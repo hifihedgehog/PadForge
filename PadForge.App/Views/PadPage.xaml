@@ -129,50 +129,49 @@
 
             <!-- ─── TAB 0: Controller ─── -->
             <TabItem Header="Controller">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel HorizontalAlignment="Center">
+                <Viewbox Stretch="Uniform" Margin="4">
+                    <StackPanel Width="768" HorizontalAlignment="Center">
 
                         <!-- ══════════════════════════════════════
                              TOP VIEW: Triggers + Bumpers
                              ══════════════════════════════════════ -->
-                        <Viewbox Stretch="Uniform" MaxWidth="700" MaxHeight="220" Margin="8,8,8,2">
-                            <Grid Width="768" Height="432">
-                                <Image Source="/Resources/Xbox Series Controller - Top.png" Stretch="Fill" Width="1280" Margin="-250,-82,-262,-206" Height="720"/>
+                        <Grid Width="768" Height="432" Margin="0,4,0,1">
+                                <Image Source="/Resources/Xbox Series Controller - Top.png" Stretch="Fill"/>
                                 <Canvas Width="768" Height="432">
 
                                     <!-- LT trigger fill -->
-                                    <Border Canvas.Left="-9" Canvas.Top="218" Width="155" Height="163"
-                                            Background="#30000000" CornerRadius="8" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Border Canvas.Left="145" Canvas.Top="180" Width="93" Height="98"
+                                            Background="#30000000" CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Top">
                                         <Grid VerticalAlignment="Bottom">
-                                            <Rectangle Fill="#40FF9800" RadiusX="6" RadiusY="6"
-                                                       Width="155" HorizontalAlignment="Center"
+                                            <Rectangle Fill="#40FF9800" RadiusX="4" RadiusY="4"
+                                                       Width="93" HorizontalAlignment="Center"
                                                        VerticalAlignment="Bottom"
                                                        Height="{Binding LeftTrigger,
                                                            Converter={StaticResource NormToTriggerHeightConverter},
-                                                           ConverterParameter=196}"/>
+                                                           ConverterParameter=94}"/>
                                         </Grid>
                                     </Border>
 
                                     <!-- RT trigger fill -->
-                                    <Border Canvas.Left="631" Canvas.Top="218" Width="155" Height="163"
-                                            Background="#30000000" CornerRadius="8" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Border Canvas.Left="529" Canvas.Top="180" Width="93" Height="98"
+                                            Background="#30000000" CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Top">
                                         <Grid VerticalAlignment="Bottom">
-                                            <Rectangle Fill="#40FF9800" RadiusX="6" RadiusY="6"
-                                                       Width="155" HorizontalAlignment="Center"
+                                            <Rectangle Fill="#40FF9800" RadiusX="4" RadiusY="4"
+                                                       Width="93" HorizontalAlignment="Center"
                                                        VerticalAlignment="Bottom"
                                                        Height="{Binding RightTrigger,
                                                            Converter={StaticResource NormToTriggerHeightConverter},
-                                                           ConverterParameter=196}"/>
+                                                           ConverterParameter=94}"/>
                                         </Grid>
                                     </Border>
 
                                     <!-- Left shoulder rectangle -->
-                                    <Border Canvas.Left="-1" Canvas.Top="382" Width="236" Height="120" CornerRadius="10"
+                                    <Border Canvas.Left="149" Canvas.Top="278" Width="142" Height="72" CornerRadius="6"
                                             Background="#FF607D8B"
                                             Opacity="{Binding LeftShoulder, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6' }"/>
 
                                     <!-- Right shoulder rectangle -->
-                                    <Border Canvas.Left="545" Canvas.Top="382" Width="236" Height="120" CornerRadius="10"
+                                    <Border Canvas.Left="477" Canvas.Top="278" Width="142" Height="72" CornerRadius="6"
                                             Background="#FF607D8B"
                                             Opacity="{Binding RightShoulder, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6' }"/>
 
@@ -181,14 +180,12 @@
                                     <!-- RB bumper highlight -->
 
                                 </Canvas>
-                            </Grid>
-                        </Viewbox>
+                        </Grid>
 
                         <!-- ══════════════════════════════════════
                              FRONT VIEW: Sticks, Buttons, D-Pad, Center
                              ══════════════════════════════════════ -->
-                        <Viewbox Stretch="Uniform" MaxWidth="700" Margin="8,2,8,4">
-                            <Grid Width="768" Height="588">
+                        <Grid Width="768" Height="588" ClipToBounds="True" Margin="0,1,0,2">
                                 <Image Source="/Resources/Xbox Series Controller - Front.png" Stretch="Fill" RenderTransformOrigin="0.494,0.495"/>
                                 <Canvas Width="768" Height="588">
 
@@ -289,13 +286,12 @@
                                                  Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"/>
 
                                 </Canvas>
-                            </Grid>
-                        </Viewbox>
+                        </Grid>
 
                         <!-- ══════════════════════════════════════
                              MOTOR ACTIVITY INDICATORS
                              ══════════════════════════════════════ -->
-                        <Grid MaxWidth="500" Margin="8,0,8,8" HorizontalAlignment="Center">
+                        <Grid Width="500" Margin="0,0,0,4" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="24"/>
@@ -332,7 +328,7 @@
                         </Grid>
 
                     </StackPanel>
-                </ScrollViewer>
+                </Viewbox>
             </TabItem>
 
             <!-- ─── TAB 1: Mappings ─── -->

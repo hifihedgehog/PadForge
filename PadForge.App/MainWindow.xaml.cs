@@ -19,6 +19,7 @@ namespace PadForge
         private SettingsService _settingsService;
         private RecorderService _recorderService;
         private DeviceService _deviceService;
+        private System.Windows.Forms.NotifyIcon _notifyIcon;
 
         public MainWindow()
         {
@@ -125,6 +126,7 @@ namespace PadForge
             // Window events.
             Loaded += OnLoaded;
             Closing += OnClosing;
+            StateChanged += OnStateChanged;
         }
 
         // ─────────────────────────────────────────────
@@ -140,8 +142,12 @@ namespace PadForge
             _viewModel.Settings.ApplicationVersion =
                 System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
             _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
-            _viewModel.Settings.XInputLibraryInfo =
-                PadForge.Common.Input.InputManager.GetXInputLibraryInfo();
+
+            // Load XInput library before querying its info.
+            PadForge.Common.Input.InputManager.LoadXInputLibrary();
+            var xinputInfo = PadForge.Common.Input.InputManager.GetXInputLibraryInfo();
+            _viewModel.Settings.XInputLibraryInfo = xinputInfo;
+            _viewModel.Dashboard.XInputLibraryInfo = xinputInfo;
 
             // Detect ViGEmBus driver.
             RefreshViGEmStatus();
@@ -166,6 +172,9 @@ namespace PadForge
                 _viewModel.Settings.SdlVersion = "Unknown";
             }
 
+            // Set up system tray icon.
+            SetupNotifyIcon();
+
             // Auto-start engine if configured.
             if (_viewModel.Settings.AutoStartEngine)
             {
@@ -175,7 +184,15 @@ namespace PadForge
             // Apply start-minimized setting.
             if (_viewModel.Settings.StartMinimized)
             {
-                WindowState = WindowState.Minimized;
+                if (_viewModel.Settings.MinimizeToTray)
+                {
+                    Hide();
+                    _notifyIcon.Visible = true;
+                }
+                else
+                {
+                    WindowState = WindowState.Minimized;
+                }
             }
 
             // Select the first nav item.
@@ -189,6 +206,14 @@ namespace PadForge
             if (_settingsService.IsDirty)
             {
                 _settingsService.Save();
+            }
+
+            // Dispose tray icon.
+            if (_notifyIcon != null)
+            {
+                _notifyIcon.Visible = false;
+                _notifyIcon.Dispose();
+                _notifyIcon = null;
             }
 
             // Unwire device service.
@@ -288,6 +313,48 @@ namespace PadForge
         }
 
         // ─────────────────────────────────────────────
+        //  System tray
+        // ─────────────────────────────────────────────
+
+        private void SetupNotifyIcon()
+        {
+            _notifyIcon = new System.Windows.Forms.NotifyIcon();
+            _notifyIcon.Text = "PadForge";
+
+            // Load icon from the running executable.
+            var exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+            if (!string.IsNullOrEmpty(exePath))
+                _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
+
+            // Context menu.
+            var menu = new System.Windows.Forms.ContextMenuStrip();
+            menu.Items.Add("Show PadForge", null, (s, e) => RestoreFromTray());
+            menu.Items.Add("-");
+            menu.Items.Add("Exit", null, (s, e) => { _notifyIcon.Visible = false; Close(); });
+            _notifyIcon.ContextMenuStrip = menu;
+
+            // Double-click to restore.
+            _notifyIcon.DoubleClick += (s, e) => RestoreFromTray();
+        }
+
+        private void OnStateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized && _viewModel.Settings.MinimizeToTray)
+            {
+                Hide();
+                _notifyIcon.Visible = true;
+            }
+        }
+
+        private void RestoreFromTray()
+        {
+            Show();
+            WindowState = WindowState.Normal;
+            Activate();
+            _notifyIcon.Visible = false;
+        }
+
+        // ─────────────────────────────────────────────
         //  Driver install/uninstall helpers
         // ─────────────────────────────────────────────
 
@@ -322,6 +389,11 @@ namespace PadForge
                 bool installed = PadForge.Common.Input.InputManager.CheckViGEmInstalled();
                 _viewModel.Settings.IsViGEmInstalled = installed;
                 _viewModel.Dashboard.IsViGEmInstalled = installed;
+
+                var version = DriverInstaller.GetViGEmVersion();
+                _viewModel.Settings.ViGEmVersion = version ?? string.Empty;
+                _viewModel.Dashboard.ViGEmVersion = version ?? string.Empty;
+
                 if (!installed)
                     _viewModel.StatusText = "ViGEmBus driver not detected. Virtual controller output disabled.";
             }

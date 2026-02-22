@@ -114,6 +114,45 @@ namespace PadForge.Common
         }
 
         // ─────────────────────────────────────────────
+        //  ViGEmBus detection
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Returns the installed ViGEmBus version string, or null if not found in registry.
+        /// </summary>
+        public static string GetViGEmVersion()
+        {
+            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
+
+            foreach (var view in views)
+            {
+                try
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var uninstallKey = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+
+                    if (uninstallKey == null) continue;
+
+                    foreach (var subName in uninstallKey.GetSubKeyNames())
+                    {
+                        using var sub = uninstallKey.OpenSubKey(subName, false);
+                        var name = sub?.GetValue("DisplayName") as string;
+                        if (string.IsNullOrEmpty(name)) continue;
+
+                        if (name.IndexOf("ViGEm", StringComparison.OrdinalIgnoreCase) < 0)
+                            continue;
+
+                        return sub.GetValue("DisplayVersion") as string;
+                    }
+                }
+                catch { }
+            }
+
+            return null;
+        }
+
+        // ─────────────────────────────────────────────
         //  HidHide detection
         // ─────────────────────────────────────────────
 

@@ -6,6 +6,7 @@
     <RootNamespace>PadForge</RootNamespace>
     <AssemblyName>PadForge</AssemblyName>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -17,6 +18,12 @@
     <Description>PadForge — Modern controller mapping application.</Description>
     <ApplicationIcon>Resources\PadForge.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <!-- Remove WinForms implicit usings to avoid ambiguity with WPF types. -->
+  <ItemGroup>
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
+  </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Xbox Series Controller - Front.png" />

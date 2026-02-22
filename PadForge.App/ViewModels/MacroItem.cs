@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Common;
 
 namespace PadForge.ViewModels
 {
@@ -77,6 +78,8 @@ namespace PadForge.ViewModels
                 if ((_triggerButtons & 0x0010) != 0) parts.Add("Start");
                 if ((_triggerButtons & 0x0040) != 0) parts.Add("LS");
                 if ((_triggerButtons & 0x0080) != 0) parts.Add("RS");
+                if ((_triggerButtons & 0x0400) != 0) parts.Add("Guide");
+                if ((_triggerButtons & 0x0800) != 0) parts.Add("Share");
                 if ((_triggerButtons & 0x0001) != 0) parts.Add("Up");
                 if ((_triggerButtons & 0x0002) != 0) parts.Add("Down");
                 if ((_triggerButtons & 0x0004) != 0) parts.Add("Left");
@@ -278,9 +281,28 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _keyCode, value))
+                {
                     OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(SelectedVirtualKey));
+                }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the key code as a VirtualKey enum value.
+        /// Provides typed ComboBox binding while keeping KeyCode as the serialized int.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public VirtualKey SelectedVirtualKey
+        {
+            get => (VirtualKey)_keyCode;
+            set => KeyCode = (int)value;
+        }
+
+        /// <summary>
+        /// Provides the list of VirtualKey values for ComboBox binding in the UI.
+        /// </summary>
+        public static Array VirtualKeyValues { get; } = Enum.GetValues(typeof(VirtualKey));
 
         private int _durationMs = 50;
 
@@ -327,13 +349,24 @@ namespace PadForge.ViewModels
                 {
                     MacroActionType.ButtonPress => $"Press buttons ({_buttonFlags:X4}) for {_durationMs}ms",
                     MacroActionType.ButtonRelease => $"Release buttons ({_buttonFlags:X4})",
-                    MacroActionType.KeyPress => $"Key 0x{_keyCode:X2} for {_durationMs}ms",
-                    MacroActionType.KeyRelease => $"Release key 0x{_keyCode:X2}",
+                    MacroActionType.KeyPress => $"Key {ResolveKeyName(_keyCode)} for {_durationMs}ms",
+                    MacroActionType.KeyRelease => $"Release key {ResolveKeyName(_keyCode)}",
                     MacroActionType.Delay => $"Wait {_durationMs}ms",
                     MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
                     _ => "Unknown action"
                 };
             }
+        }
+
+        /// <summary>
+        /// Resolves a virtual key code to a human-readable name using the VirtualKey enum.
+        /// Falls back to hex notation if the code is not a known enum member.
+        /// </summary>
+        private static string ResolveKeyName(int keyCode)
+        {
+            if (Enum.IsDefined(typeof(VirtualKey), keyCode))
+                return ((VirtualKey)keyCode).ToString();
+            return $"0x{keyCode:X2}";
         }
     }
 

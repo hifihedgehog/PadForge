@@ -290,61 +290,8 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
-            // SDL / DirectInput devices: button indices follow SDL reporting order.
-            // If the device has a standard gamepad layout (4+ axes, 10+ buttons, 1 POV),
-            // create the standard Xbox mapping.
-            bool isStandardGamepad =
-                ud.CapAxeCount >= 4 &&
-                ud.CapButtonCount >= 10 &&
-                ud.CapPovCount >= 1;
-
-            if (isStandardGamepad)
-            {
-                // Standard gamepad: first 4 axes → sticks, next 2 → triggers, POV → dpad
-                ps.LeftThumbAxisX = "Axis 0";
-                ps.LeftThumbAxisY = "Axis 1";
-                ps.RightThumbAxisX = "Axis 2";
-                ps.RightThumbAxisY = "Axis 3";
-
-                // Triggers (often axes 4+5 or as buttons)
-                if (ud.CapAxeCount >= 6)
-                {
-                    ps.LeftTrigger = "Axis 4";
-                    ps.RightTrigger = "Axis 5";
-                }
-
-                // D-pad from POV
-                ps.DPad = "POV 0";
-
-                // Standard button order: A, B, X, Y, LB, RB, Back, Start, LS, RS
-                ps.ButtonA = "Button 0";
-                ps.ButtonB = "Button 1";
-                ps.ButtonX = "Button 2";
-                ps.ButtonY = "Button 3";
-                ps.LeftShoulder = "Button 4";
-                ps.RightShoulder = "Button 5";
-                ps.ButtonBack = "Button 6";
-                ps.ButtonStart = "Button 7";
-                ps.LeftThumbButton = "Button 8";
-                ps.RightThumbButton = "Button 9";
-
-                if (ud.CapButtonCount >= 11)
-                    ps.ButtonGuide = "Button 10";
-
-                // Default dead zones and gains
-                ps.LeftThumbDeadZoneX = "0";
-                ps.LeftThumbDeadZoneY = "0";
-                ps.RightThumbDeadZoneX = "0";
-                ps.RightThumbDeadZoneY = "0";
-                ps.LeftThumbAntiDeadZone = "0";
-                ps.RightThumbAntiDeadZone = "0";
-                ps.LeftThumbLinear = "0";
-                ps.RightThumbLinear = "0";
-                ps.ForceOverall = "100";
-                ps.LeftMotorStrength = "100";
-                ps.RightMotorStrength = "100";
-                ps.ForceSwapMotor = "0";
-            }
+            // Non-XInput devices (SDL / DirectInput) are not auto-mapped.
+            // The user must manually record mappings for these devices.
 
             ps.UpdateChecksum();
             return ps;

@@ -57,6 +57,11 @@ namespace PadForge.Services
         /// </summary>
         public bool IsPadPageVisible { get; set; }
 
+        // ── Macro trigger recording state ──
+        private MacroItem _recordingMacro;
+        private int _recordingPadIndex;
+        private ushort _recordedButtons;
+
         // ─────────────────────────────────────────────
         //  Constructor
         // ─────────────────────────────────────────────
@@ -181,6 +186,15 @@ namespace PadForge.Services
             {
                 UpdateMappingLiveValues();
             }
+
+            // ── Macro trigger recording (accumulate buttons) ──
+            UpdateMacroTriggerRecording();
+
+            // ── Push ViewModel settings to PadSetting objects (runtime sync) ──
+            SyncViewModelToPadSettings();
+
+            // ── Sync macro snapshots to engine ──
+            SyncMacroSnapshots();
         }
 
         // ─────────────────────────────────────────────
@@ -367,6 +381,107 @@ namespace PadForge.Services
                 "pov" when index >= 0 && index < CustomInputState.MaxPovs => state.Povs[index],
                 _ => 0
             };
+        }
+
+        // ─────────────────────────────────────────────
+        //  Runtime sync: ViewModel → PadSetting
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Pushes ViewModel slider values (dead zones, force feedback, linear)
+        /// directly to PadSetting objects so the engine picks them up immediately.
+        /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
+        /// </summary>
+        private void SyncViewModelToPadSettings()
+        {
+            var settings = SettingsManager.UserSettings?.Items;
+            if (settings == null) return;
+
+            UserSetting[] snapshot;
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                snapshot = settings.ToArray();
+            }
+
+            foreach (var us in snapshot)
+            {
+                var ps = us.GetPadSetting();
+                if (ps == null) continue;
+
+                int padIndex = us.MapTo;
+                if (padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                    continue;
+
+                var padVm = _mainVm.Pads[padIndex];
+
+                // Dead zones (independent X/Y).
+                ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString();
+                ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString();
+                ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
+                ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
+
+                // Anti-dead zones.
+                ps.LeftThumbAntiDeadZone = padVm.LeftAntiDeadZone.ToString();
+                ps.RightThumbAntiDeadZone = padVm.RightAntiDeadZone.ToString();
+
+                // Linear response.
+                ps.LeftThumbLinear = padVm.LeftLinear.ToString();
+                ps.RightThumbLinear = padVm.RightLinear.ToString();
+
+                // Trigger dead zones.
+                ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
+                ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
+                ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
+                ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
+
+                // Force feedback.
+                ps.ForceOverall = padVm.ForceOverallGain.ToString();
+                ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
+                ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
+                ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+
+                // Mapping descriptors.
+                foreach (var mapping in padVm.Mappings)
+                {
+                    var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
+                    if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
+                        prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Macro snapshot sync
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Pushes the current macro lists from PadViewModels to the engine's
+        /// MacroSnapshots array. The engine reads these atomically each cycle.
+        /// Called at 30Hz on the UI thread.
+        /// </summary>
+        private void SyncMacroSnapshots()
+        {
+            if (_inputManager == null)
+                return;
+
+            for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
+            {
+                var padVm = _mainVm.Pads[i];
+                if (padVm.Macros.Count == 0)
+                {
+                    _inputManager.MacroSnapshots[i] = null;
+                }
+                else
+                {
+                    // Create a snapshot array. The MacroItem objects are shared references —
+                    // runtime state (IsExecuting, CurrentActionIndex, etc.) is read/written
+                    // by the engine thread, but the properties themselves are simple fields
+                    // that don't need locking for this use case.
+                    var snapshot = new MacroItem[padVm.Macros.Count];
+                    padVm.Macros.CopyTo(snapshot, 0);
+                    _inputManager.MacroSnapshots[i] = snapshot;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -579,9 +694,9 @@ namespace PadForge.Services
         /// <summary>
         /// Updates PadViewModel device info (name, online status) for all pads.
         /// Populates the MappedDevices collection with ALL devices assigned to each slot.
-        /// Called after the device list changes.
+        /// Called after the device list changes or after a device is assigned to a slot.
         /// </summary>
-        private void UpdatePadDeviceInfo()
+        public void UpdatePadDeviceInfo()
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
@@ -727,6 +842,59 @@ namespace PadForge.Services
                 clearTimer.Stop();
             };
             clearTimer.Start();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Macro trigger recording
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Starts recording button presses for a macro trigger combo.
+        /// While recording, CombinedXiState button flags are OR'd together
+        /// each UI tick. Call <see cref="StopMacroTriggerRecording"/> to
+        /// finalize and write the result to the MacroItem.
+        /// </summary>
+        public void StartMacroTriggerRecording(MacroItem macro, int padIndex)
+        {
+            // Stop any existing recording.
+            if (_recordingMacro != null)
+                StopMacroTriggerRecording();
+
+            _recordingMacro = macro;
+            _recordingPadIndex = padIndex;
+            _recordedButtons = 0;
+            macro.IsRecordingTrigger = true;
+        }
+
+        /// <summary>
+        /// Stops the current macro trigger recording session and writes the
+        /// accumulated button flags to the MacroItem.
+        /// </summary>
+        public void StopMacroTriggerRecording()
+        {
+            if (_recordingMacro == null)
+                return;
+
+            _recordingMacro.TriggerButtons = _recordedButtons;
+            _recordingMacro.IsRecordingTrigger = false;
+            _recordingMacro = null;
+            _recordedButtons = 0;
+        }
+
+        /// <summary>
+        /// Called each UI tick during macro trigger recording.
+        /// Accumulates button flags from the CombinedXiState.
+        /// </summary>
+        private void UpdateMacroTriggerRecording()
+        {
+            if (_recordingMacro == null || _inputManager == null)
+                return;
+
+            if (_recordingPadIndex >= 0 && _recordingPadIndex < InputManager.MaxPads)
+            {
+                ushort buttons = _inputManager.CombinedXiStates[_recordingPadIndex].Buttons;
+                _recordedButtons |= buttons;
+            }
         }
 
         // ─────────────────────────────────────────────

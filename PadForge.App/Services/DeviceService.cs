@@ -20,6 +20,12 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private readonly SettingsService _settingsService;
 
+        /// <summary>
+        /// Raised after a device is assigned to or unassigned from a slot.
+        /// MainWindow subscribes to refresh PadViewModel device info.
+        /// </summary>
+        public event EventHandler DeviceAssignmentChanged;
+
         public DeviceService(MainViewModel mainVm, SettingsService settingsService)
         {
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
@@ -103,6 +109,9 @@ namespace PadForge.Services
             _settingsService.MarkDirty();
 
             _mainVm.StatusText = $"Assigned \"{selectedRow.DeviceName}\" to Player {slotIndex + 1}.";
+
+            // Notify listeners so PadPage dropdowns refresh immediately.
+            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -195,6 +204,8 @@ namespace PadForge.Services
                 row.AssignedSlot = -1;
 
             _settingsService.MarkDirty();
+
+            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -18,8 +18,8 @@ namespace PadForge.Converters
             if (value is double normalized && parameter is string dimStr
                 && double.TryParse(dimStr, out double dimension))
             {
-                // Map normalized 0..1 to canvas position, offset by half dot size (6)
-                return Math.Clamp(normalized * dimension - 6.0, 0, dimension - 12);
+                // Map normalized 0..1 to canvas position, offset by half dot size (7)
+                return Math.Clamp(normalized * dimension - 7.0, 0, dimension - 14);
             }
             return 0.0;
         }

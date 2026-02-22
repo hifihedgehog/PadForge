@@ -57,6 +57,9 @@ namespace PadForge
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
 
+            // Refresh PadPage dropdowns immediately after device assignment changes.
+            _deviceService.DeviceAssignmentChanged += (s, e) => _inputService.UpdatePadDeviceInfo();
+
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>
                 _viewModel.StatusText = "Device list refreshed.";
@@ -90,6 +93,26 @@ namespace PadForge
             // Recorder completion marks settings dirty.
             _recorderService.RecordingCompleted += (s, result) =>
                 _settingsService.MarkDirty();
+
+            // Wire macro trigger recording for each pad.
+            foreach (var pad in _viewModel.Pads)
+            {
+                var capturedPad = pad;
+
+                // Wire existing macros.
+                foreach (var macro in pad.Macros)
+                    WireMacroRecording(macro, capturedPad.PadIndex);
+
+                // Wire macros added later.
+                pad.Macros.CollectionChanged += (s, e) =>
+                {
+                    if (e.NewItems != null)
+                    {
+                        foreach (MacroItem macro in e.NewItems)
+                            WireMacroRecording(macro, capturedPad.PadIndex);
+                    }
+                };
+            }
 
             // Window events.
             Loaded += OnLoaded;
@@ -147,6 +170,12 @@ namespace PadForge
             if (_viewModel.Settings.AutoStartEngine)
             {
                 _inputService.Start();
+            }
+
+            // Apply start-minimized setting.
+            if (_viewModel.Settings.StartMinimized)
+            {
+                WindowState = WindowState.Minimized;
             }
 
             // Select the first nav item.
@@ -232,6 +261,20 @@ namespace PadForge
                     UseShellExecute = true
                 });
             }
+        }
+
+        private void WireMacroRecording(MacroItem macro, int padIndex)
+        {
+            macro.RecordTriggerRequested += (s, e) =>
+            {
+                if (s is MacroItem mi)
+                {
+                    if (mi.IsRecordingTrigger)
+                        _inputService.StartMacroTriggerRecording(mi, padIndex);
+                    else
+                        _inputService.StopMacroTriggerRecording();
+                }
+            };
         }
 
         private void OnThemeChanged(object sender, int themeIndex)

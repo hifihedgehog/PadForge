@@ -285,6 +285,7 @@ namespace PadForge.Common.Input
                     UpdateInputStates();
                     UpdateXiStates();
                     CombineXiStates();
+                    EvaluateMacros();
                     UpdateVirtualDevices();
                     RetrieveXiStates();
 

@@ -178,6 +178,10 @@ namespace PadForge.Services
                 // Load pad-specific settings.
                 if (data.PadSettings != null)
                     LoadPadSettings(data.Settings, data.PadSettings);
+
+                // Load macros into pad ViewModels.
+                if (data.Macros != null)
+                    LoadMacros(data.Macros);
             }
             catch (Exception ex)
             {
@@ -225,11 +229,21 @@ namespace PadForge.Services
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
-                // Load dead zone settings.
-                padVm.LeftDeadZone = TryParseInt(ps.LeftThumbDeadZoneX, 0);
-                padVm.RightDeadZone = TryParseInt(ps.RightThumbDeadZoneX, 0);
+                // Load dead zone settings (independent X/Y).
+                padVm.LeftDeadZoneX = TryParseInt(ps.LeftThumbDeadZoneX, 0);
+                padVm.LeftDeadZoneY = TryParseInt(ps.LeftThumbDeadZoneY, 0);
+                padVm.RightDeadZoneX = TryParseInt(ps.RightThumbDeadZoneX, 0);
+                padVm.RightDeadZoneY = TryParseInt(ps.RightThumbDeadZoneY, 0);
                 padVm.LeftAntiDeadZone = TryParseInt(ps.LeftThumbAntiDeadZone, 0);
                 padVm.RightAntiDeadZone = TryParseInt(ps.RightThumbAntiDeadZone, 0);
+                padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
+                padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
+
+                // Load trigger dead zone settings.
+                padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
+                padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
+                padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
+                padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
 
                 // Load mapping descriptors into mapping rows.
                 LoadMappingDescriptors(padVm, ps);
@@ -245,6 +259,53 @@ namespace PadForge.Services
             {
                 string value = GetPadSettingProperty(ps, mapping.TargetSettingName);
                 mapping.SourceDescriptor = value ?? string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Populates pad ViewModels with macros from serialized data.
+        /// </summary>
+        private void LoadMacros(MacroData[] macros)
+        {
+            // Clear existing macros on all pads.
+            foreach (var pad in _mainVm.Pads)
+                pad.Macros.Clear();
+
+            foreach (var md in macros)
+            {
+                if (md.PadIndex < 0 || md.PadIndex >= _mainVm.Pads.Count)
+                    continue;
+
+                var padVm = _mainVm.Pads[md.PadIndex];
+                var macro = new MacroItem
+                {
+                    Name = md.Name ?? "Macro",
+                    IsEnabled = md.IsEnabled,
+                    TriggerButtons = md.TriggerButtons,
+                    TriggerMode = md.TriggerMode,
+                    ConsumeTriggerButtons = md.ConsumeTriggerButtons,
+                    RepeatMode = md.RepeatMode,
+                    RepeatCount = md.RepeatCount,
+                    RepeatDelayMs = md.RepeatDelayMs
+                };
+
+                if (md.Actions != null)
+                {
+                    foreach (var ad in md.Actions)
+                    {
+                        macro.Actions.Add(new MacroAction
+                        {
+                            Type = ad.Type,
+                            ButtonFlags = ad.ButtonFlags,
+                            KeyCode = ad.KeyCode,
+                            DurationMs = ad.DurationMs,
+                            AxisValue = ad.AxisValue,
+                            AxisTarget = ad.AxisTarget
+                        });
+                    }
+                }
+
+                padVm.Macros.Add(macro);
             }
         }
 
@@ -292,6 +353,9 @@ namespace PadForge.Services
                 // Collect app settings from ViewModel.
                 data.AppSettings = BuildAppSettings();
 
+                // Collect macros from all pad ViewModels.
+                data.Macros = BuildMacroData();
+
                 // Update PadSettings from ViewModels before saving.
                 UpdatePadSettingsFromViewModels();
 
@@ -334,6 +398,45 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Collects macro data from all pad ViewModels for serialization.
+        /// </summary>
+        private MacroData[] BuildMacroData()
+        {
+            var list = new System.Collections.Generic.List<MacroData>();
+
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var padVm = _mainVm.Pads[i];
+                foreach (var macro in padVm.Macros)
+                {
+                    list.Add(new MacroData
+                    {
+                        PadIndex = i,
+                        Name = macro.Name,
+                        IsEnabled = macro.IsEnabled,
+                        TriggerButtons = macro.TriggerButtons,
+                        TriggerMode = macro.TriggerMode,
+                        ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
+                        RepeatMode = macro.RepeatMode,
+                        RepeatCount = macro.RepeatCount,
+                        RepeatDelayMs = macro.RepeatDelayMs,
+                        Actions = macro.Actions.Select(a => new ActionData
+                        {
+                            Type = a.Type,
+                            ButtonFlags = a.ButtonFlags,
+                            KeyCode = a.KeyCode,
+                            DurationMs = a.DurationMs,
+                            AxisValue = a.AxisValue,
+                            AxisTarget = a.AxisTarget
+                        }).ToArray()
+                    });
+                }
+            }
+
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        /// <summary>
         /// Pushes ViewModel values back into PadSetting objects before saving.
         /// </summary>
         private void UpdatePadSettingsFromViewModels()
@@ -360,13 +463,21 @@ namespace PadForge.Services
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
-                    // Write dead zone settings.
-                    ps.LeftThumbDeadZoneX = padVm.LeftDeadZone.ToString();
-                    ps.LeftThumbDeadZoneY = padVm.LeftDeadZone.ToString();
-                    ps.RightThumbDeadZoneX = padVm.RightDeadZone.ToString();
-                    ps.RightThumbDeadZoneY = padVm.RightDeadZone.ToString();
+                    // Write dead zone settings (independent X/Y).
+                    ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString();
+                    ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString();
+                    ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
+                    ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
                     ps.LeftThumbAntiDeadZone = padVm.LeftAntiDeadZone.ToString();
                     ps.RightThumbAntiDeadZone = padVm.RightAntiDeadZone.ToString();
+                    ps.LeftThumbLinear = padVm.LeftLinear.ToString();
+                    ps.RightThumbLinear = padVm.RightLinear.ToString();
+
+                    // Write trigger dead zone settings.
+                    ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
+                    ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
+                    ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
+                    ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
 
                     // Write mapping descriptors.
                     foreach (var mapping in padVm.Mappings)
@@ -406,10 +517,18 @@ namespace PadForge.Services
                 padVm.LeftMotorStrength = 100;
                 padVm.RightMotorStrength = 100;
                 padVm.SwapMotors = false;
-                padVm.LeftDeadZone = 0;
-                padVm.RightDeadZone = 0;
+                padVm.LeftDeadZoneX = 0;
+                padVm.LeftDeadZoneY = 0;
+                padVm.RightDeadZoneX = 0;
+                padVm.RightDeadZoneY = 0;
                 padVm.LeftAntiDeadZone = 0;
                 padVm.RightAntiDeadZone = 0;
+                padVm.LeftLinear = 0;
+                padVm.RightLinear = 0;
+                padVm.LeftTriggerDeadZone = 0;
+                padVm.RightTriggerDeadZone = 0;
+                padVm.LeftTriggerAntiDeadZone = 0;
+                padVm.RightTriggerAntiDeadZone = 0;
             }
 
             var settingsVm = _mainVm.Settings;
@@ -527,6 +646,10 @@ namespace PadForge.Services
 
         [XmlElement("AppSettings")]
         public AppSettingsData AppSettings { get; set; }
+
+        [XmlArray("Macros")]
+        [XmlArrayItem("Macro")]
+        public MacroData[] Macros { get; set; }
     }
 
     /// <summary>
@@ -551,5 +674,66 @@ namespace PadForge.Services
 
         [XmlElement]
         public int ThemeIndex { get; set; }
+    }
+
+    /// <summary>
+    /// Serializable DTO for a macro. Stored per pad slot.
+    /// </summary>
+    public class MacroData
+    {
+        [XmlAttribute]
+        public int PadIndex { get; set; }
+
+        [XmlElement]
+        public string Name { get; set; } = "New Macro";
+
+        [XmlElement]
+        public bool IsEnabled { get; set; } = true;
+
+        [XmlElement]
+        public ushort TriggerButtons { get; set; }
+
+        [XmlElement]
+        public MacroTriggerMode TriggerMode { get; set; }
+
+        [XmlElement]
+        public bool ConsumeTriggerButtons { get; set; } = true;
+
+        [XmlElement]
+        public MacroRepeatMode RepeatMode { get; set; }
+
+        [XmlElement]
+        public int RepeatCount { get; set; } = 1;
+
+        [XmlElement]
+        public int RepeatDelayMs { get; set; } = 100;
+
+        [XmlArray("Actions")]
+        [XmlArrayItem("Action")]
+        public ActionData[] Actions { get; set; }
+    }
+
+    /// <summary>
+    /// Serializable DTO for a single macro action.
+    /// </summary>
+    public class ActionData
+    {
+        [XmlElement]
+        public MacroActionType Type { get; set; }
+
+        [XmlElement]
+        public ushort ButtonFlags { get; set; }
+
+        [XmlElement]
+        public int KeyCode { get; set; }
+
+        [XmlElement]
+        public int DurationMs { get; set; } = 50;
+
+        [XmlElement]
+        public short AxisValue { get; set; }
+
+        [XmlElement]
+        public MacroAxisTarget AxisTarget { get; set; }
     }
 }

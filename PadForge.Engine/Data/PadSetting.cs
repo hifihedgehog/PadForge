@@ -84,6 +84,15 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string RightTriggerDeadZone { get; set; } = "0";
 
+        /// <summary>
+        /// Anti-dead zone for the left trigger (0–100%). Offsets the output range minimum
+        /// so small physical presses register past the game's built-in trigger dead zone.
+        /// </summary>
+        [XmlElement] public string LeftTriggerAntiDeadZone { get; set; } = "0";
+
+        /// <summary>Anti-dead zone for the right trigger (0–100%).</summary>
+        [XmlElement] public string RightTriggerAntiDeadZone { get; set; } = "0";
+
         // ─────────────────────────────────────────────
         //  Thumbstick axis mappings
         // ─────────────────────────────────────────────
@@ -250,6 +259,8 @@ namespace PadForge.Engine.Data
             sb.Append(RightTrigger); sb.Append('|');
             sb.Append(LeftTriggerDeadZone); sb.Append('|');
             sb.Append(RightTriggerDeadZone); sb.Append('|');
+            sb.Append(LeftTriggerAntiDeadZone); sb.Append('|');
+            sb.Append(RightTriggerAntiDeadZone); sb.Append('|');
 
             // Thumbstick axes
             sb.Append(LeftThumbAxisX); sb.Append('|');

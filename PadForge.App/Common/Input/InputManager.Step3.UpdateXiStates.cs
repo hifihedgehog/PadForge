@@ -138,11 +138,19 @@ namespace PadForge.Common.Input
             gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger);
             gp.RightTrigger = MapToTrigger(state, ps.RightTrigger);
 
+            // ── Trigger dead zones ──
+            gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
+                TryParseIntStatic(ps.LeftTriggerDeadZone, 0),
+                TryParseIntStatic(ps.LeftTriggerAntiDeadZone, 0));
+            gp.RightTrigger = ApplyTriggerDeadZone(gp.RightTrigger,
+                TryParseIntStatic(ps.RightTriggerDeadZone, 0),
+                TryParseIntStatic(ps.RightTriggerAntiDeadZone, 0));
+
             // ── Thumbsticks ──
             gp.ThumbLX = MapToThumbAxis(state, ps.LeftThumbAxisX);
-            gp.ThumbLY = MapToThumbAxis(state, ps.LeftThumbAxisY);
+            gp.ThumbLY = NegateAxis(MapToThumbAxis(state, ps.LeftThumbAxisY));
             gp.ThumbRX = MapToThumbAxis(state, ps.RightThumbAxisX);
-            gp.ThumbRY = MapToThumbAxis(state, ps.RightThumbAxisY);
+            gp.ThumbRY = NegateAxis(MapToThumbAxis(state, ps.RightThumbAxisY));
 
             // ── Dead zones ──
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
@@ -159,6 +167,15 @@ namespace PadForge.Common.Input
 
             return gp;
         }
+
+        /// <summary>
+        /// Negates a signed short axis value. Clamps short.MinValue to short.MaxValue
+        /// to avoid overflow (since -(-32768) overflows short).
+        /// Used to correct Y-axis orientation: the unsigned pipeline produces 0=up
+        /// which maps to negative signed values, but XInput convention is positive Y = up.
+        /// </summary>
+        private static short NegateAxis(short value)
+            => value == short.MinValue ? short.MaxValue : (short)-value;
 
         // ─────────────────────────────────────────────
         //  Mapping descriptor parser
@@ -656,6 +673,34 @@ namespace PadForge.Common.Input
             // Apply sign and clamp to short range.
             double result = sign * output * 32767.0;
             return (short)Math.Clamp(result, short.MinValue, short.MaxValue);
+        }
+
+        /// <summary>
+        /// Applies dead zone and anti-dead zone processing to a trigger value (0–255).
+        /// Dead zone: values below the threshold percentage are zeroed.
+        /// Anti-dead zone: remaps the output so small presses register past the game's dead zone.
+        /// </summary>
+        private static byte ApplyTriggerDeadZone(byte value, int deadZone, int antiDeadZone)
+        {
+            if (deadZone <= 0 && antiDeadZone <= 0)
+                return value;
+
+            // Normalize to 0.0–1.0.
+            double norm = value / 255.0;
+
+            // Dead zone: values below threshold are zeroed.
+            double dzNorm = deadZone / 100.0;
+            if (norm < dzNorm)
+                return 0;
+
+            // Remap from dead zone edge to 1.0.
+            double remapped = (norm - dzNorm) / (1.0 - dzNorm);
+
+            // Anti-dead zone: offset the output minimum.
+            double adzNorm = antiDeadZone / 100.0;
+            double output = adzNorm + remapped * (1.0 - adzNorm);
+
+            return (byte)Math.Clamp((int)(output * 255.0), 0, 255);
         }
 
         private static int TryParseIntStatic(string value, int defaultValue)

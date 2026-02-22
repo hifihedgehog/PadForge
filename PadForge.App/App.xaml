@@ -20,6 +20,10 @@
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
             <conv:StatusToColorConverter x:Key="StatusToColorConverter" />
             <conv:BoolToInstallTextConverter x:Key="BoolToInstallTextConverter" />
+            <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
+            <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+            <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+            <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

@@ -248,6 +248,25 @@ namespace PadForge.Services
 
                 slot.IsActive = padVm.IsDeviceOnline;
                 slot.DeviceName = padVm.MappedDeviceName;
+
+                // Count mapped and connected devices for this slot.
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(i);
+                int mappedCount = slotSettings?.Count ?? 0;
+                int connectedCount = 0;
+                if (slotSettings != null && devices != null)
+                {
+                    foreach (var us in slotSettings)
+                    {
+                        if (devices.Any(d => d.InstanceGuid == us.InstanceGuid && d.IsOnline))
+                            connectedCount++;
+                    }
+                }
+
+                slot.MappedDeviceCount = mappedCount;
+                slot.ConnectedDeviceCount = connectedCount;
+                slot.StatusText = mappedCount == 0 ? "No mapping"
+                    : padVm.IsDeviceOnline ? "Active"
+                    : "Idle";
             }
 
             // Update main VM frequency.

@@ -142,7 +142,11 @@ namespace PadForge.ViewModels
         public MacroAction SelectedAction
         {
             get => _selectedAction;
-            set => SetProperty(ref _selectedAction, value);
+            set
+            {
+                if (SetProperty(ref _selectedAction, value))
+                    _removeActionCommand?.NotifyCanExecuteChanged();
+            }
         }
 
         // ─────────────────────────────────────────────

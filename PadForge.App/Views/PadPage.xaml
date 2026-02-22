@@ -13,7 +13,7 @@
         <Style x:Key="DzLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="110"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
         </Style>
         <Style x:Key="DzSlider" TargetType="Slider">
             <Setter Property="Minimum" Value="0"/>
@@ -27,7 +27,7 @@
             <Setter Property="Width" Value="35"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
             <Setter Property="Margin" Value="4,0,0,0"/>
         </Style>
     </UserControl.Resources>
@@ -58,7 +58,7 @@
                 <TextBlock Grid.Column="0" Text="{Binding SlotLabel}"
                            FontSize="16" FontWeight="SemiBold"
                            VerticalAlignment="Center" Margin="0,0,12,0"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                 <!-- Device ComboBox: select which mapped device to configure -->
                 <ComboBox Grid.Column="1"
@@ -104,7 +104,7 @@
                         </Ellipse.Style>
                     </Ellipse>
                     <TextBlock VerticalAlignment="Center"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Text" Value="Offline"/>
@@ -300,7 +300,7 @@
 
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="L Motor" FontSize="10"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                            HorizontalAlignment="Center" Margin="0,0,0,2"/>
                                 <Border Height="10" Background="#FF1E1E21" CornerRadius="3"
                                         BorderBrush="#FF3F3F46" BorderThickness="1">
@@ -314,7 +314,7 @@
 
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="R Motor" FontSize="10"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                            HorizontalAlignment="Center" Margin="0,0,0,2"/>
                                 <Border Height="10" Background="#FF1E1E21" CornerRadius="3"
                                         BorderBrush="#FF3F3F46" BorderThickness="1">
@@ -345,7 +345,7 @@
                                 Padding="8,4" Margin="0,0,8,0"/>
                         <TextBlock Text="Click a mapping row and press a button/axis on your controller to assign it."
                                    VerticalAlignment="Center" FontStyle="Italic"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                     </StackPanel>
 
                     <!-- Mapping DataGrid -->
@@ -416,7 +416,7 @@
                     <StackPanel>
                         <TextBlock Text="Left Thumbstick Configuration"
                                    FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                         <!-- Dead Zone X -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -458,7 +458,7 @@
 
                         <!-- Live preview -->
                         <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                         <Grid Width="200" Height="200" HorizontalAlignment="Left">
                             <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                     BorderThickness="1" CornerRadius="100"
@@ -510,7 +510,7 @@
                             </Border>
                         </Grid>
                         <TextBlock Margin="0,4,0,0"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
                             <Run Text="X:"/>
                             <Run Text="{Binding RawThumbLX, Mode=OneWay}"/>
                             <Run Text="  Y:"/>
@@ -526,7 +526,7 @@
                     <StackPanel>
                         <TextBlock Text="Right Thumbstick Configuration"
                                    FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                         <!-- Dead Zone X -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -568,7 +568,7 @@
 
                         <!-- Live preview -->
                         <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                         <Grid Width="200" Height="200" HorizontalAlignment="Left">
                             <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                     BorderThickness="1" CornerRadius="100"
@@ -620,7 +620,7 @@
                             </Border>
                         </Grid>
                         <TextBlock Margin="0,4,0,0"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
                             <Run Text="X:"/>
                             <Run Text="{Binding RawThumbRX, Mode=OneWay}"/>
                             <Run Text="  Y:"/>
@@ -637,7 +637,7 @@
                         <!-- Left Trigger -->
                         <TextBlock Text="Left Trigger" FontSize="14" FontWeight="SemiBold"
                                    Margin="0,0,0,12"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
@@ -670,7 +670,7 @@
                         <!-- Right Trigger -->
                         <TextBlock Text="Right Trigger" FontSize="14" FontWeight="SemiBold"
                                    Margin="0,0,0,12"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
@@ -706,7 +706,7 @@
                     <StackPanel>
                         <TextBlock Text="Force Feedback / Rumble"
                                    FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                         <!-- Overall gain -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -748,7 +748,7 @@
 
                         <!-- Live motor display -->
                         <TextBlock Text="Motor Activity" FontWeight="SemiBold" Margin="0,8,0,8"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Left Motor:" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding LeftMotorDisplay, Mode=OneWay}"
@@ -805,7 +805,7 @@
                         <StackPanel>
                             <!-- Macro name -->
                             <TextBlock Text="Name" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0,0,0,12"/>
 
@@ -816,7 +816,7 @@
                             <!-- Trigger -->
                             <TextBlock Text="Trigger Combination" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="{Binding TriggerDisplayText}"
                                            VerticalAlignment="Center" Margin="0,0,8,0"
@@ -845,7 +845,7 @@
                             <!-- Action sequence -->
                             <TextBlock Text="Action Sequence" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <Button Content="Add Action" Command="{Binding AddActionCommand}"
                                         Padding="8,4" Margin="0,0,4,0"/>
@@ -866,7 +866,7 @@
                                         Converter={StaticResource NullToCollapsedConverter}}">
                                 <StackPanel>
                                     <TextBlock Text="Edit Action" FontWeight="SemiBold" Margin="0,0,0,8"
-                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                                     <!-- Action type -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
@@ -891,7 +891,7 @@
                                                      StringFormat=X4}" Width="80"/>
                                         <TextBlock Text="(hex flags: A=1000, B=2000, X=4000, Y=8000, LB=0100, RB=0200)"
                                                    VerticalAlignment="Center" Margin="8,0,0,0" FontSize="11"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
 
                                     <!-- Key code — for KeyPress / KeyRelease -->
@@ -935,7 +935,7 @@
 
                             <!-- Repeat settings -->
                             <TextBlock Text="Repeat" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="Mode:" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>

@@ -30,6 +30,8 @@
     <Content Include="Resources\SDL2\x64\SDL2.dll" Link="SDL2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
+    <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using ModernWpf.Controls;
+using PadForge.Common;
 using PadForge.Services;
 using PadForge.ViewModels;
 
@@ -48,11 +50,17 @@ namespace PadForge
             _viewModel.Settings.OpenSettingsFolderRequested += OnOpenSettingsFolder;
             _viewModel.Settings.ThemeChanged += OnThemeChanged;
 
-            // Wire ViGEm commands (stubs — full implementation in carried-over ViGEm code).
-            _viewModel.Settings.InstallViGEmRequested += (s, e) =>
-                _viewModel.StatusText = "ViGEmBus installation not yet implemented.";
-            _viewModel.Settings.UninstallViGEmRequested += (s, e) =>
-                _viewModel.StatusText = "ViGEmBus uninstallation not yet implemented.";
+            // Wire ViGEm install/uninstall commands.
+            _viewModel.Settings.InstallViGEmRequested += async (s, e) => await RunDriverOperationAsync(
+                "Installing ViGEmBus…", DriverInstaller.InstallViGEmBus, RefreshViGEmStatus);
+            _viewModel.Settings.UninstallViGEmRequested += async (s, e) => await RunDriverOperationAsync(
+                "Uninstalling ViGEmBus…", DriverInstaller.UninstallViGEmBus, RefreshViGEmStatus);
+
+            // Wire HidHide install/uninstall commands.
+            _viewModel.Settings.InstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
+                "Installing HidHide…", DriverInstaller.InstallHidHide, RefreshHidHideStatus);
+            _viewModel.Settings.UninstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
+                "Uninstalling HidHide…", DriverInstaller.UninstallHidHide, RefreshHidHideStatus);
 
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
@@ -136,18 +144,10 @@ namespace PadForge
                 PadForge.Common.Input.InputManager.GetXInputLibraryInfo();
 
             // Detect ViGEmBus driver.
-            try
-            {
-                bool vigemInstalled = PadForge.Common.Input.InputManager.CheckViGEmInstalled();
-                _viewModel.Settings.IsViGEmInstalled = vigemInstalled;
-                if (!vigemInstalled)
-                    _viewModel.StatusText = "ViGEmBus driver not detected. Virtual controller output disabled.";
-            }
-            catch (Exception ex)
-            {
-                _viewModel.Settings.IsViGEmInstalled = false;
-                _viewModel.StatusText = $"ViGEm check failed: {ex.Message}";
-            }
+            RefreshViGEmStatus();
+
+            // Detect HidHide driver.
+            RefreshHidHideStatus();
 
             // Check SDL2.dll availability.
             try
@@ -285,6 +285,68 @@ namespace PadForge
                 2 => ModernWpf.ApplicationTheme.Dark,
                 _ => null // System default
             };
+        }
+
+        // ─────────────────────────────────────────────
+        //  Driver install/uninstall helpers
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Runs a driver install/uninstall operation on a background thread,
+        /// then refreshes the driver status on the UI thread.
+        /// </summary>
+        private async Task RunDriverOperationAsync(string statusMessage, Action operation, Action refreshStatus)
+        {
+            _viewModel.StatusText = statusMessage;
+            try
+            {
+                await Task.Run(operation);
+                _viewModel.StatusText = "Ready";
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                // User declined UAC prompt.
+                _viewModel.StatusText = "Operation cancelled by user.";
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = $"Driver operation failed: {ex.Message}";
+            }
+            refreshStatus();
+        }
+
+        private void RefreshViGEmStatus()
+        {
+            try
+            {
+                bool installed = PadForge.Common.Input.InputManager.CheckViGEmInstalled();
+                _viewModel.Settings.IsViGEmInstalled = installed;
+                _viewModel.Dashboard.IsViGEmInstalled = installed;
+                if (!installed)
+                    _viewModel.StatusText = "ViGEmBus driver not detected. Virtual controller output disabled.";
+            }
+            catch (Exception ex)
+            {
+                _viewModel.Settings.IsViGEmInstalled = false;
+                _viewModel.Dashboard.IsViGEmInstalled = false;
+                _viewModel.StatusText = $"ViGEm check failed: {ex.Message}";
+            }
+        }
+
+        private void RefreshHidHideStatus()
+        {
+            try
+            {
+                bool installed = DriverInstaller.IsHidHideInstalled();
+                _viewModel.Settings.IsHidHideInstalled = installed;
+                _viewModel.Dashboard.IsHidHideInstalled = installed;
+                _viewModel.Settings.HidHideVersion = DriverInstaller.GetHidHideVersion() ?? string.Empty;
+            }
+            catch
+            {
+                _viewModel.Settings.IsHidHideInstalled = false;
+                _viewModel.Dashboard.IsHidHideInstalled = false;
+            }
         }
     }
 }

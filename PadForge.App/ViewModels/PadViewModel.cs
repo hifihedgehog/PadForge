@@ -334,7 +334,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _selectedMacro, value))
+                {
                     OnPropertyChanged(nameof(HasSelectedMacro));
+                    _removeMacroCommand?.NotifyCanExecuteChanged();
+                }
             }
         }
 

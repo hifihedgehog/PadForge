@@ -94,6 +94,61 @@ namespace PadForge.ViewModels
         public event EventHandler UninstallViGEmRequested;
 
         // ─────────────────────────────────────────────
+        //  HidHide driver
+        // ─────────────────────────────────────────────
+
+        private bool _isHidHideInstalled;
+
+        /// <summary>Whether the HidHide driver is installed.</summary>
+        public bool IsHidHideInstalled
+        {
+            get => _isHidHideInstalled;
+            set
+            {
+                if (SetProperty(ref _isHidHideInstalled, value))
+                {
+                    OnPropertyChanged(nameof(HidHideStatusText));
+                    _installHidHideCommand?.NotifyCanExecuteChanged();
+                    _uninstallHidHideCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>HidHide status display text.</summary>
+        public string HidHideStatusText => _isHidHideInstalled ? "Installed" : "Not Installed";
+
+        private string _hidHideVersion = string.Empty;
+
+        /// <summary>HidHide driver version string.</summary>
+        public string HidHideVersion
+        {
+            get => _hidHideVersion;
+            set => SetProperty(ref _hidHideVersion, value);
+        }
+
+        private RelayCommand _installHidHideCommand;
+
+        /// <summary>Command to install the HidHide driver.</summary>
+        public RelayCommand InstallHidHideCommand =>
+            _installHidHideCommand ??= new RelayCommand(
+                () => InstallHidHideRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isHidHideInstalled);
+
+        private RelayCommand _uninstallHidHideCommand;
+
+        /// <summary>Command to uninstall the HidHide driver.</summary>
+        public RelayCommand UninstallHidHideCommand =>
+            _uninstallHidHideCommand ??= new RelayCommand(
+                () => UninstallHidHideRequested?.Invoke(this, EventArgs.Empty),
+                () => _isHidHideInstalled);
+
+        /// <summary>Raised when the user requests HidHide installation.</summary>
+        public event EventHandler InstallHidHideRequested;
+
+        /// <summary>Raised when the user requests HidHide uninstallation.</summary>
+        public event EventHandler UninstallHidHideRequested;
+
+        // ─────────────────────────────────────────────
         //  Engine settings
         // ─────────────────────────────────────────────
 

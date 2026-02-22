@@ -94,6 +94,41 @@
                 </Grid>
             </Border>
 
+            <!-- ═══ HidHide ═══ -->
+            <TextBlock Text="HidHide Driver" Style="{StaticResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,12"/>
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="8" Height="8"
+                                     Fill="{Binding IsHidHideInstalled, Converter={StaticResource BoolToColorConverter}}"
+                                     VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding HidHideStatusText}" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding HidHideVersion}" FontSize="12"
+                                   Opacity="0.6" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <Button Content="{Binding IsHidHideInstalled, Converter={StaticResource BoolToInstallTextConverter}}"
+                                Command="{Binding InstallHidHideCommand}"
+                                Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Uninstall"
+                                Command="{Binding UninstallHidHideCommand}"
+                                Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <!-- ═══ Settings File ═══ -->
             <TextBlock Text="Settings File" Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,0,0,12"/>

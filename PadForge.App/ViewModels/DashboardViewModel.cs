@@ -130,6 +130,26 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  HidHide status
+        // ─────────────────────────────────────────────
+
+        private bool _isHidHideInstalled;
+
+        /// <summary>Whether HidHide is installed.</summary>
+        public bool IsHidHideInstalled
+        {
+            get => _isHidHideInstalled;
+            set
+            {
+                if (SetProperty(ref _isHidHideInstalled, value))
+                    OnPropertyChanged(nameof(HidHideStatusText));
+            }
+        }
+
+        /// <summary>Display text for HidHide status.</summary>
+        public string HidHideStatusText => IsHidHideInstalled ? "Installed" : "Not Installed";
+
+        // ─────────────────────────────────────────────
         //  XInput library info
         // ─────────────────────────────────────────────
 
@@ -195,6 +215,15 @@ namespace PadForge.ViewModels
         {
             get => _mappedDeviceCount;
             set => SetProperty(ref _mappedDeviceCount, value);
+        }
+
+        private int _connectedDeviceCount;
+
+        /// <summary>Number of mapped devices that are currently connected.</summary>
+        public int ConnectedDeviceCount
+        {
+            get => _connectedDeviceCount;
+            set => SetProperty(ref _connectedDeviceCount, value);
         }
 
         private string _statusText = "Idle";

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
@@ -9,11 +10,10 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// ViewModel for a single virtual controller slot (one of 4 pads).
-    /// Contains the current mapped XInput output state, the list of mapping
-    /// rows, force feedback settings, and properties for the controller visualizer.
-    /// 
-    /// Updated at 30Hz from <see cref="Services.InputService"/> with the combined
-    /// gamepad state from the engine.
+    /// Features:
+    ///   #1 — Multi-device selection: SelectedMappedDevice picks which device to configure
+    ///   #2 — Expanded dead zones: per-axis X/Y, trigger dead zones, anti-dead zone, linear
+    ///   #4 — Macro foundation: trigger combos → action sequences
     /// </summary>
     public partial class PadViewModel : ViewModelBase
     {
@@ -22,8 +22,6 @@ namespace PadForge.ViewModels
             PadIndex = padIndex;
             Title = $"Controller {padIndex + 1}";
             SlotLabel = $"Player {padIndex + 1}";
-
-            // Initialize default mapping rows for all Xbox controller inputs.
             InitializeDefaultMappings();
         }
 
@@ -33,9 +31,9 @@ namespace PadForge.ViewModels
         /// <summary>Display label (e.g., "Player 1").</summary>
         public string SlotLabel { get; }
 
-        // ─────────────────────────────────────────────
-        //  Mapped device info
-        // ─────────────────────────────────────────────
+        // ═══════════════════════════════════════════════
+        //  #1: Multi-device selection within a slot
+        // ═══════════════════════════════════════════════
 
         /// <summary>
         /// Info about a single physical device mapped to this virtual controller slot.
@@ -63,17 +61,44 @@ namespace PadForge.ViewModels
                 get => _isOnline;
                 set => SetProperty(ref _isOnline, value);
             }
+
+            public override string ToString() => Name;
         }
 
         /// <summary>All physical devices currently mapped to this slot.</summary>
         public ObservableCollection<MappedDeviceInfo> MappedDevices { get; } = new();
 
-        private string _mappedDeviceName = "No device mapped";
+        private MappedDeviceInfo _selectedMappedDevice;
 
         /// <summary>
-        /// Summary name of mapped devices. Shows all device names joined by " + ",
-        /// or "No device mapped" if empty.
+        /// The currently selected device within this slot for configuration.
+        /// When changed, the mapping grid and dead zone settings should update
+        /// to reflect THIS device's PadSetting.
         /// </summary>
+        public MappedDeviceInfo SelectedMappedDevice
+        {
+            get => _selectedMappedDevice;
+            set
+            {
+                if (SetProperty(ref _selectedMappedDevice, value))
+                {
+                    OnPropertyChanged(nameof(HasSelectedDevice));
+                    SelectedDeviceChanged?.Invoke(this, value);
+                }
+            }
+        }
+
+        /// <summary>Whether a device is selected for configuration.</summary>
+        public bool HasSelectedDevice => _selectedMappedDevice != null;
+
+        /// <summary>
+        /// Raised when the user selects a different device within this slot.
+        /// InputService should reload the PadSetting for the newly selected device.
+        /// </summary>
+        public event EventHandler<MappedDeviceInfo> SelectedDeviceChanged;
+
+        private string _mappedDeviceName = "No device mapped";
+
         public string MappedDeviceName
         {
             get => _mappedDeviceName;
@@ -82,7 +107,6 @@ namespace PadForge.ViewModels
 
         private Guid _mappedDeviceGuid;
 
-        /// <summary>Instance GUID of the primary mapped device (first in the list).</summary>
         public Guid MappedDeviceGuid
         {
             get => _mappedDeviceGuid;
@@ -91,20 +115,16 @@ namespace PadForge.ViewModels
 
         private bool _isDeviceOnline;
 
-        /// <summary>Whether any mapped device is currently connected.</summary>
         public bool IsDeviceOnline
         {
             get => _isDeviceOnline;
             set => SetProperty(ref _isDeviceOnline, value);
         }
 
-        // ─────────────────────────────────────────────
-        //  XInput output state (for visualizer)
-        //  These are the FINAL mapped values sent to the virtual controller.
-        //  Updated at 30Hz from InputService.
-        // ─────────────────────────────────────────────
+        // ═══════════════════════════════════════════════
+        //  XInput output state (for visualizer) — unchanged
+        // ═══════════════════════════════════════════════
 
-        // Buttons (bool properties for data binding)
         private bool _buttonA;
         public bool ButtonA { get => _buttonA; set => SetProperty(ref _buttonA, value); }
 
@@ -150,39 +170,24 @@ namespace PadForge.ViewModels
         private bool _dpadRight;
         public bool DPadRight { get => _dpadRight; set => SetProperty(ref _dpadRight, value); }
 
-        // Triggers (0–255 → normalized 0.0–1.0 for visualizer)
         private double _leftTrigger;
-
-        /// <summary>Left trigger value normalized 0.0–1.0.</summary>
         public double LeftTrigger { get => _leftTrigger; set => SetProperty(ref _leftTrigger, value); }
 
         private double _rightTrigger;
-
-        /// <summary>Right trigger value normalized 0.0–1.0.</summary>
         public double RightTrigger { get => _rightTrigger; set => SetProperty(ref _rightTrigger, value); }
 
-        // Thumbsticks (normalized 0.0–1.0, where 0.5 = center)
         private double _thumbLX = 0.5;
-
-        /// <summary>Left thumbstick X position, normalized 0.0–1.0 (0.5 = center).</summary>
         public double ThumbLX { get => _thumbLX; set => SetProperty(ref _thumbLX, value); }
 
         private double _thumbLY = 0.5;
-
-        /// <summary>Left thumbstick Y position, normalized 0.0–1.0 (0.5 = center).</summary>
         public double ThumbLY { get => _thumbLY; set => SetProperty(ref _thumbLY, value); }
 
         private double _thumbRX = 0.5;
-
-        /// <summary>Right thumbstick X position, normalized 0.0–1.0 (0.5 = center).</summary>
         public double ThumbRX { get => _thumbRX; set => SetProperty(ref _thumbRX, value); }
 
         private double _thumbRY = 0.5;
-
-        /// <summary>Right thumbstick Y position, normalized 0.0–1.0 (0.5 = center).</summary>
         public double ThumbRY { get => _thumbRY; set => SetProperty(ref _thumbRY, value); }
 
-        // Raw signed values (for numeric display)
         private short _rawThumbLX;
         public short RawThumbLX { get => _rawThumbLX; set => SetProperty(ref _rawThumbLX, value); }
 
@@ -201,171 +206,203 @@ namespace PadForge.ViewModels
         private byte _rawRightTrigger;
         public byte RawRightTrigger { get => _rawRightTrigger; set => SetProperty(ref _rawRightTrigger, value); }
 
-        // ─────────────────────────────────────────────
-        //  Mapping rows
-        // ─────────────────────────────────────────────
+        // ═══════════════════════════════════════════════
+        //  Mapping rows — unchanged
+        // ═══════════════════════════════════════════════
 
-        /// <summary>
-        /// Collection of mapping rows, one per Xbox controller target
-        /// (buttons, triggers, thumbstick axes, D-pad directions).
-        /// Each row links a physical input source to an XInput output.
-        /// </summary>
         public ObservableCollection<MappingItem> Mappings { get; } =
             new ObservableCollection<MappingItem>();
 
-        /// <summary>
-        /// Initializes the default set of mapping rows for all standard
-        /// Xbox controller inputs.
-        /// </summary>
         private void InitializeDefaultMappings()
         {
             Mappings.Add(new MappingItem("A", "ButtonA", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("B", "ButtonB", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("X", "ButtonX", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("Y", "ButtonY", MappingCategory.Buttons));
-
             Mappings.Add(new MappingItem("Left Bumper", "LeftShoulder", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("Right Bumper", "RightShoulder", MappingCategory.Buttons));
-
             Mappings.Add(new MappingItem("Back", "ButtonBack", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("Start", "ButtonStart", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("Guide", "ButtonGuide", MappingCategory.Buttons));
-
             Mappings.Add(new MappingItem("Left Stick Click", "LeftThumbButton", MappingCategory.Buttons));
             Mappings.Add(new MappingItem("Right Stick Click", "RightThumbButton", MappingCategory.Buttons));
-
             Mappings.Add(new MappingItem("D-Pad Up", "DPadUp", MappingCategory.DPad));
             Mappings.Add(new MappingItem("D-Pad Down", "DPadDown", MappingCategory.DPad));
             Mappings.Add(new MappingItem("D-Pad Left", "DPadLeft", MappingCategory.DPad));
             Mappings.Add(new MappingItem("D-Pad Right", "DPadRight", MappingCategory.DPad));
-
             Mappings.Add(new MappingItem("Left Trigger", "LeftTrigger", MappingCategory.Triggers));
             Mappings.Add(new MappingItem("Right Trigger", "RightTrigger", MappingCategory.Triggers));
-
             Mappings.Add(new MappingItem("Left Stick X", "LeftThumbAxisX", MappingCategory.LeftStick));
             Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick));
             Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick));
             Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick));
         }
 
-        // ─────────────────────────────────────────────
-        //  Force feedback settings
-        // ─────────────────────────────────────────────
+        // ═══════════════════════════════════════════════
+        //  Force feedback — unchanged
+        // ═══════════════════════════════════════════════
 
         private int _forceOverallGain = 100;
-
-        /// <summary>Overall force feedback gain percentage (0–100).</summary>
-        public int ForceOverallGain
-        {
-            get => _forceOverallGain;
-            set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100));
-        }
+        public int ForceOverallGain { get => _forceOverallGain; set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100)); }
 
         private int _leftMotorStrength = 100;
-
-        /// <summary>Left motor strength percentage (0–100).</summary>
-        public int LeftMotorStrength
-        {
-            get => _leftMotorStrength;
-            set => SetProperty(ref _leftMotorStrength, Math.Clamp(value, 0, 100));
-        }
+        public int LeftMotorStrength { get => _leftMotorStrength; set => SetProperty(ref _leftMotorStrength, Math.Clamp(value, 0, 100)); }
 
         private int _rightMotorStrength = 100;
-
-        /// <summary>Right motor strength percentage (0–100).</summary>
-        public int RightMotorStrength
-        {
-            get => _rightMotorStrength;
-            set => SetProperty(ref _rightMotorStrength, Math.Clamp(value, 0, 100));
-        }
+        public int RightMotorStrength { get => _rightMotorStrength; set => SetProperty(ref _rightMotorStrength, Math.Clamp(value, 0, 100)); }
 
         private bool _swapMotors;
+        public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
 
-        /// <summary>Whether to swap left and right rumble motors.</summary>
-        public bool SwapMotors
-        {
-            get => _swapMotors;
-            set => SetProperty(ref _swapMotors, value);
-        }
-
-        // Rumble feedback display (shows what the game is requesting)
         private double _leftMotorDisplay;
-
-        /// <summary>Left motor activity level 0.0–1.0 for visual display.</summary>
-        public double LeftMotorDisplay
-        {
-            get => _leftMotorDisplay;
-            set => SetProperty(ref _leftMotorDisplay, value);
-        }
+        public double LeftMotorDisplay { get => _leftMotorDisplay; set => SetProperty(ref _leftMotorDisplay, value); }
 
         private double _rightMotorDisplay;
+        public double RightMotorDisplay { get => _rightMotorDisplay; set => SetProperty(ref _rightMotorDisplay, value); }
 
-        /// <summary>Right motor activity level 0.0–1.0 for visual display.</summary>
-        public double RightMotorDisplay
-        {
-            get => _rightMotorDisplay;
-            set => SetProperty(ref _rightMotorDisplay, value);
-        }
+        // ═══════════════════════════════════════════════
+        //  #2: Expanded dead zone settings
+        //  Per-axis X/Y, anti-dead zone, linear, trigger dead zones
+        // ═══════════════════════════════════════════════
 
-        // ─────────────────────────────────────────────
-        //  Dead zone settings
-        // ─────────────────────────────────────────────
+        // ── Left Stick ──
+        private int _leftDeadZoneX;
+        public int LeftDeadZoneX { get => _leftDeadZoneX; set => SetProperty(ref _leftDeadZoneX, Math.Clamp(value, 0, 100)); }
 
-        private int _leftDeadZone;
-        public int LeftDeadZone { get => _leftDeadZone; set => SetProperty(ref _leftDeadZone, Math.Clamp(value, 0, 100)); }
-
-        private int _rightDeadZone;
-        public int RightDeadZone { get => _rightDeadZone; set => SetProperty(ref _rightDeadZone, Math.Clamp(value, 0, 100)); }
+        private int _leftDeadZoneY;
+        public int LeftDeadZoneY { get => _leftDeadZoneY; set => SetProperty(ref _leftDeadZoneY, Math.Clamp(value, 0, 100)); }
 
         private int _leftAntiDeadZone;
         public int LeftAntiDeadZone { get => _leftAntiDeadZone; set => SetProperty(ref _leftAntiDeadZone, Math.Clamp(value, 0, 100)); }
 
+        private int _leftLinear;
+        public int LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
+
+        // ── Right Stick ──
+        private int _rightDeadZoneX;
+        public int RightDeadZoneX { get => _rightDeadZoneX; set => SetProperty(ref _rightDeadZoneX, Math.Clamp(value, 0, 100)); }
+
+        private int _rightDeadZoneY;
+        public int RightDeadZoneY { get => _rightDeadZoneY; set => SetProperty(ref _rightDeadZoneY, Math.Clamp(value, 0, 100)); }
+
         private int _rightAntiDeadZone;
         public int RightAntiDeadZone { get => _rightAntiDeadZone; set => SetProperty(ref _rightAntiDeadZone, Math.Clamp(value, 0, 100)); }
 
-        // ─────────────────────────────────────────────
+        private int _rightLinear;
+        public int RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
+
+        // ── Triggers ──
+        private int _leftTriggerDeadZone;
+        public int LeftTriggerDeadZone { get => _leftTriggerDeadZone; set => SetProperty(ref _leftTriggerDeadZone, Math.Clamp(value, 0, 100)); }
+
+        private int _rightTriggerDeadZone;
+        public int RightTriggerDeadZone { get => _rightTriggerDeadZone; set => SetProperty(ref _rightTriggerDeadZone, Math.Clamp(value, 0, 100)); }
+
+        private int _leftTriggerAntiDeadZone;
+        public int LeftTriggerAntiDeadZone { get => _leftTriggerAntiDeadZone; set => SetProperty(ref _leftTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
+
+        private int _rightTriggerAntiDeadZone;
+        public int RightTriggerAntiDeadZone { get => _rightTriggerAntiDeadZone; set => SetProperty(ref _rightTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
+
+        // ── Backward compatibility shims ──
+        // SettingsService and existing PadPage.xaml use LeftDeadZone/RightDeadZone.
+        // Route to both X and Y axes so old code works transparently.
+        public int LeftDeadZone
+        {
+            get => _leftDeadZoneX;
+            set { LeftDeadZoneX = value; LeftDeadZoneY = value; }
+        }
+
+        public int RightDeadZone
+        {
+            get => _rightDeadZoneX;
+            set { RightDeadZoneX = value; RightDeadZoneY = value; }
+        }
+
+        // ═══════════════════════════════════════════════
+        //  #4: Macro system — foundation
+        // ═══════════════════════════════════════════════
+
+        /// <summary>Macros configured for this pad slot.</summary>
+        public ObservableCollection<MacroItem> Macros { get; } = new();
+
+        private MacroItem _selectedMacro;
+
+        public MacroItem SelectedMacro
+        {
+            get => _selectedMacro;
+            set
+            {
+                if (SetProperty(ref _selectedMacro, value))
+                    OnPropertyChanged(nameof(HasSelectedMacro));
+            }
+        }
+
+        public bool HasSelectedMacro => _selectedMacro != null;
+
+        private RelayCommand _addMacroCommand;
+        public RelayCommand AddMacroCommand =>
+            _addMacroCommand ??= new RelayCommand(() =>
+            {
+                var macro = new MacroItem { Name = $"Macro {Macros.Count + 1}" };
+                Macros.Add(macro);
+                SelectedMacro = macro;
+            });
+
+        private RelayCommand _removeMacroCommand;
+        public RelayCommand RemoveMacroCommand =>
+            _removeMacroCommand ??= new RelayCommand(() =>
+            {
+                if (_selectedMacro != null)
+                {
+                    Macros.Remove(_selectedMacro);
+                    SelectedMacro = Macros.LastOrDefault();
+                }
+            }, () => HasSelectedMacro);
+
+        // ═══════════════════════════════════════════════
+        //  Active config tab
+        // ═══════════════════════════════════════════════
+
+        private int _selectedConfigTab;
+
+        /// <summary>
+        /// 0=Mappings, 1=Left Stick, 2=Right Stick, 3=Triggers, 4=Force Feedback, 5=Macros
+        /// </summary>
+        public int SelectedConfigTab
+        {
+            get => _selectedConfigTab;
+            set => SetProperty(ref _selectedConfigTab, value);
+        }
+
+        // ═══════════════════════════════════════════════
         //  Commands
-        // ─────────────────────────────────────────────
+        // ═══════════════════════════════════════════════
 
         private RelayCommand _testRumbleCommand;
-
-        /// <summary>Command to send a brief test rumble to the mapped device.</summary>
         public RelayCommand TestRumbleCommand =>
             _testRumbleCommand ??= new RelayCommand(
                 () => TestRumbleRequested?.Invoke(this, EventArgs.Empty),
                 () => IsDeviceOnline);
 
-        /// <summary>Raised when the user clicks the test rumble button.</summary>
         public event EventHandler TestRumbleRequested;
 
         private RelayCommand _clearMappingsCommand;
-
-        /// <summary>Command to clear all mapping assignments for this pad.</summary>
         public RelayCommand ClearMappingsCommand =>
             _clearMappingsCommand ??= new RelayCommand(ClearAllMappings);
 
-        /// <summary>
-        /// Clears the source assignment on all mapping rows.
-        /// </summary>
         private void ClearAllMappings()
         {
             foreach (var m in Mappings)
                 m.SourceDescriptor = string.Empty;
         }
 
-        // ─────────────────────────────────────────────
-        //  State update (called by InputService at 30Hz)
-        // ─────────────────────────────────────────────
+        // ═══════════════════════════════════════════════
+        //  State update (30Hz from InputService)
+        // ═══════════════════════════════════════════════
 
-        /// <summary>
-        /// Updates all output state properties from a combined Gamepad struct.
-        /// Called on the UI thread by InputService at 30Hz.
-        /// </summary>
-        /// <param name="gp">The combined gamepad state for this slot.</param>
-        /// <param name="vibration">The current vibration state for this slot.</param>
         public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration)
         {
-            // Buttons
             ButtonA = gp.IsButtonPressed(Gamepad.A);
             ButtonB = gp.IsButtonPressed(Gamepad.B);
             ButtonX = gp.IsButtonPressed(Gamepad.X);
@@ -382,23 +419,20 @@ namespace PadForge.ViewModels
             DPadLeft = gp.IsButtonPressed(Gamepad.DPAD_LEFT);
             DPadRight = gp.IsButtonPressed(Gamepad.DPAD_RIGHT);
 
-            // Triggers
             RawLeftTrigger = gp.LeftTrigger;
             RawRightTrigger = gp.RightTrigger;
             LeftTrigger = gp.LeftTrigger / 255.0;
             RightTrigger = gp.RightTrigger / 255.0;
 
-            // Thumbsticks — convert signed (-32768..32767) to normalized (0.0..1.0)
             RawThumbLX = gp.ThumbLX;
             RawThumbLY = gp.ThumbLY;
             RawThumbRX = gp.ThumbRX;
             RawThumbRY = gp.ThumbRY;
             ThumbLX = (gp.ThumbLX - (double)short.MinValue) / 65535.0;
-            ThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0); // Invert Y for display
+            ThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0);
             ThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
             ThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
 
-            // Vibration display
             if (vibration != null)
             {
                 LeftMotorDisplay = vibration.LeftMotorSpeed / 65535.0;
@@ -406,12 +440,10 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>
-        /// Refreshes command CanExecute states. Call after IsDeviceOnline changes.
-        /// </summary>
         public void RefreshCommands()
         {
             _testRumbleCommand?.NotifyCanExecuteChanged();
+            _removeMacroCommand?.NotifyCanExecuteChanged();
         }
     }
 }

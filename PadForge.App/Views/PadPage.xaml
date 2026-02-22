@@ -1,396 +1,589 @@
 <UserControl x:Class="PadForge.Views.PadPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ui="http://schemas.modernwpf.com/2019">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:PadForge.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:PadViewModel}"
+             d:DesignHeight="700" d:DesignWidth="900">
 
-    <ScrollViewer Padding="24,16">
-        <Grid MaxWidth="1000">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <!-- Style for dead zone slider groups -->
+        <Style x:Key="DzLabel" TargetType="TextBlock">
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        </Style>
+        <Style x:Key="DzSlider" TargetType="Slider">
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="Maximum" Value="100"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="1"/>
+        </Style>
+        <Style x:Key="DzValue" TargetType="TextBlock">
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+        </Style>
+    </UserControl.Resources>
 
-            <!-- ═══ Header ═══ -->
-            <StackPanel Margin="0,0,0,16">
-                <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}"/>
-                <!-- Show all mapped devices, each with its own online status dot -->
-                <ItemsControl ItemsSource="{Binding MappedDevices}" Margin="0,6,0,0">
-                    <ItemsControl.ItemTemplate>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Row 0: Device selector header -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 1: Configuration tabs -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══════════════════════════════════════════
+             ROW 0: Device Selector Header
+             Selects which physical device to configure within this pad slot.
+             Like x360ce's device list above the mapping grid.
+             ═══════════════════════════════════════════ -->
+        <Border Grid.Row="0" Padding="8" Margin="0,0,0,4"
+                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                CornerRadius="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding SlotLabel}"
+                           FontSize="16" FontWeight="SemiBold"
+                           VerticalAlignment="Center" Margin="0,0,12,0"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                <!-- Device ComboBox: select which mapped device to configure -->
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding MappedDevices}"
+                          SelectedItem="{Binding SelectedMappedDevice, Mode=TwoWay}"
+                          MinWidth="250"
+                          VerticalAlignment="Center">
+                    <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                                <Ellipse Width="8" Height="8"
-                                         Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
-                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <TextBlock Text="{Binding Name}" Opacity="0.7"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="8" Height="8" Margin="0,0,6,0"
+                                         VerticalAlignment="Center">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="#FF888888"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                                    <Setter Property="Fill" Value="#FF4CAF50"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Text="{Binding Name}"/>
                             </StackPanel>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <!-- Fallback when no devices are mapped -->
-                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding MappedDevices.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    <Ellipse Width="8" Height="8"
-                             Fill="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                             VerticalAlignment="Center" Margin="0,0,8,0"/>
-                    <TextBlock Text="No device mapped" Opacity="0.5"/>
-                </StackPanel>
-            </StackPanel>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-            <!-- ═══ Controller Visualizer ═══ -->
-            <Border Grid.Row="1"
-                    Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="20" Margin="0,0,0,16">
-                <Grid>
+                <!-- Online status indicator -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="12,0,0,0">
+                    <Ellipse Width="10" Height="10" Margin="0,0,6,0">
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Fill" Value="#FF888888"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDeviceOnline}" Value="True">
+                                        <Setter Property="Fill" Value="#FF4CAF50"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Offline"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDeviceOnline}" Value="True">
+                                        <Setter Property="Text" Value="Online"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════
+             ROW 1: Configuration TabControl
+             Tabs: Mappings | Left Stick | Right Stick | Triggers | Force Feedback | Macros
+             ═══════════════════════════════════════════ -->
+        <TabControl Grid.Row="1"
+                    SelectedIndex="{Binding SelectedConfigTab, Mode=TwoWay}">
+
+            <!-- ─── TAB 0: Mappings ─── -->
+            <TabItem Header="Mappings">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Toolbar -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button Content="Clear All" Command="{Binding ClearMappingsCommand}"
+                                Padding="8,4" Margin="0,0,8,0"/>
+                        <TextBlock Text="Click a mapping row and press a button/axis on your controller to assign it."
+                                   VerticalAlignment="Center" FontStyle="Italic"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+
+                    <!-- Mapping DataGrid -->
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding Mappings}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserReorderColumns="False"
+                              SelectionMode="Single"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              IsReadOnly="False"
+                              VerticalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="XInput Output"
+                                                Binding="{Binding DisplayName}"
+                                                Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Source Mapping"
+                                                Binding="{Binding SourceDescriptor, Mode=TwoWay}"
+                                                Width="200"/>
+                            <DataGridTextColumn Header="Live Value"
+                                                Binding="{Binding LiveValue, Mode=OneWay}"
+                                                Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Category"
+                                                Binding="{Binding Category}"
+                                                Width="100" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- ─── TAB 1: Left Stick ─── -->
+            <TabItem Header="Left Stick">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Left Thumbstick Configuration"
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                        <!-- Dead Zone X -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftDeadZoneX, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftDeadZoneX, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Dead Zone Y -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftDeadZoneY, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftDeadZoneY, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Anti-Dead Zone -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftAntiDeadZone, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftAntiDeadZone, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Linear (response curve) -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftLinear, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftLinear, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <Separator Margin="0,8,0,12"/>
+
+                        <!-- Live preview -->
+                        <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <Grid Width="200" Height="200" HorizontalAlignment="Left">
+                            <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                    BorderThickness="1" CornerRadius="4"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}">
+                                <!-- Crosshair -->
+                                <Canvas ClipToBounds="True">
+                                    <Line X1="100" Y1="0" X2="100" Y2="200"
+                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                          StrokeThickness="0.5"/>
+                                    <Line X1="0" Y1="100" X2="200" Y2="100"
+                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                          StrokeThickness="0.5"/>
+                                    <!-- Stick position dot -->
+                                    <Ellipse Width="12" Height="12" Fill="#FF2196F3"
+                                             Canvas.Left="{Binding ThumbLX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter=200}"
+                                             Canvas.Top="{Binding ThumbLY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter=200}"/>
+                                </Canvas>
+                            </Border>
+                        </Grid>
+                        <TextBlock Margin="0,4,0,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                            <Run Text="X:"/>
+                            <Run Text="{Binding RawThumbLX, Mode=OneWay}"/>
+                            <Run Text="  Y:"/>
+                            <Run Text="{Binding RawThumbLY, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ─── TAB 2: Right Stick ─── -->
+            <TabItem Header="Right Stick">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Right Thumbstick Configuration"
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                        <!-- Dead Zone X -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightDeadZoneX, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightDeadZoneX, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Dead Zone Y -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightDeadZoneY, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightDeadZoneY, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Anti-Dead Zone -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightAntiDeadZone, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightAntiDeadZone, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Linear -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightLinear, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightLinear, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <Separator Margin="0,8,0,12"/>
+
+                        <!-- Live preview -->
+                        <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <Grid Width="200" Height="200" HorizontalAlignment="Left">
+                            <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                    BorderThickness="1" CornerRadius="4"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}">
+                                <Canvas ClipToBounds="True">
+                                    <Line X1="100" Y1="0" X2="100" Y2="200"
+                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                          StrokeThickness="0.5"/>
+                                    <Line X1="0" Y1="100" X2="200" Y2="100"
+                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                          StrokeThickness="0.5"/>
+                                    <Ellipse Width="12" Height="12" Fill="#FF2196F3"
+                                             Canvas.Left="{Binding ThumbRX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter=200}"
+                                             Canvas.Top="{Binding ThumbRY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter=200}"/>
+                                </Canvas>
+                            </Border>
+                        </Grid>
+                        <TextBlock Margin="0,4,0,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                            <Run Text="X:"/>
+                            <Run Text="{Binding RawThumbRX, Mode=OneWay}"/>
+                            <Run Text="  Y:"/>
+                            <Run Text="{Binding RawThumbRY, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ─── TAB 3: Triggers ─── -->
+            <TabItem Header="Triggers">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <!-- Left Trigger -->
+                        <TextBlock Text="Left Trigger" FontSize="14" FontWeight="SemiBold"
+                                   Margin="0,0,0,12"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftTriggerDeadZone, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftTriggerDeadZone, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftTriggerAntiDeadZone, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftTriggerAntiDeadZone, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Live value bar -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
+                            <ProgressBar Value="{Binding LeftTrigger, Mode=OneWay}"
+                                         Minimum="0" Maximum="1"
+                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding RawLeftTrigger, Mode=OneWay}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <Separator Margin="0,12,0,12"/>
+
+                        <!-- Right Trigger -->
+                        <TextBlock Text="Right Trigger" FontSize="14" FontWeight="SemiBold"
+                                   Margin="0,0,0,12"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightTriggerDeadZone, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightTriggerDeadZone, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightTriggerAntiDeadZone, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightTriggerAntiDeadZone, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
+                            <ProgressBar Value="{Binding RightTrigger, Mode=OneWay}"
+                                         Minimum="0" Maximum="1"
+                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding RawRightTrigger, Mode=OneWay}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ─── TAB 4: Force Feedback ─── -->
+            <TabItem Header="Force Feedback">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Force Feedback / Rumble"
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                        <!-- Overall gain -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Overall Gain:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding ForceOverallGain, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding ForceOverallGain, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Left motor -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Left Motor:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding LeftMotorStrength, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding LeftMotorStrength, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Right motor -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Right Motor:" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding RightMotorStrength, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBlock Text="{Binding RightMotorStrength, StringFormat='{}{0}%'}"
+                                       Style="{StaticResource DzValue}"/>
+                        </StackPanel>
+
+                        <!-- Swap motors -->
+                        <CheckBox Content="Swap left/right motors"
+                                  IsChecked="{Binding SwapMotors, Mode=TwoWay}"
+                                  Margin="0,0,0,12"/>
+
+                        <!-- Test rumble -->
+                        <Button Content="Test Rumble"
+                                Command="{Binding TestRumbleCommand}"
+                                Padding="12,6" HorizontalAlignment="Left"
+                                Margin="0,0,0,12"/>
+
+                        <!-- Live motor display -->
+                        <TextBlock Text="Motor Activity" FontWeight="SemiBold" Margin="0,8,0,8"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Left Motor:" Style="{StaticResource DzLabel}"/>
+                            <ProgressBar Value="{Binding LeftMotorDisplay, Mode=OneWay}"
+                                         Minimum="0" Maximum="1"
+                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Right Motor:" Style="{StaticResource DzLabel}"/>
+                            <ProgressBar Value="{Binding RightMotorDisplay, Mode=OneWay}"
+                                         Minimum="0" Maximum="1"
+                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ─── TAB 5: Macros ─── -->
+            <TabItem Header="Macros">
+                <Grid Margin="8">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <!-- Macro list -->
+                        <ColumnDefinition Width="250"/>
+                        <!-- Splitter -->
                         <ColumnDefinition Width="Auto"/>
+                        <!-- Macro editor -->
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Left side: Left Stick + Triggers -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <!-- Left Stick visualizer -->
-                        <TextBlock Text="Left Stick" HorizontalAlignment="Center"
-                                   FontSize="12" Opacity="0.6" Margin="0,0,0,4"/>
-                        <Border Width="120" Height="120" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                BorderThickness="1" CornerRadius="60"
-                                Background="{DynamicResource SystemControlBackgroundChromeLowBrush}">
-                            <Canvas Width="120" Height="120">
-                                <!-- Crosshair -->
-                                <Line X1="60" Y1="0" X2="60" Y2="120" Stroke="{DynamicResource SystemControlForegroundBaseLowBrush}" StrokeThickness="0.5"/>
-                                <Line X1="0" Y1="60" X2="120" Y2="60" Stroke="{DynamicResource SystemControlForegroundBaseLowBrush}" StrokeThickness="0.5"/>
-                                <!-- Thumb position dot -->
-                                <Ellipse Width="14" Height="14" Fill="{DynamicResource SystemControlHighlightAccentBrush}">
-                                    <Canvas.Left>
-                                        <Binding Path="ThumbLX" Converter="{StaticResource NormToCanvasConverter}" ConverterParameter="120,7"/>
-                                    </Canvas.Left>
-                                    <Canvas.Top>
-                                        <Binding Path="ThumbLY" Converter="{StaticResource NormToCanvasConverter}" ConverterParameter="120,7"/>
-                                    </Canvas.Top>
-                                </Ellipse>
-                            </Canvas>
-                        </Border>
-
-                        <!-- Numeric readout -->
-                        <TextBlock HorizontalAlignment="Center" FontSize="11"
-                                   Opacity="0.5" Margin="0,4,0,0">
-                            <Run Text="X:"/><Run Text="{Binding RawThumbLX, Mode=OneWay}"/>
-                            <Run Text=" Y:"/><Run Text="{Binding RawThumbLY, Mode=OneWay}"/>
-                        </TextBlock>
-
-                        <!-- Left Trigger bar -->
-                        <TextBlock Text="LT" HorizontalAlignment="Center"
-                                   FontSize="12" Opacity="0.6" Margin="0,12,0,4"/>
-                        <ProgressBar Width="100" Height="12" Minimum="0" Maximum="1"
-                                     Value="{Binding LeftTrigger, Mode=OneWay}"/>
-                        <TextBlock Text="{Binding RawLeftTrigger, Mode=OneWay}"
-                                   HorizontalAlignment="Center" FontSize="11" Opacity="0.5"/>
-                    </StackPanel>
-
-                    <!-- Center: Buttons + D-Pad -->
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center"
-                                VerticalAlignment="Center" Margin="24,0">
-
-                        <!-- Face buttons -->
-                        <Grid HorizontalAlignment="Center" Margin="0,0,0,12">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="28"/>
-                                <RowDefinition Height="28"/>
-                                <RowDefinition Height="28"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="28"/>
-                                <ColumnDefinition Width="28"/>
-                                <ColumnDefinition Width="28"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border Grid.Row="0" Grid.Column="1" CornerRadius="14" Width="24" Height="24"
-                                    HorizontalAlignment="Center"
-                                    Background="{Binding ButtonY, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="Y" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           FontSize="11" FontWeight="Bold" Foreground="White"/>
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="0" CornerRadius="14" Width="24" Height="24"
-                                    HorizontalAlignment="Center"
-                                    Background="{Binding ButtonX, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="X" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           FontSize="11" FontWeight="Bold" Foreground="White"/>
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="2" CornerRadius="14" Width="24" Height="24"
-                                    HorizontalAlignment="Center"
-                                    Background="{Binding ButtonB, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           FontSize="11" FontWeight="Bold" Foreground="White"/>
-                            </Border>
-                            <Border Grid.Row="2" Grid.Column="1" CornerRadius="14" Width="24" Height="24"
-                                    HorizontalAlignment="Center"
-                                    Background="{Binding ButtonA, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           FontSize="11" FontWeight="Bold" Foreground="White"/>
-                            </Border>
-                        </Grid>
-
-                        <!-- Bumpers -->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
-                            <Border CornerRadius="4" Padding="8,2" Margin="4,0"
-                                    Background="{Binding LeftShoulder, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="LB" FontSize="11" FontWeight="Bold" Foreground="White"/>
-                            </Border>
-                            <Border CornerRadius="4" Padding="8,2" Margin="4,0"
-                                    Background="{Binding RightShoulder, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="RB" FontSize="11" FontWeight="Bold" Foreground="White"/>
-                            </Border>
+                    <!-- Macro list -->
+                    <DockPanel Grid.Column="0">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Content="Add" Command="{Binding AddMacroCommand}"
+                                    Padding="8,4" Margin="0,0,4,0"/>
+                            <Button Content="Remove" Command="{Binding RemoveMacroCommand}"
+                                    Padding="8,4"/>
                         </StackPanel>
 
-                        <!-- Back / Guide / Start -->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
-                            <Border CornerRadius="4" Padding="6,2" Margin="2,0"
-                                    Background="{Binding ButtonBack, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="Back" FontSize="10" Foreground="White"/>
-                            </Border>
-                            <Border CornerRadius="10" Width="20" Height="20" Margin="6,0"
-                                    Background="{Binding ButtonGuide, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="G" FontSize="10" FontWeight="Bold" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <Border CornerRadius="4" Padding="6,2" Margin="2,0"
-                                    Background="{Binding ButtonStart, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="Start" FontSize="10" Foreground="White"/>
-                            </Border>
+                        <ListBox ItemsSource="{Binding Macros}"
+                                 SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
+                                 DisplayMemberPath="Name"/>
+                    </DockPanel>
+
+                    <GridSplitter Grid.Column="1" Width="4" Margin="4,0"
+                                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                  ResizeBehavior="PreviousAndNext"/>
+
+                    <!-- Macro editor (shows when a macro is selected) -->
+                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto"
+                                  Padding="8"
+                                  DataContext="{Binding SelectedMacro}"
+                                  Visibility="{Binding DataContext.HasSelectedMacro,
+                                      RelativeSource={RelativeSource AncestorType=TabItem},
+                                      Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <!-- Macro name -->
+                            <TextBlock Text="Name" FontWeight="SemiBold" Margin="0,0,0,4"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,0,0,12"/>
+
+                            <!-- Enabled -->
+                            <CheckBox Content="Enabled" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                                      Margin="0,0,0,12"/>
+
+                            <!-- Trigger -->
+                            <TextBlock Text="Trigger Combination" FontWeight="SemiBold"
+                                       Margin="0,0,0,4"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="{Binding TriggerDisplayText}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"
+                                           MinWidth="150"/>
+                                <Button Content="{Binding RecordTriggerButtonText}"
+                                        Command="{Binding RecordTriggerCommand}"
+                                        Padding="8,4"/>
+                            </StackPanel>
+
+                            <!-- Trigger mode -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Fire:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
+                                          SelectedValuePath="Tag" MinWidth="120">
+                                    <ComboBoxItem Content="On Press" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
+                                    <ComboBoxItem Content="On Release" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
+                                    <ComboBoxItem Content="While Held" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <CheckBox Content="Consume trigger buttons (hide from game)"
+                                      IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
+                                      Margin="0,0,0,12"/>
+
+                            <!-- Action sequence -->
+                            <TextBlock Text="Action Sequence" FontWeight="SemiBold"
+                                       Margin="0,0,0,4"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Button Content="Add Action" Command="{Binding AddActionCommand}"
+                                        Padding="8,4" Margin="0,0,4,0"/>
+                                <Button Content="Remove" Command="{Binding RemoveActionCommand}"
+                                        Padding="8,4"/>
+                            </StackPanel>
+                            <ListBox ItemsSource="{Binding Actions}"
+                                     SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
+                                     DisplayMemberPath="DisplayText"
+                                     MinHeight="100" MaxHeight="200" Margin="0,0,0,12"/>
+
+                            <!-- Repeat settings -->
+                            <TextBlock Text="Repeat" FontWeight="SemiBold" Margin="0,0,0,4"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Mode:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
+                                          SelectedValuePath="Tag" MinWidth="120">
+                                    <ComboBoxItem Content="Once" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
+                                    <ComboBoxItem Content="Fixed Count" Tag="{x:Static vm:MacroRepeatMode.FixedCount}"/>
+                                    <ComboBoxItem Content="Until Release" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Count:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0" Width="50"/>
+                                <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
+                                         Width="60"/>
+                                <TextBlock Text="Delay (ms):" VerticalAlignment="Center"
+                                           Margin="12,0,8,0"/>
+                                <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
+                                         Width="60"/>
+                            </StackPanel>
                         </StackPanel>
-
-                        <!-- D-Pad -->
-                        <TextBlock Text="D-Pad" HorizontalAlignment="Center"
-                                   FontSize="12" Opacity="0.6" Margin="0,4,0,4"/>
-                        <Grid HorizontalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="22"/>
-                                <RowDefinition Height="22"/>
-                                <RowDefinition Height="22"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="22"/>
-                                <ColumnDefinition Width="22"/>
-                                <ColumnDefinition Width="22"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border Grid.Row="0" Grid.Column="1" CornerRadius="3"
-                                    Background="{Binding DPadUp, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="▲" FontSize="9" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="0" CornerRadius="3"
-                                    Background="{Binding DPadLeft, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="◄" FontSize="9" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="2" CornerRadius="3"
-                                    Background="{Binding DPadRight, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="►" FontSize="9" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <Border Grid.Row="2" Grid.Column="1" CornerRadius="3"
-                                    Background="{Binding DPadDown, Converter={StaticResource BoolToColorConverter}}">
-                                <TextBlock Text="▼" FontSize="9" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </Grid>
-                    </StackPanel>
-
-                    <!-- Right side: Right Stick + Triggers -->
-                    <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                        <TextBlock Text="Right Stick" HorizontalAlignment="Center"
-                                   FontSize="12" Opacity="0.6" Margin="0,0,0,4"/>
-                        <Border Width="120" Height="120" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                BorderThickness="1" CornerRadius="60"
-                                Background="{DynamicResource SystemControlBackgroundChromeLowBrush}">
-                            <Canvas Width="120" Height="120">
-                                <Line X1="60" Y1="0" X2="60" Y2="120" Stroke="{DynamicResource SystemControlForegroundBaseLowBrush}" StrokeThickness="0.5"/>
-                                <Line X1="0" Y1="60" X2="120" Y2="60" Stroke="{DynamicResource SystemControlForegroundBaseLowBrush}" StrokeThickness="0.5"/>
-                                <Ellipse Width="14" Height="14" Fill="{DynamicResource SystemControlHighlightAccentBrush}">
-                                    <Canvas.Left>
-                                        <Binding Path="ThumbRX" Converter="{StaticResource NormToCanvasConverter}" ConverterParameter="120,7"/>
-                                    </Canvas.Left>
-                                    <Canvas.Top>
-                                        <Binding Path="ThumbRY" Converter="{StaticResource NormToCanvasConverter}" ConverterParameter="120,7"/>
-                                    </Canvas.Top>
-                                </Ellipse>
-                            </Canvas>
-                        </Border>
-                        <TextBlock HorizontalAlignment="Center" FontSize="11"
-                                   Opacity="0.5" Margin="0,4,0,0">
-                            <Run Text="X:"/><Run Text="{Binding RawThumbRX, Mode=OneWay}"/>
-                            <Run Text=" Y:"/><Run Text="{Binding RawThumbRY, Mode=OneWay}"/>
-                        </TextBlock>
-
-                        <TextBlock Text="RT" HorizontalAlignment="Center"
-                                   FontSize="12" Opacity="0.6" Margin="0,12,0,4"/>
-                        <ProgressBar Width="100" Height="12" Minimum="0" Maximum="1"
-                                     Value="{Binding RightTrigger, Mode=OneWay}"/>
-                        <TextBlock Text="{Binding RawRightTrigger, Mode=OneWay}"
-                                   HorizontalAlignment="Center" FontSize="11" Opacity="0.5"/>
-                    </StackPanel>
+                    </ScrollViewer>
                 </Grid>
-            </Border>
-
-            <!-- ═══ Mapping Grid ═══ -->
-            <Border Grid.Row="2"
-                    Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,16">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                        <TextBlock Text="Input Mappings" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                        <Button Content="Clear All" Margin="16,0,0,0"
-                                Command="{Binding ClearMappingsCommand}"
-                                Style="{StaticResource DefaultButtonStyle}"/>
-                    </StackPanel>
-
-                    <DataGrid ItemsSource="{Binding Mappings}"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False" CanUserDeleteRows="False"
-                              IsReadOnly="False" SelectionMode="Single"
-                              HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                              BorderThickness="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Target" Binding="{Binding TargetLabel}"
-                                                IsReadOnly="True" Width="140"/>
-                            <DataGridTextColumn Header="Source" Binding="{Binding SourceDisplayText}"
-                                                IsReadOnly="True" Width="160"/>
-                            <DataGridTextColumn Header="Value" Binding="{Binding CurrentValueText}"
-                                                IsReadOnly="True" Width="80"/>
-                            <DataGridTemplateColumn Header="" Width="90">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding RecordButtonText}"
-                                                Command="{Binding ToggleRecordCommand}"
-                                                Padding="8,2" FontSize="11"
-                                                MinWidth="70"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="" Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="✕" Command="{Binding ClearCommand}"
-                                                Padding="4,2" FontSize="11"
-                                                ToolTip="Clear mapping"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Dead Zones ═══ -->
-            <Border Grid.Row="3"
-                    Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,16">
-                <StackPanel>
-                    <TextBlock Text="Dead Zones" Style="{StaticResource SubtitleTextBlockStyle}"
-                               Margin="0,0,0,12"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <StackPanel Margin="0,0,12,8">
-                            <TextBlock Text="Left Stick Dead Zone" FontSize="12" Opacity="0.7"/>
-                            <Slider Minimum="0" Maximum="100"
-                                    Value="{Binding LeftDeadZone}" TickFrequency="5"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Margin="12,0,0,8">
-                            <TextBlock Text="Right Stick Dead Zone" FontSize="12" Opacity="0.7"/>
-                            <Slider Minimum="0" Maximum="100"
-                                    Value="{Binding RightDeadZone}" TickFrequency="5"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1" Margin="0,0,12,0">
-                            <TextBlock Text="Left Anti-Dead Zone" FontSize="12" Opacity="0.7"/>
-                            <Slider Minimum="0" Maximum="100"
-                                    Value="{Binding LeftAntiDeadZone}" TickFrequency="5"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,0">
-                            <TextBlock Text="Right Anti-Dead Zone" FontSize="12" Opacity="0.7"/>
-                            <Slider Minimum="0" Maximum="100"
-                                    Value="{Binding RightAntiDeadZone}" TickFrequency="5"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Force Feedback ═══ -->
-            <Border Grid.Row="4"
-                    Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,16">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                        <TextBlock Text="Force Feedback" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                        <Button Content="Test Rumble" Margin="16,0,0,0"
-                                Command="{Binding TestRumbleCommand}"/>
-                    </StackPanel>
-
-                    <StackPanel Margin="0,0,0,8">
-                        <TextBlock FontSize="12" Opacity="0.7">
-                            <Run Text="Overall Gain:"/>
-                            <Run Text="{Binding ForceOverallGain, Mode=OneWay}"/>
-                            <Run Text="%"/>
-                        </TextBlock>
-                        <Slider Minimum="0" Maximum="100" Value="{Binding ForceOverallGain}"/>
-                    </StackPanel>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Margin="0,0,12,0">
-                            <TextBlock FontSize="12" Opacity="0.7">
-                                <Run Text="Left Motor:"/>
-                                <Run Text="{Binding LeftMotorStrength, Mode=OneWay}"/>
-                                <Run Text="%"/>
-                            </TextBlock>
-                            <Slider Minimum="0" Maximum="100" Value="{Binding LeftMotorStrength}"/>
-                            <ProgressBar Height="8" Minimum="0" Maximum="1"
-                                         Value="{Binding LeftMotorDisplay, Mode=OneWay}"
-                                         Margin="0,4,0,0"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                            <TextBlock FontSize="12" Opacity="0.7">
-                                <Run Text="Right Motor:"/>
-                                <Run Text="{Binding RightMotorStrength, Mode=OneWay}"/>
-                                <Run Text="%"/>
-                            </TextBlock>
-                            <Slider Minimum="0" Maximum="100" Value="{Binding RightMotorStrength}"/>
-                            <ProgressBar Height="8" Minimum="0" Maximum="1"
-                                         Value="{Binding RightMotorDisplay, Mode=OneWay}"
-                                         Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <CheckBox Content="Swap motors" IsChecked="{Binding SwapMotors}"
-                              Margin="0,8,0,0"/>
-                </StackPanel>
-            </Border>
-
-        </Grid>
-    </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </UserControl>

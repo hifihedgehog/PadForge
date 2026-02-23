@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -35,14 +34,21 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings?.Items;
             if (settings == null) return;
 
-            UserSetting[] snapshot;
+            // Snapshot settings into pre-allocated buffer (no LINQ allocation).
+            int snapshotCount;
             lock (SettingsManager.UserSettings.SyncRoot)
             {
-                snapshot = settings.ToArray();
+                if (_settingSnapshotBuffer.Length < settings.Count)
+                    _settingSnapshotBuffer = new UserSetting[settings.Count];
+
+                snapshotCount = 0;
+                for (int i = 0; i < settings.Count; i++)
+                    _settingSnapshotBuffer[snapshotCount++] = settings[i];
             }
 
-            foreach (var us in snapshot)
+            for (int si = 0; si < snapshotCount; si++)
             {
+                var us = _settingSnapshotBuffer[si];
                 try
                 {
                     // Find the device for this setting.

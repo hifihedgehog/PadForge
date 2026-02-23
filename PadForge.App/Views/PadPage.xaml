@@ -299,9 +299,9 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="L Motor" FontSize="10"
+                                <TextBlock Text="L Motor" FontSize="16"
                                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
                                 <Border Height="10" Background="#FF1E1E21" CornerRadius="3"
                                         BorderBrush="#FF3F3F46" BorderThickness="1">
                                     <Rectangle Fill="#FF9C27B0" RadiusX="2" RadiusY="2"
@@ -313,9 +313,9 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="R Motor" FontSize="10"
+                                <TextBlock Text="R Motor" FontSize="16"
                                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
                                 <Border Height="10" Background="#FF1E1E21" CornerRadius="3"
                                         BorderBrush="#FF3F3F46" BorderThickness="1">
                                     <Rectangle Fill="#FF9C27B0" RadiusX="2" RadiusY="2"
@@ -343,6 +343,15 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
                         <Button Content="Clear All" Command="{Binding ClearMappingsCommand}"
                                 Padding="8,4" Margin="0,0,8,0"/>
+                        <Button Content="Copy" Command="{Binding CopySettingsCommand}"
+                                Padding="8,4" Margin="0,0,4,0"
+                                ToolTip="Copy all mappings and settings to clipboard"/>
+                        <Button Content="Paste" Command="{Binding PasteSettingsCommand}"
+                                Padding="8,4" Margin="0,0,4,0"
+                                ToolTip="Paste mappings and settings from clipboard"/>
+                        <Button Content="Copy From..." Command="{Binding CopyFromCommand}"
+                                Padding="8,4" Margin="0,0,8,0"
+                                ToolTip="Copy settings from another configured device"/>
                         <TextBlock Text="Click a mapping row and press a button/axis on your controller to assign it."
                                    VerticalAlignment="Center" FontStyle="Italic"
                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>

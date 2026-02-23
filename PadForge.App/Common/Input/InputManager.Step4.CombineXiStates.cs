@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -33,26 +32,28 @@ namespace PadForge.Common.Input
             {
                 try
                 {
-                    List<UserSetting> slotSettings = settings.FindByPadIndex(padIndex);
+                    // Use non-allocating overload with pre-allocated buffer.
+                    int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 
-                    if (slotSettings == null || slotSettings.Count == 0)
+                    if (slotCount == 0)
                     {
                         CombinedXiStates[padIndex].Clear();
                         continue;
                     }
 
-                    if (slotSettings.Count == 1)
+                    if (slotCount == 1)
                     {
                         // Single device — no combination needed, direct copy.
-                        CombinedXiStates[padIndex] = slotSettings[0].XiState;
+                        CombinedXiStates[padIndex] = _padIndexBuffer[0].XiState;
                         continue;
                     }
 
                     // Multiple devices — merge all states.
                     var combined = new Gamepad();
 
-                    foreach (var us in slotSettings)
+                    for (int si = 0; si < slotCount; si++)
                     {
+                        var us = _padIndexBuffer[si];
                         if (us == null)
                             continue;
 

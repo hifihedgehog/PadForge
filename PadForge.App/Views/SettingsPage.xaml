@@ -83,7 +83,7 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal"
                                 VerticalAlignment="Center">
-                        <Button Content="{Binding IsViGEmInstalled, Converter={StaticResource BoolToInstallTextConverter}}"
+                        <Button Content="Install"
                                 Command="{Binding InstallViGEmCommand}"
                                 Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                 Margin="0,0,8,0"/>
@@ -118,7 +118,7 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal"
                                 VerticalAlignment="Center">
-                        <Button Content="{Binding IsHidHideInstalled, Converter={StaticResource BoolToInstallTextConverter}}"
+                        <Button Content="Install"
                                 Command="{Binding InstallHidHideCommand}"
                                 Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                 Margin="0,0,8,0"/>

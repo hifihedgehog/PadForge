@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -30,14 +29,24 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
-            UserDevice[] snapshot;
+            // Snapshot online devices into pre-allocated buffer (no LINQ allocation).
+            int snapshotCount;
             lock (SettingsManager.UserDevices.SyncRoot)
             {
-                snapshot = devices.Where(d => d.IsOnline).ToArray();
+                if (_deviceSnapshotBuffer.Length < devices.Count)
+                    _deviceSnapshotBuffer = new UserDevice[devices.Count];
+
+                snapshotCount = 0;
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    if (devices[i].IsOnline)
+                        _deviceSnapshotBuffer[snapshotCount++] = devices[i];
+                }
             }
 
-            foreach (var ud in snapshot)
+            for (int si = 0; si < snapshotCount; si++)
             {
+                var ud = _deviceSnapshotBuffer[si];
                 try
                 {
                     // Save previous state for change detection.

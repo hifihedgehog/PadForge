@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Xml.Serialization;
 
 namespace PadForge.Engine.Data
@@ -284,6 +286,10 @@ namespace PadForge.Engine.Data
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
+            sb.Append(LeftMotorPeriod); sb.Append('|');
+            sb.Append(RightMotorPeriod); sb.Append('|');
+            sb.Append(LeftMotorDirection); sb.Append('|');
+            sb.Append(RightMotorDirection); sb.Append('|');
 
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
@@ -357,6 +363,112 @@ namespace PadForge.Engine.Data
             if (!string.IsNullOrEmpty(RightTrigger)) count++;
 
             return $"PadSetting [{PadSettingChecksum}] ({count} mapped)";
+        }
+
+        // ─────────────────────────────────────────────
+        //  JSON serialization for copy/paste
+        // ─────────────────────────────────────────────
+
+        /// <summary>Names of all copyable properties (excludes identity and game-specific fields).</summary>
+        private static readonly string[] CopyablePropertyNames = new[]
+        {
+            // Buttons
+            nameof(ButtonA), nameof(ButtonB), nameof(ButtonX), nameof(ButtonY),
+            nameof(LeftShoulder), nameof(RightShoulder),
+            nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
+            nameof(LeftThumbButton), nameof(RightThumbButton),
+            // D-Pad
+            nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
+            // Triggers
+            nameof(LeftTrigger), nameof(RightTrigger),
+            nameof(LeftTriggerDeadZone), nameof(RightTriggerDeadZone),
+            nameof(LeftTriggerAntiDeadZone), nameof(RightTriggerAntiDeadZone),
+            // Sticks
+            nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
+            nameof(RightThumbAxisX), nameof(RightThumbAxisY),
+            // Dead zones
+            nameof(LeftThumbDeadZoneX), nameof(LeftThumbDeadZoneY),
+            nameof(RightThumbDeadZoneX), nameof(RightThumbDeadZoneY),
+            nameof(LeftThumbAntiDeadZone), nameof(RightThumbAntiDeadZone),
+            nameof(LeftThumbLinear), nameof(RightThumbLinear),
+            // Force feedback
+            nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
+            nameof(LeftMotorStrength), nameof(RightMotorStrength),
+            nameof(LeftMotorPeriod), nameof(RightMotorPeriod),
+            nameof(LeftMotorDirection), nameof(RightMotorDirection),
+            // Axis inversion
+            nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
+            nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),
+            // Threshold
+            nameof(AxisToButtonThreshold),
+        };
+
+        /// <summary>
+        /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
+        /// Used for clipboard copy/paste of controller settings.
+        /// </summary>
+        public string ToJson()
+        {
+            var dict = new Dictionary<string, string>();
+            var type = GetType();
+
+            foreach (string name in CopyablePropertyNames)
+            {
+                var prop = type.GetProperty(name);
+                if (prop != null)
+                    dict[name] = prop.GetValue(this) as string ?? "";
+            }
+
+            return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
+        }
+
+        /// <summary>
+        /// Deserializes a JSON string into a new PadSetting.
+        /// Returns null if the JSON is invalid or not a PadSetting export.
+        /// </summary>
+        public static PadSetting FromJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            try
+            {
+                var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                if (dict == null || dict.Count == 0)
+                    return null;
+
+                var ps = new PadSetting();
+                var type = typeof(PadSetting);
+
+                foreach (var kvp in dict)
+                {
+                    var prop = type.GetProperty(kvp.Key);
+                    if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
+                        prop.SetValue(ps, kvp.Value ?? "");
+                }
+
+                return ps;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Copies all copyable properties from another PadSetting into this one.
+        /// </summary>
+        public void CopyFrom(PadSetting source)
+        {
+            if (source == null) return;
+
+            var type = GetType();
+            foreach (string name in CopyablePropertyNames)
+            {
+                var prop = type.GetProperty(name);
+                if (prop != null && prop.CanWrite)
+                    prop.SetValue(this, prop.GetValue(source) ?? "");
+            }
         }
     }
 }

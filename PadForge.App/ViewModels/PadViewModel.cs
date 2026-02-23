@@ -400,6 +400,44 @@ namespace PadForge.ViewModels
                 m.SourceDescriptor = string.Empty;
         }
 
+        // ── Copy / Paste / Copy From ──
+
+        /// <summary>
+        /// Raised when the user wants to copy the current device's settings to the clipboard.
+        /// MainWindow/InputService handles reading the PadSetting and calling ToJson().
+        /// </summary>
+        public event EventHandler CopySettingsRequested;
+
+        private RelayCommand _copySettingsCommand;
+        public RelayCommand CopySettingsCommand =>
+            _copySettingsCommand ??= new RelayCommand(
+                () => CopySettingsRequested?.Invoke(this, EventArgs.Empty),
+                () => HasSelectedDevice);
+
+        /// <summary>
+        /// Raised when the user wants to paste settings from the clipboard.
+        /// MainWindow/InputService handles parsing and applying.
+        /// </summary>
+        public event EventHandler PasteSettingsRequested;
+
+        private RelayCommand _pasteSettingsCommand;
+        public RelayCommand PasteSettingsCommand =>
+            _pasteSettingsCommand ??= new RelayCommand(
+                () => PasteSettingsRequested?.Invoke(this, EventArgs.Empty),
+                () => HasSelectedDevice);
+
+        /// <summary>
+        /// Raised when the user wants to copy settings from another device.
+        /// MainWindow handles showing the picker dialog.
+        /// </summary>
+        public event EventHandler CopyFromRequested;
+
+        private RelayCommand _copyFromCommand;
+        public RelayCommand CopyFromCommand =>
+            _copyFromCommand ??= new RelayCommand(
+                () => CopyFromRequested?.Invoke(this, EventArgs.Empty),
+                () => HasSelectedDevice);
+
         // ═══════════════════════════════════════════════
         //  State update (30Hz from InputService)
         // ═══════════════════════════════════════════════
@@ -447,6 +485,9 @@ namespace PadForge.ViewModels
         {
             _testRumbleCommand?.NotifyCanExecuteChanged();
             _removeMacroCommand?.NotifyCanExecuteChanged();
+            _copySettingsCommand?.NotifyCanExecuteChanged();
+            _pasteSettingsCommand?.NotifyCanExecuteChanged();
+            _copyFromCommand?.NotifyCanExecuteChanged();
         }
     }
 }

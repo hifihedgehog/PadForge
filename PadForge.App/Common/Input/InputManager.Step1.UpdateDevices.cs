@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using SDL2;
@@ -203,6 +202,11 @@ namespace PadForge.Common.Input
                 vigemSlots = new HashSet<int>(_vigemOccupiedXInputSlots);
             }
 
+            // Sequential counter for physical (non-ViGEm) XInput controllers.
+            // Used for display names so "Controller 2" means the 2nd physical
+            // controller regardless of which raw XInput slot it occupies.
+            int physicalNum = 0;
+
             for (int i = 0; i < MaxPads; i++)
             {
                 try
@@ -229,15 +233,18 @@ namespace PadForge.Common.Input
 
                     if (connected)
                     {
+                        physicalNum++;
+
                         if (ud == null || !ud.IsOnline)
                         {
                             // Controller just connected.
                             ud = FindOrCreateUserDevice(instanceGuid);
+                            string displayName = $"XInput Controller {physicalNum}";
                             ud.LoadInstance(
                                 instanceGuid,
-                                $"XInput Controller {i + 1}",
+                                displayName,
                                 SdlDeviceWrapper.BuildXInputProductGuid(0x045E, 0x028E), // Generic Xbox 360
-                                $"XInput Controller {i + 1}");
+                                displayName);
                             ud.LoadCapabilities(6, 16, 1,
                                 InputDeviceType.Gamepad, 1, 0);
                             ud.VendorId = 0x045E;
@@ -252,6 +259,17 @@ namespace PadForge.Common.Input
                             ud.DeviceEffects = new[] { DeviceEffectItem.CreateRumbleEffect() };
 
                             changed = true;
+                        }
+                        else
+                        {
+                            // Already online — update display name in case ViGEm
+                            // slots changed and the numbering shifted.
+                            string displayName = $"XInput Controller {physicalNum}";
+                            if (ud.InstanceName != displayName)
+                            {
+                                ud.InstanceName = displayName;
+                                ud.ProductName = displayName;
+                            }
                         }
                     }
                     else
@@ -505,7 +523,8 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Finds an online UserDevice by its instance GUID.
+        /// Finds a UserDevice by its instance GUID.
+        /// Uses a manual loop to avoid LINQ closure allocations in the hot path.
         /// </summary>
         private UserDevice FindOnlineDeviceByInstanceGuid(Guid instanceGuid)
         {
@@ -514,13 +533,18 @@ namespace PadForge.Common.Input
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
-                return devices.FirstOrDefault(d =>
-                    d.InstanceGuid == instanceGuid);
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    if (devices[i].InstanceGuid == instanceGuid)
+                        return devices[i];
+                }
+                return null;
             }
         }
 
         /// <summary>
         /// Finds an online UserDevice by its SDL instance ID.
+        /// Uses a manual loop to avoid LINQ closure allocations.
         /// </summary>
         private UserDevice FindOnlineDeviceBySdlInstanceId(int sdlInstanceId)
         {
@@ -529,8 +553,13 @@ namespace PadForge.Common.Input
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
-                return devices.FirstOrDefault(d =>
-                    d.IsOnline && d.Device != null && d.Device.SdlInstanceId == sdlInstanceId);
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d.IsOnline && d.Device != null && d.Device.SdlInstanceId == sdlInstanceId)
+                        return d;
+                }
+                return null;
             }
         }
 
@@ -545,9 +574,11 @@ namespace PadForge.Common.Input
 
             lock (devices.SyncRoot)
             {
-                var existing = devices.Items.FirstOrDefault(d => d.InstanceGuid == instanceGuid);
-                if (existing != null)
-                    return existing;
+                for (int i = 0; i < devices.Items.Count; i++)
+                {
+                    if (devices.Items[i].InstanceGuid == instanceGuid)
+                        return devices.Items[i];
+                }
 
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
@@ -626,24 +657,56 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Finds the UserSetting that links a device (by InstanceGuid) to a pad slot.
+        /// Uses a manual loop to avoid LINQ closure allocations.
         /// </summary>
         public UserSetting FindByInstanceGuid(Guid instanceGuid)
         {
             lock (SyncRoot)
             {
-                return Items.FirstOrDefault(s => s.InstanceGuid == instanceGuid);
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    if (Items[i].InstanceGuid == instanceGuid)
+                        return Items[i];
+                }
+                return null;
             }
         }
 
         /// <summary>
         /// Returns all UserSettings assigned to a specific pad slot (0–3).
+        /// Allocates a new List — use <see cref="FindByPadIndex(int, UserSetting[], out int)"/>
+        /// in the hot path to avoid allocations.
         /// </summary>
         public List<UserSetting> FindByPadIndex(int padIndex)
         {
+            var results = new List<UserSetting>();
             lock (SyncRoot)
             {
-                return Items.Where(s => s.MapTo == padIndex).ToList();
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    if (Items[i].MapTo == padIndex)
+                        results.Add(Items[i]);
+                }
             }
+            return results;
+        }
+
+        /// <summary>
+        /// Non-allocating overload: fills a pre-allocated buffer with UserSettings
+        /// assigned to the specified pad slot. Returns the count of matches.
+        /// </summary>
+        public int FindByPadIndex(int padIndex, UserSetting[] buffer)
+        {
+            int count = 0;
+            lock (SyncRoot)
+            {
+                for (int i = 0; i < Items.Count && count < buffer.Length; i++)
+                {
+                    if (Items[i].MapTo == padIndex)
+                        buffer[count++] = Items[i];
+                }
+            }
+            return count;
         }
     }
 }

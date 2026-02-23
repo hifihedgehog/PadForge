@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using ModernWpf.Controls;
 using PadForge.Common;
+using PadForge.Common.Input;
+using PadForge.Engine.Data;
 using PadForge.Services;
 using PadForge.ViewModels;
+using PadForge.Views;
 
 namespace PadForge
 {
@@ -92,7 +97,10 @@ namespace PadForge
                     mapping.StartRecordingRequested += (s, e) =>
                     {
                         if (s is MappingItem mi)
-                            _recorderService.StartRecording(mi, capturedPad.PadIndex);
+                        {
+                            Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                            _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid);
+                        }
                     };
                     mapping.StopRecordingRequested += (s, e) =>
                         _recorderService.CancelRecording();
@@ -121,6 +129,15 @@ namespace PadForge
                             WireMacroRecording(macro, capturedPad.PadIndex);
                     }
                 };
+            }
+
+            // Wire copy/paste/copy-from for each pad.
+            foreach (var pad in _viewModel.Pads)
+            {
+                var capturedPad = pad;
+                pad.CopySettingsRequested += (s, e) => OnCopySettings(capturedPad);
+                pad.PasteSettingsRequested += (s, e) => OnPasteSettings(capturedPad);
+                pad.CopyFromRequested += (s, e) => OnCopyFrom(capturedPad);
             }
 
             // Window events.
@@ -352,6 +369,111 @@ namespace PadForge
             WindowState = WindowState.Normal;
             Activate();
             _notifyIcon.Visible = false;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Copy / Paste / Copy From
+        // ─────────────────────────────────────────────
+
+        private void OnCopySettings(PadViewModel padVm)
+        {
+            var ps = _inputService.GetCurrentPadSetting(padVm.PadIndex);
+            if (ps == null)
+            {
+                _viewModel.StatusText = "No device selected to copy from.";
+                return;
+            }
+
+            try
+            {
+                Clipboard.SetText(ps.ToJson());
+                _viewModel.StatusText = "Settings copied to clipboard.";
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = $"Failed to copy: {ex.Message}";
+            }
+        }
+
+        private void OnPasteSettings(PadViewModel padVm)
+        {
+            try
+            {
+                string json = Clipboard.GetText();
+                var ps = PadSetting.FromJson(json);
+                if (ps == null)
+                {
+                    _viewModel.StatusText = "Clipboard does not contain valid PadForge settings.";
+                    return;
+                }
+
+                _inputService.ApplyPadSettingToCurrentDevice(padVm.PadIndex, ps);
+                _settingsService.MarkDirty();
+                _viewModel.StatusText = "Settings pasted from clipboard.";
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = $"Failed to paste: {ex.Message}";
+            }
+        }
+
+        private void OnCopyFrom(PadViewModel padVm)
+        {
+            // Build list of all devices that have configured settings.
+            var entries = new List<CopyFromDialog.DeviceEntry>();
+            var settings = SettingsManager.UserSettings?.Items;
+            if (settings != null)
+            {
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    foreach (var us in settings)
+                    {
+                        // Skip the currently selected device.
+                        if (padVm.SelectedMappedDevice != null &&
+                            us.InstanceGuid == padVm.SelectedMappedDevice.InstanceGuid)
+                            continue;
+
+                        var ps = us.GetPadSetting();
+                        if (ps == null || !ps.HasAnyMapping)
+                            continue;
+
+                        // Get the real device name from UserDevice (InstanceName on
+                        // UserSetting is often empty).
+                        var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
+                        string name = ud?.InstanceName;
+                        if (string.IsNullOrEmpty(name))
+                            name = ud?.ProductName;
+                        if (string.IsNullOrEmpty(name))
+                            name = us.InstanceGuid.ToString();
+
+                        string slot = us.MapTo >= 0 && us.MapTo < 4
+                            ? $"Player {us.MapTo + 1} — {us.InstanceGuid:D}"
+                            : $"Unmapped — {us.InstanceGuid:D}";
+
+                        entries.Add(new CopyFromDialog.DeviceEntry
+                        {
+                            Name = name,
+                            SlotLabel = slot,
+                            InstanceGuid = us.InstanceGuid,
+                            PadSetting = ps
+                        });
+                    }
+                }
+            }
+
+            if (entries.Count == 0)
+            {
+                _viewModel.StatusText = "No other configured devices found to copy from.";
+                return;
+            }
+
+            var dialog = new CopyFromDialog(entries) { Owner = this };
+            if (dialog.ShowDialog() == true && dialog.SelectedPadSetting != null)
+            {
+                _inputService.ApplyPadSettingToCurrentDevice(padVm.PadIndex, dialog.SelectedPadSetting);
+                _settingsService.MarkDirty();
+                _viewModel.StatusText = "Settings copied from selected device.";
+            }
         }
 
         // ─────────────────────────────────────────────

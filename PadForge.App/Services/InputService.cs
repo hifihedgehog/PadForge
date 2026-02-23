@@ -62,6 +62,12 @@ namespace PadForge.Services
         private int _recordingPadIndex;
         private ushort _recordedButtons;
 
+        /// <summary>
+        /// Tracks the previously selected device GUID for each pad slot,
+        /// so we can save the old device's PadSetting before loading the new one.
+        /// </summary>
+        private readonly Dictionary<int, Guid> _previousSelectedDevice = new();
+
         // ─────────────────────────────────────────────
         //  Constructor
         // ─────────────────────────────────────────────
@@ -74,6 +80,12 @@ namespace PadForge.Services
         {
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
             _dispatcher = Dispatcher.CurrentDispatcher;
+
+            // Subscribe to device selection changes on each pad.
+            foreach (var padVm in _mainVm.Pads)
+            {
+                padVm.SelectedDeviceChanged += OnSelectedDeviceChanged;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -346,8 +358,8 @@ namespace PadForge.Services
             if (padVm == null)
                 return;
 
-            // Find the primary device for this pad slot.
-            UserDevice ud = FindPrimaryDeviceForSlot(padVm.PadIndex);
+            // Find the selected device for this pad slot.
+            UserDevice ud = FindSelectedDeviceForSlot(padVm);
             if (ud == null || ud.InputState == null)
                 return;
 
@@ -413,59 +425,192 @@ namespace PadForge.Services
         /// </summary>
         private void SyncViewModelToPadSettings()
         {
-            var settings = SettingsManager.UserSettings?.Items;
-            if (settings == null) return;
-
-            UserSetting[] snapshot;
-            lock (SettingsManager.UserSettings.SyncRoot)
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                snapshot = settings.ToArray();
-            }
-
-            foreach (var us in snapshot)
-            {
-                var ps = us.GetPadSetting();
-                if (ps == null) continue;
-
-                int padIndex = us.MapTo;
-                if (padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                var padVm = _mainVm.Pads[i];
+                var selected = padVm.SelectedMappedDevice;
+                if (selected == null || selected.InstanceGuid == Guid.Empty)
                     continue;
 
-                var padVm = _mainVm.Pads[padIndex];
+                SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+            }
+        }
 
-                // Dead zones (independent X/Y).
-                ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString();
-                ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString();
-                ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
-                ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
+        /// <summary>
+        /// Saves the current PadViewModel state to a specific device's PadSetting.
+        /// </summary>
+        private static void SaveViewModelToPadSetting(PadViewModel padVm, Guid instanceGuid)
+        {
+            var us = SettingsManager.FindSettingByInstanceGuid(instanceGuid);
+            if (us == null) return;
 
-                // Anti-dead zones.
-                ps.LeftThumbAntiDeadZone = padVm.LeftAntiDeadZone.ToString();
-                ps.RightThumbAntiDeadZone = padVm.RightAntiDeadZone.ToString();
+            var ps = us.GetPadSetting();
+            if (ps == null) return;
 
-                // Linear response.
-                ps.LeftThumbLinear = padVm.LeftLinear.ToString();
-                ps.RightThumbLinear = padVm.RightLinear.ToString();
+            // Dead zones (independent X/Y).
+            ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString();
+            ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString();
+            ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
+            ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
 
-                // Trigger dead zones.
-                ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
-                ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
-                ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
-                ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
+            // Anti-dead zones.
+            ps.LeftThumbAntiDeadZone = padVm.LeftAntiDeadZone.ToString();
+            ps.RightThumbAntiDeadZone = padVm.RightAntiDeadZone.ToString();
 
-                // Force feedback.
-                ps.ForceOverall = padVm.ForceOverallGain.ToString();
-                ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
-                ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
-                ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+            // Linear response.
+            ps.LeftThumbLinear = padVm.LeftLinear.ToString();
+            ps.RightThumbLinear = padVm.RightLinear.ToString();
 
-                // Mapping descriptors.
-                foreach (var mapping in padVm.Mappings)
-                {
-                    var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
-                    if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
-                        prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
-                }
+            // Trigger dead zones.
+            ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
+            ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
+            ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
+            ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
+
+            // Force feedback.
+            ps.ForceOverall = padVm.ForceOverallGain.ToString();
+            ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
+            ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
+            ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+
+            // Mapping descriptors.
+            foreach (var mapping in padVm.Mappings)
+            {
+                var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
+                if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
+                    prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Loads a specific device's PadSetting into the PadViewModel.
+        /// </summary>
+        private static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
+        {
+            var us = SettingsManager.FindSettingByInstanceGuid(instanceGuid);
+            if (us == null) return;
+
+            var ps = us.GetPadSetting();
+            if (ps == null) return;
+
+            // Dead zones.
+            padVm.LeftDeadZoneX = TryParseInt(ps.LeftThumbDeadZoneX, 0);
+            padVm.LeftDeadZoneY = TryParseInt(ps.LeftThumbDeadZoneY, 0);
+            padVm.RightDeadZoneX = TryParseInt(ps.RightThumbDeadZoneX, 0);
+            padVm.RightDeadZoneY = TryParseInt(ps.RightThumbDeadZoneY, 0);
+            padVm.LeftAntiDeadZone = TryParseInt(ps.LeftThumbAntiDeadZone, 0);
+            padVm.RightAntiDeadZone = TryParseInt(ps.RightThumbAntiDeadZone, 0);
+            padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
+            padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
+
+            // Trigger dead zones.
+            padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
+            padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
+            padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
+            padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+
+            // Force feedback.
+            padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
+            padVm.LeftMotorStrength = TryParseInt(ps.LeftMotorStrength, 100);
+            padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
+            padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
+                (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+
+            // Mapping descriptors.
+            foreach (var mapping in padVm.Mappings)
+            {
+                var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
+                string value = (prop != null && prop.PropertyType == typeof(string))
+                    ? prop.GetValue(ps) as string ?? string.Empty
+                    : string.Empty;
+                mapping.SourceDescriptor = value;
+            }
+        }
+
+        private static int TryParseInt(string value, int defaultValue)
+        {
+            if (string.IsNullOrEmpty(value)) return defaultValue;
+            return int.TryParse(value, out int result) ? result : defaultValue;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Copy / Paste settings
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Applies a source PadSetting to the currently selected device in the given pad slot.
+        /// Used by both clipboard Paste and "Copy From" operations.
+        /// </summary>
+        public void ApplyPadSettingToCurrentDevice(int padIndex, PadSetting source)
+        {
+            if (source == null || padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                return;
+
+            var padVm = _mainVm.Pads[padIndex];
+            var selected = padVm.SelectedMappedDevice;
+            if (selected == null || selected.InstanceGuid == Guid.Empty)
+                return;
+
+            var us = SettingsManager.FindSettingByInstanceGuid(selected.InstanceGuid);
+            if (us == null) return;
+
+            var ps = us.GetPadSetting();
+            if (ps == null) return;
+
+            // Copy all settings from the source.
+            ps.CopyFrom(source);
+
+            // Reload the ViewModel to reflect the new values.
+            LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+        }
+
+        /// <summary>
+        /// Gets the PadSetting for the currently selected device in the given pad slot.
+        /// Returns null if no device is selected.
+        /// </summary>
+        public PadSetting GetCurrentPadSetting(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                return null;
+
+            var padVm = _mainVm.Pads[padIndex];
+            var selected = padVm.SelectedMappedDevice;
+            if (selected == null || selected.InstanceGuid == Guid.Empty)
+                return null;
+
+            // First sync the ViewModel to the PadSetting to capture any unsaved slider changes.
+            SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+
+            var us = SettingsManager.FindSettingByInstanceGuid(selected.InstanceGuid);
+            return us?.GetPadSetting();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Per-device settings swap
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Called when the user selects a different device in a pad slot's dropdown.
+        /// Saves current ViewModel values to the old device's PadSetting, then loads
+        /// the new device's PadSetting into the ViewModel.
+        /// </summary>
+        private void OnSelectedDeviceChanged(object sender, PadViewModel.MappedDeviceInfo newDevice)
+        {
+            if (sender is not PadViewModel padVm)
+                return;
+
+            // Save ViewModel state to the PREVIOUSLY selected device's PadSetting.
+            if (_previousSelectedDevice.TryGetValue(padVm.PadIndex, out Guid previousGuid)
+                && previousGuid != Guid.Empty)
+            {
+                SaveViewModelToPadSetting(padVm, previousGuid);
+            }
+
+            // Load the new device's PadSetting into the ViewModel.
+            if (newDevice != null && newDevice.InstanceGuid != Guid.Empty)
+            {
+                LoadPadSettingToViewModel(padVm, newDevice.InstanceGuid);
+                _previousSelectedDevice[padVm.PadIndex] = newDevice.InstanceGuid;
             }
         }
 
@@ -638,6 +783,14 @@ namespace PadForge.Services
         /// <returns>True if the device should be hidden.</returns>
         private bool IsVirtualOrShadowDevice(UserDevice ud, HashSet<Guid> vigemGuids)
         {
+            // Offline devices are never virtual controllers — virtual controllers
+            // only exist while the engine is running. Skipping the filter for offline
+            // devices ensures disconnected XInput controllers remain visible in the
+            // list (ClearRuntimeState resets IsXInput, which would otherwise cause
+            // Layer 2 to incorrectly match them as ViGEm shadow devices).
+            if (!ud.IsOnline)
+                return false;
+
             // ── Layer 1: GUID match (XInput-based ViGEm devices) ──
             if (vigemGuids.Contains(ud.InstanceGuid))
                 return true;
@@ -756,6 +909,18 @@ namespace PadForge.Services
                     // Sync the ObservableCollection (minimize UI churn).
                     SyncMappedDevices(padVm.MappedDevices, deviceInfos);
 
+                    // Auto-select first device if nothing is selected.
+                    if (padVm.SelectedMappedDevice == null && padVm.MappedDevices.Count > 0)
+                    {
+                        padVm.SelectedMappedDevice = padVm.MappedDevices[0];
+                    }
+
+                    // Initialize the previous-device tracker if not set.
+                    if (!_previousSelectedDevice.ContainsKey(i) && padVm.SelectedMappedDevice != null)
+                    {
+                        _previousSelectedDevice[i] = padVm.SelectedMappedDevice.InstanceGuid;
+                    }
+
                     // Summary properties for backward compatibility / simple bindings.
                     var primary = slotSettings[0];
                     var primaryUd = FindUserDevice(primary.InstanceGuid);
@@ -818,14 +983,23 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Finds the primary (first) UserDevice assigned to a pad slot.
+        /// Finds the UserDevice for the currently selected device in a pad slot's dropdown.
+        /// Falls back to the first device in the slot if nothing is selected.
         /// </summary>
-        private static UserDevice FindPrimaryDeviceForSlot(int padIndex)
+        private static UserDevice FindSelectedDeviceForSlot(PadViewModel padVm)
         {
+            // Use the dropdown-selected device if available.
+            if (padVm.SelectedMappedDevice != null &&
+                padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
+            {
+                return FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid);
+            }
+
+            // Fallback: first device in slot.
             var settings = SettingsManager.UserSettings;
             if (settings == null) return null;
 
-            var slotSettings = settings.FindByPadIndex(padIndex);
+            var slotSettings = settings.FindByPadIndex(padVm.PadIndex);
             if (slotSettings == null || slotSettings.Count == 0)
                 return null;
 

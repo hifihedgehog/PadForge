@@ -158,12 +158,23 @@ namespace PadForge.Services
                     {
                         foreach (var us in data.Settings)
                         {
-                            // Link PadSetting.
+                            // Link PadSetting — clone the template so each device
+                            // has its own independent PadSetting instance. Without
+                            // cloning, devices that share a checksum would share the
+                            // same object, so modifying one device's settings would
+                            // silently corrupt the other's.
                             if (data.PadSettings != null && us.PadSettingChecksum != null)
                             {
-                                var ps = data.PadSettings.FirstOrDefault(
+                                var template = data.PadSettings.FirstOrDefault(
                                     p => p.PadSettingChecksum == us.PadSettingChecksum);
-                                us.SetPadSetting(ps);
+                                if (template != null)
+                                {
+                                    var ps = new PadSetting();
+                                    ps.CopyFrom(template);
+                                    ps.PadSettingChecksum = template.PadSettingChecksum;
+                                    ps.GameFileName = template.GameFileName;
+                                    us.SetPadSetting(ps);
+                                }
                             }
 
                             SettingsManager.UserSettings.Items.Add(us);
@@ -205,16 +216,24 @@ namespace PadForge.Services
 
         /// <summary>
         /// Pushes per-pad settings to PadViewModels.
+        /// Only loads the first device encountered per slot — the user can switch
+        /// to other devices via the dropdown, which triggers a live swap.
         /// </summary>
         private void LoadPadSettings(UserSetting[] settings, PadSetting[] padSettings)
         {
             if (settings == null || padSettings == null)
                 return;
 
+            var loadedSlots = new System.Collections.Generic.HashSet<int>();
+
             foreach (var us in settings)
             {
                 int padIndex = us.MapTo;
                 if (padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                    continue;
+
+                // Only load the first device's PadSetting into the ViewModel per slot.
+                if (!loadedSlots.Add(padIndex))
                     continue;
 
                 var padVm = _mainVm.Pads[padIndex];
@@ -331,23 +350,46 @@ namespace PadForge.Services
             {
                 var data = new SettingsFileData();
 
+                // Push ViewModel values to PadSetting objects FIRST,
+                // before collecting data for serialization.
+                UpdatePadSettingsFromViewModels();
+
+                // Recompute checksums for ALL PadSettings and sync to UserSettings.
+                // This ensures each PadSetting's checksum reflects its actual content,
+                // preventing checksum collisions that cause settings to be swapped on reload.
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    foreach (var us in SettingsManager.UserSettings.Items)
+                    {
+                        var ps = us.GetPadSetting();
+                        if (ps != null)
+                        {
+                            ps.UpdateChecksum();
+                            us.PadSettingChecksum = ps.PadSettingChecksum;
+                        }
+                    }
+                }
+
                 // Collect devices.
                 lock (SettingsManager.UserDevices.SyncRoot)
                 {
                     data.Devices = SettingsManager.UserDevices.Items.ToArray();
                 }
 
-                // Collect user settings and pad settings.
+                // Collect user settings and unique pad settings (deduplicated by checksum).
                 lock (SettingsManager.UserSettings.SyncRoot)
                 {
                     data.Settings = SettingsManager.UserSettings.Items.ToArray();
 
-                    // Collect unique PadSettings.
-                    data.PadSettings = SettingsManager.UserSettings.Items
-                        .Select(s => s.GetPadSetting())
-                        .Where(p => p != null)
-                        .Distinct()
-                        .ToArray();
+                    var seen = new System.Collections.Generic.HashSet<string>();
+                    var uniquePadSettings = new System.Collections.Generic.List<PadSetting>();
+                    foreach (var us in SettingsManager.UserSettings.Items)
+                    {
+                        var ps = us.GetPadSetting();
+                        if (ps != null && seen.Add(ps.PadSettingChecksum))
+                            uniquePadSettings.Add(ps);
+                    }
+                    data.PadSettings = uniquePadSettings.ToArray();
                 }
 
                 // Collect app settings from ViewModel.
@@ -355,9 +397,6 @@ namespace PadForge.Services
 
                 // Collect macros from all pad ViewModels.
                 data.Macros = BuildMacroData();
-
-                // Update PadSettings from ViewModels before saving.
-                UpdatePadSettingsFromViewModels();
 
                 // Serialize.
                 var serializer = new XmlSerializer(typeof(SettingsFileData));
@@ -437,25 +476,25 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Pushes ViewModel values back into PadSetting objects before saving.
+        /// Pushes ViewModel values back into the currently selected device's
+        /// PadSetting per slot. Non-selected devices retain their own settings.
         /// </summary>
         private void UpdatePadSettingsFromViewModels()
         {
-            var settings = SettingsManager.UserSettings?.Items;
-            if (settings == null) return;
-
             lock (SettingsManager.UserSettings.SyncRoot)
             {
-                foreach (var us in settings)
+                for (int i = 0; i < _mainVm.Pads.Count; i++)
                 {
-                    var ps = us.GetPadSetting();
-                    if (ps == null) continue;
-
-                    int padIndex = us.MapTo;
-                    if (padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                    var padVm = _mainVm.Pads[i];
+                    var selected = padVm.SelectedMappedDevice;
+                    if (selected == null || selected.InstanceGuid == Guid.Empty)
                         continue;
 
-                    var padVm = _mainVm.Pads[padIndex];
+                    var us = SettingsManager.FindSettingByInstanceGuid(selected.InstanceGuid);
+                    if (us == null) continue;
+
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
 
                     // Write force feedback settings.
                     ps.ForceOverall = padVm.ForceOverallGain.ToString();

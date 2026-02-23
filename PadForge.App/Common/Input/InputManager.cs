@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -53,6 +54,11 @@ namespace PadForge.Common.Input
         /// <summary>Stopwatch for frequency measurement.</summary>
         private readonly Stopwatch _frequencyTimer = new Stopwatch();
         private int _frequencyCounter;
+
+        // ── Pre-allocated snapshot buffers for hot path (avoid LINQ allocations) ──
+        private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
+        private UserSetting[] _settingSnapshotBuffer = new UserSetting[16];
+        private readonly UserSetting[] _padIndexBuffer = new UserSetting[8];
 
         /// <summary>
         /// Combined XInput gamepad states for the 4 virtual controller slots.
@@ -270,41 +276,59 @@ namespace PadForge.Common.Input
         /// </summary>
         private void PollingLoop()
         {
-            while (_running)
+            // Increase Windows timer resolution to ~1ms for accurate Thread.Sleep(1).
+            // Without this, Sleep(1) can sleep up to 15-16ms due to the default
+            // scheduler quantum, capping the loop at ~60-500Hz.
+            timeBeginPeriod(1);
+
+            try
             {
-                try
-                {
-                    SDL_JoystickUpdate();
+                // Run device enumeration immediately on the first cycle so that
+                // controllers are detected, virtual devices are created, and force
+                // feedback is wired without waiting for the 2-second interval.
+                bool firstCycle = true;
 
-                    if (_enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)
+                while (_running)
+                {
+                    try
                     {
-                        _enumerationTimer.Restart();
-                        UpdateDevices();
+                        SDL_JoystickUpdate();
+
+                        if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)
+                        {
+                            firstCycle = false;
+                            _enumerationTimer.Restart();
+                            UpdateDevices();
+                        }
+
+                        UpdateInputStates();
+                        UpdateXiStates();
+                        CombineXiStates();
+                        EvaluateMacros();
+                        UpdateVirtualDevices();
+                        RetrieveXiStates();
+
+                        // Frequency measurement.
+                        _frequencyCounter++;
+                        if (_frequencyTimer.ElapsedMilliseconds >= 1000)
+                        {
+                            CurrentFrequency = _frequencyCounter * 1000.0 / _frequencyTimer.ElapsedMilliseconds;
+                            _frequencyCounter = 0;
+                            _frequencyTimer.Restart();
+                            FrequencyUpdated?.Invoke(this, EventArgs.Empty);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError("Polling loop error", ex);
                     }
 
-                    UpdateInputStates();
-                    UpdateXiStates();
-                    CombineXiStates();
-                    EvaluateMacros();
-                    UpdateVirtualDevices();
-                    RetrieveXiStates();
-
-                    // Frequency measurement.
-                    _frequencyCounter++;
-                    if (_frequencyTimer.ElapsedMilliseconds >= 1000)
-                    {
-                        CurrentFrequency = _frequencyCounter * 1000.0 / _frequencyTimer.ElapsedMilliseconds;
-                        _frequencyCounter = 0;
-                        _frequencyTimer.Restart();
-                        FrequencyUpdated?.Invoke(this, EventArgs.Empty);
-                    }
+                    Thread.Sleep(PollingIntervalMs);
                 }
-                catch (Exception ex)
-                {
-                    RaiseError("Polling loop error", ex);
-                }
-
-                Thread.Sleep(PollingIntervalMs);
+            }
+            finally
+            {
+                timeEndPeriod(1);
             }
         }
 
@@ -357,6 +381,16 @@ namespace PadForge.Common.Input
         {
             ErrorOccurred?.Invoke(this, new InputExceptionEventArgs(message, ex));
         }
+
+        // ─────────────────────────────────────────────
+        //  Win32 timer resolution
+        // ─────────────────────────────────────────────
+
+        [DllImport("winmm.dll", ExactSpelling = true)]
+        private static extern uint timeBeginPeriod(uint uPeriod);
+
+        [DllImport("winmm.dll", ExactSpelling = true)]
+        private static extern uint timeEndPeriod(uint uPeriod);
 
         // ─────────────────────────────────────────────
         //  IDisposable

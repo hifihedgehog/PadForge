@@ -58,6 +58,9 @@ namespace PadForge.Services
         /// <summary>The pad index (0–3) of the active recording.</summary>
         private int _activePadIndex = -1;
 
+        /// <summary>The device GUID to record from (the selected device).</summary>
+        private Guid _activeDeviceGuid;
+
         /// <summary>The baseline input state captured at the start of recording.</summary>
         private CustomInputState _baseline;
 
@@ -103,7 +106,8 @@ namespace PadForge.Services
         /// </summary>
         /// <param name="mapping">The mapping item to record a source for.</param>
         /// <param name="padIndex">The pad index (0–3) to read input from.</param>
-        public void StartRecording(MappingItem mapping, int padIndex)
+        /// <param name="deviceGuid">The specific device GUID to record from.</param>
+        public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid)
         {
             if (mapping == null)
                 return;
@@ -114,13 +118,14 @@ namespace PadForge.Services
 
             _activeMapping = mapping;
             _activePadIndex = padIndex;
+            _activeDeviceGuid = deviceGuid;
             _axisHoldCounter = 0;
             _axisCandidateType = MapType.None;
             _axisCandidateIndex = -1;
             _recordingStartTime = DateTime.UtcNow;
 
             // Capture baseline state.
-            _baseline = CaptureCurrentState(padIndex);
+            _baseline = CaptureCurrentState();
             if (_baseline == null)
             {
                 // No device available — can't record.
@@ -156,6 +161,7 @@ namespace PadForge.Services
 
             _activeMapping = null;
             _activePadIndex = -1;
+            _activeDeviceGuid = Guid.Empty;
             _baseline = null;
 
             _mainVm.StatusText = "Recording cancelled.";
@@ -188,7 +194,7 @@ namespace PadForge.Services
             }
 
             // Read current state.
-            CustomInputState current = CaptureCurrentState(_activePadIndex);
+            CustomInputState current = CaptureCurrentState();
             if (current == null)
             {
                 CancelRecording();
@@ -365,29 +371,24 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Captures the current input state for the primary device on the given pad slot.
+        /// Captures the current input state for the active device being recorded.
+        /// Uses <see cref="_activeDeviceGuid"/> to find the specific device.
         /// Returns a clone to prevent mutation.
         /// </summary>
-        private CustomInputState CaptureCurrentState(int padIndex)
+        private CustomInputState CaptureCurrentState()
         {
-            var settings = SettingsManager.UserSettings;
-            if (settings == null) return null;
-
-            var slotSettings = settings.FindByPadIndex(padIndex);
-            if (slotSettings == null || slotSettings.Count == 0)
+            if (_activeDeviceGuid == Guid.Empty)
                 return null;
 
-            // Find the primary device's current state.
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return null;
 
-            Guid primaryGuid = slotSettings[0].InstanceGuid;
             UserDevice ud;
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 ud = devices.FirstOrDefault(d =>
-                    d.InstanceGuid == primaryGuid && d.IsOnline);
+                    d.InstanceGuid == _activeDeviceGuid && d.IsOnline);
             }
 
             if (ud == null || ud.InputState == null)

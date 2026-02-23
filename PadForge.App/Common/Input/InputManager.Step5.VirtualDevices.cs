@@ -177,12 +177,14 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
 
-            var slotSettings = settings.FindByPadIndex(padIndex);
-            if (slotSettings == null || slotSettings.Count == 0)
+            // Use non-allocating overload with pre-allocated buffer.
+            int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
+            if (slotCount == 0)
                 return false;
 
-            foreach (var us in slotSettings)
+            for (int i = 0; i < slotCount; i++)
             {
+                var us = _padIndexBuffer[i];
                 if (us == null) continue;
                 var ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
                 if (ud != null && ud.IsOnline)

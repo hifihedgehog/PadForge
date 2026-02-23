@@ -184,6 +184,11 @@ namespace PadForge.Common.Input
         /// Creates/updates UserDevice records for connected controllers.
         /// Skips slots occupied by our own ViGEm virtual controllers to prevent
         /// loopback (reading our own output back as input).
+        ///
+        /// GUIDs are assigned based on physical controller numbering (1st non-ViGEm
+        /// controller = GUID[0], 2nd = GUID[1], etc.) rather than raw XInput slot
+        /// numbers. This prevents settings from being lost or assigned to the wrong
+        /// virtual controller when ViGEm virtual controllers shift raw slot positions.
         /// </summary>
         private void UpdateXInputDevices(ref bool changed)
         {
@@ -203,8 +208,9 @@ namespace PadForge.Common.Input
             }
 
             // Sequential counter for physical (non-ViGEm) XInput controllers.
-            // Used for display names so "Controller 2" means the 2nd physical
-            // controller regardless of which raw XInput slot it occupies.
+            // Used for BOTH display names AND instance GUIDs so that the 1st
+            // physical controller always gets GUID[0] ("XInput Controller 1")
+            // regardless of which raw XInput slot it occupies.
             int physicalNum = 0;
 
             for (int i = 0; i < MaxPads; i++)
@@ -217,9 +223,8 @@ namespace PadForge.Common.Input
                     {
                         // If we previously had a native XInput device at this slot,
                         // mark it offline since it's now shadowed by our virtual controller.
-                        Guid shadowedGuid = XInputInstanceGuids[i];
-                        UserDevice shadowedUd = FindOnlineDeviceByInstanceGuid(shadowedGuid);
-                        if (shadowedUd != null && shadowedUd.IsOnline && shadowedUd.IsXInput)
+                        UserDevice shadowedUd = FindOnlineXInputDeviceByRawSlot(i);
+                        if (shadowedUd != null)
                         {
                             MarkDeviceOffline(shadowedUd);
                             changed = true;
@@ -228,12 +233,12 @@ namespace PadForge.Common.Input
                     }
 
                     bool connected = XInputInterop.IsControllerConnected(i);
-                    Guid instanceGuid = XInputInstanceGuids[i];
-                    UserDevice ud = FindOnlineDeviceByInstanceGuid(instanceGuid);
 
                     if (connected)
                     {
                         physicalNum++;
+                        Guid instanceGuid = XInputInstanceGuids[physicalNum - 1];
+                        UserDevice ud = FindOnlineDeviceByInstanceGuid(instanceGuid);
 
                         if (ud == null || !ud.IsOnline)
                         {
@@ -262,8 +267,9 @@ namespace PadForge.Common.Input
                         }
                         else
                         {
-                            // Already online — update display name in case ViGEm
-                            // slots changed and the numbering shifted.
+                            // Already online — update raw slot index and display name
+                            // in case ViGEm slots changed and the numbering shifted.
+                            ud.XInputUserIndex = i;
                             string displayName = $"XInput Controller {physicalNum}";
                             if (ud.InstanceName != displayName)
                             {
@@ -274,9 +280,11 @@ namespace PadForge.Common.Input
                     }
                     else
                     {
-                        if (ud != null && ud.IsOnline)
+                        // Not connected at this raw slot. Check if any online XInput
+                        // device was using this raw slot and mark it offline.
+                        UserDevice ud = FindOnlineXInputDeviceByRawSlot(i);
+                        if (ud != null)
                         {
-                            // Controller disconnected.
                             ud.ClearRuntimeState();
                             changed = true;
                         }
@@ -286,6 +294,28 @@ namespace PadForge.Common.Input
                 {
                     RaiseError($"Error checking XInput slot {i}", ex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Finds an online XInput device that is using the specified raw XInput slot.
+        /// Used for disconnect/shadow detection when we can't look up by GUID
+        /// (since GUIDs are physicalNum-based, not raw-slot-based).
+        /// </summary>
+        private UserDevice FindOnlineXInputDeviceByRawSlot(int rawSlot)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return null;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d.IsOnline && d.IsXInput && d.XInputUserIndex == rawSlot)
+                        return d;
+                }
+                return null;
             }
         }
 

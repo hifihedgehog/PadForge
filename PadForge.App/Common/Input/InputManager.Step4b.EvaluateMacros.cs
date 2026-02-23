@@ -232,6 +232,8 @@ namespace PadForge.Common.Input
 
         private static void SendKeyInput(ushort virtualKeyCode, bool keyUp)
         {
+            ushort scanCode = (ushort)MapVirtualKey(virtualKeyCode, MAPVK_VK_TO_VSC);
+
             var input = new INPUT
             {
                 type = INPUT_KEYBOARD,
@@ -240,7 +242,7 @@ namespace PadForge.Common.Input
                     ki = new KEYBDINPUT
                     {
                         wVk = virtualKeyCode,
-                        wScan = 0,
+                        wScan = scanCode,
                         dwFlags = keyUp ? KEYEVENTF_KEYUP : 0u,
                         time = 0,
                         dwExtraInfo = IntPtr.Zero
@@ -255,9 +257,13 @@ namespace PadForge.Common.Input
 
         private const uint INPUT_KEYBOARD = 1;
         private const uint KEYEVENTF_KEYUP = 0x0002;
+        private const uint MAPVK_VK_TO_VSC = 0;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct INPUT
@@ -266,11 +272,30 @@ namespace PadForge.Common.Input
             public InputUnion u;
         }
 
+        // The union must include all three input types so its size matches
+        // the Win32 INPUT union (the largest member is MOUSEINPUT at 32 bytes
+        // on 64-bit). Without this, Marshal.SizeOf<INPUT>() returns too small
+        // a value and SendInput silently fails.
         [StructLayout(LayoutKind.Explicit)]
         private struct InputUnion
         {
             [FieldOffset(0)]
+            public MOUSEINPUT mi;
+            [FieldOffset(0)]
             public KEYBDINPUT ki;
+            [FieldOffset(0)]
+            public HARDWAREINPUT hi;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MOUSEINPUT
+        {
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -281,6 +306,14 @@ namespace PadForge.Common.Input
             public uint dwFlags;
             public uint time;
             public IntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct HARDWAREINPUT
+        {
+            public uint uMsg;
+            public ushort wParamL;
+            public ushort wParamH;
         }
     }
 }

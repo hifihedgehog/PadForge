@@ -87,6 +87,10 @@ namespace PadForge.Services
             }
 
             // If no PadSetting exists or it has no mappings, create defaults.
+            // The PadSetting is stored in SettingsManager only — NOT pushed into the
+            // ViewModel here, because the slot's ViewModel may be displaying a different
+            // device's settings. The correct settings load when the user selects this
+            // device in the dropdown (OnSelectedDeviceChanged → LoadPadSettingToViewModel).
             var existingPs = us.GetPadSetting();
             if (existingPs == null || !existingPs.HasAnyMapping)
             {
@@ -94,12 +98,6 @@ namespace PadForge.Services
                 var ps = SettingsManager.CreateDefaultPadSetting(ud);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
-
-                // Load the defaults into the PadViewModel.
-                if (slotIndex < _mainVm.Pads.Count)
-                {
-                    LoadDefaultMappingsToViewModel(_mainVm.Pads[slotIndex], ps);
-                }
             }
 
             // Update the row display.
@@ -112,35 +110,6 @@ namespace PadForge.Services
 
             // Notify listeners so PadPage dropdowns refresh immediately.
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Loads default mapping descriptors from a PadSetting into a PadViewModel's
-        /// mapping rows.
-        /// </summary>
-        private static void LoadDefaultMappingsToViewModel(PadViewModel padVm, PadSetting ps)
-        {
-            foreach (var mapping in padVm.Mappings)
-            {
-                string value = GetPadSettingProperty(ps, mapping.TargetSettingName);
-                if (!string.IsNullOrEmpty(value))
-                    mapping.SourceDescriptor = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets a string property value from a PadSetting by property name.
-        /// </summary>
-        private static string GetPadSettingProperty(PadSetting ps, string propertyName)
-        {
-            if (ps == null || string.IsNullOrEmpty(propertyName))
-                return string.Empty;
-
-            var prop = typeof(PadSetting).GetProperty(propertyName);
-            if (prop == null || prop.PropertyType != typeof(string))
-                return string.Empty;
-
-            return prop.GetValue(ps) as string ?? string.Empty;
         }
 
         // ─────────────────────────────────────────────

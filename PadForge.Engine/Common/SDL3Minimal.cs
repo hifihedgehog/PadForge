@@ -19,6 +19,7 @@ namespace SDL3
         //  Init flags
         // ─────────────────────────────────────────────
 
+        public const uint SDL_INIT_VIDEO = 0x00000020;     // Required for keyboard/mouse
         public const uint SDL_INIT_JOYSTICK = 0x00000200;
         public const uint SDL_INIT_GAMEPAD = 0x00002000; // was SDL_INIT_GAMECONTROLLER
 
@@ -398,6 +399,190 @@ namespace SDL3
         public static bool SDL_RumbleJoystick(IntPtr joystick,
             ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms) =>
             _SDL_RumbleJoystick(joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
+
+        // ─────────────────────────────────────────────
+        //  Keyboard enumeration and state
+        // ─────────────────────────────────────────────
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyboards")]
+        private static extern IntPtr _SDL_GetKeyboards(out int count);
+
+        /// <summary>
+        /// Returns an array of instance IDs for all connected keyboards.
+        /// </summary>
+        public static uint[] SDL_GetKeyboards()
+        {
+            IntPtr ptr = _SDL_GetKeyboards(out int count);
+            if (ptr == IntPtr.Zero || count <= 0)
+                return Array.Empty<uint>();
+
+            try
+            {
+                var ids = new uint[count];
+                for (int i = 0; i < count; i++)
+                    ids[i] = unchecked((uint)Marshal.ReadInt32(ptr, i * 4));
+                return ids;
+            }
+            finally
+            {
+                SDL_free(ptr);
+            }
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyboardNameForID")]
+        private static extern IntPtr _SDL_GetKeyboardNameForID(uint instance_id);
+
+        public static string SDL_GetKeyboardNameForID(uint instance_id)
+        {
+            return Marshal.PtrToStringUTF8(_SDL_GetKeyboardNameForID(instance_id)) ?? "Keyboard";
+        }
+
+        /// <summary>
+        /// Returns a pointer to an array of booleans (one per SDL_Scancode) representing key states.
+        /// The pointer is owned by SDL and valid until the next SDL_PumpEvents/SDL_PollEvent.
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr SDL_GetKeyboardState(out int numkeys);
+
+        // ─────────────────────────────────────────────
+        //  Mouse enumeration and state
+        // ─────────────────────────────────────────────
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetMice")]
+        private static extern IntPtr _SDL_GetMice(out int count);
+
+        /// <summary>
+        /// Returns an array of instance IDs for all connected mice.
+        /// </summary>
+        public static uint[] SDL_GetMice()
+        {
+            IntPtr ptr = _SDL_GetMice(out int count);
+            if (ptr == IntPtr.Zero || count <= 0)
+                return Array.Empty<uint>();
+
+            try
+            {
+                var ids = new uint[count];
+                for (int i = 0; i < count; i++)
+                    ids[i] = unchecked((uint)Marshal.ReadInt32(ptr, i * 4));
+                return ids;
+            }
+            finally
+            {
+                SDL_free(ptr);
+            }
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetMouseNameForID")]
+        private static extern IntPtr _SDL_GetMouseNameForID(uint instance_id);
+
+        public static string SDL_GetMouseNameForID(uint instance_id)
+        {
+            return Marshal.PtrToStringUTF8(_SDL_GetMouseNameForID(instance_id)) ?? "Mouse";
+        }
+
+        /// <summary>
+        /// Returns the current mouse button state and absolute position.
+        /// Button mask: bit 0 = left, bit 1 = middle, bit 2 = right, bit 3 = X1, bit 4 = X2.
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint SDL_GetMouseState(out float x, out float y);
+
+        /// <summary>
+        /// Returns mouse relative motion since the last call.
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint SDL_GetRelativeMouseState(out float x, out float y);
+
+        // SDL mouse button masks
+        public const uint SDL_BUTTON_LMASK = 1u << 0;
+        public const uint SDL_BUTTON_MMASK = 1u << 1;
+        public const uint SDL_BUTTON_RMASK = 1u << 2;
+        public const uint SDL_BUTTON_X1MASK = 1u << 3;
+        public const uint SDL_BUTTON_X2MASK = 1u << 4;
+
+        // ─────────────────────────────────────────────
+        //  SDL Scancode constants (common keys)
+        //  Full enum: SDL_Scancode in SDL3 headers.
+        //  We define only the subset needed for button naming.
+        // ─────────────────────────────────────────────
+
+        public static readonly string[] ScancodeName = BuildScancodeNames();
+
+        private static string[] BuildScancodeNames()
+        {
+            var names = new string[512];
+            for (int i = 0; i < names.Length; i++)
+                names[i] = $"Key {i}";
+
+            // Letters
+            for (int i = 0; i < 26; i++)
+                names[4 + i] = ((char)('A' + i)).ToString();
+
+            // Numbers
+            for (int i = 0; i < 10; i++)
+                names[30 + i] = i.ToString();
+
+            // Common keys
+            names[40] = "Return";
+            names[41] = "Escape";
+            names[42] = "Backspace";
+            names[43] = "Tab";
+            names[44] = "Space";
+            names[45] = "Minus";
+            names[46] = "Equals";
+            names[47] = "LeftBracket";
+            names[48] = "RightBracket";
+            names[49] = "Backslash";
+            names[51] = "Semicolon";
+            names[52] = "Apostrophe";
+            names[53] = "Grave";
+            names[54] = "Comma";
+            names[55] = "Period";
+            names[56] = "Slash";
+            names[57] = "CapsLock";
+
+            // F keys
+            for (int i = 0; i < 12; i++)
+                names[58 + i] = $"F{i + 1}";
+
+            names[70] = "PrintScreen";
+            names[71] = "ScrollLock";
+            names[72] = "Pause";
+            names[73] = "Insert";
+            names[74] = "Home";
+            names[75] = "PageUp";
+            names[76] = "Delete";
+            names[77] = "End";
+            names[78] = "PageDown";
+            names[79] = "Right";
+            names[80] = "Left";
+            names[81] = "Down";
+            names[82] = "Up";
+            names[83] = "NumLock";
+
+            // Keypad
+            names[84] = "KP Divide";
+            names[85] = "KP Multiply";
+            names[86] = "KP Minus";
+            names[87] = "KP Plus";
+            names[88] = "KP Enter";
+            for (int i = 0; i < 10; i++)
+                names[89 + i] = $"KP {(i + 1) % 10}";
+            names[99] = "KP Period";
+
+            // Modifiers
+            names[224] = "LCtrl";
+            names[225] = "LShift";
+            names[226] = "LAlt";
+            names[227] = "LGui";
+            names[228] = "RCtrl";
+            names[229] = "RShift";
+            names[230] = "RAlt";
+            names[231] = "RGui";
+
+            return names;
+        }
 
         // ─────────────────────────────────────────────
         //  Version

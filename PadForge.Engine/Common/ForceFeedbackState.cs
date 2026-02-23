@@ -54,7 +54,7 @@ namespace PadForge.Engine
         /// Stops all rumble on the device and resets cached state.
         /// </summary>
         /// <param name="device">The SDL device wrapper to stop.</param>
-        public void StopDeviceForces(SdlDeviceWrapper device)
+        public void StopDeviceForces(ISdlInputDevice device)
         {
             if (device == null || !device.HasRumble)
                 return;
@@ -86,7 +86,7 @@ namespace PadForge.Engine
         /// <param name="device">The SDL device wrapper to rumble.</param>
         /// <param name="ps">PadSetting containing force feedback configuration.</param>
         /// <param name="v">Vibration values from the XInput state (LeftMotorSpeed, RightMotorSpeed).</param>
-        public void SetDeviceForces(UserDevice ud, SdlDeviceWrapper device, PadSetting ps, Vibration v)
+        public void SetDeviceForces(UserDevice ud, ISdlInputDevice device, PadSetting ps, Vibration v)
         {
             if (device == null || !device.HasRumble)
                 return;

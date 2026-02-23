@@ -14,19 +14,25 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 1: UpdateDevices
-        //  Enumerates SDL joystick devices, opens newly connected devices,
-        //  marks disconnected devices as offline.
+        //  Enumerates SDL joystick, keyboard, and mouse devices,
+        //  opens newly connected devices, marks disconnected devices as offline.
         //
         //  All controllers (including Xbox/XInput) are handled via SDL3.
         //  ViGEm virtual controllers are detected and filtered out.
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Set of SDL instance IDs that we have already opened.
+        /// Set of SDL instance IDs that we have already opened (joysticks).
         /// Used to detect new vs. already-known devices.
         /// SDL3: instance IDs are uint (0 = invalid).
         /// </summary>
         private readonly HashSet<uint> _openedSdlInstanceIds = new HashSet<uint>();
+
+        /// <summary>Tracked keyboard SDL instance IDs.</summary>
+        private readonly HashSet<uint> _openedKeyboardIds = new HashSet<uint>();
+
+        /// <summary>Tracked mouse SDL instance IDs.</summary>
+        private readonly HashSet<uint> _openedMouseIds = new HashSet<uint>();
 
         /// <summary>
         /// SDL instance IDs identified as ViGEm virtual controllers.
@@ -133,6 +139,12 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // --- Phase 1b: Enumerate keyboards ---
+            changed |= EnumerateKeyboards();
+
+            // --- Phase 1c: Enumerate mice ---
+            changed |= EnumerateMice();
+
             // --- Phase 2: Detect disconnected devices ---
             var disconnectedIds = new List<uint>();
 
@@ -160,6 +172,12 @@ namespace PadForge.Common.Input
             {
                 _openedSdlInstanceIds.Remove(sdlId);
             }
+
+            // Detect disconnected keyboards.
+            changed |= DetectDisconnected(_openedKeyboardIds, SDL_GetKeyboards());
+
+            // Detect disconnected mice.
+            changed |= DetectDisconnected(_openedMouseIds, SDL_GetMice());
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
             _filteredVigemInstanceIds.IntersectWith(currentInstanceIds);
@@ -440,6 +458,122 @@ namespace PadForge.Common.Input
             }
 
             ud.ClearRuntimeState();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Keyboard / Mouse enumeration
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Enumerates connected keyboards via SDL_GetKeyboards and creates UserDevice
+        /// records for any new keyboards. Returns true if a new keyboard was found.
+        /// </summary>
+        private bool EnumerateKeyboards()
+        {
+            uint[] keyboardIds = SDL_GetKeyboards();
+            bool changed = false;
+
+            foreach (uint kbId in keyboardIds)
+            {
+                if (_openedKeyboardIds.Contains(kbId))
+                    continue;
+
+                try
+                {
+                    var wrapper = new SdlKeyboardWrapper();
+                    if (!wrapper.Open(kbId))
+                    {
+                        wrapper.Dispose();
+                        continue;
+                    }
+
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
+                    ud.LoadFromKeyboardDevice(wrapper);
+                    ud.IsOnline = true;
+
+                    _openedKeyboardIds.Add(kbId);
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    RaiseError($"Error opening keyboard (instance {kbId})", ex);
+                }
+            }
+
+            return changed;
+        }
+
+        /// <summary>
+        /// Enumerates connected mice via SDL_GetMice and creates UserDevice
+        /// records for any new mice. Returns true if a new mouse was found.
+        /// </summary>
+        private bool EnumerateMice()
+        {
+            uint[] mouseIds = SDL_GetMice();
+            bool changed = false;
+
+            foreach (uint mouseId in mouseIds)
+            {
+                if (_openedMouseIds.Contains(mouseId))
+                    continue;
+
+                try
+                {
+                    var wrapper = new SdlMouseWrapper();
+                    if (!wrapper.Open(mouseId))
+                    {
+                        wrapper.Dispose();
+                        continue;
+                    }
+
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
+                    ud.LoadFromMouseDevice(wrapper);
+                    ud.IsOnline = true;
+
+                    _openedMouseIds.Add(mouseId);
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    RaiseError($"Error opening mouse (instance {mouseId})", ex);
+                }
+            }
+
+            return changed;
+        }
+
+        /// <summary>
+        /// Detects disconnected keyboards or mice by comparing tracked IDs to current SDL IDs.
+        /// Marks disconnected devices offline and removes them from tracking.
+        /// </summary>
+        private bool DetectDisconnected(HashSet<uint> trackedIds, uint[] currentIds)
+        {
+            if (trackedIds.Count == 0)
+                return false;
+
+            var currentSet = new HashSet<uint>(currentIds);
+            var disconnected = new List<uint>();
+            bool changed = false;
+
+            foreach (uint id in trackedIds)
+            {
+                if (!currentSet.Contains(id))
+                {
+                    // Find by checking all devices whose SdlInstanceId matches.
+                    UserDevice ud = FindOnlineDeviceBySdlInstanceId(id);
+                    if (ud != null)
+                    {
+                        MarkDeviceOffline(ud);
+                        changed = true;
+                    }
+                    disconnected.Add(id);
+                }
+            }
+
+            foreach (uint id in disconnected)
+                trackedIds.Remove(id);
+
+            return changed;
         }
     }
 

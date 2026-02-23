@@ -15,7 +15,7 @@ namespace PadForge.Engine
     /// Each physical device is represented by one <see cref="SdlDeviceWrapper"/> instance
     /// that is opened by <see cref="Open(uint)"/> and released by <see cref="Dispose"/>.
     /// </summary>
-    public class SdlDeviceWrapper : IDisposable
+    public class SdlDeviceWrapper : ISdlInputDevice
     {
         // ─────────────────────────────────────────────
         //  Properties

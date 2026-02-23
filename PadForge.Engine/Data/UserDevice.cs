@@ -13,7 +13,7 @@ namespace PadForge.Engine.Data
     /// Key changes:
     ///   - LoadInstance() takes discrete values instead of a DeviceInstance
     ///   - LoadCapabilities() takes discrete values instead of Capabilities
-    ///   - Runtime device reference is SdlDeviceWrapper (was Joystick)
+    ///   - Runtime device reference is ISdlInputDevice (was Joystick)
     ///   - State fields renamed: InputState/InputUpdates/etc. (were Di* prefixed)
     ///   - JoState/JoUpdate fields removed entirely
     ///   - IsExclusiveMode field removed (SDL has no acquisition model)
@@ -124,7 +124,7 @@ namespace PadForge.Engine.Data
         /// the device is disconnected.
         /// </summary>
         [XmlIgnore]
-        public SdlDeviceWrapper Device { get; set; }
+        public ISdlInputDevice Device { get; set; }
 
         /// <summary>
         /// Whether this device is currently online (physically connected and opened).
@@ -327,6 +327,16 @@ namespace PadForge.Engine.Data
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));
 
+            LoadFromDevice(wrapper);
+            DevRevision = wrapper.ProductVersion;
+        }
+
+        /// <summary>
+        /// Populates the device identity and capabilities from any <see cref="ISdlInputDevice"/>
+        /// (joystick, keyboard, or mouse). Common logic shared by all device types.
+        /// </summary>
+        private void LoadFromDevice(ISdlInputDevice wrapper)
+        {
             LoadInstance(
                 wrapper.InstanceGuid,
                 wrapper.Name,
@@ -344,7 +354,6 @@ namespace PadForge.Engine.Data
 
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;
-            DevRevision = wrapper.ProductVersion;
             DevicePath = wrapper.DevicePath;
 
             // Populate device objects and effects.
@@ -366,6 +375,26 @@ namespace PadForge.Engine.Data
                 ForceFeedbackState = new ForceFeedbackState();
 
             Device = wrapper;
+        }
+
+        /// <summary>
+        /// Populates the device identity and capabilities from a <see cref="SdlKeyboardWrapper"/>.
+        /// </summary>
+        public void LoadFromKeyboardDevice(SdlKeyboardWrapper wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
+        /// Populates the device identity and capabilities from a <see cref="SdlMouseWrapper"/>.
+        /// </summary>
+        public void LoadFromMouseDevice(SdlMouseWrapper wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
         }
 
         /// <summary>

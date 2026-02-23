@@ -182,8 +182,8 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Checks each XInput slot (0–3) for a connected native Xbox controller.
         /// Creates/updates UserDevice records for connected controllers.
-        /// Skips slots occupied by our own ViGEm virtual controllers to prevent
-        /// loopback (reading our own output back as input).
+        /// Skips slots occupied by ViGEm virtual controllers (detected via PnP
+        /// device tree walk + delta tracking) to prevent loopback.
         ///
         /// GUIDs are assigned based on physical controller numbering (1st non-ViGEm
         /// controller = GUID[0], 2nd = GUID[1], etc.) rather than raw XInput slot
@@ -192,15 +192,16 @@ namespace PadForge.Common.Input
         /// </summary>
         private void UpdateXInputDevices(ref bool changed)
         {
-            // ── Run ViGEm slot tracking (count-based + delta) ──
-            // This catches any slots that the before/after delta in
-            // CreateVirtualController may have missed due to timing.
-            // Must run BEFORE we snapshot vigemSlots below.
-            // Adapted from x360ce DInputHelper.Step1.UpdateDevices.cs:
-            //   UpdateViGEmSlotTracking()
+            // ── Run ViGEm slot tracking ──
+            // Uses PnP device tree walk (cfgmgr32 + registry) to get an
+            // authoritative ViGEm count, then delta tracking to identify
+            // which specific XInput slots are ViGEm-owned.
             UpdateViGEmSlotTracking();
 
-            // Snapshot the set of XInput slots occupied by our ViGEm virtual controllers.
+            // Snapshot the set of XInput slots occupied by ViGEm virtual controllers.
+            // This is authoritative: populated by PnP-based detection + delta tracking
+            // in UpdateViGEmSlotTracking(), and by spin-wait detection in
+            // CreateVirtualController/DestroyVirtualController.
             HashSet<int> vigemSlots;
             lock (_vigemOccupiedXInputSlots)
             {
@@ -293,6 +294,25 @@ namespace PadForge.Common.Input
                 catch (Exception ex)
                 {
                     RaiseError($"Error checking XInput slot {i}", ex);
+                }
+            }
+
+            // ── Stale XInput device cleanup ──
+            // After physicalNum renumbering, any XInput device with a GUID
+            // index >= physicalNum is stale (no longer corresponds to a real
+            // controller). Take those offline to prevent duplicate reads.
+            //
+            // Example: 2 physical controllers → GUID[0], GUID[1] online.
+            // Physical #1 disconnects → physicalNum is now 1.
+            // GUID[1] is stale (the remaining controller is now GUID[0]).
+            for (int g = physicalNum; g < MaxPads; g++)
+            {
+                Guid staleGuid = XInputInstanceGuids[g];
+                UserDevice staleUd = FindOnlineDeviceByInstanceGuid(staleGuid);
+                if (staleUd != null && staleUd.IsOnline && staleUd.IsXInput)
+                {
+                    staleUd.ClearRuntimeState();
+                    changed = true;
                 }
             }
         }

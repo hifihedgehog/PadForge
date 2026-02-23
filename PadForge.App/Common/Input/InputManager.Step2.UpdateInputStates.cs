@@ -58,6 +58,18 @@ namespace PadForge.Common.Input
 
                     if (ud.IsXInput && ud.XInputUserIndex >= 0)
                     {
+                        // Safety guard: skip ViGEm-owned XInput slots to prevent
+                        // loopback. This is a defense-in-depth check — Step 1
+                        // should already exclude ViGEm slots during enumeration,
+                        // but if a slot becomes ViGEm-owned between Step 1 and
+                        // Step 2, this catches it. Adapted from x360ce's
+                        // IsViGEmOwnedSlot() guard.
+                        if (IsViGEmOccupiedSlot(ud.XInputUserIndex))
+                        {
+                            ud.IsOnline = false;
+                            continue;
+                        }
+
                         // Native XInput controller — read via P/Invoke.
                         newState = ReadXInputState(ud.XInputUserIndex);
                     }

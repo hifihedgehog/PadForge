@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using Microsoft.Win32;
 using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
@@ -42,25 +46,23 @@ namespace PadForge.Common.Input
         public bool IsViGEmAvailable => _vigemClient != null;
 
         // ═══════════════════════════════════════════════════════════
-        // ViGEm slot tracking state (count-based + delta approach).
+        // ViGEm slot tracking state.
         //
         // Adapted from x360ce DInputHelper.Step1.UpdateDevices.cs:
-        //   UpdateViGEmSlotTracking()
-        //
-        // WHY NOT controller.UserIndex?
-        //   Reading UserIndex after Connect() can block or throw if
-        //   the virtual device hasn't finished initializing. When called
-        //   on the update thread this causes a hang/infinite loop.
+        //   UpdateViGEmSlotTracking(), CountViGEmXInputDevices()
         //
         // HOW THIS WORKS:
-        //   1. Track how many ViGEm controllers WE have connected
-        //      (_activeVigemCount — we know this exactly).
-        //   2. Snapshot the XInput slot mask BEFORE and AFTER Connect().
-        //   3. New bit = the slot our virtual controller landed on.
-        //   4. If the delta is missed (timing), UpdateViGEmSlotTracking()
-        //      catches it on the next enumeration cycle using count-based
-        //      detection: total connected slots minus real physical slots
-        //      = virtual slots, assigned from the TOP down.
+        //   1. CountViGEmXInputDevices() walks the Windows PnP device
+        //      tree (cfgmgr32 + registry) to AUTHORITATIVELY count
+        //      how many ViGEm virtual Xbox controllers exist.
+        //   2. On first detection: physical controllers occupy the
+        //      LOWEST XInput slots; ViGEm controllers get the HIGHEST.
+        //   3. On runtime changes: use slot-mask delta to identify
+        //      exactly which slot appeared or disappeared — no
+        //      guessing about ordering.
+        //   4. Spin-wait in CreateVirtualController provides immediate
+        //      slot detection as an optimization (before the next
+        //      2-second enumeration cycle).
         // ═══════════════════════════════════════════════════════════
 
         private int _activeVigemCount;
@@ -213,15 +215,25 @@ namespace PadForge.Common.Input
                 var controller = _vigemClient.CreateXbox360Controller();
                 controller.Connect();
 
-                // ── Snapshot XInput slot mask AFTER connecting ──
-                // The new slot should appear immediately or within a few ms.
-                // We do ONE non-blocking check — no retries, no Thread.Sleep.
-                uint maskAfter = GetXInputConnectedSlotMask();
-                uint newBits = maskAfter & ~maskBefore;
+                // ── Wait for the new XInput slot to appear ──
+                // After Connect(), the ViGEm kernel driver needs a few ms to
+                // register the new device with the XInput stack. Spin-wait for
+                // up to 50ms for the slot mask to change. This is a one-time
+                // cost per controller creation (rare event), not per cycle.
+                uint newBits = 0;
+                var waitSw = Stopwatch.StartNew();
+                while (waitSw.ElapsedMilliseconds < 50)
+                {
+                    uint maskAfter = GetXInputConnectedSlotMask();
+                    newBits = maskAfter & ~maskBefore;
+                    if (newBits != 0)
+                        break;
+                    Thread.SpinWait(100);
+                }
 
                 if (newBits != 0)
                 {
-                    // Exactly one new slot appeared — register it as ViGEm-owned.
+                    // New slot(s) appeared — register as ViGEm-owned.
                     lock (_vigemOccupiedXInputSlots)
                     {
                         for (int i = 0; i < MaxPads; i++)
@@ -231,10 +243,9 @@ namespace PadForge.Common.Input
                         }
                     }
                 }
-                // If delta detection missed (timing), UpdateViGEmSlotTracking()
-                // will catch it on the next enumeration cycle in Step 1.
-                // The VID/PID and name-based filters in Step 1 also provide
-                // fallback protection against loopback.
+                // If detection still missed (very unlikely after 50ms wait),
+                // UpdateViGEmSlotTracking() will catch it on the next
+                // enumeration cycle in Step 1.
 
                 _activeVigemCount++;
 
@@ -271,9 +282,17 @@ namespace PadForge.Common.Input
 
                 vc.Disconnect();
 
-                // ── Snapshot mask AFTER disconnecting ──
-                uint maskAfter = GetXInputConnectedSlotMask();
-                uint removedBits = maskBefore & ~maskAfter;
+                // ── Wait for the slot to disappear ──
+                uint removedBits = 0;
+                var waitSw = Stopwatch.StartNew();
+                while (waitSw.ElapsedMilliseconds < 50)
+                {
+                    uint maskAfter = GetXInputConnectedSlotMask();
+                    removedBits = maskBefore & ~maskAfter;
+                    if (removedBits != 0)
+                        break;
+                    Thread.SpinWait(100);
+                }
 
                 // Unregister any ViGEm-owned slots that disappeared.
                 if (removedBits != 0)
@@ -301,7 +320,8 @@ namespace PadForge.Common.Input
                 _virtualControllers[i] = null;
             }
 
-            // Clear all slot tracking.
+            // Clear all slot tracking and reset delta state
+            // so the next Start() does fresh PnP detection.
             lock (_vigemOccupiedXInputSlots)
             {
                 _vigemOccupiedXInputSlots.Clear();
@@ -313,27 +333,38 @@ namespace PadForge.Common.Input
         }
 
         // ═══════════════════════════════════════════════════════════
-        // ViGEm slot tracking: count-based + delta approach.
+        // ViGEm slot tracking — PnP-based count + delta approach
         //
         // Called by Step 1 (UpdateDevices) at the start of each
-        // enumeration cycle. Catches any slots that the before/after
-        // delta in CreateVirtualController/DestroyVirtualController
-        // may have missed due to timing.
+        // enumeration cycle. Determines which XInput slots are
+        // occupied by ViGEm virtual controllers.
         //
-        // Adapted from x360ce DInputHelper.Step1.UpdateDevices.cs:
-        //   UpdateViGEmSlotTracking()
+        // Adapted from x360ce DInputHelper.Step1.UpdateDevices.cs.
         //
-        // This method is NON-BLOCKING. No Thread.Sleep, no retries.
+        // Primary: PnP device tree walk via cfgmgr32 to get an
+        //          authoritative ViGEm device count, combined with
+        //          slot-mask delta tracking to identify which slots
+        //          appeared or disappeared.
+        // Secondary: spin-wait delta in CreateVirtualController and
+        //            DestroyVirtualController (immediate optimization).
+        //
+        // The PnP count + delta approach avoids the "rebuild from
+        // scratch" heuristic that assumed lowest slots = physical.
+        // That assumption breaks when ViGEm and physical controllers
+        // are interleaved (e.g., hot-plug after ViGEm creation).
         // ═══════════════════════════════════════════════════════════
 
         /// <summary>
-        /// Update ViGEm slot tracking using count-based + delta detection.
-        /// Call this at the start of Step 1 (device enumeration) each cycle.
+        /// Update ViGEm slot tracking using PnP-based count + delta detection.
+        /// On first run: uses "highest N slots = ViGEm" heuristic.
+        /// On subsequent runs: uses mask delta to track new/removed ViGEm slots.
         /// </summary>
         internal void UpdateViGEmSlotTracking()
         {
-            // We know exactly how many ViGEm controllers WE have active.
-            int vigemCount = _activeVigemCount;
+            // Get authoritative ViGEm count from PnP device tree.
+            // Falls back to internal _activeVigemCount if PnP detection fails.
+            int pnpCount = CountViGEmXInputDevices();
+            int vigemCount = pnpCount >= 0 ? pnpCount : _activeVigemCount;
             uint currentMask = GetXInputConnectedSlotMask();
 
             if (_lastKnownVigemCount < 0)
@@ -349,20 +380,21 @@ namespace PadForge.Common.Input
                     return;
                 }
 
-                // Physical controllers connected before the app started
-                // occupy the LOWEST XInput slots (assigned by Windows at
-                // boot/plug-in time). ViGEm controllers created during
-                // app initialization get the next available (HIGHEST) slots.
-                var allSlots = new List<int>();
+                // Physical controllers connected before PadForge occupy
+                // the LOWEST XInput slots. ViGEm controllers (if any
+                // already exist on first run) get the HIGHEST slots.
+                var connectedSlots = new List<int>();
                 for (int i = 0; i < MaxPads; i++)
+                {
                     if ((currentMask & (1u << i)) != 0)
-                        allSlots.Add(i);
+                        connectedSlots.Add(i);
+                }
 
                 lock (_vigemOccupiedXInputSlots)
                 {
                     _vigemOccupiedXInputSlots.Clear();
-                    for (int vi = 0; vi < vigemCount && vi < allSlots.Count; vi++)
-                        _vigemOccupiedXInputSlots.Add(allSlots[allSlots.Count - 1 - vi]);
+                    for (int vi = 0; vi < vigemCount && vi < connectedSlots.Count; vi++)
+                        _vigemOccupiedXInputSlots.Add(connectedSlots[connectedSlots.Count - 1 - vi]);
                 }
                 return;
             }
@@ -370,14 +402,16 @@ namespace PadForge.Common.Input
             // ── Runtime: detect ViGEm count changes via delta ──
             if (vigemCount > _lastKnownVigemCount)
             {
-                // New ViGEm device(s) created.
+                // New ViGEm device(s) appeared.
                 // Any XInput slot that appeared since last check is ViGEm.
                 uint newBits = currentMask & ~_lastKnownSlotMask;
                 lock (_vigemOccupiedXInputSlots)
                 {
                     for (int i = 0; i < MaxPads; i++)
+                    {
                         if ((newBits & (1u << i)) != 0)
                             _vigemOccupiedXInputSlots.Add(i);
+                    }
                 }
             }
             else if (vigemCount < _lastKnownVigemCount)
@@ -388,13 +422,177 @@ namespace PadForge.Common.Input
                 lock (_vigemOccupiedXInputSlots)
                 {
                     for (int i = 0; i < MaxPads; i++)
-                        if ((removedBits & (1u << i)) != 0 && _vigemOccupiedXInputSlots.Contains(i))
+                    {
+                        if ((removedBits & (1u << i)) != 0)
                             _vigemOccupiedXInputSlots.Remove(i);
+                    }
                 }
             }
 
             _lastKnownVigemCount = vigemCount;
             _lastKnownSlotMask = currentMask;
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // PnP-based ViGEm device counting
+        //
+        // Walks the Windows PnP device tree to authoritatively count
+        // ViGEm virtual Xbox controllers. Enumerates the registry
+        // under USB\VID_045E&PID_028E (the VID/PID that ViGEm
+        // emulates for Xbox 360 controllers), then for each instance
+        // walks the PnP parent chain via cfgmgr32 to check if any
+        // ancestor is the ViGEmBus driver.
+        //
+        // Adapted from x360ce DInputHelper.Step1.UpdateDevices.cs:
+        //   CountViGEmXInputDevices(), PnP.IsUnderViGEmBus_ByServiceOrName()
+        // ═══════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Counts how many ViGEm virtual Xbox controllers exist in the system
+        /// by walking the PnP device tree. Returns -1 if detection fails.
+        /// </summary>
+        private static int CountViGEmXInputDevices()
+        {
+            int count = 0;
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&PID_028E", false);
+                if (key == null)
+                    return 0;
+
+                foreach (var instanceName in key.GetSubKeyNames())
+                {
+                    var instanceId = @"USB\VID_045E&PID_028E\" + instanceName;
+
+                    // Skip devices that are not currently present (stale registry entries).
+                    if (!ViGEmPnP.IsDevicePresent(instanceId))
+                        continue;
+
+                    if (ViGEmPnP.IsUnderViGEmBus(instanceId))
+                        count++;
+                }
+            }
+            catch
+            {
+                return -1; // PnP detection failed
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// PnP device tree helpers for ViGEm detection via cfgmgr32.
+        /// </summary>
+        private static class ViGEmPnP
+        {
+            private const int CR_SUCCESS = 0;
+            private const uint DN_DEVICE_IS_PRESENT = 0x00000002;
+
+            [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+            private static extern int CM_Locate_DevNodeW(
+                out uint pdnDevInst, string pDeviceID, int ulFlags);
+
+            [DllImport("cfgmgr32.dll")]
+            private static extern int CM_Get_Parent(
+                out uint pdnDevInst, uint dnDevInst, int ulFlags);
+
+            [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+            private static extern int CM_Get_Device_IDW(
+                uint dnDevInst, StringBuilder Buffer, int BufferLen, int ulFlags);
+
+            [DllImport("cfgmgr32.dll")]
+            private static extern int CM_Get_DevNode_Status(
+                out uint pulStatus, out uint pulProblemNumber, uint dnDevInst, int ulFlags);
+
+            /// <summary>
+            /// Returns true only if the device node is currently present
+            /// (not a stale/disconnected registry entry).
+            /// </summary>
+            public static bool IsDevicePresent(string deviceInstanceId)
+            {
+                if (string.IsNullOrEmpty(deviceInstanceId))
+                    return false;
+
+                if (CM_Locate_DevNodeW(out var devInst, deviceInstanceId, 0) != CR_SUCCESS)
+                    return false;
+
+                if (CM_Get_DevNode_Status(out var status, out _, devInst, 0) != CR_SUCCESS)
+                    return false;
+
+                return (status & DN_DEVICE_IS_PRESENT) != 0;
+            }
+
+            /// <summary>
+            /// Checks whether the given device instance is under the ViGEmBus
+            /// by walking up the PnP parent chain and checking each ancestor's
+            /// registry key for ViGEm signatures.
+            /// </summary>
+            public static bool IsUnderViGEmBus(string deviceInstanceId)
+            {
+                if (string.IsNullOrEmpty(deviceInstanceId))
+                    return false;
+
+                if (CM_Locate_DevNodeW(out var devInst, deviceInstanceId, 0) != CR_SUCCESS)
+                    return false;
+
+                // Walk up the device tree (max 64 levels to prevent infinite loops).
+                for (int depth = 0; depth < 64; depth++)
+                {
+                    var id = GetDeviceInstanceId(devInst);
+                    if (!string.IsNullOrEmpty(id) && IsViGEmBusNode(id))
+                        return true;
+
+                    if (CM_Get_Parent(out var parent, devInst, 0) != CR_SUCCESS)
+                        break;
+
+                    devInst = parent;
+                }
+
+                return false;
+            }
+
+            private static string GetDeviceInstanceId(uint devInst)
+            {
+                var sb = new StringBuilder(1024);
+                return CM_Get_Device_IDW(devInst, sb, sb.Capacity, 0) == CR_SUCCESS
+                    ? sb.ToString()
+                    : null;
+            }
+
+            /// <summary>
+            /// Checks if the given PnP instance is a ViGEmBus node by inspecting
+            /// its registry Enum key for Service = "ViGEmBus" or recognized
+            /// device descriptions.
+            /// </summary>
+            private static bool IsViGEmBusNode(string instanceId)
+            {
+                try
+                {
+                    using var key = Registry.LocalMachine.OpenSubKey(
+                        @"SYSTEM\CurrentControlSet\Enum\" + instanceId, false);
+                    if (key == null)
+                        return false;
+
+                    // Check the Service value (most reliable indicator).
+                    var service = key.GetValue("Service") as string;
+                    if (!string.IsNullOrEmpty(service) &&
+                        service.Equals("ViGEmBus", StringComparison.OrdinalIgnoreCase))
+                        return true;
+
+                    // Fallback: check FriendlyName and DeviceDesc for ViGEm signatures.
+                    var friendly = key.GetValue("FriendlyName") as string;
+                    var desc = key.GetValue("DeviceDesc") as string;
+                    var text = (friendly ?? "") + "\n" + (desc ?? "");
+
+                    if (text.Contains("Virtual Gamepad Emulation Bus", StringComparison.OrdinalIgnoreCase))
+                        return true;
+                    if (text.Contains("Nefarius", StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                catch { }
+
+                return false;
+            }
         }
 
         // ─────────────────────────────────────────────

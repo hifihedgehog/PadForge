@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
+using PadForge.Common.Input;
 
 namespace PadForge.ViewModels
 {
@@ -65,12 +66,37 @@ namespace PadForge.ViewModels
             }
         }
 
+        private MacroTriggerSource _triggerSource = MacroTriggerSource.InputDevice;
+
+        /// <summary>
+        /// Whether the trigger records from the physical input device (raw buttons)
+        /// or from the combined Xbox-mapped virtual controller output.
+        /// </summary>
+        public MacroTriggerSource TriggerSource
+        {
+            get => _triggerSource;
+            set => SetProperty(ref _triggerSource, value);
+        }
+
         /// <summary>Human-readable display of the trigger combo.</summary>
         public string TriggerDisplayText
         {
             get
             {
-                if (_triggerButtons == 0) return "Not set — click Record";
+                // Raw device button path.
+                if (UsesRawTrigger)
+                {
+                    var btnParts = _triggerRawButtons.Select(b => $"Btn {b}");
+                    string combo = string.Join(" + ", btnParts);
+                    // Try to resolve device name.
+                    string deviceName = ResolveDeviceName(_triggerDeviceGuid);
+                    return string.IsNullOrEmpty(deviceName)
+                        ? combo
+                        : $"{combo} ({deviceName})";
+                }
+
+                // Legacy Xbox bitmask path.
+                if (_triggerButtons == 0) return "Not set \u2014 click Record";
                 var parts = new System.Collections.Generic.List<string>();
                 if ((_triggerButtons & 0x1000) != 0) parts.Add("A");
                 if ((_triggerButtons & 0x2000) != 0) parts.Add("B");
@@ -91,6 +117,59 @@ namespace PadForge.ViewModels
                 return parts.Count > 0 ? string.Join(" + ", parts) : "Not set";
             }
         }
+
+        /// <summary>
+        /// Resolves a device GUID to a human-readable name via SettingsManager.
+        /// Returns null if the device is not found.
+        /// </summary>
+        private static string ResolveDeviceName(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return null;
+            var ud = SettingsManager.FindDeviceByInstanceGuid(deviceGuid);
+            return ud?.ResolvedName;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Raw device button trigger (alternative path)
+        //  When set, the macro fires based on raw device-specific buttons
+        //  rather than the Xbox-mapped bitmask above.
+        // ─────────────────────────────────────────────
+
+        private Guid _triggerDeviceGuid;
+
+        /// <summary>
+        /// GUID of the device whose raw buttons are the trigger source.
+        /// <see cref="Guid.Empty"/> = use legacy Xbox bitmask path.
+        /// </summary>
+        public Guid TriggerDeviceGuid
+        {
+            get => _triggerDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _triggerDeviceGuid, value))
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        private int[] _triggerRawButtons = Array.Empty<int>();
+
+        /// <summary>
+        /// Raw button indices that must all be pressed simultaneously.
+        /// E.g. [13, 14] for DualSense touchpad + mic buttons.
+        /// </summary>
+        public int[] TriggerRawButtons
+        {
+            get => _triggerRawButtons;
+            set
+            {
+                if (SetProperty(ref _triggerRawButtons, value ?? Array.Empty<int>()))
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        /// <summary>True if this macro uses the raw device button trigger path.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool UsesRawTrigger => _triggerDeviceGuid != Guid.Empty && _triggerRawButtons.Length > 0;
 
         private bool _isRecordingTrigger;
 
@@ -522,6 +601,15 @@ namespace PadForge.ViewModels
 
         /// <summary>Fire repeatedly while the trigger combo is held.</summary>
         WhileHeld
+    }
+
+    public enum MacroTriggerSource
+    {
+        /// <summary>Record from the physical input device's raw/native buttons.</summary>
+        InputDevice,
+
+        /// <summary>Record from the combined Xbox-mapped virtual controller output.</summary>
+        OutputController
     }
 
     public enum MacroRepeatMode

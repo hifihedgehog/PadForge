@@ -312,6 +312,10 @@ namespace PadForge.Services
                     Name = md.Name ?? "Macro",
                     IsEnabled = md.IsEnabled,
                     TriggerButtons = md.TriggerButtons,
+                    TriggerDeviceGuid = Guid.TryParse(md.TriggerDeviceGuid, out var parsedGuid)
+                        ? parsedGuid : Guid.Empty,
+                    TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
+                    TriggerSource = md.TriggerSource,
                     TriggerMode = md.TriggerMode,
                     ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                     RepeatMode = md.RepeatMode,
@@ -341,6 +345,24 @@ namespace PadForge.Services
 
                 padVm.Macros.Add(macro);
             }
+        }
+
+        /// <summary>
+        /// Parses a comma-separated string of button indices (e.g. "13,14") into an int array.
+        /// Returns empty array for null/empty input.
+        /// </summary>
+        private static int[] ParseRawButtonIndices(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+                return Array.Empty<int>();
+            var parts = raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var result = new System.Collections.Generic.List<int>(parts.Length);
+            foreach (var part in parts)
+            {
+                if (int.TryParse(part, out int idx))
+                    result.Add(idx);
+            }
+            return result.ToArray();
         }
 
         /// <summary>
@@ -521,6 +543,11 @@ namespace PadForge.Services
                         Name = macro.Name,
                         IsEnabled = macro.IsEnabled,
                         TriggerButtons = macro.TriggerButtons,
+                        TriggerDeviceGuid = macro.TriggerDeviceGuid != Guid.Empty
+                            ? macro.TriggerDeviceGuid.ToString("N") : null,
+                        TriggerRawButtons = macro.TriggerRawButtons.Length > 0
+                            ? string.Join(",", macro.TriggerRawButtons) : null,
+                        TriggerSource = macro.TriggerSource,
                         TriggerMode = macro.TriggerMode,
                         ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
                         RepeatMode = macro.RepeatMode,
@@ -823,6 +850,23 @@ namespace PadForge.Services
 
         [XmlElement]
         public ushort TriggerButtons { get; set; }
+
+        /// <summary>
+        /// GUID of the device whose raw buttons are the trigger source (string form).
+        /// Null/empty = use legacy Xbox bitmask path.
+        /// </summary>
+        [XmlElement]
+        public string TriggerDeviceGuid { get; set; }
+
+        /// <summary>
+        /// Comma-separated raw button indices, e.g. "13,14".
+        /// Null/empty = not using raw trigger path.
+        /// </summary>
+        [XmlElement]
+        public string TriggerRawButtons { get; set; }
+
+        [XmlElement]
+        public MacroTriggerSource TriggerSource { get; set; }
 
         [XmlElement]
         public MacroTriggerMode TriggerMode { get; set; }

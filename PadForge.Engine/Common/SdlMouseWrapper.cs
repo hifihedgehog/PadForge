@@ -32,6 +32,7 @@ namespace PadForge.Engine
         public string Name { get; private set; } = "Mouse";
         public int NumAxes => MouseAxes;
         public int NumButtons => MouseButtons;
+        public int RawButtonCount => 0;
         public int NumHats => 0;
         public bool HasRumble => false;
         public bool HasHaptic => false;

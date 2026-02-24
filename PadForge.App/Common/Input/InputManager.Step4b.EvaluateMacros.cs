@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
+using PadForge.Common;
 using PadForge.Engine;
+using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
 namespace PadForge.Common.Input
@@ -50,17 +52,27 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Evaluates all macros for a single pad slot.
+        /// Instance method to allow raw button lookups via FindOnlineDeviceByInstanceGuid.
         /// </summary>
-        private static void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
+        private void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
             for (int m = 0; m < macros.Length; m++)
             {
                 var macro = macros[m];
-                if (macro == null || !macro.IsEnabled || macro.TriggerButtons == 0)
+                if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Check trigger condition: all trigger buttons must be pressed.
-                bool triggerActive = (gp.Buttons & macro.TriggerButtons) == macro.TriggerButtons;
+                // Skip macros with no trigger configured.
+                if (!macro.UsesRawTrigger && macro.TriggerButtons == 0)
+                    continue;
+
+                // Check trigger condition based on trigger type.
+                bool triggerActive;
+                if (macro.UsesRawTrigger)
+                    triggerActive = CheckRawButtonTrigger(macro);
+                else
+                    triggerActive = (gp.Buttons & macro.TriggerButtons) == macro.TriggerButtons;
+
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
 
@@ -104,12 +116,35 @@ namespace PadForge.Common.Input
                     ExecuteMacroActions(ref gp, macro);
                 }
 
-                // Consume trigger buttons if configured.
-                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting)
+                // Consume trigger buttons if configured (only for Xbox bitmask triggers;
+                // raw device buttons aren't part of the combined Gamepad state).
+                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
+                    && !macro.UsesRawTrigger)
                 {
                     gp.Buttons &= (ushort)~macro.TriggerButtons;
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks whether all raw button indices specified by the macro's trigger
+        /// are currently pressed on the target device.
+        /// </summary>
+        private bool CheckRawButtonTrigger(MacroItem macro)
+        {
+            var ud = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            if (ud == null || !ud.IsOnline || ud.InputState == null)
+                return false;
+
+            var buttons = ud.InputState.Buttons;
+            var rawIndices = macro.TriggerRawButtons;
+            for (int i = 0; i < rawIndices.Length; i++)
+            {
+                int idx = rawIndices[i];
+                if (idx < 0 || idx >= buttons.Length || !buttons[idx])
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>

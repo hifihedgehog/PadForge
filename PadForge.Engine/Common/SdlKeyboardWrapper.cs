@@ -21,6 +21,7 @@ namespace PadForge.Engine
         public string Name { get; private set; } = "Keyboard";
         public int NumAxes => 0;
         public int NumButtons => _numKeys;
+        public int RawButtonCount => 0;
         public int NumHats => 0;
         public bool HasRumble => false;
         public bool HasHaptic => false;

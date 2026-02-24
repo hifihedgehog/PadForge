@@ -13,6 +13,7 @@ namespace PadForge.Engine
         string Name { get; }
         int NumAxes { get; }
         int NumButtons { get; }
+        int RawButtonCount { get; }
         int NumHats { get; }
         bool HasRumble { get; }
         bool HasHaptic { get; }

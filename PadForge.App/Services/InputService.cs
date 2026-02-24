@@ -62,6 +62,8 @@ namespace PadForge.Services
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
         private ushort _recordedButtons;
+        private Guid _recordingDeviceGuid;
+        private HashSet<int> _recordedRawButtons;
 
         /// <summary>
         /// Tracks the previously selected device GUID for each pad slot,
@@ -1080,37 +1082,96 @@ namespace PadForge.Services
             _recordingMacro = macro;
             _recordingPadIndex = padIndex;
             _recordedButtons = 0;
+            _recordingDeviceGuid = Guid.Empty;
+            _recordedRawButtons = new HashSet<int>();
             macro.IsRecordingTrigger = true;
         }
 
         /// <summary>
         /// Stops the current macro trigger recording session and writes the
-        /// accumulated button flags to the MacroItem.
+        /// accumulated trigger data to the MacroItem.
         /// </summary>
         public void StopMacroTriggerRecording()
         {
             if (_recordingMacro == null)
                 return;
 
-            _recordingMacro.TriggerButtons = _recordedButtons;
+            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
+                && _recordingDeviceGuid != Guid.Empty
+                && _recordedRawButtons != null && _recordedRawButtons.Count > 0)
+            {
+                // Raw device button path.
+                _recordingMacro.TriggerDeviceGuid = _recordingDeviceGuid;
+                _recordingMacro.TriggerRawButtons = _recordedRawButtons.OrderBy(x => x).ToArray();
+                _recordingMacro.TriggerButtons = 0; // Clear legacy
+            }
+            else
+            {
+                // Xbox bitmask path (OutputController or fallback).
+                _recordingMacro.TriggerButtons = _recordedButtons;
+                _recordingMacro.TriggerDeviceGuid = Guid.Empty;
+                _recordingMacro.TriggerRawButtons = Array.Empty<int>();
+            }
+
             _recordingMacro.IsRecordingTrigger = false;
             _recordingMacro = null;
             _recordedButtons = 0;
+            _recordingDeviceGuid = Guid.Empty;
+            _recordedRawButtons = null;
         }
 
         /// <summary>
         /// Called each UI tick during macro trigger recording.
-        /// Accumulates button flags from the CombinedXiState.
+        /// When TriggerSource is InputDevice, reads raw button state from individual
+        /// devices mapped to the pad slot; the first device to press a button "locks in".
+        /// When TriggerSource is OutputController, reads from the combined Xbox-mapped state.
         /// </summary>
         private void UpdateMacroTriggerRecording()
         {
             if (_recordingMacro == null || _inputManager == null)
                 return;
 
-            if (_recordingPadIndex >= 0 && _recordingPadIndex < InputManager.MaxPads)
+            if (_recordingPadIndex < 0 || _recordingPadIndex >= InputManager.MaxPads)
+                return;
+
+            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
-                ushort buttons = _inputManager.CombinedXiStates[_recordingPadIndex].Buttons;
-                _recordedButtons |= buttons;
+                // Scan raw buttons from devices mapped to this pad slot.
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(_recordingPadIndex);
+                if (slotSettings != null)
+                {
+                    foreach (var setting in slotSettings)
+                    {
+                        var ud = FindUserDevice(setting.InstanceGuid);
+                        if (ud == null || !ud.IsOnline || ud.InputState == null)
+                            continue;
+
+                        // If already locked to a different device, skip.
+                        if (_recordingDeviceGuid != Guid.Empty && _recordingDeviceGuid != ud.InstanceGuid)
+                            continue;
+
+                        // Check for any pressed buttons on this device.
+                        var buttons = ud.InputState.Buttons;
+                        int count = Math.Min(buttons.Length, ud.Device?.RawButtonCount ?? buttons.Length);
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (buttons[i])
+                            {
+                                // Lock to this device on first press.
+                                if (_recordingDeviceGuid == Guid.Empty)
+                                    _recordingDeviceGuid = ud.InstanceGuid;
+
+                                _recordedRawButtons.Add(i);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // OutputController: accumulate from the combined Xbox-mapped state.
+                ushort xboxButtons = _inputManager.CombinedXiStates[_recordingPadIndex].Buttons;
+                _recordedButtons |= xboxButtons;
             }
         }
 

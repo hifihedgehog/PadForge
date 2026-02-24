@@ -941,6 +941,15 @@
                                        Margin="0,0,0,4"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Source:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
+                                          SelectedValuePath="Tag" MinWidth="160">
+                                    <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
+                                    <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="{Binding TriggerDisplayText}"
                                            VerticalAlignment="Center" Margin="0,0,8,0"
                                            MinWidth="150"/>

@@ -57,6 +57,13 @@ namespace PadForge.Engine
         /// <summary>Best haptic strategy for this device (chosen at open time).</summary>
         public HapticEffectStrategy HapticStrategy { get; private set; } = HapticEffectStrategy.None;
 
+        /// <summary>
+        /// Total number of raw joystick buttons as reported by SDL (before gamepad remapping).
+        /// For gamepad devices this may be higher than <see cref="NumButtons"/> (11), exposing
+        /// extra native buttons like DualSense touchpad click or mic button.
+        /// </summary>
+        public int RawButtonCount { get; private set; }
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 
@@ -151,6 +158,9 @@ namespace PadForge.Engine
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
 
+            // Always capture the raw joystick button count before any gamepad override.
+            RawButtonCount = SDL_GetNumJoystickButtons(Joystick);
+
             // When opened as a Gamepad, report the standardized layout counts
             // so that GetDeviceObjects() and the UI reflect the remapped layout
             // instead of the raw HID descriptor. This matches GetGamepadState().
@@ -163,7 +173,7 @@ namespace PadForge.Engine
             else
             {
                 NumAxes = SDL_GetNumJoystickAxes(Joystick);
-                NumButtons = SDL_GetNumJoystickButtons(Joystick);
+                NumButtons = RawButtonCount;
                 NumHats = SDL_GetNumJoystickHats(Joystick);
             }
 
@@ -350,6 +360,14 @@ namespace PadForge.Engine
             state.Buttons[8] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_STICK);
             state.Buttons[9] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_STICK);
             state.Buttons[10] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_GUIDE);
+
+            // --- Extra raw buttons ---
+            // Append raw joystick buttons beyond the 11 standard gamepad buttons.
+            // This exposes native device buttons (e.g. DualSense touchpad, mic) that
+            // aren't part of the Xbox gamepad mapping, for use as macro triggers.
+            int rawCount = RawButtonCount;
+            for (int i = 11; i < rawCount && i < CustomInputState.MaxButtons; i++)
+                state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
 
             // --- D-pad → POV[0] ---
             // Synthesize a POV hat from the four D-pad buttons.

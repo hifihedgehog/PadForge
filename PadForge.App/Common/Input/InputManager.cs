@@ -144,6 +144,9 @@ namespace PadForge.Common.Input
                 // XInput enumeration and prevents Xbox controllers from appearing.
                 SDL_SetHint(SDL_HINT_JOYSTICK_XINPUT, "1");
 
+                // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");
+
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
                 // SDL_INIT_VIDEO is required for keyboard/mouse enumeration.

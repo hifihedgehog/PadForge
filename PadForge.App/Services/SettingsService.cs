@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -38,6 +39,7 @@ namespace PadForge.Services
 
         private readonly MainViewModel _mainVm;
         private string _settingsFilePath;
+        private DispatcherTimer _autoSaveTimer;
 
         /// <summary>
         /// Full path to the active settings file.
@@ -48,6 +50,12 @@ namespace PadForge.Services
         /// Whether settings have been modified since last save.
         /// </summary>
         public bool IsDirty { get; private set; }
+
+        /// <summary>
+        /// Raised after autosave completes so callers can perform post-save actions
+        /// (e.g. refreshing the default profile snapshot).
+        /// </summary>
+        public event EventHandler AutoSaved;
 
         // ─────────────────────────────────────────────
         //  Constructor
@@ -394,6 +402,49 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// If a profile is currently active, updates its stored snapshot from
+        /// the current runtime state so that edits made while the profile was
+        /// active are persisted back to it. Called during Save after checksums
+        /// have been recomputed.
+        /// </summary>
+        private void UpdateActiveProfileSnapshot()
+        {
+            string activeId = SettingsManager.ActiveProfileId;
+            if (string.IsNullOrEmpty(activeId))
+                return;
+
+            var profile = SettingsManager.Profiles.Find(p => p.Id == activeId);
+            if (profile == null)
+                return;
+
+            var entries = new System.Collections.Generic.List<ProfileEntry>();
+            var padSettings = new System.Collections.Generic.List<PadSetting>();
+            var seen = new System.Collections.Generic.HashSet<string>();
+
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                foreach (var us in SettingsManager.UserSettings.Items)
+                {
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+
+                    entries.Add(new ProfileEntry
+                    {
+                        InstanceGuid = us.InstanceGuid,
+                        MapTo = us.MapTo,
+                        PadSettingChecksum = ps.PadSettingChecksum
+                    });
+
+                    if (seen.Add(ps.PadSettingChecksum))
+                        padSettings.Add(ps.CloneDeep());
+                }
+            }
+
+            profile.Entries = entries.ToArray();
+            profile.PadSettings = padSettings.ToArray();
+        }
+
+        /// <summary>
         /// Formats pipe-separated full paths into a display string showing just file names.
         /// </summary>
         private static string FormatExePaths(string pipeSeparatedPaths)
@@ -449,6 +500,10 @@ namespace PadForge.Services
                         }
                     }
                 }
+
+                // If a profile is currently active, update its snapshot so
+                // any edits made while the profile was active are persisted.
+                UpdateActiveProfileSnapshot();
 
                 // Collect devices.
                 lock (SettingsManager.UserDevices.SyncRoot)
@@ -713,12 +768,34 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Marks settings as dirty (unsaved changes).
+        /// Marks settings as dirty (unsaved changes) and schedules an autosave
+        /// after a 2-second debounce period.
         /// </summary>
         public void MarkDirty()
         {
             IsDirty = true;
             _mainVm.Settings.HasUnsavedChanges = true;
+
+            // Start or restart the autosave debounce timer.
+            if (_autoSaveTimer == null)
+            {
+                _autoSaveTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(250)
+                };
+                _autoSaveTimer.Tick += (s, e) =>
+                {
+                    _autoSaveTimer.Stop();
+                    if (IsDirty)
+                    {
+                        Save();
+                        AutoSaved?.Invoke(this, EventArgs.Empty);
+                    }
+                };
+            }
+
+            _autoSaveTimer.Stop();
+            _autoSaveTimer.Start();
         }
 
         // ─────────────────────────────────────────────

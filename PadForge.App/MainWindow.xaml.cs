@@ -74,10 +74,14 @@ namespace PadForge
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
 
             // Apply registry Run key when Start at Login is toggled.
+            // Persist DSU server settings on change.
             _viewModel.Settings.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin))
                     Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
+                else if (e.PropertyName is nameof(SettingsViewModel.EnableDsuMotionServer)
+                         or nameof(SettingsViewModel.DsuMotionServerPort))
+                    _settingsService.MarkDirty();
             };
 
             // Wire ViGEm install/uninstall commands.

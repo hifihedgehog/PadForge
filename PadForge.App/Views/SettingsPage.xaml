@@ -46,6 +46,32 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Motion Server ═══ -->
+            <TextBlock Text="Motion Server" Style="{StaticResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,12"/>
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+                <StackPanel>
+                    <CheckBox Content="Enable DSU motion server (cemuhook)"
+                              IsChecked="{Binding EnableDsuMotionServer}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Port:" VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
+                                      Minimum="1024" Maximum="65535"
+                                      SpinButtonPlacementMode="Inline" Width="140"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Ellipse Width="8" Height="8"
+                                 Fill="{Binding EnableDsuMotionServer, Converter={StaticResource BoolToColorConverter}}"
+                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"/>
+                    </StackPanel>
+                    <TextBlock Text="Provides gyro/accel data to Cemu, Dolphin, Yuzu, etc."
+                               FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Window ═══ -->
             <TextBlock Text="Window" Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,0,0,12"/>

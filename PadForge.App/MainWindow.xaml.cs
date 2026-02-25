@@ -96,17 +96,17 @@ namespace PadForge
                 pad.TestRumbleRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex);
+                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid);
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, true, false);
+                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, true, false);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, false, true);
+                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, false, true);
                 };
             }
 

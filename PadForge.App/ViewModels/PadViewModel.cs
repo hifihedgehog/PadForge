@@ -22,7 +22,7 @@ namespace PadForge.ViewModels
         {
             PadIndex = padIndex;
             Title = $"Controller {padIndex + 1}";
-            SlotLabel = $"Player {padIndex + 1}";
+            SlotLabel = $"Controller {padIndex + 1}";
             InitializeDefaultMappings();
         }
 

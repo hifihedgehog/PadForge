@@ -597,7 +597,7 @@ namespace PadForge.Services
                 string value = (prop != null && prop.PropertyType == typeof(string))
                     ? prop.GetValue(ps) as string ?? string.Empty
                     : string.Empty;
-                mapping.SourceDescriptor = value;
+                mapping.LoadDescriptor(value);
             }
         }
 
@@ -1280,10 +1280,11 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Loads a profile's PadSettings into the runtime state.
-        /// For each ProfileEntry, finds the matching UserSetting and swaps its PadSetting.
+        /// Loads a profile's PadSettings and slot assignments into the runtime state.
+        /// For each ProfileEntry, finds the matching UserSetting and swaps its
+        /// PadSetting and MapTo slot.
         /// </summary>
-        private void ApplyProfile(ProfileData profile)
+        public void ApplyProfile(ProfileData profile)
         {
             if (profile?.Entries == null || profile.Entries.Length == 0 ||
                 profile.PadSettings == null || profile.PadSettings.Length == 0)
@@ -1302,13 +1303,17 @@ namespace PadForge.Services
                         .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
                     if (template == null) continue;
 
-                    // Clone and apply.
+                    // Clone and apply PadSetting + slot assignment.
                     var ps = template.CloneDeep();
                     us.SetPadSetting(ps);
+                    us.MapTo = entry.MapTo;
                 }
             }
 
-            // Reload ViewModels with new PadSettings.
+            // Rebuild pad device lists based on new MapTo values.
+            UpdatePadDeviceInfo();
+
+            // Reload ViewModels with new PadSettings (after device lists are rebuilt).
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
@@ -1316,6 +1321,9 @@ namespace PadForge.Services
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
             }
+
+            // Refresh Devices page slot labels.
+            SyncDevicesList();
         }
 
         /// <summary>
@@ -1334,8 +1342,14 @@ namespace PadForge.Services
                 var target = FindProfileById(profileId);
                 if (target != null)
                 {
+                    // Snapshot current state before switching away from default,
+                    // so unsaved changes are preserved for revert.
+                    if (SettingsManager.ActiveProfileId == null)
+                        _defaultProfileSnapshot = SnapshotCurrentProfile();
+
                     ApplyProfile(target);
                     SettingsManager.ActiveProfileId = profileId;
+                    _mainVm.Settings.ActiveProfileInfo = target.Name;
                     _mainVm.StatusText = $"Profile switched: {target.Name}";
                 }
             }
@@ -1345,8 +1359,29 @@ namespace PadForge.Services
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
                 SettingsManager.ActiveProfileId = null;
+                _mainVm.Settings.ActiveProfileInfo = "Default";
                 _mainVm.StatusText = "Profile switched: Default";
             }
+        }
+
+        /// <summary>
+        /// Refreshes the default profile snapshot from the current runtime state.
+        /// Call after saving when no profile is active so future reverts use the
+        /// latest saved state.
+        /// </summary>
+        public void RefreshDefaultSnapshot()
+        {
+            _defaultProfileSnapshot = SnapshotCurrentProfile();
+        }
+
+        /// <summary>
+        /// Applies the default profile snapshot, reverting to the state before
+        /// any named profile was loaded.
+        /// </summary>
+        public void ApplyDefaultProfile()
+        {
+            if (_defaultProfileSnapshot != null)
+                ApplyProfile(_defaultProfileSnapshot);
         }
 
         private static ProfileData FindProfileById(string id)

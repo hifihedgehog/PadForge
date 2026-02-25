@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <!-- Style for dead zone slider groups -->
         <Style x:Key="DzLabel" TargetType="TextBlock">
-            <Setter Property="Width" Value="110"/>
+            <Setter Property="Width" Value="130"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
         </Style>
@@ -29,6 +29,18 @@
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
             <Setter Property="Margin" Value="4,0,0,0"/>
+        </Style>
+        <Style x:Key="DzValueEdit" TargetType="TextBox">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="Padding" Value="2,1"/>
+        </Style>
+        <Style x:Key="DzPercent" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="2,0,0,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
     </UserControl.Resources>
 
@@ -539,8 +551,9 @@
                             <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftDeadZoneX, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftDeadZoneX, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Dead Zone Y -->
@@ -548,8 +561,9 @@
                             <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftDeadZoneY, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftDeadZoneY, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Anti-Dead Zone X -->
@@ -557,8 +571,9 @@
                             <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftAntiDeadZoneX, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftAntiDeadZoneX, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftAntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Anti-Dead Zone Y -->
@@ -566,8 +581,9 @@
                             <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftAntiDeadZoneY, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftAntiDeadZoneY, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftAntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Linear (response curve) -->
@@ -575,8 +591,9 @@
                             <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftLinear, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftLinear, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftLinear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <Separator Margin="0,8,0,12"/>
@@ -661,8 +678,9 @@
                             <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightDeadZoneX, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightDeadZoneX, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Dead Zone Y -->
@@ -670,8 +688,9 @@
                             <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightDeadZoneY, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightDeadZoneY, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Anti-Dead Zone X -->
@@ -679,8 +698,9 @@
                             <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightAntiDeadZoneX, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightAntiDeadZoneX, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightAntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Anti-Dead Zone Y -->
@@ -688,8 +708,9 @@
                             <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightAntiDeadZoneY, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightAntiDeadZoneY, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightAntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Linear -->
@@ -697,8 +718,9 @@
                             <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightLinear, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightLinear, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightLinear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <Separator Margin="0,8,0,12"/>
@@ -783,16 +805,18 @@
                             <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftTriggerDeadZone, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftTriggerDeadZone, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftTriggerDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftTriggerAntiDeadZone, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftTriggerAntiDeadZone, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftTriggerAntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Live value bar -->
@@ -816,16 +840,18 @@
                             <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightTriggerDeadZone, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightTriggerDeadZone, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightTriggerDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightTriggerAntiDeadZone, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightTriggerAntiDeadZone, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightTriggerAntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -853,8 +879,9 @@
                             <TextBlock Text="Overall Gain:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding ForceOverallGain, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding ForceOverallGain, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding ForceOverallGain, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Left motor -->
@@ -862,8 +889,9 @@
                             <TextBlock Text="Left Motor:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftMotorStrength, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding LeftMotorStrength, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding LeftMotorStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Right motor -->
@@ -871,8 +899,9 @@
                             <TextBlock Text="Right Motor:" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightMotorStrength, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
-                            <TextBlock Text="{Binding RightMotorStrength, StringFormat='{}{0}%'}"
-                                       Style="{StaticResource DzValue}"/>
+                            <TextBox Text="{Binding RightMotorStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                         </StackPanel>
 
                         <!-- Swap motors -->

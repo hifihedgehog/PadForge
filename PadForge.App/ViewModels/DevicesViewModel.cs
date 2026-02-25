@@ -103,6 +103,24 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _rawPovDisplay, value);
         }
 
+        private string _rawGyroDisplay = string.Empty;
+
+        /// <summary>Formatted string showing gyroscope sensor data (rad/s).</summary>
+        public string RawGyroDisplay
+        {
+            get => _rawGyroDisplay;
+            set => SetProperty(ref _rawGyroDisplay, value);
+        }
+
+        private string _rawAccelDisplay = string.Empty;
+
+        /// <summary>Formatted string showing accelerometer sensor data (m/s²).</summary>
+        public string RawAccelDisplay
+        {
+            get => _rawAccelDisplay;
+            set => SetProperty(ref _rawAccelDisplay, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Commands
         // ─────────────────────────────────────────────

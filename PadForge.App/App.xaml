@@ -25,6 +25,7 @@
             <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:NormToTriggerSlideConverter x:Key="NormToTriggerSlideConverter" />
+            <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
 
         </ResourceDictionary>
     </Application.Resources>

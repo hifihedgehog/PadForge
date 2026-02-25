@@ -442,6 +442,47 @@ namespace SDL3
         public static extern SDL_PowerState SDL_GetJoystickPowerInfo(IntPtr joystick, out int percent);
 
         // ─────────────────────────────────────────────
+        //  Gamepad sensors (gyro / accelerometer)
+        // ─────────────────────────────────────────────
+
+        // SDL_SensorType enum values
+        public const int SDL_SENSOR_ACCEL = 1;
+        public const int SDL_SENSOR_GYRO = 2;
+        public const int SDL_SENSOR_ACCEL_L = 3;
+        public const int SDL_SENSOR_GYRO_L = 4;
+        public const int SDL_SENSOR_ACCEL_R = 5;
+        public const int SDL_SENSOR_GYRO_R = 6;
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasSensor")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GamepadHasSensor(IntPtr gamepad, int type);
+
+        /// <summary>Returns true if the gamepad has the specified sensor type.</summary>
+        public static bool SDL_GamepadHasSensor(IntPtr gamepad, int type) =>
+            _SDL_GamepadHasSensor(gamepad, type);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetGamepadSensorEnabled")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_SetGamepadSensorEnabled(IntPtr gamepad, int type,
+            [MarshalAs(UnmanagedType.U1)] bool enabled);
+
+        /// <summary>Enables or disables data reporting for the specified sensor.</summary>
+        public static bool SDL_SetGamepadSensorEnabled(IntPtr gamepad, int type, bool enabled) =>
+            _SDL_SetGamepadSensorEnabled(gamepad, type, enabled);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadSensorData")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadSensorData(IntPtr gamepad, int type,
+            [Out] float[] data, int num_values);
+
+        /// <summary>
+        /// Reads sensor data. For gyro: 3 floats (X, Y, Z) in radians/second.
+        /// For accel: 3 floats (X, Y, Z) in m/s².
+        /// </summary>
+        public static bool SDL_GetGamepadSensorData(IntPtr gamepad, int type, float[] data, int num_values) =>
+            _SDL_GetGamepadSensorData(gamepad, type, data, num_values);
+
+        // ─────────────────────────────────────────────
         //  Rumble / haptics
         // ─────────────────────────────────────────────
 

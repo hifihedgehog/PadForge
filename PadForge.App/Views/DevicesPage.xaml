@@ -54,87 +54,95 @@
             <!-- Detail panel -->
             <Border Grid.Column="1"
                     Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16">
+                    CornerRadius="8" Padding="12,10">
                 <StackPanel Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
 
                     <TextBlock Text="{Binding SelectedDevice.DeviceName}"
-                               Style="{StaticResource SubtitleTextBlockStyle}"
-                               TextWrapping="Wrap" Margin="0,0,0,12"/>
+                               FontSize="16" FontWeight="SemiBold"
+                               TextWrapping="Wrap" Margin="0,0,0,6"/>
 
                     <!-- Identity -->
-                    <TextBlock FontSize="12" Opacity="0.7" Margin="0,0,0,2">
+                    <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
                         <Run Text="Product:"/>
                         <Run Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
                     </TextBlock>
-                    <TextBlock FontSize="12" Opacity="0.7" Margin="0,0,0,2">
+                    <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
                         <Run Text="VID:PID:"/>
                         <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
                         <Run Text=":"/>
                         <Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                     </TextBlock>
-                    <TextBlock FontSize="12" Opacity="0.7" Margin="0,0,0,2">
+                    <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
                         <Run Text="Type:"/>
                         <Run Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
                     </TextBlock>
-                    <TextBlock FontSize="11" Opacity="0.5" Margin="0,0,0,2"
+                    <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,1">
+                        <Run Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
+                    </TextBlock>
+                    <TextBlock FontSize="10" Opacity="0.45" Margin="0,0,0,4"
                                TextWrapping="Wrap" FontFamily="Consolas">
                         <Run Text="GUID:"/>
                         <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
                     </TextBlock>
-                    <TextBlock FontSize="12" Opacity="0.6" TextWrapping="Wrap" Margin="0,0,0,8">
-                        <Run Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
-                    </TextBlock>
 
-                    <Separator Margin="0,4,0,8"/>
+                    <Separator Margin="0,2,0,6"/>
 
-                    <!-- Assign to slot -->
-                    <TextBlock Text="Assign to Slot" FontWeight="SemiBold"
-                               FontSize="13" Margin="0,0,0,6"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                        <Button Content="P1" Margin="0,0,4,0" MinWidth="36"
+                    <!-- Assign to slot + Remove -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                        <Button Content="P1" Margin="0,0,3,0" MinWidth="32" Padding="4,3"
                                 Command="{Binding AssignToSlotCommand}">
                             <Button.CommandParameter><sys:Int32>0</sys:Int32></Button.CommandParameter>
                         </Button>
-                        <Button Content="P2" Margin="0,0,4,0" MinWidth="36"
+                        <Button Content="P2" Margin="0,0,3,0" MinWidth="32" Padding="4,3"
                                 Command="{Binding AssignToSlotCommand}">
                             <Button.CommandParameter><sys:Int32>1</sys:Int32></Button.CommandParameter>
                         </Button>
-                        <Button Content="P3" Margin="0,0,4,0" MinWidth="36"
+                        <Button Content="P3" Margin="0,0,3,0" MinWidth="32" Padding="4,3"
                                 Command="{Binding AssignToSlotCommand}">
                             <Button.CommandParameter><sys:Int32>2</sys:Int32></Button.CommandParameter>
                         </Button>
-                        <Button Content="P4" Margin="0,0,0,0" MinWidth="36"
+                        <Button Content="P4" Margin="0,0,8,0" MinWidth="32" Padding="4,3"
                                 Command="{Binding AssignToSlotCommand}">
                             <Button.CommandParameter><sys:Int32>3</sys:Int32></Button.CommandParameter>
                         </Button>
-                    </StackPanel>
-
-                    <!-- Device management -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                        <Button Content="Remove Device" MinWidth="100"
+                        <Button Content="Remove" Padding="8,3"
                                 Command="{Binding RemoveDeviceCommand}"
                                 ToolTip="Remove this device and its settings"/>
                     </StackPanel>
 
-                    <Separator Margin="0,4,0,8"/>
+                    <Separator Margin="0,2,0,6"/>
 
                     <!-- Raw state -->
                     <TextBlock Text="Raw Input State" FontWeight="SemiBold"
-                               FontSize="13" Margin="0,0,0,6"/>
+                               FontSize="12" Margin="0,0,0,4"/>
 
-                    <TextBlock Text="Axes" FontSize="12" Opacity="0.6" Margin="0,0,0,2"/>
-                    <TextBlock Text="{Binding RawAxisDisplay}" FontSize="11"
+                    <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,1"/>
+                    <TextBlock Text="{Binding RawAxisDisplay}" FontSize="10"
                                FontFamily="Consolas" TextWrapping="Wrap"
-                               MaxHeight="120" Margin="0,0,0,8"/>
+                               MaxHeight="100" Margin="0,0,0,5"/>
 
-                    <TextBlock Text="Buttons" FontSize="12" Opacity="0.6" Margin="0,0,0,2"/>
-                    <TextBlock Text="{Binding RawButtonDisplay}" FontSize="11"
+                    <TextBlock Text="Buttons" FontSize="11" Opacity="0.6" Margin="0,0,0,1"/>
+                    <TextBlock Text="{Binding RawButtonDisplay}" FontSize="10"
                                FontFamily="Consolas" TextWrapping="Wrap"
-                               Margin="0,0,0,8"/>
+                               Margin="0,0,0,5"/>
 
-                    <TextBlock Text="POV Hats" FontSize="12" Opacity="0.6" Margin="0,0,0,2"/>
-                    <TextBlock Text="{Binding RawPovDisplay}" FontSize="11"
+                    <TextBlock Text="POV Hats" FontSize="11" Opacity="0.6" Margin="0,0,0,1"/>
+                    <TextBlock Text="{Binding RawPovDisplay}" FontSize="10"
                                FontFamily="Consolas" TextWrapping="Wrap"/>
+
+                    <!-- Gyroscope (visible only when the device has a gyro sensor) -->
+                    <TextBlock Text="Gyroscope" FontSize="11" Opacity="0.6" Margin="0,5,0,1"
+                               Visibility="{Binding RawGyroDisplay, Converter={StaticResource StringToVisibility}}"/>
+                    <TextBlock Text="{Binding RawGyroDisplay}" FontSize="10"
+                               FontFamily="Consolas" TextWrapping="Wrap"
+                               Visibility="{Binding RawGyroDisplay, Converter={StaticResource StringToVisibility}}"/>
+
+                    <!-- Accelerometer (visible only when the device has an accel sensor) -->
+                    <TextBlock Text="Accelerometer" FontSize="11" Opacity="0.6" Margin="0,5,0,1"
+                               Visibility="{Binding RawAccelDisplay, Converter={StaticResource StringToVisibility}}"/>
+                    <TextBlock Text="{Binding RawAccelDisplay}" FontSize="10"
+                               FontFamily="Consolas" TextWrapping="Wrap"
+                               Visibility="{Binding RawAccelDisplay, Converter={StaticResource StringToVisibility}}"/>
                 </StackPanel>
             </Border>
         </Grid>

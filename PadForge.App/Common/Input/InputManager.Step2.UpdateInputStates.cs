@@ -127,6 +127,11 @@ namespace PadForge.Common.Input
             if (padIndex < 0 || padIndex >= MaxPads)
                 return;
 
+            // If a test rumble targets a specific device in this slot, skip others.
+            Guid targetGuid = TestRumbleTargetGuid[padIndex];
+            if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
+                return;
+
             // Get the vibration state for this pad slot.
             Vibration vibration = VibrationStates[padIndex];
             if (vibration == null)

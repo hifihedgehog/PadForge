@@ -78,6 +78,12 @@ namespace PadForge.Common.Input
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
+        /// When set (non-empty), the test rumble for this slot targets only the
+        /// device with this GUID. ApplyForceFeedback skips other devices in the slot.
+        /// </summary>
+        public Guid[] TestRumbleTargetGuid { get; } = new Guid[MaxPads];
+
+        /// <summary>
         /// Current measured polling frequency in Hz.
         /// </summary>
         public double CurrentFrequency { get; private set; }

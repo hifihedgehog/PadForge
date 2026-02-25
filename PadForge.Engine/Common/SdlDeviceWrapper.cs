@@ -205,10 +205,11 @@ namespace PadForge.Engine
                 if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
             }
 
-            // If the device doesn't support simple rumble, try the haptic API for
-            // full force feedback (DirectInput FFB wheels, joysticks, etc.).
-            if (!HasRumble)
-                OpenHaptic();
+            // Always try the haptic API for force feedback devices (joysticks,
+            // wheels, etc.). Some report HasRumble=true via SDL properties but
+            // only actually work through the haptic effect system. The routing
+            // in ForceFeedbackState prefers HasHaptic when available.
+            OpenHaptic();
 
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
@@ -260,11 +261,27 @@ namespace PadForge.Engine
 
             IntPtr h = SDL_OpenHapticFromJoystick(Joystick);
             if (h == IntPtr.Zero)
+            {
+                RumbleLogger.Log($"OpenHaptic: SDL_OpenHapticFromJoystick failed for '{Name}': {SDL_GetError()}");
                 return;
+            }
 
             uint features = SDL_GetHapticFeatures(h);
+            RumbleLogger.Log($"OpenHaptic: '{Name}' features=0x{features:X8} rumble={HasRumble}");
+
             if (features == 0)
             {
+                SDL_CloseHaptic(h);
+                return;
+            }
+
+            // For devices that already have simple rumble (gamepads), skip haptic
+            // unless they lack LeftRight support — simple rumble via SDL_RumbleJoystick
+            // is more reliable for gamepads.
+            if (HasRumble && (features & SDL_HAPTIC_LEFTRIGHT) != 0)
+            {
+                // Gamepad with LeftRight haptic — simple rumble works fine, skip haptic.
+                RumbleLogger.Log($"OpenHaptic: '{Name}' has rumble + LeftRight, preferring simple rumble");
                 SDL_CloseHaptic(h);
                 return;
             }
@@ -287,6 +304,8 @@ namespace PadForge.Engine
                 HapticFeatures = 0;
                 return;
             }
+
+            RumbleLogger.Log($"OpenHaptic: '{Name}' strategy={HapticStrategy}");
 
             // Set gain to maximum if the device supports it.
             if ((features & SDL_HAPTIC_GAIN) != 0)

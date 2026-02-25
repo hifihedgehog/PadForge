@@ -55,10 +55,16 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="{Binding SlotLabel}"
-                           FontSize="16" FontWeight="SemiBold"
-                           VerticalAlignment="Center" Margin="0,0,12,0"
-                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,12,0">
+                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
+                               FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0"
+                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                    <TextBlock Text="{Binding SlotLabel}"
+                               FontSize="16" FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                </StackPanel>
 
                 <!-- Device ComboBox: select which mapped device to configure -->
                 <ComboBox Grid.Column="1"
@@ -127,8 +133,11 @@
         <TabControl Grid.Row="1"
                     SelectedIndex="{Binding SelectedConfigTab, Mode=TwoWay}">
 
-            <!-- ─── TAB 0: Controller ─── -->
-            <TabItem Header="Controller">
+            <!-- ─── TAB 0: Controller (slot-level) ─── -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Controller" FontSize="14" FontWeight="SemiBold" Padding="4,2"/>
+                </TabItem.Header>
                 <Viewbox Stretch="Uniform" Margin="4">
                     <StackPanel Width="768" HorizontalAlignment="Center">
 
@@ -389,7 +398,15 @@
                 </Viewbox>
             </TabItem>
 
-            <!-- ─── TAB 1: Mappings ─── -->
+            <!-- Separator between slot-level and device-specific tabs -->
+            <TabItem IsEnabled="False" IsHitTestVisible="False">
+                <TabItem.Header>
+                    <TextBlock Text="|" Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                               FontSize="14" Margin="-4,0"/>
+                </TabItem.Header>
+            </TabItem>
+
+            <!-- ─── TAB 2: Mappings (device-specific) ─── -->
             <TabItem Header="Mappings">
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
@@ -888,8 +905,19 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- ─── TAB 5: Macros ─── -->
-            <TabItem Header="Macros">
+            <!-- Separator between device-specific and slot-level tabs -->
+            <TabItem IsEnabled="False" IsHitTestVisible="False">
+                <TabItem.Header>
+                    <TextBlock Text="|" Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                               FontSize="14" Margin="-4,0"/>
+                </TabItem.Header>
+            </TabItem>
+
+            <!-- ─── TAB 8: Macros (slot-level) ─── -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Macros" FontSize="14" FontWeight="SemiBold" Padding="4,2"/>
+                </TabItem.Header>
                 <Grid Margin="8">
                     <Grid.ColumnDefinitions>
                         <!-- Macro list -->

@@ -207,6 +207,18 @@ namespace PadForge.Services
                 var vibration = _inputManager.VibrationStates[i];
 
                 padVm.UpdateFromEngineState(gp, vibration);
+
+                // Per-device state for stick/trigger tab previews.
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                {
+                    var us = SettingsManager.UserSettings?.FindByInstanceGuid(selected.InstanceGuid);
+                    padVm.UpdateDeviceState(us?.XiState ?? default);
+                }
+                else
+                {
+                    padVm.UpdateDeviceState(gp);
+                }
             }
 
             // ── Update Dashboard ──

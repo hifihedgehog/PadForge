@@ -239,9 +239,9 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsKeyboard => CapType == InputDeviceType.Keyboard;
 
-        /// <summary>True if the device has at least one force-feedback actuator or SDL rumble support.</summary>
+        /// <summary>True if the device has at least one force-feedback actuator, SDL rumble, or SDL haptic support.</summary>
         [XmlIgnore]
-        public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && Device.HasRumble);
+        public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && (Device.HasRumble || Device.HasHaptic));
 
         /// <summary>
         /// Returns the display name for UI purposes: the user-assigned DisplayName if set,
@@ -358,7 +358,7 @@ namespace PadForge.Engine.Data
 
             // Populate device objects and effects.
             DeviceObjects = wrapper.GetDeviceObjects();
-            DeviceEffects = wrapper.HasRumble
+            DeviceEffects = (wrapper.HasRumble || wrapper.HasHaptic)
                 ? new[] { DeviceEffectItem.CreateRumbleEffect() }
                 : Array.Empty<DeviceEffectItem>();
 
@@ -370,8 +370,8 @@ namespace PadForge.Engine.Data
             ActuatorCount = actuatorCount;
             SliderMask = CustomInputState.GetSlidersMask(DeviceObjects, CustomInputState.MaxSliders);
 
-            // Initialize force feedback state.
-            if (wrapper.HasRumble)
+            // Initialize force feedback state for devices with rumble or haptic FFB.
+            if (wrapper.HasRumble || wrapper.HasHaptic)
                 ForceFeedbackState = new ForceFeedbackState();
 
             Device = wrapper;

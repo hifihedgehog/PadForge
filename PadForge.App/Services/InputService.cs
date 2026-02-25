@@ -43,6 +43,7 @@ namespace PadForge.Services
         private InputManager _inputManager;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
+        private ProfileData _defaultProfileSnapshot;
         private bool _disposed;
 
         /// <summary>
@@ -119,6 +120,9 @@ namespace PadForge.Services
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
+
+            // Capture default profile snapshot before any profile switches.
+            _defaultProfileSnapshot = SnapshotCurrentProfile();
 
             // Start engine background thread.
             _inputManager.Start();
@@ -1032,35 +1036,69 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Sends a brief test rumble to the device mapped to the specified pad slot.
+        /// Sends a brief test rumble to a specific device (or all devices in a slot).
         /// </summary>
         /// <param name="padIndex">Pad slot index (0–3).</param>
-        public void SendTestRumble(int padIndex)
+        /// <param name="deviceGuid">Optional device GUID to target. When null, rumbles all devices in the slot.</param>
+        public void SendTestRumble(int padIndex, Guid? deviceGuid)
         {
-            SendTestRumble(padIndex, true, true);
+            SendTestRumble(padIndex, deviceGuid, true, true);
         }
 
-        public void SendTestRumble(int padIndex, bool left, bool right)
+        public void SendTestRumble(int padIndex, Guid? deviceGuid, bool left, bool right)
         {
             if (_inputManager == null || padIndex < 0 || padIndex >= InputManager.MaxPads)
                 return;
 
-            // Set vibration for 500ms, then clear.
-            if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
-            if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
-
-            // Schedule clearing after 500ms.
-            var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-            clearTimer.Tick += (s, e) =>
+            if (deviceGuid.HasValue && deviceGuid.Value != Guid.Empty)
             {
-                if (_inputManager != null && padIndex < InputManager.MaxPads)
+                // Direct device rumble — bypasses the slot-level VibrationStates entirely.
+                var ud = FindUserDevice(deviceGuid.Value);
+                if (ud?.Device == null || ud.ForceFeedbackState == null)
+                    return;
+                if (!ud.Device.HasRumble && !ud.Device.HasHaptic)
+                    return;
+
+                var userSetting = SettingsManager.UserSettings?.FindByInstanceGuid(ud.InstanceGuid);
+                var ps = userSetting?.GetPadSetting();
+                if (ps == null)
+                    return;
+
+                var testVib = new Vibration
                 {
-                    if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
-                    if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
-                }
-                clearTimer.Stop();
-            };
-            clearTimer.Start();
+                    LeftMotorSpeed = left ? (ushort)32768 : (ushort)0,
+                    RightMotorSpeed = right ? (ushort)32768 : (ushort)0
+                };
+                ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, ps, testVib);
+
+                // Schedule clearing after 500ms.
+                var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+                clearTimer.Tick += (s2, e2) =>
+                {
+                    if (ud.Device != null && ud.ForceFeedbackState != null)
+                        ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, ps, new Vibration());
+                    clearTimer.Stop();
+                };
+                clearTimer.Start();
+            }
+            else
+            {
+                // Fallback: slot-level rumble (all devices in slot).
+                if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
+                if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
+
+                var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+                clearTimer.Tick += (s2, e2) =>
+                {
+                    if (_inputManager != null && padIndex < InputManager.MaxPads)
+                    {
+                        if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
+                        if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
+                    }
+                    clearTimer.Stop();
+                };
+                clearTimer.Start();
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1232,7 +1270,8 @@ namespace PadForge.Services
         /// </summary>
         private void ApplyProfile(ProfileData profile)
         {
-            if (profile?.Entries == null || profile.PadSettings == null)
+            if (profile?.Entries == null || profile.Entries.Length == 0 ||
+                profile.PadSettings == null || profile.PadSettings.Length == 0)
                 return;
 
             lock (SettingsManager.UserSettings.SyncRoot)
@@ -1270,14 +1309,9 @@ namespace PadForge.Services
         /// </summary>
         private void OnProfileSwitchRequired(string profileId)
         {
-            // Save current state into the previously active profile.
-            var currentProfile = FindProfileById(SettingsManager.ActiveProfileId);
-            var snapshot = SnapshotCurrentProfile();
-            if (currentProfile != null)
-            {
-                currentProfile.Entries = snapshot.Entries;
-                currentProfile.PadSettings = snapshot.PadSettings;
-            }
+            // If switching to the same profile, skip.
+            if (profileId == SettingsManager.ActiveProfileId)
+                return;
 
             // Switch to the target profile (or revert to default).
             if (profileId != null)
@@ -1292,8 +1326,9 @@ namespace PadForge.Services
             }
             else
             {
-                // Revert to default (root) profile — null ID means use the current
-                // root-level settings. If we had a "default" snapshot, apply it.
+                // Revert to default (root) profile using the startup snapshot.
+                if (_defaultProfileSnapshot != null)
+                    ApplyProfile(_defaultProfileSnapshot);
                 SettingsManager.ActiveProfileId = null;
                 _mainVm.StatusText = "Profile switched: Default";
             }

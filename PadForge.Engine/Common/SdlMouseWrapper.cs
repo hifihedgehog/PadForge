@@ -32,8 +32,15 @@ namespace PadForge.Engine
         public string Name { get; private set; } = "Mouse";
         public int NumAxes => MouseAxes;
         public int NumButtons => MouseButtons;
+        public int RawButtonCount => 0;
         public int NumHats => 0;
         public bool HasRumble => false;
+        public bool HasHaptic => false;
+        public bool HasGyro => false;
+        public bool HasAccel => false;
+        public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
+        public IntPtr HapticHandle => IntPtr.Zero;
+        public uint HapticFeatures => 0;
         public ushort VendorId => 0;
         public ushort ProductId => 0;
         public string DevicePath { get; private set; } = string.Empty;

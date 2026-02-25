@@ -515,5 +515,17 @@ namespace PadForge.Engine.Data
                     prop.SetValue(this, prop.GetValue(source) ?? "");
             }
         }
+
+        /// <summary>
+        /// Creates a deep copy of this PadSetting (copies all properties + checksum + GameFileName).
+        /// </summary>
+        public PadSetting CloneDeep()
+        {
+            var clone = new PadSetting();
+            clone.CopyFrom(this);
+            clone.PadSettingChecksum = PadSettingChecksum;
+            clone.GameFileName = GameFileName;
+            return clone;
+        }
     }
 }

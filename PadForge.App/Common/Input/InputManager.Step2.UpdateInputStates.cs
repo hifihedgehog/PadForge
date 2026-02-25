@@ -114,8 +114,8 @@ namespace PadForge.Common.Input
             if (ud == null || ud.ForceFeedbackState == null)
                 return;
 
-            // Only SDL devices with rumble support.
-            if (ud.Device == null || !ud.Device.HasRumble)
+            // Only SDL devices with rumble or haptic FFB support.
+            if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                 return;
 
             // Find which pad slot this device is mapped to.
@@ -125,6 +125,11 @@ namespace PadForge.Common.Input
 
             int padIndex = userSetting.MapTo;
             if (padIndex < 0 || padIndex >= MaxPads)
+                return;
+
+            // If a test rumble targets a specific device in this slot, skip others.
+            Guid targetGuid = TestRumbleTargetGuid[padIndex];
+            if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
                 return;
 
             // Get the vibration state for this pad slot.

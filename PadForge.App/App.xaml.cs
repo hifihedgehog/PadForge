@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Windows;
 using ModernWpf;
 
@@ -6,8 +7,19 @@ namespace PadForge
 {
     public partial class App : Application
     {
+        private Mutex _singleInstanceMutex;
+
         protected override void OnStartup(StartupEventArgs e)
         {
+            _singleInstanceMutex = new Mutex(true, "PadForge_SingleInstance", out bool isNewInstance);
+            if (!isNewInstance)
+            {
+                MessageBox.Show("PadForge is already running.", "PadForge",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown();
+                return;
+            }
+
             base.OnStartup(e);
 
             // Set the application theme to follow system settings.

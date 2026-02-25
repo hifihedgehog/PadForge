@@ -70,9 +70,18 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int CapAxeCount { get; set; }
 
-        /// <summary>Number of buttons on the device.</summary>
+        /// <summary>Number of buttons on the device (gamepad-mapped count for gamepad devices).</summary>
         [XmlElement]
         public int CapButtonCount { get; set; }
+
+        /// <summary>
+        /// Total number of raw joystick buttons (before gamepad remapping).
+        /// For gamepad devices, this is higher than <see cref="CapButtonCount"/> (11),
+        /// exposing extra native buttons like DualSense touchpad or mic.
+        /// For non-gamepad devices, this equals <see cref="CapButtonCount"/>.
+        /// </summary>
+        [XmlElement]
+        public int RawButtonCount { get; set; }
 
         /// <summary>Number of POV hat switches on the device.</summary>
         [XmlElement]
@@ -89,6 +98,14 @@ namespace PadForge.Engine.Data
         /// <summary>Device capability flags.</summary>
         [XmlElement]
         public int CapFlags { get; set; }
+
+        /// <summary>Whether the device has a gyroscope sensor.</summary>
+        [XmlElement]
+        public bool HasGyro { get; set; }
+
+        /// <summary>Whether the device has an accelerometer sensor.</summary>
+        [XmlElement]
+        public bool HasAccel { get; set; }
 
         // ─────────────────────────────────────────────────────────────
         //  Serializable metadata
@@ -239,9 +256,9 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsKeyboard => CapType == InputDeviceType.Keyboard;
 
-        /// <summary>True if the device has at least one force-feedback actuator or SDL rumble support.</summary>
+        /// <summary>True if the device has at least one force-feedback actuator, SDL rumble, or SDL haptic support.</summary>
         [XmlIgnore]
-        public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && Device.HasRumble);
+        public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && (Device.HasRumble || Device.HasHaptic));
 
         /// <summary>
         /// Returns the display name for UI purposes: the user-assigned DisplayName if set,
@@ -352,13 +369,20 @@ namespace PadForge.Engine.Data
                 0  // flags not available from SDL
             );
 
+            // Store the raw joystick button count (may exceed NumButtons for gamepad devices).
+            RawButtonCount = Math.Max(wrapper.RawButtonCount, wrapper.NumButtons);
+
+            // Sensor capabilities.
+            HasGyro = wrapper.HasGyro;
+            HasAccel = wrapper.HasAccel;
+
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;
             DevicePath = wrapper.DevicePath;
 
             // Populate device objects and effects.
             DeviceObjects = wrapper.GetDeviceObjects();
-            DeviceEffects = wrapper.HasRumble
+            DeviceEffects = (wrapper.HasRumble || wrapper.HasHaptic)
                 ? new[] { DeviceEffectItem.CreateRumbleEffect() }
                 : Array.Empty<DeviceEffectItem>();
 
@@ -370,8 +394,8 @@ namespace PadForge.Engine.Data
             ActuatorCount = actuatorCount;
             SliderMask = CustomInputState.GetSlidersMask(DeviceObjects, CustomInputState.MaxSliders);
 
-            // Initialize force feedback state.
-            if (wrapper.HasRumble)
+            // Initialize force feedback state for devices with rumble or haptic FFB.
+            if (wrapper.HasRumble || wrapper.HasHaptic)
                 ForceFeedbackState = new ForceFeedbackState();
 
             Device = wrapper;

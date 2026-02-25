@@ -71,6 +71,9 @@ namespace PadForge.Services
         private MapType _axisCandidateType;
         private int _axisCandidateIndex;
 
+        /// <summary>Whether the axis candidate moved in the positive direction (value increased).</summary>
+        private bool _axisCandidatePositive;
+
         /// <summary>When recording started (for timeout).</summary>
         private DateTime _recordingStartTime;
 
@@ -227,26 +230,31 @@ namespace PadForge.Services
             int bestAxisIndex = -1;
             MapType bestAxisType = MapType.None;
             int bestAxisDelta = 0;
+            int bestAxisSignedDelta = 0;
 
             for (int i = 0; i < CustomInputState.MaxAxis; i++)
             {
-                int delta = Math.Abs(current.Axis[i] - _baseline.Axis[i]);
+                int signedDelta = current.Axis[i] - _baseline.Axis[i];
+                int delta = Math.Abs(signedDelta);
                 if (delta > AxisThreshold && delta > bestAxisDelta)
                 {
                     bestAxisDelta = delta;
                     bestAxisIndex = i;
                     bestAxisType = MapType.Axis;
+                    bestAxisSignedDelta = signedDelta;
                 }
             }
 
             for (int i = 0; i < CustomInputState.MaxSliders; i++)
             {
-                int delta = Math.Abs(current.Sliders[i] - _baseline.Sliders[i]);
+                int signedDelta = current.Sliders[i] - _baseline.Sliders[i];
+                int delta = Math.Abs(signedDelta);
                 if (delta > AxisThreshold && delta > bestAxisDelta)
                 {
                     bestAxisDelta = delta;
                     bestAxisIndex = i;
                     bestAxisType = MapType.Slider;
+                    bestAxisSignedDelta = signedDelta;
                 }
             }
 
@@ -258,7 +266,7 @@ namespace PadForge.Services
                     _axisHoldCounter++;
                     if (_axisHoldCounter >= AxisHoldCycles)
                     {
-                        CompleteRecording(bestAxisType, bestAxisIndex, null);
+                        CompleteRecording(bestAxisType, bestAxisIndex, null, _axisCandidatePositive);
                         return;
                     }
                 }
@@ -267,6 +275,7 @@ namespace PadForge.Services
                     // New candidate — reset counter.
                     _axisCandidateType = bestAxisType;
                     _axisCandidateIndex = bestAxisIndex;
+                    _axisCandidatePositive = bestAxisSignedDelta > 0;
                     _axisHoldCounter = 1;
                 }
             }
@@ -290,7 +299,8 @@ namespace PadForge.Services
         /// <param name="type">The input type detected.</param>
         /// <param name="index">The zero-based index within the type.</param>
         /// <param name="povDirection">For POV: the direction string ("Up", "Down", etc.).</param>
-        private void CompleteRecording(MapType type, int index, string povDirection)
+        /// <param name="axisPositive">For axes: true if the raw value increased (positive delta).</param>
+        private void CompleteRecording(MapType type, int index, string povDirection, bool axisPositive = false)
         {
             if (_activeMapping == null)
                 return;
@@ -309,21 +319,56 @@ namespace PadForge.Services
             _activePadIndex = -1;
             _baseline = null;
 
-            // Assign the descriptor.
+            // Assign the clean descriptor first (no prefix).
             mapping.SourceDescriptor = descriptor;
 
-            _mainVm.StatusText = $"Recorded \"{mapping.TargetLabel}\" ← {descriptor}";
+            // Auto-detect inversion for axis/slider recordings based on movement direction.
+            if (type == MapType.Axis || type == MapType.Slider)
+                mapping.IsInverted = ShouldAutoInvert(mapping, axisPositive);
+
+            // Read back the final descriptor (may have "I" prefix from auto-inversion).
+            string finalDescriptor = mapping.SourceDescriptor;
+            _mainVm.StatusText = $"Recorded \"{mapping.TargetLabel}\" ← {finalDescriptor}";
 
             // Raise event.
             RecordingCompleted?.Invoke(this, new RecordingResult
             {
                 Mapping = mapping,
                 PadIndex = padIndex,
-                Descriptor = descriptor,
+                Descriptor = finalDescriptor,
                 Type = type,
                 Index = index,
                 PovDirection = povDirection
             });
+        }
+
+        /// <summary>
+        /// Determines whether an axis recording should auto-apply the Invert prefix
+        /// based on the target mapping and the direction of initial movement.
+        /// </summary>
+        /// <param name="mapping">The target mapping item being recorded.</param>
+        /// <param name="axisPositive">True if the raw axis value increased (positive delta).</param>
+        private static bool ShouldAutoInvert(MappingItem mapping, bool axisPositive)
+        {
+            string target = mapping.TargetSettingName;
+
+            // Y-axis targets: "up" is natural. SDL raw Y increases when pushed down,
+            // so positive delta = down = needs inversion.
+            if (target == "LeftThumbAxisY" || target == "RightThumbAxisY")
+                return axisPositive;
+
+            // X-axis targets: "right" is natural. SDL raw X increases when pushed right,
+            // so negative delta = left = needs inversion.
+            if (target == "LeftThumbAxisX" || target == "RightThumbAxisX")
+                return !axisPositive;
+
+            // Trigger targets: increasing value is natural.
+            // Negative delta = reverse polarity = needs inversion.
+            if (target == "LeftTrigger" || target == "RightTrigger")
+                return !axisPositive;
+
+            // All other targets (buttons, d-pad, etc.): no auto-inversion.
+            return false;
         }
 
         /// <summary>

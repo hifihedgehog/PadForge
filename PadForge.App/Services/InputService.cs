@@ -42,6 +42,8 @@ namespace PadForge.Services
         private readonly Dispatcher _dispatcher;
         private InputManager _inputManager;
         private DispatcherTimer _uiTimer;
+        private ForegroundMonitorService _foregroundMonitor;
+        private ProfileData _defaultProfileSnapshot;
         private bool _disposed;
 
         /// <summary>
@@ -61,6 +63,8 @@ namespace PadForge.Services
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
         private ushort _recordedButtons;
+        private Guid _recordingDeviceGuid;
+        private HashSet<int> _recordedRawButtons;
 
         /// <summary>
         /// Tracks the previously selected device GUID for each pad slot,
@@ -113,6 +117,13 @@ namespace PadForge.Services
             // Subscribe to polling interval changes from the Settings UI.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
 
+            // Create foreground monitor for auto-profile switching.
+            _foregroundMonitor = new ForegroundMonitorService();
+            _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
+
+            // Capture default profile snapshot before any profile switches.
+            _defaultProfileSnapshot = SnapshotCurrentProfile();
+
             // Start engine background thread.
             _inputManager.Start();
 
@@ -145,6 +156,13 @@ namespace PadForge.Services
 
             // Unsubscribe from settings changes.
             _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
+
+            // Dispose foreground monitor.
+            if (_foregroundMonitor != null)
+            {
+                _foregroundMonitor.ProfileSwitchRequired -= OnProfileSwitchRequired;
+                _foregroundMonitor = null;
+            }
 
             // Stop and dispose engine.
             if (_inputManager != null)
@@ -189,6 +207,18 @@ namespace PadForge.Services
                 var vibration = _inputManager.VibrationStates[i];
 
                 padVm.UpdateFromEngineState(gp, vibration);
+
+                // Per-device state for stick/trigger tab previews.
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                {
+                    var us = SettingsManager.UserSettings?.FindByInstanceGuid(selected.InstanceGuid);
+                    padVm.UpdateDeviceState(us?.XiState ?? default);
+                }
+                else
+                {
+                    padVm.UpdateDeviceState(gp);
+                }
             }
 
             // ── Update Dashboard ──
@@ -214,6 +244,9 @@ namespace PadForge.Services
 
             // ── Sync macro snapshots to engine ──
             SyncMacroSnapshots();
+
+            // ── Auto-profile switching (check foreground window) ──
+            _foregroundMonitor?.CheckForegroundWindow();
         }
 
         // ─────────────────────────────────────────────
@@ -314,6 +347,8 @@ namespace PadForge.Services
                 devVm.RawAxisDisplay = "No data";
                 devVm.RawButtonDisplay = "No data";
                 devVm.RawPovDisplay = "No data";
+                devVm.RawGyroDisplay = string.Empty;
+                devVm.RawAccelDisplay = string.Empty;
                 return;
             }
 
@@ -328,17 +363,20 @@ namespace PadForge.Services
             }
             devVm.RawAxisDisplay = axisLines.ToString().TrimEnd();
 
-            // Format buttons.
+            // Format buttons — use RawButtonCount to show all native buttons,
+            // not just the 11 gamepad-mapped ones.
             var btnParts = new System.Collections.Generic.List<string>();
-            int btnCount = Math.Min(ud.CapButtonCount, CustomInputState.MaxButtons);
+            int btnCount = Math.Min(
+                ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                CustomInputState.MaxButtons);
             for (int i = 0; i < btnCount; i++)
             {
                 if (state.Buttons[i])
                     btnParts.Add($"[{i}]");
             }
             devVm.RawButtonDisplay = btnParts.Count > 0
-                ? "Pressed: " + string.Join(", ", btnParts)
-                : "No buttons pressed";
+                ? $"Pressed: {string.Join(", ", btnParts)}  ({btnCount} total)"
+                : $"No buttons pressed  ({btnCount} total)";
 
             // Format POVs.
             var povLines = new System.Text.StringBuilder();
@@ -350,6 +388,30 @@ namespace PadForge.Services
                 povLines.AppendLine($"POV {i}: {povText}");
             }
             devVm.RawPovDisplay = povLines.ToString().TrimEnd();
+
+            // Format gyroscope (only if the device has a gyro sensor).
+            if (ud.HasGyro)
+            {
+                devVm.RawGyroDisplay = $"X: {state.Gyro[0],8:F3} rad/s\n" +
+                                       $"Y: {state.Gyro[1],8:F3} rad/s\n" +
+                                       $"Z: {state.Gyro[2],8:F3} rad/s";
+            }
+            else
+            {
+                devVm.RawGyroDisplay = string.Empty;
+            }
+
+            // Format accelerometer (only if the device has an accel sensor).
+            if (ud.HasAccel)
+            {
+                devVm.RawAccelDisplay = $"X: {state.Accel[0],8:F3} m/s²\n" +
+                                        $"Y: {state.Accel[1],8:F3} m/s²\n" +
+                                        $"Z: {state.Accel[2],8:F3} m/s²";
+            }
+            else
+            {
+                devVm.RawAccelDisplay = string.Empty;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -836,6 +898,8 @@ namespace PadForge.Services
             row.ButtonCount = ud.CapButtonCount;
             row.PovCount = ud.CapPovCount;
             row.HasRumble = ud.HasForceFeedback;
+            row.HasGyro = ud.HasGyro;
+            row.HasAccel = ud.HasAccel;
             row.DevicePath = ud.DevicePath;
 
             // Resolve device type name.
@@ -1015,31 +1079,37 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Sends a brief test rumble to the device mapped to the specified pad slot.
+        /// Sends a brief test rumble to a specific device (or all devices in a slot).
         /// </summary>
         /// <param name="padIndex">Pad slot index (0–3).</param>
-        public void SendTestRumble(int padIndex)
+        /// <param name="deviceGuid">Optional device GUID to target. When null, rumbles all devices in the slot.</param>
+        public void SendTestRumble(int padIndex, Guid? deviceGuid)
         {
-            SendTestRumble(padIndex, true, true);
+            SendTestRumble(padIndex, deviceGuid, true, true);
         }
 
-        public void SendTestRumble(int padIndex, bool left, bool right)
+        public void SendTestRumble(int padIndex, Guid? deviceGuid, bool left, bool right)
         {
             if (_inputManager == null || padIndex < 0 || padIndex >= InputManager.MaxPads)
                 return;
 
-            // Set vibration for 500ms, then clear.
+            // Set device-level filter so the background thread only rumbles the target device.
+            if (deviceGuid.HasValue && deviceGuid.Value != Guid.Empty)
+                _inputManager.TestRumbleTargetGuid[padIndex] = deviceGuid.Value;
+
+            // Set vibration via slot-level state (background thread applies it).
             if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
             if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
 
             // Schedule clearing after 500ms.
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-            clearTimer.Tick += (s, e) =>
+            clearTimer.Tick += (s2, e2) =>
             {
                 if (_inputManager != null && padIndex < InputManager.MaxPads)
                 {
                     if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
                     if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
+                    _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
                 }
                 clearTimer.Stop();
             };
@@ -1065,38 +1135,224 @@ namespace PadForge.Services
             _recordingMacro = macro;
             _recordingPadIndex = padIndex;
             _recordedButtons = 0;
+            _recordingDeviceGuid = Guid.Empty;
+            _recordedRawButtons = new HashSet<int>();
             macro.IsRecordingTrigger = true;
         }
 
         /// <summary>
         /// Stops the current macro trigger recording session and writes the
-        /// accumulated button flags to the MacroItem.
+        /// accumulated trigger data to the MacroItem.
         /// </summary>
         public void StopMacroTriggerRecording()
         {
             if (_recordingMacro == null)
                 return;
 
-            _recordingMacro.TriggerButtons = _recordedButtons;
+            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
+                && _recordingDeviceGuid != Guid.Empty
+                && _recordedRawButtons != null && _recordedRawButtons.Count > 0)
+            {
+                // Raw device button path.
+                _recordingMacro.TriggerDeviceGuid = _recordingDeviceGuid;
+                _recordingMacro.TriggerRawButtons = _recordedRawButtons.OrderBy(x => x).ToArray();
+                _recordingMacro.TriggerButtons = 0; // Clear legacy
+            }
+            else
+            {
+                // Xbox bitmask path (OutputController or fallback).
+                _recordingMacro.TriggerButtons = _recordedButtons;
+                _recordingMacro.TriggerDeviceGuid = Guid.Empty;
+                _recordingMacro.TriggerRawButtons = Array.Empty<int>();
+            }
+
             _recordingMacro.IsRecordingTrigger = false;
             _recordingMacro = null;
             _recordedButtons = 0;
+            _recordingDeviceGuid = Guid.Empty;
+            _recordedRawButtons = null;
         }
 
         /// <summary>
         /// Called each UI tick during macro trigger recording.
-        /// Accumulates button flags from the CombinedXiState.
+        /// When TriggerSource is InputDevice, reads raw button state from individual
+        /// devices mapped to the pad slot; the first device to press a button "locks in".
+        /// When TriggerSource is OutputController, reads from the combined Xbox-mapped state.
         /// </summary>
         private void UpdateMacroTriggerRecording()
         {
             if (_recordingMacro == null || _inputManager == null)
                 return;
 
-            if (_recordingPadIndex >= 0 && _recordingPadIndex < InputManager.MaxPads)
+            if (_recordingPadIndex < 0 || _recordingPadIndex >= InputManager.MaxPads)
+                return;
+
+            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
-                ushort buttons = _inputManager.CombinedXiStates[_recordingPadIndex].Buttons;
-                _recordedButtons |= buttons;
+                // Scan raw buttons from devices mapped to this pad slot.
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(_recordingPadIndex);
+                if (slotSettings != null)
+                {
+                    foreach (var setting in slotSettings)
+                    {
+                        var ud = FindUserDevice(setting.InstanceGuid);
+                        if (ud == null || !ud.IsOnline || ud.InputState == null)
+                            continue;
+
+                        // If already locked to a different device, skip.
+                        if (_recordingDeviceGuid != Guid.Empty && _recordingDeviceGuid != ud.InstanceGuid)
+                            continue;
+
+                        // Check for any pressed buttons on this device.
+                        var buttons = ud.InputState.Buttons;
+                        int count = Math.Min(buttons.Length, ud.Device?.RawButtonCount ?? buttons.Length);
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (buttons[i])
+                            {
+                                // Lock to this device on first press.
+                                if (_recordingDeviceGuid == Guid.Empty)
+                                    _recordingDeviceGuid = ud.InstanceGuid;
+
+                                _recordedRawButtons.Add(i);
+                            }
+                        }
+                    }
+                }
             }
+            else
+            {
+                // OutputController: accumulate from the combined Xbox-mapped state.
+                ushort xboxButtons = _inputManager.CombinedXiStates[_recordingPadIndex].Buttons;
+                _recordedButtons |= xboxButtons;
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Profile switching
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Saves the current runtime PadSettings and macros into a ProfileData snapshot.
+        /// Used to capture the current state before switching profiles.
+        /// </summary>
+        public ProfileData SnapshotCurrentProfile()
+        {
+            // Ensure ViewModel values are pushed to PadSettings first.
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var padVm = _mainVm.Pads[i];
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+            }
+
+            var entries = new List<ProfileEntry>();
+            var padSettings = new List<PadSetting>();
+            var seen = new HashSet<string>();
+
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                foreach (var us in SettingsManager.UserSettings.Items)
+                {
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+
+                    ps.UpdateChecksum();
+
+                    entries.Add(new ProfileEntry
+                    {
+                        InstanceGuid = us.InstanceGuid,
+                        MapTo = us.MapTo,
+                        PadSettingChecksum = ps.PadSettingChecksum
+                    });
+
+                    if (seen.Add(ps.PadSettingChecksum))
+                        padSettings.Add(ps.CloneDeep());
+                }
+            }
+
+            return new ProfileData
+            {
+                Entries = entries.ToArray(),
+                PadSettings = padSettings.ToArray()
+            };
+        }
+
+        /// <summary>
+        /// Loads a profile's PadSettings into the runtime state.
+        /// For each ProfileEntry, finds the matching UserSetting and swaps its PadSetting.
+        /// </summary>
+        private void ApplyProfile(ProfileData profile)
+        {
+            if (profile?.Entries == null || profile.Entries.Length == 0 ||
+                profile.PadSettings == null || profile.PadSettings.Length == 0)
+                return;
+
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                foreach (var entry in profile.Entries)
+                {
+                    var us = SettingsManager.UserSettings.Items
+                        .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid);
+                    if (us == null) continue;
+
+                    // Find the PadSetting template by checksum.
+                    var template = profile.PadSettings
+                        .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
+                    if (template == null) continue;
+
+                    // Clone and apply.
+                    var ps = template.CloneDeep();
+                    us.SetPadSetting(ps);
+                }
+            }
+
+            // Reload ViewModels with new PadSettings.
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var padVm = _mainVm.Pads[i];
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+            }
+        }
+
+        /// <summary>
+        /// Called by <see cref="ForegroundMonitorService"/> when the foreground
+        /// process matches a different profile. Runs on the UI thread.
+        /// </summary>
+        private void OnProfileSwitchRequired(string profileId)
+        {
+            // If switching to the same profile, skip.
+            if (profileId == SettingsManager.ActiveProfileId)
+                return;
+
+            // Switch to the target profile (or revert to default).
+            if (profileId != null)
+            {
+                var target = FindProfileById(profileId);
+                if (target != null)
+                {
+                    ApplyProfile(target);
+                    SettingsManager.ActiveProfileId = profileId;
+                    _mainVm.StatusText = $"Profile switched: {target.Name}";
+                }
+            }
+            else
+            {
+                // Revert to default (root) profile using the startup snapshot.
+                if (_defaultProfileSnapshot != null)
+                    ApplyProfile(_defaultProfileSnapshot);
+                SettingsManager.ActiveProfileId = null;
+                _mainVm.StatusText = "Profile switched: Default";
+            }
+        }
+
+        private static ProfileData FindProfileById(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return null;
+            return SettingsManager.Profiles?.FirstOrDefault(p => p.Id == id);
         }
 
         // ─────────────────────────────────────────────

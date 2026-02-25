@@ -55,6 +55,8 @@ namespace PadForge
             _viewModel.Settings.ResetRequested += (s, e) => _settingsService.ResetToDefaults();
             _viewModel.Settings.OpenSettingsFolderRequested += OnOpenSettingsFolder;
             _viewModel.Settings.ThemeChanged += OnThemeChanged;
+            _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
+            _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
 
             // Apply registry Run key when Start at Login is toggled.
             _viewModel.Settings.PropertyChanged += (s, e) =>
@@ -94,17 +96,17 @@ namespace PadForge
                 pad.TestRumbleRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex);
+                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid);
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, true, false);
+                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, true, false);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, false, true);
+                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, false, true);
                 };
             }
 
@@ -377,6 +379,70 @@ namespace PadForge
                     UseShellExecute = true
                 });
             }
+        }
+
+        private void OnSaveAsProfile(object sender, EventArgs e)
+        {
+            var dialog = new Views.ProfileDialog { Owner = this };
+            if (dialog.ShowDialog() != true)
+                return;
+
+            string name = dialog.ProfileName;
+            // Store full paths pipe-separated.
+            string exePaths = string.Join("|", dialog.ExecutablePaths);
+
+            // Snapshot current settings into a new profile.
+            var snapshot = _inputService.SnapshotCurrentProfile();
+            snapshot.Id = Guid.NewGuid().ToString("N");
+            snapshot.Name = name.Trim();
+            snapshot.ExecutableNames = exePaths;
+
+            SettingsManager.Profiles.Add(snapshot);
+
+            _viewModel.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+            {
+                Id = snapshot.Id,
+                Name = snapshot.Name,
+                Executables = FormatExePaths(exePaths)
+            });
+
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = $"Profile \"{name}\" created.";
+        }
+
+        /// <summary>
+        /// Formats pipe-separated full paths into a display string showing just file names.
+        /// </summary>
+        private static string FormatExePaths(string pipeSeparatedPaths)
+        {
+            if (string.IsNullOrEmpty(pipeSeparatedPaths))
+                return string.Empty;
+
+            var parts = pipeSeparatedPaths.Split('|', StringSplitOptions.RemoveEmptyEntries);
+            var names = new string[parts.Length];
+            for (int i = 0; i < parts.Length; i++)
+                names[i] = System.IO.Path.GetFileName(parts[i]);
+            return string.Join(", ", names);
+        }
+
+        private void OnDeleteProfile(object sender, EventArgs e)
+        {
+            var selected = _viewModel.Settings.SelectedProfile;
+            if (selected == null) return;
+
+            SettingsManager.Profiles.RemoveAll(p => p.Id == selected.Id);
+
+            _viewModel.Settings.ProfileItems.Remove(selected);
+            _viewModel.Settings.SelectedProfile = null;
+
+            if (SettingsManager.ActiveProfileId == selected.Id)
+            {
+                SettingsManager.ActiveProfileId = null;
+                _viewModel.Settings.ActiveProfileInfo = "Default";
+            }
+
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = $"Profile \"{selected.Name}\" deleted.";
         }
 
         private void WireMacroRecording(MacroItem macro, int padIndex)

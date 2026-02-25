@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -300,6 +301,98 @@ namespace PadForge.ViewModels
         {
             get => _runtimeVersion;
             set => SetProperty(ref _runtimeVersion, value ?? string.Empty);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Profiles
+        // ─────────────────────────────────────────────
+
+        private bool _enableAutoProfileSwitching;
+
+        /// <summary>Whether auto-profile switching is enabled.</summary>
+        public bool EnableAutoProfileSwitching
+        {
+            get => _enableAutoProfileSwitching;
+            set => SetProperty(ref _enableAutoProfileSwitching, value);
+        }
+
+        /// <summary>Observable list of profile names for the UI.</summary>
+        public ObservableCollection<ProfileListItem> ProfileItems { get; } = new();
+
+        private ProfileListItem _selectedProfile;
+
+        /// <summary>Currently selected profile in the list.</summary>
+        public ProfileListItem SelectedProfile
+        {
+            get => _selectedProfile;
+            set
+            {
+                if (SetProperty(ref _selectedProfile, value))
+                    _deleteProfileCommand?.NotifyCanExecuteChanged();
+            }
+        }
+
+        private string _activeProfileInfo = "Default";
+
+        /// <summary>Display text for the currently active profile.</summary>
+        public string ActiveProfileInfo
+        {
+            get => _activeProfileInfo;
+            set => SetProperty(ref _activeProfileInfo, value ?? "Default");
+        }
+
+        /// <summary>Raised when the user requests saving current settings as a new profile.</summary>
+        public event EventHandler SaveAsProfileRequested;
+
+        /// <summary>Raised when the user requests deleting the selected profile.</summary>
+        public event EventHandler DeleteProfileRequested;
+
+        private RelayCommand _saveAsProfileCommand;
+
+        /// <summary>Command to save current settings as a new profile.</summary>
+        public RelayCommand SaveAsProfileCommand =>
+            _saveAsProfileCommand ??= new RelayCommand(
+                () => SaveAsProfileRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _deleteProfileCommand;
+
+        /// <summary>Command to delete the selected profile.</summary>
+        public RelayCommand DeleteProfileCommand =>
+            _deleteProfileCommand ??= new RelayCommand(
+                () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
+                () => _selectedProfile != null);
+
+        /// <summary>Refreshes the can-execute state of profile commands.</summary>
+        public void RefreshProfileCommands()
+        {
+            _deleteProfileCommand?.NotifyCanExecuteChanged();
+        }
+    }
+
+    /// <summary>
+    /// Display item for a profile in the Settings page list.
+    /// </summary>
+    public class ProfileListItem : ObservableObject
+    {
+        private string _id;
+        public string Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private string _executables;
+        public string Executables
+        {
+            get => _executables;
+            set => SetProperty(ref _executables, value);
         }
     }
 }

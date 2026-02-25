@@ -194,6 +194,9 @@ namespace PadForge.Services
                 // Load macros into pad ViewModels.
                 if (data.Macros != null)
                     LoadMacros(data.Macros);
+
+                // Load profiles.
+                LoadProfiles(data.Profiles, data.AppSettings);
             }
             catch (Exception ex)
             {
@@ -214,6 +217,9 @@ namespace PadForge.Services
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
             vm.PollingRateMs = appSettings.PollingRateMs;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
+            vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
+            SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
+            SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
         }
 
         /// <summary>
@@ -306,6 +312,10 @@ namespace PadForge.Services
                     Name = md.Name ?? "Macro",
                     IsEnabled = md.IsEnabled,
                     TriggerButtons = md.TriggerButtons,
+                    TriggerDeviceGuid = Guid.TryParse(md.TriggerDeviceGuid, out var parsedGuid)
+                        ? parsedGuid : Guid.Empty,
+                    TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
+                    TriggerSource = md.TriggerSource,
                     TriggerMode = md.TriggerMode,
                     ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                     RepeatMode = md.RepeatMode,
@@ -335,6 +345,67 @@ namespace PadForge.Services
 
                 padVm.Macros.Add(macro);
             }
+        }
+
+        /// <summary>
+        /// Parses a comma-separated string of button indices (e.g. "13,14") into an int array.
+        /// Returns empty array for null/empty input.
+        /// </summary>
+        private static int[] ParseRawButtonIndices(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+                return Array.Empty<int>();
+            var parts = raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var result = new System.Collections.Generic.List<int>(parts.Length);
+            foreach (var part in parts)
+            {
+                if (int.TryParse(part, out int idx))
+                    result.Add(idx);
+            }
+            return result.ToArray();
+        }
+
+        /// <summary>
+        /// Loads profiles from serialized data into SettingsManager and the ViewModel.
+        /// </summary>
+        private void LoadProfiles(ProfileData[] profiles, AppSettingsData appSettings)
+        {
+            SettingsManager.Profiles.Clear();
+            _mainVm.Settings.ProfileItems.Clear();
+
+            if (profiles != null)
+            {
+                foreach (var p in profiles)
+                {
+                    SettingsManager.Profiles.Add(p);
+                    _mainVm.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Executables = FormatExePaths(p.ExecutableNames)
+                    });
+                }
+            }
+
+            // Update active profile display.
+            string activeId = appSettings?.ActiveProfileId;
+            var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
+            _mainVm.Settings.ActiveProfileInfo = active?.Name ?? "Default";
+        }
+
+        /// <summary>
+        /// Formats pipe-separated full paths into a display string showing just file names.
+        /// </summary>
+        private static string FormatExePaths(string pipeSeparatedPaths)
+        {
+            if (string.IsNullOrEmpty(pipeSeparatedPaths))
+                return string.Empty;
+
+            var parts = pipeSeparatedPaths.Split('|', StringSplitOptions.RemoveEmptyEntries);
+            var names = new string[parts.Length];
+            for (int i = 0; i < parts.Length; i++)
+                names[i] = System.IO.Path.GetFileName(parts[i]);
+            return string.Join(", ", names);
         }
 
         // ─────────────────────────────────────────────
@@ -407,6 +478,10 @@ namespace PadForge.Services
                 // Collect macros from all pad ViewModels.
                 data.Macros = BuildMacroData();
 
+                // Collect profiles.
+                if (SettingsManager.Profiles.Count > 0)
+                    data.Profiles = SettingsManager.Profiles.ToArray();
+
                 // Serialize.
                 var serializer = new XmlSerializer(typeof(SettingsFileData));
                 string dir = Path.GetDirectoryName(filePath);
@@ -434,6 +509,8 @@ namespace PadForge.Services
         private AppSettingsData BuildAppSettings()
         {
             var vm = _mainVm.Settings;
+            // Sync the ViewModel toggle to the static state.
+            SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
             return new AppSettingsData
             {
                 AutoStartEngine = vm.AutoStartEngine,
@@ -442,7 +519,9 @@ namespace PadForge.Services
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateMs = vm.PollingRateMs,
-                ThemeIndex = vm.SelectedThemeIndex
+                ThemeIndex = vm.SelectedThemeIndex,
+                EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
+                ActiveProfileId = SettingsManager.ActiveProfileId
             };
         }
 
@@ -464,6 +543,11 @@ namespace PadForge.Services
                         Name = macro.Name,
                         IsEnabled = macro.IsEnabled,
                         TriggerButtons = macro.TriggerButtons,
+                        TriggerDeviceGuid = macro.TriggerDeviceGuid != Guid.Empty
+                            ? macro.TriggerDeviceGuid.ToString("N") : null,
+                        TriggerRawButtons = macro.TriggerRawButtons.Length > 0
+                            ? string.Join(",", macro.TriggerRawButtons) : null,
+                        TriggerSource = macro.TriggerSource,
                         TriggerMode = macro.TriggerMode,
                         ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
                         RepeatMode = macro.RepeatMode,
@@ -593,6 +677,12 @@ namespace PadForge.Services
             settingsVm.EnablePollingOnFocusLoss = true;
             settingsVm.PollingRateMs = 1;
             settingsVm.SelectedThemeIndex = 0;
+            settingsVm.EnableAutoProfileSwitching = false;
+            SettingsManager.EnableAutoProfileSwitching = false;
+            SettingsManager.ActiveProfileId = null;
+            SettingsManager.Profiles.Clear();
+            settingsVm.ProfileItems.Clear();
+            settingsVm.ActiveProfileInfo = "Default";
 
             IsDirty = true;
             settingsVm.HasUnsavedChanges = true;
@@ -705,6 +795,10 @@ namespace PadForge.Services
         [XmlArray("Macros")]
         [XmlArrayItem("Macro")]
         public MacroData[] Macros { get; set; }
+
+        [XmlArray("Profiles")]
+        [XmlArrayItem("Profile")]
+        public ProfileData[] Profiles { get; set; }
     }
 
     /// <summary>
@@ -732,6 +826,12 @@ namespace PadForge.Services
 
         [XmlElement]
         public int ThemeIndex { get; set; }
+
+        [XmlElement]
+        public bool EnableAutoProfileSwitching { get; set; }
+
+        [XmlElement]
+        public string ActiveProfileId { get; set; }
     }
 
     /// <summary>
@@ -750,6 +850,23 @@ namespace PadForge.Services
 
         [XmlElement]
         public ushort TriggerButtons { get; set; }
+
+        /// <summary>
+        /// GUID of the device whose raw buttons are the trigger source (string form).
+        /// Null/empty = use legacy Xbox bitmask path.
+        /// </summary>
+        [XmlElement]
+        public string TriggerDeviceGuid { get; set; }
+
+        /// <summary>
+        /// Comma-separated raw button indices, e.g. "13,14".
+        /// Null/empty = not using raw trigger path.
+        /// </summary>
+        [XmlElement]
+        public string TriggerRawButtons { get; set; }
+
+        [XmlElement]
+        public MacroTriggerSource TriggerSource { get; set; }
 
         [XmlElement]
         public MacroTriggerMode TriggerMode { get; set; }
@@ -799,5 +916,53 @@ namespace PadForge.Services
 
         [XmlElement]
         public MacroAxisTarget AxisTarget { get; set; }
+    }
+
+    /// <summary>
+    /// A named profile that stores per-device PadSettings and macros.
+    /// When auto-switching is enabled, profiles activate when a matching
+    /// executable's window comes to the foreground.
+    /// </summary>
+    public class ProfileData
+    {
+        [XmlAttribute]
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+        [XmlElement]
+        public string Name { get; set; } = "New Profile";
+
+        /// <summary>
+        /// Pipe-separated full executable paths (e.g. "C:\Games\game.exe|D:\Other\game2.exe").
+        /// Case-insensitive matching against the foreground window's process path.
+        /// </summary>
+        [XmlElement]
+        public string ExecutableNames { get; set; } = string.Empty;
+
+        [XmlArray("Entries")]
+        [XmlArrayItem("Entry")]
+        public ProfileEntry[] Entries { get; set; }
+
+        [XmlArray("ProfilePadSettings")]
+        [XmlArrayItem("PadSetting")]
+        public PadSetting[] PadSettings { get; set; }
+
+        [XmlArray("ProfileMacros")]
+        [XmlArrayItem("Macro")]
+        public MacroData[] Macros { get; set; }
+    }
+
+    /// <summary>
+    /// Links a device (by instance GUID) to a slot and PadSetting within a profile.
+    /// </summary>
+    public class ProfileEntry
+    {
+        [XmlElement]
+        public Guid InstanceGuid { get; set; }
+
+        [XmlElement]
+        public int MapTo { get; set; }
+
+        [XmlElement]
+        public string PadSettingChecksum { get; set; }
     }
 }

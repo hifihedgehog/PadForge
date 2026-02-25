@@ -347,6 +347,8 @@ namespace PadForge.Services
                 devVm.RawAxisDisplay = "No data";
                 devVm.RawButtonDisplay = "No data";
                 devVm.RawPovDisplay = "No data";
+                devVm.RawGyroDisplay = string.Empty;
+                devVm.RawAccelDisplay = string.Empty;
                 return;
             }
 
@@ -361,17 +363,20 @@ namespace PadForge.Services
             }
             devVm.RawAxisDisplay = axisLines.ToString().TrimEnd();
 
-            // Format buttons.
+            // Format buttons — use RawButtonCount to show all native buttons,
+            // not just the 11 gamepad-mapped ones.
             var btnParts = new System.Collections.Generic.List<string>();
-            int btnCount = Math.Min(ud.CapButtonCount, CustomInputState.MaxButtons);
+            int btnCount = Math.Min(
+                ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                CustomInputState.MaxButtons);
             for (int i = 0; i < btnCount; i++)
             {
                 if (state.Buttons[i])
                     btnParts.Add($"[{i}]");
             }
             devVm.RawButtonDisplay = btnParts.Count > 0
-                ? "Pressed: " + string.Join(", ", btnParts)
-                : "No buttons pressed";
+                ? $"Pressed: {string.Join(", ", btnParts)}  ({btnCount} total)"
+                : $"No buttons pressed  ({btnCount} total)";
 
             // Format POVs.
             var povLines = new System.Text.StringBuilder();
@@ -383,6 +388,30 @@ namespace PadForge.Services
                 povLines.AppendLine($"POV {i}: {povText}");
             }
             devVm.RawPovDisplay = povLines.ToString().TrimEnd();
+
+            // Format gyroscope (only if the device has a gyro sensor).
+            if (ud.HasGyro)
+            {
+                devVm.RawGyroDisplay = $"X: {state.Gyro[0],8:F3} rad/s\n" +
+                                       $"Y: {state.Gyro[1],8:F3} rad/s\n" +
+                                       $"Z: {state.Gyro[2],8:F3} rad/s";
+            }
+            else
+            {
+                devVm.RawGyroDisplay = string.Empty;
+            }
+
+            // Format accelerometer (only if the device has an accel sensor).
+            if (ud.HasAccel)
+            {
+                devVm.RawAccelDisplay = $"X: {state.Accel[0],8:F3} m/s²\n" +
+                                        $"Y: {state.Accel[1],8:F3} m/s²\n" +
+                                        $"Z: {state.Accel[2],8:F3} m/s²";
+            }
+            else
+            {
+                devVm.RawAccelDisplay = string.Empty;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -869,6 +898,8 @@ namespace PadForge.Services
             row.ButtonCount = ud.CapButtonCount;
             row.PovCount = ud.CapPovCount;
             row.HasRumble = ud.HasForceFeedback;
+            row.HasGyro = ud.HasGyro;
+            row.HasAccel = ud.HasAccel;
             row.DevicePath = ud.DevicePath;
 
             // Resolve device type name.

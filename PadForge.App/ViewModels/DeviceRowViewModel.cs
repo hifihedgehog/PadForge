@@ -184,6 +184,24 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hasRumble, value);
         }
 
+        private bool _hasGyro;
+
+        /// <summary>Whether the device has a gyroscope sensor.</summary>
+        public bool HasGyro
+        {
+            get => _hasGyro;
+            set => SetProperty(ref _hasGyro, value);
+        }
+
+        private bool _hasAccel;
+
+        /// <summary>Whether the device has an accelerometer sensor.</summary>
+        public bool HasAccel
+        {
+            get => _hasAccel;
+            set => SetProperty(ref _hasAccel, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Slot assignment
         // ─────────────────────────────────────────────
@@ -227,7 +245,9 @@ namespace PadForge.ViewModels
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
             $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} POV" +
-            (_hasRumble ? ", Rumble" : "");
+            (_hasRumble ? ", Rumble" : "") +
+            (_hasGyro ? ", Gyro" : "") +
+            (_hasAccel ? ", Accel" : "");
 
         /// <summary>
         /// Refreshes computed display properties.

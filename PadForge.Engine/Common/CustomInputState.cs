@@ -51,6 +51,18 @@ namespace PadForge.Engine
         public bool[] Buttons;
 
         /// <summary>
+        /// Gyroscope data: [X, Y, Z] in radians per second.
+        /// Only populated for devices with a gyro sensor.
+        /// </summary>
+        public float[] Gyro;
+
+        /// <summary>
+        /// Accelerometer data: [X, Y, Z] in meters per second squared.
+        /// Only populated for devices with an accelerometer sensor.
+        /// </summary>
+        public float[] Accel;
+
+        /// <summary>
         /// Creates a new zeroed input state with default array sizes.
         /// All axes and sliders default to 0, all POVs default to -1 (centered),
         /// all buttons default to false (released).
@@ -61,6 +73,8 @@ namespace PadForge.Engine
             Sliders = new int[MaxSliders];
             Povs = new int[MaxPovs];
             Buttons = new bool[MaxButtons];
+            Gyro = new float[3];
+            Accel = new float[3];
 
             // Initialize POVs to centered.
             for (int i = 0; i < Povs.Length; i++)
@@ -109,6 +123,8 @@ namespace PadForge.Engine
             Array.Copy(Sliders, clone.Sliders, MaxSliders);
             Array.Copy(Povs, clone.Povs, MaxPovs);
             Array.Copy(Buttons, clone.Buttons, MaxButtons);
+            Array.Copy(Gyro, clone.Gyro, 3);
+            Array.Copy(Accel, clone.Accel, 3);
             return clone;
         }
 

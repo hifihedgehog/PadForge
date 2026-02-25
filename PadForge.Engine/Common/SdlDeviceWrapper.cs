@@ -64,6 +64,12 @@ namespace PadForge.Engine
         /// </summary>
         public int RawButtonCount { get; private set; }
 
+        /// <summary>Whether the device has a gyroscope sensor.</summary>
+        public bool HasGyro { get; private set; }
+
+        /// <summary>Whether the device has an accelerometer sensor.</summary>
+        public bool HasAccel { get; private set; }
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 
@@ -189,6 +195,15 @@ namespace PadForge.Engine
             // Check rumble support via properties system (replaces SDL_JoystickHasRumble).
             uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
+
+            // Detect and enable motion sensors (gyro / accelerometer).
+            if (GameController != IntPtr.Zero)
+            {
+                HasGyro = SDL_GamepadHasSensor(GameController, SDL_SENSOR_GYRO);
+                HasAccel = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL);
+                if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
+                if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+            }
 
             // If the device doesn't support simple rumble, try the haptic API for
             // full force feedback (DirectInput FFB wheels, joysticks, etc.).
@@ -376,6 +391,12 @@ namespace PadForge.Engine
             bool left = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_LEFT);
             bool right = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
             state.Povs[0] = DpadToCentidegrees(up, down, left, right);
+
+            // --- Sensors (gyro / accelerometer) ---
+            if (HasGyro)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_GYRO, state.Gyro, 3);
+            if (HasAccel)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
 
             return state;
         }

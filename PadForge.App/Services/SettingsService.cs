@@ -238,6 +238,11 @@ namespace PadForge.Services
                         _mainVm.Pads[i].OutputType = (Engine.VirtualControllerType)appSettings.SlotControllerTypes[i];
                 }
             }
+
+            // Load DSU motion server settings.
+            vm.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
+            vm.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
+                ? appSettings.DsuMotionServerPort : 26760;
         }
 
         /// <summary>
@@ -596,7 +601,9 @@ namespace PadForge.Services
                 ThemeIndex = vm.SelectedThemeIndex,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
-                SlotControllerTypes = slotTypes
+                SlotControllerTypes = slotTypes,
+                EnableDsuMotionServer = vm.EnableDsuMotionServer,
+                DsuMotionServerPort = vm.DsuMotionServerPort
             };
         }
 
@@ -757,6 +764,8 @@ namespace PadForge.Services
             settingsVm.PollingRateMs = 1;
             settingsVm.SelectedThemeIndex = 0;
             settingsVm.EnableAutoProfileSwitching = false;
+            settingsVm.EnableDsuMotionServer = false;
+            settingsVm.DsuMotionServerPort = 26760;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
@@ -941,6 +950,12 @@ namespace PadForge.Services
         [XmlArray("SlotControllerTypes")]
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
+
+        [XmlElement]
+        public bool EnableDsuMotionServer { get; set; }
+
+        [XmlElement]
+        public int DsuMotionServerPort { get; set; } = 26760;
     }
 
     /// <summary>

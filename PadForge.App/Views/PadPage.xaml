@@ -585,55 +585,55 @@
                         <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
                                    Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                         <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                Padding="4" Width="112" Height="112" HorizontalAlignment="Left"
+                                Padding="4" Width="62" Height="62" HorizontalAlignment="Left"
                                 ClipToBounds="True">
-                            <Grid Width="100" Height="100">
+                            <Grid Width="50" Height="50">
                                 <!-- Circle background fill -->
-                                <Ellipse Width="100" Height="100"
+                                <Ellipse Width="50" Height="50"
                                          Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
                                 <Canvas>
                                     <!-- Boundary circle -->
-                                    <Ellipse Width="96" Height="96" Canvas.Left="2" Canvas.Top="2"
+                                    <Ellipse Width="48" Height="48" Canvas.Left="1" Canvas.Top="1"
                                              Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                             StrokeThickness="1.5" Fill="Transparent"/>
+                                             StrokeThickness="1" Fill="Transparent"/>
                                     <!-- 50% range ring -->
-                                    <Ellipse Width="48" Height="48" Canvas.Left="26" Canvas.Top="26"
+                                    <Ellipse Width="24" Height="24" Canvas.Left="13" Canvas.Top="13"
                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                              StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
-                                    <!-- Dead zone ring (scaled by LeftDeadZoneX — max 100px diameter at 100%) -->
+                                    <!-- Dead zone ring (scaled by LeftDeadZoneX — max 50px diameter at 100%) -->
                                     <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
                                              HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Ellipse.Width>
-                                            <Binding Path="LeftDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="100"/>
+                                            <Binding Path="LeftDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="50"/>
                                         </Ellipse.Width>
                                         <Ellipse.Height>
-                                            <Binding Path="LeftDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="100"/>
+                                            <Binding Path="LeftDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="50"/>
                                         </Ellipse.Height>
                                         <Ellipse.RenderTransform>
                                             <TranslateTransform>
                                                 <TranslateTransform.X>
-                                                    <Binding Path="LeftDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-50"/>
+                                                    <Binding Path="LeftDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-25"/>
                                                 </TranslateTransform.X>
                                                 <TranslateTransform.Y>
-                                                    <Binding Path="LeftDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-50"/>
+                                                    <Binding Path="LeftDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-25"/>
                                                 </TranslateTransform.Y>
                                             </TranslateTransform>
                                         </Ellipse.RenderTransform>
-                                        <Canvas.Left>50</Canvas.Left>
-                                        <Canvas.Top>50</Canvas.Top>
+                                        <Canvas.Left>25</Canvas.Left>
+                                        <Canvas.Top>25</Canvas.Top>
                                     </Ellipse>
                                     <!-- Crosshair -->
-                                    <Line X1="50" Y1="0" X2="50" Y2="100"
+                                    <Line X1="25" Y1="0" X2="25" Y2="50"
                                           Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                           StrokeThickness="0.5"/>
-                                    <Line X1="0" Y1="50" X2="100" Y2="50"
+                                    <Line X1="0" Y1="25" X2="50" Y2="25"
                                           Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                           StrokeThickness="0.5"/>
                                     <!-- Stick position dot -->
-                                    <Ellipse Width="12" Height="12" Fill="#FF2196F3"
-                                             Stroke="#FF1976D2" StrokeThickness="1.5"
-                                             Canvas.Left="{Binding DeviceThumbLX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='100,12'}"
-                                             Canvas.Top="{Binding DeviceThumbLY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='100,12'}"/>
+                                    <Ellipse Width="8" Height="8" Fill="#FF2196F3"
+                                             Stroke="#FF1976D2" StrokeThickness="1"
+                                             Canvas.Left="{Binding DeviceThumbLX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='50,8'}"
+                                             Canvas.Top="{Binding DeviceThumbLY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='50,8'}"/>
                                 </Canvas>
                             </Grid>
                         </Border>
@@ -707,55 +707,55 @@
                         <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
                                    Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                         <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                Padding="4" Width="112" Height="112" HorizontalAlignment="Left"
+                                Padding="4" Width="62" Height="62" HorizontalAlignment="Left"
                                 ClipToBounds="True">
-                            <Grid Width="100" Height="100">
+                            <Grid Width="50" Height="50">
                                 <!-- Circle background fill -->
-                                <Ellipse Width="100" Height="100"
+                                <Ellipse Width="50" Height="50"
                                          Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
                                 <Canvas>
                                     <!-- Boundary circle -->
-                                    <Ellipse Width="96" Height="96" Canvas.Left="2" Canvas.Top="2"
+                                    <Ellipse Width="48" Height="48" Canvas.Left="1" Canvas.Top="1"
                                              Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                             StrokeThickness="1.5" Fill="Transparent"/>
+                                             StrokeThickness="1" Fill="Transparent"/>
                                     <!-- 50% range ring -->
-                                    <Ellipse Width="48" Height="48" Canvas.Left="26" Canvas.Top="26"
+                                    <Ellipse Width="24" Height="24" Canvas.Left="13" Canvas.Top="13"
                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                              StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
                                     <!-- Dead zone ring -->
                                     <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
                                              HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Ellipse.Width>
-                                            <Binding Path="RightDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="100"/>
+                                            <Binding Path="RightDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="50"/>
                                         </Ellipse.Width>
                                         <Ellipse.Height>
-                                            <Binding Path="RightDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="100"/>
+                                            <Binding Path="RightDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="50"/>
                                         </Ellipse.Height>
                                         <Ellipse.RenderTransform>
                                             <TranslateTransform>
                                                 <TranslateTransform.X>
-                                                    <Binding Path="RightDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-50"/>
+                                                    <Binding Path="RightDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-25"/>
                                                 </TranslateTransform.X>
                                                 <TranslateTransform.Y>
-                                                    <Binding Path="RightDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-50"/>
+                                                    <Binding Path="RightDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-25"/>
                                                 </TranslateTransform.Y>
                                             </TranslateTransform>
                                         </Ellipse.RenderTransform>
-                                        <Canvas.Left>50</Canvas.Left>
-                                        <Canvas.Top>50</Canvas.Top>
+                                        <Canvas.Left>25</Canvas.Left>
+                                        <Canvas.Top>25</Canvas.Top>
                                     </Ellipse>
                                     <!-- Crosshair -->
-                                    <Line X1="50" Y1="0" X2="50" Y2="100"
+                                    <Line X1="25" Y1="0" X2="25" Y2="50"
                                           Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                           StrokeThickness="0.5"/>
-                                    <Line X1="0" Y1="50" X2="100" Y2="50"
+                                    <Line X1="0" Y1="25" X2="50" Y2="25"
                                           Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                           StrokeThickness="0.5"/>
                                     <!-- Stick position dot -->
-                                    <Ellipse Width="12" Height="12" Fill="#FF2196F3"
-                                             Stroke="#FF1976D2" StrokeThickness="1.5"
-                                             Canvas.Left="{Binding DeviceThumbRX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='100,12'}"
-                                             Canvas.Top="{Binding DeviceThumbRY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='100,12'}"/>
+                                    <Ellipse Width="8" Height="8" Fill="#FF2196F3"
+                                             Stroke="#FF1976D2" StrokeThickness="1"
+                                             Canvas.Left="{Binding DeviceThumbRX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='50,8'}"
+                                             Canvas.Top="{Binding DeviceThumbRY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='50,8'}"/>
                                 </Canvas>
                             </Grid>
                         </Border>

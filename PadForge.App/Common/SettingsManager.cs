@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Services;
 
 namespace PadForge.Common.Input
 {
@@ -28,6 +29,19 @@ namespace PadForge.Common.Input
     {
         // UserDevices and UserSettings properties are declared in
         // InputManager.Step1.UpdateDevices.cs (partial class).
+
+        // ─────────────────────────────────────────────
+        //  Profiles
+        // ─────────────────────────────────────────────
+
+        /// <summary>All saved profiles. Empty list = no profiles configured.</summary>
+        public static List<ProfileData> Profiles { get; set; } = new();
+
+        /// <summary>The ID of the currently active profile, or null for the default (root) profile.</summary>
+        public static string ActiveProfileId { get; set; }
+
+        /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
+        public static bool EnableAutoProfileSwitching { get; set; }
 
         // ─────────────────────────────────────────────
         //  Initialization

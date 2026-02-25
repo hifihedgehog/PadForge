@@ -22,7 +22,7 @@ namespace PadForge.ViewModels
         {
             PadIndex = padIndex;
             Title = $"Controller {padIndex + 1}";
-            SlotLabel = $"Player {padIndex + 1}";
+            SlotLabel = $"Controller {padIndex + 1}";
             InitializeDefaultMappings();
         }
 
@@ -206,6 +206,45 @@ namespace PadForge.ViewModels
 
         private byte _rawRightTrigger;
         public byte RawRightTrigger { get => _rawRightTrigger; set => SetProperty(ref _rawRightTrigger, value); }
+
+        // ── Per-device values for stick/trigger tab previews ──
+        // These show the selected device only, not the combined slot.
+
+        private double _deviceThumbLX = 0.5;
+        public double DeviceThumbLX { get => _deviceThumbLX; set => SetProperty(ref _deviceThumbLX, value); }
+
+        private double _deviceThumbLY = 0.5;
+        public double DeviceThumbLY { get => _deviceThumbLY; set => SetProperty(ref _deviceThumbLY, value); }
+
+        private double _deviceThumbRX = 0.5;
+        public double DeviceThumbRX { get => _deviceThumbRX; set => SetProperty(ref _deviceThumbRX, value); }
+
+        private double _deviceThumbRY = 0.5;
+        public double DeviceThumbRY { get => _deviceThumbRY; set => SetProperty(ref _deviceThumbRY, value); }
+
+        private short _deviceRawThumbLX;
+        public short DeviceRawThumbLX { get => _deviceRawThumbLX; set => SetProperty(ref _deviceRawThumbLX, value); }
+
+        private short _deviceRawThumbLY;
+        public short DeviceRawThumbLY { get => _deviceRawThumbLY; set => SetProperty(ref _deviceRawThumbLY, value); }
+
+        private short _deviceRawThumbRX;
+        public short DeviceRawThumbRX { get => _deviceRawThumbRX; set => SetProperty(ref _deviceRawThumbRX, value); }
+
+        private short _deviceRawThumbRY;
+        public short DeviceRawThumbRY { get => _deviceRawThumbRY; set => SetProperty(ref _deviceRawThumbRY, value); }
+
+        private double _deviceLeftTrigger;
+        public double DeviceLeftTrigger { get => _deviceLeftTrigger; set => SetProperty(ref _deviceLeftTrigger, value); }
+
+        private double _deviceRightTrigger;
+        public double DeviceRightTrigger { get => _deviceRightTrigger; set => SetProperty(ref _deviceRightTrigger, value); }
+
+        private byte _deviceRawLeftTrigger;
+        public byte DeviceRawLeftTrigger { get => _deviceRawLeftTrigger; set => SetProperty(ref _deviceRawLeftTrigger, value); }
+
+        private byte _deviceRawRightTrigger;
+        public byte DeviceRawRightTrigger { get => _deviceRawRightTrigger; set => SetProperty(ref _deviceRawRightTrigger, value); }
 
         // ═══════════════════════════════════════════════
         //  Mapping rows — unchanged
@@ -611,6 +650,27 @@ namespace PadForge.ViewModels
                 LeftMotorDisplay = vibration.LeftMotorSpeed / 65535.0;
                 RightMotorDisplay = vibration.RightMotorSpeed / 65535.0;
             }
+        }
+
+        /// <summary>
+        /// Updates per-device stick/trigger values for the stick and trigger tab previews.
+        /// Shows only the selected device's input, not the combined slot.
+        /// </summary>
+        public void UpdateDeviceState(Gamepad gp)
+        {
+            DeviceRawLeftTrigger = gp.LeftTrigger;
+            DeviceRawRightTrigger = gp.RightTrigger;
+            DeviceLeftTrigger = gp.LeftTrigger / 255.0;
+            DeviceRightTrigger = gp.RightTrigger / 255.0;
+
+            DeviceRawThumbLX = gp.ThumbLX;
+            DeviceRawThumbLY = gp.ThumbLY;
+            DeviceRawThumbRX = gp.ThumbRX;
+            DeviceRawThumbRY = gp.ThumbRY;
+            DeviceThumbLX = (gp.ThumbLX - (double)short.MinValue) / 65535.0;
+            DeviceThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0);
+            DeviceThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
+            DeviceThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
         }
 
         public void RefreshCommands()

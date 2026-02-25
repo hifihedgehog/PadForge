@@ -46,6 +46,47 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Profiles ═══ -->
+            <TextBlock Text="Profiles" Style="{StaticResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,12"/>
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+                <StackPanel>
+                    <CheckBox Content="Auto-switch profiles based on foreground application"
+                              IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Active profile:" VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <ListBox ItemsSource="{Binding ProfileItems}"
+                             SelectedItem="{Binding SelectedProfile}"
+                             MinHeight="60" MaxHeight="200"
+                             Margin="0,0,0,8">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="4,2">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Executables}" FontSize="12"
+                                               Opacity="0.6" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Save Current as Profile"
+                                Command="{Binding SaveAsProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Delete Selected"
+                                Command="{Binding DeleteProfileCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Window ═══ -->
             <TextBlock Text="Window" Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,0,0,12"/>

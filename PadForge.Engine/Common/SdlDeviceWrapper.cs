@@ -42,6 +42,34 @@ namespace PadForge.Engine
         /// <summary>Whether the device supports rumble vibration.</summary>
         public bool HasRumble { get; private set; }
 
+        /// <summary>SDL haptic device handle. Non-zero when haptic FFB is available (and rumble is not).</summary>
+        public IntPtr Haptic { get; private set; } = IntPtr.Zero;
+
+        /// <summary>Haptic handle exposed via ISdlInputDevice interface.</summary>
+        public IntPtr HapticHandle => Haptic;
+
+        /// <summary>Bitmask of supported haptic features (SDL_HAPTIC_* flags).</summary>
+        public uint HapticFeatures { get; private set; }
+
+        /// <summary>True if the device has a haptic FFB handle open.</summary>
+        public bool HasHaptic => Haptic != IntPtr.Zero;
+
+        /// <summary>Best haptic strategy for this device (chosen at open time).</summary>
+        public HapticEffectStrategy HapticStrategy { get; private set; } = HapticEffectStrategy.None;
+
+        /// <summary>
+        /// Total number of raw joystick buttons as reported by SDL (before gamepad remapping).
+        /// For gamepad devices this may be higher than <see cref="NumButtons"/> (11), exposing
+        /// extra native buttons like DualSense touchpad click or mic button.
+        /// </summary>
+        public int RawButtonCount { get; private set; }
+
+        /// <summary>Whether the device has a gyroscope sensor.</summary>
+        public bool HasGyro { get; private set; }
+
+        /// <summary>Whether the device has an accelerometer sensor.</summary>
+        public bool HasAccel { get; private set; }
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 
@@ -136,6 +164,9 @@ namespace PadForge.Engine
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
 
+            // Always capture the raw joystick button count before any gamepad override.
+            RawButtonCount = SDL_GetNumJoystickButtons(Joystick);
+
             // When opened as a Gamepad, report the standardized layout counts
             // so that GetDeviceObjects() and the UI reflect the remapped layout
             // instead of the raw HID descriptor. This matches GetGamepadState().
@@ -148,7 +179,7 @@ namespace PadForge.Engine
             else
             {
                 NumAxes = SDL_GetNumJoystickAxes(Joystick);
-                NumButtons = SDL_GetNumJoystickButtons(Joystick);
+                NumButtons = RawButtonCount;
                 NumHats = SDL_GetNumJoystickHats(Joystick);
             }
 
@@ -165,6 +196,20 @@ namespace PadForge.Engine
             uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
 
+            // Detect and enable motion sensors (gyro / accelerometer).
+            if (GameController != IntPtr.Zero)
+            {
+                HasGyro = SDL_GamepadHasSensor(GameController, SDL_SENSOR_GYRO);
+                HasAccel = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL);
+                if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
+                if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+            }
+
+            // If the device doesn't support simple rumble, try the haptic API for
+            // full force feedback (DirectInput FFB wheels, joysticks, etc.).
+            if (!HasRumble)
+                OpenHaptic();
+
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
             InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId);
@@ -174,9 +219,19 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Internal close that releases SDL handles without setting _disposed.
+        /// Haptic must be closed before the joystick it was opened from.
         /// </summary>
         private void CloseInternal()
         {
+            // Close haptic first — it depends on the joystick handle.
+            if (Haptic != IntPtr.Zero)
+            {
+                SDL_CloseHaptic(Haptic);
+                Haptic = IntPtr.Zero;
+                HapticFeatures = 0;
+                HapticStrategy = HapticEffectStrategy.None;
+            }
+
             if (GameController != IntPtr.Zero)
             {
                 SDL_CloseGamepad(GameController);
@@ -191,6 +246,51 @@ namespace PadForge.Engine
             }
 
             SdlInstanceId = 0;
+        }
+
+        /// <summary>
+        /// Attempts to open the SDL haptic subsystem from the current joystick handle.
+        /// Queries supported features and picks the best effect strategy:
+        /// LeftRight > Sine > Constant.
+        /// </summary>
+        private void OpenHaptic()
+        {
+            if (Joystick == IntPtr.Zero)
+                return;
+
+            IntPtr h = SDL_OpenHapticFromJoystick(Joystick);
+            if (h == IntPtr.Zero)
+                return;
+
+            uint features = SDL_GetHapticFeatures(h);
+            if (features == 0)
+            {
+                SDL_CloseHaptic(h);
+                return;
+            }
+
+            Haptic = h;
+            HapticFeatures = features;
+
+            // Pick the best strategy for translating dual-motor rumble into haptic effects.
+            if ((features & SDL_HAPTIC_LEFTRIGHT) != 0)
+                HapticStrategy = HapticEffectStrategy.LeftRight;
+            else if ((features & SDL_HAPTIC_SINE) != 0)
+                HapticStrategy = HapticEffectStrategy.Sine;
+            else if ((features & SDL_HAPTIC_CONSTANT) != 0)
+                HapticStrategy = HapticEffectStrategy.Constant;
+            else
+            {
+                // Device has haptic support but no usable effect types.
+                SDL_CloseHaptic(h);
+                Haptic = IntPtr.Zero;
+                HapticFeatures = 0;
+                return;
+            }
+
+            // Set gain to maximum if the device supports it.
+            if ((features & SDL_HAPTIC_GAIN) != 0)
+                SDL_SetHapticGain(h, 100);
         }
 
         // ─────────────────────────────────────────────
@@ -276,6 +376,14 @@ namespace PadForge.Engine
             state.Buttons[9] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_STICK);
             state.Buttons[10] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_GUIDE);
 
+            // --- Extra raw buttons ---
+            // Append raw joystick buttons beyond the 11 standard gamepad buttons.
+            // This exposes native device buttons (e.g. DualSense touchpad, mic) that
+            // aren't part of the Xbox gamepad mapping, for use as macro triggers.
+            int rawCount = RawButtonCount;
+            for (int i = 11; i < rawCount && i < CustomInputState.MaxButtons; i++)
+                state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
+
             // --- D-pad → POV[0] ---
             // Synthesize a POV hat from the four D-pad buttons.
             bool up = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_UP);
@@ -283,6 +391,12 @@ namespace PadForge.Engine
             bool left = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_LEFT);
             bool right = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
             state.Povs[0] = DpadToCentidegrees(up, down, left, right);
+
+            // --- Sensors (gyro / accelerometer) ---
+            if (HasGyro)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_GYRO, state.Gyro, 3);
+            if (HasAccel)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
 
             return state;
         }
@@ -738,5 +852,17 @@ namespace PadForge.Engine
         {
             Dispose(false);
         }
+    }
+
+    /// <summary>
+    /// Strategy for translating ViGEm dual-motor rumble values into SDL haptic effects.
+    /// Chosen at device open time based on the device's supported feature flags.
+    /// </summary>
+    public enum HapticEffectStrategy
+    {
+        None,
+        LeftRight,
+        Sine,
+        Constant
     }
 }

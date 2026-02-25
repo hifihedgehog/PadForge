@@ -1,5 +1,6 @@
 using System;
 using PadForge.Engine.Data;
+using static SDL3.SDL;
 
 namespace PadForge.Engine
 {
@@ -26,6 +27,10 @@ namespace PadForge.Engine
         private int _cachedOverallStrength = -1;
         private ushort _cachedLeftMotorSpeed;
         private ushort _cachedRightMotorSpeed;
+
+        // Haptic effect tracking
+        private int _hapticEffectId = -1;
+        private bool _hapticEffectCreated;
 
         // ─────────────────────────────────────────────
         //  Public state
@@ -56,11 +61,24 @@ namespace PadForge.Engine
         /// <param name="device">The SDL device wrapper to stop.</param>
         public void StopDeviceForces(ISdlInputDevice device)
         {
-            if (device == null || !device.HasRumble)
+            if (device == null)
                 return;
 
-            RumbleLogger.Log("StopDeviceForces called");
-            device.StopRumble();
+            if (device.HasHaptic)
+            {
+                RumbleLogger.Log("StopDeviceForces (haptic) called");
+                StopAndDestroyHapticEffect(device);
+            }
+            else if (device.HasRumble)
+            {
+                RumbleLogger.Log("StopDeviceForces called");
+                device.StopRumble();
+            }
+            else
+            {
+                return;
+            }
+
             _cachedLeftMotorSpeed = 0;
             _cachedRightMotorSpeed = 0;
             LeftMotorSpeed = 0;
@@ -88,7 +106,7 @@ namespace PadForge.Engine
         /// <param name="v">Vibration values from the XInput state (LeftMotorSpeed, RightMotorSpeed).</param>
         public void SetDeviceForces(UserDevice ud, ISdlInputDevice device, PadSetting ps, Vibration v)
         {
-            if (device == null || !device.HasRumble)
+            if (device == null || (!device.HasRumble && !device.HasHaptic))
                 return;
 
             if (ps == null || v == null)
@@ -135,7 +153,12 @@ namespace PadForge.Engine
             RumbleLogger.Log($"CHANGE L:{_cachedLeftMotorSpeed}->{finalLeft} R:{_cachedRightMotorSpeed}->{finalRight} (raw L:{rawLeft} R:{rawRight} gain:{overallGain})");
 
             bool success;
-            if (finalLeft == 0 && finalRight == 0)
+            if (device.HasHaptic)
+            {
+                // Route through SDL haptic API for DirectInput FFB devices.
+                success = SetHapticForces(device, finalLeft, finalRight);
+            }
+            else if (finalLeft == 0 && finalRight == 0)
             {
                 // Explicit stop — no need for a duration.
                 success = device.StopRumble();
@@ -159,6 +182,116 @@ namespace PadForge.Engine
             LeftMotorSpeed = finalLeft;
             RightMotorSpeed = finalRight;
             IsActive = finalLeft > 0 || finalRight > 0;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Haptic effect routing
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Translates dual-motor rumble values into an SDL haptic effect based on
+        /// the device's <see cref="HapticEffectStrategy"/>. Creates the effect on
+        /// first call, updates it on subsequent calls (same change-detection pattern
+        /// as the rumble path).
+        /// </summary>
+        private bool SetHapticForces(ISdlInputDevice device, ushort left, ushort right)
+        {
+            if (left == 0 && right == 0)
+            {
+                StopAndDestroyHapticEffect(device);
+                RumbleLogger.Log("Haptic stop (zero)");
+                return true;
+            }
+
+            var effect = new SDL_HapticEffect();
+
+            switch (device.HapticStrategy)
+            {
+                case HapticEffectStrategy.LeftRight:
+                    effect.leftright.type = (ushort)SDL_HAPTIC_LEFTRIGHT;
+                    effect.leftright.length = SDL_HAPTIC_INFINITY;
+                    effect.leftright.large_magnitude = left;
+                    effect.leftright.small_magnitude = right;
+                    break;
+
+                case HapticEffectStrategy.Sine:
+                    effect.periodic.type = (ushort)SDL_HAPTIC_SINE;
+                    effect.periodic.direction.type = SDL_HAPTIC_CARTESIAN;
+                    effect.periodic.direction.dir0 = 1;
+                    effect.periodic.length = SDL_HAPTIC_INFINITY;
+                    // Magnitude from dominant motor, period varies by which motor is stronger.
+                    short mag = (short)Math.Min(Math.Max(left, right) >> 1, 32767);
+                    effect.periodic.magnitude = mag;
+                    // Heavy motor → longer period (low freq), light motor → shorter period (high freq).
+                    effect.periodic.period = (ushort)(left >= right ? 120 : 40);
+                    break;
+
+                case HapticEffectStrategy.Constant:
+                    effect.constant.type = (ushort)SDL_HAPTIC_CONSTANT;
+                    effect.constant.direction.type = SDL_HAPTIC_CARTESIAN;
+                    effect.constant.direction.dir0 = 1;
+                    effect.constant.length = SDL_HAPTIC_INFINITY;
+                    // Level from max motor, scaled to signed range.
+                    effect.constant.level = (short)Math.Min(Math.Max(left, right) >> 1, 32767);
+                    break;
+
+                default:
+                    return false;
+            }
+
+            return ApplyHapticEffect(device, ref effect);
+        }
+
+        /// <summary>
+        /// Creates or updates the haptic effect on the device. On first call, creates
+        /// the effect and runs it. On subsequent calls, updates the existing effect
+        /// in-place (avoids create/destroy churn).
+        /// </summary>
+        private bool ApplyHapticEffect(ISdlInputDevice device, ref SDL_HapticEffect effect)
+        {
+            IntPtr haptic = device.HapticHandle;
+            if (haptic == IntPtr.Zero)
+                return false;
+
+            if (!_hapticEffectCreated)
+            {
+                _hapticEffectId = SDL_CreateHapticEffect(haptic, ref effect);
+                if (_hapticEffectId < 0)
+                {
+                    RumbleLogger.Log($"SDL_CreateHapticEffect failed: {SDL_GetError()}");
+                    return false;
+                }
+                _hapticEffectCreated = true;
+
+                bool run = SDL_RunHapticEffect(haptic, _hapticEffectId, SDL_HAPTIC_INFINITY);
+                RumbleLogger.Log($"Haptic create+run id={_hapticEffectId} -> {run}");
+                return run;
+            }
+            else
+            {
+                bool upd = SDL_UpdateHapticEffect(haptic, _hapticEffectId, ref effect);
+                RumbleLogger.Log($"Haptic update id={_hapticEffectId} -> {upd}");
+                return upd;
+            }
+        }
+
+        /// <summary>
+        /// Stops and destroys the current haptic effect if one is active.
+        /// </summary>
+        private void StopAndDestroyHapticEffect(ISdlInputDevice device)
+        {
+            if (!_hapticEffectCreated || _hapticEffectId < 0)
+                return;
+
+            IntPtr haptic = device.HapticHandle;
+            if (haptic != IntPtr.Zero)
+            {
+                SDL_StopHapticEffect(haptic, _hapticEffectId);
+                SDL_DestroyHapticEffect(haptic, _hapticEffectId);
+            }
+
+            _hapticEffectId = -1;
+            _hapticEffectCreated = false;
         }
 
         // ─────────────────────────────────────────────

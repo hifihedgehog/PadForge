@@ -48,6 +48,10 @@
              Condition="Exists('Resources\SDL3\x64\SDL3.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\SDL3\x64\libusb-1.0.dll" Link="libusb-1.0.dll"
+             Condition="Exists('Resources\SDL3\x64\libusb-1.0.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
   </ItemGroup>

@@ -497,6 +497,11 @@ namespace PadForge.Services
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
+
+                // Sync output type to engine (always, even when no device is selected).
+                if (_inputManager != null && i < InputManager.MaxPads)
+                    _inputManager.SlotControllerTypes[i] = padVm.OutputType;
+
                 var selected = padVm.SelectedMappedDevice;
                 if (selected == null || selected.InstanceGuid == Guid.Empty)
                     continue;
@@ -537,6 +542,8 @@ namespace PadForge.Services
             ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
             ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
             ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
+            ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString();
+            ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString();
 
             // Force feedback.
             ps.ForceOverall = padVm.ForceOverallGain.ToString();
@@ -1263,6 +1270,7 @@ namespace PadForge.Services
                     entries.Add(new ProfileEntry
                     {
                         InstanceGuid = us.InstanceGuid,
+                        ProductGuid = us.ProductGuid,
                         MapTo = us.MapTo,
                         PadSettingChecksum = ps.PadSettingChecksum
                     });
@@ -1294,8 +1302,16 @@ namespace PadForge.Services
             {
                 foreach (var entry in profile.Entries)
                 {
+                    // Try exact InstanceGuid match first, then fallback to ProductGuid.
                     var us = SettingsManager.UserSettings.Items
                         .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid);
+
+                    if (us == null && entry.ProductGuid != Guid.Empty)
+                    {
+                        us = SettingsManager.UserSettings.Items
+                            .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid);
+                    }
+
                     if (us == null) continue;
 
                     // Find the PadSetting template by checksum.

@@ -86,6 +86,11 @@ namespace PadForge.Services
                 return;
             }
 
+            // Ensure ProductGuid is populated for fallback matching.
+            var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+            if (udForGuid != null)
+                us.ProductGuid = udForGuid.ProductGuid;
+
             // If no PadSetting exists or it has no mappings, create defaults.
             // The PadSetting is stored in SettingsManager only — NOT pushed into the
             // ViewModel here, because the slot's ViewModel may be displaying a different
@@ -94,8 +99,7 @@ namespace PadForge.Services
             var existingPs = us.GetPadSetting();
             if (existingPs == null || !existingPs.HasAnyMapping)
             {
-                var ud = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
-                var ps = SettingsManager.CreateDefaultPadSetting(ud);
+                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }

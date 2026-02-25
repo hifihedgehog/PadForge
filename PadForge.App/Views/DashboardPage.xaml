@@ -46,8 +46,8 @@
                 </Grid>
             </Border>
 
-            <!-- ═══ Controller slot cards ═══ -->
-            <TextBlock Text="Controller Slots" Style="{StaticResource SubtitleTextBlockStyle}"
+            <!-- ═══ Virtual controller slot cards ═══ -->
+            <TextBlock Text="Virtual Controllers" Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,8,0,12"/>
 
             <ItemsControl ItemsSource="{Binding SlotSummaries}">

@@ -7,21 +7,21 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 6: RetrieveXiStates
-        //  Reads back the XInput states from the system's XInput DLL.
-        //  This reflects what the game actually sees from the virtual
-        //  controllers (ViGEmBus). Used by the UI to display the final
-        //  output state after all processing.
+        //  Copies the combined gamepad states directly from Step 4 output
+        //  for UI display. This shows exactly what was submitted to the
+        //  virtual controllers and works for all controller types
+        //  (Xbox 360, DualShock 4, etc.).
         //
-        //  P/Invoke: reuses XInputGetStateEx declared in Step5.VirtualDevices.cs
+        //  Previously used XInput P/Invoke readback, but that only worked
+        //  for Xbox 360 virtual controllers. DS4 controllers don't appear
+        //  in the XInput stack, so direct copy is both more universal and
+        //  more accurate.
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Step 6: For each of the 4 controller slots, reads the current XInput
-        /// state via the system's xinput1_4.dll. The result is stored in
-        /// <see cref="RetrievedXiStates"/> for UI display.
-        ///
-        /// This reads what the game would see if it called XInputGetState().
-        /// If ViGEmBus is active, this reflects the virtual controller state.
+        /// Step 6: For each of the 4 controller slots, copies the combined
+        /// gamepad state to <see cref="RetrievedXiStates"/> for UI display.
+        /// Only populates slots that have an active virtual controller.
         /// </summary>
         private void RetrieveXiStates()
         {
@@ -29,29 +29,19 @@ namespace PadForge.Common.Input
             {
                 try
                 {
-                    var nativeState = new XInputStateInternal();
-                    uint result = XInputGetStateEx((uint)padIndex, ref nativeState);
-
-                    if (result != XINPUT_ERROR_DEVICE_NOT_CONNECTED)
+                    var vc = _virtualControllers[padIndex];
+                    if (vc != null && vc.IsConnected)
                     {
-                        // Convert the internal struct to the engine's Gamepad struct.
-                        RetrievedXiStates[padIndex].Buttons = nativeState.Gamepad.wButtons;
-                        RetrievedXiStates[padIndex].LeftTrigger = nativeState.Gamepad.bLeftTrigger;
-                        RetrievedXiStates[padIndex].RightTrigger = nativeState.Gamepad.bRightTrigger;
-                        RetrievedXiStates[padIndex].ThumbLX = nativeState.Gamepad.sThumbLX;
-                        RetrievedXiStates[padIndex].ThumbLY = nativeState.Gamepad.sThumbLY;
-                        RetrievedXiStates[padIndex].ThumbRX = nativeState.Gamepad.sThumbRX;
-                        RetrievedXiStates[padIndex].ThumbRY = nativeState.Gamepad.sThumbRY;
+                        RetrievedXiStates[padIndex] = CombinedXiStates[padIndex];
                     }
                     else
                     {
-                        // Controller not connected at this slot.
                         RetrievedXiStates[padIndex].Clear();
                     }
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error retrieving XInput state for pad {padIndex}", ex);
+                    RaiseError($"Error retrieving state for pad {padIndex}", ex);
                     RetrievedXiStates[padIndex].Clear();
                 }
             }

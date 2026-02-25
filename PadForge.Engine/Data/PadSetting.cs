@@ -95,6 +95,15 @@ namespace PadForge.Engine.Data
         /// <summary>Anti-dead zone for the right trigger (0–100%).</summary>
         [XmlElement] public string RightTriggerAntiDeadZone { get; set; } = "0";
 
+        /// <summary>
+        /// Max range for the left trigger (1–100%). Caps the output ceiling so full
+        /// physical press maps to this percentage of the output range.
+        /// </summary>
+        [XmlElement] public string LeftTriggerMaxRange { get; set; } = "100";
+
+        /// <summary>Max range for the right trigger (1–100%).</summary>
+        [XmlElement] public string RightTriggerMaxRange { get; set; } = "100";
+
         // ─────────────────────────────────────────────
         //  Thumbstick axis mappings
         // ─────────────────────────────────────────────
@@ -302,6 +311,8 @@ namespace PadForge.Engine.Data
             sb.Append(RightTriggerDeadZone); sb.Append('|');
             sb.Append(LeftTriggerAntiDeadZone); sb.Append('|');
             sb.Append(RightTriggerAntiDeadZone); sb.Append('|');
+            sb.Append(LeftTriggerMaxRange); sb.Append('|');
+            sb.Append(RightTriggerMaxRange); sb.Append('|');
 
             // Thumbstick axes
             sb.Append(LeftThumbAxisX); sb.Append('|');
@@ -426,6 +437,7 @@ namespace PadForge.Engine.Data
             nameof(LeftTrigger), nameof(RightTrigger),
             nameof(LeftTriggerDeadZone), nameof(RightTriggerDeadZone),
             nameof(LeftTriggerAntiDeadZone), nameof(RightTriggerAntiDeadZone),
+            nameof(LeftTriggerMaxRange), nameof(RightTriggerMaxRange),
             // Sticks
             nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
             nameof(RightThumbAxisX), nameof(RightThumbAxisY),

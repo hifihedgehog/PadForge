@@ -414,6 +414,15 @@ namespace SDL3
             return ptr != IntPtr.Zero ? (Marshal.PtrToStringUTF8(ptr) ?? string.Empty) : string.Empty;
         }
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetJoystickSerial")]
+        private static extern IntPtr _SDL_GetJoystickSerial(IntPtr joystick);
+
+        public static string SDL_GetJoystickSerial(IntPtr joystick)
+        {
+            IntPtr ptr = _SDL_GetJoystickSerial(joystick);
+            return ptr != IntPtr.Zero ? Marshal.PtrToStringUTF8(ptr) : null;
+        }
+
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern SDL_GUID SDL_GetJoystickGUID(IntPtr joystick);
 

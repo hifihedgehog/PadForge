@@ -328,7 +328,11 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _selectedProfile, value))
+                {
                     _deleteProfileCommand?.NotifyCanExecuteChanged();
+                    _editProfileCommand?.NotifyCanExecuteChanged();
+                    _loadProfileCommand?.NotifyCanExecuteChanged();
+                }
             }
         }
 
@@ -338,14 +342,27 @@ namespace PadForge.ViewModels
         public string ActiveProfileInfo
         {
             get => _activeProfileInfo;
-            set => SetProperty(ref _activeProfileInfo, value ?? "Default");
+            set
+            {
+                if (SetProperty(ref _activeProfileInfo, value ?? "Default"))
+                    _revertToDefaultCommand?.NotifyCanExecuteChanged();
+            }
         }
+
+        /// <summary>Raised when the user requests reverting to the default profile.</summary>
+        public event EventHandler RevertToDefaultRequested;
 
         /// <summary>Raised when the user requests saving current settings as a new profile.</summary>
         public event EventHandler SaveAsProfileRequested;
 
         /// <summary>Raised when the user requests deleting the selected profile.</summary>
         public event EventHandler DeleteProfileRequested;
+
+        /// <summary>Raised when the user requests editing the selected profile's metadata.</summary>
+        public event EventHandler EditProfileRequested;
+
+        /// <summary>Raised when the user requests loading the selected profile into the editor.</summary>
+        public event EventHandler LoadProfileRequested;
 
         private RelayCommand _saveAsProfileCommand;
 
@@ -362,10 +379,37 @@ namespace PadForge.ViewModels
                 () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
                 () => _selectedProfile != null);
 
+        private RelayCommand _editProfileCommand;
+
+        /// <summary>Command to edit the selected profile's name and executables.</summary>
+        public RelayCommand EditProfileCommand =>
+            _editProfileCommand ??= new RelayCommand(
+                () => EditProfileRequested?.Invoke(this, EventArgs.Empty),
+                () => _selectedProfile != null);
+
+        private RelayCommand _loadProfileCommand;
+
+        /// <summary>Command to load the selected profile's settings into the editor.</summary>
+        public RelayCommand LoadProfileCommand =>
+            _loadProfileCommand ??= new RelayCommand(
+                () => LoadProfileRequested?.Invoke(this, EventArgs.Empty),
+                () => _selectedProfile != null);
+
+        private RelayCommand _revertToDefaultCommand;
+
+        /// <summary>Command to revert to the default profile.</summary>
+        public RelayCommand RevertToDefaultCommand =>
+            _revertToDefaultCommand ??= new RelayCommand(
+                () => RevertToDefaultRequested?.Invoke(this, EventArgs.Empty),
+                () => _activeProfileInfo != "Default");
+
         /// <summary>Refreshes the can-execute state of profile commands.</summary>
         public void RefreshProfileCommands()
         {
             _deleteProfileCommand?.NotifyCanExecuteChanged();
+            _editProfileCommand?.NotifyCanExecuteChanged();
+            _loadProfileCommand?.NotifyCanExecuteChanged();
+            _revertToDefaultCommand?.NotifyCanExecuteChanged();
         }
     }
 

@@ -60,6 +60,9 @@
                                    Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
+                        <Button Content="Revert to Default" Margin="12,0,0,0"
+                                Padding="8,2"
+                                Command="{Binding RevertToDefaultCommand}"/>
                     </StackPanel>
 
                     <ListBox ItemsSource="{Binding ProfileItems}"
@@ -81,7 +84,13 @@
                         <Button Content="Save Current as Profile"
                                 Command="{Binding SaveAsProfileCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="Delete Selected"
+                        <Button Content="Edit"
+                                Command="{Binding EditProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Load"
+                                Command="{Binding LoadProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Delete"
                                 Command="{Binding DeleteProfileCommand}"/>
                     </StackPanel>
                 </StackPanel>

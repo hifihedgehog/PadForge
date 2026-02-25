@@ -50,13 +50,27 @@ namespace PadForge
             _viewModel.StopEngineRequested += (s, e) => _inputService.Stop();
 
             // Wire settings commands.
-            _viewModel.Settings.SaveRequested += (s, e) => _settingsService.Save();
+            _viewModel.Settings.SaveRequested += (s, e) =>
+            {
+                _settingsService.Save();
+                // Refresh default snapshot so future profile reverts use the latest saved state.
+                if (SettingsManager.ActiveProfileId == null)
+                    _inputService.RefreshDefaultSnapshot();
+            };
+            _settingsService.AutoSaved += (s, e) =>
+            {
+                if (SettingsManager.ActiveProfileId == null)
+                    _inputService.RefreshDefaultSnapshot();
+            };
             _viewModel.Settings.ReloadRequested += (s, e) => _settingsService.Reload();
             _viewModel.Settings.ResetRequested += (s, e) => _settingsService.ResetToDefaults();
             _viewModel.Settings.OpenSettingsFolderRequested += OnOpenSettingsFolder;
             _viewModel.Settings.ThemeChanged += OnThemeChanged;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
+            _viewModel.Settings.EditProfileRequested += OnEditProfile;
+            _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
+            _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
 
             // Apply registry Run key when Start at Login is toggled.
             _viewModel.Settings.PropertyChanged += (s, e) =>
@@ -127,7 +141,32 @@ namespace PadForge
                     };
                     mapping.StopRecordingRequested += (s, e) =>
                         _recorderService.CancelRecording();
+
+                    // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.
+                    mapping.PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName is nameof(MappingItem.SourceDescriptor)
+                            or nameof(MappingItem.IsInverted)
+                            or nameof(MappingItem.IsHalfAxis))
+                            _settingsService.MarkDirty();
+                    };
                 }
+
+                // Pad setting changes (dead zones, force feedback, etc.) trigger autosave.
+                pad.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName is
+                        nameof(PadViewModel.LeftDeadZoneX) or nameof(PadViewModel.LeftDeadZoneY) or
+                        nameof(PadViewModel.RightDeadZoneX) or nameof(PadViewModel.RightDeadZoneY) or
+                        nameof(PadViewModel.LeftAntiDeadZoneX) or nameof(PadViewModel.LeftAntiDeadZoneY) or
+                        nameof(PadViewModel.RightAntiDeadZoneX) or nameof(PadViewModel.RightAntiDeadZoneY) or
+                        nameof(PadViewModel.LeftLinear) or nameof(PadViewModel.RightLinear) or
+                        nameof(PadViewModel.LeftTriggerDeadZone) or nameof(PadViewModel.RightTriggerDeadZone) or
+                        nameof(PadViewModel.LeftTriggerAntiDeadZone) or nameof(PadViewModel.RightTriggerAntiDeadZone) or
+                        nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
+                        nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors))
+                        _settingsService.MarkDirty();
+                };
             }
 
             // Recorder completion marks settings dirty + clear flash + advance Map All.
@@ -443,6 +482,70 @@ namespace PadForge
 
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{selected.Name}\" deleted.";
+        }
+
+        private void OnEditProfile(object sender, EventArgs e)
+        {
+            var selected = _viewModel.Settings.SelectedProfile;
+            if (selected == null) return;
+
+            var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
+            if (profile == null) return;
+
+            var exePaths = string.IsNullOrEmpty(profile.ExecutableNames)
+                ? Array.Empty<string>()
+                : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries);
+
+            var dialog = new Views.ProfileDialog { Owner = this };
+            dialog.LoadForEdit(profile.Name, exePaths);
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            string newName = dialog.ProfileName;
+            string newExePaths = string.Join("|", dialog.ExecutablePaths);
+
+            profile.Name = newName;
+            profile.ExecutableNames = newExePaths;
+
+            selected.Name = newName;
+            selected.Executables = FormatExePaths(newExePaths);
+
+            // Update active profile label if this profile is currently active.
+            if (SettingsManager.ActiveProfileId == profile.Id)
+                _viewModel.Settings.ActiveProfileInfo = newName;
+
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = $"Profile \"{newName}\" updated.";
+        }
+
+        private void OnLoadProfile(object sender, EventArgs e)
+        {
+            var selected = _viewModel.Settings.SelectedProfile;
+            if (selected == null) return;
+
+            var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
+            if (profile == null) return;
+
+            // Snapshot current state before switching away from default.
+            if (SettingsManager.ActiveProfileId == null)
+                _inputService.RefreshDefaultSnapshot();
+
+            _inputService.ApplyProfile(profile);
+            SettingsManager.ActiveProfileId = profile.Id;
+            _viewModel.Settings.ActiveProfileInfo = profile.Name;
+            _viewModel.StatusText = $"Profile loaded: {profile.Name}";
+        }
+
+        private void OnRevertToDefault(object sender, EventArgs e)
+        {
+            if (SettingsManager.ActiveProfileId == null)
+                return;
+
+            _inputService.ApplyDefaultProfile();
+            SettingsManager.ActiveProfileId = null;
+            _viewModel.Settings.ActiveProfileInfo = "Default";
+            _viewModel.StatusText = "Profile reverted to Default";
         }
 
         private void WireMacroRecording(MacroItem macro, int padIndex)

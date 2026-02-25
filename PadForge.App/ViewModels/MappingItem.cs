@@ -135,6 +135,40 @@ namespace PadForge.ViewModels
 
         private bool _isInverted;
 
+        /// <summary>
+        /// Sets the source descriptor and syncs the IsInverted/IsHalfAxis flags
+        /// from the "I" and "H" prefixes in the descriptor string.
+        /// </summary>
+        public void LoadDescriptor(string descriptor)
+        {
+            string d = descriptor ?? string.Empty;
+            bool inv = false;
+            bool half = false;
+
+            if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            {
+                inv = true;
+                half = true;
+            }
+            else if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+            {
+                inv = true;
+            }
+            else if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+            {
+                half = true;
+            }
+
+            // Set flags first (without triggering RebuildDescriptor).
+            _isInverted = inv;
+            OnPropertyChanged(nameof(IsInverted));
+            _isHalfAxis = half;
+            OnPropertyChanged(nameof(IsHalfAxis));
+
+            // Then set the descriptor string.
+            SourceDescriptor = d;
+        }
+
         /// <summary>Whether the axis value should be inverted.</summary>
         public bool IsInverted
         {

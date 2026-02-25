@@ -1,0 +1,61 @@
+<UserControl x:Class="PadForge.Views.ProfilesPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019">
+
+    <ScrollViewer Padding="24,16">
+        <StackPanel MaxWidth="700">
+
+            <TextBlock Text="Profiles" Style="{StaticResource TitleTextBlockStyle}"
+                       Margin="0,0,0,20"/>
+
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+                <StackPanel>
+                    <CheckBox Content="Auto-switch profiles based on foreground application"
+                              IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Active profile:" VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <Button Content="Revert to Default" Margin="12,0,0,0"
+                                Padding="8,2"
+                                Command="{Binding RevertToDefaultCommand}"/>
+                    </StackPanel>
+
+                    <ListBox ItemsSource="{Binding ProfileItems}"
+                             SelectedItem="{Binding SelectedProfile}"
+                             MinHeight="60" MaxHeight="300"
+                             Margin="0,0,0,8">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="4,2">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Executables}" FontSize="12"
+                                               Opacity="0.6" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Save Current as Profile"
+                                Command="{Binding SaveAsProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Edit"
+                                Command="{Binding EditProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Load"
+                                Command="{Binding LoadProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Delete"
+                                Command="{Binding DeleteProfileCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

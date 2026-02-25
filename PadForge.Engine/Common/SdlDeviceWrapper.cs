@@ -88,9 +88,13 @@ namespace PadForge.Engine
         /// <summary>SDL joystick type classification.</summary>
         public SDL_JoystickType JoystickType { get; private set; } = SDL_JoystickType.SDL_JOYSTICK_TYPE_UNKNOWN;
 
+        /// <summary>Device serial number (e.g. Bluetooth MAC address). May be empty.</summary>
+        public string SerialNumber { get; private set; } = string.Empty;
+
         /// <summary>
-        /// Deterministic instance GUID for this device, derived from its device path
-        /// (or a fallback identifier). Used to match saved settings to physical devices.
+        /// Deterministic instance GUID for this device, derived from VID+PID+Serial
+        /// (when serial is available) or device path. Used to match saved settings
+        /// to physical devices.
         /// </summary>
         public Guid InstanceGuid { get; private set; } = Guid.Empty;
 
@@ -163,6 +167,7 @@ namespace PadForge.Engine
             ProductVersion = SDL_GetJoystickProductVersion(Joystick);
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
+            SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
 
             // Always capture the raw joystick button count before any gamepad override.
             RawButtonCount = SDL_GetNumJoystickButtons(Joystick);
@@ -213,7 +218,7 @@ namespace PadForge.Engine
 
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
-            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId);
+            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId, SerialNumber);
 
             return true;
         }
@@ -560,28 +565,27 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Builds a deterministic instance GUID from the device path (preferred)
-        /// or a fallback identifier string. Uses MD5 to produce a stable 16-byte hash
-        /// so the same physical device (same USB port path) always gets the same GUID,
-        /// enabling settings persistence across sessions.
+        /// Builds a deterministic instance GUID for a physical device.
+        /// Priority: VID+PID+Serial (stable across reboots for BT devices),
+        /// then device path, then VID+PID+SDL instance ID as last resort.
         /// </summary>
-        /// <param name="devicePath">The file system device path (may be empty).</param>
-        /// <param name="vid">USB Vendor ID.</param>
-        /// <param name="pid">USB Product ID.</param>
-        /// <param name="instanceId">SDL instance ID (used in fallback only).</param>
-        /// <returns>A deterministic GUID for the device instance.</returns>
-        public static Guid BuildInstanceGuid(string devicePath, ushort vid, ushort pid, uint instanceId)
+        public static Guid BuildInstanceGuid(string devicePath, ushort vid, ushort pid, uint instanceId, string serial = null)
         {
             string identifier;
 
-            if (!string.IsNullOrEmpty(devicePath))
+            if (!string.IsNullOrEmpty(serial))
             {
-                // Use the device path for a stable identifier.
+                // Best: serial number (e.g. BT MAC) is stable across reboots/re-pairs.
+                identifier = $"serial:{vid:X4}:{pid:X4}:{serial}";
+            }
+            else if (!string.IsNullOrEmpty(devicePath))
+            {
+                // Good for wired/USB devices whose path is stable.
                 identifier = devicePath;
             }
             else
             {
-                // Fallback: synthetic identifier from VID, PID, and instance ID.
+                // Last resort: session-specific SDL instance ID.
                 identifier = $"sdl:{vid:X4}:{pid:X4}:{instanceId}";
             }
 

@@ -21,16 +21,40 @@ namespace PadForge.ViewModels
         public PadViewModel(int padIndex)
         {
             PadIndex = padIndex;
-            Title = $"Controller {padIndex + 1}";
-            SlotLabel = $"Controller {padIndex + 1}";
+            Title = $"Virtual Controller {padIndex + 1}";
+            SlotLabel = $"Virtual Controller {padIndex + 1}";
             InitializeDefaultMappings();
         }
 
         /// <summary>Zero-based pad slot index (0–3).</summary>
         public int PadIndex { get; }
 
-        /// <summary>Display label (e.g., "Player 1").</summary>
+        /// <summary>Display label (e.g., "Virtual Controller 1").</summary>
         public string SlotLabel { get; }
+
+        // ═══════════════════════════════════════════════
+        //  Output type (Xbox 360 / DualShock 4)
+        // ═══════════════════════════════════════════════
+
+        private VirtualControllerType _outputType;
+
+        /// <summary>Virtual controller output type for this slot.</summary>
+        public VirtualControllerType OutputType
+        {
+            get => _outputType;
+            set => SetProperty(ref _outputType, value);
+        }
+
+        /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox 360, 1=DualShock 4).</summary>
+        public int OutputTypeIndex
+        {
+            get => (int)_outputType;
+            set
+            {
+                if (Enum.IsDefined(typeof(VirtualControllerType), value))
+                    OutputType = (VirtualControllerType)value;
+            }
+        }
 
         // ═══════════════════════════════════════════════
         //  #1: Multi-device selection within a slot
@@ -349,6 +373,12 @@ namespace PadForge.ViewModels
 
         private int _rightTriggerAntiDeadZone;
         public int RightTriggerAntiDeadZone { get => _rightTriggerAntiDeadZone; set => SetProperty(ref _rightTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
+
+        private int _leftTriggerMaxRange = 100;
+        public int LeftTriggerMaxRange { get => _leftTriggerMaxRange; set => SetProperty(ref _leftTriggerMaxRange, Math.Clamp(value, 1, 100)); }
+
+        private int _rightTriggerMaxRange = 100;
+        public int RightTriggerMaxRange { get => _rightTriggerMaxRange; set => SetProperty(ref _rightTriggerMaxRange, Math.Clamp(value, 1, 100)); }
 
         // ── Backward compatibility shims ──
         // SettingsService and existing PadPage.xaml use LeftDeadZone/RightDeadZone.

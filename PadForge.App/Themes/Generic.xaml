@@ -1,0 +1,53 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:PadForge.Controls">
+
+    <Style TargetType="{x:Type controls:RangeSlider}">
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:RangeSlider}">
+                    <Grid x:Name="PART_Track">
+                        <!-- Track background bar -->
+                        <Border Height="4" VerticalAlignment="Center" CornerRadius="2"
+                                Margin="7,0"
+                                Background="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+                        <Canvas ClipToBounds="False">
+                            <!-- Active range highlight -->
+                            <Border x:Name="PART_RangeHighlight" Height="4" CornerRadius="2"
+                                    Canvas.Top="10"
+                                    Background="#FF2196F3"/>
+
+                            <!-- Lower thumb (dead zone) -->
+                            <Thumb x:Name="PART_LowerThumb" Width="14" Height="24"
+                                   Canvas.Top="0" Cursor="SizeWE">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                BorderThickness="1" CornerRadius="3"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+
+                            <!-- Upper thumb (max range) -->
+                            <Thumb x:Name="PART_UpperThumb" Width="14" Height="24"
+                                   Canvas.Top="0" Cursor="SizeWE">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                BorderThickness="1" CornerRadius="3"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Canvas>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -36,25 +36,25 @@
 
                 <ui:NavigationViewItemSeparator/>
 
-                <ui:NavigationViewItem Content="Controller 1" Tag="Pad1">
+                <ui:NavigationViewItem Content="Virtual Controller 1" Tag="Pad1">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE7FC;"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
-                <ui:NavigationViewItem Content="Controller 2" Tag="Pad2">
+                <ui:NavigationViewItem Content="Virtual Controller 2" Tag="Pad2">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE7FC;"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
-                <ui:NavigationViewItem Content="Controller 3" Tag="Pad3">
+                <ui:NavigationViewItem Content="Virtual Controller 3" Tag="Pad3">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE7FC;"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
-                <ui:NavigationViewItem Content="Controller 4" Tag="Pad4">
+                <ui:NavigationViewItem Content="Virtual Controller 4" Tag="Pad4">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE7FC;"/>
                     </ui:NavigationViewItem.Icon>
@@ -65,6 +65,12 @@
                 <ui:NavigationViewItem Content="Devices" Tag="Devices">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="AllApps"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+
+                <ui:NavigationViewItem Content="Profiles" Tag="Profiles">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:FontIcon Glyph="&#xE8F1;"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.MenuItems>
@@ -83,6 +89,7 @@
                 <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                 <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>
                 <views:SettingsPage x:Name="SettingsPageView" Visibility="Collapsed"/>
+                <views:ProfilesPage x:Name="ProfilesPageView" Visibility="Collapsed"/>
                 <views:AboutPage x:Name="AboutPageView" Visibility="Collapsed"/>
             </Grid>
 

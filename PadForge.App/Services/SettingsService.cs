@@ -228,6 +228,16 @@ namespace PadForge.Services
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
+
+            // Load per-slot virtual controller types.
+            if (appSettings.SlotControllerTypes != null)
+            {
+                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotControllerTypes.Length; i++)
+                {
+                    if (Enum.IsDefined(typeof(Engine.VirtualControllerType), appSettings.SlotControllerTypes[i]))
+                        _mainVm.Pads[i].OutputType = (Engine.VirtualControllerType)appSettings.SlotControllerTypes[i];
+                }
+            }
         }
 
         /// <summary>
@@ -282,6 +292,8 @@ namespace PadForge.Services
                 padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
                 padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
                 padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+                padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
+                padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
 
                 // Load mapping descriptors into mapping rows.
                 LoadMappingDescriptors(padVm, ps);
@@ -431,6 +443,7 @@ namespace PadForge.Services
                     entries.Add(new ProfileEntry
                     {
                         InstanceGuid = us.InstanceGuid,
+                        ProductGuid = us.ProductGuid,
                         MapTo = us.MapTo,
                         PadSettingChecksum = ps.PadSettingChecksum
                     });
@@ -566,6 +579,12 @@ namespace PadForge.Services
             var vm = _mainVm.Settings;
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
+
+            // Collect per-slot controller types from PadViewModels.
+            var slotTypes = new int[_mainVm.Pads.Count];
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+                slotTypes[i] = (int)_mainVm.Pads[i].OutputType;
+
             return new AppSettingsData
             {
                 AutoStartEngine = vm.AutoStartEngine,
@@ -576,7 +595,8 @@ namespace PadForge.Services
                 PollingRateMs = vm.PollingRateMs,
                 ThemeIndex = vm.SelectedThemeIndex,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
-                ActiveProfileId = SettingsManager.ActiveProfileId
+                ActiveProfileId = SettingsManager.ActiveProfileId,
+                SlotControllerTypes = slotTypes
             };
         }
 
@@ -669,6 +689,8 @@ namespace PadForge.Services
                     ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
                     ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
                     ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
+                    ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString();
+                    ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString();
 
                     // Write mapping descriptors.
                     foreach (var mapping in padVm.Mappings)
@@ -722,6 +744,8 @@ namespace PadForge.Services
                 padVm.RightTriggerDeadZone = 0;
                 padVm.LeftTriggerAntiDeadZone = 0;
                 padVm.RightTriggerAntiDeadZone = 0;
+                padVm.LeftTriggerMaxRange = 100;
+                padVm.RightTriggerMaxRange = 100;
             }
 
             var settingsVm = _mainVm.Settings;
@@ -909,6 +933,14 @@ namespace PadForge.Services
 
         [XmlElement]
         public string ActiveProfileId { get; set; }
+
+        /// <summary>
+        /// Per-slot virtual controller output types (Xbox 360 or DualShock 4).
+        /// Array of 4 ints matching VirtualControllerType enum values.
+        /// </summary>
+        [XmlArray("SlotControllerTypes")]
+        [XmlArrayItem("Type")]
+        public int[] SlotControllerTypes { get; set; }
     }
 
     /// <summary>
@@ -1030,11 +1062,15 @@ namespace PadForge.Services
 
     /// <summary>
     /// Links a device (by instance GUID) to a slot and PadSetting within a profile.
+    /// ProductGuid enables fallback matching when InstanceGuid changes (BT reconnect).
     /// </summary>
     public class ProfileEntry
     {
         [XmlElement]
         public Guid InstanceGuid { get; set; }
+
+        [XmlElement]
+        public Guid ProductGuid { get; set; }
 
         [XmlElement]
         public int MapTo { get; set; }

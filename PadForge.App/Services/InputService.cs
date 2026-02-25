@@ -1050,55 +1050,27 @@ namespace PadForge.Services
             if (_inputManager == null || padIndex < 0 || padIndex >= InputManager.MaxPads)
                 return;
 
+            // Set device-level filter so the background thread only rumbles the target device.
             if (deviceGuid.HasValue && deviceGuid.Value != Guid.Empty)
+                _inputManager.TestRumbleTargetGuid[padIndex] = deviceGuid.Value;
+
+            // Set vibration via slot-level state (background thread applies it).
+            if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
+            if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
+
+            // Schedule clearing after 500ms.
+            var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+            clearTimer.Tick += (s2, e2) =>
             {
-                // Direct device rumble — bypasses the slot-level VibrationStates entirely.
-                var ud = FindUserDevice(deviceGuid.Value);
-                if (ud?.Device == null || ud.ForceFeedbackState == null)
-                    return;
-                if (!ud.Device.HasRumble && !ud.Device.HasHaptic)
-                    return;
-
-                var userSetting = SettingsManager.UserSettings?.FindByInstanceGuid(ud.InstanceGuid);
-                var ps = userSetting?.GetPadSetting();
-                if (ps == null)
-                    return;
-
-                var testVib = new Vibration
+                if (_inputManager != null && padIndex < InputManager.MaxPads)
                 {
-                    LeftMotorSpeed = left ? (ushort)32768 : (ushort)0,
-                    RightMotorSpeed = right ? (ushort)32768 : (ushort)0
-                };
-                ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, ps, testVib);
-
-                // Schedule clearing after 500ms.
-                var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-                clearTimer.Tick += (s2, e2) =>
-                {
-                    if (ud.Device != null && ud.ForceFeedbackState != null)
-                        ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, ps, new Vibration());
-                    clearTimer.Stop();
-                };
-                clearTimer.Start();
-            }
-            else
-            {
-                // Fallback: slot-level rumble (all devices in slot).
-                if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
-                if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
-
-                var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-                clearTimer.Tick += (s2, e2) =>
-                {
-                    if (_inputManager != null && padIndex < InputManager.MaxPads)
-                    {
-                        if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
-                        if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
-                    }
-                    clearTimer.Stop();
-                };
-                clearTimer.Start();
-            }
+                    if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
+                    if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
+                    _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
+                }
+                clearTimer.Stop();
+            };
+            clearTimer.Start();
         }
 
         // ─────────────────────────────────────────────

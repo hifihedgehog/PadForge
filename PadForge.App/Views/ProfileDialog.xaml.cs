@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Microsoft.Win32;
@@ -16,6 +17,18 @@ namespace PadForge.Views
             ExeListBox.ItemsSource = ExecutablePaths;
             NameBox.Focus();
             NameBox.SelectAll();
+        }
+
+        /// <summary>
+        /// Pre-populates the dialog for editing an existing profile.
+        /// </summary>
+        public void LoadForEdit(string name, IEnumerable<string> exePaths)
+        {
+            NameBox.Text = name;
+            ExecutablePaths.Clear();
+            foreach (var p in exePaths)
+                ExecutablePaths.Add(p);
+            Title = "Edit Profile";
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)

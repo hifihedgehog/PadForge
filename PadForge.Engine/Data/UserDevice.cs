@@ -62,6 +62,10 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public string DevicePath { get; set; } = string.Empty;
 
+        /// <summary>Device serial number (e.g. Bluetooth MAC address). Empty if unavailable.</summary>
+        [XmlElement]
+        public string SerialNumber { get; set; } = string.Empty;
+
         // ─────────────────────────────────────────────────────────────
         //  Serializable capability properties
         // ─────────────────────────────────────────────────────────────
@@ -379,6 +383,7 @@ namespace PadForge.Engine.Data
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;
             DevicePath = wrapper.DevicePath;
+            SerialNumber = wrapper.SerialNumber ?? string.Empty;
 
             // Populate device objects and effects.
             DeviceObjects = wrapper.GetDeviceObjects();

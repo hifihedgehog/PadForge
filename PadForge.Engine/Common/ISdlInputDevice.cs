@@ -28,6 +28,7 @@ namespace PadForge.Engine
         Guid InstanceGuid { get; }
         Guid ProductGuid { get; }
         string DevicePath { get; }
+        string SerialNumber { get; }
 
         CustomInputState GetCurrentState();
         DeviceObjectItem[] GetDeviceObjects();

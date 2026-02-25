@@ -147,10 +147,12 @@ namespace PadForge.Common.Input
             // ── Trigger dead zones ──
             gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
                 TryParseIntStatic(ps.LeftTriggerDeadZone, 0),
-                TryParseIntStatic(ps.LeftTriggerAntiDeadZone, 0));
+                TryParseIntStatic(ps.LeftTriggerAntiDeadZone, 0),
+                TryParseIntStatic(ps.LeftTriggerMaxRange, 100));
             gp.RightTrigger = ApplyTriggerDeadZone(gp.RightTrigger,
                 TryParseIntStatic(ps.RightTriggerDeadZone, 0),
-                TryParseIntStatic(ps.RightTriggerAntiDeadZone, 0));
+                TryParseIntStatic(ps.RightTriggerAntiDeadZone, 0),
+                TryParseIntStatic(ps.RightTriggerMaxRange, 100));
 
             // ── Thumbsticks ──
             gp.ThumbLX = MapToThumbAxis(state, ps.LeftThumbAxisX);
@@ -685,13 +687,14 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Applies dead zone and anti-dead zone processing to a trigger value (0–255).
+        /// Applies dead zone, anti-dead zone, and max range processing to a trigger value (0–255).
         /// Dead zone: values below the threshold percentage are zeroed.
+        /// Max range: caps the input so full physical press maps to this percentage ceiling.
         /// Anti-dead zone: remaps the output so small presses register past the game's dead zone.
         /// </summary>
-        private static byte ApplyTriggerDeadZone(byte value, int deadZone, int antiDeadZone)
+        private static byte ApplyTriggerDeadZone(byte value, int deadZone, int antiDeadZone, int maxRange)
         {
-            if (deadZone <= 0 && antiDeadZone <= 0)
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
                 return value;
 
             // Normalize to 0.0–1.0.
@@ -702,8 +705,13 @@ namespace PadForge.Common.Input
             if (norm < dzNorm)
                 return 0;
 
-            // Remap from dead zone edge to 1.0.
-            double remapped = (norm - dzNorm) / (1.0 - dzNorm);
+            // Max range: cap the input ceiling.
+            double maxNorm = maxRange / 100.0;
+            if (maxNorm <= dzNorm)
+                maxNorm = dzNorm + 0.01;
+
+            // Remap from [dzNorm, maxNorm] to [0, 1].
+            double remapped = Math.Clamp((norm - dzNorm) / (maxNorm - dzNorm), 0.0, 1.0);
 
             // Anti-dead zone: offset the output minimum.
             double adzNorm = antiDeadZone / 100.0;

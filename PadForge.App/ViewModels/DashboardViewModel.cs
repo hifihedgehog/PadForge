@@ -160,7 +160,7 @@ namespace PadForge.ViewModels
         public SlotSummary(int padIndex)
         {
             PadIndex = padIndex;
-            SlotLabel = $"Player {padIndex + 1}";
+            SlotLabel = $"Virtual Controller {padIndex + 1}";
         }
 
         /// <summary>Zero-based pad slot index (0–3).</summary>

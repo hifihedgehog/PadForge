@@ -80,29 +80,14 @@ namespace PadForge.Common.Input
                 try
                 {
                     // Skip devices already identified as ViGEm virtual controllers.
-                    // Opening and closing them resets their XInput rumble state,
-                    // which kills any active vibration feedback from games.
                     if (_filteredVigemInstanceIds.Contains(instanceId))
                         continue;
 
-                    // Get pre-open identification to check if already tracked.
-                    ushort vid = SDL_GetJoystickVendorForID(instanceId);
-                    ushort pid = SDL_GetJoystickProductForID(instanceId);
-                    string path = SDL_GetJoystickPathForID(instanceId);
-                    Guid instanceGuid = SdlDeviceWrapper.BuildInstanceGuid(path, vid, pid, instanceId);
-
-                    // Check if we already have this device online.
-                    UserDevice existingUd = FindOnlineDeviceByInstanceGuid(instanceGuid);
-                    if (existingUd != null && existingUd.IsOnline && existingUd.Device != null)
-                    {
-                        // Already open — verify still attached.
-                        if (!existingUd.Device.IsAttached)
-                        {
-                            MarkDeviceOffline(existingUd);
-                            changed = true;
-                        }
+                    // Skip devices we already have open (by SDL instance ID).
+                    // This is more reliable than GUID matching because serial-based
+                    // GUIDs aren't available until after the device is opened.
+                    if (_openedSdlInstanceIds.Contains(instanceId))
                         continue;
-                    }
 
                     // Open the device by instance ID.
                     var wrapper = new SdlDeviceWrapper();
@@ -122,7 +107,9 @@ namespace PadForge.Common.Input
                     }
 
                     // Find or create the UserDevice record.
-                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
+                    // Passes ProductGuid for fallback matching when InstanceGuid changes
+                    // (e.g. Bluetooth device reconnects with a different device path).
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
 
                     // Populate from the SDL device.
                     ud.LoadFromSdlDevice(wrapper);
@@ -414,25 +401,81 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Finds an existing UserDevice by instance GUID or creates a new one
-        /// and adds it to the SettingsManager collection.
+        /// Finds an existing UserDevice by instance GUID, with fallback matching
+        /// by ProductGuid for devices whose InstanceGuid changed (e.g. Bluetooth
+        /// controllers that get a different device path after reboot).
+        /// When a fallback match is found, migrates the old device and its
+        /// UserSetting to the new InstanceGuid.
         /// </summary>
-        private UserDevice FindOrCreateUserDevice(Guid instanceGuid)
+        private UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default)
         {
             var devices = SettingsManager.UserDevices;
             if (devices == null) return new UserDevice();
 
             lock (devices.SyncRoot)
             {
+                // 1. Exact match by InstanceGuid.
                 for (int i = 0; i < devices.Items.Count; i++)
                 {
                     if (devices.Items[i].InstanceGuid == instanceGuid)
                         return devices.Items[i];
                 }
 
+                // 2. Fallback: find an offline device with the same ProductGuid.
+                //    This handles BT controllers that reconnect with a new device path.
+                if (productGuid != Guid.Empty)
+                {
+                    UserDevice fallback = null;
+                    for (int i = 0; i < devices.Items.Count; i++)
+                    {
+                        var d = devices.Items[i];
+                        if (!d.IsOnline && d.ProductGuid == productGuid)
+                        {
+                            fallback = d;
+                            break;
+                        }
+                    }
+
+                    if (fallback != null)
+                    {
+                        // Migrate the device to its new InstanceGuid.
+                        Guid oldGuid = fallback.InstanceGuid;
+                        fallback.InstanceGuid = instanceGuid;
+
+                        // Also migrate the linked UserSetting so slot assignment
+                        // and PadSetting are preserved.
+                        MigrateUserSettingGuid(oldGuid, instanceGuid);
+
+                        return fallback;
+                    }
+                }
+
+                // 3. No match — create a new device.
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
                 return ud;
+            }
+        }
+
+        /// <summary>
+        /// Updates a UserSetting's InstanceGuid when the physical device's
+        /// identity changes (e.g. Bluetooth reconnect with different path).
+        /// </summary>
+        private static void MigrateUserSettingGuid(Guid oldGuid, Guid newGuid)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    if (settings.Items[i].InstanceGuid == oldGuid)
+                    {
+                        settings.Items[i].InstanceGuid = newGuid;
+                        break; // One UserSetting per device.
+                    }
+                }
             }
         }
 

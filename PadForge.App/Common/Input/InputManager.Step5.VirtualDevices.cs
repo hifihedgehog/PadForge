@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Nefarius.ViGEm.Client;
-using Nefarius.ViGEm.Client.Targets;
-using Nefarius.ViGEm.Client.Targets.Xbox360;
 using PadForge.Engine;
 
 namespace PadForge.Common.Input
@@ -13,8 +11,8 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 5: UpdateVirtualDevices
-        //  Feeds combined Gamepad states to ViGEmBus virtual Xbox 360
-        //  controllers via the Nefarius.ViGEm.Client NuGet package.
+        //  Feeds combined Gamepad states to ViGEmBus virtual controllers
+        //  (Xbox 360 or DualShock 4) via the IVirtualController abstraction.
         // ─────────────────────────────────────────────
 
         /// <summary>Shared ViGEmClient instance (one per process).</summary>
@@ -23,7 +21,14 @@ namespace PadForge.Common.Input
         private static bool _vigemClientFailed;
 
         /// <summary>Virtual controller targets (one per slot).</summary>
-        private IXbox360Controller[] _virtualControllers = new IXbox360Controller[MaxPads];
+        private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
+
+        /// <summary>
+        /// Configured virtual controller type per slot. The UI writes to this
+        /// array via InputService at 30Hz. Step 5 reads it at ~1000Hz to detect
+        /// type changes and recreate controllers accordingly.
+        /// </summary>
+        public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
 
         /// <summary>
         /// Count of currently active ViGEm virtual controllers.
@@ -60,6 +65,9 @@ namespace PadForge.Common.Input
         /// Destroying a virtual controller severs the game's vibration connection
         /// (FeedbackReceived stops firing), and recreating it requires the game to
         /// rediscover the controller and re-send XInputSetState — causing a gap.
+        ///
+        /// Virtual controllers are created in ascending slot order so that ViGEm
+        /// assigns sequential indices matching the PadForge slot numbers.
         /// </summary>
         private void UpdateVirtualDevices()
         {
@@ -70,51 +78,79 @@ namespace PadForge.Common.Input
             if (_vigemClient == null)
                 return;
 
+            // --- Pass 1: Handle type changes, destruction, and activity tracking ---
+            bool anyNeedsCreate = false;
+
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                var vc = _virtualControllers[padIndex];
+
+                // Detect controller type change — destroy old if type differs.
+                if (vc != null && vc.Type != SlotControllerTypes[padIndex])
+                {
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, recreating");
+                    DestroyVirtualController(padIndex);
+                    _virtualControllers[padIndex] = null;
+                    vc = null;
+                }
+
+                bool slotActive = IsSlotActive(padIndex);
+
+                if (slotActive)
+                {
+                    if (_slotInactiveCounter[padIndex] > 0)
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} active again after {_slotInactiveCounter[padIndex]} inactive cycles");
+
+                    _slotInactiveCounter[padIndex] = 0;
+
+                    if (vc == null)
+                        anyNeedsCreate = true;
+                }
+                else
+                {
+                    _slotInactiveCounter[padIndex]++;
+
+                    if (_slotInactiveCounter[padIndex] == 1)
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} !slotActive (vc={vc != null}) VibL={VibrationStates[padIndex].LeftMotorSpeed} VibR={VibrationStates[padIndex].RightMotorSpeed}");
+
+                    if (vc != null && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
+                    {
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} destroying virtual controller after {SlotDestroyGraceCycles} inactive cycles");
+                        DestroyVirtualController(padIndex);
+                        _virtualControllers[padIndex] = null;
+                        VibrationStates[padIndex].LeftMotorSpeed = 0;
+                        VibrationStates[padIndex].RightMotorSpeed = 0;
+                    }
+                }
+            }
+
+            // --- Pass 2: Create virtual controllers in ascending slot order ---
+            // ViGEm assigns indices sequentially on Connect(), so creation order
+            // must match slot order. This applies to both Xbox 360 (XInput index)
+            // and DS4 (ViGEm DS4 index) controllers.
+            if (anyNeedsCreate)
+            {
+                for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                {
+                    if (_virtualControllers[padIndex] == null &&
+                        _slotInactiveCounter[padIndex] == 0)
+                    {
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} creating {SlotControllerTypes[padIndex]} virtual controller (ordered)");
+                        var vc = CreateVirtualController(padIndex);
+                        _virtualControllers[padIndex] = vc;
+                    }
+                }
+            }
+
+            // --- Pass 3: Submit reports for active slots ---
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 try
                 {
-                    var gp = CombinedXiStates[padIndex];
                     var vc = _virtualControllers[padIndex];
-                    bool slotActive = IsSlotActive(padIndex);
-
-                    if (slotActive)
+                    if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
-                        if (_slotInactiveCounter[padIndex] > 0)
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} active again after {_slotInactiveCounter[padIndex]} inactive cycles");
-
-                        _slotInactiveCounter[padIndex] = 0;
-
-                        if (vc == null)
-                        {
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} creating virtual controller");
-                            vc = CreateVirtualController(padIndex);
-                            _virtualControllers[padIndex] = vc;
-                        }
-
-                        if (vc != null)
-                        {
-                            SubmitGamepadToVirtual(vc, gp);
-                        }
-                    }
-                    else
-                    {
-                        // Don't destroy immediately — wait for sustained inactivity.
-                        // Transient IsSlotActive=false (e.g., during device enumeration
-                        // or brief lock contention) must not kill vibration feedback.
-                        _slotInactiveCounter[padIndex]++;
-
-                        if (_slotInactiveCounter[padIndex] == 1)
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} !slotActive (vc={vc != null}) VibL={VibrationStates[padIndex].LeftMotorSpeed} VibR={VibrationStates[padIndex].RightMotorSpeed}");
-
-                        if (vc != null && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
-                        {
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} destroying virtual controller after {SlotDestroyGraceCycles} inactive cycles");
-                            DestroyVirtualController(padIndex);
-                            _virtualControllers[padIndex] = null;
-                            VibrationStates[padIndex].LeftMotorSpeed = 0;
-                            VibrationStates[padIndex].RightMotorSpeed = 0;
-                        }
+                        vc.SubmitGamepadState(CombinedXiStates[padIndex]);
                     }
                 }
                 catch (Exception ex)
@@ -204,58 +240,49 @@ namespace PadForge.Common.Input
         //  slot the new virtual controller occupies.
         // ─────────────────────────────────────────────
 
-        private IXbox360Controller CreateVirtualController(int padIndex)
+        private IVirtualController CreateVirtualController(int padIndex)
         {
             if (_vigemClient == null)
                 return null;
 
             try
             {
-                // ── Snapshot XInput slot mask BEFORE connecting ──
-                uint maskBefore = GetXInputConnectedSlotMask();
+                // Snapshot XInput slot mask BEFORE connecting (Xbox 360 only).
+                uint maskBefore = 0;
+                var controllerType = SlotControllerTypes[padIndex];
+                if (controllerType == VirtualControllerType.Xbox360)
+                    maskBefore = GetXInputConnectedSlotMask();
 
-                var controller = _vigemClient.CreateXbox360Controller();
-                controller.Connect();
-
-                // ── Wait for the new XInput slot to appear ──
-                // After Connect(), the ViGEm kernel driver needs a few ms to
-                // register the new device with the XInput stack. Spin-wait for
-                // up to 50ms for the slot mask to change. This is a one-time
-                // cost per controller creation (rare event), not per cycle.
-                var waitSw = Stopwatch.StartNew();
-                while (waitSw.ElapsedMilliseconds < 50)
+                IVirtualController vc = controllerType switch
                 {
-                    uint maskAfter = GetXInputConnectedSlotMask();
-                    if (maskAfter != maskBefore)
-                        break;
-                    Thread.SpinWait(100);
+                    VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
+                    _ => new Xbox360VirtualController(_vigemClient)
+                };
+
+                vc.Connect();
+
+                // Wait for the new XInput slot to appear (Xbox 360 only).
+                // DS4 virtual controllers don't appear in the XInput stack.
+                if (controllerType == VirtualControllerType.Xbox360)
+                {
+                    var waitSw = Stopwatch.StartNew();
+                    while (waitSw.ElapsedMilliseconds < 50)
+                    {
+                        uint maskAfter = GetXInputConnectedSlotMask();
+                        if (maskAfter != maskBefore)
+                            break;
+                        Thread.SpinWait(100);
+                    }
                 }
 
                 _activeVigemCount++;
+                vc.RegisterFeedbackCallback(padIndex, VibrationStates);
 
-                int capturedIndex = padIndex;
-                controller.FeedbackReceived += (sender, args) =>
-                {
-                    if (capturedIndex >= 0 && capturedIndex < MaxPads)
-                    {
-                        ushort newL = (ushort)(args.LargeMotor * 257);
-                        ushort newR = (ushort)(args.SmallMotor * 257);
-                        ushort oldL = VibrationStates[capturedIndex].LeftMotorSpeed;
-                        ushort oldR = VibrationStates[capturedIndex].RightMotorSpeed;
-
-                        VibrationStates[capturedIndex].LeftMotorSpeed = newL;
-                        VibrationStates[capturedIndex].RightMotorSpeed = newR;
-
-                        if (newL != oldL || newR != oldR)
-                            RumbleLogger.Log($"[ViGEm] Pad{capturedIndex} feedback L:{oldL}->{newL} R:{oldR}->{newR}");
-                    }
-                };
-
-                return controller;
+                return vc;
             }
             catch (Exception ex)
             {
-                RaiseError($"Failed to create virtual controller for pad {padIndex}", ex);
+                RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }
         }
@@ -267,17 +294,24 @@ namespace PadForge.Common.Input
 
             try
             {
+                // Snapshot for Xbox 360 slot mask wait.
+                uint maskBefore = 0;
+                if (vc.Type == VirtualControllerType.Xbox360)
+                    maskBefore = GetXInputConnectedSlotMask();
+
                 vc.Disconnect();
 
                 // Brief wait for the slot to disappear from the XInput stack.
-                var waitSw = Stopwatch.StartNew();
-                uint maskBefore = GetXInputConnectedSlotMask();
-                while (waitSw.ElapsedMilliseconds < 50)
+                if (vc.Type == VirtualControllerType.Xbox360)
                 {
-                    uint maskAfter = GetXInputConnectedSlotMask();
-                    if (maskAfter != maskBefore)
-                        break;
-                    Thread.SpinWait(100);
+                    var waitSw = Stopwatch.StartNew();
+                    while (waitSw.ElapsedMilliseconds < 50)
+                    {
+                        uint maskAfter = GetXInputConnectedSlotMask();
+                        if (maskAfter != maskBefore)
+                            break;
+                        Thread.SpinWait(100);
+                    }
                 }
 
                 _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
@@ -300,8 +334,8 @@ namespace PadForge.Common.Input
         //  XInput slot mask — direct P/Invoke to xinput1_4.dll
         //
         //  Used for ViGEm virtual controller management only
-        //  (detecting when a newly created virtual controller
-        //  appears in the XInput stack).
+        //  (detecting when a newly created Xbox 360 virtual
+        //  controller appears in the XInput stack).
         // ─────────────────────────────────────────────
 
         [DllImport("xinput1_4.dll", EntryPoint = "#100")]
@@ -343,39 +377,6 @@ namespace PadForge.Common.Input
                     mask |= (1u << (int)i);
             }
             return mask;
-        }
-
-        // ─────────────────────────────────────────────
-        //  Report submission
-        // ─────────────────────────────────────────────
-
-        private static void SubmitGamepadToVirtual(IXbox360Controller vc, Gamepad gp)
-        {
-            vc.SetButtonState(Xbox360Button.A, (gp.Buttons & Gamepad.A) != 0);
-            vc.SetButtonState(Xbox360Button.B, (gp.Buttons & Gamepad.B) != 0);
-            vc.SetButtonState(Xbox360Button.X, (gp.Buttons & Gamepad.X) != 0);
-            vc.SetButtonState(Xbox360Button.Y, (gp.Buttons & Gamepad.Y) != 0);
-            vc.SetButtonState(Xbox360Button.LeftShoulder, (gp.Buttons & Gamepad.LEFT_SHOULDER) != 0);
-            vc.SetButtonState(Xbox360Button.RightShoulder, (gp.Buttons & Gamepad.RIGHT_SHOULDER) != 0);
-            vc.SetButtonState(Xbox360Button.Back, (gp.Buttons & Gamepad.BACK) != 0);
-            vc.SetButtonState(Xbox360Button.Start, (gp.Buttons & Gamepad.START) != 0);
-            vc.SetButtonState(Xbox360Button.LeftThumb, (gp.Buttons & Gamepad.LEFT_THUMB) != 0);
-            vc.SetButtonState(Xbox360Button.RightThumb, (gp.Buttons & Gamepad.RIGHT_THUMB) != 0);
-            vc.SetButtonState(Xbox360Button.Guide, (gp.Buttons & Gamepad.GUIDE) != 0);
-            vc.SetButtonState(Xbox360Button.Up, (gp.Buttons & Gamepad.DPAD_UP) != 0);
-            vc.SetButtonState(Xbox360Button.Down, (gp.Buttons & Gamepad.DPAD_DOWN) != 0);
-            vc.SetButtonState(Xbox360Button.Left, (gp.Buttons & Gamepad.DPAD_LEFT) != 0);
-            vc.SetButtonState(Xbox360Button.Right, (gp.Buttons & Gamepad.DPAD_RIGHT) != 0);
-
-            vc.SetAxisValue(Xbox360Axis.LeftThumbX, gp.ThumbLX);
-            vc.SetAxisValue(Xbox360Axis.LeftThumbY, gp.ThumbLY);
-            vc.SetAxisValue(Xbox360Axis.RightThumbX, gp.ThumbRX);
-            vc.SetAxisValue(Xbox360Axis.RightThumbY, gp.ThumbRY);
-
-            vc.SetSliderValue(Xbox360Slider.LeftTrigger, gp.LeftTrigger);
-            vc.SetSliderValue(Xbox360Slider.RightTrigger, gp.RightTrigger);
-
-            vc.SubmitReport();
         }
     }
 }

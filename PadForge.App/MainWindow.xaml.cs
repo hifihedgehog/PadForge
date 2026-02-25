@@ -38,6 +38,7 @@ namespace PadForge
             DashboardPageView.DataContext = _viewModel.Dashboard;
             DevicesPageView.DataContext = _viewModel.Devices;
             SettingsPageView.DataContext = _viewModel.Settings;
+            ProfilesPageView.DataContext = _viewModel.Settings;
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);
@@ -163,8 +164,10 @@ namespace PadForge
                         nameof(PadViewModel.LeftLinear) or nameof(PadViewModel.RightLinear) or
                         nameof(PadViewModel.LeftTriggerDeadZone) or nameof(PadViewModel.RightTriggerDeadZone) or
                         nameof(PadViewModel.LeftTriggerAntiDeadZone) or nameof(PadViewModel.RightTriggerAntiDeadZone) or
+                        nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
-                        nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors))
+                        nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };
             }
@@ -384,6 +387,7 @@ namespace PadForge
             // Swap visible page.
             DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;
             DevicesPageView.Visibility = tag == "Devices" ? Visibility.Visible : Visibility.Collapsed;
+            ProfilesPageView.Visibility = tag == "Profiles" ? Visibility.Visible : Visibility.Collapsed;
             SettingsPageView.Visibility = tag == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             AboutPageView.Visibility = tag == "About" ? Visibility.Visible : Visibility.Collapsed;
 

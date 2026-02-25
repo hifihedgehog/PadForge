@@ -67,6 +67,7 @@ namespace PadForge.Common.Input
 
             // Reset per-cycle caches for ViGEm PnP detection.
             _vigemPnPCount = -1;
+            _vigemDs4PnPCount = -1;
 
             // SDL3: Get array of instance IDs for all connected joysticks.
             uint[] joystickIds = SDL_GetJoysticks();
@@ -187,6 +188,8 @@ namespace PadForge.Common.Input
         /// </summary>
         private int _vigemPnPCount = -1;
         private int _xbox360FilteredThisCycle;
+        private int _vigemDs4PnPCount = -1;
+        private int _ds4FilteredThisCycle;
 
         /// <summary>
         /// Checks whether an SDL device is a ViGEm virtual controller
@@ -231,7 +234,9 @@ namespace PadForge.Common.Input
                 // Lazy-compute the PnP count once per cycle.
                 if (_vigemPnPCount < 0)
                 {
-                    _vigemPnPCount = CountViGEmXbox360Devices();
+                    _vigemPnPCount = CountViGEmDevices(
+                        @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&PID_028E",
+                        @"USB\VID_045E&PID_028E\");
                     _xbox360FilteredThisCycle = 0;
                 }
 
@@ -243,27 +248,49 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // ── DS4 VID/PID — ViGEm emulates Sony DS4 ──
+            // ViGEm DS4 virtual controllers report VID=054C PID=05C4.
+            // Same PnP tree walk as Xbox 360 to distinguish real vs virtual.
+            if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4
+                && _activeVigemCount > 0)
+            {
+                if (_vigemDs4PnPCount < 0)
+                {
+                    _vigemDs4PnPCount = CountViGEmDevices(
+                        @"SYSTEM\CurrentControlSet\Enum\USB\VID_054C&PID_05C4",
+                        @"USB\VID_054C&PID_05C4\");
+                    _ds4FilteredThisCycle = 0;
+                }
+
+                if (_ds4FilteredThisCycle < _vigemDs4PnPCount)
+                {
+                    _ds4FilteredThisCycle++;
+                    return true;
+                }
+            }
+
             return false;
         }
 
         /// <summary>
-        /// Counts how many VID_045E/PID_028E devices in the Windows PnP tree
-        /// are ViGEm virtual controllers (have ViGEmBus as an ancestor).
-        /// Returns 0 if detection fails or no ViGEm devices are found.
+        /// Counts how many devices under the given registry key are ViGEm virtual
+        /// controllers (have ViGEmBus as a PnP ancestor). Used for both Xbox 360
+        /// (VID_045E/PID_028E) and DS4 (VID_054C/PID_05C4) filtering.
         /// </summary>
-        private static int CountViGEmXbox360Devices()
+        /// <param name="registrySubKey">e.g. @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&amp;PID_028E"</param>
+        /// <param name="instancePrefix">e.g. @"USB\VID_045E&amp;PID_028E\"</param>
+        private static int CountViGEmDevices(string registrySubKey, string instancePrefix)
         {
             int count = 0;
             try
             {
-                using var key = Registry.LocalMachine.OpenSubKey(
-                    @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&PID_028E", false);
+                using var key = Registry.LocalMachine.OpenSubKey(registrySubKey, false);
                 if (key == null)
                     return 0;
 
                 foreach (var instanceName in key.GetSubKeyNames())
                 {
-                    var instanceId = @"USB\VID_045E&PID_028E\" + instanceName;
+                    var instanceId = instancePrefix + instanceName;
 
                     // Skip devices that are not currently present.
                     if (!IsDevicePresent(instanceId))

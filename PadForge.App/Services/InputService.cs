@@ -44,6 +44,7 @@ namespace PadForge.Services
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
+        private DsuMotionServer _dsuServer;
         private bool _disposed;
 
         /// <summary>
@@ -127,6 +128,9 @@ namespace PadForge.Services
             // Start engine background thread.
             _inputManager.Start();
 
+            // Start DSU motion server if enabled.
+            StartDsuServerIfEnabled();
+
             // Create UI update timer on the dispatcher.
             _uiTimer = new DispatcherTimer(DispatcherPriority.Render)
             {
@@ -163,6 +167,9 @@ namespace PadForge.Services
                 _foregroundMonitor.ProfileSwitchRequired -= OnProfileSwitchRequired;
                 _foregroundMonitor = null;
             }
+
+            // Stop DSU server.
+            StopDsuServer();
 
             // Stop and dispose engine.
             if (_inputManager != null)
@@ -774,6 +781,67 @@ namespace PadForge.Services
             {
                 _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
             }
+            else if (e.PropertyName == nameof(SettingsViewModel.EnableDsuMotionServer))
+            {
+                if (_mainVm.Settings.EnableDsuMotionServer)
+                    StartDsuServerIfEnabled();
+                else
+                    StopDsuServer();
+            }
+            else if (e.PropertyName == nameof(SettingsViewModel.DsuMotionServerPort))
+            {
+                // Restart on port change if enabled.
+                if (_mainVm.Settings.EnableDsuMotionServer)
+                {
+                    StopDsuServer();
+                    StartDsuServerIfEnabled();
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  DSU Motion Server lifecycle
+        // ─────────────────────────────────────────────
+
+        private void StartDsuServerIfEnabled()
+        {
+            if (!_mainVm.Settings.EnableDsuMotionServer || _inputManager == null)
+                return;
+
+            if (_dsuServer != null)
+                return; // Already running.
+
+            _dsuServer = new DsuMotionServer();
+            _dsuServer.StatusChanged += (_, status) =>
+            {
+                _dispatcher.BeginInvoke(() => _mainVm.Settings.DsuServerStatus = status);
+            };
+
+            int port = _mainVm.Settings.DsuMotionServerPort;
+            if (port < 1024 || port > 65535)
+                port = 26760;
+
+            if (_dsuServer.Start(port))
+            {
+                _inputManager.DsuServer = _dsuServer;
+            }
+            else
+            {
+                _dsuServer.Dispose();
+                _dsuServer = null;
+            }
+        }
+
+        private void StopDsuServer()
+        {
+            if (_dsuServer == null)
+                return;
+
+            if (_inputManager != null)
+                _inputManager.DsuServer = null;
+
+            _dsuServer.Dispose();
+            _dsuServer = null;
         }
 
         // ─────────────────────────────────────────────

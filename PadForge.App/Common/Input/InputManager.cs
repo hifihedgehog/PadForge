@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Services;
 using SDL3;
 using static SDL3.SDL;
 
@@ -76,6 +77,18 @@ namespace PadForge.Common.Input
         /// Per-slot vibration states received from games via ViGEmBus.
         /// </summary>
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
+
+        /// <summary>
+        /// Per-slot motion snapshots for DSU (cemuhook) streaming.
+        /// Written by the polling thread after Step 2, read by the DSU server.
+        /// </summary>
+        public MotionSnapshot[] MotionSnapshots { get; } = new MotionSnapshot[MaxPads];
+
+        /// <summary>
+        /// DSU motion server reference. When set, the polling thread broadcasts
+        /// motion data to subscribed clients after snapshotting sensor data.
+        /// </summary>
+        public DsuMotionServer DsuServer { get; set; }
 
         /// <summary>
         /// When set (non-empty), the test rumble for this slot targets only the
@@ -298,6 +311,8 @@ namespace PadForge.Common.Input
                         }
 
                         UpdateInputStates();
+                        UpdateMotionSnapshots();
+                        BroadcastDsuMotion();
                         UpdateXiStates();
                         CombineXiStates();
                         EvaluateMacros();
@@ -391,6 +406,99 @@ namespace PadForge.Common.Input
                         ud.ClearRuntimeState();
                     }
                 }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Motion snapshots (for DSU server)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Unit conversion: SDL gyro rad/s → DSU deg/s.</summary>
+        private const float RadToDeg = 180f / MathF.PI;
+
+        /// <summary>Unit conversion: SDL accel m/s² → DSU g-force.</summary>
+        private const float MsToG = 1f / 9.80665f;
+
+        /// <summary>
+        /// Snapshots per-slot motion data from the first online device with sensors.
+        /// Called on the polling thread after Step 2 (UpdateInputStates).
+        /// </summary>
+        private void UpdateMotionSnapshots()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            long timestampUs = Stopwatch.GetTimestamp() * 1_000_000 / Stopwatch.Frequency;
+
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
+                bool found = false;
+
+                for (int i = 0; i < slotCount; i++)
+                {
+                    var us = _padIndexBuffer[i];
+                    if (us == null) continue;
+
+                    var ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
+                    if (ud == null || !ud.IsOnline || ud.Device == null)
+                        continue;
+
+                    if (!ud.Device.HasGyro && !ud.Device.HasAccel)
+                        continue;
+
+                    var state = ud.InputState;
+                    if (state == null)
+                        continue;
+
+                    // SDL standard: Accel in m/s² (Y=up has gravity), Gyro in rad/s
+                    // DSU/DS4 convention: negated accel signs, consistent frame
+                    // Derived from Switch Pro SDL→DSU mapping (BetterJoy reference)
+                    float ax = state.Accel[0] * MsToG;
+                    float ay = state.Accel[1] * MsToG;
+                    float az = state.Accel[2] * MsToG;
+                    float gx = state.Gyro[0] * RadToDeg;
+                    float gy = state.Gyro[1] * RadToDeg;
+                    float gz = state.Gyro[2] * RadToDeg;
+
+                    MotionSnapshots[padIndex] = new MotionSnapshot
+                    {
+                        AccelX = -ax,
+                        AccelY = -ay,
+                        AccelZ = -az,
+                        GyroPitch = -gx,
+                        GyroYaw = gy,
+                        GyroRoll = -gz,
+                        TimestampUs = timestampUs,
+                        HasMotion = true
+                    };
+                    found = true;
+                    break;
+                }
+
+                if (!found)
+                {
+                    MotionSnapshots[padIndex] = new MotionSnapshot
+                    {
+                        TimestampUs = timestampUs,
+                        HasMotion = false
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// Broadcasts motion data to DSU clients if the server is active.
+        /// </summary>
+        private void BroadcastDsuMotion()
+        {
+            var server = DsuServer;
+            if (server == null) return;
+
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                bool connected = IsSlotActive(padIndex);
+                server.BroadcastMotion(padIndex, MotionSnapshots[padIndex], connected);
             }
         }
 

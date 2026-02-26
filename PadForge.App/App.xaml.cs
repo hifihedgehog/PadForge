@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using ModernWpf;
@@ -8,6 +9,12 @@ namespace PadForge
     public partial class App : Application
     {
         private Mutex _singleInstanceMutex;
+
+        /// <summary>Timestamp of the last dispatcher error shown. Used to rate-limit popups.</summary>
+        private readonly Stopwatch _lastErrorTime = new Stopwatch();
+
+        /// <summary>Suppressed error count since last shown popup.</summary>
+        private int _suppressedErrorCount;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -64,13 +71,29 @@ namespace PadForge
         private void App_DispatcherUnhandledException(object sender,
             System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            e.Handled = true;
+
+            // Rate-limit: if an error was shown in the last 3 seconds, suppress
+            // the popup to prevent the infinite MessageBox loop that occurs when
+            // the 30Hz DispatcherTimer fires during the modal MessageBox.Show()
+            // nested dispatcher pump and hits the same exception repeatedly.
+            if (_lastErrorTime.IsRunning && _lastErrorTime.ElapsedMilliseconds < 3000)
+            {
+                _suppressedErrorCount++;
+                return;
+            }
+
+            _lastErrorTime.Restart();
+            string suppressed = _suppressedErrorCount > 0
+                ? $"\n\n({_suppressedErrorCount} additional error(s) suppressed)"
+                : string.Empty;
+            _suppressedErrorCount = 0;
+
             MessageBox.Show(
-                $"An unexpected error occurred:\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace}",
+                $"An unexpected error occurred:\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace}{suppressed}",
                 "PadForge — Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
-
-            e.Handled = true;
         }
     }
 }

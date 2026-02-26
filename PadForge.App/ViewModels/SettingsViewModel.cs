@@ -375,8 +375,7 @@ namespace PadForge.ViewModels
             get => _activeProfileInfo;
             set
             {
-                if (SetProperty(ref _activeProfileInfo, value ?? "Default"))
-                    _revertToDefaultCommand?.NotifyCanExecuteChanged();
+                SetProperty(ref _activeProfileInfo, value ?? "Default");
             }
         }
 
@@ -408,7 +407,7 @@ namespace PadForge.ViewModels
         public RelayCommand DeleteProfileCommand =>
             _deleteProfileCommand ??= new RelayCommand(
                 () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null);
+                () => _selectedProfile != null && !_selectedProfile.IsDefault);
 
         private RelayCommand _editProfileCommand;
 
@@ -416,23 +415,21 @@ namespace PadForge.ViewModels
         public RelayCommand EditProfileCommand =>
             _editProfileCommand ??= new RelayCommand(
                 () => EditProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null);
+                () => _selectedProfile != null && !_selectedProfile.IsDefault);
 
         private RelayCommand _loadProfileCommand;
 
         /// <summary>Command to load the selected profile's settings into the editor.</summary>
         public RelayCommand LoadProfileCommand =>
             _loadProfileCommand ??= new RelayCommand(
-                () => LoadProfileRequested?.Invoke(this, EventArgs.Empty),
+                () =>
+                {
+                    if (_selectedProfile?.IsDefault == true)
+                        RevertToDefaultRequested?.Invoke(this, EventArgs.Empty);
+                    else
+                        LoadProfileRequested?.Invoke(this, EventArgs.Empty);
+                },
                 () => _selectedProfile != null);
-
-        private RelayCommand _revertToDefaultCommand;
-
-        /// <summary>Command to revert to the default profile.</summary>
-        public RelayCommand RevertToDefaultCommand =>
-            _revertToDefaultCommand ??= new RelayCommand(
-                () => RevertToDefaultRequested?.Invoke(this, EventArgs.Empty),
-                () => _activeProfileInfo != "Default");
 
         /// <summary>Refreshes the can-execute state of profile commands.</summary>
         public void RefreshProfileCommands()
@@ -440,7 +437,6 @@ namespace PadForge.ViewModels
             _deleteProfileCommand?.NotifyCanExecuteChanged();
             _editProfileCommand?.NotifyCanExecuteChanged();
             _loadProfileCommand?.NotifyCanExecuteChanged();
-            _revertToDefaultCommand?.NotifyCanExecuteChanged();
         }
     }
 
@@ -449,6 +445,12 @@ namespace PadForge.ViewModels
     /// </summary>
     public class ProfileListItem : ObservableObject
     {
+        /// <summary>Sentinel ID for the built-in Default profile entry.</summary>
+        public const string DefaultProfileId = "__default__";
+
+        /// <summary>Whether this is the built-in Default profile entry.</summary>
+        public bool IsDefault => Id == DefaultProfileId;
+
         private string _id;
         public string Id
         {

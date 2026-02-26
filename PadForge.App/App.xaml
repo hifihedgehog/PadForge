@@ -12,16 +12,20 @@
                     <ui:ThemeResources.ThemeDictionaries>
                         <ResourceDictionary x:Key="Light">
                             <SolidColorBrush x:Key="RangeSliderThumbFill" Color="#F0F0F0"/>
+                            <SolidColorBrush x:Key="PopupBackgroundBrush" Color="#FFE0E0E0"/>
                         </ResourceDictionary>
                         <ResourceDictionary x:Key="Dark">
                             <SolidColorBrush x:Key="RangeSliderThumbFill" Color="#F0F0F0"/>
+                            <SolidColorBrush x:Key="PopupBackgroundBrush" Color="#FF3A3A3A"/>
                         </ResourceDictionary>
                         <ResourceDictionary x:Key="HighContrast">
                             <SolidColorBrush x:Key="RangeSliderThumbFill" Color="#F0F0F0"/>
+                            <SolidColorBrush x:Key="PopupBackgroundBrush" Color="#FF3A3A3A"/>
                         </ResourceDictionary>
                     </ui:ThemeResources.ThemeDictionaries>
                 </ui:ThemeResources>
                 <ui:XamlControlsResources />
+                <ResourceDictionary Source="/Resources/ControllerIcons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Global Converters -->
@@ -38,6 +42,7 @@
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:NormToTriggerSlideConverter x:Key="NormToTriggerSlideConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
+            <conv:StringToGeometryConverter x:Key="StringToGeometry" />
 
         </ResourceDictionary>
     </Application.Resources>

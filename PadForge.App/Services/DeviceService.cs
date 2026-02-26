@@ -1,5 +1,6 @@
 using System;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
@@ -25,6 +26,12 @@ namespace PadForge.Services
         /// MainWindow subscribes to refresh PadViewModel device info.
         /// </summary>
         public event EventHandler DeviceAssignmentChanged;
+
+        /// <summary>
+        /// Raised after a device is assigned to a slot, carrying the slot index.
+        /// MainWindow subscribes to navigate to the newly assigned controller page.
+        /// </summary>
+        public event EventHandler<int> NavigateToSlotRequested;
 
         public DeviceService(MainViewModel mainVm, SettingsService settingsService)
         {
@@ -76,6 +83,13 @@ namespace PadForge.Services
                 return;
             }
 
+            // Auto-create the virtual controller slot if it doesn't exist yet.
+            if (!SettingsManager.SlotCreated[slotIndex])
+            {
+                SettingsManager.SlotCreated[slotIndex] = true;
+                SettingsManager.SlotEnabled[slotIndex] = true;
+            }
+
             Guid instanceGuid = selectedRow.InstanceGuid;
 
             // Create or update the UserSetting.
@@ -114,6 +128,9 @@ namespace PadForge.Services
 
             // Notify listeners so PadPage dropdowns refresh immediately.
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+
+            // Navigate to the assigned controller page.
+            NavigateToSlotRequested?.Invoke(this, slotIndex);
         }
 
         // ─────────────────────────────────────────────
@@ -149,15 +166,18 @@ namespace PadForge.Services
 
         /// <summary>
         /// Removes a device and its associated settings entirely.
-        /// Called when the user explicitly removes an offline device.
         /// The device record, any UserSettings pointing to it, and PadSettings
-        /// are all deleted from SettingsManager.
+        /// are all deleted from SettingsManager. The virtual controller slot
+        /// itself is NOT deleted — it remains as an empty slot.
         /// </summary>
         private void OnRemoveDevice(object sender, Guid instanceGuid)
         {
             SettingsManager.RemoveDevice(instanceGuid);
             _settingsService.MarkDirty();
             _mainVm.StatusText = "Device removed.";
+
+            // Refresh sidebar/dashboard device info (slot persists, just empty now).
+            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────
@@ -179,6 +199,74 @@ namespace PadForge.Services
             _settingsService.MarkDirty();
 
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Virtual controller slot management
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Creates the next available virtual controller slot with the specified type.
+        /// Returns the slot index (0–3) or -1 if all slots are taken.
+        /// </summary>
+        public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox360)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (!SettingsManager.SlotCreated[i])
+                {
+                    // Set OutputType BEFORE SlotCreated so that the PropertyChanged
+                    // handler's call to RefreshNavControllerItems() sees SlotCreated[i]=false
+                    // and doesn't trigger a premature sidebar rebuild.
+                    _mainVm.Pads[i].OutputType = controllerType;
+                    SettingsManager.SlotCreated[i] = true;
+                    SettingsManager.SlotEnabled[i] = true;
+                    _settingsService.MarkDirty();
+                    DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Deletes a virtual controller slot. Unassigns all devices from it.
+        /// </summary>
+        public void DeleteSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex > 3) return;
+
+            SettingsManager.SlotCreated[slotIndex] = false;
+            SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
+
+            // Unassign all devices mapped to this slot.
+            var settings = SettingsManager.UserSettings;
+            if (settings != null)
+            {
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                    {
+                        if (us.MapTo == slotIndex)
+                            us.MapTo = -1;
+                    }
+                }
+            }
+
+            _settingsService.MarkDirty();
+            _mainVm.StatusText = $"Virtual Controller {slotIndex + 1} deleted.";
+            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Sets the enabled state of a virtual controller slot.
+        /// </summary>
+        public void SetSlotEnabled(int slotIndex, bool enabled)
+        {
+            if (slotIndex < 0 || slotIndex > 3) return;
+
+            SettingsManager.SlotEnabled[slotIndex] = enabled;
+            _settingsService.MarkDirty();
         }
     }
 }

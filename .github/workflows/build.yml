@@ -60,7 +60,7 @@ jobs:
     - name: Release - archive-${{env.Branch}}
       run: |
         gh release create archive-${{env.Branch}} --repo ${{github.repository}} --target ${{env.FirstCommitHash}} --latest=false --prerelease --title "${{env.Title}} build archive" --notes "Latest build: https://github.com/${{github.repository}}/releases/latest-${{env.Branch}}
-        Build log: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}" || true
+        Build logs: https://github.com/${{github.repository}}/actions" || true
         gh release upload archive-${{env.Branch}} --repo ${{github.repository}} --clobber "Release/${{env.Title}}_r${{env.CommitCount}}@${{env.CommitHashShort}}.zip"
 
     - name: Release - latest-${{env.Branch}}

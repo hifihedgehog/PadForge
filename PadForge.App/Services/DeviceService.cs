@@ -46,6 +46,7 @@ namespace PadForge.Services
         public void WireEvents()
         {
             _mainVm.Devices.AssignToSlotRequested += OnAssignToSlot;
+            _mainVm.Devices.ToggleSlotRequested += OnToggleSlot;
             _mainVm.Devices.HideDeviceRequested += OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested += OnRemoveDevice;
         }
@@ -56,6 +57,7 @@ namespace PadForge.Services
         public void UnwireEvents()
         {
             _mainVm.Devices.AssignToSlotRequested -= OnAssignToSlot;
+            _mainVm.Devices.ToggleSlotRequested -= OnToggleSlot;
             _mainVm.Devices.HideDeviceRequested -= OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested -= OnRemoveDevice;
         }
@@ -77,7 +79,7 @@ namespace PadForge.Services
                 return;
             }
 
-            if (slotIndex < 0 || slotIndex > 3)
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
             {
                 _mainVm.StatusText = $"Invalid slot index: {slotIndex}";
                 return;
@@ -119,7 +121,7 @@ namespace PadForge.Services
             }
 
             // Update the row display.
-            selectedRow.AssignedSlot = slotIndex;
+            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 
             // Mark settings as dirty.
             _settingsService.MarkDirty();
@@ -131,6 +133,61 @@ namespace PadForge.Services
 
             // Navigate to the assigned controller page.
             NavigateToSlotRequested?.Invoke(this, slotIndex);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Toggle slot assignment (multi-slot)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Toggles the selected device's assignment to a specific slot.
+        /// Supports multi-slot: a device can be assigned to multiple slots.
+        /// </summary>
+        private void OnToggleSlot(object sender, int slotIndex)
+        {
+            var selectedRow = _mainVm.Devices.SelectedDevice;
+            if (selectedRow == null) return;
+
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return;
+
+            // Auto-create the virtual controller slot if it doesn't exist yet.
+            if (!SettingsManager.SlotCreated[slotIndex])
+            {
+                SettingsManager.SlotCreated[slotIndex] = true;
+                SettingsManager.SlotEnabled[slotIndex] = true;
+            }
+
+            Guid instanceGuid = selectedRow.InstanceGuid;
+            var (assigned, us) = SettingsManager.ToggleDeviceSlotAssignment(instanceGuid, slotIndex);
+
+            if (assigned && us != null)
+            {
+                // Populate device info on the new UserSetting.
+                var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+                if (udForGuid != null)
+                    us.ProductGuid = udForGuid.ProductGuid;
+
+                // Create default PadSetting if needed.
+                var existingPs = us.GetPadSetting();
+                if (existingPs == null || !existingPs.HasAnyMapping)
+                {
+                    var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+                    us.SetPadSetting(ps);
+                    us.PadSettingChecksum = ps.PadSettingChecksum;
+                }
+
+                _mainVm.StatusText = $"Assigned \"{selectedRow.DeviceName}\" to slot #{slotIndex + 1}.";
+            }
+            else
+            {
+                _mainVm.StatusText = $"Unassigned \"{selectedRow.DeviceName}\" from slot #{slotIndex + 1}.";
+            }
+
+            // Update device row display.
+            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
+
+            _settingsService.MarkDirty();
+            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────
@@ -194,7 +251,7 @@ namespace PadForge.Services
 
             var row = _mainVm.Devices.FindByGuid(instanceGuid);
             if (row != null)
-                row.AssignedSlot = -1;
+                row.SetAssignedSlots(new System.Collections.Generic.List<int>());
 
             _settingsService.MarkDirty();
 
@@ -211,7 +268,7 @@ namespace PadForge.Services
         /// </summary>
         public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox360)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i])
                 {
@@ -234,7 +291,7 @@ namespace PadForge.Services
         /// </summary>
         public void DeleteSlot(int slotIndex)
         {
-            if (slotIndex < 0 || slotIndex > 3) return;
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return;
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
@@ -263,7 +320,7 @@ namespace PadForge.Services
         /// </summary>
         public void SetSlotEnabled(int slotIndex, bool enabled)
         {
-            if (slotIndex < 0 || slotIndex > 3) return;
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return;
 
             SettingsManager.SlotEnabled[slotIndex] = enabled;
             _settingsService.MarkDirty();

@@ -7,8 +7,8 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
-        //  Step 3: UpdateXiStates
-        //  Maps each device's CustomInputState to an XInput Gamepad struct
+        //  Step 3: UpdateOutputStates
+        //  Maps each device's CustomInputState to a Gamepad struct
         //  based on the PadSetting mapping rules configured for that device.
         //
         //  Each UserSetting links a device (InstanceGuid) to a pad slot (MapTo 0–3)
@@ -29,7 +29,7 @@ namespace PadForge.Common.Input
         /// <see cref="CustomInputState"/> to a <see cref="Gamepad"/> and store the
         /// result on the UserSetting for later combination in Step 4.
         /// </summary>
-        private void UpdateXiStates()
+        private void UpdateOutputStates()
         {
             var settings = SettingsManager.UserSettings?.Items;
             if (settings == null) return;
@@ -55,7 +55,7 @@ namespace PadForge.Common.Input
                     UserDevice ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
                     if (ud == null || !ud.IsOnline || ud.InputState == null)
                     {
-                        us.XiState = default;
+                        us.OutputState = default;
                         continue;
                     }
 
@@ -63,17 +63,17 @@ namespace PadForge.Common.Input
                     PadSetting ps = us.GetPadSetting();
                     if (ps == null)
                     {
-                        us.XiState = default;
+                        us.OutputState = default;
                         continue;
                     }
 
                     // Map the input state to a gamepad.
-                    us.XiState = MapInputToGamepad(ud.InputState, ps);
+                    us.OutputState = MapInputToGamepad(ud.InputState, ps);
                 }
                 catch (Exception ex)
                 {
                     RaiseError($"Error mapping device {us.InstanceGuid}", ex);
-                    us.XiState = default;
+                    us.OutputState = default;
                 }
             }
         }

@@ -89,23 +89,31 @@
 
                     <!-- Assign to slot + Remove -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                        <Button Content="P1" Margin="0,0,3,0" MinWidth="32" Padding="4,3"
-                                Command="{Binding AssignToSlotCommand}">
-                            <Button.CommandParameter><sys:Int32>0</sys:Int32></Button.CommandParameter>
-                        </Button>
-                        <Button Content="P2" Margin="0,0,3,0" MinWidth="32" Padding="4,3"
-                                Command="{Binding AssignToSlotCommand}">
-                            <Button.CommandParameter><sys:Int32>1</sys:Int32></Button.CommandParameter>
-                        </Button>
-                        <Button Content="P3" Margin="0,0,3,0" MinWidth="32" Padding="4,3"
-                                Command="{Binding AssignToSlotCommand}">
-                            <Button.CommandParameter><sys:Int32>2</sys:Int32></Button.CommandParameter>
-                        </Button>
-                        <Button Content="P4" Margin="0,0,8,0" MinWidth="32" Padding="4,3"
-                                Command="{Binding AssignToSlotCommand}">
-                            <Button.CommandParameter><sys:Int32>3</sys:Int32></Button.CommandParameter>
-                        </Button>
-                        <Button Content="Remove" Padding="8,3"
+                        <ItemsControl ItemsSource="{Binding ActiveSlotItems}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ToggleButton IsChecked="{Binding IsAssigned, Mode=OneWay}"
+                                                  Command="{Binding DataContext.ToggleSlotCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                  CommandParameter="{Binding PadIndex}"
+                                                  Margin="0,0,3,0" MinWidth="36" Padding="4,3"
+                                                  ToolTip="Toggle assignment">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="11" VerticalAlignment="Center"
+                                                       Margin="0,0,3,0"/>
+                                            <TextBlock Text="{Binding SlotNumber}" FontSize="12"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ToggleButton>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Content="Remove" Padding="8,3" Margin="5,0,0,0"
                                 Command="{Binding RemoveDeviceCommand}"
                                 ToolTip="Remove this device and its settings"/>
                     </StackPanel>

@@ -448,7 +448,11 @@ namespace PadForge
             // and rebuild MenuItems. Without this, the ItemsRepeater's cached index
             // goes stale and crashes in MeasureOverride.
             _viewModel.NavControllerItemsRefreshed += (s, e) =>
-                Dispatcher.BeginInvoke(new Action(() => RebuildControllerSection()));
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    RebuildControllerSection();
+                    _viewModel.Devices.RefreshSlotButtons();
+                }));
 
             // Subscribe to OutputType changes on each pad to refresh sidebar.
             foreach (var pad in _viewModel.Pads)
@@ -512,8 +516,8 @@ namespace PadForge
                     };
                 }
 
-                // "Add Controller" button (only if fewer than 4 slots are active).
-                if (_viewModel.NavControllerItems.Count < 4)
+                // "Add Controller" button (visible if any controller type has remaining capacity).
+                if (HasAnyControllerTypeCapacity())
                 {
                     var addItem = new NavigationViewItem
                     {
@@ -819,6 +823,23 @@ namespace PadForge
         /// Shows a popup anchored to the given element with Xbox 360 and DS4 controller type buttons.
         /// Clicking a button creates a new slot of that type and navigates to it.
         /// </summary>
+        /// <summary>
+        /// Returns true if at least one virtual controller type has remaining capacity.
+        /// </summary>
+        private bool HasAnyControllerTypeCapacity()
+        {
+            int xboxCount = 0, ds4Count = 0;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (!SettingsManager.SlotCreated[i]) continue;
+                if (_viewModel.Pads[i].OutputType == VirtualControllerType.Xbox360)
+                    xboxCount++;
+                else if (_viewModel.Pads[i].OutputType == VirtualControllerType.DualShock4)
+                    ds4Count++;
+            }
+            return xboxCount < SettingsManager.MaxXbox360Slots || ds4Count < SettingsManager.MaxDS4Slots;
+        }
+
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
         {
             // If the popup is already open, close it instead of opening a duplicate.
@@ -869,6 +890,17 @@ namespace PadForge
 
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
+            // Count existing slots by type for per-type capacity check.
+            int xboxCount = 0, ds4Count = 0;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (!SettingsManager.SlotCreated[i]) continue;
+                if (_viewModel.Pads[i].OutputType == VirtualControllerType.Xbox360)
+                    xboxCount++;
+                else if (_viewModel.Pads[i].OutputType == VirtualControllerType.DualShock4)
+                    ds4Count++;
+            }
+
             // Xbox 360 button — theme-aware icon fill.
             var xboxPopupPath = new System.Windows.Shapes.Path
             {
@@ -878,14 +910,17 @@ namespace PadForge
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
             xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPopupPath,
-                ToolTip = "Xbox 360",
+                ToolTip = xboxAtCapacity ? $"Xbox 360 (max {SettingsManager.MaxXbox360Slots})" : "Xbox 360",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand
+                Cursor = System.Windows.Input.Cursors.Hand,
+                IsEnabled = !xboxAtCapacity,
+                Opacity = xboxAtCapacity ? 0.35 : 1.0
             };
             xboxBtn.Click += (s, e) =>
             {
@@ -909,14 +944,17 @@ namespace PadForge
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
             ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4PopupPath,
-                ToolTip = "DualShock 4",
+                ToolTip = ds4AtCapacity ? $"DualShock 4 (max {SettingsManager.MaxDS4Slots})" : "DualShock 4",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand
+                Cursor = System.Windows.Input.Cursors.Hand,
+                IsEnabled = !ds4AtCapacity,
+                Opacity = ds4AtCapacity ? 0.35 : 1.0
             };
             ds4Btn.Click += (s, e) =>
             {
@@ -1317,7 +1355,7 @@ namespace PadForge
                         if (string.IsNullOrEmpty(name))
                             name = us.InstanceGuid.ToString();
 
-                        string slot = us.MapTo >= 0 && us.MapTo < 4
+                        string slot = us.MapTo >= 0 && us.MapTo < InputManager.MaxPads
                             ? $"Player {us.MapTo + 1} — {us.InstanceGuid:D}"
                             : $"Unmapped — {us.InstanceGuid:D}";
 

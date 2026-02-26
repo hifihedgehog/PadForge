@@ -206,24 +206,29 @@ namespace PadForge.ViewModels
         //  Slot assignment
         // ─────────────────────────────────────────────
 
-        private int _assignedSlot = -1;
+        private System.Collections.Generic.List<int> _assignedSlots = new();
 
         /// <summary>
-        /// The pad slot this device is assigned to (0–3), or -1 if unassigned.
+        /// The pad slot indices this device is assigned to (0–3). Empty if unassigned.
+        /// A device can be assigned to multiple slots simultaneously.
         /// </summary>
-        public int AssignedSlot
+        public System.Collections.Generic.List<int> AssignedSlots => _assignedSlots;
+
+        /// <summary>
+        /// Replaces the assigned slots list and notifies the UI.
+        /// </summary>
+        public void SetAssignedSlots(System.Collections.Generic.List<int> slots)
         {
-            get => _assignedSlot;
-            set
-            {
-                if (SetProperty(ref _assignedSlot, value))
-                    OnPropertyChanged(nameof(AssignedSlotText));
-            }
+            _assignedSlots = slots ?? new();
+            OnPropertyChanged(nameof(AssignedSlots));
+            OnPropertyChanged(nameof(AssignedSlotText));
         }
 
         /// <summary>Display text for the slot assignment.</summary>
         public string AssignedSlotText =>
-            _assignedSlot >= 0 ? $"Player {_assignedSlot + 1}" : "Unassigned";
+            _assignedSlots.Count > 0
+                ? string.Join(", ", _assignedSlots.ConvertAll(s => $"#{s + 1}"))
+                : "Unassigned";
 
         // ─────────────────────────────────────────────
         //  Device path

@@ -29,7 +29,7 @@ namespace PadForge.ViewModels
             new ObservableCollection<SlotSummary>();
 
         /// <summary>
-        /// Whether the "Add Controller" card should be visible (fewer than 4 active slots).
+        /// Whether the "Add Controller" card should be visible (any controller type has capacity).
         /// </summary>
         private bool _showAddController = true;
         public bool ShowAddController
@@ -42,7 +42,7 @@ namespace PadForge.ViewModels
         /// Rebuilds the SlotSummaries to only include slots with mapped devices.
         /// Called from InputService after UpdatePadDeviceInfo().
         /// </summary>
-        public void RefreshActiveSlots(System.Collections.Generic.IList<int> activeSlots)
+        public void RefreshActiveSlots(System.Collections.Generic.IList<int> activeSlots, bool canAddMore)
         {
             // Check if the set of active slots has changed.
             bool changed = activeSlots.Count != SlotSummaries.Count;
@@ -65,7 +65,7 @@ namespace PadForge.ViewModels
                     SlotSummaries.Add(new SlotSummary(slot));
             }
 
-            ShowAddController = activeSlots.Count < 4;
+            ShowAddController = canAddMore;
         }
 
         // ─────────────────────────────────────────────
@@ -198,7 +198,7 @@ namespace PadForge.ViewModels
             SlotLabel = $"Virtual Controller {padIndex + 1}";
         }
 
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index.</summary>
         public int PadIndex { get; }
 
         /// <summary>Display label (e.g., "Player 1").</summary>

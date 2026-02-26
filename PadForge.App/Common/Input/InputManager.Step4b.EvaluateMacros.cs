@@ -11,7 +11,7 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 4b: EvaluateMacros
-        //  After Step 4 (CombineXiStates) merges all devices into a single
+        //  After Step 4 (CombineOutputStates) merges all devices into a single
         //  Gamepad per slot, this step evaluates macro trigger conditions and
         //  injects macro actions into the Gamepad state.
         //
@@ -29,7 +29,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Step 4b: Evaluate macros for all pad slots.
-        /// Called after CombineXiStates and before VirtualDevices.
+        /// Called after CombineOutputStates and before VirtualDevices.
         /// </summary>
         private void EvaluateMacros()
         {
@@ -41,7 +41,7 @@ namespace PadForge.Common.Input
 
                 try
                 {
-                    EvaluateSlotMacros(ref CombinedXiStates[i], macros);
+                    EvaluateSlotMacros(ref CombinedOutputStates[i], macros);
                 }
                 catch (Exception ex)
                 {

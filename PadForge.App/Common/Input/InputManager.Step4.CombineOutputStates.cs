@@ -7,7 +7,7 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
-        //  Step 4: CombineXiStates
+        //  Step 4: CombineOutputStates
         //  Merges the mapped Gamepad states from all devices assigned to
         //  each virtual controller slot (0–3) into a single combined state.
         //
@@ -19,10 +19,10 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Step 4: For each of the 4 virtual controller slots, find all UserSettings
-        /// mapped to that slot and combine their XiState gamepads into a single
-        /// <see cref="CombinedXiStates"/> entry.
+        /// mapped to that slot and combine their output gamepads into a single
+        /// <see cref="CombinedOutputStates"/> entry.
         /// </summary>
-        private void CombineXiStates()
+        private void CombineOutputStates()
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null)
@@ -37,14 +37,14 @@ namespace PadForge.Common.Input
 
                     if (slotCount == 0)
                     {
-                        CombinedXiStates[padIndex].Clear();
+                        CombinedOutputStates[padIndex].Clear();
                         continue;
                     }
 
                     if (slotCount == 1)
                     {
                         // Single device — no combination needed, direct copy.
-                        CombinedXiStates[padIndex] = _padIndexBuffer[0].XiState;
+                        CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
                         continue;
                     }
 
@@ -57,16 +57,16 @@ namespace PadForge.Common.Input
                         if (us == null)
                             continue;
 
-                        var gp = us.XiState;
+                        var gp = us.OutputState;
                         MergeGamepad(ref combined, ref gp);
                     }
 
-                    CombinedXiStates[padIndex] = combined;
+                    CombinedOutputStates[padIndex] = combined;
                 }
                 catch (Exception ex)
                 {
                     RaiseError($"Error combining states for pad {padIndex}", ex);
-                    CombinedXiStates[padIndex].Clear();
+                    CombinedOutputStates[padIndex].Clear();
                 }
             }
         }

@@ -233,9 +233,10 @@ namespace PadForge.Services
             // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
             // which reads SlotCreated[]. If SlotCreated isn't loaded yet, the sidebar
             // gets built with the wrong slot set and triggers a double-rebuild crash.
-            if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length == 4)
+            if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length >= 1)
             {
-                Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, 4);
+                int count = Math.Min(appSettings.SlotCreated.Length, SettingsManager.SlotCreated.Length);
+                Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, count);
             }
             else
             {
@@ -243,9 +244,10 @@ namespace PadForge.Services
                 AutoCreateSlotsFromExistingAssignments();
             }
 
-            if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length == 4)
+            if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length >= 1)
             {
-                Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, 4);
+                int count = Math.Min(appSettings.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
+                Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, count);
             }
             // else: defaults are all true, which is correct for migration.
 
@@ -279,7 +281,7 @@ namespace PadForge.Services
                 foreach (var us in settings.Items)
                 {
                     int idx = us.MapTo;
-                    if (idx >= 0 && idx < 4)
+                    if (idx >= 0 && idx < InputManager.MaxPads)
                     {
                         SettingsManager.SlotCreated[idx] = true;
                         SettingsManager.SlotEnabled[idx] = true;

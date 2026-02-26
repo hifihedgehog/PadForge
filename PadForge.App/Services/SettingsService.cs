@@ -229,7 +229,27 @@ namespace PadForge.Services
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
 
-            // Load per-slot virtual controller types.
+            // Load per-slot created/enabled state BEFORE OutputType,
+            // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
+            // which reads SlotCreated[]. If SlotCreated isn't loaded yet, the sidebar
+            // gets built with the wrong slot set and triggers a double-rebuild crash.
+            if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length == 4)
+            {
+                Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, 4);
+            }
+            else
+            {
+                // Backward compat: auto-create slots for existing device assignments.
+                AutoCreateSlotsFromExistingAssignments();
+            }
+
+            if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length == 4)
+            {
+                Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, 4);
+            }
+            // else: defaults are all true, which is correct for migration.
+
+            // Load per-slot virtual controller types (after SlotCreated/SlotEnabled).
             if (appSettings.SlotControllerTypes != null)
             {
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotControllerTypes.Length; i++)
@@ -243,6 +263,29 @@ namespace PadForge.Services
             vm.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
             vm.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
                 ? appSettings.DsuMotionServerPort : 26760;
+        }
+
+        /// <summary>
+        /// For old settings files without SlotCreated: creates slots for any
+        /// indices that have device assignments.
+        /// </summary>
+        private static void AutoCreateSlotsFromExistingAssignments()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    int idx = us.MapTo;
+                    if (idx >= 0 && idx < 4)
+                    {
+                        SettingsManager.SlotCreated[idx] = true;
+                        SettingsManager.SlotEnabled[idx] = true;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -397,6 +440,14 @@ namespace PadForge.Services
         {
             SettingsManager.Profiles.Clear();
             _mainVm.Settings.ProfileItems.Clear();
+
+            // Always include the built-in Default profile at the top.
+            _mainVm.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+            {
+                Id = ViewModels.ProfileListItem.DefaultProfileId,
+                Name = "Default",
+                Executables = "Base controller configuration"
+            });
 
             if (profiles != null)
             {
@@ -602,6 +653,8 @@ namespace PadForge.Services
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
                 SlotControllerTypes = slotTypes,
+                SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
+                SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 EnableDsuMotionServer = vm.EnableDsuMotionServer,
                 DsuMotionServerPort = vm.DsuMotionServerPort
             };
@@ -770,6 +823,12 @@ namespace PadForge.Services
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
             settingsVm.ProfileItems.Clear();
+            settingsVm.ProfileItems.Add(new ViewModels.ProfileListItem
+            {
+                Id = ViewModels.ProfileListItem.DefaultProfileId,
+                Name = "Default",
+                Executables = "Base controller configuration"
+            });
             settingsVm.ActiveProfileInfo = "Default";
 
             IsDirty = true;
@@ -950,6 +1009,22 @@ namespace PadForge.Services
         [XmlArray("SlotControllerTypes")]
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots have been explicitly created.
+        /// Null on old settings files — auto-populated from existing assignments.
+        /// </summary>
+        [XmlArray("SlotCreated")]
+        [XmlArrayItem("Created")]
+        public bool[] SlotCreated { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots are enabled for ViGEm output.
+        /// Null on old settings files — defaults to all true.
+        /// </summary>
+        [XmlArray("SlotEnabled")]
+        [XmlArrayItem("Enabled")]
+        public bool[] SlotEnabled { get; set; }
 
         [XmlElement]
         public bool EnableDsuMotionServer { get; set; }

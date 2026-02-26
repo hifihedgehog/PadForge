@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using ModernWpf.Controls;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Services;
 using PadForge.ViewModels;
@@ -24,6 +26,7 @@ namespace PadForge
         private SettingsService _settingsService;
         private RecorderService _recorderService;
         private DeviceService _deviceService;
+        private Popup _controllerTypePopup;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
 
         public MainWindow()
@@ -101,6 +104,9 @@ namespace PadForge
 
             // Refresh PadPage dropdowns immediately after device assignment changes.
             _deviceService.DeviceAssignmentChanged += (s, e) => _inputService.UpdatePadDeviceInfo();
+
+            // After assigning a device to a slot, navigate to that controller page.
+            _deviceService.NavigateToSlotRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
 
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>
@@ -260,6 +266,43 @@ namespace PadForge
                 pad.CopyFromRequested += (s, e) => OnCopyFrom(capturedPad);
             }
 
+            // Build the sidebar navigation items dynamically.
+            BuildNavigationItems();
+
+            // Wire Dashboard "Add Controller" to show type-selection popup.
+            DashboardPageView.AddControllerRequested += (s, e) =>
+            {
+                ShowControllerTypePopup(DashboardPageView.AddControllerCardElement, PlacementMode.Bottom);
+            };
+
+            // Wire Dashboard delete + toggle events.
+            DashboardPageView.DeleteSlotRequested += (s, slotIndex) =>
+            {
+                // Deferred — DeleteSlot fires DeviceAssignmentChanged → RebuildControllerSection.
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (_viewModel.SelectedPadIndex == slotIndex)
+                        SelectNavItemByTag("Dashboard");
+
+                    _deviceService.DeleteSlot(slotIndex);
+                }));
+            };
+
+            DashboardPageView.SlotEnabledToggled += (s, args) =>
+            {
+                _deviceService.SetSlotEnabled(args.SlotIndex, args.IsEnabled);
+                // Refresh sidebar so power button updates.
+                _viewModel.RefreshNavControllerItems();
+            };
+
+            DashboardPageView.SlotTypeChangeRequested += (s, args) =>
+            {
+                _viewModel.Pads[args.SlotIndex].OutputType = args.IsXbox
+                    ? VirtualControllerType.Xbox360
+                    : VirtualControllerType.DualShock4;
+                _settingsService.MarkDirty();
+            };
+
             // Window events.
             Loaded += OnLoaded;
             Closing += OnClosing;
@@ -367,9 +410,562 @@ namespace PadForge
         //  Navigation
         // ─────────────────────────────────────────────
 
+        // SVG path data for controller type icons — shared via ControllerIcons static class.
+        private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
+        private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
+
+        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard + separator).</summary>
+        private const int ControllerInsertIndex = 2;
+
+        /// <summary>Re-entrancy guard for <see cref="RebuildControllerSection"/>.</summary>
+        private bool _rebuildingControllerSection;
+
+        /// <summary>
+        /// Programmatically builds the NavigationView menu items.
+        /// Static items: Dashboard, separators, Devices, Profiles.
+        /// Dynamic items: controller entries + "Add" button, rebuilt when NavControllerItems changes.
+        /// </summary>
+        private void BuildNavigationItems()
+        {
+            NavView.MenuItems.Clear();
+
+            // Dashboard.
+            NavView.MenuItems.Add(new NavigationViewItem
+            {
+                Content = "Dashboard",
+                Tag = "Dashboard",
+                Icon = new SymbolIcon(Symbol.Home)
+            });
+
+            NavView.MenuItems.Add(new NavigationViewItemSeparator());
+
+            // Controller entries (initially none — populated dynamically).
+            RebuildControllerSection();
+
+            // Subscribe to the single "done" event instead of CollectionChanged.
+            // Deferred to the next dispatcher frame so the NavigationView's internal
+            // ItemsRepeater completes its current layout pass before we tear down
+            // and rebuild MenuItems. Without this, the ItemsRepeater's cached index
+            // goes stale and crashes in MeasureOverride.
+            _viewModel.NavControllerItemsRefreshed += (s, e) =>
+                Dispatcher.BeginInvoke(new Action(() => RebuildControllerSection()));
+
+            // Subscribe to OutputType changes on each pad to refresh sidebar.
+            foreach (var pad in _viewModel.Pads)
+            {
+                pad.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(PadViewModel.OutputType))
+                        _viewModel.RefreshNavControllerItems();
+                };
+            }
+        }
+
+        /// <summary>
+        /// Rebuilds only the controller section of the sidebar (between the two separators).
+        /// Preserves Dashboard, Devices, Profiles, and footer items.
+        ///
+        /// Uses a re-entrancy guard because <see cref="RefreshNavControllerItems"/> fires
+        /// CollectionChanged once for Clear() and once per Add(), each of which would
+        /// re-trigger this method. The guard ensures only one rebuild occurs.
+        ///
+        /// Saves and restores the NavView selection tag so that removing/re-adding
+        /// Devices or Profiles (which are rebuilt each time) doesn't break the
+        /// current navigation state.
+        /// </summary>
+        private void RebuildControllerSection()
+        {
+            if (_rebuildingControllerSection)
+                return;
+
+            // Save current selection tag before tearing down items.
+            string selectedTag = (NavView.SelectedItem as NavigationViewItem)?.Tag?.ToString();
+
+            _rebuildingControllerSection = true;
+            try
+            {
+                // Remove everything from ControllerInsertIndex onward.
+                // This fires NavView_SelectionChanged for intermediate states —
+                // the flag suppresses those events (see guard in that handler).
+                while (NavView.MenuItems.Count > ControllerInsertIndex)
+                    NavView.MenuItems.RemoveAt(ControllerInsertIndex);
+
+                // Add controller entries for each active slot.
+                foreach (var navItem in _viewModel.NavControllerItems)
+                {
+                    var menuItem = CreateControllerNavItem(navItem);
+                    NavView.MenuItems.Add(menuItem);
+
+                    var capturedMenuItem = menuItem;
+                    var capturedNavItem = navItem;
+                    navItem.PropertyChanged += (s, e) =>
+                    {
+                        // Rebuild content for any visual property change.
+                        if (e.PropertyName is nameof(NavControllerItemViewModel.InstanceLabel)
+                            or nameof(NavControllerItemViewModel.IconKey)
+                            or nameof(NavControllerItemViewModel.IsEnabled)
+                            or nameof(NavControllerItemViewModel.SlotNumber)
+                            or nameof(NavControllerItemViewModel.ConnectedDeviceCount))
+                        {
+                            UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
+                        }
+                    };
+                }
+
+                // "Add Controller" button (only if fewer than 4 slots are active).
+                if (_viewModel.NavControllerItems.Count < 4)
+                {
+                    var addItem = new NavigationViewItem
+                    {
+                        Tag = "AddController",
+                        Icon = new FontIcon { Glyph = "\uE710" }, // + icon
+                        Content = "Add Controller"
+                    };
+                    NavView.MenuItems.Add(addItem);
+                }
+
+                NavView.MenuItems.Add(new NavigationViewItemSeparator());
+
+                // Devices.
+                NavView.MenuItems.Add(new NavigationViewItem
+                {
+                    Content = "Devices",
+                    Tag = "Devices",
+                    Icon = new SymbolIcon(Symbol.AllApps)
+                });
+
+                // Profiles.
+                var profiles = new NavigationViewItem
+                {
+                    Tag = "Profiles",
+                    Icon = new FontIcon { Glyph = "\uE8F1" }
+                };
+                profiles.Content = "Profiles";
+                NavView.MenuItems.Add(profiles);
+            }
+            finally
+            {
+                _rebuildingControllerSection = false;
+            }
+
+            // Restore selection AFTER the guard is cleared so
+            // NavView_SelectionChanged processes it normally.
+            if (!string.IsNullOrEmpty(selectedTag))
+            {
+                NavigationViewItem match = null;
+                NavigationViewItem fallback = null;
+                foreach (var mi in NavView.MenuItems)
+                {
+                    if (mi is NavigationViewItem nvi)
+                    {
+                        if (nvi.Tag?.ToString() == selectedTag)
+                        {
+                            match = nvi;
+                            break;
+                        }
+                        if (nvi.Tag?.ToString() == "Dashboard")
+                            fallback = nvi;
+                    }
+                }
+                NavView.SelectedItem = match ?? fallback;
+            }
+        }
+
+        /// <summary>
+        /// Creates a NavigationViewItem with two-line content for a virtual controller slot.
+        /// </summary>
+        private NavigationViewItem CreateControllerNavItem(NavControllerItemViewModel navItem)
+        {
+            var menuItem = new NavigationViewItem { Tag = navItem.Tag };
+            UpdateControllerNavItemContent(menuItem, navItem);
+            return menuItem;
+        }
+
+        // Power button icon: E7E8 = PowerButton glyph in Segoe MDL2 Assets.
+        private const string PowerGlyph = "\uE7E8";
+
+        /// <summary>
+        /// Updates the Content and Icon of a controller NavigationViewItem.
+        /// Compact card with rounded border: [Power] [Gamepad] #N | [Xbox][PS] #N [X]
+        /// </summary>
+        private void UpdateControllerNavItemContent(NavigationViewItem menuItem, NavControllerItemViewModel navItem)
+        {
+            bool isXbox = navItem.IconKey != "DS4ControllerIcon";
+
+            var row = new System.Windows.Controls.StackPanel
+            {
+                Orientation = System.Windows.Controls.Orientation.Horizontal
+            };
+
+            // Power button (green = enabled + connected, yellow = enabled + no devices, red = disabled).
+            System.Windows.Media.SolidColorBrush powerColor;
+            if (!navItem.IsEnabled)
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
+            else if (navItem.ConnectedDeviceCount == 0)
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
+            else
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
+
+            var powerBtn = new System.Windows.Controls.Button
+            {
+                Content = new System.Windows.Controls.TextBlock
+                {
+                    Text = PowerGlyph,
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 12,
+                    Foreground = powerColor
+                },
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                ToolTip = !navItem.IsEnabled ? "Disabled"
+                    : navItem.ConnectedDeviceCount == 0 ? "Awaiting controllers"
+                    : "Active",
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            powerBtn.Click += OnSidebarPowerToggle;
+            row.Children.Add(powerBtn);
+
+            // Gamepad icon + global slot number.
+            row.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = "\uE7FC",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 13,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4, 0, 0, 0)
+            });
+            row.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = $"#{navItem.SlotNumber}",
+                FontSize = 12,
+                FontWeight = FontWeights.SemiBold,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(3, 0, 0, 0)
+            });
+
+            // Separator.
+            row.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = "|",
+                FontSize = 12,
+                Opacity = 0.3,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(6, 0, 6, 0)
+            });
+
+            // Xbox type button — use SetResourceReference for theme-aware Fill.
+            var xboxPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var xboxBtn = new System.Windows.Controls.Button
+            {
+                Content = xboxPath,
+                ToolTip = "Xbox 360",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isXbox ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            xboxBtn.Click += OnSidebarTypeXbox;
+            row.Children.Add(xboxBtn);
+
+            // PS type button — use SetResourceReference for theme-aware Fill.
+            var ds4Path = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var ds4Btn = new System.Windows.Controls.Button
+            {
+                Content = ds4Path,
+                ToolTip = "DualShock 4",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isXbox ? 0.3 : 1.0,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            ds4Btn.Click += OnSidebarTypeDS4;
+            row.Children.Add(ds4Btn);
+
+            // Per-type instance label.
+            row.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = navItem.InstanceLabel,
+                FontSize = 11,
+                Opacity = 0.6,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4, 0, 0, 0)
+            });
+
+            // Delete button.
+            var deleteBtn = new System.Windows.Controls.Button
+            {
+                Content = new FontIcon { Glyph = "\uE711", FontSize = 9 },
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Background = System.Windows.Media.Brushes.Transparent,
+                ToolTip = "Delete virtual controller",
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(6, 0, 0, 0),
+                Opacity = 0.5
+            };
+            deleteBtn.Click += OnSidebarDeleteSlot;
+            row.Children.Add(deleteBtn);
+
+            // Wrap in a rounded card border.
+            var card = new System.Windows.Controls.Border
+            {
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(6, 4, 6, 4),
+                Child = row
+            };
+            card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SystemControlBackgroundChromeMediumLowBrush");
+
+            menuItem.Content = card;
+
+            // No left gutter icon — the power button inside the card shows state.
+            menuItem.Icon = null;
+        }
+
+        /// <summary>Handles sidebar power toggle button click.</summary>
+        private void OnSidebarPowerToggle(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                bool newState = !SettingsManager.SlotEnabled[padIndex];
+                _deviceService.SetSlotEnabled(padIndex, newState);
+                // Refresh nav items so IsEnabled updates and content rebuilds.
+                _viewModel.RefreshNavControllerItems();
+            }
+        }
+
+        /// <summary>Handles sidebar Xbox type button click.</summary>
+        private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox360;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar DualShock 4 type button click.</summary>
+        private void OnSidebarTypeDS4(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.DualShock4;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>
+        /// Handles the sidebar delete button click for a virtual controller slot.
+        /// </summary>
+        private void OnSidebarDeleteSlot(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true; // Prevent NavigationView selection change.
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int slotIndex)
+            {
+                // Deferred to next dispatcher frame — DeleteSlot() fires
+                // DeviceAssignmentChanged → RebuildControllerSection() which removes
+                // the NavViewItem whose child button we're inside of right now.
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    // Navigate away if we're viewing the slot being deleted.
+                    if (_viewModel.SelectedPadIndex == slotIndex)
+                        SelectNavItemByTag("Dashboard");
+
+                    _deviceService.DeleteSlot(slotIndex);
+                }));
+            }
+        }
+
+        /// <summary>
+        /// Programmatically navigates to the Devices page.
+        /// </summary>
+        private void NavigateToDevices()
+        {
+            SelectNavItemByTag("Devices");
+        }
+
+        /// <summary>
+        /// Shows a popup anchored to the given element with Xbox 360 and DS4 controller type buttons.
+        /// Clicking a button creates a new slot of that type and navigates to it.
+        /// </summary>
+        private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
+        {
+            // If the popup is already open, close it instead of opening a duplicate.
+            if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
+            {
+                _controllerTypePopup.IsOpen = false;
+                _controllerTypePopup = null;
+                return;
+            }
+
+            var popup = new Popup
+            {
+                StaysOpen = false,
+                Placement = placement,
+                PlacementTarget = anchor,
+                AllowsTransparency = true
+            };
+            popup.Closed += (s, e) => _controllerTypePopup = null;
+            _controllerTypePopup = popup;
+
+            // Center the popup horizontally below the anchor when using Bottom placement.
+            if (placement == PlacementMode.Bottom && anchor is FrameworkElement fe)
+            {
+                popup.Opened += (s, e) =>
+                {
+                    if (popup.Child is FrameworkElement popupContent)
+                    {
+                        popupContent.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+                        double popupWidth = popupContent.DesiredSize.Width;
+                        double anchorWidth = fe.ActualWidth;
+                        popup.HorizontalOffset = (anchorWidth - popupWidth) / 2;
+                    }
+                };
+            }
+
+            var border = new System.Windows.Controls.Border
+            {
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(6),
+                Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    BlurRadius = 8,
+                    Opacity = 0.3,
+                    ShadowDepth = 2
+                }
+            };
+            border.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "PopupBackgroundBrush");
+
+            var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
+
+            // Xbox 360 button — theme-aware icon fill.
+            var xboxPopupPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
+                Width = 28,
+                Height = 28,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var xboxBtn = new System.Windows.Controls.Button
+            {
+                Content = xboxPopupPath,
+                ToolTip = "Xbox 360",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            xboxBtn.Click += (s, e) =>
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Xbox360);
+                if (newSlot >= 0)
+                {
+                    // NavigateToSlot must run after the deferred RebuildControllerSection
+                    // so the new nav item exists. Both are queued via BeginInvoke in order.
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(newSlot)));
+                }
+            };
+            stack.Children.Add(xboxBtn);
+
+            // DS4 button — theme-aware icon fill.
+            var ds4PopupPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
+                Width = 28,
+                Height = 28,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var ds4Btn = new System.Windows.Controls.Button
+            {
+                Content = ds4PopupPath,
+                ToolTip = "DualShock 4",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            ds4Btn.Click += (s, e) =>
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.DualShock4);
+                if (newSlot >= 0)
+                {
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(newSlot)));
+                }
+            };
+            stack.Children.Add(ds4Btn);
+
+            border.Child = stack;
+            popup.Child = border;
+            popup.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Programmatically navigates to a controller slot page (e.g., "Pad1").
+        /// </summary>
+        private void NavigateToSlot(int slotIndex)
+        {
+            SelectNavItemByTag($"Pad{slotIndex + 1}");
+        }
+
+        /// <summary>
+        /// Selects a NavigationViewItem by its Tag string.
+        /// </summary>
+        private void SelectNavItemByTag(string tag)
+        {
+            foreach (var mi in NavView.MenuItems)
+            {
+                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
+                {
+                    NavView.SelectedItem = nvi;
+                    return;
+                }
+            }
+        }
+
         private void NavView_SelectionChanged(NavigationView sender,
             NavigationViewSelectionChangedEventArgs args)
         {
+            // Skip intermediate selection events fired while RebuildControllerSection
+            // is tearing down and re-adding items. The rebuild restores the correct
+            // selection after the guard flag is cleared.
+            if (_rebuildingControllerSection)
+                return;
+
             string tag;
 
             if (args.IsSettingsSelected)
@@ -382,6 +978,30 @@ namespace PadForge
             }
             else
             {
+                return;
+            }
+
+            // "Add Controller" shows a type-selection popup, then creates a slot.
+            // Deferred to next dispatcher frame because CreateSlot() triggers
+            // RebuildControllerSection() which modifies NavView.MenuItems —
+            // doing that synchronously inside SelectionChanged crashes ModernWpf's
+            // internal ItemsRepeater layout.
+            if (tag == "AddController")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    // Find the AddController nav item to anchor the popup.
+                    NavigationViewItem addItem = null;
+                    foreach (var mi in NavView.MenuItems)
+                    {
+                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == "AddController")
+                        {
+                            addItem = nvi;
+                            break;
+                        }
+                    }
+                    ShowControllerTypePopup(addItem);
+                }));
                 return;
             }
 

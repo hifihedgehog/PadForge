@@ -9,9 +9,15 @@
             <TextBlock Text="Profiles" Style="{StaticResource TitleTextBlockStyle}"
                        Margin="0,0,0,20"/>
 
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Profile Management" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Create per-application controller profiles that auto-switch based on the active game."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="Auto-switch profiles based on foreground application"
                               IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
 
@@ -20,9 +26,6 @@
                                    Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
-                        <Button Content="Revert to Default" Margin="12,0,0,0"
-                                Padding="8,2"
-                                Command="{Binding RevertToDefaultCommand}"/>
                     </StackPanel>
 
                     <ListBox ItemsSource="{Binding ProfileItems}"

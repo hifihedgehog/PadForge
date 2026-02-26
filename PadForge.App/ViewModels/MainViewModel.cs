@@ -2,9 +2,73 @@ using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Common.Input;
+using PadForge.Engine;
 
 namespace PadForge.ViewModels
 {
+    /// <summary>
+    /// ViewModel for a single virtual controller sidebar entry.
+    /// Line 1: "Virtual Controller N"
+    /// Line 2: [type icon] #instance_number
+    /// </summary>
+    public class NavControllerItemViewModel : ObservableObject
+    {
+        public NavControllerItemViewModel(int padIndex)
+        {
+            PadIndex = padIndex;
+            _slotNumber = 1;
+            _instanceLabel = "#1";
+            _iconKey = "XboxControllerIcon";
+        }
+
+        /// <summary>Zero-based pad slot index (0–3).</summary>
+        public int PadIndex { get; }
+
+        /// <summary>Navigation tag for this item ("Pad1"–"Pad4").</summary>
+        public string Tag => $"Pad{PadIndex + 1}";
+
+        private int _slotNumber;
+        /// <summary>Overall controller number among active slots (1-based).</summary>
+        public int SlotNumber
+        {
+            get => _slotNumber;
+            set => SetProperty(ref _slotNumber, value);
+        }
+
+        private string _instanceLabel;
+        /// <summary>Per-type instance number label (e.g., "#1", "#2").</summary>
+        public string InstanceLabel
+        {
+            get => _instanceLabel;
+            set => SetProperty(ref _instanceLabel, value);
+        }
+
+        private string _iconKey;
+        /// <summary>Resource key for the controller type icon (e.g., "XboxControllerIcon").</summary>
+        public string IconKey
+        {
+            get => _iconKey;
+            set => SetProperty(ref _iconKey, value);
+        }
+
+        private bool _isEnabled = true;
+        /// <summary>Whether this virtual controller is enabled (ViGEm active).</summary>
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value);
+        }
+
+        private int _connectedDeviceCount;
+        /// <summary>Number of mapped physical devices that are currently connected.</summary>
+        public int ConnectedDeviceCount
+        {
+            get => _connectedDeviceCount;
+            set => SetProperty(ref _connectedDeviceCount, value);
+        }
+    }
+
     /// <summary>
     /// Root ViewModel for the application. Manages navigation state,
     /// the collection of 4 pad ViewModels, and app-wide status information.
@@ -42,6 +106,95 @@ namespace PadForge.ViewModels
         /// The 4 virtual controller pad ViewModels (Player 1–4).
         /// </summary>
         public ObservableCollection<PadViewModel> Pads { get; } = new ObservableCollection<PadViewModel>();
+
+        /// <summary>
+        /// Sidebar navigation items for virtual controller slots that have mapped devices.
+        /// Dynamically rebuilt when device assignments change.
+        /// </summary>
+        public ObservableCollection<NavControllerItemViewModel> NavControllerItems { get; } = new ObservableCollection<NavControllerItemViewModel>();
+
+        /// <summary>
+        /// Raised once after <see cref="RefreshNavControllerItems"/> finishes all
+        /// collection changes. MainWindow subscribes to this instead of
+        /// <c>NavControllerItems.CollectionChanged</c> to avoid multiple rapid
+        /// sidebar rebuilds that corrupt ModernWpf's internal ItemsRepeater.
+        /// </summary>
+        public event EventHandler NavControllerItemsRefreshed;
+
+        /// <summary>
+        /// Rebuilds the sidebar controller entries based on which slots are created,
+        /// and computes per-type instance numbers.
+        /// </summary>
+        public void RefreshNavControllerItems()
+        {
+            // Determine which slots have been explicitly created.
+            var activeSlots = new System.Collections.Generic.List<int>();
+            for (int i = 0; i < Pads.Count; i++)
+            {
+                if (SettingsManager.SlotCreated[i])
+                    activeSlots.Add(i);
+            }
+
+            // Check if the set of active slots has changed.
+            bool slotsChanged = activeSlots.Count != NavControllerItems.Count;
+            if (!slotsChanged)
+            {
+                for (int i = 0; i < activeSlots.Count; i++)
+                {
+                    if (NavControllerItems[i].PadIndex != activeSlots[i])
+                    {
+                        slotsChanged = true;
+                        break;
+                    }
+                }
+            }
+
+            if (slotsChanged)
+            {
+                NavControllerItems.Clear();
+                foreach (int slot in activeSlots)
+                    NavControllerItems.Add(new NavControllerItemViewModel(slot));
+            }
+
+            // Compute global slot number and per-type instance numbers.
+            int xboxCount = 0;
+            int ds4Count = 0;
+            int globalCount = 0;
+
+            foreach (var nav in NavControllerItems)
+            {
+                globalCount++;
+                nav.SlotNumber = globalCount;
+
+                var pad = Pads[nav.PadIndex];
+                string iconKey;
+                int instanceNum;
+
+                switch (pad.OutputType)
+                {
+                    case VirtualControllerType.DualShock4:
+                        ds4Count++;
+                        instanceNum = ds4Count;
+                        iconKey = "DS4ControllerIcon";
+                        break;
+                    default:
+                        xboxCount++;
+                        instanceNum = xboxCount;
+                        iconKey = "XboxControllerIcon";
+                        break;
+                }
+
+                nav.InstanceLabel = $"#{instanceNum}";
+                nav.IconKey = iconKey;
+                nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
+            }
+
+            // Only trigger a full sidebar rebuild when slots were added/removed.
+            // Property-only changes (icon, label, enabled) are handled in-place
+            // by the PropertyChanged subscriptions wired in RebuildControllerSection.
+            if (slotsChanged)
+                NavControllerItemsRefreshed?.Invoke(this, EventArgs.Empty);
+        }
 
         /// <summary>Dashboard overview ViewModel.</summary>
         public DashboardViewModel Dashboard { get; }

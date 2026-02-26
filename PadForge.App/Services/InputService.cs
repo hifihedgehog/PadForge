@@ -299,17 +299,19 @@ namespace PadForge.Services
                 _mainVm.ConnectedDeviceCount = online;
             }
 
-            // Update slot summaries.
-            for (int i = 0; i < InputManager.MaxPads && i < dash.SlotSummaries.Count; i++)
+            // Update slot summaries (dynamic — only slots with mapped devices).
+            foreach (var slot in dash.SlotSummaries)
             {
-                var slot = dash.SlotSummaries[i];
-                var padVm = _mainVm.Pads[i];
+                int padIndex = slot.PadIndex;
+                if (padIndex < 0 || padIndex >= _mainVm.Pads.Count) continue;
+
+                var padVm = _mainVm.Pads[padIndex];
 
                 slot.IsActive = padVm.IsDeviceOnline;
                 slot.DeviceName = padVm.MappedDeviceName;
 
                 // Count mapped and connected devices for this slot.
-                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(i);
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
                 int mappedCount = slotSettings?.Count ?? 0;
                 int connectedCount = 0;
                 if (slotSettings != null && devices != null)
@@ -323,9 +325,54 @@ namespace PadForge.Services
 
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
-                slot.StatusText = mappedCount == 0 ? "No mapping"
+                slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
+                slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
+                slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? "Disabled"
+                    : mappedCount == 0 ? "No mapping"
                     : padVm.IsDeviceOnline ? "Active"
                     : "Idle";
+            }
+
+            // Compute global slot numbers and per-type instance numbers.
+            int xboxCount = 0, ds4Count = 0, globalCount = 0;
+            foreach (var slot in dash.SlotSummaries)
+            {
+                globalCount++;
+                slot.SlotNumber = globalCount;
+
+                var padVm = _mainVm.Pads[slot.PadIndex];
+                bool isXbox = padVm.OutputType != VirtualControllerType.DualShock4;
+                slot.IsXboxType = isXbox;
+
+                if (isXbox)
+                {
+                    xboxCount++;
+                    slot.TypeInstanceLabel = $"#{xboxCount}";
+                }
+                else
+                {
+                    ds4Count++;
+                    slot.TypeInstanceLabel = $"#{ds4Count}";
+                }
+            }
+
+            // Update sidebar nav items' connected device counts (for power icon 3-state).
+            foreach (var nav in _mainVm.NavControllerItems)
+            {
+                int padIndex = nav.PadIndex;
+                if (padIndex < 0 || padIndex >= _mainVm.Pads.Count) continue;
+
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
+                int connCount = 0;
+                if (slotSettings != null && devices != null)
+                {
+                    foreach (var us in slotSettings)
+                    {
+                        if (devices.Any(d => d.InstanceGuid == us.InstanceGuid && d.IsOnline))
+                            connCount++;
+                    }
+                }
+                nav.ConnectedDeviceCount = connCount;
             }
 
             // Update main VM frequency.
@@ -1077,6 +1124,18 @@ namespace PadForge.Services
 
                 padVm.RefreshCommands();
             }
+
+            // Refresh sidebar and dashboard to reflect which slots are created.
+            _mainVm.RefreshNavControllerItems();
+
+            // Build the list of created slot indices for the dashboard.
+            var activeSlots = new List<int>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (SettingsManager.SlotCreated[i])
+                    activeSlots.Add(i);
+            }
+            _mainVm.Dashboard.RefreshActiveSlots(activeSlots);
         }
 
         /// <summary>

@@ -10,8 +10,7 @@
                        Margin="0,0,0,20"/>
 
             <!-- App identity -->
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="24" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Padding="24" Margin="0,0,0,20">
                 <StackPanel HorizontalAlignment="Center">
                     <TextBlock Text="PadForge" FontSize="28" FontWeight="Bold"
                                HorizontalAlignment="Center"/>
@@ -26,8 +25,7 @@
             </Border>
 
             <!-- Description -->
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="20" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Opacity="0.85">
                     PadForge maps any DirectInput-compatible controller to an Xbox 360 virtual
                     controller via ViGEmBus. It uses SDL3 for robust device handling and
@@ -37,10 +35,12 @@
             </Border>
 
             <!-- Technologies -->
-            <TextBlock Text="Built With" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="20" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="Built With" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="140"/>
@@ -79,10 +79,12 @@
             </Border>
 
             <!-- License -->
-            <TextBlock Text="License" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="20" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE8D7;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="License" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12" LineHeight="18">
                     This software is provided under the MIT License.
                     Portions derived from x360ce, which is licensed under the MIT License.

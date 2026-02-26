@@ -1,0 +1,76 @@
+#Based on template from: https://github.com/ThreeDeeJay/GitHub-Actions-build-templates/blob/main/Windows-MSBuild.yml
+name: Build
+
+env:
+  GH_TOKEN: ${{github.token}}
+  Branch: ${{github.ref_name}}
+  Platform: Any CPU
+  Configuration: Release
+  Artifacts: PadForge.App\bin\Any CPU\Release\net8.0-windows\win-x64\publish
+  Title: PadForge
+  Solution: PadForge.sln
+
+on:
+  push:
+    Branches: $Branch
+  pull_request:
+    Branches: $Branch
+  workflow_dispatch:
+
+jobs:
+  Windows:
+    runs-on: windows-2025
+    steps:
+
+    - name: Clone repo and submodules
+      run: git clone https://${{github.repository_owner}}:${{github.token}}@github.com/${{github.repository}}.git "${{github.workspace}}" --branch ${{env.Branch}} --recurse-submodules
+
+    - name: Get current date, commit hash and count
+      run: |
+        echo "FirstCommitHash=$(git rev-list --max-parents=0 HEAD --first-parent)" >> $env:GITHUB_ENV
+        echo "CommitHash=$(git rev-parse HEAD)" >> $env:GITHUB_ENV
+        echo "CommitHashShort=$(git rev-parse --short=7 HEAD)" >> $env:GITHUB_ENV
+        echo "CommitCount=$(git rev-list --count HEAD)" >> $env:GITHUB_ENV
+        echo "CommitDate=$(git show -s --date=format:'%Y-%m-%d' --format=%cd)" >> $env:GITHUB_ENV
+
+    - name: Download dependencies
+      run: |
+        curl -L "https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe" -o "PadForge.App\Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe"
+        curl -L "https://github.com/nefarius/HidHide/releases/download/v1.5.230.0/HidHide_1.5.230_x64.exe"         -o "PadForge.App\Resources\HidHide_1.5.230_x64.exe"
+
+    - name: .NET Restore
+      run: dotnet restore "${{env.Solution}}"
+
+    - name: .NET Build
+      run: dotnet build "${{env.Solution}}" -c "${{env.Configuration}}"
+
+    - name: .NET Publish
+      run: dotnet publish "${{github.event.repository.name}}.App/${{github.event.repository.name}}.App.csproj" -c "${{env.Configuration}}"
+
+    - name: Upload artifacts to GitHub
+      uses: actions/upload-artifact@v4
+      with:
+        name: "${{env.Title}}_r${{env.CommitCount}}@${{env.CommitHashShort}}"
+        path: "${{github.workspace}}/${{env.Artifacts}}/"
+
+    - name: Compress artifacts
+      run: |
+        mkdir Release
+        7z a "Release/${{env.Title}}.zip" "${{github.workspace}}/${{env.Artifacts}}/*" -mx=9
+        cp "Release/${{env.Title}}.zip" "Release/${{env.Title}}_r${{env.CommitCount}}@${{env.CommitHashShort}}.zip"
+
+    - name: Purge tag - latest-${{env.Branch}}
+      run: |
+        gh release delete latest-${{env.Branch}} --repo ${{github.repository}} --cleanup-tag --yes || true
+
+    - name: Release - archive-${{env.Branch}}
+      run: |
+        gh release create archive-${{env.Branch}} --repo ${{github.repository}} --target ${{env.FirstCommitHash}} --latest=false --prerelease --title "${{env.Title}} build archive" --notes "Latest build: https://github.com/${{github.repository}}/releases/latest
+        Build log: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}" || true
+        gh release upload archive-${{env.Branch}} --repo ${{github.repository}} --clobber "Release/${{env.Title}}_r${{env.CommitCount}}@${{env.CommitHashShort}}.zip"
+
+    - name: Release - latest-${{env.Branch}}
+      run: |
+        gh release create latest-${{env.Branch}} --repo ${{github.repository}} --target ${{env.CommitHash}} --generate-notes --latest=true --title "${{env.Title}} r${{env.CommitCount}}@${{env.CommitHashShort}}" --notes "Build archive: https://github.com/${{github.repository}}/releases/tag/archive
+        Build log: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
+        gh release upload latest-${{env.Branch}} --repo ${{github.repository}} --clobber "Release/${{env.Title}}.zip"

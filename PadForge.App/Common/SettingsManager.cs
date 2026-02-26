@@ -44,6 +44,16 @@ namespace PadForge.Common.Input
         public static bool EnableAutoProfileSwitching { get; set; }
 
         // ─────────────────────────────────────────────
+        //  Virtual Controller Slots
+        // ─────────────────────────────────────────────
+
+        /// <summary>Whether each slot (0–3) has been explicitly created. Persisted to settings.</summary>
+        public static bool[] SlotCreated { get; set; } = new bool[4];
+
+        /// <summary>Whether each slot (0–3) is enabled for ViGEm output. Persisted to settings.</summary>
+        public static bool[] SlotEnabled { get; set; } = new bool[4] { true, true, true, true };
+
+        // ─────────────────────────────────────────────
         //  Initialization
         // ─────────────────────────────────────────────
 

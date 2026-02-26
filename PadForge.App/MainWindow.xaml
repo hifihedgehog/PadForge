@@ -27,53 +27,7 @@
                            PaneTitle="PadForge"
                            OpenPaneLength="200">
 
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="Home"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItemSeparator/>
-
-                <ui:NavigationViewItem Content="Virtual Controller 1" Tag="Pad1">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Virtual Controller 2" Tag="Pad2">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Virtual Controller 3" Tag="Pad3">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Virtual Controller 4" Tag="Pad4">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItemSeparator/>
-
-                <ui:NavigationViewItem Content="Devices" Tag="Devices">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="AllApps"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Profiles" Tag="Profiles">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE8F1;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-            </ui:NavigationView.MenuItems>
+            <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItem Content="About" Tag="About">

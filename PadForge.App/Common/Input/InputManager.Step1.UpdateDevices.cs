@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Microsoft.Win32;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using SDL3;
@@ -65,9 +62,9 @@ namespace PadForge.Common.Input
 
             bool changed = false;
 
-            // Reset per-cycle caches for ViGEm PnP detection.
-            _vigemPnPCount = -1;
-            _vigemDs4PnPCount = -1;
+            // Reset per-cycle counters for ViGEm VID/PID filtering.
+            _xbox360FilteredThisCycle = 0;
+            _ds4FilteredThisCycle = 0;
 
             // SDL3: Get array of instance IDs for all connected joysticks.
             uint[] joystickIds = SDL_GetJoysticks();
@@ -182,13 +179,15 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Cached count of ViGEm Xbox 360 devices from PnP detection.
-        /// Refreshed once per enumeration cycle (not per device).
-        /// -1 = not yet computed this cycle.
+        /// Per-cycle counter: how many Xbox 360 VID/PID devices we've filtered
+        /// this enumeration cycle. Reset at the start of each UpdateDevices() call.
         /// </summary>
-        private int _vigemPnPCount = -1;
         private int _xbox360FilteredThisCycle;
-        private int _vigemDs4PnPCount = -1;
+
+        /// <summary>
+        /// Per-cycle counter: how many DS4 VID/PID devices we've filtered
+        /// this enumeration cycle. Reset at the start of each UpdateDevices() call.
+        /// </summary>
         private int _ds4FilteredThisCycle;
 
         /// <summary>
@@ -196,10 +195,15 @@ namespace PadForge.Common.Input
         /// (our own output device that must not be opened as an input device).
         ///
         /// Detection methods:
-        ///   1. Device path containing ViGEm signatures
-        ///   2. Zero VID/PID + SDL game controller (likely virtual)
-        ///   3. Xbox 360 VID/PID (045E:028E) — uses PnP device tree walk
-        ///      to distinguish real Xbox 360 controllers from ViGEm emulation
+        ///   1. Device path containing ViGEm signatures ("vigem", "virtual")
+        ///   2. Zero VID/PID + SDL game controller + active ViGEm count > 0
+        ///   3. Xbox 360 VID/PID (045E:028E) — filter up to _activeXbox360Count
+        ///   4. DS4 VID/PID (054C:05C4) — filter up to _activeDs4Count
+        ///
+        /// For Xbox 360 and DS4, we use our own count of virtual controllers
+        /// created by Step 5 rather than walking the PnP device tree. ViGEm DS4
+        /// devices don't register under USB\VID_054C&amp;PID_05C4 in the registry
+        /// (they use ViGEmBus's own bus enumerator), making PnP tree walks unreliable.
         /// </summary>
         private bool IsViGEmVirtualDevice(SdlDeviceWrapper wrapper)
         {
@@ -225,23 +229,12 @@ namespace PadForge.Common.Input
 
             // ── Xbox 360 VID/PID — ViGEm emulates exactly this ──
             // Real Xbox 360 controllers and ViGEm virtual controllers both
-            // report VID=045E PID=028E. We distinguish them by walking the
-            // Windows PnP device tree: ViGEm devices have ViGEmBus as an
-            // ancestor. The PnP count is cached per enumeration cycle.
+            // report VID=045E PID=028E. We filter up to _activeXbox360Count
+            // devices per cycle (the rest are real controllers).
             if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E
-                && _activeVigemCount > 0)
+                && _activeXbox360Count > 0)
             {
-                // Lazy-compute the PnP count once per cycle.
-                if (_vigemPnPCount < 0)
-                {
-                    _vigemPnPCount = CountViGEmDevices(
-                        @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&PID_028E",
-                        @"USB\VID_045E&PID_028E\");
-                    _xbox360FilteredThisCycle = 0;
-                }
-
-                // Filter up to _vigemPnPCount devices (keep the rest as real).
-                if (_xbox360FilteredThisCycle < _vigemPnPCount)
+                if (_xbox360FilteredThisCycle < _activeXbox360Count)
                 {
                     _xbox360FilteredThisCycle++;
                     return true;
@@ -250,19 +243,11 @@ namespace PadForge.Common.Input
 
             // ── DS4 VID/PID — ViGEm emulates Sony DS4 ──
             // ViGEm DS4 virtual controllers report VID=054C PID=05C4.
-            // Same PnP tree walk as Xbox 360 to distinguish real vs virtual.
+            // Filter up to _activeDs4Count devices per cycle.
             if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4
-                && _activeVigemCount > 0)
+                && _activeDs4Count > 0)
             {
-                if (_vigemDs4PnPCount < 0)
-                {
-                    _vigemDs4PnPCount = CountViGEmDevices(
-                        @"SYSTEM\CurrentControlSet\Enum\USB\VID_054C&PID_05C4",
-                        @"USB\VID_054C&PID_05C4\");
-                    _ds4FilteredThisCycle = 0;
-                }
-
-                if (_ds4FilteredThisCycle < _vigemDs4PnPCount)
+                if (_ds4FilteredThisCycle < _activeDs4Count)
                 {
                     _ds4FilteredThisCycle++;
                     return true;
@@ -270,116 +255,6 @@ namespace PadForge.Common.Input
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Counts how many devices under the given registry key are ViGEm virtual
-        /// controllers (have ViGEmBus as a PnP ancestor). Used for both Xbox 360
-        /// (VID_045E/PID_028E) and DS4 (VID_054C/PID_05C4) filtering.
-        /// </summary>
-        /// <param name="registrySubKey">e.g. @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&amp;PID_028E"</param>
-        /// <param name="instancePrefix">e.g. @"USB\VID_045E&amp;PID_028E\"</param>
-        private static int CountViGEmDevices(string registrySubKey, string instancePrefix)
-        {
-            int count = 0;
-            try
-            {
-                using var key = Registry.LocalMachine.OpenSubKey(registrySubKey, false);
-                if (key == null)
-                    return 0;
-
-                foreach (var instanceName in key.GetSubKeyNames())
-                {
-                    var instanceId = instancePrefix + instanceName;
-
-                    // Skip devices that are not currently present.
-                    if (!IsDevicePresent(instanceId))
-                        continue;
-
-                    if (IsUnderViGEmBus(instanceId))
-                        count++;
-                }
-            }
-            catch
-            {
-                return 0;
-            }
-            return count;
-        }
-
-        // ─────────────────────────────────────────────
-        //  PnP helpers (cfgmgr32) for ViGEm detection
-        // ─────────────────────────────────────────────
-
-        private const int CR_SUCCESS = 0;
-        private const uint DN_DEVICE_IS_PRESENT = 0x00000002;
-
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Locate_DevNodeW(
-            out uint pdnDevInst, string pDeviceID, int ulFlags);
-
-        [DllImport("cfgmgr32.dll")]
-        private static extern int CM_Get_Parent(
-            out uint pdnDevInst, uint dnDevInst, int ulFlags);
-
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Get_Device_IDW(
-            uint dnDevInst, StringBuilder Buffer, int BufferLen, int ulFlags);
-
-        [DllImport("cfgmgr32.dll")]
-        private static extern int CM_Get_DevNode_Status(
-            out uint pulStatus, out uint pulProblemNumber, uint dnDevInst, int ulFlags);
-
-        private static bool IsDevicePresent(string deviceInstanceId)
-        {
-            if (CM_Locate_DevNodeW(out var devInst, deviceInstanceId, 0) != CR_SUCCESS)
-                return false;
-            if (CM_Get_DevNode_Status(out var status, out _, devInst, 0) != CR_SUCCESS)
-                return false;
-            return (status & DN_DEVICE_IS_PRESENT) != 0;
-        }
-
-        private static bool IsUnderViGEmBus(string deviceInstanceId)
-        {
-            if (CM_Locate_DevNodeW(out var devInst, deviceInstanceId, 0) != CR_SUCCESS)
-                return false;
-
-            // Walk up the device tree (max 64 levels).
-            for (int depth = 0; depth < 64; depth++)
-            {
-                var id = GetDeviceInstanceId(devInst);
-                if (!string.IsNullOrEmpty(id))
-                {
-                    // Check registry for ViGEmBus service name.
-                    try
-                    {
-                        using var regKey = Registry.LocalMachine.OpenSubKey(
-                            @"SYSTEM\CurrentControlSet\Enum\" + id, false);
-                        if (regKey != null)
-                        {
-                            var service = regKey.GetValue("Service") as string;
-                            if (!string.IsNullOrEmpty(service) &&
-                                service.Equals("ViGEmBus", StringComparison.OrdinalIgnoreCase))
-                                return true;
-                        }
-                    }
-                    catch { }
-                }
-
-                if (CM_Get_Parent(out var parent, devInst, 0) != CR_SUCCESS)
-                    break;
-                devInst = parent;
-            }
-
-            return false;
-        }
-
-        private static string GetDeviceInstanceId(uint devInst)
-        {
-            var sb = new StringBuilder(1024);
-            return CM_Get_Device_IDW(devInst, sb, sb.Capacity, 0) == CR_SUCCESS
-                ? sb.ToString()
-                : null;
         }
 
         // ─────────────────────────────────────────────

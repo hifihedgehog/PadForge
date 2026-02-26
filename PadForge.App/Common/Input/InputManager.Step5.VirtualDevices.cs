@@ -37,6 +37,18 @@ namespace PadForge.Common.Input
         private int _activeVigemCount;
 
         /// <summary>
+        /// Count of currently active ViGEm Xbox 360 virtual controllers.
+        /// Used by IsViGEmVirtualDevice() to filter the correct number of 045E:028E devices.
+        /// </summary>
+        private int _activeXbox360Count;
+
+        /// <summary>
+        /// Count of currently active ViGEm DS4 virtual controllers.
+        /// Used by IsViGEmVirtualDevice() to filter the correct number of 054C:05C4 devices.
+        /// </summary>
+        private int _activeDs4Count;
+
+        /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.
         /// Virtual controllers are only destroyed after a sustained inactivity period
         /// to prevent transient <see cref="IsSlotActive"/> false returns from
@@ -55,6 +67,17 @@ namespace PadForge.Common.Input
 
         /// <summary>Whether ViGEmBus driver is reachable.</summary>
         public bool IsViGEmAvailable => _vigemClient != null;
+
+        /// <summary>
+        /// Returns true if the specified pad slot has an active ViGEm virtual controller.
+        /// Used by the UI to show connected status on dashboard cards.
+        /// </summary>
+        public bool IsVirtualControllerConnected(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            var vc = _virtualControllers[padIndex];
+            return vc != null && vc.IsConnected;
+        }
 
         /// <summary>
         /// Step 5: Feed each slot's combined gamepad state to ViGEmBus.
@@ -214,6 +237,10 @@ namespace PadForge.Common.Input
 
         private bool IsSlotActive(int padIndex)
         {
+            // Slot must be explicitly created AND enabled.
+            if (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex])
+                return false;
+
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
 
@@ -276,6 +303,10 @@ namespace PadForge.Common.Input
                 }
 
                 _activeVigemCount++;
+                if (controllerType == VirtualControllerType.Xbox360)
+                    _activeXbox360Count++;
+                else if (controllerType == VirtualControllerType.DualShock4)
+                    _activeDs4Count++;
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
 
                 return vc;
@@ -315,6 +346,10 @@ namespace PadForge.Common.Input
                 }
 
                 _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
+                if (vc.Type == VirtualControllerType.Xbox360)
+                    _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
+                else if (vc.Type == VirtualControllerType.DualShock4)
+                    _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
             }
             catch { /* best effort */ }
         }
@@ -328,6 +363,8 @@ namespace PadForge.Common.Input
             }
 
             _activeVigemCount = 0;
+            _activeXbox360Count = 0;
+            _activeDs4Count = 0;
         }
 
         // ─────────────────────────────────────────────

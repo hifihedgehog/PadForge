@@ -14,12 +14,7 @@ namespace PadForge.ViewModels
         public DashboardViewModel()
         {
             Title = "Dashboard";
-
-            // Create slot summary entries for each of the 4 pads.
-            for (int i = 0; i < 4; i++)
-            {
-                SlotSummaries.Add(new SlotSummary(i));
-            }
+            // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
         }
 
         // ─────────────────────────────────────────────
@@ -27,11 +22,51 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Summary information for each of the 4 virtual controller slots.
+        /// Summary information for virtual controller slots that have mapped devices.
         /// Displayed as cards on the Dashboard page.
         /// </summary>
         public ObservableCollection<SlotSummary> SlotSummaries { get; } =
             new ObservableCollection<SlotSummary>();
+
+        /// <summary>
+        /// Whether the "Add Controller" card should be visible (fewer than 4 active slots).
+        /// </summary>
+        private bool _showAddController = true;
+        public bool ShowAddController
+        {
+            get => _showAddController;
+            set => SetProperty(ref _showAddController, value);
+        }
+
+        /// <summary>
+        /// Rebuilds the SlotSummaries to only include slots with mapped devices.
+        /// Called from InputService after UpdatePadDeviceInfo().
+        /// </summary>
+        public void RefreshActiveSlots(System.Collections.Generic.IList<int> activeSlots)
+        {
+            // Check if the set of active slots has changed.
+            bool changed = activeSlots.Count != SlotSummaries.Count;
+            if (!changed)
+            {
+                for (int i = 0; i < activeSlots.Count; i++)
+                {
+                    if (SlotSummaries[i].PadIndex != activeSlots[i])
+                    {
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                SlotSummaries.Clear();
+                foreach (int slot in activeSlots)
+                    SlotSummaries.Add(new SlotSummary(slot));
+            }
+
+            ShowAddController = activeSlots.Count < 4;
+        }
 
         // ─────────────────────────────────────────────
         //  Engine status
@@ -216,11 +251,47 @@ namespace PadForge.ViewModels
 
         private string _statusText = "Idle";
 
-        /// <summary>Status text for the slot (e.g., "Active", "Idle", "No mapping").</summary>
+        /// <summary>Status text for the slot (e.g., "Active", "Idle", "No mapping", "Disabled").</summary>
         public string StatusText
         {
             get => _statusText;
             set => SetProperty(ref _statusText, value);
+        }
+
+        private bool _isEnabled = true;
+
+        /// <summary>Whether this virtual controller slot is enabled for ViGEm output.</summary>
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value);
+        }
+
+        private int _slotNumber = 1;
+
+        /// <summary>Overall controller number among active slots (1-based).</summary>
+        public int SlotNumber
+        {
+            get => _slotNumber;
+            set => SetProperty(ref _slotNumber, value);
+        }
+
+        private string _typeInstanceLabel = "#1";
+
+        /// <summary>Per-type instance number label (e.g., "#1", "#2").</summary>
+        public string TypeInstanceLabel
+        {
+            get => _typeInstanceLabel;
+            set => SetProperty(ref _typeInstanceLabel, value);
+        }
+
+        private bool _isXboxType = true;
+
+        /// <summary>True if Xbox 360 type, false if DualShock 4.</summary>
+        public bool IsXboxType
+        {
+            get => _isXboxType;
+            set => SetProperty(ref _isXboxType, value);
         }
     }
 }

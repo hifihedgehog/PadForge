@@ -3,8 +3,8 @@ namespace PadForge.Engine
     /// <summary>
     /// Minimal Gamepad struct matching XInput XINPUT_GAMEPAD layout.
     /// Used as the output of the mapping pipeline (Step 3 → Step 4 → Step 5).
-    /// 
-    /// Lives in the Engine assembly so both Engine (UserSetting.XiState) and
+    ///
+    /// Lives in the Engine assembly so both Engine (UserSetting.OutputState) and
     /// App (InputManager, PadViewModel) can reference it.
     /// </summary>
     public struct Gamepad

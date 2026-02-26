@@ -173,7 +173,7 @@ namespace PadForge.Common.Input
                     var vc = _virtualControllers[padIndex];
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
-                        vc.SubmitGamepadState(CombinedXiStates[padIndex]);
+                        vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
                 }
                 catch (Exception ex)

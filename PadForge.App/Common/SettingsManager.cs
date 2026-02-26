@@ -47,11 +47,18 @@ namespace PadForge.Common.Input
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────
 
-        /// <summary>Whether each slot (0–3) has been explicitly created. Persisted to settings.</summary>
-        public static bool[] SlotCreated { get; set; } = new bool[4];
+        /// <summary>Maximum number of Xbox 360 virtual controllers (XInput hard limit).</summary>
+        public const int MaxXbox360Slots = 4;
 
-        /// <summary>Whether each slot (0–3) is enabled for ViGEm output. Persisted to settings.</summary>
-        public static bool[] SlotEnabled { get; set; } = new bool[4] { true, true, true, true };
+        /// <summary>Maximum number of DualShock 4 virtual controllers (ViGEm limit).</summary>
+        public const int MaxDS4Slots = 4;
+
+        /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
+        public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
+
+        /// <summary>Whether each slot is enabled for ViGEm output. Persisted to settings.</summary>
+        public static bool[] SlotEnabled { get; set; } = new bool[InputManager.MaxPads]
+            { true, true, true, true, true, true, true, true };
 
         // ─────────────────────────────────────────────
         //  Initialization
@@ -186,7 +193,7 @@ namespace PadForge.Common.Input
         /// <returns>The UserSetting (existing or new).</returns>
         public static UserSetting AssignDeviceToSlot(Guid instanceGuid, int padIndex)
         {
-            if (padIndex < 0 || padIndex > 3)
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads)
                 throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–3.");
 
             var settings = UserSettings;
@@ -231,6 +238,65 @@ namespace PadForge.Common.Input
                 return settings.Items.RemoveAll(
                     s => s.InstanceGuid == instanceGuid) > 0;
             }
+        }
+
+        /// <summary>
+        /// Toggles a device's assignment to a specific slot.
+        /// If assigned → removes that UserSetting (unassign). If not → creates one (assign).
+        /// Supports multi-slot: a device can have UserSettings for multiple slots.
+        /// Thread-safe.
+        /// </summary>
+        /// <returns>(true, UserSetting) if assigned; (false, null) if unassigned.</returns>
+        public static (bool Assigned, UserSetting Setting) ToggleDeviceSlotAssignment(Guid instanceGuid, int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads)
+                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–3.");
+
+            var settings = UserSettings;
+            if (settings == null) return (false, null);
+
+            lock (settings.SyncRoot)
+            {
+                var existing = settings.Items.FirstOrDefault(
+                    s => s.InstanceGuid == instanceGuid && s.MapTo == padIndex);
+
+                if (existing != null)
+                {
+                    // Unassign from this slot.
+                    settings.Items.Remove(existing);
+                    return (false, null);
+                }
+
+                // Assign to this slot (new UserSetting entry).
+                var us = new UserSetting
+                {
+                    InstanceGuid = instanceGuid,
+                    MapTo = padIndex
+                };
+                settings.Items.Add(us);
+                return (true, us);
+            }
+        }
+
+        /// <summary>
+        /// Returns all slot indices that a device is assigned to.
+        /// Thread-safe.
+        /// </summary>
+        public static List<int> GetAssignedSlots(Guid instanceGuid)
+        {
+            var result = new List<int>();
+            var settings = UserSettings;
+            if (settings == null) return result;
+
+            lock (settings.SyncRoot)
+            {
+                foreach (var s in settings.Items)
+                {
+                    if (s.InstanceGuid == instanceGuid && s.MapTo >= 0)
+                        result.Add(s.MapTo);
+                }
+            }
+            return result;
         }
 
         /// <summary>

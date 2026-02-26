@@ -210,7 +210,7 @@ namespace PadForge.Services
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
-                var gp = _inputManager.CombinedXiStates[i];
+                var gp = _inputManager.CombinedOutputStates[i];
                 var vibration = _inputManager.VibrationStates[i];
 
                 padVm.UpdateFromEngineState(gp, vibration);
@@ -220,7 +220,7 @@ namespace PadForge.Services
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                 {
                     var us = SettingsManager.UserSettings?.FindByInstanceGuid(selected.InstanceGuid);
-                    padVm.UpdateDeviceState(us?.XiState ?? default);
+                    padVm.UpdateDeviceState(us?.OutputState ?? default);
                 }
                 else
                 {
@@ -1038,9 +1038,8 @@ namespace PadForge.Services
                 _ => "Device"
             };
 
-            // Resolve slot assignment.
-            var us = SettingsManager.UserSettings?.FindByInstanceGuid(ud.InstanceGuid);
-            row.AssignedSlot = us?.MapTo ?? -1;
+            // Resolve slot assignments (device can be assigned to multiple slots).
+            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid));
         }
 
         /// <summary>
@@ -1130,12 +1129,21 @@ namespace PadForge.Services
 
             // Build the list of created slot indices for the dashboard.
             var activeSlots = new List<int>();
+            int xboxCount = 0, ds4Count = 0;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (SettingsManager.SlotCreated[i])
+                {
                     activeSlots.Add(i);
+                    if (_mainVm.Pads[i].OutputType == VirtualControllerType.Xbox360)
+                        xboxCount++;
+                    else if (_mainVm.Pads[i].OutputType == VirtualControllerType.DualShock4)
+                        ds4Count++;
+                }
             }
-            _mainVm.Dashboard.RefreshActiveSlots(activeSlots);
+            bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
+                           || ds4Count < SettingsManager.MaxDS4Slots;
+            _mainVm.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 
         /// <summary>
@@ -1256,7 +1264,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Starts recording button presses for a macro trigger combo.
-        /// While recording, CombinedXiState button flags are OR'd together
+        /// While recording, CombinedOutputState button flags are OR'd together
         /// each UI tick. Call <see cref="StopMacroTriggerRecording"/> to
         /// finalize and write the result to the MacroItem.
         /// </summary>
@@ -1357,7 +1365,7 @@ namespace PadForge.Services
             else
             {
                 // OutputController: accumulate from the combined Xbox-mapped state.
-                ushort xboxButtons = _inputManager.CombinedXiStates[_recordingPadIndex].Buttons;
+                ushort xboxButtons = _inputManager.CombinedOutputStates[_recordingPadIndex].Buttons;
                 _recordedButtons |= xboxButtons;
             }
         }

@@ -10,7 +10,8 @@ namespace PadForge.Engine.Data
     /// and a mapping configuration (identified by <see cref="PadSettingChecksum"/>).
     /// 
     /// One UserSetting per device-to-slot assignment. Multiple devices can map to the
-    /// same slot (combined in Step 4), and a device can only map to one slot at a time.
+    /// same slot (combined in Step 4), and a device can map to multiple slots
+    /// (one UserSetting per slot, same InstanceGuid, different MapTo).
     /// </summary>
     public class UserSetting : INotifyPropertyChanged
     {
@@ -139,11 +140,11 @@ namespace PadForge.Engine.Data
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// The mapped XInput gamepad state computed in Step 3.
+        /// The mapped gamepad output state computed in Step 3.
         /// Written by the background thread, read by Step 4.
         /// </summary>
         [XmlIgnore]
-        public Gamepad XiState { get; set; }
+        public Gamepad OutputState { get; set; }
 
         /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.

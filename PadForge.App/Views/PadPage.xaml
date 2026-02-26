@@ -459,7 +459,7 @@
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="XInput Output"
+                            <DataGridTextColumn Header="Output"
                                                 Binding="{Binding TargetLabel}"
                                                 Width="130"/>
                             <DataGridTextColumn Header="Source"

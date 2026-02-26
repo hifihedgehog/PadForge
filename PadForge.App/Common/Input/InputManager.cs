@@ -38,8 +38,8 @@ namespace PadForge.Common.Input
         /// <summary>Device re-enumeration interval in milliseconds (every 2 seconds).</summary>
         private const int EnumerationIntervalMs = 2000;
 
-        /// <summary>Maximum number of virtual controller slots.</summary>
-        public const int MaxPads = 4;
+        /// <summary>Maximum number of virtual controller slots (4 Xbox 360 + 4 DS4).</summary>
+        public const int MaxPads = 8;
 
         // ─────────────────────────────────────────────
         //  State
@@ -63,15 +63,15 @@ namespace PadForge.Common.Input
         private readonly UserSetting[] _padIndexBuffer = new UserSetting[8];
 
         /// <summary>
-        /// Combined XInput gamepad states for the 4 virtual controller slots.
+        /// Combined output gamepad states for the virtual controller slots.
         /// Written by Step 4 (background thread), read by UI (InputService).
         /// </summary>
-        public Gamepad[] CombinedXiStates { get; } = new Gamepad[MaxPads];
+        public Gamepad[] CombinedOutputStates { get; } = new Gamepad[MaxPads];
 
         /// <summary>
-        /// Retrieved XInput states read back from the XInput DLL in Step 6.
+        /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
-        public Gamepad[] RetrievedXiStates { get; } = new Gamepad[MaxPads];
+        public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
 
         /// <summary>
         /// Per-slot vibration states received from games via ViGEmBus.
@@ -313,11 +313,11 @@ namespace PadForge.Common.Input
                         UpdateInputStates();
                         UpdateMotionSnapshots();
                         BroadcastDsuMotion();
-                        UpdateXiStates();
-                        CombineXiStates();
+                        UpdateOutputStates();
+                        CombineOutputStates();
                         EvaluateMacros();
                         UpdateVirtualDevices();
-                        RetrieveXiStates();
+                        RetrieveOutputStates();
 
                         // Frequency measurement.
                         _frequencyCounter++;

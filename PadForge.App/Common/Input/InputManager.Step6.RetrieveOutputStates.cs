@@ -6,7 +6,7 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
-        //  Step 6: RetrieveXiStates
+        //  Step 6: RetrieveOutputStates
         //  Copies the combined gamepad states directly from Step 4 output
         //  for UI display. This shows exactly what was submitted to the
         //  virtual controllers and works for all controller types
@@ -19,11 +19,11 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Step 6: For each of the 4 controller slots, copies the combined
-        /// gamepad state to <see cref="RetrievedXiStates"/> for UI display.
+        /// Step 6: For each controller slot, copies the combined
+        /// gamepad state to <see cref="RetrievedOutputStates"/> for UI display.
         /// Only populates slots that have an active virtual controller.
         /// </summary>
-        private void RetrieveXiStates()
+        private void RetrieveOutputStates()
         {
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
@@ -32,17 +32,17 @@ namespace PadForge.Common.Input
                     var vc = _virtualControllers[padIndex];
                     if (vc != null && vc.IsConnected)
                     {
-                        RetrievedXiStates[padIndex] = CombinedXiStates[padIndex];
+                        RetrievedOutputStates[padIndex] = CombinedOutputStates[padIndex];
                     }
                     else
                     {
-                        RetrievedXiStates[padIndex].Clear();
+                        RetrievedOutputStates[padIndex].Clear();
                     }
                 }
                 catch (Exception ex)
                 {
                     RaiseError($"Error retrieving state for pad {padIndex}", ex);
-                    RetrievedXiStates[padIndex].Clear();
+                    RetrievedOutputStates[padIndex].Clear();
                 }
             }
         }

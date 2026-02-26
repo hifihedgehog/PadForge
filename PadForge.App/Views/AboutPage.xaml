@@ -27,9 +27,9 @@
             <!-- Description -->
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Opacity="0.85">
-                    PadForge maps any DirectInput-compatible controller to an Xbox 360 virtual
-                    controller via ViGEmBus. It uses SDL3 for robust device handling and
-                    provides a modern Fluent Design interface for mapping, dead zone
+                    PadForge maps any controller to virtually any other controller type
+                    via ViGEmBus. It uses SDL3 for robust device enumeration and input,
+                    and provides a modern Fluent Design interface for mapping, dead zone
                     configuration, and force feedback management.
                 </TextBlock>
             </Border>
@@ -63,7 +63,7 @@
 
                     <TextBlock Grid.Row="2" Text="ViGEmBus" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="2" Grid.Column="1"
-                               Text="Virtual Xbox 360 controller driver"
+                               Text="Virtual controller driver (Xbox 360, DualShock 4)"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
                     <TextBlock Grid.Row="3" Text="ModernWpf" FontWeight="SemiBold" Margin="0,6,0,0"/>

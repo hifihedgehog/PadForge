@@ -84,8 +84,8 @@ namespace PadForge.ViewModels
         {
             Title = "PadForge";
 
-            // Create the 4 pad ViewModels (one per virtual controller slot).
-            for (int i = 0; i < 4; i++)
+            // Create pad ViewModels (one per virtual controller slot).
+            for (int i = 0; i < Common.Input.InputManager.MaxPads; i++)
             {
                 Pads.Add(new PadViewModel(i));
             }

@@ -118,7 +118,10 @@
                     </ListBox>
 
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Save Current as Profile"
+                        <Button Content="New"
+                                Command="{Binding NewProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Save As"
                                 Command="{Binding SaveAsProfileCommand}"
                                 Margin="0,0,8,0"/>
                         <Button Content="Edit"

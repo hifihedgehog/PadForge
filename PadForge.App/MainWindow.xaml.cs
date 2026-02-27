@@ -72,6 +72,7 @@ namespace PadForge
             _viewModel.Settings.ResetRequested += (s, e) => _settingsService.ResetToDefaults();
             _viewModel.Settings.OpenSettingsFolderRequested += OnOpenSettingsFolder;
             _viewModel.Settings.ThemeChanged += OnThemeChanged;
+            _viewModel.Settings.NewProfileRequested += OnNewProfile;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
             _viewModel.Settings.EditProfileRequested += OnEditProfile;
@@ -1212,6 +1213,43 @@ namespace PadForge
                     UseShellExecute = true
                 });
             }
+        }
+
+        private void OnNewProfile(object sender, EventArgs e)
+        {
+            var dialog = new Views.ProfileDialog { Owner = this };
+            if (dialog.ShowDialog() != true)
+                return;
+
+            string name = dialog.ProfileName;
+            string exePaths = string.Join("|", dialog.ExecutablePaths);
+
+            // Create an empty shell profile — no VCs, no device assignments.
+            var profile = new ProfileData
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Name = name.Trim(),
+                ExecutableNames = exePaths,
+                Entries = Array.Empty<ProfileEntry>(),
+                PadSettings = Array.Empty<PadSetting>(),
+                SlotCreated = new bool[InputManager.MaxPads],
+                SlotEnabled = new bool[InputManager.MaxPads],
+                SlotControllerTypes = new int[InputManager.MaxPads],
+            };
+
+            SettingsManager.Profiles.Add(profile);
+
+            var listItem = new ViewModels.ProfileListItem
+            {
+                Id = profile.Id,
+                Name = profile.Name,
+                Executables = FormatExePaths(exePaths),
+            };
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            _viewModel.Settings.ProfileItems.Add(listItem);
+
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = $"Profile \"{name}\" created (empty).";
         }
 
         private void OnSaveAsProfile(object sender, EventArgs e)

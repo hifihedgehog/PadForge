@@ -328,9 +328,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _slotNumber, value);
         }
 
-        private string _typeInstanceLabel = "#1";
+        private string _typeInstanceLabel = "1";
 
-        /// <summary>Per-type instance number label (e.g., "#1", "#2").</summary>
+        /// <summary>Per-type instance number label (e.g., "1", "2").</summary>
         public string TypeInstanceLabel
         {
             get => _typeInstanceLabel;

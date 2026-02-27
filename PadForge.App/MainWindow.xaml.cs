@@ -306,7 +306,7 @@ namespace PadForge
                         SelectNavItemByTag("Dashboard");
 
                     _deviceService.DeleteSlot(slotIndex);
-                    _viewModel.Devices.RefreshSlotButtons();
+                    _viewModel.Devices.RefreshSlotButtons(ResolveSlotBadge);
                     _inputService.RefreshDeviceList();
                 }));
             };
@@ -493,7 +493,7 @@ namespace PadForge
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     RebuildControllerSection();
-                    _viewModel.Devices.RefreshSlotButtons();
+                    _viewModel.Devices.RefreshSlotButtons(ResolveSlotBadge);
                 }));
 
             // Subscribe to OutputType changes on each pad to refresh sidebar.
@@ -924,6 +924,21 @@ namespace PadForge
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
                 || vjoyCount < SettingsManager.MaxVJoySlots;
+        }
+
+        private (VirtualControllerType Type, int InstanceNum) ResolveSlotBadge(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _viewModel.Pads.Count)
+                return (VirtualControllerType.Xbox360, 1);
+
+            var type = _viewModel.Pads[slotIndex].OutputType;
+            int instance = 0;
+            for (int i = 0; i <= slotIndex; i++)
+            {
+                if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == type)
+                    instance++;
+            }
+            return (type, instance);
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)

@@ -1,0 +1,90 @@
+name: Build
+
+on:
+  push:
+    branches: [v2-dev]
+  pull_request:
+    branches: [v2-dev]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+
+      - name: Publish
+        run: dotnet publish PadForge.App/PadForge.App.csproj -c Release
+
+      - name: Get build info
+        shell: bash
+        run: |
+          echo "COMMIT_SHORT=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_ENV"
+          echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> "$GITHUB_ENV"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PadForge_r${{ env.COMMIT_COUNT }}@${{ env.COMMIT_SHORT }}
+          path: PadForge.App/bin/Release/net8.0-windows/win-x64/publish/
+
+      - name: Package release zip
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          mkdir -p release
+          cd PadForge.App/bin/Release/net8.0-windows/win-x64/publish
+          7z a -mx=9 "$GITHUB_WORKSPACE/release/PadForge.zip" ./*
+          cp "$GITHUB_WORKSPACE/release/PadForge.zip" \
+             "$GITHUB_WORKSPACE/release/PadForge_r${COMMIT_COUNT}@${COMMIT_SHORT}.zip"
+
+      - name: Release — archive-${{ github.ref_name }}
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          tag="archive-${{ github.ref_name }}"
+          gh release create "$tag" \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --prerelease \
+            --title "PadForge build archive" \
+            --notes "Latest build: https://github.com/${{ github.repository }}/releases/tag/latest-${{ github.ref_name }}" \
+            2>/dev/null || true
+          gh release upload "$tag" \
+            --repo "${{ github.repository }}" \
+            --clobber \
+            "release/PadForge_r${COMMIT_COUNT}@${COMMIT_SHORT}.zip"
+
+      - name: Release — latest-${{ github.ref_name }}
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          tag="latest-${{ github.ref_name }}"
+          gh release delete "$tag" \
+            --repo "${{ github.repository }}" \
+            --cleanup-tag --yes 2>/dev/null || true
+          gh release create "$tag" \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --prerelease \
+            --title "PadForge r${COMMIT_COUNT}@${COMMIT_SHORT}" \
+            --notes "Build archive: https://github.com/${{ github.repository }}/releases/tag/archive-${{ github.ref_name }}
+          Build log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh release upload "$tag" \
+            --repo "${{ github.repository }}" \
+            --clobber \
+            "release/PadForge.zip"

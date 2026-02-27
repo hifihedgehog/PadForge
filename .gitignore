@@ -25,6 +25,7 @@ bld/
 !**/Resources/**
 
 *.exe
+!**/Resources/*.exe
 *.pdb
 *.cache
 *.ilk

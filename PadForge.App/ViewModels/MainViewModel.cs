@@ -202,6 +202,15 @@ namespace PadForge.ViewModels
                 NavControllerItemsRefreshed?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Forces a NavControllerItemsRefreshed event even when slot count hasn't changed.
+        /// Used after slot reorder/swap where card visuals need a full rebuild.
+        /// </summary>
+        public void ForceNavControllerItemsRefreshed()
+        {
+            NavControllerItemsRefreshed?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <summary>Dashboard overview ViewModel.</summary>
         public DashboardViewModel Dashboard { get; }
 

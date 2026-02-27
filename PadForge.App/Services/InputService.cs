@@ -305,7 +305,31 @@ namespace PadForge.Services
                 _mainVm.ConnectedDeviceCount = online;
             }
 
-            // Update slot summaries (dynamic — only slots with mapped devices).
+            RefreshSlotSummaryProperties(devices);
+            RefreshNavItemConnectedCounts(devices);
+
+            // Update main VM frequency.
+            _mainVm.PollingFrequency = _inputManager.CurrentFrequency;
+        }
+
+        /// <summary>
+        /// Updates all SlotSummary properties on the dashboard (type, label, status, device info).
+        /// Safe to call with or without the engine running.
+        /// </summary>
+        public void RefreshSlotSummaryProperties(IEnumerable<UserDevice> devices = null)
+        {
+            var dash = _mainVm.Dashboard;
+
+            if (devices == null)
+            {
+                var ud = SettingsManager.UserDevices;
+                if (ud != null)
+                {
+                    lock (ud.SyncRoot)
+                        devices = ud.Items.ToArray();
+                }
+            }
+
             foreach (var slot in dash.SlotSummaries)
             {
                 int padIndex = slot.PadIndex;
@@ -316,7 +340,6 @@ namespace PadForge.Services
                 slot.IsActive = padVm.IsDeviceOnline;
                 slot.DeviceName = padVm.MappedDeviceName;
 
-                // Count mapped and connected devices for this slot.
                 var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
                 int mappedCount = slotSettings?.Count ?? 0;
                 int connectedCount = 0;
@@ -339,7 +362,6 @@ namespace PadForge.Services
                     : "Idle";
             }
 
-            // Compute global slot numbers and per-type instance numbers.
             int xboxCount = 0, ds4Count = 0, vjoyCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
@@ -365,8 +387,24 @@ namespace PadForge.Services
                         break;
                 }
             }
+        }
 
-            // Update sidebar nav items' connected device counts (for power icon 3-state).
+        /// <summary>
+        /// Updates NavControllerItem connected device counts for sidebar power icon colors.
+        /// Safe to call with or without the engine running.
+        /// </summary>
+        private void RefreshNavItemConnectedCounts(IEnumerable<UserDevice> devices = null)
+        {
+            if (devices == null)
+            {
+                var ud = SettingsManager.UserDevices;
+                if (ud != null)
+                {
+                    lock (ud.SyncRoot)
+                        devices = ud.Items.ToArray();
+                }
+            }
+
             foreach (var nav in _mainVm.NavControllerItems)
             {
                 int padIndex = nav.PadIndex;
@@ -384,9 +422,6 @@ namespace PadForge.Services
                 }
                 nav.ConnectedDeviceCount = connCount;
             }
-
-            // Update main VM frequency.
-            _mainVm.PollingFrequency = _inputManager.CurrentFrequency;
         }
 
         // ─────────────────────────────────────────────
@@ -1247,21 +1282,28 @@ namespace PadForge.Services
 
             // Build the list of created slot indices for the dashboard.
             var activeSlots = new List<int>();
-            int xboxCount = 0, ds4Count = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (SettingsManager.SlotCreated[i])
                 {
                     activeSlots.Add(i);
-                    if (_mainVm.Pads[i].OutputType == VirtualControllerType.Xbox360)
-                        xboxCount++;
-                    else if (_mainVm.Pads[i].OutputType == VirtualControllerType.DualShock4)
-                        ds4Count++;
+                    switch (_mainVm.Pads[i].OutputType)
+                    {
+                        case VirtualControllerType.Xbox360: xboxCount++; break;
+                        case VirtualControllerType.DualShock4: ds4Count++; break;
+                        case VirtualControllerType.VJoy: vjoyCount++; break;
+                    }
                 }
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
-                           || ds4Count < SettingsManager.MaxDS4Slots;
+                           || ds4Count < SettingsManager.MaxDS4Slots
+                           || vjoyCount < SettingsManager.MaxVJoySlots;
             _mainVm.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
+
+            // Update slot summary properties so dashboard cards reflect current state
+            // even when the engine (and its UI timer) is not running.
+            RefreshSlotSummaryProperties();
 
             // Update the active profile's topology label so the Profiles page
             // reflects slot create/delete changes in real-time.

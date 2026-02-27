@@ -1315,12 +1315,22 @@ namespace PadForge
             var selected = _viewModel.Settings.SelectedProfile;
             if (selected == null) return;
 
+            // Loading the Default profile is equivalent to reverting.
+            if (selected.IsDefault)
+            {
+                OnRevertToDefault(sender, e);
+                return;
+            }
+
             var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
             if (profile == null) return;
 
-            // Snapshot current state before switching away from default.
-            if (SettingsManager.ActiveProfileId == null)
-                _inputService.RefreshDefaultSnapshot();
+            // Already on this profile — nothing to do.
+            if (SettingsManager.ActiveProfileId == profile.Id)
+                return;
+
+            // Save outgoing profile state before switching.
+            _inputService.SaveActiveProfileState();
 
             _inputService.ApplyProfile(profile);
             SettingsManager.ActiveProfileId = profile.Id;
@@ -1332,6 +1342,9 @@ namespace PadForge
         {
             if (SettingsManager.ActiveProfileId == null)
                 return;
+
+            // Save outgoing profile state before reverting.
+            _inputService.SaveActiveProfileState();
 
             _inputService.ApplyDefaultProfile();
             SettingsManager.ActiveProfileId = null;

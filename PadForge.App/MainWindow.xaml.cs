@@ -306,7 +306,7 @@ namespace PadForge
                         SelectNavItemByTag("Dashboard");
 
                     _deviceService.DeleteSlot(slotIndex);
-                    _viewModel.Devices.RefreshSlotButtons(ResolveSlotBadge);
+                    _viewModel.Devices.RefreshSlotButtons();
                     _inputService.RefreshDeviceList();
                 }));
             };
@@ -322,6 +322,8 @@ namespace PadForge
             {
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _settingsService.MarkDirty();
+                _inputService.RefreshDeviceList();
+                _viewModel.Devices.RefreshSlotButtons();
             };
 
             // Window events.
@@ -493,7 +495,8 @@ namespace PadForge
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     RebuildControllerSection();
-                    _viewModel.Devices.RefreshSlotButtons(ResolveSlotBadge);
+                    _viewModel.Devices.RefreshSlotButtons();
+                    _inputService.RefreshProfileTopology();
                 }));
 
             // Subscribe to OutputType changes on each pad to refresh sidebar.
@@ -641,10 +644,25 @@ namespace PadForge
             bool isDS4 = iconKey == "DS4ControllerIcon";
             bool isVJoy = iconKey == "VJoyControllerIcon";
 
-            var row = new System.Windows.Controls.StackPanel
+            var row = new System.Windows.Controls.DockPanel();
+
+            // Delete button — docked right so it stays at the far end of the card.
+            var deleteBtn = new System.Windows.Controls.Button
             {
-                Orientation = System.Windows.Controls.Orientation.Horizontal
+                Content = new FontIcon { Glyph = "\uE711", FontSize = 9 },
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Background = System.Windows.Media.Brushes.Transparent,
+                ToolTip = "Delete virtual controller",
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(6, 0, 0, 0),
+                Opacity = 0.5
             };
+            deleteBtn.Click += OnSidebarDeleteSlot;
+            System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
+            row.Children.Add(deleteBtn);
 
             // Power button (green = enabled + connected, yellow = enabled + no devices, red = disabled).
             System.Windows.Media.SolidColorBrush powerColor;
@@ -793,23 +811,6 @@ namespace PadForge
                 Margin = new Thickness(4, 0, 0, 0)
             });
 
-            // Delete button.
-            var deleteBtn = new System.Windows.Controls.Button
-            {
-                Content = new FontIcon { Glyph = "\uE711", FontSize = 9 },
-                Padding = new Thickness(2),
-                MinWidth = 0,
-                MinHeight = 0,
-                Background = System.Windows.Media.Brushes.Transparent,
-                ToolTip = "Delete virtual controller",
-                Tag = navItem.PadIndex,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(6, 0, 0, 0),
-                Opacity = 0.5
-            };
-            deleteBtn.Click += OnSidebarDeleteSlot;
-            row.Children.Add(deleteBtn);
-
             // Wrap in a rounded card border.
             var card = new System.Windows.Controls.Border
             {
@@ -924,21 +925,6 @@ namespace PadForge
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
                 || vjoyCount < SettingsManager.MaxVJoySlots;
-        }
-
-        private (VirtualControllerType Type, int InstanceNum) ResolveSlotBadge(int slotIndex)
-        {
-            if (slotIndex < 0 || slotIndex >= _viewModel.Pads.Count)
-                return (VirtualControllerType.Xbox360, 1);
-
-            var type = _viewModel.Pads[slotIndex].OutputType;
-            int instance = 0;
-            for (int i = 0; i <= slotIndex; i++)
-            {
-                if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == type)
-                    instance++;
-            }
-            return (type, instance);
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -1171,9 +1157,16 @@ namespace PadForge
             // internal ItemsRepeater layout.
             if (tag == "AddController")
             {
+                // Immediately reselect the previous page so the blue selection
+                // indicator never visually lands on the "Add Controller" item.
+                SelectNavItemByTag(_viewModel.SelectedNavTag ?? "Dashboard");
+
+                // Defer the popup + CreateSlot because they trigger
+                // RebuildControllerSection() which modifies NavView.MenuItems —
+                // doing that synchronously inside SelectionChanged crashes ModernWpf's
+                // internal ItemsRepeater layout.
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    // Find the AddController nav item to anchor the popup.
                     NavigationViewItem addItem = null;
                     foreach (var mi in NavView.MenuItems)
                     {
@@ -1184,10 +1177,6 @@ namespace PadForge
                         }
                     }
                     ShowControllerTypePopup(addItem);
-
-                    // Reselect the previous page so that AddController can be
-                    // clicked again (SelectionChanged only fires on actual changes).
-                    SelectNavItemByTag(_viewModel.SelectedNavTag ?? "Dashboard");
                 }));
                 return;
             }

@@ -88,6 +88,17 @@ namespace PadForge.ViewModels
         /// <summary>Structured POV hat values for visual display (compass).</summary>
         public ObservableCollection<PovDisplayItem> RawPovs { get; } = new();
 
+        /// <summary>Keyboard key layout items for visual keyboard display.</summary>
+        public ObservableCollection<KeyboardKeyItem> KeyboardKeys { get; } = new();
+
+        private bool _isKeyboardDevice;
+        /// <summary>Whether the currently selected device is a keyboard.</summary>
+        public bool IsKeyboardDevice
+        {
+            get => _isKeyboardDevice;
+            set => SetProperty(ref _isKeyboardDevice, value);
+        }
+
         private int _selectedButtonTotal;
 
         /// <summary>Total number of buttons on the selected device.</summary>
@@ -130,15 +141,27 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Rebuilds the raw state collections for a new device with the given capabilities.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount)
+        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount, bool isKeyboard = false)
         {
             RawAxes.Clear();
             for (int i = 0; i < axisCount; i++)
                 RawAxes.Add(new AxisDisplayItem { Index = i, Name = $"Axis {i}" });
 
             RawButtons.Clear();
-            for (int i = 0; i < buttonCount; i++)
-                RawButtons.Add(new ButtonDisplayItem { Index = i });
+            KeyboardKeys.Clear();
+            IsKeyboardDevice = isKeyboard;
+
+            if (isKeyboard)
+            {
+                // Build positioned keyboard layout instead of flat button list.
+                foreach (var key in KeyboardKeyItem.BuildLayout())
+                    KeyboardKeys.Add(key);
+            }
+            else
+            {
+                for (int i = 0; i < buttonCount; i++)
+                    RawButtons.Add(new ButtonDisplayItem { Index = i });
+            }
 
             RawPovs.Clear();
             for (int i = 0; i < povCount; i++)
@@ -153,6 +176,8 @@ namespace PadForge.ViewModels
             RawAxes.Clear();
             RawButtons.Clear();
             RawPovs.Clear();
+            KeyboardKeys.Clear();
+            IsKeyboardDevice = false;
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
@@ -410,6 +435,146 @@ namespace PadForge.ViewModels
         {
             get => _isPressed;
             set => SetProperty(ref _isPressed, value);
+        }
+    }
+
+    /// <summary>Visual display item for a single keyboard key with position data.</summary>
+    public class KeyboardKeyItem : ObservableObject
+    {
+        public int VKeyIndex { get; set; }
+        public string Label { get; set; } = string.Empty;
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double KeyWidth { get; set; }
+        public double KeyHeight { get; set; }
+
+        private bool _isPressed;
+        public bool IsPressed
+        {
+            get => _isPressed;
+            set => SetProperty(ref _isPressed, value);
+        }
+
+        /// <summary>Canvas width for the keyboard layout (for XAML binding).</summary>
+        public const double LayoutWidth = 556;
+        /// <summary>Canvas height for the keyboard layout (for XAML binding).</summary>
+        public const double LayoutHeight = 136;
+
+        /// <summary>
+        /// Builds a full ANSI QWERTY keyboard layout with numpad as positioned key items.
+        /// Each key is mapped to its Windows Virtual Key code.
+        /// Wrapped in a Viewbox in XAML so it auto-scales to the available width.
+        /// </summary>
+        public static ObservableCollection<KeyboardKeyItem> BuildLayout()
+        {
+            const double u = 24;  // unit size in pixels (1 standard key width)
+            const double g = 2;   // gap between keys
+            const double kh = 20; // key height
+            const double rh = 22; // row height (key + gap)
+
+            var keys = new ObservableCollection<KeyboardKeyItem>();
+
+            void Add(int vk, string label, double xU, double y, double wU = 1, double hU = 1)
+            {
+                keys.Add(new KeyboardKeyItem
+                {
+                    VKeyIndex = vk,
+                    Label = label,
+                    X = xU * u,
+                    Y = y,
+                    KeyWidth = wU * u - g,
+                    KeyHeight = hU * kh + (hU > 1 ? g : 0) // tall keys span the gap
+                });
+            }
+
+            // ── Row 0: Esc, F1–F12 ──
+            double y0 = 0;
+            Add(0x1B, "Esc", 0, y0);
+            for (int i = 0; i < 4; i++) Add(0x70 + i, $"F{i + 1}", 2 + i, y0);
+            for (int i = 0; i < 4; i++) Add(0x74 + i, $"F{i + 5}", 6.5 + i, y0);
+            for (int i = 0; i < 4; i++) Add(0x78 + i, $"F{i + 9}", 11 + i, y0);
+
+            // ── Row 1: ` 1–0 - = Bksp ──
+            double y1 = rh + 4; // extra gap after Fn row
+            Add(0xC0, "`", 0, y1);
+            for (int i = 1; i <= 9; i++) Add(0x30 + i, i.ToString(), i, y1);
+            Add(0x30, "0", 10, y1);
+            Add(0xBD, "-", 11, y1);
+            Add(0xBB, "=", 12, y1);
+            Add(0x08, "\u2190", 13, y1, 2); // ← arrow for Backspace
+
+            // ── Row 2: Tab Q–P [ ] \ ──
+            double y2 = y1 + rh;
+            Add(0x09, "Tab", 0, y2, 1.5);
+            int[] qRow = { 0x51, 0x57, 0x45, 0x52, 0x54, 0x59, 0x55, 0x49, 0x4F, 0x50 };
+            string[] qLbl = { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P" };
+            for (int i = 0; i < 10; i++) Add(qRow[i], qLbl[i], 1.5 + i, y2);
+            Add(0xDB, "[", 11.5, y2);
+            Add(0xDD, "]", 12.5, y2);
+            Add(0xDC, "\\", 13.5, y2, 1.5);
+
+            // ── Row 3: Caps A–L ; ' Enter ──
+            double y3 = y2 + rh;
+            Add(0x14, "Caps", 0, y3, 1.75);
+            int[] aRow = { 0x41, 0x53, 0x44, 0x46, 0x47, 0x48, 0x4A, 0x4B, 0x4C };
+            string[] aLbl = { "A", "S", "D", "F", "G", "H", "J", "K", "L" };
+            for (int i = 0; i < 9; i++) Add(aRow[i], aLbl[i], 1.75 + i, y3);
+            Add(0xBA, ";", 10.75, y3);
+            Add(0xDE, "'", 11.75, y3);
+            Add(0x0D, "\u21B5", 12.75, y3, 2.25); // ↵ arrow for Enter
+
+            // ── Row 4: Shift Z–M , . / Shift ──
+            double y4 = y3 + rh;
+            Add(0xA0, "Shift", 0, y4, 2.25);
+            int[] zRow = { 0x5A, 0x58, 0x43, 0x56, 0x42, 0x4E, 0x4D };
+            string[] zLbl = { "Z", "X", "C", "V", "B", "N", "M" };
+            for (int i = 0; i < 7; i++) Add(zRow[i], zLbl[i], 2.25 + i, y4);
+            Add(0xBC, ",", 9.25, y4);
+            Add(0xBE, ".", 10.25, y4);
+            Add(0xBF, "/", 11.25, y4);
+            Add(0xA1, "Shift", 12.25, y4, 2.75);
+
+            // ── Row 5: Ctrl Win Alt Space Alt Win Menu Ctrl ──
+            double y5 = y4 + rh;
+            Add(0xA2, "Ctrl", 0, y5, 1.25);
+            Add(0x5B, "Win", 1.25, y5, 1.25);
+            Add(0xA4, "Alt", 2.5, y5, 1.25);
+            Add(0x20, "", 3.75, y5, 6.25);
+            Add(0xA5, "Alt", 10, y5, 1.25);
+            Add(0x5C, "Win", 11.25, y5, 1.25);
+            Add(0x5D, "Fn", 12.5, y5, 1.25);
+            Add(0xA3, "Ctrl", 13.75, y5, 1.25);
+
+            // ── Navigation cluster ──
+            double nx = 15.5;
+            Add(0x2D, "Ins", nx, y1);       Add(0x24, "Hm", nx + 1, y1);   Add(0x21, "PU", nx + 2, y1);
+            Add(0x2E, "Del", nx, y2);       Add(0x23, "End", nx + 1, y2);  Add(0x22, "PD", nx + 2, y2);
+
+            // ── Arrow keys ──
+            Add(0x26, "\u25B2", nx + 1, y4);                                         // Up
+            Add(0x25, "\u25C4", nx, y5);  Add(0x28, "\u25BC", nx + 1, y5);  Add(0x27, "\u25BA", nx + 2, y5); // Left Down Right
+
+            // ── Numpad ──
+            double np = 19;
+            Add(0x90, "Num", np, y1);       Add(0x6F, "/", np + 1, y1);    Add(0x6A, "*", np + 2, y1);   Add(0x6D, "-", np + 3, y1);
+            Add(0x67, "7", np, y2);         Add(0x68, "8", np + 1, y2);    Add(0x69, "9", np + 2, y2);
+            Add(0x6B, "+", np + 3, y2, 1, 2); // tall key spanning 2 rows
+            Add(0x64, "4", np, y3);         Add(0x65, "5", np + 1, y3);    Add(0x66, "6", np + 2, y3);
+            Add(0x61, "1", np, y4);         Add(0x62, "2", np + 1, y4);    Add(0x63, "3", np + 2, y4);
+            Add(0x88, "\u21B5", np + 3, y4, 1, 2); // NumEnter (custom VKey 0x88 via RawInput E0 translation)
+            Add(0x60, "0", np, y5, 2);      Add(0x6E, ".", np + 2, y5);
+
+            return keys;
+        }
+
+        /// <summary>
+        /// Checks if a VKey is pressed. The Raw Input handler sets both
+        /// generic (0x10/0x11/0x12) and specific L/R codes (0xA0–0xA5),
+        /// so a direct array lookup is sufficient.
+        /// </summary>
+        public static bool IsVKeyPressed(bool[] buttons, int vk)
+        {
+            return vk < buttons.Length && buttons[vk];
         }
     }
 

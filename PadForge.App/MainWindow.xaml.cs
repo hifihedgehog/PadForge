@@ -31,6 +31,13 @@ namespace PadForge
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
 
+        // Drag reorder state for sidebar controller cards.
+        private Point _cardDragStartPoint;
+        private System.Windows.Controls.Border _cardDragSource;
+        private CardDragAdorner _dragAdorner;
+        private InsertionLineAdorner _insertionAdorner;
+        private System.Windows.Documents.AdornerLayer _dragAdornerLayer;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -115,8 +122,12 @@ namespace PadForge
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
 
-            // Refresh PadPage dropdowns immediately after device assignment changes.
-            _deviceService.DeviceAssignmentChanged += (s, e) => _inputService.UpdatePadDeviceInfo();
+            // Refresh PadPage dropdowns and Devices-page slot buttons after assignment changes.
+            _deviceService.DeviceAssignmentChanged += (s, e) =>
+            {
+                _inputService.RefreshDeviceList();
+                _viewModel.Devices.RefreshSlotButtons();
+            };
 
             // After assigning a device to a slot, navigate to that controller page.
             _deviceService.NavigateToSlotRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
@@ -326,6 +337,18 @@ namespace PadForge
                 _viewModel.Devices.RefreshSlotButtons();
             };
 
+            DashboardPageView.SlotSwapRequested += (s, args) =>
+            {
+                _inputService.SwapSlots(args.PadIndexA, args.PadIndexB);
+                _settingsService.MarkDirty();
+            };
+
+            DashboardPageView.SlotMoveRequested += (s, args) =>
+            {
+                _inputService.MoveSlot(args.SourcePadIndex, args.TargetVisualPos);
+                _settingsService.MarkDirty();
+            };
+
             // Window events.
             Loaded += OnLoaded;
             Closing += OnClosing;
@@ -471,6 +494,11 @@ namespace PadForge
         /// </summary>
         private void BuildNavigationItems()
         {
+            // Card drag-reorder: NavView-level handlers for threshold, movement, and drop.
+            NavView.PreviewMouseMove += OnNavViewDragMove;
+            NavView.PreviewMouseLeftButtonUp += OnNavViewDragEnd;
+            NavView.PreviewKeyDown += OnNavViewDragKeyDown;
+
             NavView.MenuItems.Clear();
 
             // Dashboard.
@@ -815,10 +843,22 @@ namespace PadForge
             var card = new System.Windows.Controls.Border
             {
                 CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(6, 4, 6, 4),
-                Child = row
+                Padding = new Thickness(4, 2, 4, 2),
+                BorderThickness = new Thickness(2),
+                BorderBrush = System.Windows.Media.Brushes.Transparent,
+                Child = row,
+                Tag = navItem.PadIndex
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SystemControlBackgroundChromeMediumLowBrush");
+
+            // Drag reordering — mouse-down recorded here, threshold + movement tracked at NavView level.
+            card.PreviewMouseLeftButtonDown += OnCardDragStart;
+
+            // Cross-panel: accept device drops from Devices page.
+            card.AllowDrop = true;
+            card.Drop += OnSidebarCardDrop;
+            card.DragOver += OnSidebarCardDragOver;
+            card.DragLeave += OnSidebarCardDragLeave;
 
             menuItem.Content = card;
 
@@ -891,6 +931,486 @@ namespace PadForge
 
                     _deviceService.DeleteSlot(slotIndex);
                 }));
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Sidebar card drag reordering (manual mouse capture)
+        // ─────────────────────────────────────────────
+
+        private bool _isDraggingCard;
+        private int _dragSourcePadIndex;
+        private int _dragSourceVisualPos;
+        private int _dragDropIndex;
+        private bool _dragIsSwapMode;       // true = swap with card under cursor; false = insert between cards
+        private int _dragSwapTargetPadIndex = -1;
+        private System.Windows.Controls.Border _dragSwapHighlight; // card currently highlighted for swap
+
+        /// <summary>Records the mouse-down point on a card border (per-card handler).</summary>
+        private void OnCardDragStart(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var card = sender as System.Windows.Controls.Border;
+
+            // Don't initiate drag from button clicks inside the card.
+            if (e.OriginalSource is DependencyObject source && IsInsideButton(source, card))
+            {
+                _cardDragSource = null;
+                return;
+            }
+
+            _cardDragStartPoint = e.GetPosition(null);
+            _cardDragSource = card;
+        }
+
+        /// <summary>NavView-level: threshold check when idle, position tracking while dragging.</summary>
+        private void OnNavViewDragMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton != System.Windows.Input.MouseButtonState.Pressed)
+            {
+                if (_isDraggingCard) EndCardDrag(cancel: true);
+                _cardDragSource = null;
+                return;
+            }
+
+            if (_isDraggingCard)
+            {
+                UpdateDragPosition(e.GetPosition(NavView));
+                return;
+            }
+
+            if (_cardDragSource == null) return;
+
+            Vector diff = _cardDragStartPoint - e.GetPosition(null);
+            if (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+            {
+                BeginCardDrag();
+            }
+        }
+
+        /// <summary>NavView-level: ends drag on mouse-up.</summary>
+        private void OnNavViewDragEnd(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_isDraggingCard)
+            {
+                EndCardDrag(cancel: false);
+                e.Handled = true;
+            }
+            _cardDragSource = null;
+        }
+
+        /// <summary>NavView-level: cancels drag on Escape.</summary>
+        private void OnNavViewDragKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (_isDraggingCard && e.Key == System.Windows.Input.Key.Escape)
+            {
+                EndCardDrag(cancel: true);
+                e.Handled = true;
+            }
+        }
+
+        private void BeginCardDrag()
+        {
+            if (_cardDragSource == null || _cardDragSource.Tag is not int padIndex) return;
+
+            var cards = GetControllerCardBounds();
+            if (cards.Count < 2) return;
+
+            _dragSourcePadIndex = padIndex;
+            _dragSourceVisualPos = cards.FindIndex(c => c.PadIndex == padIndex);
+            if (_dragSourceVisualPos < 0) return;
+
+            _dragAdornerLayer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
+            if (_dragAdornerLayer == null) return;
+
+            // Snapshot the card visual before hiding.
+            var snapshot = CaptureCardVisual(_cardDragSource);
+            if (snapshot == null) return;
+
+            _dragAdorner = new CardDragAdorner(NavView, snapshot, _cardDragSource.RenderSize);
+            _dragAdornerLayer.Add(_dragAdorner);
+
+            var accentBrush = (System.Windows.Media.Brush)FindResource("SystemControlHighlightAccentBrush");
+            _insertionAdorner = new InsertionLineAdorner(NavView, accentBrush);
+            _dragAdornerLayer.Add(_insertionAdorner);
+
+            _cardDragSource.Opacity = 0;
+            _isDraggingCard = true;
+            _dragDropIndex = _dragSourceVisualPos;
+            System.Windows.Input.Mouse.Capture(NavView, System.Windows.Input.CaptureMode.SubTree);
+        }
+
+        private void UpdateDragPosition(Point navViewPos)
+        {
+            _dragAdorner?.UpdatePosition(navViewPos);
+
+            var cards = GetControllerCardBounds();
+            if (cards.Count < 2) return;
+
+            // If cursor has moved outside the card column horizontally (e.g. dragged
+            // into the main content area for cross-panel assignment), don't trigger
+            // any swap/insert reordering — just clear indicators.
+            if (cards.Count > 0)
+            {
+                double colLeft = cards[0].Left;
+                double colRight = cards[0].Left + cards[0].Width;
+                if (navViewPos.X < colLeft - 20 || navViewPos.X > colRight + 20)
+                {
+                    _dragIsSwapMode = false;
+                    _dragDropIndex = -1;
+                    _dragSwapTargetPadIndex = -1;
+                    ClearSwapHighlight();
+                    _insertionAdorner?.Update(0, 0, 0, false);
+                    return;
+                }
+            }
+
+            // Edge zone = 25% of card height at top/bottom → insert between cards.
+            // Middle zone = 50% of card height → swap with that card.
+            const double edgeFraction = 0.25;
+
+            bool isSwap = false;
+            int swapCardIndex = -1;
+            int dropIndex = cards.Count;
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+                double height = cards[i].Bottom - cards[i].Top;
+                double edgeSize = height * edgeFraction;
+                double topEdge = cards[i].Top + edgeSize;
+                double bottomEdge = cards[i].Bottom - edgeSize;
+
+                if (navViewPos.Y >= topEdge && navViewPos.Y <= bottomEdge)
+                {
+                    // Cursor is in the middle zone — swap mode (skip if it's the source card).
+                    if (i != _dragSourceVisualPos)
+                    {
+                        isSwap = true;
+                        swapCardIndex = i;
+                    }
+                    break;
+                }
+                else if (navViewPos.Y < topEdge)
+                {
+                    // Cursor is above this card's middle zone — insert before this card.
+                    dropIndex = i;
+                    break;
+                }
+                // else cursor is below this card's middle zone — continue to next card
+            }
+
+            _dragIsSwapMode = isSwap;
+
+            if (isSwap)
+            {
+                // Swap mode: highlight target card, hide insertion line.
+                _dragDropIndex = -1;
+                _dragSwapTargetPadIndex = cards[swapCardIndex].PadIndex;
+                _insertionAdorner?.Update(0, 0, 0, false);
+                SetSwapHighlight(cards[swapCardIndex].PadIndex, true);
+            }
+            else
+            {
+                // Insert mode: show insertion line, clear swap highlight.
+                _dragDropIndex = dropIndex;
+                _dragSwapTargetPadIndex = -1;
+                ClearSwapHighlight();
+
+                bool noMove = (dropIndex == _dragSourceVisualPos || dropIndex == _dragSourceVisualPos + 1);
+                if (noMove || _insertionAdorner == null)
+                {
+                    _insertionAdorner?.Update(0, 0, 0, false);
+                }
+                else
+                {
+                    double lineY;
+                    if (dropIndex == 0)
+                        lineY = cards[0].Top - 1;
+                    else if (dropIndex >= cards.Count)
+                        lineY = cards[cards.Count - 1].Bottom + 1;
+                    else
+                        lineY = (cards[dropIndex - 1].Bottom + cards[dropIndex].Top) / 2;
+
+                    _insertionAdorner.Update(lineY, cards[0].Left, cards[0].Width, true);
+                }
+            }
+        }
+
+        private void SetSwapHighlight(int padIndex, bool highlight)
+        {
+            // Clear previous highlight if it's a different card.
+            if (_dragSwapHighlight != null && (_dragSwapHighlight.Tag is int prevPad) && prevPad != padIndex)
+                ClearSwapHighlight();
+
+            if (!highlight) { ClearSwapHighlight(); return; }
+
+            // Find the card Border for this padIndex.
+            foreach (var item in NavView.MenuItems)
+            {
+                if (item is NavigationViewItem nvi &&
+                    nvi.Content is System.Windows.Controls.Border card &&
+                    card.Tag is int idx && idx == padIndex)
+                {
+                    var accent = FindResource("SystemControlHighlightAccentBrush") as System.Windows.Media.Brush
+                              ?? System.Windows.Media.Brushes.DodgerBlue;
+                    card.BorderBrush = accent;
+                    _dragSwapHighlight = card;
+                    break;
+                }
+            }
+        }
+
+        private void ClearSwapHighlight()
+        {
+            if (_dragSwapHighlight == null) return;
+            _dragSwapHighlight.BorderBrush = System.Windows.Media.Brushes.Transparent;
+            _dragSwapHighlight = null;
+        }
+
+        private void EndCardDrag(bool cancel)
+        {
+            System.Windows.Input.Mouse.Capture(null);
+            _isDraggingCard = false;
+
+            if (_cardDragSource != null)
+                _cardDragSource.Opacity = 1;
+
+            ClearSwapHighlight();
+
+            // Remove adorners.
+            if (_dragAdornerLayer != null)
+            {
+                if (_dragAdorner != null) _dragAdornerLayer.Remove(_dragAdorner);
+                if (_insertionAdorner != null) _dragAdornerLayer.Remove(_insertionAdorner);
+            }
+            _dragAdorner = null;
+            _insertionAdorner = null;
+            _dragAdornerLayer = null;
+
+            if (!cancel)
+            {
+                bool handled = false;
+                if (_dragIsSwapMode && _dragSwapTargetPadIndex >= 0)
+                {
+                    // Direct swap between two cards.
+                    int srcPad = _dragSourcePadIndex;
+                    int tgtPad = _dragSwapTargetPadIndex;
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        _inputService.SwapSlots(srcPad, tgtPad);
+                        _settingsService.MarkDirty();
+                    }));
+                    handled = true;
+                }
+                else if (!_dragIsSwapMode && _dragDropIndex >= 0)
+                {
+                    // Insert mode: convert dropIndex to target visual position.
+                    int targetVisualPos;
+                    if (_dragDropIndex <= _dragSourceVisualPos)
+                        targetVisualPos = _dragDropIndex;
+                    else if (_dragDropIndex <= _dragSourceVisualPos + 1)
+                        targetVisualPos = _dragSourceVisualPos; // no move
+                    else
+                        targetVisualPos = _dragDropIndex - 1;
+
+                    if (targetVisualPos != _dragSourceVisualPos)
+                    {
+                        int srcPad = _dragSourcePadIndex;
+                        int tgtPos = targetVisualPos;
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            _inputService.MoveSlot(srcPad, tgtPos);
+                            _settingsService.MarkDirty();
+                        }));
+                        handled = true;
+                    }
+                }
+
+                // Cross-panel: sidebar card dropped over a Devices-page device card.
+                if (!handled)
+                    TryAssignDeviceFromSidebarDrop(_dragSourcePadIndex);
+            }
+
+            _cardDragSource = null;
+        }
+
+        // ── Helpers ──
+
+        private record struct CardBounds(int PadIndex, double Left, double Top, double Bottom, double Width);
+
+        private List<CardBounds> GetControllerCardBounds()
+        {
+            var result = new List<CardBounds>();
+            foreach (var item in NavView.MenuItems)
+            {
+                if (item is NavigationViewItem nvi &&
+                    nvi.Content is System.Windows.Controls.Border card &&
+                    card.Tag is int padIndex)
+                {
+                    try
+                    {
+                        var transform = card.TransformToVisual(NavView);
+                        var topLeft = transform.Transform(new Point(0, 0));
+                        result.Add(new CardBounds(padIndex, topLeft.X, topLeft.Y,
+                            topLeft.Y + card.ActualHeight, card.ActualWidth));
+                    }
+                    catch { /* not in visual tree */ }
+                }
+            }
+            return result;
+        }
+
+        private static System.Windows.Media.ImageSource CaptureCardVisual(System.Windows.Controls.Border card)
+        {
+            if (card.ActualWidth <= 0 || card.ActualHeight <= 0) return null;
+            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(card);
+            int w = (int)Math.Ceiling(card.ActualWidth * dpi.DpiScaleX);
+            int h = (int)Math.Ceiling(card.ActualHeight * dpi.DpiScaleY);
+            var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                w, h, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
+                System.Windows.Media.PixelFormats.Pbgra32);
+            rtb.Render(card);
+            return rtb;
+        }
+
+        private static bool IsInsideButton(DependencyObject source, DependencyObject boundary)
+        {
+            var current = source;
+            while (current != null && current != boundary)
+            {
+                if (current is System.Windows.Controls.Button) return true;
+                current = current is System.Windows.Media.Visual || current is System.Windows.Media.Media3D.Visual3D
+                    ? System.Windows.Media.VisualTreeHelper.GetParent(current)
+                    : LogicalTreeHelper.GetParent(current);
+            }
+            return false;
+        }
+
+        // ── Cross-panel drag assignment ──
+
+        /// <summary>
+        /// When a sidebar controller card is dropped over a Devices-page device card,
+        /// assign that device to the controller slot.
+        /// </summary>
+        private void TryAssignDeviceFromSidebarDrop(int padIndex)
+        {
+            if (DevicesPageView.Visibility != Visibility.Visible) return;
+
+            var screenPos = System.Windows.Forms.Control.MousePosition;
+            var wpfPos = DevicesPageView.PointFromScreen(new Point(screenPos.X, screenPos.Y));
+
+            // Hit-test the Devices page to find a device card Border.
+            var hit = System.Windows.Media.VisualTreeHelper.HitTest(DevicesPageView, wpfPos);
+            if (hit?.VisualHit == null) return;
+
+            // Walk up from hit element to find a card Border whose DataContext is DeviceRowViewModel.
+            DependencyObject current = hit.VisualHit;
+            while (current != null)
+            {
+                if (current is FrameworkElement fe &&
+                    fe.DataContext is ViewModels.DeviceRowViewModel device)
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                        _deviceService.AssignDeviceToSlot(device.InstanceGuid, padIndex)));
+                    return;
+                }
+                current = System.Windows.Media.VisualTreeHelper.GetParent(current);
+            }
+        }
+
+        /// <summary>
+        /// When a Devices-page device card is dropped on a sidebar controller card,
+        /// assign that device to the controller slot.
+        /// </summary>
+        private void OnSidebarCardDrop(object sender, DragEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.Border card) return;
+            if (card.Tag is not int padIndex) return;
+
+            if (e.Data.GetDataPresent("DeviceInstanceGuid"))
+            {
+                var guid = (Guid)e.Data.GetData("DeviceInstanceGuid");
+                Dispatcher.BeginInvoke(new Action(() =>
+                    _deviceService.AssignDeviceToSlot(guid, padIndex)));
+                e.Handled = true;
+            }
+        }
+
+        private void OnSidebarCardDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("DeviceInstanceGuid"))
+            {
+                e.Effects = DragDropEffects.Link;
+                e.Handled = true;
+
+                // Highlight the card.
+                if (sender is System.Windows.Controls.Border card && card.Tag is int padIndex)
+                    SetSwapHighlight(padIndex, true);
+            }
+        }
+
+        private void OnSidebarCardDragLeave(object sender, DragEventArgs e)
+        {
+            ClearSwapHighlight();
+        }
+
+        // ── Adorners ──
+
+        /// <summary>Renders a bitmap snapshot of the dragged card following the cursor.</summary>
+        private class CardDragAdorner : System.Windows.Documents.Adorner
+        {
+            private readonly System.Windows.Media.ImageBrush _brush;
+            private readonly Size _size;
+            private Point _position;
+
+            public CardDragAdorner(UIElement adornedElement, System.Windows.Media.ImageSource snapshot, Size cardSize)
+                : base(adornedElement)
+            {
+                _brush = new System.Windows.Media.ImageBrush(snapshot);
+                _size = cardSize;
+                IsHitTestVisible = false;
+            }
+
+            public void UpdatePosition(Point pos)
+            {
+                _position = pos;
+                InvalidateVisual();
+            }
+
+            protected override void OnRender(System.Windows.Media.DrawingContext dc)
+            {
+                dc.DrawRectangle(_brush, null,
+                    new Rect(
+                        _position.X - _size.Width / 2,
+                        _position.Y - _size.Height / 2,
+                        _size.Width, _size.Height));
+            }
+        }
+
+        /// <summary>Draws a horizontal accent line at the insertion point between cards.</summary>
+        private class InsertionLineAdorner : System.Windows.Documents.Adorner
+        {
+            private readonly System.Windows.Media.Brush _brush;
+            private double _y, _x, _width;
+            private bool _visible;
+
+            public InsertionLineAdorner(UIElement adornedElement, System.Windows.Media.Brush accentBrush)
+                : base(adornedElement)
+            {
+                _brush = accentBrush;
+                IsHitTestVisible = false;
+            }
+
+            public void Update(double y, double x, double width, bool visible)
+            {
+                _y = y; _x = x; _width = width; _visible = visible;
+                InvalidateVisual();
+            }
+
+            protected override void OnRender(System.Windows.Media.DrawingContext dc)
+            {
+                if (!_visible) return;
+                dc.DrawRectangle(_brush, null, new Rect(_x, _y - 1, _width, 3));
             }
         }
 

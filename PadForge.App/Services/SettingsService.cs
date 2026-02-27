@@ -449,12 +449,15 @@ namespace PadForge.Services
             _mainVm.Settings.ProfileItems.Clear();
 
             // Always include the built-in Default profile at the top.
-            _mainVm.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+            var defaultItem = new ViewModels.ProfileListItem
             {
                 Id = ViewModels.ProfileListItem.DefaultProfileId,
                 Name = "Default",
-                Executables = "Base controller configuration"
-            });
+            };
+            var slotTypes = Enumerable.Range(0, SettingsManager.SlotCreated.Length)
+                .Select(i => i < _mainVm.Pads.Count ? (int)_mainVm.Pads[i].OutputType : 0).ToArray();
+            UpdateTopologyCounts(defaultItem, SettingsManager.SlotCreated, slotTypes);
+            _mainVm.Settings.ProfileItems.Add(defaultItem);
 
             if (profiles != null)
             {
@@ -885,7 +888,6 @@ namespace PadForge.Services
             {
                 Id = ViewModels.ProfileListItem.DefaultProfileId,
                 Name = "Default",
-                Executables = "Base controller configuration"
             });
             settingsVm.ActiveProfileInfo = "Default";
 

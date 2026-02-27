@@ -40,10 +40,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                                CornerRadius="8" Padding="12,10" Margin="0,0,0,4">
+                                CornerRadius="8" Padding="12,10" Margin="0,0,0,4"
+                                PreviewMouseLeftButtonDown="DeviceCard_MouseDown"
+                                PreviewMouseMove="DeviceCard_MouseMove"
+                                PreviewMouseLeftButtonUp="DeviceCard_MouseUp">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -88,12 +92,24 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                     <!-- Unassigned fallback -->
-                                    <TextBlock Text="Unassigned" FontSize="11" Opacity="0.55"
-                                               Visibility="{Binding IsUnassigned, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,3"
+                                            Background="{DynamicResource SystemControlBackgroundListLowBrush}"
+                                            Visibility="{Binding IsUnassigned, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="Unassigned" FontSize="10" Opacity="0.55"/>
+                                    </Border>
                                 </StackPanel>
 
+                                <!-- Delete button (upper-right) -->
+                                <Button Grid.Column="2" Grid.RowSpan="2"
+                                        ToolTip="Remove this device and its settings"
+                                        Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
+                                        VerticalAlignment="Top" Margin="4,0,0,0" Opacity="0.5"
+                                        Click="RemoveDevice_Click">
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
+                                </Button>
+
                                 <!-- Row 1: Type | VID:PID | Capabilities -->
-                                <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
+                                <StackPanel Grid.Row="1" Grid.ColumnSpan="3"
                                             Orientation="Horizontal" Margin="16,3,0,0">
                                     <TextBlock Text="{Binding DeviceType}" FontSize="11" Opacity="0.55"/>
                                     <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
@@ -176,7 +192,7 @@
 
                         <Separator Margin="0,2,0,6"/>
 
-                        <!-- Assign to slot + Remove -->
+                        <!-- Assign to slot -->
                         <WrapPanel Margin="0,0,0,6">
                             <ItemsControl ItemsSource="{Binding ActiveSlotItems}">
                                 <ItemsControl.ItemsPanel>
@@ -201,9 +217,6 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <Button Content="Remove" Padding="8,3" Margin="5,0,0,3"
-                                    Command="{Binding RemoveDeviceCommand}"
-                                    ToolTip="Remove this device and its settings"/>
                         </WrapPanel>
 
                         <Separator Margin="0,2,0,8"/>
@@ -238,9 +251,18 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!-- Buttons: circle grid -->
+                        <!-- Buttons: circle grid (non-keyboard devices) -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,3"
                                     Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
                             <TextBlock Text="Buttons" FontSize="11" Opacity="0.6"/>
                             <TextBlock FontSize="10" Opacity="0.4" Margin="6,0,0,0"
                                        VerticalAlignment="Center">
@@ -250,6 +272,15 @@
                             </TextBlock>
                         </StackPanel>
                         <ItemsControl ItemsSource="{Binding RawButtons}" Margin="0,0,0,8">
+                            <ItemsControl.Style>
+                                <Style TargetType="ItemsControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Style>
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel/>
@@ -276,6 +307,67 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+
+                        <!-- Keyboard: visual QWERTY layout -->
+                        <TextBlock Text="Keyboard" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Left" Margin="0,0,0,8"
+                                 StretchDirection="DownOnly">
+                            <Viewbox.Style>
+                                <Style TargetType="Viewbox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Viewbox.Style>
+                            <ItemsControl ItemsSource="{Binding KeyboardKeys}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas Width="556" Height="136"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="{Binding KeyWidth}" Height="{Binding KeyHeight}"
+                                                CornerRadius="3"
+                                                ToolTip="{Binding Label}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#28888888"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsPressed}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding Label}" FontSize="8"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Opacity="0.8" TextTrimming="None"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Viewbox>
 
                         <!-- POV Hats: compass indicators -->
                         <TextBlock Text="D-Pad / POV" FontSize="11" Opacity="0.6"

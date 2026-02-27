@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -61,7 +63,7 @@ jobs:
             --prerelease \
             --title "PadForge build archive" \
             --notes "Latest build: https://github.com/${{ github.repository }}/releases/tag/latest-${{ github.ref_name }}" \
-            2>/dev/null || true
+            || echo "Archive release already exists"
           gh release upload "$tag" \
             --repo "${{ github.repository }}" \
             --clobber \

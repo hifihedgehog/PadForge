@@ -40,6 +40,14 @@ namespace PadForge.Views
         /// <summary>Raised when the user drags a card to insert at a new position (sourcePadIndex, targetVisualPos).</summary>
         public event EventHandler<(int SourcePadIndex, int TargetVisualPos)> SlotMoveRequested;
 
+        /// <summary>Raised when the user clicks the engine power toggle.</summary>
+        public event EventHandler EngineToggleRequested;
+
+        private void EngineToggle_Click(object sender, RoutedEventArgs e)
+        {
+            EngineToggleRequested?.Invoke(this, EventArgs.Empty);
+        }
+
         private void AddControllerCard_Click(object sender, MouseButtonEventArgs e)
         {
             AddControllerRequested?.Invoke(this, EventArgs.Empty);

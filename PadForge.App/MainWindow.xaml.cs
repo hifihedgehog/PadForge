@@ -30,6 +30,7 @@ namespace PadForge
         private DateTime _popupClosedAt;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
+        private bool _previousViGEmInstalled;
 
         // Drag reorder state for sidebar controller cards.
         private Point _cardDragStartPoint;
@@ -329,6 +330,14 @@ namespace PadForge
                 _viewModel.RefreshNavControllerItems();
             };
 
+            DashboardPageView.EngineToggleRequested += (s, e) =>
+            {
+                if (_viewModel.IsEngineRunning)
+                    _inputService.Stop();
+                else
+                    _inputService.Start();
+            };
+
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
@@ -373,6 +382,11 @@ namespace PadForge
             if (ShouldStartMinimizedToTray)
                 _notifyIcon.Visible = true;
 
+            // Populate sidebar and dashboard with saved slots regardless of engine state,
+            // so virtual controllers are visible for configuration even when the engine is off.
+            _viewModel.RefreshNavControllerItems();
+            RefreshDashboardActiveSlots();
+
             // Auto-start engine. Must be in the constructor (not OnLoaded) because
             // OnLoaded only fires when the window is rendered — which never happens
             // when starting minimized to tray.
@@ -402,6 +416,7 @@ namespace PadForge
 
             // Detect ViGEmBus driver.
             RefreshViGEmStatus();
+            _previousViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
 
             // Detect HidHide driver.
             RefreshHidHideStatus();
@@ -416,9 +431,25 @@ namespace PadForge
             };
             _driverStatusTimer.Tick += (s, ev) =>
             {
+                bool wasViGEmInstalled = _previousViGEmInstalled;
                 RefreshViGEmStatus();
                 RefreshHidHideStatus();
                 RefreshVJoyStatus();
+
+                bool nowViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
+                _previousViGEmInstalled = nowViGEmInstalled;
+
+                // ViGEm installed mid-session: restart engine to recreate ViGEmClient and virtual controllers.
+                if (!wasViGEmInstalled && nowViGEmInstalled && _viewModel.IsEngineRunning)
+                {
+                    _inputService.Stop();
+                    _inputService.Start();
+                    _viewModel.StatusText = "ViGEmBus detected — engine restarted.";
+                }
+
+                // ViGEm status changed: refresh sidebar power indicator colors.
+                if (wasViGEmInstalled != nowViGEmInstalled)
+                    _viewModel.RefreshNavControllerItems();
             };
             _driverStatusTimer.Start();
 
@@ -697,14 +728,30 @@ namespace PadForge
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
 
-            // Power button (green = enabled + connected, yellow = enabled + no devices, red = disabled).
+            // Power button (green = enabled + connected, yellow = enabled + warning, red = disabled).
+            var outputType = _viewModel.Pads[navItem.PadIndex].OutputType;
             System.Windows.Media.SolidColorBrush powerColor;
+            string powerTooltip;
             if (!navItem.IsEnabled)
+            {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
-            else if (navItem.ConnectedDeviceCount == 0)
+                powerTooltip = "Disabled";
+            }
+            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy)
+            {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
+                powerTooltip = "ViGEmBus not installed";
+            }
+            else if (navItem.ConnectedDeviceCount == 0)
+            {
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
+                powerTooltip = "Awaiting controllers";
+            }
             else
+            {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
+                powerTooltip = "Active";
+            }
 
             var powerBtn = new System.Windows.Controls.Button
             {
@@ -719,9 +766,7 @@ namespace PadForge
                 Padding = new Thickness(2),
                 MinWidth = 0,
                 MinHeight = 0,
-                ToolTip = !navItem.IsEnabled ? "Disabled"
-                    : navItem.ConnectedDeviceCount == 0 ? "Awaiting controllers"
-                    : "Active",
+                ToolTip = powerTooltip,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
                 Cursor = System.Windows.Input.Cursors.Hand
@@ -1612,9 +1657,26 @@ namespace PadForge
                 IsEnabled = !vjoyAtCapacity,
                 Opacity = vjoyAtCapacity ? 0.35 : 1.0
             };
-            vjoyBtn.Click += (s, e) =>
+            vjoyBtn.Click += async (s, e) =>
             {
                 popup.IsOpen = false;
+
+                // Ensure a vJoy device node exists before the engine tries to use it.
+                // Uses SetupAPI with UAC if no devices are configured.
+                bool ready = await Task.Run(() => VJoyVirtualController.EnsureDeviceAvailable());
+                if (!ready)
+                {
+                    if (VJoyVirtualController.IsServiceStuck())
+                    {
+                        _viewModel.StatusText = "vJoy driver is stuck. Please restart your PC (Start \u2192 Restart, not Shut Down).";
+                    }
+                    else
+                    {
+                        _viewModel.StatusText = "vJoy device could not be created. Check driver installation.";
+                    }
+                    return;
+                }
+
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.VJoy);
                 if (newSlot >= 0)
                 {
@@ -2119,6 +2181,8 @@ namespace PadForge
         private async Task RunDriverOperationAsync(string statusMessage, Action operation, Action refreshStatus)
         {
             _viewModel.StatusText = statusMessage;
+            DriverOverlayText.Text = statusMessage;
+            DriverOverlay.Visibility = Visibility.Visible;
             try
             {
                 await Task.Run(operation);
@@ -2133,7 +2197,38 @@ namespace PadForge
             {
                 _viewModel.StatusText = $"Driver operation failed: {ex.Message}";
             }
+            finally
+            {
+                DriverOverlay.Visibility = Visibility.Collapsed;
+            }
             refreshStatus();
+        }
+
+        /// <summary>
+        /// Rebuilds the dashboard SlotSummaries from SettingsManager state.
+        /// Used at startup and when slots change while the engine is off.
+        /// </summary>
+        private void RefreshDashboardActiveSlots()
+        {
+            var activeSlots = new System.Collections.Generic.List<int>();
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
+            for (int i = 0; i < _viewModel.Pads.Count; i++)
+            {
+                if (SettingsManager.SlotCreated[i])
+                {
+                    activeSlots.Add(i);
+                    switch (_viewModel.Pads[i].OutputType)
+                    {
+                        case VirtualControllerType.Xbox360: xboxCount++; break;
+                        case VirtualControllerType.DualShock4: ds4Count++; break;
+                        case VirtualControllerType.VJoy: vjoyCount++; break;
+                    }
+                }
+            }
+            bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
+                           || ds4Count < SettingsManager.MaxDS4Slots
+                           || vjoyCount < SettingsManager.MaxVJoySlots;
+            _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 
         private void RefreshViGEmStatus()

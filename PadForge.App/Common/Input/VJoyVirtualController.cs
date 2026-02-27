@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using PadForge.Engine;
 
 namespace PadForge.Common.Input
@@ -34,11 +35,15 @@ namespace PadForge.Common.Input
                 return;
             }
 
-            // Try vJoy installation directory.
-            string arch = Environment.Is64BitProcess ? "x64" : "x86";
-            string vjoyPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
-                "vJoy", arch, "vJoyInterface.dll");
+            // Try vJoy installation directory (root first, then arch subdirectory for legacy installs).
+            string vjoyDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+            string vjoyPath = Path.Combine(vjoyDir, "vJoyInterface.dll");
+            if (!File.Exists(vjoyPath))
+            {
+                string arch = Environment.Is64BitProcess ? "x64" : "x86";
+                vjoyPath = Path.Combine(vjoyDir, arch, "vJoyInterface.dll");
+            }
             if (File.Exists(vjoyPath) && NativeLibrary.TryLoad(vjoyPath, out _))
                 _dllLoaded = true;
         }
@@ -59,14 +64,7 @@ namespace PadForge.Common.Input
         public void Connect()
         {
             EnsureDllLoaded();
-            // Ensure the device exists (auto-create if missing).
             var status = VJoyNative.GetVJDStatus(_deviceId);
-            if (status == VjdStat.VJD_STAT_MISS)
-            {
-                // Device not configured — create it on the fly.
-                CreateVJoyDevice(_deviceId);
-                status = VJoyNative.GetVJDStatus(_deviceId);
-            }
 
             if (status != VjdStat.VJD_STAT_FREE && status != VjdStat.VJD_STAT_OWN)
                 throw new InvalidOperationException($"vJoy device {_deviceId} is not available (status: {status}).");
@@ -185,38 +183,21 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Returns the next available vJoy device ID (1–16), or 0 if none available.
-        /// If all devices are missing (unconfigured), auto-creates the first one
-        /// using vJoyConfig.exe with the axes/buttons/POV PadForge needs.
+        /// This is a fast, non-blocking scan — safe to call from the engine thread.
+        /// Device creation must be done beforehand via <see cref="EnsureDeviceAvailable"/>.
         /// </summary>
         public static uint FindFreeDeviceId()
         {
             try
             {
                 EnsureDllLoaded();
-                // Scan all 16 device slots for a free one.
-                // Don't gate on vJoyEnabled() — it can return false even when
-                // the driver is functional (e.g., after clean reinstall).
-                bool anyExist = false;
+                if (!_dllLoaded) return 0;
+
                 for (uint id = 1; id <= 16; id++)
                 {
                     var status = VJoyNative.GetVJDStatus(id);
-                    Debug.WriteLine($"[vJoy] Device {id} status: {status}");
                     if (status == VjdStat.VJD_STAT_FREE)
                         return id;
-                    if (status != VjdStat.VJD_STAT_MISS)
-                        anyExist = true;
-                }
-
-                Debug.WriteLine($"[vJoy] No free devices found. anyExist={anyExist}. Attempting auto-create...");
-
-                // All devices are MISS (unconfigured) — create device 1
-                // using vJoyConfig.exe which works independently of the DLL.
-                if (!anyExist)
-                {
-                    bool created = CreateVJoyDevice(1);
-                    Debug.WriteLine($"[vJoy] CreateVJoyDevice(1) = {created}");
-                    if (created)
-                        return 1;
                 }
             }
             catch (DllNotFoundException ex)
@@ -231,82 +212,235 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Deletes a vJoy device using vJoyConfig.exe so it no longer appears
-        /// in Windows game controllers.
+        /// Checks whether the vjoy service is stuck in STOP_PENDING (zombie state).
+        /// This happens when a previous uninstall failed to remove device nodes
+        /// before stopping the service, and Windows Fast Startup preserved the
+        /// broken kernel state across shutdowns. Only a full restart clears it.
         /// </summary>
-        internal static bool DeleteVJoyDevice(uint deviceId)
+        public static bool IsServiceStuck()
         {
-            return RunVJoyConfig($"-d {deviceId}");
-        }
-
-        /// <summary>
-        /// Creates a vJoy device using vJoyConfig.exe with the layout PadForge needs:
-        /// 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 discrete POV.
-        /// </summary>
-        internal static bool CreateVJoyDevice(uint deviceId)
-        {
-            return RunVJoyConfig($"{deviceId} -f -a x y z rx ry rz -b 11 -s 1");
-        }
-
-        /// <summary>
-        /// Runs vJoyConfig.exe with the given arguments from its own directory
-        /// (required — it loads vJoyInstall.dll and other DLLs from its working directory).
-        /// </summary>
-        private static bool RunVJoyConfig(string arguments)
-        {
-            string configExe = FindVJoyConfigExe();
-            if (configExe == null)
-            {
-                Debug.WriteLine($"[vJoy] vJoyConfig.exe not found");
-                return false;
-            }
-
             try
             {
                 var psi = new ProcessStartInfo
                 {
-                    FileName = configExe,
-                    Arguments = arguments,
-                    WorkingDirectory = Path.GetDirectoryName(configExe),
+                    FileName = "sc.exe",
+                    Arguments = "query vjoy",
                     UseShellExecute = false,
-                    CreateNoWindow = true,
                     RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    CreateNoWindow = true
                 };
-
-                Debug.WriteLine($"[vJoy] Running: \"{configExe}\" {arguments} (cwd: {psi.WorkingDirectory})");
                 using var proc = Process.Start(psi);
                 if (proc == null) return false;
-                string stdout = proc.StandardOutput.ReadToEnd();
-                string stderr = proc.StandardError.ReadToEnd();
-                proc.WaitForExit(15_000);
-                Debug.WriteLine($"[vJoy] Exit code: {proc.ExitCode}, stdout: {stdout.Trim()}, stderr: {stderr.Trim()}");
-                return proc.ExitCode == 0;
+                string output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(5_000);
+                return output.Contains("STOP_PENDING");
+            }
+            catch { return false; }
+        }
+
+        /// <summary>
+        /// Ensures at least one vJoy device is configured and ready.
+        /// Must be called from the UI thread (shows UAC prompt if needed).
+        /// Creates a device node via SetupAPI if none exist, then waits
+        /// for PnP to bind the driver so FindFreeDeviceId can find it.
+        /// Returns true if a free device is available.
+        /// </summary>
+        public static bool EnsureDeviceAvailable()
+        {
+            // Fast check: already have a free device?
+            EnsureDllLoaded();
+            if (_dllLoaded && FindFreeDeviceId() > 0)
+                return true;
+
+            // No free devices — create one via SetupAPI (needs UAC).
+            Debug.WriteLine($"[vJoy] No free device found (dllLoaded={_dllLoaded}). Creating device 1...");
+            if (!CreateVJoyDevice(1))
+            {
+                Debug.WriteLine("[vJoy] CreateVJoyDevice(1) failed (UAC cancelled or SetupAPI error)");
+                return false;
+            }
+
+            // Wait for PnP to bind the driver to the new device node.
+            // Reset _dllLoaded so we retry loading (driver may start now).
+            _dllLoaded = false;
+            for (int attempt = 0; attempt < 20; attempt++)
+            {
+                Thread.Sleep(250);
+                EnsureDllLoaded();
+                if (_dllLoaded && FindFreeDeviceId() > 0)
+                {
+                    Debug.WriteLine($"[vJoy] Device ready after {(attempt + 1) * 250}ms");
+                    return true;
+                }
+            }
+
+            Debug.WriteLine("[vJoy] Device created but not ready after 5 seconds");
+            return false;
+        }
+
+        /// <summary>
+        /// Removes a vJoy device node via pnputil so it no longer appears
+        /// in Windows game controllers. Runs elevated in a hidden cmd window.
+        /// </summary>
+        internal static bool DeleteVJoyDevice(uint deviceId)
+        {
+            // vJoy device nodes are ROOT\HIDCLASS\NNNN (0-based, deviceId is 1-based).
+            // Scan ROOT\HIDCLASS\0000–0015 and remove any that exist.
+            // In practice there's usually just one per active device.
+            try
+            {
+                string instanceId = $"ROOT\\HIDCLASS\\{(deviceId - 1):D4}";
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/c pnputil /remove-device \"{instanceId}\" /subtree >nul 2>&1",
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                Debug.WriteLine($"[vJoy] Deleting device node {instanceId}...");
+                using var proc = Process.Start(psi);
+                if (proc == null) return false;
+                proc.WaitForExit(10_000);
+                Debug.WriteLine($"[vJoy] pnputil remove-device exit code: {proc.ExitCode}");
+                return true;
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
+            {
+                Debug.WriteLine("[vJoy] UAC cancelled by user");
+                return false;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] RunVJoyConfig exception: {ex.Message}");
+                Debug.WriteLine($"[vJoy] DeleteVJoyDevice exception: {ex.Message}");
                 return false;
             }
         }
 
         /// <summary>
-        /// Locates vJoyConfig.exe in the vJoy installation directory.
+        /// Creates a vJoy device node using SetupAPI (same approach as devcon.exe).
+        /// Sequence: SetupDiCreateDeviceInfoList → SetupDiCreateDeviceInfoW (class name,
+        /// DICD_GENERATE_ID) → SetupDiSetDeviceRegistryPropertyW (SPDRP_HARDWAREID) →
+        /// SetupDiCallClassInstaller (DIF_REGISTERDEVICE) → pnputil /scan-devices.
+        /// Runs the SetupAPI calls via an elevated PowerShell script (single UAC prompt).
         /// </summary>
-        private static string FindVJoyConfigExe()
+        internal static bool CreateVJoyDevice(uint deviceId)
         {
-            string vjoyDir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+            try
+            {
+                // Build a self-contained PowerShell script that uses SetupAPI P/Invoke.
+                string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_create_device.ps1");
+                string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_create_device.log");
 
-            string arch = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            string path = Path.Combine(vjoyDir, arch, "vJoyConfig.exe");
-            if (File.Exists(path)) return path;
+                string vjoyDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
 
-            // Fallback: check directly in vJoy dir.
-            path = Path.Combine(vjoyDir, "vJoyConfig.exe");
-            if (File.Exists(path)) return path;
+                File.WriteAllText(scriptPath, $@"
+$ErrorActionPreference = 'Continue'
+$log = '{logPath.Replace("'", "''")}'
+try {{
+    # Ensure the vjoy service registry key exists (PnP can't create it when
+    # a zombie STOP_PENDING ghost service blocks CreateService in the SCM).
+    $svcPath = 'HKLM:\SYSTEM\CurrentControlSet\Services\vjoy'
+    if (-not (Test-Path $svcPath)) {{
+        New-Item -Path $svcPath -Force | Out-Null
+        Set-ItemProperty $svcPath -Name 'Type' -Value 1 -Type DWord
+        Set-ItemProperty $svcPath -Name 'Start' -Value 3 -Type DWord
+        Set-ItemProperty $svcPath -Name 'ErrorControl' -Value 0 -Type DWord
+        Set-ItemProperty $svcPath -Name 'ImagePath' -Value 'System32\DRIVERS\vjoy.sys' -Type ExpandString
+    }}
+    # Ensure vjoy.sys is in the drivers folder.
+    $src = '{vjoyDir.Replace("'", "''")}\vjoy.sys'
+    $dst = ""$env:SystemRoot\System32\drivers\vjoy.sys""
+    if (-not (Test-Path $dst) -and (Test-Path $src)) {{ Copy-Item $src $dst -Force }}
 
-            return null;
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class PF_SetupApi {{
+    public const int DIF_REGISTERDEVICE = 0x19;
+    public const int SPDRP_HARDWAREID = 0x01;
+    public const int DICD_GENERATE_ID = 0x01;
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SP_DEVINFO_DATA {{ public int cbSize; public Guid ClassGuid; public int DevInst; public IntPtr Reserved; }}
+    [DllImport(""setupapi.dll"", SetLastError = true)]
+    public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
+    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SP_DEVINFO_DATA DeviceInfoData);
+    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
+    [DllImport(""setupapi.dll"", SetLastError = true)]
+    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+    [DllImport(""setupapi.dll"", SetLastError = true)]
+    public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
+    [DllImport(""newdev.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool UpdateDriverForPlugAndPlayDevicesW(IntPtr hwndParent, string HardwareId, string FullInfPath, int InstallFlags, out bool bRebootRequired);
+}}
+'@
+    $hidGuid = [Guid]::new('{{745a17a0-74d3-11d0-b6fe-00a0c90f57da}}')
+    $hwid = 'root\VID_1234&PID_BEAD&REV_0222'
+    $infPath = '{vjoyDir.Replace("'", "''")}\vjoy.inf'
+    $hwidBytes = [System.Text.Encoding]::Unicode.GetBytes($hwid + [char]0 + [char]0)
+    $dis = [PF_SetupApi]::SetupDiCreateDeviceInfoList([ref]$hidGuid, [IntPtr]::Zero)
+    if ($dis -eq [IntPtr]::new(-1)) {{ 'FAIL: SetupDiCreateDeviceInfoList' | Out-File $log -Force; exit 1 }}
+    $did = New-Object PF_SetupApi+SP_DEVINFO_DATA
+    $did.cbSize = [Runtime.InteropServices.Marshal]::SizeOf([type][PF_SetupApi+SP_DEVINFO_DATA])
+    $ok = [PF_SetupApi]::SetupDiCreateDeviceInfoW($dis, 'HIDClass', [ref]$hidGuid, 'vJoy Device', [IntPtr]::Zero, [PF_SetupApi]::DICD_GENERATE_ID, [ref]$did)
+    if (-not $ok) {{ $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error(); ""FAIL: CreateDeviceInfo err=$e"" | Out-File $log -Force; [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null; exit 1 }}
+    $ok = [PF_SetupApi]::SetupDiSetDeviceRegistryPropertyW($dis, [ref]$did, [PF_SetupApi]::SPDRP_HARDWAREID, $hwidBytes, $hwidBytes.Length)
+    if (-not $ok) {{ $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error(); ""FAIL: SetHardwareID err=$e"" | Out-File $log -Force; [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null; exit 1 }}
+    $ok = [PF_SetupApi]::SetupDiCallClassInstaller([PF_SetupApi]::DIF_REGISTERDEVICE, $dis, [ref]$did)
+    if (-not $ok) {{ $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error(); ""FAIL: RegisterDevice err=$e"" | Out-File $log -Force; [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null; exit 1 }}
+    [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
+    # Install the driver on the new device node (creates the service and starts the driver).
+    # pnputil /scan-devices only matches but doesn't install — UpdateDriverForPlugAndPlayDevices does both.
+    $reboot = $false
+    $ok = [PF_SetupApi]::UpdateDriverForPlugAndPlayDevicesW([IntPtr]::Zero, $hwid, $infPath, 1, [ref]$reboot)
+    if (-not $ok) {{ $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error(); ""FAIL: UpdateDriver err=$e"" | Out-File $log -Force; exit 1 }}
+    'OK' | Out-File $log -Force
+}} catch {{
+    ""EXCEPTION: $_"" | Out-File $log -Force
+    exit 1
+}}
+");
+                // Delete stale log.
+                try { File.Delete(logPath); } catch { }
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"",
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                Debug.WriteLine("[vJoy] Creating device node via SetupAPI (elevated PowerShell)...");
+                using var proc = Process.Start(psi);
+                if (proc == null) return false;
+                proc.WaitForExit(30_000);
+
+                // Check result from log file.
+                string result = File.Exists(logPath) ? File.ReadAllText(logPath).Trim() : "NO_LOG";
+                Debug.WriteLine($"[vJoy] CreateVJoyDevice result: {result} (exit code: {proc.ExitCode})");
+
+                try { File.Delete(scriptPath); } catch { }
+                try { File.Delete(logPath); } catch { }
+
+                return result.StartsWith("OK", StringComparison.OrdinalIgnoreCase);
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
+            {
+                Debug.WriteLine("[vJoy] UAC cancelled by user");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy] CreateVJoyDevice exception: {ex.Message}");
+                return false;
+            }
         }
     }
 

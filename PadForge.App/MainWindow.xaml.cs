@@ -527,13 +527,18 @@ namespace PadForge
                     _inputService.RefreshProfileTopology();
                 }));
 
-            // Subscribe to OutputType changes on each pad to refresh sidebar.
+            // Subscribe to OutputType changes on each pad to refresh sidebar
+            // and profile topology badges (type change doesn't add/remove slots
+            // so NavControllerItemsRefreshed won't fire — call topology directly).
             foreach (var pad in _viewModel.Pads)
             {
                 pad.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(PadViewModel.OutputType))
+                    {
                         _viewModel.RefreshNavControllerItems();
+                        _inputService.RefreshProfileTopology();
+                    }
                 };
             }
         }
@@ -1841,9 +1846,13 @@ namespace PadForge
             {
                 SettingsManager.ActiveProfileId = null;
                 _viewModel.Settings.ActiveProfileInfo = "Default";
+                // Restore the default profile state so the deleted profile's
+                // topology doesn't persist and overwrite the default snapshot.
+                _inputService.ApplyDefaultProfile();
             }
 
             _settingsService.MarkDirty();
+            _inputService.RefreshProfileTopology();
             _viewModel.StatusText = $"Profile \"{selected.Name}\" deleted.";
         }
 

@@ -1110,7 +1110,10 @@ namespace PadForge.Services
             };
 
             // Resolve slot assignments (device can be assigned to multiple slots).
-            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid));
+            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid),
+                slot => slot >= 0 && slot < _mainVm.Pads.Count
+                    ? _mainVm.Pads[slot].OutputType
+                    : VirtualControllerType.Xbox360);
         }
 
         /// <summary>

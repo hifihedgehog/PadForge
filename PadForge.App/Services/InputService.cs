@@ -1110,25 +1110,7 @@ namespace PadForge.Services
             };
 
             // Resolve slot assignments (device can be assigned to multiple slots).
-            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid), ResolveSlotBadge);
-        }
-
-        /// <summary>
-        /// Returns the controller type and per-type instance number for a slot.
-        /// </summary>
-        private (VirtualControllerType Type, int InstanceNum) ResolveSlotBadge(int slotIndex)
-        {
-            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
-                return (VirtualControllerType.Xbox360, 1);
-
-            var type = _mainVm.Pads[slotIndex].OutputType;
-            int instance = 0;
-            for (int i = 0; i <= slotIndex; i++)
-            {
-                if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].OutputType == type)
-                    instance++;
-            }
-            return (type, instance);
+            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid));
         }
 
         /// <summary>
@@ -1733,6 +1715,12 @@ namespace PadForge.Services
         /// Updates the TopologyLabel on the active profile's list item so the
         /// Profiles page reflects slot create/delete/type changes immediately.
         /// </summary>
+        /// <summary>
+        /// Public wrapper so callers (e.g. MainWindow) can refresh the profile
+        /// topology label after controller type changes.
+        /// </summary>
+        public void RefreshProfileTopology() => RefreshActiveProfileTopologyLabel();
+
         private void RefreshActiveProfileTopologyLabel()
         {
             string activeId = SettingsManager.ActiveProfileId;

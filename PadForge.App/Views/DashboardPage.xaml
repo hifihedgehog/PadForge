@@ -203,14 +203,16 @@
                                                FontSize="11" Opacity="0.6"
                                                VerticalAlignment="Center" Margin="4,0,0,0"/>
 
-                                    <!-- Delete button (right end) -->
-                                    <Button ToolTip="Delete virtual controller"
-                                            Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
-                                            VerticalAlignment="Center" Margin="8,0,0,0" Opacity="0.5"
-                                            Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
-                                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                                    </Button>
                                 </StackPanel>
+
+                                <!-- Delete button (upper-right corner) -->
+                                <Button ToolTip="Delete virtual controller"
+                                        Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
+                                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                                        Margin="0" Opacity="0.5"
+                                        Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
+                                </Button>
 
                                 <!-- Row 1: Device name (compact) -->
                                 <TextBlock Grid.Row="1" Text="{Binding DeviceName}"

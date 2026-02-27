@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p release
           cd PadForge.App/bin/Release/net8.0-windows/win-x64/publish
-          7z a -mx=9 "$GITHUB_WORKSPACE/release/PadForge.zip" ./*
+          7z a -mx=9 "$GITHUB_WORKSPACE/release/PadForge.zip" ./* -x'!*.pdb'
           cp "$GITHUB_WORKSPACE/release/PadForge.zip" \
              "$GITHUB_WORKSPACE/release/PadForge_r${COMMIT_COUNT}@${COMMIT_SHORT}.zip"
 

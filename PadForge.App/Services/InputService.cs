@@ -557,7 +557,7 @@ namespace PadForge.Services
         /// </summary>
         private static void SaveViewModelToPadSetting(PadViewModel padVm, Guid instanceGuid)
         {
-            var us = SettingsManager.FindSettingByInstanceGuid(instanceGuid);
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
             if (us == null) return;
 
             var ps = us.GetPadSetting();
@@ -607,7 +607,7 @@ namespace PadForge.Services
         /// </summary>
         private static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
         {
-            var us = SettingsManager.FindSettingByInstanceGuid(instanceGuid);
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
             if (us == null) return;
 
             var ps = us.GetPadSetting();
@@ -784,7 +784,7 @@ namespace PadForge.Services
             // First sync the ViewModel to the PadSetting to capture any unsaved slider changes.
             SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
 
-            var us = SettingsManager.FindSettingByInstanceGuid(selected.InstanceGuid);
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, padIndex);
             return us?.GetPadSetting();
         }
 

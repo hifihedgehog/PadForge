@@ -48,12 +48,8 @@
                         </TextBlock>
                     </Button>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Ellipse Width="10" Height="10"
-                                 Fill="{Binding EngineStatus, Converter={StaticResource StatusToColorConverter}}"
-                                 Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding EngineStatus}" Opacity="0.8"/>
-                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding EngineStatus}" Opacity="0.8"
+                               VerticalAlignment="Center"/>
 
                     <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="24,0"
                                Opacity="0.7">
@@ -128,6 +124,13 @@
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
                                                     </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                            <Condition Binding="{Binding DataContext.EngineStatus, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="ToolTip" Value="Engine stopped"/>
+                                                    </MultiDataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -154,6 +157,14 @@
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                                 <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="#FFFFC107"/>
+                                                        </MultiDataTrigger>
+                                                        <!-- Enabled but engine stopped: yellow -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                                <Condition Binding="{Binding DataContext.EngineStatus, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                                         </MultiDataTrigger>

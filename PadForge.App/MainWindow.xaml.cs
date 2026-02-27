@@ -336,6 +336,8 @@ namespace PadForge
                     _inputService.Stop();
                 else
                     _inputService.Start();
+                // Refresh sidebar power indicator colors (engine state affects color).
+                _viewModel.RefreshNavControllerItems();
             };
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
@@ -728,7 +730,7 @@ namespace PadForge
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
 
-            // Power button (green = enabled + connected, yellow = enabled + warning, red = disabled).
+            // Power button (green = enabled + active, yellow = enabled + warning, red = disabled).
             var outputType = _viewModel.Pads[navItem.PadIndex].OutputType;
             System.Windows.Media.SolidColorBrush powerColor;
             string powerTooltip;
@@ -736,6 +738,11 @@ namespace PadForge
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
                 powerTooltip = "Disabled";
+            }
+            else if (!_viewModel.IsEngineRunning)
+            {
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
+                powerTooltip = "Engine stopped";
             }
             else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy)
             {

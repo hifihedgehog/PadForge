@@ -205,6 +205,37 @@ namespace PadForge.ViewModels
         /// <summary>Display text for vJoy status.</summary>
         public string VJoyStatusText => IsVJoyInstalled ? "Installed" : "Not Installed";
 
+        // ─────────────────────────────────────────────
+        //  DSU Motion Server
+        // ─────────────────────────────────────────────
+
+        private bool _enableDsuMotionServer;
+
+        /// <summary>Whether the DSU (cemuhook) motion server is enabled.</summary>
+        public bool EnableDsuMotionServer
+        {
+            get => _enableDsuMotionServer;
+            set => SetProperty(ref _enableDsuMotionServer, value);
+        }
+
+        private int _dsuMotionServerPort = 26760;
+
+        /// <summary>UDP port for the DSU motion server (default 26760).</summary>
+        public int DsuMotionServerPort
+        {
+            get => _dsuMotionServerPort;
+            set => SetProperty(ref _dsuMotionServerPort, Math.Clamp(value, 1024, 65535));
+        }
+
+        private string _dsuServerStatus = "Stopped";
+
+        /// <summary>Current status of the DSU server for UI display.</summary>
+        public string DsuServerStatus
+        {
+            get => _dsuServerStatus;
+            set => SetProperty(ref _dsuServerStatus, value ?? "Stopped");
+        }
+
     }
 
     /// <summary>

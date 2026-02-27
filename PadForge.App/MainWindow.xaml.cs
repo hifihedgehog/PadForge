@@ -1232,13 +1232,14 @@ namespace PadForge
 
             SettingsManager.Profiles.Add(snapshot);
 
-            _viewModel.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+            var listItem = new ViewModels.ProfileListItem
             {
                 Id = snapshot.Id,
                 Name = snapshot.Name,
                 Executables = FormatExePaths(exePaths),
-                TopologyLabel = SettingsService.FormatTopologyLabel(snapshot.SlotCreated, snapshot.SlotControllerTypes)
-            });
+            };
+            SettingsService.UpdateTopologyCounts(listItem, snapshot.SlotCreated, snapshot.SlotControllerTypes);
+            _viewModel.Settings.ProfileItems.Add(listItem);
 
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created.";

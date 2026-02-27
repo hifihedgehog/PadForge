@@ -460,7 +460,8 @@ namespace PadForge.Services
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Executables = FormatExePaths(p.ExecutableNames)
+                        Executables = FormatExePaths(p.ExecutableNames),
+                        TopologyLabel = FormatTopologyLabel(p.SlotCreated, p.SlotControllerTypes)
                     });
                 }
             }
@@ -513,6 +514,39 @@ namespace PadForge.Services
 
             profile.Entries = entries.ToArray();
             profile.PadSettings = padSettings.ToArray();
+            profile.SlotCreated = (bool[])SettingsManager.SlotCreated.Clone();
+            profile.SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
+            profile.SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
+                .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
+        }
+
+        /// <summary>
+        /// Formats a profile's topology into a compact label like "2x Xbox, 1x DS4".
+        /// Returns empty string for old profiles without topology data.
+        /// </summary>
+        internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
+        {
+            if (slotCreated == null) return string.Empty;
+
+            int xbox = 0, ds4 = 0, vjoy = 0;
+            for (int i = 0; i < slotCreated.Length; i++)
+            {
+                if (!slotCreated[i]) continue;
+                int type = (slotControllerTypes != null && i < slotControllerTypes.Length)
+                    ? slotControllerTypes[i] : 0;
+                switch (type)
+                {
+                    case 1: ds4++; break;
+                    case 2: vjoy++; break;
+                    default: xbox++; break;
+                }
+            }
+
+            var parts = new System.Collections.Generic.List<string>();
+            if (xbox > 0) parts.Add($"{xbox}x Xbox");
+            if (ds4 > 0) parts.Add($"{ds4}x DS4");
+            if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
+            return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
         }
 
         /// <summary>
@@ -1150,6 +1184,30 @@ namespace PadForge.Services
         [XmlArray("ProfileMacros")]
         [XmlArrayItem("Macro")]
         public MacroData[] Macros { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots were created when this profile was saved.
+        /// Null on old profiles — topology application is skipped.
+        /// </summary>
+        [XmlArray("ProfileSlotCreated")]
+        [XmlArrayItem("Created")]
+        public bool[] SlotCreated { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots were enabled when this profile was saved.
+        /// Null on old profiles — topology application is skipped.
+        /// </summary>
+        [XmlArray("ProfileSlotEnabled")]
+        [XmlArrayItem("Enabled")]
+        public bool[] SlotEnabled { get; set; }
+
+        /// <summary>
+        /// Per-slot virtual controller output types (VirtualControllerType enum cast to int).
+        /// Null on old profiles — topology application is skipped.
+        /// </summary>
+        [XmlArray("ProfileSlotControllerTypes")]
+        [XmlArrayItem("Type")]
+        public int[] SlotControllerTypes { get; set; }
     }
 
     /// <summary>

@@ -159,6 +159,7 @@ namespace PadForge.ViewModels
             // Compute global slot number and per-type instance numbers.
             int xboxCount = 0;
             int ds4Count = 0;
+            int vjoyCount = 0;
             int globalCount = 0;
 
             foreach (var nav in NavControllerItems)
@@ -176,6 +177,11 @@ namespace PadForge.ViewModels
                         ds4Count++;
                         instanceNum = ds4Count;
                         iconKey = "DS4ControllerIcon";
+                        break;
+                    case VirtualControllerType.VJoy:
+                        vjoyCount++;
+                        instanceNum = vjoyCount;
+                        iconKey = "VJoyControllerIcon";
                         break;
                     default:
                         xboxCount++;

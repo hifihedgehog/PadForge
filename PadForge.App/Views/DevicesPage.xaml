@@ -8,7 +8,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -24,72 +23,251 @@
             </TextBlock>
         </StackPanel>
 
-        <!-- Main content: Grid + Detail -->
+        <!-- Main content: Card list + Detail -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="340"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Device list -->
-            <DataGrid ItemsSource="{Binding Devices}"
-                      SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True" SelectionMode="Single"
-                      CanUserAddRows="False" CanUserDeleteRows="False"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal"
-                      BorderThickness="1"
-                      Margin="0,0,12,0">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding DeviceName}" Width="*"/>
-                    <DataGridTextColumn Header="Status" Binding="{Binding StatusText}" Width="70"/>
-                    <DataGridTextColumn Header="Type" Binding="{Binding DeviceType}" Width="80"/>
-                    <DataGridTextColumn Header="VID" Binding="{Binding VendorIdHex}" Width="50"/>
-                    <DataGridTextColumn Header="PID" Binding="{Binding ProductIdHex}" Width="50"/>
-                    <DataGridTextColumn Header="Slot" Binding="{Binding AssignedSlotText}" Width="80"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <!-- ═══════════════════════════════════════════ -->
+            <!--  Left: Device card list                    -->
+            <!-- ═══════════════════════════════════════════ -->
+            <ListBox ItemsSource="{Binding Devices}"
+                     SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     BorderThickness="0" Background="Transparent"
+                     Margin="0,0,12,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                                CornerRadius="8" Padding="12,10" Margin="0,0,0,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-            <!-- Detail panel -->
+                                <!-- Row 0: Status dot + Device name -->
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="8" Height="8"
+                                             Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding DeviceName}" FontWeight="SemiBold"
+                                               FontSize="13" TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <!-- Slot badges (right, row 0) -->
+                                <TextBlock Grid.Column="1" Text="{Binding AssignedSlotText}"
+                                           FontSize="11" Opacity="0.55" VerticalAlignment="Center"
+                                           Margin="8,0,0,0"/>
+
+                                <!-- Row 1: Type | VID:PID | Capabilities -->
+                                <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
+                                            Orientation="Horizontal" Margin="16,3,0,0">
+                                    <TextBlock Text="{Binding DeviceType}" FontSize="11" Opacity="0.55"/>
+                                    <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
+                                    <TextBlock FontSize="11" Opacity="0.45" FontFamily="Consolas">
+                                        <Run Text="{Binding VendorIdHex, Mode=OneWay}"/>:<Run Text="{Binding ProductIdHex, Mode=OneWay}"/>
+                                    </TextBlock>
+                                    <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
+                                    <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Opacity="0.45"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Grid>
+                                        <!-- Selection accent bar (left edge) -->
+                                        <Border x:Name="SelectionBar" Width="4"
+                                                HorizontalAlignment="Left" CornerRadius="2"
+                                                Background="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                Visibility="Collapsed" Margin="0,2"/>
+                                        <ContentPresenter Margin="6,0,0,0"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="SelectionBar" Property="Visibility" Value="Visible"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!--  Right: Detail panel                       -->
+            <!-- ═══════════════════════════════════════════ -->
             <Border Grid.Column="1"
                     Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="12,10">
-                <StackPanel Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
+                    CornerRadius="8" Padding="14,12">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
 
-                    <TextBlock Text="{Binding SelectedDevice.DeviceName}"
-                               FontSize="16" FontWeight="SemiBold"
-                               TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        <!-- Device identity -->
+                        <TextBlock Text="{Binding SelectedDevice.DeviceName}"
+                                   FontSize="16" FontWeight="SemiBold"
+                                   TextWrapping="Wrap" Margin="0,0,0,6"/>
 
-                    <!-- Identity -->
-                    <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
-                        <Run Text="Product:"/>
-                        <Run Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
-                    </TextBlock>
-                    <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
-                        <Run Text="VID:PID:"/>
-                        <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
-                        <Run Text=":"/>
-                        <Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
-                    </TextBlock>
-                    <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
-                        <Run Text="Type:"/>
-                        <Run Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
-                    </TextBlock>
-                    <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,1">
-                        <Run Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
-                    </TextBlock>
-                    <TextBlock FontSize="10" Opacity="0.45" Margin="0,0,0,4"
-                               TextWrapping="Wrap" FontFamily="Consolas">
-                        <Run Text="GUID:"/>
-                        <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
-                    </TextBlock>
+                        <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
+                            <Run Text="Product:"/>
+                            <Run Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
+                            <Run Text="VID:PID:"/>
+                            <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
+                            <Run Text=":"/>
+                            <Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
+                            <Run Text="Type:"/>
+                            <Run Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,1">
+                            <Run Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="10" Opacity="0.4" Margin="0,0,0,4"
+                                   TextWrapping="Wrap" FontFamily="Consolas">
+                            <Run Text="GUID:"/>
+                            <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
+                        </TextBlock>
 
-                    <Separator Margin="0,2,0,6"/>
+                        <Separator Margin="0,2,0,6"/>
 
-                    <!-- Assign to slot + Remove -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                        <ItemsControl ItemsSource="{Binding ActiveSlotItems}">
+                        <!-- Assign to slot + Remove -->
+                        <WrapPanel Margin="0,0,0,6">
+                            <ItemsControl ItemsSource="{Binding ActiveSlotItems}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton IsChecked="{Binding IsAssigned, Mode=OneWay}"
+                                                      Command="{Binding DataContext.ToggleSlotCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      CommandParameter="{Binding PadIndex}"
+                                                      Margin="0,0,3,3" MinWidth="36" Padding="4,3"
+                                                      ToolTip="Toggle assignment">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="11" VerticalAlignment="Center"
+                                                           Margin="0,0,3,0"/>
+                                                <TextBlock Text="{Binding SlotNumber}" FontSize="12"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </ToggleButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Content="Remove" Padding="8,3" Margin="5,0,0,3"
+                                    Command="{Binding RemoveDeviceCommand}"
+                                    ToolTip="Remove this device and its settings"/>
+                        </WrapPanel>
+
+                        <Separator Margin="0,2,0,8"/>
+
+                        <!-- ─── Raw Input State (Visual) ─── -->
+                        <TextBlock Text="Raw Input State" FontWeight="SemiBold"
+                                   FontSize="13" Margin="0,0,0,8"/>
+
+                        <!-- Axes: progress bars -->
+                        <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <ItemsControl ItemsSource="{Binding RawAxes}" Margin="0,0,0,8">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="48"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="44"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Name}" FontSize="10" Opacity="0.55"
+                                                   VerticalAlignment="Center"/>
+                                        <ProgressBar Grid.Column="1" Minimum="0" Maximum="1"
+                                                     Value="{Binding NormalizedValue, Mode=OneWay}"
+                                                     Height="8" Margin="4,0"/>
+                                        <TextBlock Grid.Column="2" FontSize="9" Opacity="0.45"
+                                                   FontFamily="Consolas" VerticalAlignment="Center"
+                                                   HorizontalAlignment="Right"
+                                                   Text="{Binding RawValue}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Buttons: circle grid -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,3"
+                                    Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="Buttons" FontSize="11" Opacity="0.6"/>
+                            <TextBlock FontSize="10" Opacity="0.4" Margin="6,0,0,0"
+                                       VerticalAlignment="Center">
+                                <Run Text="("/>
+                                <Run Text="{Binding SelectedButtonTotal, Mode=OneWay}"/>
+                                <Run Text="total)"/>
+                            </TextBlock>
+                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding RawButtons}" Margin="0,0,0,8">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="24" Height="24" CornerRadius="12" Margin="1"
+                                            ToolTip="{Binding Index, StringFormat='Button {0}'}">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#28888888"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPressed}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Index}" FontSize="8"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Opacity="0.7"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- POV Hats: compass indicators -->
+                        <TextBlock Text="D-Pad / POV" FontSize="11" Opacity="0.6"
+                                   Margin="0,0,0,3">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RawPovs.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <ItemsControl ItemsSource="{Binding RawPovs}" Margin="0,0,0,8">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>
@@ -97,61 +275,105 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ToggleButton IsChecked="{Binding IsAssigned, Mode=OneWay}"
-                                                  Command="{Binding DataContext.ToggleSlotCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                  CommandParameter="{Binding PadIndex}"
-                                                  Margin="0,0,3,0" MinWidth="36" Padding="4,3"
-                                                  ToolTip="Toggle assignment">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
-                                                       FontSize="11" VerticalAlignment="Center"
-                                                       Margin="0,0,3,0"/>
-                                            <TextBlock Text="{Binding SlotNumber}" FontSize="12"
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </ToggleButton>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,12,0">
+                                        <Canvas Width="36" Height="36">
+                                            <!-- Background circle -->
+                                            <Ellipse Width="36" Height="36"
+                                                     Fill="#18888888" Stroke="#30888888"
+                                                     StrokeThickness="1"/>
+                                            <!-- Center dot -->
+                                            <Ellipse Width="4" Height="4" Canvas.Left="16" Canvas.Top="16"
+                                                     Fill="#50888888"/>
+                                            <!-- Direction indicator line -->
+                                            <Line X1="18" Y1="18" X2="18" Y2="5"
+                                                  Stroke="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                  StrokeThickness="2.5" StrokeEndLineCap="Round">
+                                                <Line.Style>
+                                                    <Style TargetType="Line">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCentered}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Line.Style>
+                                                <Line.RenderTransform>
+                                                    <RotateTransform Angle="{Binding AngleDegrees}"
+                                                                     CenterX="18" CenterY="18"/>
+                                                </Line.RenderTransform>
+                                            </Line>
+                                        </Canvas>
+                                        <TextBlock VerticalAlignment="Center" Margin="6,0,0,0"
+                                                   FontSize="10" Opacity="0.5">
+                                            <Run Text="POV"/>
+                                            <Run Text="{Binding Index, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Content="Remove" Padding="8,3" Margin="5,0,0,0"
-                                Command="{Binding RemoveDeviceCommand}"
-                                ToolTip="Remove this device and its settings"/>
+
+                        <!-- Gyroscope -->
+                        <TextBlock Text="Gyroscope" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Border Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="#10888888" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="X" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
+                                               Text="{Binding GyroX, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Y" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
+                                               Text="{Binding GyroY, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Z" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
+                                               Text="{Binding GyroZ, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Accelerometer -->
+                        <TextBlock Text="Accelerometer" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Border Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="#10888888" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="X" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
+                                               Text="{Binding AccelX, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Y" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
+                                               Text="{Binding AccelY, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Z" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
+                                               Text="{Binding AccelZ, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
                     </StackPanel>
-
-                    <Separator Margin="0,2,0,6"/>
-
-                    <!-- Raw state -->
-                    <TextBlock Text="Raw Input State" FontWeight="SemiBold"
-                               FontSize="12" Margin="0,0,0,4"/>
-
-                    <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,1"/>
-                    <TextBlock Text="{Binding RawAxisDisplay}" FontSize="10"
-                               FontFamily="Consolas" TextWrapping="Wrap"
-                               MaxHeight="100" Margin="0,0,0,5"/>
-
-                    <TextBlock Text="Buttons" FontSize="11" Opacity="0.6" Margin="0,0,0,1"/>
-                    <TextBlock Text="{Binding RawButtonDisplay}" FontSize="10"
-                               FontFamily="Consolas" TextWrapping="Wrap"
-                               Margin="0,0,0,5"/>
-
-                    <TextBlock Text="POV Hats" FontSize="11" Opacity="0.6" Margin="0,0,0,1"/>
-                    <TextBlock Text="{Binding RawPovDisplay}" FontSize="10"
-                               FontFamily="Consolas" TextWrapping="Wrap"/>
-
-                    <!-- Gyroscope (visible only when the device has a gyro sensor) -->
-                    <TextBlock Text="Gyroscope" FontSize="11" Opacity="0.6" Margin="0,5,0,1"
-                               Visibility="{Binding RawGyroDisplay, Converter={StaticResource StringToVisibility}}"/>
-                    <TextBlock Text="{Binding RawGyroDisplay}" FontSize="10"
-                               FontFamily="Consolas" TextWrapping="Wrap"
-                               Visibility="{Binding RawGyroDisplay, Converter={StaticResource StringToVisibility}}"/>
-
-                    <!-- Accelerometer (visible only when the device has an accel sensor) -->
-                    <TextBlock Text="Accelerometer" FontSize="11" Opacity="0.6" Margin="0,5,0,1"
-                               Visibility="{Binding RawAccelDisplay, Converter={StaticResource StringToVisibility}}"/>
-                    <TextBlock Text="{Binding RawAccelDisplay}" FontSize="10"
-                               FontFamily="Consolas" TextWrapping="Wrap"
-                               Visibility="{Binding RawAccelDisplay, Converter={StaticResource StringToVisibility}}"/>
-                </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
     </Grid>

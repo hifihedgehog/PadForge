@@ -25,6 +25,14 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <!-- vJoy joystick icon (svgrepo.com/show/360517, translated from viewBox -4 -2 24 24) -->
+    <DrawingImage x:Key="VJoyControllerIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                             Geometry="M11.915 15H13V9.874A4.002 4.002 0 0 1 14 2a4 4 0 0 1 1 7.874V15h2a3 3 0 0 1 3 3v4H4v-4a3 3 0 0 1 3-3h.085A1.5 1.5 0 0 1 8.5 14h2a1.5 1.5 0 0 1 1.415 1z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <!-- Generic gamepad icon (512x512 viewBox, scaled to ~32x32) -->
     <DrawingImage x:Key="GenericControllerIcon">
         <DrawingImage.Drawing>

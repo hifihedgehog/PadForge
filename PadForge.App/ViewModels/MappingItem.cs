@@ -68,18 +68,34 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _sourceDescriptor, value ?? string.Empty))
                 {
+                    _resolvedSourceText = null; // Clear until re-resolved
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
                 }
             }
         }
 
+        private string _resolvedSourceText;
+
         /// <summary>
         /// Human-readable display text for the source.
-        /// Shows the descriptor or "Not mapped" if empty.
+        /// When a resolved name is available (e.g., "A" for keyboard button 65),
+        /// shows that instead of the raw descriptor.
         /// </summary>
         public string SourceDisplayText =>
-            string.IsNullOrEmpty(_sourceDescriptor) ? "Not mapped" : _sourceDescriptor;
+            string.IsNullOrEmpty(_sourceDescriptor)
+                ? "Not mapped"
+                : _resolvedSourceText ?? _sourceDescriptor;
+
+        /// <summary>
+        /// Sets the human-readable resolved text for display (e.g., "A" instead of "Button 65").
+        /// Called by InputService when loading mappings from a known device.
+        /// </summary>
+        public void SetResolvedSourceText(string text)
+        {
+            _resolvedSourceText = text;
+            OnPropertyChanged(nameof(SourceDisplayText));
+        }
 
         /// <summary>
         /// Whether this mapping row has a source assigned.

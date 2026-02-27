@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using PadForge.Engine;
 
 namespace PadForge.ViewModels
 {
@@ -184,6 +185,26 @@ namespace PadForge.ViewModels
         /// <summary>Display text for HidHide status.</summary>
         public string HidHideStatusText => IsHidHideInstalled ? "Installed" : "Not Installed";
 
+        // ─────────────────────────────────────────────
+        //  vJoy status
+        // ─────────────────────────────────────────────
+
+        private bool _isVJoyInstalled;
+
+        /// <summary>Whether the vJoy driver is installed.</summary>
+        public bool IsVJoyInstalled
+        {
+            get => _isVJoyInstalled;
+            set
+            {
+                if (SetProperty(ref _isVJoyInstalled, value))
+                    OnPropertyChanged(nameof(VJoyStatusText));
+            }
+        }
+
+        /// <summary>Display text for vJoy status.</summary>
+        public string VJoyStatusText => IsVJoyInstalled ? "Installed" : "Not Installed";
+
     }
 
     /// <summary>
@@ -285,13 +306,13 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _typeInstanceLabel, value);
         }
 
-        private bool _isXboxType = true;
+        private VirtualControllerType _outputType = VirtualControllerType.Xbox360;
 
-        /// <summary>True if Xbox 360 type, false if DualShock 4.</summary>
-        public bool IsXboxType
+        /// <summary>The virtual controller output type for this slot.</summary>
+        public VirtualControllerType OutputType
         {
-            get => _isXboxType;
-            set => SetProperty(ref _isXboxType, value);
+            get => _outputType;
+            set => SetProperty(ref _outputType, value);
         }
     }
 }

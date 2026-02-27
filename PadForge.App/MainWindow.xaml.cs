@@ -336,8 +336,9 @@ namespace PadForge
                     _inputService.Stop();
                 else
                     _inputService.Start();
-                // Refresh sidebar power indicator colors (engine state affects color).
-                _viewModel.RefreshNavControllerItems();
+                // Force full sidebar card rebuild — engine state affects power icon colors
+                // but isn't a NavControllerItemViewModel property, so in-place updates miss it.
+                RebuildControllerSection();
             };
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
@@ -449,9 +450,9 @@ namespace PadForge
                     _viewModel.StatusText = "ViGEmBus detected — engine restarted.";
                 }
 
-                // ViGEm status changed: refresh sidebar power indicator colors.
+                // ViGEm status changed: force full sidebar rebuild for power icon colors.
                 if (wasViGEmInstalled != nowViGEmInstalled)
-                    _viewModel.RefreshNavControllerItems();
+                    RebuildControllerSection();
             };
             _driverStatusTimer.Start();
 

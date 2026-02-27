@@ -1827,6 +1827,11 @@ namespace PadForge.Services
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
             }
 
+            // Force a full sidebar rebuild — RefreshNavControllerItems() only updates
+            // properties in-place (no NavControllerItemsRefreshed event) since slot count
+            // doesn't change during a swap/move, but card visuals need a full rebuild.
+            _mainVm.ForceNavControllerItemsRefreshed();
+
             SyncDevicesList();
             RefreshActiveProfileTopologyLabel();
         }

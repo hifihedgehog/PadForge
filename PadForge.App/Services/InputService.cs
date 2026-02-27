@@ -142,6 +142,7 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = true;
+            _mainVm.Dashboard.EngineStatus = "Running";
             _mainVm.StatusText = "Engine started.";
             _mainVm.RefreshCommands();
         }
@@ -185,6 +186,9 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = false;
+            _mainVm.Dashboard.EngineStatus = "Stopped";
+            _mainVm.Dashboard.PollingFrequency = 0;
+            _mainVm.Dashboard.OnlineDevices = 0;
             _mainVm.PollingFrequency = 0;
             _mainVm.StatusText = "Engine stopped.";
             _mainVm.RefreshCommands();

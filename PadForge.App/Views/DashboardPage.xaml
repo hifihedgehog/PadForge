@@ -23,24 +23,44 @@
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,16">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
+                    <!-- Engine power toggle -->
+                    <Button Padding="2" MinWidth="0" MinHeight="0"
+                            VerticalAlignment="Center" Cursor="Hand"
+                            Background="Transparent" BorderThickness="0"
+                            Click="EngineToggle_Click" Margin="0,0,8,0">
+                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FFF44336"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EngineStatus}" Value="Running">
+                                            <Setter Property="Foreground" Value="#FF4CAF50"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Button>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Ellipse Width="10" Height="10"
                                  Fill="{Binding EngineStatus, Converter={StaticResource StatusToColorConverter}}"
                                  Margin="0,0,8,0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding EngineStatus}" Opacity="0.8"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="24,0"
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="24,0"
                                Opacity="0.7">
                         <Run Text="{Binding PollingFrequencyText, Mode=OneWay}"/>
                     </TextBlock>
 
-                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <StackPanel Grid.Column="3" VerticalAlignment="Center">
                         <TextBlock Opacity="0.6" FontSize="12">
                             <Run Text="{Binding OnlineDevices, Mode=OneWay}"/>
                             <Run Text="/"/>
@@ -101,6 +121,13 @@
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="Awaiting controllers"/>
                                                     </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                            <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
+                                                    </MultiDataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -119,6 +146,14 @@
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                                 <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="#FFFFC107"/>
+                                                        </MultiDataTrigger>
+                                                        <!-- Enabled but ViGEmBus not installed: yellow -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                                <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                                         </MultiDataTrigger>

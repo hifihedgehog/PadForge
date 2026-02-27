@@ -98,5 +98,32 @@
                 </StackPanel>
             </Grid>
         </Border>
+        <!-- ═══════════════════════════════════════════
+             Driver operation overlay (blocks UI during install/uninstall)
+             ═══════════════════════════════════════════ -->
+        <Grid x:Name="DriverOverlay"
+              Grid.RowSpan="2"
+              Visibility="Collapsed"
+              Panel.ZIndex="1000">
+            <Border Background="#80000000"/>
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="8"
+                    Padding="32,24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="280">
+                <StackPanel HorizontalAlignment="Center">
+                    <ui:ProgressRing IsActive="True"
+                                     Width="40" Height="40"
+                                     HorizontalAlignment="Center"
+                                     Margin="0,0,0,16"/>
+                    <TextBlock x:Name="DriverOverlayText"
+                               Text="Please wait..."
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

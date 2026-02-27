@@ -118,37 +118,36 @@ namespace PadForge.Common
         //  vJoy
         // ─────────────────────────────────────────────
 
-        private const string VJoyResourceName = "vJoySetup_v2.2.2.0_Win10_Win11.exe";
+        private const string VJoyResourceName = "vJoyDriver.zip";
 
         private static string GetVJoyTempDir()
             => Path.Combine(Path.GetTempPath(), "PadForge_vJoy");
 
-        private const string VJoySilentArgs = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART";
-
         /// <summary>
-        /// Install vJoy driver. Builds a single elevated batch script that:
-        /// 1. Cleans stale driver store entries + leftover install directory
-        /// 2. Runs the Inno Setup installer silently
-        /// 3. If vJoyInstall.exe fails to bind, creates the vjoy service manually
-        ///    and uses pnputil /add-driver /install as a fallback
-        /// 4. Creates vJoy device 1 with the layout PadForge needs
-        /// All steps run in one elevated process (single UAC prompt).
+        /// Install vJoy driver. Bypasses the Inno Setup installer entirely:
+        /// 1. Extracts the signed driver package (vjoy.sys, hidkmdf.sys,
+        ///    vjoy.inf, vjoy.cat, vJoyInterface.dll) from an embedded zip
+        ///    to "C:\Program Files\vJoy"
+        /// 2. Uses pnputil /add-driver /install to add the driver to the
+        ///    Windows driver store (no GUI, no restart dialog)
+        /// Device nodes are created on-demand when the user adds a vJoy
+        /// controller, via SetupAPI in VJoyVirtualController.CreateVJoyDevice.
+        /// All cleanup/install steps run in one elevated batch script (single UAC prompt).
         /// </summary>
         public static void InstallVJoy()
         {
             try
             {
-                var setupExe = ExtractEmbeddedResource(VJoyResourceName, GetVJoyTempDir());
+                // Extract the embedded zip to a temp directory.
+                var zipPath = ExtractEmbeddedResource(VJoyResourceName, GetVJoyTempDir());
 
                 string vjoyDir = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
                 string vjoyInf = Path.Combine(vjoyDir, "vjoy.inf");
-                string vJoyConfigExe = Path.Combine(vjoyDir, "x64", "vJoyConfig.exe");
 
                 // Find stale driver store entries before building the script.
                 var oemInfs = FindVJoyOemInfs();
 
-                // Build a batch + PowerShell install script. Single elevated process.
                 string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.cmd");
                 string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.log");
                 using (var sw = new StreamWriter(scriptPath))
@@ -157,55 +156,37 @@ namespace PadForge.Common
                     sw.WriteLine($"echo [%date% %time%] vJoy install starting > \"{logPath}\"");
 
                     // Step 1: Pre-install cleanup.
+                    // IMPORTANT: Remove device nodes FIRST so the driver can fully
+                    // unload, THEN stop/delete the service. Reversing this order
+                    // causes the service to get stuck in STOP_PENDING.
+                    for (int i = 0; i <= 15; i++)
+                        sw.WriteLine($"pnputil /remove-device \"ROOT\\HIDCLASS\\{i:D4}\" /subtree >nul 2>&1");
+                    sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
+                    sw.WriteLine("sc stop vjoy >nul 2>&1");
+                    sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
                     foreach (var inf in oemInfs)
                         sw.WriteLine($"pnputil /delete-driver {inf} /uninstall /force >nul 2>&1");
                     sw.WriteLine($"sc delete vjoy >nul 2>&1");
+                    // Fallback: if sc delete failed (e.g. STOP_PENDING), remove the
+                    // service registry keys from ALL ControlSets so it doesn't resurrect on reboot.
+                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\vjoy\" /f >nul 2>&1");
+                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet001\\Services\\vjoy\" /f >nul 2>&1");
+                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet002\\Services\\vjoy\" /f >nul 2>&1");
+                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet003\\Services\\vjoy\" /f >nul 2>&1");
                     sw.WriteLine($"rmdir /s /q \"{vjoyDir}\" >nul 2>&1");
+                    sw.WriteLine("del /f \"%SystemRoot%\\System32\\drivers\\vjoy.sys\" >nul 2>&1");
                     sw.WriteLine($"echo [%time%] Cleanup done >> \"{logPath}\"");
 
-                    // Step 2: Run the Inno Setup installer (copies files, vJoyInstall.exe
-                    // may fail to bind driver — that's expected on broken systems).
-                    sw.WriteLine($"\"{setupExe}\" {VJoySilentArgs}");
-                    sw.WriteLine($"echo [%time%] Inno Setup exited with code %errorlevel% >> \"{logPath}\"");
+                    // Step 2: Extract driver files from zip.
+                    sw.WriteLine($"mkdir \"{vjoyDir}\" >nul 2>&1");
+                    sw.WriteLine($"powershell -NoProfile -Command \"Expand-Archive -Path '{zipPath.Replace("'", "''")}' -DestinationPath '{vjoyDir.Replace("'", "''")}' -Force\" >> \"{logPath}\" 2>&1");
+                    sw.WriteLine($"echo [%time%] Files extracted >> \"{logPath}\"");
 
-                    // Step 3: Use DiInstallDriver (newdev.dll) to install the driver.
-                    // This is a completely different API from UpdateDriverForPlugAndPlayDevices
-                    // that vJoyInstall.exe uses. It processes the inf and installs the
-                    // driver package for all matching devices in one call.
-                    sw.WriteLine($"echo [%time%] Checking vjoy service... >> \"{logPath}\"");
-                    sw.WriteLine("sc query vjoy >nul 2>&1");
-                    sw.WriteLine($"echo [%time%] sc query vjoy = %errorlevel% >> \"{logPath}\"");
-                    sw.WriteLine("if errorlevel 1 (");
-                    sw.WriteLine($"  echo [%time%] vjoy service missing, using DiInstallDriver... >> \"{logPath}\"");
-
-                    // Use PowerShell to P/Invoke DiInstallDriver from newdev.dll.
-                    // This creates the device node AND binds the driver in one call.
-                    string psScript = string.Join("; ",
-                        "$sig = '[DllImport(\"newdev.dll\", CharSet=CharSet.Unicode, SetLastError=true)] public static extern bool DiInstallDriverW(IntPtr hwnd, string infPath, uint flags, ref bool reboot);'",
-                        "$t = Add-Type -MemberDefinition $sig -Name NativeMethods -Namespace Win32 -PassThru",
-                        "$reboot = $false",
-                        $"$result = $t::DiInstallDriverW([IntPtr]::Zero, '{vjoyInf.Replace("'", "''")}', 0, [ref]$reboot)",
-                        "$err = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()",
-                        "Write-Output \"DiInstallDriver result=$result error=$err reboot=$reboot\"");
-
-                    sw.WriteLine($"  powershell -NoProfile -ExecutionPolicy Bypass -Command \"{psScript.Replace("\"", "\\\"")}\" >> \"{logPath}\" 2>&1");
-
-                    // Fallback: if DiInstallDriver didn't create the service, create it manually.
-                    sw.WriteLine($"  sc query vjoy >nul 2>&1");
-                    sw.WriteLine($"  if errorlevel 1 (");
-                    sw.WriteLine($"    echo [%time%] DiInstallDriver did not create service, creating manually... >> \"{logPath}\"");
-                    sw.WriteLine($"    copy /y \"{Path.Combine(vjoyDir, "vjoy.sys")}\" \"%SystemRoot%\\System32\\drivers\\vjoy.sys\" >nul 2>&1");
-                    sw.WriteLine($"    copy /y \"{Path.Combine(vjoyDir, "hidkmdf.sys")}\" \"%SystemRoot%\\System32\\drivers\\hidkmdf.sys\" >nul 2>&1");
-                    sw.WriteLine("    sc create vjoy type= kernel start= demand error= ignore binPath= \"\\SystemRoot\\System32\\drivers\\vjoy.sys\" DisplayName= \"vJoy Device\"");
-                    sw.WriteLine($"    echo [%time%] sc create vjoy = %errorlevel% >> \"{logPath}\"");
-                    sw.WriteLine("  )");
-                    sw.WriteLine(")");
-
-                    // Step 4: Create vJoy device 1 (6 axes, 11 buttons, 1 discrete POV).
-                    sw.WriteLine($"echo [%time%] Running vJoyConfig... >> \"{logPath}\"");
-                    sw.WriteLine($"cd /d \"{Path.Combine(vjoyDir, "x64")}\"");
-                    sw.WriteLine($"vJoyConfig.exe 1 -f -a x y z rx ry rz -b 11 -s 1 >> \"{logPath}\" 2>&1");
-                    sw.WriteLine($"echo [%time%] vJoyConfig exited with code %errorlevel% >> \"{logPath}\"");
+                    // Step 3: Use pnputil to add the driver to the store.
+                    // Device nodes are NOT created here — they're created on-demand
+                    // by VJoyVirtualController.CreateVJoyDevice using SetupAPI.
+                    sw.WriteLine($"pnputil /add-driver \"{vjoyInf}\" /install >> \"{logPath}\" 2>&1");
+                    sw.WriteLine($"echo [%time%] pnputil exited with code %errorlevel% >> \"{logPath}\"");
                     sw.WriteLine($"echo [%time%] Done >> \"{logPath}\"");
                 }
 
@@ -219,59 +200,58 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Uninstall vJoy driver via its registered uninstaller with /VERYSILENT.
-        /// Falls back to the embedded setup if no uninstaller is found.
-        /// Cleans leftover driver store entries and registry keys afterward.
+        /// Uninstall vJoy driver. Removes device nodes first (so the driver
+        /// can unload cleanly), then removes the driver from the store,
+        /// deletes the service, and cleans up the install directory.
         /// </summary>
         public static void UninstallVJoy()
         {
-            string uninstallCmd = GetVJoyUninstallString();
+            string vjoyDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+            var oemInfs = FindVJoyOemInfs();
 
-            if (!string.IsNullOrEmpty(uninstallCmd))
+            string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.cmd");
+            string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.log");
+            using (var sw = new StreamWriter(scriptPath))
             {
-                // Parse the UninstallString — may be a quoted path with arguments.
-                string exe, args;
-                if (uninstallCmd.StartsWith("\""))
-                {
-                    int closeQuote = uninstallCmd.IndexOf('"', 1);
-                    exe = uninstallCmd.Substring(1, closeQuote - 1);
-                    args = uninstallCmd.Substring(closeQuote + 1).Trim() + " " + VJoySilentArgs;
-                }
-                else
-                {
-                    int space = uninstallCmd.IndexOf(' ');
-                    if (space > 0)
-                    {
-                        exe = uninstallCmd.Substring(0, space);
-                        args = uninstallCmd.Substring(space + 1).Trim() + " " + VJoySilentArgs;
-                    }
-                    else
-                    {
-                        exe = uninstallCmd;
-                        args = VJoySilentArgs;
-                    }
-                }
+                sw.WriteLine("@echo off");
+                sw.WriteLine($"echo [%date% %time%] vJoy uninstall starting > \"{logPath}\"");
 
-                RunElevated(exe, args);
-            }
-            else
-            {
-                // Fallback: run the embedded installer with silent flags.
-                try
-                {
-                    var exePath = ExtractEmbeddedResource(VJoyResourceName, GetVJoyTempDir());
-                    RunElevated(exePath, VJoySilentArgs);
-                }
-                finally
-                {
-                    CleanupTempDir(GetVJoyTempDir());
-                }
+                // IMPORTANT: Remove device nodes FIRST so the driver can fully
+                // unload from the kernel. If we stop/delete the service while
+                // devices are still attached, it gets stuck in STOP_PENDING.
+                for (int i = 0; i <= 15; i++)
+                    sw.WriteLine($"pnputil /remove-device \"ROOT\\HIDCLASS\\{i:D4}\" /subtree >nul 2>&1");
+                sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
+
+                // Now stop and delete the service (driver should be unloaded).
+                sw.WriteLine("sc stop vjoy >nul 2>&1");
+                sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
+                sw.WriteLine("sc delete vjoy >nul 2>&1");
+                // Fallback: if sc delete failed (e.g. STOP_PENDING), remove the
+                // service registry keys from ALL ControlSets so it doesn't resurrect on reboot.
+                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\vjoy\" /f >nul 2>&1");
+                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet001\\Services\\vjoy\" /f >nul 2>&1");
+                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet002\\Services\\vjoy\" /f >nul 2>&1");
+                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet003\\Services\\vjoy\" /f >nul 2>&1");
+
+                // Remove driver from driver store.
+                foreach (var inf in oemInfs)
+                    sw.WriteLine($"pnputil /delete-driver {inf} /uninstall /force >> \"{logPath}\" 2>&1");
+
+                // Delete the install directory and stale driver binary.
+                sw.WriteLine($"rmdir /s /q \"{vjoyDir}\" >nul 2>&1");
+                sw.WriteLine("del /f \"%SystemRoot%\\System32\\drivers\\vjoy.sys\" >nul 2>&1");
+
+                // Remove legacy Inno Setup uninstall registry entries (if present).
+                sw.WriteLine("powershell -NoProfile -Command \"Get-ChildItem 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall','HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall' -EA SilentlyContinue | Where-Object { (Get-ItemProperty $_.PSPath -EA SilentlyContinue).DisplayName -like '*vJoy*' } | Remove-Item -Recurse -Force -EA SilentlyContinue\" >nul 2>&1");
+
+                sw.WriteLine($"echo [%time%] Done >> \"{logPath}\"");
             }
 
-            // Clean leftover registry keys that may cause reinstall hangs.
-            // Do NOT use the full CleanVJoyDriverArtifacts() here — removing
-            // pnputil entries and files breaks subsequent reinstalls because
-            // UpdateDriverForPlugAndPlayDevices can't find the driver.
+            RunElevated("cmd.exe", $"/c \"{scriptPath}\"");
+            try { File.Delete(scriptPath); } catch { }
+
             CleanVJoyRegistryArtifacts();
         }
 
@@ -287,6 +267,9 @@ namespace PadForge.Common
                 string[] registryPaths =
                 {
                     @"SYSTEM\CurrentControlSet\Services\vjoy",
+                    @"SYSTEM\ControlSet001\Services\vjoy",
+                    @"SYSTEM\ControlSet002\Services\vjoy",
+                    @"SYSTEM\ControlSet003\Services\vjoy",
                     @"SYSTEM\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_1234&PID_BEAD",
                     @"SYSTEM\ControlSet001\Services\EventLog\System\vjoy",
                     @"SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\PnpLockdownFiles\%SystemRoot%/System32/drivers/hidkmdf.sys",
@@ -419,17 +402,48 @@ namespace PadForge.Common
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Checks whether the vJoy driver is installed by scanning the registry.
+        /// Checks whether the vJoy driver is installed.
+        /// Detects both our minimal install (vjoy.sys in Program Files) and
+        /// legacy Inno Setup installs (registry uninstall entry).
         /// </summary>
         public static bool IsVJoyInstalled()
         {
-            return !string.IsNullOrEmpty(GetVJoyVersion());
+            // Primary: check for our minimal driver install.
+            string vjoyDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+            if (File.Exists(Path.Combine(vjoyDir, "vjoy.sys")))
+                return true;
+
+            // Fallback: check for legacy Inno Setup install via registry.
+            return !string.IsNullOrEmpty(GetVJoyVersionFromRegistry());
         }
 
         /// <summary>
         /// Returns the installed vJoy version string, or null if not found.
         /// </summary>
         public static string GetVJoyVersion()
+        {
+            // Check our minimal install first.
+            string vjoyDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+            if (File.Exists(Path.Combine(vjoyDir, "vjoy.sys")))
+            {
+                // Try to get version from the driver file.
+                try
+                {
+                    var vi = FileVersionInfo.GetVersionInfo(Path.Combine(vjoyDir, "vjoy.sys"));
+                    if (!string.IsNullOrEmpty(vi.FileVersion))
+                        return vi.FileVersion;
+                }
+                catch { }
+                return "Installed";
+            }
+
+            // Fallback: legacy registry detection.
+            return GetVJoyVersionFromRegistry();
+        }
+
+        private static string GetVJoyVersionFromRegistry()
         {
             var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
 
@@ -453,38 +467,6 @@ namespace PadForge.Common
                             continue;
 
                         return sub.GetValue("DisplayVersion") as string ?? "Installed";
-                    }
-                }
-                catch { }
-            }
-
-            return null;
-        }
-
-        private static string GetVJoyUninstallString()
-        {
-            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
-
-            foreach (var view in views)
-            {
-                try
-                {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-
-                    if (uninstallKey == null) continue;
-
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        var name = sub?.GetValue("DisplayName") as string;
-                        if (string.IsNullOrEmpty(name)) continue;
-
-                        if (name.IndexOf("vJoy", StringComparison.OrdinalIgnoreCase) < 0)
-                            continue;
-
-                        return sub.GetValue("UninstallString") as string;
                     }
                 }
                 catch { }
@@ -695,11 +677,12 @@ namespace PadForge.Common
                 FileName = fileName,
                 Arguments = arguments,
                 Verb = "runas",
-                UseShellExecute = true
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden
             };
 
             using var proc = Process.Start(psi);
-            proc?.WaitForExit(120_000);
+            proc?.WaitForExit(180_000);
         }
 
         /// <summary>

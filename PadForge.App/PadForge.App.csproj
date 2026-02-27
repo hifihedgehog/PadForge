@@ -54,7 +54,7 @@
     </Content>
     <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
-    <EmbeddedResource Include="Resources\vJoySetup_v2.2.2.0_Win10_Win11.exe" />
+    <EmbeddedResource Include="Resources\vJoyDriver.zip" />
   </ItemGroup>
 
   <ItemGroup>

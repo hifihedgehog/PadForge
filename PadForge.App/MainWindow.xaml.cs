@@ -307,6 +307,7 @@ namespace PadForge
 
                     _deviceService.DeleteSlot(slotIndex);
                     _viewModel.Devices.RefreshSlotButtons();
+                    _inputService.RefreshDeviceList();
                 }));
             };
 
@@ -1168,6 +1169,10 @@ namespace PadForge
                         }
                     }
                     ShowControllerTypePopup(addItem);
+
+                    // Reselect the previous page so that AddController can be
+                    // clicked again (SelectionChanged only fires on actual changes).
+                    SelectNavItemByTag(_viewModel.SelectedNavTag ?? "Dashboard");
                 }));
                 return;
             }

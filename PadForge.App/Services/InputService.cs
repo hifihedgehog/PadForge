@@ -1564,22 +1564,33 @@ namespace PadForge.Services
                 {
                     foreach (var entry in profile.Entries)
                     {
-                        // Try exact InstanceGuid match first, then fallback to ProductGuid.
+                        // Find the PadSetting template by checksum first — skip if missing.
+                        var template = profile.PadSettings
+                            .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
+                        if (template == null) continue;
+
+                        // Find an UNASSIGNED UserSetting for this device.
+                        // A device mapped to multiple slots has multiple profile entries;
+                        // each must claim a separate UserSetting (MapTo < 0 = unclaimed).
                         var us = SettingsManager.UserSettings.Items
-                            .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid);
+                            .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid && s.MapTo < 0);
 
                         if (us == null && entry.ProductGuid != Guid.Empty)
                         {
                             us = SettingsManager.UserSettings.Items
-                                .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid);
+                                .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid && s.MapTo < 0);
                         }
 
-                        if (us == null) continue;
-
-                        // Find the PadSetting template by checksum.
-                        var template = profile.PadSettings
-                            .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
-                        if (template == null) continue;
+                        // No unclaimed UserSetting found — create one for this slot.
+                        if (us == null)
+                        {
+                            us = new UserSetting
+                            {
+                                InstanceGuid = entry.InstanceGuid,
+                                ProductGuid = entry.ProductGuid
+                            };
+                            SettingsManager.UserSettings.Items.Add(us);
+                        }
 
                         // Clone and apply PadSetting + slot assignment.
                         var ps = template.CloneDeep();
@@ -1624,24 +1635,26 @@ namespace PadForge.Services
             SaveActiveProfileState();
 
             // Switch to the target profile (or revert to default).
+            // Set ActiveProfileId BEFORE ApplyProfile so that
+            // RefreshActiveProfileTopologyLabel updates the correct profile.
             if (profileId != null)
             {
                 var target = FindProfileById(profileId);
                 if (target != null)
                 {
-                    ApplyProfile(target);
                     SettingsManager.ActiveProfileId = profileId;
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
+                    ApplyProfile(target);
                     _mainVm.StatusText = $"Profile switched: {target.Name}";
                 }
             }
             else
             {
                 // Revert to default (root) profile using the startup snapshot.
-                if (_defaultProfileSnapshot != null)
-                    ApplyProfile(_defaultProfileSnapshot);
                 SettingsManager.ActiveProfileId = null;
                 _mainVm.Settings.ActiveProfileInfo = "Default";
+                if (_defaultProfileSnapshot != null)
+                    ApplyProfile(_defaultProfileSnapshot);
                 _mainVm.StatusText = "Profile switched: Default";
             }
         }

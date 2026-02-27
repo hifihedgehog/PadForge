@@ -1375,9 +1375,11 @@ namespace PadForge
             // Save outgoing profile state before switching.
             _inputService.SaveActiveProfileState();
 
-            _inputService.ApplyProfile(profile);
+            // Set ActiveProfileId BEFORE ApplyProfile so that
+            // RefreshActiveProfileTopologyLabel updates the correct profile.
             SettingsManager.ActiveProfileId = profile.Id;
             _viewModel.Settings.ActiveProfileInfo = profile.Name;
+            _inputService.ApplyProfile(profile);
             _viewModel.StatusText = $"Profile loaded: {profile.Name}";
         }
 
@@ -1389,9 +1391,11 @@ namespace PadForge
             // Save outgoing profile state before reverting.
             _inputService.SaveActiveProfileState();
 
-            _inputService.ApplyDefaultProfile();
+            // Set ActiveProfileId BEFORE ApplyProfile so that
+            // RefreshActiveProfileTopologyLabel updates the correct profile.
             SettingsManager.ActiveProfileId = null;
             _viewModel.Settings.ActiveProfileInfo = "Default";
+            _inputService.ApplyDefaultProfile();
             _viewModel.StatusText = "Profile reverted to Default";
         }
 

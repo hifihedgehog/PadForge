@@ -916,14 +916,14 @@ namespace PadForge.Engine
                 };
 
                 ushort atom = RegisterClassExW(ref wc);
-                if (atom == 0)
-                {
-                    _running = false;
-                    return;
-                }
+
+                // Use atom if registration succeeded, otherwise reuse the
+                // existing class by name (ERROR_CLASS_ALREADY_EXISTS after
+                // a previous Start/Stop cycle).
+                IntPtr classId = atom != 0 ? (IntPtr)atom : classNamePtr;
 
                 _hwnd = CreateWindowExW(
-                    0, (IntPtr)atom, null, 0,
+                    0, classId, null, 0,
                     0, 0, 0, 0,
                     HWND_MESSAGE, IntPtr.Zero, hInstance, IntPtr.Zero);
 

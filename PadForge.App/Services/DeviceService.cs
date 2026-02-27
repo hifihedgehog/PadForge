@@ -121,7 +121,7 @@ namespace PadForge.Services
             }
 
             // Update the row display.
-            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid), ResolveSlotType);
+            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid), ResolveSlotBadge);
 
             // Mark settings as dirty.
             _settingsService.MarkDirty();
@@ -184,7 +184,7 @@ namespace PadForge.Services
             }
 
             // Update device row display.
-            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid), ResolveSlotType);
+            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid), ResolveSlotBadge);
 
             _settingsService.MarkDirty();
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
@@ -259,12 +259,22 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Resolves the virtual controller type for a given slot index.
+        /// Returns the controller type and per-type instance number for a slot.
         /// </summary>
-        private VirtualControllerType ResolveSlotType(int slot) =>
-            slot >= 0 && slot < _mainVm.Pads.Count
-                ? _mainVm.Pads[slot].OutputType
-                : VirtualControllerType.Xbox360;
+        private (VirtualControllerType Type, int InstanceNum) ResolveSlotBadge(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
+                return (VirtualControllerType.Xbox360, 1);
+
+            var type = _mainVm.Pads[slotIndex].OutputType;
+            int instance = 0;
+            for (int i = 0; i <= slotIndex; i++)
+            {
+                if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].OutputType == type)
+                    instance++;
+            }
+            return (type, instance);
+        }
 
         // ─────────────────────────────────────────────
         //  Virtual controller slot management

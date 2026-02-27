@@ -349,15 +349,15 @@ namespace PadForge.Services
                 {
                     case VirtualControllerType.DualShock4:
                         ds4Count++;
-                        slot.TypeInstanceLabel = $"#{ds4Count}";
+                        slot.TypeInstanceLabel = ds4Count.ToString();
                         break;
                     case VirtualControllerType.VJoy:
                         vjoyCount++;
-                        slot.TypeInstanceLabel = $"#{vjoyCount}";
+                        slot.TypeInstanceLabel = vjoyCount.ToString();
                         break;
                     default:
                         xboxCount++;
-                        slot.TypeInstanceLabel = $"#{xboxCount}";
+                        slot.TypeInstanceLabel = xboxCount.ToString();
                         break;
                 }
             }
@@ -1110,10 +1110,25 @@ namespace PadForge.Services
             };
 
             // Resolve slot assignments (device can be assigned to multiple slots).
-            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid),
-                slot => slot >= 0 && slot < _mainVm.Pads.Count
-                    ? _mainVm.Pads[slot].OutputType
-                    : VirtualControllerType.Xbox360);
+            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid), ResolveSlotBadge);
+        }
+
+        /// <summary>
+        /// Returns the controller type and per-type instance number for a slot.
+        /// </summary>
+        private (VirtualControllerType Type, int InstanceNum) ResolveSlotBadge(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
+                return (VirtualControllerType.Xbox360, 1);
+
+            var type = _mainVm.Pads[slotIndex].OutputType;
+            int instance = 0;
+            for (int i = 0; i <= slotIndex; i++)
+            {
+                if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].OutputType == type)
+                    instance++;
+            }
+            return (type, instance);
         }
 
         /// <summary>

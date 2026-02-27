@@ -228,17 +228,22 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Replaces the assigned slots list, rebuilds SlotBadges, and notifies the UI.
         /// </summary>
-        public void SetAssignedSlots(List<int> slots, Func<int, VirtualControllerType> typeResolver = null)
+        /// <param name="slots">Slot indices this device is assigned to.</param>
+        /// <param name="badgeResolver">Returns (ControllerType, TypeInstanceNumber) for a slot index.</param>
+        public void SetAssignedSlots(List<int> slots, Func<int, (VirtualControllerType Type, int InstanceNum)> badgeResolver = null)
         {
             _assignedSlots = slots ?? new();
             SlotBadges.Clear();
             foreach (int slot in _assignedSlots)
             {
+                var (type, instanceNum) = badgeResolver?.Invoke(slot)
+                    ?? (VirtualControllerType.Xbox360, slot + 1);
                 SlotBadges.Add(new SlotBadge
                 {
                     SlotIndex = slot,
                     SlotNumber = slot + 1,
-                    ControllerType = typeResolver?.Invoke(slot) ?? VirtualControllerType.Xbox360
+                    ControllerType = type,
+                    TypeInstanceNumber = instanceNum
                 });
             }
             OnPropertyChanged(nameof(AssignedSlots));
@@ -295,5 +300,6 @@ namespace PadForge.ViewModels
         public int SlotIndex { get; set; }
         public int SlotNumber { get; set; }
         public VirtualControllerType ControllerType { get; set; }
+        public int TypeInstanceNumber { get; set; }
     }
 }

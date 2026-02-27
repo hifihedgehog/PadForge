@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 
 namespace PadForge.ViewModels
 {
@@ -260,7 +261,7 @@ namespace PadForge.ViewModels
         /// Rebuilds <see cref="ActiveSlotItems"/> based on which virtual controller
         /// slots are created and whether the selected device is assigned to each.
         /// </summary>
-        public void RefreshSlotButtons()
+        public void RefreshSlotButtons(Func<int, (VirtualControllerType Type, int InstanceNum)> badgeResolver = null)
         {
             var activeSlots = new System.Collections.Generic.List<int>();
             for (int i = 0; i < InputManager.MaxPads; i++)
@@ -295,19 +296,31 @@ namespace PadForge.ViewModels
                 foreach (int slot in activeSlots)
                 {
                     num++;
+                    var (type, instanceNum) = badgeResolver?.Invoke(slot)
+                        ?? (VirtualControllerType.Xbox360, num);
                     ActiveSlotItems.Add(new SlotButtonItem
                     {
                         PadIndex = slot,
                         SlotNumber = num,
-                        IsAssigned = assignedSlots.Contains(slot)
+                        IsAssigned = assignedSlots.Contains(slot),
+                        ControllerType = type,
+                        TypeInstanceNumber = instanceNum
                     });
                 }
             }
             else
             {
-                // Just update IsAssigned on existing items.
+                // Update IsAssigned and type info on existing items.
                 foreach (var item in ActiveSlotItems)
+                {
                     item.IsAssigned = assignedSlots.Contains(item.PadIndex);
+                    if (badgeResolver != null)
+                    {
+                        var (type, instanceNum) = badgeResolver(item.PadIndex);
+                        item.ControllerType = type;
+                        item.TypeInstanceNumber = instanceNum;
+                    }
+                }
             }
 
             _toggleSlotCommand?.NotifyCanExecuteChanged();
@@ -373,6 +386,22 @@ namespace PadForge.ViewModels
         {
             get => _isAssigned;
             set => SetProperty(ref _isAssigned, value);
+        }
+
+        private VirtualControllerType _controllerType;
+        /// <summary>Virtual controller type for this slot.</summary>
+        public VirtualControllerType ControllerType
+        {
+            get => _controllerType;
+            set => SetProperty(ref _controllerType, value);
+        }
+
+        private int _typeInstanceNumber;
+        /// <summary>Per-type instance number (e.g., Xbox 1, Xbox 2).</summary>
+        public int TypeInstanceNumber
+        {
+            get => _typeInstanceNumber;
+            set => SetProperty(ref _typeInstanceNumber, value);
         }
     }
 

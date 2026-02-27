@@ -18,7 +18,7 @@ namespace PadForge.ViewModels
         {
             PadIndex = padIndex;
             _slotNumber = 1;
-            _instanceLabel = "#1";
+            _instanceLabel = "1";
             _iconKey = "XboxControllerIcon";
         }
 
@@ -190,7 +190,7 @@ namespace PadForge.ViewModels
                         break;
                 }
 
-                nav.InstanceLabel = $"#{instanceNum}";
+                nav.InstanceLabel = instanceNum.ToString();
                 nav.IconKey = iconKey;
                 nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
             }

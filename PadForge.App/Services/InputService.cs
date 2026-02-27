@@ -115,8 +115,9 @@ namespace PadForge.Services
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
 
-            // Subscribe to polling interval changes from the Settings UI.
+            // Subscribe to settings/dashboard property changes for runtime propagation.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
+            _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
 
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
@@ -158,8 +159,9 @@ namespace PadForge.Services
                 _uiTimer = null;
             }
 
-            // Unsubscribe from settings changes.
+            // Unsubscribe from settings/dashboard changes.
             _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
+            _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
 
             // Dispose foreground monitor.
             if (_foregroundMonitor != null)
@@ -894,17 +896,20 @@ namespace PadForge.Services
             {
                 _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
             }
-            else if (e.PropertyName == nameof(SettingsViewModel.EnableDsuMotionServer))
+        }
+
+        private void OnDashboardPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DashboardViewModel.EnableDsuMotionServer))
             {
-                if (_mainVm.Settings.EnableDsuMotionServer)
+                if (_mainVm.Dashboard.EnableDsuMotionServer)
                     StartDsuServerIfEnabled();
                 else
                     StopDsuServer();
             }
-            else if (e.PropertyName == nameof(SettingsViewModel.DsuMotionServerPort))
+            else if (e.PropertyName == nameof(DashboardViewModel.DsuMotionServerPort))
             {
-                // Restart on port change if enabled.
-                if (_mainVm.Settings.EnableDsuMotionServer)
+                if (_mainVm.Dashboard.EnableDsuMotionServer)
                 {
                     StopDsuServer();
                     StartDsuServerIfEnabled();
@@ -918,7 +923,7 @@ namespace PadForge.Services
 
         private void StartDsuServerIfEnabled()
         {
-            if (!_mainVm.Settings.EnableDsuMotionServer || _inputManager == null)
+            if (!_mainVm.Dashboard.EnableDsuMotionServer || _inputManager == null)
                 return;
 
             if (_dsuServer != null)
@@ -927,10 +932,10 @@ namespace PadForge.Services
             _dsuServer = new DsuMotionServer();
             _dsuServer.StatusChanged += (_, status) =>
             {
-                _dispatcher.BeginInvoke(() => _mainVm.Settings.DsuServerStatus = status);
+                _dispatcher.BeginInvoke(() => _mainVm.Dashboard.DsuServerStatus = status);
             };
 
-            int port = _mainVm.Settings.DsuMotionServerPort;
+            int port = _mainVm.Dashboard.DsuMotionServerPort;
             if (port < 1024 || port > 65535)
                 port = 26760;
 
@@ -1488,7 +1493,9 @@ namespace PadForge.Services
                 SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
-                    .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray()
+                    .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
+                EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
+                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort
             };
         }
 
@@ -1540,11 +1547,16 @@ namespace PadForge.Services
                 }
             }
 
-            // ── Apply pad settings and slot assignments (if present) ──
-            if (profile.Entries != null && profile.Entries.Length > 0 &&
-                profile.PadSettings != null && profile.PadSettings.Length > 0)
+            // ── Reset all device assignments, then apply profile entries ──
+            // Each profile fully owns slot assignments; unassign everything
+            // first so devices not in this profile don't leak from the previous one.
+            lock (SettingsManager.UserSettings.SyncRoot)
             {
-                lock (SettingsManager.UserSettings.SyncRoot)
+                foreach (var us in SettingsManager.UserSettings.Items)
+                    us.MapTo = -1;
+
+                if (profile.Entries != null && profile.Entries.Length > 0 &&
+                    profile.PadSettings != null && profile.PadSettings.Length > 0)
                 {
                     foreach (var entry in profile.Entries)
                     {
@@ -1572,6 +1584,11 @@ namespace PadForge.Services
                     }
                 }
             }
+
+            // ── Apply DSU motion server settings ──
+            _mainVm.Dashboard.EnableDsuMotionServer = profile.EnableDsuMotionServer;
+            if (profile.DsuMotionServerPort >= 1024 && profile.DsuMotionServerPort <= 65535)
+                _mainVm.Dashboard.DsuMotionServerPort = profile.DsuMotionServerPort;
 
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
@@ -1626,11 +1643,6 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Refreshes the default profile snapshot from the current runtime state.
-        /// Call after saving when no profile is active so future reverts use the
-        /// latest saved state.
-        /// </summary>
-        /// <summary>
         /// Saves the current runtime state into the active profile (or the
         /// default snapshot if no named profile is active).  Call before
         /// switching away from any profile so changes are preserved.
@@ -1656,10 +1668,17 @@ namespace PadForge.Services
                     profile.SlotCreated = snapshot.SlotCreated;
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
+                    profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
+                    profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                 }
             }
         }
 
+        /// <summary>
+        /// Refreshes the default profile snapshot from the current runtime state.
+        /// Call after saving when no profile is active so future reverts use the
+        /// latest saved state.
+        /// </summary>
         public void RefreshDefaultSnapshot()
         {
             _defaultProfileSnapshot = SnapshotCurrentProfile();

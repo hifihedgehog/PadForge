@@ -220,6 +220,8 @@ namespace PadForge.Common.Input
             if (!InitializeSdl())
                 return;
 
+            RawInputListener.Start();
+
             _running = true;
             _enumerationTimer.Restart();
             _frequencyTimer.Restart();
@@ -249,6 +251,8 @@ namespace PadForge.Common.Input
                 _pollingThread.Join(timeout: TimeSpan.FromSeconds(3));
                 _pollingThread = null;
             }
+
+            RawInputListener.Stop();
 
             StopAllForceFeedback();
             DestroyAllVirtualControllers();

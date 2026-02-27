@@ -27,7 +27,9 @@ namespace PadForge
         private RecorderService _recorderService;
         private DeviceService _deviceService;
         private Popup _controllerTypePopup;
+        private DateTime _popupClosedAt;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
+        private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
 
         public MainWindow()
         {
@@ -98,6 +100,12 @@ namespace PadForge
                 "Installing HidHide…", DriverInstaller.InstallHidHide, RefreshHidHideStatus);
             _viewModel.Settings.UninstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
                 "Uninstalling HidHide…", DriverInstaller.UninstallHidHide, RefreshHidHideStatus);
+
+            // Wire vJoy install/uninstall commands.
+            _viewModel.Settings.InstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
+                "Installing vJoy…", DriverInstaller.InstallVJoy, RefreshVJoyStatus);
+            _viewModel.Settings.UninstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
+                "Uninstalling vJoy…", DriverInstaller.UninstallVJoy, RefreshVJoyStatus);
 
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
@@ -189,6 +197,14 @@ namespace PadForge
                 var activePad = _viewModel.SelectedPad;
                 if (activePad != null)
                 {
+                    // Resolve human-friendly name for the recorded mapping.
+                    Guid deviceGuid = activePad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                    if (deviceGuid != Guid.Empty)
+                        InputService.ResolveDisplayText(result.Mapping, deviceGuid);
+
+                    // Update status with resolved name.
+                    _viewModel.StatusText = $"Recorded \"{result.Mapping.TargetLabel}\" \u2190 {result.Mapping.SourceDisplayText}";
+
                     if (activePad.IsMapAllActive)
                         activePad.OnMapAllItemCompleted();
                     else
@@ -285,6 +301,7 @@ namespace PadForge
                         SelectNavItemByTag("Dashboard");
 
                     _deviceService.DeleteSlot(slotIndex);
+                    _viewModel.Devices.RefreshSlotButtons();
                 }));
             };
 
@@ -297,9 +314,7 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
-                _viewModel.Pads[args.SlotIndex].OutputType = args.IsXbox
-                    ? VirtualControllerType.Xbox360
-                    : VirtualControllerType.DualShock4;
+                _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _settingsService.MarkDirty();
             };
 
@@ -360,6 +375,22 @@ namespace PadForge
             // Detect HidHide driver.
             RefreshHidHideStatus();
 
+            // Detect vJoy driver.
+            RefreshVJoyStatus();
+
+            // Periodically refresh driver install states (every 5 seconds).
+            _driverStatusTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(5)
+            };
+            _driverStatusTimer.Tick += (s, ev) =>
+            {
+                RefreshViGEmStatus();
+                RefreshHidHideStatus();
+                RefreshVJoyStatus();
+            };
+            _driverStatusTimer.Start();
+
             // Check SDL3.dll availability.
             try
             {
@@ -390,6 +421,10 @@ namespace PadForge
                 _settingsService.Save();
             }
 
+            // Stop driver status polling.
+            _driverStatusTimer?.Stop();
+            _driverStatusTimer = null;
+
             // Dispose tray icon.
             if (_notifyIcon != null)
             {
@@ -413,6 +448,7 @@ namespace PadForge
         // SVG path data for controller type icons — shared via ControllerIcons static class.
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
+        private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
 
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard + separator).</summary>
         private const int ControllerInsertIndex = 2;
@@ -594,7 +630,10 @@ namespace PadForge
         /// </summary>
         private void UpdateControllerNavItemContent(NavigationViewItem menuItem, NavControllerItemViewModel navItem)
         {
-            bool isXbox = navItem.IconKey != "DS4ControllerIcon";
+            string iconKey = navItem.IconKey;
+            bool isXbox = iconKey == "XboxControllerIcon";
+            bool isDS4 = iconKey == "DS4ControllerIcon";
+            bool isVJoy = iconKey == "VJoyControllerIcon";
 
             var row = new System.Windows.Controls.StackPanel
             {
@@ -644,7 +683,7 @@ namespace PadForge
             });
             row.Children.Add(new System.Windows.Controls.TextBlock
             {
-                Text = $"#{navItem.SlotNumber}",
+                Text = $"{navItem.SlotNumber}",
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -703,7 +742,7 @@ namespace PadForge
                 Padding = new Thickness(2),
                 MinWidth = 0,
                 MinHeight = 0,
-                Opacity = isXbox ? 0.3 : 1.0,
+                Opacity = isDS4 ? 1.0 : 0.3,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
@@ -711,6 +750,32 @@ namespace PadForge
             };
             ds4Btn.Click += OnSidebarTypeDS4;
             row.Children.Add(ds4Btn);
+
+            // vJoy type button — use SetResourceReference for theme-aware Fill.
+            var vjoyPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var vjoyBtn = new System.Windows.Controls.Button
+            {
+                Content = vjoyPath,
+                ToolTip = "vJoy",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isVJoy ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            vjoyBtn.Click += OnSidebarTypeVJoy;
+            row.Children.Add(vjoyBtn);
 
             // Per-type instance label.
             row.Children.Add(new System.Windows.Controls.TextBlock
@@ -789,6 +854,17 @@ namespace PadForge
             }
         }
 
+        /// <summary>Handles sidebar vJoy type button click.</summary>
+        private void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                _settingsService.MarkDirty();
+            }
+        }
+
         /// <summary>
         /// Handles the sidebar delete button click for a virtual controller slot.
         /// </summary>
@@ -828,16 +904,20 @@ namespace PadForge
         /// </summary>
         private bool HasAnyControllerTypeCapacity()
         {
-            int xboxCount = 0, ds4Count = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
-                if (_viewModel.Pads[i].OutputType == VirtualControllerType.Xbox360)
-                    xboxCount++;
-                else if (_viewModel.Pads[i].OutputType == VirtualControllerType.DualShock4)
-                    ds4Count++;
+                switch (_viewModel.Pads[i].OutputType)
+                {
+                    case VirtualControllerType.Xbox360: xboxCount++; break;
+                    case VirtualControllerType.DualShock4: ds4Count++; break;
+                    case VirtualControllerType.VJoy: vjoyCount++; break;
+                }
             }
-            return xboxCount < SettingsManager.MaxXbox360Slots || ds4Count < SettingsManager.MaxDS4Slots;
+            return xboxCount < SettingsManager.MaxXbox360Slots
+                || ds4Count < SettingsManager.MaxDS4Slots
+                || vjoyCount < SettingsManager.MaxVJoySlots;
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -850,6 +930,12 @@ namespace PadForge
                 return;
             }
 
+            // StaysOpen=false closes the popup when the anchor is clicked, then the
+            // click handler fires and would immediately reopen it. Suppress reopening
+            // if the popup was just dismissed within the same click cycle.
+            if ((DateTime.UtcNow - _popupClosedAt).TotalMilliseconds < 300)
+                return;
+
             var popup = new Popup
             {
                 StaysOpen = false,
@@ -857,7 +943,11 @@ namespace PadForge
                 PlacementTarget = anchor,
                 AllowsTransparency = true
             };
-            popup.Closed += (s, e) => _controllerTypePopup = null;
+            popup.Closed += (s, e) =>
+            {
+                _controllerTypePopup = null;
+                _popupClosedAt = DateTime.UtcNow;
+            };
             _controllerTypePopup = popup;
 
             // Center the popup horizontally below the anchor when using Bottom placement.
@@ -891,14 +981,16 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Count existing slots by type for per-type capacity check.
-            int xboxCount = 0, ds4Count = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
-                if (_viewModel.Pads[i].OutputType == VirtualControllerType.Xbox360)
-                    xboxCount++;
-                else if (_viewModel.Pads[i].OutputType == VirtualControllerType.DualShock4)
-                    ds4Count++;
+                switch (_viewModel.Pads[i].OutputType)
+                {
+                    case VirtualControllerType.Xbox360: xboxCount++; break;
+                    case VirtualControllerType.DualShock4: ds4Count++; break;
+                    case VirtualControllerType.VJoy: vjoyCount++; break;
+                }
             }
 
             // Xbox 360 button — theme-aware icon fill.
@@ -966,6 +1058,38 @@ namespace PadForge
                 }
             };
             stack.Children.Add(ds4Btn);
+
+            // vJoy button — theme-aware icon fill.
+            var vjoyPopupPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
+                Width = 28,
+                Height = 28,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            vjoyPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            bool vjoyAtCapacity = vjoyCount >= SettingsManager.MaxVJoySlots;
+            var vjoyBtn = new System.Windows.Controls.Button
+            {
+                Content = vjoyPopupPath,
+                ToolTip = vjoyAtCapacity ? $"vJoy (max {SettingsManager.MaxVJoySlots})" : "vJoy",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                IsEnabled = !vjoyAtCapacity,
+                Opacity = vjoyAtCapacity ? 0.35 : 1.0
+            };
+            vjoyBtn.Click += (s, e) =>
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.VJoy);
+                if (newSlot >= 0)
+                {
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(newSlot)));
+                }
+            };
+            stack.Children.Add(vjoyBtn);
 
             border.Child = stack;
             popup.Child = border;
@@ -1108,7 +1232,8 @@ namespace PadForge
             {
                 Id = snapshot.Id,
                 Name = snapshot.Name,
-                Executables = FormatExePaths(exePaths)
+                Executables = FormatExePaths(exePaths),
+                TopologyLabel = SettingsService.FormatTopologyLabel(snapshot.SlotCreated, snapshot.SlotControllerTypes)
             });
 
             _settingsService.MarkDirty();
@@ -1449,6 +1574,22 @@ namespace PadForge
             {
                 _viewModel.Settings.IsHidHideInstalled = false;
                 _viewModel.Dashboard.IsHidHideInstalled = false;
+            }
+        }
+
+        private void RefreshVJoyStatus()
+        {
+            try
+            {
+                bool installed = DriverInstaller.IsVJoyInstalled();
+                _viewModel.Settings.IsVJoyInstalled = installed;
+                _viewModel.Dashboard.IsVJoyInstalled = installed;
+                _viewModel.Settings.VJoyVersion = DriverInstaller.GetVJoyVersion() ?? string.Empty;
+            }
+            catch
+            {
+                _viewModel.Settings.IsVJoyInstalled = false;
+                _viewModel.Dashboard.IsVJoyInstalled = false;
             }
         }
     }

@@ -28,7 +28,7 @@
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Opacity="0.85">
                     PadForge maps any controller to virtually any other controller type
-                    via ViGEmBus. It uses SDL3 for robust device enumeration and input,
+                    via ViGEmBus and vJoy. It uses SDL3 for robust device enumeration and input,
                     and provides a modern Fluent Design interface for mapping, dead zone
                     configuration, and force feedback management.
                 </TextBlock>
@@ -52,6 +52,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text=".NET 8" FontWeight="SemiBold"/>
@@ -66,13 +67,18 @@
                                Text="Virtual controller driver (Xbox 360, DualShock 4)"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="3" Text="ModernWpf" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="3" Text="vJoy" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="3" Grid.Column="1"
+                               Text="Virtual joystick driver for custom HID output"
+                               Opacity="0.7" Margin="0,6,0,0"/>
+
+                    <TextBlock Grid.Row="4" Text="ModernWpf" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1"
                                Text="Fluent Design theme for WPF"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="4" Text="MVVM Toolkit" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1"
+                    <TextBlock Grid.Row="5" Text="MVVM Toolkit" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1"
                                Text="CommunityToolkit.Mvvm for data binding"
                                Opacity="0.7" Margin="0,6,0,0"/>
                 </Grid>
@@ -90,6 +96,7 @@
                     Portions derived from x360ce, which is licensed under the MIT License.
                     SDL3 is licensed under the zlib License.
                     ViGEmBus is licensed under the MIT License.
+                    vJoy is licensed under the MIT License.
                 </TextBlock>
             </Border>
 

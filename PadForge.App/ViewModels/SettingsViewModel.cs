@@ -150,6 +150,61 @@ namespace PadForge.ViewModels
         public event EventHandler UninstallHidHideRequested;
 
         // ─────────────────────────────────────────────
+        //  vJoy driver
+        // ─────────────────────────────────────────────
+
+        private bool _isVJoyInstalled;
+
+        /// <summary>Whether the vJoy driver is installed and the DLL is accessible.</summary>
+        public bool IsVJoyInstalled
+        {
+            get => _isVJoyInstalled;
+            set
+            {
+                if (SetProperty(ref _isVJoyInstalled, value))
+                {
+                    OnPropertyChanged(nameof(VJoyStatusText));
+                    _installVJoyCommand?.NotifyCanExecuteChanged();
+                    _uninstallVJoyCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>vJoy status display text.</summary>
+        public string VJoyStatusText => _isVJoyInstalled ? "Installed" : "Not Installed";
+
+        private string _vjoyVersion = string.Empty;
+
+        /// <summary>vJoy driver version string.</summary>
+        public string VJoyVersion
+        {
+            get => _vjoyVersion;
+            set => SetProperty(ref _vjoyVersion, value);
+        }
+
+        private RelayCommand _installVJoyCommand;
+
+        /// <summary>Command to install the vJoy driver.</summary>
+        public RelayCommand InstallVJoyCommand =>
+            _installVJoyCommand ??= new RelayCommand(
+                () => InstallVJoyRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isVJoyInstalled);
+
+        private RelayCommand _uninstallVJoyCommand;
+
+        /// <summary>Command to uninstall the vJoy driver.</summary>
+        public RelayCommand UninstallVJoyCommand =>
+            _uninstallVJoyCommand ??= new RelayCommand(
+                () => UninstallVJoyRequested?.Invoke(this, EventArgs.Empty),
+                () => _isVJoyInstalled);
+
+        /// <summary>Raised when the user requests vJoy installation.</summary>
+        public event EventHandler InstallVJoyRequested;
+
+        /// <summary>Raised when the user requests vJoy uninstallation.</summary>
+        public event EventHandler UninstallVJoyRequested;
+
+        // ─────────────────────────────────────────────
         //  Engine settings
         // ─────────────────────────────────────────────
 
@@ -470,6 +525,13 @@ namespace PadForge.ViewModels
         {
             get => _executables;
             set => SetProperty(ref _executables, value);
+        }
+
+        private string _topologyLabel;
+        public string TopologyLabel
+        {
+            get => _topologyLabel;
+            set => SetProperty(ref _topologyLabel, value);
         }
     }
 }

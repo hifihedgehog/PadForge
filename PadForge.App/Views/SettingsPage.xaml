@@ -185,6 +185,47 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ vJoy ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="vJoy Driver" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Virtual joystick driver for custom HID device output."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="8" Height="8"
+                                         Fill="{Binding IsVJoyInstalled, Converter={StaticResource BoolToColorConverter}}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding VJoyStatusText}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding VJoyVersion}" FontSize="12"
+                                       Opacity="0.6" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="Install"
+                                    Command="{Binding InstallVJoyCommand}"
+                                    Visibility="{Binding IsVJoyInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Uninstall"
+                                    Command="{Binding UninstallVJoyCommand}"
+                                    Visibility="{Binding IsVJoyInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Settings File ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

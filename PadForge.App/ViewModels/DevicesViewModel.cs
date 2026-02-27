@@ -76,52 +76,87 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
-        //  Raw state display (for selected device)
+        //  Raw state display (structured, for selected device)
         // ─────────────────────────────────────────────
 
-        private string _rawAxisDisplay = string.Empty;
+        /// <summary>Structured axis values for visual display (progress bars).</summary>
+        public ObservableCollection<AxisDisplayItem> RawAxes { get; } = new();
 
-        /// <summary>Formatted string showing all axis values for the selected device.</summary>
-        public string RawAxisDisplay
+        /// <summary>Structured button states for visual display (circles).</summary>
+        public ObservableCollection<ButtonDisplayItem> RawButtons { get; } = new();
+
+        /// <summary>Structured POV hat values for visual display (compass).</summary>
+        public ObservableCollection<PovDisplayItem> RawPovs { get; } = new();
+
+        private int _selectedButtonTotal;
+
+        /// <summary>Total number of buttons on the selected device.</summary>
+        public int SelectedButtonTotal
         {
-            get => _rawAxisDisplay;
-            set => SetProperty(ref _rawAxisDisplay, value);
+            get => _selectedButtonTotal;
+            set => SetProperty(ref _selectedButtonTotal, value);
         }
 
-        private string _rawButtonDisplay = string.Empty;
+        private bool _hasRawData;
 
-        /// <summary>Formatted string showing all button states for the selected device.</summary>
-        public string RawButtonDisplay
+        /// <summary>Whether raw state data is available for the selected device.</summary>
+        public bool HasRawData
         {
-            get => _rawButtonDisplay;
-            set => SetProperty(ref _rawButtonDisplay, value);
+            get => _hasRawData;
+            set => SetProperty(ref _hasRawData, value);
         }
 
-        private string _rawPovDisplay = string.Empty;
+        // Gyroscope / Accelerometer individual values
 
-        /// <summary>Formatted string showing all POV hat values for the selected device.</summary>
-        public string RawPovDisplay
+        private bool _hasGyroData;
+        public bool HasGyroData { get => _hasGyroData; set => SetProperty(ref _hasGyroData, value); }
+
+        private bool _hasAccelData;
+        public bool HasAccelData { get => _hasAccelData; set => SetProperty(ref _hasAccelData, value); }
+
+        private double _gyroX, _gyroY, _gyroZ;
+        public double GyroX { get => _gyroX; set => SetProperty(ref _gyroX, value); }
+        public double GyroY { get => _gyroY; set => SetProperty(ref _gyroY, value); }
+        public double GyroZ { get => _gyroZ; set => SetProperty(ref _gyroZ, value); }
+
+        private double _accelX, _accelY, _accelZ;
+        public double AccelX { get => _accelX; set => SetProperty(ref _accelX, value); }
+        public double AccelY { get => _accelY; set => SetProperty(ref _accelY, value); }
+        public double AccelZ { get => _accelZ; set => SetProperty(ref _accelZ, value); }
+
+        /// <summary>Tracks which device's collections are currently populated.</summary>
+        internal Guid LastRawStateDeviceGuid { get; set; }
+
+        /// <summary>
+        /// Rebuilds the raw state collections for a new device with the given capabilities.
+        /// </summary>
+        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount)
         {
-            get => _rawPovDisplay;
-            set => SetProperty(ref _rawPovDisplay, value);
+            RawAxes.Clear();
+            for (int i = 0; i < axisCount; i++)
+                RawAxes.Add(new AxisDisplayItem { Index = i, Name = $"Axis {i}" });
+
+            RawButtons.Clear();
+            for (int i = 0; i < buttonCount; i++)
+                RawButtons.Add(new ButtonDisplayItem { Index = i });
+
+            RawPovs.Clear();
+            for (int i = 0; i < povCount; i++)
+                RawPovs.Add(new PovDisplayItem { Index = i });
+
+            SelectedButtonTotal = buttonCount;
         }
 
-        private string _rawGyroDisplay = string.Empty;
-
-        /// <summary>Formatted string showing gyroscope sensor data (rad/s).</summary>
-        public string RawGyroDisplay
+        /// <summary>Clears all raw state display data.</summary>
+        internal void ClearRawState()
         {
-            get => _rawGyroDisplay;
-            set => SetProperty(ref _rawGyroDisplay, value);
-        }
-
-        private string _rawAccelDisplay = string.Empty;
-
-        /// <summary>Formatted string showing accelerometer sensor data (m/s²).</summary>
-        public string RawAccelDisplay
-        {
-            get => _rawAccelDisplay;
-            set => SetProperty(ref _rawAccelDisplay, value);
+            RawAxes.Clear();
+            RawButtons.Clear();
+            RawPovs.Clear();
+            HasRawData = false;
+            HasGyroData = false;
+            HasAccelData = false;
+            LastRawStateDeviceGuid = Guid.Empty;
         }
 
         // ─────────────────────────────────────────────
@@ -339,5 +374,69 @@ namespace PadForge.ViewModels
             get => _isAssigned;
             set => SetProperty(ref _isAssigned, value);
         }
+    }
+
+    /// <summary>Visual display item for a single axis value.</summary>
+    public class AxisDisplayItem : ObservableObject
+    {
+        public int Index { get; set; }
+        public string Name { get; set; } = string.Empty;
+
+        private double _normalizedValue;
+        /// <summary>Axis value normalized to 0.0–1.0 range.</summary>
+        public double NormalizedValue
+        {
+            get => _normalizedValue;
+            set => SetProperty(ref _normalizedValue, value);
+        }
+
+        private int _rawValue;
+        /// <summary>Raw axis value (0–65535).</summary>
+        public int RawValue
+        {
+            get => _rawValue;
+            set => SetProperty(ref _rawValue, value);
+        }
+    }
+
+    /// <summary>Visual display item for a single button state.</summary>
+    public class ButtonDisplayItem : ObservableObject
+    {
+        public int Index { get; set; }
+
+        private bool _isPressed;
+        /// <summary>Whether the button is currently pressed.</summary>
+        public bool IsPressed
+        {
+            get => _isPressed;
+            set => SetProperty(ref _isPressed, value);
+        }
+    }
+
+    /// <summary>Visual display item for a single POV hat switch.</summary>
+    public class PovDisplayItem : ObservableObject
+    {
+        public int Index { get; set; }
+
+        private int _centidegrees = -1;
+        /// <summary>POV value in centidegrees (0–35900), or -1 for centered.</summary>
+        public int Centidegrees
+        {
+            get => _centidegrees;
+            set
+            {
+                if (SetProperty(ref _centidegrees, value))
+                {
+                    OnPropertyChanged(nameof(IsCentered));
+                    OnPropertyChanged(nameof(AngleDegrees));
+                }
+            }
+        }
+
+        /// <summary>Whether the POV is centered (no direction).</summary>
+        public bool IsCentered => _centidegrees < 0;
+
+        /// <summary>Direction in degrees (0–359) for rotation transforms.</summary>
+        public double AngleDegrees => _centidegrees >= 0 ? _centidegrees / 100.0 : 0;
     }
 }

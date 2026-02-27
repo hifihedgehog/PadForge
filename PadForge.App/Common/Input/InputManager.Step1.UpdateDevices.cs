@@ -25,11 +25,8 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly HashSet<uint> _openedSdlInstanceIds = new HashSet<uint>();
 
-        /// <summary>Tracked keyboard SDL instance IDs.</summary>
-        private readonly HashSet<uint> _openedKeyboardIds = new HashSet<uint>();
-
-        /// <summary>Tracked mouse SDL instance IDs.</summary>
-        private readonly HashSet<uint> _openedMouseIds = new HashSet<uint>();
+        // Keyboard/mouse tracking moved to _openedKeyboardHandles / _openedMouseHandles
+        // (Raw Input IntPtr handles instead of SDL uint IDs).
 
         /// <summary>
         /// SDL instance IDs identified as ViGEm virtual controllers.
@@ -159,10 +156,10 @@ namespace PadForge.Common.Input
             }
 
             // Detect disconnected keyboards.
-            changed |= DetectDisconnected(_openedKeyboardIds, SDL_GetKeyboards());
+            changed |= DetectDisconnectedHandles(_openedKeyboardHandles, RawInputListener.EnumerateKeyboards());
 
             // Detect disconnected mice.
-            changed |= DetectDisconnected(_openedMouseIds, SDL_GetMice());
+            changed |= DetectDisconnectedHandles(_openedMouseHandles, RawInputListener.EnumerateMice());
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
             _filteredVigemInstanceIds.IntersectWith(currentInstanceIds);
@@ -410,23 +407,36 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Enumerates connected keyboards via SDL_GetKeyboards and creates UserDevice
+        /// Tracked Raw Input keyboard device handles.
+        /// </summary>
+        private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
+
+        /// <summary>
+        /// Tracked Raw Input mouse device handles.
+        /// </summary>
+        private readonly HashSet<IntPtr> _openedMouseHandles = new HashSet<IntPtr>();
+
+        /// <summary>
+        /// Enumerates connected keyboards via Raw Input and creates UserDevice
         /// records for any new keyboards. Returns true if a new keyboard was found.
         /// </summary>
         private bool EnumerateKeyboards()
         {
-            uint[] keyboardIds = SDL_GetKeyboards();
+            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
+            PruneOrphanedHandles(_openedKeyboardHandles);
+
+            var keyboards = RawInputListener.EnumerateKeyboards();
             bool changed = false;
 
-            foreach (uint kbId in keyboardIds)
+            foreach (var kb in keyboards)
             {
-                if (_openedKeyboardIds.Contains(kbId))
+                if (_openedKeyboardHandles.Contains(kb.Handle))
                     continue;
 
                 try
                 {
                     var wrapper = new SdlKeyboardWrapper();
-                    if (!wrapper.Open(kbId))
+                    if (!wrapper.Open(kb))
                     {
                         wrapper.Dispose();
                         continue;
@@ -436,12 +446,12 @@ namespace PadForge.Common.Input
                     ud.LoadFromKeyboardDevice(wrapper);
                     ud.IsOnline = true;
 
-                    _openedKeyboardIds.Add(kbId);
+                    _openedKeyboardHandles.Add(kb.Handle);
                     changed = true;
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening keyboard (instance {kbId})", ex);
+                    RaiseError($"Error opening keyboard ({kb.Name})", ex);
                 }
             }
 
@@ -449,23 +459,26 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Enumerates connected mice via SDL_GetMice and creates UserDevice
+        /// Enumerates connected mice via Raw Input and creates UserDevice
         /// records for any new mice. Returns true if a new mouse was found.
         /// </summary>
         private bool EnumerateMice()
         {
-            uint[] mouseIds = SDL_GetMice();
+            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
+            PruneOrphanedHandles(_openedMouseHandles);
+
+            var mice = RawInputListener.EnumerateMice();
             bool changed = false;
 
-            foreach (uint mouseId in mouseIds)
+            foreach (var mouse in mice)
             {
-                if (_openedMouseIds.Contains(mouseId))
+                if (_openedMouseHandles.Contains(mouse.Handle))
                     continue;
 
                 try
                 {
                     var wrapper = new SdlMouseWrapper();
-                    if (!wrapper.Open(mouseId))
+                    if (!wrapper.Open(mouse))
                     {
                         wrapper.Dispose();
                         continue;
@@ -475,12 +488,12 @@ namespace PadForge.Common.Input
                     ud.LoadFromMouseDevice(wrapper);
                     ud.IsOnline = true;
 
-                    _openedMouseIds.Add(mouseId);
+                    _openedMouseHandles.Add(mouse.Handle);
                     changed = true;
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening mouse (instance {mouseId})", ex);
+                    RaiseError($"Error opening mouse ({mouse.Name})", ex);
                 }
             }
 
@@ -488,37 +501,93 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Detects disconnected keyboards or mice by comparing tracked IDs to current SDL IDs.
-        /// Marks disconnected devices offline and removes them from tracking.
+        /// Detects disconnected keyboards or mice by comparing tracked handles
+        /// to current Raw Input device handles. Marks disconnected devices offline
+        /// and removes their tracking entries so they can be re-opened on reconnect.
         /// </summary>
-        private bool DetectDisconnected(HashSet<uint> trackedIds, uint[] currentIds)
+        private bool DetectDisconnectedHandles(
+            HashSet<IntPtr> trackedHandles, RawInputListener.DeviceInfo[] currentDevices)
         {
-            if (trackedIds.Count == 0)
+            if (trackedHandles.Count == 0)
                 return false;
 
-            var currentSet = new HashSet<uint>(currentIds);
-            var disconnected = new List<uint>();
+            var currentSet = new HashSet<IntPtr>();
+            for (int i = 0; i < currentDevices.Length; i++)
+                currentSet.Add(currentDevices[i].Handle);
+
+            var disconnected = new List<IntPtr>();
             bool changed = false;
 
-            foreach (uint id in trackedIds)
+            foreach (IntPtr handle in trackedHandles)
             {
-                if (!currentSet.Contains(id))
+                if (!currentSet.Contains(handle))
                 {
-                    // Find by checking all devices whose SdlInstanceId matches.
-                    UserDevice ud = FindOnlineDeviceBySdlInstanceId(id);
+                    // Find by InstanceGuid (built from device path, same as wrapper).
+                    UserDevice ud = FindOnlineDeviceByHandle(handle);
                     if (ud != null)
                     {
                         MarkDeviceOffline(ud);
                         changed = true;
                     }
-                    disconnected.Add(id);
+                    disconnected.Add(handle);
                 }
             }
 
-            foreach (uint id in disconnected)
-                trackedIds.Remove(id);
+            foreach (IntPtr handle in disconnected)
+                trackedHandles.Remove(handle);
 
             return changed;
+        }
+
+        /// <summary>
+        /// Removes tracked handles that no longer have a corresponding UserDevice.
+        /// This handles the case where the user removes a device via the UI while
+        /// it's still physically connected — the tracking must be cleared so the
+        /// device can be re-detected on the next enumeration cycle.
+        /// </summary>
+        private void PruneOrphanedHandles(HashSet<IntPtr> trackedHandles)
+        {
+            if (trackedHandles.Count == 0)
+                return;
+
+            var toRemove = new List<IntPtr>();
+            foreach (IntPtr handle in trackedHandles)
+            {
+                if (FindOnlineDeviceByHandle(handle) == null)
+                    toRemove.Add(handle);
+            }
+
+            for (int i = 0; i < toRemove.Count; i++)
+                trackedHandles.Remove(toRemove[i]);
+        }
+
+        /// <summary>
+        /// Finds an online device that was opened from the given Raw Input handle.
+        /// Checks the RawInputHandle property on keyboard/mouse wrappers.
+        /// </summary>
+        private UserDevice FindOnlineDeviceByHandle(IntPtr handle)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return null;
+
+            // The keyboard/mouse wrappers store _sdlId = (uint)devicePath.GetHashCode().
+            // We need to match on the device reference since we can't recover the path
+            // from just the handle. Check Device.RawInputHandle for keyboard/mouse wrappers.
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (!d.IsOnline || d.Device == null)
+                        continue;
+
+                    if (d.Device is SdlKeyboardWrapper kb && kb.RawInputHandle == handle)
+                        return d;
+                    if (d.Device is SdlMouseWrapper mouse && mouse.RawInputHandle == handle)
+                        return d;
+                }
+                return null;
+            }
         }
     }
 

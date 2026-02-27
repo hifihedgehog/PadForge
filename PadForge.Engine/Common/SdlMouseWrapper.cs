@@ -1,31 +1,24 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using SDL3;
 using static SDL3.SDL;
 
 namespace PadForge.Engine
 {
     /// <summary>
-    /// Wraps an SDL mouse device to provide unified input access via
-    /// <see cref="ISdlInputDevice"/>. Buttons map to Buttons[0..4],
-    /// relative motion maps to Axis[0] (X) and Axis[1] (Y).
+    /// Wraps a mouse device for unified input via <see cref="ISdlInputDevice"/>.
+    /// State is read from Raw Input (per-device) via <see cref="RawInputListener"/>.
     /// </summary>
     public class SdlMouseWrapper : ISdlInputDevice
     {
         private uint _sdlId;
+        private IntPtr _rawInputHandle;
         private bool _disposed;
+        private bool _isRawInputDevice;
 
-        /// <summary>Number of mouse buttons (left, middle, right, X1, X2).</summary>
         private const int MouseButtons = 5;
-
-        /// <summary>Number of mouse axes (X delta, Y delta).</summary>
         private const int MouseAxes = 2;
-
-        /// <summary>Center value for unsigned axis range (0-65535).</summary>
         private const int AxisCenter = 32767;
-
-        /// <summary>Scale factor for relative mouse motion to axis range.</summary>
         private const float MotionScale = 256f;
 
         public uint SdlInstanceId => _sdlId;
@@ -41,17 +34,31 @@ namespace PadForge.Engine
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;
-        public ushort VendorId => 0;
-        public ushort ProductId => 0;
+        public ushort VendorId { get; private set; }
+        public ushort ProductId { get; private set; }
         public string DevicePath { get; private set; } = string.Empty;
         public string SerialNumber => string.Empty;
         public Guid InstanceGuid { get; private set; }
         public Guid ProductGuid { get; private set; }
 
+        /// <summary>The Raw Input device handle for per-device state reading.</summary>
+        public IntPtr RawInputHandle => _rawInputHandle;
+
         public bool IsAttached
         {
             get
             {
+                if (_isRawInputDevice)
+                {
+                    var devices = RawInputListener.EnumerateMice();
+                    for (int i = 0; i < devices.Length; i++)
+                    {
+                        if (devices[i].Handle == _rawInputHandle)
+                            return true;
+                    }
+                    return false;
+                }
+
                 var ids = SDL_GetMice();
                 for (int i = 0; i < ids.Length; i++)
                 {
@@ -63,44 +70,45 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Opens the mouse with the given SDL instance ID.
+        /// Opens the mouse from a Raw Input device enumeration result.
         /// </summary>
-        public bool Open(uint mouseId)
+        public bool Open(RawInputListener.DeviceInfo deviceInfo)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(SdlMouseWrapper));
 
-            _sdlId = mouseId;
-            Name = SDL_GetMouseNameForID(mouseId);
-            if (string.IsNullOrEmpty(Name))
-                Name = "Mouse";
+            _isRawInputDevice = true;
+            _rawInputHandle = deviceInfo.Handle;
+            Name = deviceInfo.Name;
+            DevicePath = deviceInfo.DevicePath;
 
-            DevicePath = $"Mouse#{mouseId}";
-
-            InstanceGuid = BuildGuid($"Mouse#{mouseId}");
+            InstanceGuid = BuildGuid(deviceInfo.DevicePath);
             ProductGuid = BuildGuid("Mouse");
+            VendorId = deviceInfo.VendorId;
+            ProductId = deviceInfo.ProductId;
+
+            _sdlId = (uint)deviceInfo.DevicePath.GetHashCode();
 
             return true;
         }
+
+        /// <summary>Pre-allocated buffer for mouse button reads.</summary>
+        private readonly bool[] _mouseButtonBuffer = new bool[5];
 
         public CustomInputState GetCurrentState()
         {
             var state = new CustomInputState();
 
-            // Relative mouse motion → axes centered at 32767.
-            // GetRelativeMouseState returns delta since last call.
-            uint buttons = SDL_GetRelativeMouseState(out float dx, out float dy);
-
-            // Scale and clamp to unsigned axis range.
+            RawInputListener.ConsumeMouseDelta(_rawInputHandle, out int dx, out int dy);
             state.Axis[0] = Math.Clamp(AxisCenter + (int)(dx * MotionScale), 0, 65535);
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);
 
-            // Mouse buttons from bitmask.
-            state.Buttons[0] = (buttons & SDL_BUTTON_LMASK) != 0;
-            state.Buttons[1] = (buttons & SDL_BUTTON_MMASK) != 0;
-            state.Buttons[2] = (buttons & SDL_BUTTON_RMASK) != 0;
-            state.Buttons[3] = (buttons & SDL_BUTTON_X1MASK) != 0;
-            state.Buttons[4] = (buttons & SDL_BUTTON_X2MASK) != 0;
+            RawInputListener.GetMouseButtons(_rawInputHandle, _mouseButtonBuffer);
+            state.Buttons[0] = _mouseButtonBuffer[0]; // Left
+            state.Buttons[1] = _mouseButtonBuffer[1]; // Middle
+            state.Buttons[2] = _mouseButtonBuffer[2]; // Right
+            state.Buttons[3] = _mouseButtonBuffer[3]; // X1
+            state.Buttons[4] = _mouseButtonBuffer[4]; // X2
 
             return state;
         }
@@ -110,7 +118,6 @@ namespace PadForge.Engine
             var items = new DeviceObjectItem[MouseAxes + MouseButtons];
             int index = 0;
 
-            // Axes
             items[index++] = new DeviceObjectItem
             {
                 InputIndex = 0,
@@ -130,7 +137,6 @@ namespace PadForge.Engine
                 Aspect = ObjectAspect.Position
             };
 
-            // Buttons
             string[] buttonNames = { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
             for (int i = 0; i < MouseButtons; i++)
             {

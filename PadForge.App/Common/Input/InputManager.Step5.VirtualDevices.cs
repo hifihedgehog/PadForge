@@ -269,27 +269,31 @@ namespace PadForge.Common.Input
 
         private IVirtualController CreateVirtualController(int padIndex)
         {
-            if (_vigemClient == null)
+            var controllerType = SlotControllerTypes[padIndex];
+
+            // vJoy doesn't need ViGEm, but Xbox 360 and DS4 do.
+            if (controllerType != VirtualControllerType.VJoy && _vigemClient == null)
                 return null;
 
             try
             {
                 // Snapshot XInput slot mask BEFORE connecting (Xbox 360 only).
                 uint maskBefore = 0;
-                var controllerType = SlotControllerTypes[padIndex];
                 if (controllerType == VirtualControllerType.Xbox360)
                     maskBefore = GetXInputConnectedSlotMask();
 
                 IVirtualController vc = controllerType switch
                 {
                     VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
+                    VirtualControllerType.VJoy => CreateVJoyController(),
                     _ => new Xbox360VirtualController(_vigemClient)
                 };
 
+                if (vc == null) return null;
                 vc.Connect();
 
                 // Wait for the new XInput slot to appear (Xbox 360 only).
-                // DS4 virtual controllers don't appear in the XInput stack.
+                // DS4 and vJoy virtual controllers don't appear in the XInput stack.
                 if (controllerType == VirtualControllerType.Xbox360)
                 {
                     var waitSw = Stopwatch.StartNew();
@@ -316,6 +320,21 @@ namespace PadForge.Common.Input
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Creates a vJoy virtual controller using the next available device ID.
+        /// Returns null if vJoy driver is not installed or no free devices.
+        /// </summary>
+        private IVirtualController CreateVJoyController()
+        {
+            uint deviceId = VJoyVirtualController.FindFreeDeviceId();
+            if (deviceId == 0)
+            {
+                RaiseError("No free vJoy devices available. Configure devices in vJoy Configuration.", null);
+                return null;
+            }
+            return new VJoyVirtualController(deviceId);
         }
 
         private void DestroyVirtualController(int padIndex)

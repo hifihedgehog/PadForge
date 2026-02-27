@@ -24,8 +24,8 @@ namespace PadForge.Engine
         /// <summary>Maximum number of POV hat switches.</summary>
         public const int MaxPovs = 4;
 
-        /// <summary>Maximum number of buttons.</summary>
-        public const int MaxButtons = 128;
+        /// <summary>Maximum number of buttons (256 covers full Windows VK code range).</summary>
+        public const int MaxButtons = 256;
 
         /// <summary>
         /// Axis values (unsigned, 0–65535). Indices 0–5 correspond to standard axes

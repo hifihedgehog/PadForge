@@ -1,12 +1,13 @@
 namespace PadForge.Engine
 {
     /// <summary>
-    /// Type of virtual controller to create via ViGEmBus.
+    /// Type of virtual controller to create.
     /// </summary>
     public enum VirtualControllerType
     {
         Xbox360 = 0,
-        DualShock4 = 1
+        DualShock4 = 1,
+        VJoy = 2
     }
 
     /// <summary>

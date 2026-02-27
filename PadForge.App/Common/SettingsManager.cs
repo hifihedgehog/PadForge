@@ -53,6 +53,9 @@ namespace PadForge.Common.Input
         /// <summary>Maximum number of DualShock 4 virtual controllers (ViGEm limit).</summary>
         public const int MaxDS4Slots = 4;
 
+        /// <summary>Maximum number of vJoy virtual controllers (vJoy driver limit).</summary>
+        public const int MaxVJoySlots = 16;
+
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 

@@ -403,6 +403,7 @@ namespace PadForge.Engine.Data
             if (wrapper.HasRumble || wrapper.HasHaptic)
                 ForceFeedbackState = new ForceFeedbackState();
 
+            // Store the device wrapper for state reading in the polling loop.
             Device = wrapper;
         }
 

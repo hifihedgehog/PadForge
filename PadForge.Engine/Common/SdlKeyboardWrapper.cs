@@ -1,21 +1,22 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
-using SDL3;
 using static SDL3.SDL;
 
 namespace PadForge.Engine
 {
     /// <summary>
-    /// Wraps an SDL keyboard device to provide unified input access via
-    /// <see cref="ISdlInputDevice"/>. Each key scancode maps to a button index.
+    /// Wraps a keyboard device for unified input via <see cref="ISdlInputDevice"/>.
+    /// State is read from Raw Input (per-device) via <see cref="RawInputListener"/>.
+    /// Enumeration uses either SDL or Raw Input depending on how the device was opened.
     /// </summary>
     public class SdlKeyboardWrapper : ISdlInputDevice
     {
         private uint _sdlId;
+        private IntPtr _rawInputHandle;
         private int _numKeys;
         private bool _disposed;
+        private bool _isRawInputDevice;
 
         public uint SdlInstanceId => _sdlId;
         public string Name { get; private set; } = "Keyboard";
@@ -30,17 +31,31 @@ namespace PadForge.Engine
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;
-        public ushort VendorId => 0;
-        public ushort ProductId => 0;
+        public ushort VendorId { get; private set; }
+        public ushort ProductId { get; private set; }
         public string DevicePath { get; private set; } = string.Empty;
         public string SerialNumber => string.Empty;
         public Guid InstanceGuid { get; private set; }
         public Guid ProductGuid { get; private set; }
 
+        /// <summary>The Raw Input device handle for per-device state reading.</summary>
+        public IntPtr RawInputHandle => _rawInputHandle;
+
         public bool IsAttached
         {
             get
             {
+                if (_isRawInputDevice)
+                {
+                    var devices = RawInputListener.EnumerateKeyboards();
+                    for (int i = 0; i < devices.Length; i++)
+                    {
+                        if (devices[i].Handle == _rawInputHandle)
+                            return true;
+                    }
+                    return false;
+                }
+
                 var ids = SDL_GetKeyboards();
                 for (int i = 0; i < ids.Length; i++)
                 {
@@ -52,46 +67,35 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Opens the keyboard with the given SDL instance ID.
+        /// Opens the keyboard from a Raw Input device enumeration result.
         /// </summary>
-        public bool Open(uint keyboardId)
+        public bool Open(RawInputListener.DeviceInfo deviceInfo)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(SdlKeyboardWrapper));
 
-            _sdlId = keyboardId;
-            Name = SDL_GetKeyboardNameForID(keyboardId);
-            if (string.IsNullOrEmpty(Name))
-                Name = "Keyboard";
+            _isRawInputDevice = true;
+            _rawInputHandle = deviceInfo.Handle;
+            Name = deviceInfo.Name;
+            DevicePath = deviceInfo.DevicePath;
 
-            DevicePath = $"Keyboard#{keyboardId}";
+            _numKeys = Math.Min(256, CustomInputState.MaxButtons);
 
-            // Get the number of scancodes. Clamp to MaxButtons.
-            IntPtr statePtr = SDL_GetKeyboardState(out int numKeys);
-            _numKeys = Math.Min(numKeys, CustomInputState.MaxButtons);
-
-            // Build deterministic GUIDs.
-            InstanceGuid = BuildGuid($"Keyboard#{keyboardId}");
+            InstanceGuid = BuildGuid(deviceInfo.DevicePath);
             ProductGuid = BuildGuid("Keyboard");
+            VendorId = deviceInfo.VendorId;
+            ProductId = deviceInfo.ProductId;
+
+            // Use a hash of the device path as a pseudo SDL instance ID for tracking.
+            _sdlId = (uint)deviceInfo.DevicePath.GetHashCode();
 
             return true;
         }
 
         public CustomInputState GetCurrentState()
         {
-            IntPtr statePtr = SDL_GetKeyboardState(out int numKeys);
-            if (statePtr == IntPtr.Zero)
-                return null;
-
             var state = new CustomInputState();
-            int count = Math.Min(numKeys, state.Buttons.Length);
-
-            // SDL_GetKeyboardState returns an array of SDL_bool (1 byte each in SDL3).
-            for (int i = 0; i < count; i++)
-            {
-                state.Buttons[i] = Marshal.ReadByte(statePtr, i) != 0;
-            }
-
+            RawInputListener.GetKeyboardState(_rawInputHandle, state.Buttons, state.Buttons.Length);
             return state;
         }
 
@@ -100,7 +104,7 @@ namespace PadForge.Engine
             var items = new DeviceObjectItem[_numKeys];
             for (int i = 0; i < _numKeys; i++)
             {
-                string name = (i < ScancodeName.Length) ? ScancodeName[i] : $"Key {i}";
+                string name = (i < VirtualKeyName.Length) ? VirtualKeyName[i] : $"Key {i}";
                 items[i] = new DeviceObjectItem
                 {
                     InputIndex = i,

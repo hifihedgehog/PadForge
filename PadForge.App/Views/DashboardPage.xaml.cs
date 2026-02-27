@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
+using PadForge.Engine;
 
 namespace PadForge.Views
 {
@@ -24,8 +25,8 @@ namespace PadForge.Views
         /// <summary>Raised when the user clicks the power button to toggle enabled state.</summary>
         public event EventHandler<(int SlotIndex, bool IsEnabled)> SlotEnabledToggled;
 
-        /// <summary>Raised when the user clicks an Xbox/PS type icon to change controller type.</summary>
-        public event EventHandler<(int SlotIndex, bool IsXbox)> SlotTypeChangeRequested;
+        /// <summary>Raised when the user clicks a type icon to change controller type.</summary>
+        public event EventHandler<(int SlotIndex, VirtualControllerType Type)> SlotTypeChangeRequested;
 
         private void AddControllerCard_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -51,13 +52,19 @@ namespace PadForge.Views
         private void XboxType_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, true));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Xbox360));
         }
 
         private void DS4Type_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, false));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.DualShock4));
+        }
+
+        private void VJoyType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int slotIndex)
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.VJoy));
         }
     }
 }

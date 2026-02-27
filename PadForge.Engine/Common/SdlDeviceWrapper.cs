@@ -402,7 +402,7 @@ namespace PadForge.Engine
 
             // --- Extra raw buttons ---
             // Append raw joystick buttons beyond the 11 standard gamepad buttons.
-            // This exposes native device buttons (e.g. DualSense touchpad, mic) that
+            // This exposes native device buttons (e.g. DualSense touchpad) that
             // aren't part of the Xbox gamepad mapping, for use as macro triggers.
             int rawCount = RawButtonCount;
             for (int i = 11; i < rawCount && i < CustomInputState.MaxButtons; i++)

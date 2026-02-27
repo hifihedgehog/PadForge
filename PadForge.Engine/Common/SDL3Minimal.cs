@@ -356,6 +356,9 @@ namespace SDL3
         public static extern void SDL_UpdateJoysticks();
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SDL_PumpEvents();
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern short SDL_GetJoystickAxis(IntPtr joystick, int axis);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetJoystickButton")]
@@ -770,79 +773,88 @@ namespace SDL3
         //  We define only the subset needed for button naming.
         // ─────────────────────────────────────────────
 
-        public static readonly string[] ScancodeName = BuildScancodeNames();
+        /// <summary>
+        /// Human-readable names for Windows Virtual Key codes (0-255).
+        /// Used by SdlKeyboardWrapper.GetDeviceObjects() for button naming.
+        /// </summary>
+        public static readonly string[] VirtualKeyName = BuildVirtualKeyNames();
 
-        private static string[] BuildScancodeNames()
+        private static string[] BuildVirtualKeyNames()
         {
-            var names = new string[512];
+            var names = new string[256];
             for (int i = 0; i < names.Length; i++)
-                names[i] = $"Key {i}";
+                names[i] = $"Key 0x{i:X2}";
 
-            // Letters
+            names[0x08] = "Backspace";
+            names[0x09] = "Tab";
+            names[0x0D] = "Enter";
+            names[0x10] = "Shift";
+            names[0x11] = "Ctrl";
+            names[0x12] = "Alt";
+            names[0x13] = "Pause";
+            names[0x14] = "CapsLock";
+            names[0x1B] = "Escape";
+            names[0x20] = "Space";
+            names[0x21] = "PageUp";
+            names[0x22] = "PageDown";
+            names[0x23] = "End";
+            names[0x24] = "Home";
+            names[0x25] = "Left";
+            names[0x26] = "Up";
+            names[0x27] = "Right";
+            names[0x28] = "Down";
+            names[0x2C] = "PrintScreen";
+            names[0x2D] = "Insert";
+            names[0x2E] = "Delete";
+
+            // 0-9
+            for (int i = 0; i < 10; i++)
+                names[0x30 + i] = i.ToString();
+
+            // A-Z
             for (int i = 0; i < 26; i++)
-                names[4 + i] = ((char)('A' + i)).ToString();
+                names[0x41 + i] = ((char)('A' + i)).ToString();
 
-            // Numbers
+            names[0x5B] = "LWin";
+            names[0x5C] = "RWin";
+            names[0x5D] = "Apps";
+
+            // Numpad 0-9
             for (int i = 0; i < 10; i++)
-                names[30 + i] = i.ToString();
+                names[0x60 + i] = $"Numpad {i}";
 
-            // Common keys
-            names[40] = "Return";
-            names[41] = "Escape";
-            names[42] = "Backspace";
-            names[43] = "Tab";
-            names[44] = "Space";
-            names[45] = "Minus";
-            names[46] = "Equals";
-            names[47] = "LeftBracket";
-            names[48] = "RightBracket";
-            names[49] = "Backslash";
-            names[51] = "Semicolon";
-            names[52] = "Apostrophe";
-            names[53] = "Grave";
-            names[54] = "Comma";
-            names[55] = "Period";
-            names[56] = "Slash";
-            names[57] = "CapsLock";
+            names[0x6A] = "Numpad *";
+            names[0x6B] = "Numpad +";
+            names[0x6D] = "Numpad -";
+            names[0x6E] = "Numpad .";
+            names[0x6F] = "Numpad /";
 
-            // F keys
-            for (int i = 0; i < 12; i++)
-                names[58 + i] = $"F{i + 1}";
+            // F1-F24
+            for (int i = 0; i < 24; i++)
+                names[0x70 + i] = $"F{i + 1}";
 
-            names[70] = "PrintScreen";
-            names[71] = "ScrollLock";
-            names[72] = "Pause";
-            names[73] = "Insert";
-            names[74] = "Home";
-            names[75] = "PageUp";
-            names[76] = "Delete";
-            names[77] = "End";
-            names[78] = "PageDown";
-            names[79] = "Right";
-            names[80] = "Left";
-            names[81] = "Down";
-            names[82] = "Up";
-            names[83] = "NumLock";
+            names[0x90] = "NumLock";
+            names[0x91] = "ScrollLock";
 
-            // Keypad
-            names[84] = "KP Divide";
-            names[85] = "KP Multiply";
-            names[86] = "KP Minus";
-            names[87] = "KP Plus";
-            names[88] = "KP Enter";
-            for (int i = 0; i < 10; i++)
-                names[89 + i] = $"KP {(i + 1) % 10}";
-            names[99] = "KP Period";
+            names[0xA0] = "LShift";
+            names[0xA1] = "RShift";
+            names[0xA2] = "LCtrl";
+            names[0xA3] = "RCtrl";
+            names[0xA4] = "LAlt";
+            names[0xA5] = "RAlt";
 
-            // Modifiers
-            names[224] = "LCtrl";
-            names[225] = "LShift";
-            names[226] = "LAlt";
-            names[227] = "LGui";
-            names[228] = "RCtrl";
-            names[229] = "RShift";
-            names[230] = "RAlt";
-            names[231] = "RGui";
+            // OEM keys (US layout)
+            names[0xBA] = "Semicolon";
+            names[0xBB] = "Equals";
+            names[0xBC] = "Comma";
+            names[0xBD] = "Minus";
+            names[0xBE] = "Period";
+            names[0xBF] = "Slash";
+            names[0xC0] = "Grave";
+            names[0xDB] = "LeftBracket";
+            names[0xDC] = "Backslash";
+            names[0xDD] = "RightBracket";
+            names[0xDE] = "Apostrophe";
 
             return names;
         }

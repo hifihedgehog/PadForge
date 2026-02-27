@@ -334,25 +334,29 @@ namespace PadForge.Services
             }
 
             // Compute global slot numbers and per-type instance numbers.
-            int xboxCount = 0, ds4Count = 0, globalCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
                 slot.SlotNumber = globalCount;
 
                 var padVm = _mainVm.Pads[slot.PadIndex];
-                bool isXbox = padVm.OutputType != VirtualControllerType.DualShock4;
-                slot.IsXboxType = isXbox;
+                slot.OutputType = padVm.OutputType;
 
-                if (isXbox)
+                switch (padVm.OutputType)
                 {
-                    xboxCount++;
-                    slot.TypeInstanceLabel = $"#{xboxCount}";
-                }
-                else
-                {
-                    ds4Count++;
-                    slot.TypeInstanceLabel = $"#{ds4Count}";
+                    case VirtualControllerType.DualShock4:
+                        ds4Count++;
+                        slot.TypeInstanceLabel = $"#{ds4Count}";
+                        break;
+                    case VirtualControllerType.VJoy:
+                        vjoyCount++;
+                        slot.TypeInstanceLabel = $"#{vjoyCount}";
+                        break;
+                    default:
+                        xboxCount++;
+                        slot.TypeInstanceLabel = $"#{xboxCount}";
+                        break;
                 }
             }
 
@@ -385,7 +389,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Updates the raw input state display for the selected device
-        /// on the Devices page.
+        /// on the Devices page using structured observable collections.
         /// </summary>
         private void UpdateDevicesRawState()
         {
@@ -398,73 +402,55 @@ namespace PadForge.Services
             UserDevice ud = FindUserDevice(selected.InstanceGuid);
             if (ud == null || ud.InputState == null)
             {
-                devVm.RawAxisDisplay = "No data";
-                devVm.RawButtonDisplay = "No data";
-                devVm.RawPovDisplay = "No data";
-                devVm.RawGyroDisplay = string.Empty;
-                devVm.RawAccelDisplay = string.Empty;
+                devVm.HasRawData = false;
                 return;
             }
 
+            devVm.HasRawData = true;
             var state = ud.InputState;
 
-            // Format axes.
-            var axisLines = new System.Text.StringBuilder();
-            int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
-            for (int i = 0; i < axisCount; i++)
+            // Rebuild collections when the selected device changes.
+            if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
             {
-                axisLines.AppendLine($"Axis {i}: {state.Axis[i],6} ({state.Axis[i] * 100.0 / 65535.0:F1}%)");
+                devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
+                int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
+                int btnCount = Math.Min(
+                    ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                    CustomInputState.MaxButtons);
+                int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount);
+                devVm.HasGyroData = ud.HasGyro;
+                devVm.HasAccelData = ud.HasAccel;
             }
-            devVm.RawAxisDisplay = axisLines.ToString().TrimEnd();
 
-            // Format buttons — use RawButtonCount to show all native buttons,
-            // not just the 11 gamepad-mapped ones.
-            var btnParts = new System.Collections.Generic.List<string>();
-            int btnCount = Math.Min(
-                ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
-                CustomInputState.MaxButtons);
-            for (int i = 0; i < btnCount; i++)
+            // Update axis values in-place (no allocation).
+            for (int i = 0; i < devVm.RawAxes.Count; i++)
             {
-                if (state.Buttons[i])
-                    btnParts.Add($"[{i}]");
+                var item = devVm.RawAxes[i];
+                item.RawValue = state.Axis[i];
+                item.NormalizedValue = state.Axis[i] / 65535.0;
             }
-            devVm.RawButtonDisplay = btnParts.Count > 0
-                ? $"Pressed: {string.Join(", ", btnParts)}  ({btnCount} total)"
-                : $"No buttons pressed  ({btnCount} total)";
 
-            // Format POVs.
-            var povLines = new System.Text.StringBuilder();
-            int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
-            for (int i = 0; i < povCount; i++)
-            {
-                int pov = state.Povs[i];
-                string povText = pov < 0 ? "Centered" : $"{pov / 100.0:F1}°";
-                povLines.AppendLine($"POV {i}: {povText}");
-            }
-            devVm.RawPovDisplay = povLines.ToString().TrimEnd();
+            // Update button states in-place.
+            for (int i = 0; i < devVm.RawButtons.Count; i++)
+                devVm.RawButtons[i].IsPressed = state.Buttons[i];
 
-            // Format gyroscope (only if the device has a gyro sensor).
+            // Update POV hat values in-place.
+            for (int i = 0; i < devVm.RawPovs.Count; i++)
+                devVm.RawPovs[i].Centidegrees = state.Povs[i];
+
+            // Update gyro/accel values.
             if (ud.HasGyro)
             {
-                devVm.RawGyroDisplay = $"X: {state.Gyro[0],8:F3} rad/s\n" +
-                                       $"Y: {state.Gyro[1],8:F3} rad/s\n" +
-                                       $"Z: {state.Gyro[2],8:F3} rad/s";
+                devVm.GyroX = state.Gyro[0];
+                devVm.GyroY = state.Gyro[1];
+                devVm.GyroZ = state.Gyro[2];
             }
-            else
-            {
-                devVm.RawGyroDisplay = string.Empty;
-            }
-
-            // Format accelerometer (only if the device has an accel sensor).
             if (ud.HasAccel)
             {
-                devVm.RawAccelDisplay = $"X: {state.Accel[0],8:F3} m/s²\n" +
-                                        $"Y: {state.Accel[1],8:F3} m/s²\n" +
-                                        $"Z: {state.Accel[2],8:F3} m/s²";
-            }
-            else
-            {
-                devVm.RawAccelDisplay = string.Empty;
+                devVm.AccelX = state.Accel[0];
+                devVm.AccelY = state.Accel[1];
+                devVm.AccelZ = state.Accel[2];
             }
         }
 
@@ -652,6 +638,7 @@ namespace PadForge.Services
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
             // Mapping descriptors.
+            var ud = FindUserDevice(instanceGuid);
             foreach (var mapping in padVm.Mappings)
             {
                 var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
@@ -659,6 +646,7 @@ namespace PadForge.Services
                     ? prop.GetValue(ps) as string ?? string.Empty
                     : string.Empty;
                 mapping.LoadDescriptor(value);
+                ResolveDisplayText(mapping, ud);
             }
         }
 
@@ -666,6 +654,84 @@ namespace PadForge.Services
         {
             if (string.IsNullOrEmpty(value)) return defaultValue;
             return int.TryParse(value, out int result) ? result : defaultValue;
+        }
+
+        /// <summary>
+        /// Resolves a mapping descriptor to a human-friendly display name using
+        /// the device's object metadata. For keyboards, "Button 65" becomes "A".
+        /// For mice, "Button 0" becomes "Left Click".
+        /// </summary>
+        /// <summary>
+        /// Resolves a mapping descriptor to a human-friendly display name using
+        /// the device identified by the given instance GUID.
+        /// </summary>
+        internal static void ResolveDisplayText(MappingItem mapping, Guid instanceGuid)
+        {
+            ResolveDisplayText(mapping, FindUserDevice(instanceGuid));
+        }
+
+        private static void ResolveDisplayText(MappingItem mapping, UserDevice ud)
+        {
+            if (mapping == null || string.IsNullOrEmpty(mapping.SourceDescriptor))
+                return;
+
+            var objects = ud?.DeviceObjects;
+            if (objects == null || objects.Length == 0)
+                return;
+
+            // Parse the descriptor to get type + index.
+            string s = mapping.SourceDescriptor;
+            // Strip I/H prefixes for parsing.
+            string prefix = "";
+            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            { prefix = s.Substring(0, 2); s = s.Substring(2); }
+            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            { prefix = s.Substring(0, 1); s = s.Substring(1); }
+            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            { prefix = s.Substring(0, 1); s = s.Substring(1); }
+
+            string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
+                return;
+
+            string typeName = parts[0].ToLowerInvariant();
+
+            // Find the matching DeviceObjectItem.
+            for (int i = 0; i < objects.Length; i++)
+            {
+                var obj = objects[i];
+                if (obj.InputIndex != index)
+                    continue;
+
+                bool match = typeName switch
+                {
+                    "button" => obj.IsButton,
+                    "axis" => obj.IsAxis && !obj.IsSlider,
+                    "slider" => obj.IsSlider,
+                    "pov" => obj.IsPov,
+                    _ => false
+                };
+
+                if (match && !string.IsNullOrEmpty(obj.Name))
+                {
+                    // Build display text: e.g. "A" or "Inv. Left Stick X"
+                    string display = obj.Name;
+                    if (!string.IsNullOrEmpty(prefix))
+                    {
+                        string prefixLabel = prefix.ToUpperInvariant() switch
+                        {
+                            "I" => "Inv.",
+                            "H" => "Half",
+                            "IH" => "Inv. Half",
+                            _ => ""
+                        };
+                        if (!string.IsNullOrEmpty(prefixLabel))
+                            display = $"{prefixLabel} {display}";
+                    }
+                    mapping.SetResolvedSourceText(display);
+                    return;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1418,7 +1484,11 @@ namespace PadForge.Services
             return new ProfileData
             {
                 Entries = entries.ToArray(),
-                PadSettings = padSettings.ToArray()
+                PadSettings = padSettings.ToArray(),
+                SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
+                SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
+                SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
+                    .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray()
             };
         }
 
@@ -1432,6 +1502,44 @@ namespace PadForge.Services
             if (profile?.Entries == null || profile.Entries.Length == 0 ||
                 profile.PadSettings == null || profile.PadSettings.Length == 0)
                 return;
+
+            // ── Apply topology (if present in profile) ──
+            if (profile.SlotCreated != null)
+            {
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                {
+                    bool willCreate = i < profile.SlotCreated.Length && profile.SlotCreated[i];
+
+                    // Unassign devices from slots being destroyed.
+                    if (SettingsManager.SlotCreated[i] && !willCreate)
+                    {
+                        var settings = SettingsManager.UserSettings;
+                        if (settings != null)
+                        {
+                            lock (settings.SyncRoot)
+                            {
+                                foreach (var us in settings.Items)
+                                {
+                                    if (us.MapTo == i)
+                                        us.MapTo = -1;
+                                }
+                            }
+                        }
+                    }
+
+                    // Set OutputType before SlotCreated (same order as DeviceService.CreateSlot).
+                    if (profile.SlotControllerTypes != null && i < profile.SlotControllerTypes.Length)
+                    {
+                        if (Enum.IsDefined(typeof(VirtualControllerType), profile.SlotControllerTypes[i]))
+                            _mainVm.Pads[i].OutputType = (VirtualControllerType)profile.SlotControllerTypes[i];
+                    }
+
+                    SettingsManager.SlotCreated[i] = willCreate;
+                    SettingsManager.SlotEnabled[i] = (profile.SlotEnabled != null && i < profile.SlotEnabled.Length)
+                        ? profile.SlotEnabled[i]
+                        : willCreate;
+                }
+            }
 
             lock (SettingsManager.UserSettings.SyncRoot)
             {

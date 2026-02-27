@@ -91,6 +91,9 @@ namespace PadForge.Services
             {
                 padVm.SelectedDeviceChanged += OnSelectedDeviceChanged;
             }
+
+            // Subscribe to Devices page selection changes for offline detail display.
+            _mainVm.Devices.PropertyChanged += OnDevicesVmPropertyChanged;
         }
 
         // ─────────────────────────────────────────────
@@ -192,6 +195,11 @@ namespace PadForge.Services
             _mainVm.PollingFrequency = 0;
             _mainVm.StatusText = "Engine stopped.";
             _mainVm.RefreshCommands();
+
+            // Mark all device rows offline so indicators turn gray.
+            foreach (var row in _mainVm.Devices.Devices)
+                row.IsOnline = false;
+            _mainVm.Devices.RefreshCounts();
         }
 
         /// <summary>
@@ -431,6 +439,54 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
         //  Devices page raw state
         // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Handles Devices page SelectedDevice changes.
+        /// When the engine is off, populates the detail panel structure
+        /// from cached UserDevice capabilities so the layout is visible.
+        /// </summary>
+        private void OnDevicesVmPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(ViewModels.DevicesViewModel.SelectedDevice))
+                return;
+
+            // When engine is running, UpdateDevicesRawState handles everything.
+            if (_inputManager != null && _inputManager.IsRunning)
+                return;
+
+            var devVm = _mainVm.Devices;
+            var selected = devVm.SelectedDevice;
+            if (selected == null)
+            {
+                devVm.ClearRawState();
+                return;
+            }
+
+            // Find the UserDevice to get cached capabilities.
+            UserDevice ud = FindUserDevice(selected.InstanceGuid);
+            if (ud == null)
+            {
+                devVm.HasRawData = false;
+                return;
+            }
+
+            // Build the structural layout from cached capabilities.
+            if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
+            {
+                devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
+                int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
+                int btnCount = Math.Min(
+                    ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                    CustomInputState.MaxButtons);
+                int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
+                bool isKb = ud.CapType == InputDeviceType.Keyboard;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb);
+                devVm.HasGyroData = ud.HasGyro;
+                devVm.HasAccelData = ud.HasAccel;
+            }
+
+            devVm.HasRawData = true;
+        }
 
         /// <summary>
         /// Updates the raw input state display for the selected device

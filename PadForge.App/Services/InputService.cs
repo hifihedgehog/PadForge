@@ -276,15 +276,19 @@ namespace PadForge.Services
             dash.EngineStatus = _inputManager.IsRunning ? "Running" : "Stopped";
             dash.PollingFrequency = _inputManager.CurrentFrequency;
 
-            // Count online devices.
-            var devices = SettingsManager.UserDevices?.Items;
-            if (devices != null)
+            // Snapshot devices under lock to avoid cross-thread collection-modified
+            // exceptions when the engine's UpdateDevices runs concurrently.
+            UserDevice[] deviceSnapshot = null;
+            var ud = SettingsManager.UserDevices;
+            if (ud != null)
             {
                 int total, online, mapped;
-                lock (SettingsManager.UserDevices.SyncRoot)
+                lock (ud.SyncRoot)
                 {
-                    total = devices.Count;
-                    online = devices.Count(d => d.IsOnline);
+                    var devices = ud.Items;
+                    deviceSnapshot = devices.ToArray();
+                    total = deviceSnapshot.Length;
+                    online = deviceSnapshot.Count(d => d.IsOnline);
                     mapped = 0;
 
                     var settings = SettingsManager.UserSettings?.Items;
@@ -293,7 +297,7 @@ namespace PadForge.Services
                         lock (SettingsManager.UserSettings.SyncRoot)
                         {
                             mapped = settings.Count(s =>
-                                devices.Any(d => d.InstanceGuid == s.InstanceGuid && d.IsOnline));
+                                deviceSnapshot.Any(d => d.InstanceGuid == s.InstanceGuid && d.IsOnline));
                         }
                     }
                 }
@@ -305,8 +309,8 @@ namespace PadForge.Services
                 _mainVm.ConnectedDeviceCount = online;
             }
 
-            RefreshSlotSummaryProperties(devices);
-            RefreshNavItemConnectedCounts(devices);
+            RefreshSlotSummaryProperties(deviceSnapshot);
+            RefreshNavItemConnectedCounts(deviceSnapshot);
 
             // Update main VM frequency.
             _mainVm.PollingFrequency = _inputManager.CurrentFrequency;

@@ -36,6 +36,7 @@ namespace PadForge.Engine
         private const uint RIM_TYPEHID = 2;
 
         private const ushort RI_KEY_BREAK = 0x0001;
+        private const ushort RI_KEY_E0 = 0x0002;
 
         private const ushort RI_MOUSE_LEFT_BUTTON_DOWN = 0x0001;
         private const ushort RI_MOUSE_LEFT_BUTTON_UP = 0x0002;
@@ -228,6 +229,11 @@ namespace PadForge.Engine
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool PostMessageW(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKeyW(uint uCode, uint uMapType);
+
+        private const uint MAPVK_VSC_TO_VK_EX = 3;
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr GetModuleHandleW(string lpModuleName);
@@ -1018,8 +1024,27 @@ namespace PadForge.Engine
                     if (vk >= 0 && vk < 256)
                     {
                         bool isDown = (kb.Flags & RI_KEY_BREAK) == 0;
+                        bool isE0 = (kb.Flags & RI_KEY_E0) != 0;
                         bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
-                        state[vk] = isDown;
+
+                        // Translate generic modifier VKeys to left/right specific
+                        // codes using hardcoded scan code + E0 flag lookup.
+                        // MapVirtualKey is unreliable for this across Windows versions.
+                        int specific = (vk, kb.MakeCode, isE0) switch
+                        {
+                            (0x10, 0x2A, _) => 0xA0,   // LShift (scan 0x2A)
+                            (0x10, 0x36, _) => 0xA1,   // RShift (scan 0x36)
+                            (0x11, _, false) => 0xA2,   // LCtrl  (scan 0x1D, no E0)
+                            (0x11, _, true)  => 0xA3,   // RCtrl  (scan 0x1D + E0)
+                            (0x12, _, false) => 0xA4,   // LAlt   (scan 0x38, no E0)
+                            (0x12, _, true)  => 0xA5,   // RAlt   (scan 0x38 + E0)
+                            (0x0D, _, true)  => 0x88,   // Numpad Enter (VK_RETURN + E0)
+                            _ => -1
+                        };
+                        if (specific >= 0)
+                            state[specific] = isDown;
+                        else
+                            state[vk] = isDown;
                     }
                 }
                 else if (header.dwType == RIM_TYPEMOUSE)

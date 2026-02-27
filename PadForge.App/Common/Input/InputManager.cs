@@ -373,6 +373,50 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
+        //  Slot swap
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Swaps all per-slot engine data between two controller slots.
+        /// Destroys virtual controllers for both slots first so ViGEm
+        /// recreates them in the correct XInput order.
+        /// </summary>
+        public void SwapSlots(int slotA, int slotB)
+        {
+            if (slotA == slotB) return;
+            if (slotA < 0 || slotA >= MaxPads) return;
+            if (slotB < 0 || slotB >= MaxPads) return;
+
+            // Destroy virtual controllers — Step 5 will recreate them.
+            DestroyVirtualController(slotA);
+            DestroyVirtualController(slotB);
+            _virtualControllers[slotA] = null;
+            _virtualControllers[slotB] = null;
+
+            // Swap all per-slot arrays.
+            (CombinedOutputStates[slotA], CombinedOutputStates[slotB]) =
+                (CombinedOutputStates[slotB], CombinedOutputStates[slotA]);
+            (RetrievedOutputStates[slotA], RetrievedOutputStates[slotB]) =
+                (RetrievedOutputStates[slotB], RetrievedOutputStates[slotA]);
+            (VibrationStates[slotA], VibrationStates[slotB]) =
+                (VibrationStates[slotB], VibrationStates[slotA]);
+            (MotionSnapshots[slotA], MotionSnapshots[slotB]) =
+                (MotionSnapshots[slotB], MotionSnapshots[slotA]);
+            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
+                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
+            (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
+                (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (_slotInactiveCounter[slotA], _slotInactiveCounter[slotB]) =
+                (_slotInactiveCounter[slotB], _slotInactiveCounter[slotA]);
+            (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
+                (MacroSnapshots[slotB], MacroSnapshots[slotA]);
+
+            // Reset inactive counters so Step 5 recreates immediately.
+            _slotInactiveCounter[slotA] = 0;
+            _slotInactiveCounter[slotB] = 0;
+        }
+
+        // ─────────────────────────────────────────────
         //  Device cleanup helpers
         // ─────────────────────────────────────────────
 

@@ -420,7 +420,8 @@ namespace PadForge.Services
                     ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount);
+                bool isKb = ud.CapType == InputDeviceType.Keyboard;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
             }
@@ -434,8 +435,20 @@ namespace PadForge.Services
             }
 
             // Update button states in-place.
-            for (int i = 0; i < devVm.RawButtons.Count; i++)
-                devVm.RawButtons[i].IsPressed = state.Buttons[i];
+            if (devVm.IsKeyboardDevice)
+            {
+                // Map keyboard layout keys to their VKey button indices.
+                for (int i = 0; i < devVm.KeyboardKeys.Count; i++)
+                {
+                    int vk = devVm.KeyboardKeys[i].VKeyIndex;
+                    devVm.KeyboardKeys[i].IsPressed = KeyboardKeyItem.IsVKeyPressed(state.Buttons, vk);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < devVm.RawButtons.Count; i++)
+                    devVm.RawButtons[i].IsPressed = state.Buttons[i];
+            }
 
             // Update POV hat values in-place.
             for (int i = 0; i < devVm.RawPovs.Count; i++)
@@ -1030,6 +1043,18 @@ namespace PadForge.Services
                     devVm.Devices.RemoveAt(i);
             }
 
+            // Sort: alphabetically by name, then by VID:PID.
+            var sorted = devVm.Devices.OrderBy(d => d.DeviceName, StringComparer.OrdinalIgnoreCase)
+                                      .ThenBy(d => d.VendorId)
+                                      .ThenBy(d => d.ProductId)
+                                      .ToList();
+            for (int i = 0; i < sorted.Count; i++)
+            {
+                int current = devVm.Devices.IndexOf(sorted[i]);
+                if (current != i)
+                    devVm.Devices.Move(current, i);
+            }
+
             devVm.RefreshCounts();
         }
 
@@ -1166,6 +1191,13 @@ namespace PadForge.Services
                         });
                     }
 
+                    // Sort alphabetically by name before syncing.
+                    deviceInfos.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+
+                    // Remember the previously selected device GUID before sync
+                    // (sync may overwrite the same object in-place).
+                    Guid prevSelectedGuid = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
                     // Sync the ObservableCollection (minimize UI churn).
                     SyncMappedDevices(padVm.MappedDevices, deviceInfos);
 
@@ -1173,6 +1205,17 @@ namespace PadForge.Services
                     if (padVm.SelectedMappedDevice == null && padVm.MappedDevices.Count > 0)
                     {
                         padVm.SelectedMappedDevice = padVm.MappedDevices[0];
+                    }
+
+                    // If the selected item was overwritten in-place (e.g. a device was
+                    // deleted and the next device slid into index 0), reload the correct
+                    // PadSetting so stale mappings don't bleed into another device.
+                    if (padVm.SelectedMappedDevice != null
+                        && prevSelectedGuid != Guid.Empty
+                        && padVm.SelectedMappedDevice.InstanceGuid != prevSelectedGuid)
+                    {
+                        LoadPadSettingToViewModel(padVm, padVm.SelectedMappedDevice.InstanceGuid);
+                        _previousSelectedDevice[i] = padVm.SelectedMappedDevice.InstanceGuid;
                     }
 
                     // Initialize the previous-device tracker if not set.
@@ -1720,6 +1763,69 @@ namespace PadForge.Services
         /// topology label after controller type changes.
         /// </summary>
         public void RefreshProfileTopology() => RefreshActiveProfileTopologyLabel();
+
+        /// <summary>
+        /// Swaps two virtual controller slots across all layers:
+        /// engine arrays, settings, and ViewModel state, then refreshes UI.
+        /// Must be called on the UI thread.
+        /// </summary>
+        /// <summary>
+        /// Moves a controller slot from its current visual position to a new one
+        /// by performing adjacent bubble swaps through the active slots list.
+        /// UI is refreshed once after all swaps complete.
+        /// </summary>
+        public void SwapSlots(int padIndexA, int padIndexB)
+        {
+            if (padIndexA == padIndexB) return;
+            _inputManager?.SwapSlots(padIndexA, padIndexB);
+            SettingsManager.SwapSlots(padIndexA, padIndexB);
+            (_mainVm.Pads[padIndexA].OutputType, _mainVm.Pads[padIndexB].OutputType) =
+                (_mainVm.Pads[padIndexB].OutputType, _mainVm.Pads[padIndexA].OutputType);
+            RefreshAfterSlotReorder();
+        }
+
+        public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
+        {
+            var activeSlots = new List<int>();
+            for (int i = 0; i < InputManager.MaxPads; i++)
+                if (SettingsManager.SlotCreated[i])
+                    activeSlots.Add(i);
+
+            int sourcePos = activeSlots.IndexOf(sourcePadIndex);
+            if (sourcePos < 0) return;
+            if (targetVisualPosition < 0 || targetVisualPosition >= activeSlots.Count) return;
+            if (sourcePos == targetVisualPosition) return;
+
+            // Bubble the source to the target via adjacent swaps (data only).
+            int step = targetVisualPosition > sourcePos ? 1 : -1;
+            for (int i = sourcePos; i != targetVisualPosition; i += step)
+            {
+                int a = activeSlots[i], b = activeSlots[i + step];
+                _inputManager?.SwapSlots(a, b);
+                SettingsManager.SwapSlots(a, b);
+                (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
+                    (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+            }
+
+            RefreshAfterSlotReorder();
+        }
+
+        private void RefreshAfterSlotReorder()
+        {
+            UpdatePadDeviceInfo();
+
+            // Reload PadSettings into ViewModels so deadzones, mappings, etc. follow the device.
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var padVm = _mainVm.Pads[i];
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+            }
+
+            SyncDevicesList();
+            RefreshActiveProfileTopologyLabel();
+        }
 
         private void RefreshActiveProfileTopologyLabel()
         {

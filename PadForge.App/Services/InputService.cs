@@ -1499,8 +1499,7 @@ namespace PadForge.Services
         /// </summary>
         public void ApplyProfile(ProfileData profile)
         {
-            if (profile?.Entries == null || profile.Entries.Length == 0 ||
-                profile.PadSettings == null || profile.PadSettings.Length == 0)
+            if (profile == null)
                 return;
 
             // ── Apply topology (if present in profile) ──
@@ -1541,31 +1540,36 @@ namespace PadForge.Services
                 }
             }
 
-            lock (SettingsManager.UserSettings.SyncRoot)
+            // ── Apply pad settings and slot assignments (if present) ──
+            if (profile.Entries != null && profile.Entries.Length > 0 &&
+                profile.PadSettings != null && profile.PadSettings.Length > 0)
             {
-                foreach (var entry in profile.Entries)
+                lock (SettingsManager.UserSettings.SyncRoot)
                 {
-                    // Try exact InstanceGuid match first, then fallback to ProductGuid.
-                    var us = SettingsManager.UserSettings.Items
-                        .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid);
-
-                    if (us == null && entry.ProductGuid != Guid.Empty)
+                    foreach (var entry in profile.Entries)
                     {
-                        us = SettingsManager.UserSettings.Items
-                            .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid);
+                        // Try exact InstanceGuid match first, then fallback to ProductGuid.
+                        var us = SettingsManager.UserSettings.Items
+                            .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid);
+
+                        if (us == null && entry.ProductGuid != Guid.Empty)
+                        {
+                            us = SettingsManager.UserSettings.Items
+                                .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid);
+                        }
+
+                        if (us == null) continue;
+
+                        // Find the PadSetting template by checksum.
+                        var template = profile.PadSettings
+                            .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
+                        if (template == null) continue;
+
+                        // Clone and apply PadSetting + slot assignment.
+                        var ps = template.CloneDeep();
+                        us.SetPadSetting(ps);
+                        us.MapTo = entry.MapTo;
                     }
-
-                    if (us == null) continue;
-
-                    // Find the PadSetting template by checksum.
-                    var template = profile.PadSettings
-                        .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
-                    if (template == null) continue;
-
-                    // Clone and apply PadSetting + slot assignment.
-                    var ps = template.CloneDeep();
-                    us.SetPadSetting(ps);
-                    us.MapTo = entry.MapTo;
                 }
             }
 
@@ -1595,17 +1599,15 @@ namespace PadForge.Services
             if (profileId == SettingsManager.ActiveProfileId)
                 return;
 
+            // Save outgoing profile state before switching.
+            SaveActiveProfileState();
+
             // Switch to the target profile (or revert to default).
             if (profileId != null)
             {
                 var target = FindProfileById(profileId);
                 if (target != null)
                 {
-                    // Snapshot current state before switching away from default,
-                    // so unsaved changes are preserved for revert.
-                    if (SettingsManager.ActiveProfileId == null)
-                        _defaultProfileSnapshot = SnapshotCurrentProfile();
-
                     ApplyProfile(target);
                     SettingsManager.ActiveProfileId = profileId;
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
@@ -1628,6 +1630,36 @@ namespace PadForge.Services
         /// Call after saving when no profile is active so future reverts use the
         /// latest saved state.
         /// </summary>
+        /// <summary>
+        /// Saves the current runtime state into the active profile (or the
+        /// default snapshot if no named profile is active).  Call before
+        /// switching away from any profile so changes are preserved.
+        /// </summary>
+        public void SaveActiveProfileState()
+        {
+            var snapshot = SnapshotCurrentProfile();
+            string activeId = SettingsManager.ActiveProfileId;
+
+            if (string.IsNullOrEmpty(activeId))
+            {
+                // Currently on the default profile — update the default snapshot.
+                _defaultProfileSnapshot = snapshot;
+            }
+            else
+            {
+                // Currently on a named profile — update its stored data.
+                var profile = SettingsManager.Profiles.Find(p => p.Id == activeId);
+                if (profile != null)
+                {
+                    profile.Entries = snapshot.Entries;
+                    profile.PadSettings = snapshot.PadSettings;
+                    profile.SlotCreated = snapshot.SlotCreated;
+                    profile.SlotEnabled = snapshot.SlotEnabled;
+                    profile.SlotControllerTypes = snapshot.SlotControllerTypes;
+                }
+            }
+        }
+
         public void RefreshDefaultSnapshot()
         {
             _defaultProfileSnapshot = SnapshotCurrentProfile();

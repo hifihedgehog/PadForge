@@ -461,13 +461,14 @@ namespace PadForge.Services
                 foreach (var p in profiles)
                 {
                     SettingsManager.Profiles.Add(p);
-                    _mainVm.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+                    var item = new ViewModels.ProfileListItem
                     {
                         Id = p.Id,
                         Name = p.Name,
                         Executables = FormatExePaths(p.ExecutableNames),
-                        TopologyLabel = FormatTopologyLabel(p.SlotCreated, p.SlotControllerTypes)
-                    });
+                    };
+                    UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
+                    _mainVm.Settings.ProfileItems.Add(item);
                 }
             }
 
@@ -533,9 +534,29 @@ namespace PadForge.Services
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
-            if (slotCreated == null) return string.Empty;
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy);
+            var parts = new System.Collections.Generic.List<string>();
+            if (xbox > 0) parts.Add($"{xbox}x Xbox");
+            if (ds4 > 0) parts.Add($"{ds4}x DS4");
+            if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
+            return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
+        }
 
-            int xbox = 0, ds4 = 0, vjoy = 0;
+        internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
+            bool[] slotCreated, int[] slotControllerTypes)
+        {
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy);
+            item.XboxCount = xbox;
+            item.DS4Count = ds4;
+            item.VJoyCount = vjoy;
+            item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
+        }
+
+        private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
+            out int xbox, out int ds4, out int vjoy)
+        {
+            xbox = 0; ds4 = 0; vjoy = 0;
+            if (slotCreated == null) return;
             for (int i = 0; i < slotCreated.Length; i++)
             {
                 if (!slotCreated[i]) continue;
@@ -548,12 +569,6 @@ namespace PadForge.Services
                     default: xbox++; break;
                 }
             }
-
-            var parts = new System.Collections.Generic.List<string>();
-            if (xbox > 0) parts.Add($"{xbox}x Xbox");
-            if (ds4 > 0) parts.Add($"{ds4}x DS4");
-            if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
-            return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
         }
 
         /// <summary>

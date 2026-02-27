@@ -502,5 +502,26 @@ namespace PadForge.ViewModels
             get => _topologyLabel;
             set => SetProperty(ref _topologyLabel, value);
         }
+
+        private int _xboxCount;
+        public int XboxCount
+        {
+            get => _xboxCount;
+            set => SetProperty(ref _xboxCount, value);
+        }
+
+        private int _ds4Count;
+        public int DS4Count
+        {
+            get => _ds4Count;
+            set => SetProperty(ref _ds4Count, value);
+        }
+
+        private int _vjoyCount;
+        public int VJoyCount
+        {
+            get => _vjoyCount;
+            set => SetProperty(ref _vjoyCount, value);
+        }
     }
 }

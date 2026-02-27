@@ -1215,6 +1215,10 @@ namespace PadForge.Services
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots;
             _mainVm.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
+
+            // Update the active profile's topology label so the Profiles page
+            // reflects slot create/delete changes in real-time.
+            RefreshActiveProfileTopologyLabel();
         }
 
         /// <summary>
@@ -1692,6 +1696,27 @@ namespace PadForge.Services
         {
             if (_defaultProfileSnapshot != null)
                 ApplyProfile(_defaultProfileSnapshot);
+        }
+
+        /// <summary>
+        /// Updates the TopologyLabel on the active profile's list item so the
+        /// Profiles page reflects slot create/delete/type changes immediately.
+        /// </summary>
+        private void RefreshActiveProfileTopologyLabel()
+        {
+            string activeId = SettingsManager.ActiveProfileId;
+            var slotCreated = SettingsManager.SlotCreated;
+            var slotTypes = Enumerable.Range(0, _mainVm.Pads.Count)
+                .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
+
+            foreach (var item in _mainVm.Settings.ProfileItems)
+            {
+                if ((string.IsNullOrEmpty(activeId) && item.IsDefault) || item.Id == activeId)
+                {
+                    SettingsService.UpdateTopologyCounts(item, slotCreated, slotTypes);
+                    break;
+                }
+            }
         }
 
         private static ProfileData FindProfileById(string id)

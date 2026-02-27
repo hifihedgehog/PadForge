@@ -213,31 +213,31 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Creates or retrieves a UserSetting that links a device to a pad slot.
-        /// If a UserSetting already exists for the device, its MapTo is updated.
+        /// Supports multi-slot: if the device is already assigned to other slots,
+        /// a new UserSetting is created for the additional slot.
         /// Thread-safe.
         /// </summary>
         /// <param name="instanceGuid">Device instance GUID.</param>
-        /// <param name="padIndex">Target pad slot (0–3).</param>
+        /// <param name="padIndex">Target pad slot (0–7).</param>
         /// <returns>The UserSetting (existing or new).</returns>
         public static UserSetting AssignDeviceToSlot(Guid instanceGuid, int padIndex)
         {
             if (padIndex < 0 || padIndex >= InputManager.MaxPads)
-                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–3.");
+                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–7.");
 
             var settings = UserSettings;
             if (settings == null) return null;
 
             lock (settings.SyncRoot)
             {
-                var existing = settings.Items.FirstOrDefault(
-                    s => s.InstanceGuid == instanceGuid);
+                // Check if already assigned to this exact slot — return existing.
+                var exactMatch = settings.Items.FirstOrDefault(
+                    s => s.InstanceGuid == instanceGuid && s.MapTo == padIndex);
 
-                if (existing != null)
-                {
-                    existing.MapTo = padIndex;
-                    return existing;
-                }
+                if (exactMatch != null)
+                    return exactMatch;
 
+                // Create a new UserSetting for this slot (supports multi-slot assignment).
                 var us = new UserSetting
                 {
                     InstanceGuid = instanceGuid,
@@ -324,6 +324,7 @@ namespace PadForge.Common.Input
                         result.Add(s.MapTo);
                 }
             }
+            result.Sort();
             return result;
         }
 
@@ -336,6 +337,40 @@ namespace PadForge.Common.Input
             var settings = UserSettings;
             if (settings == null) return new List<UserSetting>();
             return settings.FindByPadIndex(padIndex);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Slot swap
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Swaps all persisted slot data between two indices:
+        /// SlotCreated, SlotEnabled, and UserSettings MapTo values.
+        /// Thread-safe.
+        /// </summary>
+        public static void SwapSlots(int slotA, int slotB)
+        {
+            if (slotA == slotB) return;
+
+            (SlotCreated[slotA], SlotCreated[slotB]) =
+                (SlotCreated[slotB], SlotCreated[slotA]);
+            (SlotEnabled[slotA], SlotEnabled[slotB]) =
+                (SlotEnabled[slotB], SlotEnabled[slotA]);
+
+            var settings = UserSettings;
+            if (settings != null)
+            {
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                    {
+                        if (us.MapTo == slotA)
+                            us.MapTo = slotB;
+                        else if (us.MapTo == slotB)
+                            us.MapTo = slotA;
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -133,6 +134,48 @@ namespace PadForge.Services
 
             // Navigate to the assigned controller page.
             NavigateToSlotRequested?.Invoke(this, slotIndex);
+        }
+
+        /// <summary>
+        /// Assigns a device (by GUID) to a specific slot. Used by cross-panel drag-and-drop.
+        /// </summary>
+        public void AssignDeviceToSlot(Guid instanceGuid, int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return;
+
+            var row = _mainVm.Devices.Devices
+                .OfType<ViewModels.DeviceRowViewModel>()
+                .FirstOrDefault(d => d.InstanceGuid == instanceGuid);
+            if (row == null) return;
+
+            // Check if already assigned to this slot.
+            if (row.AssignedSlots.Contains(slotIndex)) return;
+
+            // Auto-create the virtual controller slot if it doesn't exist yet.
+            if (!SettingsManager.SlotCreated[slotIndex])
+            {
+                SettingsManager.SlotCreated[slotIndex] = true;
+                SettingsManager.SlotEnabled[slotIndex] = true;
+            }
+
+            var us = SettingsManager.AssignDeviceToSlot(instanceGuid, slotIndex);
+            if (us == null) return;
+
+            var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+            if (udForGuid != null) us.ProductGuid = udForGuid.ProductGuid;
+
+            var existingPs = us.GetPadSetting();
+            if (existingPs == null || !existingPs.HasAnyMapping)
+            {
+                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+                us.SetPadSetting(ps);
+                us.PadSettingChecksum = ps.PadSettingChecksum;
+            }
+
+            row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
+            _settingsService.MarkDirty();
+            _mainVm.StatusText = $"Assigned \"{row.DeviceName}\" to Player {slotIndex + 1}.";
+            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────

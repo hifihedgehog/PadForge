@@ -406,6 +406,9 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user requests reverting to the default profile.</summary>
         public event EventHandler RevertToDefaultRequested;
 
+        /// <summary>Raised when the user requests creating a new empty profile.</summary>
+        public event EventHandler NewProfileRequested;
+
         /// <summary>Raised when the user requests saving current settings as a new profile.</summary>
         public event EventHandler SaveAsProfileRequested;
 
@@ -417,6 +420,13 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user requests loading the selected profile into the editor.</summary>
         public event EventHandler LoadProfileRequested;
+
+        private RelayCommand _newProfileCommand;
+
+        /// <summary>Command to create a new empty profile.</summary>
+        public RelayCommand NewProfileCommand =>
+            _newProfileCommand ??= new RelayCommand(
+                () => NewProfileRequested?.Invoke(this, EventArgs.Empty));
 
         private RelayCommand _saveAsProfileCommand;
 

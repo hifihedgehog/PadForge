@@ -90,6 +90,11 @@ namespace PadForge.Services
             {
                 LoadFromFile(_settingsFilePath);
             }
+            else
+            {
+                // No settings file — initialize profiles with the Default entry.
+                LoadProfiles(null, null);
+            }
 
             // Push file path to ViewModel.
             _mainVm.Settings.SettingsFilePath = _settingsFilePath;

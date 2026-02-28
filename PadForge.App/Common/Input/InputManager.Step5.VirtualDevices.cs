@@ -62,6 +62,15 @@ namespace PadForge.Common.Input
         /// </summary>
         private const int SlotDestroyGraceCycles = 10000;
 
+        /// <summary>
+        /// Per-slot cooldown counter after a failed virtual controller creation.
+        /// Prevents per-frame retry of FindFreeDeviceId (16 GetVJDStatus calls)
+        /// when creation fails. Counts down each cycle; creation retries at 0.
+        /// At ~1000Hz polling, 2000 cycles ≈ 2 seconds between retries.
+        /// </summary>
+        private readonly int[] _createCooldown = new int[MaxPads];
+        private const int CreateCooldownCycles = 2000;
+
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
@@ -114,6 +123,7 @@ namespace PadForge.Common.Input
                     RumbleLogger.Log($"[Step5] Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, recreating");
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
+                    _createCooldown[padIndex] = 0; // Reset cooldown on type change
                     vc = null;
                 }
 
@@ -158,9 +168,19 @@ namespace PadForge.Common.Input
                     if (_virtualControllers[padIndex] == null &&
                         _slotInactiveCounter[padIndex] == 0)
                     {
+                        // Skip if still in cooldown from a previous failed creation.
+                        if (_createCooldown[padIndex] > 0)
+                        {
+                            _createCooldown[padIndex]--;
+                            continue;
+                        }
+
                         RumbleLogger.Log($"[Step5] Pad{padIndex} creating {SlotControllerTypes[padIndex]} virtual controller (ordered)");
                         var vc = CreateVirtualController(padIndex);
                         _virtualControllers[padIndex] = vc;
+
+                        if (vc == null)
+                            _createCooldown[padIndex] = CreateCooldownCycles;
                     }
                 }
             }

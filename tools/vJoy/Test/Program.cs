@@ -988,6 +988,15 @@ class Program
 
                 Console.WriteLine($"  {subKeyName}: {descriptor.Length} byte descriptor ({layout})");
             }
+
+            // Delete stale DeviceNN subkeys beyond 'count'.
+            // The vJoy driver reads ALL DeviceNN keys and concatenates their
+            // HID descriptors — stale keys cause phantom devices to appear.
+            for (int id = count + 1; id <= 16; id++)
+            {
+                string subKeyName = $"Device{id:D2}";
+                try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
+            }
         }
         catch (Exception ex)
         {

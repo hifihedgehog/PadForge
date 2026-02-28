@@ -589,6 +589,9 @@ namespace PadForge.Common.Input
                         Debug.WriteLine($"[ViGEm] Failed to remove {id}: {ex.Message}");
                     }
                 }
+
+                // Brief wait for PnP to fully process the removals before SDL init.
+                Thread.Sleep(500);
             }
             catch (Exception ex)
             {

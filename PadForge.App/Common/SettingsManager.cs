@@ -47,11 +47,12 @@ namespace PadForge.Common.Input
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────
 
-        /// <summary>Maximum number of Xbox 360 virtual controllers (XInput hard limit).</summary>
-        public const int MaxXbox360Slots = 4;
+        /// <summary>Maximum number of Xbox 360 virtual controllers.
+        /// XInput only sees 4, but SDL/ViGEm support up to MaxPads.</summary>
+        public const int MaxXbox360Slots = InputManager.MaxPads;
 
-        /// <summary>Maximum number of DualShock 4 virtual controllers (ViGEm limit).</summary>
-        public const int MaxDS4Slots = 4;
+        /// <summary>Maximum number of DualShock 4 virtual controllers.</summary>
+        public const int MaxDS4Slots = InputManager.MaxPads;
 
         /// <summary>Maximum number of vJoy virtual controllers (vJoy driver limit).</summary>
         public const int MaxVJoySlots = 16;

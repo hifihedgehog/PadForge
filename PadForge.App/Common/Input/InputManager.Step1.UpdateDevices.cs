@@ -655,8 +655,8 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Non-allocating overload: fills a pre-allocated buffer with all UserSettings
-        /// for a given device (by InstanceGuid). Returns the count of matches.
-        /// A device mapped to multiple slots will have multiple entries.
+        /// for a given device (by InstanceGuid) that have a valid MapTo (>= 0).
+        /// Returns the count of matches. Skips orphaned entries (MapTo == -1).
         /// </summary>
         public int FindByInstanceGuid(Guid instanceGuid, UserSetting[] buffer)
         {
@@ -665,7 +665,7 @@ namespace PadForge.Common.Input
             {
                 for (int i = 0; i < Items.Count && count < buffer.Length; i++)
                 {
-                    if (Items[i].InstanceGuid == instanceGuid)
+                    if (Items[i].InstanceGuid == instanceGuid && Items[i].MapTo >= 0)
                         buffer[count++] = Items[i];
                 }
             }

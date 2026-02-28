@@ -113,6 +113,11 @@ namespace PadForge.Services
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
 
+            // Copy controller types immediately so Step 5 creates the correct
+            // VC types from the first polling cycle (don't wait for UI timer sync).
+            for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
+                _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
+
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;

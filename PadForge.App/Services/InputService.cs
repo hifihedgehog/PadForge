@@ -1926,6 +1926,59 @@ namespace PadForge.Services
             RefreshAfterSlotReorder();
         }
 
+        /// <summary>
+        /// Re-sorts created slots so types are grouped: Xbox 360, then DS4, then vJoy.
+        /// Uses adjacent SwapSlots calls (same-type swaps are zero-flicker).
+        /// Returns true if any reordering was performed.
+        /// </summary>
+        public bool EnsureTypeGroupOrder()
+        {
+            var activeSlots = new List<int>();
+            for (int i = 0; i < InputManager.MaxPads; i++)
+                if (SettingsManager.SlotCreated[i])
+                    activeSlots.Add(i);
+
+            if (activeSlots.Count <= 1) return false;
+
+            // Stable sort by type priority preserves within-group order.
+            var sorted = activeSlots
+                .OrderBy(i => GetTypePriority(_mainVm.Pads[i].OutputType))
+                .ToList();
+
+            bool needsReorder = false;
+            for (int i = 0; i < activeSlots.Count; i++)
+                if (activeSlots[i] != sorted[i]) { needsReorder = true; break; }
+            if (!needsReorder) return false;
+
+            // Bubble each slot into its correct position via adjacent swaps.
+            for (int target = 0; target < sorted.Count; target++)
+            {
+                int current = activeSlots.IndexOf(sorted[target]);
+                while (current > target)
+                {
+                    int a = activeSlots[current - 1], b = activeSlots[current];
+                    _inputManager?.SwapSlots(a, b);
+                    SettingsManager.SwapSlots(a, b);
+                    (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
+                        (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+                    activeSlots[current] = a;
+                    activeSlots[current - 1] = b;
+                    current--;
+                }
+            }
+
+            RefreshAfterSlotReorder();
+            return true;
+        }
+
+        private static int GetTypePriority(VirtualControllerType type) => type switch
+        {
+            VirtualControllerType.Xbox360 => 0,
+            VirtualControllerType.DualShock4 => 1,
+            VirtualControllerType.VJoy => 2,
+            _ => 3
+        };
+
         private void RefreshAfterSlotReorder()
         {
             UpdatePadDeviceInfo();

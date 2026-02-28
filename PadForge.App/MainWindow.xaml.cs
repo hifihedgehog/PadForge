@@ -385,6 +385,11 @@ namespace PadForge
             if (ShouldStartMinimizedToTray)
                 _notifyIcon.Visible = true;
 
+            // Enforce type-group ordering (Xbox 360 > DS4 > vJoy) on startup.
+            // Handles backward-compat with old configs that have interleaved types.
+            if (_inputService.EnsureTypeGroupOrder())
+                _settingsService.MarkDirty();
+
             // Populate sidebar and dashboard with saved slots regardless of engine state,
             // so virtual controllers are visible for configuration even when the engine is off.
             _viewModel.RefreshNavControllerItems();
@@ -1190,6 +1195,24 @@ namespace PadForge
                 // else cursor is below this card's middle zone — continue to next card
             }
 
+            // ── Type-group validation ──
+            // Block cross-type reordering: only allow swap/insert within the same type group.
+            var sourceType = _viewModel.Pads[_dragSourcePadIndex].OutputType;
+
+            if (isSwap)
+            {
+                // Reject swap if target is a different type.
+                if (_viewModel.Pads[cards[swapCardIndex].PadIndex].OutputType != sourceType)
+                    isSwap = false;
+            }
+
+            if (!isSwap)
+            {
+                // Reject insertion outside the source's type group.
+                if (!IsInsertionInSameTypeGroup(dropIndex, sourceType, cards))
+                    dropIndex = -1;
+            }
+
             _dragIsSwapMode = isSwap;
 
             if (isSwap)
@@ -1207,7 +1230,7 @@ namespace PadForge
                 _dragSwapTargetPadIndex = -1;
                 ClearSwapHighlight();
 
-                bool noMove = (dropIndex == _dragSourceVisualPos || dropIndex == _dragSourceVisualPos + 1);
+                bool noMove = dropIndex < 0 || dropIndex == _dragSourceVisualPos || dropIndex == _dragSourceVisualPos + 1;
                 if (noMove || _insertionAdorner == null)
                 {
                     _insertionAdorner?.Update(0, 0, 0, false);
@@ -1225,6 +1248,30 @@ namespace PadForge
                     _insertionAdorner.Update(lineY, cards[0].Left, cards[0].Width, true);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns true if the insertion point at <paramref name="insertionVisualPos"/>
+        /// is adjacent to at least one card of the same type as <paramref name="sourceType"/>.
+        /// </summary>
+        private bool IsInsertionInSameTypeGroup(int insertionVisualPos, VirtualControllerType sourceType, List<CardBounds> cards)
+        {
+            if (insertionVisualPos < 0) return false;
+            // Check the card above the insertion point.
+            if (insertionVisualPos > 0)
+            {
+                int abovePad = cards[insertionVisualPos - 1].PadIndex;
+                if (_viewModel.Pads[abovePad].OutputType == sourceType)
+                    return true;
+            }
+            // Check the card below the insertion point.
+            if (insertionVisualPos < cards.Count)
+            {
+                int belowPad = cards[insertionVisualPos].PadIndex;
+                if (_viewModel.Pads[belowPad].OutputType == sourceType)
+                    return true;
+            }
+            return false;
         }
 
         private void SetSwapHighlight(int padIndex, bool highlight)
@@ -1638,9 +1685,9 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Xbox360);
                 if (newSlot >= 0)
                 {
-                    // NavigateToSlot must run after the deferred RebuildControllerSection
-                    // so the new nav item exists. Both are queued via BeginInvoke in order.
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(newSlot)));
+                    _inputService.EnsureTypeGroupOrder();
+                    int nav = FindLastSlotOfType(VirtualControllerType.Xbox360);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
             stack.Children.Add(xboxBtn);
@@ -1672,7 +1719,9 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.DualShock4);
                 if (newSlot >= 0)
                 {
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(newSlot)));
+                    _inputService.EnsureTypeGroupOrder();
+                    int nav = FindLastSlotOfType(VirtualControllerType.DualShock4);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
             stack.Children.Add(ds4Btn);
@@ -1726,7 +1775,9 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.VJoy);
                 if (newSlot >= 0)
                 {
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(newSlot)));
+                    _inputService.EnsureTypeGroupOrder();
+                    int nav = FindLastSlotOfType(VirtualControllerType.VJoy);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
             stack.Children.Add(vjoyBtn);
@@ -1742,6 +1793,20 @@ namespace PadForge
         private void NavigateToSlot(int slotIndex)
         {
             SelectNavItemByTag($"Pad{slotIndex + 1}");
+        }
+
+        /// <summary>
+        /// Returns the last created slot index of the given type, or -1 if none.
+        /// Used after EnsureTypeGroupOrder to navigate to a newly created slot
+        /// whose index may have shifted during re-sorting.
+        /// </summary>
+        private int FindLastSlotOfType(VirtualControllerType type)
+        {
+            int last = -1;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+                if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == type)
+                    last = i;
+            return last;
         }
 
         /// <summary>

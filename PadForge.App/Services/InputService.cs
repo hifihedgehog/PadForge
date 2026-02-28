@@ -109,14 +109,32 @@ namespace PadForge.Services
             if (_inputManager != null)
                 return; // Already running.
 
+            // Remove stale ViGEm USB device nodes left over from previous sessions
+            // (e.g., app crash without Dispose, or old builds that didn't call Dispose).
+            // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
+            InputManager.CleanupStaleVigemDevices();
+
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
 
             // Copy controller types immediately so Step 5 creates the correct
             // VC types from the first polling cycle (don't wait for UI timer sync).
+            int expectedXbox = 0, expectedDs4 = 0;
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
+            {
                 _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
+                if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                {
+                    if (_mainVm.Pads[i].OutputType == VirtualControllerType.Xbox360) expectedXbox++;
+                    else if (_mainVm.Pads[i].OutputType == VirtualControllerType.DualShock4) expectedDs4++;
+                }
+            }
+
+            // Pre-initialize expected ViGEm counts so the device filter catches
+            // ViGEm virtual controllers on the very first UpdateDevices() cycle
+            // (before Step 5 has created any actual VCs).
+            _inputManager.PreInitializeVigemCounts(expectedXbox, expectedDs4);
 
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;

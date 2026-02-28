@@ -61,6 +61,7 @@ namespace PadForge.Common.Input
         private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
         private UserSetting[] _settingSnapshotBuffer = new UserSetting[16];
         private readonly UserSetting[] _padIndexBuffer = new UserSetting[8];
+        private readonly UserSetting[] _instanceGuidBuffer = new UserSetting[MaxPads];
 
         /// <summary>
         /// Combined output gamepad states for the virtual controller slots.

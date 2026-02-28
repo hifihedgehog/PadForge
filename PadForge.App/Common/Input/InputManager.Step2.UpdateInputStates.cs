@@ -103,11 +103,11 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Applies force feedback (rumble) to a device based on the vibration
-        /// state received from the game via ViGEmBus.
+        /// state received from games via ViGEmBus.
         ///
-        /// The vibration state comes from the virtual controller slot that this
-        /// device is mapped to. The PadSetting for the device controls gain,
-        /// motor swap, and other force feedback parameters.
+        /// When a device is mapped to multiple slots, vibration from all slots
+        /// is combined (max of each motor) so rumble from any game reaches the
+        /// physical controller.
         /// </summary>
         private void ApplyForceFeedback(UserDevice ud)
         {
@@ -118,33 +118,48 @@ namespace PadForge.Common.Input
             if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                 return;
 
-            // Find which pad slot this device is mapped to.
-            var userSetting = SettingsManager.UserSettings?.FindByInstanceGuid(ud.InstanceGuid);
-            if (userSetting == null)
-                return;
+            // Find ALL pad slots this device is mapped to (multi-slot assignment).
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
 
-            int padIndex = userSetting.MapTo;
-            if (padIndex < 0 || padIndex >= MaxPads)
-                return;
+            int slotCount = settings.FindByInstanceGuid(ud.InstanceGuid, _instanceGuidBuffer);
+            if (slotCount == 0) return;
 
-            // If a test rumble targets a specific device in this slot, skip others.
-            Guid targetGuid = TestRumbleTargetGuid[padIndex];
-            if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
-                return;
+            // Combine vibration across all mapped slots (max of each motor).
+            ushort combinedL = 0, combinedR = 0;
+            PadSetting firstPadSetting = null;
+            for (int i = 0; i < slotCount; i++)
+            {
+                var us = _instanceGuidBuffer[i];
+                int padIndex = us.MapTo;
+                if (padIndex < 0 || padIndex >= MaxPads) continue;
 
-            // Get the vibration state for this pad slot.
-            Vibration vibration = VibrationStates[padIndex];
-            if (vibration == null)
-                return;
+                // If a test rumble targets a specific device in this slot, skip others.
+                Guid targetGuid = TestRumbleTargetGuid[padIndex];
+                if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
+                    continue;
 
-            // Get the PadSetting for force feedback configuration.
-            PadSetting ps = userSetting.GetPadSetting();
-            if (ps == null)
-                return;
+                var vib = VibrationStates[padIndex];
+                if (vib == null) continue;
 
-            // SDL device: use ForceFeedbackState to manage rumble.
-            ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, ps, vibration);
+                if (vib.LeftMotorSpeed > combinedL)  combinedL = vib.LeftMotorSpeed;
+                if (vib.RightMotorSpeed > combinedR) combinedR = vib.RightMotorSpeed;
+
+                if (firstPadSetting == null)
+                    firstPadSetting = us.GetPadSetting();
+            }
+
+            if (firstPadSetting == null) return;
+
+            // Write combined vibration to a scratch Vibration and apply.
+            if (_combinedVibration == null) _combinedVibration = new Vibration();
+            _combinedVibration.LeftMotorSpeed = combinedL;
+            _combinedVibration.RightMotorSpeed = combinedR;
+
+            ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
         }
+
+        private Vibration _combinedVibration;
 
         // ─────────────────────────────────────────────
         //  Parse helpers

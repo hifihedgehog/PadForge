@@ -387,7 +387,7 @@ namespace PadForge
 
             // Enforce type-group ordering (Xbox 360 > DS4 > vJoy) on startup.
             // Handles backward-compat with old configs that have interleaved types.
-            if (_inputService.EnsureTypeGroupOrder())
+            if (_inputService.EnsureTypeGroupOrder(silent: true))
                 _settingsService.MarkDirty();
 
             // Populate sidebar and dashboard with saved slots regardless of engine state,

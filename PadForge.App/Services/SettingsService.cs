@@ -264,7 +264,11 @@ namespace PadForge.Services
             {
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotControllerTypes.Length; i++)
                 {
-                    if (Enum.IsDefined(typeof(Engine.VirtualControllerType), appSettings.SlotControllerTypes[i]))
+                    // Only load types for created slots. Uncreated slots keep the
+                    // default (Xbox360) to prevent stale values from previous sessions
+                    // leaking into the engine's SlotControllerTypes array.
+                    if (SettingsManager.SlotCreated[i] &&
+                        Enum.IsDefined(typeof(Engine.VirtualControllerType), appSettings.SlotControllerTypes[i]))
                         _mainVm.Pads[i].OutputType = (Engine.VirtualControllerType)appSettings.SlotControllerTypes[i];
                 }
             }

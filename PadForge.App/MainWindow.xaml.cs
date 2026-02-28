@@ -390,13 +390,22 @@ namespace PadForge
             _viewModel.RefreshNavControllerItems();
             RefreshDashboardActiveSlots();
 
-            // Ensure enough vJoy device nodes exist for any saved vJoy slots,
-            // then start the engine. Device nodes are persistent PnP entries —
-            // this is usually a no-op (fast path) after the first run.
+            // Ensure enough vJoy device nodes exist for vJoy slots that have
+            // at least one physical device assigned. Unlike ViGEm (which creates
+            // devices on-demand via Connect()), vJoy needs PnP device nodes to
+            // exist before AcquireVJD() can succeed. Only create nodes for slots
+            // with assigned devices — empty vJoy slots shouldn't show up in joy.cpl.
             int vjoySlotCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
+            {
                 if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
-                    vjoySlotCount++;
+                {
+                    // Only count slots with at least one device mapped.
+                    var settings = SettingsManager.UserSettings;
+                    if (settings != null && settings.FindByPadIndex(i)?.Count > 0)
+                        vjoySlotCount++;
+                }
+            }
 
             if (vjoySlotCount > 0 && _viewModel.Settings.AutoStartEngine)
             {

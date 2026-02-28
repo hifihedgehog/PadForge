@@ -344,6 +344,7 @@ namespace PadForge
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
+                _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
@@ -982,6 +983,7 @@ namespace PadForge
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox360;
+                _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
         }
@@ -993,6 +995,7 @@ namespace PadForge
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.DualShock4;
+                _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
         }
@@ -1004,6 +1007,7 @@ namespace PadForge
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
         }

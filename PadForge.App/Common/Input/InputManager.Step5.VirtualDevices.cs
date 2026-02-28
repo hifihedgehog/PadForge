@@ -372,6 +372,16 @@ namespace PadForge.Common.Input
                     _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
                 else if (vc.Type == VirtualControllerType.DualShock4)
                     _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
+
+                // vJoy: trim device nodes so dormant devices don't appear in joy.cpl.
+                if (vc.Type == VirtualControllerType.VJoy)
+                {
+                    int remainingVJoy = 0;
+                    for (int i = 0; i < MaxPads; i++)
+                        if (i != padIndex && _virtualControllers[i]?.Type == VirtualControllerType.VJoy)
+                            remainingVJoy++;
+                    VJoyVirtualController.TrimDeviceNodes(remainingVJoy);
+                }
             }
             catch { /* best effort */ }
         }

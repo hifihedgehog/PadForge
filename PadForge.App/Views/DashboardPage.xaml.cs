@@ -271,6 +271,22 @@ namespace PadForge.Views
                 }
             }
 
+            // ── Type-group validation ──
+            // Block cross-type reordering: only allow swap/insert within the same type group.
+            var sourceType = GetSlotOutputType(_dragSourcePadIndex);
+
+            if (isSwap)
+            {
+                if (GetSlotOutputType(cards[swapCardIndex].PadIndex) != sourceType)
+                    isSwap = false;
+            }
+
+            if (!isSwap && dropIndex >= 0)
+            {
+                if (!IsInsertionInSameTypeGroup(dropIndex, sourceType, cards))
+                    dropIndex = -1;
+            }
+
             _dragIsSwapMode = isSwap;
 
             if (isSwap)
@@ -286,7 +302,7 @@ namespace PadForge.Views
                 _dragSwapTargetPadIndex = -1;
                 ClearSwapHighlight();
 
-                bool noMove = (dropIndex == _dragSourceVisualPos || dropIndex == _dragSourceVisualPos + 1);
+                bool noMove = dropIndex < 0 || dropIndex == _dragSourceVisualPos || dropIndex == _dragSourceVisualPos + 1;
                 if (noMove || _insertionAdorner == null)
                 {
                     _insertionAdorner?.Update(0, 0, 0, 0, false);
@@ -388,6 +404,24 @@ namespace PadForge.Views
         }
 
         // ── Helpers ──
+
+        private VirtualControllerType GetSlotOutputType(int padIndex)
+        {
+            foreach (var item in SlotsItemsControl.Items)
+                if (item is ViewModels.SlotSummary s && s.PadIndex == padIndex)
+                    return s.OutputType;
+            return VirtualControllerType.Xbox360;
+        }
+
+        private bool IsInsertionInSameTypeGroup(int insertionVisualPos, VirtualControllerType sourceType, List<CardBounds> cards)
+        {
+            if (insertionVisualPos < 0) return false;
+            if (insertionVisualPos > 0 && GetSlotOutputType(cards[insertionVisualPos - 1].PadIndex) == sourceType)
+                return true;
+            if (insertionVisualPos < cards.Count && GetSlotOutputType(cards[insertionVisualPos].PadIndex) == sourceType)
+                return true;
+            return false;
+        }
 
         private record struct CardBounds(int PadIndex, double Left, double Top, double Right, double Bottom);
 

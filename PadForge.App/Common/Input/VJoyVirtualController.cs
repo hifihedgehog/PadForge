@@ -117,71 +117,55 @@ namespace PadForge.Common.Input
         {
             if (!_connected) return;
 
-            // Axes: Gamepad thumbsticks are signed short (-32768 to 32767).
-            // vJoy axes are 0 to 32767 (default range).
-            // Convert: (short + 32768) / 2 → 0..32767
-            VJoyNative.SetAxis(ShortToVJoy(gp.ThumbLX), _deviceId, HID_USAGES.HID_USAGE_X);
-            VJoyNative.SetAxis(ShortToVJoyInverted(gp.ThumbLY), _deviceId, HID_USAGES.HID_USAGE_Y);
-            VJoyNative.SetAxis(ShortToVJoy(gp.ThumbRX), _deviceId, HID_USAGES.HID_USAGE_RX);
-            VJoyNative.SetAxis(ShortToVJoyInverted(gp.ThumbRY), _deviceId, HID_USAGES.HID_USAGE_RY);
+            // Build the entire joystick state in a single struct, then send
+            // one IOCTL via UpdateVJD instead of 18+ individual SetAxis/SetBtn calls.
+            // This is critical for multi-controller performance — each individual call
+            // is a separate kernel roundtrip (~1-2ms), causing catastrophic polling
+            // rate drops (1000Hz → 11Hz with 2 controllers, 5Hz with 3).
+            var pos = new VJoyNative.JoystickPosition { bDevice = (byte)_deviceId };
 
-            // Triggers: 0–255 byte → 0–32767 vJoy axis
-            VJoyNative.SetAxis(gp.LeftTrigger * 32767 / 255, _deviceId, HID_USAGES.HID_USAGE_Z);
-            VJoyNative.SetAxis(gp.RightTrigger * 32767 / 255, _deviceId, HID_USAGES.HID_USAGE_RZ);
+            // Axes: signed short (-32768..32767) → vJoy range (0..32767)
+            pos.wAxisX  = (gp.ThumbLX + 32768) / 2;
+            pos.wAxisY  = 32767 - (gp.ThumbLY + 32768) / 2;  // Y inverted (HID Y-down = max)
+            pos.wAxisXRot = (gp.ThumbRX + 32768) / 2;
+            pos.wAxisYRot = 32767 - (gp.ThumbRY + 32768) / 2; // Y inverted
+            pos.wAxisZ  = gp.LeftTrigger * 32767 / 255;
+            pos.wAxisZRot = gp.RightTrigger * 32767 / 255;
 
-            // Buttons (1-based for vJoy)
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.A), _deviceId, 1);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.B), _deviceId, 2);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.X), _deviceId, 3);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.Y), _deviceId, 4);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_SHOULDER), _deviceId, 5);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER), _deviceId, 6);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.BACK), _deviceId, 7);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.START), _deviceId, 8);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_THUMB), _deviceId, 9);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_THUMB), _deviceId, 10);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.GUIDE), _deviceId, 11);
+            // Buttons: build bitmask (bit 0 = button 1, bit 10 = button 11)
+            int buttons = 0;
+            if (gp.IsButtonPressed(Gamepad.A))              buttons |= 1 << 0;
+            if (gp.IsButtonPressed(Gamepad.B))              buttons |= 1 << 1;
+            if (gp.IsButtonPressed(Gamepad.X))              buttons |= 1 << 2;
+            if (gp.IsButtonPressed(Gamepad.Y))              buttons |= 1 << 3;
+            if (gp.IsButtonPressed(Gamepad.LEFT_SHOULDER))  buttons |= 1 << 4;
+            if (gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER)) buttons |= 1 << 5;
+            if (gp.IsButtonPressed(Gamepad.BACK))           buttons |= 1 << 6;
+            if (gp.IsButtonPressed(Gamepad.START))          buttons |= 1 << 7;
+            if (gp.IsButtonPressed(Gamepad.LEFT_THUMB))     buttons |= 1 << 8;
+            if (gp.IsButtonPressed(Gamepad.RIGHT_THUMB))    buttons |= 1 << 9;
+            if (gp.IsButtonPressed(Gamepad.GUIDE))          buttons |= 1 << 10;
+            pos.lButtons = buttons;
 
-            // D-Pad → discrete POV hat (0=Up, 1=Right, 2=Down, 3=Left, -1=centered)
-            int povValue = GamepadDPadToDiscPov(gp.Buttons);
-            VJoyNative.SetDiscPov(povValue, _deviceId, 1);
+            // D-Pad → discrete POV hat packed in lower nibble of bHats.
+            // Each nibble = one POV (0=Up, 1=Right, 2=Down, 3=Left, 0xF=centered).
+            // All 4 POVs in bHats start as 0xFFFFFFFF (all centered), then set POV 1.
+            bool up    = (gp.Buttons & Gamepad.DPAD_UP) != 0;
+            bool right = (gp.Buttons & Gamepad.DPAD_RIGHT) != 0;
+            bool down  = (gp.Buttons & Gamepad.DPAD_DOWN) != 0;
+            bool left  = (gp.Buttons & Gamepad.DPAD_LEFT) != 0;
+            uint povNibble = up ? 0u : right ? 1u : down ? 2u : left ? 3u : 0x0Fu;
+            pos.bHats = 0xFFFFFFF0u | povNibble;
+            pos.bHatsEx1 = 0xFFFFFFFF;
+            pos.bHatsEx2 = 0xFFFFFFFF;
+            pos.bHatsEx3 = 0xFFFFFFFF;
+
+            VJoyNative.UpdateVJD(_deviceId, ref pos);
         }
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             // vJoy has no rumble/force feedback callback — no-op.
-        }
-
-        /// <summary>Converts signed short (-32768..32767) to vJoy range (0..32767).</summary>
-        private static int ShortToVJoy(short value)
-        {
-            return (value + 32768) / 2;
-        }
-
-        /// <summary>
-        /// Converts signed short to vJoy range with Y-axis inversion.
-        /// HID convention: Y-down = max value (32767). Gamepad convention: Y-up = positive.
-        /// </summary>
-        private static int ShortToVJoyInverted(short value)
-        {
-            return 32767 - (value + 32768) / 2;
-        }
-
-        /// <summary>Extracts D-Pad from Gamepad buttons to vJoy discrete POV value.</summary>
-        private static int GamepadDPadToDiscPov(ushort buttons)
-        {
-            bool up = (buttons & Gamepad.DPAD_UP) != 0;
-            bool down = (buttons & Gamepad.DPAD_DOWN) != 0;
-            bool left = (buttons & Gamepad.DPAD_LEFT) != 0;
-            bool right = (buttons & Gamepad.DPAD_RIGHT) != 0;
-
-            // vJoy discrete POV: 0=Up, 1=Right, 2=Down, 3=Left, -1=centered
-            // Diagonals not supported in discrete mode — prioritize cardinal directions.
-            if (up) return 0;
-            if (right) return 1;
-            if (down) return 2;
-            if (left) return 3;
-            return -1; // centered
         }
 
         // ─────────────────────────────────────────────
@@ -572,23 +556,10 @@ public static class PF_SetupApi {{
         VJD_STAT_UNKN = 4
     }
 
-    internal enum HID_USAGES : uint
-    {
-        HID_USAGE_X = 0x30,
-        HID_USAGE_Y = 0x31,
-        HID_USAGE_Z = 0x32,
-        HID_USAGE_RX = 0x33,
-        HID_USAGE_RY = 0x34,
-        HID_USAGE_RZ = 0x35,
-        HID_USAGE_SL0 = 0x36,
-        HID_USAGE_SL1 = 0x37,
-    }
-
     /// <summary>
     /// Direct P/Invoke to vJoyInterface.dll (native C DLL from vJoy SDK).
-    /// Only the minimal set of functions needed for virtual controller output.
-    /// The DLL is loaded from the vJoy installation directory (must be in PATH
-    /// or placed alongside the application).
+    /// Uses UpdateVJD (batch API) for output — sends the entire joystick
+    /// state in a single IOCTL instead of per-axis/per-button calls.
     /// </summary>
     internal static class VJoyNative
     {
@@ -612,17 +583,51 @@ public static class PF_SetupApi {{
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ResetVJD(uint rID);
 
+        /// <summary>
+        /// Sends the entire joystick state to the vJoy driver in a single IOCTL.
+        /// This is ~18x faster than individual SetAxis/SetBtn/SetDiscPov calls,
+        /// each of which makes a separate kernel roundtrip.
+        /// </summary>
         [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetAxis(int value, uint rID, HID_USAGES axis);
+        public static extern bool UpdateVJD(uint rID, ref JoystickPosition pData);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetBtn([MarshalAs(UnmanagedType.Bool)] bool value, uint rID, byte nBtn);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetDiscPov(int value, uint rID, byte nPov);
+        /// <summary>
+        /// Maps to JOYSTICK_POSITION from vJoy SDK (public.h).
+        /// Layout must match the native C struct exactly — field offsets
+        /// verified against the SDK header.
+        /// </summary>
+        [StructLayout(LayoutKind.Explicit)]
+        public struct JoystickPosition
+        {
+            [FieldOffset(0)]  public byte bDevice;     // 1-based device index
+            [FieldOffset(4)]  public int wThrottle;
+            [FieldOffset(8)]  public int wRudder;
+            [FieldOffset(12)] public int wAileron;
+            [FieldOffset(16)] public int wAxisX;       // Left stick X
+            [FieldOffset(20)] public int wAxisY;       // Left stick Y
+            [FieldOffset(24)] public int wAxisZ;       // Left trigger
+            [FieldOffset(28)] public int wAxisXRot;    // Right stick X
+            [FieldOffset(32)] public int wAxisYRot;    // Right stick Y
+            [FieldOffset(36)] public int wAxisZRot;    // Right trigger
+            [FieldOffset(40)] public int wSlider;
+            [FieldOffset(44)] public int wDial;
+            [FieldOffset(48)] public int wWheel;
+            [FieldOffset(52)] public int wAxisVX;
+            [FieldOffset(56)] public int wAxisVY;
+            [FieldOffset(60)] public int wAxisVZ;
+            [FieldOffset(64)] public int wAxisVBRX;
+            [FieldOffset(68)] public int wAxisVBRY;
+            [FieldOffset(72)] public int wAxisVBRZ;
+            [FieldOffset(76)] public int lButtons;     // Buttons 1–32 bitmask
+            [FieldOffset(80)] public uint bHats;       // Discrete POVs (4 per nibble)
+            [FieldOffset(84)] public uint bHatsEx1;    // Continuous POV 2
+            [FieldOffset(88)] public uint bHatsEx2;    // Continuous POV 3
+            [FieldOffset(92)] public uint bHatsEx3;    // Continuous POV 4
+            [FieldOffset(96)] public int lButtonsEx1;  // Buttons 33–64
+            [FieldOffset(100)] public int lButtonsEx2; // Buttons 65–96
+            [FieldOffset(104)] public int lButtonsEx3; // Buttons 97–128
+        }
     }
 
 }

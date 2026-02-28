@@ -127,10 +127,12 @@ namespace PadForge.Common.Input
                     vc = null;
                 }
 
-                // Slot deleted by user — destroy immediately, no grace period.
-                if (vc != null && !SettingsManager.SlotCreated[padIndex])
+                // Slot deleted or disabled by user — destroy immediately.
+                // The grace period only applies to transient device disconnects
+                // (slot still created + enabled, but physical device offline).
+                if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
                 {
-                    RumbleLogger.Log($"[Step5] Pad{padIndex} slot deleted, destroying virtual controller immediately");
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} slot {(SettingsManager.SlotCreated[padIndex] ? "disabled" : "deleted")}, destroying virtual controller immediately");
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
@@ -151,8 +153,21 @@ namespace PadForge.Common.Input
                     if (vc == null)
                         anyNeedsCreate = true;
                 }
+                else if (vc != null && !HasAnyDeviceMapped(padIndex))
+                {
+                    // No devices mapped to this slot — user explicitly unassigned
+                    // all devices. Destroy immediately (not a transient disconnect).
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} no devices mapped, destroying virtual controller immediately");
+                    DestroyVirtualController(padIndex);
+                    _virtualControllers[padIndex] = null;
+                    _slotInactiveCounter[padIndex] = 0;
+                    VibrationStates[padIndex].LeftMotorSpeed = 0;
+                    VibrationStates[padIndex].RightMotorSpeed = 0;
+                }
                 else
                 {
+                    // Device(s) mapped but offline — transient disconnect.
+                    // Grace period preserves rumble feedback through USB hiccups.
                     _slotInactiveCounter[padIndex]++;
 
                     if (_slotInactiveCounter[padIndex] == 1)
@@ -291,6 +306,18 @@ namespace PadForge.Common.Input
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns true if any device (online or offline) is mapped to this slot.
+        /// Used to distinguish "user unassigned all devices" (no mappings → destroy
+        /// immediately) from "device temporarily offline" (mapping exists → grace period).
+        /// </summary>
+        private bool HasAnyDeviceMapped(int padIndex)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return false;
+            return settings.FindByPadIndex(padIndex, _padIndexBuffer) > 0;
         }
 
         // ─────────────────────────────────────────────

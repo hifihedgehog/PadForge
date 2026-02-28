@@ -378,8 +378,9 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Swaps all per-slot engine data between two controller slots.
-        /// Destroys virtual controllers for both slots first so ViGEm
-        /// recreates them in the correct XInput order.
+        /// vJoy controllers are swapped in-place (device IDs are fixed, no
+        /// creation-order dependency). ViGEm controllers must be destroyed
+        /// and recreated because XInput/DS4 indices depend on creation order.
         /// </summary>
         public void SwapSlots(int slotA, int slotB)
         {
@@ -387,11 +388,29 @@ namespace PadForge.Common.Input
             if (slotA < 0 || slotA >= MaxPads) return;
             if (slotB < 0 || slotB >= MaxPads) return;
 
-            // Destroy virtual controllers — Step 5 will recreate them.
-            DestroyVirtualController(slotA);
-            DestroyVirtualController(slotB);
-            _virtualControllers[slotA] = null;
-            _virtualControllers[slotB] = null;
+            // vJoy controllers can be swapped in-place — their device IDs
+            // are fixed and don't depend on creation order. ViGEm controllers
+            // must be destroyed because XInput/DS4 indices are assigned
+            // sequentially at Connect() time.
+            var vcA = _virtualControllers[slotA];
+            var vcB = _virtualControllers[slotB];
+            bool canSwapA = vcA == null || vcA.Type == VirtualControllerType.VJoy;
+            bool canSwapB = vcB == null || vcB.Type == VirtualControllerType.VJoy;
+
+            if (canSwapA && canSwapB)
+            {
+                // Both are vJoy (or null) — swap references directly.
+                (_virtualControllers[slotA], _virtualControllers[slotB]) =
+                    (_virtualControllers[slotB], _virtualControllers[slotA]);
+            }
+            else
+            {
+                // At least one is ViGEm — destroy both, Step 5 will recreate.
+                DestroyVirtualController(slotA);
+                DestroyVirtualController(slotB);
+                _virtualControllers[slotA] = null;
+                _virtualControllers[slotB] = null;
+            }
 
             // Swap all per-slot arrays.
             (CombinedOutputStates[slotA], CombinedOutputStates[slotB]) =
@@ -411,7 +430,7 @@ namespace PadForge.Common.Input
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
                 (MacroSnapshots[slotB], MacroSnapshots[slotA]);
 
-            // Reset inactive counters so Step 5 recreates immediately.
+            // Reset inactive counters so Step 5 recreates ViGEm immediately.
             _slotInactiveCounter[slotA] = 0;
             _slotInactiveCounter[slotB] = 0;
         }

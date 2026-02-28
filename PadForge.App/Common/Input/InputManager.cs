@@ -377,10 +377,12 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Swaps all per-slot engine data between two controller slots.
-        /// vJoy controllers are swapped in-place (device IDs are fixed, no
-        /// creation-order dependency). ViGEm controllers must be destroyed
-        /// and recreated because XInput/DS4 indices depend on creation order.
+        /// Swaps controller slot data between two positions.
+        /// Same-type swaps keep virtual controllers alive — only the input
+        /// routing changes (via MapTo swap in SettingsManager). This avoids
+        /// ViGEm disconnect/reconnect flicker and preserves XInput indices.
+        /// Cross-type swaps destroy both VCs so Step 5 recreates them with
+        /// the correct types.
         /// </summary>
         public void SwapSlots(int slotA, int slotB)
         {
@@ -388,51 +390,42 @@ namespace PadForge.Common.Input
             if (slotA < 0 || slotA >= MaxPads) return;
             if (slotB < 0 || slotB >= MaxPads) return;
 
-            // vJoy controllers can be swapped in-place — their device IDs
-            // are fixed and don't depend on creation order. ViGEm controllers
-            // must be destroyed because XInput/DS4 indices are assigned
-            // sequentially at Connect() time.
             var vcA = _virtualControllers[slotA];
             var vcB = _virtualControllers[slotB];
-            bool canSwapA = vcA == null || vcA.Type == VirtualControllerType.VJoy;
-            bool canSwapB = vcB == null || vcB.Type == VirtualControllerType.VJoy;
+            var typeA = vcA?.Type ?? SlotControllerTypes[slotA];
+            var typeB = vcB?.Type ?? SlotControllerTypes[slotB];
 
-            if (canSwapA && canSwapB)
+            if (typeA == typeB)
             {
-                // Both are vJoy (or null) — swap references directly.
-                (_virtualControllers[slotA], _virtualControllers[slotB]) =
-                    (_virtualControllers[slotB], _virtualControllers[slotA]);
+                // Same type — virtual controllers stay at their indices.
+                // SettingsManager.SwapSlots (called by InputService) swaps
+                // MapTo values, which reroutes the entire pipeline:
+                //   Step 3 maps device input using MapTo → OutputState
+                //   Step 4 combines by MapTo index → CombinedOutputStates
+                //   Step 5 feeds CombinedOutputStates[i] → _virtualControllers[i]
+                // All per-slot arrays are recomputed each frame from MapTo,
+                // so no array swapping needed. Zero game disruption.
             }
             else
             {
-                // At least one is ViGEm — destroy both, Step 5 will recreate.
+                // Cross-type swap — must destroy both VCs so Step 5 recreates
+                // them with the correct types in ascending slot order.
                 DestroyVirtualController(slotA);
                 DestroyVirtualController(slotB);
                 _virtualControllers[slotA] = null;
                 _virtualControllers[slotB] = null;
+                _slotInactiveCounter[slotA] = 0;
+                _slotInactiveCounter[slotB] = 0;
             }
 
-            // Swap all per-slot arrays.
-            (CombinedOutputStates[slotA], CombinedOutputStates[slotB]) =
-                (CombinedOutputStates[slotB], CombinedOutputStates[slotA]);
-            (RetrievedOutputStates[slotA], RetrievedOutputStates[slotB]) =
-                (RetrievedOutputStates[slotB], RetrievedOutputStates[slotA]);
-            (VibrationStates[slotA], VibrationStates[slotB]) =
-                (VibrationStates[slotB], VibrationStates[slotA]);
-            (MotionSnapshots[slotA], MotionSnapshots[slotB]) =
-                (MotionSnapshots[slotB], MotionSnapshots[slotA]);
-            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
-                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
+            // Always swap type tracking and UI-associated state that
+            // travels with the card (not recomputed from MapTo).
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
-            (_slotInactiveCounter[slotA], _slotInactiveCounter[slotB]) =
-                (_slotInactiveCounter[slotB], _slotInactiveCounter[slotA]);
+            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
+                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
                 (MacroSnapshots[slotB], MacroSnapshots[slotA]);
-
-            // Reset inactive counters so Step 5 recreates ViGEm immediately.
-            _slotInactiveCounter[slotA] = 0;
-            _slotInactiveCounter[slotB] = 0;
         }
 
         // ─────────────────────────────────────────────

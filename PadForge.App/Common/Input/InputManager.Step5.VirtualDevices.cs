@@ -331,7 +331,10 @@ namespace PadForge.Common.Input
             uint deviceId = VJoyVirtualController.FindFreeDeviceId();
             if (deviceId == 0)
             {
-                RaiseError("No free vJoy devices available. Configure devices in vJoy Configuration.", null);
+                int existing = VJoyVirtualController.CountExistingDevices();
+                bool installed = VJoyVirtualController.CheckVJoyInstalled();
+                RaiseError($"No free vJoy devices (existing={existing}, driver={installed}). " +
+                    "Add a vJoy controller from the dashboard to create device nodes.", null);
                 return null;
             }
             return new VJoyVirtualController(deviceId);

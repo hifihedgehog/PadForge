@@ -326,19 +326,11 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                // Only count ViGEm-based controllers (Xbox 360 / DS4).
-                // vJoy is NOT a ViGEm controller — inflating this count causes
-                // IsViGEmVirtualDevice() to incorrectly filter real controllers.
+                _activeVigemCount++;
                 if (controllerType == VirtualControllerType.Xbox360)
-                {
-                    _activeVigemCount++;
                     _activeXbox360Count++;
-                }
                 else if (controllerType == VirtualControllerType.DualShock4)
-                {
-                    _activeVigemCount++;
                     _activeDs4Count++;
-                }
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
 
                 return vc;
@@ -400,16 +392,11 @@ namespace PadForge.Common.Input
                     }
                 }
 
+                _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                 if (vc.Type == VirtualControllerType.Xbox360)
-                {
-                    _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                     _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
-                }
                 else if (vc.Type == VirtualControllerType.DualShock4)
-                {
-                    _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                     _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
-                }
 
                 // vJoy: trim device nodes so dormant devices don't appear in joy.cpl.
                 // Skipped during bulk destroy — RemoveAllDeviceNodes handles it.

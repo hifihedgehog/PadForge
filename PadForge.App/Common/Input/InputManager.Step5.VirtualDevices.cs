@@ -340,7 +340,12 @@ namespace PadForge.Common.Input
             return new VJoyVirtualController(deviceId);
         }
 
-        private void DestroyVirtualController(int padIndex)
+        /// <param name="trimVJoyNodes">
+        /// When true, trims vJoy device nodes after disconnecting. Set to false
+        /// during bulk destroy (DestroyAllVirtualControllers) — the caller handles
+        /// node cleanup via RemoveAllDeviceNodes() once at the end.
+        /// </param>
+        private void DestroyVirtualController(int padIndex, bool trimVJoyNodes = true)
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
@@ -374,7 +379,8 @@ namespace PadForge.Common.Input
                     _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
 
                 // vJoy: trim device nodes so dormant devices don't appear in joy.cpl.
-                if (vc.Type == VirtualControllerType.VJoy)
+                // Skipped during bulk destroy — RemoveAllDeviceNodes handles it.
+                if (trimVJoyNodes && vc.Type == VirtualControllerType.VJoy)
                 {
                     int remainingVJoy = 0;
                     for (int i = 0; i < MaxPads; i++)
@@ -388,9 +394,11 @@ namespace PadForge.Common.Input
 
         private void DestroyAllVirtualControllers()
         {
+            // Skip per-VC device node trimming — RemoveAllDeviceNodes()
+            // in InputService.Stop() handles bulk cleanup in one pass.
             for (int i = 0; i < MaxPads; i++)
             {
-                DestroyVirtualController(i);
+                DestroyVirtualController(i, trimVJoyNodes: false);
                 _virtualControllers[i] = null;
             }
 

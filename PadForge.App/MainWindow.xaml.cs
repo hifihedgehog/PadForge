@@ -556,17 +556,19 @@ namespace PadForge
             RebuildControllerSection();
 
             // Subscribe to the single "done" event instead of CollectionChanged.
-            // Deferred to the next dispatcher frame so the NavigationView's internal
-            // ItemsRepeater completes its current layout pass before we tear down
-            // and rebuild MenuItems. Without this, the ItemsRepeater's cached index
-            // goes stale and crashes in MeasureOverride.
+            // Deferred to Background priority so the NavigationView's internal
+            // ItemsRepeater completes ALL pending layout/render passes before we
+            // tear down and rebuild MenuItems. Normal priority can still interleave
+            // with layout, causing the ItemsRepeater's cached index to go stale and
+            // crash in ViewManager.GetElementFromElementFactory (MeasureOverride).
             _viewModel.NavControllerItemsRefreshed += (s, e) =>
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    RebuildControllerSection();
-                    _viewModel.Devices.RefreshSlotButtons();
-                    _inputService.RefreshProfileTopology();
-                }));
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                    new Action(() =>
+                    {
+                        RebuildControllerSection();
+                        _viewModel.Devices.RefreshSlotButtons();
+                        _inputService.RefreshProfileTopology();
+                    }));
 
             // Subscribe to OutputType changes on each pad to refresh sidebar
             // and profile topology badges (type change doesn't add/remove slots

@@ -160,7 +160,14 @@ namespace PadForge.Common.Input
             pos.bHatsEx2 = 0xFFFFFFFF;
             pos.bHatsEx3 = 0xFFFFFFFF;
 
-            VJoyNative.UpdateVJD(_deviceId, ref pos);
+            if (!VJoyNative.UpdateVJD(_deviceId, ref pos))
+            {
+                // UpdateVJD failed — device may have been released or struct mismatch.
+                // Re-check status; if device is no longer ours, mark disconnected.
+                var status = VJoyNative.GetVJDStatus(_deviceId);
+                if (status != VjdStat.VJD_STAT_OWN)
+                    _connected = false;
+            }
         }
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)

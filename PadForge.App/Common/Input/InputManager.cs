@@ -38,8 +38,8 @@ namespace PadForge.Common.Input
         /// <summary>Device re-enumeration interval in milliseconds (every 2 seconds).</summary>
         private const int EnumerationIntervalMs = 2000;
 
-        /// <summary>Maximum number of virtual controller slots (4 Xbox 360 + 4 DS4).</summary>
-        public const int MaxPads = 8;
+        /// <summary>Maximum number of virtual controller slots.</summary>
+        public const int MaxPads = 16;
 
         // ─────────────────────────────────────────────
         //  State
@@ -60,7 +60,7 @@ namespace PadForge.Common.Input
         // ── Pre-allocated snapshot buffers for hot path (avoid LINQ allocations) ──
         private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
         private UserSetting[] _settingSnapshotBuffer = new UserSetting[16];
-        private readonly UserSetting[] _padIndexBuffer = new UserSetting[8];
+        private readonly UserSetting[] _padIndexBuffer = new UserSetting[MaxPads];
         private readonly UserSetting[] _instanceGuidBuffer = new UserSetting[MaxPads];
 
         /// <summary>

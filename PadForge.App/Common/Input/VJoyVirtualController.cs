@@ -315,32 +315,63 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Removes a vJoy device node via pnputil so it no longer appears
-        /// in Windows game controllers. Runs elevated in a hidden cmd window.
+        /// Removes ALL vJoy device nodes via a single elevated PowerShell script.
+        /// Enumerates ROOT\HIDCLASS\* devices matching the vJoy hardware ID and
+        /// removes them with pnputil. One UAC prompt for the entire batch.
         /// </summary>
-        internal static bool DeleteVJoyDevice(uint deviceId)
+        internal static bool RemoveAllDeviceNodes()
         {
-            // vJoy device nodes are ROOT\HIDCLASS\NNNN (0-based, deviceId is 1-based).
-            // Scan ROOT\HIDCLASS\0000–0015 and remove any that exist.
-            // In practice there's usually just one per active device.
             try
             {
-                string instanceId = $"ROOT\\HIDCLASS\\{(deviceId - 1):D4}";
+                string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_cleanup.ps1");
+                string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_cleanup.log");
+
+                File.WriteAllText(scriptPath, @"
+$log = '" + logPath.Replace("'", "''") + @"'
+try {
+    $removed = 0
+    # Find all ROOT\HIDCLASS\* devices with vJoy hardware ID
+    $devices = pnputil /enum-devices /class HIDClass 2>&1
+    $instanceId = $null
+    foreach ($line in $devices) {
+        if ($line -match 'Instance ID:\s+(.+)') {
+            $instanceId = $matches[1].Trim()
+        }
+        if ($line -match 'vJoy Device' -and $instanceId -and $instanceId -like 'ROOT\HIDCLASS\*') {
+            pnputil /remove-device ""$instanceId"" /subtree 2>&1 | Out-Null
+            $removed++
+            $instanceId = $null
+        }
+    }
+    ""OK:$removed"" | Out-File $log -Force
+} catch {
+    ""EXCEPTION: $_"" | Out-File $log -Force
+    exit 1
+}
+");
+                try { File.Delete(logPath); } catch { }
+
                 var psi = new ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c pnputil /remove-device \"{instanceId}\" /subtree >nul 2>&1",
+                    FileName = "powershell.exe",
+                    Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"",
                     Verb = "runas",
                     UseShellExecute = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 };
 
-                Debug.WriteLine($"[vJoy] Deleting device node {instanceId}...");
+                Debug.WriteLine("[vJoy] Removing all device nodes (elevated PowerShell)...");
                 using var proc = Process.Start(psi);
                 if (proc == null) return false;
-                proc.WaitForExit(10_000);
-                Debug.WriteLine($"[vJoy] pnputil remove-device exit code: {proc.ExitCode}");
-                return true;
+                proc.WaitForExit(15_000);
+
+                string result = File.Exists(logPath) ? File.ReadAllText(logPath).Trim() : "NO_LOG";
+                Debug.WriteLine($"[vJoy] RemoveAllDeviceNodes result: {result}");
+
+                try { File.Delete(scriptPath); } catch { }
+                try { File.Delete(logPath); } catch { }
+
+                return result.StartsWith("OK", StringComparison.OrdinalIgnoreCase);
             }
             catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
             {
@@ -349,7 +380,7 @@ namespace PadForge.Common.Input
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] DeleteVJoyDevice exception: {ex.Message}");
+                Debug.WriteLine($"[vJoy] RemoveAllDeviceNodes exception: {ex.Message}");
                 return false;
             }
         }

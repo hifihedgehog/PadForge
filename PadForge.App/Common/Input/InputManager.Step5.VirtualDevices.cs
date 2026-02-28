@@ -417,9 +417,13 @@ namespace PadForge.Common.Input
         /// </summary>
         private IVirtualController CreateVJoyController()
         {
-            if (!VJoyVirtualController.CheckVJoyInstalled())
+            // Light check: can the DLL be loaded? Don't use CheckVJoyInstalled()
+            // (calls vJoyEnabled()) because that requires active device nodes —
+            // which don't exist yet in the on-demand model.
+            VJoyVirtualController.EnsureDllLoaded();
+            if (!VJoyVirtualController.IsDllLoaded)
             {
-                RaiseError("vJoy driver is not installed.", null);
+                RaiseError("vJoy driver is not installed (vJoyInterface.dll not found).", null);
                 return null;
             }
 

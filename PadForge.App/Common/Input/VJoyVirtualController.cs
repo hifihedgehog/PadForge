@@ -18,6 +18,9 @@ namespace PadForge.Common.Input
     {
         private static bool _dllLoaded;
 
+        /// <summary>Whether vJoyInterface.dll has been successfully loaded into the process.</summary>
+        public static bool IsDllLoaded => _dllLoaded;
+
         /// <summary>
         /// Preloads vJoyInterface.dll from the vJoy installation directory.
         /// Once loaded into the process, all [DllImport] calls resolve to it.

@@ -114,6 +114,10 @@ namespace PadForge.Services
             // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
             InputManager.CleanupStaleVigemDevices();
 
+            // Remove stale vJoy device nodes from previous sessions (crash without cleanup).
+            // vJoy nodes should only exist while virtual controllers are actively connected.
+            VJoyVirtualController.RemoveAllDeviceNodes();
+
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;

@@ -412,17 +412,37 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Creates a vJoy virtual controller using the next available device ID.
-        /// Returns null if vJoy driver is not installed or no free devices.
+        /// Creates a device node on demand if needed (like ViGEm creates USB nodes).
+        /// Returns null if vJoy driver is not installed or node creation fails.
         /// </summary>
         private IVirtualController CreateVJoyController()
         {
+            if (!VJoyVirtualController.CheckVJoyInstalled())
+            {
+                RaiseError("vJoy driver is not installed.", null);
+                return null;
+            }
+
+            // Count how many vJoy device nodes we need (this new one + existing connected ones).
+            int activeVJoy = 0;
+            for (int i = 0; i < MaxPads; i++)
+                if (_virtualControllers[i]?.Type == VirtualControllerType.VJoy)
+                    activeVJoy++;
+            int needed = activeVJoy + 1;
+
+            // Ensure enough device nodes exist. WriteDeviceConfiguration runs
+            // inside EnsureDevicesAvailable to set the correct HID descriptor
+            // (11 buttons, 6 axes, 1 POV) before the driver binds.
+            if (!VJoyVirtualController.EnsureDevicesAvailable(needed))
+            {
+                RaiseError("Failed to create vJoy device node.", null);
+                return null;
+            }
+
             uint deviceId = VJoyVirtualController.FindFreeDeviceId();
             if (deviceId == 0)
             {
-                int existing = VJoyVirtualController.CountExistingDevices();
-                bool installed = VJoyVirtualController.CheckVJoyInstalled();
-                RaiseError($"No free vJoy devices (existing={existing}, driver={installed}). " +
-                    "Check that the vJoy driver is installed and device nodes exist.", null);
+                RaiseError("No free vJoy devices after node creation.", null);
                 return null;
             }
             return new VJoyVirtualController(deviceId);

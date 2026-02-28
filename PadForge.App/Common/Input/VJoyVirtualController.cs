@@ -208,7 +208,6 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Returns the next available vJoy device ID (1–16), or 0 if none available.
         /// This is a fast, non-blocking scan — safe to call from the engine thread.
-        /// Device creation must be done beforehand via <see cref="EnsureDeviceAvailable"/>.
         /// </summary>
         public static uint FindFreeDeviceId()
         {
@@ -273,7 +272,9 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Ensures at least <paramref name="requiredCount"/> vJoy device nodes exist.
-        /// Creates additional device nodes via SetupAPI (single UAC prompt) if needed.
+        /// Creates additional device nodes via SetupAPI if needed.
+        /// Called by the engine thread (CreateVJoyController) on demand — device nodes
+        /// only exist while virtual controllers are actively connected (like ViGEm).
         /// Returns true if enough free or existing devices are available.
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
@@ -572,7 +573,7 @@ public static class PF_SetupApi {{
             if (count < 1) return;
             try
             {
-                // HID Report Descriptor for gamepad: 6 axes (32-bit each), 13 buttons, 1 discrete POV.
+                // HID Report Descriptor for gamepad: 6 axes (32-bit each), 11 buttons, 1 discrete POV.
                 // Built per USB HID 1.11 spec. The vJoy driver parses this to determine
                 // which JOYSTICK_POSITION_V3 fields to include in the HID report.
                 byte[] descriptor = BuildGamepadHidDescriptor();

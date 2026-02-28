@@ -1931,7 +1931,11 @@ namespace PadForge.Services
         /// Uses adjacent SwapSlots calls (same-type swaps are zero-flicker).
         /// Returns true if any reordering was performed.
         /// </summary>
-        public bool EnsureTypeGroupOrder()
+        /// <param name="silent">
+        /// When true, performs data swaps only without UI refresh.
+        /// Use during startup before the window is loaded.
+        /// </param>
+        public bool EnsureTypeGroupOrder(bool silent = false)
         {
             var activeSlots = new List<int>();
             for (int i = 0; i < InputManager.MaxPads; i++)
@@ -1967,7 +1971,8 @@ namespace PadForge.Services
                 }
             }
 
-            RefreshAfterSlotReorder();
+            if (!silent)
+                RefreshAfterSlotReorder();
             return true;
         }
 

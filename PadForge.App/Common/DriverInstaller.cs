@@ -125,14 +125,13 @@ namespace PadForge.Common
 
         /// <summary>
         /// Install vJoy driver. Bypasses the Inno Setup installer entirely:
-        /// 1. Extracts the signed driver package (vjoy.sys, hidkmdf.sys,
-        ///    vjoy.inf, vjoy.cat, vJoyInterface.dll) from an embedded zip
+        /// 1. Cleans up stale driver/service/registry entries
+        /// 2. Extracts the signed driver package from an embedded zip
         ///    to "C:\Program Files\vJoy"
-        /// 2. Uses pnputil /add-driver /install to add the driver to the
-        ///    Windows driver store (no GUI, no restart dialog)
-        /// Device nodes are created on-demand when the user adds a vJoy
-        /// controller, via SetupAPI in VJoyVirtualController.CreateVJoyDevice.
-        /// All cleanup/install steps run in one elevated batch script (single UAC prompt).
+        /// 3. Adds the driver to the Windows driver store
+        /// 4. Creates a persistent device node via SetupAPI so vJoy devices
+        ///    are immediately available without per-session UAC prompts
+        /// Everything runs in one elevated PowerShell script (single UAC prompt).
         /// </summary>
         public static void InstallVJoy()
         {
@@ -148,49 +147,129 @@ namespace PadForge.Common
                 // Find stale driver store entries before building the script.
                 var oemInfs = FindVJoyOemInfs();
 
-                string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.cmd");
+                string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.ps1");
                 string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.log");
-                using (var sw = new StreamWriter(scriptPath))
-                {
-                    sw.WriteLine("@echo off");
-                    sw.WriteLine($"echo [%date% %time%] vJoy install starting > \"{logPath}\"");
 
-                    // Step 1: Pre-install cleanup.
-                    // IMPORTANT: Remove device nodes FIRST so the driver can fully
-                    // unload, THEN stop/delete the service. Reversing this order
-                    // causes the service to get stuck in STOP_PENDING.
-                    for (int i = 0; i <= 15; i++)
-                        sw.WriteLine($"pnputil /remove-device \"ROOT\\HIDCLASS\\{i:D4}\" /subtree >nul 2>&1");
-                    sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
-                    sw.WriteLine("sc stop vjoy >nul 2>&1");
-                    sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
-                    foreach (var inf in oemInfs)
-                        sw.WriteLine($"pnputil /delete-driver {inf} /uninstall /force >nul 2>&1");
-                    sw.WriteLine($"sc delete vjoy >nul 2>&1");
-                    // Fallback: if sc delete failed (e.g. STOP_PENDING), remove the
-                    // service registry keys from ALL ControlSets so it doesn't resurrect on reboot.
-                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\vjoy\" /f >nul 2>&1");
-                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet001\\Services\\vjoy\" /f >nul 2>&1");
-                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet002\\Services\\vjoy\" /f >nul 2>&1");
-                    sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet003\\Services\\vjoy\" /f >nul 2>&1");
-                    sw.WriteLine($"rmdir /s /q \"{vjoyDir}\" >nul 2>&1");
-                    sw.WriteLine("del /f \"%SystemRoot%\\System32\\drivers\\vjoy.sys\" >nul 2>&1");
-                    sw.WriteLine($"echo [%time%] Cleanup done >> \"{logPath}\"");
+                // Build OEM inf removal commands.
+                string oemDeleteCmds = string.Join("\n",
+                    oemInfs.Select(inf => $"pnputil /delete-driver {inf} /uninstall /force 2>&1 | Out-Null"));
 
-                    // Step 2: Extract driver files from zip.
-                    sw.WriteLine($"mkdir \"{vjoyDir}\" >nul 2>&1");
-                    sw.WriteLine($"powershell -NoProfile -Command \"Expand-Archive -Path '{zipPath.Replace("'", "''")}' -DestinationPath '{vjoyDir.Replace("'", "''")}' -Force\" >> \"{logPath}\" 2>&1");
-                    sw.WriteLine($"echo [%time%] Files extracted >> \"{logPath}\"");
+                File.WriteAllText(scriptPath, $@"
+$ErrorActionPreference = 'Continue'
+$log = '{logPath.Replace("'", "''")}'
+try {{
+    ""[$(Get-Date -Format 'HH:mm:ss')] vJoy install starting"" | Out-File $log -Force
 
-                    // Step 3: Use pnputil to add the driver to the store.
-                    // Device nodes are NOT created here — they're created on-demand
-                    // by VJoyVirtualController.CreateVJoyDevice using SetupAPI.
-                    sw.WriteLine($"pnputil /add-driver \"{vjoyInf}\" /install >> \"{logPath}\" 2>&1");
-                    sw.WriteLine($"echo [%time%] pnputil exited with code %errorlevel% >> \"{logPath}\"");
-                    sw.WriteLine($"echo [%time%] Done >> \"{logPath}\"");
-                }
+    # Step 1: Pre-install cleanup.
+    # Remove device nodes FIRST so the driver can unload, THEN stop/delete the service.
+    for ($i = 0; $i -le 15; $i++) {{
+        pnputil /remove-device ""ROOT\HIDCLASS\$($i.ToString('D4'))"" /subtree 2>&1 | Out-Null
+    }}
+    Start-Sleep -Seconds 2
+    sc.exe stop vjoy 2>&1 | Out-Null
+    Start-Sleep -Seconds 2
+    {oemDeleteCmds}
+    sc.exe delete vjoy 2>&1 | Out-Null
+    # Remove service registry keys from ALL ControlSets.
+    foreach ($cs in @('CurrentControlSet','ControlSet001','ControlSet002','ControlSet003')) {{
+        Remove-Item ""HKLM:\SYSTEM\$cs\Services\vjoy"" -Recurse -Force -ErrorAction SilentlyContinue
+    }}
+    Remove-Item '{vjoyDir.Replace("'", "''")}' -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item ""$env:SystemRoot\System32\drivers\vjoy.sys"" -Force -ErrorAction SilentlyContinue
+    ""[$(Get-Date -Format 'HH:mm:ss')] Cleanup done"" | Out-File $log -Append
 
-                RunElevated("cmd.exe", $"/c \"{scriptPath}\"");
+    # Step 2: Extract driver files from zip.
+    New-Item -Path '{vjoyDir.Replace("'", "''")}' -ItemType Directory -Force | Out-Null
+    Expand-Archive -Path '{zipPath.Replace("'", "''")}' -DestinationPath '{vjoyDir.Replace("'", "''")}' -Force
+    ""[$(Get-Date -Format 'HH:mm:ss')] Files extracted"" | Out-File $log -Append
+
+    # Step 3: Add driver to the store.
+    $pnpResult = pnputil /add-driver '{vjoyInf.Replace("'", "''")}' /install 2>&1
+    $pnpResult | Out-File $log -Append
+    ""[$(Get-Date -Format 'HH:mm:ss')] pnputil done"" | Out-File $log -Append
+
+    # Step 4: Create a persistent device node via SetupAPI.
+    # This makes vJoy immediately available without per-session UAC prompts.
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class PF_SetupApi {{
+    public const int DIF_REGISTERDEVICE = 0x19;
+    public const int SPDRP_HARDWAREID = 0x01;
+    public const int DICD_GENERATE_ID = 0x01;
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SP_DEVINFO_DATA {{ public int cbSize; public Guid ClassGuid; public int DevInst; public IntPtr Reserved; }}
+    [DllImport(""setupapi.dll"", SetLastError = true)]
+    public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
+    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SP_DEVINFO_DATA DeviceInfoData);
+    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
+    [DllImport(""setupapi.dll"", SetLastError = true)]
+    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+    [DllImport(""setupapi.dll"", SetLastError = true)]
+    public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
+    [DllImport(""newdev.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool UpdateDriverForPlugAndPlayDevicesW(IntPtr hwndParent, string HardwareId, string FullInfPath, int InstallFlags, out bool bRebootRequired);
+}}
+'@
+
+    $hidGuid = [Guid]::new('{{745a17a0-74d3-11d0-b6fe-00a0c90f57da}}')
+    $hwid = 'root\VID_1234&PID_BEAD&REV_0222'
+    $infPath = '{vjoyInf.Replace("'", "''")}'
+    $hwidBytes = [System.Text.Encoding]::Unicode.GetBytes($hwid + [char]0 + [char]0)
+
+    $dis = [PF_SetupApi]::SetupDiCreateDeviceInfoList([ref]$hidGuid, [IntPtr]::Zero)
+    if ($dis -eq [IntPtr]::new(-1)) {{ ""FAIL: SetupDiCreateDeviceInfoList"" | Out-File $log -Append; exit 1 }}
+
+    $did = New-Object PF_SetupApi+SP_DEVINFO_DATA
+    $did.cbSize = [Runtime.InteropServices.Marshal]::SizeOf([type][PF_SetupApi+SP_DEVINFO_DATA])
+
+    $ok = [PF_SetupApi]::SetupDiCreateDeviceInfoW($dis, 'HIDClass', [ref]$hidGuid, 'vJoy Device', [IntPtr]::Zero, [PF_SetupApi]::DICD_GENERATE_ID, [ref]$did)
+    if (-not $ok) {{
+        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+        ""FAIL: CreateDeviceInfo err=$e"" | Out-File $log -Append
+        [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
+        exit 1
+    }}
+
+    $ok = [PF_SetupApi]::SetupDiSetDeviceRegistryPropertyW($dis, [ref]$did, [PF_SetupApi]::SPDRP_HARDWAREID, $hwidBytes, $hwidBytes.Length)
+    if (-not $ok) {{
+        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+        ""FAIL: SetHardwareID err=$e"" | Out-File $log -Append
+        [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
+        exit 1
+    }}
+
+    $ok = [PF_SetupApi]::SetupDiCallClassInstaller([PF_SetupApi]::DIF_REGISTERDEVICE, $dis, [ref]$did)
+    if (-not $ok) {{
+        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+        ""FAIL: RegisterDevice err=$e"" | Out-File $log -Append
+        [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
+        exit 1
+    }}
+    [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
+
+    # Install the driver on the new device node.
+    $reboot = $false
+    $ok = [PF_SetupApi]::UpdateDriverForPlugAndPlayDevicesW([IntPtr]::Zero, $hwid, $infPath, 1, [ref]$reboot)
+    if (-not $ok) {{
+        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+        ""FAIL: UpdateDriver err=$e"" | Out-File $log -Append
+        exit 1
+    }}
+
+    ""[$(Get-Date -Format 'HH:mm:ss')] Device node created and driver loaded"" | Out-File $log -Append
+    ""OK"" | Out-File $log -Append
+}} catch {{
+    ""EXCEPTION: $_"" | Out-File $log -Append
+    exit 1
+}}
+");
+
+                RunElevated("powershell.exe",
+                    $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"");
                 try { File.Delete(scriptPath); } catch { }
             }
             finally

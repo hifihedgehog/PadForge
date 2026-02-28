@@ -86,12 +86,14 @@ namespace PadForge.Common.Input
         {
             if (_connected)
             {
+                VJoyNative.ResetVJD(_deviceId);
                 VJoyNative.RelinquishVJD(_deviceId);
                 _connected = false;
             }
 
-            // Delete the vJoy device so it doesn't linger in Windows game controllers.
-            DeleteVJoyDevice(_deviceId);
+            // Device nodes are persistent — no deletion here.
+            // They stay alive for instant reuse on next Connect().
+            // Nodes are only removed during driver uninstall.
         }
 
         public void SubmitGamepadState(Gamepad gp)

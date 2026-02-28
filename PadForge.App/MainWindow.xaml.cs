@@ -1671,7 +1671,12 @@ namespace PadForge
 
                 // Ensure a vJoy device node exists before the engine tries to use it.
                 // Uses SetupAPI with UAC if no devices are configured.
-                bool ready = await Task.Run(() => VJoyVirtualController.EnsureDeviceAvailable());
+                // Count how many vJoy slots will exist after adding this one.
+                int vjoyNeeded = 1;
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                    if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
+                        vjoyNeeded++;
+                bool ready = await Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoyNeeded));
                 if (!ready)
                 {
                     if (VJoyVirtualController.IsServiceStuck())

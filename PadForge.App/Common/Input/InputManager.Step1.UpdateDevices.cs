@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using SDL3;
@@ -59,10 +60,6 @@ namespace PadForge.Common.Input
 
             bool changed = false;
 
-            // Reset per-cycle counters for ViGEm VID/PID filtering.
-            _xbox360FilteredThisCycle = 0;
-            _ds4FilteredThisCycle = 0;
-
             // SDL3: Get array of instance IDs for all connected joysticks.
             uint[] joystickIds = SDL_GetJoysticks();
 
@@ -96,10 +93,13 @@ namespace PadForge.Common.Input
                     // Skip ViGEm virtual controllers (our own output devices).
                     if (IsViGEmVirtualDevice(wrapper))
                     {
+                        Debug.WriteLine($"[Step1] Filtered ViGEm device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                         _filteredVigemInstanceIds.Add(instanceId);
                         wrapper.Dispose();
                         continue;
                     }
+
+                    Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
 
                     // Find or create the UserDevice record.
                     // Passes ProductGuid for fallback matching when InstanceGuid changes
@@ -176,18 +176,6 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Per-cycle counter: how many Xbox 360 VID/PID devices we've filtered
-        /// this enumeration cycle. Reset at the start of each UpdateDevices() call.
-        /// </summary>
-        private int _xbox360FilteredThisCycle;
-
-        /// <summary>
-        /// Per-cycle counter: how many DS4 VID/PID devices we've filtered
-        /// this enumeration cycle. Reset at the start of each UpdateDevices() call.
-        /// </summary>
-        private int _ds4FilteredThisCycle;
-
-        /// <summary>
         /// Checks whether an SDL device is a ViGEm virtual controller
         /// (our own output device that must not be opened as an input device).
         ///
@@ -226,38 +214,28 @@ namespace PadForge.Common.Input
             }
 
             // ── Xbox 360 VID/PID — ViGEm emulates exactly this ──
-            // Real Xbox 360 controllers and ViGEm virtual controllers both
-            // report VID=045E PID=028E. Filter up to the greater of actual
-            // active count or expected count (pre-initialized from slot config).
-            // Expected count handles the startup race: the first UpdateDevices()
-            // runs before Step 5 creates any VCs (_activeXbox360Count=0).
+            // ViGEm Xbox 360 virtual controllers report VID=045E PID=028E.
+            // Modern real Xbox controllers use different PIDs (0B12, 0B13, 0B20, etc.)
+            // — only the original Xbox 360 controller from 2005 uses 028E.
+            // When we have any active/expected Xbox VCs, filter ALL 045E:028E devices
+            // to prevent feedback loops where stale ViGEm nodes slip through a
+            // counter-based filter and cause exponential virtual controller creation.
+            if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E)
             {
                 int filterCount = Math.Max(_activeXbox360Count, _expectedXbox360Count);
-                if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E
-                    && filterCount > 0)
-                {
-                    if (_xbox360FilteredThisCycle < filterCount)
-                    {
-                        _xbox360FilteredThisCycle++;
-                        return true;
-                    }
-                }
+                if (filterCount > 0)
+                    return true;
             }
 
             // ── DS4 VID/PID — ViGEm emulates Sony DS4 ──
-            // ViGEm DS4 virtual controllers report VID=054C PID=05C4.
-            // Same expected-count logic as Xbox 360 above.
+            // Same logic: filter ALL 054C:05C4 devices when we have active/expected DS4 VCs.
+            // Real DS4 controllers with this exact PID are rare (original DualShock 4 v1);
+            // newer DS4s and DualSense use different PIDs.
+            if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4)
             {
                 int filterCount = Math.Max(_activeDs4Count, _expectedDs4Count);
-                if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4
-                    && filterCount > 0)
-                {
-                    if (_ds4FilteredThisCycle < filterCount)
-                    {
-                        _ds4FilteredThisCycle++;
-                        return true;
-                    }
-                }
+                if (filterCount > 0)
+                    return true;
             }
 
             return false;

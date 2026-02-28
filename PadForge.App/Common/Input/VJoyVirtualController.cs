@@ -125,40 +125,49 @@ namespace PadForge.Common.Input
         {
             if (!_connected) return;
 
-            // Use individual SetAxis/SetBtn/SetDiscPov calls.
-            // Each call is a separate IOCTL (~0.1-0.2ms each), totaling ~18 calls.
-            // This is the proven-working approach (same as test applet).
-            uint id = _deviceId;
+            // Use UpdateVJD for single-IOCTL-per-frame output.
+            // Individual SetAxis/SetBtn/SetDiscPov are ~0.1-0.2ms EACH (separate kernel IOCTLs),
+            // causing 1000Hz→11Hz with 2+ controllers. UpdateVJD sends everything in one call.
+            // Verified working by standalone test tool (tools/vJoy/Test/).
+            var pos = new JoystickPositionV2();
+            pos.bDevice = (byte)_deviceId;
 
             // Axes: signed short (-32768..32767) → vJoy range (0..32767)
-            VJoyNative.SetAxis((gp.ThumbLX + 32768) / 2, id, VJoyNative.HID_USAGE_X);
-            VJoyNative.SetAxis(32767 - (gp.ThumbLY + 32768) / 2, id, VJoyNative.HID_USAGE_Y);  // Y inverted
-            VJoyNative.SetAxis((gp.ThumbRX + 32768) / 2, id, VJoyNative.HID_USAGE_RX);
-            VJoyNative.SetAxis(32767 - (gp.ThumbRY + 32768) / 2, id, VJoyNative.HID_USAGE_RY); // Y inverted
-            VJoyNative.SetAxis(gp.LeftTrigger * 32767 / 255, id, VJoyNative.HID_USAGE_Z);
-            VJoyNative.SetAxis(gp.RightTrigger * 32767 / 255, id, VJoyNative.HID_USAGE_RZ);
+            pos.wAxisX    = (gp.ThumbLX + 32768) / 2;
+            pos.wAxisY    = 32767 - (gp.ThumbLY + 32768) / 2;   // Y inverted (HID Y-down=max)
+            pos.wAxisXRot = (gp.ThumbRX + 32768) / 2;
+            pos.wAxisYRot = 32767 - (gp.ThumbRY + 32768) / 2;   // Y inverted
+            pos.wAxisZ    = gp.LeftTrigger * 32767 / 255;
+            pos.wAxisZRot = gp.RightTrigger * 32767 / 255;
 
             // Buttons 1–11 (Xbox 360 layout: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.A), id, 1);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.B), id, 2);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.X), id, 3);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.Y), id, 4);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_SHOULDER), id, 5);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER), id, 6);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.BACK), id, 7);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.START), id, 8);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_THUMB), id, 9);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_THUMB), id, 10);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.GUIDE), id, 11);
+            int buttons = 0;
+            if (gp.IsButtonPressed(Gamepad.A))              buttons |= (1 << 0);
+            if (gp.IsButtonPressed(Gamepad.B))              buttons |= (1 << 1);
+            if (gp.IsButtonPressed(Gamepad.X))              buttons |= (1 << 2);
+            if (gp.IsButtonPressed(Gamepad.Y))              buttons |= (1 << 3);
+            if (gp.IsButtonPressed(Gamepad.LEFT_SHOULDER))  buttons |= (1 << 4);
+            if (gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER)) buttons |= (1 << 5);
+            if (gp.IsButtonPressed(Gamepad.BACK))           buttons |= (1 << 6);
+            if (gp.IsButtonPressed(Gamepad.START))          buttons |= (1 << 7);
+            if (gp.IsButtonPressed(Gamepad.LEFT_THUMB))     buttons |= (1 << 8);
+            if (gp.IsButtonPressed(Gamepad.RIGHT_THUMB))    buttons |= (1 << 9);
+            if (gp.IsButtonPressed(Gamepad.GUIDE))          buttons |= (1 << 10);
+            pos.lButtons = buttons;
 
-            // D-Pad → discrete POV hat.
-            // vJoy discrete POV values: 0=Up, 1=Right, 2=Down, 3=Left, -1=centered.
+            // D-Pad → discrete POV hat (packed in low nibble of bHats).
+            // vJoy discrete POV values: 0=Up, 1=Right, 2=Down, 3=Left, 0xF=centered.
             bool up    = (gp.Buttons & Gamepad.DPAD_UP) != 0;
             bool right = (gp.Buttons & Gamepad.DPAD_RIGHT) != 0;
             bool down  = (gp.Buttons & Gamepad.DPAD_DOWN) != 0;
             bool left  = (gp.Buttons & Gamepad.DPAD_LEFT) != 0;
-            int pov = up ? 0 : right ? 1 : down ? 2 : left ? 3 : -1;
-            VJoyNative.SetDiscPov(pov, id, 1);
+            uint pov = up ? 0u : right ? 1u : down ? 2u : left ? 3u : 0xFu;
+            pos.bHats = pov | 0xFFFF_FFF0u;  // Other POV slots = centered (0xF each nibble)
+            pos.bHatsEx1 = 0xFFFF_FFFFu;
+            pos.bHatsEx2 = 0xFFFF_FFFFu;
+            pos.bHatsEx3 = 0xFFFF_FFFFu;
+
+            VJoyNative.UpdateVJD(_deviceId, ref pos);
         }
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
@@ -571,15 +580,14 @@ public static class PF_SetupApi {{
                     byte[] descriptor = BuildGamepadHidDescriptor((byte)id);
                     string subKeyName = $"Device{id:D2}"; // Device01, Device02, ...
                     using var devKey = baseKey.CreateSubKey(subKeyName);
-                    // NOTE: The vJoy driver source (vjoy.h) uses MISSPELLED registry key names:
-                    //   DESC_NAME = L"HidReportDesctiptor"  (not "Descriptor")
-                    //   DESC_SIZE = L"HidReportDesctiptorSize"
-                    // We MUST match the driver's typo, or it falls back to hardcoded defaults.
-                    devKey.SetValue("HidReportDesctiptor", descriptor, Microsoft.Win32.RegistryValueKind.Binary);
-                    devKey.SetValue("HidReportDesctiptorSize", descriptor.Length, Microsoft.Win32.RegistryValueKind.DWord);
-                    // Clean up stale correctly-spelled keys from older versions.
-                    try { devKey.DeleteValue("HidReportDescriptor", false); } catch { }
-                    try { devKey.DeleteValue("HidReportDescriptorSize", false); } catch { }
+                    // The compiled vjoy.sys binary uses correctly-spelled names,
+                    // even though the vjoy.h source header has misspelled versions.
+                    // Verified by extracting Unicode strings from vjoy.sys.
+                    devKey.SetValue("HidReportDescriptor", descriptor, Microsoft.Win32.RegistryValueKind.Binary);
+                    devKey.SetValue("HidReportDescriptorSize", descriptor.Length, Microsoft.Win32.RegistryValueKind.DWord);
+                    // Clean up old misspelled keys from previous versions.
+                    try { devKey.DeleteValue("HidReportDesctiptor", false); } catch { }
+                    try { devKey.DeleteValue("HidReportDesctiptorSize", false); } catch { }
                 }
 
                 Debug.WriteLine($"[vJoy] Wrote HID descriptors for {count} device(s)");
@@ -674,8 +682,45 @@ public static class PF_SetupApi {{
     }
 
     /// <summary>
+    /// JOYSTICK_POSITION_V2 — matches public.h _JOYSTICK_POSITION_V2 struct (108 bytes).
+    /// Used by UpdateVJD for single-IOCTL-per-frame output.
+    /// Verified working against vJoyInterface.dll v2.2.2 by standalone test tool.
+    /// </summary>
+    [StructLayout(LayoutKind.Explicit, Size = 108)]
+    internal struct JoystickPositionV2
+    {
+        [FieldOffset(0)]  public byte bDevice;       // 1-based device index
+        [FieldOffset(4)]  public int wThrottle;
+        [FieldOffset(8)]  public int wRudder;
+        [FieldOffset(12)] public int wAileron;
+        [FieldOffset(16)] public int wAxisX;
+        [FieldOffset(20)] public int wAxisY;
+        [FieldOffset(24)] public int wAxisZ;
+        [FieldOffset(28)] public int wAxisXRot;
+        [FieldOffset(32)] public int wAxisYRot;
+        [FieldOffset(36)] public int wAxisZRot;
+        [FieldOffset(40)] public int wSlider;
+        [FieldOffset(44)] public int wDial;
+        [FieldOffset(48)] public int wWheel;
+        [FieldOffset(52)] public int wAxisVX;
+        [FieldOffset(56)] public int wAxisVY;
+        [FieldOffset(60)] public int wAxisVZ;
+        [FieldOffset(64)] public int wAxisVBRX;
+        [FieldOffset(68)] public int wAxisVBRY;
+        [FieldOffset(72)] public int wAxisVBRZ;
+        [FieldOffset(76)] public int lButtons;       // Buttons 1-32 bitmask
+        [FieldOffset(80)] public uint bHats;          // Discrete POV 1 (low nibble)
+        [FieldOffset(84)] public uint bHatsEx1;
+        [FieldOffset(88)] public uint bHatsEx2;
+        [FieldOffset(92)] public uint bHatsEx3;
+        [FieldOffset(96)]  public int lButtonsEx1;
+        [FieldOffset(100)] public int lButtonsEx2;
+        [FieldOffset(104)] public int lButtonsEx3;
+    }
+
+    /// <summary>
     /// Direct P/Invoke to vJoyInterface.dll (native C DLL from vJoy SDK).
-    /// Uses individual SetAxis/SetBtn/SetDiscPov calls for output.
+    /// Uses UpdateVJD for single-IOCTL-per-frame output (fastest path).
     /// </summary>
     internal static class VJoyNative
     {
@@ -699,27 +744,9 @@ public static class PF_SetupApi {{
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ResetVJD(uint rID);
 
-        // ── Individual axis/button/POV setters (proven working in test applet) ──
-
         [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetAxis(int value, uint rID, uint axis);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetBtn([MarshalAs(UnmanagedType.Bool)] bool value, uint rID, byte nBtn);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetDiscPov(int value, uint rID, byte nPov);
-
-        // HID Usage IDs for axes (Generic Desktop page 0x01)
-        public const uint HID_USAGE_X  = 0x30;
-        public const uint HID_USAGE_Y  = 0x31;
-        public const uint HID_USAGE_Z  = 0x32;
-        public const uint HID_USAGE_RX = 0x33;
-        public const uint HID_USAGE_RY = 0x34;
-        public const uint HID_USAGE_RZ = 0x35;
+        public static extern bool UpdateVJD(uint rID, ref JoystickPositionV2 pData);
     }
 
 }

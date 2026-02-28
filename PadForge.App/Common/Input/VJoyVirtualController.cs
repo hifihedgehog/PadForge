@@ -18,6 +18,14 @@ namespace PadForge.Common.Input
     {
         private static bool _dllLoaded;
 
+        /// <summary>
+        /// Tracks how many device nodes were created by THIS session with the correct
+        /// HID descriptor. Nodes from previous sessions may have stale descriptors
+        /// and need to be removed+recreated so the driver re-reads the registry.
+        /// Reset to 0 when all nodes are removed (RemoveAllDeviceNodes / engine stop).
+        /// </summary>
+        private static int _nodesCreatedThisSession;
+
         /// <summary>Whether vJoyInterface.dll has been successfully loaded into the process.</summary>
         public static bool IsDllLoaded => _dllLoaded;
 
@@ -114,6 +122,7 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] TrimDeviceNodes: active={activeCount}, nodes={instanceIds.Count}, excess={excess}");
                 for (int i = instanceIds.Count - 1; i >= 0 && excess > 0; i--, excess--)
                     RemoveDeviceNode(instanceIds[i]);
+                _nodesCreatedThisSession = Math.Min(_nodesCreatedThisSession, activeCount);
             }
             catch (Exception ex)
             {
@@ -277,22 +286,50 @@ namespace PadForge.Common.Input
             // Count actual PnP device nodes (reliable, not stale DLL state).
             int existing = CountExistingDevices();
 
-            Debug.WriteLine($"[vJoy] EnsureDevicesAvailable: required={requiredCount}, existing={existing}");
+            Debug.WriteLine($"[vJoy] EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
 
-            // Always write device config (idempotent) so existing devices
-            // pick up the Xbox 360 gamepad layout (11 buttons, 1 POV, 6 axes).
-            WriteDeviceConfiguration(Math.Max(requiredCount, existing));
+            // Write descriptor for exactly the required count.
+            // This also deletes stale DeviceNN keys beyond requiredCount.
+            WriteDeviceConfiguration(requiredCount);
+
+            // If there are stale nodes from a previous session (existing nodes that
+            // we didn't create), remove ALL and recreate. The driver reads the HID
+            // descriptor from the registry at bind time — stale nodes have the
+            // old/default descriptor (13 buttons) and must be re-bound.
+            // Nodes we created this session already have the correct descriptor.
+            bool hasStaleNodes = existing > 0 && _nodesCreatedThisSession < existing;
+
+            if (hasStaleNodes)
+            {
+                Debug.WriteLine($"[vJoy] Removing {existing} stale node(s) to rebind with fresh descriptor");
+                var instanceIds = EnumerateVJoyInstanceIds();
+                foreach (var id in instanceIds)
+                    RemoveDeviceNode(id);
+                existing = 0;
+                _nodesCreatedThisSession = 0;
+                _dllLoaded = false;
+                Thread.Sleep(200); // Let PnP process removals
+            }
+            else if (existing > requiredCount)
+            {
+                // More nodes than needed (all ours) — remove the extras from the end.
+                var instanceIds = EnumerateVJoyInstanceIds();
+                for (int i = instanceIds.Count - 1; i >= requiredCount; i--)
+                    RemoveDeviceNode(instanceIds[i]);
+                existing = requiredCount;
+                _nodesCreatedThisSession = Math.Min(_nodesCreatedThisSession, requiredCount);
+            }
 
             if (existing >= requiredCount)
             {
-                // Enough nodes exist — ensure DLL is loaded so the engine can use them.
+                // All nodes are ours and we have enough — no need to recreate.
                 EnsureDllLoaded();
                 return true;
             }
 
-            // Create enough new device nodes to satisfy the requirement.
+            // Create the needed device nodes (additional or all, depending on stale cleanup).
             int toCreate = requiredCount - existing;
-            Debug.WriteLine($"[vJoy] Need to create {toCreate} device node(s)");
+            Debug.WriteLine($"[vJoy] Creating {toCreate} device node(s) (existing={existing})");
 
             if (!CreateVJoyDevices(toCreate))
             {
@@ -309,6 +346,7 @@ namespace PadForge.Common.Input
                 if (_dllLoaded && FindFreeDeviceId() > 0)
                 {
                     Debug.WriteLine($"[vJoy] Devices ready after {(attempt + 1) * 250}ms");
+                    _nodesCreatedThisSession = requiredCount;
                     return true;
                 }
             }
@@ -424,8 +462,9 @@ namespace PadForge.Common.Input
                 }
 
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
-                // Reset DLL loaded state so vJoyEnabled() is re-evaluated after node removal.
+                // Reset state so vJoyEnabled() is re-evaluated and stale detection works.
                 _dllLoaded = false;
+                _nodesCreatedThisSession = 0;
                 return true;
             }
             catch (Exception ex)
@@ -573,16 +612,9 @@ public static class PF_SetupApi {{
 
                 for (int id = 1; id <= count; id++)
                 {
-                    // Each device gets a unique Report ID matching its 1-based ID.
-                    // The vJoy driver's GetReportDescriptorFromRegistry() concatenates
-                    // all DeviceNN descriptors and uses ParseIdInDescriptor() to extract
-                    // the Report ID from the 0x85 tag in each descriptor.
                     byte[] descriptor = BuildGamepadHidDescriptor((byte)id);
                     string subKeyName = $"Device{id:D2}"; // Device01, Device02, ...
                     using var devKey = baseKey.CreateSubKey(subKeyName);
-                    // The compiled vjoy.sys binary uses correctly-spelled names,
-                    // even though the vjoy.h source header has misspelled versions.
-                    // Verified by extracting Unicode strings from vjoy.sys.
                     devKey.SetValue("HidReportDescriptor", descriptor, Microsoft.Win32.RegistryValueKind.Binary);
                     devKey.SetValue("HidReportDescriptorSize", descriptor.Length, Microsoft.Win32.RegistryValueKind.DWord);
                     // Clean up old misspelled keys from previous versions.
@@ -590,7 +622,16 @@ public static class PF_SetupApi {{
                     try { devKey.DeleteValue("HidReportDesctiptorSize", false); } catch { }
                 }
 
-                Debug.WriteLine($"[vJoy] Wrote HID descriptors for {count} device(s)");
+                // Delete stale DeviceNN subkeys beyond 'count'.
+                // The vJoy driver reads ALL DeviceNN keys and concatenates their
+                // HID descriptors — stale keys cause phantom devices to appear.
+                for (int id = count + 1; id <= 16; id++)
+                {
+                    string subKeyName = $"Device{id:D2}";
+                    try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
+                }
+
+                Debug.WriteLine($"[vJoy] Wrote HID descriptors for {count} device(s), cleaned up stale keys");
             }
             catch (Exception ex)
             {

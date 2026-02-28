@@ -127,6 +127,18 @@ namespace PadForge.Common.Input
                     vc = null;
                 }
 
+                // Slot deleted by user — destroy immediately, no grace period.
+                if (vc != null && !SettingsManager.SlotCreated[padIndex])
+                {
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} slot deleted, destroying virtual controller immediately");
+                    DestroyVirtualController(padIndex);
+                    _virtualControllers[padIndex] = null;
+                    _slotInactiveCounter[padIndex] = 0;
+                    VibrationStates[padIndex].LeftMotorSpeed = 0;
+                    VibrationStates[padIndex].RightMotorSpeed = 0;
+                    continue;
+                }
+
                 bool slotActive = IsSlotActive(padIndex);
 
                 if (slotActive)

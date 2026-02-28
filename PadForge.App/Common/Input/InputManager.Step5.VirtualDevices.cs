@@ -127,12 +127,14 @@ namespace PadForge.Common.Input
         /// </summary>
         private void UpdateVirtualDevices()
         {
-            if (!VirtualControllersEnabled || _vigemClientFailed)
+            if (!VirtualControllersEnabled)
                 return;
 
-            EnsureViGEmClient();
-            if (_vigemClient == null)
-                return;
+            // ViGEm is only required for Xbox 360 and DS4 virtual controllers.
+            // vJoy uses its own driver and works independently. Only try to
+            // initialize ViGEm if it hasn't permanently failed.
+            if (!_vigemClientFailed)
+                EnsureViGEmClient();
 
             // --- Pass 1: Handle type changes, destruction, and activity tracking ---
             bool anyNeedsCreate = false;

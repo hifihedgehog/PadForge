@@ -340,15 +340,23 @@ namespace PadForge.Services
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
 
             // Unassign all devices mapped to this slot.
+            // Remove entries that are ONLY mapped to this slot (orphans).
+            // Keep entries that are also mapped to other slots via separate UserSetting instances.
             var settings = SettingsManager.UserSettings;
             if (settings != null)
             {
                 lock (settings.SyncRoot)
                 {
-                    foreach (var us in settings.Items)
+                    for (int i = settings.Items.Count - 1; i >= 0; i--)
                     {
+                        var us = settings.Items[i];
                         if (us.MapTo == slotIndex)
-                            us.MapTo = -1;
+                        {
+                            // Remove entirely — no reason to keep a MapTo=-1 entry.
+                            // If the device is later assigned to a new slot, a fresh
+                            // UserSetting will be created by the assignment logic.
+                            settings.Items.RemoveAt(i);
+                        }
                     }
                 }
             }

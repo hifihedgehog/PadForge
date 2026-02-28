@@ -196,6 +196,9 @@ namespace PadForge.Services
                     }
                 }
 
+                // Purge orphaned UserSettings (MapTo == -1) left by older versions.
+                SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
+
                 // Load app settings into ViewModel.
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);

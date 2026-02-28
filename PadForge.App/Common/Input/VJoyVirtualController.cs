@@ -90,10 +90,27 @@ namespace PadForge.Common.Input
                 VJoyNative.RelinquishVJD(_deviceId);
                 _connected = false;
             }
+        }
 
-            // Device nodes are persistent — no deletion here.
-            // They stay alive for instant reuse on next Connect().
-            // Nodes are only removed during driver uninstall.
+        /// <summary>
+        /// Trims vJoy device nodes to match <paramref name="activeCount"/>.
+        /// Removes excess nodes (from the end) so dormant devices don't
+        /// appear in Game Controllers. Call after destroying a vJoy VC.
+        /// </summary>
+        public static void TrimDeviceNodes(int activeCount)
+        {
+            try
+            {
+                var instanceIds = EnumerateVJoyInstanceIds();
+                int excess = instanceIds.Count - activeCount;
+                Debug.WriteLine($"[vJoy] TrimDeviceNodes: active={activeCount}, nodes={instanceIds.Count}, excess={excess}");
+                for (int i = instanceIds.Count - 1; i >= 0 && excess > 0; i--, excess--)
+                    RemoveDeviceNode(instanceIds[i]);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy] TrimDeviceNodes exception: {ex.Message}");
+            }
         }
 
         public void SubmitGamepadState(Gamepad gp)
@@ -104,9 +121,9 @@ namespace PadForge.Common.Input
             // vJoy axes are 0 to 32767 (default range).
             // Convert: (short + 32768) / 2 → 0..32767
             VJoyNative.SetAxis(ShortToVJoy(gp.ThumbLX), _deviceId, HID_USAGES.HID_USAGE_X);
-            VJoyNative.SetAxis(ShortToVJoy(gp.ThumbLY), _deviceId, HID_USAGES.HID_USAGE_Y);
+            VJoyNative.SetAxis(ShortToVJoyInverted(gp.ThumbLY), _deviceId, HID_USAGES.HID_USAGE_Y);
             VJoyNative.SetAxis(ShortToVJoy(gp.ThumbRX), _deviceId, HID_USAGES.HID_USAGE_RX);
-            VJoyNative.SetAxis(ShortToVJoy(gp.ThumbRY), _deviceId, HID_USAGES.HID_USAGE_RY);
+            VJoyNative.SetAxis(ShortToVJoyInverted(gp.ThumbRY), _deviceId, HID_USAGES.HID_USAGE_RY);
 
             // Triggers: 0–255 byte → 0–32767 vJoy axis
             VJoyNative.SetAxis(gp.LeftTrigger * 32767 / 255, _deviceId, HID_USAGES.HID_USAGE_Z);
@@ -139,6 +156,15 @@ namespace PadForge.Common.Input
         private static int ShortToVJoy(short value)
         {
             return (value + 32768) / 2;
+        }
+
+        /// <summary>
+        /// Converts signed short to vJoy range with Y-axis inversion.
+        /// HID convention: Y-down = max value (32767). Gamepad convention: Y-up = positive.
+        /// </summary>
+        private static int ShortToVJoyInverted(short value)
+        {
+            return 32767 - (value + 32768) / 2;
         }
 
         /// <summary>Extracts D-Pad from Gamepad buttons to vJoy discrete POV value.</summary>
@@ -241,26 +267,12 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Counts existing vJoy device nodes (IDs 1–16 that are not MISS).
-        /// Returns 0 if the DLL isn't loaded.
+        /// Counts existing vJoy device nodes by querying PnP (pnputil).
+        /// More reliable than GetVJDStatus which can return stale data.
         /// </summary>
         public static int CountExistingDevices()
         {
-            try
-            {
-                EnsureDllLoaded();
-                if (!_dllLoaded) return 0;
-
-                int count = 0;
-                for (uint id = 1; id <= 16; id++)
-                {
-                    var status = VJoyNative.GetVJDStatus(id);
-                    if (status != VjdStat.VJD_STAT_MISS)
-                        count++;
-                }
-                return count;
-            }
-            catch { return 0; }
+            return EnumerateVJoyInstanceIds().Count;
         }
 
         /// <summary>
@@ -270,30 +282,25 @@ namespace PadForge.Common.Input
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
         {
-            EnsureDllLoaded();
+            // Count actual PnP device nodes (reliable, not stale DLL state).
+            int existing = CountExistingDevices();
 
-            // Count how many device nodes already exist (any status except MISS).
-            int existing = _dllLoaded ? CountExistingDevices() : 0;
-            int free = 0;
-            if (_dllLoaded)
+            Debug.WriteLine($"[vJoy] EnsureDevicesAvailable: required={requiredCount}, existing={existing}");
+
+            if (existing >= requiredCount)
             {
-                for (uint id = 1; id <= 16; id++)
-                    if (VJoyNative.GetVJDStatus(id) == VjdStat.VJD_STAT_FREE) free++;
+                // Enough nodes exist — ensure DLL is loaded so the engine can use them.
+                EnsureDllLoaded();
+                return true;
             }
 
-            Debug.WriteLine($"[vJoy] EnsureDevicesAvailable: required={requiredCount}, existing={existing}, free={free}");
-
-            // Need at least 1 free device for the new slot being added.
-            if (free >= 1 && existing >= requiredCount)
-                return true;
-
             // Create enough new device nodes to satisfy the requirement.
-            int toCreate = Math.Max(1, requiredCount - existing);
-            Debug.WriteLine($"[vJoy] Need to create {toCreate} device node(s) (existing={existing}, required={requiredCount})");
+            int toCreate = requiredCount - existing;
+            Debug.WriteLine($"[vJoy] Need to create {toCreate} device node(s)");
 
             if (!CreateVJoyDevices(toCreate))
             {
-                Debug.WriteLine("[vJoy] CreateVJoyDevices failed (UAC cancelled or SetupAPI error)");
+                Debug.WriteLine("[vJoy] CreateVJoyDevices failed");
                 return false;
             }
 
@@ -315,68 +322,115 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Removes ALL vJoy device nodes via a single elevated PowerShell script.
-        /// Enumerates ROOT\HIDCLASS\* devices matching the vJoy hardware ID and
-        /// removes them with pnputil. One UAC prompt for the entire batch.
+        /// Enumerates vJoy device instance IDs via pnputil.
+        /// Looks for ROOT\HIDCLASS\* devices whose description contains "vJoy".
+        /// </summary>
+        internal static System.Collections.Generic.List<string> EnumerateVJoyInstanceIds()
+        {
+            var results = new System.Collections.Generic.List<string>();
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = "/enum-devices /class HIDClass",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                using var proc = Process.Start(psi);
+                if (proc == null) return results;
+
+                string output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(5_000);
+
+                // Parse pnputil output: blocks separated by blank lines.
+                // Each block has "Instance ID:", "Device Description:", etc.
+                string currentInstanceId = null;
+                foreach (string rawLine in output.Split('\n'))
+                {
+                    string line = rawLine.Trim();
+                    if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                        line.Contains(":"))
+                    {
+                        currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
+                    }
+                    else if (currentInstanceId != null &&
+                             line.IndexOf("vJoy", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                             currentInstanceId.StartsWith("ROOT\\HIDCLASS\\", StringComparison.OrdinalIgnoreCase))
+                    {
+                        results.Add(currentInstanceId);
+                        currentInstanceId = null;
+                    }
+                    else if (string.IsNullOrEmpty(line))
+                    {
+                        currentInstanceId = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy] EnumerateVJoyInstanceIds exception: {ex.Message}");
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Removes a single device node by instance ID via pnputil.
+        /// App must be running elevated (which it is when vJoy is installed).
+        /// </summary>
+        internal static bool RemoveDeviceNode(string instanceId)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/remove-device \"{instanceId}\" /subtree",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                Debug.WriteLine($"[vJoy] Removing device node: {instanceId}");
+                using var proc = Process.Start(psi);
+                if (proc == null) return false;
+                proc.WaitForExit(5_000);
+                Debug.WriteLine($"[vJoy] pnputil exit code: {proc.ExitCode}");
+                return proc.ExitCode == 0;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy] RemoveDeviceNode exception: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Removes ALL vJoy device nodes via direct pnputil calls.
+        /// App must be running elevated (auto-elevation happens at startup when vJoy is installed).
+        /// No PowerShell, no UAC prompt — fast and synchronous.
         /// </summary>
         internal static bool RemoveAllDeviceNodes()
         {
             try
             {
-                string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_cleanup.ps1");
-                string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_cleanup.log");
+                var instanceIds = EnumerateVJoyInstanceIds();
+                Debug.WriteLine($"[vJoy] RemoveAllDeviceNodes: found {instanceIds.Count} device(s)");
 
-                File.WriteAllText(scriptPath, @"
-$log = '" + logPath.Replace("'", "''") + @"'
-try {
-    $removed = 0
-    # Find all ROOT\HIDCLASS\* devices with vJoy hardware ID
-    $devices = pnputil /enum-devices /class HIDClass 2>&1
-    $instanceId = $null
-    foreach ($line in $devices) {
-        if ($line -match 'Instance ID:\s+(.+)') {
-            $instanceId = $matches[1].Trim()
-        }
-        if ($line -match 'vJoy Device' -and $instanceId -and $instanceId -like 'ROOT\HIDCLASS\*') {
-            pnputil /remove-device ""$instanceId"" /subtree 2>&1 | Out-Null
-            $removed++
-            $instanceId = $null
-        }
-    }
-    ""OK:$removed"" | Out-File $log -Force
-} catch {
-    ""EXCEPTION: $_"" | Out-File $log -Force
-    exit 1
-}
-");
-                try { File.Delete(logPath); } catch { }
-
-                var psi = new ProcessStartInfo
+                int removed = 0;
+                foreach (var id in instanceIds)
                 {
-                    FileName = "powershell.exe",
-                    Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"",
-                    Verb = "runas",
-                    UseShellExecute = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                };
+                    if (RemoveDeviceNode(id))
+                        removed++;
+                }
 
-                Debug.WriteLine("[vJoy] Removing all device nodes (elevated PowerShell)...");
-                using var proc = Process.Start(psi);
-                if (proc == null) return false;
-                proc.WaitForExit(15_000);
-
-                string result = File.Exists(logPath) ? File.ReadAllText(logPath).Trim() : "NO_LOG";
-                Debug.WriteLine($"[vJoy] RemoveAllDeviceNodes result: {result}");
-
-                try { File.Delete(scriptPath); } catch { }
-                try { File.Delete(logPath); } catch { }
-
-                return result.StartsWith("OK", StringComparison.OrdinalIgnoreCase);
-            }
-            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
-            {
-                Debug.WriteLine("[vJoy] UAC cancelled by user");
-                return false;
+                Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
+                // Reset DLL loaded state so vJoyEnabled() is re-evaluated after node removal.
+                _dllLoaded = false;
+                return true;
             }
             catch (Exception ex)
             {
@@ -472,16 +526,19 @@ public static class PF_SetupApi {{
 ");
                 try { File.Delete(logPath); } catch { }
 
+                // App runs elevated when vJoy is installed (auto-elevation in App.xaml.cs),
+                // so no Verb="runas" needed. Use redirected output for better control.
                 var psi = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
                     Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"",
-                    Verb = "runas",
-                    UseShellExecute = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
                 };
 
-                Debug.WriteLine($"[vJoy] Creating {count} device node(s) via SetupAPI (elevated PowerShell)...");
+                Debug.WriteLine($"[vJoy] Creating {count} device node(s) via SetupAPI (PowerShell)...");
                 using var proc = Process.Start(psi);
                 if (proc == null) return false;
                 proc.WaitForExit(30_000);
@@ -493,11 +550,6 @@ public static class PF_SetupApi {{
                 try { File.Delete(logPath); } catch { }
 
                 return result.StartsWith("OK", StringComparison.OrdinalIgnoreCase);
-            }
-            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
-            {
-                Debug.WriteLine("[vJoy] UAC cancelled by user");
-                return false;
             }
             catch (Exception ex)
             {

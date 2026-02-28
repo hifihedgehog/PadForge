@@ -593,40 +593,46 @@ public static class PF_SetupApi {{
         public static extern bool UpdateVJD(uint rID, ref JoystickPosition pData);
 
         /// <summary>
-        /// Maps to JOYSTICK_POSITION from vJoy SDK (public.h).
-        /// Layout must match the native C struct exactly — field offsets
-        /// verified against the SDK header.
+        /// Maps to JOYSTICK_POSITION_V3 from vJoy SDK (public.h, API version 3).
+        /// The SDK #defines USE_JOYSTICK_API_VERSION 3, which typedefs
+        /// JOYSTICK_POSITION_V3 as JOYSTICK_POSITION. V3 adds 4 axes
+        /// (Accelerator/Brake/Clutch/Steering) after wWheel and moves
+        /// VZ/VBRX/VBRY/VBRZ to the end of the struct.
         /// </summary>
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit, Size = 124)]
         public struct JoystickPosition
         {
-            [FieldOffset(0)]  public byte bDevice;     // 1-based device index
-            [FieldOffset(4)]  public int wThrottle;
-            [FieldOffset(8)]  public int wRudder;
-            [FieldOffset(12)] public int wAileron;
-            [FieldOffset(16)] public int wAxisX;       // Left stick X
-            [FieldOffset(20)] public int wAxisY;       // Left stick Y
-            [FieldOffset(24)] public int wAxisZ;       // Left trigger
-            [FieldOffset(28)] public int wAxisXRot;    // Right stick X
-            [FieldOffset(32)] public int wAxisYRot;    // Right stick Y
-            [FieldOffset(36)] public int wAxisZRot;    // Right trigger
-            [FieldOffset(40)] public int wSlider;
-            [FieldOffset(44)] public int wDial;
-            [FieldOffset(48)] public int wWheel;
-            [FieldOffset(52)] public int wAxisVX;
-            [FieldOffset(56)] public int wAxisVY;
-            [FieldOffset(60)] public int wAxisVZ;
-            [FieldOffset(64)] public int wAxisVBRX;
-            [FieldOffset(68)] public int wAxisVBRY;
-            [FieldOffset(72)] public int wAxisVBRZ;
-            [FieldOffset(76)] public int lButtons;     // Buttons 1–32 bitmask
-            [FieldOffset(80)] public uint bHats;       // Discrete POVs (4 per nibble)
-            [FieldOffset(84)] public uint bHatsEx1;    // Continuous POV 2
-            [FieldOffset(88)] public uint bHatsEx2;    // Continuous POV 3
-            [FieldOffset(92)] public uint bHatsEx3;    // Continuous POV 4
-            [FieldOffset(96)] public int lButtonsEx1;  // Buttons 33–64
-            [FieldOffset(100)] public int lButtonsEx2; // Buttons 65–96
-            [FieldOffset(104)] public int lButtonsEx3; // Buttons 97–128
+            [FieldOffset(0)]   public byte bDevice;      // 1-based device index
+            [FieldOffset(4)]   public int wThrottle;
+            [FieldOffset(8)]   public int wRudder;
+            [FieldOffset(12)]  public int wAileron;
+            [FieldOffset(16)]  public int wAxisX;        // Left stick X
+            [FieldOffset(20)]  public int wAxisY;        // Left stick Y
+            [FieldOffset(24)]  public int wAxisZ;        // Left trigger
+            [FieldOffset(28)]  public int wAxisXRot;     // Right stick X
+            [FieldOffset(32)]  public int wAxisYRot;     // Right stick Y
+            [FieldOffset(36)]  public int wAxisZRot;     // Right trigger
+            [FieldOffset(40)]  public int wSlider;
+            [FieldOffset(44)]  public int wDial;
+            [FieldOffset(48)]  public int wWheel;
+            [FieldOffset(52)]  public int wAccelerator;  // V3: new axis
+            [FieldOffset(56)]  public int wBrake;        // V3: new axis
+            [FieldOffset(60)]  public int wClutch;       // V3: new axis
+            [FieldOffset(64)]  public int wSteering;     // V3: new axis
+            [FieldOffset(68)]  public int wAxisVX;
+            [FieldOffset(72)]  public int wAxisVY;
+            [FieldOffset(76)]  public int lButtons;      // Buttons 1–32 bitmask
+            [FieldOffset(80)]  public uint bHats;        // Discrete POVs (4 per nibble)
+            [FieldOffset(84)]  public uint bHatsEx1;
+            [FieldOffset(88)]  public uint bHatsEx2;
+            [FieldOffset(92)]  public uint bHatsEx3;
+            [FieldOffset(96)]  public int lButtonsEx1;   // Buttons 33–64
+            [FieldOffset(100)] public int lButtonsEx2;   // Buttons 65–96
+            [FieldOffset(104)] public int lButtonsEx3;   // Buttons 97–128
+            [FieldOffset(108)] public int wAxisVZ;       // V3: moved to end
+            [FieldOffset(112)] public int wAxisVBRX;     // V3: moved to end
+            [FieldOffset(116)] public int wAxisVBRY;     // V3: moved to end
+            [FieldOffset(120)] public int wAxisVBRZ;     // V3: moved to end
         }
     }
 

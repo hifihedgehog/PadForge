@@ -1,3 +1,5 @@
+using System;
+
 namespace PadForge.Engine
 {
     /// <summary>
@@ -15,7 +17,7 @@ namespace PadForge.Engine
     /// Concrete implementations (Xbox360VirtualController, DS4VirtualController)
     /// live in the App assembly where the ViGEm NuGet reference exists.
     /// </summary>
-    public interface IVirtualController
+    public interface IVirtualController : IDisposable
     {
         VirtualControllerType Type { get; }
         bool IsConnected { get; }

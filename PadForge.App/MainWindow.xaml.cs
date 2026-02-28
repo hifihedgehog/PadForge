@@ -341,25 +341,10 @@ namespace PadForge
                 RebuildControllerSection();
             };
 
-            DashboardPageView.SlotTypeChangeRequested += async (s, args) =>
+            DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
-                // If switching to vJoy, ensure device nodes exist first.
-                if (args.Type == VirtualControllerType.VJoy)
-                {
-                    int vjoyNeeded = 1;
-                    for (int i = 0; i < InputManager.MaxPads; i++)
-                        if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
-                            vjoyNeeded++;
-                    bool ready = await Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoyNeeded));
-                    if (!ready)
-                    {
-                        _viewModel.StatusText = VJoyVirtualController.IsServiceStuck()
-                            ? "vJoy driver is stuck. Please restart your PC (Start \u2192 Restart, not Shut Down)."
-                            : "vJoy device could not be created. Check driver installation.";
-                        return;
-                    }
-                }
-
+                // Device nodes are created on demand by the engine (CreateVJoyController)
+                // when the slot becomes active — same pattern as ViGEm.
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -413,44 +398,10 @@ namespace PadForge
             _viewModel.RefreshNavControllerItems();
             RefreshDashboardActiveSlots();
 
-            // Ensure enough vJoy device nodes exist for vJoy slots that have
-            // at least one physical device assigned. Unlike ViGEm (which creates
-            // devices on-demand via Connect()), vJoy needs PnP device nodes to
-            // exist before AcquireVJD() can succeed. Only create nodes for slots
-            // with assigned devices — empty vJoy slots shouldn't show up in joy.cpl.
-            int vjoySlotCount = 0;
-            for (int i = 0; i < InputManager.MaxPads; i++)
-            {
-                if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
-                {
-                    // Only count slots with at least one device mapped.
-                    var settings = SettingsManager.UserSettings;
-                    if (settings != null && settings.FindByPadIndex(i)?.Count > 0)
-                        vjoySlotCount++;
-                }
-            }
-
-            if (vjoySlotCount > 0 && _viewModel.Settings.AutoStartEngine)
-            {
-                // vJoy device nodes must exist before the engine can acquire them.
-                // Run the check on a background thread, then start the engine.
-                Task.Run(() =>
-                {
-                    VJoyVirtualController.EnsureDevicesAvailable(vjoySlotCount);
-                    Dispatcher.BeginInvoke(new Action(() => _inputService.Start()));
-                });
-            }
-            else if (vjoySlotCount > 0)
-            {
-                // vJoy slots exist but engine won't auto-start — ensure nodes
-                // in background so they're ready when the user starts the engine.
-                Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoySlotCount));
-            }
-            else if (_viewModel.Settings.AutoStartEngine)
-            {
-                // No vJoy slots — start engine immediately.
+            // vJoy device nodes are created on demand by the engine (CreateVJoyController)
+            // when slots become active — same pattern as ViGEm. No pre-creation needed.
+            if (_viewModel.Settings.AutoStartEngine)
                 _inputService.Start();
-            }
         }
 
         /// <summary>Whether the app should start minimized (to taskbar).</summary>
@@ -1018,25 +969,13 @@ namespace PadForge
         }
 
         /// <summary>Handles sidebar vJoy type button click.</summary>
-        private async void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
+        private void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
-                // Ensure a vJoy device node exists before the engine tries to use it.
-                int vjoyNeeded = 1;
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                    if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
-                        vjoyNeeded++;
-                bool ready = await Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoyNeeded));
-                if (!ready)
-                {
-                    _viewModel.StatusText = VJoyVirtualController.IsServiceStuck()
-                        ? "vJoy driver is stuck. Please restart your PC (Start \u2192 Restart, not Shut Down)."
-                        : "vJoy device could not be created. Check driver installation.";
-                    return;
-                }
-
+                // Device nodes are created on demand by the engine (CreateVJoyController)
+                // when the slot becomes active — same pattern as ViGEm.
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1782,31 +1721,12 @@ namespace PadForge
                 IsEnabled = !vjoyAtCapacity,
                 Opacity = vjoyAtCapacity ? 0.35 : 1.0
             };
-            vjoyBtn.Click += async (s, e) =>
+            vjoyBtn.Click += (s, e) =>
             {
                 popup.IsOpen = false;
 
-                // Ensure a vJoy device node exists before the engine tries to use it.
-                // Uses SetupAPI with UAC if no devices are configured.
-                // Count how many vJoy slots will exist after adding this one.
-                int vjoyNeeded = 1;
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                    if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
-                        vjoyNeeded++;
-                bool ready = await Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoyNeeded));
-                if (!ready)
-                {
-                    if (VJoyVirtualController.IsServiceStuck())
-                    {
-                        _viewModel.StatusText = "vJoy driver is stuck. Please restart your PC (Start \u2192 Restart, not Shut Down).";
-                    }
-                    else
-                    {
-                        _viewModel.StatusText = "vJoy device could not be created. Check driver installation.";
-                    }
-                    return;
-                }
-
+                // Device nodes are created on demand by the engine (CreateVJoyController)
+                // when the slot becomes active — same pattern as ViGEm.
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.VJoy);
                 if (newSlot >= 0)
                 {

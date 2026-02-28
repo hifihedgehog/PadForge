@@ -203,10 +203,13 @@ namespace PadForge.Services
 
             // Remove vJoy device nodes so dormant devices don't appear in
             // Game Controllers — games may latch onto them as valid input.
-            // Fire-and-forget: pnputil spawns ~300ms each and we don't need
-            // to block app exit waiting for them to finish.
+            // Allow up to 3s for cleanup, then let the app exit regardless.
             if (VJoyVirtualController.CountExistingDevices() > 0)
-                System.Threading.Tasks.Task.Run(() => VJoyVirtualController.RemoveAllDeviceNodes());
+            {
+                var cleanupTask = System.Threading.Tasks.Task.Run(
+                    () => VJoyVirtualController.RemoveAllDeviceNodes());
+                cleanupTask.Wait(TimeSpan.FromSeconds(3));
+            }
         }
 
         /// <summary>

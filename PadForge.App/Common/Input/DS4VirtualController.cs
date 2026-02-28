@@ -1,3 +1,4 @@
+using System;
 using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.DualShock4;
@@ -8,6 +9,7 @@ namespace PadForge.Common.Input
     internal sealed class DS4VirtualController : IVirtualController
     {
         private readonly IDualShock4Controller _controller;
+        private bool _disposed;
 
         public VirtualControllerType Type => VirtualControllerType.DualShock4;
         public bool IsConnected { get; private set; }
@@ -27,6 +29,17 @@ namespace PadForge.Common.Input
         {
             _controller.Disconnect();
             IsConnected = false;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+
+            if (IsConnected)
+                Disconnect();
+
+            (_controller as IDisposable)?.Dispose();
         }
 
         public void SubmitGamepadState(Gamepad gp)

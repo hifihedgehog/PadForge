@@ -217,37 +217,46 @@ namespace PadForge.Common.Input
             // ViGEm devices may report VID/PID as 0 through SDL's
             // pre-open enumeration. If a device has no VID/PID but SDL
             // recognizes it as a standard game controller, AND we currently
-            // have ViGEm virtual controllers active, it's very likely virtual.
+            // have ViGEm virtual controllers active (or expect to), it's very likely virtual.
             if (wrapper.VendorId == 0 && wrapper.ProductId == 0)
             {
-                if (_activeVigemCount > 0 && wrapper.IsGameController)
+                if ((_activeVigemCount > 0 || _expectedXbox360Count > 0 || _expectedDs4Count > 0)
+                    && wrapper.IsGameController)
                     return true;
             }
 
             // ── Xbox 360 VID/PID — ViGEm emulates exactly this ──
             // Real Xbox 360 controllers and ViGEm virtual controllers both
-            // report VID=045E PID=028E. We filter up to _activeXbox360Count
-            // devices per cycle (the rest are real controllers).
-            if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E
-                && _activeXbox360Count > 0)
+            // report VID=045E PID=028E. Filter up to the greater of actual
+            // active count or expected count (pre-initialized from slot config).
+            // Expected count handles the startup race: the first UpdateDevices()
+            // runs before Step 5 creates any VCs (_activeXbox360Count=0).
             {
-                if (_xbox360FilteredThisCycle < _activeXbox360Count)
+                int filterCount = Math.Max(_activeXbox360Count, _expectedXbox360Count);
+                if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E
+                    && filterCount > 0)
                 {
-                    _xbox360FilteredThisCycle++;
-                    return true;
+                    if (_xbox360FilteredThisCycle < filterCount)
+                    {
+                        _xbox360FilteredThisCycle++;
+                        return true;
+                    }
                 }
             }
 
             // ── DS4 VID/PID — ViGEm emulates Sony DS4 ──
             // ViGEm DS4 virtual controllers report VID=054C PID=05C4.
-            // Filter up to _activeDs4Count devices per cycle.
-            if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4
-                && _activeDs4Count > 0)
+            // Same expected-count logic as Xbox 360 above.
             {
-                if (_ds4FilteredThisCycle < _activeDs4Count)
+                int filterCount = Math.Max(_activeDs4Count, _expectedDs4Count);
+                if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4
+                    && filterCount > 0)
                 {
-                    _ds4FilteredThisCycle++;
-                    return true;
+                    if (_ds4FilteredThisCycle < filterCount)
+                    {
+                        _ds4FilteredThisCycle++;
+                        return true;
+                    }
                 }
             }
 

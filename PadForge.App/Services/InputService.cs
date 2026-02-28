@@ -1944,32 +1944,40 @@ namespace PadForge.Services
 
             if (activeSlots.Count <= 1) return false;
 
-            // Stable sort by type priority preserves within-group order.
-            var sorted = activeSlots
-                .OrderBy(i => GetTypePriority(_mainVm.Pads[i].OutputType))
-                .ToList();
-
+            // Check if already in order.
             bool needsReorder = false;
-            for (int i = 0; i < activeSlots.Count; i++)
-                if (activeSlots[i] != sorted[i]) { needsReorder = true; break; }
-            if (!needsReorder) return false;
-
-            // Bubble each slot into its correct position via adjacent swaps.
-            for (int target = 0; target < sorted.Count; target++)
+            for (int i = 0; i < activeSlots.Count - 1; i++)
             {
-                int current = activeSlots.IndexOf(sorted[target]);
-                while (current > target)
+                if (GetTypePriority(_mainVm.Pads[activeSlots[i]].OutputType) >
+                    GetTypePriority(_mainVm.Pads[activeSlots[i + 1]].OutputType))
                 {
-                    int a = activeSlots[current - 1], b = activeSlots[current];
-                    _inputManager?.SwapSlots(a, b);
-                    SettingsManager.SwapSlots(a, b);
-                    (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
-                        (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
-                    activeSlots[current] = a;
-                    activeSlots[current - 1] = b;
-                    current--;
+                    needsReorder = true;
+                    break;
                 }
             }
+            if (!needsReorder) return false;
+
+            // Bubble sort by type priority using adjacent swaps.
+            // Each swap uses current physical indices and current OutputTypes,
+            // so the comparison is always against up-to-date data.
+            bool swapped;
+            do
+            {
+                swapped = false;
+                for (int i = 0; i < activeSlots.Count - 1; i++)
+                {
+                    int a = activeSlots[i], b = activeSlots[i + 1];
+                    if (GetTypePriority(_mainVm.Pads[a].OutputType) >
+                        GetTypePriority(_mainVm.Pads[b].OutputType))
+                    {
+                        _inputManager?.SwapSlots(a, b);
+                        SettingsManager.SwapSlots(a, b);
+                        (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
+                            (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
 
             if (!silent)
                 RefreshAfterSlotReorder();

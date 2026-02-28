@@ -62,7 +62,8 @@ namespace PadForge.Common.Input
 
         /// <summary>Whether each slot is enabled for ViGEm output. Persisted to settings.</summary>
         public static bool[] SlotEnabled { get; set; } = new bool[InputManager.MaxPads]
-            { true, true, true, true, true, true, true, true };
+            { true, true, true, true, true, true, true, true,
+              true, true, true, true, true, true, true, true };
 
         // ─────────────────────────────────────────────
         //  Initialization

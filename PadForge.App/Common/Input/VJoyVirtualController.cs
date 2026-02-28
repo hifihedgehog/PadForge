@@ -576,23 +576,30 @@ public static class PF_SetupApi {{
             if (count < 1) return;
             try
             {
-                // HID Report Descriptor for gamepad: 6 axes (32-bit each), 11 buttons, 1 discrete POV.
-                // Built per USB HID 1.11 spec. The vJoy driver parses this to determine
-                // which JOYSTICK_POSITION_V3 fields to include in the HID report.
-                byte[] descriptor = BuildGamepadHidDescriptor();
-
                 using var baseKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(
                     @"SYSTEM\CurrentControlSet\services\vjoy\Parameters");
 
                 for (int id = 1; id <= count; id++)
                 {
+                    // Each device gets a unique Report ID matching its 1-based ID.
+                    // The vJoy driver's GetReportDescriptorFromRegistry() concatenates
+                    // all DeviceNN descriptors and uses ParseIdInDescriptor() to extract
+                    // the Report ID from the 0x85 tag in each descriptor.
+                    byte[] descriptor = BuildGamepadHidDescriptor((byte)id);
                     string subKeyName = $"Device{id:D2}"; // Device01, Device02, ...
                     using var devKey = baseKey.CreateSubKey(subKeyName);
-                    devKey.SetValue("HidReportDescriptor", descriptor, Microsoft.Win32.RegistryValueKind.Binary);
-                    devKey.SetValue("HidReportDescriptorSize", descriptor.Length, Microsoft.Win32.RegistryValueKind.DWord);
+                    // NOTE: The vJoy driver source (vjoy.h) uses MISSPELLED registry key names:
+                    //   DESC_NAME = L"HidReportDesctiptor"  (not "Descriptor")
+                    //   DESC_SIZE = L"HidReportDesctiptorSize"
+                    // We MUST match the driver's typo, or it falls back to hardcoded defaults.
+                    devKey.SetValue("HidReportDesctiptor", descriptor, Microsoft.Win32.RegistryValueKind.Binary);
+                    devKey.SetValue("HidReportDesctiptorSize", descriptor.Length, Microsoft.Win32.RegistryValueKind.DWord);
+                    // Clean up stale correctly-spelled keys from older versions.
+                    try { devKey.DeleteValue("HidReportDescriptor", false); } catch { }
+                    try { devKey.DeleteValue("HidReportDescriptorSize", false); } catch { }
                 }
 
-                Debug.WriteLine($"[vJoy] Wrote HID descriptor ({descriptor.Length} bytes) for {count} device(s)");
+                Debug.WriteLine($"[vJoy] Wrote HID descriptors for {count} device(s)");
             }
             catch (Exception ex)
             {
@@ -606,15 +613,17 @@ public static class PF_SetupApi {{
         /// Matches Xbox 360 controller layout. All axes are 32-bit with
         /// 0–32767 range (matching JOYSTICK_POSITION_V3).
         /// </summary>
-        private static byte[] BuildGamepadHidDescriptor()
+        /// <param name="reportId">Report ID (1–16) — must match the vJoy device ID.
+        /// The driver uses ParseIdInDescriptor() to extract this from the 0x85 tag.</param>
+        private static byte[] BuildGamepadHidDescriptor(byte reportId)
         {
             var d = new System.Collections.Generic.List<byte>();
 
             // ── Collection: Generic Desktop / Joystick ──
-            d.AddRange(new byte[] { 0x05, 0x01 });       // USAGE_PAGE (Generic Desktop)
-            d.AddRange(new byte[] { 0x09, 0x04 });       // USAGE (Joystick)
-            d.AddRange(new byte[] { 0xA1, 0x01 });       // COLLECTION (Application)
-            d.AddRange(new byte[] { 0x85, 0x01 });       //   REPORT_ID (1)
+            d.AddRange(new byte[] { 0x05, 0x01 });             // USAGE_PAGE (Generic Desktop)
+            d.AddRange(new byte[] { 0x09, 0x04 });             // USAGE (Joystick)
+            d.AddRange(new byte[] { 0xA1, 0x01 });             // COLLECTION (Application)
+            d.AddRange(new byte[] { 0x85, reportId });          //   REPORT_ID (matches device ID)
 
             // ── 6 Axes: X, Y, Z, RX, RY, RZ — each 32-bit, range 0–32767 ──
             d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)

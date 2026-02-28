@@ -200,6 +200,12 @@ namespace PadForge.Services
             foreach (var row in _mainVm.Devices.Devices)
                 row.IsOnline = false;
             _mainVm.Devices.RefreshCounts();
+
+            // Remove vJoy device nodes so dormant devices don't appear in
+            // Game Controllers — games may latch onto them as valid input.
+            // Runs synchronously to ensure cleanup completes before app exit.
+            if (VJoyVirtualController.CountExistingDevices() > 0)
+                VJoyVirtualController.RemoveAllDeviceNodes();
         }
 
         /// <summary>

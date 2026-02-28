@@ -390,11 +390,35 @@ namespace PadForge
             _viewModel.RefreshNavControllerItems();
             RefreshDashboardActiveSlots();
 
-            // Auto-start engine. Must be in the constructor (not OnLoaded) because
-            // OnLoaded only fires when the window is rendered — which never happens
-            // when starting minimized to tray.
-            if (_viewModel.Settings.AutoStartEngine)
+            // Ensure enough vJoy device nodes exist for any saved vJoy slots,
+            // then start the engine. Device nodes are persistent PnP entries —
+            // this is usually a no-op (fast path) after the first run.
+            int vjoySlotCount = 0;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+                if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
+                    vjoySlotCount++;
+
+            if (vjoySlotCount > 0 && _viewModel.Settings.AutoStartEngine)
+            {
+                // vJoy device nodes must exist before the engine can acquire them.
+                // Run the check on a background thread, then start the engine.
+                Task.Run(() =>
+                {
+                    VJoyVirtualController.EnsureDevicesAvailable(vjoySlotCount);
+                    Dispatcher.BeginInvoke(new Action(() => _inputService.Start()));
+                });
+            }
+            else if (vjoySlotCount > 0)
+            {
+                // vJoy slots exist but engine won't auto-start — ensure nodes
+                // in background so they're ready when the user starts the engine.
+                Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoySlotCount));
+            }
+            else if (_viewModel.Settings.AutoStartEngine)
+            {
+                // No vJoy slots — start engine immediately.
                 _inputService.Start();
+            }
         }
 
         /// <summary>Whether the app should start minimized (to taskbar).</summary>

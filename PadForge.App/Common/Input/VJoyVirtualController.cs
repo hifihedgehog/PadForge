@@ -132,7 +132,7 @@ namespace PadForge.Common.Input
             pos.wAxisZ  = gp.LeftTrigger * 32767 / 255;
             pos.wAxisZRot = gp.RightTrigger * 32767 / 255;
 
-            // Buttons: build bitmask (bit 0 = button 1, bit 10 = button 11)
+            // Buttons: build bitmask (bits 0–10 = buttons 1–11, Xbox 360 layout)
             int buttons = 0;
             if (gp.IsButtonPressed(Gamepad.A))              buttons |= 1 << 0;
             if (gp.IsButtonPressed(Gamepad.B))              buttons |= 1 << 1;
@@ -279,7 +279,7 @@ namespace PadForge.Common.Input
             Debug.WriteLine($"[vJoy] EnsureDevicesAvailable: required={requiredCount}, existing={existing}");
 
             // Always write device config (idempotent) so existing devices
-            // pick up the gamepad layout (13 buttons, 1 POV, 6 axes).
+            // pick up the Xbox 360 gamepad layout (11 buttons, 1 POV, 6 axes).
             WriteDeviceConfiguration(Math.Max(requiredCount, existing));
 
             if (existing >= requiredCount)
@@ -560,7 +560,7 @@ public static class PF_SetupApi {{
         /// to determine the device's axis/button/POV layout.
         /// Must be called BEFORE the driver binds to new device nodes.
         ///
-        /// Configuration: 6 axes (X/Y/Z/RX/RY/RZ), 13 buttons, 1 discrete POV.
+        /// Configuration: 6 axes (X/Y/Z/RX/RY/RZ), 11 buttons, 1 discrete POV.
         /// </summary>
         internal static void WriteDeviceConfiguration(int count)
         {
@@ -593,8 +593,9 @@ public static class PF_SetupApi {{
 
         /// <summary>
         /// Builds a HID Report Descriptor for a gamepad-like vJoy device:
-        /// 6 axes (X, Y, Z, RX, RY, RZ), 13 buttons, 1 discrete POV hat.
-        /// All axes are 32-bit with 0–32767 range (matching JOYSTICK_POSITION_V3).
+        /// 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 discrete POV hat.
+        /// Matches Xbox 360 controller layout. All axes are 32-bit with
+        /// 0–32767 range (matching JOYSTICK_POSITION_V3).
         /// </summary>
         private static byte[] BuildGamepadHidDescriptor()
         {
@@ -618,18 +619,18 @@ public static class PF_SetupApi {{
                 d.AddRange(new byte[] { 0x81, 0x02 });  //   INPUT (Data, Var, Abs)
             }
 
-            // ── 13 Buttons ──
+            // ── 11 Buttons (Xbox 360: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide) ──
             d.AddRange(new byte[] { 0x05, 0x09 });       //   USAGE_PAGE (Button)
             d.AddRange(new byte[] { 0x19, 0x01 });       //   USAGE_MINIMUM (1)
-            d.AddRange(new byte[] { 0x29, 0x0D });       //   USAGE_MAXIMUM (13)
+            d.AddRange(new byte[] { 0x29, 0x0B });       //   USAGE_MAXIMUM (11)
             d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
             d.AddRange(new byte[] { 0x25, 0x01 });       //   LOGICAL_MAXIMUM (1)
             d.AddRange(new byte[] { 0x75, 0x01 });       //   REPORT_SIZE (1)
-            d.AddRange(new byte[] { 0x95, 0x0D });       //   REPORT_COUNT (13)
+            d.AddRange(new byte[] { 0x95, 0x0B });       //   REPORT_COUNT (11)
             d.AddRange(new byte[] { 0x81, 0x02 });       //   INPUT (Data, Var, Abs)
-            // Padding to byte boundary (3 bits → 16 bits total)
+            // Padding to byte boundary (5 bits → 16 bits total)
             d.AddRange(new byte[] { 0x75, 0x01 });       //   REPORT_SIZE (1)
-            d.AddRange(new byte[] { 0x95, 0x03 });       //   REPORT_COUNT (3)
+            d.AddRange(new byte[] { 0x95, 0x05 });       //   REPORT_COUNT (5)
             d.AddRange(new byte[] { 0x81, 0x01 });       //   INPUT (Cnst, Ary, Abs)
 
             // ── 1 Discrete POV (4-direction hat switch) ──

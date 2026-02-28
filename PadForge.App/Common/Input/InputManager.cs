@@ -429,6 +429,29 @@ namespace PadForge.Common.Input
                 (MacroSnapshots[slotB], MacroSnapshots[slotA]);
         }
 
+        /// <summary>
+        /// Swaps only data arrays between two slots: SlotControllerTypes,
+        /// TestRumbleTargetGuid, MacroSnapshots. Does NOT touch virtual
+        /// controllers or their lifecycle.
+        /// Used by EnsureTypeGroupOrder so Step 5 detects the type mismatch
+        /// and handles VC recreation naturally on the polling thread,
+        /// avoiding the all-VCs-destroyed-at-once race that causes phantom
+        /// Xbox controllers.
+        /// </summary>
+        public void SwapSlotData(int slotA, int slotB)
+        {
+            if (slotA == slotB) return;
+            if (slotA < 0 || slotA >= MaxPads) return;
+            if (slotB < 0 || slotB >= MaxPads) return;
+
+            (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
+                (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
+                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
+            (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
+                (MacroSnapshots[slotB], MacroSnapshots[slotA]);
+        }
+
         // ─────────────────────────────────────────────
         //  Device cleanup helpers
         // ─────────────────────────────────────────────

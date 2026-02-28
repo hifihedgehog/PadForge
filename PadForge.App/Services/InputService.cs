@@ -1975,7 +1975,11 @@ namespace PadForge.Services
                     if (GetTypePriority(_mainVm.Pads[a].OutputType) >
                         GetTypePriority(_mainVm.Pads[b].OutputType))
                     {
-                        _inputManager?.SwapSlots(a, b);
+                        // Data-only swap: don't destroy VCs here.
+                        // Step 5 detects the type mismatch on the polling thread
+                        // and handles VC recreation naturally — avoids the
+                        // all-VCs-destroyed-at-once race that causes phantom controllers.
+                        _inputManager?.SwapSlotData(a, b);
                         SettingsManager.SwapSlots(a, b);
                         (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
                             (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);

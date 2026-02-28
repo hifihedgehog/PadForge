@@ -341,8 +341,25 @@ namespace PadForge
                 RebuildControllerSection();
             };
 
-            DashboardPageView.SlotTypeChangeRequested += (s, args) =>
+            DashboardPageView.SlotTypeChangeRequested += async (s, args) =>
             {
+                // If switching to vJoy, ensure device nodes exist first.
+                if (args.Type == VirtualControllerType.VJoy)
+                {
+                    int vjoyNeeded = 1;
+                    for (int i = 0; i < InputManager.MaxPads; i++)
+                        if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
+                            vjoyNeeded++;
+                    bool ready = await Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoyNeeded));
+                    if (!ready)
+                    {
+                        _viewModel.StatusText = VJoyVirtualController.IsServiceStuck()
+                            ? "vJoy driver is stuck. Please restart your PC (Start \u2192 Restart, not Shut Down)."
+                            : "vJoy device could not be created. Check driver installation.";
+                        return;
+                    }
+                }
+
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1001,11 +1018,25 @@ namespace PadForge
         }
 
         /// <summary>Handles sidebar vJoy type button click.</summary>
-        private void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
+        private async void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Ensure a vJoy device node exists before the engine tries to use it.
+                int vjoyNeeded = 1;
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                    if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
+                        vjoyNeeded++;
+                bool ready = await Task.Run(() => VJoyVirtualController.EnsureDevicesAvailable(vjoyNeeded));
+                if (!ready)
+                {
+                    _viewModel.StatusText = VJoyVirtualController.IsServiceStuck()
+                        ? "vJoy driver is stuck. Please restart your PC (Start \u2192 Restart, not Shut Down)."
+                        : "vJoy device could not be created. Check driver installation.";
+                    return;
+                }
+
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();

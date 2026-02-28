@@ -436,6 +436,10 @@ namespace PadForge.Common.Input
                     }
                 }
 
+                // Dispose releases the native ViGEm target handle (vigem_target_free).
+                // Without this, the ViGEm target leaks and phantom USB devices remain.
+                vc.Dispose();
+
                 if (vc.Type == VirtualControllerType.Xbox360)
                 {
                     _activeVigemCount = Math.Max(0, _activeVigemCount - 1);

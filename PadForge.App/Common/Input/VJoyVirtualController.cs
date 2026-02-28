@@ -92,6 +92,11 @@ namespace PadForge.Common.Input
             }
         }
 
+        public void Dispose()
+        {
+            Disconnect();
+        }
+
         /// <summary>
         /// Trims vJoy device nodes to match <paramref name="activeCount"/>.
         /// Removes excess nodes (from the end) so dormant devices don't

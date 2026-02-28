@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -47,6 +48,29 @@ namespace PadForge.Common.Input
         /// Used by IsViGEmVirtualDevice() to filter the correct number of 054C:05C4 devices.
         /// </summary>
         private int _activeDs4Count;
+
+        /// <summary>
+        /// Expected ViGEm Xbox 360 / DS4 virtual controller counts, pre-initialized
+        /// from slot configuration BEFORE the polling loop starts. Used by
+        /// IsViGEmVirtualDevice() to filter ViGEm devices on the very first
+        /// UpdateDevices() call — before Step 5 has created any actual VCs.
+        /// Without this, _activeXbox360Count is 0 on the first cycle, causing
+        /// all stale ViGEm 045E:028E devices to pass through the filter as
+        /// "real" Xbox controllers.
+        /// </summary>
+        private int _expectedXbox360Count;
+        private int _expectedDs4Count;
+
+        /// <summary>
+        /// Pre-initializes expected ViGEm counts from the slot configuration.
+        /// Must be called before Start() so the first UpdateDevices() cycle
+        /// filters ViGEm devices correctly.
+        /// </summary>
+        public void PreInitializeVigemCounts(int xbox360Count, int ds4Count)
+        {
+            _expectedXbox360Count = xbox360Count;
+            _expectedDs4Count = ds4Count;
+        }
 
         /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.
@@ -414,17 +438,19 @@ namespace PadForge.Common.Input
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
 
+            var vcType = vc.Type;
+
             try
             {
                 // Snapshot for Xbox 360 slot mask wait.
                 uint maskBefore = 0;
-                if (vc.Type == VirtualControllerType.Xbox360)
+                if (vcType == VirtualControllerType.Xbox360)
                     maskBefore = GetXInputConnectedSlotMask();
 
                 vc.Disconnect();
 
                 // Brief wait for the slot to disappear from the XInput stack.
-                if (vc.Type == VirtualControllerType.Xbox360)
+                if (vcType == VirtualControllerType.Xbox360)
                 {
                     var waitSw = Stopwatch.StartNew();
                     while (waitSw.ElapsedMilliseconds < 50)
@@ -439,21 +465,30 @@ namespace PadForge.Common.Input
                 // Dispose releases the native ViGEm target handle (vigem_target_free).
                 // Without this, the ViGEm target leaks and phantom USB devices remain.
                 vc.Dispose();
-
-                if (vc.Type == VirtualControllerType.Xbox360)
+            }
+            catch { /* best effort */ }
+            finally
+            {
+                // Counter decrements MUST happen even if Disconnect/Dispose throws.
+                // Otherwise _activeXbox360Count stays inflated and the filter
+                // over-filters on subsequent UpdateDevices cycles.
+                if (vcType == VirtualControllerType.Xbox360)
                 {
                     _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                     _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
                 }
-                else if (vc.Type == VirtualControllerType.DualShock4)
+                else if (vcType == VirtualControllerType.DualShock4)
                 {
                     _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                     _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
                 }
+            }
 
-                // vJoy: trim device nodes so dormant devices don't appear in joy.cpl.
-                // Skipped during bulk destroy — RemoveAllDeviceNodes handles it.
-                if (trimVJoyNodes && vc.Type == VirtualControllerType.VJoy)
+            // vJoy: trim device nodes so dormant devices don't appear in joy.cpl.
+            // Skipped during bulk destroy — RemoveAllDeviceNodes handles it.
+            try
+            {
+                if (trimVJoyNodes && vcType == VirtualControllerType.VJoy)
                 {
                     int remainingVJoy = 0;
                     for (int i = 0; i < MaxPads; i++)
@@ -478,6 +513,137 @@ namespace PadForge.Common.Input
             _activeVigemCount = 0;
             _activeXbox360Count = 0;
             _activeDs4Count = 0;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Stale ViGEm device cleanup
+        //
+        //  ViGEm bus driver may leave orphaned USB device nodes
+        //  when a feeder app exits without calling Dispose() on
+        //  its virtual controller targets. These stale nodes
+        //  appear as real Xbox 360 / DS4 controllers to SDL.
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Removes stale ViGEm USB device nodes that survived from previous sessions.
+        /// ViGEm assigns short numeric serials (01, 02, ..., 16) to Xbox 360 targets.
+        /// Real Xbox 360 controllers have longer hardware serials.
+        /// Must be called BEFORE Start() so SDL doesn't enumerate the stale nodes.
+        /// </summary>
+        public static void CleanupStaleVigemDevices()
+        {
+            try
+            {
+                // ViGEm Xbox 360 virtual controllers are in the XnaComposite class
+                // with instance IDs like USB\VID_045E&PID_028E\01.
+                var staleIds = EnumerateStaleVigemIds("XnaComposite");
+
+                if (staleIds.Count == 0) return;
+
+                Debug.WriteLine($"[ViGEm] Cleaning up {staleIds.Count} stale device node(s)");
+                foreach (string id in staleIds)
+                {
+                    try
+                    {
+                        var removePsi = new ProcessStartInfo
+                        {
+                            FileName = "pnputil.exe",
+                            Arguments = $"/remove-device \"{id}\" /subtree",
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            CreateNoWindow = true
+                        };
+                        using var removeProc = Process.Start(removePsi);
+                        removeProc?.WaitForExit(5_000);
+                        Debug.WriteLine($"[ViGEm] Removed stale device: {id}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"[ViGEm] Failed to remove {id}: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ViGEm] CleanupStaleVigemDevices exception: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Enumerates stale ViGEm device instance IDs in the given device class.
+        /// ViGEm Xbox 360 targets: USB\VID_045E&amp;PID_028E\NN (short numeric serial).
+        /// Real Xbox controllers have longer alphanumeric serials.
+        /// </summary>
+        private static List<string> EnumerateStaleVigemIds(string deviceClass)
+        {
+            var results = new List<string>();
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/enum-devices /class {deviceClass}",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                using var proc = Process.Start(psi);
+                if (proc == null) return results;
+                string output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(5_000);
+
+                string currentInstanceId = null;
+                foreach (string rawLine in output.Split('\n'))
+                {
+                    string line = rawLine.Trim();
+                    if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0
+                        && line.Contains(":"))
+                    {
+                        currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
+                    }
+                    else if (string.IsNullOrEmpty(line))
+                    {
+                        if (currentInstanceId != null && IsVigemInstanceId(currentInstanceId))
+                            results.Add(currentInstanceId);
+                        currentInstanceId = null;
+                    }
+                }
+                if (currentInstanceId != null && IsVigemInstanceId(currentInstanceId))
+                    results.Add(currentInstanceId);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ViGEm] EnumerateStaleVigemIds({deviceClass}) exception: {ex.Message}");
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Checks if a PnP instance ID looks like a ViGEm virtual controller.
+        /// ViGEm assigns short numeric serials (1-2 digits): USB\VID_045E&amp;PID_028E\01
+        /// Real Xbox controllers have long alphanumeric serials.
+        /// </summary>
+        private static bool IsVigemInstanceId(string instanceId)
+        {
+            // USB\VID_045E&PID_028E\NN (Xbox 360)
+            if (!instanceId.StartsWith("USB\\", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            int lastBackslash = instanceId.LastIndexOf('\\');
+            if (lastBackslash < 0) return false;
+
+            string serial = instanceId.Substring(lastBackslash + 1);
+            // ViGEm serials are short numeric strings (1-2 digits).
+            // Real USB controllers have longer alphanumeric serials.
+            if (serial.Length > 2 || serial.Length == 0) return false;
+            foreach (char c in serial)
+                if (!char.IsDigit(c)) return false;
+
+            string upperPath = instanceId.ToUpperInvariant();
+            return upperPath.Contains("VID_045E&PID_028E") ||
+                   upperPath.Contains("VID_054C&PID_05C4");
         }
 
         // ─────────────────────────────────────────────

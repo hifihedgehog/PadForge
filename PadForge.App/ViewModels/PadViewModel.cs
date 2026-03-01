@@ -607,23 +607,41 @@ namespace PadForge.ViewModels
 
             var mapping = Mappings[MapAllCurrentIndex];
 
+            // Switch to Controller tab (index 0) for stick axes so the 3D arrow is visible.
+            // The 3D model is only on the Controller tab; if Map All was started from the
+            // Mappings tab, the user wouldn't see the directional arrows otherwise.
+            if (mapping.HasNegDirection)
+                SelectedConfigTab = 0;
+
             if (MapAllRecordingNeg)
             {
-                // Recording the negative direction for the current axis.
-                // Neg X = left, Neg Y = up (Y inverted by NegateAxis in Step 3).
-                string dirHint = mapping.TargetSettingName.Contains("AxisX") ? "(\u2190)" : "(\u2191)";
-                MapAllCurrentTarget = mapping.NegSettingName;
-                CurrentRecordingTarget = mapping.NegSettingName;
+                // Second phase: opposite direction from the first.
+                // X: second=left (neg). Y: second=down (pos, because NegateAxis inverts).
+                bool isY = mapping.TargetSettingName.Contains("AxisY");
+                string dirHint = isY ? "(\u2193)" : "(\u2190)";
+                // Y: second phase targets pos descriptor (down in game).
+                // X: second phase targets neg descriptor (left).
+                string target = isY ? mapping.TargetSettingName : mapping.NegSettingName;
+                MapAllCurrentTarget = target;
+                CurrentRecordingTarget = target;
                 MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             else
             {
                 string suffix = "";
                 if (mapping.HasNegDirection)
-                    // Pos X = right, Pos Y = down (Y inverted by NegateAxis in Step 3).
-                    suffix = mapping.TargetSettingName.Contains("AxisX") ? " (\u2192)" : " (\u2193)";
-                MapAllCurrentTarget = mapping.TargetSettingName;
-                CurrentRecordingTarget = mapping.TargetSettingName;
+                {
+                    // First phase: natural primary direction.
+                    // X: first=right (pos). Y: first=up (neg, because NegateAxis inverts).
+                    bool isY = mapping.TargetSettingName.Contains("AxisY");
+                    suffix = isY ? " (\u2191)" : " (\u2192)";
+                }
+                // Y: first phase targets neg descriptor (up in game).
+                // X: first phase targets pos descriptor (right).
+                bool yStartNeg = mapping.HasNegDirection && mapping.TargetSettingName.Contains("AxisY");
+                string target = yStartNeg ? mapping.NegSettingName : mapping.TargetSettingName;
+                MapAllCurrentTarget = target;
+                CurrentRecordingTarget = target;
                 MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             MapAllRecordRequested?.Invoke(this, mapping);

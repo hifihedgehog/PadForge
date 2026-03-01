@@ -247,17 +247,54 @@ namespace PadForge
                     var negMapping = _pendingNegMapping;
                     _pendingNegMapping = null;
 
-                    // The recorder wrote to SourceDescriptor — restore the positive and set neg.
-                    negMapping.NegSourceDescriptor = result.Descriptor;
-                    if (_savedPosDescriptor != null)
+                    if (result.Type != MapType.Button && negMapping.HasNegDirection)
                     {
+                        // An axis was recorded — a full axis covers both directions,
+                        // so write it to the primary descriptor and clear neg.
+                        negMapping.SourceDescriptor = result.Descriptor;
+                        negMapping.NegSourceDescriptor = string.Empty;
+                        _savedPosDescriptor = null;
+                        if (deviceGuid != Guid.Empty)
+                            InputService.ResolveDisplayText(negMapping, deviceGuid);
+
+                        _viewModel.StatusText = $"Recorded \"{negMapping.TargetLabel}\" \u2190 {negMapping.SourceDisplayText}";
+
+                        if (activePad.IsMapAllActive)
+                            activePad.OnMapAllItemCompleted();
+                        else
+                            activePad.CurrentRecordingTarget = null;
+                        return;
+                    }
+
+                    // Button recorded — write to neg descriptor.
+                    negMapping.NegSourceDescriptor = result.Descriptor;
+                    bool hadSavedPos = _savedPosDescriptor != null;
+                    if (hadSavedPos)
+                    {
+                        // Came from auto-prompt (pos already recorded) — restore saved positive.
                         negMapping.SourceDescriptor = _savedPosDescriptor;
                         _savedPosDescriptor = null;
                     }
+
                     if (deviceGuid != Guid.Empty)
                     {
                         InputService.ResolveDisplayText(negMapping, deviceGuid);
                         InputService.ResolveNegDisplayText(negMapping, deviceGuid);
+                    }
+
+                    if (!hadSavedPos && negMapping.HasNegDirection)
+                    {
+                        // Came from a neg-quadrant click — now auto-prompt for the positive direction.
+                        string dirHint = negMapping.TargetSettingName.Contains("AxisX")
+                            ? "(\u2192 right)" : "(\u2193 down)";
+                        _viewModel.StatusText = $"Now map: {negMapping.TargetLabel} {dirHint}";
+
+                        // Update recording target to pos for flash/arrow.
+                        activePad.CurrentRecordingTarget = negMapping.TargetSettingName;
+
+                        // Start recording — result will go to SourceDescriptor via normal path.
+                        _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid);
+                        return;
                     }
 
                     _viewModel.StatusText = $"Recorded \"{negMapping.TargetLabel}\" \u2190 {negMapping.SourceDisplayText}";
@@ -273,8 +310,11 @@ namespace PadForge
                 if (deviceGuid != Guid.Empty)
                     InputService.ResolveDisplayText(result.Mapping, deviceGuid);
 
-                // If a button was recorded for a bidirectional axis, auto-prompt for neg direction.
-                if (result.Type == MapType.Button && result.Mapping.HasNegDirection)
+                // If a button was recorded for a bidirectional axis, auto-prompt for neg direction
+                // (but only if neg isn't already mapped — avoids re-prompting after a neg-quadrant click
+                // that already auto-prompted for pos).
+                if (result.Type == MapType.Button && result.Mapping.HasNegDirection
+                    && string.IsNullOrEmpty(result.Mapping.NegSourceDescriptor))
                 {
                     // Save the positive descriptor before the recorder overwrites it.
                     _savedPosDescriptor = result.Mapping.SourceDescriptor;

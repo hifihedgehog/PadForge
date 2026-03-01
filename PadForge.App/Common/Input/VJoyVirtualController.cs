@@ -26,6 +26,13 @@ namespace PadForge.Common.Input
         /// </summary>
         private static int _currentDescriptorCount;
 
+        /// <summary>
+        /// The current number of vJoy registry descriptors (Device01..DeviceNN).
+        /// Used by Step 5 to determine whether EnsureDevicesAvailable needs to be
+        /// called for scale-down (deletion) as well as scale-up (creation).
+        /// </summary>
+        public static int CurrentDescriptorCount => _currentDescriptorCount;
+
         /// <summary>Whether we've already ensured the driver is in the Windows driver store this session.</summary>
         private static bool _driverStoreChecked;
 
@@ -876,6 +883,11 @@ namespace PadForge.Common.Input
                 EnsureFfbRegistryKeys();
             }
 
+            // Fast path: if the count hasn't changed and we're already loaded,
+            // skip the expensive pnputil enumeration and registry writes.
+            if (_currentDescriptorCount == requiredCount && _dllLoaded && requiredCount > 0)
+                return true;
+
             EnsureDllLoaded();
             int existingNodes = CountExistingDevices();
 
@@ -886,6 +898,19 @@ namespace PadForge.Common.Input
             bool descriptorsChanged = _currentDescriptorCount != requiredCount;
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
             _currentDescriptorCount = requiredCount;
+
+            // If no vJoy devices are needed, just restart the node (so the driver
+            // re-reads the now-empty registry) and return. Don't create new nodes.
+            if (requiredCount == 0)
+            {
+                if (descriptorsChanged && existingNodes >= 1)
+                {
+                    DiagLog("Restarting device node (all vJoy slots deleted)");
+                    RestartDeviceNode();
+                    _dllLoaded = false;
+                }
+                return true;
+            }
 
             // Ensure exactly 1 device node exists.
             if (existingNodes == 0)

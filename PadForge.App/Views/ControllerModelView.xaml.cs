@@ -539,8 +539,10 @@ namespace PadForge.Views
                 ? _currentModel.JoystickRotationPointCenterLeftMillimeter
                 : _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            // Place arrow at stick center, floating above the model surface
-            var arrowCenter = new Point3D(center.X, center.Y - 3, center.Z);
+            // Place arrow at stick center, floating in front of the model surface.
+            // Rotation center Y is inside the body (~-6); stick surface is ~-8 to -10.
+            // Use a fixed offset to place the arrow visibly in front.
+            var arrowCenter = new Point3D(center.X, center.Y - 7, center.Z);
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try

@@ -77,6 +77,13 @@ namespace PadForge.Services
         /// <summary>When recording started (for timeout).</summary>
         private DateTime _recordingStartTime;
 
+        /// <summary>
+        /// When true, the recorder waits for all buttons and POVs to return to neutral
+        /// before detecting new inputs. Used for follow-up recordings where the previous
+        /// input may still be physically held.
+        /// </summary>
+        private bool _waitForRelease;
+
         /// <summary>Whether recording is currently active.</summary>
         public bool IsRecording => _activeMapping != null;
 
@@ -110,7 +117,12 @@ namespace PadForge.Services
         /// <param name="mapping">The mapping item to record a source for.</param>
         /// <param name="padIndex">The pad index (0–3) to read input from.</param>
         /// <param name="deviceGuid">The specific device GUID to record from.</param>
-        public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid)
+        /// <param name="neutralizeBaseline">When true, forces all buttons and POVs to
+        /// their neutral state in the baseline so that any press (even if currently held)
+        /// is detected as a fresh change. Used for auto-prompt follow-up recordings
+        /// where the previous input may still be physically held.</param>
+        public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
+            bool neutralizeBaseline = false)
         {
             if (mapping == null)
                 return;
@@ -136,6 +148,11 @@ namespace PadForge.Services
                 _mainVm.StatusText = "No device connected to record from.";
                 return;
             }
+
+            // For follow-up recordings, wait for the previous input to be released
+            // before detecting new presses. This prevents the same POV/button from
+            // being immediately re-detected when it's still physically held.
+            _waitForRelease = neutralizeBaseline;
 
             // Mark the mapping as recording.
             mapping.IsRecording = true;
@@ -201,6 +218,24 @@ namespace PadForge.Services
             if (current == null)
             {
                 CancelRecording();
+                return;
+            }
+
+            // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
+            if (_waitForRelease)
+            {
+                bool anyHeld = false;
+                for (int i = 0; i < CustomInputState.MaxButtons && !anyHeld; i++)
+                    anyHeld = current.Buttons[i];
+                for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
+                    anyHeld = current.Povs[i] >= 0;
+
+                if (anyHeld)
+                    return; // Still held — wait for release
+
+                // Everything released — capture fresh baseline and start detecting.
+                _waitForRelease = false;
+                _baseline = current;
                 return;
             }
 

@@ -293,7 +293,8 @@ namespace PadForge
                         activePad.CurrentRecordingTarget = negMapping.TargetSettingName;
 
                         // Start recording — result will go to SourceDescriptor via normal path.
-                        _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid);
+                        // Neutralize baseline so the previous POV/button press doesn't block detection.
+                        _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
                         return;
                     }
 
@@ -332,7 +333,8 @@ namespace PadForge
                     activePad.CurrentRecordingTarget = result.Mapping.NegSettingName;
 
                     // Start recording again for the neg direction.
-                    _recorderService.StartRecording(result.Mapping, activePad.PadIndex, deviceGuid);
+                    // Neutralize baseline so the previous POV/button press doesn't block detection.
+                    _recorderService.StartRecording(result.Mapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
                     return;
                 }
 

@@ -19,14 +19,22 @@ namespace PadForge.Common.Input
         private static bool _dllLoaded;
 
         /// <summary>
-        /// Set to true once DisableFfbChildren has run this session.
-        /// Prevents redundant pnputil calls on subsequent EnsureDevicesAvailable invocations.
-        /// Reset by RemoveAllDeviceNodes (engine stop).
+        /// Number of DeviceNN registry descriptors currently written.
+        /// The vJoy driver reads ALL DeviceNN keys from a single device node
+        /// to create that many virtual joysticks. Tracked so we know when a
+        /// device restart is needed (descriptor count changed).
         /// </summary>
-        private static bool _ffbChildrenDisabled;
+        private static int _currentDescriptorCount;
 
         /// <summary>Whether we've already ensured the driver is in the Windows driver store this session.</summary>
         private static bool _driverStoreChecked;
+
+        /// <summary>
+        /// Incremented whenever the device node is restarted. Each VJoyVirtualController
+        /// instance captures the generation at Connect() time; if a newer generation exists
+        /// during SubmitGamepadState, the controller re-acquires its device handle.
+        /// </summary>
+        private static int _generation;
 
         /// <summary>Whether vJoyInterface.dll has been successfully loaded into the process.</summary>
         public static bool IsDllLoaded => _dllLoaded;
@@ -63,6 +71,7 @@ namespace PadForge.Common.Input
 
         private readonly uint _deviceId;
         private bool _connected;
+        private int _connectedGeneration;
 
         public VirtualControllerType Type => VirtualControllerType.VJoy;
         public bool IsConnected => _connected;
@@ -93,6 +102,7 @@ namespace PadForge.Common.Input
 
             VJoyNative.ResetVJD(_deviceId);
             _connected = true;
+            _connectedGeneration = _generation;
 
             // Verify output works: send a single test frame with non-zero axes.
             var testPos = new JoystickPositionV2 { bDevice = (byte)_deviceId, wAxisX = 16383, wAxisY = 16383 };
@@ -131,28 +141,8 @@ namespace PadForge.Common.Input
             Disconnect();
         }
 
-        /// <summary>
-        /// Trims vJoy device nodes to match <paramref name="activeCount"/>.
-        /// Removes excess nodes (from the end) so dormant devices don't
-        /// appear in Game Controllers. Call after destroying a vJoy VC.
-        /// </summary>
-        public static void TrimDeviceNodes(int activeCount)
-        {
-            try
-            {
-                var instanceIds = EnumerateVJoyInstanceIds();
-                int excess = instanceIds.Count - activeCount;
-                Debug.WriteLine($"[vJoy] TrimDeviceNodes: active={activeCount}, nodes={instanceIds.Count}, excess={excess}");
-                for (int i = instanceIds.Count - 1; i >= 0 && excess > 0; i--, excess--)
-                    RemoveDeviceNode(instanceIds[i]);
-                // Do NOT reset _ffbChildrenDisabled here — that flag is only
-                // reset by RemoveAllDeviceNodes (engine stop).
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[vJoy] TrimDeviceNodes exception: {ex.Message}");
-            }
-        }
+        // TrimDeviceNodes removed — single-node model means there's always
+        // exactly 0 or 1 device nodes. Scaling is done via registry descriptors.
 
         private int _submitCallCount;
         private int _submitFailCount;
@@ -179,6 +169,23 @@ namespace PadForge.Common.Input
         public void SubmitGamepadState(Gamepad gp)
         {
             if (!_connected) return;
+
+            // If the device node was restarted (descriptor count changed),
+            // our AcquireVJD handle is stale. Re-acquire transparently.
+            if (_connectedGeneration != _generation)
+            {
+                DiagLog($"SubmitGamepadState: generation mismatch ({_connectedGeneration}→{_generation}), re-acquiring device {_deviceId}");
+                try
+                {
+                    VJoyNative.RelinquishVJD(_deviceId);
+                    bool acquired = VJoyNative.AcquireVJD(_deviceId);
+                    DiagLog($"Re-AcquireVJD({_deviceId}): {acquired}");
+                    if (!acquired) { _connected = false; return; }
+                    VJoyNative.ResetVJD(_deviceId);
+                    _connectedGeneration = _generation;
+                }
+                catch { _connected = false; return; }
+            }
 
             uint id = _deviceId;
 
@@ -749,16 +756,16 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Ensures at least <paramref name="requiredCount"/> vJoy device nodes exist.
-        /// Called once by UpdateVirtualDevices() BEFORE any per-slot creation, so all
-        /// nodes are created in a single batch with one UpdateDriverForPlugAndPlayDevicesW
-        /// call. This avoids the stale PnP child device issue that causes phantom controllers.
+        /// Ensures <paramref name="requiredCount"/> vJoy virtual joysticks are available.
         ///
-        /// IMPORTANT: This method is additive — it never removes existing nodes that may
-        /// have active AcquireVJD handles. When scaling up (e.g., 1→2 nodes), only the
-        /// delta is created. The first call per session does a full recreate to replace
-        /// stale nodes from previous sessions with potentially different descriptors.
-        /// Returns true if enough devices are available.
+        /// vJoy architecture: ONE device node + N registry descriptor keys.
+        /// The driver reads ALL DeviceNN keys from HKLM\..\vjoy\Parameters\ and
+        /// creates one HID top-level collection per key — all within a single
+        /// ROOT\HIDCLASS device node. Multiple device nodes cause phantom
+        /// controllers (each node reads ALL keys → N nodes × N keys = N² joysticks).
+        ///
+        /// To change the count: update registry keys, then restart the device node
+        /// so the driver re-reads the report descriptor.
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
         {
@@ -769,50 +776,78 @@ namespace PadForge.Common.Input
             }
 
             EnsureDllLoaded();
-            int existing = CountExistingDevices();
+            int existingNodes = CountExistingDevices();
 
-            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, dllLoaded={_dllLoaded}");
+            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, nodes={existingNodes}, descriptors={_currentDescriptorCount}, dllLoaded={_dllLoaded}");
 
-            // Already have enough nodes → use them.
-            if (existing >= requiredCount)
-            {
-                if (!_ffbChildrenDisabled)
-                {
-                    DisableFfbChildren();
-                    _ffbChildrenDisabled = true;
-                }
-                return true;
-            }
-
-            // Need more nodes — create only the delta.
-            int toCreate = requiredCount - existing;
+            // Write registry descriptors for the required count.
+            // WriteDeviceDescriptors is smart — only writes if changed.
+            bool descriptorsChanged = _currentDescriptorCount != requiredCount;
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
+            _currentDescriptorCount = requiredCount;
 
-            DiagLog($"Creating {toCreate} device node(s) (existing={existing})");
-
-            if (!CreateVJoyDevices(toCreate))
+            // Ensure exactly 1 device node exists.
+            if (existingNodes == 0)
             {
-                DiagLog("CreateVJoyDevices FAILED");
+                DiagLog("Creating single vJoy device node");
+                if (!CreateVJoyDevices(1))
+                {
+                    DiagLog("CreateVJoyDevices FAILED");
+                    return false;
+                }
+
+                // Wait for PnP to bind the driver and make devices available.
+                _dllLoaded = false;
+                for (int attempt = 0; attempt < 20; attempt++)
+                {
+                    Thread.Sleep(250);
+                    EnsureDllLoaded();
+                    if (_dllLoaded && FindFreeDeviceId() > 0)
+                    {
+                        DiagLog($"Device ready after {(attempt + 1) * 250}ms");
+                        return true;
+                    }
+                }
+                DiagLog("Device created but not ready after 5 seconds");
                 return false;
             }
 
-            // Wait for PnP to bind the driver and make devices available.
-            _dllLoaded = false;
-            for (int attempt = 0; attempt < 20; attempt++)
+            // Remove excess device nodes (should be exactly 1).
+            if (existingNodes > 1)
             {
-                Thread.Sleep(250);
-                EnsureDllLoaded();
-                if (_dllLoaded && FindFreeDeviceId() > 0)
-                {
-                    DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
-                    DisableFfbChildren();
-                    _ffbChildrenDisabled = true;
-                    return true;
-                }
+                DiagLog($"Removing {existingNodes - 1} excess device node(s)");
+                var instanceIds = EnumerateVJoyInstanceIds();
+                for (int i = instanceIds.Count - 1; i >= 1; i--)
+                    RemoveDeviceNode(instanceIds[i]);
+
+                // Restart the remaining node so the driver re-reads descriptors.
+                descriptorsChanged = true;
+                _dllLoaded = false;
             }
 
-            DiagLog("Devices created but not ready after 5 seconds");
-            return false;
+            // If descriptor count changed, restart the device node so the driver
+            // re-reads the registry and creates the right number of collections.
+            if (descriptorsChanged && existingNodes >= 1)
+            {
+                DiagLog($"Restarting device node (descriptor count changed to {requiredCount})");
+                RestartDeviceNode();
+                _dllLoaded = false;
+
+                for (int attempt = 0; attempt < 20; attempt++)
+                {
+                    Thread.Sleep(250);
+                    EnsureDllLoaded();
+                    if (_dllLoaded && FindFreeDeviceId() > 0)
+                    {
+                        DiagLog($"Device ready after restart ({(attempt + 1) * 250}ms)");
+                        return true;
+                    }
+                }
+                DiagLog("Device not ready after restart (5 seconds)");
+                return false;
+            }
+
+            return _dllLoaded;
         }
 
         /// <summary>
@@ -871,94 +906,51 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Disables COL02 (FFB) HID child devices via pnputil so they don't appear
-        /// as game controllers in joy.cpl / WinMM. vjoy.sys compiled with VJOY_HAS_FFB
-        /// always creates 2 HID collections per device: COL01 (joystick input) and
-        /// COL02 (force feedback / PID). Both use Usage Page 0x01 (Generic Desktop),
-        /// Usage 0x04 (Joystick), so Windows classifies both as game controllers.
-        /// Disabling COL02 does NOT affect joystick input (COL01) or ViGEm rumble.
+        /// Restarts the single vJoy device node (disable → enable) so the driver
+        /// re-reads registry descriptors and creates the correct number of HID
+        /// top-level collections. This invalidates all AcquireVJD handles — callers
+        /// must re-acquire after restart.
         /// </summary>
-        private static void DisableFfbChildren()
+        private static void RestartDeviceNode()
         {
             try
             {
-                // Enumerate all HID class devices to find COL02 children
+                var instanceIds = EnumerateVJoyInstanceIds();
+                if (instanceIds.Count == 0) return;
+
+                string id = instanceIds[0];
+                DiagLog($"RestartDeviceNode: disabling {id}");
+
                 var psi = new ProcessStartInfo
                 {
                     FileName = "pnputil.exe",
-                    Arguments = "/enum-devices /class HIDClass",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                };
-
-                using var proc = Process.Start(psi);
-                if (proc == null) return;
-                string output = proc.StandardOutput.ReadToEnd();
-                proc.WaitForExit(5_000);
-
-                // Parse pnputil output for HID\HIDCLASS&COL02\* instance IDs
-                string currentInstanceId = null;
-                int disabledCount = 0;
-                foreach (string rawLine in output.Split('\n'))
-                {
-                    string line = rawLine.Trim();
-                    if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0 && line.Contains(":"))
-                    {
-                        currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
-                    }
-                    else if (string.IsNullOrEmpty(line))
-                    {
-                        if (currentInstanceId != null &&
-                            currentInstanceId.IndexOf("HIDCLASS&COL02", StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            if (DisableDevice(currentInstanceId))
-                                disabledCount++;
-                        }
-                        currentInstanceId = null;
-                    }
-                }
-                // Handle last block
-                if (currentInstanceId != null &&
-                    currentInstanceId.IndexOf("HIDCLASS&COL02", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    if (DisableDevice(currentInstanceId))
-                        disabledCount++;
-                }
-
-                if (disabledCount > 0)
-                    DiagLog($"Disabled {disabledCount} COL02 (FFB) HID child device(s)");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[vJoy] DisableFfbChildren exception: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Disables a single PnP device by instance ID using pnputil /disable-device.
-        /// </summary>
-        private static bool DisableDevice(string instanceId)
-        {
-            try
-            {
-                var psi = new ProcessStartInfo
-                {
-                    FileName = "pnputil.exe",
-                    Arguments = $"/disable-device \"{instanceId}\"",
+                    Arguments = $"/disable-device \"{id}\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true
                 };
-                using var proc = Process.Start(psi);
-                if (proc == null) return false;
-                proc.WaitForExit(5_000);
-                return proc.ExitCode == 0;
+                using (var proc = Process.Start(psi))
+                {
+                    proc?.WaitForExit(5_000);
+                }
+
+                Thread.Sleep(200);
+
+                DiagLog($"RestartDeviceNode: enabling {id}");
+                psi.Arguments = $"/enable-device \"{id}\"";
+                using (var proc = Process.Start(psi))
+                {
+                    proc?.WaitForExit(5_000);
+                }
+
+                // Increment generation so existing controllers know to re-acquire.
+                _generation++;
+                DiagLog($"RestartDeviceNode: generation={_generation}");
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                Debug.WriteLine($"[vJoy] RestartDeviceNode exception: {ex.Message}");
             }
         }
 
@@ -1016,7 +1008,7 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
                 // Reset state so vJoyEnabled() is re-evaluated.
                 _dllLoaded = false;
-                _ffbChildrenDisabled = false;
+                _currentDescriptorCount = 0;
                 return true;
             }
             catch (Exception ex)

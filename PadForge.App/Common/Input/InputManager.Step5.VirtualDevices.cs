@@ -504,11 +504,8 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Do NOT trim device nodes here — removing a device node via pnputil
-            // causes vjoy.sys to tear down kernel state, which invalidates the
-            // AcquireVJD handle on any sibling device that's still active.
-            // Orphaned nodes are cleaned up at engine stop (DestroyAllVirtualControllers)
-            // and at next startup (EnsureDevicesAvailable's first-session recreate).
+            // Single-node model: only 1 ROOT\HIDCLASS device node ever exists.
+            // No node trimming needed — the node stays alive for the session.
         }
 
         private void DestroyAllVirtualControllers()

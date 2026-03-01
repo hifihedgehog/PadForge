@@ -119,6 +119,9 @@ namespace PadForge.Views
             if (_currentModel?.ModelName == needed)
                 return;
 
+            // Clear arrow from old model before switching
+            RemoveArrow();
+
             _currentModel?.Dispose();
             _currentModel = null;
 
@@ -431,7 +434,7 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Shows a 3D arrow at the stick indicating the positive axis direction.
+        /// Shows a flat 3D arrow at the stick indicating the positive axis direction.
         /// X axis → arrow pointing right (+X), Y axis → arrow pointing up (+Z).
         /// Arrow stays visible until mapping finishes (CurrentRecordingTarget clears).
         /// </summary>
@@ -441,19 +444,13 @@ namespace PadForge.Views
 
             bool isX = axis.Contains("AxisX");
 
-            // Positive direction: right (+X) for X axis, up (+Z) for Y axis
-            Vector3D direction = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
-
-            // Use the stick center for X/Z but raise Y to the hit surface so
-            // the arrow floats above the stick instead of hiding inside the body.
             Vector3D center;
             if (axis.StartsWith("Left"))
                 center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
             else
                 center = _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            // Place arrow at stick center X/Z, but at the hit surface Y minus
-            // a small offset toward the camera (-Y) so it floats above the stick.
+            // Place arrow at stick center X/Z, raised to hit surface toward camera
             var arrowCenter = new Point3D(center.X, hitPos.Y - 3, center.Z);
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
@@ -464,20 +461,71 @@ namespace PadForge.Views
             }
             catch { }
 
-            double arrowLen = 15.0;
+            var arrowGeo = CreateFlatArrow(arrowCenter, isX, accentColor);
+            _arrowVisual = new ModelVisual3D { Content = arrowGeo };
+            ModelViewPort.Children.Add(_arrowVisual);
+        }
 
-            // Single arrow pointing in the positive direction (right or up)
-            var arrow = new ArrowVisual3D
+        /// <summary>
+        /// Creates a flat rectangular arrow shape (extruded 2D arrow profile with Y depth).
+        /// Arrow points along +X (isX=true) or +Z (isX=false).
+        /// </summary>
+        private static GeometryModel3D CreateFlatArrow(Point3D center, bool isX, Color color)
+        {
+            // Direction the arrow points and perpendicular (width) axis
+            var dir = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
+            var perp = isX ? new Vector3D(0, 0, 1) : new Vector3D(1, 0, 0);
+            var depthVec = new Vector3D(0, 1, 0);
+
+            double shaftHalfLen = 6.0;
+            double headLen = 6.0;
+            double shaftHalfW = 1.0;
+            double headHalfW = 3.0;
+            double halfDepth = 1.0;
+
+            // 7 vertices of the arrow outline (shaft + triangular head)
+            var outline = new Point3D[]
             {
-                Point1 = arrowCenter - direction * (arrowLen * 0.4),
-                Point2 = arrowCenter + direction * arrowLen,
-                Diameter = 2.0,
-                Fill = new SolidColorBrush(accentColor)
+                center - dir * shaftHalfLen - perp * shaftHalfW,  // 0: tail bottom
+                center + dir * shaftHalfLen - perp * shaftHalfW,  // 1: shaft-head join bottom
+                center + dir * shaftHalfLen - perp * headHalfW,   // 2: head base bottom
+                center + dir * (shaftHalfLen + headLen),           // 3: tip
+                center + dir * shaftHalfLen + perp * headHalfW,   // 4: head base top
+                center + dir * shaftHalfLen + perp * shaftHalfW,  // 5: shaft-head join top
+                center - dir * shaftHalfLen + perp * shaftHalfW,  // 6: tail top
             };
 
-            _arrowVisual = new ModelVisual3D();
-            _arrowVisual.Children.Add(arrow);
-            ModelViewPort.Children.Add(_arrowVisual);
+            // Extrude: front face at -Y (toward camera), back face at +Y
+            var front = new Point3D[7];
+            var back = new Point3D[7];
+            for (int i = 0; i < 7; i++)
+            {
+                front[i] = outline[i] - depthVec * halfDepth;
+                back[i] = outline[i] + depthVec * halfDepth;
+            }
+
+            var mb = new MeshBuilder();
+
+            // Front face (facing camera at -Y)
+            mb.AddPolygon(new List<Point3D> {
+                front[0], front[1], front[2], front[3], front[4], front[5], front[6]
+            });
+
+            // Back face (reversed winding)
+            mb.AddPolygon(new List<Point3D> {
+                back[6], back[5], back[4], back[3], back[2], back[1], back[0]
+            });
+
+            // Side quads connecting front to back edges
+            for (int i = 0; i < 7; i++)
+            {
+                int next = (i + 1) % 7;
+                mb.AddQuad(front[next], front[i], back[i], back[next]);
+            }
+
+            var mesh = mb.ToMesh();
+            var material = new DiffuseMaterial(new SolidColorBrush(color));
+            return new GeometryModel3D(mesh, material) { BackMaterial = material };
         }
 
         private void RemoveArrow()

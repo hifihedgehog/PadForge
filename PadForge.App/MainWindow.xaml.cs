@@ -31,6 +31,7 @@ namespace PadForge
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
         private bool _previousViGEmInstalled;
+        private bool _previousVJoyInstalled;
 
         // Drag reorder state for sidebar controller cards.
         private Point _cardDragStartPoint;
@@ -433,6 +434,7 @@ namespace PadForge
 
             // Detect vJoy driver.
             RefreshVJoyStatus();
+            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
 
             // Periodically refresh driver install states (every 5 seconds).
             _driverStatusTimer = new System.Windows.Threading.DispatcherTimer
@@ -460,6 +462,24 @@ namespace PadForge
                 // ViGEm status changed: force full sidebar rebuild for power icon colors.
                 if (wasViGEmInstalled != nowViGEmInstalled)
                     RebuildControllerSection();
+
+                // vJoy installed/reinstalled mid-session: reset cached state and restart engine.
+                bool wasVJoyInstalled = _previousVJoyInstalled;
+                bool nowVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
+                _previousVJoyInstalled = nowVJoyInstalled;
+
+                if (wasVJoyInstalled != nowVJoyInstalled)
+                {
+                    // Always reset cached DLL/registry state on any install status change.
+                    PadForge.Common.Input.VJoyVirtualController.ResetState();
+
+                    if (nowVJoyInstalled && _viewModel.IsEngineRunning)
+                    {
+                        _inputService.Stop();
+                        _inputService.Start();
+                        _viewModel.StatusText = "vJoy driver detected — engine restarted.";
+                    }
+                }
             };
             _driverStatusTimer.Start();
 

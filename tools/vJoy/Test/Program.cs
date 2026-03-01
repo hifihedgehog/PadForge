@@ -58,10 +58,17 @@ class Program
     static extern bool SetDiscPov(int value, uint rID, byte nPov);
 
     [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    static extern bool SetContPov(int value, uint rID, byte nPov);
+
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int GetVJDButtonNumber(uint rID);
 
     [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int GetVJDDiscPovNumber(uint rID);
+
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int GetVJDContPovNumber(uint rID);
 
     [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -437,8 +444,8 @@ class Program
             Console.WriteLine($"  {iid}");
         Console.WriteLine();
 
-        Console.WriteLine($"{"ID",-4} {"Status",-8} {"Axes",-14} {"Btns",-6} {"POVs",-6} {"AxisMax",-10}");
-        Console.WriteLine(new string('-', 52));
+        Console.WriteLine($"{"ID",-4} {"Status",-8} {"Axes",-14} {"Btns",-6} {"POVs",-12} {"AxisMax",-10}");
+        Console.WriteLine(new string('-', 58));
 
         for (uint id = 1; id <= 16; id++)
         {
@@ -447,7 +454,7 @@ class Program
 
             if (status == VJD_STAT_MISS)
             {
-                Console.WriteLine($"{id,-4} {sName,-8} {"---",-14} {"---",-6} {"---",-6}");
+                Console.WriteLine($"{id,-4} {sName,-8} {"---",-14} {"---",-6} {"---",-12}");
                 continue;
             }
 
@@ -462,11 +469,13 @@ class Program
                 }
             }
             int buttons = GetVJDButtonNumber(id);
-            int povs = GetVJDDiscPovNumber(id);
+            int discPovs = GetVJDDiscPovNumber(id);
+            int contPovs = GetVJDContPovNumber(id);
+            string povStr = contPovs > 0 ? $"{contPovs}c" : discPovs > 0 ? $"{discPovs}d" : "0";
             long maxVal = 0;
             GetVJDAxisMax(id, HID_USAGE_X, ref maxVal);
 
-            Console.WriteLine($"{id,-4} {sName,-8} {sb,-14} {buttons,-6} {povs,-6} {maxVal,-10}");
+            Console.WriteLine($"{id,-4} {sName,-8} {sb,-14} {buttons,-6} {povStr,-12} {maxVal,-10}");
         }
 
         return 0;
@@ -550,7 +559,7 @@ class Program
                 }
             }
             int btns = GetVJDButtonNumber(id);
-            int povs = GetVJDDiscPovNumber(id);
+            int povs = Math.Max(GetVJDContPovNumber(id), GetVJDDiscPovNumber(id));
             long maxV = 0;
             GetVJDAxisMax(id, HID_USAGE_X, ref maxV);
             Console.WriteLine($"  Device {id}: axes=[{sb}] buttons={btns} POVs={povs} axisMax={maxV}");
@@ -672,7 +681,7 @@ class Program
                 }
             }
             int btns = GetVJDButtonNumber(id);
-            int povs = GetVJDDiscPovNumber(id);
+            int povs = Math.Max(GetVJDContPovNumber(id), GetVJDDiscPovNumber(id));
             long maxV = 0;
             GetVJDAxisMax(id, HID_USAGE_X, ref maxV);
             Console.WriteLine($"  Device {id}: axes=[{sb}] buttons={btns} POVs={povs} axisMax={maxV}");
@@ -905,7 +914,7 @@ class Program
 
         // Print capabilities.
         int btns = GetVJDButtonNumber(devId);
-        int povs = GetVJDDiscPovNumber(devId);
+        int povs = Math.Max(GetVJDContPovNumber(devId), GetVJDDiscPovNumber(devId));
         long maxV = 0;
         GetVJDAxisMax(devId, HID_USAGE_X, ref maxV);
         Console.WriteLine($"  Capabilities: buttons={btns} povs={povs} axisMax={maxV}");
@@ -1178,7 +1187,7 @@ class Program
 
             // Phase 5: Verify vJoy API capabilities match
             int reportedBtns = GetVJDButtonNumber(devId);
-            int reportedPovs = GetVJDDiscPovNumber(devId);
+            int reportedPovs = Math.Max(GetVJDContPovNumber(devId), GetVJDDiscPovNumber(devId));
             long maxV = 0;
             GetVJDAxisMax(devId, HID_USAGE_X, ref maxV);
             Console.WriteLine($"  vJoy API: buttons={reportedBtns} povs={reportedPovs} axisMax={maxV}");
@@ -1212,8 +1221,8 @@ class Program
             // Set button 1 pressed
             if (cfg.buttons >= 1) indivOk &= SetBtn(true, devId, 1);
 
-            // Set POV
-            if (cfg.povs >= 1) indivOk &= SetDiscPov(2, devId, 1); // Down
+            // Set POV (continuous: 18000 = 180° = South/Down)
+            if (cfg.povs >= 1) indivOk &= SetContPov(18000, devId, 1);
 
             Console.WriteLine($"  Individual calls: {(indivOk ? "OK" : "FAIL")}");
 
@@ -1222,7 +1231,7 @@ class Program
             posV2.wAxisX = testX;
             posV2.wAxisY = testY;
             posV2.lButtons = 1; // Button 1
-            posV2.bHats = 2;    // POV Down
+            posV2.bHats = 18000;    // POV Down (continuous: 180°)
             bool v2Ok = UpdateVJD_V2(devId, ref posV2);
             Console.WriteLine($"  UpdateVJD V2: {(v2Ok ? "OK" : "FAIL")}");
 
@@ -1553,7 +1562,7 @@ class Program
         long maxVal = 0;
         GetVJDAxisMax(devId, HID_USAGE_X, ref maxVal);
         int axisMax = (int)maxVal;
-        Console.WriteLine($"[9] Caps: buttons={GetVJDButtonNumber(devId)} povs={GetVJDDiscPovNumber(devId)} axisMax={axisMax}");
+        Console.WriteLine($"[9] Caps: buttons={GetVJDButtonNumber(devId)} contPovs={GetVJDContPovNumber(devId)} discPovs={GetVJDDiscPovNumber(devId)} axisMax={axisMax}");
 
         // Step 10: WinMM check (before feeding)
         Thread.Sleep(500);
@@ -1591,7 +1600,7 @@ class Program
         pos.wAxisX = axisMax / 5;  // Very different from above
         pos.wAxisY = axisMax * 4 / 5;
         pos.lButtons = 0b111; // Buttons 1-3
-        pos.bHats = 1; // POV Right
+        pos.bHats = 9000; // POV Right (continuous: 90°)
         bool v2Ok = UpdateVJD_V2(devId, ref pos);
         Console.WriteLine($"    UpdateVJD V2 result: {(v2Ok ? "OK" : "FAIL")}");
         Console.WriteLine($"    Sent: X={pos.wAxisX} Y={pos.wAxisY} Btns=0x{pos.lButtons:X} POV=1");
@@ -1666,10 +1675,13 @@ class Program
                 yVals[d] = y;
 
                 int buttons = GetVJDButtonNumber(id);
-                int povs = GetVJDDiscPovNumber(id);
+                int povs = Math.Max(GetVJDContPovNumber(id), GetVJDDiscPovNumber(id));
 
                 byte activeBtn = (byte)(1 + (frameCount / 25) % (uint)Math.Max(1, buttons));
-                int povVal = povs > 0 ? (int)(frameCount / 50 % 5) - 1 : -1; // -1,0,1,2,3
+                // Continuous POV: cycle through 8 directions + centered.
+                // 0=N, 4500=NE, 9000=E, 13500=SE, 18000=S, 22500=SW, 27000=W, 31500=NW, -1=centered
+                int[] povDirs = { -1, 0, 4500, 9000, 13500, 18000, 22500, 27000, 31500 };
+                int povVal = povs > 0 ? povDirs[frameCount / 50 % 9] : -1;
 
                 if (useUpdateVjd)
                 {
@@ -1685,7 +1697,7 @@ class Program
                         // Set button bitmask
                         if (activeBtn >= 1 && activeBtn <= 32)
                             pos.lButtons = 1 << (activeBtn - 1);
-                        // Discrete POV packed in low nibble: 0xF=centered, 0-3=direction
+                        // Continuous POV: degree value × 100, or 0xFFFFFFFF for centered
                         pos.bHats = povVal < 0 ? 0xFFFFFFFFu : (uint)povVal;
                         UpdateVJD_V3(id, ref pos);
                     }
@@ -1718,7 +1730,7 @@ class Program
                         SetBtn(b == activeBtn, id, b);
 
                     for (byte p = 1; p <= povs && p <= 4; p++)
-                        SetDiscPov(povVal, id, p);
+                        SetContPov(povVal, id, p);
                 }
             }
 
@@ -1772,11 +1784,11 @@ class Program
                 if (!ok) { Console.WriteLine($"    SetBtn({b}, dev{id}) FAILED"); allOk = false; }
             }
 
-            int povs = GetVJDDiscPovNumber(id);
+            int povs = Math.Max(GetVJDContPovNumber(id), GetVJDDiscPovNumber(id));
             for (byte p = 1; p <= povs && p <= 4; p++)
             {
-                bool ok = SetDiscPov(0, id, p); // POV Up
-                if (!ok) { Console.WriteLine($"    SetDiscPov({p}, dev{id}) FAILED"); allOk = false; }
+                bool ok = SetContPov(0, id, p); // POV Up (0 degrees)
+                if (!ok) { Console.WriteLine($"    SetContPov({p}, dev{id}) FAILED"); allOk = false; }
             }
 
             ResetVJD(id);
@@ -1806,7 +1818,7 @@ class Program
                 wAxisYRot = mid,
                 wAxisZRot = mid,
                 lButtons = 0x01, // Button 1 pressed
-                bHats = 0,       // POV Up
+                bHats = 0,       // POV Up (continuous: 0°)
             };
 
             bool ok = UpdateVJD_V2(id, ref pos);
@@ -2024,16 +2036,17 @@ class Program
 
         d.Add(0xC0);                                    //   END_COLLECTION (Physical)
 
-        // ── Discrete POV hats — always 128 bits (32 nibbles) ──
+        // ── Continuous POV hats — always 128 bits (4 × 32-bit DWORDs) ──
+        // Continuous POV uses degree values × 100 (0–35900), enabling 8-way diagonals.
         if (nPovs > 0)
         {
-            d.AddRange(new byte[] { 0x15, 0x00 });         // LOGICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x25, 0x03 });         // LOGICAL_MAXIMUM (3)
-            d.AddRange(new byte[] { 0x35, 0x00 });         // PHYSICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x46, 0x0E, 0x01 });   // PHYSICAL_MAXIMUM (270)
-            d.AddRange(new byte[] { 0x65, 0x14 });         // UNIT (Eng Rotation: degrees)
-            d.AddRange(new byte[] { 0x75, 0x04 });         // REPORT_SIZE (4)
-            d.AddRange(new byte[] { 0x95, 0x01 });         // REPORT_COUNT (1)
+            d.AddRange(new byte[] { 0x15, 0x00 });                     // LOGICAL_MINIMUM (0)
+            d.AddRange(new byte[] { 0x27, 0x3C, 0x8C, 0x00, 0x00 });  // LOGICAL_MAXIMUM (35900)
+            d.AddRange(new byte[] { 0x35, 0x00 });                     // PHYSICAL_MINIMUM (0)
+            d.AddRange(new byte[] { 0x47, 0x3C, 0x8C, 0x00, 0x00 });  // PHYSICAL_MAXIMUM (35900)
+            d.AddRange(new byte[] { 0x65, 0x14 });                     // UNIT (Eng Rot:Angular Pos)
+            d.AddRange(new byte[] { 0x75, 0x20 });                     // REPORT_SIZE (32)
+            d.AddRange(new byte[] { 0x95, 0x01 });                     // REPORT_COUNT (1)
 
             // Active POVs
             for (int p = 0; p < nPovs; p++)
@@ -2042,10 +2055,12 @@ class Program
                 d.AddRange(new byte[] { 0x81, 0x02 });     // INPUT (Data, Var, Abs)
             }
 
-            // Padding nibbles to fill 32 total (128 bits = 4 DWORDs)
-            int padNibbles = 32 - nPovs;
-            d.AddRange(new byte[] { 0x95, (byte)padNibbles });  // REPORT_COUNT (32-nPovs)
-            d.AddRange(new byte[] { 0x81, 0x01 });              // INPUT (Cnst, Ary, Abs)
+            // Padding DWORDs to fill 4 total (128 bits)
+            if (nPovs < 4)
+            {
+                d.AddRange(new byte[] { 0x95, (byte)(4 - nPovs) });  // REPORT_COUNT (4-nPovs)
+                d.AddRange(new byte[] { 0x81, 0x01 });                // INPUT (Cnst, Ary, Abs)
+            }
         }
         else
         {

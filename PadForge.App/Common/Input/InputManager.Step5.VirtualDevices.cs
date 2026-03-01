@@ -224,8 +224,7 @@ namespace PadForge.Common.Input
                 for (int i = 0; i < MaxPads; i++)
                 {
                     if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
-                        (_virtualControllers[i] is VJoyVirtualController ||
-                         (_virtualControllers[i] == null && _slotInactiveCounter[i] == 0 && _createCooldown[i] <= 0)))
+                        SettingsManager.SlotCreated[i])
                         totalVJoyNeeded++;
                 }
                 if (totalVJoyNeeded > 0)

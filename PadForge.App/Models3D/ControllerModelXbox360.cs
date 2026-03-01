@@ -102,22 +102,35 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(B4Button);
 
             // ── Per-button colors ───────────────────────
-            // Face button colored accents (A=Green, B=Red, X=Blue, Y=Yellow)
-            SetMaterial(B1Button, MaterialPlasticGreenTransparent);
-            SetMaterial(B2Button, MaterialPlasticRedTransparent);
-            SetMaterial(B3Button, MaterialPlasticBlueTransparent);
-            SetMaterial(B4Button, MaterialPlasticYellowTransparent);
-            SetMaterial(SpecialLED, MaterialPlasticGreenTransparent);
+            // Register button overlays into ButtonMap so they highlight together
+            // with the base button meshes (B1.obj, B2.obj, etc.).
+            RegisterButton("ButtonA", B1Button);
+            RegisterButton("ButtonB", B2Button);
+            RegisterButton("ButtonX", B3Button);
+            RegisterButton("ButtonY", B4Button);
 
-            // ButtonMap face button colors (used for highlight toggle)
+            // Face button transparent overlays
+            SetMaterial(B1Button, MaterialPlasticGreenTransparent);
+            DefaultMaterials[B1Button] = MaterialPlasticGreenTransparent;
+            SetMaterial(B2Button, MaterialPlasticRedTransparent);
+            DefaultMaterials[B2Button] = MaterialPlasticRedTransparent;
+            SetMaterial(B3Button, MaterialPlasticBlueTransparent);
+            DefaultMaterials[B3Button] = MaterialPlasticBlueTransparent;
+            SetMaterial(B4Button, MaterialPlasticYellowTransparent);
+            DefaultMaterials[B4Button] = MaterialPlasticYellowTransparent;
+
+            SetMaterial(SpecialLED, MaterialPlasticGreenTransparent);
+            DefaultMaterials[SpecialLED] = MaterialPlasticGreenTransparent;
+
+            // Base button colors
             if (ButtonMap.TryGetValue("ButtonA", out var mapA))
-                foreach (var m in mapA) { DefaultMaterials[m] = MaterialPlasticGreen; SetMaterial(m, MaterialPlasticGreen); }
+                foreach (var m in mapA) { if (!DefaultMaterials.ContainsKey(m)) { DefaultMaterials[m] = MaterialPlasticGreen; SetMaterial(m, MaterialPlasticGreen); } }
             if (ButtonMap.TryGetValue("ButtonB", out var mapB))
-                foreach (var m in mapB) { DefaultMaterials[m] = MaterialPlasticRed; SetMaterial(m, MaterialPlasticRed); }
+                foreach (var m in mapB) { if (!DefaultMaterials.ContainsKey(m)) { DefaultMaterials[m] = MaterialPlasticRed; SetMaterial(m, MaterialPlasticRed); } }
             if (ButtonMap.TryGetValue("ButtonX", out var mapX))
-                foreach (var m in mapX) { DefaultMaterials[m] = MaterialPlasticBlue; SetMaterial(m, MaterialPlasticBlue); }
+                foreach (var m in mapX) { if (!DefaultMaterials.ContainsKey(m)) { DefaultMaterials[m] = MaterialPlasticBlue; SetMaterial(m, MaterialPlasticBlue); } }
             if (ButtonMap.TryGetValue("ButtonY", out var mapY))
-                foreach (var m in mapY) { DefaultMaterials[m] = MaterialPlasticYellow; SetMaterial(m, MaterialPlasticYellow); }
+                foreach (var m in mapY) { if (!DefaultMaterials.ContainsKey(m)) { DefaultMaterials[m] = MaterialPlasticYellow; SetMaterial(m, MaterialPlasticYellow); } }
             if (ButtonMap.TryGetValue("ButtonGuide", out var mapGuide))
                 foreach (var m in mapGuide) { DefaultMaterials[m] = MaterialPlasticSilver; SetMaterial(m, MaterialPlasticSilver); }
 

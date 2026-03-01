@@ -788,7 +788,7 @@ namespace PadForge.Services
                     if (selected == null || selected.InstanceGuid == Guid.Empty)
                         continue;
 
-                    var us = SettingsManager.FindSettingByInstanceGuid(selected.InstanceGuid);
+                    var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                     if (us == null) continue;
 
                     var ps = us.GetPadSetting();

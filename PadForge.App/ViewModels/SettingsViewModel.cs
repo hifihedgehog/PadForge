@@ -86,7 +86,7 @@ namespace PadForge.ViewModels
         public RelayCommand UninstallViGEmCommand =>
             _uninstallViGEmCommand ??= new RelayCommand(
                 () => UninstallViGEmRequested?.Invoke(this, EventArgs.Empty),
-                () => _isViGEmInstalled);
+                () => _isViGEmInstalled && !HasAnyViGEmSlots());
 
         /// <summary>Raised when the user requests ViGEmBus installation.</summary>
         public event EventHandler InstallViGEmRequested;
@@ -196,13 +196,39 @@ namespace PadForge.ViewModels
         public RelayCommand UninstallVJoyCommand =>
             _uninstallVJoyCommand ??= new RelayCommand(
                 () => UninstallVJoyRequested?.Invoke(this, EventArgs.Empty),
-                () => _isVJoyInstalled);
+                () => _isVJoyInstalled && !HasAnyVJoySlots());
 
         /// <summary>Raised when the user requests vJoy installation.</summary>
         public event EventHandler InstallVJoyRequested;
 
         /// <summary>Raised when the user requests vJoy uninstallation.</summary>
         public event EventHandler UninstallVJoyRequested;
+
+        // ─────────────────────────────────────────────
+        //  Driver uninstall guards
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Set by MainWindow to provide slot-type queries for uninstall guards.
+        /// Returns true if any created slot uses ViGEm (Xbox 360 or DS4).
+        /// </summary>
+        internal Func<bool> HasAnyViGEmSlots { get; set; } = () => false;
+
+        /// <summary>
+        /// Set by MainWindow to provide slot-type queries for uninstall guards.
+        /// Returns true if any created slot uses vJoy.
+        /// </summary>
+        internal Func<bool> HasAnyVJoySlots { get; set; } = () => false;
+
+        /// <summary>
+        /// Re-evaluates uninstall button CanExecute state.
+        /// Call after slot creation/deletion/type changes.
+        /// </summary>
+        public void RefreshDriverGuards()
+        {
+            _uninstallViGEmCommand?.NotifyCanExecuteChanged();
+            _uninstallVJoyCommand?.NotifyCanExecuteChanged();
+        }
 
         // ─────────────────────────────────────────────
         //  Engine settings

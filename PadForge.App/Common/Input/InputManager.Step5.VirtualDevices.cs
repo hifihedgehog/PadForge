@@ -216,8 +216,13 @@ namespace PadForge.Common.Input
             // device assigned should NOT register descriptors in joy.cpl.
             {
                 int totalVJoyNeeded = 0;
+                bool anyVJoySlotExists = false;
                 for (int i = 0; i < MaxPads; i++)
                 {
+                    if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                        SettingsManager.SlotCreated[i])
+                        anyVJoySlotExists = true;
+
                     if (_virtualControllers[i] is VJoyVirtualController)
                         totalVJoyNeeded++;  // Already running — always count
                     else if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
@@ -226,7 +231,12 @@ namespace PadForge.Common.Input
                              IsSlotActive(i))
                         totalVJoyNeeded++;  // About to be created — has active device
                 }
-                if (totalVJoyNeeded > 0 || VJoyVirtualController.CurrentDescriptorCount > 0)
+                // Enter sync block whenever vJoy slots exist (to handle future creation),
+                // OR when stale descriptors need cleanup (count mismatch or leftover from
+                // previous session). This ensures deletion of the last vJoy slot always
+                // triggers descriptor cleanup even when _currentDescriptorCount was never set.
+                if (anyVJoySlotExists || totalVJoyNeeded > 0 ||
+                    VJoyVirtualController.CurrentDescriptorCount > 0)
                 {
                     VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded);
 

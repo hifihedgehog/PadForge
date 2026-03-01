@@ -576,11 +576,12 @@ namespace PadForge.Common.Input
             if (padIndex < 0 || padIndex >= states.Length)
                 return;
 
-            // Sum magnitudes from all running effects, split by direction into L/R motors.
-            // Direction is polar: 0=north, 9000=east(right), 18000=south, 27000=west(left).
-            // For simple rumble mapping: left-pointing force → left motor, right → right.
-            // Non-directional effects (spring/damper/condition) go to both motors equally.
-            double leftSum = 0, rightSum = 0;
+            // Sum magnitudes from all running effects into both motors equally.
+            // DirectInput FFB has a direction field, but Xbox/DualShock controllers
+            // don't have directional rumble — just a heavy motor (left) and light
+            // motor (right). Sending equal magnitude to both is the standard
+            // FFB-to-rumble mapping used by most adapters.
+            double motorSum = 0;
 
             foreach (var kv in devState.Effects)
             {
@@ -589,61 +590,26 @@ namespace PadForge.Common.Input
 
                 // Apply per-effect gain (0–255).
                 double mag = es.Magnitude * (es.Gain / 255.0);
-
-                // Condition effects (spring/damper/friction/inertia) have no meaningful
-                // direction for rumble — apply equally to both motors.
-                if (es.Type >= FFBEType.ET_SPRNG && es.Type <= FFBEType.ET_FRCTN)
-                {
-                    leftSum += mag;
-                    rightSum += mag;
-                }
-                else
-                {
-                    // Directional split using polar direction.
-                    // HID PID direction: logical 0–32767 maps to physical 0–36000
-                    // (hundredths of degrees). 0=N, 9000=E, 18000=S, 27000=W.
-                    // Map: sin(dir)=right component, cos(dir)=up/down (both motors).
-                    double rad = es.Direction * 2.0 * Math.PI / 32767.0;
-                    double sinD = Math.Sin(rad); // positive=right, negative=left
-                    double cosD = Math.Cos(rad); // up/down component
-
-                    // Both motors get the base effect; directional bias adds extra to one side.
-                    double base_ = mag * Math.Abs(cosD);
-                    double side = mag * Math.Abs(sinD);
-                    if (sinD >= 0)
-                    {
-                        // Pointing right → emphasize right motor.
-                        rightSum += base_ + side;
-                        leftSum += base_;
-                    }
-                    else
-                    {
-                        // Pointing left → emphasize left motor.
-                        leftSum += base_ + side;
-                        rightSum += base_;
-                    }
-                }
+                motorSum += mag;
             }
 
             // Apply device-level gain.
             double deviceGainFactor = devState.DeviceGain / 255.0;
-            leftSum *= deviceGainFactor;
-            rightSum *= deviceGainFactor;
+            motorSum *= deviceGainFactor;
 
-            // Scale from 0..10000 → 0..65535 (ushort).
-            ushort newL = (ushort)Math.Min(65535, (int)(leftSum * 65535.0 / 10000.0));
-            ushort newR = (ushort)Math.Min(65535, (int)(rightSum * 65535.0 / 10000.0));
+            // Scale from 0..10000 → 0..65535 (ushort). Both motors get equal value.
+            ushort motorVal = (ushort)Math.Min(65535, (int)(motorSum * 65535.0 / 10000.0));
 
             ushort oldL = states[padIndex].LeftMotorSpeed;
             ushort oldR = states[padIndex].RightMotorSpeed;
 
-            states[padIndex].LeftMotorSpeed = newL;
-            states[padIndex].RightMotorSpeed = newR;
+            states[padIndex].LeftMotorSpeed = motorVal;
+            states[padIndex].RightMotorSpeed = motorVal;
 
-            if (newL != oldL || newR != oldR)
+            if (motorVal != oldL || motorVal != oldR)
             {
-                DiagLog($"FFB Motor dev{deviceId} pad{padIndex} L:{oldL}->{newL} R:{oldR}->{newR} (lSum={leftSum:F0} rSum={rightSum:F0} devGain={devState.DeviceGain})");
-                RumbleLogger.Log($"[vJoy FFB] Dev{deviceId} Pad{padIndex} L:{oldL}->{newL} R:{oldR}->{newR}");
+                DiagLog($"FFB Motor dev{deviceId} pad{padIndex} L:{oldL}->{motorVal} R:{oldR}->{motorVal} (sum={motorSum:F0} devGain={devState.DeviceGain})");
+                RumbleLogger.Log($"[vJoy FFB] Dev{deviceId} Pad{padIndex} L:{oldL}->{motorVal} R:{oldR}->{motorVal}");
             }
         }
 

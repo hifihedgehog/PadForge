@@ -19,13 +19,11 @@ namespace PadForge.Common.Input
         private static bool _dllLoaded;
 
         /// <summary>
-        /// Set to true after the first successful EnsureDevicesAvailable call this session.
-        /// Prevents the "stale node cleanup" path from running more than once — that path
-        /// removes ALL existing nodes and recreates them, which is only needed on the very
-        /// first call to migrate nodes from a previous session with different descriptors.
-        /// Reset only by RemoveAllDeviceNodes (engine stop).
+        /// Set to true once DisableFfbChildren has run this session.
+        /// Prevents redundant pnputil calls on subsequent EnsureDevicesAvailable invocations.
+        /// Reset by RemoveAllDeviceNodes (engine stop).
         /// </summary>
-        private static bool _sessionNodesInitialized;
+        private static bool _ffbChildrenDisabled;
 
         /// <summary>Whether we've already ensured the driver is in the Windows driver store this session.</summary>
         private static bool _driverStoreChecked;
@@ -147,9 +145,8 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] TrimDeviceNodes: active={activeCount}, nodes={instanceIds.Count}, excess={excess}");
                 for (int i = instanceIds.Count - 1; i >= 0 && excess > 0; i--, excess--)
                     RemoveDeviceNode(instanceIds[i]);
-                // Do NOT reset _sessionNodesInitialized here — that flag must only be
-                // reset by RemoveAllDeviceNodes (engine stop) to prevent the first-session
-                // cleanup from running again and entering a nuke/recreate loop.
+                // Do NOT reset _ffbChildrenDisabled here — that flag is only
+                // reset by RemoveAllDeviceNodes (engine stop).
             }
             catch (Exception ex)
             {
@@ -771,40 +768,27 @@ namespace PadForge.Common.Input
                 EnsureDriverInStore();
             }
 
+            EnsureDllLoaded();
             int existing = CountExistingDevices();
 
-            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, initialized={_sessionNodesInitialized}");
+            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, dllLoaded={_dllLoaded}");
 
-            // Already initialized this session and have enough nodes → fast path.
-            if (_sessionNodesInitialized && existing >= requiredCount)
+            // Already have enough nodes → use them.
+            if (existing >= requiredCount)
             {
-                EnsureDllLoaded();
+                if (!_ffbChildrenDisabled)
+                {
+                    DisableFfbChildren();
+                    _ffbChildrenDisabled = true;
+                }
                 return true;
             }
 
-            // First call this session: remove stale nodes from a previous session that
-            // may have a different hardware ID / descriptor. This runs exactly ONCE per
-            // process lifetime (guarded by _sessionNodesInitialized).
-            if (!_sessionNodesInitialized && existing > 0)
-            {
-                DiagLog($"First session call: removing {existing} stale node(s) for clean batch create...");
-                RemoveAllDeviceNodes();
-                Thread.Sleep(2000); // Give PnP time to fully clean up child HID devices
-                existing = 0;
-            }
-
-            // How many new nodes to create?
+            // Need more nodes — create only the delta.
             int toCreate = requiredCount - existing;
-            if (toCreate <= 0)
-            {
-                EnsureDllLoaded();
-                _sessionNodesInitialized = true;
-                return true;
-            }
-
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
 
-            DiagLog($"Creating {toCreate} device node(s) (additive, existing={existing})");
+            DiagLog($"Creating {toCreate} device node(s) (existing={existing})");
 
             if (!CreateVJoyDevices(toCreate))
             {
@@ -821,20 +805,8 @@ namespace PadForge.Common.Input
                 if (_dllLoaded && FindFreeDeviceId() > 0)
                 {
                     DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
-                    _sessionNodesInitialized = true;
-
-                    // vjoy.sys compiled with VJOY_HAS_FFB creates 2 HID collections per
-                    // device: COL01 (joystick input) and COL02 (FFB/PID). Both register as
-                    // "HID-compliant game controller" so COL02 creates phantom entries in
-                    // joy.cpl. Disabling COL02 hides them from WinMM/joy.cpl.
-                    //
-                    // FfbRegisterGenCB still works with COL02 disabled — it communicates via
-                    // the Raw PDO device interface (GUID_DEVINTERFACE_VJOY), not through HID.
-                    // Games sending DirectInput FFB effects to the vJoy device will be blocked
-                    // (they go through HID COL02), but PadForge's FFB passthrough uses the
-                    // IOCTL path which remains functional.
                     DisableFfbChildren();
-
+                    _ffbChildrenDisabled = true;
                     return true;
                 }
             }
@@ -1042,9 +1014,9 @@ namespace PadForge.Common.Input
                 }
 
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
-                // Reset state so vJoyEnabled() is re-evaluated and stale detection works.
+                // Reset state so vJoyEnabled() is re-evaluated.
                 _dllLoaded = false;
-                _sessionNodesInitialized = false;
+                _ffbChildrenDisabled = false;
                 return true;
             }
             catch (Exception ex)

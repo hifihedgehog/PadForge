@@ -60,6 +60,25 @@ namespace PadForge
             _recorderService = new RecorderService(_viewModel);
             _deviceService = new DeviceService(_viewModel, _settingsService);
 
+            // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
+            _viewModel.Settings.HasAnyViGEmSlots = () =>
+            {
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                    if (SettingsManager.SlotCreated[i] &&
+                        (_viewModel.Pads[i].OutputType == VirtualControllerType.Xbox360 ||
+                         _viewModel.Pads[i].OutputType == VirtualControllerType.DualShock4))
+                        return true;
+                return false;
+            };
+            _viewModel.Settings.HasAnyVJoySlots = () =>
+            {
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                    if (SettingsManager.SlotCreated[i] &&
+                        _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
+                        return true;
+                return false;
+            };
+
             // Wire engine start/stop commands.
             _viewModel.StartEngineRequested += (s, e) => _inputService.Start();
             _viewModel.StopEngineRequested += (s, e) => _inputService.Stop();
@@ -711,6 +730,9 @@ namespace PadForge
                 }
                 NavView.SelectedItem = match ?? fallback;
             }
+
+            // Refresh uninstall button guards (disabled when slots of that type exist).
+            _viewModel.Settings.RefreshDriverGuards();
         }
 
         /// <summary>
@@ -1661,16 +1683,20 @@ namespace PadForge
             };
             xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
             bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
+            bool vigemInstalled = _viewModel.Dashboard.IsViGEmInstalled;
+            bool xboxDisabled = xboxAtCapacity || !vigemInstalled;
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPopupPath,
-                ToolTip = xboxAtCapacity ? $"Xbox 360 (max {SettingsManager.MaxXbox360Slots})" : "Xbox 360",
+                ToolTip = !vigemInstalled ? "Xbox 360 (ViGEmBus not installed)"
+                        : xboxAtCapacity ? $"Xbox 360 (max {SettingsManager.MaxXbox360Slots})"
+                        : "Xbox 360",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !xboxAtCapacity,
-                Opacity = xboxAtCapacity ? 0.35 : 1.0
+                IsEnabled = !xboxDisabled,
+                Opacity = xboxDisabled ? 0.35 : 1.0
             };
             xboxBtn.Click += (s, e) =>
             {
@@ -1695,16 +1721,19 @@ namespace PadForge
             };
             ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
             bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
+            bool ds4Disabled = ds4AtCapacity || !vigemInstalled;
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4PopupPath,
-                ToolTip = ds4AtCapacity ? $"DualShock 4 (max {SettingsManager.MaxDS4Slots})" : "DualShock 4",
+                ToolTip = !vigemInstalled ? "DualShock 4 (ViGEmBus not installed)"
+                        : ds4AtCapacity ? $"DualShock 4 (max {SettingsManager.MaxDS4Slots})"
+                        : "DualShock 4",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !ds4AtCapacity,
-                Opacity = ds4AtCapacity ? 0.35 : 1.0
+                IsEnabled = !ds4Disabled,
+                Opacity = ds4Disabled ? 0.35 : 1.0
             };
             ds4Btn.Click += (s, e) =>
             {
@@ -1729,16 +1758,20 @@ namespace PadForge
             };
             vjoyPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
             bool vjoyAtCapacity = vjoyCount >= SettingsManager.MaxVJoySlots;
+            bool vjoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
+            bool vjoyDisabled = vjoyAtCapacity || !vjoyInstalled;
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPopupPath,
-                ToolTip = vjoyAtCapacity ? $"vJoy (max {SettingsManager.MaxVJoySlots})" : "vJoy",
+                ToolTip = !vjoyInstalled ? "vJoy (driver not installed)"
+                        : vjoyAtCapacity ? $"vJoy (max {SettingsManager.MaxVJoySlots})"
+                        : "vJoy",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !vjoyAtCapacity,
-                Opacity = vjoyAtCapacity ? 0.35 : 1.0
+                IsEnabled = !vjoyDisabled,
+                Opacity = vjoyDisabled ? 0.35 : 1.0
             };
             vjoyBtn.Click += (s, e) =>
             {

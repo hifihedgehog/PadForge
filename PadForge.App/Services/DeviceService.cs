@@ -108,13 +108,9 @@ namespace PadForge.Services
             if (udForGuid != null)
                 us.ProductGuid = udForGuid.ProductGuid;
 
-            // If no PadSetting exists or it has no mappings, create defaults.
-            // The PadSetting is stored in SettingsManager only — NOT pushed into the
-            // ViewModel here, because the slot's ViewModel may be displaying a different
-            // device's settings. The correct settings load when the user selects this
-            // device in the dropdown (OnSelectedDeviceChanged → LoadPadSettingToViewModel).
+            // If no PadSetting exists, create defaults.
             var existingPs = us.GetPadSetting();
-            if (existingPs == null || !existingPs.HasAnyMapping)
+            if (existingPs == null)
             {
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
                 us.SetPadSetting(ps);
@@ -165,7 +161,7 @@ namespace PadForge.Services
             if (udForGuid != null) us.ProductGuid = udForGuid.ProductGuid;
 
             var existingPs = us.GetPadSetting();
-            if (existingPs == null || !existingPs.HasAnyMapping)
+            if (existingPs == null)
             {
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
                 us.SetPadSetting(ps);
@@ -210,9 +206,9 @@ namespace PadForge.Services
                 if (udForGuid != null)
                     us.ProductGuid = udForGuid.ProductGuid;
 
-                // Create default PadSetting if needed.
+                // Create PadSetting for the new assignment.
                 var existingPs = us.GetPadSetting();
-                if (existingPs == null || !existingPs.HasAnyMapping)
+                if (existingPs == null)
                 {
                     var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
                     us.SetPadSetting(ps);
@@ -376,5 +372,6 @@ namespace PadForge.Services
             SettingsManager.SlotEnabled[slotIndex] = enabled;
             _settingsService.MarkDirty();
         }
+
     }
 }

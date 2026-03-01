@@ -328,6 +328,7 @@ namespace PadForge.Services
 
             // Read back the final descriptor (may have "I" prefix from auto-inversion).
             string finalDescriptor = mapping.SourceDescriptor;
+
             _mainVm.StatusText = $"Recorded \"{mapping.TargetLabel}\" ← {finalDescriptor}";
 
             // Raise event.

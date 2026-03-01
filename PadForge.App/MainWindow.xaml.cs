@@ -302,6 +302,9 @@ namespace PadForge
                             ? "(\u2192 right)" : "(\u2193 down)";
                         _viewModel.StatusText = $"Now map: {negMapping.TargetLabel} {dirHint}";
 
+                        // Switch to Controller tab so the 3D directional arrow is visible.
+                        activePad.SelectedConfigTab = 0;
+
                         // Update recording target to pos for flash/arrow.
                         activePad.CurrentRecordingTarget = negMapping.TargetSettingName;
 
@@ -341,6 +344,9 @@ namespace PadForge
 
                     if (activePad.IsMapAllActive)
                         activePad.MapAllRecordingNeg = true;
+
+                    // Switch to Controller tab so the 3D directional arrow is visible.
+                    activePad.SelectedConfigTab = 0;
 
                     // Update the recording target to the neg setting for flash/arrow.
                     activePad.CurrentRecordingTarget = result.Mapping.NegSettingName;

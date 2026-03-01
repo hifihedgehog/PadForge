@@ -359,7 +359,7 @@ namespace PadForge.Common.Input
             public byte Gain = 255;         // per-effect gain from effect report (0–255)
             public ushort Duration;         // ms, 0xFFFF=infinite
             public bool Running;
-            public ushort Direction;        // polar direction 0–35999 (hundredths of degrees)
+            public ushort Direction;        // polar direction 0–32767 (HID logical units, maps to 0–360°)
         }
 
         /// <summary>
@@ -406,6 +406,9 @@ namespace PadForge.Common.Input
                             es.Gain = eff.Gain;
                             es.Duration = eff.Duration;
                             es.Direction = eff.Direction;
+                            DiagLog($"FFB PT_EFFREP dev{deviceId} ebi={ebi} type={eff.EffectType} gain={eff.Gain} dir={eff.Direction} dur={eff.Duration}");
+                            // Re-apply motor output if the effect is already running (live gain/direction updates).
+                            ApplyMotorOutput(deviceId, devState);
                         }
                         break;
                     }
@@ -415,8 +418,12 @@ namespace PadForge.Common.Input
                         var cst = new FFB_EFF_CONSTANT();
                         if (VJoyNative.Ffb_h_Eff_Constant(data, ref cst) == 0)
                         {
-                            if (devState.Effects.TryGetValue(cst.EffectBlockIndex, out var es))
-                                es.Magnitude = Math.Abs(cst.Magnitude); // -10000..+10000 → 0..10000
+                            int rawMag = cst.Magnitude;
+                            int absMag = Math.Abs(rawMag);
+                            bool found = devState.Effects.TryGetValue(cst.EffectBlockIndex, out var es);
+                            if (found)
+                                es.Magnitude = absMag; // -10000..+10000 → 0..10000
+                            DiagLog($"FFB PT_CONSTREP dev{deviceId} ebi={cst.EffectBlockIndex} rawMag={rawMag} absMag={absMag} effectFound={found}");
                             ApplyMotorOutput(deviceId, devState);
                         }
                         break;
@@ -427,8 +434,10 @@ namespace PadForge.Common.Input
                         var prd = new FFB_EFF_PERIOD();
                         if (VJoyNative.Ffb_h_Eff_Period(data, ref prd) == 0)
                         {
-                            if (devState.Effects.TryGetValue(prd.EffectBlockIndex, out var es))
+                            bool found = devState.Effects.TryGetValue(prd.EffectBlockIndex, out var es);
+                            if (found)
                                 es.Magnitude = (int)prd.Magnitude; // 0..10000
+                            DiagLog($"FFB PT_PRIDREP dev{deviceId} ebi={prd.EffectBlockIndex} mag={prd.Magnitude} effectFound={found}");
                             ApplyMotorOutput(deviceId, devState);
                         }
                         break;
@@ -467,6 +476,7 @@ namespace PadForge.Common.Input
                         if (VJoyNative.Ffb_h_EffOp(data, ref op) == 0)
                         {
                             byte ebi = op.EffectBlockIndex;
+                            DiagLog($"FFB PT_EFOPREP dev{deviceId} ebi={ebi} op={op.EffectOp}");
                             if (op.EffectOp == FFBOP.EFF_START || op.EffectOp == FFBOP.EFF_SOLO)
                             {
                                 if (op.EffectOp == FFBOP.EFF_SOLO)
@@ -476,7 +486,10 @@ namespace PadForge.Common.Input
                                         if (kv.Key != ebi) kv.Value.Running = false;
                                 }
                                 if (devState.Effects.TryGetValue(ebi, out var es))
+                                {
                                     es.Running = true;
+                                    DiagLog($"FFB EFF_START dev{deviceId} ebi={ebi} mag={es.Magnitude} gain={es.Gain} dir={es.Direction} type={es.Type}");
+                                }
                             }
                             else if (op.EffectOp == FFBOP.EFF_STOP)
                             {
@@ -493,6 +506,7 @@ namespace PadForge.Common.Input
                         byte gain = 0;
                         if (VJoyNative.Ffb_h_DevGain(data, ref gain) == 0)
                         {
+                            DiagLog($"FFB PT_GAINREP dev{deviceId} gain={gain}");
                             devState.DeviceGain = gain;
                             ApplyMotorOutput(deviceId, devState);
                         }
@@ -586,10 +600,10 @@ namespace PadForge.Common.Input
                 else
                 {
                     // Directional split using polar direction.
-                    // Convert direction (0–35999 hundredths of degrees) to radians.
-                    // 0=N, 9000=E, 18000=S, 27000=W.
+                    // HID PID direction: logical 0–32767 maps to physical 0–36000
+                    // (hundredths of degrees). 0=N, 9000=E, 18000=S, 27000=W.
                     // Map: sin(dir)=right component, cos(dir)=up/down (both motors).
-                    double rad = es.Direction * Math.PI / 18000.0;
+                    double rad = es.Direction * 2.0 * Math.PI / 32767.0;
                     double sinD = Math.Sin(rad); // positive=right, negative=left
                     double cosD = Math.Cos(rad); // up/down component
 
@@ -627,7 +641,10 @@ namespace PadForge.Common.Input
             states[padIndex].RightMotorSpeed = newR;
 
             if (newL != oldL || newR != oldR)
+            {
+                DiagLog($"FFB Motor dev{deviceId} pad{padIndex} L:{oldL}->{newL} R:{oldR}->{newR} (lSum={leftSum:F0} rSum={rightSum:F0} devGain={devState.DeviceGain})");
                 RumbleLogger.Log($"[vJoy FFB] Dev{deviceId} Pad{padIndex} L:{oldL}->{newL} R:{oldR}->{newR}");
+            }
         }
 
         // ─────────────────────────────────────────────

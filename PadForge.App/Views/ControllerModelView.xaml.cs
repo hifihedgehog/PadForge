@@ -90,9 +90,10 @@ namespace PadForge.Views
             {
                 Dispatcher.Invoke(() =>
                 {
-                    UpdateFlashTarget(_vm.CurrentRecordingTarget);
-                    // Remove axis arrow when recording target changes or clears
-                    RemoveArrow();
+                    string target = _vm.CurrentRecordingTarget;
+                    UpdateFlashTarget(target);
+                    // Show guidance arrow for axis targets, remove for others
+                    ShowArrowForTarget(target);
                 });
                 return;
             }
@@ -424,7 +425,10 @@ namespace PadForge.Views
         /// relative to joystick center. Returns the PadSetting target name including "Neg" suffix
         /// for negative-direction quadrants.
         /// Model coords: X = left/right, Z = up/down.
-        /// Right (+X) → pos X, Left (-X) → neg X, Up (+Z) → pos Y, Down (-Z) → neg Y.
+        /// Right (+X) → pos X, Left (-X) → neg X.
+        /// Y axis is inverted by NegateAxis in Step 3, so:
+        /// Down (-Z) → pos Y (becomes negative output = stick down),
+        /// Up (+Z) → neg Y (becomes positive output = stick up).
         /// </summary>
         private static string DetermineAxisFromQuadrant(
             Point3D hitPos, Vector3D center, string xAxis, string yAxis)
@@ -434,51 +438,34 @@ namespace PadForge.Views
             if (Math.Abs(deltaX) > Math.Abs(deltaZ))
                 return deltaX >= 0 ? xAxis : xAxis + "Neg";
             else
-                return deltaZ >= 0 ? yAxis : yAxis + "Neg";
+                // Y is inverted: up in model = neg descriptor (becomes + after NegateAxis = up in game)
+                return deltaZ >= 0 ? yAxis + "Neg" : yAxis;
         }
 
         /// <summary>
         /// Shows a flat 3D arrow at the stick indicating the axis direction.
-        /// Positive targets: right (+X) or up (+Z). Negative targets: left (-X) or down (-Z).
-        /// Arrow stays visible until mapping finishes (CurrentRecordingTarget clears).
+        /// Delegates to ShowArrowForTarget which handles all axis target types.
         /// </summary>
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
-            RemoveArrow();
-
-            bool isNeg = axis.EndsWith("Neg", StringComparison.Ordinal);
-            string baseAxis = isNeg ? axis.Substring(0, axis.Length - 3) : axis;
-            bool isX = baseAxis.Contains("AxisX");
-
-            Vector3D center;
-            if (baseAxis.StartsWith("Left"))
-                center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
-            else
-                center = _currentModel.JoystickRotationPointCenterRightMillimeter;
-
-            // Place arrow at stick center X/Z, raised to hit surface toward camera
-            var arrowCenter = new Point3D(center.X, hitPos.Y - 3, center.Z);
-
-            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
-            try
-            {
-                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
-                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
-            }
-            catch { }
-
-            var arrowGeo = CreateFlatArrow(arrowCenter, isX, isNeg, accentColor);
-            _arrowVisual = new ModelVisual3D { Content = arrowGeo };
-            ModelViewPort.Children.Add(_arrowVisual);
+            ShowArrowForTarget(axis);
         }
 
         /// <summary>
         /// Creates a flat rectangular arrow (box shaft + triangular prism head).
-        /// Arrow points along +X/-X (isX) or +Z/-Z (!isX). Negative flips direction.
+        /// Arrow points along +X/-X (isX) or +Z/-Z (!isX).
+        /// For X axis: neg=false → +X (right), neg=true → -X (left).
+        /// For Y axis: neg=false → -Z (down), neg=true → +Z (up).
+        /// Y is flipped because NegateAxis in Step 3 inverts the output.
         /// </summary>
         private static GeometryModel3D CreateFlatArrow(Point3D center, bool isX, bool negative, Color color)
         {
-            double sign = negative ? -1 : 1;
+            double sign;
+            if (isX)
+                sign = negative ? -1 : 1;
+            else
+                // Y visual: pos descriptor → down (-Z), neg descriptor → up (+Z)
+                sign = negative ? 1 : -1;
             var dir = isX ? new Vector3D(sign, 0, 0) : new Vector3D(0, 0, sign);
             var perp = isX ? new Vector3D(0, 0, 1) : new Vector3D(1, 0, 0);
             var depthDir = new Vector3D(0, 1, 0);
@@ -524,6 +511,48 @@ namespace PadForge.Views
             var mesh = mb.ToMesh();
             var material = new DiffuseMaterial(new SolidColorBrush(color));
             return new GeometryModel3D(mesh, material) { BackMaterial = material };
+        }
+
+        /// <summary>
+        /// Shows a guidance arrow for axis recording targets (Map All, auto-prompt, or click).
+        /// Non-axis targets just remove any existing arrow.
+        /// </summary>
+        private void ShowArrowForTarget(string target)
+        {
+            RemoveArrow();
+
+            if (_currentModel == null || string.IsNullOrEmpty(target))
+                return;
+
+            // Check if this is a stick axis target (with or without Neg suffix)
+            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
+            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
+
+            bool isLeftStick = baseTarget is "LeftThumbAxisX" or "LeftThumbAxisY";
+            bool isRightStick = baseTarget is "RightThumbAxisX" or "RightThumbAxisY";
+            if (!isLeftStick && !isRightStick)
+                return;
+
+            bool isX = baseTarget.Contains("AxisX");
+
+            Vector3D center = isLeftStick
+                ? _currentModel.JoystickRotationPointCenterLeftMillimeter
+                : _currentModel.JoystickRotationPointCenterRightMillimeter;
+
+            // Place arrow at stick center, floating above the model surface
+            var arrowCenter = new Point3D(center.X, center.Y - 3, center.Z);
+
+            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
+            try
+            {
+                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
+            }
+            catch { }
+
+            var arrowGeo = CreateFlatArrow(arrowCenter, isX, isNeg, accentColor);
+            _arrowVisual = new ModelVisual3D { Content = arrowGeo };
+            ModelViewPort.Children.Add(_arrowVisual);
         }
 
         private void RemoveArrow()

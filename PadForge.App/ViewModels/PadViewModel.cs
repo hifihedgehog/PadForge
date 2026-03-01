@@ -610,7 +610,8 @@ namespace PadForge.ViewModels
             if (MapAllRecordingNeg)
             {
                 // Recording the negative direction for the current axis.
-                string dirHint = mapping.TargetSettingName.Contains("AxisX") ? "(\u2190)" : "(\u2193)";
+                // Neg X = left, Neg Y = up (Y inverted by NegateAxis in Step 3).
+                string dirHint = mapping.TargetSettingName.Contains("AxisX") ? "(\u2190)" : "(\u2191)";
                 MapAllCurrentTarget = mapping.NegSettingName;
                 CurrentRecordingTarget = mapping.NegSettingName;
                 MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
@@ -619,7 +620,8 @@ namespace PadForge.ViewModels
             {
                 string suffix = "";
                 if (mapping.HasNegDirection)
-                    suffix = mapping.TargetSettingName.Contains("AxisX") ? " (\u2192)" : " (\u2191)";
+                    // Pos X = right, Pos Y = down (Y inverted by NegateAxis in Step 3).
+                    suffix = mapping.TargetSettingName.Contains("AxisX") ? " (\u2192)" : " (\u2193)";
                 MapAllCurrentTarget = mapping.TargetSettingName;
                 CurrentRecordingTarget = mapping.TargetSettingName;
                 MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";

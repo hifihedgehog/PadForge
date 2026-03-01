@@ -280,8 +280,9 @@ namespace PadForge
                     _savedPosDescriptor = result.Mapping.SourceDescriptor;
                     _pendingNegMapping = result.Mapping;
 
+                    // Neg X = left, Neg Y = up (Y inverted by NegateAxis in Step 3).
                     string dirHint = result.Mapping.TargetSettingName.Contains("AxisX")
-                        ? "(\u2190 negative)" : "(\u2193 negative)";
+                        ? "(\u2190 left)" : "(\u2191 up)";
                     _viewModel.StatusText = $"Now map: {result.Mapping.TargetLabel} {dirHint}";
 
                     if (activePad.IsMapAllActive)

@@ -5,8 +5,22 @@ namespace FfbTest;
 
 class Program
 {
-    [DllImport("kernel32.dll")]
-    static extern IntPtr GetConsoleWindow();
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    static extern IntPtr CreateWindowExW(int exStyle, string className, string windowName,
+        int style, int x, int y, int w, int h, IntPtr parent, IntPtr menu, IntPtr instance, IntPtr param);
+
+    [DllImport("user32.dll")]
+    static extern bool DestroyWindow(IntPtr hwnd);
+
+    static readonly IntPtr HWND_MESSAGE = new(-3);
+
+    static IntPtr CreateMessageWindow()
+    {
+        // Message-only window — invisible, no taskbar entry, valid for DirectInput.
+        var hwnd = CreateWindowExW(0, "Static", "FfbTest", 0, 0, 0, 0, 0,
+            HWND_MESSAGE, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+        return hwnd;
+    }
 
     static void Main()
     {
@@ -72,7 +86,7 @@ class Program
         Console.WriteLine($"Using: {target.InstanceName}\n");
 
         using var joystick = new Joystick(di, target.InstanceGuid);
-        var hwnd = GetConsoleWindow();
+        var hwnd = CreateMessageWindow();
         joystick.SetCooperativeLevel(hwnd,
             CooperativeLevel.Exclusive | CooperativeLevel.Background);
 
@@ -230,6 +244,7 @@ class Program
         constantEffect?.Dispose();
         sineEffect?.Dispose();
         joystick.Unacquire();
+        if (hwnd != IntPtr.Zero) DestroyWindow(hwnd);
         Console.WriteLine("\nDone.");
     }
 

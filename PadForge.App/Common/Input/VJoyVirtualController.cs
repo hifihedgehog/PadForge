@@ -659,7 +659,10 @@ namespace PadForge.Common.Input
                 for (uint id = 1; id <= 16; id++)
                 {
                     var status = VJoyNative.GetVJDStatus(id);
-                    if (status == VjdStat.VJD_STAT_FREE)
+                    // Accept both FREE and OWN — after destroying all VCs, the
+                    // driver may briefly report recently-relinquished IDs as OWN.
+                    // We're the only process using vJoy, so OWN means "ours to take".
+                    if (status == VjdStat.VJD_STAT_FREE || status == VjdStat.VJD_STAT_OWN)
                         return id;
                 }
             }

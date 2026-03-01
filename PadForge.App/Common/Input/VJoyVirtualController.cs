@@ -403,9 +403,14 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Ensures at least <paramref name="requiredCount"/> vJoy device nodes exist.
-        /// Creates additional device nodes via SetupAPI if needed.
-        /// Called by the engine thread (CreateVJoyController) on demand — device nodes
-        /// only exist while virtual controllers are actively connected (like ViGEm).
+        /// When more nodes are needed, removes ALL existing nodes and recreates the
+        /// entire set in one batch. This avoids the INSTALLFLAG_FORCE issue where
+        /// UpdateDriverForPlugAndPlayDevicesW re-binds already-bound devices,
+        /// creating duplicate HID children and invalidating acquired handles.
+        ///
+        /// The caller (CreateVJoyController) must relinquish existing devices before
+        /// calling this and re-acquire them after, since the rebuild invalidates handles.
+        ///
         /// Returns true if enough free or existing devices are available.
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
@@ -442,16 +447,26 @@ namespace PadForge.Common.Input
                 return true;
             }
 
-            // Write HID descriptors for the required number of devices BEFORE creating nodes.
+            // Need more nodes. Remove ALL existing nodes first, then recreate the full set.
+            // UpdateDriverForPlugAndPlayDevicesW re-binds ALL matching devices (even with
+            // flag=0), invalidating acquired handles. By removing everything and recreating
+            // in one batch, we avoid partial-state issues. The caller must relinquish and
+            // re-acquire existing devices around this call.
+            if (existing > 0)
+            {
+                DiagLog($"Removing {existing} existing node(s) for full rebuild...");
+                RemoveAllDeviceNodes();
+                Thread.Sleep(500); // Give PnP time to clean up
+            }
+
+            // Write HID descriptors for ALL devices BEFORE creating nodes.
             // Xbox 360 layout: 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 continuous POV.
-            // Only written when we're about to create new nodes — avoids disturbing live devices.
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
 
-            // Create the needed device nodes (additional or all, depending on stale cleanup).
-            int toCreate = requiredCount - existing;
-            DiagLog($"Creating {toCreate} device node(s) (existing={existing})");
+            // Create ALL device nodes in one batch (single UpdateDriverForPlugAndPlayDevicesW call).
+            DiagLog($"Creating {requiredCount} device node(s) (full batch)");
 
-            if (!CreateVJoyDevices(toCreate))
+            if (!CreateVJoyDevices(requiredCount))
             {
                 DiagLog("CreateVJoyDevices FAILED");
                 return false;
@@ -614,8 +629,6 @@ namespace PadForge.Common.Input
 $ErrorActionPreference = 'Continue'
 $log = '{logPath.Replace("'", "''")}'
 try {{
-    $infPath = '{vjoyDir.Replace("'", "''")}\vjoy.inf'
-
     $svcPath = 'HKLM:\SYSTEM\CurrentControlSet\Services\vjoy'
     if (-not (Test-Path $svcPath)) {{
         New-Item -Path $svcPath -Force | Out-Null
@@ -671,9 +684,12 @@ public static class PF_SetupApi {{
         [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
     }}
     if ($created -eq 0) {{ 'FAIL: No devices created' | Out-File $log -Force; exit 1 }}
-    # Bind the driver to all unmatched device nodes at once.
+    # Bind driver to new device nodes. Flag=0 (no INSTALLFLAG_FORCE) so already-bound
+    # devices are left alone — only unmatched nodes get the driver installed.
+    # INSTALLFLAG_FORCE (1) would re-bind ALL matching devices, creating duplicate
+    # HID children and invalidating existing controller handles.
     $reboot = $false
-    $ok = [PF_SetupApi]::UpdateDriverForPlugAndPlayDevicesW([IntPtr]::Zero, $hwid, $infPath, 1, [ref]$reboot)
+    $ok = [PF_SetupApi]::UpdateDriverForPlugAndPlayDevicesW([IntPtr]::Zero, $hwid, $infPath, 0, [ref]$reboot)
     if (-not $ok) {{ $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error(); ""FAIL: UpdateDriver err=$e (created=$created)"" | Out-File $log -Force; exit 1 }}
     ""OK:$created"" | Out-File $log -Force
 }} catch {{

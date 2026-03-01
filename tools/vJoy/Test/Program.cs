@@ -312,6 +312,7 @@ class Program
             "info"         => CmdInfo(),
             "full"         => CmdFull(args),
             "battery"      => CmdBattery(),
+            "incremental"  => CmdIncremental(args),
             "diag"         => CmdDiag(),
             "freshinstall" => CmdFreshInstall(),
             _              => Error($"Unknown command: {args[0]}")
@@ -340,6 +341,11 @@ class Program
         Console.WriteLine("  VJoyTest full [N] [axes=6] [buttons=11] [povs=1]");
         Console.WriteLine("    Full end-to-end test: create N devices, configure,");
         Console.WriteLine("    feed data, then cleanup on Ctrl+C.");
+        Console.WriteLine();
+        Console.WriteLine("  VJoyTest incremental [N]");
+        Console.WriteLine("    Create N devices ONE AT A TIME (default 3), verifying each");
+        Console.WriteLine("    previously created device still works after adding the next.");
+        Console.WriteLine("    Tests PadForge's incremental creation pattern.");
         Console.WriteLine();
         Console.WriteLine("  VJoyTest freshinstall");
         Console.WriteLine("    Full DriverInstaller-style cleanup + reinstall + data flow test.");
@@ -1352,6 +1358,194 @@ class Program
         return failed > 0 ? 1 : 0;
     }
 
+    // ─────────────────────────────────────────────────────────────────────
+    //  Command: incremental — tests PadForge's incremental creation pattern
+    // ─────────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Tests incremental device creation: creates devices one at a time
+    /// (exactly like PadForge does), verifying each device works before
+    /// creating the next. This catches the INSTALLFLAG_FORCE bug where
+    /// UpdateDriverForPlugAndPlayDevicesW re-binds ALL existing nodes.
+    /// </summary>
+    static int CmdIncremental(string[] args)
+    {
+        int totalDevices = 3;
+        if (args.Length > 1 && int.TryParse(args[1], out int n) && n >= 1 && n <= 16)
+            totalDevices = n;
+
+        var layout = new DeviceLayout { Axes = 6, Buttons = 11, Povs = 1 };
+        Console.WriteLine($"=== INCREMENTAL TEST: Add {totalDevices} devices one at a time with full rebuild (6/11/1) ===\n");
+        Console.WriteLine("This mirrors PadForge's pattern: relinquish all → remove all → recreate batch → re-acquire.\n");
+
+        // Clean slate
+        RemoveAllVJoyNodes();
+        Thread.Sleep(2000);
+
+        if (!TryLoadDll())
+            return Error("Cannot load vJoyInterface.dll");
+
+        var acquiredDevices = new List<uint>();
+        bool allOk = true;
+
+        for (int step = 1; step <= totalDevices; step++)
+        {
+            Console.WriteLine($"─── Step {step}: Add device #{step} (rebuild with {step} total nodes) ───");
+
+            // Step A: Relinquish all existing devices (like PadForge's CreateVJoyController)
+            if (acquiredDevices.Count > 0)
+            {
+                Console.Write($"  Relinquishing {acquiredDevices.Count} existing device(s)... ");
+                foreach (uint id in acquiredDevices)
+                {
+                    ResetVJD(id);
+                    RelinquishVJD(id);
+                }
+                Console.WriteLine("OK");
+            }
+
+            // Step B: Remove ALL existing nodes
+            if (step > 1)
+            {
+                Console.Write($"  Removing all existing nodes... ");
+                RemoveAllVJoyNodes();
+                Console.WriteLine("OK");
+                Thread.Sleep(500);
+            }
+
+            // Step C: Write registry for the full set
+            WriteRegistryConfig(step, layout);
+
+            // Step D: Create ALL nodes in one batch
+            Console.Write($"  Creating {step} node(s) in one batch... ");
+            if (!CreateDeviceNodes(step))
+            {
+                Console.Error.WriteLine("FAIL");
+                allOk = false;
+                break;
+            }
+            Console.WriteLine("OK");
+
+            // Step E: Wait for PnP
+            if (!WaitForDevices(step, timeout: TimeSpan.FromSeconds(10)))
+            {
+                Console.Error.WriteLine($"  FAIL: PnP binding timeout for {step} devices");
+                allOk = false;
+                break;
+            }
+
+            // Step F: Re-acquire ALL devices (existing + new)
+            acquiredDevices.Clear();
+            for (uint id = 1; id <= 16 && acquiredDevices.Count < step; id++)
+            {
+                int status = GetVJDStatus(id);
+                if (status == VJD_STAT_FREE)
+                {
+                    if (AcquireVJD(id))
+                    {
+                        ResetVJD(id);
+                        acquiredDevices.Add(id);
+                        Console.WriteLine($"  Acquired device {id}");
+                    }
+                }
+            }
+            if (acquiredDevices.Count < step)
+            {
+                Console.Error.WriteLine($"  FAIL: Only acquired {acquiredDevices.Count}/{step} devices");
+                allOk = false;
+                break;
+            }
+
+            // Step G: Verify ALL devices work with UpdateVJD
+            Console.Write($"  Verifying all {acquiredDevices.Count} device(s)... ");
+            bool allWork = true;
+            foreach (uint id in acquiredDevices)
+            {
+                int testVal = (int)(id * 5000);
+                var pos = new JOYSTICK_POSITION_V2
+                {
+                    bDevice = (byte)id,
+                    wAxisX = testVal,
+                    wAxisY = 16383,
+                    bHats = 0xFFFF_FFFFu,
+                    bHatsEx1 = 0xFFFF_FFFFu,
+                    bHatsEx2 = 0xFFFF_FFFFu,
+                    bHatsEx3 = 0xFFFF_FFFFu,
+                };
+                if (!UpdateVJD_V2(id, ref pos))
+                {
+                    Console.Write($"[Dev{id}:UpdateVJD FAILED] ");
+                    allWork = false;
+                }
+            }
+            Console.WriteLine(allWork ? "OK" : "FAIL");
+
+            if (!allWork)
+            {
+                allOk = false;
+                break;
+            }
+
+            // Check device count in PnP
+            var nodeIds = EnumerateVJoyInstanceIds();
+            Console.WriteLine($"  PnP nodes: {nodeIds.Count} (expected {step})");
+            if (nodeIds.Count != step)
+            {
+                Console.Error.WriteLine($"  FAIL: Expected {step} nodes, found {nodeIds.Count}");
+                allOk = false;
+                break;
+            }
+
+            Console.WriteLine($"  Step {step}: PASS\n");
+        }
+
+        // Feed all devices for 2 seconds to verify sustained output
+        if (allOk && acquiredDevices.Count >= 2)
+        {
+            Console.WriteLine($"─── Sustained feed test: {acquiredDevices.Count} devices for 2 seconds ───");
+            var sw = Stopwatch.StartNew();
+            int frames = 0;
+            while (sw.ElapsedMilliseconds < 2000)
+            {
+                foreach (uint id in acquiredDevices)
+                {
+                    int t = (int)(sw.ElapsedMilliseconds % 32767);
+                    var pos = new JOYSTICK_POSITION_V2
+                    {
+                        bDevice = (byte)id,
+                        wAxisX = t,
+                        wAxisY = 32767 - t,
+                        bHats = 0xFFFF_FFFFu,
+                        bHatsEx1 = 0xFFFF_FFFFu,
+                        bHatsEx2 = 0xFFFF_FFFFu,
+                        bHatsEx3 = 0xFFFF_FFFFu,
+                    };
+                    UpdateVJD_V2(id, ref pos);
+                }
+                frames++;
+                Thread.Sleep(1);
+            }
+            double fps = frames / (sw.ElapsedMilliseconds / 1000.0);
+            Console.WriteLine($"  {frames} frames in {sw.ElapsedMilliseconds}ms = {fps:F1} fps");
+
+            // Check WinMM sees the right number of devices
+            var winmmDevs = EnumerateWinMMDevices();
+            Console.WriteLine($"  WinMM responding devices: {winmmDevs.Count}");
+        }
+
+        // Cleanup
+        Console.WriteLine("\n─── Cleanup ───");
+        foreach (uint id in acquiredDevices)
+        {
+            ResetVJD(id);
+            RelinquishVJD(id);
+        }
+        RemoveAllVJoyNodes();
+
+        Console.WriteLine($"\n=== INCREMENTAL TEST: {(allOk ? "PASS" : "FAIL")} ===");
+        return allOk ? 0 : 1;
+    }
+
     /// <summary>
     /// Enumerates which WinMM joystick IDs are currently responding.
     /// </summary>
@@ -2103,8 +2297,9 @@ class Program
     /// <summary>
     /// Creates vJoy device nodes via SetupAPI.
     /// Each node gets DICD_GENERATE_ID so Windows picks a unique instance ID.
-    /// After registering nodes, calls UpdateDriverForPlugAndPlayDevicesW to
-    /// bind the driver to the hardware ID.
+    /// After registering nodes, calls UpdateDriverForPlugAndPlayDevicesW with
+    /// flag=0 (no INSTALLFLAG_FORCE) to bind the driver only to new/unmatched
+    /// nodes without re-binding already-bound ones.
     /// </summary>
     static bool CreateDeviceNodes(int count)
     {
@@ -2174,10 +2369,13 @@ class Program
             return false;
         }
 
-        // Bind the vJoy driver to all device nodes with this hardware ID.
+        // Bind driver to new device nodes. Flag=0 (no INSTALLFLAG_FORCE) so
+        // already-bound devices are left alone — only unmatched nodes get installed.
+        // INSTALLFLAG_FORCE (1) would re-bind ALL matching devices, creating duplicate
+        // HID children and invalidating existing controller handles.
         Console.Write($"  Binding driver ({infPath})... ");
         bool reboot;
-        if (!UpdateDriverForPlugAndPlayDevicesW(IntPtr.Zero, VJOY_HWID, infPath, 1, out reboot))
+        if (!UpdateDriverForPlugAndPlayDevicesW(IntPtr.Zero, VJOY_HWID, infPath, 0, out reboot))
         {
             int err = Marshal.GetLastWin32Error();
             Console.WriteLine($"FAILED (error 0x{err:X})");

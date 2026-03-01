@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:PadForge.ViewModels"
              xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:views="clr-namespace:PadForge.Views"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:PadViewModel}"
              d:DesignHeight="700" d:DesignWidth="900">
@@ -120,264 +121,82 @@
                 <TabItem.Header>
                     <TextBlock Text="Controller" FontSize="14" FontWeight="SemiBold" Padding="4,2"/>
                 </TabItem.Header>
-                <Viewbox Stretch="Uniform" Margin="4">
-                    <StackPanel Width="768" HorizontalAlignment="Center">
+                <Grid Margin="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>      <!-- 3D viewport -->
+                        <RowDefinition Height="Auto"/>   <!-- Motor bars -->
+                        <RowDefinition Height="Auto"/>   <!-- Map All -->
+                    </Grid.RowDefinitions>
 
-                        <!-- ══════════════════════════════════════
-                             TOP VIEW: Triggers + Bumpers
-                             ══════════════════════════════════════ -->
-                        <Grid Width="768" Height="432" Margin="0,4,0,1">
-                                <Image Source="/Resources/Xbox Series Controller - Top.png" Stretch="Fill"/>
-                                <Canvas Width="768" Height="432">
+                    <!-- ══════════════════════════════════════
+                         3D CONTROLLER MODEL
+                         Adapted from Handheld Companion (CC BY-NC-SA 4.0)
+                         ══════════════════════════════════════ -->
+                    <views:ControllerModelView x:Name="ControllerModel3D" Grid.Row="0" />
 
-                                    <!-- LT trigger — sliding bar -->
-                                    <Border Tag="LeftTrigger" Canvas.Left="145" Canvas.Top="180" Width="93" Height="98"
-                                            Background="#30000000" CornerRadius="5" ClipToBounds="True"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click">
-                                        <Canvas>
-                                            <Border Width="85" Height="20" CornerRadius="6"
-                                                    Background="#FF2196F3" Canvas.Left="4"
-                                                    Canvas.Top="{Binding LeftTrigger,
-                                                        Converter={StaticResource NormToTriggerSlideConverter},
-                                                        ConverterParameter='98,20'}"/>
-                                        </Canvas>
-                                    </Border>
+                    <!-- ══════════════════════════════════════
+                         MOTOR ACTIVITY INDICATORS
+                         ══════════════════════════════════════ -->
+                    <Grid Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                                    <!-- RT trigger — sliding bar -->
-                                    <Border Tag="RightTrigger" Canvas.Left="529" Canvas.Top="180" Width="93" Height="98"
-                                            Background="#30000000" CornerRadius="5" ClipToBounds="True"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click">
-                                        <Canvas>
-                                            <Border Width="85" Height="20" CornerRadius="6"
-                                                    Background="#FF2196F3" Canvas.Left="4"
-                                                    Canvas.Top="{Binding RightTrigger,
-                                                        Converter={StaticResource NormToTriggerSlideConverter},
-                                                        ConverterParameter='98,20'}"/>
-                                        </Canvas>
-                                    </Border>
-
-                                    <!-- Left shoulder — invisible when idle, light blue when pressed -->
-                                    <Border Tag="LeftShoulder" Canvas.Left="149" Canvas.Top="278" Width="142" Height="72" CornerRadius="6"
-                                            Background="#FF2196F3"
-                                            Opacity="{Binding LeftShoulder, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- Right shoulder — invisible when idle, light blue when pressed -->
-                                    <Border Tag="RightShoulder" Canvas.Left="477" Canvas.Top="278" Width="142" Height="72" CornerRadius="6"
-                                            Background="#FF2196F3"
-                                            Opacity="{Binding RightShoulder, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                </Canvas>
-                        </Grid>
-
-                        <!-- ══════════════════════════════════════
-                             FRONT VIEW: Sticks, Buttons, D-Pad, Center
-                             ══════════════════════════════════════ -->
-                        <Grid Width="768" Height="588" ClipToBounds="True" Margin="0,1,0,2">
-                                <Image Source="/Resources/Xbox Series Controller - Front.png" Stretch="Fill" RenderTransformOrigin="0.494,0.495"/>
-                                <Canvas Width="768" Height="588">
-
-                                    <!-- ── LEFT STICK ── -->
-                                    <Canvas Canvas.Left="190" Canvas.Top="158" Width="84" Height="84" ClipToBounds="True">
-                                        <Ellipse Width="84" Height="84" Fill="#40000000"
-                                                 Stroke="#60FFFFFF" StrokeThickness="1.5"/>
-                                        <Ellipse Width="45" Height="45" Fill="#FF2196F3"
-                                                 Stroke="#FF1976D2" StrokeThickness="1.5"
-                                                 Canvas.Left="{Binding ThumbLX,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"
-                                                 Canvas.Top="{Binding ThumbLY,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"/>
-                                    </Canvas>
-                                    <!-- LS click glow -->
-                                    <Ellipse Tag="LeftThumbButton" Canvas.Left="190" Canvas.Top="158" Width="84" Height="84"
-                                             Fill="Transparent" Stroke="#FF2196F3" StrokeThickness="3"
-                                             Opacity="{Binding LeftThumbButton,
-                                                 Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Left stick — Up arrow (Y axis) -->
-                                    <Polygon Tag="LeftThumbAxisY" Canvas.Left="216" Canvas.Top="126"
-                                             Points="14,0 28,26 0,26" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Left stick — Right arrow (X axis) -->
-                                    <Polygon Tag="LeftThumbAxisX" Canvas.Left="278" Canvas.Top="184"
-                                             Points="0,0 26,14 0,28" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── RIGHT STICK ── -->
-                                    <Canvas Canvas.Left="421" Canvas.Top="250" Width="84" Height="84" ClipToBounds="True">
-                                        <Ellipse Width="84" Height="84" Fill="#40000000"
-                                                 Stroke="#60FFFFFF" StrokeThickness="1.5"/>
-                                        <Ellipse Width="45" Height="45" Fill="#FF2196F3"
-                                                 Stroke="#FF1976D2" StrokeThickness="1.5"
-                                                 Canvas.Left="{Binding ThumbRX,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"
-                                                 Canvas.Top="{Binding ThumbRY,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"/>
-                                    </Canvas>
-                                    <!-- RS click glow -->
-                                    <Ellipse Tag="RightThumbButton" Canvas.Left="421" Canvas.Top="250" Width="84" Height="84"
-                                             Fill="Transparent" Stroke="#FF2196F3" StrokeThickness="3"
-                                             Opacity="{Binding RightThumbButton,
-                                                 Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Right stick — Up arrow (Y axis) -->
-                                    <Polygon Tag="RightThumbAxisY" Canvas.Left="447" Canvas.Top="218"
-                                             Points="14,0 28,26 0,26" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Right stick — Right arrow (X axis) -->
-                                    <Polygon Tag="RightThumbAxisX" Canvas.Left="509" Canvas.Top="276"
-                                             Points="0,0 26,14 0,28" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── D-PAD DIRECTION HIGHLIGHTS — unified light blue ── -->
-                                    <Rectangle Tag="DPadUp" Canvas.Left="291" Canvas.Top="255" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadUp, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Rectangle Tag="DPadDown" Canvas.Left="291" Canvas.Top="314" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadDown, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Rectangle Tag="DPadLeft" Canvas.Left="260" Canvas.Top="284" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadLeft, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Rectangle Tag="DPadRight" Canvas.Left="321" Canvas.Top="284" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadRight, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── ABXY BUTTONS — unified light blue ── -->
-                                    <Ellipse Tag="ButtonA" Canvas.Left="517" Canvas.Top="222" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonA, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonB" Canvas.Left="558" Canvas.Top="184" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonB, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonX" Canvas.Left="477" Canvas.Top="182" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonX, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonY" Canvas.Left="517" Canvas.Top="143" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonY, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── CENTER BUTTONS — unified light blue ── -->
-                                    <Ellipse Tag="ButtonGuide" Canvas.Left="360" Canvas.Top="116" Width="50" Height="50"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonGuide, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonBack" Canvas.Left="327" Canvas.Top="188" Width="26" Height="26"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonBack, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonStart" Canvas.Left="415" Canvas.Top="188" Width="26" Height="26"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonStart, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                </Canvas>
-                        </Grid>
-
-                        <!-- ══════════════════════════════════════
-                             MOTOR ACTIVITY INDICATORS
-                             ══════════════════════════════════════ -->
-                        <Grid Width="500" Margin="0,0,0,4" HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="24"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0" Cursor="Hand"
-                                        MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                                        MouseLeftButtonDown="LeftMotor_Click"
-                                        ToolTip="Click to test left motor"
-                                        Background="Transparent">
-                                <TextBlock Text="L Motor" FontSize="26"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                                <Border Height="50" Background="#FF1E1E21" CornerRadius="3"
-                                        BorderBrush="#FF3F3F46" BorderThickness="1">
-                                    <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
-                                               HorizontalAlignment="Left"
-                                               Width="{Binding LeftMotorDisplay,
-                                                   Converter={StaticResource NormToTriggerHeightConverter},
-                                                   ConverterParameter=240}"/>
-                                </Border>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2" Cursor="Hand"
-                                        MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                                        MouseLeftButtonDown="RightMotor_Click"
-                                        ToolTip="Click to test right motor"
-                                        Background="Transparent">
-                                <TextBlock Text="R Motor" FontSize="26"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                                <Border Height="50" Background="#FF1E1E21" CornerRadius="3"
-                                        BorderBrush="#FF3F3F46" BorderThickness="1">
-                                    <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
-                                               HorizontalAlignment="Left"
-                                               Width="{Binding RightMotorDisplay,
-                                                   Converter={StaticResource NormToTriggerHeightConverter},
-                                                   ConverterParameter=240}"/>
-                                </Border>
-                            </StackPanel>
-                        </Grid>
-
-                        <!-- ══════════════════════════════════════
-                             MAP ALL — Controller tab controls
-                             ══════════════════════════════════════ -->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,4">
-                            <Button Content="Map All" Command="{Binding MapAllCommand}"
-                                    Padding="32,14" Margin="0,0,16,0" FontSize="36"
-                                    ToolTip="Sequentially record all mappings — press a button/axis for each prompt"/>
-                            <Button Content="Stop" Padding="24,10" FontSize="30"
-                                    Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Click="MapAllStop_Click"/>
-                            <TextBlock Text="{Binding MapAllPromptText}" FontSize="36" FontWeight="SemiBold"
-                                       VerticalAlignment="Center" Margin="16,0,0,0"
-                                       Foreground="#FF2196F3"
-                                       Visibility="{Binding MapAllPromptText, Converter={StaticResource NullToCollapsedConverter}}"/>
+                        <StackPanel Grid.Column="0" Cursor="Hand"
+                                    MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
+                                    MouseLeftButtonDown="LeftMotor_Click"
+                                    ToolTip="Click to test left motor"
+                                    Background="Transparent">
+                            <TextBlock Text="L Motor" FontSize="14"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                            <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
+                                    BorderBrush="#FF3F3F46" BorderThickness="1">
+                                <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
+                                           HorizontalAlignment="Left"
+                                           Width="{Binding LeftMotorDisplay,
+                                               Converter={StaticResource NormToTriggerHeightConverter},
+                                               ConverterParameter=240}"/>
+                            </Border>
                         </StackPanel>
 
+                        <StackPanel Grid.Column="2" Cursor="Hand"
+                                    MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
+                                    MouseLeftButtonDown="RightMotor_Click"
+                                    ToolTip="Click to test right motor"
+                                    Background="Transparent">
+                            <TextBlock Text="R Motor" FontSize="14"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                            <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
+                                    BorderBrush="#FF3F3F46" BorderThickness="1">
+                                <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
+                                           HorizontalAlignment="Left"
+                                           Width="{Binding RightMotorDisplay,
+                                               Converter={StaticResource NormToTriggerHeightConverter},
+                                               ConverterParameter=240}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- ══════════════════════════════════════
+                         MAP ALL — Controller tab controls
+                         ══════════════════════════════════════ -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
+                        <Button Content="Map All" Command="{Binding MapAllCommand}"
+                                Padding="16,8" Margin="0,0,8,0" FontSize="14"
+                                ToolTip="Sequentially record all mappings — press a button/axis for each prompt"/>
+                        <Button Content="Stop" Padding="12,6" FontSize="14"
+                                Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Click="MapAllStop_Click"/>
+                        <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="8,0,0,0"
+                                   Foreground="#FF2196F3"
+                                   Visibility="{Binding MapAllPromptText, Converter={StaticResource NullToCollapsedConverter}}"/>
                     </StackPanel>
-                </Viewbox>
+                </Grid>
             </TabItem>
 
             <!-- Separator between slot-level and device-specific tabs -->

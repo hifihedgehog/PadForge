@@ -403,36 +403,25 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Ensures at least <paramref name="requiredCount"/> vJoy device nodes exist.
-        /// When more nodes are needed, removes ALL existing nodes and recreates the
-        /// entire set in one batch. This avoids the INSTALLFLAG_FORCE issue where
-        /// UpdateDriverForPlugAndPlayDevicesW re-binds already-bound devices,
-        /// creating duplicate HID children and invalidating acquired handles.
-        ///
-        /// The caller (CreateVJoyController) must relinquish existing devices before
-        /// calling this and re-acquire them after, since the rebuild invalidates handles.
-        ///
-        /// Returns true if enough free or existing devices are available.
+        /// Called once by UpdateVirtualDevices() BEFORE any per-slot creation, so all
+        /// nodes are created in a single batch with one UpdateDriverForPlugAndPlayDevicesW
+        /// call. This avoids the stale PnP child device issue that causes phantom controllers.
+        /// Returns true if enough devices are available.
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
         {
-            // Ensure the vJoy driver INF is in the Windows driver store (once per session).
-            // Without this, PnP won't set UpperFilters=mshidkmdf from the INF when binding
-            // new device nodes, and the HID-KMDF bridge won't be created — vjoy.sys handles
-            // IOCTLs (AcquireVJD/UpdateVJD succeed) but no HID reports reach Windows.
             if (!_driverStoreChecked)
             {
                 _driverStoreChecked = true;
                 EnsureDriverInStore();
             }
 
-            // Count actual PnP device nodes (reliable, not stale DLL state).
             int existing = CountExistingDevices();
 
             DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
 
             if (existing > requiredCount)
             {
-                // More nodes than needed (all ours) — remove the extras from the end.
                 var instanceIds = EnumerateVJoyInstanceIds();
                 for (int i = instanceIds.Count - 1; i >= requiredCount; i--)
                     RemoveDeviceNode(instanceIds[i]);
@@ -442,29 +431,23 @@ namespace PadForge.Common.Input
 
             if (existing >= requiredCount)
             {
-                // All nodes are ours and we have enough — no need to recreate.
                 EnsureDllLoaded();
                 return true;
             }
 
-            // Need more nodes. Remove ALL existing nodes first, then recreate the full set.
-            // UpdateDriverForPlugAndPlayDevicesW re-binds ALL matching devices (even with
-            // flag=0), invalidating acquired handles. By removing everything and recreating
-            // in one batch, we avoid partial-state issues. The caller must relinquish and
-            // re-acquire existing devices around this call.
+            // Need to create nodes. Since UpdateDriverForPlugAndPlayDevicesW re-binds
+            // ALL matching devices, we must start from a clean slate: remove any existing
+            // nodes, then create the full set in one batch.
             if (existing > 0)
             {
-                DiagLog($"Removing {existing} existing node(s) for full rebuild...");
+                DiagLog($"Removing {existing} existing node(s) for clean batch create...");
                 RemoveAllDeviceNodes();
-                Thread.Sleep(500); // Give PnP time to clean up
+                Thread.Sleep(2000); // Give PnP time to fully clean up child HID devices
             }
 
-            // Write HID descriptors for ALL devices BEFORE creating nodes.
-            // Xbox 360 layout: 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 continuous POV.
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
 
-            // Create ALL device nodes in one batch (single UpdateDriverForPlugAndPlayDevicesW call).
-            DiagLog($"Creating {requiredCount} device node(s) (full batch)");
+            DiagLog($"Creating {requiredCount} device node(s) (single batch)");
 
             if (!CreateVJoyDevices(requiredCount))
             {
@@ -472,7 +455,7 @@ namespace PadForge.Common.Input
                 return false;
             }
 
-            // Wait for PnP to bind the driver to the new device nodes.
+            // Wait for PnP to bind the driver and make devices available.
             _dllLoaded = false;
             for (int attempt = 0; attempt < 20; attempt++)
             {

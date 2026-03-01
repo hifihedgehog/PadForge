@@ -113,6 +113,14 @@ namespace PadForge.Common.Input
             if (_connected)
             {
                 DiagLog($"Disconnect: deviceId={_deviceId}, submitCalls={_submitCallCount}, submitFails={_submitFailCount}");
+
+                // Remove FFB routing for this device.
+                lock (_ffbLock)
+                {
+                    _ffbDeviceMap.Remove(_deviceId);
+                    _ffbDeviceStates.Remove(_deviceId);
+                }
+
                 VJoyNative.ResetVJD(_deviceId);
                 VJoyNative.RelinquishVJD(_deviceId);
                 _connected = false;
@@ -245,7 +253,346 @@ namespace PadForge.Common.Input
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
-            // vJoy has no rumble/force feedback callback — no-op.
+            // Register this device for FFB routing: vJoy device ID → pad index + vibration array.
+            lock (_ffbLock)
+            {
+                _ffbDeviceMap[_deviceId] = (padIndex, vibrationStates);
+
+                // Register the global FFB callback once (shared across all vJoy devices).
+                if (!_ffbCallbackRegistered)
+                {
+                    try
+                    {
+                        // Must keep a strong reference to the delegate to prevent GC.
+                        _ffbCallbackDelegate = FfbCallback;
+                        VJoyNative.FfbRegisterGenCB(_ffbCallbackDelegate, IntPtr.Zero);
+                        _ffbCallbackRegistered = true;
+                        DiagLog($"FFB callback registered (device {_deviceId}, pad {padIndex})");
+                    }
+                    catch (DllNotFoundException)
+                    {
+                        DiagLog("FFB callback registration failed: DLL not found");
+                    }
+                    catch (Exception ex)
+                    {
+                        DiagLog($"FFB callback registration failed: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    DiagLog($"FFB callback already registered, added device {_deviceId} → pad {padIndex}");
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  FFB (Force Feedback) passthrough
+        //
+        //  vJoy's FfbRegisterGenCB fires on a thread pool thread whenever a
+        //  game sends a DirectInput force feedback effect to the virtual joystick.
+        //  We parse the FFB packets and map them to left/right motor vibration,
+        //  matching the ViGEm FeedbackReceived pattern.
+        // ─────────────────────────────────────────────
+
+        private static readonly object _ffbLock = new object();
+        private static bool _ffbCallbackRegistered;
+        private static VJoyNative.FfbGenCB _ffbCallbackDelegate;
+
+        /// <summary>Maps vJoy device ID → (padIndex, vibrationStates array).</summary>
+        private static readonly System.Collections.Generic.Dictionary<uint, (int padIndex, Vibration[] states)>
+            _ffbDeviceMap = new();
+
+        /// <summary>
+        /// Per-device FFB effect state. Tracks the most recently set constant/periodic
+        /// magnitude and gain so we can compute motor output when effects start/stop.
+        /// </summary>
+        private static readonly System.Collections.Generic.Dictionary<uint, FfbDeviceState>
+            _ffbDeviceStates = new();
+
+        private class FfbDeviceState
+        {
+            /// <summary>Device-level gain (0–255, default 255 = 100%).</summary>
+            public byte DeviceGain = 255;
+            /// <summary>Per-effect: last known magnitude (0–10000 absolute).</summary>
+            public System.Collections.Generic.Dictionary<byte, FfbEffectState> Effects = new();
+        }
+
+        private class FfbEffectState
+        {
+            public FFBEType Type;
+            public int Magnitude;           // absolute, 0–10000
+            public byte Gain = 255;         // per-effect gain from effect report (0–255)
+            public ushort Duration;         // ms, 0xFFFF=infinite
+            public bool Running;
+            public ushort Direction;        // polar direction 0–35999 (hundredths of degrees)
+        }
+
+        /// <summary>
+        /// Global FFB callback invoked by vJoyInterface.dll on its thread pool.
+        /// Routes FFB packets by device ID to the correct VibrationStates[] slot.
+        /// </summary>
+        private static void FfbCallback(IntPtr data, IntPtr userData)
+        {
+            try
+            {
+                uint deviceId = 0;
+                if (VJoyNative.Ffb_h_DeviceID(data, ref deviceId) != 0)
+                    return;
+
+                FFBPType packetType = 0;
+                if (VJoyNative.Ffb_h_Type(data, ref packetType) != 0)
+                    return;
+
+                // Get or create per-device state.
+                FfbDeviceState devState;
+                lock (_ffbLock)
+                {
+                    if (!_ffbDeviceStates.TryGetValue(deviceId, out devState))
+                    {
+                        devState = new FfbDeviceState();
+                        _ffbDeviceStates[deviceId] = devState;
+                    }
+                }
+
+                switch (packetType)
+                {
+                    case FFBPType.PT_EFFREP: // Set Effect Report — contains effect type, gain, direction, duration
+                    {
+                        var eff = new FFB_EFF_REPORT();
+                        if (VJoyNative.Ffb_h_Eff_Report(data, ref eff) == 0)
+                        {
+                            byte ebi = eff.EffectBlockIndex;
+                            if (!devState.Effects.TryGetValue(ebi, out var es))
+                            {
+                                es = new FfbEffectState();
+                                devState.Effects[ebi] = es;
+                            }
+                            es.Type = eff.EffectType;
+                            es.Gain = eff.Gain;
+                            es.Duration = eff.Duration;
+                            es.Direction = eff.Direction;
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_CONSTREP: // Set Constant Force
+                    {
+                        var cst = new FFB_EFF_CONSTANT();
+                        if (VJoyNative.Ffb_h_Eff_Constant(data, ref cst) == 0)
+                        {
+                            if (devState.Effects.TryGetValue(cst.EffectBlockIndex, out var es))
+                                es.Magnitude = Math.Abs(cst.Magnitude); // -10000..+10000 → 0..10000
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_PRIDREP: // Set Periodic (Sine, Square, Triangle, etc.)
+                    {
+                        var prd = new FFB_EFF_PERIOD();
+                        if (VJoyNative.Ffb_h_Eff_Period(data, ref prd) == 0)
+                        {
+                            if (devState.Effects.TryGetValue(prd.EffectBlockIndex, out var es))
+                                es.Magnitude = (int)prd.Magnitude; // 0..10000
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_RAMPREP: // Set Ramp Force
+                    {
+                        var ramp = new FFB_EFF_RAMP();
+                        if (VJoyNative.Ffb_h_Eff_Ramp(data, ref ramp) == 0)
+                        {
+                            if (devState.Effects.TryGetValue(ramp.EffectBlockIndex, out var es))
+                                es.Magnitude = Math.Max(Math.Abs(ramp.Start), Math.Abs(ramp.End));
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_CONDREP: // Set Condition (Spring, Damper, Friction, Inertia)
+                    {
+                        var cond = new FFB_EFF_COND();
+                        if (VJoyNative.Ffb_h_Eff_Cond(data, ref cond) == 0)
+                        {
+                            if (devState.Effects.TryGetValue(cond.EffectBlockIndex, out var es))
+                            {
+                                // Use the larger of pos/neg coefficients as magnitude.
+                                es.Magnitude = Math.Max(Math.Abs(cond.PosCoeff), Math.Abs(cond.NegCoeff));
+                            }
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_EFOPREP: // Effect Operation (Start/Stop/Solo)
+                    {
+                        var op = new FFB_EFF_OP();
+                        if (VJoyNative.Ffb_h_EffOp(data, ref op) == 0)
+                        {
+                            byte ebi = op.EffectBlockIndex;
+                            if (op.EffectOp == FFBOP.EFF_START || op.EffectOp == FFBOP.EFF_SOLO)
+                            {
+                                if (op.EffectOp == FFBOP.EFF_SOLO)
+                                {
+                                    // Solo: stop all other effects.
+                                    foreach (var kv in devState.Effects)
+                                        if (kv.Key != ebi) kv.Value.Running = false;
+                                }
+                                if (devState.Effects.TryGetValue(ebi, out var es))
+                                    es.Running = true;
+                            }
+                            else if (op.EffectOp == FFBOP.EFF_STOP)
+                            {
+                                if (devState.Effects.TryGetValue(ebi, out var es))
+                                    es.Running = false;
+                            }
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_GAINREP: // Device Gain
+                    {
+                        byte gain = 0;
+                        if (VJoyNative.Ffb_h_DevGain(data, ref gain) == 0)
+                        {
+                            devState.DeviceGain = gain;
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_CTRLREP: // Device Control (Reset, Stop All, etc.)
+                    {
+                        FFB_CTRL ctrl = 0;
+                        if (VJoyNative.Ffb_h_DevCtrl(data, ref ctrl) == 0)
+                        {
+                            if (ctrl == FFB_CTRL.CTRL_STOPALL || ctrl == FFB_CTRL.CTRL_DEVRST)
+                            {
+                                foreach (var kv in devState.Effects)
+                                    kv.Value.Running = false;
+                                if (ctrl == FFB_CTRL.CTRL_DEVRST)
+                                {
+                                    devState.Effects.Clear();
+                                    devState.DeviceGain = 255;
+                                }
+                            }
+                            else if (ctrl == FFB_CTRL.CTRL_DISACT)
+                            {
+                                foreach (var kv in devState.Effects)
+                                    kv.Value.Running = false;
+                            }
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+
+                    case FFBPType.PT_BLKFRREP: // Block Free (delete effect)
+                    {
+                        uint blockIndex = 0;
+                        if (VJoyNative.Ffb_h_EffectBlockIndex(data, ref blockIndex) == 0)
+                        {
+                            devState.Effects.Remove((byte)blockIndex);
+                            ApplyMotorOutput(deviceId, devState);
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy FFB] Callback exception: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Computes aggregate motor output from all running effects and writes to VibrationStates[].
+        /// Uses directional mapping: effects pointing left drive the left motor, right → right motor.
+        /// Constant/ramp forces use magnitude directly; periodic uses peak amplitude.
+        /// </summary>
+        private static void ApplyMotorOutput(uint deviceId, FfbDeviceState devState)
+        {
+            int padIndex;
+            Vibration[] states;
+            lock (_ffbLock)
+            {
+                if (!_ffbDeviceMap.TryGetValue(deviceId, out var entry))
+                    return;
+                padIndex = entry.padIndex;
+                states = entry.states;
+            }
+
+            if (padIndex < 0 || padIndex >= states.Length)
+                return;
+
+            // Sum magnitudes from all running effects, split by direction into L/R motors.
+            // Direction is polar: 0=north, 9000=east(right), 18000=south, 27000=west(left).
+            // For simple rumble mapping: left-pointing force → left motor, right → right.
+            // Non-directional effects (spring/damper/condition) go to both motors equally.
+            double leftSum = 0, rightSum = 0;
+
+            foreach (var kv in devState.Effects)
+            {
+                var es = kv.Value;
+                if (!es.Running || es.Magnitude == 0) continue;
+
+                // Apply per-effect gain (0–255).
+                double mag = es.Magnitude * (es.Gain / 255.0);
+
+                // Condition effects (spring/damper/friction/inertia) have no meaningful
+                // direction for rumble — apply equally to both motors.
+                if (es.Type >= FFBEType.ET_SPRNG && es.Type <= FFBEType.ET_FRCTN)
+                {
+                    leftSum += mag;
+                    rightSum += mag;
+                }
+                else
+                {
+                    // Directional split using polar direction.
+                    // Convert direction (0–35999 hundredths of degrees) to radians.
+                    // 0=N, 9000=E, 18000=S, 27000=W.
+                    // Map: sin(dir)=right component, cos(dir)=up/down (both motors).
+                    double rad = es.Direction * Math.PI / 18000.0;
+                    double sinD = Math.Sin(rad); // positive=right, negative=left
+                    double cosD = Math.Cos(rad); // up/down component
+
+                    // Both motors get the base effect; directional bias adds extra to one side.
+                    double base_ = mag * Math.Abs(cosD);
+                    double side = mag * Math.Abs(sinD);
+                    if (sinD >= 0)
+                    {
+                        // Pointing right → emphasize right motor.
+                        rightSum += base_ + side;
+                        leftSum += base_;
+                    }
+                    else
+                    {
+                        // Pointing left → emphasize left motor.
+                        leftSum += base_ + side;
+                        rightSum += base_;
+                    }
+                }
+            }
+
+            // Apply device-level gain.
+            double deviceGainFactor = devState.DeviceGain / 255.0;
+            leftSum *= deviceGainFactor;
+            rightSum *= deviceGainFactor;
+
+            // Scale from 0..10000 → 0..65535 (ushort).
+            ushort newL = (ushort)Math.Min(65535, (int)(leftSum * 65535.0 / 10000.0));
+            ushort newR = (ushort)Math.Min(65535, (int)(rightSum * 65535.0 / 10000.0));
+
+            ushort oldL = states[padIndex].LeftMotorSpeed;
+            ushort oldR = states[padIndex].RightMotorSpeed;
+
+            states[padIndex].LeftMotorSpeed = newL;
+            states[padIndex].RightMotorSpeed = newR;
+
+            if (newL != oldL || newR != oldR)
+                RumbleLogger.Log($"[vJoy FFB] Dev{deviceId} Pad{padIndex} L:{oldL}->{newL} R:{oldR}->{newR}");
         }
 
         // ─────────────────────────────────────────────
@@ -406,6 +753,11 @@ namespace PadForge.Common.Input
         /// Called once by UpdateVirtualDevices() BEFORE any per-slot creation, so all
         /// nodes are created in a single batch with one UpdateDriverForPlugAndPlayDevicesW
         /// call. This avoids the stale PnP child device issue that causes phantom controllers.
+        ///
+        /// IMPORTANT: This method is additive — it never removes existing nodes that may
+        /// have active AcquireVJD handles. When scaling up (e.g., 1→2 nodes), only the
+        /// delta is created. The first call per session does a full recreate to replace
+        /// stale nodes from previous sessions with potentially different descriptors.
         /// Returns true if enough devices are available.
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
@@ -420,40 +772,38 @@ namespace PadForge.Common.Input
 
             DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
 
-            if (existing > requiredCount)
-            {
-                var instanceIds = EnumerateVJoyInstanceIds();
-                for (int i = instanceIds.Count - 1; i >= requiredCount; i--)
-                    RemoveDeviceNode(instanceIds[i]);
-                existing = requiredCount;
-                _nodesCreatedThisSession = Math.Min(_nodesCreatedThisSession, requiredCount);
-            }
-
-            // If we already created nodes this session, reuse them.
-            // On first call (_nodesCreatedThisSession == 0), always recreate from scratch
-            // to replace any leftover nodes from a previous session that may have a
-            // different hardware ID (e.g., PID_BEAD with FFB → PID_0FFB without FFB).
+            // Already have enough nodes AND we created them this session (so descriptors are correct).
             if (existing >= requiredCount && _nodesCreatedThisSession > 0)
             {
                 EnsureDllLoaded();
                 return true;
             }
 
-            // Need to create nodes. Since UpdateDriverForPlugAndPlayDevicesW re-binds
-            // ALL matching devices, we must start from a clean slate: remove any existing
-            // nodes, then create the full set in one batch.
-            if (existing > 0)
+            // First call this session (_nodesCreatedThisSession == 0): recreate from scratch
+            // to replace leftover nodes from a previous session that may have a different
+            // hardware ID (e.g., PID_BEAD with FFB → PID_0FFB without FFB).
+            if (_nodesCreatedThisSession == 0 && existing > 0)
             {
-                DiagLog($"Removing {existing} existing node(s) for clean batch create...");
+                DiagLog($"First session call: removing {existing} stale node(s) for clean batch create...");
                 RemoveAllDeviceNodes();
                 Thread.Sleep(2000); // Give PnP time to fully clean up child HID devices
+                existing = 0;
+            }
+
+            // How many new nodes to create?
+            int toCreate = requiredCount - existing;
+            if (toCreate <= 0)
+            {
+                EnsureDllLoaded();
+                _nodesCreatedThisSession = existing;
+                return true;
             }
 
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
 
-            DiagLog($"Creating {requiredCount} device node(s) (single batch)");
+            DiagLog($"Creating {toCreate} device node(s) (additive, existing={existing})");
 
-            if (!CreateVJoyDevices(requiredCount))
+            if (!CreateVJoyDevices(toCreate))
             {
                 DiagLog("CreateVJoyDevices FAILED");
                 return false;
@@ -470,10 +820,10 @@ namespace PadForge.Common.Input
                     DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
                     _nodesCreatedThisSession = requiredCount;
 
-                    // vjoy.sys is compiled with FFB support and always creates
-                    // 2 HID collections per device (COL01=joystick, COL02=FFB).
-                    // Disable the COL02 children so they don't appear in joy.cpl.
-                    DisableFfbChildren();
+                    // vjoy.sys is compiled with FFB support and creates 2 HID
+                    // collections per device: COL01 (joystick input) and COL02 (FFB/PID).
+                    // COL02 must stay enabled so games can send DirectInput force
+                    // feedback effects through it → vjoy.sys → FfbRegisterGenCB → PadForge.
 
                     return true;
                 }
@@ -1100,6 +1450,171 @@ public static class PF_SetupApi {{
         public const uint HID_USAGE_RX = 0x33;
         public const uint HID_USAGE_RY = 0x34;
         public const uint HID_USAGE_RZ = 0x35;
+
+        // ── Force Feedback (FFB) ──
+
+        /// <summary>Callback delegate for FfbRegisterGenCB.</summary>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void FfbGenCB(IntPtr data, IntPtr userData);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FfbRegisterGenCB(FfbGenCB cb, IntPtr data);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_DeviceID(IntPtr packet, ref uint deviceId);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_Type(IntPtr packet, ref FFBPType type);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_EffectBlockIndex(IntPtr packet, ref uint index);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_Eff_Report(IntPtr packet, ref FFB_EFF_REPORT effect);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_Eff_Constant(IntPtr packet, ref FFB_EFF_CONSTANT effect);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_Eff_Ramp(IntPtr packet, ref FFB_EFF_RAMP effect);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_Eff_Period(IntPtr packet, ref FFB_EFF_PERIOD effect);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_Eff_Cond(IntPtr packet, ref FFB_EFF_COND effect);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_EffOp(IntPtr packet, ref FFB_EFF_OP operation);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_DevCtrl(IntPtr packet, ref FFB_CTRL control);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint Ffb_h_DevGain(IntPtr packet, ref byte gain);
+    }
+
+    // ─────────────────────────────────────────────
+    //  FFB enums and structs (matching vJoy SDK public.h)
+    // ─────────────────────────────────────────────
+
+    internal enum FFBEType : uint
+    {
+        ET_NONE  = 0,
+        ET_CONST = 1,   // Constant Force
+        ET_RAMP  = 2,   // Ramp
+        ET_SQR   = 3,   // Square
+        ET_SINE  = 4,   // Sine
+        ET_TRNGL = 5,   // Triangle
+        ET_STUP  = 6,   // Sawtooth Up
+        ET_STDN  = 7,   // Sawtooth Down
+        ET_SPRNG = 8,   // Spring
+        ET_DMPR  = 9,   // Damper
+        ET_INRT  = 10,  // Inertia
+        ET_FRCTN = 11,  // Friction
+        ET_CSTM  = 12,  // Custom Force Data
+    }
+
+    internal enum FFBPType : uint
+    {
+        PT_EFFREP   = 0x01,  // Set Effect Report
+        PT_ENVREP   = 0x02,  // Set Envelope Report
+        PT_CONDREP  = 0x03,  // Set Condition Report
+        PT_PRIDREP  = 0x04,  // Set Periodic Report
+        PT_CONSTREP = 0x05,  // Set Constant Force Report
+        PT_RAMPREP  = 0x06,  // Set Ramp Force Report
+        PT_CSTMREP  = 0x07,  // Custom Force Data Report
+        PT_SMPLREP  = 0x08,  // Download Force Sample
+        PT_EFOPREP  = 0x0A,  // Effect Operation Report
+        PT_BLKFRREP = 0x0B,  // PID Block Free Report
+        PT_CTRLREP  = 0x0C,  // PID Device Control
+        PT_GAINREP  = 0x0D,  // Device Gain Report
+        PT_SETCREP  = 0x0E,  // Set Custom Force Report
+        PT_NEWEFREP = 0x11,  // Create New Effect Report
+        PT_BLKLDREP = 0x12,  // Block Load Report
+        PT_POOLREP  = 0x13,  // PID Pool Report
+        PT_STATEREP = 0x14,  // PID State Report
+    }
+
+    internal enum FFB_CTRL : uint
+    {
+        CTRL_ENACT   = 1,  // Enable Actuators
+        CTRL_DISACT  = 2,  // Disable Actuators
+        CTRL_STOPALL = 3,  // Stop All Effects
+        CTRL_DEVRST  = 4,  // Device Reset
+        CTRL_DEVPAUSE = 5, // Device Pause
+        CTRL_DEVCONT = 6,  // Device Continue
+    }
+
+    internal enum FFBOP : uint
+    {
+        EFF_START = 1,
+        EFF_SOLO  = 2,
+        EFF_STOP  = 3,
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct FFB_EFF_REPORT
+    {
+        [FieldOffset(0)]  public byte EffectBlockIndex;
+        [FieldOffset(4)]  public FFBEType EffectType;
+        [FieldOffset(8)]  public ushort Duration;
+        [FieldOffset(10)] public ushort TrigerRpt;
+        [FieldOffset(12)] public ushort SamplePrd;
+        [FieldOffset(14)] public ushort StartDelay;
+        [FieldOffset(16)] public byte Gain;
+        [FieldOffset(17)] public byte TrigerBtn;
+        [FieldOffset(18)] public byte AxesEnabledDirection;
+        [FieldOffset(20)] public bool Polar;
+        [FieldOffset(24)] public ushort Direction;   // Polar: 0–35999 hundredths of degrees
+        [FieldOffset(24)] public ushort DirX;        // Cartesian (overlapped with Direction)
+        [FieldOffset(26)] public ushort DirY;        // Cartesian
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct FFB_EFF_CONSTANT
+    {
+        [FieldOffset(0)] public byte EffectBlockIndex;
+        [FieldOffset(4)] public short Magnitude;     // -10000..+10000
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct FFB_EFF_RAMP
+    {
+        [FieldOffset(0)] public byte EffectBlockIndex;
+        [FieldOffset(4)] public short Start;         // -10000..+10000
+        [FieldOffset(8)] public short End;           // -10000..+10000
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct FFB_EFF_PERIOD
+    {
+        [FieldOffset(0)]  public byte EffectBlockIndex;
+        [FieldOffset(4)]  public uint Magnitude;      // 0..10000
+        [FieldOffset(8)]  public short Offset;        // -10000..+10000
+        [FieldOffset(12)] public uint Phase;           // 0..35999
+        [FieldOffset(16)] public uint Period;          // ms
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct FFB_EFF_COND
+    {
+        [FieldOffset(0)]  public byte EffectBlockIndex;
+        [FieldOffset(4)]  public bool IsY;
+        [FieldOffset(8)]  public short CenterPointOffset;
+        [FieldOffset(12)] public short PosCoeff;       // -10000..+10000
+        [FieldOffset(16)] public short NegCoeff;       // -10000..+10000
+        [FieldOffset(20)] public uint PosSatur;
+        [FieldOffset(24)] public uint NegSatur;
+        [FieldOffset(28)] public int DeadBand;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal struct FFB_EFF_OP
+    {
+        [FieldOffset(0)] public byte EffectBlockIndex;
+        [FieldOffset(4)] public FFBOP EffectOp;
+        [FieldOffset(8)] public byte LoopCount;
     }
 
 }

@@ -504,11 +504,21 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // vJoy: do NOT trim device nodes on individual controller destroy.
-            // Removing a node invalidates AcquireVJD handles on other controllers
-            // that share the same driver, and forces a full recreate when the slot
-            // is re-enabled — which kills the remaining controllers' handles too.
-            // Nodes are cleaned up on engine stop via RemoveAllDeviceNodes().
+            // vJoy: trim excess device nodes so they don't appear in joy.cpl.
+            // Safe because EnsureDevicesAvailable is now additive — re-adding nodes
+            // later won't disturb existing controllers' AcquireVJD handles.
+            try
+            {
+                if (vcType == VirtualControllerType.VJoy)
+                {
+                    int remainingVJoy = 0;
+                    for (int i = 0; i < MaxPads; i++)
+                        if (i != padIndex && _virtualControllers[i]?.Type == VirtualControllerType.VJoy)
+                            remainingVJoy++;
+                    VJoyVirtualController.TrimDeviceNodes(remainingVJoy);
+                }
+            }
+            catch { /* best effort */ }
         }
 
         private void DestroyAllVirtualControllers()

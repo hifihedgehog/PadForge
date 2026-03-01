@@ -199,6 +199,11 @@
                                                     <DataTrigger Binding="{Binding OutputType}" Value="Xbox360">
                                                         <Setter Property="Opacity" Value="1.0"/>
                                                     </DataTrigger>
+                                                    <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Setter Property="Opacity" Value="0.15"/>
+                                                        <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -220,6 +225,11 @@
                                                     <DataTrigger Binding="{Binding OutputType}" Value="DualShock4">
                                                         <Setter Property="Opacity" Value="1.0"/>
                                                     </DataTrigger>
+                                                    <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Setter Property="Opacity" Value="0.15"/>
+                                                        <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -240,6 +250,11 @@
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding OutputType}" Value="VJoy">
                                                         <Setter Property="Opacity" Value="1.0"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding DataContext.IsVJoyInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Setter Property="Opacity" Value="0.15"/>
+                                                        <Setter Property="ToolTip" Value="vJoy driver not installed"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

@@ -195,8 +195,20 @@ namespace PadForge
                     {
                         if (s is MappingItem mi)
                         {
-                            capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
                             Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                            // Y axes: record neg (up in game) first due to NegateAxis inversion.
+                            bool isYAxis = mi.HasNegDirection && mi.TargetSettingName.Contains("AxisY");
+                            if (isYAxis)
+                            {
+                                capturedPad.CurrentRecordingTarget = mi.NegSettingName;
+                                _pendingNegMapping = mi;
+                            }
+                            else
+                            {
+                                capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
+                            }
+
                             _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid);
                         }
                     };
@@ -282,9 +294,10 @@ namespace PadForge
                         InputService.ResolveNegDisplayText(negMapping, deviceGuid);
                     }
 
-                    if (!hadSavedPos && negMapping.HasNegDirection)
+                    if (!hadSavedPos && negMapping.HasNegDirection && !activePad.IsMapAllActive)
                     {
                         // Came from a neg-quadrant click — now auto-prompt for the positive direction.
+                        // (Map All handles the second phase itself via MapAllRecordingNeg.)
                         string dirHint = negMapping.TargetSettingName.Contains("AxisX")
                             ? "(\u2192 right)" : "(\u2193 down)";
                         _viewModel.StatusText = $"Now map: {negMapping.TargetLabel} {dirHint}";
@@ -401,6 +414,15 @@ namespace PadForge
                 pad.MapAllRecordRequested += (s, mapping) =>
                 {
                     Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                    // Y axes record neg (up in game) first due to NegateAxis inversion.
+                    // Pre-set _pendingNegMapping so the recorder result goes to NegSourceDescriptor.
+                    bool isYFirstPhase = mapping.HasNegDirection
+                        && mapping.TargetSettingName.Contains("AxisY")
+                        && !capturedPad.MapAllRecordingNeg;
+                    if (isYFirstPhase)
+                        _pendingNegMapping = mapping;
+
                     _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid);
                 };
                 pad.MapAllCancelRequested += (s, e) =>

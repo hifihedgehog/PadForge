@@ -30,6 +30,7 @@
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
             <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItemSeparator/>
                 <ui:NavigationViewItem Content="About" Tag="About">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Help"/>

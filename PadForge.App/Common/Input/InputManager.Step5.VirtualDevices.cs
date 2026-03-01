@@ -414,7 +414,13 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Creates a vJoy virtual controller using the next available device ID.
-        /// Creates a device node on demand if needed (like ViGEm creates USB nodes).
+        /// Creates device nodes on demand if needed (like ViGEm creates USB nodes).
+        ///
+        /// When adding a new device, ALL existing vJoy nodes are removed and the full
+        /// set is recreated in one batch. This avoids the UpdateDriverForPlugAndPlayDevicesW
+        /// issue where re-binding invalidates existing controller handles. Existing
+        /// VJoyVirtualController instances are disconnected and re-connected after rebuild.
+        ///
         /// Returns null if vJoy driver is not installed or node creation fails.
         /// </summary>
         private IVirtualController CreateVJoyController()
@@ -431,23 +437,47 @@ namespace PadForge.Common.Input
                 return null;
             }
 
-            // Count how many vJoy device nodes we need (this new one + existing connected ones).
-            int activeVJoy = 0;
+            // Collect existing vJoy controllers and their pad indices.
+            var existingVJoy = new System.Collections.Generic.List<(int padIndex, VJoyVirtualController vc)>();
             for (int i = 0; i < MaxPads; i++)
-                if (_virtualControllers[i]?.Type == VirtualControllerType.VJoy)
-                    activeVJoy++;
-            int needed = activeVJoy + 1;
+            {
+                if (_virtualControllers[i] is VJoyVirtualController vjc)
+                    existingVJoy.Add((i, vjc));
+            }
+            int needed = existingVJoy.Count + 1;
 
-            VJoyVirtualController.DiagLog($"CreateVJoyController: activeVJoy={activeVJoy}, needed={needed}");
+            VJoyVirtualController.DiagLog($"CreateVJoyController: existingVJoy={existingVJoy.Count}, needed={needed}");
 
-            // Ensure enough device nodes exist. EnsureDevicesAvailable writes
-            // the HID descriptor (6 axes, 11 buttons, 1 POV) to the registry
-            // before creating device nodes so the driver reads the correct layout.
+            // Relinquish all existing vJoy devices before rebuild.
+            // EnsureDevicesAvailable does a full remove+recreate when adding nodes,
+            // which invalidates all acquired handles.
+            foreach (var (_, vc) in existingVJoy)
+                vc.Disconnect();
+
+            // Ensure enough device nodes exist. This removes all nodes and recreates
+            // the full set in one batch (single UpdateDriverForPlugAndPlayDevicesW call).
             if (!VJoyVirtualController.EnsureDevicesAvailable(needed))
             {
                 VJoyVirtualController.DiagLog("CreateVJoyController: EnsureDevicesAvailable FAILED");
+                // Try to re-acquire existing devices even if we failed to create the new one.
+                foreach (var (_, vc) in existingVJoy)
+                    try { vc.Connect(); } catch { /* best effort */ }
                 RaiseError("Failed to create vJoy device node.", null);
                 return null;
+            }
+
+            // Re-acquire existing vJoy devices with fresh handles after rebuild.
+            foreach (var (padIndex, vc) in existingVJoy)
+            {
+                try
+                {
+                    vc.Connect();
+                    VJoyVirtualController.DiagLog($"Re-acquired vJoy device for pad {padIndex}");
+                }
+                catch (Exception ex)
+                {
+                    VJoyVirtualController.DiagLog($"Failed to re-acquire vJoy device for pad {padIndex}: {ex.Message}");
+                }
             }
 
             uint deviceId = VJoyVirtualController.FindFreeDeviceId();

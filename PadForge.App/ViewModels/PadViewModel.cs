@@ -682,8 +682,16 @@ namespace PadForge.ViewModels
 
             if (vibration != null)
             {
-                LeftMotorDisplay = vibration.LeftMotorSpeed / 65535.0;
-                RightMotorDisplay = vibration.RightMotorSpeed / 65535.0;
+                // Apply FFB scaling so the motor bars reflect what the physical controller receives.
+                double overallFactor = ForceOverallGain / 100.0;
+                double leftFactor = LeftMotorStrength / 100.0;
+                double rightFactor = RightMotorStrength / 100.0;
+                double rawL = vibration.LeftMotorSpeed / 65535.0 * leftFactor * overallFactor;
+                double rawR = vibration.RightMotorSpeed / 65535.0 * rightFactor * overallFactor;
+                if (SwapMotors)
+                    (rawL, rawR) = (rawR, rawL);
+                LeftMotorDisplay = rawL;
+                RightMotorDisplay = rawR;
             }
         }
 

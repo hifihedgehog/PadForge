@@ -211,17 +211,20 @@ namespace PadForge.Common.Input
             }
 
             // --- Pass 1b: Sync vJoy registry descriptor count ---
-            // Always keep the registry descriptor count in sync with the number
-            // of active vJoy slots. This handles both creation (scaling up) and
-            // deletion (scaling down). Without this, deleted vJoy slots persist
-            // as phantom controllers in joy.cpl until app restart.
+            // Only count vJoy slots that have an actual running controller or are
+            // about to create one (active device mapped). Empty vJoy slots with no
+            // device assigned should NOT register descriptors in joy.cpl.
             {
                 int totalVJoyNeeded = 0;
                 for (int i = 0; i < MaxPads; i++)
                 {
-                    if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
-                        SettingsManager.SlotCreated[i])
-                        totalVJoyNeeded++;
+                    if (_virtualControllers[i] is VJoyVirtualController)
+                        totalVJoyNeeded++;  // Already running — always count
+                    else if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                             SettingsManager.SlotCreated[i] &&
+                             _slotInactiveCounter[i] == 0 &&
+                             IsSlotActive(i))
+                        totalVJoyNeeded++;  // About to be created — has active device
                 }
                 if (totalVJoyNeeded > 0 || VJoyVirtualController.CurrentDescriptorCount > 0)
                 {

@@ -49,6 +49,10 @@ namespace PadForge.Views
         private string _flashTarget;
         private bool _flashOn;
 
+        // Axis arrow overlay
+        private ModelVisual3D _arrowVisual;
+        private DispatcherTimer _arrowTimer;
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -358,6 +362,15 @@ namespace PadForge.Views
                 if (hit.Model is not GeometryModel3D hitGeo)
                     continue;
 
+                // Check if hit is on a stick ring — use quadrant detection for X vs Y
+                if (IsStickRingHit(hitGeo, hit.Position, out string stickAxis))
+                {
+                    ControllerElementRecordRequested?.Invoke(this, stickAxis);
+                    ShowAxisArrow(hit.Position, stickAxis);
+                    e.Handled = true;
+                    return;
+                }
+
                 // Walk ClickMap to find which Model3DGroup contains this geometry
                 foreach (var kv in _currentModel.ClickMap)
                 {
@@ -368,6 +381,125 @@ namespace PadForge.Views
                         return;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Checks if the hit geometry belongs to a stick ring, and determines
+        /// X or Y axis based on the click quadrant relative to the joystick center.
+        /// Left/right quadrants → X axis, top/bottom quadrants → Y axis.
+        /// </summary>
+        private bool IsStickRingHit(GeometryModel3D hitGeo, Point3D hitPos, out string axis)
+        {
+            axis = null;
+
+            // Check left stick ring
+            if (_currentModel.LeftThumbRing?.Children.Contains(hitGeo) == true)
+            {
+                var center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
+                axis = DetermineAxisFromQuadrant(hitPos, center, "LeftThumbAxisX", "LeftThumbAxisY");
+                return true;
+            }
+
+            // Check right stick ring
+            if (_currentModel.RightThumbRing?.Children.Contains(hitGeo) == true)
+            {
+                var center = _currentModel.JoystickRotationPointCenterRightMillimeter;
+                axis = DetermineAxisFromQuadrant(hitPos, center, "RightThumbAxisX", "RightThumbAxisY");
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines X or Y axis based on hit position relative to joystick center.
+        /// Model coords: X = left/right, Z = up/down.
+        /// |deltaX| > |deltaZ| → horizontal click → X axis.
+        /// |deltaZ| >= |deltaX| → vertical click → Y axis.
+        /// </summary>
+        private static string DetermineAxisFromQuadrant(
+            Point3D hitPos, Vector3D center, string xAxis, string yAxis)
+        {
+            double deltaX = hitPos.X - center.X;
+            double deltaZ = hitPos.Z - center.Z;
+            return Math.Abs(deltaX) > Math.Abs(deltaZ) ? xAxis : yAxis;
+        }
+
+        /// <summary>
+        /// Shows a 3D arrow at the stick indicating which axis direction was selected.
+        /// Arrow disappears after 1.5 seconds.
+        /// </summary>
+        private void ShowAxisArrow(Point3D hitPos, string axis)
+        {
+            RemoveArrow();
+
+            bool isX = axis.Contains("AxisX");
+
+            // Arrow direction in model space: X-axis arrow points along X, Y-axis arrow points along Z (up)
+            Vector3D direction = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
+
+            // Find the stick center
+            Vector3D center;
+            if (axis.StartsWith("Left"))
+                center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
+            else
+                center = _currentModel.JoystickRotationPointCenterRightMillimeter;
+
+            var centerPt = new Point3D(center.X, center.Y, center.Z);
+
+            // Build a double-headed arrow from two ArrowVisual3D
+            var arrowGroup = new Model3DGroup();
+            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
+            try
+            {
+                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
+            }
+            catch { }
+
+            var arrowMaterial = new DiffuseMaterial(new SolidColorBrush(accentColor));
+            double arrowLen = 12.0;
+            double arrowDia = 1.5;
+
+            // Positive direction arrow
+            var arrow1 = new ArrowVisual3D
+            {
+                Point1 = centerPt,
+                Point2 = centerPt + direction * arrowLen,
+                Diameter = arrowDia,
+                Fill = new SolidColorBrush(accentColor)
+            };
+
+            // Negative direction arrow
+            var arrow2 = new ArrowVisual3D
+            {
+                Point1 = centerPt,
+                Point2 = centerPt - direction * arrowLen,
+                Diameter = arrowDia,
+                Fill = new SolidColorBrush(accentColor)
+            };
+
+            _arrowVisual = new ModelVisual3D();
+            _arrowVisual.Children.Add(arrow1);
+            _arrowVisual.Children.Add(arrow2);
+            ModelViewPort.Children.Add(_arrowVisual);
+
+            // Auto-remove after 1.5 seconds
+            _arrowTimer?.Stop();
+            _arrowTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
+            _arrowTimer.Tick += (s, ev) => { RemoveArrow(); };
+            _arrowTimer.Start();
+        }
+
+        private void RemoveArrow()
+        {
+            _arrowTimer?.Stop();
+            _arrowTimer = null;
+            if (_arrowVisual != null)
+            {
+                ModelViewPort.Children.Remove(_arrowVisual);
+                _arrowVisual = null;
             }
         }
 
@@ -382,19 +514,41 @@ namespace PadForge.Views
             if (string.IsNullOrEmpty(target))
                 return;
 
-            // Axis Y targets resolve to the stick ring (same visual part)
-            _flashTarget = target switch
-            {
-                "LeftThumbAxisY" => "LeftThumbAxisX",
-                "RightThumbAxisY" => "RightThumbAxisX",
-                _ => target
-            };
-
+            _flashTarget = target;
             _flashOn = false;
             _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
             _flashTimer.Tick += FlashTick;
             _flashTimer.Start();
             FlashTick(null, EventArgs.Empty); // immediate first tick
+        }
+
+        /// <summary>
+        /// Resolves a flash/recording target to the model groups that should flash.
+        /// Stick axis targets (LeftThumbAxisX/Y, RightThumbAxisX/Y) all flash the stick ring.
+        /// </summary>
+        private List<Model3DGroup> ResolveFlashGroups(string target)
+        {
+            if (_currentModel == null || target == null)
+                return null;
+
+            // Stick axis targets → flash the ring
+            if (target is "LeftThumbAxisX" or "LeftThumbAxisY" && _currentModel.LeftThumbRing != null)
+                return new List<Model3DGroup> { _currentModel.LeftThumbRing };
+            if (target is "RightThumbAxisX" or "RightThumbAxisY" && _currentModel.RightThumbRing != null)
+                return new List<Model3DGroup> { _currentModel.RightThumbRing };
+
+            // Button targets
+            if (_currentModel.ButtonMap.TryGetValue(target, out var btnGroups))
+                return btnGroups;
+
+            // ClickMap targets (triggers, etc.)
+            foreach (var kv in _currentModel.ClickMap)
+            {
+                if (kv.Value == target)
+                    return new List<Model3DGroup> { kv.Key };
+            }
+
+            return null;
         }
 
         private void FlashTick(object sender, EventArgs e)
@@ -403,24 +557,7 @@ namespace PadForge.Views
 
             _flashOn = !_flashOn;
 
-            // Find model groups for this target
-            List<Model3DGroup> groups = null;
-
-            if (_currentModel.ButtonMap.TryGetValue(_flashTarget, out var btnGroups))
-                groups = btnGroups;
-            else
-            {
-                // Check ClickMap for axis/trigger targets
-                foreach (var kv in _currentModel.ClickMap)
-                {
-                    if (kv.Value == _flashTarget)
-                    {
-                        groups = new List<Model3DGroup> { kv.Key };
-                        break;
-                    }
-                }
-            }
-
+            var groups = ResolveFlashGroups(_flashTarget);
             if (groups == null) return;
 
             foreach (var group in groups)
@@ -453,21 +590,7 @@ namespace PadForge.Views
             // Restore default materials
             if (_currentModel != null && _flashTarget != null)
             {
-                List<Model3DGroup> groups = null;
-                if (_currentModel.ButtonMap.TryGetValue(_flashTarget, out var btnGroups))
-                    groups = btnGroups;
-                else
-                {
-                    foreach (var kv in _currentModel.ClickMap)
-                    {
-                        if (kv.Value == _flashTarget)
-                        {
-                            groups = new List<Model3DGroup> { kv.Key };
-                            break;
-                        }
-                    }
-                }
-
+                var groups = ResolveFlashGroups(_flashTarget);
                 if (groups != null)
                 {
                     foreach (var group in groups)
@@ -502,6 +625,7 @@ namespace PadForge.Views
         public void Unbind()
         {
             StopFlash();
+            RemoveArrow();
             CompositionTarget.Rendering -= OnRendering;
             if (_vm != null)
                 _vm.PropertyChanged -= OnVmPropertyChanged;

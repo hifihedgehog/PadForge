@@ -921,18 +921,21 @@ namespace PadForge.Common.Input
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
             _currentDescriptorCount = requiredCount;
 
-            // If no vJoy devices are needed, remove the device node entirely.
-            // A disable/enable restart doesn't make the driver drop its HID
-            // collections when 0 descriptors remain — the last controller stays
-            // visible in joy.cpl. Removing the node forces Windows to tear down
-            // all HID children. The node is recreated on demand when vJoy slots
-            // get devices assigned again.
+            // If no vJoy devices are needed, disable the device node (don't remove it).
+            // With 0 DeviceNN keys, the driver falls back to a hardcoded default
+            // controller — so a disable/enable restart still shows 1 controller.
+            // Disabling the node makes all HID children disappear from joy.cpl.
+            // Keeping the node alive avoids the stale-DLL-handle problem that
+            // occurs when removing and recreating nodes (vJoyInterface.dll caches
+            // device handles internally and can't reconnect after node removal).
+            // RestartDeviceNode will re-enable it when requiredCount > 0.
             if (requiredCount == 0)
             {
-                if (existingNodes >= 1)
+                if (descriptorsChanged && existingNodes >= 1)
                 {
-                    DiagLog("Removing device node (all vJoy slots deleted)");
-                    RemoveAllDeviceNodes();
+                    DiagLog("Disabling device node (all vJoy slots inactive)");
+                    DisableDeviceNode();
+                    _dllLoaded = false;
                 }
                 return true;
             }
@@ -1054,6 +1057,46 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] EnumerateVJoyInstanceIds exception: {ex.Message}");
             }
             return results;
+        }
+
+        /// <summary>
+        /// Disables the vJoy device node without removing it. All HID children
+        /// disappear from joy.cpl, but the node remains in PnP (enumerable).
+        /// On next EnsureDevicesAvailable(N>0), RestartDeviceNode re-enables it
+        /// with fresh descriptors. The DLL keeps working because the node was
+        /// never fully removed — no stale handle problem.
+        /// </summary>
+        private static void DisableDeviceNode()
+        {
+            try
+            {
+                var instanceIds = EnumerateVJoyInstanceIds();
+                if (instanceIds.Count == 0) return;
+
+                string id = instanceIds[0];
+                DiagLog($"DisableDeviceNode: disabling {id}");
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/disable-device \"{id}\"",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+                using (var proc = Process.Start(psi))
+                {
+                    proc?.WaitForExit(5_000);
+                }
+
+                _generation++;
+                DiagLog($"DisableDeviceNode: generation={_generation}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy] DisableDeviceNode exception: {ex.Message}");
+            }
         }
 
         /// <summary>

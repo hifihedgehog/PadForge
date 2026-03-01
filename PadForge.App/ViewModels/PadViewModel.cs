@@ -301,10 +301,10 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem("D-Pad Right", "DPadRight", MappingCategory.DPad));
             Mappings.Add(new MappingItem("Left Trigger", "LeftTrigger", MappingCategory.Triggers));
             Mappings.Add(new MappingItem("Right Trigger", "RightTrigger", MappingCategory.Triggers));
-            Mappings.Add(new MappingItem("Left Stick X", "LeftThumbAxisX", MappingCategory.LeftStick));
-            Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick));
-            Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick));
-            Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick));
+            Mappings.Add(new MappingItem("Left Stick X", "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
+            Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
+            Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
+            Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
         }
 
         // ═══════════════════════════════════════════════
@@ -554,6 +554,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isMapAllActive, value);
         }
 
+        /// <summary>When true, the current Map All step is recording the negative direction of an axis.</summary>
+        internal bool MapAllRecordingNeg { get; set; }
+
         private int _mapAllCurrentIndex;
         public int MapAllCurrentIndex
         {
@@ -603,9 +606,24 @@ namespace PadForge.ViewModels
             }
 
             var mapping = Mappings[MapAllCurrentIndex];
-            MapAllCurrentTarget = mapping.TargetSettingName;
-            CurrentRecordingTarget = mapping.TargetSettingName;
-            MapAllPromptText = $"Map: {mapping.TargetLabel}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+
+            if (MapAllRecordingNeg)
+            {
+                // Recording the negative direction for the current axis.
+                string dirHint = mapping.TargetSettingName.Contains("AxisX") ? "(\u2190)" : "(\u2193)";
+                MapAllCurrentTarget = mapping.NegSettingName;
+                CurrentRecordingTarget = mapping.NegSettingName;
+                MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+            }
+            else
+            {
+                string suffix = "";
+                if (mapping.HasNegDirection)
+                    suffix = mapping.TargetSettingName.Contains("AxisX") ? " (\u2192)" : " (\u2191)";
+                MapAllCurrentTarget = mapping.TargetSettingName;
+                CurrentRecordingTarget = mapping.TargetSettingName;
+                MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+            }
             MapAllRecordRequested?.Invoke(this, mapping);
         }
 
@@ -626,7 +644,18 @@ namespace PadForge.ViewModels
                 _mapAllDelayTimer.Stop();
                 _mapAllDelayTimer = null;
                 if (!IsMapAllActive) return;
-                MapAllCurrentIndex++;
+
+                // If we just finished the neg phase, move to next mapping.
+                // If we just finished pos phase and neg is pending, AdvanceMapAll handles it.
+                if (!MapAllRecordingNeg)
+                {
+                    MapAllCurrentIndex++;
+                }
+                else
+                {
+                    MapAllRecordingNeg = false;
+                    MapAllCurrentIndex++;
+                }
                 AdvanceMapAll();
             };
             _mapAllDelayTimer.Start();
@@ -637,6 +666,7 @@ namespace PadForge.ViewModels
             _mapAllDelayTimer?.Stop();
             _mapAllDelayTimer = null;
             IsMapAllActive = false;
+            MapAllRecordingNeg = false;
             MapAllCurrentTarget = null;
             CurrentRecordingTarget = null;
             MapAllPromptText = null;

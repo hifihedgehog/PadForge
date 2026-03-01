@@ -371,6 +371,12 @@ namespace PadForge.Services
             {
                 string value = GetPadSettingProperty(ps, mapping.TargetSettingName);
                 mapping.SourceDescriptor = value ?? string.Empty;
+
+                if (mapping.NegSettingName != null)
+                {
+                    string negValue = GetPadSettingProperty(ps, mapping.NegSettingName);
+                    mapping.NegSourceDescriptor = negValue ?? string.Empty;
+                }
             }
         }
 
@@ -824,6 +830,8 @@ namespace PadForge.Services
                     foreach (var mapping in padVm.Mappings)
                     {
                         SetPadSettingProperty(ps, mapping.TargetSettingName, mapping.SourceDescriptor);
+                        if (mapping.NegSettingName != null)
+                            SetPadSettingProperty(ps, mapping.NegSettingName, mapping.NegSourceDescriptor);
                     }
                 }
             }

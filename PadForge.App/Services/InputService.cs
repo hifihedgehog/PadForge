@@ -811,6 +811,16 @@ namespace PadForge.Services
                     : string.Empty;
                 mapping.LoadDescriptor(value);
                 ResolveDisplayText(mapping, ud);
+
+                if (mapping.NegSettingName != null)
+                {
+                    var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
+                    string negValue = (negProp != null && negProp.PropertyType == typeof(string))
+                        ? negProp.GetValue(ps) as string ?? string.Empty
+                        : string.Empty;
+                    mapping.LoadNegDescriptor(negValue);
+                    ResolveNegDisplayText(mapping, ud);
+                }
             }
         }
 
@@ -912,6 +922,99 @@ namespace PadForge.Services
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Resolves the negative-direction descriptor to a human-friendly display name.
+        /// </summary>
+        internal static void ResolveNegDisplayText(MappingItem mapping, Guid instanceGuid)
+        {
+            ResolveNegDisplayText(mapping, FindUserDevice(instanceGuid));
+        }
+
+        private static void ResolveNegDisplayText(MappingItem mapping, UserDevice ud)
+        {
+            if (mapping == null || string.IsNullOrEmpty(mapping.NegSourceDescriptor))
+                return;
+
+            var objects = ud?.DeviceObjects;
+            if (objects == null || objects.Length == 0)
+                return;
+
+            string resolved = ResolveDescriptorText(mapping.NegSourceDescriptor, objects);
+            if (resolved != null)
+                mapping.SetResolvedNegText(resolved);
+        }
+
+        /// <summary>
+        /// Resolves a descriptor string to a human-readable name using device object metadata.
+        /// Returns null if no match found.
+        /// </summary>
+        private static string ResolveDescriptorText(string descriptor, DeviceObjectItem[] objects)
+        {
+            string s = descriptor;
+            string prefix = "";
+            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            { prefix = s.Substring(0, 2); s = s.Substring(2); }
+            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            { prefix = s.Substring(0, 1); s = s.Substring(1); }
+            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            { prefix = s.Substring(0, 1); s = s.Substring(1); }
+
+            string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
+                return null;
+
+            string typeName = parts[0].ToLowerInvariant();
+
+            for (int i = 0; i < objects.Length; i++)
+            {
+                var obj = objects[i];
+                if (obj.InputIndex != index)
+                    continue;
+
+                bool match = typeName switch
+                {
+                    "button" => obj.IsButton,
+                    "axis" => obj.IsAxis && !obj.IsSlider,
+                    "slider" => obj.IsSlider,
+                    "pov" => obj.IsPov,
+                    _ => false
+                };
+
+                if (match && !string.IsNullOrEmpty(obj.Name))
+                {
+                    string display = obj.Name;
+
+                    if (typeName == "pov" && parts.Length >= 3)
+                    {
+                        string dir = parts[2] switch
+                        {
+                            "UpRight" => "Up-Right",
+                            "DownRight" => "Down-Right",
+                            "DownLeft" => "Down-Left",
+                            "UpLeft" => "Up-Left",
+                            _ => parts[2]
+                        };
+                        display = $"Hat {dir}";
+                    }
+
+                    if (!string.IsNullOrEmpty(prefix))
+                    {
+                        string prefixLabel = prefix.ToUpperInvariant() switch
+                        {
+                            "I" => "Inv.",
+                            "H" => "Half",
+                            "IH" => "Inv. Half",
+                            _ => ""
+                        };
+                        if (!string.IsNullOrEmpty(prefixLabel))
+                            display = $"{prefixLabel} {display}";
+                    }
+                    return display;
+                }
+            }
+            return null;
         }
 
         // ─────────────────────────────────────────────

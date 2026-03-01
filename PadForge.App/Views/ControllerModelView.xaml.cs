@@ -49,9 +49,8 @@ namespace PadForge.Views
         private string _flashTarget;
         private bool _flashOn;
 
-        // Axis arrow overlay
+        // Axis arrow overlay (visible until mapping finishes)
         private ModelVisual3D _arrowVisual;
-        private DispatcherTimer _arrowTimer;
 
         public ControllerModelView()
         {
@@ -86,10 +85,15 @@ namespace PadForge.Views
                 return;
             }
 
-            // Map All flash target change
+            // Map All flash target change / recording finished
             if (e.PropertyName == nameof(PadViewModel.CurrentRecordingTarget))
             {
-                Dispatcher.Invoke(() => UpdateFlashTarget(_vm.CurrentRecordingTarget));
+                Dispatcher.Invoke(() =>
+                {
+                    UpdateFlashTarget(_vm.CurrentRecordingTarget);
+                    // Remove axis arrow when recording target changes or clears
+                    RemoveArrow();
+                });
                 return;
             }
 
@@ -429,7 +433,7 @@ namespace PadForge.Views
         /// <summary>
         /// Shows a 3D arrow at the stick indicating the positive axis direction.
         /// X axis → arrow pointing right (+X), Y axis → arrow pointing up (+Z).
-        /// Arrow disappears after 1.5 seconds.
+        /// Arrow stays visible until mapping finishes (CurrentRecordingTarget clears).
         /// </summary>
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
@@ -440,14 +444,17 @@ namespace PadForge.Views
             // Positive direction: right (+X) for X axis, up (+Z) for Y axis
             Vector3D direction = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
 
-            // Find the stick center
+            // Use the stick center for X/Z but raise Y to the hit surface so
+            // the arrow floats above the stick instead of hiding inside the body.
             Vector3D center;
             if (axis.StartsWith("Left"))
                 center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
             else
                 center = _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            var centerPt = new Point3D(center.X, center.Y, center.Z);
+            // Place arrow at stick center X/Z, but at the hit surface Y minus
+            // a small offset toward the camera (-Y) so it floats above the stick.
+            var arrowCenter = new Point3D(center.X, hitPos.Y - 3, center.Z);
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
@@ -457,30 +464,24 @@ namespace PadForge.Views
             }
             catch { }
 
+            double arrowLen = 15.0;
+
             // Single arrow pointing in the positive direction (right or up)
             var arrow = new ArrowVisual3D
             {
-                Point1 = centerPt - direction * 6,
-                Point2 = centerPt + direction * 12,
-                Diameter = 1.5,
+                Point1 = arrowCenter - direction * (arrowLen * 0.4),
+                Point2 = arrowCenter + direction * arrowLen,
+                Diameter = 2.0,
                 Fill = new SolidColorBrush(accentColor)
             };
 
             _arrowVisual = new ModelVisual3D();
             _arrowVisual.Children.Add(arrow);
             ModelViewPort.Children.Add(_arrowVisual);
-
-            // Auto-remove after 1.5 seconds
-            _arrowTimer?.Stop();
-            _arrowTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
-            _arrowTimer.Tick += (s, ev) => { RemoveArrow(); };
-            _arrowTimer.Start();
         }
 
         private void RemoveArrow()
         {
-            _arrowTimer?.Stop();
-            _arrowTimer = null;
             if (_arrowVisual != null)
             {
                 ModelViewPort.Children.Remove(_arrowVisual);

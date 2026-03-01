@@ -589,7 +589,7 @@ namespace PadForge.Common.Input
             // No node trimming needed — the node stays alive for the session.
         }
 
-        private void DestroyAllVirtualControllers()
+        private void DestroyAllVirtualControllers(bool preserveVJoyNodes = false)
         {
             for (int i = 0; i < MaxPads; i++)
             {
@@ -601,9 +601,19 @@ namespace PadForge.Common.Input
             _activeXbox360Count = 0;
             _activeDs4Count = 0;
 
-            // Safe to remove all vJoy device nodes now — no active controllers remain.
-            // This prevents orphaned nodes from showing in joy.cpl after PadForge exits.
-            try { VJoyVirtualController.RemoveAllDeviceNodes(); } catch { }
+            if (preserveVJoyNodes)
+            {
+                // Disable the node instead of removing it. The DLL's internal device
+                // handle stays valid for when the node is re-enabled via RestartDeviceNode.
+                // This matches the EnsureDevicesAvailable(0) pattern.
+                try { VJoyVirtualController.DisableDeviceNode(); } catch { }
+            }
+            else
+            {
+                // Full removal — for final app shutdown. Prevents orphaned nodes
+                // from showing in joy.cpl after PadForge exits.
+                try { VJoyVirtualController.RemoveAllDeviceNodes(); } catch { }
+            }
         }
 
         // ─────────────────────────────────────────────

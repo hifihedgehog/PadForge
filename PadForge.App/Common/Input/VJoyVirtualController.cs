@@ -1070,7 +1070,7 @@ namespace PadForge.Common.Input
         /// with fresh descriptors. The DLL keeps working because the node was
         /// never fully removed — no stale handle problem.
         /// </summary>
-        private static void DisableDeviceNode()
+        internal static void DisableDeviceNode()
         {
             try
             {

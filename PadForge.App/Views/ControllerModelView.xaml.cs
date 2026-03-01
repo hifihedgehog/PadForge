@@ -427,7 +427,8 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Shows a 3D arrow at the stick indicating which axis direction was selected.
+        /// Shows a 3D arrow at the stick indicating the positive axis direction.
+        /// X axis → arrow pointing right (+X), Y axis → arrow pointing up (+Z).
         /// Arrow disappears after 1.5 seconds.
         /// </summary>
         private void ShowAxisArrow(Point3D hitPos, string axis)
@@ -436,7 +437,7 @@ namespace PadForge.Views
 
             bool isX = axis.Contains("AxisX");
 
-            // Arrow direction in model space: X-axis arrow points along X, Y-axis arrow points along Z (up)
+            // Positive direction: right (+X) for X axis, up (+Z) for Y axis
             Vector3D direction = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
 
             // Find the stick center
@@ -448,8 +449,6 @@ namespace PadForge.Views
 
             var centerPt = new Point3D(center.X, center.Y, center.Z);
 
-            // Build a double-headed arrow from two ArrowVisual3D
-            var arrowGroup = new Model3DGroup();
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
             {
@@ -458,31 +457,17 @@ namespace PadForge.Views
             }
             catch { }
 
-            var arrowMaterial = new DiffuseMaterial(new SolidColorBrush(accentColor));
-            double arrowLen = 12.0;
-            double arrowDia = 1.5;
-
-            // Positive direction arrow
-            var arrow1 = new ArrowVisual3D
+            // Single arrow pointing in the positive direction (right or up)
+            var arrow = new ArrowVisual3D
             {
-                Point1 = centerPt,
-                Point2 = centerPt + direction * arrowLen,
-                Diameter = arrowDia,
-                Fill = new SolidColorBrush(accentColor)
-            };
-
-            // Negative direction arrow
-            var arrow2 = new ArrowVisual3D
-            {
-                Point1 = centerPt,
-                Point2 = centerPt - direction * arrowLen,
-                Diameter = arrowDia,
+                Point1 = centerPt - direction * 6,
+                Point2 = centerPt + direction * 12,
+                Diameter = 1.5,
                 Fill = new SolidColorBrush(accentColor)
             };
 
             _arrowVisual = new ModelVisual3D();
-            _arrowVisual.Children.Add(arrow1);
-            _arrowVisual.Children.Add(arrow2);
+            _arrowVisual.Children.Add(arrow);
             ModelViewPort.Children.Add(_arrowVisual);
 
             // Auto-remove after 1.5 seconds

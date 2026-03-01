@@ -17,7 +17,6 @@ namespace PadForge.Common.Input
     internal sealed class VJoyVirtualController : IVirtualController
     {
         private static bool _dllLoaded;
-        private static IntPtr _dllHandle;
 
         /// <summary>
         /// Number of DeviceNN registry descriptors currently written.
@@ -58,7 +57,7 @@ namespace PadForge.Common.Input
             if (_dllLoaded) return;
 
             // Already loadable from default search paths?
-            if (NativeLibrary.TryLoad("vJoyInterface.dll", out _dllHandle))
+            if (NativeLibrary.TryLoad("vJoyInterface.dll", out _))
             {
                 _dllLoaded = true;
                 return;
@@ -73,27 +72,10 @@ namespace PadForge.Common.Input
                 string arch = Environment.Is64BitProcess ? "x64" : "x86";
                 vjoyPath = Path.Combine(vjoyDir, arch, "vJoyInterface.dll");
             }
-            if (File.Exists(vjoyPath) && NativeLibrary.TryLoad(vjoyPath, out _dllHandle))
+            if (File.Exists(vjoyPath) && NativeLibrary.TryLoad(vjoyPath, out _))
                 _dllLoaded = true;
         }
 
-        /// <summary>
-        /// Forces vJoyInterface.dll to be unloaded and reloaded from disk.
-        /// vJoyInterface.dll caches internal device handles; after removing
-        /// and recreating a device node, the stale handle prevents all API
-        /// calls from working. Unloading and reloading forces the DLL to
-        /// re-open the device interface on next use.
-        /// </summary>
-        internal static void ForceReloadDll()
-        {
-            if (_dllHandle != IntPtr.Zero)
-            {
-                DiagLog("ForceReloadDll: unloading vJoyInterface.dll");
-                try { NativeLibrary.Free(_dllHandle); } catch { }
-                _dllHandle = IntPtr.Zero;
-            }
-            _dllLoaded = false;
-        }
 
         private readonly uint _deviceId;
         private bool _connected;
@@ -173,23 +155,9 @@ namespace PadForge.Common.Input
         private int _submitCallCount;
         private int _submitFailCount;
 
-        private static readonly string _diagLogPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_diag.log");
-        private static bool _diagLogCleared;
-
         internal static void DiagLog(string msg)
         {
-            try
-            {
-                if (!_diagLogCleared)
-                {
-                    File.WriteAllText(_diagLogPath, "");
-                    _diagLogCleared = true;
-                }
-                string line = $"[{DateTime.Now:HH:mm:ss.fff}] {msg}\n";
-                Debug.Write(line);
-                File.AppendAllText(_diagLogPath, line);
-            }
-            catch { }
+            Debug.Write($"[vJoy {DateTime.Now:HH:mm:ss.fff}] {msg}\n");
         }
 
         /// <summary>
@@ -1200,10 +1168,7 @@ namespace PadForge.Common.Input
                 }
 
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
-                // Force-reload the DLL so it drops cached device handles.
-                // Without this, the DLL's internal state is stale after node
-                // removal and all API calls fail when a new node is created.
-                ForceReloadDll();
+                _dllLoaded = false;
                 _currentDescriptorCount = 0;
                 return true;
             }

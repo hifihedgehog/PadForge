@@ -771,6 +771,82 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Writes the OEMForceFeedback registry keys that DirectInput needs to
+        /// recognize vJoy as an FFB-capable device. Without these, DirectInput's
+        /// ForceFeedback enumeration flag won't find the device even though
+        /// vjoy.sys creates COL02 (the PID collection) with PID_BEAD.
+        /// Keys go under HKCU — no elevation needed.
+        /// </summary>
+        private static void EnsureFfbRegistryKeys()
+        {
+            try
+            {
+                const string basePath =
+                    @"System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_1234&PID_BEAD";
+
+                using var oemKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(basePath);
+                if (oemKey == null) return;
+                if (oemKey.GetValue("OEMName") == null)
+                    oemKey.SetValue("OEMName", "vJoy Device");
+
+                using var ffbKey = oemKey.CreateSubKey("OEMForceFeedback");
+                if (ffbKey == null) return;
+                // Standard HID PID FFB class driver CLSID.
+                ffbKey.SetValue("CLSID", "{EEC6993A-B3FD-11D2-A916-00C04FB98638}");
+                ffbKey.SetValue("CreatedBy", new byte[] { 0x00, 0x08, 0x00, 0x00 },
+                    Microsoft.Win32.RegistryValueKind.Binary);
+                // Attributes: flags=0, maxForce=1000000 (0x000F4240), minForce=1000000
+                ffbKey.SetValue("Attributes",
+                    new byte[] { 0x00, 0x00, 0x00, 0x00, 0x40, 0x42, 0x0F, 0x00, 0x40, 0x42, 0x0F, 0x00 },
+                    Microsoft.Win32.RegistryValueKind.Binary);
+
+                using var effectsKey = ffbKey.CreateSubKey("Effects");
+                if (effectsKey == null) return;
+
+                // Effect GUIDs and their attribute data (from AddvJoyFFB.reg).
+                var effects = new (string guid, string name, byte[] attrs)[]
+                {
+                    ("{13541C20-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_ConstantForce",
+                     new byte[] { 0x26, 0x00, 0x0F, 0x00, 0x01, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C21-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_RampForce",
+                     new byte[] { 0x27, 0x00, 0x0F, 0x00, 0x02, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C22-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Square",
+                     new byte[] { 0x30, 0x00, 0x0F, 0x00, 0x03, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C23-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Sine",
+                     new byte[] { 0x31, 0x00, 0x0F, 0x00, 0x03, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C24-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Triangle",
+                     new byte[] { 0x32, 0x00, 0x0F, 0x00, 0x03, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C25-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_SawtoothUp",
+                     new byte[] { 0x33, 0x00, 0x0F, 0x00, 0x03, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C26-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_SawtoothDown",
+                     new byte[] { 0x34, 0x00, 0x0F, 0x00, 0x03, 0x86, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0xFD, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C27-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Spring",
+                     new byte[] { 0x40, 0x00, 0x0F, 0x00, 0x04, 0xC8, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C28-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Damper",
+                     new byte[] { 0x41, 0x00, 0x0F, 0x00, 0x04, 0xC8, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C29-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Inertia",
+                     new byte[] { 0x42, 0x00, 0x0F, 0x00, 0x04, 0xC8, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                    ("{13541C2A-8E33-11D0-9AD0-00A0C9A06E35}", "GUID_Friction",
+                     new byte[] { 0x43, 0x00, 0x0F, 0x00, 0x04, 0xC8, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x65, 0x03, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00 }),
+                };
+
+                foreach (var (guid, name, attrs) in effects)
+                {
+                    using var effKey = effectsKey.CreateSubKey(guid);
+                    if (effKey == null) continue;
+                    effKey.SetValue("", name); // default value
+                    effKey.SetValue("Attributes", attrs, Microsoft.Win32.RegistryValueKind.Binary);
+                }
+
+                DiagLog("EnsureFfbRegistryKeys: OEMForceFeedback keys written");
+            }
+            catch (Exception ex)
+            {
+                DiagLog($"EnsureFfbRegistryKeys exception: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Counts existing vJoy device nodes by querying PnP (pnputil).
         /// More reliable than GetVJDStatus which can return stale data.
         /// </summary>
@@ -797,6 +873,7 @@ namespace PadForge.Common.Input
             {
                 _driverStoreChecked = true;
                 EnsureDriverInStore();
+                EnsureFfbRegistryKeys();
             }
 
             EnsureDllLoaded();

@@ -467,61 +467,52 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Creates a flat rectangular arrow shape (extruded 2D arrow profile with Y depth).
+        /// Creates a flat rectangular arrow (box shaft + triangular prism head).
         /// Arrow points along +X (isX=true) or +Z (isX=false).
         /// </summary>
         private static GeometryModel3D CreateFlatArrow(Point3D center, bool isX, Color color)
         {
-            // Direction the arrow points and perpendicular (width) axis
             var dir = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
             var perp = isX ? new Vector3D(0, 0, 1) : new Vector3D(1, 0, 0);
-            var depthVec = new Vector3D(0, 1, 0);
+            var depthDir = new Vector3D(0, 1, 0);
 
             double shaftHalfLen = 6.0;
             double headLen = 6.0;
-            double shaftHalfW = 1.0;
+            double shaftW = 2.0;
             double headHalfW = 3.0;
-            double halfDepth = 1.0;
-
-            // 7 vertices of the arrow outline (shaft + triangular head)
-            var outline = new Point3D[]
-            {
-                center - dir * shaftHalfLen - perp * shaftHalfW,  // 0: tail bottom
-                center + dir * shaftHalfLen - perp * shaftHalfW,  // 1: shaft-head join bottom
-                center + dir * shaftHalfLen - perp * headHalfW,   // 2: head base bottom
-                center + dir * (shaftHalfLen + headLen),           // 3: tip
-                center + dir * shaftHalfLen + perp * headHalfW,   // 4: head base top
-                center + dir * shaftHalfLen + perp * shaftHalfW,  // 5: shaft-head join top
-                center - dir * shaftHalfLen + perp * shaftHalfW,  // 6: tail top
-            };
-
-            // Extrude: front face at -Y (toward camera), back face at +Y
-            var front = new Point3D[7];
-            var back = new Point3D[7];
-            for (int i = 0; i < 7; i++)
-            {
-                front[i] = outline[i] - depthVec * halfDepth;
-                back[i] = outline[i] + depthVec * halfDepth;
-            }
+            double depth = 2.0;
+            double halfDepth = depth / 2;
 
             var mb = new MeshBuilder();
 
-            // Front face (facing camera at -Y)
-            mb.AddPolygon(new List<Point3D> {
-                front[0], front[1], front[2], front[3], front[4], front[5], front[6]
-            });
+            // Shaft: axis-aligned box
+            if (isX)
+                mb.AddBox(center, shaftHalfLen * 2, depth, shaftW);
+            else
+                mb.AddBox(center, shaftW, depth, shaftHalfLen * 2);
 
-            // Back face (reversed winding)
-            mb.AddPolygon(new List<Point3D> {
-                back[6], back[5], back[4], back[3], back[2], back[1], back[0]
-            });
+            // Head: triangular prism extending from shaft end to tip
+            var headBase = center + dir * shaftHalfLen;
+            var tip = center + dir * (shaftHalfLen + headLen);
 
-            // Side quads connecting front to back edges
-            for (int i = 0; i < 7; i++)
-            {
-                int next = (i + 1) % 7;
-                mb.AddQuad(front[next], front[i], back[i], back[next]);
-            }
+            // Front face vertices (Y = -halfDepth, toward camera)
+            var h0f = headBase - perp * headHalfW - depthDir * halfDepth;
+            var h1f = tip - depthDir * halfDepth;
+            var h2f = headBase + perp * headHalfW - depthDir * halfDepth;
+
+            // Back face vertices (Y = +halfDepth)
+            var h0b = headBase - perp * headHalfW + depthDir * halfDepth;
+            var h1b = tip + depthDir * halfDepth;
+            var h2b = headBase + perp * headHalfW + depthDir * halfDepth;
+
+            // Front and back triangles
+            mb.AddTriangle(h0f, h1f, h2f);
+            mb.AddTriangle(h2b, h1b, h0b);
+
+            // Side quads
+            mb.AddQuad(h0f, h0b, h1b, h1f);
+            mb.AddQuad(h1f, h1b, h2b, h2f);
+            mb.AddQuad(h2f, h2b, h0b, h0f);
 
             var mesh = mb.ToMesh();
             var material = new DiffuseMaterial(new SolidColorBrush(color));

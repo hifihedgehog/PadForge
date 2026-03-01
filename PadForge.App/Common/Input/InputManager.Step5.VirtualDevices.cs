@@ -238,12 +238,14 @@ namespace PadForge.Common.Input
                 if (anyVJoySlotExists || totalVJoyNeeded > 0 ||
                     VJoyVirtualController.CurrentDescriptorCount > 0)
                 {
+                    bool descriptorCountChanged = totalVJoyNeeded != VJoyVirtualController.CurrentDescriptorCount;
+
                     // If descriptor count is changing, destroy vJoy VCs whose device
                     // IDs exceed the new count. Registry descriptors are always
                     // Device01..DeviceN (contiguous), so any VC with ID > N would
                     // reference a non-existent descriptor after the restart.
                     // VCs with IDs 1..N survive and re-acquire after the restart.
-                    if (totalVJoyNeeded != VJoyVirtualController.CurrentDescriptorCount)
+                    if (descriptorCountChanged)
                     {
                         for (int i = 0; i < MaxPads; i++)
                         {
@@ -266,6 +268,39 @@ namespace PadForge.Common.Input
                     {
                         if (_virtualControllers[padIndex] is VJoyVirtualController existingVjoy)
                             existingVjoy.ReAcquireIfNeeded();
+                    }
+
+                    // After a descriptor count change, surviving VCs may have device
+                    // IDs that don't match their sequential position. Example: deleting
+                    // the first of 3 vJoy slots leaves the second slot with ID 2, but
+                    // it's now the FIRST vJoy slot and should have ID 1. Without this
+                    // fix, input mapped to the Nth vJoy slot writes to the wrong device.
+                    if (descriptorCountChanged)
+                    {
+                        int expectedId = 0;
+                        for (int i = 0; i < MaxPads; i++)
+                        {
+                            bool countsAsVjoy =
+                                _virtualControllers[i] is VJoyVirtualController ||
+                                (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                 SettingsManager.SlotCreated[i] &&
+                                 _slotInactiveCounter[i] == 0 &&
+                                 IsSlotActive(i));
+
+                            if (countsAsVjoy)
+                            {
+                                expectedId++;
+                                if (_virtualControllers[i] is VJoyVirtualController vjCheck &&
+                                    vjCheck.DeviceId != (uint)expectedId)
+                                {
+                                    VJoyVirtualController.DiagLog(
+                                        $"ID ordering fix: pad{i} has ID {vjCheck.DeviceId}, expected {expectedId} — destroying for recreation");
+                                    DestroyVirtualController(i);
+                                    _virtualControllers[i] = null;
+                                    anyNeedsCreate = true;
+                                }
+                            }
+                        }
                     }
                 }
             }

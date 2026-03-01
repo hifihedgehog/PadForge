@@ -453,12 +453,7 @@ namespace PadForge.Common.Input
             return new VJoyVirtualController(deviceId);
         }
 
-        /// <param name="trimVJoyNodes">
-        /// When true, trims vJoy device nodes after disconnecting. Set to false
-        /// during bulk destroy (DestroyAllVirtualControllers) — the caller handles
-        /// node cleanup via RemoveAllDeviceNodes() once at the end.
-        /// </param>
-        private void DestroyVirtualController(int padIndex, bool trimVJoyNodes = true)
+        private void DestroyVirtualController(int padIndex)
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
@@ -509,29 +504,18 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // vJoy: trim device nodes so dormant devices don't appear in joy.cpl.
-            // Skipped during bulk destroy — RemoveAllDeviceNodes handles it.
-            try
-            {
-                if (trimVJoyNodes && vcType == VirtualControllerType.VJoy)
-                {
-                    int remainingVJoy = 0;
-                    for (int i = 0; i < MaxPads; i++)
-                        if (i != padIndex && _virtualControllers[i]?.Type == VirtualControllerType.VJoy)
-                            remainingVJoy++;
-                    VJoyVirtualController.TrimDeviceNodes(remainingVJoy);
-                }
-            }
-            catch { /* best effort */ }
+            // vJoy: do NOT trim device nodes on individual controller destroy.
+            // Removing a node invalidates AcquireVJD handles on other controllers
+            // that share the same driver, and forces a full recreate when the slot
+            // is re-enabled — which kills the remaining controllers' handles too.
+            // Nodes are cleaned up on engine stop via RemoveAllDeviceNodes().
         }
 
         private void DestroyAllVirtualControllers()
         {
-            // Skip per-VC device node trimming — RemoveAllDeviceNodes()
-            // in InputService.Stop() handles bulk cleanup in one pass.
             for (int i = 0; i < MaxPads; i++)
             {
-                DestroyVirtualController(i, trimVJoyNodes: false);
+                DestroyVirtualController(i);
                 _virtualControllers[i] = null;
             }
 

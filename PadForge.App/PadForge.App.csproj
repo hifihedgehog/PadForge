@@ -55,10 +55,13 @@
     <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
     <EmbeddedResource Include="Resources\vJoyDriver.zip" />
+    <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
+    <EmbeddedResource Include="3DModels\**\*.obj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+    <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.27.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Nefarius.ViGEm.Client" Version="1.21.256" />
   </ItemGroup>

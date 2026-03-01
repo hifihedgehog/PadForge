@@ -122,23 +122,29 @@ namespace PadForge.Common.Input
                 gp.SetButton(Gamepad.GUIDE, true);
 
             // ── D-Pad ──
-            if (MapToButtonPressed(state, ps.DPad))
+            // Individual direction mappings take priority. Only fall back to
+            // the combined DPad descriptor if no individual directions are set.
+            bool hasIndividualDPad = !string.IsNullOrEmpty(ps.DPadUp)
+                                 || !string.IsNullOrEmpty(ps.DPadDown)
+                                 || !string.IsNullOrEmpty(ps.DPadLeft)
+                                 || !string.IsNullOrEmpty(ps.DPadRight);
+
+            if (hasIndividualDPad)
             {
-                // If DPad is mapped to a single POV, use directional mapping.
-                // This is handled below via DPadUp/Down/Left/Right instead.
+                if (MapToButtonPressed(state, ps.DPadUp))
+                    gp.SetButton(Gamepad.DPAD_UP, true);
+                if (MapToButtonPressed(state, ps.DPadDown))
+                    gp.SetButton(Gamepad.DPAD_DOWN, true);
+                if (MapToButtonPressed(state, ps.DPadLeft))
+                    gp.SetButton(Gamepad.DPAD_LEFT, true);
+                if (MapToButtonPressed(state, ps.DPadRight))
+                    gp.SetButton(Gamepad.DPAD_RIGHT, true);
             }
-
-            if (MapToButtonPressed(state, ps.DPadUp))
-                gp.SetButton(Gamepad.DPAD_UP, true);
-            if (MapToButtonPressed(state, ps.DPadDown))
-                gp.SetButton(Gamepad.DPAD_DOWN, true);
-            if (MapToButtonPressed(state, ps.DPadLeft))
-                gp.SetButton(Gamepad.DPAD_LEFT, true);
-            if (MapToButtonPressed(state, ps.DPadRight))
-                gp.SetButton(Gamepad.DPAD_RIGHT, true);
-
-            // If DPad is mapped to a POV hat, extract directions.
-            MapDPadFromPov(state, ps.DPad, ref gp);
+            else
+            {
+                // Legacy/combined: extract all 4 directions from a single POV hat.
+                MapDPadFromPov(state, ps.DPad, ref gp);
+            }
 
             // ── Triggers ──
             gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger);

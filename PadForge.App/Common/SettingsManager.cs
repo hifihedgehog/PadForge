@@ -405,8 +405,11 @@ namespace PadForge.Common.Input
                 ps.RightThumbAxisY = "Axis 4";
                 ps.RightTrigger = "Axis 5";
 
-                // D-pad from hat switch.
-                ps.DPad = "POV 0";
+                // D-pad from hat switch (individual directions for UI display and remapping).
+                ps.DPadUp = "POV 0 Up";
+                ps.DPadDown = "POV 0 Down";
+                ps.DPadLeft = "POV 0 Left";
+                ps.DPadRight = "POV 0 Right";
 
                 // SDL3 XInput backend button indices.
                 ps.ButtonA = "Button 0";

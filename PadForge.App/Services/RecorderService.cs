@@ -403,8 +403,10 @@ namespace PadForge.Services
             if (target == "LeftTrigger" || target == "RightTrigger")
                 return !axisPositive;
 
-            // All other targets (buttons, d-pad, etc.): no auto-inversion.
-            return false;
+            // All other targets (buttons, d-pad, etc.): invert when the user pushed
+            // the axis in the negative direction. This ensures the engine's threshold
+            // check ("value < 25%") fires for the direction the user actually moved.
+            return !axisPositive;
         }
 
         /// <summary>

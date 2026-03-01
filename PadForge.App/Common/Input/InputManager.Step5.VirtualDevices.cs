@@ -504,21 +504,11 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // vJoy: trim excess device nodes so they don't appear in joy.cpl.
-            // Safe because EnsureDevicesAvailable is now additive — re-adding nodes
-            // later won't disturb existing controllers' AcquireVJD handles.
-            try
-            {
-                if (vcType == VirtualControllerType.VJoy)
-                {
-                    int remainingVJoy = 0;
-                    for (int i = 0; i < MaxPads; i++)
-                        if (i != padIndex && _virtualControllers[i]?.Type == VirtualControllerType.VJoy)
-                            remainingVJoy++;
-                    VJoyVirtualController.TrimDeviceNodes(remainingVJoy);
-                }
-            }
-            catch { /* best effort */ }
+            // Do NOT trim device nodes here — removing a device node via pnputil
+            // causes vjoy.sys to tear down kernel state, which invalidates the
+            // AcquireVJD handle on any sibling device that's still active.
+            // Orphaned nodes are cleaned up at engine stop (DestroyAllVirtualControllers)
+            // and at next startup (EnsureDevicesAvailable's first-session recreate).
         }
 
         private void DestroyAllVirtualControllers()
@@ -532,6 +522,10 @@ namespace PadForge.Common.Input
             _activeVigemCount = 0;
             _activeXbox360Count = 0;
             _activeDs4Count = 0;
+
+            // Safe to remove all vJoy device nodes now — no active controllers remain.
+            // This prevents orphaned nodes from showing in joy.cpl after PadForge exits.
+            try { VJoyVirtualController.RemoveAllDeviceNodes(); } catch { }
         }
 
         // ─────────────────────────────────────────────

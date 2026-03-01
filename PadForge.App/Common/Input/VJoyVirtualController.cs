@@ -47,6 +47,19 @@ namespace PadForge.Common.Input
         public static bool IsDllLoaded => _dllLoaded;
 
         /// <summary>
+        /// Resets all cached static state so the next operation re-discovers
+        /// the vJoy driver from scratch. Called after driver reinstall so the
+        /// engine picks up the new driver without restarting PadForge.
+        /// </summary>
+        internal static void ResetState()
+        {
+            _dllLoaded = false;
+            _currentDescriptorCount = 0;
+            _driverStoreChecked = false;
+            _generation++;
+        }
+
+        /// <summary>
         /// Preloads vJoyInterface.dll from the vJoy installation directory.
         /// Once loaded into the process, all [DllImport] calls resolve to it.
         /// Only caches success — retries on next call if the DLL wasn't found

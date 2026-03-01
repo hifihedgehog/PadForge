@@ -20,11 +20,14 @@ namespace PadForge.ViewModels
         /// <param name="targetLabel">Human-readable label for the XInput target (e.g., "A", "Left Stick X").</param>
         /// <param name="targetSettingName">PadSetting property name (e.g., "ButtonA", "LeftThumbAxisX").</param>
         /// <param name="category">Category for grouping in tabs.</param>
-        public MappingItem(string targetLabel, string targetSettingName, MappingCategory category)
+        /// <param name="negSettingName">PadSetting property for negative direction (null for non-axis targets).</param>
+        public MappingItem(string targetLabel, string targetSettingName, MappingCategory category,
+            string negSettingName = null)
         {
             TargetLabel = targetLabel ?? string.Empty;
             TargetSettingName = targetSettingName ?? string.Empty;
             Category = category;
+            NegSettingName = negSettingName;
         }
 
         // ─────────────────────────────────────────────
@@ -48,6 +51,15 @@ namespace PadForge.ViewModels
         /// Category for grouping mapping rows in tabs.
         /// </summary>
         public MappingCategory Category { get; }
+
+        /// <summary>
+        /// PadSetting property name for the negative direction (e.g., "LeftThumbAxisXNeg").
+        /// Null for non-axis targets that don't support bidirectional button mapping.
+        /// </summary>
+        public string NegSettingName { get; }
+
+        /// <summary>Whether this mapping supports a negative direction (stick axes only).</summary>
+        public bool HasNegDirection => NegSettingName != null;
 
         // ─────────────────────────────────────────────
         //  Source (physical input)
@@ -77,15 +89,68 @@ namespace PadForge.ViewModels
 
         private string _resolvedSourceText;
 
+        // ─────────────────────────────────────────────
+        //  Negative direction source (for bidirectional stick axes)
+        // ─────────────────────────────────────────────
+
+        private string _negSourceDescriptor = string.Empty;
+
+        /// <summary>
+        /// Negative-direction descriptor for stick axes (e.g., the "left" button for an X axis).
+        /// Only used when HasNegDirection is true.
+        /// </summary>
+        public string NegSourceDescriptor
+        {
+            get => _negSourceDescriptor;
+            set
+            {
+                if (SetProperty(ref _negSourceDescriptor, value ?? string.Empty))
+                {
+                    _resolvedNegText = null;
+                    OnPropertyChanged(nameof(SourceDisplayText));
+                    OnPropertyChanged(nameof(IsMapped));
+                }
+            }
+        }
+
+        private string _resolvedNegText;
+
+        /// <summary>
+        /// Sets the human-readable resolved text for the negative direction.
+        /// </summary>
+        public void SetResolvedNegText(string text)
+        {
+            _resolvedNegText = text;
+            OnPropertyChanged(nameof(SourceDisplayText));
+        }
+
         /// <summary>
         /// Human-readable display text for the source.
-        /// When a resolved name is available (e.g., "A" for keyboard button 65),
-        /// shows that instead of the raw descriptor.
+        /// For bidirectional axes with both pos and neg set, shows "neg / pos" format.
         /// </summary>
-        public string SourceDisplayText =>
-            string.IsNullOrEmpty(_sourceDescriptor)
-                ? "Not mapped"
-                : _resolvedSourceText ?? _sourceDescriptor;
+        public string SourceDisplayText
+        {
+            get
+            {
+                bool hasPos = !string.IsNullOrEmpty(_sourceDescriptor);
+                bool hasNeg = !string.IsNullOrEmpty(_negSourceDescriptor);
+
+                if (!hasPos && !hasNeg) return "Not mapped";
+
+                string posText = hasPos ? (_resolvedSourceText ?? _sourceDescriptor) : "";
+
+                if (!HasNegDirection || (!hasNeg && hasPos))
+                    return posText;
+
+                string negText = hasNeg ? (_resolvedNegText ?? _negSourceDescriptor) : "";
+
+                if (hasPos && hasNeg)
+                    return $"{negText} / {posText}";
+                if (hasNeg)
+                    return $"{negText} / ...";
+                return $"... / {posText}";
+            }
+        }
 
         /// <summary>
         /// Sets the human-readable resolved text for display (e.g., "A" instead of "Button 65").
@@ -100,7 +165,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Whether this mapping row has a source assigned.
         /// </summary>
-        public bool IsMapped => !string.IsNullOrEmpty(_sourceDescriptor);
+        public bool IsMapped => !string.IsNullOrEmpty(_sourceDescriptor) || !string.IsNullOrEmpty(_negSourceDescriptor);
 
         // ─────────────────────────────────────────────
         //  Recording state
@@ -185,6 +250,14 @@ namespace PadForge.ViewModels
             SourceDescriptor = d;
         }
 
+        /// <summary>
+        /// Loads a negative-direction descriptor, parsing any I/H prefixes.
+        /// </summary>
+        public void LoadNegDescriptor(string descriptor)
+        {
+            NegSourceDescriptor = descriptor ?? string.Empty;
+        }
+
         /// <summary>Whether the axis value should be inverted.</summary>
         public bool IsInverted
         {
@@ -258,6 +331,7 @@ namespace PadForge.ViewModels
             _clearCommand ??= new RelayCommand(() =>
             {
                 SourceDescriptor = string.Empty;
+                NegSourceDescriptor = string.Empty;
                 IsInverted = false;
                 IsHalfAxis = false;
             });

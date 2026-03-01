@@ -1422,8 +1422,8 @@ public static class PF_SetupApi {{
             // ── FFB/PID section (Usage Page 0x0F Physical Interface) ──
             // Appended inside the Application collection so DirectInput
             // discovers FFB actuators and can create effects.
-            // Report IDs are offset by 0x10 * (reportId - 1) to avoid
-            // collisions between multiple vJoy devices.
+            // Report IDs are offset by 0x10 * reportId to avoid
+            // collisions with the joystick input report ID.
             AppendFfbDescriptor(d, reportId);
 
             d.Add(0xC0);                                    // END_COLLECTION (Application)
@@ -1437,8 +1437,10 @@ public static class PF_SetupApi {{
         /// </summary>
         private static void AppendFfbDescriptor(System.Collections.Generic.List<byte> d, byte reportId)
         {
-            // TLID = reportId - 1 (device 1 → offset 0, device 2 → offset 0x10, etc.)
-            int tlid = reportId - 1;
+            // vJoyConf uses: HID_ID_EFFREP + 0x10 * ReportId (1-based).
+            // Device 1 → FFB IDs start at 0x11, device 2 → 0x21, etc.
+            // This avoids collisions with the joystick input report ID (0x01..0x10).
+            int tlid = reportId;
             const byte MAX_EBI = 0x64; // VJOY_FFB_MAX_EFFECTS_BLOCK_INDEX = 100
 
             // Report ID helpers: base + 0x10 * tlid

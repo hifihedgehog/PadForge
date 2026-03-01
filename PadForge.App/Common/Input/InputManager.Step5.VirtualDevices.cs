@@ -216,6 +216,20 @@ namespace PadForge.Common.Input
             // and DS4 (ViGEm DS4 index) controllers.
             if (anyNeedsCreate)
             {
+                // Pre-provision vJoy device nodes for ALL vJoy slots that need
+                // controllers (existing + to-be-created). This creates all nodes
+                // in a single batch BEFORE any per-slot Connect() calls, avoiding
+                // the teardown/rebuild cycle that causes stale PnP child devices.
+                int totalVJoyNeeded = 0;
+                for (int i = 0; i < MaxPads; i++)
+                {
+                    if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                        (_virtualControllers[i] is VJoyVirtualController ||
+                         (_virtualControllers[i] == null && _slotInactiveCounter[i] == 0 && _createCooldown[i] <= 0)))
+                        totalVJoyNeeded++;
+                }
+                if (totalVJoyNeeded > 0)
+                    VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded);
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
                 {
                     if (_virtualControllers[padIndex] == null &&
@@ -414,70 +428,19 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Creates a vJoy virtual controller using the next available device ID.
-        /// Creates device nodes on demand if needed (like ViGEm creates USB nodes).
-        ///
-        /// When adding a new device, ALL existing vJoy nodes are removed and the full
-        /// set is recreated in one batch. This avoids the UpdateDriverForPlugAndPlayDevicesW
-        /// issue where re-binding invalidates existing controller handles. Existing
-        /// VJoyVirtualController instances are disconnected and re-connected after rebuild.
-        ///
-        /// Returns null if vJoy driver is not installed or node creation fails.
+        /// Device nodes are pre-provisioned by UpdateVirtualDevices() before this
+        /// method is called, so this just finds a free ID and returns a controller.
+        /// Returns null if vJoy driver is not installed or no free devices found.
         /// </summary>
         private IVirtualController CreateVJoyController()
         {
             VJoyVirtualController.DiagLog($"CreateVJoyController called");
 
-            // Light check: can the DLL be loaded? Don't use CheckVJoyInstalled()
-            // (calls vJoyEnabled()) because that requires active device nodes —
-            // which don't exist yet in the on-demand model.
             VJoyVirtualController.EnsureDllLoaded();
             if (!VJoyVirtualController.IsDllLoaded)
             {
                 RaiseError("vJoy driver is not installed (vJoyInterface.dll not found).", null);
                 return null;
-            }
-
-            // Collect existing vJoy controllers and their pad indices.
-            var existingVJoy = new System.Collections.Generic.List<(int padIndex, VJoyVirtualController vc)>();
-            for (int i = 0; i < MaxPads; i++)
-            {
-                if (_virtualControllers[i] is VJoyVirtualController vjc)
-                    existingVJoy.Add((i, vjc));
-            }
-            int needed = existingVJoy.Count + 1;
-
-            VJoyVirtualController.DiagLog($"CreateVJoyController: existingVJoy={existingVJoy.Count}, needed={needed}");
-
-            // Relinquish all existing vJoy devices before rebuild.
-            // EnsureDevicesAvailable does a full remove+recreate when adding nodes,
-            // which invalidates all acquired handles.
-            foreach (var (_, vc) in existingVJoy)
-                vc.Disconnect();
-
-            // Ensure enough device nodes exist. This removes all nodes and recreates
-            // the full set in one batch (single UpdateDriverForPlugAndPlayDevicesW call).
-            if (!VJoyVirtualController.EnsureDevicesAvailable(needed))
-            {
-                VJoyVirtualController.DiagLog("CreateVJoyController: EnsureDevicesAvailable FAILED");
-                // Try to re-acquire existing devices even if we failed to create the new one.
-                foreach (var (_, vc) in existingVJoy)
-                    try { vc.Connect(); } catch { /* best effort */ }
-                RaiseError("Failed to create vJoy device node.", null);
-                return null;
-            }
-
-            // Re-acquire existing vJoy devices with fresh handles after rebuild.
-            foreach (var (padIndex, vc) in existingVJoy)
-            {
-                try
-                {
-                    vc.Connect();
-                    VJoyVirtualController.DiagLog($"Re-acquired vJoy device for pad {padIndex}");
-                }
-                catch (Exception ex)
-                {
-                    VJoyVirtualController.DiagLog($"Failed to re-acquire vJoy device for pad {padIndex}: {ex.Message}");
-                }
             }
 
             uint deviceId = VJoyVirtualController.FindFreeDeviceId();

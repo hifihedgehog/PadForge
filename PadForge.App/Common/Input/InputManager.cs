@@ -240,7 +240,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Stops the background polling thread and waits for it to exit.
         /// </summary>
-        public void Stop()
+        public void Stop(bool preserveVJoyNodes = false)
         {
             if (!_running)
                 return;
@@ -256,7 +256,7 @@ namespace PadForge.Common.Input
             RawInputListener.Stop();
 
             StopAllForceFeedback();
-            DestroyAllVirtualControllers();
+            DestroyAllVirtualControllers(preserveVJoyNodes);
             CloseAllDevices();
 
             _enumerationTimer.Stop();

@@ -46,6 +46,7 @@ namespace PadForge.Services
         private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
         private bool _disposed;
+        private bool _preservedVJoyNodes;
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -115,8 +116,13 @@ namespace PadForge.Services
             InputManager.CleanupStaleVigemDevices();
 
             // Remove stale vJoy device nodes from previous sessions (crash without cleanup).
-            // vJoy nodes should only exist while virtual controllers are actively connected.
-            VJoyVirtualController.RemoveAllDeviceNodes();
+            // Skip if Stop(preserveVJoyNodes: true) disabled the node instead of removing
+            // it — the DLL's internal handles are still valid and EnsureDevicesAvailable
+            // will re-enable the node when vJoy slots become active.
+            if (_preservedVJoyNodes)
+                _preservedVJoyNodes = false; // consumed — next Stop+Start will do full removal
+            else
+                VJoyVirtualController.RemoveAllDeviceNodes();
 
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
@@ -180,7 +186,7 @@ namespace PadForge.Services
         /// <summary>
         /// Stops the UI timer and engine, releases resources.
         /// </summary>
-        public void Stop()
+        public void Stop(bool preserveVJoyNodes = false)
         {
             // Stop UI timer.
             if (_uiTimer != null)
@@ -210,6 +216,9 @@ namespace PadForge.Services
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
+                // Pass preserveVJoyNodes so engine teardown disables (not removes)
+                // vJoy device nodes when we're about to restart immediately.
+                _inputManager.Stop(preserveVJoyNodes);
                 _inputManager.Dispose();
                 _inputManager = null;
             }
@@ -228,14 +237,18 @@ namespace PadForge.Services
                 row.IsOnline = false;
             _mainVm.Devices.RefreshCounts();
 
-            // Remove vJoy device nodes so dormant devices don't appear in
-            // Game Controllers — games may latch onto them as valid input.
-            // Allow up to 3s for cleanup, then let the app exit regardless.
-            if (VJoyVirtualController.CountExistingDevices() > 0)
+            _preservedVJoyNodes = preserveVJoyNodes;
+            if (!preserveVJoyNodes)
             {
-                var cleanupTask = System.Threading.Tasks.Task.Run(
-                    () => VJoyVirtualController.RemoveAllDeviceNodes());
-                cleanupTask.Wait(TimeSpan.FromSeconds(3));
+                // Remove vJoy device nodes so dormant devices don't appear in
+                // Game Controllers — games may latch onto them as valid input.
+                // Allow up to 3s for cleanup, then let the app exit regardless.
+                if (VJoyVirtualController.CountExistingDevices() > 0)
+                {
+                    var cleanupTask = System.Threading.Tasks.Task.Run(
+                        () => VJoyVirtualController.RemoveAllDeviceNodes());
+                    cleanupTask.Wait(TimeSpan.FromSeconds(3));
+                }
             }
         }
 

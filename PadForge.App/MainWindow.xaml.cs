@@ -522,8 +522,8 @@ namespace PadForge
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
         private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
 
-        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard + separator).</summary>
-        private const int ControllerInsertIndex = 2;
+        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices + separator).</summary>
+        private const int ControllerInsertIndex = 4;
 
         /// <summary>Re-entrancy guard for <see cref="RebuildControllerSection"/>.</summary>
         private bool _rebuildingControllerSection;
@@ -548,6 +548,23 @@ namespace PadForge
                 Content = "Dashboard",
                 Tag = "Dashboard",
                 Icon = new SymbolIcon(Symbol.Home)
+            });
+
+            // Profiles.
+            var profiles = new NavigationViewItem
+            {
+                Tag = "Profiles",
+                Icon = new FontIcon { Glyph = "\uE8F1" },
+                Content = "Profiles"
+            };
+            NavView.MenuItems.Add(profiles);
+
+            // Devices.
+            NavView.MenuItems.Add(new NavigationViewItem
+            {
+                Content = "Devices",
+                Tag = "Devices",
+                Icon = new SymbolIcon(Symbol.AllApps)
             });
 
             NavView.MenuItems.Add(new NavigationViewItemSeparator());
@@ -649,24 +666,6 @@ namespace PadForge
                     NavView.MenuItems.Add(addItem);
                 }
 
-                NavView.MenuItems.Add(new NavigationViewItemSeparator());
-
-                // Devices.
-                NavView.MenuItems.Add(new NavigationViewItem
-                {
-                    Content = "Devices",
-                    Tag = "Devices",
-                    Icon = new SymbolIcon(Symbol.AllApps)
-                });
-
-                // Profiles.
-                var profiles = new NavigationViewItem
-                {
-                    Tag = "Profiles",
-                    Icon = new FontIcon { Glyph = "\uE8F1" }
-                };
-                profiles.Content = "Profiles";
-                NavView.MenuItems.Add(profiles);
             }
             finally
             {

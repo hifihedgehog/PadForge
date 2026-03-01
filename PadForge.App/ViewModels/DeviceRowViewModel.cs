@@ -232,7 +232,16 @@ namespace PadForge.ViewModels
             _assignedSlots = slots ?? new();
             SlotBadges.Clear();
             foreach (int slot in _assignedSlots)
-                SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = slot + 1 });
+            {
+                // Compute sequential global number (1-based) among created slots,
+                // not raw padIndex+1. Without this, gaps in SlotCreated[] (e.g.,
+                // slot 1 uncreated) cause badge numbers to skip (1, 3, 4...).
+                int globalNum = 0;
+                for (int i = 0; i <= slot; i++)
+                    if (Common.Input.SettingsManager.SlotCreated[i])
+                        globalNum++;
+                SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = globalNum });
+            }
             OnPropertyChanged(nameof(AssignedSlots));
             OnPropertyChanged(nameof(IsUnassigned));
         }

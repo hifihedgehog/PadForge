@@ -1846,7 +1846,7 @@ namespace PadForge
             SettingsPageView.Visibility = tag == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             AboutPageView.Visibility = tag == "About" ? Visibility.Visible : Visibility.Collapsed;
 
-            bool isPad = tag.StartsWith("Pad") && tag.Length == 4;
+            bool isPad = tag.StartsWith("Pad") && tag.Length >= 4 && int.TryParse(tag.Substring(3), out _);
             PadPageView.Visibility = isPad ? Visibility.Visible : Visibility.Collapsed;
 
             // Update PadPage DataContext to the selected pad.

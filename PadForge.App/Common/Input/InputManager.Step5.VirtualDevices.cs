@@ -238,18 +238,17 @@ namespace PadForge.Common.Input
                 if (anyVJoySlotExists || totalVJoyNeeded > 0 ||
                     VJoyVirtualController.CurrentDescriptorCount > 0)
                 {
-                    // If descriptor count is changing, destroy ALL vJoy VCs first.
-                    // Registry descriptors are always Device01..DeviceN (contiguous),
-                    // but VC device IDs may be non-contiguous after a mid-range
-                    // deletion (e.g., ID 5 destroyed → IDs 1,2,3,4,6,7,8,9,10).
-                    // WriteDeviceDescriptors removes the LAST key (Device10), not
-                    // the gap (Device05), causing ID mismatches. Destroying all VCs
-                    // and letting Pass 2 recreate them ensures fresh contiguous IDs.
+                    // If descriptor count is changing, destroy vJoy VCs whose device
+                    // IDs exceed the new count. Registry descriptors are always
+                    // Device01..DeviceN (contiguous), so any VC with ID > N would
+                    // reference a non-existent descriptor after the restart.
+                    // VCs with IDs 1..N survive and re-acquire after the restart.
                     if (totalVJoyNeeded != VJoyVirtualController.CurrentDescriptorCount)
                     {
                         for (int i = 0; i < MaxPads; i++)
                         {
-                            if (_virtualControllers[i] is VJoyVirtualController)
+                            if (_virtualControllers[i] is VJoyVirtualController vjoy &&
+                                vjoy.DeviceId > (uint)totalVJoyNeeded)
                             {
                                 DestroyVirtualController(i);
                                 _virtualControllers[i] = null;

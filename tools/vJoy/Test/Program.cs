@@ -1119,7 +1119,7 @@ class Program
 
             // Cleanup any previous state
             RemoveAllVJoyNodes();
-            Thread.Sleep(500);
+            Thread.Sleep(2000); // WinMM needs time to deregister the old device
 
             var layout = new DeviceLayout { Axes = cfg.axes, Buttons = cfg.buttons, Povs = cfg.povs };
 
@@ -1227,13 +1227,20 @@ class Program
             Console.WriteLine($"  UpdateVJD V2: {(v2Ok ? "OK" : "FAIL")}");
 
             // Phase 8: WinMM readback verification
-            // Wait for WinMM to detect the new device (may take a moment)
-            Thread.Sleep(500);
-
-            // Find new WinMM device IDs that weren't present before
-            var afterDevices = EnumerateWinMMDevices();
-            var newDevices = new HashSet<int>(afterDevices);
-            newDevices.ExceptWith(beforeDevices);
+            // Poll WinMM for up to 5 seconds until the device appears.
+            // WinMM caches device enumeration and can be slow to pick up
+            // newly created devices, especially after rapid remove/create cycles.
+            HashSet<int> afterDevices = null;
+            HashSet<int> newDevices = null;
+            for (int poll = 0; poll < 10; poll++)
+            {
+                Thread.Sleep(500);
+                afterDevices = EnumerateWinMMDevices();
+                newDevices = new HashSet<int>(afterDevices);
+                newDevices.ExceptWith(beforeDevices);
+                if (newDevices.Count > 0 || afterDevices.Count > beforeDevices.Count)
+                    break;
+            }
 
             Console.Write("  WinMM readback: ");
             Console.Write($"before={beforeDevices.Count} after={afterDevices.Count} new={newDevices.Count} | ");
@@ -1318,7 +1325,7 @@ class Program
             // Cleanup
             RelinquishVJD(devId);
             RemoveAllVJoyNodes();
-            Thread.Sleep(500);
+            Thread.Sleep(2000); // Give WinMM time to deregister
         }
 
         // Summary
@@ -1928,21 +1935,31 @@ class Program
                 Console.WriteLine($"  Copied vjoy.sys to {dstSys}");
             }
 
-            // Remove ALL DeviceNN registry keys so the driver uses its built-in
-            // default HID descriptor. Custom descriptors cause a layout mismatch:
-            // the descriptor says N axes at specific offsets, but the driver always
-            // sends a fixed 97-byte HID_INPUT_REPORT with 16 axes + 4 POV hats + 128
-            // buttons at fixed offsets. This mismatch prevents data from reaching WinMM.
+            // Write per-device HID report descriptors to registry.
+            // The descriptor must match the driver's fixed 97-byte report layout:
+            // 16 axes × 32-bit + 4 POV DWORDs + 128 button bits = 96 bytes + 1 report ID.
+            // Disabled axes/POVs/buttons are emitted as constant padding in the descriptor.
             using var baseKey = Registry.LocalMachine.CreateSubKey(
                 @"SYSTEM\CurrentControlSet\services\vjoy\Parameters");
 
+            // Clean any existing DeviceNN keys first
             foreach (string subKeyName in baseKey.GetSubKeyNames())
             {
                 if (subKeyName.StartsWith("Device", StringComparison.OrdinalIgnoreCase))
                 {
                     try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
-                    Console.WriteLine($"  Cleaned registry: {subKeyName}");
                 }
+            }
+
+            // Write descriptor for each device (Device01..DeviceNN)
+            for (int i = 1; i <= count; i++)
+            {
+                byte[] descriptor = BuildHidDescriptor((byte)i, layout);
+                string keyName = $"Device{i:D2}";
+                using var devKey = baseKey.CreateSubKey(keyName);
+                devKey.SetValue("HidReportDescriptor", descriptor, RegistryValueKind.Binary);
+                devKey.SetValue("HidReportDescriptorSize", descriptor.Length, RegistryValueKind.DWord);
+                Console.WriteLine($"  Wrote {keyName}: {descriptor.Length} bytes ({layout})");
             }
         }
         catch (Exception ex)
@@ -1953,86 +1970,114 @@ class Program
     }
 
     /// <summary>
-    /// Builds a HID Report Descriptor for a vJoy device with the specified layout.
-    /// All axes are 32-bit, range 0-32767 (matching JOYSTICK_POSITION_V3 axis range).
+    /// Builds a HID Report Descriptor matching the vJoyConf format exactly.
+    /// The report always has a fixed 97-byte layout:
+    ///   1 byte report ID + 16 axes × 4 bytes + 4 POV DWORDs + 128 button bits (16 bytes)
+    /// Disabled axes/POVs/buttons are emitted as constant padding so the byte offsets
+    /// always match the driver's HID_INPUT_REPORT struct.
     /// </summary>
     static byte[] BuildHidDescriptor(byte reportId, DeviceLayout layout)
     {
+        int nAxes = Math.Clamp(layout.Axes, 0, 6);
+        int nButtons = Math.Clamp(layout.Buttons, 0, 128);
+        int nPovs = Math.Clamp(layout.Povs, 0, 4);
+
+        // All 16 axis HID usages in vJoyConf order
+        byte[] axisUsages = {
+            0x30, 0x31, 0x32, 0x33, 0x34, 0x35,   // X, Y, Z, RX, RY, RZ
+            0x36, 0x37, 0x38,                       // Slider, Dial, Wheel
+            0xC4, 0xC5, 0xC6, 0xC8,                // Accelerator, Brake, Clutch, Steering
+            0xB0, 0xBA, 0xBB                        // Aileron, Rudder, Throttle
+        };
+
         var d = new List<byte>();
 
-        // Collection: Generic Desktop / Joystick
-        d.AddRange(new byte[] { 0x05, 0x01 });             // USAGE_PAGE (Generic Desktop)
-        d.AddRange(new byte[] { 0x09, 0x04 });             // USAGE (Joystick)
-        d.AddRange(new byte[] { 0xA1, 0x01 });             // COLLECTION (Application)
-        d.AddRange(new byte[] { 0x85, reportId });          //   REPORT_ID
+        // ── Outer header ──
+        d.AddRange(new byte[] { 0x05, 0x01 });         // USAGE_PAGE (Generic Desktop)
+        d.AddRange(new byte[] { 0x15, 0x00 });         // LOGICAL_MINIMUM (0)
+        d.AddRange(new byte[] { 0x09, 0x04 });         // USAGE (Joystick)
+        d.AddRange(new byte[] { 0xA1, 0x01 });         // COLLECTION (Application)
 
-        // Axes: each 32-bit, range 0-32767
-        if (layout.Axes > 0)
+        // ── Axes collection ──
+        d.AddRange(new byte[] { 0x05, 0x01 });         //   USAGE_PAGE (Generic Desktop)
+        d.AddRange(new byte[] { 0x85, reportId });      //   REPORT_ID
+        d.AddRange(new byte[] { 0x09, 0x01 });         //   USAGE (Pointer)
+        d.AddRange(new byte[] { 0x15, 0x00 });         //   LOGICAL_MINIMUM (0)
+        d.AddRange(new byte[] { 0x26, 0xFF, 0x7F });   //   LOGICAL_MAXIMUM (32767)
+        d.AddRange(new byte[] { 0x75, 0x20 });         //   REPORT_SIZE (32)
+        d.AddRange(new byte[] { 0x95, 0x01 });         //   REPORT_COUNT (1)
+        d.AddRange(new byte[] { 0xA1, 0x00 });         //   COLLECTION (Physical)
+
+        // All 16 axes — enabled ones get Usage + Input(Data), disabled ones get Input(Cnst)
+        for (int i = 0; i < 16; i++)
         {
-            d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x26, 0xFF, 0x7F }); //   LOGICAL_MAXIMUM (32767)
-            d.AddRange(new byte[] { 0x75, 0x20 });       //   REPORT_SIZE (32)
-            d.AddRange(new byte[] { 0x95, 0x01 });       //   REPORT_COUNT (1)
-
-            // Usage IDs: X=0x30, Y=0x31, Z=0x32, RX=0x33, RY=0x34, RZ=0x35
-            byte[] usages = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35 };
-            for (int i = 0; i < layout.Axes && i < usages.Length; i++)
+            if (i < nAxes)
             {
-                d.AddRange(new byte[] { 0x09, usages[i] }); // USAGE (axis)
-                d.AddRange(new byte[] { 0x81, 0x02 });      // INPUT (Data, Var, Abs)
+                d.AddRange(new byte[] { 0x09, axisUsages[i] });  // USAGE (axis)
+                d.AddRange(new byte[] { 0x81, 0x02 });           // INPUT (Data, Var, Abs)
+            }
+            else
+            {
+                d.AddRange(new byte[] { 0x81, 0x01 });           // INPUT (Cnst, Ary, Abs)
             }
         }
 
-        // Buttons
-        if (layout.Buttons > 0)
-        {
-            int btnCount = Math.Min(layout.Buttons, 128);
-            d.AddRange(new byte[] { 0x05, 0x09 });       //   USAGE_PAGE (Button)
-            d.AddRange(new byte[] { 0x19, 0x01 });       //   USAGE_MINIMUM (1)
-            d.Add(0x29); d.Add((byte)btnCount);           //   USAGE_MAXIMUM (N)
-            d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x25, 0x01 });       //   LOGICAL_MAXIMUM (1)
-            d.AddRange(new byte[] { 0x75, 0x01 });       //   REPORT_SIZE (1)
-            d.Add(0x95); d.Add((byte)btnCount);           //   REPORT_COUNT (N)
-            d.AddRange(new byte[] { 0x81, 0x02 });       //   INPUT (Data, Var, Abs)
+        d.Add(0xC0);                                    //   END_COLLECTION (Physical)
 
-            // Padding to byte boundary
-            int padBits = (8 - (btnCount % 8)) % 8;
-            if (padBits > 0)
+        // ── Discrete POV hats — always 128 bits (32 nibbles) ──
+        if (nPovs > 0)
+        {
+            d.AddRange(new byte[] { 0x15, 0x00 });         // LOGICAL_MINIMUM (0)
+            d.AddRange(new byte[] { 0x25, 0x03 });         // LOGICAL_MAXIMUM (3)
+            d.AddRange(new byte[] { 0x35, 0x00 });         // PHYSICAL_MINIMUM (0)
+            d.AddRange(new byte[] { 0x46, 0x0E, 0x01 });   // PHYSICAL_MAXIMUM (270)
+            d.AddRange(new byte[] { 0x65, 0x14 });         // UNIT (Eng Rotation: degrees)
+            d.AddRange(new byte[] { 0x75, 0x04 });         // REPORT_SIZE (4)
+            d.AddRange(new byte[] { 0x95, 0x01 });         // REPORT_COUNT (1)
+
+            // Active POVs
+            for (int p = 0; p < nPovs; p++)
             {
-                d.AddRange(new byte[] { 0x75, 0x01 });       //   REPORT_SIZE (1)
-                d.Add(0x95); d.Add((byte)padBits);            //   REPORT_COUNT (pad)
-                d.AddRange(new byte[] { 0x81, 0x01 });       //   INPUT (Cnst)
+                d.AddRange(new byte[] { 0x09, 0x39 });     // USAGE (Hat Switch)
+                d.AddRange(new byte[] { 0x81, 0x02 });     // INPUT (Data, Var, Abs)
             }
+
+            // Padding nibbles to fill 32 total (128 bits = 4 DWORDs)
+            int padNibbles = 32 - nPovs;
+            d.AddRange(new byte[] { 0x95, (byte)padNibbles });  // REPORT_COUNT (32-nPovs)
+            d.AddRange(new byte[] { 0x81, 0x01 });              // INPUT (Cnst, Ary, Abs)
+        }
+        else
+        {
+            // No POVs: 4 × 32-bit constant padding (128 bits)
+            d.AddRange(new byte[] { 0x75, 0x20 });         // REPORT_SIZE (32)
+            d.AddRange(new byte[] { 0x95, 0x04 });         // REPORT_COUNT (4)
+            d.AddRange(new byte[] { 0x81, 0x01 });         // INPUT (Cnst, Ary, Abs)
         }
 
-        // Discrete POV hat switches
-        if (layout.Povs > 0)
-        {
-            d.AddRange(new byte[] { 0x05, 0x01 });       //   USAGE_PAGE (Generic Desktop)
+        // ── Buttons — always 128 bits ──
+        byte usageMin = (byte)(nButtons > 0 ? 0x01 : 0x00);
+        d.AddRange(new byte[] { 0x05, 0x09 });             // USAGE_PAGE (Button)
+        d.AddRange(new byte[] { 0x15, 0x00 });             // LOGICAL_MINIMUM (0)
+        d.AddRange(new byte[] { 0x25, 0x01 });             // LOGICAL_MAXIMUM (1)
+        d.AddRange(new byte[] { 0x55, 0x00 });             // UNIT_EXPONENT (0)
+        d.AddRange(new byte[] { 0x65, 0x00 });             // UNIT (None)
+        d.AddRange(new byte[] { 0x19, usageMin });          // USAGE_MINIMUM (1 or 0)
+        d.Add(0x29); d.Add((byte)nButtons);                 // USAGE_MAXIMUM (nButtons)
+        d.AddRange(new byte[] { 0x75, 0x01 });             // REPORT_SIZE (1)
+        d.Add(0x95); d.Add((byte)nButtons);                 // REPORT_COUNT (nButtons)
+        d.AddRange(new byte[] { 0x81, 0x02 });             // INPUT (Data, Var, Abs)
 
-            for (int p = 0; p < layout.Povs && p < 4; p++)
-            {
-                d.AddRange(new byte[] { 0x09, 0x39 });       //   USAGE (Hat Switch)
-                d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
-                d.AddRange(new byte[] { 0x25, 0x03 });       //   LOGICAL_MAXIMUM (3)
-                d.AddRange(new byte[] { 0x35, 0x00 });       //   PHYSICAL_MINIMUM (0)
-                d.AddRange(new byte[] { 0x46, 0x0E, 0x01 }); //   PHYSICAL_MAXIMUM (270)
-                d.AddRange(new byte[] { 0x65, 0x14 });       //   UNIT (Eng Rotation: degrees)
-                d.AddRange(new byte[] { 0x75, 0x04 });       //   REPORT_SIZE (4)
-                d.AddRange(new byte[] { 0x95, 0x01 });       //   REPORT_COUNT (1)
-                d.AddRange(new byte[] { 0x81, 0x42 });       //   INPUT (Data, Var, Abs, Null)
-                // 4-bit padding per POV
-                d.AddRange(new byte[] { 0x75, 0x04 });       //   REPORT_SIZE (4)
-                d.AddRange(new byte[] { 0x95, 0x01 });       //   REPORT_COUNT (1)
-                d.AddRange(new byte[] { 0x81, 0x01 });       //   INPUT (Cnst)
-                d.AddRange(new byte[] { 0x65, 0x00 });       //   UNIT (None)
-                d.AddRange(new byte[] { 0x35, 0x00 });       //   PHYSICAL_MINIMUM (0)
-                d.AddRange(new byte[] { 0x45, 0x00 });       //   PHYSICAL_MAXIMUM (0)
-            }
+        // Padding to fill 128 bits total
+        if (nButtons < 128)
+        {
+            int padBits = 128 - nButtons;
+            d.Add(0x75); d.Add((byte)padBits);              // REPORT_SIZE (128-nButtons)
+            d.AddRange(new byte[] { 0x95, 0x01 });         // REPORT_COUNT (1)
+            d.AddRange(new byte[] { 0x81, 0x01 });         // INPUT (Cnst, Ary, Abs)
         }
 
-        d.Add(0xC0); // END_COLLECTION
+        d.Add(0xC0);                                        // END_COLLECTION (Application)
         return d.ToArray();
     }
 

@@ -440,9 +440,9 @@ namespace PadForge.Common.Input
 
             VJoyVirtualController.DiagLog($"CreateVJoyController: activeVJoy={activeVJoy}, needed={needed}");
 
-            // Ensure enough device nodes exist. WriteDeviceConfiguration runs
-            // inside EnsureDevicesAvailable to set the correct HID descriptor
-            // (11 buttons, 6 axes, 1 POV) before the driver binds.
+            // Ensure enough device nodes exist. EnsureDevicesAvailable writes
+            // the HID descriptor (6 axes, 11 buttons, 1 POV) to the registry
+            // before creating device nodes so the driver reads the correct layout.
             if (!VJoyVirtualController.EnsureDevicesAvailable(needed))
             {
                 VJoyVirtualController.DiagLog("CreateVJoyController: EnsureDevicesAvailable FAILED");

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -119,6 +120,37 @@ class Program
     [return: MarshalAs(UnmanagedType.Bool)]
     static extern bool UpdateDriverForPlugAndPlayDevicesW(IntPtr hwndParent, string HardwareId,
         string FullInfPath, int InstallFlags, out bool bRebootRequired);
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  WinMM joystick API (same backend as joy.cpl / Game Controllers)
+    // ─────────────────────────────────────────────────────────────────────
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct JOYINFOEX
+    {
+        public int dwSize;
+        public int dwFlags;
+        public int dwXpos;
+        public int dwYpos;
+        public int dwZpos;
+        public int dwRpos;
+        public int dwUpos;
+        public int dwVpos;
+        public int dwButtons;
+        public int dwButtonNumber;
+        public int dwPOV;
+        public int dwReserved1;
+        public int dwReserved2;
+    }
+
+    const int JOY_RETURNALL = 0xFF;
+    const int JOYERR_NOERROR = 0;
+
+    [DllImport("winmm.dll")]
+    static extern int joyGetNumDevs();
+
+    [DllImport("winmm.dll")]
+    static extern int joyGetPosEx(int uJoyID, ref JOYINFOEX pji);
 
     // ─────────────────────────────────────────────────────────────────────
     //  VjdStat values
@@ -267,12 +299,15 @@ class Program
         string cmd = args[0].ToLowerInvariant();
         return cmd switch
         {
-            "create" => CmdCreate(args),
-            "remove" => CmdRemove(),
-            "feed"   => CmdFeed(args),
-            "info"   => CmdInfo(),
-            "full"   => CmdFull(args),
-            _        => Error($"Unknown command: {args[0]}")
+            "create"       => CmdCreate(args),
+            "remove"       => CmdRemove(),
+            "feed"         => CmdFeed(args),
+            "info"         => CmdInfo(),
+            "full"         => CmdFull(args),
+            "battery"      => CmdBattery(),
+            "diag"         => CmdDiag(),
+            "freshinstall" => CmdFreshInstall(),
+            _              => Error($"Unknown command: {args[0]}")
         };
     }
 
@@ -299,7 +334,12 @@ class Program
         Console.WriteLine("    Full end-to-end test: create N devices, configure,");
         Console.WriteLine("    feed data, then cleanup on Ctrl+C.");
         Console.WriteLine();
-        Console.WriteLine("Must run elevated (Administrator) for create/remove/full.");
+        Console.WriteLine("  VJoyTest freshinstall");
+        Console.WriteLine("    Full DriverInstaller-style cleanup + reinstall + data flow test.");
+        Console.WriteLine("    Replicates the exact cleanup that PadForge's DriverInstaller.cs does:");
+        Console.WriteLine("    remove nodes, stop/delete service, clean registry, re-add driver.");
+        Console.WriteLine();
+        Console.WriteLine("Must run elevated (Administrator) for create/remove/full/freshinstall.");
     }
 
     static int Error(string msg)
@@ -667,6 +707,927 @@ class Program
     }
 
     // ─────────────────────────────────────────────────────────────────────
+    //  Command: freshinstall — Full DriverInstaller-style cleanup + test
+    //  Replicates PadForge's DriverInstaller.cs flow exactly.
+    // ─────────────────────────────────────────────────────────────────────
+
+    static int CmdFreshInstall()
+    {
+        Console.WriteLine("=== FRESH INSTALL: Replicating PadForge DriverInstaller.cs flow ===\n");
+
+        string vjoyDir = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+        string vjoyInf = System.IO.Path.Combine(vjoyDir, "vjoy.inf");
+        string vjoyDll = System.IO.Path.Combine(vjoyDir, "vJoyInterface.dll");
+
+        // Verify vJoy files exist before we nuke everything.
+        if (!System.IO.File.Exists(vjoyInf))
+            return Error($"vjoy.inf not found at {vjoyInf}. Install vJoy first via PadForge Settings.");
+        if (!System.IO.File.Exists(System.IO.Path.Combine(vjoyDir, "vjoy.sys")))
+            return Error($"vjoy.sys not found in {vjoyDir}. Install vJoy first via PadForge Settings.");
+
+        // Snapshot WinMM devices before.
+        var beforeDevices = EnumerateWinMMDevices();
+        Console.WriteLine($"WinMM devices before: {string.Join(",", beforeDevices.OrderBy(x => x))}");
+
+        // ─── Step 1: Remove ALL device nodes ───
+        Console.WriteLine("\n[Step 1] Removing all vJoy device nodes...");
+        RemoveAllVJoyNodes();
+        // Also try ROOT\HIDCLASS\0000-0015 explicitly (DriverInstaller does this).
+        for (int i = 0; i <= 15; i++)
+        {
+            string instanceId = $"ROOT\\HIDCLASS\\{i:D4}";
+            RemoveDeviceNode(instanceId); // Ignore failures — may not exist.
+        }
+        Thread.Sleep(2000);
+        Console.WriteLine("  Done.");
+
+        // ─── Step 2: Stop vjoy service ───
+        Console.WriteLine("\n[Step 2] Stopping vjoy service...");
+        RunPnpCmd("sc.exe", "stop vjoy");
+        Thread.Sleep(2000);
+
+        // ─── Step 3: Delete OEM inf from driver store ───
+        Console.WriteLine("\n[Step 3] Removing vJoy OEM inf from driver store...");
+        var oemInfs = FindVJoyOemInfs();
+        if (oemInfs.Length > 0)
+        {
+            foreach (var inf in oemInfs)
+            {
+                Console.Write($"  Removing {inf}... ");
+                RunPnpCmd("pnputil.exe", $"/delete-driver {inf} /uninstall /force");
+                Console.WriteLine("done");
+            }
+        }
+        else
+        {
+            Console.WriteLine("  No OEM infs found.");
+        }
+
+        // ─── Step 4: Delete the service ───
+        Console.WriteLine("\n[Step 4] Deleting vjoy service (sc delete)...");
+        RunPnpCmd("sc.exe", "delete vjoy");
+
+        // ─── Step 5: Remove ALL service registry keys from ALL ControlSets ───
+        Console.WriteLine("\n[Step 5] Cleaning service registry keys...");
+        string[] controlSets = { "CurrentControlSet", "ControlSet001", "ControlSet002", "ControlSet003" };
+        foreach (var cs in controlSets)
+        {
+            string path = $@"SYSTEM\{cs}\Services\vjoy";
+            try
+            {
+                Registry.LocalMachine.DeleteSubKeyTree(path, throwOnMissingSubKey: false);
+                Console.WriteLine($"  Deleted HKLM\\{path}");
+            }
+            catch
+            {
+                Console.WriteLine($"  HKLM\\{path} — not found or locked");
+            }
+        }
+
+        // ─── Step 6: Delete vjoy.sys from System32\drivers ───
+        Console.WriteLine("\n[Step 6] Removing vjoy.sys from System32\\drivers...");
+        string driversSys = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers", "vjoy.sys");
+        try
+        {
+            if (System.IO.File.Exists(driversSys))
+            {
+                System.IO.File.Delete(driversSys);
+                Console.WriteLine($"  Deleted {driversSys}");
+            }
+            else
+            {
+                Console.WriteLine($"  {driversSys} not found.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"  Could not delete: {ex.Message}");
+        }
+
+        Console.WriteLine("\n  >>> Full cleanup complete. Waiting 3 seconds for system to settle...");
+        Thread.Sleep(3000);
+
+        // ─── Step 7: Re-add driver to store ───
+        Console.WriteLine("\n[Step 7] Adding vJoy driver back to driver store...");
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "pnputil.exe",
+                Arguments = $"/add-driver \"{vjoyInf}\" /install",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc != null)
+            {
+                string stdout = proc.StandardOutput.ReadToEnd();
+                string stderr = proc.StandardError.ReadToEnd();
+                proc.WaitForExit(30_000);
+                Console.WriteLine(stdout);
+                if (!string.IsNullOrWhiteSpace(stderr))
+                    Console.WriteLine($"  stderr: {stderr}");
+                Console.WriteLine($"  pnputil exit code: {proc.ExitCode}");
+            }
+        }
+
+        Thread.Sleep(2000);
+
+        // ─── Step 8: Create device node via SetupAPI ───
+        Console.WriteLine("\n[Step 8] Creating device node via SetupAPI...");
+        if (!CreateDeviceNodes(1))
+            return Error("Failed to create device node.");
+
+        // ─── Step 9: Wait for PnP ───
+        Console.WriteLine("\n[Step 9] Waiting for PnP driver binding...");
+        if (!WaitForDevices(1, timeout: TimeSpan.FromSeconds(15)))
+        {
+            Console.Error.WriteLine("WARNING: Device not ready after 15 seconds.");
+        }
+
+        Thread.Sleep(3000);
+
+        // ─── Step 10: Check driver state ───
+        Console.WriteLine("\n[Step 10] Checking driver state...");
+        string uf = GetDeviceNodeUpperFilters();
+        Console.WriteLine($"  UpperFilters: {(string.IsNullOrEmpty(uf) ? "MISSING" : uf)}");
+
+        // Check service status.
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "sc.exe",
+                Arguments = "query vjoy",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc != null)
+            {
+                string output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(5_000);
+                Console.WriteLine(output);
+            }
+        }
+
+        // ─── Step 11: Load DLL and acquire ───
+        Console.WriteLine("\n[Step 11] Loading vJoyInterface.dll and acquiring device...");
+        if (!TryLoadDll())
+            return Error("Cannot load vJoyInterface.dll");
+
+        bool enabled = vJoyEnabled();
+        Console.WriteLine($"  vJoyEnabled: {enabled}");
+        if (!enabled)
+            return Error("vJoyEnabled() returned false after fresh install.");
+
+        uint devId = 0;
+        for (uint id = 1; id <= 16; id++)
+        {
+            int status = GetVJDStatus(id);
+            Console.WriteLine($"  Device {id}: {StatusName(status)}");
+            if (status == VJD_STAT_FREE && devId == 0)
+            {
+                if (AcquireVJD(id))
+                {
+                    ResetVJD(id);
+                    devId = id;
+                    Console.WriteLine($"  >>> Acquired device {id}");
+                }
+            }
+        }
+
+        if (devId == 0)
+            return Error("No devices could be acquired.");
+
+        // Print capabilities.
+        int btns = GetVJDButtonNumber(devId);
+        int povs = GetVJDDiscPovNumber(devId);
+        long maxV = 0;
+        GetVJDAxisMax(devId, HID_USAGE_X, ref maxV);
+        Console.WriteLine($"  Capabilities: buttons={btns} povs={povs} axisMax={maxV}");
+
+        // ─── Step 12: Feed data and verify via WinMM ───
+        Console.WriteLine("\n[Step 12] Feeding data and verifying via WinMM...");
+
+        int axisMax = (int)maxV;
+        if (axisMax <= 0) axisMax = 32767;
+
+        // Set distinctive values: X=75%, Y=25%.
+        int testX = axisMax * 3 / 4;
+        int testY = axisMax / 4;
+        bool setOk = SetAxis(testX, devId, HID_USAGE_X);
+        setOk &= SetAxis(testY, devId, HID_USAGE_Y);
+        if (GetVJDAxisExist(devId, HID_USAGE_Z))
+            setOk &= SetAxis(axisMax / 2, devId, HID_USAGE_Z);
+        setOk &= SetBtn(true, devId, 1);
+        Console.WriteLine($"  SetAxis/SetBtn calls: {(setOk ? "OK" : "FAIL")}");
+
+        // Pump many frames to ensure the timer fires.
+        Console.Write("  Pumping 500 frames (5 seconds)... ");
+        for (int i = 0; i < 500; i++)
+        {
+            SetAxis(testX, devId, HID_USAGE_X);
+            SetAxis(testY, devId, HID_USAGE_Y);
+            Thread.Sleep(10);
+        }
+        Console.WriteLine("done.");
+
+        // Check WinMM.
+        var afterDevices = EnumerateWinMMDevices();
+        var newDevices = new HashSet<int>(afterDevices);
+        newDevices.ExceptWith(beforeDevices);
+
+        Console.WriteLine($"  WinMM devices after: {string.Join(",", afterDevices.OrderBy(x => x))} (new: {string.Join(",", newDevices.OrderBy(x => x))})");
+
+        // Try all devices.
+        Console.WriteLine("\n  WinMM device state dump:");
+        int vjoyJoyId = -1;
+        foreach (int jid in afterDevices.OrderBy(x => x))
+        {
+            var r = ReadWinMMDevice(jid);
+            bool isNew = newDevices.Contains(jid);
+            Console.WriteLine($"    joyID={jid}{(isNew ? " *NEW*" : "")} : X={r.x} Y={r.y} Z={r.z} R={r.r} U={r.u} V={r.v} Btns=0x{r.buttons:X} POV={r.pov}");
+            if (isNew && vjoyJoyId < 0)
+                vjoyJoyId = jid;
+        }
+
+        if (vjoyJoyId < 0 && afterDevices.Count > 0)
+        {
+            // No new devices — try to find one with non-default data.
+            foreach (int jid in afterDevices.OrderBy(x => x))
+            {
+                var r = ReadWinMMDevice(jid);
+                if (r.ok && r.x != 0 && r.x != 32767 && r.x != 65535)
+                {
+                    vjoyJoyId = jid;
+                    break;
+                }
+            }
+        }
+
+        // ─── Step 13: Data flow verification ───
+        Console.WriteLine("\n[Step 13] Data flow verification...");
+        if (vjoyJoyId >= 0)
+        {
+            var r1 = ReadWinMMDevice(vjoyJoyId);
+            Console.WriteLine($"  Target joyID={vjoyJoyId}: X={r1.x} Y={r1.y}");
+
+            // Change value and re-read.
+            int newX = axisMax / 2;
+            SetAxis(newX, devId, HID_USAGE_X);
+            Thread.Sleep(100);
+            // Pump a few more frames.
+            for (int i = 0; i < 20; i++)
+            {
+                SetAxis(newX, devId, HID_USAGE_X);
+                Thread.Sleep(10);
+            }
+
+            var r2 = ReadWinMMDevice(vjoyJoyId);
+            Console.WriteLine($"  After SetAxis(X={newX}): X={r2.x} Y={r2.y}");
+
+            if (r2.x != r1.x && r2.x != 32767)
+            {
+                Console.WriteLine("\n  >>> DATA FLOWS CORRECTLY! Fresh install fixed the issue. <<<");
+            }
+            else
+            {
+                Console.WriteLine("\n  >>> DATA STILL NOT FLOWING — same as before. <<<");
+            }
+        }
+        else
+        {
+            Console.WriteLine("  No vJoy device visible to WinMM at all.");
+        }
+
+        // Cleanup.
+        Console.WriteLine("\n[Cleanup] Relinquishing device...");
+        RelinquishVJD(devId);
+
+        Console.WriteLine("\nDone. Device node left in place for manual inspection.");
+        Console.WriteLine("Run 'VJoyTest remove' to clean up, or 'VJoyTest feed' to test more.");
+        return 0;
+    }
+
+    /// <summary>
+    /// Finds vJoy OEM inf names in the driver store (same as DriverInstaller.cs).
+    /// </summary>
+    static string[] FindVJoyOemInfs()
+    {
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "pnputil.exe",
+                Arguments = "/enum-drivers",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc == null) return Array.Empty<string>();
+            string output = proc.StandardOutput.ReadToEnd();
+            proc.WaitForExit(30_000);
+
+            var results = new List<string>();
+            string[] lines = output.Split('\n');
+            string currentOem = null;
+            bool isVJoyBlock = false;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i].Trim();
+                if (line.StartsWith("Published", StringComparison.OrdinalIgnoreCase) && line.Contains(":"))
+                {
+                    if (isVJoyBlock && currentOem != null)
+                        results.Add(currentOem);
+                    currentOem = line.Substring(line.IndexOf(':') + 1).Trim();
+                    isVJoyBlock = false;
+                }
+                else if (currentOem != null &&
+                         (line.IndexOf("shaul", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                          line.IndexOf("vjoy", StringComparison.OrdinalIgnoreCase) >= 0))
+                {
+                    isVJoyBlock = true;
+                }
+            }
+            if (isVJoyBlock && currentOem != null)
+                results.Add(currentOem);
+            return results.ToArray();
+        }
+        catch { return Array.Empty<string>(); }
+    }
+
+    /// <summary>
+    /// Runs a command and ignores output/errors (best-effort, like DriverInstaller scripts).
+    /// </summary>
+    static void RunPnpCmd(string fileName, string arguments)
+    {
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = arguments,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc != null)
+            {
+                proc.StandardOutput.ReadToEnd();
+                proc.StandardError.ReadToEnd();
+                proc.WaitForExit(10_000);
+            }
+        }
+        catch { }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Battery test — automated permutations with DirectInput readback
+    // ─────────────────────────────────────────────────────────────────────
+
+    static int CmdBattery()
+    {
+        Console.WriteLine("=== BATTERY TEST: Automated permutation tests with WinMM readback ===\n");
+
+        // Test configurations: (axes, buttons, povs)
+        var configs = new (int axes, int buttons, int povs)[]
+        {
+            (6, 11, 1),   // PadForge default (Xbox-like)
+            (2, 4, 0),    // Minimal: 2 axes, 4 buttons, no POV
+            (6, 32, 1),   // Max buttons for V2 bitmask
+            (4, 8, 1),    // Mid-range
+            (6, 11, 0),   // No POV
+            (1, 1, 0),    // Absolute minimal
+        };
+
+        int passed = 0;
+        int failed = 0;
+        var failures = new List<string>();
+
+        foreach (var cfg in configs)
+        {
+            string cfgName = $"axes={cfg.axes} buttons={cfg.buttons} povs={cfg.povs}";
+            Console.WriteLine($"─── Config: {cfgName} ───");
+
+            // Cleanup any previous state
+            RemoveAllVJoyNodes();
+            Thread.Sleep(500);
+
+            var layout = new DeviceLayout { Axes = cfg.axes, Buttons = cfg.buttons, Povs = cfg.povs };
+
+            // Snapshot WinMM devices BEFORE creating vJoy
+            var beforeDevices = EnumerateWinMMDevices();
+            Console.WriteLine($"  WinMM devices before: {string.Join(",", beforeDevices.OrderBy(x => x))}");
+
+            // Phase 1: Registry
+            try { WriteRegistryConfig(1, layout); }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"  FAIL: Registry write: {ex.Message}");
+                failures.Add($"{cfgName}: Registry write failed");
+                failed++;
+                continue;
+            }
+
+            // Phase 2: Create device node
+            if (!CreateDeviceNodes(1))
+            {
+                Console.WriteLine($"  FAIL: Device node creation failed");
+                failures.Add($"{cfgName}: Device creation failed");
+                failed++;
+                continue;
+            }
+
+            // Phase 3: Wait for PnP
+            if (!WaitForDevices(1, timeout: TimeSpan.FromSeconds(10)))
+            {
+                Console.WriteLine($"  FAIL: PnP binding timeout");
+                failures.Add($"{cfgName}: PnP timeout");
+                failed++;
+                RemoveAllVJoyNodes();
+                continue;
+            }
+
+            // Phase 4: Acquire
+            uint devId = 0;
+            for (uint id = 1; id <= 16; id++)
+            {
+                if (GetVJDStatus(id) == VJD_STAT_FREE && AcquireVJD(id))
+                {
+                    ResetVJD(id);
+                    devId = id;
+                    break;
+                }
+            }
+            if (devId == 0)
+            {
+                Console.WriteLine($"  FAIL: Could not acquire any device");
+                failures.Add($"{cfgName}: Acquire failed");
+                failed++;
+                RemoveAllVJoyNodes();
+                continue;
+            }
+
+            // Phase 5: Verify vJoy API capabilities match
+            int reportedBtns = GetVJDButtonNumber(devId);
+            int reportedPovs = GetVJDDiscPovNumber(devId);
+            long maxV = 0;
+            GetVJDAxisMax(devId, HID_USAGE_X, ref maxV);
+            Console.WriteLine($"  vJoy API: buttons={reportedBtns} povs={reportedPovs} axisMax={maxV}");
+
+            bool apiOk = true;
+            if (reportedBtns != cfg.buttons)
+            {
+                Console.WriteLine($"  WARN: Expected {cfg.buttons} buttons, got {reportedBtns}");
+                // Not a hard failure — driver may report differently
+            }
+            if (reportedPovs != cfg.povs)
+            {
+                Console.WriteLine($"  WARN: Expected {cfg.povs} POVs, got {reportedPovs}");
+            }
+
+            // Phase 6: Test individual calls
+            bool indivOk = true;
+            int axisMax = (int)maxV;
+            if (axisMax <= 0) axisMax = 32767;
+
+            // Set known values
+            int testX = axisMax * 3 / 4;  // 75%
+            int testY = axisMax / 4;       // 25%
+            if (cfg.axes >= 1) indivOk &= SetAxis(testX, devId, HID_USAGE_X);
+            if (cfg.axes >= 2) indivOk &= SetAxis(testY, devId, HID_USAGE_Y);
+            if (cfg.axes >= 3) indivOk &= SetAxis(axisMax / 2, devId, HID_USAGE_Z);
+            if (cfg.axes >= 4) indivOk &= SetAxis(axisMax / 3, devId, HID_USAGE_RX);
+            if (cfg.axes >= 5) indivOk &= SetAxis(axisMax * 2 / 3, devId, HID_USAGE_RY);
+            if (cfg.axes >= 6) indivOk &= SetAxis(axisMax / 5, devId, HID_USAGE_RZ);
+
+            // Set button 1 pressed
+            if (cfg.buttons >= 1) indivOk &= SetBtn(true, devId, 1);
+
+            // Set POV
+            if (cfg.povs >= 1) indivOk &= SetDiscPov(2, devId, 1); // Down
+
+            Console.WriteLine($"  Individual calls: {(indivOk ? "OK" : "FAIL")}");
+
+            // Phase 7: Test UpdateVJD V2
+            var posV2 = new JOYSTICK_POSITION_V2 { bDevice = (byte)devId };
+            posV2.wAxisX = testX;
+            posV2.wAxisY = testY;
+            posV2.lButtons = 1; // Button 1
+            posV2.bHats = 2;    // POV Down
+            bool v2Ok = UpdateVJD_V2(devId, ref posV2);
+            Console.WriteLine($"  UpdateVJD V2: {(v2Ok ? "OK" : "FAIL")}");
+
+            // Phase 8: WinMM readback verification
+            // Wait for WinMM to detect the new device (may take a moment)
+            Thread.Sleep(500);
+
+            // Find new WinMM device IDs that weren't present before
+            var afterDevices = EnumerateWinMMDevices();
+            var newDevices = new HashSet<int>(afterDevices);
+            newDevices.ExceptWith(beforeDevices);
+
+            Console.Write("  WinMM readback: ");
+            Console.Write($"before={beforeDevices.Count} after={afterDevices.Count} new={newDevices.Count} | ");
+
+            int vjoyJoyId = -1;
+            if (newDevices.Count > 0)
+            {
+                vjoyJoyId = newDevices.First();
+            }
+            else if (afterDevices.Count > 0)
+            {
+                // No new devices — vJoy might have replaced an existing slot.
+                // Try all responding devices and look for one whose data matches what we set.
+                foreach (int id in afterDevices)
+                {
+                    var r = ReadWinMMDevice(id);
+                    // Our test values: X=75%, Y=25% of axisMax
+                    if (r.ok && r.x != 0 && r.x != 32767)
+                    {
+                        vjoyJoyId = id;
+                        break;
+                    }
+                }
+            }
+
+            if (vjoyJoyId >= 0)
+            {
+                var r = ReadWinMMDevice(vjoyJoyId);
+                Console.WriteLine($"FOUND at joyID={vjoyJoyId}");
+                Console.WriteLine($"    X={r.x} Y={r.y} Z={r.z} R={r.r} U={r.u} V={r.v} Btns=0x{r.buttons:X} POV={r.pov}");
+
+                // Now verify output data changes: set a different value and read back
+                int newTestX = axisMax / 2;
+                SetAxis(newTestX, devId, HID_USAGE_X);
+                Thread.Sleep(50);
+                var r2 = ReadWinMMDevice(vjoyJoyId);
+                bool dataFlows = r2.ok && r2.x != r.x;
+                Console.Write($"    Data flow test: set X={newTestX}, read X={r2.x} → ");
+                if (dataFlows)
+                    Console.WriteLine("DATA FLOWS CORRECTLY");
+                else
+                    Console.WriteLine("DATA NOT CHANGING (output not reaching WinMM!)");
+
+                if (!dataFlows)
+                {
+                    failures.Add($"{cfgName}: WinMM data flow failed — output not reaching Windows");
+                    failed++;
+                    RelinquishVJD(devId);
+                    RemoveAllVJoyNodes();
+                    continue;
+                }
+            }
+            else
+            {
+                Console.WriteLine("NOT FOUND — vJoy device not visible to WinMM/joy.cpl!");
+                // Dump all WinMM device states for diagnosis
+                foreach (int id in afterDevices)
+                {
+                    var r = ReadWinMMDevice(id);
+                    Console.WriteLine($"    joyID={id}: X={r.x} Y={r.y} Btns=0x{r.buttons:X} POV={r.pov}");
+                }
+                failures.Add($"{cfgName}: WinMM readback failed — device not visible");
+                failed++;
+                RelinquishVJD(devId);
+                RemoveAllVJoyNodes();
+                continue;
+            }
+
+            // Phase 9: Check device node UpperFilters
+            Console.Write("  UpperFilters: ");
+            string upperFilters = GetDeviceNodeUpperFilters();
+            Console.WriteLine(string.IsNullOrEmpty(upperFilters) ? "MISSING (no mshidkmdf!)" : upperFilters);
+            if (string.IsNullOrEmpty(upperFilters) || !upperFilters.Contains("mshidkmdf", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("  CRITICAL: mshidkmdf not in UpperFilters — HID bridge missing!");
+                failures.Add($"{cfgName}: mshidkmdf UpperFilter missing");
+            }
+
+            Console.WriteLine($"  RESULT: PASS\n");
+            passed++;
+
+            // Cleanup
+            RelinquishVJD(devId);
+            RemoveAllVJoyNodes();
+            Thread.Sleep(500);
+        }
+
+        // Summary
+        Console.WriteLine("\n═══════════════════════════════════════");
+        Console.WriteLine($"  PASSED: {passed}/{configs.Length}");
+        Console.WriteLine($"  FAILED: {failed}/{configs.Length}");
+        if (failures.Count > 0)
+        {
+            Console.WriteLine("  Failures:");
+            foreach (var f in failures)
+                Console.WriteLine($"    - {f}");
+        }
+        Console.WriteLine("═══════════════════════════════════════");
+
+        return failed > 0 ? 1 : 0;
+    }
+
+    /// <summary>
+    /// Enumerates which WinMM joystick IDs are currently responding.
+    /// </summary>
+    static HashSet<int> EnumerateWinMMDevices()
+    {
+        var result = new HashSet<int>();
+        int numDevs = joyGetNumDevs();
+        for (int i = 0; i < Math.Min(numDevs, 16); i++)
+        {
+            var info = new JOYINFOEX { dwSize = Marshal.SizeOf<JOYINFOEX>(), dwFlags = JOY_RETURNALL };
+            if (joyGetPosEx(i, ref info) == JOYERR_NOERROR)
+                result.Add(i);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Reads joystick state for a specific WinMM joystick ID.
+    /// </summary>
+    static (bool ok, int x, int y, int z, int r, int u, int v, int buttons, int pov) ReadWinMMDevice(int joyId)
+    {
+        var info = new JOYINFOEX { dwSize = Marshal.SizeOf<JOYINFOEX>(), dwFlags = JOY_RETURNALL };
+        if (joyGetPosEx(joyId, ref info) == JOYERR_NOERROR)
+            return (true, info.dwXpos, info.dwYpos, info.dwZpos, info.dwRpos, info.dwUpos, info.dwVpos, info.dwButtons, info.dwPOV);
+        return (false, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    /// <summary>
+    /// Checks UpperFilters on ROOT\HIDCLASS device nodes via registry.
+    /// </summary>
+    static string GetDeviceNodeUpperFilters()
+    {
+        try
+        {
+            // Check all ROOT\HIDCLASS\NNNN entries
+            using var enumKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                @"SYSTEM\CurrentControlSet\Enum\ROOT\HIDCLASS");
+            if (enumKey == null) return "";
+
+            foreach (string subName in enumKey.GetSubKeyNames())
+            {
+                using var devKey = enumKey.OpenSubKey(subName);
+                if (devKey == null) continue;
+
+                string desc = devKey.GetValue("DeviceDesc") as string ?? "";
+                if (desc.IndexOf("vJoy", StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    // Also check hardware ID
+                    string[] hwids = devKey.GetValue("HardwareID") as string[] ?? Array.Empty<string>();
+                    bool isVjoy = false;
+                    foreach (var hwid in hwids)
+                        if (hwid.Contains("VID_1234", StringComparison.OrdinalIgnoreCase))
+                            isVjoy = true;
+                    if (!isVjoy) continue;
+                }
+
+                // Found a vJoy node — check UpperFilters
+                string[] filters = devKey.GetValue("UpperFilters") as string[] ?? Array.Empty<string>();
+                return string.Join(",", filters);
+            }
+        }
+        catch (Exception ex)
+        {
+            return $"(error: {ex.Message})";
+        }
+        return "";
+    }
+
+    static void RemoveAllVJoyNodes()
+    {
+        // Use pnputil to remove all vJoy nodes
+        var psi = new ProcessStartInfo
+        {
+            FileName = "pnputil.exe",
+            Arguments = "/enum-devices /class HIDClass",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = true
+        };
+        using var proc = Process.Start(psi);
+        if (proc == null) return;
+        string output = proc.StandardOutput.ReadToEnd();
+        proc.WaitForExit(5_000);
+
+        string currentId = null;
+        foreach (string rawLine in output.Split('\n'))
+        {
+            string line = rawLine.Trim();
+            if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0 && line.Contains(":"))
+                currentId = line.Substring(line.IndexOf(':') + 1).Trim();
+            else if (currentId != null && line.IndexOf("vJoy", StringComparison.OrdinalIgnoreCase) >= 0
+                     && currentId.StartsWith("ROOT\\HIDCLASS\\", StringComparison.OrdinalIgnoreCase))
+            {
+                var rmPsi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/remove-device \"{currentId}\" /subtree",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true
+                };
+                using var rmProc = Process.Start(rmPsi);
+                rmProc?.WaitForExit(5_000);
+                currentId = null;
+            }
+            else if (string.IsNullOrEmpty(line))
+                currentId = null;
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Diagnostic: single device, deep investigation of data flow
+    // ─────────────────────────────────────────────────────────────────────
+
+    static int CmdDiag()
+    {
+        Console.WriteLine("=== DIAGNOSTIC: Deep investigation of vJoy data flow ===\n");
+
+        // Step 1: Clean slate
+        Console.WriteLine("[1] Cleaning up existing nodes...");
+        RemoveAllVJoyNodes();
+        Thread.Sleep(1000);
+
+        // Step 2: Snapshot WinMM before
+        var beforeWinMM = EnumerateWinMMDevices();
+        Console.WriteLine($"[2] WinMM devices before: [{string.Join(",", beforeWinMM.OrderBy(x => x))}]");
+
+        // Step 3: Write registry (standard 6/11/1 config)
+        Console.WriteLine("[3] Writing registry config (6 axes, 11 buttons, 1 POV)...");
+        var layout = new DeviceLayout { Axes = 6, Buttons = 11, Povs = 1 };
+        WriteRegistryConfig(1, layout);
+
+        // Step 4: Create device node
+        Console.WriteLine("[4] Creating device node...");
+        if (!CreateDeviceNodes(1))
+        {
+            Console.Error.WriteLine("FATAL: Failed to create device node.");
+            return 1;
+        }
+
+        // Step 5: Wait for PnP
+        Console.WriteLine("[5] Waiting for PnP...");
+        if (!WaitForDevices(1, timeout: TimeSpan.FromSeconds(15)))
+        {
+            Console.Error.WriteLine("FATAL: PnP binding timeout.");
+            return 1;
+        }
+
+        // Step 6: Check UpperFilters
+        Console.Write("[6] UpperFilters: ");
+        string uf = GetDeviceNodeUpperFilters();
+        Console.WriteLine(string.IsNullOrEmpty(uf) ? "MISSING!" : uf);
+
+        // Step 7: Check device node registry in detail
+        Console.WriteLine("[7] Device node registry:");
+        try
+        {
+            using var enumKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Enum\ROOT\HIDCLASS");
+            if (enumKey != null)
+            {
+                foreach (string sub in enumKey.GetSubKeyNames())
+                {
+                    using var dk = enumKey.OpenSubKey(sub);
+                    if (dk == null) continue;
+                    string[] hwids = dk.GetValue("HardwareID") as string[] ?? Array.Empty<string>();
+                    bool isVjoy = hwids.Any(h => h.Contains("VID_1234", StringComparison.OrdinalIgnoreCase));
+                    if (!isVjoy) continue;
+                    Console.WriteLine($"    {sub}:");
+                    Console.WriteLine($"      HardwareID: {string.Join("; ", hwids)}");
+                    Console.WriteLine($"      Service: {dk.GetValue("Service")}");
+                    Console.WriteLine($"      UpperFilters: {string.Join(",", dk.GetValue("UpperFilters") as string[] ?? Array.Empty<string>())}");
+                    Console.WriteLine($"      DeviceDesc: {dk.GetValue("DeviceDesc")}");
+                    Console.WriteLine($"      ClassGUID: {dk.GetValue("ClassGUID")}");
+                    Console.WriteLine($"      Driver: {dk.GetValue("Driver")}");
+                }
+            }
+        }
+        catch (Exception ex) { Console.WriteLine($"    Error: {ex.Message}"); }
+
+        // Step 8: Acquire
+        Console.WriteLine("[8] Acquiring device...");
+        uint devId = 0;
+        for (uint id = 1; id <= 16; id++)
+        {
+            int status = GetVJDStatus(id);
+            Console.WriteLine($"    Device {id}: status={StatusName(status)}");
+            if (status == VJD_STAT_FREE && devId == 0)
+            {
+                if (AcquireVJD(id))
+                {
+                    devId = id;
+                    ResetVJD(id);
+                    Console.WriteLine($"    Acquired device {id}");
+                }
+                else
+                    Console.WriteLine($"    Failed to acquire device {id}");
+            }
+            if (status == VJD_STAT_MISS) break;
+        }
+
+        if (devId == 0)
+        {
+            Console.Error.WriteLine("FATAL: No device acquired.");
+            return 1;
+        }
+
+        // Step 9: Print capabilities
+        long maxVal = 0;
+        GetVJDAxisMax(devId, HID_USAGE_X, ref maxVal);
+        int axisMax = (int)maxVal;
+        Console.WriteLine($"[9] Caps: buttons={GetVJDButtonNumber(devId)} povs={GetVJDDiscPovNumber(devId)} axisMax={axisMax}");
+
+        // Step 10: WinMM check (before feeding)
+        Thread.Sleep(500);
+        var afterWinMM = EnumerateWinMMDevices();
+        var newDevs = new HashSet<int>(afterWinMM);
+        newDevs.ExceptWith(beforeWinMM);
+        Console.WriteLine($"[10] WinMM devices after: [{string.Join(",", afterWinMM.OrderBy(x => x))}]  new: [{string.Join(",", newDevs.OrderBy(x => x))}]");
+
+        // Step 11: Set known axis values and check WinMM readback
+        Console.WriteLine("[11] Testing data flow (SetAxis)...");
+        int testX = axisMax * 3 / 4;
+        int testY = axisMax / 4;
+
+        // Set values
+        bool setOk = true;
+        setOk &= SetAxis(testX, devId, HID_USAGE_X);
+        setOk &= SetAxis(testY, devId, HID_USAGE_Y);
+        setOk &= SetBtn(true, devId, 1);
+        Console.WriteLine($"    SetAxis/SetBtn result: {(setOk ? "OK" : "FAIL")}");
+        Console.WriteLine($"    Sent: X={testX} Y={testY} Btn1=pressed");
+
+        Thread.Sleep(100);
+
+        // Read back from ALL WinMM devices
+        Console.WriteLine("    WinMM readback (all devices):");
+        foreach (int joyId in afterWinMM.OrderBy(x => x))
+        {
+            var r = ReadWinMMDevice(joyId);
+            Console.WriteLine($"      joyID={joyId}: X={r.x} Y={r.y} Z={r.z} R={r.r} U={r.u} V={r.v} Btns=0x{r.buttons:X} POV={r.pov}");
+        }
+
+        // Step 12: Now test with UpdateVJD V2
+        Console.WriteLine("[12] Testing data flow (UpdateVJD V2)...");
+        var pos = new JOYSTICK_POSITION_V2 { bDevice = (byte)devId };
+        pos.wAxisX = axisMax / 5;  // Very different from above
+        pos.wAxisY = axisMax * 4 / 5;
+        pos.lButtons = 0b111; // Buttons 1-3
+        pos.bHats = 1; // POV Right
+        bool v2Ok = UpdateVJD_V2(devId, ref pos);
+        Console.WriteLine($"    UpdateVJD V2 result: {(v2Ok ? "OK" : "FAIL")}");
+        Console.WriteLine($"    Sent: X={pos.wAxisX} Y={pos.wAxisY} Btns=0x{pos.lButtons:X} POV=1");
+
+        Thread.Sleep(100);
+
+        Console.WriteLine("    WinMM readback (all devices):");
+        foreach (int joyId in afterWinMM.OrderBy(x => x))
+        {
+            var r = ReadWinMMDevice(joyId);
+            Console.WriteLine($"      joyID={joyId}: X={r.x} Y={r.y} Z={r.z} R={r.r} U={r.u} V={r.v} Btns=0x{r.buttons:X} POV={r.pov}");
+        }
+
+        // Step 13: Pump data rapidly for 2 seconds, then check
+        Console.WriteLine("[13] Pumping data for 2 seconds...");
+        var sw = Stopwatch.StartNew();
+        int frameCount = 0;
+        while (sw.ElapsedMilliseconds < 2000)
+        {
+            int x = (frameCount * 100) % (axisMax + 1);
+            SetAxis(x, devId, HID_USAGE_X);
+            SetAxis(axisMax - x, devId, HID_USAGE_Y);
+            frameCount++;
+            Thread.Sleep(1);
+        }
+        Console.WriteLine($"    Pumped {frameCount} frames in {sw.ElapsedMilliseconds}ms");
+
+        Console.WriteLine("    WinMM readback after pump:");
+        foreach (int joyId in afterWinMM.OrderBy(x => x))
+        {
+            var r = ReadWinMMDevice(joyId);
+            Console.WriteLine($"      joyID={joyId}: X={r.x} Y={r.y} Z={r.z} R={r.r} U={r.u} V={r.v} Btns=0x{r.buttons:X} POV={r.pov}");
+        }
+
+        // Cleanup
+        Console.WriteLine("\n[14] Cleanup...");
+        RelinquishVJD(devId);
+        RemoveAllVJoyNodes();
+
+        return 0;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
     //  Feed loop — drives all devices with sweeping test data
     // ─────────────────────────────────────────────────────────────────────
 
@@ -935,7 +1896,7 @@ class Program
     /// the compiled vjoy.sys binary uses the correctly-spelled names.
     /// Must be called BEFORE device nodes are created / driver is loaded.
     /// </summary>
-    static void WriteRegistryConfig(int count, DeviceLayout layout)
+    static void WriteRegistryConfig(int count, DeviceLayout layout = default)
     {
         try
         {
@@ -967,35 +1928,21 @@ class Program
                 Console.WriteLine($"  Copied vjoy.sys to {dstSys}");
             }
 
+            // Remove ALL DeviceNN registry keys so the driver uses its built-in
+            // default HID descriptor. Custom descriptors cause a layout mismatch:
+            // the descriptor says N axes at specific offsets, but the driver always
+            // sends a fixed 97-byte HID_INPUT_REPORT with 16 axes + 4 POV hats + 128
+            // buttons at fixed offsets. This mismatch prevents data from reaching WinMM.
             using var baseKey = Registry.LocalMachine.CreateSubKey(
                 @"SYSTEM\CurrentControlSet\services\vjoy\Parameters");
 
-            for (int id = 1; id <= count; id++)
+            foreach (string subKeyName in baseKey.GetSubKeyNames())
             {
-                byte[] descriptor = BuildHidDescriptor((byte)id, layout);
-                string subKeyName = $"Device{id:D2}";
-                using var devKey = baseKey.CreateSubKey(subKeyName);
-
-                // The compiled vjoy.sys binary uses correctly-spelled names,
-                // even though the vjoy.h source header has misspelled versions.
-                // Verified by extracting Unicode strings from vjoy.sys.
-                devKey.SetValue("HidReportDescriptor", descriptor, RegistryValueKind.Binary);
-                devKey.SetValue("HidReportDescriptorSize", descriptor.Length, RegistryValueKind.DWord);
-
-                // Clean up old misspelled keys from previous versions.
-                try { devKey.DeleteValue("HidReportDesctiptor", throwOnMissingValue: false); } catch { }
-                try { devKey.DeleteValue("HidReportDesctiptorSize", throwOnMissingValue: false); } catch { }
-
-                Console.WriteLine($"  {subKeyName}: {descriptor.Length} byte descriptor ({layout})");
-            }
-
-            // Delete stale DeviceNN subkeys beyond 'count'.
-            // The vJoy driver reads ALL DeviceNN keys and concatenates their
-            // HID descriptors — stale keys cause phantom devices to appear.
-            for (int id = count + 1; id <= 16; id++)
-            {
-                string subKeyName = $"Device{id:D2}";
-                try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
+                if (subKeyName.StartsWith("Device", StringComparison.OrdinalIgnoreCase))
+                {
+                    try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
+                    Console.WriteLine($"  Cleaned registry: {subKeyName}");
+                }
             }
         }
         catch (Exception ex)

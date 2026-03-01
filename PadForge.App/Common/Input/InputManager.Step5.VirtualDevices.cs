@@ -419,6 +419,8 @@ namespace PadForge.Common.Input
         /// </summary>
         private IVirtualController CreateVJoyController()
         {
+            VJoyVirtualController.DiagLog($"CreateVJoyController called");
+
             // Light check: can the DLL be loaded? Don't use CheckVJoyInstalled()
             // (calls vJoyEnabled()) because that requires active device nodes —
             // which don't exist yet in the on-demand model.
@@ -436,16 +438,20 @@ namespace PadForge.Common.Input
                     activeVJoy++;
             int needed = activeVJoy + 1;
 
+            VJoyVirtualController.DiagLog($"CreateVJoyController: activeVJoy={activeVJoy}, needed={needed}");
+
             // Ensure enough device nodes exist. WriteDeviceConfiguration runs
             // inside EnsureDevicesAvailable to set the correct HID descriptor
             // (11 buttons, 6 axes, 1 POV) before the driver binds.
             if (!VJoyVirtualController.EnsureDevicesAvailable(needed))
             {
+                VJoyVirtualController.DiagLog("CreateVJoyController: EnsureDevicesAvailable FAILED");
                 RaiseError("Failed to create vJoy device node.", null);
                 return null;
             }
 
             uint deviceId = VJoyVirtualController.FindFreeDeviceId();
+            VJoyVirtualController.DiagLog($"CreateVJoyController: FindFreeDeviceId={deviceId}");
             if (deviceId == 0)
             {
                 RaiseError("No free vJoy devices after node creation.", null);

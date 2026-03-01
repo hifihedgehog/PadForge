@@ -26,6 +26,9 @@ namespace PadForge.Common.Input
         /// </summary>
         private static int _nodesCreatedThisSession;
 
+        /// <summary>Whether we've already ensured the driver is in the Windows driver store this session.</summary>
+        private static bool _driverStoreChecked;
+
         /// <summary>Whether vJoyInterface.dll has been successfully loaded into the process.</summary>
         public static bool IsDllLoaded => _dllLoaded;
 
@@ -76,18 +79,30 @@ namespace PadForge.Common.Input
         {
             EnsureDllLoaded();
             var status = VJoyNative.GetVJDStatus(_deviceId);
+            DiagLog($"Connect: deviceId={_deviceId}, status={status}, dllLoaded={_dllLoaded}");
 
             if (status != VjdStat.VJD_STAT_FREE && status != VjdStat.VJD_STAT_OWN)
                 throw new InvalidOperationException($"vJoy device {_deviceId} is not available (status: {status}).");
 
             if (status == VjdStat.VJD_STAT_FREE)
             {
-                if (!VJoyNative.AcquireVJD(_deviceId))
+                bool acquired = VJoyNative.AcquireVJD(_deviceId);
+                DiagLog($"AcquireVJD({_deviceId}): {acquired}");
+                if (!acquired)
                     throw new InvalidOperationException($"Failed to acquire vJoy device {_deviceId}.");
             }
 
             VJoyNative.ResetVJD(_deviceId);
             _connected = true;
+
+            // Verify output works: send a single test frame with non-zero axes.
+            var testPos = new JoystickPositionV2 { bDevice = (byte)_deviceId, wAxisX = 16383, wAxisY = 16383 };
+            testPos.bHats = 0xFFFF_FFFFu;
+            testPos.bHatsEx1 = 0xFFFF_FFFFu;
+            testPos.bHatsEx2 = 0xFFFF_FFFFu;
+            testPos.bHatsEx3 = 0xFFFF_FFFFu;
+            bool testOk = VJoyNative.UpdateVJD(_deviceId, ref testPos);
+            DiagLog($"Post-connect test UpdateVJD({_deviceId}): {testOk}");
         }
 
         /// <summary>The vJoy device ID (1–16) this controller was created with.</summary>
@@ -97,6 +112,7 @@ namespace PadForge.Common.Input
         {
             if (_connected)
             {
+                DiagLog($"Disconnect: deviceId={_deviceId}, submitCalls={_submitCallCount}, submitFails={_submitFailCount}");
                 VJoyNative.ResetVJD(_deviceId);
                 VJoyNative.RelinquishVJD(_deviceId);
                 _connected = false;
@@ -130,53 +146,78 @@ namespace PadForge.Common.Input
             }
         }
 
+        private int _submitCallCount;
+        private int _submitFailCount;
+
+        private static readonly string _diagLogPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_diag.log");
+        private static bool _diagLogCleared;
+
+        internal static void DiagLog(string msg)
+        {
+            try
+            {
+                if (!_diagLogCleared)
+                {
+                    File.WriteAllText(_diagLogPath, "");
+                    _diagLogCleared = true;
+                }
+                string line = $"[{DateTime.Now:HH:mm:ss.fff}] {msg}\n";
+                Debug.Write(line);
+                File.AppendAllText(_diagLogPath, line);
+            }
+            catch { }
+        }
+
         public void SubmitGamepadState(Gamepad gp)
         {
             if (!_connected) return;
 
-            // Use UpdateVJD for single-IOCTL-per-frame output.
-            // Individual SetAxis/SetBtn/SetDiscPov are ~0.1-0.2ms EACH (separate kernel IOCTLs),
-            // causing 1000Hz→11Hz with 2+ controllers. UpdateVJD sends everything in one call.
-            // Verified working by standalone test tool (tools/vJoy/Test/).
-            var pos = new JoystickPositionV2();
-            pos.bDevice = (byte)_deviceId;
+            uint id = _deviceId;
 
             // Axes: signed short (-32768..32767) → vJoy range (0..32767)
-            pos.wAxisX    = (gp.ThumbLX + 32768) / 2;
-            pos.wAxisY    = 32767 - (gp.ThumbLY + 32768) / 2;   // Y inverted (HID Y-down=max)
-            pos.wAxisXRot = (gp.ThumbRX + 32768) / 2;
-            pos.wAxisYRot = 32767 - (gp.ThumbRY + 32768) / 2;   // Y inverted
-            pos.wAxisZ    = gp.LeftTrigger * 32767 / 255;
-            pos.wAxisZRot = gp.RightTrigger * 32767 / 255;
+            int lx = (gp.ThumbLX + 32768) / 2;
+            int ly = 32767 - (gp.ThumbLY + 32768) / 2;   // Y inverted (HID Y-down=max)
+            int rx = (gp.ThumbRX + 32768) / 2;
+            int ry = 32767 - (gp.ThumbRY + 32768) / 2;   // Y inverted
+            int lt = gp.LeftTrigger * 32767 / 255;
+            int rt = gp.RightTrigger * 32767 / 255;
+
+            VJoyNative.SetAxis(lx, id, VJoyNative.HID_USAGE_X);
+            VJoyNative.SetAxis(ly, id, VJoyNative.HID_USAGE_Y);
+            VJoyNative.SetAxis(rx, id, VJoyNative.HID_USAGE_RX);
+            VJoyNative.SetAxis(ry, id, VJoyNative.HID_USAGE_RY);
+            VJoyNative.SetAxis(lt, id, VJoyNative.HID_USAGE_Z);
+            VJoyNative.SetAxis(rt, id, VJoyNative.HID_USAGE_RZ);
 
             // Buttons 1–11 (Xbox 360 layout: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
-            int buttons = 0;
-            if (gp.IsButtonPressed(Gamepad.A))              buttons |= (1 << 0);
-            if (gp.IsButtonPressed(Gamepad.B))              buttons |= (1 << 1);
-            if (gp.IsButtonPressed(Gamepad.X))              buttons |= (1 << 2);
-            if (gp.IsButtonPressed(Gamepad.Y))              buttons |= (1 << 3);
-            if (gp.IsButtonPressed(Gamepad.LEFT_SHOULDER))  buttons |= (1 << 4);
-            if (gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER)) buttons |= (1 << 5);
-            if (gp.IsButtonPressed(Gamepad.BACK))           buttons |= (1 << 6);
-            if (gp.IsButtonPressed(Gamepad.START))          buttons |= (1 << 7);
-            if (gp.IsButtonPressed(Gamepad.LEFT_THUMB))     buttons |= (1 << 8);
-            if (gp.IsButtonPressed(Gamepad.RIGHT_THUMB))    buttons |= (1 << 9);
-            if (gp.IsButtonPressed(Gamepad.GUIDE))          buttons |= (1 << 10);
-            pos.lButtons = buttons;
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.A), id, 1);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.B), id, 2);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.X), id, 3);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.Y), id, 4);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_SHOULDER), id, 5);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER), id, 6);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.BACK), id, 7);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.START), id, 8);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_THUMB), id, 9);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_THUMB), id, 10);
+            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.GUIDE), id, 11);
 
-            // D-Pad → discrete POV hat (packed in low nibble of bHats).
-            // vJoy discrete POV values: 0=Up, 1=Right, 2=Down, 3=Left, 0xF=centered.
+            // D-Pad → discrete POV hat.
+            // vJoy discrete POV values: 0=Up, 1=Right, 2=Down, 3=Left, -1=centered.
             bool up    = (gp.Buttons & Gamepad.DPAD_UP) != 0;
             bool right = (gp.Buttons & Gamepad.DPAD_RIGHT) != 0;
             bool down  = (gp.Buttons & Gamepad.DPAD_DOWN) != 0;
             bool left  = (gp.Buttons & Gamepad.DPAD_LEFT) != 0;
-            uint pov = up ? 0u : right ? 1u : down ? 2u : left ? 3u : 0xFu;
-            pos.bHats = pov | 0xFFFF_FFF0u;  // Other POV slots = centered (0xF each nibble)
-            pos.bHatsEx1 = 0xFFFF_FFFFu;
-            pos.bHatsEx2 = 0xFFFF_FFFFu;
-            pos.bHatsEx3 = 0xFFFF_FFFFu;
+            int pov = up ? 0 : right ? 1 : down ? 2 : left ? 3 : -1;
+            VJoyNative.SetDiscPov(pov, id, 1);
 
-            VJoyNative.UpdateVJD(_deviceId, ref pos);
+            _submitCallCount++;
+
+            // Log first call and periodic status (every ~5 seconds at 1000Hz)
+            if (_submitCallCount == 1 || _submitCallCount % 5000 == 0)
+            {
+                DiagLog($"SubmitGamepadState(individual) devId={id} call#{_submitCallCount} X={lx} Y={ly} btns=0x{gp.Buttons:X} pov={pov}");
+            }
         }
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
@@ -266,6 +307,69 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Ensures the vJoy driver INF is in the Windows driver store.
+        /// Without it, PnP won't apply UpperFilters=mshidkmdf from the INF
+        /// when binding new device nodes — vjoy.sys handles IOCTLs but no
+        /// HID reports reach Windows (joy.cpl shows no output).
+        /// Safe to call once at session start, before any device nodes exist.
+        /// </summary>
+        private static void EnsureDriverInStore()
+        {
+            try
+            {
+                string vjoyDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
+                string infPath = Path.Combine(vjoyDir, "vjoy.inf");
+                if (!File.Exists(infPath))
+                {
+                    DiagLog("EnsureDriverInStore: vjoy.inf not found, skipping");
+                    return;
+                }
+
+                // Check if vjoy is already in the driver store.
+                var checkPsi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = "/enum-drivers",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+                using var checkProc = Process.Start(checkPsi);
+                if (checkProc == null) return;
+                string output = checkProc.StandardOutput.ReadToEnd();
+                checkProc.WaitForExit(5_000);
+
+                if (output.IndexOf("vjoy", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    DiagLog("EnsureDriverInStore: driver already in store");
+                    return;
+                }
+
+                // Driver not in store — add it.
+                DiagLog("EnsureDriverInStore: driver NOT in store, adding...");
+                var addPsi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/add-driver \"{infPath}\" /install",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+                using var addProc = Process.Start(addPsi);
+                if (addProc == null) return;
+                string addOutput = addProc.StandardOutput.ReadToEnd();
+                addProc.WaitForExit(10_000);
+                DiagLog($"EnsureDriverInStore: pnputil exit={addProc.ExitCode}, output={addOutput.Trim()}");
+            }
+            catch (Exception ex)
+            {
+                DiagLog($"EnsureDriverInStore exception: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Counts existing vJoy device nodes by querying PnP (pnputil).
         /// More reliable than GetVJDStatus which can return stale data.
         /// </summary>
@@ -283,34 +387,28 @@ namespace PadForge.Common.Input
         /// </summary>
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
         {
+            // Ensure the vJoy driver INF is in the Windows driver store (once per session).
+            // Without this, PnP won't set UpperFilters=mshidkmdf from the INF when binding
+            // new device nodes, and the HID-KMDF bridge won't be created — vjoy.sys handles
+            // IOCTLs (AcquireVJD/UpdateVJD succeed) but no HID reports reach Windows.
+            if (!_driverStoreChecked)
+            {
+                _driverStoreChecked = true;
+                EnsureDriverInStore();
+            }
+
             // Count actual PnP device nodes (reliable, not stale DLL state).
             int existing = CountExistingDevices();
 
-            Debug.WriteLine($"[vJoy] EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
+            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
 
-            // Write descriptor for exactly the required count.
-            // This also deletes stale DeviceNN keys beyond requiredCount.
-            WriteDeviceConfiguration(requiredCount);
+            // Remove any custom DeviceNN registry keys so the driver uses its
+            // built-in default HID descriptor. Custom descriptors cause a mismatch
+            // between the described report layout and the driver's fixed 97-byte
+            // HID_INPUT_REPORT format, which prevents data from reaching WinMM.
+            CleanDeviceRegistryKeys();
 
-            // If there are stale nodes from a previous session (existing nodes that
-            // we didn't create), remove ALL and recreate. The driver reads the HID
-            // descriptor from the registry at bind time — stale nodes have the
-            // old/default descriptor (13 buttons) and must be re-bound.
-            // Nodes we created this session already have the correct descriptor.
-            bool hasStaleNodes = existing > 0 && _nodesCreatedThisSession < existing;
-
-            if (hasStaleNodes)
-            {
-                Debug.WriteLine($"[vJoy] Removing {existing} stale node(s) to rebind with fresh descriptor");
-                var instanceIds = EnumerateVJoyInstanceIds();
-                foreach (var id in instanceIds)
-                    RemoveDeviceNode(id);
-                existing = 0;
-                _nodesCreatedThisSession = 0;
-                _dllLoaded = false;
-                Thread.Sleep(200); // Let PnP process removals
-            }
-            else if (existing > requiredCount)
+            if (existing > requiredCount)
             {
                 // More nodes than needed (all ours) — remove the extras from the end.
                 var instanceIds = EnumerateVJoyInstanceIds();
@@ -329,11 +427,11 @@ namespace PadForge.Common.Input
 
             // Create the needed device nodes (additional or all, depending on stale cleanup).
             int toCreate = requiredCount - existing;
-            Debug.WriteLine($"[vJoy] Creating {toCreate} device node(s) (existing={existing})");
+            DiagLog($"Creating {toCreate} device node(s) (existing={existing})");
 
             if (!CreateVJoyDevices(toCreate))
             {
-                Debug.WriteLine("[vJoy] CreateVJoyDevices failed");
+                DiagLog("CreateVJoyDevices FAILED");
                 return false;
             }
 
@@ -345,13 +443,13 @@ namespace PadForge.Common.Input
                 EnsureDllLoaded();
                 if (_dllLoaded && FindFreeDeviceId() > 0)
                 {
-                    Debug.WriteLine($"[vJoy] Devices ready after {(attempt + 1) * 250}ms");
+                    DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
                     _nodesCreatedThisSession = requiredCount;
                     return true;
                 }
             }
 
-            Debug.WriteLine("[vJoy] Devices created but not ready after 5 seconds");
+            DiagLog("Devices created but not ready after 5 seconds");
             return false;
         }
 
@@ -494,6 +592,8 @@ namespace PadForge.Common.Input
 $ErrorActionPreference = 'Continue'
 $log = '{logPath.Replace("'", "''")}'
 try {{
+    $infPath = '{vjoyDir.Replace("'", "''")}\vjoy.inf'
+
     $svcPath = 'HKLM:\SYSTEM\CurrentControlSet\Services\vjoy'
     if (-not (Test-Path $svcPath)) {{
         New-Item -Path $svcPath -Force | Out-Null
@@ -594,118 +694,33 @@ public static class PF_SetupApi {{
         }
 
         /// <summary>
-        /// Writes vJoy device configuration to the registry for device IDs 1 through count.
-        /// The vJoy driver reads HidReportDescriptor from
-        /// HKLM\SYSTEM\CurrentControlSet\services\vjoy\Parameters\DeviceNN
-        /// to determine the device's axis/button/POV layout.
-        /// Must be called BEFORE the driver binds to new device nodes.
-        ///
-        /// Configuration: 6 axes (X/Y/Z/RX/RY/RZ), 11 buttons, 1 discrete POV.
+        /// Removes all DeviceNN registry subkeys from the vJoy Parameters key.
+        /// This ensures the driver uses its built-in default HID descriptor, which
+        /// matches the fixed 97-byte HID_INPUT_REPORT format. Custom descriptors
+        /// cause a layout mismatch (descriptor says 6 axes at specific offsets, but
+        /// the driver always sends 16 axes + 4 POV hats + 128 buttons at fixed offsets)
+        /// that prevents data from reaching WinMM/DirectInput.
         /// </summary>
-        internal static void WriteDeviceConfiguration(int count)
+        private static void CleanDeviceRegistryKeys()
         {
-            if (count < 1) return;
             try
             {
-                using var baseKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(
-                    @"SYSTEM\CurrentControlSet\services\vjoy\Parameters");
+                using var baseKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\services\vjoy\Parameters", writable: true);
+                if (baseKey == null) return;
 
-                for (int id = 1; id <= count; id++)
+                foreach (string subKeyName in baseKey.GetSubKeyNames())
                 {
-                    byte[] descriptor = BuildGamepadHidDescriptor((byte)id);
-                    string subKeyName = $"Device{id:D2}"; // Device01, Device02, ...
-                    using var devKey = baseKey.CreateSubKey(subKeyName);
-                    devKey.SetValue("HidReportDescriptor", descriptor, Microsoft.Win32.RegistryValueKind.Binary);
-                    devKey.SetValue("HidReportDescriptorSize", descriptor.Length, Microsoft.Win32.RegistryValueKind.DWord);
-                    // Clean up old misspelled keys from previous versions.
-                    try { devKey.DeleteValue("HidReportDesctiptor", false); } catch { }
-                    try { devKey.DeleteValue("HidReportDesctiptorSize", false); } catch { }
+                    if (subKeyName.StartsWith("Device", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
+                    }
                 }
-
-                // Delete stale DeviceNN subkeys beyond 'count'.
-                // The vJoy driver reads ALL DeviceNN keys and concatenates their
-                // HID descriptors — stale keys cause phantom devices to appear.
-                for (int id = count + 1; id <= 16; id++)
-                {
-                    string subKeyName = $"Device{id:D2}";
-                    try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
-                }
-
-                Debug.WriteLine($"[vJoy] Wrote HID descriptors for {count} device(s), cleaned up stale keys");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] WriteDeviceConfiguration exception: {ex.Message}");
+                Debug.WriteLine($"[vJoy] CleanDeviceRegistryKeys exception: {ex.Message}");
             }
-        }
-
-        /// <summary>
-        /// Builds a HID Report Descriptor for a gamepad-like vJoy device:
-        /// 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 discrete POV hat.
-        /// Matches Xbox 360 controller layout. All axes are 32-bit with
-        /// 0–32767 range (matching JOYSTICK_POSITION_V3).
-        /// </summary>
-        /// <param name="reportId">Report ID (1–16) — must match the vJoy device ID.
-        /// The driver uses ParseIdInDescriptor() to extract this from the 0x85 tag.</param>
-        private static byte[] BuildGamepadHidDescriptor(byte reportId)
-        {
-            var d = new System.Collections.Generic.List<byte>();
-
-            // ── Collection: Generic Desktop / Joystick ──
-            d.AddRange(new byte[] { 0x05, 0x01 });             // USAGE_PAGE (Generic Desktop)
-            d.AddRange(new byte[] { 0x09, 0x04 });             // USAGE (Joystick)
-            d.AddRange(new byte[] { 0xA1, 0x01 });             // COLLECTION (Application)
-            d.AddRange(new byte[] { 0x85, reportId });          //   REPORT_ID (matches device ID)
-
-            // ── 6 Axes: X, Y, Z, RX, RY, RZ — each 32-bit, range 0–32767 ──
-            d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x26, 0xFF, 0x7F }); //   LOGICAL_MAXIMUM (32767)
-            d.AddRange(new byte[] { 0x75, 0x20 });       //   REPORT_SIZE (32)
-            d.AddRange(new byte[] { 0x95, 0x01 });       //   REPORT_COUNT (1)
-            // Each axis declared individually so the driver maps by Usage code.
-            foreach (byte usage in new byte[] { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35 })
-            {
-                d.AddRange(new byte[] { 0x09, usage }); //   USAGE (X/Y/Z/RX/RY/RZ)
-                d.AddRange(new byte[] { 0x81, 0x02 });  //   INPUT (Data, Var, Abs)
-            }
-
-            // ── 11 Buttons (Xbox 360: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide) ──
-            d.AddRange(new byte[] { 0x05, 0x09 });       //   USAGE_PAGE (Button)
-            d.AddRange(new byte[] { 0x19, 0x01 });       //   USAGE_MINIMUM (1)
-            d.AddRange(new byte[] { 0x29, 0x0B });       //   USAGE_MAXIMUM (11)
-            d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x25, 0x01 });       //   LOGICAL_MAXIMUM (1)
-            d.AddRange(new byte[] { 0x75, 0x01 });       //   REPORT_SIZE (1)
-            d.AddRange(new byte[] { 0x95, 0x0B });       //   REPORT_COUNT (11)
-            d.AddRange(new byte[] { 0x81, 0x02 });       //   INPUT (Data, Var, Abs)
-            // Padding to byte boundary (5 bits → 16 bits total)
-            d.AddRange(new byte[] { 0x75, 0x01 });       //   REPORT_SIZE (1)
-            d.AddRange(new byte[] { 0x95, 0x05 });       //   REPORT_COUNT (5)
-            d.AddRange(new byte[] { 0x81, 0x01 });       //   INPUT (Cnst, Ary, Abs)
-
-            // ── 1 Discrete POV (4-direction hat switch) ──
-            d.AddRange(new byte[] { 0x05, 0x01 });       //   USAGE_PAGE (Generic Desktop)
-            d.AddRange(new byte[] { 0x09, 0x39 });       //   USAGE (Hat Switch)
-            d.AddRange(new byte[] { 0x15, 0x00 });       //   LOGICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x25, 0x03 });       //   LOGICAL_MAXIMUM (3)
-            d.AddRange(new byte[] { 0x35, 0x00 });       //   PHYSICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x46, 0x0E, 0x01 }); //   PHYSICAL_MAXIMUM (270)
-            d.AddRange(new byte[] { 0x65, 0x14 });       //   UNIT (Eng Rotation: degrees)
-            d.AddRange(new byte[] { 0x75, 0x04 });       //   REPORT_SIZE (4)
-            d.AddRange(new byte[] { 0x95, 0x01 });       //   REPORT_COUNT (1)
-            d.AddRange(new byte[] { 0x81, 0x42 });       //   INPUT (Data, Var, Abs, Null)
-            // Padding (4 bits)
-            d.AddRange(new byte[] { 0x75, 0x04 });       //   REPORT_SIZE (4)
-            d.AddRange(new byte[] { 0x95, 0x01 });       //   REPORT_COUNT (1)
-            d.AddRange(new byte[] { 0x81, 0x01 });       //   INPUT (Cnst)
-            // Reset unit
-            d.AddRange(new byte[] { 0x65, 0x00 });       //   UNIT (None)
-            d.AddRange(new byte[] { 0x35, 0x00 });       //   PHYSICAL_MINIMUM (0)
-            d.AddRange(new byte[] { 0x45, 0x00 });       //   PHYSICAL_MAXIMUM (0)
-
-            d.Add(0xC0);                                  // END_COLLECTION
-
-            return d.ToArray();
         }
     }
 
@@ -788,6 +803,28 @@ public static class PF_SetupApi {{
         [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UpdateVJD(uint rID, ref JoystickPositionV2 pData);
+
+        // ── Individual axis/button/POV setters ──
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetAxis(int value, uint rID, uint axis);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetBtn([MarshalAs(UnmanagedType.Bool)] bool value, uint rID, byte nBtn);
+
+        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetDiscPov(int value, uint rID, byte nPov);
+
+        // HID Usage IDs for axes (Generic Desktop page 0x01)
+        public const uint HID_USAGE_X  = 0x30;
+        public const uint HID_USAGE_Y  = 0x31;
+        public const uint HID_USAGE_Z  = 0x32;
+        public const uint HID_USAGE_RX = 0x33;
+        public const uint HID_USAGE_RY = 0x34;
+        public const uint HID_USAGE_RZ = 0x35;
     }
 
 }

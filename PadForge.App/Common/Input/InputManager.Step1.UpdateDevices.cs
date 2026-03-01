@@ -213,6 +213,13 @@ namespace PadForge.Common.Input
                     return true;
             }
 
+            // ── vJoy VID/PID — our own virtual joystick output device ──
+            // vJoy devices (VID=1234 PID=BEAD) must not be opened as input devices.
+            // SDL opening the HID device can interfere with vJoyInterface.dll's
+            // write path (the driver's HID report mechanism).
+            if (wrapper.VendorId == 0x1234 && wrapper.ProductId == 0xBEAD)
+                return true;
+
             // ── Xbox 360 VID/PID — ViGEm emulates exactly this ──
             // ViGEm Xbox 360 virtual controllers report VID=045E PID=028E.
             // Modern real Xbox controllers use different PIDs (0B12, 0B13, 0B20, etc.)

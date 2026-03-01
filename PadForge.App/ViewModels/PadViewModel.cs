@@ -29,8 +29,13 @@ namespace PadForge.ViewModels
         /// <summary>Zero-based pad slot index (0–3).</summary>
         public int PadIndex { get; }
 
+        private string _slotLabel;
         /// <summary>Display label (e.g., "Virtual Controller 1").</summary>
-        public string SlotLabel { get; }
+        public string SlotLabel
+        {
+            get => _slotLabel;
+            set => SetProperty(ref _slotLabel, value);
+        }
 
         // ═══════════════════════════════════════════════
         //  Output type (Xbox 360 / DualShock 4)

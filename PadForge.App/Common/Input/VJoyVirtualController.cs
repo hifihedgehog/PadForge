@@ -97,16 +97,13 @@ namespace PadForge.Common.Input
             var status = VJoyNative.GetVJDStatus(_deviceId);
             DiagLog($"Connect: deviceId={_deviceId}, status={status}, dllLoaded={_dllLoaded}");
 
-            if (status != VjdStat.VJD_STAT_FREE && status != VjdStat.VJD_STAT_OWN)
+            if (status != VjdStat.VJD_STAT_FREE)
                 throw new InvalidOperationException($"vJoy device {_deviceId} is not available (status: {status}).");
 
-            if (status == VjdStat.VJD_STAT_FREE)
-            {
-                bool acquired = VJoyNative.AcquireVJD(_deviceId);
-                DiagLog($"AcquireVJD({_deviceId}): {acquired}");
-                if (!acquired)
-                    throw new InvalidOperationException($"Failed to acquire vJoy device {_deviceId}.");
-            }
+            bool acquired = VJoyNative.AcquireVJD(_deviceId);
+            DiagLog($"AcquireVJD({_deviceId}): {acquired}");
+            if (!acquired)
+                throw new InvalidOperationException($"Failed to acquire vJoy device {_deviceId}.");
 
             VJoyNative.ResetVJD(_deviceId);
             _connected = true;
@@ -646,6 +643,25 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Checks that all vJoy device IDs 1..count report FREE status.
+        /// Used by the wait loop in EnsureDevicesAvailable to confirm ALL
+        /// devices are initialized after a node restart, not just the first one.
+        /// </summary>
+        private static bool AllDevicesReady(int count)
+        {
+            try
+            {
+                for (uint id = 1; id <= (uint)count; id++)
+                {
+                    if (VJoyNative.GetVJDStatus(id) != VjdStat.VJD_STAT_FREE)
+                        return false;
+                }
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /// <summary>
         /// Returns the next available vJoy device ID (1–16), or 0 if none available.
         /// This is a fast, non-blocking scan — safe to call from the engine thread.
         /// </summary>
@@ -659,10 +675,7 @@ namespace PadForge.Common.Input
                 for (uint id = 1; id <= 16; id++)
                 {
                     var status = VJoyNative.GetVJDStatus(id);
-                    // Accept both FREE and OWN — after destroying all VCs, the
-                    // driver may briefly report recently-relinquished IDs as OWN.
-                    // We're the only process using vJoy, so OWN means "ours to take".
-                    if (status == VjdStat.VJD_STAT_FREE || status == VjdStat.VJD_STAT_OWN)
+                    if (status == VjdStat.VJD_STAT_FREE)
                         return id;
                 }
             }
@@ -887,10 +900,17 @@ namespace PadForge.Common.Input
             DiagLog($"EnsureDevicesAvailable: required={requiredCount}, nodes={existingNodes}, descriptors={_currentDescriptorCount}, dllLoaded={_dllLoaded}");
 
             // Write registry descriptors for the required count.
-            // WriteDeviceDescriptors is smart — only writes if changed.
-            bool descriptorsChanged = _currentDescriptorCount != requiredCount;
-            WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
+            // WriteDeviceDescriptors returns true only if actual registry changes occurred.
+            bool registryChanged = WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
+            bool countMismatch = _currentDescriptorCount != requiredCount;
             _currentDescriptorCount = requiredCount;
+
+            // Need restart if registry actually changed, OR if this is the first call
+            // in the process and the node is disabled (DLL can't communicate).
+            // Don't restart just because _currentDescriptorCount was 0 at process start
+            // when the registry already has the correct descriptors — that causes an
+            // unnecessary restart that disrupts live devices.
+            bool descriptorsChanged = registryChanged || (countMismatch && !_dllLoaded);
 
             // If no vJoy devices are needed, disable the device node (don't remove it).
             // With 0 DeviceNN keys, the driver falls back to a hardcoded default
@@ -921,15 +941,15 @@ namespace PadForge.Common.Input
                     return false;
                 }
 
-                // Wait for PnP to bind the driver and make devices available.
+                // Wait for PnP to bind the driver and make ALL devices available.
                 _dllLoaded = false;
                 for (int attempt = 0; attempt < 20; attempt++)
                 {
                     Thread.Sleep(250);
                     EnsureDllLoaded();
-                    if (_dllLoaded && FindFreeDeviceId() > 0)
+                    if (_dllLoaded && AllDevicesReady(requiredCount))
                     {
-                        DiagLog($"Device ready after {(attempt + 1) * 250}ms");
+                        DiagLog($"All {requiredCount} devices ready after {(attempt + 1) * 250}ms");
                         return true;
                     }
                 }
@@ -962,9 +982,9 @@ namespace PadForge.Common.Input
                 {
                     Thread.Sleep(250);
                     EnsureDllLoaded();
-                    if (_dllLoaded && FindFreeDeviceId() > 0)
+                    if (_dllLoaded && AllDevicesReady(requiredCount))
                     {
-                        DiagLog($"Device ready after restart ({(attempt + 1) * 250}ms)");
+                        DiagLog($"All {requiredCount} devices ready after restart ({(attempt + 1) * 250}ms)");
                         return true;
                     }
                 }
@@ -1312,14 +1332,18 @@ public static class PF_SetupApi {{
         ///   + 128-bit button area (1-bit per button, padded to 128 bits)
         /// Total report: 1 byte report ID + 96 bytes data = 97 bytes always.
         /// </summary>
-        private static void WriteDeviceDescriptors(int requiredCount,
+        /// <summary>
+        /// Returns true if any registry keys were actually modified (written or deleted).
+        /// </summary>
+        private static bool WriteDeviceDescriptors(int requiredCount,
             int nAxes = 6, int nButtons = 11, int nPovs = 1)
         {
+            bool anyChanged = false;
             try
             {
                 using var baseKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
                     @"SYSTEM\CurrentControlSet\services\vjoy\Parameters", writable: true);
-                if (baseKey == null) return;
+                if (baseKey == null) return false;
 
                 // Remove DeviceNN keys beyond the required count.
                 foreach (string subKeyName in baseKey.GetSubKeyNames())
@@ -1328,7 +1352,7 @@ public static class PF_SetupApi {{
                         int.TryParse(subKeyName.Substring(6), out int keyNum) &&
                         keyNum > requiredCount)
                     {
-                        try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
+                        try { baseKey.DeleteSubKeyTree(subKeyName, false); anyChanged = true; } catch { }
                     }
                 }
 
@@ -1364,6 +1388,7 @@ public static class PF_SetupApi {{
                         devKey.SetValue("HidReportDescriptorSize", descriptor.Length,
                             Microsoft.Win32.RegistryValueKind.DWord);
                         DiagLog($"Wrote {keyName}: {descriptor.Length} bytes ({nAxes} axes, {nButtons} buttons, {nPovs} POVs)");
+                        anyChanged = true;
                     }
                     else
                     {
@@ -1375,6 +1400,7 @@ public static class PF_SetupApi {{
             {
                 Debug.WriteLine($"[vJoy] WriteDeviceDescriptors exception: {ex.Message}");
             }
+            return anyChanged;
         }
 
         /// <summary>

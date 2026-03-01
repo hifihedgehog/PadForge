@@ -66,6 +66,10 @@ namespace PadForge.ViewModels
                     SlotSummaries.Add(new SlotSummary(slot));
             }
 
+            // Update display labels to use sequential global numbering.
+            for (int i = 0; i < SlotSummaries.Count; i++)
+                SlotSummaries[i].SlotLabel = $"Virtual Controller {i + 1}";
+
             ShowAddController = canAddMore;
         }
 
@@ -253,8 +257,13 @@ namespace PadForge.ViewModels
         /// <summary>Zero-based pad slot index.</summary>
         public int PadIndex { get; }
 
-        /// <summary>Display label (e.g., "Player 1").</summary>
-        public string SlotLabel { get; }
+        private string _slotLabel;
+        /// <summary>Display label (e.g., "Virtual Controller 1").</summary>
+        public string SlotLabel
+        {
+            get => _slotLabel;
+            set => SetProperty(ref _slotLabel, value);
+        }
 
         private string _deviceName = "No device";
 

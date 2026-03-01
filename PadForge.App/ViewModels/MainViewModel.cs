@@ -193,6 +193,10 @@ namespace PadForge.ViewModels
                 nav.InstanceLabel = instanceNum.ToString();
                 nav.IconKey = iconKey;
                 nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
+
+                // Update PadViewModel's display label to match the global slot number.
+                pad.Title = $"Virtual Controller {globalCount}";
+                pad.SlotLabel = $"Virtual Controller {globalCount}";
             }
 
             // Only trigger a full sidebar rebuild when slots were added/removed.
@@ -245,13 +249,13 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// True if a Pad page (Pad1–Pad4) is currently selected.
+        /// True if a Pad page (Pad1–Pad16) is currently selected.
         /// </summary>
         public bool IsPadPageSelected =>
             _selectedNavTag != null &&
             _selectedNavTag.StartsWith("Pad", StringComparison.Ordinal) &&
-            _selectedNavTag.Length == 4 &&
-            char.IsDigit(_selectedNavTag[3]);
+            _selectedNavTag.Length >= 4 &&
+            int.TryParse(_selectedNavTag.Substring(3), out _);
 
         /// <summary>
         /// Returns the zero-based pad index for the currently selected Pad page,

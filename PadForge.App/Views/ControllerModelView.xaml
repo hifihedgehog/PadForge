@@ -25,8 +25,8 @@
 
             <helix:HelixViewport3D.Camera>
                 <PerspectiveCamera FieldOfView="35"
-                                   LookDirection="-1,0,0"
-                                   Position="200,0,0"
+                                   LookDirection="0,-1,0"
+                                   Position="0,200,0"
                                    UpDirection="0,0,1" />
             </helix:HelixViewport3D.Camera>
         </helix:HelixViewport3D>

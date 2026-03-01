@@ -132,8 +132,17 @@ namespace PadForge.Models3D
                 RegisterButton(padSetting, group);
                 model3DGroup.Children.Add(group);
 
-                if (padSetting == "LeftThumbButton") LeftThumb = group;
-                if (padSetting == "RightThumbButton") RightThumb = group;
+                if (padSetting == "LeftThumbButton")
+                {
+                    LeftThumb = group;
+                    // Stick knob click → Y axis (ring → X axis above).
+                    ClickMap[group] = "LeftThumbAxisY";
+                }
+                if (padSetting == "RightThumbButton")
+                {
+                    RightThumb = group;
+                    ClickMap[group] = "RightThumbAxisY";
+                }
             }
 
             // Add non-button parts to scene.

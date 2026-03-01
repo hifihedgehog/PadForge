@@ -117,9 +117,9 @@ namespace PadForge
 
             // Wire vJoy install/uninstall commands.
             _viewModel.Settings.InstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
-                "Installing vJoy…", DriverInstaller.InstallVJoy, RefreshVJoyStatus);
+                "Installing vJoy…", DriverInstaller.InstallVJoy, OnVJoyDriverChanged);
             _viewModel.Settings.UninstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
-                "Uninstalling vJoy…", DriverInstaller.UninstallVJoy, RefreshVJoyStatus);
+                "Uninstalling vJoy…", DriverInstaller.UninstallVJoy, OnVJoyDriverChanged);
 
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
@@ -2368,6 +2368,28 @@ namespace PadForge
             {
                 _viewModel.Settings.IsVJoyInstalled = false;
                 _viewModel.Dashboard.IsVJoyInstalled = false;
+            }
+        }
+
+        /// <summary>
+        /// Called after vJoy install/uninstall via PadForge's own buttons.
+        /// Resets cached vJoy state and restarts the engine so the new driver
+        /// is picked up immediately without requiring a PadForge relaunch.
+        /// </summary>
+        private void OnVJoyDriverChanged()
+        {
+            RefreshVJoyStatus();
+            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
+
+            PadForge.Common.Input.VJoyVirtualController.ResetState();
+
+            if (_viewModel.IsEngineRunning)
+            {
+                _inputService.Stop();
+                _inputService.Start();
+                _viewModel.StatusText = _viewModel.Dashboard.IsVJoyInstalled
+                    ? "vJoy driver installed — engine restarted."
+                    : "vJoy driver removed — engine restarted.";
             }
         }
     }

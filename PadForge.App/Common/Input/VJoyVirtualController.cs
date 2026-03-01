@@ -177,11 +177,11 @@ namespace PadForge.Common.Input
                 VJoyNative.RelinquishVJD(_deviceId);
                 bool acquired = VJoyNative.AcquireVJD(_deviceId);
                 DiagLog($"Re-AcquireVJD({_deviceId}): {acquired}");
-                if (!acquired) { _connected = false; return; }
+                if (!acquired) return; // Don't kill VC — retry next cycle
                 VJoyNative.ResetVJD(_deviceId);
                 _connectedGeneration = _generation;
             }
-            catch { _connected = false; }
+            catch { /* retry next cycle */ }
         }
 
         public void SubmitGamepadState(Gamepad gp)
@@ -198,11 +198,11 @@ namespace PadForge.Common.Input
                     VJoyNative.RelinquishVJD(_deviceId);
                     bool acquired = VJoyNative.AcquireVJD(_deviceId);
                     DiagLog($"Re-AcquireVJD({_deviceId}): {acquired}");
-                    if (!acquired) { _connected = false; return; }
+                    if (!acquired) return; // Skip this frame, retry next cycle
                     VJoyNative.ResetVJD(_deviceId);
                     _connectedGeneration = _generation;
                 }
-                catch { _connected = false; return; }
+                catch { return; /* retry next cycle */ }
             }
 
             uint id = _deviceId;

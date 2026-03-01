@@ -469,6 +469,12 @@ namespace PadForge.Common.Input
                 {
                     DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
                     _nodesCreatedThisSession = requiredCount;
+
+                    // vjoy.sys is compiled with FFB support and always creates
+                    // 2 HID collections per device (COL01=joystick, COL02=FFB).
+                    // Disable the COL02 children so they don't appear in joy.cpl.
+                    DisableFfbChildren();
+
                     return true;
                 }
             }
@@ -530,6 +536,98 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] EnumerateVJoyInstanceIds exception: {ex.Message}");
             }
             return results;
+        }
+
+        /// <summary>
+        /// Disables COL02 (FFB) HID child devices via pnputil so they don't appear
+        /// as game controllers in joy.cpl / WinMM. vjoy.sys compiled with VJOY_HAS_FFB
+        /// always creates 2 HID collections per device: COL01 (joystick input) and
+        /// COL02 (force feedback / PID). Both use Usage Page 0x01 (Generic Desktop),
+        /// Usage 0x04 (Joystick), so Windows classifies both as game controllers.
+        /// Disabling COL02 does NOT affect joystick input (COL01) or ViGEm rumble.
+        /// </summary>
+        private static void DisableFfbChildren()
+        {
+            try
+            {
+                // Enumerate all HID class devices to find COL02 children
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = "/enum-devices /class HIDClass",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                using var proc = Process.Start(psi);
+                if (proc == null) return;
+                string output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(5_000);
+
+                // Parse pnputil output for HID\HIDCLASS&COL02\* instance IDs
+                string currentInstanceId = null;
+                int disabledCount = 0;
+                foreach (string rawLine in output.Split('\n'))
+                {
+                    string line = rawLine.Trim();
+                    if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0 && line.Contains(":"))
+                    {
+                        currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
+                    }
+                    else if (string.IsNullOrEmpty(line))
+                    {
+                        if (currentInstanceId != null &&
+                            currentInstanceId.IndexOf("HIDCLASS&COL02", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            if (DisableDevice(currentInstanceId))
+                                disabledCount++;
+                        }
+                        currentInstanceId = null;
+                    }
+                }
+                // Handle last block
+                if (currentInstanceId != null &&
+                    currentInstanceId.IndexOf("HIDCLASS&COL02", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    if (DisableDevice(currentInstanceId))
+                        disabledCount++;
+                }
+
+                if (disabledCount > 0)
+                    DiagLog($"Disabled {disabledCount} COL02 (FFB) HID child device(s)");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[vJoy] DisableFfbChildren exception: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Disables a single PnP device by instance ID using pnputil /disable-device.
+        /// </summary>
+        private static bool DisableDevice(string instanceId)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/disable-device \"{instanceId}\"",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+                using var proc = Process.Start(psi);
+                if (proc == null) return false;
+                proc.WaitForExit(5_000);
+                return proc.ExitCode == 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

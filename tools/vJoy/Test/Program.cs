@@ -313,6 +313,7 @@ class Program
             "full"         => CmdFull(args),
             "battery"      => CmdBattery(),
             "incremental"  => CmdIncremental(args),
+            "padforge"     => CmdPadForge(args),
             "diag"         => CmdDiag(),
             "freshinstall" => CmdFreshInstall(),
             _              => Error($"Unknown command: {args[0]}")
@@ -1546,6 +1547,215 @@ class Program
         return allOk ? 0 : 1;
     }
 
+    // ─────────────────────────────────────────────────────────────────────
+    //  Command: padforge — exact replica of PadForge's startup flow
+    // ─────────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Replicates PadForge's exact vJoy startup sequence:
+    ///   1. Remove all existing nodes (first-call-per-session cleanup)
+    ///   2. Pre-provision N nodes in single batch
+    ///   3. Acquire devices one at a time (as PadForge's per-slot loop does)
+    ///   4. Count PnP nodes, HID children, WinMM entries, joy.cpl entries
+    ///   5. Feed data for 10 seconds so user can check joy.cpl manually
+    /// </summary>
+    static int CmdPadForge(string[] args)
+    {
+        int totalDevices = 2;
+        if (args.Length > 1 && int.TryParse(args[1], out int n) && n >= 1 && n <= 16)
+            totalDevices = n;
+
+        var layout = new DeviceLayout { Axes = 6, Buttons = 11, Povs = 1 };
+        Console.WriteLine($"=== PADFORGE FLOW TEST: {totalDevices} devices (6/11/1) ===\n");
+
+        // Step 1: Clean slate (mirrors _nodesCreatedThisSession == 0 path)
+        Console.Write("Step 1: Clean slate — remove all existing nodes... ");
+        RemoveAllVJoyNodes();
+        Console.WriteLine("OK");
+
+        Console.Write("Step 1b: Wait 2000ms for PnP cleanup... ");
+        Thread.Sleep(2000);
+        Console.WriteLine("OK");
+
+        var winmmBefore = EnumerateWinMMDevices();
+        var pnpBefore = EnumerateVJoyInstanceIds();
+        Console.WriteLine($"  Before: PnP nodes={pnpBefore.Count}, WinMM={winmmBefore.Count}");
+
+        if (!TryLoadDll())
+            return Error("Cannot load vJoyInterface.dll");
+
+        // Step 2: Write descriptors + create all nodes in one batch
+        //         (mirrors EnsureDevicesAvailable)
+        Console.Write($"\nStep 2: Write descriptors for {totalDevices} devices... ");
+        WriteRegistryConfig(totalDevices, layout);
+        Console.WriteLine("OK");
+
+        Console.Write($"Step 2b: Create {totalDevices} node(s) in single batch... ");
+        if (!CreateDeviceNodes(totalDevices))
+        {
+            Console.Error.WriteLine("FAILED");
+            return 1;
+        }
+        Console.WriteLine("OK");
+
+        // Step 2c: Wait for PnP binding (mirrors EnsureDevicesAvailable wait loop)
+        Console.Write("Step 2c: Wait for PnP binding... ");
+        if (!WaitForDevices(totalDevices, timeout: TimeSpan.FromSeconds(5)))
+        {
+            Console.Error.WriteLine("TIMEOUT");
+            return 1;
+        }
+        Console.WriteLine("OK");
+
+        // Step 2d: Disable COL02 (FFB) HID children so they don't appear in joy.cpl
+        Console.Write("Step 2d: Disable COL02 (FFB) HID children... ");
+        int disabled = DisableFfbChildren();
+        Console.WriteLine($"disabled {disabled} device(s)");
+
+        // Step 3: Acquire devices one at a time (mirrors Pass 2 per-slot loop)
+        Console.WriteLine($"\nStep 3: Acquire devices one at a time (PadForge Pass 2)...");
+        var acquiredDevices = new List<uint>();
+        for (int slot = 0; slot < totalDevices; slot++)
+        {
+            // FindFreeDeviceId equivalent
+            uint deviceId = 0;
+            for (uint id = 1; id <= 16; id++)
+            {
+                int status = GetVJDStatus(id);
+                if (status == VJD_STAT_FREE)
+                {
+                    deviceId = id;
+                    break;
+                }
+            }
+            if (deviceId == 0)
+            {
+                Console.Error.WriteLine($"  Slot {slot}: No free device ID!");
+                continue;
+            }
+
+            // AcquireVJD (mirrors Connect())
+            if (!AcquireVJD(deviceId))
+            {
+                Console.Error.WriteLine($"  Slot {slot}: AcquireVJD({deviceId}) FAILED");
+                continue;
+            }
+            ResetVJD(deviceId);
+            acquiredDevices.Add(deviceId);
+            Console.WriteLine($"  Slot {slot}: Acquired device {deviceId}");
+        }
+
+        // Step 4: Check counts
+        Console.WriteLine($"\n=== DEVICE COUNTS ===");
+        var pnpAfter = EnumerateVJoyInstanceIds();
+        Console.WriteLine($"  ROOT\\HIDCLASS nodes:  {pnpAfter.Count}");
+        foreach (var id in pnpAfter)
+            Console.WriteLine($"    {id}");
+
+        // Count HID children via Get-PnpDevice
+        Console.Write("  Checking HID children... ");
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments = "-NoProfile -Command \"Get-PnpDevice -Class HIDClass -Status OK | Where-Object { $_.InstanceId -like 'HID\\HIDCLASS*' } | ForEach-Object { $_.InstanceId }\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            string output = proc!.StandardOutput.ReadToEnd();
+            proc.WaitForExit(10_000);
+            var hidChildren = output.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            Console.WriteLine($"{hidChildren.Length} active HID children");
+            foreach (var child in hidChildren)
+                Console.WriteLine($"    {child}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"ERROR: {ex.Message}");
+        }
+
+        var winmmAfter = EnumerateWinMMDevices();
+        Console.WriteLine($"  WinMM responding:     {winmmAfter.Count}");
+        foreach (var id in winmmAfter)
+            Console.WriteLine($"    joyID={id}");
+
+        // Verify data flow
+        Console.Write("  UpdateVJD data flow:  ");
+        bool allWork = true;
+        foreach (uint id in acquiredDevices)
+        {
+            var pos = new JOYSTICK_POSITION_V2
+            {
+                bDevice = (byte)id,
+                wAxisX = 16383,
+                wAxisY = 16383,
+                bHats = 0xFFFF_FFFFu,
+                bHatsEx1 = 0xFFFF_FFFFu,
+                bHatsEx2 = 0xFFFF_FFFFu,
+                bHatsEx3 = 0xFFFF_FFFFu,
+            };
+            if (!UpdateVJD_V2(id, ref pos))
+            {
+                Console.Write($"[Dev{id}:FAIL] ");
+                allWork = false;
+            }
+        }
+        Console.WriteLine(allWork ? "OK" : "FAIL");
+
+        // Step 5: Feed data so user can check joy.cpl
+        Console.WriteLine($"\n=== FEEDING DATA — check Game Controllers (joy.cpl) now ===");
+        Console.WriteLine("Press Ctrl+C to stop and cleanup...");
+
+        var cts = new CancellationTokenSource();
+        Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
+
+        var sw = Stopwatch.StartNew();
+        int frames = 0;
+        try
+        {
+            while (!cts.Token.IsCancellationRequested)
+            {
+                foreach (uint id in acquiredDevices)
+                {
+                    int t = (int)(sw.ElapsedMilliseconds % 32767);
+                    var pos = new JOYSTICK_POSITION_V2
+                    {
+                        bDevice = (byte)id,
+                        wAxisX = t,
+                        wAxisY = 32767 - t,
+                        wAxisZ = t / 2,
+                        bHats = 0xFFFF_FFFFu,
+                        bHatsEx1 = 0xFFFF_FFFFu,
+                        bHatsEx2 = 0xFFFF_FFFFu,
+                        bHatsEx3 = 0xFFFF_FFFFu,
+                    };
+                    UpdateVJD_V2(id, ref pos);
+                }
+                frames++;
+                Thread.Sleep(8); // ~120fps
+            }
+        }
+        catch (OperationCanceledException) { }
+
+        double fps = sw.ElapsedMilliseconds > 0 ? frames / (sw.ElapsedMilliseconds / 1000.0) : 0;
+        Console.WriteLine($"\n  Fed {frames} frames in {sw.ElapsedMilliseconds}ms = {fps:F1} fps");
+
+        // Cleanup
+        Console.Write("\nCleanup: ");
+        foreach (uint id in acquiredDevices)
+        {
+            ResetVJD(id);
+            RelinquishVJD(id);
+        }
+        RemoveAllVJoyNodes();
+        Console.WriteLine("OK");
+
+        return 0;
+    }
+
     /// <summary>
     /// Enumerates which WinMM joystick IDs are currently responding.
     /// </summary>
@@ -1560,6 +1770,98 @@ class Program
                 result.Add(i);
         }
         return result;
+    }
+
+    /// <summary>
+    /// Disables COL02 (FFB) HID child devices via pnputil so they don't appear
+    /// as game controllers in joy.cpl / WinMM. vjoy.sys compiled with VJOY_HAS_FFB
+    /// always creates 2 HID collections per device: COL01 (joystick input) and
+    /// COL02 (force feedback / PID). Both show as "HID-compliant game controller"
+    /// because COL02 uses Usage Page 0x01 (Generic Desktop), Usage 0x04 (Joystick).
+    /// Disabling COL02 does NOT affect joystick input (COL01) or ViGEm rumble.
+    /// Returns the number of devices disabled.
+    /// </summary>
+    static int DisableFfbChildren()
+    {
+        int count = 0;
+        try
+        {
+            // Find all COL02 HID children of vJoy ROOT\HIDCLASS parents
+            var psi = new ProcessStartInfo
+            {
+                FileName = "pnputil.exe",
+                Arguments = "/enum-devices /class HIDClass",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            using var proc = Process.Start(psi);
+            if (proc == null) return 0;
+            string output = proc.StandardOutput.ReadToEnd();
+            proc.WaitForExit(5_000);
+
+            // Parse pnputil output to find HID\HIDCLASS&COL02\* instance IDs.
+            string currentInstanceId = null;
+            foreach (string rawLine in output.Split('\n'))
+            {
+                string line = rawLine.Trim();
+                if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0 && line.Contains(":"))
+                {
+                    currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
+                }
+                else if (string.IsNullOrEmpty(line))
+                {
+                    // Process the current block — disable if it's a COL02 device
+                    if (currentInstanceId != null &&
+                        currentInstanceId.IndexOf("HIDCLASS&COL02", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        if (DisableDevice(currentInstanceId))
+                            count++;
+                    }
+                    currentInstanceId = null;
+                }
+            }
+            // Handle last block (in case output doesn't end with blank line)
+            if (currentInstanceId != null &&
+                currentInstanceId.IndexOf("HIDCLASS&COL02", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                if (DisableDevice(currentInstanceId))
+                    count++;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"WARNING: DisableFfbChildren exception: {ex.Message}");
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// Disables a single PnP device by instance ID using pnputil /disable-device.
+    /// </summary>
+    static bool DisableDevice(string instanceId)
+    {
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "pnputil.exe",
+                Arguments = $"/disable-device \"{instanceId}\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc == null) return false;
+            proc.WaitForExit(5_000);
+            return proc.ExitCode == 0;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>

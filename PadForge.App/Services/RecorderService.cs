@@ -400,14 +400,15 @@ namespace PadForge.Services
             centidegrees = centidegrees % 36000;
 
             // 8-way detection with 45-degree (4500 centidegrees) sectors.
+            // 0=N, 4500=NE, 9000=E, 13500=SE, 18000=S, 22500=SW, 27000=W, 31500=NW
             if (centidegrees >= 33750 || centidegrees < 2250) return "Up";
-            if (centidegrees >= 2250 && centidegrees < 6750) return "Up"; // UpRight → treat as Up
+            if (centidegrees >= 2250 && centidegrees < 6750) return "UpRight";
             if (centidegrees >= 6750 && centidegrees < 11250) return "Right";
-            if (centidegrees >= 11250 && centidegrees < 15750) return "Down"; // DownRight → treat as Down
+            if (centidegrees >= 11250 && centidegrees < 15750) return "DownRight";
             if (centidegrees >= 15750 && centidegrees < 20250) return "Down";
-            if (centidegrees >= 20250 && centidegrees < 24750) return "Down"; // DownLeft → treat as Down
+            if (centidegrees >= 20250 && centidegrees < 24750) return "DownLeft";
             if (centidegrees >= 24750 && centidegrees < 29250) return "Left";
-            if (centidegrees >= 29250 && centidegrees < 33750) return "Up"; // UpLeft → treat as Up
+            if (centidegrees >= 29250 && centidegrees < 33750) return "UpLeft";
 
             return "Up"; // Fallback
         }

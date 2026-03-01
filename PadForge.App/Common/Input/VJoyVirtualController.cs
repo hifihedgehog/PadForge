@@ -429,7 +429,11 @@ namespace PadForge.Common.Input
                 _nodesCreatedThisSession = Math.Min(_nodesCreatedThisSession, requiredCount);
             }
 
-            if (existing >= requiredCount)
+            // If we already created nodes this session, reuse them.
+            // On first call (_nodesCreatedThisSession == 0), always recreate from scratch
+            // to replace any leftover nodes from a previous session that may have a
+            // different hardware ID (e.g., PID_BEAD with FFB → PID_0FFB without FFB).
+            if (existing >= requiredCount && _nodesCreatedThisSession > 0)
             {
                 EnsureDllLoaded();
                 return true;

@@ -210,16 +210,12 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // --- Pass 2: Create virtual controllers in ascending slot order ---
-            // ViGEm assigns indices sequentially on Connect(), so creation order
-            // must match slot order. This applies to both Xbox 360 (XInput index)
-            // and DS4 (ViGEm DS4 index) controllers.
-            if (anyNeedsCreate)
+            // --- Pass 1b: Sync vJoy registry descriptor count ---
+            // Always keep the registry descriptor count in sync with the number
+            // of active vJoy slots. This handles both creation (scaling up) and
+            // deletion (scaling down). Without this, deleted vJoy slots persist
+            // as phantom controllers in joy.cpl until app restart.
             {
-                // Pre-provision vJoy device nodes for ALL vJoy slots that need
-                // controllers (existing + to-be-created). This creates all nodes
-                // in a single batch BEFORE any per-slot Connect() calls, avoiding
-                // the teardown/rebuild cycle that causes stale PnP child devices.
                 int totalVJoyNeeded = 0;
                 for (int i = 0; i < MaxPads; i++)
                 {
@@ -227,20 +223,27 @@ namespace PadForge.Common.Input
                         SettingsManager.SlotCreated[i])
                         totalVJoyNeeded++;
                 }
-                if (totalVJoyNeeded > 0)
+                if (totalVJoyNeeded > 0 || VJoyVirtualController.CurrentDescriptorCount > 0)
+                {
                     VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded);
 
-                // After EnsureDevicesAvailable (which may restart the device node),
-                // force existing vJoy controllers to re-acquire their device IDs
-                // BEFORE creating new ones. Without this, FindFreeDeviceId returns
-                // device 1 for the new controller (all devices are FREE after restart),
-                // causing both old and new controllers to fight over device 1.
-                for (int padIndex = 0; padIndex < MaxPads; padIndex++)
-                {
-                    if (_virtualControllers[padIndex] is VJoyVirtualController existingVjoy)
-                        existingVjoy.ReAcquireIfNeeded();
+                    // After EnsureDevicesAvailable (which may restart the device node),
+                    // force existing vJoy controllers to re-acquire their device IDs
+                    // BEFORE creating new ones.
+                    for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                    {
+                        if (_virtualControllers[padIndex] is VJoyVirtualController existingVjoy)
+                            existingVjoy.ReAcquireIfNeeded();
+                    }
                 }
+            }
 
+            // --- Pass 2: Create virtual controllers in ascending slot order ---
+            // ViGEm assigns indices sequentially on Connect(), so creation order
+            // must match slot order. This applies to both Xbox 360 (XInput index)
+            // and DS4 (ViGEm DS4 index) controllers.
+            if (anyNeedsCreate)
+            {
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
                 {
                     if (_virtualControllers[padIndex] == null &&

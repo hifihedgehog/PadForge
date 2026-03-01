@@ -188,7 +188,7 @@ class Program
 
     // HID class GUID
     static Guid HID_GUID = new Guid("745a17a0-74d3-11d0-b6fe-00a0c90f57da");
-    const string VJOY_HWID = "root\\VID_1234&PID_BEAD&REV_0222";
+    const string VJOY_HWID = "root\\VID_1234&PID_0FFB&REV_0222";
 
     // ─────────────────────────────────────────────────────────────────────
     //  JOYSTICK_POSITION_V2 — 108 bytes (API version 2)

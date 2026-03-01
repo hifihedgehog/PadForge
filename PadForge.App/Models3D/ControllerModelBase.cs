@@ -116,9 +116,8 @@ namespace PadForge.Models3D
             LeftShoulderTrigger = LoadModel("Shoulder-Left-Trigger.obj");
             RightShoulderTrigger = LoadModel("Shoulder-Right-Trigger.obj");
 
-            // Clickable stick rings and triggers.
-            ClickMap[LeftThumbRing] = "LeftThumbAxisX";
-            ClickMap[RightThumbRing] = "RightThumbAxisX";
+            // Stick rings — quadrant-based X/Y detection handled in ControllerModelView.
+            // Not in ClickMap; the view checks IsStickRing() and uses hit position.
             ClickMap[LeftShoulderTrigger] = "LeftTrigger";
             ClickMap[RightShoulderTrigger] = "RightTrigger";
 
@@ -133,16 +132,9 @@ namespace PadForge.Models3D
                 model3DGroup.Children.Add(group);
 
                 if (padSetting == "LeftThumbButton")
-                {
                     LeftThumb = group;
-                    // Stick knob click → Y axis (ring → X axis above).
-                    ClickMap[group] = "LeftThumbAxisY";
-                }
                 if (padSetting == "RightThumbButton")
-                {
                     RightThumb = group;
-                    ClickMap[group] = "RightThumbAxisY";
-                }
             }
 
             // Add non-button parts to scene.

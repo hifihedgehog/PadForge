@@ -207,9 +207,9 @@ namespace PadForge.Models3D
         {
             var assembly = Assembly.GetExecutingAssembly();
             // MSBuild prefixes folder names starting with a digit (e.g. "3DModels" → "_3DModels")
-            // and replaces hyphens with underscores in embedded resource names.
+            // but keeps hyphens and other characters as-is in resource names.
             // Search by suffix to avoid needing the exact prefix.
-            string suffix = $".{ModelName}.{filename.Replace("-", "_")}";
+            string suffix = $".{ModelName}.{filename}";
             string resourceName = null;
 
             foreach (var name in assembly.GetManifestResourceNames())

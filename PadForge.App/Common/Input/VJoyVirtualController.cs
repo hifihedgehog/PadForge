@@ -899,15 +899,18 @@ namespace PadForge.Common.Input
             WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
             _currentDescriptorCount = requiredCount;
 
-            // If no vJoy devices are needed, just restart the node (so the driver
-            // re-reads the now-empty registry) and return. Don't create new nodes.
+            // If no vJoy devices are needed, remove the device node entirely.
+            // A disable/enable restart doesn't make the driver drop its HID
+            // collections when 0 descriptors remain — the last controller stays
+            // visible in joy.cpl. Removing the node forces Windows to tear down
+            // all HID children. The node is recreated on demand when vJoy slots
+            // get devices assigned again.
             if (requiredCount == 0)
             {
-                if (descriptorsChanged && existingNodes >= 1)
+                if (existingNodes >= 1)
                 {
-                    DiagLog("Restarting device node (all vJoy slots deleted)");
-                    RestartDeviceNode();
-                    _dllLoaded = false;
+                    DiagLog("Removing device node (all vJoy slots deleted)");
+                    RemoveAllDeviceNodes();
                 }
                 return true;
             }

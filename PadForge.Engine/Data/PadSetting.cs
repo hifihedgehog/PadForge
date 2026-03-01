@@ -113,6 +113,12 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightThumbAxisX { get; set; } = "";
         [XmlElement] public string RightThumbAxisY { get; set; } = "";
 
+        /// <summary>Negative-direction descriptor for stick axes (used when buttons map to bidirectional axes).</summary>
+        [XmlElement] public string LeftThumbAxisXNeg { get; set; } = "";
+        [XmlElement] public string LeftThumbAxisYNeg { get; set; } = "";
+        [XmlElement] public string RightThumbAxisXNeg { get; set; } = "";
+        [XmlElement] public string RightThumbAxisYNeg { get; set; } = "";
+
         // ─────────────────────────────────────────────
         //  Dead zone settings
         // ─────────────────────────────────────────────
@@ -319,6 +325,10 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbAxisY); sb.Append('|');
             sb.Append(RightThumbAxisX); sb.Append('|');
             sb.Append(RightThumbAxisY); sb.Append('|');
+            sb.Append(LeftThumbAxisXNeg); sb.Append('|');
+            sb.Append(LeftThumbAxisYNeg); sb.Append('|');
+            sb.Append(RightThumbAxisXNeg); sb.Append('|');
+            sb.Append(RightThumbAxisYNeg); sb.Append('|');
 
             // Dead zones
             sb.Append(LeftThumbDeadZoneX); sb.Append('|');
@@ -396,7 +406,11 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbAxisX) ||
             !string.IsNullOrEmpty(LeftThumbAxisY) ||
             !string.IsNullOrEmpty(RightThumbAxisX) ||
-            !string.IsNullOrEmpty(RightThumbAxisY);
+            !string.IsNullOrEmpty(RightThumbAxisY) ||
+            !string.IsNullOrEmpty(LeftThumbAxisXNeg) ||
+            !string.IsNullOrEmpty(LeftThumbAxisYNeg) ||
+            !string.IsNullOrEmpty(RightThumbAxisXNeg) ||
+            !string.IsNullOrEmpty(RightThumbAxisYNeg);
 
         // ─────────────────────────────────────────────
         //  Display
@@ -441,6 +455,8 @@ namespace PadForge.Engine.Data
             // Sticks
             nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
             nameof(RightThumbAxisX), nameof(RightThumbAxisY),
+            nameof(LeftThumbAxisXNeg), nameof(LeftThumbAxisYNeg),
+            nameof(RightThumbAxisXNeg), nameof(RightThumbAxisYNeg),
             // Dead zones
             nameof(LeftThumbDeadZoneX), nameof(LeftThumbDeadZoneY),
             nameof(RightThumbDeadZoneX), nameof(RightThumbDeadZoneY),

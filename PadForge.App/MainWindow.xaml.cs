@@ -28,6 +28,11 @@ namespace PadForge
         private DeviceService _deviceService;
         private Popup _controllerTypePopup;
         private DateTime _popupClosedAt;
+
+        /// <summary>When non-null, the next recording result goes to this mapping's NegSourceDescriptor.</summary>
+        private MappingItem _pendingNegMapping;
+        /// <summary>Saved positive descriptor while recording the negative direction.</summary>
+        private string _savedPosDescriptor;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
         private bool _previousViGEmInstalled;
@@ -232,26 +237,87 @@ namespace PadForge
             {
                 _settingsService.MarkDirty();
                 var activePad = _viewModel.SelectedPad;
-                if (activePad != null)
-                {
-                    // Resolve human-friendly name for the recorded mapping.
-                    Guid deviceGuid = activePad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-                    if (deviceGuid != Guid.Empty)
-                        InputService.ResolveDisplayText(result.Mapping, deviceGuid);
+                if (activePad == null) return;
 
-                    // Update status with resolved name.
-                    _viewModel.StatusText = $"Recorded \"{result.Mapping.TargetLabel}\" \u2190 {result.Mapping.SourceDisplayText}";
+                Guid deviceGuid = activePad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                // ── Neg-recording mode: redirect result to NegSourceDescriptor ──
+                if (_pendingNegMapping != null)
+                {
+                    var negMapping = _pendingNegMapping;
+                    _pendingNegMapping = null;
+
+                    // The recorder wrote to SourceDescriptor — restore the positive and set neg.
+                    negMapping.NegSourceDescriptor = result.Descriptor;
+                    if (_savedPosDescriptor != null)
+                    {
+                        negMapping.SourceDescriptor = _savedPosDescriptor;
+                        _savedPosDescriptor = null;
+                    }
+                    if (deviceGuid != Guid.Empty)
+                    {
+                        InputService.ResolveDisplayText(negMapping, deviceGuid);
+                        InputService.ResolveNegDisplayText(negMapping, deviceGuid);
+                    }
+
+                    _viewModel.StatusText = $"Recorded \"{negMapping.TargetLabel}\" \u2190 {negMapping.SourceDisplayText}";
 
                     if (activePad.IsMapAllActive)
                         activePad.OnMapAllItemCompleted();
                     else
                         activePad.CurrentRecordingTarget = null;
+                    return;
                 }
+
+                // ── Normal recording ──
+                if (deviceGuid != Guid.Empty)
+                    InputService.ResolveDisplayText(result.Mapping, deviceGuid);
+
+                // If a button was recorded for a bidirectional axis, auto-prompt for neg direction.
+                if (result.Type == MapType.Button && result.Mapping.HasNegDirection)
+                {
+                    // Save the positive descriptor before the recorder overwrites it.
+                    _savedPosDescriptor = result.Mapping.SourceDescriptor;
+                    _pendingNegMapping = result.Mapping;
+
+                    string dirHint = result.Mapping.TargetSettingName.Contains("AxisX")
+                        ? "(\u2190 negative)" : "(\u2193 negative)";
+                    _viewModel.StatusText = $"Now map: {result.Mapping.TargetLabel} {dirHint}";
+
+                    if (activePad.IsMapAllActive)
+                        activePad.MapAllRecordingNeg = true;
+
+                    // Update the recording target to the neg setting for flash/arrow.
+                    activePad.CurrentRecordingTarget = result.Mapping.NegSettingName;
+
+                    // Start recording again for the neg direction.
+                    _recorderService.StartRecording(result.Mapping, activePad.PadIndex, deviceGuid);
+                    return;
+                }
+
+                // If an axis was recorded for a bidirectional target, clear neg (axis covers both directions).
+                if (result.Mapping.HasNegDirection && result.Type != MapType.Button)
+                {
+                    result.Mapping.NegSourceDescriptor = string.Empty;
+                }
+
+                _viewModel.StatusText = $"Recorded \"{result.Mapping.TargetLabel}\" \u2190 {result.Mapping.SourceDisplayText}";
+
+                if (activePad.IsMapAllActive)
+                    activePad.OnMapAllItemCompleted();
+                else
+                    activePad.CurrentRecordingTarget = null;
             };
 
             // Recording timeout clears flash + advances Map All.
             _recorderService.RecordingTimedOut += (s, e) =>
             {
+                // If we were waiting for neg, restore the positive descriptor.
+                if (_pendingNegMapping != null && _savedPosDescriptor != null)
+                    _pendingNegMapping.SourceDescriptor = _savedPosDescriptor;
+                _pendingNegMapping = null;
+                _savedPosDescriptor = null;
+
                 var activePad = _viewModel.SelectedPad;
                 if (activePad != null)
                 {
@@ -268,12 +334,20 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm == null) return;
 
+                // Check if this is a neg target (e.g., "LeftThumbAxisXNeg").
+                bool isNegTarget = targetName.EndsWith("Neg", StringComparison.Ordinal);
+                string posTargetName = isNegTarget ? targetName.Substring(0, targetName.Length - 3) : targetName;
+
                 var mapping = padVm.Mappings.FirstOrDefault(m =>
-                    string.Equals(m.TargetSettingName, targetName, StringComparison.OrdinalIgnoreCase));
+                    string.Equals(m.TargetSettingName, posTargetName, StringComparison.OrdinalIgnoreCase));
                 if (mapping == null) return;
 
                 padVm.CurrentRecordingTarget = targetName;
                 Guid deviceGuid = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                if (isNegTarget)
+                    _pendingNegMapping = mapping;
+
                 _recorderService.StartRecording(mapping, padVm.PadIndex, deviceGuid);
             };
 

@@ -161,10 +161,10 @@ namespace PadForge.Common.Input
                 TryParseIntStatic(ps.RightTriggerMaxRange, 100));
 
             // ── Thumbsticks ──
-            gp.ThumbLX = MapToThumbAxis(state, ps.LeftThumbAxisX);
-            gp.ThumbLY = NegateAxis(MapToThumbAxis(state, ps.LeftThumbAxisY));
-            gp.ThumbRX = MapToThumbAxis(state, ps.RightThumbAxisX);
-            gp.ThumbRY = NegateAxis(MapToThumbAxis(state, ps.RightThumbAxisY));
+            gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg);
+            gp.ThumbLY = NegateAxis(MapToThumbAxisWithNeg(state, ps.LeftThumbAxisY, ps.LeftThumbAxisYNeg));
+            gp.ThumbRX = MapToThumbAxisWithNeg(state, ps.RightThumbAxisX, ps.RightThumbAxisXNeg);
+            gp.ThumbRY = NegateAxis(MapToThumbAxisWithNeg(state, ps.RightThumbAxisY, ps.RightThumbAxisYNeg));
 
             // ── Dead zones ──
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
@@ -565,6 +565,27 @@ namespace PadForge.Common.Input
 
             // Clamp to short range.
             return (short)Math.Clamp(signed, short.MinValue, short.MaxValue);
+        }
+
+        /// <summary>
+        /// Maps a thumbstick axis using both positive and negative descriptors.
+        /// When negDescriptor is empty, delegates to MapToThumbAxis (existing behavior).
+        /// When both are set (typically buttons), pos pressed → +32767, neg pressed → -32768,
+        /// both pressed → 0 (cancel out).
+        /// </summary>
+        private static short MapToThumbAxisWithNeg(CustomInputState state, string posDescriptor, string negDescriptor)
+        {
+            if (string.IsNullOrWhiteSpace(negDescriptor))
+                return MapToThumbAxis(state, posDescriptor);
+
+            // Both descriptors exist — treat as digital directions.
+            bool posActive = MapToButtonPressed(state, posDescriptor);
+            bool negActive = MapToButtonPressed(state, negDescriptor);
+
+            if (posActive && negActive) return 0;
+            if (posActive) return short.MaxValue;
+            if (negActive) return short.MinValue;
+            return 0;
         }
 
         // ─────────────────────────────────────────────

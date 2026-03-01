@@ -420,32 +420,38 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Determines X or Y axis based on hit position relative to joystick center.
+        /// Determines X or Y axis and positive or negative direction based on hit position
+        /// relative to joystick center. Returns the PadSetting target name including "Neg" suffix
+        /// for negative-direction quadrants.
         /// Model coords: X = left/right, Z = up/down.
-        /// |deltaX| > |deltaZ| → horizontal click → X axis.
-        /// |deltaZ| >= |deltaX| → vertical click → Y axis.
+        /// Right (+X) → pos X, Left (-X) → neg X, Up (+Z) → pos Y, Down (-Z) → neg Y.
         /// </summary>
         private static string DetermineAxisFromQuadrant(
             Point3D hitPos, Vector3D center, string xAxis, string yAxis)
         {
             double deltaX = hitPos.X - center.X;
             double deltaZ = hitPos.Z - center.Z;
-            return Math.Abs(deltaX) > Math.Abs(deltaZ) ? xAxis : yAxis;
+            if (Math.Abs(deltaX) > Math.Abs(deltaZ))
+                return deltaX >= 0 ? xAxis : xAxis + "Neg";
+            else
+                return deltaZ >= 0 ? yAxis : yAxis + "Neg";
         }
 
         /// <summary>
-        /// Shows a flat 3D arrow at the stick indicating the positive axis direction.
-        /// X axis → arrow pointing right (+X), Y axis → arrow pointing up (+Z).
+        /// Shows a flat 3D arrow at the stick indicating the axis direction.
+        /// Positive targets: right (+X) or up (+Z). Negative targets: left (-X) or down (-Z).
         /// Arrow stays visible until mapping finishes (CurrentRecordingTarget clears).
         /// </summary>
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
             RemoveArrow();
 
-            bool isX = axis.Contains("AxisX");
+            bool isNeg = axis.EndsWith("Neg", StringComparison.Ordinal);
+            string baseAxis = isNeg ? axis.Substring(0, axis.Length - 3) : axis;
+            bool isX = baseAxis.Contains("AxisX");
 
             Vector3D center;
-            if (axis.StartsWith("Left"))
+            if (baseAxis.StartsWith("Left"))
                 center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
             else
                 center = _currentModel.JoystickRotationPointCenterRightMillimeter;
@@ -461,18 +467,19 @@ namespace PadForge.Views
             }
             catch { }
 
-            var arrowGeo = CreateFlatArrow(arrowCenter, isX, accentColor);
+            var arrowGeo = CreateFlatArrow(arrowCenter, isX, isNeg, accentColor);
             _arrowVisual = new ModelVisual3D { Content = arrowGeo };
             ModelViewPort.Children.Add(_arrowVisual);
         }
 
         /// <summary>
         /// Creates a flat rectangular arrow (box shaft + triangular prism head).
-        /// Arrow points along +X (isX=true) or +Z (isX=false).
+        /// Arrow points along +X/-X (isX) or +Z/-Z (!isX). Negative flips direction.
         /// </summary>
-        private static GeometryModel3D CreateFlatArrow(Point3D center, bool isX, Color color)
+        private static GeometryModel3D CreateFlatArrow(Point3D center, bool isX, bool negative, Color color)
         {
-            var dir = isX ? new Vector3D(1, 0, 0) : new Vector3D(0, 0, 1);
+            double sign = negative ? -1 : 1;
+            var dir = isX ? new Vector3D(sign, 0, 0) : new Vector3D(0, 0, sign);
             var perp = isX ? new Vector3D(0, 0, 1) : new Vector3D(1, 0, 0);
             var depthDir = new Vector3D(0, 1, 0);
 
@@ -556,10 +563,14 @@ namespace PadForge.Views
             if (_currentModel == null || target == null)
                 return null;
 
-            // Stick axis targets → flash the ring
-            if (target is "LeftThumbAxisX" or "LeftThumbAxisY" && _currentModel.LeftThumbRing != null)
+            // Stick axis targets (including *Neg variants) → flash the stick ring
+            string baseTarget = target.EndsWith("Neg", StringComparison.Ordinal)
+                ? target.Substring(0, target.Length - 3)
+                : target;
+
+            if (baseTarget is "LeftThumbAxisX" or "LeftThumbAxisY" && _currentModel.LeftThumbRing != null)
                 return new List<Model3DGroup> { _currentModel.LeftThumbRing };
-            if (target is "RightThumbAxisX" or "RightThumbAxisY" && _currentModel.RightThumbRing != null)
+            if (baseTarget is "RightThumbAxisX" or "RightThumbAxisY" && _currentModel.RightThumbRing != null)
                 return new List<Model3DGroup> { _currentModel.RightThumbRing };
 
             // Button targets

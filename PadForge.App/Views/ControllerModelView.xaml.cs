@@ -93,18 +93,10 @@ namespace PadForge.Views
                 {
                     string target = _vm.CurrentRecordingTarget;
                     UpdateFlashTarget(target);
-                    // Show guidance arrow for Map All axis targets.
-                    // Don't replace an arrow created by a stick ring click.
-                    if (_arrowFromClick)
-                    {
-                        // Click-created arrow is already visible; clear flag
-                        // so a subsequent target change (next Map All step) can show its own arrow.
-                        _arrowFromClick = false;
-                    }
-                    else
-                    {
-                        ShowArrowForTarget(target);
-                    }
+                    // Always show the arrow for the current target.
+                    // (Clears _arrowFromClick since the target has changed.)
+                    _arrowFromClick = false;
+                    ShowArrowForTarget(target);
                 });
                 return;
             }

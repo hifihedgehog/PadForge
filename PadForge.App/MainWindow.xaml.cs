@@ -494,7 +494,7 @@ namespace PadForge
 
                     if (nowVJoyInstalled && _viewModel.IsEngineRunning)
                     {
-                        _inputService.Stop();
+                        _inputService.Stop(preserveVJoyNodes: true);
                         _inputService.Start();
                         _viewModel.StatusText = "vJoy driver detected — engine restarted.";
                     }
@@ -2418,7 +2418,11 @@ namespace PadForge
 
             if (_viewModel.IsEngineRunning)
             {
-                _inputService.Stop();
+                // Preserve vJoy device nodes during restart so the DLL's internal
+                // device handles stay valid. Nodes are disabled (not removed) during
+                // Stop, then re-enabled by EnsureDevicesAvailable when vJoy slots
+                // become active — same pattern as "delete last vJoy + re-add".
+                _inputService.Stop(preserveVJoyNodes: true);
                 _inputService.Start();
                 _viewModel.StatusText = _viewModel.Dashboard.IsVJoyInstalled
                     ? "vJoy driver installed — engine restarted."

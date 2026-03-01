@@ -51,6 +51,7 @@ namespace PadForge.Views
 
         // Axis arrow overlay (visible until mapping finishes)
         private ModelVisual3D _arrowVisual;
+        private bool _arrowFromClick; // true when arrow was created by stick ring click (don't replace)
 
         public ControllerModelView()
         {
@@ -92,8 +93,18 @@ namespace PadForge.Views
                 {
                     string target = _vm.CurrentRecordingTarget;
                     UpdateFlashTarget(target);
-                    // Show guidance arrow for axis targets, remove for others
-                    ShowArrowForTarget(target);
+                    // Show guidance arrow for Map All axis targets.
+                    // Don't replace an arrow created by a stick ring click.
+                    if (_arrowFromClick)
+                    {
+                        // Click-created arrow is already visible; clear flag
+                        // so a subsequent target change (next Map All step) can show its own arrow.
+                        _arrowFromClick = false;
+                    }
+                    else
+                    {
+                        ShowArrowForTarget(target);
+                    }
                 });
                 return;
             }
@@ -444,11 +455,29 @@ namespace PadForge.Views
 
         /// <summary>
         /// Shows a flat 3D arrow at the stick indicating the axis direction.
-        /// Delegates to ShowArrowForTarget which handles all axis target types.
+        /// Called when the user clicks on a stick ring — uses the actual hit Y position.
         /// </summary>
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
-            ShowArrowForTarget(axis);
+            RemoveArrow();
+
+            bool isNeg = axis.EndsWith("Neg", StringComparison.Ordinal);
+            string baseAxis = isNeg ? axis.Substring(0, axis.Length - 3) : axis;
+            bool isX = baseAxis.Contains("AxisX");
+
+            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
+            try
+            {
+                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
+            }
+            catch { }
+
+            var arrowCenter = new Point3D(hitPos.X, hitPos.Y - 3, hitPos.Z);
+            var arrowGeo = CreateFlatArrow(arrowCenter, isX, isNeg, accentColor);
+            _arrowVisual = new ModelVisual3D { Content = arrowGeo };
+            _arrowFromClick = true;
+            ModelViewPort.Children.Add(_arrowVisual);
         }
 
         /// <summary>
@@ -564,6 +593,7 @@ namespace PadForge.Views
                 ModelViewPort.Children.Remove(_arrowVisual);
                 _arrowVisual = null;
             }
+            _arrowFromClick = false;
         }
 
         // ─────────────────────────────────────────────

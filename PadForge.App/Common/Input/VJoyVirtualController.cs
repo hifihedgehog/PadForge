@@ -820,10 +820,17 @@ namespace PadForge.Common.Input
                     DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
                     _nodesCreatedThisSession = requiredCount;
 
-                    // vjoy.sys is compiled with FFB support and creates 2 HID
-                    // collections per device: COL01 (joystick input) and COL02 (FFB/PID).
-                    // COL02 must stay enabled so games can send DirectInput force
-                    // feedback effects through it → vjoy.sys → FfbRegisterGenCB → PadForge.
+                    // vjoy.sys compiled with VJOY_HAS_FFB creates 2 HID collections per
+                    // device: COL01 (joystick input) and COL02 (FFB/PID). Both register as
+                    // "HID-compliant game controller" so COL02 creates phantom entries in
+                    // joy.cpl. Disabling COL02 hides them from WinMM/joy.cpl.
+                    //
+                    // FfbRegisterGenCB still works with COL02 disabled — it communicates via
+                    // the Raw PDO device interface (GUID_DEVINTERFACE_VJOY), not through HID.
+                    // Games sending DirectInput FFB effects to the vJoy device will be blocked
+                    // (they go through HID COL02), but PadForge's FFB passthrough uses the
+                    // IOCTL path which remains functional.
+                    DisableFfbChildren();
 
                     return true;
                 }

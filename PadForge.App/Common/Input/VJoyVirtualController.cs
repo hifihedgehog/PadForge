@@ -19,12 +19,13 @@ namespace PadForge.Common.Input
         private static bool _dllLoaded;
 
         /// <summary>
-        /// Tracks how many device nodes were created by THIS session with the correct
-        /// HID descriptor. Nodes from previous sessions may have stale descriptors
-        /// and need to be removed+recreated so the driver re-reads the registry.
-        /// Reset to 0 when all nodes are removed (RemoveAllDeviceNodes / engine stop).
+        /// Set to true after the first successful EnsureDevicesAvailable call this session.
+        /// Prevents the "stale node cleanup" path from running more than once — that path
+        /// removes ALL existing nodes and recreates them, which is only needed on the very
+        /// first call to migrate nodes from a previous session with different descriptors.
+        /// Reset only by RemoveAllDeviceNodes (engine stop).
         /// </summary>
-        private static int _nodesCreatedThisSession;
+        private static bool _sessionNodesInitialized;
 
         /// <summary>Whether we've already ensured the driver is in the Windows driver store this session.</summary>
         private static bool _driverStoreChecked;
@@ -146,7 +147,9 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] TrimDeviceNodes: active={activeCount}, nodes={instanceIds.Count}, excess={excess}");
                 for (int i = instanceIds.Count - 1; i >= 0 && excess > 0; i--, excess--)
                     RemoveDeviceNode(instanceIds[i]);
-                _nodesCreatedThisSession = Math.Min(_nodesCreatedThisSession, activeCount);
+                // Do NOT reset _sessionNodesInitialized here — that flag must only be
+                // reset by RemoveAllDeviceNodes (engine stop) to prevent the first-session
+                // cleanup from running again and entering a nuke/recreate loop.
             }
             catch (Exception ex)
             {
@@ -770,19 +773,19 @@ namespace PadForge.Common.Input
 
             int existing = CountExistingDevices();
 
-            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
+            DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, initialized={_sessionNodesInitialized}");
 
-            // Already have enough nodes AND we created them this session (so descriptors are correct).
-            if (existing >= requiredCount && _nodesCreatedThisSession > 0)
+            // Already initialized this session and have enough nodes → fast path.
+            if (_sessionNodesInitialized && existing >= requiredCount)
             {
                 EnsureDllLoaded();
                 return true;
             }
 
-            // First call this session (_nodesCreatedThisSession == 0): recreate from scratch
-            // to replace leftover nodes from a previous session that may have a different
-            // hardware ID (e.g., PID_BEAD with FFB → PID_0FFB without FFB).
-            if (_nodesCreatedThisSession == 0 && existing > 0)
+            // First call this session: remove stale nodes from a previous session that
+            // may have a different hardware ID / descriptor. This runs exactly ONCE per
+            // process lifetime (guarded by _sessionNodesInitialized).
+            if (!_sessionNodesInitialized && existing > 0)
             {
                 DiagLog($"First session call: removing {existing} stale node(s) for clean batch create...");
                 RemoveAllDeviceNodes();
@@ -795,7 +798,7 @@ namespace PadForge.Common.Input
             if (toCreate <= 0)
             {
                 EnsureDllLoaded();
-                _nodesCreatedThisSession = existing;
+                _sessionNodesInitialized = true;
                 return true;
             }
 
@@ -818,7 +821,7 @@ namespace PadForge.Common.Input
                 if (_dllLoaded && FindFreeDeviceId() > 0)
                 {
                     DiagLog($"Devices ready after {(attempt + 1) * 250}ms");
-                    _nodesCreatedThisSession = requiredCount;
+                    _sessionNodesInitialized = true;
 
                     // vjoy.sys compiled with VJOY_HAS_FFB creates 2 HID collections per
                     // device: COL01 (joystick input) and COL02 (FFB/PID). Both register as
@@ -1041,7 +1044,7 @@ namespace PadForge.Common.Input
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
                 // Reset state so vJoyEnabled() is re-evaluated and stale detection works.
                 _dllLoaded = false;
-                _nodesCreatedThisSession = 0;
+                _sessionNodesInitialized = false;
                 return true;
             }
             catch (Exception ex)

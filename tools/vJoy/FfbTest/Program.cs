@@ -111,21 +111,33 @@ class Program
             Console.WriteLine($"  - {e.Name}");
         Console.WriteLine();
 
-        // Find FFB actuator axes.
+        // Find FFB actuator axes, fall back to regular axes.
         var axisObjects = objects
             .Where(o => o.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.ForceFeedbackActuator))
             .ToList();
 
-        if (axisObjects.Count == 0)
+        if (axisObjects.Count > 0)
         {
-            Console.WriteLine("No FFB actuator axes found on this device.");
-            joystick.Unacquire();
-            return;
+            Console.WriteLine("FFB actuator axes:");
+            foreach (var ax in axisObjects)
+                Console.WriteLine($"  {ax.Name} (offset {ax.Offset})");
         }
-
-        Console.WriteLine("FFB actuator axes:");
-        foreach (var ax in axisObjects)
-            Console.WriteLine($"  {ax.Name} (offset {ax.Offset})");
+        else
+        {
+            Console.WriteLine("No dedicated FFB actuator axes found — using regular axes.");
+            axisObjects = objects
+                .Where(o => o.ObjectId.Flags.HasFlag(DeviceObjectTypeFlags.AbsoluteAxis))
+                .ToList();
+            if (axisObjects.Count == 0)
+            {
+                Console.WriteLine("No axes found at all.");
+                joystick.Unacquire();
+                if (hwnd != IntPtr.Zero) DestroyWindow(hwnd);
+                return;
+            }
+            foreach (var ax in axisObjects.Take(2))
+                Console.WriteLine($"  {ax.Name} (offset {ax.Offset})");
+        }
         Console.WriteLine();
 
         int[] axisOffsets = axisObjects.Select(a => a.Offset).Take(2).ToArray();

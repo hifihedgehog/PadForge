@@ -17,6 +17,7 @@ namespace PadForge.Common.Input
     internal sealed class VJoyVirtualController : IVirtualController
     {
         private static bool _dllLoaded;
+        private static IntPtr _dllHandle;
 
         /// <summary>
         /// Number of DeviceNN registry descriptors currently written.
@@ -57,7 +58,7 @@ namespace PadForge.Common.Input
             if (_dllLoaded) return;
 
             // Already loadable from default search paths?
-            if (NativeLibrary.TryLoad("vJoyInterface.dll", out _))
+            if (NativeLibrary.TryLoad("vJoyInterface.dll", out _dllHandle))
             {
                 _dllLoaded = true;
                 return;
@@ -72,8 +73,26 @@ namespace PadForge.Common.Input
                 string arch = Environment.Is64BitProcess ? "x64" : "x86";
                 vjoyPath = Path.Combine(vjoyDir, arch, "vJoyInterface.dll");
             }
-            if (File.Exists(vjoyPath) && NativeLibrary.TryLoad(vjoyPath, out _))
+            if (File.Exists(vjoyPath) && NativeLibrary.TryLoad(vjoyPath, out _dllHandle))
                 _dllLoaded = true;
+        }
+
+        /// <summary>
+        /// Forces vJoyInterface.dll to be unloaded and reloaded from disk.
+        /// vJoyInterface.dll caches internal device handles; after removing
+        /// and recreating a device node, the stale handle prevents all API
+        /// calls from working. Unloading and reloading forces the DLL to
+        /// re-open the device interface on next use.
+        /// </summary>
+        internal static void ForceReloadDll()
+        {
+            if (_dllHandle != IntPtr.Zero)
+            {
+                DiagLog("ForceReloadDll: unloading vJoyInterface.dll");
+                try { NativeLibrary.Free(_dllHandle); } catch { }
+                _dllHandle = IntPtr.Zero;
+            }
+            _dllLoaded = false;
         }
 
         private readonly uint _deviceId;
@@ -883,9 +902,12 @@ namespace PadForge.Common.Input
                 EnsureFfbRegistryKeys();
             }
 
-            // Fast path: if the count hasn't changed and we're already loaded,
-            // skip the expensive pnputil enumeration and registry writes.
-            if (_currentDescriptorCount == requiredCount && _dllLoaded && requiredCount > 0)
+            // Fast path: if the count hasn't changed, skip expensive pnputil
+            // enumeration and registry writes. For requiredCount > 0, also
+            // require DLL loaded. For requiredCount == 0, just check count match
+            // (no DLL needed, node already removed).
+            if (_currentDescriptorCount == requiredCount &&
+                (requiredCount == 0 || _dllLoaded))
                 return true;
 
             EnsureDllLoaded();
@@ -1135,8 +1157,10 @@ namespace PadForge.Common.Input
                 }
 
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
-                // Reset state so vJoyEnabled() is re-evaluated.
-                _dllLoaded = false;
+                // Force-reload the DLL so it drops cached device handles.
+                // Without this, the DLL's internal state is stale after node
+                // removal and all API calls fail when a new node is created.
+                ForceReloadDll();
                 _currentDescriptorCount = 0;
                 return true;
             }

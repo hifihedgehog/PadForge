@@ -112,15 +112,24 @@ namespace PadForge.Views
                 return;
 
             _currentModel?.Dispose();
-            _currentModel = needed switch
-            {
-                "DS4" => new ControllerModelDS4(),
-                _ => new ControllerModelXbox360()
-            };
+            _currentModel = null;
 
-            ModelVisual3D.Content = _currentModel.model3DGroup;
-            ModelViewPort.ZoomExtents();
-            _dirty = true;
+            try
+            {
+                _currentModel = needed switch
+                {
+                    "DS4" => new ControllerModelDS4(),
+                    _ => new ControllerModelXbox360()
+                };
+
+                ModelVisual3D.Content = _currentModel.model3DGroup;
+                ModelViewPort.ZoomExtents();
+                _dirty = true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[ControllerModelView] Failed to load 3D model: {ex}");
+            }
         }
 
         // ─────────────────────────────────────────────

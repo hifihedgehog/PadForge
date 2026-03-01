@@ -880,6 +880,22 @@ namespace PadForge.Services
                 {
                     // Build display text: e.g. "A" or "Inv. Left Stick X"
                     string display = obj.Name;
+
+                    // For POV descriptors with a direction suffix (e.g., "POV 0 Up"),
+                    // replace generic name like "Hat Switch" with "Hat Up".
+                    if (typeName == "pov" && parts.Length >= 3)
+                    {
+                        string dir = parts[2] switch
+                        {
+                            "UpRight" => "Up-Right",
+                            "DownRight" => "Down-Right",
+                            "DownLeft" => "Down-Left",
+                            "UpLeft" => "Up-Left",
+                            _ => parts[2]
+                        };
+                        display = $"Hat {dir}";
+                    }
+
                     if (!string.IsNullOrEmpty(prefix))
                     {
                         string prefixLabel = prefix.ToUpperInvariant() switch

@@ -377,8 +377,9 @@ namespace PadForge.Common.Input
             if (povValue < 0) return false; // Centered
             if (string.IsNullOrEmpty(direction)) return povValue >= 0; // Any direction
 
-            // Centidegrees: 0=Up, 9000=Right, 18000=Down, 27000=Left
-            // Allow ±6750 tolerance for diagonal detection.
+            // Centidegrees: 0=Up, 4500=UpRight, 9000=Right, 13500=DownRight,
+            // 18000=Down, 22500=DownLeft, 27000=Left, 31500=UpLeft.
+            // Cardinals use ±67.5° tolerance; diagonals use ±22.5° (exact sector).
             switch (direction.ToLowerInvariant())
             {
                 case "up":
@@ -389,6 +390,14 @@ namespace PadForge.Common.Input
                     return povValue >= 11250 && povValue <= 24750;
                 case "left":
                     return povValue >= 20250 && povValue <= 33750;
+                case "upright":
+                    return povValue >= 2250 && povValue <= 6750;
+                case "downright":
+                    return povValue >= 11250 && povValue <= 15750;
+                case "downleft":
+                    return povValue >= 20250 && povValue <= 24750;
+                case "upleft":
+                    return povValue >= 29250 && povValue <= 33750;
                 default:
                     return false;
             }

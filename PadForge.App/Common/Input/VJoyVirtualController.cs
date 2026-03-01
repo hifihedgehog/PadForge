@@ -182,41 +182,64 @@ namespace PadForge.Common.Input
             int lt = gp.LeftTrigger * 32767 / 255;
             int rt = gp.RightTrigger * 32767 / 255;
 
-            VJoyNative.SetAxis(lx, id, VJoyNative.HID_USAGE_X);
-            VJoyNative.SetAxis(ly, id, VJoyNative.HID_USAGE_Y);
-            VJoyNative.SetAxis(rx, id, VJoyNative.HID_USAGE_RX);
-            VJoyNative.SetAxis(ry, id, VJoyNative.HID_USAGE_RY);
-            VJoyNative.SetAxis(lt, id, VJoyNative.HID_USAGE_Z);
-            VJoyNative.SetAxis(rt, id, VJoyNative.HID_USAGE_RZ);
+            // Buttons 1–11 bitmask (Xbox 360 layout: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
+            int buttons = 0;
+            if (gp.IsButtonPressed(Gamepad.A))              buttons |= 1 << 0;
+            if (gp.IsButtonPressed(Gamepad.B))              buttons |= 1 << 1;
+            if (gp.IsButtonPressed(Gamepad.X))              buttons |= 1 << 2;
+            if (gp.IsButtonPressed(Gamepad.Y))              buttons |= 1 << 3;
+            if (gp.IsButtonPressed(Gamepad.LEFT_SHOULDER))  buttons |= 1 << 4;
+            if (gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER)) buttons |= 1 << 5;
+            if (gp.IsButtonPressed(Gamepad.BACK))           buttons |= 1 << 6;
+            if (gp.IsButtonPressed(Gamepad.START))          buttons |= 1 << 7;
+            if (gp.IsButtonPressed(Gamepad.LEFT_THUMB))     buttons |= 1 << 8;
+            if (gp.IsButtonPressed(Gamepad.RIGHT_THUMB))    buttons |= 1 << 9;
+            if (gp.IsButtonPressed(Gamepad.GUIDE))          buttons |= 1 << 10;
 
-            // Buttons 1–11 (Xbox 360 layout: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.A), id, 1);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.B), id, 2);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.X), id, 3);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.Y), id, 4);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_SHOULDER), id, 5);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER), id, 6);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.BACK), id, 7);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.START), id, 8);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.LEFT_THUMB), id, 9);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.RIGHT_THUMB), id, 10);
-            VJoyNative.SetBtn(gp.IsButtonPressed(Gamepad.GUIDE), id, 11);
-
-            // D-Pad → discrete POV hat.
-            // vJoy discrete POV values: 0=Up, 1=Right, 2=Down, 3=Left, -1=centered.
+            // D-Pad → continuous POV hat (hundredths of degrees).
+            // Supports 8-way diagonals: 0=N, 4500=NE, 9000=E, 13500=SE, etc.
+            // -1 = centered.
             bool up    = (gp.Buttons & Gamepad.DPAD_UP) != 0;
             bool right = (gp.Buttons & Gamepad.DPAD_RIGHT) != 0;
             bool down  = (gp.Buttons & Gamepad.DPAD_DOWN) != 0;
             bool left  = (gp.Buttons & Gamepad.DPAD_LEFT) != 0;
-            int pov = up ? 0 : right ? 1 : down ? 2 : left ? 3 : -1;
-            VJoyNative.SetDiscPov(pov, id, 1);
+            int pov;
+            if      (up && right)   pov = 4500;
+            else if (up && left)    pov = 31500;
+            else if (down && right) pov = 13500;
+            else if (down && left)  pov = 22500;
+            else if (up)            pov = 0;
+            else if (right)         pov = 9000;
+            else if (down)          pov = 18000;
+            else if (left)          pov = 27000;
+            else                    pov = -1;
 
+            // Single UpdateVJD call per frame (1 kernel IOCTL) instead of individual
+            // SetAxis/SetBtn/SetDiscPov calls (18+ IOCTLs). Critical for multi-controller.
+            var pos = new JoystickPositionV2
+            {
+                bDevice = (byte)id,
+                wAxisX = lx,
+                wAxisY = ly,
+                wAxisZ = lt,
+                wAxisXRot = rx,
+                wAxisYRot = ry,
+                wAxisZRot = rt,
+                lButtons = buttons,
+                bHats = pov < 0 ? 0xFFFF_FFFFu : (uint)pov,
+                bHatsEx1 = 0xFFFF_FFFFu,
+                bHatsEx2 = 0xFFFF_FFFFu,
+                bHatsEx3 = 0xFFFF_FFFFu,
+            };
+
+            bool ok = VJoyNative.UpdateVJD(id, ref pos);
             _submitCallCount++;
+            if (!ok) _submitFailCount++;
 
             // Log first call and periodic status (every ~5 seconds at 1000Hz)
             if (_submitCallCount == 1 || _submitCallCount % 5000 == 0)
             {
-                DiagLog($"SubmitGamepadState(individual) devId={id} call#{_submitCallCount} X={lx} Y={ly} btns=0x{gp.Buttons:X} pov={pov}");
+                DiagLog($"SubmitGamepadState(UpdateVJD) devId={id} call#{_submitCallCount} fails={_submitFailCount} X={lx} Y={ly} btns=0x{buttons:X} pov={pov}");
             }
         }
 
@@ -402,10 +425,6 @@ namespace PadForge.Common.Input
 
             DiagLog($"EnsureDevicesAvailable: required={requiredCount}, existing={existing}, createdThisSession={_nodesCreatedThisSession}");
 
-            // Write correct HID descriptors for the required number of devices.
-            // Xbox 360 layout: 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 POV.
-            WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
-
             if (existing > requiredCount)
             {
                 // More nodes than needed (all ours) — remove the extras from the end.
@@ -422,6 +441,11 @@ namespace PadForge.Common.Input
                 EnsureDllLoaded();
                 return true;
             }
+
+            // Write HID descriptors for the required number of devices BEFORE creating nodes.
+            // Xbox 360 layout: 6 axes (X, Y, Z, RX, RY, RZ), 11 buttons, 1 continuous POV.
+            // Only written when we're about to create new nodes — avoids disturbing live devices.
+            WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
 
             // Create the needed device nodes (additional or all, depending on stale cleanup).
             int toCreate = requiredCount - existing;
@@ -708,26 +732,54 @@ public static class PF_SetupApi {{
                     @"SYSTEM\CurrentControlSet\services\vjoy\Parameters", writable: true);
                 if (baseKey == null) return;
 
-                // Clean any existing DeviceNN keys first
+                // Remove DeviceNN keys beyond the required count.
                 foreach (string subKeyName in baseKey.GetSubKeyNames())
                 {
-                    if (subKeyName.StartsWith("Device", StringComparison.OrdinalIgnoreCase))
+                    if (subKeyName.StartsWith("Device", StringComparison.OrdinalIgnoreCase) &&
+                        int.TryParse(subKeyName.Substring(6), out int keyNum) &&
+                        keyNum > requiredCount)
                     {
                         try { baseKey.DeleteSubKeyTree(subKeyName, false); } catch { }
                     }
                 }
 
-                // Write descriptor for each device (Device01..DeviceNN)
+                // Write descriptor for each device (Device01..DeviceNN).
+                // Only overwrite if the existing descriptor doesn't match — avoids
+                // disturbing live device nodes whose driver has already read the registry.
                 for (int i = 1; i <= requiredCount; i++)
                 {
                     byte[] descriptor = BuildHidDescriptor((byte)i, nAxes, nButtons, nPovs);
                     string keyName = $"Device{i:D2}";
                     using var devKey = baseKey.CreateSubKey(keyName);
-                    devKey.SetValue("HidReportDescriptor", descriptor,
-                        Microsoft.Win32.RegistryValueKind.Binary);
-                    devKey.SetValue("HidReportDescriptorSize", descriptor.Length,
-                        Microsoft.Win32.RegistryValueKind.DWord);
-                    DiagLog($"Wrote {keyName}: {descriptor.Length} bytes ({nAxes} axes, {nButtons} buttons, {nPovs} POVs)");
+
+                    // Check if existing descriptor already matches.
+                    bool needsWrite = true;
+                    try
+                    {
+                        if (devKey.GetValue("HidReportDescriptor") is byte[] existing &&
+                            existing.Length == descriptor.Length)
+                        {
+                            needsWrite = false;
+                            for (int b = 0; b < descriptor.Length; b++)
+                            {
+                                if (existing[b] != descriptor[b]) { needsWrite = true; break; }
+                            }
+                        }
+                    }
+                    catch { needsWrite = true; }
+
+                    if (needsWrite)
+                    {
+                        devKey.SetValue("HidReportDescriptor", descriptor,
+                            Microsoft.Win32.RegistryValueKind.Binary);
+                        devKey.SetValue("HidReportDescriptorSize", descriptor.Length,
+                            Microsoft.Win32.RegistryValueKind.DWord);
+                        DiagLog($"Wrote {keyName}: {descriptor.Length} bytes ({nAxes} axes, {nButtons} buttons, {nPovs} POVs)");
+                    }
+                    else
+                    {
+                        DiagLog($"{keyName}: descriptor already correct, skipping");
+                    }
                 }
             }
             catch (Exception ex)
@@ -788,32 +840,36 @@ public static class PF_SetupApi {{
 
             d.Add(0xC0);                                    //   END_COLLECTION (Physical)
 
-            // ── Discrete POV hats — always 128 bits (32 nibbles) ──
+            // ── Continuous POV hats — always 128 bits (4 × 32-bit DWORDs) ──
+            // Continuous POV uses degree values × 100 (0–35900), enabling 8-way diagonals.
+            // Matches vJoyConf continuous POV format.
             if (nPovs > 0)
             {
-                d.AddRange(new byte[] { 0x15, 0x00 });
-                d.AddRange(new byte[] { 0x25, 0x03 });
-                d.AddRange(new byte[] { 0x35, 0x00 });
-                d.AddRange(new byte[] { 0x46, 0x0E, 0x01 });
-                d.AddRange(new byte[] { 0x65, 0x14 });
-                d.AddRange(new byte[] { 0x75, 0x04 });
-                d.AddRange(new byte[] { 0x95, 0x01 });
+                d.AddRange(new byte[] { 0x15, 0x00 });              // LOGICAL_MINIMUM (0)
+                d.AddRange(new byte[] { 0x27, 0x3C, 0x8C, 0x00, 0x00 }); // LOGICAL_MAXIMUM (35900)
+                d.AddRange(new byte[] { 0x35, 0x00 });              // PHYSICAL_MINIMUM (0)
+                d.AddRange(new byte[] { 0x47, 0x3C, 0x8C, 0x00, 0x00 }); // PHYSICAL_MAXIMUM (35900)
+                d.AddRange(new byte[] { 0x65, 0x14 });              // UNIT (Eng Rot:Angular Pos)
+                d.AddRange(new byte[] { 0x75, 0x20 });              // REPORT_SIZE (32)
+                d.AddRange(new byte[] { 0x95, 0x01 });              // REPORT_COUNT (1)
 
                 for (int p = 0; p < nPovs; p++)
                 {
-                    d.AddRange(new byte[] { 0x09, 0x39 });
-                    d.AddRange(new byte[] { 0x81, 0x02 });
+                    d.AddRange(new byte[] { 0x09, 0x39 });          // USAGE (Hat Switch)
+                    d.AddRange(new byte[] { 0x81, 0x02 });          // INPUT (Data, Var, Abs)
                 }
 
-                int padNibbles = 32 - nPovs;
-                d.AddRange(new byte[] { 0x95, (byte)padNibbles });
-                d.AddRange(new byte[] { 0x81, 0x01 });
+                if (nPovs < 4)
+                {
+                    d.AddRange(new byte[] { 0x95, (byte)(4 - nPovs) }); // REPORT_COUNT (remaining)
+                    d.AddRange(new byte[] { 0x81, 0x01 });          // INPUT (Cnst, Ary, Abs)
+                }
             }
             else
             {
-                d.AddRange(new byte[] { 0x75, 0x20 });
-                d.AddRange(new byte[] { 0x95, 0x04 });
-                d.AddRange(new byte[] { 0x81, 0x01 });
+                d.AddRange(new byte[] { 0x75, 0x20 });              // REPORT_SIZE (32)
+                d.AddRange(new byte[] { 0x95, 0x04 });              // REPORT_COUNT (4)
+                d.AddRange(new byte[] { 0x81, 0x01 });              // INPUT (Cnst, Ary, Abs)
             }
 
             // ── Buttons — always 128 bits ──

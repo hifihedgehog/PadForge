@@ -649,7 +649,7 @@ public static class PF_SetupApi {{
 }}
 '@
     $hidGuid = [Guid]::new('{{745a17a0-74d3-11d0-b6fe-00a0c90f57da}}')
-    $hwid = 'root\VID_1234&PID_BEAD&REV_0222'
+    $hwid = 'root\VID_1234&PID_0FFB&REV_0222'
     $infPath = '{vjoyDir.Replace("'", "''")}\vjoy.inf'
     $hwidBytes = [System.Text.Encoding]::Unicode.GetBytes($hwid + [char]0 + [char]0)
     $created = 0

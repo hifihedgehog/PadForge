@@ -230,6 +230,18 @@ namespace PadForge.Common.Input
                 }
                 if (totalVJoyNeeded > 0)
                     VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded);
+
+                // After EnsureDevicesAvailable (which may restart the device node),
+                // force existing vJoy controllers to re-acquire their device IDs
+                // BEFORE creating new ones. Without this, FindFreeDeviceId returns
+                // device 1 for the new controller (all devices are FREE after restart),
+                // causing both old and new controllers to fight over device 1.
+                for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                {
+                    if (_virtualControllers[padIndex] is VJoyVirtualController existingVjoy)
+                        existingVjoy.ReAcquireIfNeeded();
+                }
+
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
                 {
                     if (_virtualControllers[padIndex] == null &&

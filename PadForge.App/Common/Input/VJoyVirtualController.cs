@@ -166,6 +166,30 @@ namespace PadForge.Common.Input
             catch { }
         }
 
+        /// <summary>
+        /// Re-acquires the vJoy device if the device node was restarted
+        /// (generation mismatch). Called by Step 5 after EnsureDevicesAvailable
+        /// to ensure existing controllers re-claim their device IDs BEFORE
+        /// new controllers are created via FindFreeDeviceId.
+        /// </summary>
+        public void ReAcquireIfNeeded()
+        {
+            if (!_connected || _connectedGeneration == _generation)
+                return;
+
+            DiagLog($"ReAcquireIfNeeded: generation mismatch ({_connectedGeneration}→{_generation}), re-acquiring device {_deviceId}");
+            try
+            {
+                VJoyNative.RelinquishVJD(_deviceId);
+                bool acquired = VJoyNative.AcquireVJD(_deviceId);
+                DiagLog($"Re-AcquireVJD({_deviceId}): {acquired}");
+                if (!acquired) { _connected = false; return; }
+                VJoyNative.ResetVJD(_deviceId);
+                _connectedGeneration = _generation;
+            }
+            catch { _connected = false; }
+        }
+
         public void SubmitGamepadState(Gamepad gp)
         {
             if (!_connected) return;

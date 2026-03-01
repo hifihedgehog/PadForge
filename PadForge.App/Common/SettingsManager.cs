@@ -191,7 +191,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Finds the UserSetting for a device on a specific pad slot. Thread-safe.
         /// Required when the same device is mapped to multiple slots.
-        /// Falls back to the first match if no slot-specific match is found.
+        /// Returns null if the device is not assigned to the specified slot.
         /// </summary>
         public static UserSetting FindSettingByInstanceGuidAndSlot(Guid instanceGuid, int padIndex)
         {
@@ -199,17 +199,12 @@ namespace PadForge.Common.Input
             if (settings == null) return null;
             lock (settings.SyncRoot)
             {
-                UserSetting fallback = null;
                 foreach (var us in settings.Items)
                 {
-                    if (us.InstanceGuid == instanceGuid)
-                    {
-                        if (us.MapTo == padIndex)
-                            return us;
-                        fallback ??= us;
-                    }
+                    if (us.InstanceGuid == instanceGuid && us.MapTo == padIndex)
+                        return us;
                 }
-                return fallback;
+                return null;
             }
         }
 

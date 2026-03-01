@@ -247,9 +247,9 @@ namespace PadForge
                     var negMapping = _pendingNegMapping;
                     _pendingNegMapping = null;
 
-                    if (result.Type != MapType.Button && negMapping.HasNegDirection)
+                    if (result.Type == MapType.Axis && negMapping.HasNegDirection)
                     {
-                        // An axis was recorded — a full axis covers both directions,
+                        // A full analog axis covers both directions,
                         // so write it to the primary descriptor and clear neg.
                         negMapping.SourceDescriptor = result.Descriptor;
                         negMapping.NegSourceDescriptor = string.Empty;
@@ -310,10 +310,10 @@ namespace PadForge
                 if (deviceGuid != Guid.Empty)
                     InputService.ResolveDisplayText(result.Mapping, deviceGuid);
 
-                // If a button was recorded for a bidirectional axis, auto-prompt for neg direction
-                // (but only if neg isn't already mapped — avoids re-prompting after a neg-quadrant click
-                // that already auto-prompted for pos).
-                if (result.Type == MapType.Button && result.Mapping.HasNegDirection
+                // If a directional input (button, POV, slider) was recorded for a bidirectional axis,
+                // auto-prompt for neg direction (but only if neg isn't already mapped — avoids
+                // re-prompting after a neg-quadrant click that already auto-prompted for pos).
+                if (result.Type != MapType.Axis && result.Mapping.HasNegDirection
                     && string.IsNullOrEmpty(result.Mapping.NegSourceDescriptor))
                 {
                     // Save the positive descriptor before the recorder overwrites it.
@@ -336,8 +336,8 @@ namespace PadForge
                     return;
                 }
 
-                // If an axis was recorded for a bidirectional target, clear neg (axis covers both directions).
-                if (result.Mapping.HasNegDirection && result.Type != MapType.Button)
+                // If a full analog axis was recorded for a bidirectional target, clear neg (axis covers both directions).
+                if (result.Mapping.HasNegDirection && result.Type == MapType.Axis)
                 {
                     result.Mapping.NegSourceDescriptor = string.Empty;
                 }

@@ -640,6 +640,13 @@ namespace PadForge.Views
 
         private void ResetView_Click(object sender, RoutedEventArgs e)
         {
+            if (ModelViewPort.Camera is PerspectiveCamera cam)
+            {
+                cam.Position = new Point3D(0, -200, 0);
+                cam.LookDirection = new Vector3D(0, 1, 0);
+                cam.UpDirection = new Vector3D(0, 0, 1);
+                cam.FieldOfView = 35;
+            }
             ModelViewPort.ZoomExtents();
         }
 

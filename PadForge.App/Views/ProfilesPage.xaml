@@ -31,7 +31,8 @@
                     <ListBox ItemsSource="{Binding ProfileItems}"
                              SelectedItem="{Binding SelectedProfile}"
                              MinHeight="60" MaxHeight="300"
-                             Margin="0,0,0,8">
+                             Margin="0,0,0,8"
+                             MouseDoubleClick="ProfileList_MouseDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="4,2">

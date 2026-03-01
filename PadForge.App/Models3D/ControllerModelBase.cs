@@ -191,8 +191,8 @@ namespace PadForge.Models3D
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Loads a .obj mesh from embedded resources. Resource names use dots
-        /// as path separators: PadForge.3DModels.{ModelName}.{filename}
+        /// Loads a .obj mesh from embedded resources. Searches by suffix
+        /// (.{ModelName}.{filename}) to handle MSBuild digit-prefix mangling.
         /// </summary>
         protected Model3DGroup LoadModel(string filename)
         {
@@ -206,28 +206,19 @@ namespace PadForge.Models3D
         protected Model3DGroup TryLoadModel(string filename)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            // Embedded resource names replace path separators and hyphens with dots/underscores.
-            // We need to find the actual resource name.
-            string resourcePrefix = $"PadForge.3DModels.{ModelName}.";
+            // MSBuild prefixes folder names starting with a digit (e.g. "3DModels" → "_3DModels")
+            // and replaces hyphens with underscores in embedded resource names.
+            // Search by suffix to avoid needing the exact prefix.
+            string suffix = $".{ModelName}.{filename.Replace("-", "_")}";
             string resourceName = null;
 
             foreach (var name in assembly.GetManifestResourceNames())
             {
-                if (name.StartsWith(resourcePrefix, StringComparison.OrdinalIgnoreCase)
-                    && name.EndsWith(filename.Replace("-", "_"), StringComparison.OrdinalIgnoreCase))
+                if (name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
                 {
                     resourceName = name;
                     break;
                 }
-            }
-
-            // Fallback: try exact match with dots.
-            if (resourceName == null)
-            {
-                string exact = $"PadForge.3DModels.{ModelName}.{filename}";
-                using var testStream = assembly.GetManifestResourceStream(exact);
-                if (testStream != null)
-                    resourceName = exact;
             }
 
             if (resourceName == null)

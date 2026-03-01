@@ -522,8 +522,8 @@ namespace PadForge
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
         private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
 
-        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices + separator).</summary>
-        private const int ControllerInsertIndex = 4;
+        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
+        private const int ControllerInsertIndex = 3;
 
         /// <summary>Re-entrancy guard for <see cref="RebuildControllerSection"/>.</summary>
         private bool _rebuildingControllerSection;
@@ -566,8 +566,6 @@ namespace PadForge
                 Tag = "Devices",
                 Icon = new SymbolIcon(Symbol.AllApps)
             });
-
-            NavView.MenuItems.Add(new NavigationViewItemSeparator());
 
             // Controller entries (initially none — populated dynamically).
             RebuildControllerSection();

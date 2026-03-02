@@ -28,7 +28,7 @@ namespace PadForge.Views
 
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
         {
-            BindModelView();
+            ApplyViewMode();
             SyncTabStripSelection();
         }
 
@@ -41,27 +41,73 @@ namespace PadForge.Views
             if (_currentPadVm != null)
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
 
-            BindModelView();
+            ApplyViewMode();
             SyncTabStripSelection();
         }
 
         // ─────────────────────────────────────────────
-        //  3D Model View binding
+        //  2D / 3D Model View
         // ─────────────────────────────────────────────
 
-        private void BindModelView()
+        private SettingsViewModel GetSettingsVm()
         {
-            if (ControllerModel3D == null) return;
-
-            // Wire click-to-record from 3D view
-            ControllerModel3D.ControllerElementRecordRequested -= OnModel3DRecordRequested;
-            ControllerModel3D.ControllerElementRecordRequested += OnModel3DRecordRequested;
-
-            if (DataContext is PadViewModel vm)
-                ControllerModel3D.Bind(vm);
+            if (Application.Current.MainWindow?.DataContext is MainViewModel mainVm)
+                return mainVm.Settings;
+            return null;
         }
 
-        private void OnModel3DRecordRequested(object sender, string targetName)
+        private void ViewModeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            var settingsVm = GetSettingsVm();
+            if (settingsVm != null)
+                settingsVm.Use2DControllerView = !settingsVm.Use2DControllerView;
+            ApplyViewMode();
+        }
+
+        private void ApplyViewMode()
+        {
+            if (ControllerModel3D == null || ControllerModel2D == null) return;
+
+            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
+
+            ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
+            ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
+
+            // E8B9 = Photo/flat icon (shown in 3D mode, click to switch TO 2D)
+            // F158 = 3D/cube icon (shown in 2D mode, click to switch TO 3D)
+            ViewModeIcon.Text = is2D ? "\uF158" : "\uE8B9";
+            ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
+
+            BindActiveModelView();
+        }
+
+        private void BindActiveModelView()
+        {
+            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
+
+            if (is2D)
+            {
+                ControllerModel3D.Unbind();
+
+                ControllerModel2D.ControllerElementRecordRequested -= OnModelRecordRequested;
+                ControllerModel2D.ControllerElementRecordRequested += OnModelRecordRequested;
+
+                if (DataContext is PadViewModel vm)
+                    ControllerModel2D.Bind(vm);
+            }
+            else
+            {
+                ControllerModel2D.Unbind();
+
+                ControllerModel3D.ControllerElementRecordRequested -= OnModelRecordRequested;
+                ControllerModel3D.ControllerElementRecordRequested += OnModelRecordRequested;
+
+                if (DataContext is PadViewModel vm)
+                    ControllerModel3D.Bind(vm);
+            }
+        }
+
+        private void OnModelRecordRequested(object sender, string targetName)
         {
             ControllerElementRecordRequested?.Invoke(this, targetName);
         }

@@ -277,6 +277,8 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
             _mainVm.Dashboard.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
                 ? appSettings.DsuMotionServerPort : 26760;
+
+            vm.Use2DControllerView = appSettings.Use2DControllerView;
         }
 
         /// <summary>
@@ -730,7 +732,8 @@ namespace PadForge.Services
                 SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
-                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort
+                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                Use2DControllerView = vm.Use2DControllerView
             };
         }
 
@@ -1106,6 +1109,9 @@ namespace PadForge.Services
 
         [XmlElement]
         public int DsuMotionServerPort { get; set; } = 26760;
+
+        [XmlElement]
+        public bool Use2DControllerView { get; set; }
     }
 
     /// <summary>

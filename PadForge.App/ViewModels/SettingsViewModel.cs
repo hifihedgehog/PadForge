@@ -397,6 +397,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableAutoProfileSwitching, value);
         }
 
+        private bool _use2DControllerView;
+
+        /// <summary>Whether to show the 2D controller view instead of 3D.</summary>
+        public bool Use2DControllerView
+        {
+            get => _use2DControllerView;
+            set => SetProperty(ref _use2DControllerView, value);
+        }
+
         /// <summary>Observable list of profile names for the UI.</summary>
         public ObservableCollection<ProfileListItem> ProfileItems { get; } = new();
 

@@ -57,6 +57,8 @@
     <EmbeddedResource Include="Resources\vJoyDriver.zip" />
     <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
     <EmbeddedResource Include="3DModels\**\*.obj" />
+    <!-- 2D controller model assets (Gamepad-Asset-Pack by AL2009man, MIT license) -->
+    <Resource Include="2DModels\**\*.png" />
   </ItemGroup>
 
   <ItemGroup>

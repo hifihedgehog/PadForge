@@ -45,7 +45,10 @@ public static class DS4Layout
 
     public static readonly OverlayElement[] Overlays =
     {
-        new("DS4_Face_Button.png", "FaceButtonGroup", OverlayElementType.FaceButtonGroup, 1126, 354, 99, 90),
+        new("DS4_Face_Button.png", "ButtonA", OverlayElementType.Button, 1124, 445, 99, 90),
+        new("DS4_Face_Button.png", "ButtonB", OverlayElementType.Button, 1230, 355, 99, 90),
+        new("DS4_Face_Button.png", "ButtonX", OverlayElementType.Button, 1022, 354, 99, 90),
+        new("DS4_Face_Button.png", "ButtonY", OverlayElementType.Button, 1124, 263, 99, 90),
         new("DS4_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 247, 278, 89, 97),
         new("DS4_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 247, 419, 89, 103),
         new("DS4_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 156, 358, 109, 85),

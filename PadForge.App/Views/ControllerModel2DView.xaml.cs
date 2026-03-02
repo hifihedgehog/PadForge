@@ -45,6 +45,9 @@ namespace PadForge.Views
         // Hover state
         private string _hoverTarget;
 
+        // Stick quadrant highlight
+        private readonly Dictionary<string, Path> _stickHighlights = new();
+
         // Layout data
         private double _stickMaxTravel;
 
@@ -128,6 +131,7 @@ namespace PadForge.Views
             _stickTransforms.Clear();
             _triggerClips.Clear();
             _elementTypes.Clear();
+            _stickHighlights.Clear();
             _hoverTarget = null;
 
             string folder = modelName == "DS4" ? "DS4" : "XBOX360";
@@ -186,13 +190,17 @@ namespace PadForge.Views
                 }
                 else
                 {
-                    // Buttons, StickClicks, FaceButtonGroup: hidden until pressed
+                    // Buttons, StickClicks: hidden until pressed
                     img.Visibility = Visibility.Collapsed;
                 }
 
                 Panel.SetZIndex(img, 1);
                 _overlayImages[ov.TargetName] = img;
                 ModelCanvas.Children.Add(img);
+
+                // StickClick: no hit-test rect — handled by StickRing's center-click detection
+                if (ov.ElementType == OverlayElementType.StickClick)
+                    continue;
 
                 // Hit-test rectangle (always visible, transparent, catches all clicks)
                 var hitRect = new Rectangle
@@ -210,6 +218,24 @@ namespace PadForge.Views
                 hitRect.MouseEnter += HitArea_MouseEnter;
                 hitRect.MouseLeave += HitArea_MouseLeave;
                 ModelCanvas.Children.Add(hitRect);
+
+                // Stick quadrant highlight path (hidden until hover)
+                if (ov.ElementType == OverlayElementType.StickRing)
+                {
+                    var highlight = new Path
+                    {
+                        Fill = new SolidColorBrush(Color.FromArgb(80, 255, 255, 255)),
+                        IsHitTestVisible = false,
+                        Visibility = Visibility.Collapsed,
+                    };
+                    Canvas.SetLeft(highlight, ov.X);
+                    Canvas.SetTop(highlight, ov.Y);
+                    Panel.SetZIndex(highlight, 5);
+                    _stickHighlights[ov.TargetName] = highlight;
+                    ModelCanvas.Children.Add(highlight);
+
+                    hitRect.MouseMove += StickHitArea_MouseMove;
+                }
             }
         }
 
@@ -261,13 +287,6 @@ namespace PadForge.Views
             SetOverlayVisible("ButtonGuide", _vm.ButtonGuide);
             SetOverlayVisible("LeftThumbButton", _vm.LeftThumbButton);
             SetOverlayVisible("RightThumbButton", _vm.RightThumbButton);
-
-            // DS4 FaceButtonGroup: visible when ANY face button is pressed
-            if (_overlayImages.ContainsKey("FaceButtonGroup"))
-            {
-                bool anyFace = _vm.ButtonA || _vm.ButtonB || _vm.ButtonX || _vm.ButtonY;
-                SetOverlayVisible("FaceButtonGroup", anyFace);
-            }
         }
 
         private void UpdateTriggers()
@@ -337,12 +356,6 @@ namespace PadForge.Views
                     string axis = DetermineAxisFromQuadrant(pos, rect.Width, rect.Height, target);
                     ControllerElementRecordRequested?.Invoke(this, axis);
                 }
-                else if (elemType == OverlayElementType.FaceButtonGroup)
-                {
-                    var pos = e.GetPosition(rect);
-                    string button = DetermineFaceButtonFromPosition(pos, rect.Width, rect.Height);
-                    ControllerElementRecordRequested?.Invoke(this, button);
-                }
                 else
                 {
                     ControllerElementRecordRequested?.Invoke(this, target);
@@ -355,8 +368,15 @@ namespace PadForge.Views
         {
             double cx = w / 2, cy = h / 2;
             double dx = pos.X - cx, dy = pos.Y - cy;
+            double dist = Math.Sqrt(dx * dx + dy * dy);
+            double radius = Math.Min(w, h) / 2;
 
             bool isLeft = stickTarget == "LeftThumbRing";
+
+            // Center click → stick button (L3/R3)
+            if (dist < radius * 0.3)
+                return isLeft ? "LeftThumbButton" : "RightThumbButton";
+
             string xAxis = isLeft ? "LeftThumbAxisX" : "RightThumbAxisX";
             string yAxis = isLeft ? "LeftThumbAxisY" : "RightThumbAxisY";
 
@@ -364,18 +384,6 @@ namespace PadForge.Views
                 return dx >= 0 ? xAxis : xAxis + "Neg";
             else
                 return dy >= 0 ? yAxis : yAxis + "Neg"; // Down = positive Y (screen coords, inverted by Step 3)
-        }
-
-        private static string DetermineFaceButtonFromPosition(Point pos, double w, double h)
-        {
-            // DS4 face buttons: Triangle=top, Cross=bottom, Square=left, Circle=right
-            double cx = w / 2, cy = h / 2;
-            double dx = pos.X - cx, dy = pos.Y - cy;
-
-            if (Math.Abs(dx) >= Math.Abs(dy))
-                return dx >= 0 ? "ButtonB" : "ButtonX"; // Circle=right, Square=left
-            else
-                return dy >= 0 ? "ButtonA" : "ButtonY"; // Cross=bottom, Triangle=top
         }
 
         // ─────────────────────────────────────────────
@@ -407,8 +415,62 @@ namespace PadForge.Views
 
         private void HitArea_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (sender is Rectangle rect && rect.Tag is string target &&
+                _stickHighlights.TryGetValue(target, out var highlight))
+            {
+                highlight.Visibility = Visibility.Collapsed;
+            }
             _hoverTarget = null;
             _dirty = true; // Next render frame restores proper state
+        }
+
+        private void StickHitArea_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is not Rectangle rect || rect.Tag is not string target)
+                return;
+            if (!_stickHighlights.TryGetValue(target, out var highlight))
+                return;
+
+            var pos = e.GetPosition(rect);
+            double w = rect.Width, h = rect.Height;
+            double cx = w / 2, cy = h / 2;
+            double dx = pos.X - cx, dy = pos.Y - cy;
+            double dist = Math.Sqrt(dx * dx + dy * dy);
+            double radius = Math.Min(w, h) / 2;
+
+            Geometry geom;
+            if (dist < radius * 0.3)
+            {
+                // Center — circle for stick click
+                geom = new EllipseGeometry(new Point(cx, cy), radius * 0.3, radius * 0.3);
+            }
+            else if (Math.Abs(dx) >= Math.Abs(dy))
+            {
+                if (dx >= 0)
+                    geom = CreateWedge(cx, cy, w, 0, w, h); // Right
+                else
+                    geom = CreateWedge(cx, cy, 0, 0, 0, h); // Left
+            }
+            else
+            {
+                if (dy >= 0)
+                    geom = CreateWedge(cx, cy, 0, h, w, h); // Bottom
+                else
+                    geom = CreateWedge(cx, cy, 0, 0, w, 0); // Top
+            }
+
+            highlight.Data = geom;
+            highlight.Visibility = Visibility.Visible;
+        }
+
+        private static Geometry CreateWedge(double cx, double cy, double x1, double y1, double x2, double y2)
+        {
+            var fig = new PathFigure { StartPoint = new Point(cx, cy), IsClosed = true };
+            fig.Segments.Add(new LineSegment(new Point(x1, y1), true));
+            fig.Segments.Add(new LineSegment(new Point(x2, y2), true));
+            var pathGeom = new PathGeometry();
+            pathGeom.Figures.Add(fig);
+            return pathGeom;
         }
 
         // ─────────────────────────────────────────────

@@ -317,7 +317,22 @@ namespace PadForge
                     _viewModel.StatusText = $"Recorded \"{negMapping.TargetLabel}\" \u2190 {negMapping.SourceDisplayText}";
 
                     if (activePad.IsMapAllActive)
+                    {
+                        if (!hadSavedPos)
+                        {
+                            // Y axis first phase came through _pendingNegMapping (neg=up recorded).
+                            // Tell Map All a second phase (pos=down) is still needed.
+                            activePad.MapAllRecordingNeg = true;
+                        }
+                        else
+                        {
+                            // X axis: both pos and neg were recorded in one round
+                            // (normal path auto-prompted neg). Clear the flag so
+                            // OnMapAllItemCompleted advances to the next mapping.
+                            activePad.MapAllRecordingNeg = false;
+                        }
                         activePad.OnMapAllItemCompleted();
+                    }
                     else
                         activePad.CurrentRecordingTarget = null;
                     return;

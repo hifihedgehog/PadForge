@@ -279,6 +279,8 @@ namespace PadForge
                     }
 
                     // Button recorded — write to neg descriptor.
+                    // The recorder always writes to SourceDescriptor (line 358 of RecorderService),
+                    // so undo that: redirect the value to NegSourceDescriptor instead.
                     negMapping.NegSourceDescriptor = result.Descriptor;
                     bool hadSavedPos = _savedPosDescriptor != null;
                     if (hadSavedPos)
@@ -286,6 +288,13 @@ namespace PadForge
                         // Came from auto-prompt (pos already recorded) — restore saved positive.
                         negMapping.SourceDescriptor = _savedPosDescriptor;
                         _savedPosDescriptor = null;
+                    }
+                    else
+                    {
+                        // First recording for this axis (e.g., Y first phase in Map All).
+                        // The recorder contaminated SourceDescriptor — clear it so only
+                        // NegSourceDescriptor holds this recording.
+                        negMapping.SourceDescriptor = string.Empty;
                     }
 
                     if (deviceGuid != Guid.Empty)
@@ -358,7 +367,12 @@ namespace PadForge
                     _viewModel.StatusText = $"Now map: {result.Mapping.TargetLabel} {dirHint}";
 
                     if (activePad.IsMapAllActive)
+                    {
                         activePad.MapAllRecordingNeg = true;
+                        // Update the Map All overlay prompt to show the correct direction.
+                        int idx = activePad.MapAllCurrentIndex;
+                        activePad.MapAllPromptText = $"Map: {result.Mapping.TargetLabel} {dirHint}  ({idx + 1}/{activePad.Mappings.Count})";
+                    }
 
                     // Switch to Controller tab so the 3D directional arrow is visible.
                     activePad.SelectedConfigTab = 0;

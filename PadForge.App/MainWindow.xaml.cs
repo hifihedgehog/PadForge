@@ -209,7 +209,8 @@ namespace PadForge
                                 capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
                             }
 
-                            _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid);
+                            _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid,
+                                negRecording: isYAxis);
                         }
                     };
                     mapping.StopRecordingRequested += (s, e) =>
@@ -382,7 +383,8 @@ namespace PadForge
 
                     // Start recording again for the neg direction.
                     // Neutralize baseline so the previous POV/button press doesn't block detection.
-                    _recorderService.StartRecording(result.Mapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
+                    _recorderService.StartRecording(result.Mapping, activePad.PadIndex, deviceGuid,
+                        neutralizeBaseline: true, negRecording: true);
                     return;
                 }
 
@@ -439,7 +441,8 @@ namespace PadForge
                 if (isNegTarget)
                     _pendingNegMapping = mapping;
 
-                _recorderService.StartRecording(mapping, padVm.PadIndex, deviceGuid);
+                _recorderService.StartRecording(mapping, padVm.PadIndex, deviceGuid,
+                    negRecording: isNegTarget);
             };
 
             // Wire Map All events for each pad.
@@ -458,7 +461,8 @@ namespace PadForge
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
 
-                    _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid);
+                    _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid,
+                        negRecording: isYFirstPhase);
                 };
                 pad.MapAllCancelRequested += (s, e) =>
                     _recorderService.CancelRecording();

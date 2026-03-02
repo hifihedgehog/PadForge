@@ -56,6 +56,12 @@ namespace PadForge.Views
         private ModelVisual3D _quadrantVisual;
         private DiffuseMaterial _quadrantMaterial;
 
+        // Hover highlight state
+        private Model3DGroup _hoverGroup;            // Currently highlighted group (button/trigger)
+        private Model3DGroup _hoverStickRing;         // Currently highlighted stick ring (for quadrant)
+        private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
+        private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -395,6 +401,158 @@ namespace PadForge.Views
                     }
                 }
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Hover highlighting
+        // ─────────────────────────────────────────────
+
+        private void Viewport_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_currentModel == null) return;
+
+            var pos = e.GetPosition(ModelViewPort);
+            var hits = Viewport3DHelper.FindHits(ModelViewPort.Viewport, pos);
+
+            foreach (var hit in hits)
+            {
+                if (hit.Model is not GeometryModel3D hitGeo)
+                    continue;
+
+                // Check stick ring quadrant
+                if (IsStickRingHit(hitGeo, hit.Position, out string quadrant))
+                {
+                    // Same quadrant as before — nothing to do
+                    if (quadrant == _hoverQuadrant) return;
+                    ClearHover();
+                    _hoverQuadrant = quadrant;
+
+                    // Determine which stick ring this belongs to
+                    bool isLeft = quadrant.StartsWith("Left", StringComparison.Ordinal);
+                    _hoverStickRing = isLeft ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
+
+                    // Show a hover quadrant wedge
+                    ShowHoverQuadrant(quadrant);
+                    ModelViewPort.Cursor = Cursors.Hand;
+                    return;
+                }
+
+                // Check ClickMap (buttons, triggers)
+                foreach (var kv in _currentModel.ClickMap)
+                {
+                    if (kv.Key.Children.Contains(hitGeo))
+                    {
+                        if (_hoverGroup == kv.Key) return; // Same group
+                        ClearHover();
+                        _hoverGroup = kv.Key;
+                        ApplyHoverHighlight(kv.Key);
+                        ModelViewPort.Cursor = Cursors.Hand;
+                        return;
+                    }
+                }
+            }
+
+            // Mouse is over the model but not on a mappable element
+            ClearHover();
+        }
+
+        private void Viewport_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ClearHover();
+        }
+
+        private void ApplyHoverHighlight(Model3DGroup group)
+        {
+            if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
+                return;
+
+            if (_currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
+            {
+                geo.Material = hlMat;
+                geo.BackMaterial = hlMat;
+            }
+        }
+
+        private void RestoreHoverGroup(Model3DGroup group)
+        {
+            if (group == null) return;
+            if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
+                return;
+
+            // Don't restore if this group is currently being flash-animated
+            if (_flashTarget != null)
+            {
+                var flashGroups = ResolveFlashGroups(_flashTarget);
+                if (flashGroups != null && flashGroups.Contains(group))
+                    return;
+            }
+
+            if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
+            {
+                geo.Material = defMat;
+                geo.BackMaterial = defMat;
+            }
+        }
+
+        private void ShowHoverQuadrant(string target)
+        {
+            RemoveHoverQuadrant();
+
+            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
+            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
+            bool isX = baseTarget.Contains("AxisX");
+            bool isLeft = baseTarget.StartsWith("Left", StringComparison.Ordinal);
+
+            Vector3D center = isLeft
+                ? _currentModel.JoystickRotationPointCenterLeftMillimeter
+                : _currentModel.JoystickRotationPointCenterRightMillimeter;
+
+            double angleDeg;
+            if (isX)
+                angleDeg = isNeg ? 180.0 : 0.0;
+            else
+                angleDeg = isNeg ? 90.0 : 270.0;
+
+            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
+            try
+            {
+                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
+            }
+            catch { }
+
+            var color = Color.FromArgb(100, accentColor.R, accentColor.G, accentColor.B);
+            var material = new DiffuseMaterial(new SolidColorBrush(color));
+            var wedgeCenter = new Point3D(center.X, center.Y - 25, center.Z);
+            var mesh = CreateWedgeMesh(wedgeCenter, radius: 10.0, angleDeg - 45, angleDeg + 45, segments: 12);
+            var geo = new GeometryModel3D(mesh, material) { BackMaterial = material };
+            _hoverQuadrantVisual = new ModelVisual3D { Content = geo };
+            ModelViewPort.Children.Add(_hoverQuadrantVisual);
+        }
+
+        private void RemoveHoverQuadrant()
+        {
+            if (_hoverQuadrantVisual != null)
+            {
+                ModelViewPort.Children.Remove(_hoverQuadrantVisual);
+                _hoverQuadrantVisual = null;
+            }
+        }
+
+        private void ClearHover()
+        {
+            if (_hoverGroup != null)
+            {
+                RestoreHoverGroup(_hoverGroup);
+                _hoverGroup = null;
+            }
+            if (_hoverQuadrant != null)
+            {
+                RemoveHoverQuadrant();
+                _hoverStickRing = null;
+                _hoverQuadrant = null;
+            }
+            ModelViewPort.Cursor = Cursors.Arrow;
         }
 
         /// <summary>

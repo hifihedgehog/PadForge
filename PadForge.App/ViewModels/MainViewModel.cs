@@ -194,9 +194,10 @@ namespace PadForge.ViewModels
                 nav.IconKey = iconKey;
                 nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
 
-                // Update PadViewModel's display label to match the global slot number.
+                // Update PadViewModel's display label and type instance number.
                 pad.Title = $"Virtual Controller {globalCount}";
                 pad.SlotLabel = $"Virtual Controller {globalCount}";
+                pad.TypeInstanceLabel = instanceNum.ToString();
             }
 
             // Only trigger a full sidebar rebuild when slots were added/removed.

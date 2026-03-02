@@ -102,11 +102,15 @@
                 BorderThickness="0,0,0,1">
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                <!-- [Type-icon #] — Controller tab -->
+                <!-- [Gamepad #  TypeIcon TypeName] — Controller tab -->
                 <RadioButton Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              IsChecked="True">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="16" Height="16" Margin="0,0,5,0" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding SlotNumber}" FontSize="15" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Image Width="14" Height="14" Margin="0,0,4,0" VerticalAlignment="Center">
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{StaticResource GenericControllerIcon}"/>
@@ -124,7 +128,7 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <TextBlock Text="{Binding SlotNumber}" FontSize="15" FontWeight="SemiBold"
+                        <TextBlock Text="{Binding OutputTypeName}" FontSize="13"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </RadioButton>

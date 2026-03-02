@@ -72,7 +72,7 @@ namespace PadForge.Views
 
         private void TabBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is RadioButton rb && rb.Tag is int idx && DataContext is PadViewModel vm)
+            if (sender is RadioButton rb && TryGetTagIndex(rb, out int idx) && DataContext is PadViewModel vm)
                 vm.SelectedConfigTab = idx;
         }
 
@@ -83,9 +83,17 @@ namespace PadForge.Views
 
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
-                if (rb.GroupName == "PadTab" && rb.Tag is int idx)
+                if (rb.GroupName == "PadTab" && TryGetTagIndex(rb, out int idx))
                     rb.IsChecked = idx == selected;
             }
+        }
+
+        private static bool TryGetTagIndex(FrameworkElement el, out int index)
+        {
+            if (el.Tag is int i) { index = i; return true; }
+            if (el.Tag is string s && int.TryParse(s, out i)) { index = i; return true; }
+            index = -1;
+            return false;
         }
 
         private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject

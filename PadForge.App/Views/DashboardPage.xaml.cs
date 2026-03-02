@@ -40,6 +40,9 @@ namespace PadForge.Views
         /// <summary>Raised when the user drags a card to insert at a new position (sourcePadIndex, targetVisualPos).</summary>
         public event EventHandler<(int SourcePadIndex, int TargetVisualPos)> SlotMoveRequested;
 
+        /// <summary>Raised when the user clicks a slot card to navigate to that controller's page.</summary>
+        public event EventHandler<int> SlotCardClicked;
+
         /// <summary>Raised when the user clicks the engine power toggle.</summary>
         public event EventHandler EngineToggleRequested;
 
@@ -158,7 +161,15 @@ namespace PadForge.Views
 
         private void OnDragEnd(object sender, MouseButtonEventArgs e)
         {
-            if (_isDragging) EndDrag(false);
+            if (_isDragging)
+            {
+                EndDrag(false);
+            }
+            else if (_dragSourceCard != null && _dragSourceCard.Tag is int padIndex)
+            {
+                // No drag occurred — treat as a click to navigate.
+                SlotCardClicked?.Invoke(this, padIndex);
+            }
             _dragSourceCard = null;
         }
 

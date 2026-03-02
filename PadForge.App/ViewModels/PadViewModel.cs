@@ -26,8 +26,11 @@ namespace PadForge.ViewModels
             InitializeDefaultMappings();
         }
 
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index (0–7).</summary>
         public int PadIndex { get; }
+
+        /// <summary>One-based slot number for display (1–8).</summary>
+        public int SlotNumber => PadIndex + 1;
 
         private string _slotLabel;
         /// <summary>Display label (e.g., "Virtual Controller 1").</summary>

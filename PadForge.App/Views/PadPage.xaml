@@ -74,13 +74,14 @@
             </Setter>
         </Style>
 
-        <!-- Separator between tab groups -->
+        <!-- Right-arrow separator between tab groups -->
         <Style x:Key="TabStripSeparator" TargetType="TextBlock">
-            <Setter Property="Text" Value="|"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Text" Value="&#xE76C;"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="10"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Margin" Value="4,0"/>
         </Style>
     </UserControl.Resources>
 
@@ -105,7 +106,7 @@
                 <RadioButton Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              IsChecked="True">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="14" Height="14" Margin="0,0,5,0" VerticalAlignment="Center">
+                        <Image Width="16" Height="16" Margin="0,0,5,0" VerticalAlignment="Center">
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{StaticResource GenericControllerIcon}"/>
@@ -123,14 +124,14 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <TextBlock Text="{Binding SlotNumber}" FontSize="13" FontWeight="SemiBold"
+                        <TextBlock Text="{Binding SlotNumber}" FontSize="15" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </RadioButton>
 
                 <!-- [Macros] -->
                 <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="Macros" FontSize="13"/>
+                    <TextBlock Text="Macros" FontSize="15"/>
                 </RadioButton>
 
                 <!-- | separator -->

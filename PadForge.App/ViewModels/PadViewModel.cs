@@ -50,8 +50,21 @@ namespace PadForge.ViewModels
         public VirtualControllerType OutputType
         {
             get => _outputType;
-            set => SetProperty(ref _outputType, value);
+            set
+            {
+                if (SetProperty(ref _outputType, value))
+                    OnPropertyChanged(nameof(OutputTypeName));
+            }
         }
+
+        /// <summary>Human-readable output type name for display.</summary>
+        public string OutputTypeName => _outputType switch
+        {
+            VirtualControllerType.Xbox360 => "Xbox 360",
+            VirtualControllerType.DualShock4 => "DualShock 4",
+            VirtualControllerType.VJoy => "vJoy",
+            _ => _outputType.ToString()
+        };
 
         /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox 360, 1=DualShock 4).</summary>
         public int OutputTypeIndex

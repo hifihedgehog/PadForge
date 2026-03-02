@@ -975,8 +975,8 @@ namespace PadForge.Views
         {
             if (ModelViewPort.Camera is PerspectiveCamera cam)
             {
-                cam.Position = new Point3D(0, -200, 0);
-                cam.LookDirection = new Vector3D(0, 1, 0);
+                cam.Position = new Point3D(0, -173, 100);
+                cam.LookDirection = new Vector3D(0, 0.866, -0.5);
                 cam.UpDirection = new Vector3D(0, 0, 1);
                 cam.FieldOfView = 35;
             }

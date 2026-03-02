@@ -128,7 +128,7 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="13"
+                        <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="15" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </RadioButton>

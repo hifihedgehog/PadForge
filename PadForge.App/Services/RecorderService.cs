@@ -392,21 +392,12 @@ namespace PadForge.Services
         {
             string target = mapping.TargetSettingName;
 
-            // When recording for the negative direction of a stick axis, the user
-            // is intentionally pushing in the opposite direction from the "natural"
-            // positive one.  Flip the effective direction so we don't spuriously
-            // invert the axis.
-            bool effective = negRecording ? !axisPositive : axisPositive;
-
-            // Y-axis targets: "up" is natural. SDL raw Y increases when pushed down,
-            // so positive delta = down = needs inversion.
-            if (target == "LeftThumbAxisY" || target == "RightThumbAxisY")
-                return effective;
-
-            // X-axis targets: "right" is natural. SDL raw X increases when pushed right,
-            // so negative delta = left = needs inversion.
-            if (target == "LeftThumbAxisX" || target == "RightThumbAxisX")
-                return !effective;
+            // Stick axis targets: pos target expects positive SDL delta (right/down),
+            // neg target expects negative SDL delta (left/up).
+            // Invert only if the user pushed in the wrong direction for the target.
+            if (target is "LeftThumbAxisX" or "RightThumbAxisX"
+                      or "LeftThumbAxisY" or "RightThumbAxisY")
+                return negRecording ? axisPositive : !axisPositive;
 
             // Trigger targets: increasing value is natural.
             // Negative delta = reverse polarity = needs inversion.

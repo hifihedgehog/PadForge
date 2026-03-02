@@ -86,6 +86,7 @@
                                 CornerRadius="8" Padding="10" Margin="4"
                                 BorderThickness="2" BorderBrush="Transparent"
                                 MinWidth="220" MaxWidth="320"
+                                Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
                             <Grid>

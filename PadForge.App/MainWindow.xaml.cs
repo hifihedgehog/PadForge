@@ -562,6 +562,11 @@ namespace PadForge
                 _settingsService.MarkDirty();
             };
 
+            DashboardPageView.SlotCardClicked += (s, slotIndex) =>
+            {
+                NavigateToSlot(slotIndex);
+            };
+
             // Window events.
             Loaded += OnLoaded;
             Closing += OnClosing;

@@ -176,6 +176,65 @@ def center_overlay_on_bbox(bbox, overlay_path):
     return (round(cx - ov_w / 2), round(cy - ov_h / 2), ov_w, ov_h)
 
 
+def refine_with_composite(composite_path, results, search_radius=40):
+    """Refine overlay positions using alpha-channel template matching against full composite.
+
+    The composite overlay image has all highlights pre-positioned correctly.
+    For each overlay, we search in a neighborhood around the SVG-derived position
+    and use the best alpha-channel match as the refined position.
+    """
+    composite = cv2.imread(composite_path, cv2.IMREAD_UNCHANGED)
+    if composite is None or composite.shape[2] < 4:
+        print("  WARNING: Could not load composite overlay for refinement")
+        return results
+
+    comp_alpha = composite[:, :, 3].astype(np.float32)
+    comp_h, comp_w = comp_alpha.shape
+
+    refined = []
+    for filename, target, etype, x, y, w, h in results:
+        overlay_path = os.path.join(os.path.dirname(composite_path), filename)
+        ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
+        if ov is None or ov.shape[2] < 4:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        ov_alpha = ov[:, :, 3].astype(np.float32)
+        ov_h, ov_w = ov_alpha.shape
+
+        # Define search region around SVG position
+        sx = max(0, x - search_radius)
+        sy = max(0, y - search_radius)
+        ex = min(comp_w, x + ov_w + search_radius)
+        ey = min(comp_h, y + ov_h + search_radius)
+
+        # Ensure search region can fit the template
+        if ex - sx < ov_w or ey - sy < ov_h:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        search_region = comp_alpha[sy:ey, sx:ex]
+
+        try:
+            result = cv2.matchTemplate(search_region, ov_alpha, cv2.TM_CCOEFF_NORMED)
+            _, max_val, _, max_loc = cv2.minMaxLoc(result)
+
+            if max_val > 0.3:
+                rx = sx + max_loc[0]
+                ry = sy + max_loc[1]
+                delta = abs(rx - x) + abs(ry - y)
+                if delta > 0:
+                    print(f"  REFINE {target:20s}: ({x:4d},{y:4d}) -> ({rx:4d},{ry:4d}) conf={max_val:.3f} delta={delta}")
+                refined.append((filename, target, etype, rx, ry, w, h))
+            else:
+                print(f"  SKIP   {target:20s}: low confidence {max_val:.3f}, keeping SVG position")
+                refined.append((filename, target, etype, x, y, w, h))
+        except cv2.error:
+            refined.append((filename, target, etype, x, y, w, h))
+
+    return refined
+
+
 def process_xbox360():
     """Extract Xbox 360 overlay positions."""
     svg_path = os.path.join(ASSET_PACK,
@@ -284,6 +343,11 @@ def process_xbox360():
                         ov.shape[1], ov.shape[0]))
         print(f"  {'DPadRight':20s} ({'D-PAD computed':20s}) -> ({results[-1][3]:4d}, {results[-1][4]:4d}) {results[-1][5]:4d}x{results[-1][6]:3d}")
 
+    # Refine positions using full composite overlay
+    composite_path = os.path.join(ov_dir, "Xbox 360 Controller Overlay.png")
+    print("\nRefining Xbox 360 positions via alpha-channel template matching...")
+    results = refine_with_composite(composite_path, results)
+
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
 
 
@@ -317,22 +381,8 @@ def process_ds4():
 
     print("Parsing DS4 V2 SVG elements...")
 
-    # Face buttons — use combined face button overlay centered on all 4 buttons
-    face_labels = ["Triangle", "Cross", "Circle", "Square"]
-    face_bboxes = []
-    for lbl in face_labels:
-        bb = get_element_pixel_bbox(root, lbl, scale)
-        if bb:
-            face_bboxes.append(bb)
-    if face_bboxes:
-        xmin = min(b[0] for b in face_bboxes)
-        ymin = min(b[1] for b in face_bboxes)
-        xmax = max(b[0] + b[2] for b in face_bboxes)
-        ymax = max(b[1] + b[3] for b in face_bboxes)
-        combined = (xmin, ymin, xmax - xmin, ymax - ymin)
-        pos = center_overlay_on_bbox(combined, os.path.join(ov_dir, "DS4_Face_Button.png"))
-        results.append(("DS4_Face_Button.png", "FaceButtonGroup", "FaceButtonGroup", pos[0], pos[1], pos[2], pos[3]))
-        print(f"  {'FaceButtonGroup':20s} ({'Face Buttons':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    # Face buttons — combined overlay (shows when any face button pressed; click quadrants map to individual buttons)
+    add("Face Buttons", "DS4_Face_Button.png", "FaceButtonGroup", "FaceButtonGroup")
 
     # D-Pad
     add("D-PAD Up", "DS4_D-PAD_Up.png", "DPadUp", "Button")
@@ -370,6 +420,11 @@ def process_ds4():
         pos = center_overlay_on_bbox(right_bbox, os.path.join(ov_dir, "DS4_AnalogStick_Click.png"))
         results.append(("DS4_AnalogStick_Click.png", "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Refine positions using full composite overlay
+    composite_path = os.path.join(ov_dir, "DualShock 4 Controller V2 Model Overlay.png")
+    print("\nRefining DS4 positions via alpha-channel template matching...")
+    results = refine_with_composite(composite_path, results)
 
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
 

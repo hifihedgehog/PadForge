@@ -81,6 +81,8 @@ namespace PadForge.Views
 
             if (_vm != null)
             {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 EnsureModel();
             }

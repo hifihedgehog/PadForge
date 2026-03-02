@@ -498,7 +498,10 @@ namespace PadForge.ViewModels
         private void ClearAllMappings()
         {
             foreach (var m in Mappings)
+            {
                 m.SourceDescriptor = string.Empty;
+                m.NegSourceDescriptor = string.Empty;
+            }
         }
 
         // ── Copy / Paste / Copy From ──

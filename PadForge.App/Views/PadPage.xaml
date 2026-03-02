@@ -218,9 +218,9 @@
                         <views:ControllerModelView x:Name="ControllerModel3D" />
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
 
-                        <!-- 2D/3D toggle button -->
-                        <Button x:Name="ViewModeToggle" HorizontalAlignment="Right" VerticalAlignment="Top"
-                                Margin="0,8,8,0" Padding="6,4" Opacity="0.7"
+                        <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
+                        <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="8,8,0,0" Padding="6,4" Opacity="0.7"
                                 Click="ViewModeToggle_Click" ToolTip="Switch to 2D view">
                             <TextBlock x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                        Text="&#xE8B9;"/>

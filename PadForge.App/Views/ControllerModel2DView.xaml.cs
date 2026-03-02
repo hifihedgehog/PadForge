@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using PadForge.Engine;
 using PadForge.Models2D;
@@ -29,15 +30,20 @@ namespace PadForge.Views
         private string _loadedModel; // "XBOX360" or "DS4"
         private bool _dirty;
 
-        // Overlay elements
+        // Visual overlay elements
         private Image _baseImage;
         private readonly Dictionary<string, Image> _overlayImages = new();
         private readonly Dictionary<string, TranslateTransform> _stickTransforms = new();
+        private readonly Dictionary<string, RectangleGeometry> _triggerClips = new();
+        private readonly Dictionary<string, OverlayElementType> _elementTypes = new();
 
         // Flash animation
         private DispatcherTimer _flashTimer;
         private string _flashTarget;
         private bool _flashOn;
+
+        // Hover state
+        private string _hoverTarget;
 
         // Layout data
         private double _stickMaxTravel;
@@ -61,6 +67,8 @@ namespace PadForge.Views
 
             if (_vm != null)
             {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 EnsureModel();
             }
@@ -118,6 +126,9 @@ namespace PadForge.Views
             ModelCanvas.Children.Clear();
             _overlayImages.Clear();
             _stickTransforms.Clear();
+            _triggerClips.Clear();
+            _elementTypes.Clear();
+            _hoverTarget = null;
 
             string folder = modelName == "DS4" ? "DS4" : "XBOX360";
             int baseW, baseH;
@@ -144,36 +155,61 @@ namespace PadForge.Views
             ModelCanvas.Width = baseW;
             ModelCanvas.Height = baseH;
 
-            // Base image
+            // Base image (Z=0)
             _baseImage = CreateImage(basePath, 0, 0, baseW, baseH);
             ModelCanvas.Children.Add(_baseImage);
 
-            // Overlay images
+            // Overlay images (Z=1) + hit-test rectangles (Z=10)
             foreach (var ov in overlays)
             {
                 string imgPath = $"2DModels/{folder}/{ov.ImageFile}";
                 var img = CreateImage(imgPath, ov.X, ov.Y, ov.Width, ov.Height);
-                img.Visibility = Visibility.Collapsed;
-                img.Cursor = Cursors.Hand;
-                img.Tag = ov.TargetName;
+                img.IsHitTestVisible = false; // Hit rect handles clicks
+                _elementTypes[ov.TargetName] = ov.ElementType;
 
-                // Stick rings get a translate transform for analog movement
                 if (ov.ElementType == OverlayElementType.StickRing)
                 {
+                    // Always visible, translates with stick input
+                    img.Visibility = Visibility.Visible;
                     var tt = new TranslateTransform();
                     img.RenderTransform = tt;
                     _stickTransforms[ov.TargetName] = tt;
                 }
+                else if (ov.ElementType == OverlayElementType.Trigger)
+                {
+                    // Always visible, clip controls fill level (gas tank effect)
+                    img.Visibility = Visibility.Visible;
+                    img.Opacity = 1.0;
+                    var clip = new RectangleGeometry(new Rect(0, ov.Height, ov.Width, 0));
+                    img.Clip = clip;
+                    _triggerClips[ov.TargetName] = clip;
+                }
+                else
+                {
+                    // Buttons, StickClicks, FaceButtonGroup: hidden until pressed
+                    img.Visibility = Visibility.Collapsed;
+                }
 
-                // Click-to-record
-                img.MouseLeftButtonDown += Overlay_MouseLeftButtonDown;
-
-                // Hover highlight
-                img.MouseEnter += Overlay_MouseEnter;
-                img.MouseLeave += Overlay_MouseLeave;
-
+                Panel.SetZIndex(img, 1);
                 _overlayImages[ov.TargetName] = img;
                 ModelCanvas.Children.Add(img);
+
+                // Hit-test rectangle (always visible, transparent, catches all clicks)
+                var hitRect = new Rectangle
+                {
+                    Width = ov.Width,
+                    Height = ov.Height,
+                    Fill = Brushes.Transparent,
+                    Cursor = Cursors.Hand,
+                    Tag = ov.TargetName,
+                };
+                Canvas.SetLeft(hitRect, ov.X);
+                Canvas.SetTop(hitRect, ov.Y);
+                Panel.SetZIndex(hitRect, 10);
+                hitRect.MouseLeftButtonDown += HitArea_Click;
+                hitRect.MouseEnter += HitArea_MouseEnter;
+                hitRect.MouseLeave += HitArea_MouseLeave;
+                ModelCanvas.Children.Add(hitRect);
             }
         }
 
@@ -236,8 +272,8 @@ namespace PadForge.Views
 
         private void UpdateTriggers()
         {
-            SetOverlayOpacity("LeftTrigger", _vm.LeftTrigger);
-            SetOverlayOpacity("RightTrigger", _vm.RightTrigger);
+            SetTriggerFill("LeftTrigger", _vm.LeftTrigger);
+            SetTriggerFill("RightTrigger", _vm.RightTrigger);
         }
 
         private void UpdateSticks()
@@ -258,53 +294,53 @@ namespace PadForge.Views
                 rt.X = rx * _stickMaxTravel;
                 rt.Y = -ry * _stickMaxTravel;
             }
-
-            // Show stick ring overlays always (they represent the current position)
-            SetOverlayVisible("LeftThumbRing", true);
-            SetOverlayVisible("RightThumbRing", true);
         }
 
         private void SetOverlayVisible(string target, bool visible)
         {
             if (_overlayImages.TryGetValue(target, out var img))
             {
-                // Don't override flash animation visibility
-                if (_flashTarget == target) return;
+                if (_flashTarget == target || _hoverTarget == target) return;
                 img.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
                 if (visible) img.Opacity = 1.0;
             }
         }
 
-        private void SetOverlayOpacity(string target, double value)
+        private void SetTriggerFill(string target, double value)
         {
-            if (_overlayImages.TryGetValue(target, out var img))
+            if (_triggerClips.TryGetValue(target, out var clip) &&
+                _overlayImages.TryGetValue(target, out var img))
             {
-                if (_flashTarget == target) return;
-                img.Visibility = value > 0.01 ? Visibility.Visible : Visibility.Collapsed;
-                img.Opacity = Math.Clamp(value, 0.0, 1.0);
+                if (_flashTarget == target || _hoverTarget == target) return;
+                double h = img.Height;
+                double w = img.Width;
+                double v = Math.Clamp(value, 0.0, 1.0);
+                double clipY = h * (1.0 - v);
+                clip.Rect = new Rect(0, clipY, w, h - clipY);
+                img.Opacity = 1.0;
             }
         }
 
         // ─────────────────────────────────────────────
-        //  Click-to-record
+        //  Click-to-record (via hit-test rectangles)
         // ─────────────────────────────────────────────
 
-        private void Overlay_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void HitArea_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Image img && img.Tag is string target)
+            if (sender is Rectangle rect && rect.Tag is string target)
             {
-                // For stick rings, determine axis from click quadrant
-                if (target == "LeftThumbRing" || target == "RightThumbRing")
+                _elementTypes.TryGetValue(target, out var elemType);
+
+                if (elemType == OverlayElementType.StickRing)
                 {
-                    var pos = e.GetPosition(img);
-                    string axis = DetermineAxisFromQuadrant(pos, img.Width, img.Height, target);
+                    var pos = e.GetPosition(rect);
+                    string axis = DetermineAxisFromQuadrant(pos, rect.Width, rect.Height, target);
                     ControllerElementRecordRequested?.Invoke(this, axis);
                 }
-                // For face button group, determine which face button from click position
-                else if (target == "FaceButtonGroup")
+                else if (elemType == OverlayElementType.FaceButtonGroup)
                 {
-                    var pos = e.GetPosition(img);
-                    string button = DetermineFaceButtonFromPosition(pos, img.Width, img.Height);
+                    var pos = e.GetPosition(rect);
+                    string button = DetermineFaceButtonFromPosition(pos, rect.Width, rect.Height);
                     ControllerElementRecordRequested?.Invoke(this, button);
                 }
                 else
@@ -343,31 +379,36 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Hover highlight
+        //  Hover highlight (via hit-test rectangles)
         // ─────────────────────────────────────────────
 
-        private void Overlay_MouseEnter(object sender, MouseEventArgs e)
+        private void HitArea_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Image img)
-                img.Opacity = 0.7;
-        }
-
-        private void Overlay_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender is Image img && img.Tag is string target)
+            if (sender is Rectangle rect && rect.Tag is string target &&
+                _overlayImages.TryGetValue(target, out var img))
             {
-                // Restore opacity based on current state
+                _elementTypes.TryGetValue(target, out var elemType);
+
+                // Sticks are always visible — skip hover ghost
+                if (elemType == OverlayElementType.StickRing)
+                    return;
+
                 if (_flashTarget == target) return;
 
-                if (target == "LeftThumbRing" || target == "RightThumbRing")
-                    img.Opacity = 1.0;
-                else if (target == "LeftTrigger")
-                    img.Opacity = _vm?.LeftTrigger ?? 0;
-                else if (target == "RightTrigger")
-                    img.Opacity = _vm?.RightTrigger ?? 0;
-                else
-                    img.Opacity = 1.0;
+                _hoverTarget = target;
+                img.Visibility = Visibility.Visible;
+                img.Opacity = 0.4;
+
+                // For triggers, show full image during hover (override clip)
+                if (_triggerClips.TryGetValue(target, out var clip))
+                    clip.Rect = new Rect(0, 0, img.Width, img.Height);
             }
+        }
+
+        private void HitArea_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _hoverTarget = null;
+            _dirty = true; // Next render frame restores proper state
         }
 
         // ─────────────────────────────────────────────
@@ -400,7 +441,13 @@ namespace PadForge.Views
             if (_flashTarget != null && _overlayImages.TryGetValue(_flashTarget, out var img))
             {
                 img.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
-                if (_flashOn) img.Opacity = 1.0;
+                if (_flashOn)
+                {
+                    img.Opacity = 1.0;
+                    // For triggers, show full image during flash
+                    if (_triggerClips.TryGetValue(_flashTarget, out var clip))
+                        clip.Rect = new Rect(0, 0, img.Width, img.Height);
+                }
             }
         }
 
@@ -416,11 +463,20 @@ namespace PadForge.Views
             // Restore the flashed element to its default state
             if (_flashTarget != null && _overlayImages.TryGetValue(_flashTarget, out var img))
             {
-                img.Visibility = Visibility.Collapsed;
+                if (_triggerClips.TryGetValue(_flashTarget, out var clip))
+                {
+                    // Reset trigger clip to empty — next dirty update will set correct fill
+                    clip.Rect = new Rect(0, img.Height, img.Width, 0);
+                }
+                else
+                {
+                    img.Visibility = Visibility.Collapsed;
+                }
                 img.Opacity = 1.0;
             }
             _flashTarget = null;
             _flashOn = false;
+            _dirty = true;
         }
     }
 }

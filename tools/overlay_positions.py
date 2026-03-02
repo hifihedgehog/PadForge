@@ -381,8 +381,11 @@ def process_ds4():
 
     print("Parsing DS4 V2 SVG elements...")
 
-    # Face buttons — combined overlay (shows when any face button pressed; click quadrants map to individual buttons)
-    add("Face Buttons", "DS4_Face_Button.png", "FaceButtonGroup", "FaceButtonGroup")
+    # Face buttons — same overlay image at each button's individual position (diamond layout)
+    add("Cross", "DS4_Face_Button.png", "ButtonA", "Button")
+    add("Circle", "DS4_Face_Button.png", "ButtonB", "Button")
+    add("Square", "DS4_Face_Button.png", "ButtonX", "Button")
+    add("Triangle", "DS4_Face_Button.png", "ButtonY", "Button")
 
     # D-Pad
     add("D-PAD Up", "DS4_D-PAD_Up.png", "DPadUp", "Button")

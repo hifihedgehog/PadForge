@@ -1,0 +1,14 @@
+<UserControl x:Class="PadForge.Views.ControllerModel2DView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="600"
+             Background="Transparent">
+
+    <Viewbox Stretch="Uniform">
+        <Canvas x:Name="ModelCanvas" ClipToBounds="True" />
+    </Viewbox>
+
+</UserControl>

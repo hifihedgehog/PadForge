@@ -620,9 +620,8 @@ namespace PadForge.ViewModels
             {
                 // Second phase: opposite direction from the first.
                 // X: second=left (neg). Y: second=down (pos, because NegateAxis inverts).
-                // Clear the flag now so that when this recording completes,
-                // OnMapAllItemCompleted increments the index and moves on.
-                MapAllRecordingNeg = false;
+                // Keep MapAllRecordingNeg=true until MapAllRecordRequested fires, so the
+                // handler can distinguish Y second phase from Y first phase.
                 bool isY = mapping.TargetSettingName.Contains("AxisY");
                 string dirHint = isY ? "(\u2193)" : "(\u2190)";
                 // Y: second phase targets pos descriptor (down in game).
@@ -651,6 +650,11 @@ namespace PadForge.ViewModels
                 MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             MapAllRecordRequested?.Invoke(this, mapping);
+
+            // Clear after firing so OnMapAllItemCompleted will advance the index
+            // when the second-phase recording finishes.
+            if (MapAllRecordingNeg)
+                MapAllRecordingNeg = false;
         }
 
         /// <summary>Called when a Map All recording completes (success or timeout). Advances to next after a short delay.</summary>

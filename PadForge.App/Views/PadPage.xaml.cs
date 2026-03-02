@@ -29,6 +29,7 @@ namespace PadForge.Views
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
         {
             BindModelView();
+            SyncTabStripSelection();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -41,6 +42,7 @@ namespace PadForge.Views
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
 
             BindModelView();
+            SyncTabStripSelection();
         }
 
         // ─────────────────────────────────────────────
@@ -62,6 +64,40 @@ namespace PadForge.Views
         private void OnModel3DRecordRequested(object sender, string targetName)
         {
             ControllerElementRecordRequested?.Invoke(this, targetName);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Custom tab strip
+        // ─────────────────────────────────────────────
+
+        private void TabBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton rb && rb.Tag is int idx && DataContext is PadViewModel vm)
+                vm.SelectedConfigTab = idx;
+        }
+
+        private void SyncTabStripSelection()
+        {
+            if (DataContext is not PadViewModel vm) return;
+            int selected = vm.SelectedConfigTab;
+
+            foreach (var rb in FindVisualChildren<RadioButton>(this))
+            {
+                if (rb.GroupName == "PadTab" && rb.Tag is int idx)
+                    rb.IsChecked = idx == selected;
+            }
+        }
+
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T t) yield return t;
+                foreach (var desc in FindVisualChildren<T>(child))
+                    yield return desc;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -103,14 +139,13 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Map All flash (delegated to 3D view)
+        //  ViewModel property changed
         // ─────────────────────────────────────────────
 
         private void OnPadVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // The 3D view handles CurrentRecordingTarget flash internally
-            // via its own PropertyChanged subscription in Bind().
-            // No additional handling needed here.
+            if (e.PropertyName == nameof(PadViewModel.SelectedConfigTab))
+                SyncTabStripSelection();
         }
     }
 }

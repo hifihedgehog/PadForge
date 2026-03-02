@@ -6,8 +6,11 @@
     <ScrollViewer Padding="24,16">
         <StackPanel MaxWidth="700">
 
-            <TextBlock Text="Profiles" Style="{StaticResource TitleTextBlockStyle}"
-                       Margin="0,0,0,20"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Profiles" Style="{StaticResource TitleTextBlockStyle}"/>
+            </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

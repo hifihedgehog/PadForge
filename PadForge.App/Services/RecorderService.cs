@@ -61,6 +61,9 @@ namespace PadForge.Services
         /// <summary>The device GUID to record from (the selected device).</summary>
         private Guid _activeDeviceGuid;
 
+        /// <summary>True when recording for the negative direction of an axis.</summary>
+        private bool _negRecording;
+
         /// <summary>The baseline input state captured at the start of recording.</summary>
         private CustomInputState _baseline;
 
@@ -122,7 +125,7 @@ namespace PadForge.Services
         /// is detected as a fresh change. Used for auto-prompt follow-up recordings
         /// where the previous input may still be physically held.</param>
         public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
-            bool neutralizeBaseline = false)
+            bool neutralizeBaseline = false, bool negRecording = false)
         {
             if (mapping == null)
                 return;
@@ -134,6 +137,7 @@ namespace PadForge.Services
             _activeMapping = mapping;
             _activePadIndex = padIndex;
             _activeDeviceGuid = deviceGuid;
+            _negRecording = negRecording;
             _axisHoldCounter = 0;
             _axisCandidateType = MapType.None;
             _axisCandidateIndex = -1;
@@ -359,7 +363,7 @@ namespace PadForge.Services
 
             // Auto-detect inversion for axis/slider recordings based on movement direction.
             if (type == MapType.Axis || type == MapType.Slider)
-                mapping.IsInverted = ShouldAutoInvert(mapping, axisPositive);
+                mapping.IsInverted = ShouldAutoInvert(mapping, axisPositive, _negRecording);
 
             // Read back the final descriptor (may have "I" prefix from auto-inversion).
             string finalDescriptor = mapping.SourceDescriptor;
@@ -384,19 +388,25 @@ namespace PadForge.Services
         /// </summary>
         /// <param name="mapping">The target mapping item being recorded.</param>
         /// <param name="axisPositive">True if the raw axis value increased (positive delta).</param>
-        private static bool ShouldAutoInvert(MappingItem mapping, bool axisPositive)
+        private static bool ShouldAutoInvert(MappingItem mapping, bool axisPositive, bool negRecording)
         {
             string target = mapping.TargetSettingName;
+
+            // When recording for the negative direction of a stick axis, the user
+            // is intentionally pushing in the opposite direction from the "natural"
+            // positive one.  Flip the effective direction so we don't spuriously
+            // invert the axis.
+            bool effective = negRecording ? !axisPositive : axisPositive;
 
             // Y-axis targets: "up" is natural. SDL raw Y increases when pushed down,
             // so positive delta = down = needs inversion.
             if (target == "LeftThumbAxisY" || target == "RightThumbAxisY")
-                return axisPositive;
+                return effective;
 
             // X-axis targets: "right" is natural. SDL raw X increases when pushed right,
             // so negative delta = left = needs inversion.
             if (target == "LeftThumbAxisX" || target == "RightThumbAxisX")
-                return !axisPositive;
+                return !effective;
 
             // Trigger targets: increasing value is natural.
             // Negative delta = reverse polarity = needs inversion.

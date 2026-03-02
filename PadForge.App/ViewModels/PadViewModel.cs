@@ -501,6 +501,8 @@ namespace PadForge.ViewModels
             {
                 m.SourceDescriptor = string.Empty;
                 m.NegSourceDescriptor = string.Empty;
+                m.IsInverted = false;
+                m.IsHalfAxis = false;
             }
         }
 

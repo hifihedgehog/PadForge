@@ -52,6 +52,10 @@ namespace PadForge.Views
         // Axis arrow overlay (visible until mapping finishes)
         private ModelVisual3D _arrowVisual;
 
+        // Quadrant highlight overlay (flashing wedge on stick ring)
+        private ModelVisual3D _quadrantVisual;
+        private DiffuseMaterial _quadrantMaterial;
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -92,10 +96,9 @@ namespace PadForge.Views
                 {
                     string target = _vm.CurrentRecordingTarget;
                     UpdateFlashTarget(target);
-                    // Always show the arrow for the current target.
+                    // Always show the arrow and quadrant highlight for the current target.
                     ShowArrowForTarget(target);
-                    // Mark dirty so OnRendering applies stick tilt.
-                    _dirty = true;
+                    ShowQuadrantForTarget(target);
                 });
                 return;
             }
@@ -157,20 +160,13 @@ namespace PadForge.Views
             _dirty = false;
 
             HighlightButtons();
-
-            // When recording a stick axis, tilt the 3D stick in the target direction
-            // so the user sees which direction they're mapping.
-            short lx = _vm.RawThumbLX, ly = _vm.RawThumbLY;
-            short rx = _vm.RawThumbRX, ry = _vm.RawThumbRY;
-            ApplyRecordingTilt(ref lx, ref ly, ref rx, ref ry);
-
             UpdateJoystick(
-                lx, ly,
+                _vm.RawThumbLX, _vm.RawThumbLY,
                 _currentModel.LeftThumbRing, _currentModel.LeftThumb,
                 _currentModel.JoystickRotationPointCenterLeftMillimeter,
                 _currentModel.JoystickMaxAngleDeg);
             UpdateJoystick(
-                rx, ry,
+                _vm.RawThumbRX, _vm.RawThumbRY,
                 _currentModel.RightThumbRing, _currentModel.RightThumb,
                 _currentModel.JoystickRotationPointCenterRightMillimeter,
                 _currentModel.JoystickMaxAngleDeg);
@@ -458,6 +454,7 @@ namespace PadForge.Views
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
             ShowArrowForTarget(axis);
+            ShowQuadrantForTarget(axis);
         }
 
         /// <summary>
@@ -566,49 +563,132 @@ namespace PadForge.Views
             ModelViewPort.Children.Add(_arrowVisual);
         }
 
-        /// <summary>
-        /// When a stick axis recording is active, overrides the raw thumb values
-        /// to visually tilt the 3D stick in the direction being polled.
-        /// Uses ~70% deflection so the tilt is visible but not extreme.
-        /// </summary>
-        private void ApplyRecordingTilt(ref short lx, ref short ly, ref short rx, ref short ry)
-        {
-            string target = _vm?.CurrentRecordingTarget;
-            if (string.IsNullOrEmpty(target)) return;
-
-            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
-            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
-
-            // Determine axis and direction.
-            // For X: pos = right (+), neg = left (-).
-            // For Y: pos descriptor = down in game (NegateAxis), neg descriptor = up.
-            // UpdateJoystick applies -maxAngle*normY, so positive rawY → stick tilts up visually.
-            // Therefore: neg descriptor (up in game) → positive rawY, pos descriptor (down) → negative rawY.
-            const short tilt = 23000; // ~70% deflection
-
-            switch (baseTarget)
-            {
-                case "LeftThumbAxisX":
-                    lx = isNeg ? (short)-tilt : tilt;
-                    break;
-                case "LeftThumbAxisY":
-                    ly = isNeg ? tilt : (short)-tilt;
-                    break;
-                case "RightThumbAxisX":
-                    rx = isNeg ? (short)-tilt : tilt;
-                    break;
-                case "RightThumbAxisY":
-                    ry = isNeg ? tilt : (short)-tilt;
-                    break;
-            }
-        }
-
         private void RemoveArrow()
         {
             if (_arrowVisual != null)
             {
                 ModelViewPort.Children.Remove(_arrowVisual);
                 _arrowVisual = null;
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Quadrant highlight (flashing wedge on stick ring)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Shows or updates a semi-transparent wedge over one quadrant of a stick ring.
+        /// The wedge indicates which direction the user should push for recording.
+        /// </summary>
+        private void ShowQuadrantForTarget(string target)
+        {
+            RemoveQuadrant();
+
+            if (_currentModel == null || string.IsNullOrEmpty(target))
+                return;
+
+            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
+            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
+
+            bool isLeftStick = baseTarget is "LeftThumbAxisX" or "LeftThumbAxisY";
+            bool isRightStick = baseTarget is "RightThumbAxisX" or "RightThumbAxisY";
+            if (!isLeftStick && !isRightStick)
+                return;
+
+            bool isX = baseTarget.Contains("AxisX");
+
+            Vector3D center = isLeftStick
+                ? _currentModel.JoystickRotationPointCenterLeftMillimeter
+                : _currentModel.JoystickRotationPointCenterRightMillimeter;
+
+            // Determine the angular center of the quadrant (degrees from +X, CCW).
+            // X axis: pos(right)=0°, neg(left)=180°.
+            // Y axis (NegateAxis): neg(up)=90°, pos(down)=270°.
+            double angleDeg;
+            if (isX)
+                angleDeg = isNeg ? 180.0 : 0.0;
+            else
+                angleDeg = isNeg ? 90.0 : 270.0;
+
+            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
+            try
+            {
+                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
+            }
+            catch { }
+
+            // Semi-transparent accent blue
+            var color = Color.FromArgb(160, accentColor.R, accentColor.G, accentColor.B);
+            _quadrantMaterial = new DiffuseMaterial(new SolidColorBrush(color));
+
+            // Build a pie-wedge disc: 90° arc from (angleDeg-45) to (angleDeg+45)
+            var wedgeCenter = new Point3D(center.X, center.Y - 25, center.Z);
+            var mesh = CreateWedgeMesh(wedgeCenter, radius: 10.0, angleDeg - 45, angleDeg + 45, segments: 12);
+            var geo = new GeometryModel3D(mesh, _quadrantMaterial) { BackMaterial = _quadrantMaterial };
+            _quadrantVisual = new ModelVisual3D { Content = geo };
+            ModelViewPort.Children.Add(_quadrantVisual);
+        }
+
+        /// <summary>
+        /// Creates a flat pie-wedge mesh in the XZ plane at the given Y height.
+        /// Angles are in degrees, measured from +X axis (right), counter-clockwise.
+        /// +X = right, +Z = up on screen (model coordinates).
+        /// </summary>
+        private static MeshGeometry3D CreateWedgeMesh(Point3D center, double radius,
+            double startDeg, double endDeg, int segments)
+        {
+            var mesh = new MeshGeometry3D();
+            double startRad = startDeg * Math.PI / 180.0;
+            double step = (endDeg - startDeg) * Math.PI / 180.0 / segments;
+
+            // Center vertex
+            mesh.Positions.Add(center);
+
+            // Arc vertices
+            for (int i = 0; i <= segments; i++)
+            {
+                double angle = startRad + step * i;
+                mesh.Positions.Add(new Point3D(
+                    center.X + radius * Math.Cos(angle),
+                    center.Y,
+                    center.Z + radius * Math.Sin(angle)));
+            }
+
+            // Triangle fan from center to arc
+            for (int i = 0; i < segments; i++)
+            {
+                mesh.TriangleIndices.Add(0);
+                mesh.TriangleIndices.Add(i + 1);
+                mesh.TriangleIndices.Add(i + 2);
+                // Back face
+                mesh.TriangleIndices.Add(0);
+                mesh.TriangleIndices.Add(i + 2);
+                mesh.TriangleIndices.Add(i + 1);
+            }
+
+            return mesh;
+        }
+
+        /// <summary>Toggles the quadrant wedge visibility for flashing.</summary>
+        private void FlashQuadrant(bool on)
+        {
+            if (_quadrantVisual == null || _quadrantMaterial == null) return;
+
+            var brush = (SolidColorBrush)_quadrantMaterial.Brush;
+            var c = brush.Color;
+            // Toggle between visible (alpha 160) and hidden (alpha 0).
+            _quadrantMaterial.Brush = new SolidColorBrush(
+                Color.FromArgb(on ? (byte)160 : (byte)0, c.R, c.G, c.B));
+        }
+
+        private void RemoveQuadrant()
+        {
+            if (_quadrantVisual != null)
+            {
+                ModelViewPort.Children.Remove(_quadrantVisual);
+                _quadrantVisual = null;
+                _quadrantMaterial = null;
             }
         }
 
@@ -689,6 +769,9 @@ namespace PadForge.Views
                     geo.BackMaterial = defMat;
                 }
             }
+
+            // Flash the quadrant wedge in sync
+            FlashQuadrant(_flashOn);
         }
 
         private void StopFlash()
@@ -720,6 +803,10 @@ namespace PadForge.Views
             }
 
             _flashTarget = null;
+
+            // Remove quadrant overlay
+            RemoveQuadrant();
+            RemoveArrow();
         }
 
         // ─────────────────────────────────────────────

@@ -16,7 +16,9 @@
                                ShowViewCube="False"
                                ZoomExtentsWhenLoaded="True"
                                Background="Transparent"
-                               MouseLeftButtonDown="Viewport_MouseLeftButtonDown">
+                               MouseLeftButtonDown="Viewport_MouseLeftButtonDown"
+                               MouseMove="Viewport_MouseMove"
+                               MouseLeave="Viewport_MouseLeave">
 
             <helix:SunLight />
             <helix:DirectionalHeadLight Brightness="0.35" />

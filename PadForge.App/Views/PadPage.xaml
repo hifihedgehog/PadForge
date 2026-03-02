@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:PadForge.ViewModels"
              xmlns:controls="clr-namespace:PadForge.Controls"
              xmlns:views="clr-namespace:PadForge.Views"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:PadViewModel}"
              d:DesignHeight="700" d:DesignWidth="900">
@@ -49,12 +50,14 @@
         <Style x:Key="TabStripButton" TargetType="RadioButton">
             <Setter Property="GroupName" Value="PadTab"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
                         <Border x:Name="Bd" Padding="10,6" Background="Transparent"
                                 BorderThickness="0,0,0,2" BorderBrush="Transparent">
-                            <ContentPresenter VerticalAlignment="Center"/>
+                            <ContentPresenter VerticalAlignment="Center"
+                                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">

@@ -84,15 +84,6 @@ $RECYCLE.BIN/
 # Claude Code
 .claude/
 
-# Release zips
-*.zip
-
-# External SDK headers
-tools/vJoy/SDK/
-
-# Debug/diagnostic images
-tools/*.png
-
 # macOS
 .DS_Store
 .AppleDouble

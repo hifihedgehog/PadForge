@@ -51,7 +51,6 @@ namespace PadForge.Views
 
         // Axis arrow overlay (visible until mapping finishes)
         private ModelVisual3D _arrowVisual;
-        private bool _arrowFromClick; // true when arrow was created by stick ring click (don't replace)
 
         public ControllerModelView()
         {
@@ -94,8 +93,6 @@ namespace PadForge.Views
                     string target = _vm.CurrentRecordingTarget;
                     UpdateFlashTarget(target);
                     // Always show the arrow for the current target.
-                    // (Clears _arrowFromClick since the target has changed.)
-                    _arrowFromClick = false;
                     ShowArrowForTarget(target);
                 });
                 return;
@@ -451,25 +448,7 @@ namespace PadForge.Views
         /// </summary>
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
-            RemoveArrow();
-
-            bool isNeg = axis.EndsWith("Neg", StringComparison.Ordinal);
-            string baseAxis = isNeg ? axis.Substring(0, axis.Length - 3) : axis;
-            bool isX = baseAxis.Contains("AxisX");
-
-            var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
-            try
-            {
-                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
-                if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
-            }
-            catch { }
-
-            var arrowCenter = new Point3D(hitPos.X, hitPos.Y - 3, hitPos.Z);
-            var arrowGeo = CreateFlatArrow(arrowCenter, isX, isNeg, accentColor);
-            _arrowVisual = new ModelVisual3D { Content = arrowGeo };
-            _arrowFromClick = true;
-            ModelViewPort.Children.Add(_arrowVisual);
+            ShowArrowForTarget(axis);
         }
 
         /// <summary>
@@ -560,10 +539,10 @@ namespace PadForge.Views
                 ? _currentModel.JoystickRotationPointCenterLeftMillimeter
                 : _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            // Place arrow at stick center, floating in front of the model surface.
-            // Rotation center Y is inside the body (~-6); stick surface is ~-8 to -10.
-            // Use a fixed offset to place the arrow visibly in front.
-            var arrowCenter = new Point3D(center.X, center.Y - 7, center.Z);
+            // Place arrow at stick center, floating well in front of the model surface.
+            // Rotation center Y is inside the body (~-6); use a large offset to ensure
+            // the arrow is clearly visible in front of the controller model.
+            var arrowCenter = new Point3D(center.X, center.Y - 25, center.Z);
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
@@ -585,7 +564,6 @@ namespace PadForge.Views
                 ModelViewPort.Children.Remove(_arrowVisual);
                 _arrowVisual = null;
             }
-            _arrowFromClick = false;
         }
 
         // ─────────────────────────────────────────────

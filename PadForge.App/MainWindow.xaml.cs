@@ -1117,10 +1117,10 @@ namespace PadForge
             row.Children.Add(new System.Windows.Controls.TextBlock
             {
                 Text = navItem.InstanceLabel,
-                FontSize = 11,
-                Opacity = 0.6,
+                FontSize = 12,
+                FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0)
+                Margin = new Thickness(3, 0, 0, 0)
             });
 
             // Wrap in a rounded card border.

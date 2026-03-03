@@ -65,6 +65,7 @@ namespace PadForge.Services
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
         private ushort _recordedButtons;
+        private uint[] _recordedCustomButtons;
         private Guid _recordingDeviceGuid;
         private HashSet<int> _recordedRawButtons;
 
@@ -1796,6 +1797,7 @@ namespace PadForge.Services
             _recordingMacro = macro;
             _recordingPadIndex = padIndex;
             _recordedButtons = 0;
+            _recordedCustomButtons = new uint[4];
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = new HashSet<int>();
             macro.RecordingLiveText = "Press buttons...";
@@ -1818,7 +1820,17 @@ namespace PadForge.Services
                 // Raw device button path.
                 _recordingMacro.TriggerDeviceGuid = _recordingDeviceGuid;
                 _recordingMacro.TriggerRawButtons = _recordedRawButtons.OrderBy(x => x).ToArray();
-                _recordingMacro.TriggerButtons = 0; // Clear legacy
+                _recordingMacro.TriggerButtons = 0;
+                _recordingMacro.TriggerCustomButtonWords = new uint[4];
+            }
+            else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered
+                     && _recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
+            {
+                // Custom vJoy button path.
+                _recordingMacro.TriggerCustomButtonWords = (uint[])_recordedCustomButtons.Clone();
+                _recordingMacro.TriggerButtons = 0;
+                _recordingMacro.TriggerDeviceGuid = Guid.Empty;
+                _recordingMacro.TriggerRawButtons = Array.Empty<int>();
             }
             else
             {
@@ -1826,12 +1838,14 @@ namespace PadForge.Services
                 _recordingMacro.TriggerButtons = _recordedButtons;
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
                 _recordingMacro.TriggerRawButtons = Array.Empty<int>();
+                _recordingMacro.TriggerCustomButtonWords = new uint[4];
             }
 
             _recordingMacro.RecordingLiveText = "";
             _recordingMacro.IsRecordingTrigger = false;
             _recordingMacro = null;
             _recordedButtons = 0;
+            _recordedCustomButtons = null;
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = null;
         }
@@ -1894,13 +1908,27 @@ namespace PadForge.Services
                 else
                     _recordingMacro.RecordingLiveText = "Press buttons...";
             }
+            else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
+            {
+                // Custom vJoy: accumulate from the combined raw state.
+                var rawState = _inputManager.CombinedVJoyRawStates[_recordingPadIndex];
+                if (rawState.Buttons != null && _recordedCustomButtons != null)
+                {
+                    for (int w = 0; w < rawState.Buttons.Length && w < _recordedCustomButtons.Length; w++)
+                        _recordedCustomButtons[w] |= rawState.Buttons[w];
+                }
+
+                if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
+                    _recordingMacro.RecordingLiveText = MacroButtonNames.FormatCustomButtons(_recordedCustomButtons);
+                else
+                    _recordingMacro.RecordingLiveText = "Press buttons...";
+            }
             else
             {
-                // OutputController: accumulate from the combined Xbox-mapped state.
+                // Gamepad preset OutputController: accumulate from the combined Xbox-mapped state.
                 ushort xboxButtons = _inputManager.CombinedOutputStates[_recordingPadIndex].Buttons;
                 _recordedButtons |= xboxButtons;
 
-                // Update live display text using type-aware button names.
                 if (_recordedButtons != 0)
                     _recordingMacro.RecordingLiveText = MacroButtonNames.FormatButtons(
                         _recordedButtons, _recordingMacro.ButtonStyle);

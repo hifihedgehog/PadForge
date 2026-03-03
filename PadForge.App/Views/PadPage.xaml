@@ -269,7 +269,7 @@
 
                                 <TextBlock Text="Buttons" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                <TextBox x:Name="VJoyButtonCountBox" Width="56" VerticalAlignment="Center"
+                                <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
                                          TextAlignment="Center" Text="11"
                                          LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
                             </StackPanel>

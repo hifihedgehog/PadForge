@@ -62,10 +62,24 @@ namespace PadForge.Views
         private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
         private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
 
+        // Model rotation via right-drag (turntable-style)
+        private bool _isRightDragging;
+        private Point _rightDragLast;
+        private double _modelYaw;    // degrees around Z axis (horizontal drag)
+        private double _modelPitch;  // degrees around X axis (vertical drag)
+        private readonly Transform3DGroup _modelRotation = new();
+        private readonly AxisAngleRotation3D _yawRotation = new(new Vector3D(0, 0, 1), 0);
+        private readonly AxisAngleRotation3D _pitchRotation = new(new Vector3D(1, 0, 0), 0);
+
         public ControllerModelView()
         {
             InitializeComponent();
             CompositionTarget.Rendering += OnRendering;
+
+            // Set up model rotation transform (turntable-style via right-drag)
+            _modelRotation.Children.Add(new RotateTransform3D(_yawRotation));
+            _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
+            ModelVisual3D.Transform = _modelRotation;
         }
 
         // ─────────────────────────────────────────────
@@ -404,15 +418,53 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Model rotation (right-drag turntable)
+        // ─────────────────────────────────────────────
+
+        private void Viewport_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isRightDragging = true;
+            _rightDragLast = e.GetPosition(ModelViewPort);
+            ModelViewPort.CaptureMouse();
+            e.Handled = true;
+        }
+
+        private void Viewport_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isRightDragging)
+            {
+                _isRightDragging = false;
+                ModelViewPort.ReleaseMouseCapture();
+                e.Handled = true;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Hover highlighting
         // ─────────────────────────────────────────────
 
         private void Viewport_MouseMove(object sender, MouseEventArgs e)
         {
+            // Right-drag: rotate the model (turntable style)
+            if (_isRightDragging)
+            {
+                var pos = e.GetPosition(ModelViewPort);
+                double dx = pos.X - _rightDragLast.X;
+                double dy = pos.Y - _rightDragLast.Y;
+                _rightDragLast = pos;
+
+                _modelYaw += dx * 0.5;
+                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+
+                _yawRotation.Angle = _modelYaw;
+                _pitchRotation.Angle = _modelPitch;
+                return;
+            }
+
             if (_currentModel == null) return;
 
-            var pos = e.GetPosition(ModelViewPort);
-            var hits = Viewport3DHelper.FindHits(ModelViewPort.Viewport, pos);
+            var hoverPos = e.GetPosition(ModelViewPort);
+            var hits = Viewport3DHelper.FindHits(ModelViewPort.Viewport, hoverPos);
 
             foreach (var hit in hits)
             {
@@ -458,6 +510,11 @@ namespace PadForge.Views
 
         private void Viewport_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (_isRightDragging)
+            {
+                _isRightDragging = false;
+                ModelViewPort.ReleaseMouseCapture();
+            }
             ClearHover();
         }
 
@@ -1083,6 +1140,12 @@ namespace PadForge.Views
                 cam.UpDirection = new Vector3D(0, 0, 1);
                 cam.FieldOfView = 45;
             }
+
+            // Reset model rotation
+            _modelYaw = 0;
+            _modelPitch = 0;
+            _yawRotation.Angle = 0;
+            _pitchRotation.Angle = 0;
         }
 
         // ─────────────────────────────────────────────

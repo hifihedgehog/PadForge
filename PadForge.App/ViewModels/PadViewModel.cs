@@ -597,7 +597,7 @@ namespace PadForge.ViewModels
 
             for (int i = 0; i < count; i++)
             {
-                string title = isCustomVJoy && count != 2
+                string title = isCustomVJoy
                     ? $"Stick {i + 1}"
                     : i == 0 ? "Left Thumbstick" : "Right Thumbstick";
                 int xiIdx = axX != null ? axX[i] : -1;
@@ -631,7 +631,7 @@ namespace PadForge.ViewModels
 
             for (int i = 0; i < count; i++)
             {
-                string title = isCustomVJoy && count != 2
+                string title = isCustomVJoy
                     ? $"Trigger {i + 1}"
                     : i == 0 ? "Left Trigger" : "Right Trigger";
                 int ai = trAx != null ? trAx[i] : -1;
@@ -1196,7 +1196,7 @@ namespace PadForge.ViewModels
                 if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
                 {
                     stick.RawY = raw.Axes[stick.AxisYIndex];
-                    stick.LiveY = 1.0 - ((raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0);
+                    stick.LiveY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
                 }
             }
 

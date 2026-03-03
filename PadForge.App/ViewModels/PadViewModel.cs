@@ -387,10 +387,10 @@ namespace PadForge.ViewModels
             // Buttons
             if (isDS4)
             {
-                Mappings.Add(new MappingItem("\u2715 Cross", "ButtonA", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("\u25CB Circle", "ButtonB", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("\u25A1 Square", "ButtonX", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("\u25B3 Triangle", "ButtonY", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u2715", "ButtonA", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u25CB", "ButtonB", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u25FB", "ButtonX", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u25B3", "ButtonY", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("L1", "LeftShoulder", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("R1", "RightShoulder", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("Share", "ButtonBack", MappingCategory.Buttons));

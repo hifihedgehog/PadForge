@@ -400,6 +400,11 @@ namespace PadForge.Engine
             state.Buttons[9] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_STICK);
             state.Buttons[10] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_GUIDE);
 
+            // Suppress Guide when Back+Start are both pressed — Windows/XInput
+            // synthesizes a Guide button press from this combo when the app has focus.
+            if (state.Buttons[6] && state.Buttons[7] && state.Buttons[10])
+                state.Buttons[10] = false;
+
             // --- Extra raw buttons ---
             // Append raw joystick buttons beyond the 11 standard gamepad buttons.
             // This exposes native device buttons (e.g. DualSense touchpad) that

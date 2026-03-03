@@ -21,7 +21,10 @@
                                PreviewMouseRightButtonUp="Viewport_MouseRightButtonUp"
                                PreviewMouseMove="Viewport_PreviewMouseMove"
                                MouseMove="Viewport_MouseMove"
-                               MouseLeave="Viewport_MouseLeave">
+                               MouseLeave="Viewport_MouseLeave"
+                               PreviewTouchDown="Viewport_PreviewTouchDown"
+                               PreviewTouchMove="Viewport_PreviewTouchMove"
+                               PreviewTouchUp="Viewport_PreviewTouchUp">
 
             <helix:SunLight />
             <helix:DirectionalHeadLight Brightness="0.35" />

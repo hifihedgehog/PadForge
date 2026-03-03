@@ -359,6 +359,9 @@ namespace PadForge.Services
                 padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
                 padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
 
+                // Sync dynamic stick/trigger config items from the loaded VM properties.
+                padVm.SyncAllConfigItemsFromVm();
+
                 // Load mapping descriptors into mapping rows.
                 LoadMappingDescriptors(padVm, ps);
             }
@@ -885,6 +888,8 @@ namespace PadForge.Services
                 padVm.RightTriggerAntiDeadZone = 0;
                 padVm.LeftTriggerMaxRange = 100;
                 padVm.RightTriggerMaxRange = 100;
+
+                padVm.SyncAllConfigItemsFromVm();
             }
 
             var settingsVm = _mainVm.Settings;

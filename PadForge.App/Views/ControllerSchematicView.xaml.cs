@@ -496,6 +496,7 @@ namespace PadForge.Views
                 PovIndex = index,
                 Arrow = arrow,
                 ArrowCanvas = arrowCanvas,
+                Outer = outer,
                 CenterX = x + PovSize / 2,
                 CenterY = y + PovSize / 2
             };
@@ -704,9 +705,12 @@ namespace PadForge.Views
                 Canvas.SetTop(w.Fill, w.Y + TriggerHeight - 2 - fillH);
             }
 
-            // Update POVs
+            // Update POVs (skip when hovered or flash-targeted to prevent flickering)
             foreach (var w in _povWidgets)
             {
+                if (w.Outer.IsMouseOver) continue;
+                if (_flashTarget != null && _flashTarget.StartsWith($"VJoyPov{w.PovIndex}", StringComparison.Ordinal)) continue;
+
                 int povValue = -1;
                 if (raw.Povs != null && w.PovIndex < raw.Povs.Length)
                     povValue = raw.Povs[w.PovIndex];
@@ -718,6 +722,7 @@ namespace PadForge.Views
                 else
                 {
                     w.Arrow.Visibility = Visibility.Visible;
+                    w.Arrow.Fill = AccentBrush;
                     w.ArrowCanvas.RenderTransform = new RotateTransform(povValue / 100.0,
                         PovSize / 2, PovSize / 2);
                 }
@@ -776,6 +781,7 @@ namespace PadForge.Views
             public int PovIndex;
             public Polygon Arrow;
             public Canvas ArrowCanvas;
+            public Ellipse Outer;
             public double CenterX, CenterY;
         }
 

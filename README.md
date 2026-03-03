@@ -6,7 +6,7 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 
 ## Features
 
-- **Any input to any virtual controller** -- Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom DirectInput controllers
+- **Any input to any virtual controller** -- Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom DirectInput controllers with up to 8 axes (sticks and triggers combined), 128 buttons, and 4 POV hats
 - **Up to 16 virtual controller slots** -- Mix and match Xbox 360, DualShock 4, and custom DirectInput across up to 16 simultaneous slots, each combining input from multiple physical devices
 - **3D and 2D controller visualization** -- Interactive 3D controller model (rotate, zoom, pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time
 - **Interactive mapping** -- Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads

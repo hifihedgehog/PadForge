@@ -62,11 +62,12 @@ namespace PadForge.Views
         private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
         private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
 
-        // Model rotation via right-drag (turntable-style)
+        // Model rotation via right-drag or single-touch drag (turntable-style)
         private bool _isRightDragging;
         private Point _rightDragLast;
         private double _modelYaw;    // degrees around Z axis (horizontal drag)
         private double _modelPitch;  // degrees around X axis (vertical drag)
+        private int? _touchDragId;   // active touch device ID for rotation
         private readonly Transform3DGroup _modelRotation = new();
         private readonly AxisAngleRotation3D _yawRotation = new(new Vector3D(0, 0, 1), 0);
         private readonly AxisAngleRotation3D _pitchRotation = new(new Vector3D(1, 0, 0), 0);
@@ -454,6 +455,44 @@ namespace PadForge.Views
 
             _yawRotation.Angle = _modelYaw;
             _pitchRotation.Angle = _modelPitch;
+            e.Handled = true;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touch rotation (single-finger drag)
+        // ─────────────────────────────────────────────
+
+        private void Viewport_PreviewTouchDown(object sender, TouchEventArgs e)
+        {
+            if (_touchDragId != null) return; // already tracking a finger
+            _touchDragId = e.TouchDevice.Id;
+            _rightDragLast = e.GetTouchPoint(ModelViewPort).Position;
+            e.TouchDevice.Capture(ModelViewPort);
+            e.Handled = true;
+        }
+
+        private void Viewport_PreviewTouchMove(object sender, TouchEventArgs e)
+        {
+            if (_touchDragId != e.TouchDevice.Id) return;
+
+            var pos = e.GetTouchPoint(ModelViewPort).Position;
+            double dx = pos.X - _rightDragLast.X;
+            double dy = pos.Y - _rightDragLast.Y;
+            _rightDragLast = pos;
+
+            _modelYaw += dx * 0.5;
+            _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+
+            _yawRotation.Angle = _modelYaw;
+            _pitchRotation.Angle = _modelPitch;
+            e.Handled = true;
+        }
+
+        private void Viewport_PreviewTouchUp(object sender, TouchEventArgs e)
+        {
+            if (_touchDragId != e.TouchDevice.Id) return;
+            _touchDragId = null;
+            e.TouchDevice.Capture(null);
             e.Handled = true;
         }
 

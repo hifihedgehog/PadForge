@@ -1,18 +1,18 @@
 # PadForge
 
-Modern controller mapping utility for Windows. Maps any controller, keyboard, or mouse to virtual Xbox 360, DualShock 4, or vJoy controllers that games see as real hardware.
+Modern controller mapping utility for Windows. Maps any controller, keyboard, or mouse to virtual Xbox 360, DualShock 4, or custom DirectInput controllers that games see as real hardware.
 
 Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Modern fork of [x360ce](https://github.com/x360ce/x360ce).
 
 ## Features
 
-- **Any input to any virtual controller** -- Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom vJoy controllers
-- **Up to 16 virtual controller slots** -- Mix and match Xbox 360, DualShock 4, and vJoy across up to 16 simultaneous slots, each combining input from multiple physical devices
+- **Any input to any virtual controller** -- Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom DirectInput controllers
+- **Up to 16 virtual controller slots** -- Mix and match Xbox 360, DualShock 4, and custom DirectInput across up to 16 simultaneous slots, each combining input from multiple physical devices
 - **3D and 2D controller visualization** -- Interactive 3D controller model (rotate, zoom, pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time
 - **Interactive mapping** -- Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads
 - **Dead zones and response curves** -- Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview
-- **Force feedback** -- Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. vJoy force feedback via DirectInput
-- **Macro system** -- Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom vJoy, with repeat modes and input device or output controller trigger sources
+- **Force feedback** -- Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
+- **Macro system** -- Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
 - **Per-app profile switching** -- Automatically switch controller configurations when specific applications gain focus
 - **DSU/Cemuhook motion server** -- Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
 - **Driver management** -- One-click install/uninstall for ViGEmBus, HidHide, and vJoy
@@ -47,7 +47,7 @@ Rumble configuration with overall gain, per-motor strength sliders, and a swap o
 
 ### Macro Editor
 ![Macros](screenshots/macros.jpg)
-Create macros triggered by button combinations from either the output controller or a physical input device. Each macro supports an action sequence of button presses, key presses, delays, and axis manipulation. Configurable fire mode (on press, on release, repeat) with type-aware button names for Xbox 360, DualShock 4, and custom vJoy (up to 128 buttons).
+Create macros triggered by button combinations from either the output controller or a physical input device. Each macro supports an action sequence of button presses, key presses, delays, and axis manipulation. Configurable fire mode (on press, on release, repeat) with type-aware button names for Xbox 360, DualShock 4, and custom DirectInput controllers (up to 128 buttons).
 
 ### Device List
 ![Devices](screenshots/devices.jpg)
@@ -73,7 +73,7 @@ Application information, technology stack, and license details.
 Optional drivers (PadForge can install all of these for you):
 
 - [ViGEmBus](https://github.com/nefarius/ViGEmBus) -- Virtual Xbox 360 and DualShock 4 output
-- [vJoy](https://github.com/BrunnerInnovation/vJoy) -- Virtual joystick output with custom HID descriptors and force feedback
+- [vJoy](https://github.com/BrunnerInnovation/vJoy) -- Custom DirectInput joystick/gamepad output with configurable axes, buttons, POVs, and force feedback
 - [HidHide](https://github.com/nefarius/HidHide) -- Hide physical controllers from games to prevent double input
 
 ## Build
@@ -96,7 +96,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 | [SDL3](https://github.com/libsdl-org/SDL) | All device input -- joystick, gamepad, keyboard, mouse, sensors | zlib |
 | [ViGEmBus](https://github.com/nefarius/ViGEmBus) | Virtual Xbox 360 and DualShock 4 controller driver | MIT |
 | [Nefarius.ViGEm.Client](https://github.com/nefarius/ViGEm.NET) | .NET client library for ViGEmBus | MIT |
-| [vJoy](https://github.com/BrunnerInnovation/vJoy) | Virtual joystick driver with custom HID descriptors and force feedback | MIT |
+| [vJoy](https://github.com/BrunnerInnovation/vJoy) | Custom DirectInput joystick/gamepad driver with configurable HID descriptors and force feedback | MIT |
 | [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) | 3D controller models (Xbox 360, DualShock 4 OBJ meshes) | CC BY-NC-SA 4.0 |
 | [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) | 2D controller schematic overlays (Xbox 360, DS4 PNG assets) | MIT |
 | [HelixToolkit](https://github.com/helix-toolkit/helix-toolkit) | 3D viewport rendering for WPF | MIT |

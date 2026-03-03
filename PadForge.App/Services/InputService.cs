@@ -289,7 +289,7 @@ namespace PadForge.Services
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                 {
-                    var us = SettingsManager.UserSettings?.FindByInstanceGuid(selected.InstanceGuid);
+                    var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                     if (_inputManager.SlotVJoyIsCustom[i] && us != null)
                         padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
                     else

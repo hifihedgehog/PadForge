@@ -512,44 +512,7 @@ namespace PadForge.Views
                 ? _currentModel.JoystickRotationPointCenterLeftMillimeter
                 : _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            // Extract quadrant triangles from the ring mesh
-            var quadrantMesh = new MeshGeometry3D();
-            foreach (var child in ring.Children)
-            {
-                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
-                    continue;
-
-                var positions = srcMesh.Positions;
-                var indices = srcMesh.TriangleIndices;
-                for (int t = 0; t + 2 < indices.Count; t += 3)
-                {
-                    var p0 = positions[indices[t]];
-                    var p1 = positions[indices[t + 1]];
-                    var p2 = positions[indices[t + 2]];
-
-                    double cx = (p0.X + p1.X + p2.X) / 3.0 - center.X;
-                    double cz = (p0.Z + p1.Z + p2.Z) / 3.0 - center.Z;
-
-                    bool inQuadrant;
-                    if (isX)
-                        inQuadrant = isNeg ? (cx < 0 && Math.Abs(cx) >= Math.Abs(cz))
-                                           : (cx >= 0 && Math.Abs(cx) >= Math.Abs(cz));
-                    else
-                        inQuadrant = isNeg ? (cz >= 0 && Math.Abs(cz) > Math.Abs(cx))
-                                           : (cz < 0 && Math.Abs(cz) > Math.Abs(cx));
-
-                    if (!inQuadrant) continue;
-
-                    int baseIdx = quadrantMesh.Positions.Count;
-                    quadrantMesh.Positions.Add(p0);
-                    quadrantMesh.Positions.Add(p1);
-                    quadrantMesh.Positions.Add(p2);
-                    quadrantMesh.TriangleIndices.Add(baseIdx);
-                    quadrantMesh.TriangleIndices.Add(baseIdx + 1);
-                    quadrantMesh.TriangleIndices.Add(baseIdx + 2);
-                }
-            }
-
+            var quadrantMesh = BuildClippedQuadrantMesh(ring, center, isX, isNeg);
             if (quadrantMesh.Positions.Count == 0) return;
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
@@ -772,8 +735,8 @@ namespace PadForge.Views
 
         /// <summary>
         /// Builds a quadrant overlay from the stick ring's actual mesh triangles.
-        /// Extracts only triangles whose centroid falls in the target quadrant,
-        /// creating an overlay that matches the ring geometry exactly.
+        /// Uses Sutherland-Hodgman clipping for clean diagonal edges and
+        /// geometric torus-outward offset for reliable z-fighting prevention.
         /// </summary>
         private void ShowQuadrantRingOverlay(string target)
         {
@@ -798,46 +761,7 @@ namespace PadForge.Views
                 ? _currentModel.JoystickRotationPointCenterLeftMillimeter
                 : _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            // Extract quadrant triangles from all geometries in the ring group
-            var quadrantMesh = new MeshGeometry3D();
-            foreach (var child in ring.Children)
-            {
-                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
-                    continue;
-
-                var positions = srcMesh.Positions;
-                var indices = srcMesh.TriangleIndices;
-                for (int t = 0; t + 2 < indices.Count; t += 3)
-                {
-                    var p0 = positions[indices[t]];
-                    var p1 = positions[indices[t + 1]];
-                    var p2 = positions[indices[t + 2]];
-
-                    // Triangle centroid
-                    double cx = (p0.X + p1.X + p2.X) / 3.0 - center.X;
-                    double cz = (p0.Z + p1.Z + p2.Z) / 3.0 - center.Z;
-
-                    // Test if centroid is in the target quadrant
-                    bool inQuadrant;
-                    if (isX)
-                        inQuadrant = isNeg ? (cx < 0 && Math.Abs(cx) >= Math.Abs(cz))
-                                           : (cx >= 0 && Math.Abs(cx) >= Math.Abs(cz));
-                    else
-                        inQuadrant = isNeg ? (cz >= 0 && Math.Abs(cz) > Math.Abs(cx))
-                                           : (cz < 0 && Math.Abs(cz) > Math.Abs(cx));
-
-                    if (!inQuadrant) continue;
-
-                    int baseIdx = quadrantMesh.Positions.Count;
-                    quadrantMesh.Positions.Add(p0);
-                    quadrantMesh.Positions.Add(p1);
-                    quadrantMesh.Positions.Add(p2);
-                    quadrantMesh.TriangleIndices.Add(baseIdx);
-                    quadrantMesh.TriangleIndices.Add(baseIdx + 1);
-                    quadrantMesh.TriangleIndices.Add(baseIdx + 2);
-                }
-            }
-
+            var quadrantMesh = BuildClippedQuadrantMesh(ring, center, isX, isNeg);
             if (quadrantMesh.Positions.Count == 0) return;
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
@@ -877,6 +801,148 @@ namespace PadForge.Views
                 _quadrantRingVisual = null;
                 _quadrantRingMaterial = null;
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Quadrant mesh building helpers
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Builds a clipped quadrant mesh from the stick ring geometry.
+        /// Uses Sutherland-Hodgman clipping for clean diagonal edges and
+        /// geometric torus-outward offset to prevent z-fighting.
+        /// </summary>
+        private MeshGeometry3D BuildClippedQuadrantMesh(
+            Model3DGroup ring, Vector3D center, bool isX, bool isNeg)
+        {
+            // Quadrant boundary half-planes: a*cx + b*cz >= 0
+            // Each quadrant is the intersection of two half-planes at ±45°
+            double a1, b1, a2, b2;
+            if (isX && !isNeg)       { a1 =  1; b1 = -1; a2 =  1; b2 =  1; } // +X
+            else if (isX && isNeg)   { a1 = -1; b1 = -1; a2 = -1; b2 =  1; } // -X
+            else if (!isX && isNeg)  { a1 = -1; b1 =  1; a2 =  1; b2 =  1; } // +Z
+            else /* !isX && !isNeg */{ a1 =  1; b1 = -1; a2 = -1; b2 = -1; } // -Z
+
+            // Compute torus major radius (average XZ distance from center to vertices)
+            double totalDist = 0;
+            int vertCount = 0;
+            foreach (var child in ring.Children)
+            {
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D m)
+                    continue;
+                foreach (Point3D p in m.Positions)
+                {
+                    double dx = p.X - center.X, dz = p.Z - center.Z;
+                    totalDist += Math.Sqrt(dx * dx + dz * dz);
+                    vertCount++;
+                }
+            }
+            double majorR = vertCount > 0 ? totalDist / vertCount : 10.0;
+
+            var quadrantMesh = new MeshGeometry3D();
+            foreach (var child in ring.Children)
+            {
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
+                    continue;
+
+                var positions = srcMesh.Positions;
+                var indices = srcMesh.TriangleIndices;
+                for (int t = 0; t + 2 < indices.Count; t += 3)
+                {
+                    var p0 = positions[indices[t]];
+                    var p1 = positions[indices[t + 1]];
+                    var p2 = positions[indices[t + 2]];
+
+                    // Clip triangle against both quadrant boundary half-planes
+                    var poly = new List<Point3D> { p0, p1, p2 };
+                    poly = ClipPolygonByHalfPlane(poly, center, a1, b1);
+                    if (poly.Count < 3) continue;
+                    poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
+                    if (poly.Count < 3) continue;
+
+                    // Triangulate clipped polygon as a fan and offset outward
+                    for (int i = 1; i < poly.Count - 1; i++)
+                    {
+                        int baseIdx = quadrantMesh.Positions.Count;
+                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[0], center, majorR));
+                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[i], center, majorR));
+                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[i + 1], center, majorR));
+                        quadrantMesh.TriangleIndices.Add(baseIdx);
+                        quadrantMesh.TriangleIndices.Add(baseIdx + 1);
+                        quadrantMesh.TriangleIndices.Add(baseIdx + 2);
+                    }
+                }
+            }
+            return quadrantMesh;
+        }
+
+        /// <summary>
+        /// Offsets a point outward from the torus surface by pushing it away
+        /// from the nearest point on the torus center circle (skeleton).
+        /// Works correctly for all surface orientations (top, bottom, inner, outer).
+        /// </summary>
+        private static Point3D OffsetTorusOutward(Point3D p, Vector3D center, double majorR)
+        {
+            const double offset = 0.4;
+            double dx = p.X - center.X, dz = p.Z - center.Z;
+            double dist = Math.Sqrt(dx * dx + dz * dz);
+            if (dist < 0.001) return p;
+
+            // Nearest point on the center circle (in the XZ plane at center.Y)
+            double sx = center.X + majorR * dx / dist;
+            double sy = center.Y;
+            double sz = center.Z + majorR * dz / dist;
+
+            // Direction from skeleton point to surface point = tube outward normal
+            double ox = p.X - sx, oy = p.Y - sy, oz = p.Z - sz;
+            double odist = Math.Sqrt(ox * ox + oy * oy + oz * oz);
+            if (odist < 0.001) return p;
+
+            return new Point3D(
+                p.X + ox / odist * offset,
+                p.Y + oy / odist * offset,
+                p.Z + oz / odist * offset);
+        }
+
+        /// <summary>
+        /// Sutherland-Hodgman polygon clipping against a half-plane
+        /// defined by a*cx + b*cz >= 0, where cx = p.X - center.X, cz = p.Z - center.Z.
+        /// </summary>
+        private static List<Point3D> ClipPolygonByHalfPlane(
+            List<Point3D> poly, Vector3D center, double a, double b)
+        {
+            var result = new List<Point3D>(poly.Count + 1);
+            for (int i = 0; i < poly.Count; i++)
+            {
+                var curr = poly[i];
+                var next = poly[(i + 1) % poly.Count];
+                double dCurr = a * (curr.X - center.X) + b * (curr.Z - center.Z);
+                double dNext = a * (next.X - center.X) + b * (next.Z - center.Z);
+
+                if (dCurr >= 0) // curr inside
+                {
+                    result.Add(curr);
+                    if (dNext < 0) // next outside → intersection
+                    {
+                        double t = dCurr / (dCurr - dNext);
+                        result.Add(LerpPoint(curr, next, t));
+                    }
+                }
+                else if (dNext >= 0) // curr outside, next inside → intersection
+                {
+                    double t = dCurr / (dCurr - dNext);
+                    result.Add(LerpPoint(curr, next, t));
+                }
+            }
+            return result;
+        }
+
+        private static Point3D LerpPoint(Point3D a, Point3D b, double t)
+        {
+            return new Point3D(
+                a.X + (b.X - a.X) * t,
+                a.Y + (b.Y - a.Y) * t,
+                a.Z + (b.Z - a.Z) * t);
         }
 
         // ─────────────────────────────────────────────

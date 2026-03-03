@@ -27,6 +27,7 @@ namespace PadForge.Views
         // Accent color for pressed/active elements
         private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
+        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
         private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
         private static readonly Brush BgBrush = new SolidColorBrush(Color.FromRgb(0x2D, 0x2D, 0x2D));
         private static readonly Brush LabelBrush = new SolidColorBrush(Color.FromRgb(0xBB, 0xBB, 0xBB));
@@ -274,6 +275,32 @@ namespace PadForge.Views
             var label = CreateLabel($"Stick {index + 1}", x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
+            // Hover: show direction arrow for hovered quadrant
+            outer.MouseMove += (s, e) =>
+            {
+                if (_flashTarget != null) return; // don't override active flash
+                var pos = e.GetPosition(outer);
+                double hx = pos.X - StickSize / 2, hy = pos.Y - StickSize / 2;
+                double angle;
+                if (Math.Abs(hx) > Math.Abs(hy))
+                    angle = hx > 0 ? 90 : 270; // right or left
+                else
+                    angle = hy > 0 ? 180 : 0; // down or up
+                dirArrow.Visibility = Visibility.Visible;
+                dirArrow.Fill = HoverBrush;
+                stickArrowCanvas.RenderTransform = new RotateTransform(angle,
+                    StickSize / 2, StickSize / 2);
+                outer.Stroke = HoverBrush;
+                outer.StrokeThickness = 2.5;
+            };
+            outer.MouseLeave += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                dirArrow.Visibility = Visibility.Collapsed;
+                outer.Stroke = DimBrush;
+                outer.StrokeThickness = 1.5;
+            };
+
             // Click-to-record: quadrant detection
             outer.MouseLeftButtonDown += (s, e) =>
             {
@@ -339,6 +366,20 @@ namespace PadForge.Views
             var label = CreateLabel($"T{index + 1}", x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
+            // Hover highlight
+            bg.MouseEnter += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                bg.Stroke = HoverBrush;
+                bg.StrokeThickness = 2.5;
+            };
+            bg.MouseLeave += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                bg.Stroke = DimBrush;
+                bg.StrokeThickness = 1;
+            };
+
             // Click-to-record
             bg.MouseLeftButtonDown += (s, e) =>
             {
@@ -348,6 +389,7 @@ namespace PadForge.Views
             return new TriggerWidget
             {
                 AxisIndex = axisIdx,
+                Background = bg,
                 Fill = fill,
                 X = x,
                 Y = y
@@ -407,8 +449,34 @@ namespace PadForge.Views
             var label = CreateLabel(povLabel, x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
-            // Click-to-record: detect direction by click position relative to center
+            // Hover: show direction arrow for hovered quadrant
             outer.Cursor = Cursors.Hand;
+            outer.MouseMove += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                var pos = e.GetPosition(outer);
+                double hx = pos.X - PovSize / 2, hy = pos.Y - PovSize / 2;
+                double angle;
+                if (Math.Abs(hx) > Math.Abs(hy))
+                    angle = hx > 0 ? 90 : 270;
+                else
+                    angle = hy > 0 ? 180 : 0;
+                arrow.Visibility = Visibility.Visible;
+                arrow.Fill = HoverBrush;
+                arrowCanvas.RenderTransform = new RotateTransform(angle,
+                    PovSize / 2, PovSize / 2);
+                outer.Stroke = HoverBrush;
+                outer.StrokeThickness = 2.5;
+            };
+            outer.MouseLeave += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                arrow.Visibility = Visibility.Collapsed;
+                outer.Stroke = DimBrush;
+                outer.StrokeThickness = 1.5;
+            };
+
+            // Click-to-record: detect direction by click position relative to center
             outer.MouseLeftButtonDown += (s, e) =>
             {
                 var pos = e.GetPosition(outer);
@@ -464,6 +532,19 @@ namespace PadForge.Views
             Canvas.SetLeft(text, x + (ButtonSize - text.DesiredSize.Width) / 2);
             Canvas.SetTop(text, y + (ButtonSize - text.DesiredSize.Height) / 2);
             SchematicCanvas.Children.Add(text);
+
+            circle.MouseEnter += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                circle.Stroke = HoverBrush;
+                circle.StrokeThickness = 2.5;
+            };
+            circle.MouseLeave += (s, e) =>
+            {
+                if (_flashTarget != null) return;
+                circle.Stroke = DimBrush;
+                circle.StrokeThickness = 1.5;
+            };
 
             circle.MouseLeftButtonDown += (s, e) =>
             {
@@ -522,11 +603,12 @@ namespace PadForge.Views
                     bool isNeg = t.EndsWith("Neg", StringComparison.Ordinal);
                     bool isX = baseTarget == $"VJoyAxis{w.AxisXIndex}";
                     // Determine arrow angle: right=90, left=270, up=0, down=180
+                    // Y: Neg = up (top of stick in WPF), non-Neg = down (bottom)
                     double angle;
                     if (isX)
                         angle = isNeg ? 270 : 90; // left or right
                     else
-                        angle = isNeg ? 180 : 0; // down or up
+                        angle = isNeg ? 0 : 180; // up or down
 
                     w.OuterCircle.Stroke = highlight ? FlashBrush : DimBrush;
                     w.OuterCircle.StrokeThickness = highlight ? 2.5 : 1.5;
@@ -603,7 +685,7 @@ namespace PadForge.Views
                     if (w.AxisXIndex < raw.Axes.Length)
                         nx = (raw.Axes[w.AxisXIndex] - (double)short.MinValue) / 65535.0;
                     if (w.AxisYIndex < raw.Axes.Length)
-                        ny = 1.0 - ((raw.Axes[w.AxisYIndex] - (double)short.MinValue) / 65535.0);
+                        ny = (raw.Axes[w.AxisYIndex] - (double)short.MinValue) / 65535.0;
                 }
                 double dotX = w.X + nx * (StickSize - 10);
                 double dotY = w.Y + ny * (StickSize - 10);
@@ -684,6 +766,7 @@ namespace PadForge.Views
         private struct TriggerWidget
         {
             public int AxisIndex;
+            public Rectangle Background;
             public Rectangle Fill;
             public double X, Y;
         }

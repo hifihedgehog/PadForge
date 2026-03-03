@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
@@ -206,24 +208,43 @@ namespace PadForge.ViewModels
         //  Slot assignment
         // ─────────────────────────────────────────────
 
-        private int _assignedSlot = -1;
+        private List<int> _assignedSlots = new();
 
         /// <summary>
-        /// The pad slot this device is assigned to (0–3), or -1 if unassigned.
+        /// The pad slot indices this device is assigned to (0–7). Empty if unassigned.
+        /// A device can be assigned to multiple slots simultaneously.
         /// </summary>
-        public int AssignedSlot
-        {
-            get => _assignedSlot;
-            set
-            {
-                if (SetProperty(ref _assignedSlot, value))
-                    OnPropertyChanged(nameof(AssignedSlotText));
-            }
-        }
+        public List<int> AssignedSlots => _assignedSlots;
 
-        /// <summary>Display text for the slot assignment.</summary>
-        public string AssignedSlotText =>
-            _assignedSlot >= 0 ? $"Player {_assignedSlot + 1}" : "Unassigned";
+        /// <summary>
+        /// Observable collection of slot badges for XAML binding (icon + number).
+        /// </summary>
+        public ObservableCollection<SlotBadge> SlotBadges { get; } = new();
+
+        /// <summary>Whether this device has no slot assignments.</summary>
+        public bool IsUnassigned => _assignedSlots.Count == 0;
+
+        /// <summary>
+        /// Replaces the assigned slots list, rebuilds SlotBadges, and notifies the UI.
+        /// </summary>
+        public void SetAssignedSlots(List<int> slots)
+        {
+            _assignedSlots = slots ?? new();
+            SlotBadges.Clear();
+            foreach (int slot in _assignedSlots)
+            {
+                // Compute sequential global number (1-based) among created slots,
+                // not raw padIndex+1. Without this, gaps in SlotCreated[] (e.g.,
+                // slot 1 uncreated) cause badge numbers to skip (1, 3, 4...).
+                int globalNum = 0;
+                for (int i = 0; i <= slot; i++)
+                    if (Common.Input.SettingsManager.SlotCreated[i])
+                        globalNum++;
+                SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = globalNum });
+            }
+            OnPropertyChanged(nameof(AssignedSlots));
+            OnPropertyChanged(nameof(IsUnassigned));
+        }
 
         // ─────────────────────────────────────────────
         //  Device path
@@ -255,7 +276,7 @@ namespace PadForge.ViewModels
         public void NotifyDisplayChanged()
         {
             OnPropertyChanged(nameof(StatusText));
-            OnPropertyChanged(nameof(AssignedSlotText));
+            OnPropertyChanged(nameof(IsUnassigned));
             OnPropertyChanged(nameof(CapabilitiesSummary));
             OnPropertyChanged(nameof(VendorIdHex));
             OnPropertyChanged(nameof(ProductIdHex));
@@ -265,5 +286,14 @@ namespace PadForge.ViewModels
         {
             return $"{_deviceName} [{StatusText}]";
         }
+    }
+
+    /// <summary>
+    /// Display item for a single slot assignment badge (icon + number).
+    /// </summary>
+    public class SlotBadge
+    {
+        public int SlotIndex { get; set; }
+        public int SlotNumber { get; set; }
     }
 }

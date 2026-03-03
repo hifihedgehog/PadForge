@@ -88,9 +88,13 @@ namespace PadForge.Engine
         /// <summary>SDL joystick type classification.</summary>
         public SDL_JoystickType JoystickType { get; private set; } = SDL_JoystickType.SDL_JOYSTICK_TYPE_UNKNOWN;
 
+        /// <summary>Device serial number (e.g. Bluetooth MAC address). May be empty.</summary>
+        public string SerialNumber { get; private set; } = string.Empty;
+
         /// <summary>
-        /// Deterministic instance GUID for this device, derived from its device path
-        /// (or a fallback identifier). Used to match saved settings to physical devices.
+        /// Deterministic instance GUID for this device, derived from VID+PID+Serial
+        /// (when serial is available) or device path. Used to match saved settings
+        /// to physical devices.
         /// </summary>
         public Guid InstanceGuid { get; private set; } = Guid.Empty;
 
@@ -163,6 +167,7 @@ namespace PadForge.Engine
             ProductVersion = SDL_GetJoystickProductVersion(Joystick);
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
+            SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
 
             // Always capture the raw joystick button count before any gamepad override.
             RawButtonCount = SDL_GetNumJoystickButtons(Joystick);
@@ -205,14 +210,15 @@ namespace PadForge.Engine
                 if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
             }
 
-            // If the device doesn't support simple rumble, try the haptic API for
-            // full force feedback (DirectInput FFB wheels, joysticks, etc.).
-            if (!HasRumble)
-                OpenHaptic();
+            // Always try the haptic API for force feedback devices (joysticks,
+            // wheels, etc.). Some report HasRumble=true via SDL properties but
+            // only actually work through the haptic effect system. The routing
+            // in ForceFeedbackState prefers HasHaptic when available.
+            OpenHaptic();
 
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
-            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId);
+            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId, SerialNumber);
 
             return true;
         }
@@ -260,11 +266,27 @@ namespace PadForge.Engine
 
             IntPtr h = SDL_OpenHapticFromJoystick(Joystick);
             if (h == IntPtr.Zero)
+            {
+                RumbleLogger.Log($"OpenHaptic: SDL_OpenHapticFromJoystick failed for '{Name}': {SDL_GetError()}");
                 return;
+            }
 
             uint features = SDL_GetHapticFeatures(h);
+            RumbleLogger.Log($"OpenHaptic: '{Name}' features=0x{features:X8} rumble={HasRumble}");
+
             if (features == 0)
             {
+                SDL_CloseHaptic(h);
+                return;
+            }
+
+            // For devices that already have simple rumble (gamepads), skip haptic
+            // unless they lack LeftRight support — simple rumble via SDL_RumbleJoystick
+            // is more reliable for gamepads.
+            if (HasRumble && (features & SDL_HAPTIC_LEFTRIGHT) != 0)
+            {
+                // Gamepad with LeftRight haptic — simple rumble works fine, skip haptic.
+                RumbleLogger.Log($"OpenHaptic: '{Name}' has rumble + LeftRight, preferring simple rumble");
                 SDL_CloseHaptic(h);
                 return;
             }
@@ -287,6 +309,8 @@ namespace PadForge.Engine
                 HapticFeatures = 0;
                 return;
             }
+
+            RumbleLogger.Log($"OpenHaptic: '{Name}' strategy={HapticStrategy}");
 
             // Set gain to maximum if the device supports it.
             if ((features & SDL_HAPTIC_GAIN) != 0)
@@ -376,9 +400,14 @@ namespace PadForge.Engine
             state.Buttons[9] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_STICK);
             state.Buttons[10] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_GUIDE);
 
+            // Suppress Guide when Back+Start are both pressed — Windows/XInput
+            // synthesizes a Guide button press from this combo when the app has focus.
+            if (state.Buttons[6] && state.Buttons[7] && state.Buttons[10])
+                state.Buttons[10] = false;
+
             // --- Extra raw buttons ---
             // Append raw joystick buttons beyond the 11 standard gamepad buttons.
-            // This exposes native device buttons (e.g. DualSense touchpad, mic) that
+            // This exposes native device buttons (e.g. DualSense touchpad) that
             // aren't part of the Xbox gamepad mapping, for use as macro triggers.
             int rawCount = RawButtonCount;
             for (int i = 11; i < rawCount && i < CustomInputState.MaxButtons; i++)
@@ -541,28 +570,27 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Builds a deterministic instance GUID from the device path (preferred)
-        /// or a fallback identifier string. Uses MD5 to produce a stable 16-byte hash
-        /// so the same physical device (same USB port path) always gets the same GUID,
-        /// enabling settings persistence across sessions.
+        /// Builds a deterministic instance GUID for a physical device.
+        /// Priority: VID+PID+Serial (stable across reboots for BT devices),
+        /// then device path, then VID+PID+SDL instance ID as last resort.
         /// </summary>
-        /// <param name="devicePath">The file system device path (may be empty).</param>
-        /// <param name="vid">USB Vendor ID.</param>
-        /// <param name="pid">USB Product ID.</param>
-        /// <param name="instanceId">SDL instance ID (used in fallback only).</param>
-        /// <returns>A deterministic GUID for the device instance.</returns>
-        public static Guid BuildInstanceGuid(string devicePath, ushort vid, ushort pid, uint instanceId)
+        public static Guid BuildInstanceGuid(string devicePath, ushort vid, ushort pid, uint instanceId, string serial = null)
         {
             string identifier;
 
-            if (!string.IsNullOrEmpty(devicePath))
+            if (!string.IsNullOrEmpty(serial))
             {
-                // Use the device path for a stable identifier.
+                // Best: serial number (e.g. BT MAC) is stable across reboots/re-pairs.
+                identifier = $"serial:{vid:X4}:{pid:X4}:{serial}";
+            }
+            else if (!string.IsNullOrEmpty(devicePath))
+            {
+                // Good for wired/USB devices whose path is stable.
                 identifier = devicePath;
             }
             else
             {
-                // Fallback: synthetic identifier from VID, PID, and instance ID.
+                // Last resort: session-specific SDL instance ID.
                 identifier = $"sdl:{vid:X4}:{pid:X4}:{instanceId}";
             }
 

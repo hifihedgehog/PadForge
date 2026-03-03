@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using PadForge.Engine;
 
 namespace PadForge.ViewModels
 {
@@ -14,12 +15,7 @@ namespace PadForge.ViewModels
         public DashboardViewModel()
         {
             Title = "Dashboard";
-
-            // Create slot summary entries for each of the 4 pads.
-            for (int i = 0; i < 4; i++)
-            {
-                SlotSummaries.Add(new SlotSummary(i));
-            }
+            // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
         }
 
         // ─────────────────────────────────────────────
@@ -27,11 +23,55 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Summary information for each of the 4 virtual controller slots.
+        /// Summary information for virtual controller slots that have mapped devices.
         /// Displayed as cards on the Dashboard page.
         /// </summary>
         public ObservableCollection<SlotSummary> SlotSummaries { get; } =
             new ObservableCollection<SlotSummary>();
+
+        /// <summary>
+        /// Whether the "Add Controller" card should be visible (any controller type has capacity).
+        /// </summary>
+        private bool _showAddController = true;
+        public bool ShowAddController
+        {
+            get => _showAddController;
+            set => SetProperty(ref _showAddController, value);
+        }
+
+        /// <summary>
+        /// Rebuilds the SlotSummaries to only include slots with mapped devices.
+        /// Called from InputService after UpdatePadDeviceInfo().
+        /// </summary>
+        public void RefreshActiveSlots(System.Collections.Generic.IList<int> activeSlots, bool canAddMore)
+        {
+            // Check if the set of active slots has changed.
+            bool changed = activeSlots.Count != SlotSummaries.Count;
+            if (!changed)
+            {
+                for (int i = 0; i < activeSlots.Count; i++)
+                {
+                    if (SlotSummaries[i].PadIndex != activeSlots[i])
+                    {
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                SlotSummaries.Clear();
+                foreach (int slot in activeSlots)
+                    SlotSummaries.Add(new SlotSummary(slot));
+            }
+
+            // Update display labels to use sequential global numbering.
+            for (int i = 0; i < SlotSummaries.Count; i++)
+                SlotSummaries[i].SlotLabel = $"Virtual Controller {i + 1}";
+
+            ShowAddController = canAddMore;
+        }
 
         // ─────────────────────────────────────────────
         //  Engine status
@@ -149,6 +189,57 @@ namespace PadForge.ViewModels
         /// <summary>Display text for HidHide status.</summary>
         public string HidHideStatusText => IsHidHideInstalled ? "Installed" : "Not Installed";
 
+        // ─────────────────────────────────────────────
+        //  vJoy status
+        // ─────────────────────────────────────────────
+
+        private bool _isVJoyInstalled;
+
+        /// <summary>Whether the vJoy driver is installed.</summary>
+        public bool IsVJoyInstalled
+        {
+            get => _isVJoyInstalled;
+            set
+            {
+                if (SetProperty(ref _isVJoyInstalled, value))
+                    OnPropertyChanged(nameof(VJoyStatusText));
+            }
+        }
+
+        /// <summary>Display text for vJoy status.</summary>
+        public string VJoyStatusText => IsVJoyInstalled ? "Installed" : "Not Installed";
+
+        // ─────────────────────────────────────────────
+        //  DSU Motion Server
+        // ─────────────────────────────────────────────
+
+        private bool _enableDsuMotionServer;
+
+        /// <summary>Whether the DSU (cemuhook) motion server is enabled.</summary>
+        public bool EnableDsuMotionServer
+        {
+            get => _enableDsuMotionServer;
+            set => SetProperty(ref _enableDsuMotionServer, value);
+        }
+
+        private int _dsuMotionServerPort = 26760;
+
+        /// <summary>UDP port for the DSU motion server (default 26760).</summary>
+        public int DsuMotionServerPort
+        {
+            get => _dsuMotionServerPort;
+            set => SetProperty(ref _dsuMotionServerPort, Math.Clamp(value, 1024, 65535));
+        }
+
+        private string _dsuServerStatus = "Stopped";
+
+        /// <summary>Current status of the DSU server for UI display.</summary>
+        public string DsuServerStatus
+        {
+            get => _dsuServerStatus;
+            set => SetProperty(ref _dsuServerStatus, value ?? "Stopped");
+        }
+
     }
 
     /// <summary>
@@ -160,14 +251,19 @@ namespace PadForge.ViewModels
         public SlotSummary(int padIndex)
         {
             PadIndex = padIndex;
-            SlotLabel = $"Player {padIndex + 1}";
+            SlotLabel = $"Virtual Controller {padIndex + 1}";
         }
 
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index.</summary>
         public int PadIndex { get; }
 
-        /// <summary>Display label (e.g., "Player 1").</summary>
-        public string SlotLabel { get; }
+        private string _slotLabel;
+        /// <summary>Display label (e.g., "Virtual Controller 1").</summary>
+        public string SlotLabel
+        {
+            get => _slotLabel;
+            set => SetProperty(ref _slotLabel, value);
+        }
 
         private string _deviceName = "No device";
 
@@ -216,11 +312,47 @@ namespace PadForge.ViewModels
 
         private string _statusText = "Idle";
 
-        /// <summary>Status text for the slot (e.g., "Active", "Idle", "No mapping").</summary>
+        /// <summary>Status text for the slot (e.g., "Active", "Idle", "No mapping", "Disabled").</summary>
         public string StatusText
         {
             get => _statusText;
             set => SetProperty(ref _statusText, value);
+        }
+
+        private bool _isEnabled = true;
+
+        /// <summary>Whether this virtual controller slot is enabled for ViGEm output.</summary>
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value);
+        }
+
+        private int _slotNumber = 1;
+
+        /// <summary>Overall controller number among active slots (1-based).</summary>
+        public int SlotNumber
+        {
+            get => _slotNumber;
+            set => SetProperty(ref _slotNumber, value);
+        }
+
+        private string _typeInstanceLabel = "1";
+
+        /// <summary>Per-type instance number label (e.g., "1", "2").</summary>
+        public string TypeInstanceLabel
+        {
+            get => _typeInstanceLabel;
+            set => SetProperty(ref _typeInstanceLabel, value);
+        }
+
+        private VirtualControllerType _outputType = VirtualControllerType.Xbox360;
+
+        /// <summary>The virtual controller output type for this slot.</summary>
+        public VirtualControllerType OutputType
+        {
+            get => _outputType;
+            set => SetProperty(ref _outputType, value);
         }
     }
 }

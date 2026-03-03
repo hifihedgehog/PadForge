@@ -4,6 +4,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:PadForge.ViewModels"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:views="clr-namespace:PadForge.Views"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:PadViewModel}"
              d:DesignHeight="700" d:DesignWidth="900">
@@ -42,6 +45,44 @@
             <Setter Property="Margin" Value="2,0,0,0"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
+
+        <!-- Custom tab strip button (RadioButton styled as tab header) -->
+        <Style x:Key="TabStripButton" TargetType="RadioButton">
+            <Setter Property="GroupName" Value="PadTab"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd" Padding="10,6" Background="Transparent"
+                                BorderThickness="0,0,0,2" BorderBrush="Transparent">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush"
+                                        Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#10FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#08FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Right-arrow separator between tab groups -->
+        <Style x:Key="TabStripSeparator" TargetType="TextBlock">
+            <Setter Property="Text" Value="&#xE76C;"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4,0"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -53,37 +94,57 @@
         </Grid.RowDefinitions>
 
         <!-- ═══════════════════════════════════════════
-             ROW 0: Device Selector Header
-             Selects which physical device to configure within this pad slot.
-             Like x360ce's device list above the mapping grid.
+             ROW 0: Unified Tab Strip
+             Combines navigation + device selector in one horizontal strip.
              ═══════════════════════════════════════════ -->
-        <Border Grid.Row="0" Padding="8" Margin="0,0,0,4"
-                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                CornerRadius="4">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Padding="4,0" Margin="0,0,0,2"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal"
-                            VerticalAlignment="Center" Margin="0,0,12,0">
-                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
-                               FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0"
-                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                    <TextBlock Text="{Binding SlotLabel}"
-                               FontSize="16" FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                </StackPanel>
+                <!-- [Gamepad #  TypeIcon TypeName] — Controller tab -->
+                <RadioButton Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             IsChecked="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding SlotNumber}" FontSize="15" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Image Width="14" Height="14" Margin="0,0,4,0" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{StaticResource GenericControllerIcon}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox360">
+                                            <Setter Property="Source" Value="{StaticResource XboxControllerIcon}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="DualShock4">
+                                            <Setter Property="Source" Value="{StaticResource DS4ControllerIcon}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="VJoy">
+                                            <Setter Property="Source" Value="{StaticResource VJoyControllerIcon}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="15" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </RadioButton>
 
-                <!-- Device ComboBox: select which mapped device to configure -->
-                <ComboBox Grid.Column="1"
-                          ItemsSource="{Binding MappedDevices}"
+                <!-- [Macros] -->
+                <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="Macros" FontSize="15"/>
+                </RadioButton>
+
+                <!-- | separator -->
+                <TextBlock Style="{StaticResource TabStripSeparator}"/>
+
+                <!-- [Device ▼] — inline ComboBox -->
+                <ComboBox ItemsSource="{Binding MappedDevices}"
                           SelectedItem="{Binding SelectedMappedDevice, Mode=TwoWay}"
-                          MinWidth="250"
-                          VerticalAlignment="Center">
+                          MinWidth="200" Margin="4,2" VerticalAlignment="Center">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -106,36 +167,23 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <!-- Online status indicator -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal"
-                            VerticalAlignment="Center" Margin="12,0,0,0">
-                    <Ellipse Width="10" Height="10" Margin="0,0,6,0">
-                        <Ellipse.Style>
-                            <Style TargetType="Ellipse">
-                                <Setter Property="Fill" Value="#FF888888"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDeviceOnline}" Value="True">
-                                        <Setter Property="Fill" Value="#FF4CAF50"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Ellipse.Style>
-                    </Ellipse>
-                    <TextBlock VerticalAlignment="Center"
-                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="Offline"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDeviceOnline}" Value="True">
-                                        <Setter Property="Text" Value="Online"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </Grid>
+                <!-- | separator -->
+                <TextBlock Style="{StaticResource TabStripSeparator}"/>
+
+                <!-- Config tabs -->
+                <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="Mappings" FontSize="13"/>
+                </RadioButton>
+                <RadioButton Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="Sticks" FontSize="13"/>
+                </RadioButton>
+                <RadioButton Tag="4" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="Triggers" FontSize="13"/>
+                </RadioButton>
+                <RadioButton Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="Force Feedback" FontSize="13"/>
+                </RadioButton>
+            </WrapPanel>
         </Border>
 
         <!-- ═══════════════════════════════════════════
@@ -144,282 +192,387 @@
              ═══════════════════════════════════════════ -->
         <TabControl Grid.Row="1"
                     SelectedIndex="{Binding SelectedConfigTab, Mode=TwoWay}">
+            <TabControl.Template>
+                <ControlTemplate TargetType="TabControl">
+                    <ContentPresenter x:Name="PART_SelectedContentHost"
+                                      ContentSource="SelectedContent"/>
+                </ControlTemplate>
+            </TabControl.Template>
 
             <!-- ─── TAB 0: Controller (slot-level) ─── -->
             <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="Controller" FontSize="14" FontWeight="SemiBold" Padding="4,2"/>
-                </TabItem.Header>
-                <Viewbox Stretch="Uniform" Margin="4">
-                    <StackPanel Width="768" HorizontalAlignment="Center">
+                <Grid Margin="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>      <!-- 3D viewport -->
+                        <RowDefinition Height="Auto"/>   <!-- vJoy config bar -->
+                        <RowDefinition Height="Auto"/>   <!-- Motor bars -->
+                        <RowDefinition Height="Auto"/>   <!-- Map All -->
+                    </Grid.RowDefinitions>
 
-                        <!-- ══════════════════════════════════════
-                             TOP VIEW: Triggers + Bumpers
-                             ══════════════════════════════════════ -->
-                        <Grid Width="768" Height="432" Margin="0,4,0,1">
-                                <Image Source="/Resources/Xbox Series Controller - Top.png" Stretch="Fill"/>
-                                <Canvas Width="768" Height="432">
+                    <!-- ══════════════════════════════════════
+                         CONTROLLER MODEL (2D / 3D)
+                         ══════════════════════════════════════ -->
+                    <Grid Grid.Row="0">
+                        <views:ControllerModelView x:Name="ControllerModel3D" />
+                        <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
+                        <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
 
-                                    <!-- LT trigger — sliding bar -->
-                                    <Border Tag="LeftTrigger" Canvas.Left="145" Canvas.Top="180" Width="93" Height="98"
-                                            Background="#30000000" CornerRadius="5" ClipToBounds="True"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click">
-                                        <Canvas>
-                                            <Border Width="85" Height="20" CornerRadius="6"
-                                                    Background="#FF2196F3" Canvas.Left="4"
-                                                    Canvas.Top="{Binding LeftTrigger,
-                                                        Converter={StaticResource NormToTriggerSlideConverter},
-                                                        ConverterParameter='98,20'}"/>
-                                        </Canvas>
-                                    </Border>
+                        <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
+                        <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="8,8,0,0" Padding="6,4" Opacity="0.7"
+                                Click="ViewModeToggle_Click" ToolTip="Switch to 2D view">
+                            <TextBlock x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Text="&#xE8B9;"/>
+                        </Button>
+                    </Grid>
 
-                                    <!-- RT trigger — sliding bar -->
-                                    <Border Tag="RightTrigger" Canvas.Left="529" Canvas.Top="180" Width="93" Height="98"
-                                            Background="#30000000" CornerRadius="5" ClipToBounds="True"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click">
-                                        <Canvas>
-                                            <Border Width="85" Height="20" CornerRadius="6"
-                                                    Background="#FF2196F3" Canvas.Left="4"
-                                                    Canvas.Top="{Binding RightTrigger,
-                                                        Converter={StaticResource NormToTriggerSlideConverter},
-                                                        ConverterParameter='98,20'}"/>
-                                        </Canvas>
-                                    </Border>
+                    <!-- ══════════════════════════════════════
+                         VJOY CONFIGURATION BAR
+                         (visible only when OutputType == VJoy)
+                         ══════════════════════════════════════ -->
+                    <Border x:Name="VJoyConfigBar" Grid.Row="1" Margin="4,4,4,0"
+                            Padding="10,6" CornerRadius="4"
+                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
+                            Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <!-- Preset selector -->
+                            <TextBlock Text="Preset" VerticalAlignment="Center" Margin="0,0,6,0"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" FontSize="13"/>
+                            <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
+                                      SelectionChanged="VJoyPresetCombo_SelectionChanged">
+                                <ComboBoxItem Content="Xbox 360"/>
+                                <ComboBoxItem Content="DualShock 4"/>
+                                <ComboBoxItem Content="Custom"/>
+                            </ComboBox>
 
-                                    <!-- Left shoulder — invisible when idle, light blue when pressed -->
-                                    <Border Tag="LeftShoulder" Canvas.Left="149" Canvas.Top="278" Width="142" Height="72" CornerRadius="6"
-                                            Background="#FF2196F3"
-                                            Opacity="{Binding LeftShoulder, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click"/>
+                            <!-- Custom config spinners (visible when Custom preset) -->
+                            <StackPanel x:Name="VJoyCustomPanel" Orientation="Horizontal" Margin="16,0,0,0"
+                                        Visibility="Collapsed">
+                                <TextBlock Text="Sticks" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
+                                         TextAlignment="Center" Text="2"
+                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                                    <!-- Right shoulder — invisible when idle, light blue when pressed -->
-                                    <Border Tag="RightShoulder" Canvas.Left="477" Canvas.Top="278" Width="142" Height="72" CornerRadius="6"
-                                            Background="#FF2196F3"
-                                            Opacity="{Binding RightShoulder, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                            Cursor="Hand"
-                                            MouseEnter="ControllerElement_MouseEnter"
-                                            MouseLeave="ControllerElement_MouseLeave"
-                                            MouseLeftButtonDown="ControllerElement_Click"/>
+                                <TextBlock Text="Triggers" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
+                                         TextAlignment="Center" Text="2"
+                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                                </Canvas>
-                        </Grid>
+                                <TextBlock Text="POVs" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
+                                         TextAlignment="Center" Text="1"
+                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                        <!-- ══════════════════════════════════════
-                             FRONT VIEW: Sticks, Buttons, D-Pad, Center
-                             ══════════════════════════════════════ -->
-                        <Grid Width="768" Height="588" ClipToBounds="True" Margin="0,1,0,2">
-                                <Image Source="/Resources/Xbox Series Controller - Front.png" Stretch="Fill" RenderTransformOrigin="0.494,0.495"/>
-                                <Canvas Width="768" Height="588">
-
-                                    <!-- ── LEFT STICK ── -->
-                                    <Canvas Canvas.Left="190" Canvas.Top="158" Width="84" Height="84" ClipToBounds="True">
-                                        <Ellipse Width="84" Height="84" Fill="#40000000"
-                                                 Stroke="#60FFFFFF" StrokeThickness="1.5"/>
-                                        <Ellipse Width="45" Height="45" Fill="#FF2196F3"
-                                                 Stroke="#FF1976D2" StrokeThickness="1.5"
-                                                 Canvas.Left="{Binding ThumbLX,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"
-                                                 Canvas.Top="{Binding ThumbLY,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"/>
-                                    </Canvas>
-                                    <!-- LS click glow -->
-                                    <Ellipse Tag="LeftThumbButton" Canvas.Left="190" Canvas.Top="158" Width="84" Height="84"
-                                             Fill="Transparent" Stroke="#FF2196F3" StrokeThickness="3"
-                                             Opacity="{Binding LeftThumbButton,
-                                                 Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Left stick — Up arrow (Y axis) -->
-                                    <Polygon Tag="LeftThumbAxisY" Canvas.Left="216" Canvas.Top="126"
-                                             Points="14,0 28,26 0,26" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Left stick — Right arrow (X axis) -->
-                                    <Polygon Tag="LeftThumbAxisX" Canvas.Left="278" Canvas.Top="184"
-                                             Points="0,0 26,14 0,28" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── RIGHT STICK ── -->
-                                    <Canvas Canvas.Left="421" Canvas.Top="250" Width="84" Height="84" ClipToBounds="True">
-                                        <Ellipse Width="84" Height="84" Fill="#40000000"
-                                                 Stroke="#60FFFFFF" StrokeThickness="1.5"/>
-                                        <Ellipse Width="45" Height="45" Fill="#FF2196F3"
-                                                 Stroke="#FF1976D2" StrokeThickness="1.5"
-                                                 Canvas.Left="{Binding ThumbRX,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"
-                                                 Canvas.Top="{Binding ThumbRY,
-                                                     Converter={StaticResource NormToCanvasConverter}, ConverterParameter='84,45'}"/>
-                                    </Canvas>
-                                    <!-- RS click glow -->
-                                    <Ellipse Tag="RightThumbButton" Canvas.Left="421" Canvas.Top="250" Width="84" Height="84"
-                                             Fill="Transparent" Stroke="#FF2196F3" StrokeThickness="3"
-                                             Opacity="{Binding RightThumbButton,
-                                                 Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.7'}"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Right stick — Up arrow (Y axis) -->
-                                    <Polygon Tag="RightThumbAxisY" Canvas.Left="447" Canvas.Top="218"
-                                             Points="14,0 28,26 0,26" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <!-- Right stick — Right arrow (X axis) -->
-                                    <Polygon Tag="RightThumbAxisX" Canvas.Left="509" Canvas.Top="276"
-                                             Points="0,0 26,14 0,28" Fill="#FF2196F3" Opacity="0.15"
-                                             Cursor="Hand"
-                                             MouseEnter="ControllerElement_MouseEnter"
-                                             MouseLeave="ControllerElement_MouseLeave"
-                                             MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── D-PAD DIRECTION HIGHLIGHTS — unified light blue ── -->
-                                    <Rectangle Tag="DPadUp" Canvas.Left="291" Canvas.Top="255" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadUp, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Rectangle Tag="DPadDown" Canvas.Left="291" Canvas.Top="314" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadDown, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Rectangle Tag="DPadLeft" Canvas.Left="260" Canvas.Top="284" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadLeft, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Rectangle Tag="DPadRight" Canvas.Left="321" Canvas.Top="284" Width="30" Height="30"
-                                               Fill="#FF2196F3" RadiusX="3" RadiusY="3" Cursor="Hand"
-                                               Opacity="{Binding DPadRight, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0,0.6'}"
-                                               MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── ABXY BUTTONS — unified light blue ── -->
-                                    <Ellipse Tag="ButtonA" Canvas.Left="517" Canvas.Top="222" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonA, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonB" Canvas.Left="558" Canvas.Top="184" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonB, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonX" Canvas.Left="477" Canvas.Top="182" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonX, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonY" Canvas.Left="517" Canvas.Top="143" Width="40" Height="40"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonY, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                    <!-- ── CENTER BUTTONS — unified light blue ── -->
-                                    <Ellipse Tag="ButtonGuide" Canvas.Left="360" Canvas.Top="116" Width="50" Height="50"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonGuide, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonBack" Canvas.Left="327" Canvas.Top="188" Width="26" Height="26"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonBack, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-                                    <Ellipse Tag="ButtonStart" Canvas.Left="415" Canvas.Top="188" Width="26" Height="26"
-                                             Fill="#FF2196F3" Cursor="Hand"
-                                             Opacity="{Binding ButtonStart, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0.1,0.6'}"
-                                             MouseEnter="ControllerElement_MouseEnter" MouseLeave="ControllerElement_MouseLeave" MouseLeftButtonDown="ControllerElement_Click"/>
-
-                                </Canvas>
-                        </Grid>
-
-                        <!-- ══════════════════════════════════════
-                             MOTOR ACTIVITY INDICATORS
-                             ══════════════════════════════════════ -->
-                        <Grid Width="500" Margin="0,0,0,4" HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="24"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0" Cursor="Hand"
-                                        MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                                        MouseLeftButtonDown="LeftMotor_Click"
-                                        ToolTip="Click to test left motor"
-                                        Background="Transparent">
-                                <TextBlock Text="L Motor" FontSize="26"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                                <Border Height="50" Background="#FF1E1E21" CornerRadius="3"
-                                        BorderBrush="#FF3F3F46" BorderThickness="1">
-                                    <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
-                                               HorizontalAlignment="Left"
-                                               Width="{Binding LeftMotorDisplay,
-                                                   Converter={StaticResource NormToTriggerHeightConverter},
-                                                   ConverterParameter=240}"/>
-                                </Border>
+                                <TextBlock Text="Buttons" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
+                                         TextAlignment="Center" Text="11"
+                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
                             </StackPanel>
+                        </StackPanel>
+                    </Border>
 
-                            <StackPanel Grid.Column="2" Cursor="Hand"
-                                        MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                                        MouseLeftButtonDown="RightMotor_Click"
-                                        ToolTip="Click to test right motor"
-                                        Background="Transparent">
-                                <TextBlock Text="R Motor" FontSize="26"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                                <Border Height="50" Background="#FF1E1E21" CornerRadius="3"
-                                        BorderBrush="#FF3F3F46" BorderThickness="1">
-                                    <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
-                                               HorizontalAlignment="Left"
-                                               Width="{Binding RightMotorDisplay,
-                                                   Converter={StaticResource NormToTriggerHeightConverter},
-                                                   ConverterParameter=240}"/>
-                                </Border>
-                            </StackPanel>
-                        </Grid>
+                    <!-- ══════════════════════════════════════
+                         MOTOR ACTIVITY INDICATORS
+                         ══════════════════════════════════════ -->
+                    <Grid Grid.Row="2" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                        <!-- ══════════════════════════════════════
-                             MAP ALL — Controller tab controls
-                             ══════════════════════════════════════ -->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,4">
-                            <Button Content="Map All" Command="{Binding MapAllCommand}"
-                                    Padding="32,14" Margin="0,0,16,0" FontSize="36"
-                                    ToolTip="Sequentially record all mappings — press a button/axis for each prompt"/>
-                            <Button Content="Stop" Padding="24,10" FontSize="30"
-                                    Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Click="MapAllStop_Click"/>
-                            <TextBlock Text="{Binding MapAllPromptText}" FontSize="36" FontWeight="SemiBold"
-                                       VerticalAlignment="Center" Margin="16,0,0,0"
-                                       Foreground="#FF2196F3"
-                                       Visibility="{Binding MapAllPromptText, Converter={StaticResource NullToCollapsedConverter}}"/>
+                        <StackPanel Grid.Column="0" Cursor="Hand"
+                                    MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
+                                    MouseLeftButtonDown="LeftMotor_Click"
+                                    ToolTip="Click to test left motor"
+                                    Background="Transparent">
+                            <TextBlock Text="L Motor" FontSize="14"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                            <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
+                                    BorderBrush="#FF3F3F46" BorderThickness="1">
+                                <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
+                                           HorizontalAlignment="Left"
+                                           Width="{Binding LeftMotorDisplay,
+                                               Converter={StaticResource NormToTriggerHeightConverter},
+                                               ConverterParameter=240}"/>
+                            </Border>
                         </StackPanel>
 
+                        <StackPanel Grid.Column="2" Cursor="Hand"
+                                    MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
+                                    MouseLeftButtonDown="RightMotor_Click"
+                                    ToolTip="Click to test right motor"
+                                    Background="Transparent">
+                            <TextBlock Text="R Motor" FontSize="14"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                            <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
+                                    BorderBrush="#FF3F3F46" BorderThickness="1">
+                                <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
+                                           HorizontalAlignment="Left"
+                                           Width="{Binding RightMotorDisplay,
+                                               Converter={StaticResource NormToTriggerHeightConverter},
+                                               ConverterParameter=240}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- ══════════════════════════════════════
+                         MAP ALL — Controller tab controls
+                         ══════════════════════════════════════ -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
+                        <Button Content="Map All" Command="{Binding MapAllCommand}"
+                                Padding="16,8" Margin="0,0,8,0" FontSize="14"
+                                ToolTip="Sequentially record all mappings — press a button/axis for each prompt"/>
+                        <Button Content="Stop" Padding="12,6" FontSize="14"
+                                Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Click="MapAllStop_Click"/>
+                        <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="8,0,0,0"
+                                   Foreground="#FF2196F3"
+                                   Visibility="{Binding MapAllPromptText, Converter={StaticResource NullToCollapsedConverter}}"/>
                     </StackPanel>
-                </Viewbox>
+                </Grid>
             </TabItem>
 
-            <!-- Separator between slot-level and device-specific tabs -->
-            <TabItem IsEnabled="False" IsHitTestVisible="False">
-                <TabItem.Header>
-                    <TextBlock Text="|" Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                               FontSize="14" Margin="-4,0"/>
-                </TabItem.Header>
+            <!-- ─── TAB 1: Macros (slot-level) ─── -->
+            <TabItem>
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Macro list -->
+                    <DockPanel Grid.Column="0">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Content="Add" Command="{Binding AddMacroCommand}"
+                                    Padding="8,4" Margin="0,0,4,0"/>
+                            <Button Content="Remove" Command="{Binding RemoveMacroCommand}"
+                                    Padding="8,4"/>
+                        </StackPanel>
+
+                        <ListBox ItemsSource="{Binding Macros}"
+                                 SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
+                                 DisplayMemberPath="Name"/>
+                    </DockPanel>
+
+                    <GridSplitter Grid.Column="1" Width="4" Margin="4,0"
+                                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                  ResizeBehavior="PreviousAndNext"/>
+
+                    <!-- Macro editor (shows when a macro is selected) -->
+                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto"
+                                  Padding="8"
+                                  DataContext="{Binding SelectedMacro}"
+                                  Visibility="{Binding DataContext.HasSelectedMacro,
+                                      RelativeSource={RelativeSource AncestorType=TabItem},
+                                      Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <!-- Macro name -->
+                            <TextBlock Text="Name" FontWeight="SemiBold" Margin="0,0,0,4"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,0,0,12"/>
+
+                            <!-- Enabled -->
+                            <CheckBox Content="Enabled" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                                      Margin="0,0,0,12"/>
+
+                            <!-- Trigger -->
+                            <TextBlock Text="Trigger Combination" FontWeight="SemiBold"
+                                       Margin="0,0,0,4"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Source:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
+                                          SelectedValuePath="Tag" MinWidth="160">
+                                    <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
+                                    <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Grid MinWidth="150" Margin="0,0,8,0">
+                                    <TextBlock Text="{Binding TriggerDisplayText}"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                    <TextBlock Text="{Binding RecordingLiveText}"
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SystemControlHighlightAccentBrush}"
+                                               FontWeight="SemiBold"
+                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </Grid>
+                                <Button Content="{Binding RecordTriggerButtonText}"
+                                        Command="{Binding RecordTriggerCommand}"
+                                        Padding="8,4"/>
+                            </StackPanel>
+
+                            <!-- Trigger mode -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Fire:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
+                                          SelectedValuePath="Tag" MinWidth="120">
+                                    <ComboBoxItem Content="On Press" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
+                                    <ComboBoxItem Content="On Release" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
+                                    <ComboBoxItem Content="While Held" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <CheckBox Content="Consume trigger buttons (hide from game)"
+                                      IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
+                                      Margin="0,0,0,12"/>
+
+                            <!-- Action sequence -->
+                            <TextBlock Text="Action Sequence" FontWeight="SemiBold"
+                                       Margin="0,0,0,4"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Button Content="Add Action" Command="{Binding AddActionCommand}"
+                                        Padding="8,4" Margin="0,0,4,0"/>
+                                <Button Content="Remove" Command="{Binding RemoveActionCommand}"
+                                        Padding="8,4"/>
+                            </StackPanel>
+                            <ListBox ItemsSource="{Binding Actions}"
+                                     SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
+                                     DisplayMemberPath="DisplayText"
+                                     MinHeight="100" MaxHeight="200" Margin="0,0,0,4"/>
+
+                            <!-- Action editor (shows when an action is selected) -->
+                            <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                                    BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12"
+                                    DataContext="{Binding SelectedAction}"
+                                    Visibility="{Binding DataContext.SelectedAction,
+                                        RelativeSource={RelativeSource AncestorType=ScrollViewer},
+                                        Converter={StaticResource NullToCollapsedConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Edit Action" FontWeight="SemiBold" Margin="0,0,0,8"
+                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+
+                                    <!-- Action type -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="Type:" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag" MinWidth="150">
+                                            <ComboBoxItem Content="Button Press" Tag="{x:Static vm:MacroActionType.ButtonPress}"/>
+                                            <ComboBoxItem Content="Button Release" Tag="{x:Static vm:MacroActionType.ButtonRelease}"/>
+                                            <ComboBoxItem Content="Key Press" Tag="{x:Static vm:MacroActionType.KeyPress}"/>
+                                            <ComboBoxItem Content="Key Release" Tag="{x:Static vm:MacroActionType.KeyRelease}"/>
+                                            <ComboBoxItem Content="Delay" Tag="{x:Static vm:MacroActionType.Delay}"/>
+                                            <ComboBoxItem Content="Set Axis" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Button flags — checkbox grid for ButtonPress / ButtonRelease -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="Buttons:" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                        <ItemsControl ItemsSource="{Binding ButtonOptions}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{Binding Label}"
+                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                              MinWidth="70" Margin="0,0,8,4"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+
+                                    <!-- Key combo — for KeyPress / KeyRelease -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="Key Combo:" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                        <TextBox Text="{Binding KeyString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 FontFamily="Consolas" Margin="0,0,0,4"
+                                                 ToolTip="Key combo in {Key1}{Key2} format — editable"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox ItemsSource="{x:Static vm:MacroAction.VirtualKeyValues}"
+                                                      SelectedItem="{Binding SelectedKeyToAdd, Mode=TwoWay}"
+                                                      MinWidth="180" MaxDropDownHeight="300"
+                                                      IsTextSearchEnabled="True"/>
+                                            <Button Content="Clear" Command="{Binding ClearKeyStringCommand}"
+                                                    Padding="8,4" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                        <TextBlock Text="Select a key to add it. Example: {Control}{Alt}{Delete}"
+                                                   FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Duration — for ButtonPress / KeyPress / Delay -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="Duration:" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
+                                        <TextBlock Text="ms" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                    </StackPanel>
+
+                                    <!-- Axis target + value — for AxisSet -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsAxisType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="Axis:" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag" MinWidth="120">
+                                            <ComboBoxItem Content="None" Tag="{x:Static vm:MacroAxisTarget.None}"/>
+                                            <ComboBoxItem Content="Left Stick X" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                            <ComboBoxItem Content="Left Stick Y" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                            <ComboBoxItem Content="Right Stick X" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                            <ComboBoxItem Content="Right Stick Y" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                            <ComboBoxItem Content="Left Trigger" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                            <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                        </ComboBox>
+                                        <TextBlock Text="Value:" VerticalAlignment="Center"
+                                                   Margin="12,0,8,0"/>
+                                        <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Repeat settings -->
+                            <TextBlock Text="Repeat" FontWeight="SemiBold" Margin="0,0,0,4"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Mode:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
+                                          SelectedValuePath="Tag" MinWidth="120">
+                                    <ComboBoxItem Content="Once" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
+                                    <ComboBoxItem Content="Fixed Count" Tag="{x:Static vm:MacroRepeatMode.FixedCount}"/>
+                                    <ComboBoxItem Content="Until Release" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Count:" VerticalAlignment="Center"
+                                           Margin="0,0,8,0" Width="50"/>
+                                <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
+                                         Width="60"/>
+                                <TextBlock Text="Delay (ms):" VerticalAlignment="Center"
+                                           Margin="12,0,8,0"/>
+                                <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
+                                         Width="60"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
 
             <!-- ─── TAB 2: Mappings (device-specific) ─── -->
-            <TabItem Header="Mappings">
+            <TabItem>
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -489,7 +642,7 @@
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="XInput Output"
+                            <DataGridTextColumn Header="Output"
                                                 Binding="{Binding TargetLabel}"
                                                 Width="130"/>
                             <DataGridTextColumn Header="Source"
@@ -538,336 +691,192 @@
                 </Grid>
             </TabItem>
 
-            <!-- ─── TAB 1: Left Stick ─── -->
-            <TabItem Header="Left Stick">
+            <!-- ─── TAB 3: Sticks (dynamic) ─── -->
+            <TabItem>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
-                    <StackPanel>
-                        <TextBlock Text="Left Thumbstick Configuration"
-                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                    <ItemsControl ItemsSource="{Binding StickConfigs}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:StickConfigItem}">
+                                <StackPanel Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Title}"
+                                               FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
+                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
-                        <!-- Dead Zone X -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftDeadZoneX, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                        <!-- Dead Zone Y -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftDeadZoneY, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
+                                        <!-- Sliders (left) -->
+                                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding DeadZoneX, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding DeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding DeadZoneY, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding DeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding AntiDeadZoneX, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding AntiDeadZoneY, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding Linear, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding Linear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                        </StackPanel>
 
-                        <!-- Anti-Dead Zone X -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftAntiDeadZoneX, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftAntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
+                                        <!-- Live preview (right) -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                                            <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
+                                                    Padding="4" Width="212" Height="212"
+                                                    ClipToBounds="True">
+                                                <Grid Width="200" Height="200">
+                                                    <Ellipse Width="200" Height="200"
+                                                             Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
+                                                    <Canvas>
+                                                        <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
+                                                                 Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                                 StrokeThickness="1.5" Fill="Transparent"/>
+                                                        <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
+                                                                 Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                                 StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
+                                                        <!-- Dead zone ring -->
+                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
+                                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Ellipse.Width>
+                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Width>
+                                                            <Ellipse.Height>
+                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Height>
+                                                            <Ellipse.RenderTransform>
+                                                                <TranslateTransform>
+                                                                    <TranslateTransform.X>
+                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.X>
+                                                                    <TranslateTransform.Y>
+                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.Y>
+                                                                </TranslateTransform>
+                                                            </Ellipse.RenderTransform>
+                                                            <Canvas.Left>100</Canvas.Left>
+                                                            <Canvas.Top>100</Canvas.Top>
+                                                        </Ellipse>
+                                                        <!-- Crosshair -->
+                                                        <Line X1="100" Y1="0" X2="100" Y2="200"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeThickness="0.5"/>
+                                                        <Line X1="0" Y1="100" X2="200" Y2="100"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeThickness="0.5"/>
+                                                        <!-- Stick position dot -->
+                                                        <Ellipse Width="11" Height="11" Fill="#FF2196F3"
+                                                                 Stroke="#FF1976D2" StrokeThickness="1"
+                                                                 Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
+                                                                 Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
+                                                    </Canvas>
+                                                </Grid>
+                                            </Border>
+                                            <TextBlock Margin="0,4,0,0" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
+                                                <Run Text="X:"/>
+                                                <Run Text="{Binding RawX, Mode=OneWay}"/>
+                                                <Run Text="  Y:"/>
+                                                <Run Text="{Binding RawY, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
 
-                        <!-- Anti-Dead Zone Y -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftAntiDeadZoneY, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftAntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <!-- Linear (response curve) -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftLinear, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftLinear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <Separator Margin="0,8,0,12"/>
-
-                        <!-- Live preview -->
-                        <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                        <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                Padding="4" Width="212" Height="212" HorizontalAlignment="Left"
-                                ClipToBounds="True">
-                            <Grid Width="200" Height="200">
-                                <!-- Circle background fill -->
-                                <Ellipse Width="200" Height="200"
-                                         Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
-                                <Canvas>
-                                    <!-- Boundary circle -->
-                                    <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
-                                             Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                             StrokeThickness="1.5" Fill="Transparent"/>
-                                    <!-- 50% range ring -->
-                                    <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
-                                             Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                             StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
-                                    <!-- Dead zone ring (scaled by LeftDeadZoneX — max 200px diameter at 100%) -->
-                                    <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                             HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Ellipse.Width>
-                                            <Binding Path="LeftDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                        </Ellipse.Width>
-                                        <Ellipse.Height>
-                                            <Binding Path="LeftDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                        </Ellipse.Height>
-                                        <Ellipse.RenderTransform>
-                                            <TranslateTransform>
-                                                <TranslateTransform.X>
-                                                    <Binding Path="LeftDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                </TranslateTransform.X>
-                                                <TranslateTransform.Y>
-                                                    <Binding Path="LeftDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                </TranslateTransform.Y>
-                                            </TranslateTransform>
-                                        </Ellipse.RenderTransform>
-                                        <Canvas.Left>100</Canvas.Left>
-                                        <Canvas.Top>100</Canvas.Top>
-                                    </Ellipse>
-                                    <!-- Crosshair -->
-                                    <Line X1="100" Y1="0" X2="100" Y2="200"
-                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                          StrokeThickness="0.5"/>
-                                    <Line X1="0" Y1="100" X2="200" Y2="100"
-                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                          StrokeThickness="0.5"/>
-                                    <!-- Stick position dot (small for dead zone visibility) -->
-                                    <Ellipse Width="11" Height="11" Fill="#FF2196F3"
-                                             Stroke="#FF1976D2" StrokeThickness="1"
-                                             Canvas.Left="{Binding DeviceThumbLX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
-                                             Canvas.Top="{Binding DeviceThumbLY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
-                                </Canvas>
-                            </Grid>
-                        </Border>
-                        <TextBlock Margin="0,4,0,0"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
-                            <Run Text="X:"/>
-                            <Run Text="{Binding DeviceRawThumbLX, Mode=OneWay}"/>
-                            <Run Text="  Y:"/>
-                            <Run Text="{Binding DeviceRawThumbLY, Mode=OneWay}"/>
-                        </TextBlock>
-                    </StackPanel>
+                                    <Separator Margin="0,8,0,12"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
             </TabItem>
 
-            <!-- ─── TAB 2: Right Stick ─── -->
-            <TabItem Header="Right Stick">
+            <!-- ─── TAB 4: Triggers (dynamic) ─── -->
+            <TabItem>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
-                    <StackPanel>
-                        <TextBlock Text="Right Thumbstick Configuration"
-                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                    <ItemsControl ItemsSource="{Binding TriggerConfigs}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:TriggerConfigItem}">
+                                <StackPanel Margin="0,0,0,16">
+                                    <TextBlock Text="{Binding Title}"
+                                               FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
+                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
-                        <!-- Dead Zone X -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightDeadZoneX, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
+                                    <!-- Range (dual-thumb: dead zone floor — max range ceiling) -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="Range:" Style="{StaticResource DzLabel}"/>
+                                        <controls:RangeSlider
+                                            LowerValue="{Binding DeadZone, Mode=TwoWay}"
+                                            UpperValue="{Binding MaxRange, Mode=TwoWay}"
+                                            Minimum="0" Maximum="100"
+                                            Width="200" VerticalAlignment="Center"/>
+                                        <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                        <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    </StackPanel>
 
-                        <!-- Dead Zone Y -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightDeadZoneY, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding AntiDeadZone, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding AntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    </StackPanel>
 
-                        <!-- Anti-Dead Zone X -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightAntiDeadZoneX, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightAntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <!-- Anti-Dead Zone Y -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightAntiDeadZoneY, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightAntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <!-- Linear -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightLinear, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightLinear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <Separator Margin="0,8,0,12"/>
-
-                        <!-- Live preview -->
-                        <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                        <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                Padding="4" Width="212" Height="212" HorizontalAlignment="Left"
-                                ClipToBounds="True">
-                            <Grid Width="200" Height="200">
-                                <!-- Circle background fill -->
-                                <Ellipse Width="200" Height="200"
-                                         Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
-                                <Canvas>
-                                    <!-- Boundary circle -->
-                                    <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
-                                             Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                             StrokeThickness="1.5" Fill="Transparent"/>
-                                    <!-- 50% range ring -->
-                                    <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
-                                             Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                             StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
-                                    <!-- Dead zone ring -->
-                                    <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                             HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Ellipse.Width>
-                                            <Binding Path="RightDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                        </Ellipse.Width>
-                                        <Ellipse.Height>
-                                            <Binding Path="RightDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                        </Ellipse.Height>
-                                        <Ellipse.RenderTransform>
-                                            <TranslateTransform>
-                                                <TranslateTransform.X>
-                                                    <Binding Path="RightDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                </TranslateTransform.X>
-                                                <TranslateTransform.Y>
-                                                    <Binding Path="RightDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                </TranslateTransform.Y>
-                                            </TranslateTransform>
-                                        </Ellipse.RenderTransform>
-                                        <Canvas.Left>100</Canvas.Left>
-                                        <Canvas.Top>100</Canvas.Top>
-                                    </Ellipse>
-                                    <!-- Crosshair -->
-                                    <Line X1="100" Y1="0" X2="100" Y2="200"
-                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                          StrokeThickness="0.5"/>
-                                    <Line X1="0" Y1="100" X2="200" Y2="100"
-                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                          StrokeThickness="0.5"/>
-                                    <!-- Stick position dot (small for dead zone visibility) -->
-                                    <Ellipse Width="11" Height="11" Fill="#FF2196F3"
-                                             Stroke="#FF1976D2" StrokeThickness="1"
-                                             Canvas.Left="{Binding DeviceThumbRX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
-                                             Canvas.Top="{Binding DeviceThumbRY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
-                                </Canvas>
-                            </Grid>
-                        </Border>
-                        <TextBlock Margin="0,4,0,0"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
-                            <Run Text="X:"/>
-                            <Run Text="{Binding DeviceRawThumbRX, Mode=OneWay}"/>
-                            <Run Text="  Y:"/>
-                            <Run Text="{Binding DeviceRawThumbRY, Mode=OneWay}"/>
-                        </TextBlock>
-                    </StackPanel>
+                                    <!-- Live value bar -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
+                                        <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
+                                                     Minimum="0" Maximum="1"
+                                                     Width="200" Height="16" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding RawValue, Mode=OneWay}"
+                                                   Style="{StaticResource DzValue}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
             </TabItem>
 
-            <!-- ─── TAB 3: Triggers ─── -->
-            <TabItem Header="Triggers">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
-                    <StackPanel>
-                        <!-- Left Trigger -->
-                        <TextBlock Text="Left Trigger" FontSize="14" FontWeight="SemiBold"
-                                   Margin="0,0,0,12"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftTriggerDeadZone, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftTriggerDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding LeftTriggerAntiDeadZone, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding LeftTriggerAntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <!-- Live value bar -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
-                            <ProgressBar Value="{Binding DeviceLeftTrigger, Mode=OneWay}"
-                                         Minimum="0" Maximum="1"
-                                         Width="200" Height="16" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding DeviceRawLeftTrigger, Mode=OneWay}"
-                                       Style="{StaticResource DzValue}"/>
-                        </StackPanel>
-
-                        <Separator Margin="0,12,0,12"/>
-
-                        <!-- Right Trigger -->
-                        <TextBlock Text="Right Trigger" FontSize="14" FontWeight="SemiBold"
-                                   Margin="0,0,0,12"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Dead Zone:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightTriggerDeadZone, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightTriggerDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
-                            <Slider Value="{Binding RightTriggerAntiDeadZone, Mode=TwoWay}"
-                                    Style="{StaticResource DzSlider}"/>
-                            <TextBox Text="{Binding RightTriggerAntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Style="{StaticResource DzValueEdit}"/>
-                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
-                            <ProgressBar Value="{Binding DeviceRightTrigger, Mode=OneWay}"
-                                         Minimum="0" Maximum="1"
-                                         Width="200" Height="16" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding DeviceRawRightTrigger, Mode=OneWay}"
-                                       Style="{StaticResource DzValue}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- ─── TAB 4: Force Feedback ─── -->
-            <TabItem Header="Force Feedback">
+            <!-- ─── TAB 5: Force Feedback ─── -->
+            <TabItem>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
                     <StackPanel>
                         <TextBlock Text="Force Feedback / Rumble"
@@ -934,238 +943,6 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- Separator between device-specific and slot-level tabs -->
-            <TabItem IsEnabled="False" IsHitTestVisible="False">
-                <TabItem.Header>
-                    <TextBlock Text="|" Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                               FontSize="14" Margin="-4,0"/>
-                </TabItem.Header>
-            </TabItem>
-
-            <!-- ─── TAB 8: Macros (slot-level) ─── -->
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="Macros" FontSize="14" FontWeight="SemiBold" Padding="4,2"/>
-                </TabItem.Header>
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <!-- Macro list -->
-                        <ColumnDefinition Width="250"/>
-                        <!-- Splitter -->
-                        <ColumnDefinition Width="Auto"/>
-                        <!-- Macro editor -->
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Macro list -->
-                    <DockPanel Grid.Column="0">
-                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
-                            <Button Content="Add" Command="{Binding AddMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,0"/>
-                            <Button Content="Remove" Command="{Binding RemoveMacroCommand}"
-                                    Padding="8,4"/>
-                        </StackPanel>
-
-                        <ListBox ItemsSource="{Binding Macros}"
-                                 SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
-                                 DisplayMemberPath="Name"/>
-                    </DockPanel>
-
-                    <GridSplitter Grid.Column="1" Width="4" Margin="4,0"
-                                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                                  ResizeBehavior="PreviousAndNext"/>
-
-                    <!-- Macro editor (shows when a macro is selected) -->
-                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto"
-                                  Padding="8"
-                                  DataContext="{Binding SelectedMacro}"
-                                  Visibility="{Binding DataContext.HasSelectedMacro,
-                                      RelativeSource={RelativeSource AncestorType=TabItem},
-                                      Converter={StaticResource BoolToVisibilityConverter}}">
-                        <StackPanel>
-                            <!-- Macro name -->
-                            <TextBlock Text="Name" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,0,0,12"/>
-
-                            <!-- Enabled -->
-                            <CheckBox Content="Enabled" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
-                                      Margin="0,0,0,12"/>
-
-                            <!-- Trigger -->
-                            <TextBlock Text="Trigger Combination" FontWeight="SemiBold"
-                                       Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="Source:" VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
-                                <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
-                                          SelectedValuePath="Tag" MinWidth="160">
-                                    <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
-                                    <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
-                                </ComboBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{Binding TriggerDisplayText}"
-                                           VerticalAlignment="Center" Margin="0,0,8,0"
-                                           MinWidth="150"/>
-                                <Button Content="{Binding RecordTriggerButtonText}"
-                                        Command="{Binding RecordTriggerCommand}"
-                                        Padding="8,4"/>
-                            </StackPanel>
-
-                            <!-- Trigger mode -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="Fire:" VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
-                                <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
-                                          SelectedValuePath="Tag" MinWidth="120">
-                                    <ComboBoxItem Content="On Press" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
-                                    <ComboBoxItem Content="On Release" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
-                                    <ComboBoxItem Content="While Held" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
-                                </ComboBox>
-                            </StackPanel>
-
-                            <CheckBox Content="Consume trigger buttons (hide from game)"
-                                      IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
-                                      Margin="0,0,0,12"/>
-
-                            <!-- Action sequence -->
-                            <TextBlock Text="Action Sequence" FontWeight="SemiBold"
-                                       Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <Button Content="Add Action" Command="{Binding AddActionCommand}"
-                                        Padding="8,4" Margin="0,0,4,0"/>
-                                <Button Content="Remove" Command="{Binding RemoveActionCommand}"
-                                        Padding="8,4"/>
-                            </StackPanel>
-                            <ListBox ItemsSource="{Binding Actions}"
-                                     SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
-                                     DisplayMemberPath="DisplayText"
-                                     MinHeight="100" MaxHeight="200" Margin="0,0,0,4"/>
-
-                            <!-- Action editor (shows when an action is selected) -->
-                            <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                                    BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12"
-                                    DataContext="{Binding SelectedAction}"
-                                    Visibility="{Binding DataContext.SelectedAction,
-                                        RelativeSource={RelativeSource AncestorType=ScrollViewer},
-                                        Converter={StaticResource NullToCollapsedConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Edit Action" FontWeight="SemiBold" Margin="0,0,0,8"
-                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-
-                                    <!-- Action type -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="Type:" VerticalAlignment="Center"
-                                                   Width="80" Margin="0,0,8,0"/>
-                                        <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
-                                                  SelectedValuePath="Tag" MinWidth="150">
-                                            <ComboBoxItem Content="Button Press" Tag="{x:Static vm:MacroActionType.ButtonPress}"/>
-                                            <ComboBoxItem Content="Button Release" Tag="{x:Static vm:MacroActionType.ButtonRelease}"/>
-                                            <ComboBoxItem Content="Key Press" Tag="{x:Static vm:MacroActionType.KeyPress}"/>
-                                            <ComboBoxItem Content="Key Release" Tag="{x:Static vm:MacroActionType.KeyRelease}"/>
-                                            <ComboBoxItem Content="Delay" Tag="{x:Static vm:MacroActionType.Delay}"/>
-                                            <ComboBoxItem Content="Set Axis" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
-                                        </ComboBox>
-                                    </StackPanel>
-
-                                    <!-- Button flags — checkbox grid for ButtonPress / ButtonRelease -->
-                                    <StackPanel Margin="0,0,0,6">
-                                        <TextBlock Text="Buttons:" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                        <ItemsControl ItemsSource="{Binding ButtonOptions}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox Content="{Binding Label}"
-                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                                              MinWidth="70" Margin="0,0,8,4"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-
-                                    <!-- Key combo — for KeyPress / KeyRelease -->
-                                    <StackPanel Margin="0,0,0,6">
-                                        <TextBlock Text="Key Combo:" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                        <TextBox Text="{Binding KeyString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 FontFamily="Consolas" Margin="0,0,0,4"
-                                                 ToolTip="Key combo in {Key1}{Key2} format — editable"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <ComboBox ItemsSource="{x:Static vm:MacroAction.VirtualKeyValues}"
-                                                      SelectedItem="{Binding SelectedKeyToAdd, Mode=TwoWay}"
-                                                      MinWidth="180" MaxDropDownHeight="300"
-                                                      IsTextSearchEnabled="True"/>
-                                            <Button Content="Clear" Command="{Binding ClearKeyStringCommand}"
-                                                    Padding="8,4" Margin="4,0,0,0"/>
-                                        </StackPanel>
-                                        <TextBlock Text="Select a key to add it. Example: {Control}{Alt}{Delete}"
-                                                   FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                    </StackPanel>
-
-                                    <!-- Duration — for ButtonPress / KeyPress / Delay -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="Duration:" VerticalAlignment="Center"
-                                                   Width="80" Margin="0,0,8,0"/>
-                                        <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
-                                        <TextBlock Text="ms" VerticalAlignment="Center" Margin="4,0,0,0"/>
-                                    </StackPanel>
-
-                                    <!-- Axis target + value — for AxisSet -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="Axis:" VerticalAlignment="Center"
-                                                   Width="80" Margin="0,0,8,0"/>
-                                        <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
-                                                  SelectedValuePath="Tag" MinWidth="120">
-                                            <ComboBoxItem Content="None" Tag="{x:Static vm:MacroAxisTarget.None}"/>
-                                            <ComboBoxItem Content="Left Stick X" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
-                                            <ComboBoxItem Content="Left Stick Y" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
-                                            <ComboBoxItem Content="Right Stick X" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
-                                            <ComboBoxItem Content="Right Stick Y" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
-                                            <ComboBoxItem Content="Left Trigger" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
-                                            <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
-                                        </ComboBox>
-                                        <TextBlock Text="Value:" VerticalAlignment="Center"
-                                                   Margin="12,0,8,0"/>
-                                        <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Repeat settings -->
-                            <TextBlock Text="Repeat" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="Mode:" VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
-                                <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
-                                          SelectedValuePath="Tag" MinWidth="120">
-                                    <ComboBoxItem Content="Once" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
-                                    <ComboBoxItem Content="Fixed Count" Tag="{x:Static vm:MacroRepeatMode.FixedCount}"/>
-                                    <ComboBoxItem Content="Until Release" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}"/>
-                                </ComboBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="Count:" VerticalAlignment="Center"
-                                           Margin="0,0,8,0" Width="50"/>
-                                <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
-                                         Width="60"/>
-                                <TextBlock Text="Delay (ms):" VerticalAlignment="Center"
-                                           Margin="12,0,8,0"/>
-                                <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
-                                         Width="60"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

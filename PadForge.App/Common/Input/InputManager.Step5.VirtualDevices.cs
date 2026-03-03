@@ -1,10 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Nefarius.ViGEm.Client;
-using Nefarius.ViGEm.Client.Targets;
-using Nefarius.ViGEm.Client.Targets.Xbox360;
 using PadForge.Engine;
 
 namespace PadForge.Common.Input
@@ -13,8 +12,8 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 5: UpdateVirtualDevices
-        //  Feeds combined Gamepad states to ViGEmBus virtual Xbox 360
-        //  controllers via the Nefarius.ViGEm.Client NuGet package.
+        //  Feeds combined Gamepad states to ViGEmBus virtual controllers
+        //  (Xbox 360 or DualShock 4) via the IVirtualController abstraction.
         // ─────────────────────────────────────────────
 
         /// <summary>Shared ViGEmClient instance (one per process).</summary>
@@ -23,13 +22,69 @@ namespace PadForge.Common.Input
         private static bool _vigemClientFailed;
 
         /// <summary>Virtual controller targets (one per slot).</summary>
-        private IXbox360Controller[] _virtualControllers = new IXbox360Controller[MaxPads];
+        private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
+
+        /// <summary>
+        /// Configured virtual controller type per slot. The UI writes to this
+        /// array via InputService at 30Hz. Step 5 reads it at ~1000Hz to detect
+        /// type changes and recreate controllers accordingly.
+        /// </summary>
+        public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
+
+        /// <summary>
+        /// Per-slot vJoy HID descriptor config (axes, buttons, POVs).
+        /// Written by InputService from PadViewModel.VJoyConfig. Read by Step 5
+        /// to pass per-device configs to EnsureDevicesAvailable.
+        /// </summary>
+        internal VJoyVirtualController.VJoyDeviceConfig[] SlotVJoyConfigs { get; } = new VJoyVirtualController.VJoyDeviceConfig[MaxPads];
+
+        /// <summary>
+        /// Per-slot flag: true if this vJoy slot uses Custom preset (raw axis/button pipeline),
+        /// false if it uses a gamepad preset (Xbox360/DS4 → Gamepad struct pipeline).
+        /// Written by InputService from PadViewModel.VJoyConfig.IsGamepadPreset.
+        /// </summary>
+        internal bool[] SlotVJoyIsCustom { get; } = new bool[MaxPads];
 
         /// <summary>
         /// Count of currently active ViGEm virtual controllers.
         /// Used by IsViGEmVirtualDevice() in Step 1 for zero-VID/PID heuristic.
         /// </summary>
         private int _activeVigemCount;
+
+        /// <summary>
+        /// Count of currently active ViGEm Xbox 360 virtual controllers.
+        /// Used by IsViGEmVirtualDevice() to filter the correct number of 045E:028E devices.
+        /// </summary>
+        private int _activeXbox360Count;
+
+        /// <summary>
+        /// Count of currently active ViGEm DS4 virtual controllers.
+        /// Used by IsViGEmVirtualDevice() to filter the correct number of 054C:05C4 devices.
+        /// </summary>
+        private int _activeDs4Count;
+
+        /// <summary>
+        /// Expected ViGEm Xbox 360 / DS4 virtual controller counts, pre-initialized
+        /// from slot configuration BEFORE the polling loop starts. Used by
+        /// IsViGEmVirtualDevice() to filter ViGEm devices on the very first
+        /// UpdateDevices() call — before Step 5 has created any actual VCs.
+        /// Without this, _activeXbox360Count is 0 on the first cycle, causing
+        /// all stale ViGEm 045E:028E devices to pass through the filter as
+        /// "real" Xbox controllers.
+        /// </summary>
+        private int _expectedXbox360Count;
+        private int _expectedDs4Count;
+
+        /// <summary>
+        /// Pre-initializes expected ViGEm counts from the slot configuration.
+        /// Must be called before Start() so the first UpdateDevices() cycle
+        /// filters ViGEm devices correctly.
+        /// </summary>
+        public void PreInitializeVigemCounts(int xbox360Count, int ds4Count)
+        {
+            _expectedXbox360Count = xbox360Count;
+            _expectedDs4Count = ds4Count;
+        }
 
         /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.
@@ -45,11 +100,31 @@ namespace PadForge.Common.Input
         /// </summary>
         private const int SlotDestroyGraceCycles = 10000;
 
+        /// <summary>
+        /// Per-slot cooldown counter after a failed virtual controller creation.
+        /// Prevents per-frame retry of FindFreeDeviceId (16 GetVJDStatus calls)
+        /// when creation fails. Counts down each cycle; creation retries at 0.
+        /// At ~1000Hz polling, 2000 cycles ≈ 2 seconds between retries.
+        /// </summary>
+        private readonly int[] _createCooldown = new int[MaxPads];
+        private const int CreateCooldownCycles = 2000;
+
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
         /// <summary>Whether ViGEmBus driver is reachable.</summary>
         public bool IsViGEmAvailable => _vigemClient != null;
+
+        /// <summary>
+        /// Returns true if the specified pad slot has an active ViGEm virtual controller.
+        /// Used by the UI to show connected status on dashboard cards.
+        /// </summary>
+        public bool IsVirtualControllerConnected(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            var vc = _virtualControllers[padIndex];
+            return vc != null && vc.IsConnected;
+        }
 
         /// <summary>
         /// Step 5: Feed each slot's combined gamepad state to ViGEmBus.
@@ -60,61 +135,250 @@ namespace PadForge.Common.Input
         /// Destroying a virtual controller severs the game's vibration connection
         /// (FeedbackReceived stops firing), and recreating it requires the game to
         /// rediscover the controller and re-send XInputSetState — causing a gap.
+        ///
+        /// Virtual controllers are created in ascending slot order so that ViGEm
+        /// assigns sequential indices matching the PadForge slot numbers.
         /// </summary>
         private void UpdateVirtualDevices()
         {
-            if (!VirtualControllersEnabled || _vigemClientFailed)
+            if (!VirtualControllersEnabled)
                 return;
 
-            EnsureViGEmClient();
-            if (_vigemClient == null)
-                return;
+            // ViGEm is only required for Xbox 360 and DS4 virtual controllers.
+            // vJoy uses its own driver and works independently. Only try to
+            // initialize ViGEm if it hasn't permanently failed.
+            if (!_vigemClientFailed)
+                EnsureViGEmClient();
 
+            // --- Pass 1: Handle type changes, destruction, and activity tracking ---
+            bool anyNeedsCreate = false;
+
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                var vc = _virtualControllers[padIndex];
+
+                // Detect controller type change — destroy old if type differs.
+                if (vc != null && vc.Type != SlotControllerTypes[padIndex])
+                {
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, recreating");
+                    DestroyVirtualController(padIndex);
+                    _virtualControllers[padIndex] = null;
+                    _createCooldown[padIndex] = 0; // Reset cooldown on type change
+                    vc = null;
+                }
+
+                // Slot deleted or disabled by user — destroy immediately.
+                // The grace period only applies to transient device disconnects
+                // (slot still created + enabled, but physical device offline).
+                if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
+                {
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} slot {(SettingsManager.SlotCreated[padIndex] ? "disabled" : "deleted")}, destroying virtual controller immediately");
+                    DestroyVirtualController(padIndex);
+                    _virtualControllers[padIndex] = null;
+                    _slotInactiveCounter[padIndex] = 0;
+                    VibrationStates[padIndex].LeftMotorSpeed = 0;
+                    VibrationStates[padIndex].RightMotorSpeed = 0;
+                    continue;
+                }
+
+                bool slotActive = IsSlotActive(padIndex);
+
+                if (slotActive)
+                {
+                    if (_slotInactiveCounter[padIndex] > 0)
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} active again after {_slotInactiveCounter[padIndex]} inactive cycles");
+
+                    _slotInactiveCounter[padIndex] = 0;
+
+                    if (vc == null)
+                        anyNeedsCreate = true;
+                }
+                else if (vc != null && !HasAnyDeviceMapped(padIndex))
+                {
+                    // No devices mapped to this slot — user explicitly unassigned
+                    // all devices. Destroy immediately (not a transient disconnect).
+                    RumbleLogger.Log($"[Step5] Pad{padIndex} no devices mapped, destroying virtual controller immediately");
+                    DestroyVirtualController(padIndex);
+                    _virtualControllers[padIndex] = null;
+                    _slotInactiveCounter[padIndex] = 0;
+                    VibrationStates[padIndex].LeftMotorSpeed = 0;
+                    VibrationStates[padIndex].RightMotorSpeed = 0;
+                }
+                else
+                {
+                    // Device(s) mapped but offline — transient disconnect.
+                    // Grace period preserves rumble feedback through USB hiccups.
+                    _slotInactiveCounter[padIndex]++;
+
+                    if (_slotInactiveCounter[padIndex] == 1)
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} !slotActive (vc={vc != null}) VibL={VibrationStates[padIndex].LeftMotorSpeed} VibR={VibrationStates[padIndex].RightMotorSpeed}");
+
+                    if (vc != null && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
+                    {
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} destroying virtual controller after {SlotDestroyGraceCycles} inactive cycles");
+                        DestroyVirtualController(padIndex);
+                        _virtualControllers[padIndex] = null;
+                        VibrationStates[padIndex].LeftMotorSpeed = 0;
+                        VibrationStates[padIndex].RightMotorSpeed = 0;
+                    }
+                }
+            }
+
+            // --- Pass 1b: Sync vJoy registry descriptor count ---
+            // Only count vJoy slots that have an actual running controller or are
+            // about to create one (active device mapped). Empty vJoy slots with no
+            // device assigned should NOT register descriptors in joy.cpl.
+            {
+                int totalVJoyNeeded = 0;
+                bool anyVJoySlotExists = false;
+                for (int i = 0; i < MaxPads; i++)
+                {
+                    if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                        SettingsManager.SlotCreated[i])
+                        anyVJoySlotExists = true;
+
+                    if (_virtualControllers[i] is VJoyVirtualController)
+                        totalVJoyNeeded++;  // Already running — always count
+                    else if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                             SettingsManager.SlotCreated[i] &&
+                             _slotInactiveCounter[i] == 0 &&
+                             IsSlotActive(i))
+                        totalVJoyNeeded++;  // About to be created — has active device
+                }
+                // Enter sync block whenever vJoy slots exist (to handle future creation),
+                // OR when stale descriptors need cleanup (count mismatch or leftover from
+                // previous session). This ensures deletion of the last vJoy slot always
+                // triggers descriptor cleanup even when _currentDescriptorCount was never set.
+                if (anyVJoySlotExists || totalVJoyNeeded > 0 ||
+                    VJoyVirtualController.CurrentDescriptorCount > 0)
+                {
+                    bool descriptorCountChanged = totalVJoyNeeded != VJoyVirtualController.CurrentDescriptorCount;
+
+                    // If descriptor count is changing, destroy vJoy VCs whose device
+                    // IDs exceed the new count. Registry descriptors are always
+                    // Device01..DeviceN (contiguous), so any VC with ID > N would
+                    // reference a non-existent descriptor after the restart.
+                    // VCs with IDs 1..N survive and re-acquire after the restart.
+                    if (descriptorCountChanged)
+                    {
+                        for (int i = 0; i < MaxPads; i++)
+                        {
+                            if (_virtualControllers[i] is VJoyVirtualController vjoy &&
+                                vjoy.DeviceId > (uint)totalVJoyNeeded)
+                            {
+                                DestroyVirtualController(i);
+                                _virtualControllers[i] = null;
+                            }
+                        }
+                        anyNeedsCreate = totalVJoyNeeded > 0;
+                    }
+
+                    // Build per-device HID descriptor configs from slot configs.
+                    // The order is sequential: 1st vJoy slot → Device01, 2nd → Device02, etc.
+                    VJoyVirtualController.VJoyDeviceConfig[] deviceConfigs = null;
+                    if (totalVJoyNeeded > 0)
+                    {
+                        deviceConfigs = new VJoyVirtualController.VJoyDeviceConfig[totalVJoyNeeded];
+                        int cfgIdx = 0;
+                        for (int i = 0; i < MaxPads && cfgIdx < totalVJoyNeeded; i++)
+                        {
+                            bool countsAsVjoy =
+                                _virtualControllers[i] is VJoyVirtualController ||
+                                (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                 SettingsManager.SlotCreated[i] &&
+                                 _slotInactiveCounter[i] == 0 &&
+                                 IsSlotActive(i));
+                            if (countsAsVjoy)
+                                deviceConfigs[cfgIdx++] = SlotVJoyConfigs[i];
+                        }
+                    }
+                    VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded, deviceConfigs);
+
+                    // After EnsureDevicesAvailable (which may restart the device node),
+                    // force existing vJoy controllers to re-acquire their device IDs
+                    // BEFORE creating new ones.
+                    for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                    {
+                        if (_virtualControllers[padIndex] is VJoyVirtualController existingVjoy)
+                            existingVjoy.ReAcquireIfNeeded();
+                    }
+
+                    // After a descriptor count change, surviving VCs may have device
+                    // IDs that don't match their sequential position. Example: deleting
+                    // the first of 3 vJoy slots leaves the second slot with ID 2, but
+                    // it's now the FIRST vJoy slot and should have ID 1. Without this
+                    // fix, input mapped to the Nth vJoy slot writes to the wrong device.
+                    if (descriptorCountChanged)
+                    {
+                        int expectedId = 0;
+                        for (int i = 0; i < MaxPads; i++)
+                        {
+                            bool countsAsVjoy =
+                                _virtualControllers[i] is VJoyVirtualController ||
+                                (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                 SettingsManager.SlotCreated[i] &&
+                                 _slotInactiveCounter[i] == 0 &&
+                                 IsSlotActive(i));
+
+                            if (countsAsVjoy)
+                            {
+                                expectedId++;
+                                if (_virtualControllers[i] is VJoyVirtualController vjCheck &&
+                                    vjCheck.DeviceId != (uint)expectedId)
+                                {
+                                    VJoyVirtualController.DiagLog(
+                                        $"ID ordering fix: pad{i} has ID {vjCheck.DeviceId}, expected {expectedId} — destroying for recreation");
+                                    DestroyVirtualController(i);
+                                    _virtualControllers[i] = null;
+                                    anyNeedsCreate = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // --- Pass 2: Create virtual controllers in ascending slot order ---
+            // ViGEm assigns indices sequentially on Connect(), so creation order
+            // must match slot order. This applies to both Xbox 360 (XInput index)
+            // and DS4 (ViGEm DS4 index) controllers.
+            if (anyNeedsCreate)
+            {
+                for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                {
+                    if (_virtualControllers[padIndex] == null &&
+                        _slotInactiveCounter[padIndex] == 0)
+                    {
+                        // Skip if still in cooldown from a previous failed creation.
+                        if (_createCooldown[padIndex] > 0)
+                        {
+                            _createCooldown[padIndex]--;
+                            continue;
+                        }
+
+                        RumbleLogger.Log($"[Step5] Pad{padIndex} creating {SlotControllerTypes[padIndex]} virtual controller (ordered)");
+                        var vc = CreateVirtualController(padIndex);
+                        _virtualControllers[padIndex] = vc;
+
+                        if (vc == null)
+                            _createCooldown[padIndex] = CreateCooldownCycles;
+                    }
+                }
+            }
+
+            // --- Pass 3: Submit reports for active slots ---
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 try
                 {
-                    var gp = CombinedXiStates[padIndex];
                     var vc = _virtualControllers[padIndex];
-                    bool slotActive = IsSlotActive(padIndex);
-
-                    if (slotActive)
+                    if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
-                        if (_slotInactiveCounter[padIndex] > 0)
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} active again after {_slotInactiveCounter[padIndex]} inactive cycles");
-
-                        _slotInactiveCounter[padIndex] = 0;
-
-                        if (vc == null)
-                        {
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} creating virtual controller");
-                            vc = CreateVirtualController(padIndex);
-                            _virtualControllers[padIndex] = vc;
-                        }
-
-                        if (vc != null)
-                        {
-                            SubmitGamepadToVirtual(vc, gp);
-                        }
-                    }
-                    else
-                    {
-                        // Don't destroy immediately — wait for sustained inactivity.
-                        // Transient IsSlotActive=false (e.g., during device enumeration
-                        // or brief lock contention) must not kill vibration feedback.
-                        _slotInactiveCounter[padIndex]++;
-
-                        if (_slotInactiveCounter[padIndex] == 1)
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} !slotActive (vc={vc != null}) VibL={VibrationStates[padIndex].LeftMotorSpeed} VibR={VibrationStates[padIndex].RightMotorSpeed}");
-
-                        if (vc != null && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
-                        {
-                            RumbleLogger.Log($"[Step5] Pad{padIndex} destroying virtual controller after {SlotDestroyGraceCycles} inactive cycles");
-                            DestroyVirtualController(padIndex);
-                            _virtualControllers[padIndex] = null;
-                            VibrationStates[padIndex].LeftMotorSpeed = 0;
-                            VibrationStates[padIndex].RightMotorSpeed = 0;
-                        }
+                        // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.
+                        if (vc is VJoyVirtualController vjoyVc && SlotVJoyIsCustom[padIndex])
+                            vjoyVc.SubmitRawState(CombinedVJoyRawStates[padIndex]);
+                        else
+                            vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
                 }
                 catch (Exception ex)
@@ -178,6 +442,10 @@ namespace PadForge.Common.Input
 
         private bool IsSlotActive(int padIndex)
         {
+            // Slot must be explicitly created AND enabled.
+            if (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex])
+                return false;
+
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
 
@@ -198,66 +466,109 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>
+        /// Returns true if any device (online or offline) is mapped to this slot.
+        /// Used to distinguish "user unassigned all devices" (no mappings → destroy
+        /// immediately) from "device temporarily offline" (mapping exists → grace period).
+        /// </summary>
+        private bool HasAnyDeviceMapped(int padIndex)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return false;
+            return settings.FindByPadIndex(padIndex, _padIndexBuffer) > 0;
+        }
+
         // ─────────────────────────────────────────────
         //  Virtual controller management
         //  Uses XInput slot mask delta to detect which
         //  slot the new virtual controller occupies.
         // ─────────────────────────────────────────────
 
-        private IXbox360Controller CreateVirtualController(int padIndex)
+        private IVirtualController CreateVirtualController(int padIndex)
         {
-            if (_vigemClient == null)
+            var controllerType = SlotControllerTypes[padIndex];
+
+            // vJoy doesn't need ViGEm, but Xbox 360 and DS4 do.
+            if (controllerType != VirtualControllerType.VJoy && _vigemClient == null)
                 return null;
 
             try
             {
-                // ── Snapshot XInput slot mask BEFORE connecting ──
-                uint maskBefore = GetXInputConnectedSlotMask();
+                // Snapshot XInput slot mask BEFORE connecting (Xbox 360 only).
+                uint maskBefore = 0;
+                if (controllerType == VirtualControllerType.Xbox360)
+                    maskBefore = GetXInputConnectedSlotMask();
 
-                var controller = _vigemClient.CreateXbox360Controller();
-                controller.Connect();
-
-                // ── Wait for the new XInput slot to appear ──
-                // After Connect(), the ViGEm kernel driver needs a few ms to
-                // register the new device with the XInput stack. Spin-wait for
-                // up to 50ms for the slot mask to change. This is a one-time
-                // cost per controller creation (rare event), not per cycle.
-                var waitSw = Stopwatch.StartNew();
-                while (waitSw.ElapsedMilliseconds < 50)
+                IVirtualController vc = controllerType switch
                 {
-                    uint maskAfter = GetXInputConnectedSlotMask();
-                    if (maskAfter != maskBefore)
-                        break;
-                    Thread.SpinWait(100);
-                }
-
-                _activeVigemCount++;
-
-                int capturedIndex = padIndex;
-                controller.FeedbackReceived += (sender, args) =>
-                {
-                    if (capturedIndex >= 0 && capturedIndex < MaxPads)
-                    {
-                        ushort newL = (ushort)(args.LargeMotor * 257);
-                        ushort newR = (ushort)(args.SmallMotor * 257);
-                        ushort oldL = VibrationStates[capturedIndex].LeftMotorSpeed;
-                        ushort oldR = VibrationStates[capturedIndex].RightMotorSpeed;
-
-                        VibrationStates[capturedIndex].LeftMotorSpeed = newL;
-                        VibrationStates[capturedIndex].RightMotorSpeed = newR;
-
-                        if (newL != oldL || newR != oldR)
-                            RumbleLogger.Log($"[ViGEm] Pad{capturedIndex} feedback L:{oldL}->{newL} R:{oldR}->{newR}");
-                    }
+                    VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
+                    VirtualControllerType.VJoy => CreateVJoyController(),
+                    _ => new Xbox360VirtualController(_vigemClient)
                 };
 
-                return controller;
+                if (vc == null) return null;
+                vc.Connect();
+
+                // Wait for the new XInput slot to appear (Xbox 360 only).
+                // DS4 and vJoy virtual controllers don't appear in the XInput stack.
+                if (controllerType == VirtualControllerType.Xbox360)
+                {
+                    var waitSw = Stopwatch.StartNew();
+                    while (waitSw.ElapsedMilliseconds < 50)
+                    {
+                        uint maskAfter = GetXInputConnectedSlotMask();
+                        if (maskAfter != maskBefore)
+                            break;
+                        Thread.SpinWait(100);
+                    }
+                }
+
+                if (controllerType == VirtualControllerType.Xbox360)
+                {
+                    _activeVigemCount++;
+                    _activeXbox360Count++;
+                }
+                else if (controllerType == VirtualControllerType.DualShock4)
+                {
+                    _activeVigemCount++;
+                    _activeDs4Count++;
+                }
+                vc.RegisterFeedbackCallback(padIndex, VibrationStates);
+
+                return vc;
             }
             catch (Exception ex)
             {
-                RaiseError($"Failed to create virtual controller for pad {padIndex}", ex);
+                RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Creates a vJoy virtual controller using the next available device ID.
+        /// Device nodes are pre-provisioned by UpdateVirtualDevices() before this
+        /// method is called, so this just finds a free ID and returns a controller.
+        /// Returns null if vJoy driver is not installed or no free devices found.
+        /// </summary>
+        private IVirtualController CreateVJoyController()
+        {
+            VJoyVirtualController.DiagLog($"CreateVJoyController called");
+
+            VJoyVirtualController.EnsureDllLoaded();
+            if (!VJoyVirtualController.IsDllLoaded)
+            {
+                RaiseError("vJoy driver is not installed (vJoyInterface.dll not found).", null);
+                return null;
+            }
+
+            uint deviceId = VJoyVirtualController.FindFreeDeviceId();
+            VJoyVirtualController.DiagLog($"CreateVJoyController: FindFreeDeviceId={deviceId}");
+            if (deviceId == 0)
+            {
+                RaiseError("No free vJoy devices after node creation.", null);
+                return null;
+            }
+            return new VJoyVirtualController(deviceId);
         }
 
         private void DestroyVirtualController(int padIndex)
@@ -265,27 +576,57 @@ namespace PadForge.Common.Input
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
 
+            var vcType = vc.Type;
+
             try
             {
+                // Snapshot for Xbox 360 slot mask wait.
+                uint maskBefore = 0;
+                if (vcType == VirtualControllerType.Xbox360)
+                    maskBefore = GetXInputConnectedSlotMask();
+
                 vc.Disconnect();
 
                 // Brief wait for the slot to disappear from the XInput stack.
-                var waitSw = Stopwatch.StartNew();
-                uint maskBefore = GetXInputConnectedSlotMask();
-                while (waitSw.ElapsedMilliseconds < 50)
+                if (vcType == VirtualControllerType.Xbox360)
                 {
-                    uint maskAfter = GetXInputConnectedSlotMask();
-                    if (maskAfter != maskBefore)
-                        break;
-                    Thread.SpinWait(100);
+                    var waitSw = Stopwatch.StartNew();
+                    while (waitSw.ElapsedMilliseconds < 50)
+                    {
+                        uint maskAfter = GetXInputConnectedSlotMask();
+                        if (maskAfter != maskBefore)
+                            break;
+                        Thread.SpinWait(100);
+                    }
                 }
 
-                _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
+                // Dispose releases the native ViGEm target handle (vigem_target_free).
+                // Without this, the ViGEm target leaks and phantom USB devices remain.
+                vc.Dispose();
             }
             catch { /* best effort */ }
+            finally
+            {
+                // Counter decrements MUST happen even if Disconnect/Dispose throws.
+                // Otherwise _activeXbox360Count stays inflated and the filter
+                // over-filters on subsequent UpdateDevices cycles.
+                if (vcType == VirtualControllerType.Xbox360)
+                {
+                    _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
+                    _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
+                }
+                else if (vcType == VirtualControllerType.DualShock4)
+                {
+                    _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
+                    _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
+                }
+            }
+
+            // Single-node model: only 1 ROOT\HIDCLASS device node ever exists.
+            // No node trimming needed — the node stays alive for the session.
         }
 
-        private void DestroyAllVirtualControllers()
+        private void DestroyAllVirtualControllers(bool preserveVJoyNodes = false)
         {
             for (int i = 0; i < MaxPads; i++)
             {
@@ -294,14 +635,164 @@ namespace PadForge.Common.Input
             }
 
             _activeVigemCount = 0;
+            _activeXbox360Count = 0;
+            _activeDs4Count = 0;
+
+            if (preserveVJoyNodes)
+            {
+                // Disable the node instead of removing it. The DLL's internal device
+                // handle stays valid for when the node is re-enabled via RestartDeviceNode.
+                // This matches the EnsureDevicesAvailable(0) pattern.
+                try { VJoyVirtualController.DisableDeviceNode(); } catch { }
+            }
+            else
+            {
+                // Full removal — for final app shutdown. Prevents orphaned nodes
+                // from showing in joy.cpl after PadForge exits.
+                try { VJoyVirtualController.RemoveAllDeviceNodes(); } catch { }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Stale ViGEm device cleanup
+        //
+        //  ViGEm bus driver may leave orphaned USB device nodes
+        //  when a feeder app exits without calling Dispose() on
+        //  its virtual controller targets. These stale nodes
+        //  appear as real Xbox 360 / DS4 controllers to SDL.
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Removes stale ViGEm USB device nodes that survived from previous sessions.
+        /// ViGEm assigns short numeric serials (01, 02, ..., 16) to Xbox 360 targets.
+        /// Real Xbox 360 controllers have longer hardware serials.
+        /// Must be called BEFORE Start() so SDL doesn't enumerate the stale nodes.
+        /// </summary>
+        public static void CleanupStaleVigemDevices()
+        {
+            try
+            {
+                // ViGEm Xbox 360 virtual controllers are in the XnaComposite class
+                // with instance IDs like USB\VID_045E&PID_028E\01.
+                var staleIds = EnumerateStaleVigemIds("XnaComposite");
+
+                if (staleIds.Count == 0) return;
+
+                Debug.WriteLine($"[ViGEm] Cleaning up {staleIds.Count} stale device node(s)");
+                foreach (string id in staleIds)
+                {
+                    try
+                    {
+                        var removePsi = new ProcessStartInfo
+                        {
+                            FileName = "pnputil.exe",
+                            Arguments = $"/remove-device \"{id}\" /subtree",
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            CreateNoWindow = true
+                        };
+                        using var removeProc = Process.Start(removePsi);
+                        removeProc?.WaitForExit(5_000);
+                        Debug.WriteLine($"[ViGEm] Removed stale device: {id}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"[ViGEm] Failed to remove {id}: {ex.Message}");
+                    }
+                }
+
+                // Brief wait for PnP to fully process the removals before SDL init.
+                Thread.Sleep(500);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ViGEm] CleanupStaleVigemDevices exception: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Enumerates stale ViGEm device instance IDs in the given device class.
+        /// ViGEm Xbox 360 targets: USB\VID_045E&amp;PID_028E\NN (short numeric serial).
+        /// Real Xbox controllers have longer alphanumeric serials.
+        /// </summary>
+        private static List<string> EnumerateStaleVigemIds(string deviceClass)
+        {
+            var results = new List<string>();
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "pnputil.exe",
+                    Arguments = $"/enum-devices /class {deviceClass}",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                using var proc = Process.Start(psi);
+                if (proc == null) return results;
+                string output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(5_000);
+
+                string currentInstanceId = null;
+                foreach (string rawLine in output.Split('\n'))
+                {
+                    string line = rawLine.Trim();
+                    if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0
+                        && line.Contains(":"))
+                    {
+                        currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
+                    }
+                    else if (string.IsNullOrEmpty(line))
+                    {
+                        if (currentInstanceId != null && IsVigemInstanceId(currentInstanceId))
+                            results.Add(currentInstanceId);
+                        currentInstanceId = null;
+                    }
+                }
+                if (currentInstanceId != null && IsVigemInstanceId(currentInstanceId))
+                    results.Add(currentInstanceId);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ViGEm] EnumerateStaleVigemIds({deviceClass}) exception: {ex.Message}");
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Checks if a PnP instance ID looks like a ViGEm virtual controller.
+        /// ViGEm assigns short numeric serials (1-2 digits): USB\VID_045E&amp;PID_028E\01
+        /// Real Xbox controllers have long alphanumeric serials.
+        /// </summary>
+        private static bool IsVigemInstanceId(string instanceId)
+        {
+            // USB\VID_045E&PID_028E\NN (Xbox 360)
+            if (!instanceId.StartsWith("USB\\", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            int lastBackslash = instanceId.LastIndexOf('\\');
+            if (lastBackslash < 0) return false;
+
+            string serial = instanceId.Substring(lastBackslash + 1);
+            // ViGEm serials are short numeric strings (1-2 digits).
+            // Real USB controllers have longer alphanumeric serials.
+            if (serial.Length > 2 || serial.Length == 0) return false;
+            foreach (char c in serial)
+                if (!char.IsDigit(c)) return false;
+
+            string upperPath = instanceId.ToUpperInvariant();
+            return upperPath.Contains("VID_045E&PID_028E") ||
+                   upperPath.Contains("VID_054C&PID_05C4");
         }
 
         // ─────────────────────────────────────────────
         //  XInput slot mask — direct P/Invoke to xinput1_4.dll
         //
         //  Used for ViGEm virtual controller management only
-        //  (detecting when a newly created virtual controller
-        //  appears in the XInput stack).
+        //  (detecting when a newly created Xbox 360 virtual
+        //  controller appears in the XInput stack).
         // ─────────────────────────────────────────────
 
         [DllImport("xinput1_4.dll", EntryPoint = "#100")]
@@ -343,39 +834,6 @@ namespace PadForge.Common.Input
                     mask |= (1u << (int)i);
             }
             return mask;
-        }
-
-        // ─────────────────────────────────────────────
-        //  Report submission
-        // ─────────────────────────────────────────────
-
-        private static void SubmitGamepadToVirtual(IXbox360Controller vc, Gamepad gp)
-        {
-            vc.SetButtonState(Xbox360Button.A, (gp.Buttons & Gamepad.A) != 0);
-            vc.SetButtonState(Xbox360Button.B, (gp.Buttons & Gamepad.B) != 0);
-            vc.SetButtonState(Xbox360Button.X, (gp.Buttons & Gamepad.X) != 0);
-            vc.SetButtonState(Xbox360Button.Y, (gp.Buttons & Gamepad.Y) != 0);
-            vc.SetButtonState(Xbox360Button.LeftShoulder, (gp.Buttons & Gamepad.LEFT_SHOULDER) != 0);
-            vc.SetButtonState(Xbox360Button.RightShoulder, (gp.Buttons & Gamepad.RIGHT_SHOULDER) != 0);
-            vc.SetButtonState(Xbox360Button.Back, (gp.Buttons & Gamepad.BACK) != 0);
-            vc.SetButtonState(Xbox360Button.Start, (gp.Buttons & Gamepad.START) != 0);
-            vc.SetButtonState(Xbox360Button.LeftThumb, (gp.Buttons & Gamepad.LEFT_THUMB) != 0);
-            vc.SetButtonState(Xbox360Button.RightThumb, (gp.Buttons & Gamepad.RIGHT_THUMB) != 0);
-            vc.SetButtonState(Xbox360Button.Guide, (gp.Buttons & Gamepad.GUIDE) != 0);
-            vc.SetButtonState(Xbox360Button.Up, (gp.Buttons & Gamepad.DPAD_UP) != 0);
-            vc.SetButtonState(Xbox360Button.Down, (gp.Buttons & Gamepad.DPAD_DOWN) != 0);
-            vc.SetButtonState(Xbox360Button.Left, (gp.Buttons & Gamepad.DPAD_LEFT) != 0);
-            vc.SetButtonState(Xbox360Button.Right, (gp.Buttons & Gamepad.DPAD_RIGHT) != 0);
-
-            vc.SetAxisValue(Xbox360Axis.LeftThumbX, gp.ThumbLX);
-            vc.SetAxisValue(Xbox360Axis.LeftThumbY, gp.ThumbLY);
-            vc.SetAxisValue(Xbox360Axis.RightThumbX, gp.ThumbRX);
-            vc.SetAxisValue(Xbox360Axis.RightThumbY, gp.ThumbRY);
-
-            vc.SetSliderValue(Xbox360Slider.LeftTrigger, gp.LeftTrigger);
-            vc.SetSliderValue(Xbox360Slider.RightTrigger, gp.RightTrigger);
-
-            vc.SubmitReport();
         }
     }
 }

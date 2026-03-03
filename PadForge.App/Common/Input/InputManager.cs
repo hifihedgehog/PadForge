@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Services;
 using SDL3;
 using static SDL3.SDL;
 
@@ -38,7 +39,7 @@ namespace PadForge.Common.Input
         private const int EnumerationIntervalMs = 2000;
 
         /// <summary>Maximum number of virtual controller slots.</summary>
-        public const int MaxPads = 4;
+        public const int MaxPads = 16;
 
         // ─────────────────────────────────────────────
         //  State
@@ -59,23 +60,42 @@ namespace PadForge.Common.Input
         // ── Pre-allocated snapshot buffers for hot path (avoid LINQ allocations) ──
         private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
         private UserSetting[] _settingSnapshotBuffer = new UserSetting[16];
-        private readonly UserSetting[] _padIndexBuffer = new UserSetting[8];
+        private readonly UserSetting[] _padIndexBuffer = new UserSetting[MaxPads];
+        private readonly UserSetting[] _instanceGuidBuffer = new UserSetting[MaxPads];
 
         /// <summary>
-        /// Combined XInput gamepad states for the 4 virtual controller slots.
+        /// Combined output gamepad states for the virtual controller slots.
         /// Written by Step 4 (background thread), read by UI (InputService).
         /// </summary>
-        public Gamepad[] CombinedXiStates { get; } = new Gamepad[MaxPads];
+        public Gamepad[] CombinedOutputStates { get; } = new Gamepad[MaxPads];
 
         /// <summary>
-        /// Retrieved XInput states read back from the XInput DLL in Step 6.
+        /// Combined vJoy raw output states for custom vJoy slots.
+        /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
-        public Gamepad[] RetrievedXiStates { get; } = new Gamepad[MaxPads];
+        public VJoyRawState[] CombinedVJoyRawStates { get; } = new VJoyRawState[MaxPads];
+
+        /// <summary>
+        /// Retrieved output states copied from Step 4 for UI display in Step 6.
+        /// </summary>
+        public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
 
         /// <summary>
         /// Per-slot vibration states received from games via ViGEmBus.
         /// </summary>
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
+
+        /// <summary>
+        /// Per-slot motion snapshots for DSU (cemuhook) streaming.
+        /// Written by the polling thread after Step 2, read by the DSU server.
+        /// </summary>
+        public MotionSnapshot[] MotionSnapshots { get; } = new MotionSnapshot[MaxPads];
+
+        /// <summary>
+        /// DSU motion server reference. When set, the polling thread broadcasts
+        /// motion data to subscribed clients after snapshotting sensor data.
+        /// </summary>
+        public DsuMotionServer DsuServer { get; set; }
 
         /// <summary>
         /// When set (non-empty), the test rumble for this slot targets only the
@@ -207,6 +227,8 @@ namespace PadForge.Common.Input
             if (!InitializeSdl())
                 return;
 
+            RawInputListener.Start();
+
             _running = true;
             _enumerationTimer.Restart();
             _frequencyTimer.Restart();
@@ -224,7 +246,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Stops the background polling thread and waits for it to exit.
         /// </summary>
-        public void Stop()
+        public void Stop(bool preserveVJoyNodes = false)
         {
             if (!_running)
                 return;
@@ -237,8 +259,10 @@ namespace PadForge.Common.Input
                 _pollingThread = null;
             }
 
+            RawInputListener.Stop();
+
             StopAllForceFeedback();
-            DestroyAllVirtualControllers();
+            DestroyAllVirtualControllers(preserveVJoyNodes);
             CloseAllDevices();
 
             _enumerationTimer.Stop();
@@ -298,11 +322,13 @@ namespace PadForge.Common.Input
                         }
 
                         UpdateInputStates();
-                        UpdateXiStates();
-                        CombineXiStates();
+                        UpdateMotionSnapshots();
+                        BroadcastDsuMotion();
+                        UpdateOutputStates();
+                        CombineOutputStates();
                         EvaluateMacros();
                         UpdateVirtualDevices();
-                        RetrieveXiStates();
+                        RetrieveOutputStates();
 
                         // Frequency measurement.
                         _frequencyCounter++;
@@ -354,6 +380,85 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
+        //  Slot swap
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Swaps controller slot data between two positions.
+        /// Same-type swaps keep virtual controllers alive — only the input
+        /// routing changes (via MapTo swap in SettingsManager). This avoids
+        /// ViGEm disconnect/reconnect flicker and preserves XInput indices.
+        /// Cross-type swaps destroy both VCs so Step 5 recreates them with
+        /// the correct types.
+        /// </summary>
+        public void SwapSlots(int slotA, int slotB)
+        {
+            if (slotA == slotB) return;
+            if (slotA < 0 || slotA >= MaxPads) return;
+            if (slotB < 0 || slotB >= MaxPads) return;
+
+            var vcA = _virtualControllers[slotA];
+            var vcB = _virtualControllers[slotB];
+            var typeA = vcA?.Type ?? SlotControllerTypes[slotA];
+            var typeB = vcB?.Type ?? SlotControllerTypes[slotB];
+
+            if (typeA == typeB)
+            {
+                // Same type — virtual controllers stay at their indices.
+                // SettingsManager.SwapSlots (called by InputService) swaps
+                // MapTo values, which reroutes the entire pipeline:
+                //   Step 3 maps device input using MapTo → OutputState
+                //   Step 4 combines by MapTo index → CombinedOutputStates
+                //   Step 5 feeds CombinedOutputStates[i] → _virtualControllers[i]
+                // All per-slot arrays are recomputed each frame from MapTo,
+                // so no array swapping needed. Zero game disruption.
+            }
+            else
+            {
+                // Cross-type swap — must destroy both VCs so Step 5 recreates
+                // them with the correct types in ascending slot order.
+                DestroyVirtualController(slotA);
+                DestroyVirtualController(slotB);
+                _virtualControllers[slotA] = null;
+                _virtualControllers[slotB] = null;
+                _slotInactiveCounter[slotA] = 0;
+                _slotInactiveCounter[slotB] = 0;
+            }
+
+            // Always swap type tracking and UI-associated state that
+            // travels with the card (not recomputed from MapTo).
+            (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
+                (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
+                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
+            (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
+                (MacroSnapshots[slotB], MacroSnapshots[slotA]);
+        }
+
+        /// <summary>
+        /// Swaps only data arrays between two slots: SlotControllerTypes,
+        /// TestRumbleTargetGuid, MacroSnapshots. Does NOT touch virtual
+        /// controllers or their lifecycle.
+        /// Used by EnsureTypeGroupOrder so Step 5 detects the type mismatch
+        /// and handles VC recreation naturally on the polling thread,
+        /// avoiding the all-VCs-destroyed-at-once race that causes phantom
+        /// Xbox controllers.
+        /// </summary>
+        public void SwapSlotData(int slotA, int slotB)
+        {
+            if (slotA == slotB) return;
+            if (slotA < 0 || slotA >= MaxPads) return;
+            if (slotB < 0 || slotB >= MaxPads) return;
+
+            (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
+                (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
+                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
+            (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
+                (MacroSnapshots[slotB], MacroSnapshots[slotA]);
+        }
+
+        // ─────────────────────────────────────────────
         //  Device cleanup helpers
         // ─────────────────────────────────────────────
 
@@ -391,6 +496,99 @@ namespace PadForge.Common.Input
                         ud.ClearRuntimeState();
                     }
                 }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Motion snapshots (for DSU server)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Unit conversion: SDL gyro rad/s → DSU deg/s.</summary>
+        private const float RadToDeg = 180f / MathF.PI;
+
+        /// <summary>Unit conversion: SDL accel m/s² → DSU g-force.</summary>
+        private const float MsToG = 1f / 9.80665f;
+
+        /// <summary>
+        /// Snapshots per-slot motion data from the first online device with sensors.
+        /// Called on the polling thread after Step 2 (UpdateInputStates).
+        /// </summary>
+        private void UpdateMotionSnapshots()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            long timestampUs = Stopwatch.GetTimestamp() * 1_000_000 / Stopwatch.Frequency;
+
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
+                bool found = false;
+
+                for (int i = 0; i < slotCount; i++)
+                {
+                    var us = _padIndexBuffer[i];
+                    if (us == null) continue;
+
+                    var ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
+                    if (ud == null || !ud.IsOnline || ud.Device == null)
+                        continue;
+
+                    if (!ud.Device.HasGyro && !ud.Device.HasAccel)
+                        continue;
+
+                    var state = ud.InputState;
+                    if (state == null)
+                        continue;
+
+                    // SDL standard: Accel in m/s² (Y=up has gravity), Gyro in rad/s
+                    // DSU/DS4 convention: negated accel signs, consistent frame
+                    // Derived from Switch Pro SDL→DSU mapping (BetterJoy reference)
+                    float ax = state.Accel[0] * MsToG;
+                    float ay = state.Accel[1] * MsToG;
+                    float az = state.Accel[2] * MsToG;
+                    float gx = state.Gyro[0] * RadToDeg;
+                    float gy = state.Gyro[1] * RadToDeg;
+                    float gz = state.Gyro[2] * RadToDeg;
+
+                    MotionSnapshots[padIndex] = new MotionSnapshot
+                    {
+                        AccelX = -ax,
+                        AccelY = -ay,
+                        AccelZ = -az,
+                        GyroPitch = -gx,
+                        GyroYaw = gy,
+                        GyroRoll = -gz,
+                        TimestampUs = timestampUs,
+                        HasMotion = true
+                    };
+                    found = true;
+                    break;
+                }
+
+                if (!found)
+                {
+                    MotionSnapshots[padIndex] = new MotionSnapshot
+                    {
+                        TimestampUs = timestampUs,
+                        HasMotion = false
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// Broadcasts motion data to DSU clients if the server is active.
+        /// </summary>
+        private void BroadcastDsuMotion()
+        {
+            var server = DsuServer;
+            if (server == null) return;
+
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                bool connected = IsSlotActive(padIndex);
+                server.BroadcastMotion(padIndex, MotionSnapshots[padIndex], connected);
             }
         }
 

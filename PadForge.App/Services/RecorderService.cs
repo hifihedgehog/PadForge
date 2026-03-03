@@ -61,6 +61,9 @@ namespace PadForge.Services
         /// <summary>The device GUID to record from (the selected device).</summary>
         private Guid _activeDeviceGuid;
 
+        /// <summary>True when recording for the negative direction of an axis.</summary>
+        private bool _negRecording;
+
         /// <summary>The baseline input state captured at the start of recording.</summary>
         private CustomInputState _baseline;
 
@@ -76,6 +79,13 @@ namespace PadForge.Services
 
         /// <summary>When recording started (for timeout).</summary>
         private DateTime _recordingStartTime;
+
+        /// <summary>
+        /// When true, the recorder waits for all buttons and POVs to return to neutral
+        /// before detecting new inputs. Used for follow-up recordings where the previous
+        /// input may still be physically held.
+        /// </summary>
+        private bool _waitForRelease;
 
         /// <summary>Whether recording is currently active.</summary>
         public bool IsRecording => _activeMapping != null;
@@ -110,7 +120,12 @@ namespace PadForge.Services
         /// <param name="mapping">The mapping item to record a source for.</param>
         /// <param name="padIndex">The pad index (0–3) to read input from.</param>
         /// <param name="deviceGuid">The specific device GUID to record from.</param>
-        public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid)
+        /// <param name="neutralizeBaseline">When true, forces all buttons and POVs to
+        /// their neutral state in the baseline so that any press (even if currently held)
+        /// is detected as a fresh change. Used for auto-prompt follow-up recordings
+        /// where the previous input may still be physically held.</param>
+        public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
+            bool neutralizeBaseline = false, bool negRecording = false)
         {
             if (mapping == null)
                 return;
@@ -122,6 +137,7 @@ namespace PadForge.Services
             _activeMapping = mapping;
             _activePadIndex = padIndex;
             _activeDeviceGuid = deviceGuid;
+            _negRecording = negRecording;
             _axisHoldCounter = 0;
             _axisCandidateType = MapType.None;
             _axisCandidateIndex = -1;
@@ -136,6 +152,11 @@ namespace PadForge.Services
                 _mainVm.StatusText = "No device connected to record from.";
                 return;
             }
+
+            // For follow-up recordings, wait for the previous input to be released
+            // before detecting new presses. This prevents the same POV/button from
+            // being immediately re-detected when it's still physically held.
+            _waitForRelease = neutralizeBaseline;
 
             // Mark the mapping as recording.
             mapping.IsRecording = true;
@@ -201,6 +222,24 @@ namespace PadForge.Services
             if (current == null)
             {
                 CancelRecording();
+                return;
+            }
+
+            // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
+            if (_waitForRelease)
+            {
+                bool anyHeld = false;
+                for (int i = 0; i < CustomInputState.MaxButtons && !anyHeld; i++)
+                    anyHeld = current.Buttons[i];
+                for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
+                    anyHeld = current.Povs[i] >= 0;
+
+                if (anyHeld)
+                    return; // Still held — wait for release
+
+                // Everything released — capture fresh baseline and start detecting.
+                _waitForRelease = false;
+                _baseline = current;
                 return;
             }
 
@@ -324,10 +363,11 @@ namespace PadForge.Services
 
             // Auto-detect inversion for axis/slider recordings based on movement direction.
             if (type == MapType.Axis || type == MapType.Slider)
-                mapping.IsInverted = ShouldAutoInvert(mapping, axisPositive);
+                mapping.IsInverted = ShouldAutoInvert(mapping, axisPositive, _negRecording);
 
             // Read back the final descriptor (may have "I" prefix from auto-inversion).
             string finalDescriptor = mapping.SourceDescriptor;
+
             _mainVm.StatusText = $"Recorded \"{mapping.TargetLabel}\" ← {finalDescriptor}";
 
             // Raise event.
@@ -348,27 +388,34 @@ namespace PadForge.Services
         /// </summary>
         /// <param name="mapping">The target mapping item being recorded.</param>
         /// <param name="axisPositive">True if the raw axis value increased (positive delta).</param>
-        private static bool ShouldAutoInvert(MappingItem mapping, bool axisPositive)
+        private static bool ShouldAutoInvert(MappingItem mapping, bool axisPositive, bool negRecording)
         {
             string target = mapping.TargetSettingName;
 
-            // Y-axis targets: "up" is natural. SDL raw Y increases when pushed down,
-            // so positive delta = down = needs inversion.
-            if (target == "LeftThumbAxisY" || target == "RightThumbAxisY")
-                return axisPositive;
+            // Stick axis targets: pos target expects positive SDL delta (right/down),
+            // neg target expects negative SDL delta (left/up).
+            // Invert only if the user pushed in the wrong direction for the target.
+            if (target is "LeftThumbAxisX" or "RightThumbAxisX"
+                      or "LeftThumbAxisY" or "RightThumbAxisY")
+                return negRecording ? axisPositive : !axisPositive;
 
-            // X-axis targets: "right" is natural. SDL raw X increases when pushed right,
-            // so negative delta = left = needs inversion.
-            if (target == "LeftThumbAxisX" || target == "RightThumbAxisX")
-                return !axisPositive;
+            // VJoy bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
+            if (target.StartsWith("VJoyAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
+                return negRecording ? axisPositive : !axisPositive;
 
             // Trigger targets: increasing value is natural.
             // Negative delta = reverse polarity = needs inversion.
             if (target == "LeftTrigger" || target == "RightTrigger")
                 return !axisPositive;
 
-            // All other targets (buttons, d-pad, etc.): no auto-inversion.
-            return false;
+            // VJoy trigger axes (unidirectional, no neg direction): same as gamepad triggers.
+            if (target.StartsWith("VJoyAxis", StringComparison.Ordinal))
+                return !axisPositive;
+
+            // All other targets (buttons, d-pad, etc.): invert when the user pushed
+            // the axis in the negative direction. This ensures the engine's threshold
+            // check ("value < 25%") fires for the direction the user actually moved.
+            return !axisPositive;
         }
 
         /// <summary>
@@ -399,14 +446,15 @@ namespace PadForge.Services
             centidegrees = centidegrees % 36000;
 
             // 8-way detection with 45-degree (4500 centidegrees) sectors.
+            // 0=N, 4500=NE, 9000=E, 13500=SE, 18000=S, 22500=SW, 27000=W, 31500=NW
             if (centidegrees >= 33750 || centidegrees < 2250) return "Up";
-            if (centidegrees >= 2250 && centidegrees < 6750) return "Up"; // UpRight → treat as Up
+            if (centidegrees >= 2250 && centidegrees < 6750) return "UpRight";
             if (centidegrees >= 6750 && centidegrees < 11250) return "Right";
-            if (centidegrees >= 11250 && centidegrees < 15750) return "Down"; // DownRight → treat as Down
+            if (centidegrees >= 11250 && centidegrees < 15750) return "DownRight";
             if (centidegrees >= 15750 && centidegrees < 20250) return "Down";
-            if (centidegrees >= 20250 && centidegrees < 24750) return "Down"; // DownLeft → treat as Down
+            if (centidegrees >= 20250 && centidegrees < 24750) return "DownLeft";
             if (centidegrees >= 24750 && centidegrees < 29250) return "Left";
-            if (centidegrees >= 29250 && centidegrees < 33750) return "Up"; // UpLeft → treat as Up
+            if (centidegrees >= 29250 && centidegrees < 33750) return "UpLeft";
 
             return "Up"; // Fallback
         }

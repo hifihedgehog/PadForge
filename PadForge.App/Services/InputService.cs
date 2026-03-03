@@ -1162,13 +1162,64 @@ namespace PadForge.Services
         /// <summary>
         /// Called when a pad's mappings are rebuilt (e.g., OutputType or vJoy preset changed).
         /// Reloads mapping descriptors from the PadSetting so auto-mapped inputs are preserved.
+        /// Does NOT reload dead zone / force feedback settings — those are intentionally reset
+        /// by PadViewModel.ResetDeadZoneSettings() when the OutputType or vJoy preset changes.
         /// </summary>
         private void OnMappingsRebuilt(object sender, EventArgs e)
         {
             if (sender is PadViewModel padVm && padVm.SelectedMappedDevice != null
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
             {
-                LoadPadSettingToViewModel(padVm, padVm.SelectedMappedDevice.InstanceGuid);
+                LoadMappingDescriptorsOnly(padVm, padVm.SelectedMappedDevice.InstanceGuid);
+            }
+        }
+
+        /// <summary>
+        /// Loads only mapping descriptors from a device's PadSetting into the ViewModel.
+        /// Unlike <see cref="LoadPadSettingToViewModel"/>, this does NOT touch dead zone,
+        /// force feedback, or other tuning properties — only mapping source descriptors.
+        /// </summary>
+        private static void LoadMappingDescriptorsOnly(PadViewModel padVm, Guid instanceGuid)
+        {
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
+            if (us == null) return;
+
+            var ps = us.GetPadSetting();
+            if (ps == null) return;
+
+            var ud = FindUserDevice(instanceGuid);
+            foreach (var mapping in padVm.Mappings)
+            {
+                string target = mapping.TargetSettingName;
+                string value;
+                if (target.StartsWith("VJoy", StringComparison.Ordinal))
+                    value = ps.GetVJoyMapping(target);
+                else
+                {
+                    var prop = typeof(PadSetting).GetProperty(target);
+                    value = (prop != null && prop.PropertyType == typeof(string))
+                        ? prop.GetValue(ps) as string ?? string.Empty
+                        : string.Empty;
+                }
+                mapping.LoadDescriptor(value);
+                ResolveDisplayText(mapping, ud);
+
+                if (mapping.NegSettingName != null)
+                {
+                    string negTarget = mapping.NegSettingName;
+                    string negValue;
+                    if (negTarget.StartsWith("VJoy", StringComparison.Ordinal))
+                        negValue = ps.GetVJoyMapping(negTarget);
+                    else
+                    {
+                        var negProp = typeof(PadSetting).GetProperty(negTarget);
+                        negValue = (negProp != null && negProp.PropertyType == typeof(string))
+                            ? negProp.GetValue(ps) as string ?? string.Empty
+                            : string.Empty;
+                    }
+                    mapping.LoadNegDescriptor(negValue);
+                    ResolveNegDisplayText(mapping, ud);
+                }
             }
         }
 

@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using System.Xml.Serialization;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
@@ -427,6 +428,7 @@ namespace PadForge.Services
                     Name = md.Name ?? "Macro",
                     IsEnabled = md.IsEnabled,
                     TriggerButtons = md.TriggerButtons,
+                    TriggerCustomButtons = md.TriggerCustomButtons,
                     TriggerDeviceGuid = Guid.TryParse(md.TriggerDeviceGuid, out var parsedGuid)
                         ? parsedGuid : Guid.Empty,
                     TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
@@ -446,8 +448,8 @@ namespace PadForge.Services
                         {
                             Type = ad.Type,
                             ButtonFlags = ad.ButtonFlags,
+                            CustomButtons = ad.CustomButtons,
                             KeyCode = ad.KeyCode,
-                            // Migrate legacy single KeyCode to KeyString format.
                             KeyString = !string.IsNullOrEmpty(ad.KeyString)
                                 ? ad.KeyString
                                 : (ad.KeyCode != 0 ? $"{{{(VirtualKey)ad.KeyCode}}}" : ""),
@@ -459,8 +461,12 @@ namespace PadForge.Services
                 }
 
                 // Set after actions are populated so propagation reaches all of them.
-                macro.ButtonStyle = MacroButtonNames.DeriveStyle(
-                    padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
+                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
+                int btnCount = (padVm.OutputType == VirtualControllerType.VJoy ? padVm.VJoyConfig?.ButtonCount : null) ?? 11;
+                macro.CustomButtonCount = btnCount;
+                macro.ButtonStyle = style;
+                foreach (var action in macro.Actions)
+                    action.CustomButtonCount = btnCount;
 
                 padVm.Macros.Add(macro);
             }
@@ -811,10 +817,12 @@ namespace PadForge.Services
                         RepeatMode = macro.RepeatMode,
                         RepeatCount = macro.RepeatCount,
                         RepeatDelayMs = macro.RepeatDelayMs,
+                        TriggerCustomButtons = macro.TriggerCustomButtons,
                         Actions = macro.Actions.Select(a => new ActionData
                         {
                             Type = a.Type,
                             ButtonFlags = a.ButtonFlags,
+                            CustomButtons = a.CustomButtons,
                             KeyCode = a.ParsedKeyCodes.Length > 0 ? a.ParsedKeyCodes[0] : a.KeyCode,
                             KeyString = a.KeyString,
                             DurationMs = a.DurationMs,
@@ -1232,6 +1240,10 @@ namespace PadForge.Services
         [XmlElement]
         public int RepeatDelayMs { get; set; } = 100;
 
+        /// <summary>Hex-encoded custom vJoy trigger button words (e.g. "00000003,00000000,00000000,00000000").</summary>
+        [XmlElement]
+        public string TriggerCustomButtons { get; set; }
+
         [XmlArray("Actions")]
         [XmlArrayItem("Action")]
         public ActionData[] Actions { get; set; }
@@ -1247,6 +1259,10 @@ namespace PadForge.Services
 
         [XmlElement]
         public ushort ButtonFlags { get; set; }
+
+        /// <summary>Hex-encoded custom vJoy button words for this action.</summary>
+        [XmlElement]
+        public string CustomButtons { get; set; }
 
         [XmlElement]
         public int KeyCode { get; set; }

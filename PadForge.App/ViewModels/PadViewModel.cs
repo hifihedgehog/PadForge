@@ -129,8 +129,11 @@ namespace PadForge.ViewModels
                         RebuildTriggerConfigs();
                         break;
                     case nameof(VJoySlotConfig.PovCount):
+                        RebuildMappings();
+                        break;
                     case nameof(VJoySlotConfig.ButtonCount):
                         RebuildMappings();
+                        SyncMacroButtonStyle();
                         break;
                 }
             }
@@ -839,8 +842,14 @@ namespace PadForge.ViewModels
         private void SyncMacroButtonStyle()
         {
             var style = MacroButtonNames.DeriveStyle(_outputType, _vJoyConfig?.Preset ?? VJoyPreset.Xbox360);
+            int btnCount = (_outputType == VirtualControllerType.VJoy ? _vJoyConfig?.ButtonCount : null) ?? 11;
             foreach (var macro in Macros)
+            {
                 macro.ButtonStyle = style;
+                macro.CustomButtonCount = btnCount;
+                foreach (var action in macro.Actions)
+                    action.CustomButtonCount = btnCount;
+            }
         }
 
         // ═══════════════════════════════════════════════

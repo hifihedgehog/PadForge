@@ -24,6 +24,8 @@ namespace PadForge.ViewModels
             Title = $"Virtual Controller {padIndex + 1}";
             SlotLabel = $"Virtual Controller {padIndex + 1}";
             InitializeDefaultMappings();
+            RebuildStickConfigs();
+            RebuildTriggerConfigs();
         }
 
         /// <summary>Zero-based pad slot index (0–7).</summary>
@@ -412,6 +414,189 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
+        //  Dynamic stick/trigger config items for the Sticks and Triggers tabs.
+        //  These collections drive the ItemsControl-based dynamic UI.
+        //  For gamepad presets: 2 sticks, 2 triggers.
+        //  For custom vJoy: N sticks, M triggers.
+        // ═══════════════════════════════════════════════
+
+        public ObservableCollection<StickConfigItem> StickConfigs { get; } = new();
+        public ObservableCollection<TriggerConfigItem> TriggerConfigs { get; } = new();
+
+        private bool _syncingConfigItems;
+
+        /// <summary>
+        /// Rebuilds the StickConfigs collection based on the current output type.
+        /// For Xbox 360/DS4: always 2 sticks (Left, Right).
+        /// </summary>
+        public void RebuildStickConfigs()
+        {
+            foreach (var item in StickConfigs)
+                item.PropertyChanged -= OnStickConfigPropertyChanged;
+            StickConfigs.Clear();
+
+            // Standard gamepad layout: 2 sticks
+            var left = new StickConfigItem(0, "Left Thumbstick");
+            var right = new StickConfigItem(1, "Right Thumbstick");
+
+            SyncStickItemFromVm(left);
+            SyncStickItemFromVm(right);
+
+            left.PropertyChanged += OnStickConfigPropertyChanged;
+            right.PropertyChanged += OnStickConfigPropertyChanged;
+
+            StickConfigs.Add(left);
+            StickConfigs.Add(right);
+        }
+
+        /// <summary>
+        /// Rebuilds the TriggerConfigs collection based on the current output type.
+        /// For Xbox 360/DS4: always 2 triggers (Left, Right).
+        /// </summary>
+        public void RebuildTriggerConfigs()
+        {
+            foreach (var item in TriggerConfigs)
+                item.PropertyChanged -= OnTriggerConfigPropertyChanged;
+            TriggerConfigs.Clear();
+
+            var left = new TriggerConfigItem(0, "Left Trigger");
+            var right = new TriggerConfigItem(1, "Right Trigger");
+
+            SyncTriggerItemFromVm(left);
+            SyncTriggerItemFromVm(right);
+
+            left.PropertyChanged += OnTriggerConfigPropertyChanged;
+            right.PropertyChanged += OnTriggerConfigPropertyChanged;
+
+            TriggerConfigs.Add(left);
+            TriggerConfigs.Add(right);
+        }
+
+        /// <summary>
+        /// Pushes current VM dead zone properties into a StickConfigItem.
+        /// Called on rebuild and when settings are loaded.
+        /// </summary>
+        public void SyncStickItemFromVm(StickConfigItem item)
+        {
+            _syncingConfigItems = true;
+            try
+            {
+                switch (item.Index)
+                {
+                    case 0:
+                        item.DeadZoneX = LeftDeadZoneX;
+                        item.DeadZoneY = LeftDeadZoneY;
+                        item.AntiDeadZoneX = LeftAntiDeadZoneX;
+                        item.AntiDeadZoneY = LeftAntiDeadZoneY;
+                        item.Linear = LeftLinear;
+                        break;
+                    case 1:
+                        item.DeadZoneX = RightDeadZoneX;
+                        item.DeadZoneY = RightDeadZoneY;
+                        item.AntiDeadZoneX = RightAntiDeadZoneX;
+                        item.AntiDeadZoneY = RightAntiDeadZoneY;
+                        item.Linear = RightLinear;
+                        break;
+                }
+            }
+            finally { _syncingConfigItems = false; }
+        }
+
+        /// <summary>
+        /// Pushes current VM trigger properties into a TriggerConfigItem.
+        /// </summary>
+        public void SyncTriggerItemFromVm(TriggerConfigItem item)
+        {
+            _syncingConfigItems = true;
+            try
+            {
+                switch (item.Index)
+                {
+                    case 0:
+                        item.DeadZone = LeftTriggerDeadZone;
+                        item.MaxRange = LeftTriggerMaxRange;
+                        item.AntiDeadZone = LeftTriggerAntiDeadZone;
+                        break;
+                    case 1:
+                        item.DeadZone = RightTriggerDeadZone;
+                        item.MaxRange = RightTriggerMaxRange;
+                        item.AntiDeadZone = RightTriggerAntiDeadZone;
+                        break;
+                }
+            }
+            finally { _syncingConfigItems = false; }
+        }
+
+        /// <summary>
+        /// Syncs all StickConfigItem values back from current VM properties.
+        /// Called after settings are loaded/pasted.
+        /// </summary>
+        public void SyncAllConfigItemsFromVm()
+        {
+            foreach (var item in StickConfigs)
+                SyncStickItemFromVm(item);
+            foreach (var item in TriggerConfigs)
+                SyncTriggerItemFromVm(item);
+        }
+
+        private void OnStickConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (_syncingConfigItems) return;
+            if (sender is not StickConfigItem item) return;
+
+            // Sync changed property back to VM
+            switch (item.Index)
+            {
+                case 0:
+                    switch (e.PropertyName)
+                    {
+                        case nameof(StickConfigItem.DeadZoneX): LeftDeadZoneX = item.DeadZoneX; break;
+                        case nameof(StickConfigItem.DeadZoneY): LeftDeadZoneY = item.DeadZoneY; break;
+                        case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
+                        case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
+                        case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
+                    }
+                    break;
+                case 1:
+                    switch (e.PropertyName)
+                    {
+                        case nameof(StickConfigItem.DeadZoneX): RightDeadZoneX = item.DeadZoneX; break;
+                        case nameof(StickConfigItem.DeadZoneY): RightDeadZoneY = item.DeadZoneY; break;
+                        case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
+                        case nameof(StickConfigItem.AntiDeadZoneY): RightAntiDeadZoneY = item.AntiDeadZoneY; break;
+                        case nameof(StickConfigItem.Linear): RightLinear = item.Linear; break;
+                    }
+                    break;
+            }
+        }
+
+        private void OnTriggerConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (_syncingConfigItems) return;
+            if (sender is not TriggerConfigItem item) return;
+
+            switch (item.Index)
+            {
+                case 0:
+                    switch (e.PropertyName)
+                    {
+                        case nameof(TriggerConfigItem.DeadZone): LeftTriggerDeadZone = item.DeadZone; break;
+                        case nameof(TriggerConfigItem.MaxRange): LeftTriggerMaxRange = item.MaxRange; break;
+                        case nameof(TriggerConfigItem.AntiDeadZone): LeftTriggerAntiDeadZone = item.AntiDeadZone; break;
+                    }
+                    break;
+                case 1:
+                    switch (e.PropertyName)
+                    {
+                        case nameof(TriggerConfigItem.DeadZone): RightTriggerDeadZone = item.DeadZone; break;
+                        case nameof(TriggerConfigItem.MaxRange): RightTriggerMaxRange = item.MaxRange; break;
+                        case nameof(TriggerConfigItem.AntiDeadZone): RightTriggerAntiDeadZone = item.AntiDeadZone; break;
+                    }
+                    break;
+            }
+        }
+
+        // ═══════════════════════════════════════════════
         //  #4: Macro system — foundation
         // ═══════════════════════════════════════════════
 
@@ -767,6 +952,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Updates per-device stick/trigger values for the stick and trigger tab previews.
         /// Shows only the selected device's input, not the combined slot.
+        /// Also syncs live values to StickConfigs/TriggerConfigs items.
         /// </summary>
         public void UpdateDeviceState(Gamepad gp)
         {
@@ -783,6 +969,32 @@ namespace PadForge.ViewModels
             DeviceThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0);
             DeviceThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
             DeviceThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
+
+            // Sync live values to dynamic config items
+            if (StickConfigs.Count > 0)
+            {
+                StickConfigs[0].LiveX = DeviceThumbLX;
+                StickConfigs[0].LiveY = DeviceThumbLY;
+                StickConfigs[0].RawX = gp.ThumbLX;
+                StickConfigs[0].RawY = gp.ThumbLY;
+            }
+            if (StickConfigs.Count > 1)
+            {
+                StickConfigs[1].LiveX = DeviceThumbRX;
+                StickConfigs[1].LiveY = DeviceThumbRY;
+                StickConfigs[1].RawX = gp.ThumbRX;
+                StickConfigs[1].RawY = gp.ThumbRY;
+            }
+            if (TriggerConfigs.Count > 0)
+            {
+                TriggerConfigs[0].LiveValue = DeviceLeftTrigger;
+                TriggerConfigs[0].RawValue = gp.LeftTrigger;
+            }
+            if (TriggerConfigs.Count > 1)
+            {
+                TriggerConfigs[1].LiveValue = DeviceRightTrigger;
+                TriggerConfigs[1].RawValue = gp.RightTrigger;
+            }
         }
 
         public void RefreshCommands()

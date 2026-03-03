@@ -801,6 +801,9 @@ namespace PadForge.Services
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
+            // Sync dynamic stick/trigger config items.
+            padVm.SyncAllConfigItemsFromVm();
+
             // Mapping descriptors.
             var ud = FindUserDevice(instanceGuid);
             foreach (var mapping in padVm.Mappings)

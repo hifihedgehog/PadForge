@@ -21,31 +21,25 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 
 ## Screenshots
 
-> **Note:** Screenshots below reflect an earlier version and will be updated soon to show the current UI.
-
 ### Dashboard
 ![Dashboard](screenshots/dashboard.jpg)
-At-a-glance overview showing input engine status (polling rate, device count), virtual controller slots with type badges, and installed driver versions.
+At-a-glance overview showing input engine status (polling rate, device count), virtual controller slots with type badges, DSU motion server, and driver status.
 
 ### 3D Controller Visualization
 ![Controller](screenshots/controller.jpg)
-Interactive 3D controller model rendered with HelixToolkit. Rotate, zoom, and pan to inspect the controller from any angle. Buttons, sticks, and triggers highlight in real time as you press them. Includes motor activity meters and a "Map All" button for quick auto-mapping.
+Interactive 3D controller model rendered with HelixToolkit. Rotate, zoom, and pan to inspect from any angle. Buttons, sticks, and triggers highlight in real time. Includes motor activity meters and a "Map All" button for quick auto-mapping. Toggle between 3D and 2D views.
 
 ### Button and Axis Mappings
 ![Mappings](screenshots/mappings.jpg)
-Full mapping grid where each output (buttons, sticks, triggers, D-pad) can be assigned to any source input. Record a mapping by pressing a button on your device, or edit the descriptor directly. Supports inversion and half-axis options.
+Full mapping grid where each output (buttons, sticks, triggers, D-pad) can be assigned to any source input. Record a mapping by pressing a button on your device, or edit the descriptor directly. Supports inversion and half-axis options. Output labels adapt to controller type (DS4 shown: Cross, Circle, Square, Triangle, L1, R1, etc.).
 
-### Left Stick Dead Zones
-![Left Stick](screenshots/left-stick.jpg)
-Per-axis dead zone and anti-dead zone sliders for the left stick, with a live circular preview showing current stick position and the active dead zone region.
-
-### Right Stick Dead Zones
-![Right Stick](screenshots/right-stick.jpg)
-Same dead zone and anti-dead zone configuration for the right stick, with its own independent live preview.
+### Stick Dead Zones
+![Sticks](screenshots/sticks.jpg)
+Per-axis dead zone, anti-dead zone, and linear response curve sliders for left and right thumbsticks, with live circular previews showing current stick position and the active dead zone region.
 
 ### Trigger Dead Zones
 ![Triggers](screenshots/triggers.jpg)
-Dead zone and anti-dead zone sliders for left and right triggers. Live value bars show the raw and processed trigger output side by side.
+Range sliders, anti-dead zone, and live value bars for left and right triggers showing real-time processed output.
 
 ### Force Feedback / Rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
@@ -57,7 +51,7 @@ Create macros triggered by button combinations from either the output controller
 
 ### Device List
 ![Devices](screenshots/devices.jpg)
-Card-based device list showing all detected gamepads, joysticks, keyboards, and mice with status, type, and slot assignment. Select a device to see its raw input state -- axes as progress bars, buttons as indicator circles, POV as a compass, and gyro/accelerometer values.
+Card-based device list showing all detected gamepads, joysticks, keyboards, and mice with status, type, VID/PID, and slot assignment. Select a device to see its raw input state -- axes as progress bars, buttons as indicator circles, POV as a compass, and gyro/accelerometer values.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
@@ -65,7 +59,11 @@ Appearance theme, input engine options (auto-start, background polling, configur
 
 ### Settings -- Drivers and Diagnostics
 ![Settings -- Drivers](screenshots/settings-drivers.jpg)
-One-click ViGEmBus, HidHide, and vJoy driver management, settings file controls (save, reload, reset, open folder), and diagnostics showing app version, .NET runtime, and SDL version.
+One-click ViGEmBus, HidHide, and vJoy driver management with version info, settings file controls (save, reload, reset, open folder), and diagnostics showing app version, .NET runtime, and SDL version.
+
+### About
+![About](screenshots/about.jpg)
+Application information, technology stack, and license details.
 
 ## Requirements
 

@@ -425,7 +425,7 @@ namespace PadForge.Views
         {
             _isRightDragging = true;
             _rightDragLast = e.GetPosition(ModelViewPort);
-            ModelViewPort.CaptureMouse();
+            Mouse.Capture(ModelViewPort, CaptureMode.Element);
             e.Handled = true;
         }
 
@@ -434,9 +434,27 @@ namespace PadForge.Views
             if (_isRightDragging)
             {
                 _isRightDragging = false;
-                ModelViewPort.ReleaseMouseCapture();
+                Mouse.Capture(null);
                 e.Handled = true;
             }
+        }
+
+        /// <summary>Preview handler for right-drag model rotation (fires before HelixToolkit).</summary>
+        private void Viewport_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isRightDragging) return;
+
+            var pos = e.GetPosition(ModelViewPort);
+            double dx = pos.X - _rightDragLast.X;
+            double dy = pos.Y - _rightDragLast.Y;
+            _rightDragLast = pos;
+
+            _modelYaw += dx * 0.5;
+            _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+
+            _yawRotation.Angle = _modelYaw;
+            _pitchRotation.Angle = _modelPitch;
+            e.Handled = true;
         }
 
         // ─────────────────────────────────────────────
@@ -445,22 +463,6 @@ namespace PadForge.Views
 
         private void Viewport_MouseMove(object sender, MouseEventArgs e)
         {
-            // Right-drag: rotate the model (turntable style)
-            if (_isRightDragging)
-            {
-                var pos = e.GetPosition(ModelViewPort);
-                double dx = pos.X - _rightDragLast.X;
-                double dy = pos.Y - _rightDragLast.Y;
-                _rightDragLast = pos;
-
-                _modelYaw += dx * 0.5;
-                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
-
-                _yawRotation.Angle = _modelYaw;
-                _pitchRotation.Angle = _modelPitch;
-                return;
-            }
-
             if (_currentModel == null) return;
 
             var hoverPos = e.GetPosition(ModelViewPort);
@@ -513,7 +515,7 @@ namespace PadForge.Views
             if (_isRightDragging)
             {
                 _isRightDragging = false;
-                ModelViewPort.ReleaseMouseCapture();
+                Mouse.Capture(null);
             }
             ClearHover();
         }

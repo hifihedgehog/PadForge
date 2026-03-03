@@ -43,6 +43,7 @@ namespace PadForge.Views
 
             ApplyViewMode();
             SyncTabStripSelection();
+            SyncVJoyConfigBar();
         }
 
         // ─────────────────────────────────────────────
@@ -64,46 +65,76 @@ namespace PadForge.Views
             ApplyViewMode();
         }
 
+        private bool IsCustomVJoy()
+        {
+            if (DataContext is PadViewModel vm &&
+                vm.OutputType == Engine.VirtualControllerType.VJoy &&
+                !vm.VJoyConfig.IsGamepadPreset)
+                return true;
+            return false;
+        }
+
         private void ApplyViewMode()
         {
-            if (ControllerModel3D == null || ControllerModel2D == null) return;
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null) return;
 
+            bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
-            ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
-            ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
+            if (isSchematic)
+            {
+                // Custom vJoy: always show schematic view, hide 2D/3D toggle
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
+                ControllerSchematic.Visibility = Visibility.Visible;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                // Gamepad preset: standard 2D/3D toggle
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
+                ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
+                ViewModeToggle.Visibility = Visibility.Visible;
 
-            // E8B9 = Photo/flat icon (shown in 3D mode, click to switch TO 2D)
-            // F158 = 3D/cube icon (shown in 2D mode, click to switch TO 3D)
-            ViewModeIcon.Text = is2D ? "\uF158" : "\uE8B9";
-            ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
+                // E8B9 = Photo/flat icon (shown in 3D mode, click to switch TO 2D)
+                // F158 = 3D/cube icon (shown in 2D mode, click to switch TO 3D)
+                ViewModeIcon.Text = is2D ? "\uF158" : "\uE8B9";
+                ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
+            }
 
             BindActiveModelView();
         }
 
         private void BindActiveModelView()
         {
+            bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
-            if (is2D)
-            {
-                ControllerModel3D.Unbind();
+            // Unbind all first
+            ControllerModel3D.Unbind();
+            ControllerModel2D.Unbind();
+            ControllerSchematic.Unbind();
 
+            if (DataContext is not PadViewModel vm) return;
+
+            if (isSchematic)
+            {
+                ControllerSchematic.ControllerElementRecordRequested -= OnModelRecordRequested;
+                ControllerSchematic.ControllerElementRecordRequested += OnModelRecordRequested;
+                ControllerSchematic.Bind(vm);
+            }
+            else if (is2D)
+            {
                 ControllerModel2D.ControllerElementRecordRequested -= OnModelRecordRequested;
                 ControllerModel2D.ControllerElementRecordRequested += OnModelRecordRequested;
-
-                if (DataContext is PadViewModel vm)
-                    ControllerModel2D.Bind(vm);
+                ControllerModel2D.Bind(vm);
             }
             else
             {
-                ControllerModel2D.Unbind();
-
                 ControllerModel3D.ControllerElementRecordRequested -= OnModelRecordRequested;
                 ControllerModel3D.ControllerElementRecordRequested += OnModelRecordRequested;
-
-                if (DataContext is PadViewModel vm)
-                    ControllerModel3D.Bind(vm);
+                ControllerModel3D.Bind(vm);
             }
         }
 
@@ -200,6 +231,90 @@ namespace PadForge.Views
         {
             if (e.PropertyName == nameof(PadViewModel.SelectedConfigTab))
                 SyncTabStripSelection();
+            else if (e.PropertyName == nameof(PadViewModel.OutputType))
+            {
+                SyncVJoyConfigBar();
+                ApplyViewMode();
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  vJoy configuration bar
+        // ─────────────────────────────────────────────
+
+        private bool _syncingVJoyConfig;
+
+        private void SyncVJoyConfigBar()
+        {
+            if (DataContext is not PadViewModel vm) return;
+
+            bool isVJoy = vm.OutputType == Engine.VirtualControllerType.VJoy;
+            VJoyConfigBar.Visibility = isVJoy ? Visibility.Visible : Visibility.Collapsed;
+
+            if (isVJoy)
+            {
+                _syncingVJoyConfig = true;
+                VJoyPresetCombo.SelectedIndex = (int)vm.VJoyConfig.Preset;
+                SyncVJoyCustomFields(vm);
+                _syncingVJoyConfig = false;
+            }
+        }
+
+        private void SyncVJoyCustomFields(PadViewModel vm)
+        {
+            bool isCustom = vm.VJoyConfig.Preset == VJoyPreset.Custom;
+            VJoyCustomPanel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
+
+            if (isCustom)
+            {
+                VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
+                VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
+                VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
+                VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+            }
+        }
+
+        private void VJoyPresetCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingVJoyConfig) return;
+            if (DataContext is not PadViewModel vm) return;
+            if (VJoyPresetCombo.SelectedIndex < 0) return;
+
+            vm.VJoyConfig.Preset = (VJoyPreset)VJoyPresetCombo.SelectedIndex;
+            SyncVJoyCustomFields(vm);
+            ApplyViewMode();
+        }
+
+        private void VJoyCustomValue_Changed(object sender, RoutedEventArgs e)
+        {
+            ApplyVJoyCustomValues();
+        }
+
+        private void VJoyCustomValue_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                ApplyVJoyCustomValues();
+        }
+
+        private void ApplyVJoyCustomValues()
+        {
+            if (DataContext is not PadViewModel vm) return;
+            if (vm.VJoyConfig.Preset != VJoyPreset.Custom) return;
+
+            if (int.TryParse(VJoyStickCountBox.Text, out int sticks))
+                vm.VJoyConfig.ThumbstickCount = sticks;
+            if (int.TryParse(VJoyTriggerCountBox.Text, out int triggers))
+                vm.VJoyConfig.TriggerCount = triggers;
+            if (int.TryParse(VJoyPovCountBox.Text, out int povs))
+                vm.VJoyConfig.PovCount = povs;
+            if (int.TryParse(VJoyButtonCountBox.Text, out int buttons))
+                vm.VJoyConfig.ButtonCount = buttons;
+
+            // Reflect clamped values back into text boxes
+            VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
+            VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
+            VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
+            VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
         }
     }
 }

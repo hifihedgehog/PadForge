@@ -273,6 +273,28 @@ namespace PadForge.Services
                 }
             }
 
+            // Load per-slot vJoy configurations (after OutputType so we know which slots are vJoy).
+            if (appSettings.VJoyConfigs != null)
+            {
+                foreach (var cfgData in appSettings.VJoyConfigs)
+                {
+                    if (cfgData.SlotIndex >= 0 && cfgData.SlotIndex < _mainVm.Pads.Count)
+                    {
+                        var cfg = _mainVm.Pads[cfgData.SlotIndex].VJoyConfig;
+                        // Load preset first (applies defaults for Xbox360/DS4),
+                        // then override with saved counts (matters for Custom preset).
+                        cfg.Preset = cfgData.Preset;
+                        if (cfgData.Preset == ViewModels.VJoyPreset.Custom)
+                        {
+                            cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                            cfg.TriggerCount = cfgData.TriggerCount;
+                            cfg.PovCount = cfgData.PovCount;
+                            cfg.ButtonCount = cfgData.ButtonCount;
+                        }
+                    }
+                }
+            }
+
             // Load DSU motion server settings (now on Dashboard VM).
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
             _mainVm.Dashboard.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
@@ -633,9 +655,8 @@ namespace PadForge.Services
                 // before collecting data for serialization.
                 UpdatePadSettingsFromViewModels();
 
-                // Recompute checksums for ALL PadSettings and sync to UserSettings.
-                // This ensures each PadSetting's checksum reflects its actual content,
-                // preventing checksum collisions that cause settings to be swapped on reload.
+                // Flush vJoy mappings from in-memory dictionaries to serializable arrays,
+                // then recompute checksums for ALL PadSettings and sync to UserSettings.
                 lock (SettingsManager.UserSettings.SyncRoot)
                 {
                     foreach (var us in SettingsManager.UserSettings.Items)
@@ -643,6 +664,7 @@ namespace PadForge.Services
                         var ps = us.GetPadSetting();
                         if (ps != null)
                         {
+                            ps.FlushVJoyMappings();
                             ps.UpdateChecksum();
                             us.PadSettingChecksum = ps.PadSettingChecksum;
                         }
@@ -720,6 +742,22 @@ namespace PadForge.Services
             for (int i = 0; i < _mainVm.Pads.Count; i++)
                 slotTypes[i] = (int)_mainVm.Pads[i].OutputType;
 
+            // Collect per-slot vJoy configurations.
+            var vjoyConfigs = new System.Collections.Generic.List<ViewModels.VJoySlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var cfg = _mainVm.Pads[i].VJoyConfig;
+                vjoyConfigs.Add(new ViewModels.VJoySlotConfigData
+                {
+                    SlotIndex = i,
+                    Preset = cfg.Preset,
+                    ThumbstickCount = cfg.ThumbstickCount,
+                    TriggerCount = cfg.TriggerCount,
+                    PovCount = cfg.PovCount,
+                    ButtonCount = cfg.ButtonCount
+                });
+            }
+
             return new AppSettingsData
             {
                 AutoStartEngine = vm.AutoStartEngine,
@@ -736,7 +774,8 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
-                Use2DControllerView = vm.Use2DControllerView
+                Use2DControllerView = vm.Use2DControllerView,
+                VJoyConfigs = vjoyConfigs.ToArray()
             };
         }
 
@@ -979,11 +1018,16 @@ namespace PadForge.Services
 
         /// <summary>
         /// Gets a string property value from a PadSetting by property name.
+        /// For keys starting with "VJoy", uses the dictionary-based VJoy mapping system.
         /// </summary>
         private static string GetPadSettingProperty(PadSetting ps, string propertyName)
         {
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return string.Empty;
+
+            // vJoy custom mappings use dictionary-based storage
+            if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
+                return ps.GetVJoyMapping(propertyName);
 
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string))
@@ -994,11 +1038,19 @@ namespace PadForge.Services
 
         /// <summary>
         /// Sets a string property value on a PadSetting by property name.
+        /// For keys starting with "VJoy", uses the dictionary-based VJoy mapping system.
         /// </summary>
         private static void SetPadSettingProperty(PadSetting ps, string propertyName, string value)
         {
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return;
+
+            // vJoy custom mappings use dictionary-based storage
+            if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
+            {
+                ps.SetVJoyMapping(propertyName, value ?? string.Empty);
+                return;
+            }
 
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string) || !prop.CanWrite)
@@ -1117,6 +1169,14 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool Use2DControllerView { get; set; }
+
+        /// <summary>
+        /// Per-slot vJoy configuration (preset, axis/button counts).
+        /// Null on old settings files — uses Xbox360 preset defaults.
+        /// </summary>
+        [XmlArray("VJoyConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.VJoySlotConfigData[] VJoyConfigs { get; set; }
     }
 
     /// <summary>

@@ -32,6 +32,20 @@ namespace PadForge.Common.Input
         public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
 
         /// <summary>
+        /// Per-slot vJoy HID descriptor config (axes, buttons, POVs).
+        /// Written by InputService from PadViewModel.VJoyConfig. Read by Step 5
+        /// to pass per-device configs to EnsureDevicesAvailable.
+        /// </summary>
+        internal VJoyVirtualController.VJoyDeviceConfig[] SlotVJoyConfigs { get; } = new VJoyVirtualController.VJoyDeviceConfig[MaxPads];
+
+        /// <summary>
+        /// Per-slot flag: true if this vJoy slot uses Custom preset (raw axis/button pipeline),
+        /// false if it uses a gamepad preset (Xbox360/DS4 → Gamepad struct pipeline).
+        /// Written by InputService from PadViewModel.VJoyConfig.IsGamepadPreset.
+        /// </summary>
+        internal bool[] SlotVJoyIsCustom { get; } = new bool[MaxPads];
+
+        /// <summary>
         /// Count of currently active ViGEm virtual controllers.
         /// Used by IsViGEmVirtualDevice() in Step 1 for zero-VID/PID heuristic.
         /// </summary>
@@ -259,7 +273,26 @@ namespace PadForge.Common.Input
                         anyNeedsCreate = totalVJoyNeeded > 0;
                     }
 
-                    VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded);
+                    // Build per-device HID descriptor configs from slot configs.
+                    // The order is sequential: 1st vJoy slot → Device01, 2nd → Device02, etc.
+                    VJoyVirtualController.VJoyDeviceConfig[] deviceConfigs = null;
+                    if (totalVJoyNeeded > 0)
+                    {
+                        deviceConfigs = new VJoyVirtualController.VJoyDeviceConfig[totalVJoyNeeded];
+                        int cfgIdx = 0;
+                        for (int i = 0; i < MaxPads && cfgIdx < totalVJoyNeeded; i++)
+                        {
+                            bool countsAsVjoy =
+                                _virtualControllers[i] is VJoyVirtualController ||
+                                (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                 SettingsManager.SlotCreated[i] &&
+                                 _slotInactiveCounter[i] == 0 &&
+                                 IsSlotActive(i));
+                            if (countsAsVjoy)
+                                deviceConfigs[cfgIdx++] = SlotVJoyConfigs[i];
+                        }
+                    }
+                    VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded, deviceConfigs);
 
                     // After EnsureDevicesAvailable (which may restart the device node),
                     // force existing vJoy controllers to re-acquire their device IDs
@@ -341,7 +374,11 @@ namespace PadForge.Common.Input
                     var vc = _virtualControllers[padIndex];
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
-                        vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
+                        // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.
+                        if (vc is VJoyVirtualController vjoyVc && SlotVJoyIsCustom[padIndex])
+                            vjoyVc.SubmitRawState(CombinedVJoyRawStates[padIndex]);
+                        else
+                            vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
                 }
                 catch (Exception ex)

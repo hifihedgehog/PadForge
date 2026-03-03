@@ -23,7 +23,8 @@ namespace PadForge.ViewModels
             PadIndex = padIndex;
             Title = $"Virtual Controller {padIndex + 1}";
             SlotLabel = $"Virtual Controller {padIndex + 1}";
-            InitializeDefaultMappings();
+            _vJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
+            RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
         }
@@ -52,7 +53,15 @@ namespace PadForge.ViewModels
         public VirtualControllerType OutputType
         {
             get => _outputType;
-            set => SetProperty(ref _outputType, value);
+            set
+            {
+                if (SetProperty(ref _outputType, value))
+                {
+                    RebuildMappings();
+                    RebuildStickConfigs();
+                    RebuildTriggerConfigs();
+                }
+            }
         }
 
         private string _typeInstanceLabel = "1";
@@ -71,6 +80,54 @@ namespace PadForge.ViewModels
             {
                 if (Enum.IsDefined(typeof(VirtualControllerType), value))
                     OutputType = (VirtualControllerType)value;
+            }
+        }
+
+        // ═══════════════════════════════════════════════
+        //  vJoy per-slot configuration
+        // ═══════════════════════════════════════════════
+
+        private VJoySlotConfig _vJoyConfig = new();
+
+        /// <summary>
+        /// Per-slot vJoy configuration (preset, axis/button counts).
+        /// Always present — only meaningful when OutputType == VJoy.
+        /// </summary>
+        public VJoySlotConfig VJoyConfig
+        {
+            get => _vJoyConfig;
+            set
+            {
+                if (_vJoyConfig != null)
+                    _vJoyConfig.PropertyChanged -= OnVJoyConfigPropertyChanged;
+                if (SetProperty(ref _vJoyConfig, value) && value != null)
+                    value.PropertyChanged += OnVJoyConfigPropertyChanged;
+            }
+        }
+
+        private void OnVJoyConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // When vJoy config changes (preset, counts), rebuild dynamic collections
+            if (OutputType == VirtualControllerType.VJoy)
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(VJoySlotConfig.Preset):
+                        RebuildMappings();
+                        RebuildStickConfigs();
+                        RebuildTriggerConfigs();
+                        break;
+                    case nameof(VJoySlotConfig.ThumbstickCount):
+                    case nameof(VJoySlotConfig.TriggerCount):
+                        RebuildMappings();
+                        RebuildStickConfigs();
+                        RebuildTriggerConfigs();
+                        break;
+                    case nameof(VJoySlotConfig.PovCount):
+                    case nameof(VJoySlotConfig.ButtonCount):
+                        RebuildMappings();
+                        break;
+                }
             }
         }
 
@@ -295,29 +352,114 @@ namespace PadForge.ViewModels
         public ObservableCollection<MappingItem> Mappings { get; } =
             new ObservableCollection<MappingItem>();
 
-        private void InitializeDefaultMappings()
+        /// <summary>
+        /// Rebuilds the Mappings collection based on the current OutputType and vJoy config.
+        /// Labels follow the output type's convention (Xbox 360/DS4/vJoy numbered).
+        /// </summary>
+        public void RebuildMappings()
         {
-            Mappings.Add(new MappingItem("A", "ButtonA", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("B", "ButtonB", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("X", "ButtonX", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Y", "ButtonY", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Left Bumper", "LeftShoulder", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Right Bumper", "RightShoulder", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Back", "ButtonBack", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Start", "ButtonStart", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Guide", "ButtonGuide", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Left Stick Click", "LeftThumbButton", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Right Stick Click", "RightThumbButton", MappingCategory.Buttons));
+            Mappings.Clear();
+
+            bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
+            if (isCustomVJoy)
+                InitializeVJoyCustomMappings();
+            else
+                InitializeGamepadMappings();
+        }
+
+        /// <summary>
+        /// Standard gamepad mappings (21 items). Labels depend on the effective output type:
+        /// Xbox 360 naming for Xbox360 / vJoy-Xbox360, DS4 naming for DualShock4 / vJoy-DS4.
+        /// </summary>
+        private void InitializeGamepadMappings()
+        {
+            bool isDS4 = OutputType == VirtualControllerType.DualShock4
+                || (OutputType == VirtualControllerType.VJoy && VJoyConfig.Preset == VJoyPreset.DualShock4);
+
+            // Buttons
+            if (isDS4)
+            {
+                Mappings.Add(new MappingItem("\u2715 Cross", "ButtonA", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u25CB Circle", "ButtonB", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u25A1 Square", "ButtonX", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("\u25B3 Triangle", "ButtonY", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("L1", "LeftShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("R1", "RightShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Share", "ButtonBack", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Options", "ButtonStart", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("PS", "ButtonGuide", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("L3", "LeftThumbButton", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("R3", "RightThumbButton", MappingCategory.Buttons));
+            }
+            else
+            {
+                Mappings.Add(new MappingItem("A", "ButtonA", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("B", "ButtonB", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("X", "ButtonX", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Y", "ButtonY", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Left Bumper", "LeftShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Right Bumper", "RightShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Back", "ButtonBack", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Start", "ButtonStart", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Guide", "ButtonGuide", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Left Stick Click", "LeftThumbButton", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem("Right Stick Click", "RightThumbButton", MappingCategory.Buttons));
+            }
+
+            // D-Pad
             Mappings.Add(new MappingItem("D-Pad Up", "DPadUp", MappingCategory.DPad));
             Mappings.Add(new MappingItem("D-Pad Down", "DPadDown", MappingCategory.DPad));
             Mappings.Add(new MappingItem("D-Pad Left", "DPadLeft", MappingCategory.DPad));
             Mappings.Add(new MappingItem("D-Pad Right", "DPadRight", MappingCategory.DPad));
-            Mappings.Add(new MappingItem("Left Trigger", "LeftTrigger", MappingCategory.Triggers));
-            Mappings.Add(new MappingItem("Right Trigger", "RightTrigger", MappingCategory.Triggers));
+
+            // Triggers
+            Mappings.Add(new MappingItem(isDS4 ? "L2" : "Left Trigger", "LeftTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(isDS4 ? "R2" : "Right Trigger", "RightTrigger", MappingCategory.Triggers));
+
+            // Stick axes
             Mappings.Add(new MappingItem("Left Stick X", "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
             Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
             Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+        }
+
+        /// <summary>
+        /// Dynamic vJoy Custom mappings — numbered buttons, sticks, triggers, POVs.
+        /// Axis layout interleaves sticks and triggers: [Stick0 X,Y | Trig0 | Stick1 X,Y | Trig1 | ...].
+        /// </summary>
+        private void InitializeVJoyCustomMappings()
+        {
+            var cfg = VJoyConfig;
+            int stickCount = cfg.ThumbstickCount;
+            int triggerCount = cfg.TriggerCount;
+
+            cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
+
+            // Stick axes (paired)
+            for (int i = 0; i < stickCount; i++)
+            {
+                var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
+                Mappings.Add(new MappingItem($"Stick {i + 1} X", $"VJoyAxis{stickAxisX[i]}", cat, $"VJoyAxis{stickAxisX[i]}Neg"));
+                Mappings.Add(new MappingItem($"Stick {i + 1} Y", $"VJoyAxis{stickAxisY[i]}", cat, $"VJoyAxis{stickAxisY[i]}Neg"));
+            }
+
+            // Trigger axes (unpaired)
+            for (int i = 0; i < triggerCount; i++)
+                Mappings.Add(new MappingItem($"Trigger {i + 1}", $"VJoyAxis{triggerAxis[i]}", MappingCategory.Triggers));
+
+            // Buttons
+            for (int i = 0; i < cfg.ButtonCount; i++)
+                Mappings.Add(new MappingItem($"Button {i + 1}", $"VJoyBtn{i}", MappingCategory.Buttons));
+
+            // POVs
+            for (int i = 0; i < cfg.PovCount; i++)
+            {
+                string label = cfg.PovCount == 1 ? "D-Pad" : $"POV {i + 1}";
+                Mappings.Add(new MappingItem($"{label} Up", $"VJoyPov{i}Up", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Down", $"VJoyPov{i}Down", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Left", $"VJoyPov{i}Left", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Right", $"VJoyPov{i}Right", MappingCategory.DPad));
+            }
         }
 
         // ═══════════════════════════════════════════════
@@ -427,7 +569,8 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the StickConfigs collection based on the current output type.
-        /// For Xbox 360/DS4: always 2 sticks (Left, Right).
+        /// For Xbox 360/DS4 (or vJoy with gamepad preset): always 2 sticks (Left, Right).
+        /// For vJoy Custom: N sticks based on ThumbstickCount.
         /// </summary>
         public void RebuildStickConfigs()
         {
@@ -435,23 +578,33 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnStickConfigPropertyChanged;
             StickConfigs.Clear();
 
-            // Standard gamepad layout: 2 sticks
-            var left = new StickConfigItem(0, "Left Thumbstick");
-            var right = new StickConfigItem(1, "Right Thumbstick");
+            int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
+            bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
+            if (isCustomVJoy)
+                count = VJoyConfig.ThumbstickCount;
 
-            SyncStickItemFromVm(left);
-            SyncStickItemFromVm(right);
+            int[] axX = null, axY = null, trAx = null;
+            if (isCustomVJoy && count > 0)
+                VJoyConfig.ComputeAxisLayout(out axX, out axY, out trAx);
 
-            left.PropertyChanged += OnStickConfigPropertyChanged;
-            right.PropertyChanged += OnStickConfigPropertyChanged;
-
-            StickConfigs.Add(left);
-            StickConfigs.Add(right);
+            for (int i = 0; i < count; i++)
+            {
+                string title = isCustomVJoy && count != 2
+                    ? $"Stick {i + 1}"
+                    : i == 0 ? "Left Thumbstick" : "Right Thumbstick";
+                int xiIdx = axX != null ? axX[i] : -1;
+                int yiIdx = axY != null ? axY[i] : -1;
+                var item = new StickConfigItem(i, title, xiIdx, yiIdx);
+                SyncStickItemFromVm(item);
+                item.PropertyChanged += OnStickConfigPropertyChanged;
+                StickConfigs.Add(item);
+            }
         }
 
         /// <summary>
         /// Rebuilds the TriggerConfigs collection based on the current output type.
-        /// For Xbox 360/DS4: always 2 triggers (Left, Right).
+        /// For Xbox 360/DS4 (or vJoy with gamepad preset): always 2 triggers (Left, Right).
+        /// For vJoy Custom: N triggers based on TriggerCount.
         /// </summary>
         public void RebuildTriggerConfigs()
         {
@@ -459,17 +612,26 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnTriggerConfigPropertyChanged;
             TriggerConfigs.Clear();
 
-            var left = new TriggerConfigItem(0, "Left Trigger");
-            var right = new TriggerConfigItem(1, "Right Trigger");
+            int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
+            bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
+            if (isCustomVJoy)
+                count = VJoyConfig.TriggerCount;
 
-            SyncTriggerItemFromVm(left);
-            SyncTriggerItemFromVm(right);
+            int[] axX = null, axY = null, trAx = null;
+            if (isCustomVJoy && count > 0)
+                VJoyConfig.ComputeAxisLayout(out axX, out axY, out trAx);
 
-            left.PropertyChanged += OnTriggerConfigPropertyChanged;
-            right.PropertyChanged += OnTriggerConfigPropertyChanged;
-
-            TriggerConfigs.Add(left);
-            TriggerConfigs.Add(right);
+            for (int i = 0; i < count; i++)
+            {
+                string title = isCustomVJoy && count != 2
+                    ? $"Trigger {i + 1}"
+                    : i == 0 ? "Left Trigger" : "Right Trigger";
+                int ai = trAx != null ? trAx[i] : -1;
+                var item = new TriggerConfigItem(i, title, ai);
+                SyncTriggerItemFromVm(item);
+                item.PropertyChanged += OnTriggerConfigPropertyChanged;
+                TriggerConfigs.Add(item);
+            }
         }
 
         /// <summary>
@@ -995,6 +1157,53 @@ namespace PadForge.ViewModels
                 TriggerConfigs[1].LiveValue = DeviceRightTrigger;
                 TriggerConfigs[1].RawValue = gp.RightTrigger;
             }
+        }
+
+        // ═══════════════════════════════════════════════
+        //  VJoy raw state snapshot (for custom vJoy schematic view)
+        // ═══════════════════════════════════════════════
+
+        /// <summary>
+        /// Latest VJoyRawState snapshot for custom vJoy display.
+        /// Updated at 30Hz alongside UpdateFromEngineState.
+        /// </summary>
+        public VJoyRawState VJoyOutputSnapshot { get; private set; }
+
+        /// <summary>
+        /// Updates the combined output display from a VJoyRawState (custom vJoy slots).
+        /// Syncs live values to StickConfigs/TriggerConfigs and stores the raw snapshot.
+        /// </summary>
+        public void UpdateFromVJoyRawState(VJoyRawState raw)
+        {
+            VJoyOutputSnapshot = raw;
+
+            // Sync stick config items from raw axes
+            foreach (var stick in StickConfigs)
+            {
+                if (stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length)
+                {
+                    stick.RawX = raw.Axes[stick.AxisXIndex];
+                    stick.LiveX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
+                }
+                if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
+                {
+                    stick.RawY = raw.Axes[stick.AxisYIndex];
+                    stick.LiveY = 1.0 - ((raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0);
+                }
+            }
+
+            // Sync trigger config items from raw axes
+            foreach (var trig in TriggerConfigs)
+            {
+                if (trig.AxisIndex >= 0 && raw.Axes != null && trig.AxisIndex < raw.Axes.Length)
+                {
+                    // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
+                    trig.LiveValue = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
+                    trig.RawValue = (byte)Math.Clamp((int)(trig.LiveValue * 255), 0, 255);
+                }
+            }
+
+            OnPropertyChanged(nameof(VJoyOutputSnapshot));
         }
 
         public void RefreshCommands()

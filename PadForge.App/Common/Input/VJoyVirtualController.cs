@@ -286,6 +286,83 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>
+        /// Submits a VJoyRawState directly to the vJoy device, bypassing the Gamepad struct.
+        /// Used for custom vJoy configurations with arbitrary axis/button/POV counts.
+        /// Axes are signed short → converted to vJoy unsigned range (0..32767).
+        /// </summary>
+        public void SubmitRawState(VJoyRawState raw)
+        {
+            if (!_connected) return;
+
+            if (_connectedGeneration != _generation)
+            {
+                try
+                {
+                    VJoyNative.RelinquishVJD(_deviceId);
+                    if (!VJoyNative.AcquireVJD(_deviceId)) return;
+                    VJoyNative.ResetVJD(_deviceId);
+                    _connectedGeneration = _generation;
+                }
+                catch { return; }
+            }
+
+            var pos = new JoystickPositionV2 { bDevice = (byte)_deviceId };
+
+            // Map axes: signed short (-32768..32767) → unsigned (0..32767)
+            // JoystickPositionV2 field order matches HID axis order in BuildHidDescriptor:
+            // X(0), Y(1), Z(2), RX(3), RY(4), RZ(5), Slider(6), Dial(7), Wheel(8),
+            // then VX/VY/VZ/VBRX/VBRY/VBRZ map to remaining HID usages (Accel/Brake/etc.)
+            // wThrottle at offset 4 maps to axis index 15 (last usage in the descriptor).
+            if (raw.Axes != null)
+            {
+                for (int i = 0; i < raw.Axes.Length && i < 16; i++)
+                {
+                    int v = (raw.Axes[i] + 32768) / 2;
+                    switch (i)
+                    {
+                        case 0:  pos.wAxisX    = v; break;
+                        case 1:  pos.wAxisY    = v; break;
+                        case 2:  pos.wAxisZ    = v; break;
+                        case 3:  pos.wAxisXRot = v; break;
+                        case 4:  pos.wAxisYRot = v; break;
+                        case 5:  pos.wAxisZRot = v; break;
+                        case 6:  pos.wSlider   = v; break;
+                        case 7:  pos.wDial     = v; break;
+                        case 8:  pos.wWheel    = v; break;
+                        case 9:  pos.wAxisVX   = v; break;
+                        case 10: pos.wAxisVY   = v; break;
+                        case 11: pos.wAxisVZ   = v; break;
+                        case 12: pos.wAxisVBRX = v; break;
+                        case 13: pos.wAileron  = v; break;
+                        case 14: pos.wRudder   = v; break;
+                        case 15: pos.wThrottle = v; break;
+                    }
+                }
+            }
+
+            // Map buttons: uint[] words → lButtons/lButtonsEx1/Ex2/Ex3
+            if (raw.Buttons != null)
+            {
+                if (raw.Buttons.Length > 0) pos.lButtons = (int)raw.Buttons[0];
+                if (raw.Buttons.Length > 1) pos.lButtonsEx1 = (int)raw.Buttons[1];
+                if (raw.Buttons.Length > 2) pos.lButtonsEx2 = (int)raw.Buttons[2];
+                if (raw.Buttons.Length > 3) pos.lButtonsEx3 = (int)raw.Buttons[3];
+            }
+
+            // Map POVs: -1=centered → 0xFFFFFFFF, else direct value
+            pos.bHats = (raw.Povs != null && raw.Povs.Length > 0 && raw.Povs[0] >= 0)
+                ? (uint)raw.Povs[0] : 0xFFFF_FFFFu;
+            pos.bHatsEx1 = (raw.Povs != null && raw.Povs.Length > 1 && raw.Povs[1] >= 0)
+                ? (uint)raw.Povs[1] : 0xFFFF_FFFFu;
+            pos.bHatsEx2 = (raw.Povs != null && raw.Povs.Length > 2 && raw.Povs[2] >= 0)
+                ? (uint)raw.Povs[2] : 0xFFFF_FFFFu;
+            pos.bHatsEx3 = (raw.Povs != null && raw.Povs.Length > 3 && raw.Povs[3] >= 0)
+                ? (uint)raw.Povs[3] : 0xFFFF_FFFFu;
+
+            VJoyNative.UpdateVJD(_deviceId, ref pos);
+        }
+
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             // Register this device for FFB routing: vJoy device ID → pad index + vibration array.
@@ -873,7 +950,28 @@ namespace PadForge.Common.Input
         /// To change the count: update registry keys, then restart the device node
         /// so the driver re-reads the report descriptor.
         /// </summary>
+        /// <summary>Per-device HID descriptor configuration for WriteDeviceDescriptors.</summary>
+        public struct VJoyDeviceConfig
+        {
+            public int Axes;
+            public int Buttons;
+            public int Povs;
+        }
+
+        /// <summary>Cached per-device configs from last EnsureDevicesAvailable call.</summary>
+        private static VJoyDeviceConfig[] _lastDeviceConfigs;
+
+        public static bool EnsureDevicesAvailable(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
+        {
+            return EnsureDevicesAvailableCore(requiredCount, perDeviceConfigs);
+        }
+
         public static bool EnsureDevicesAvailable(int requiredCount = 1)
+        {
+            return EnsureDevicesAvailableCore(requiredCount, null);
+        }
+
+        private static bool EnsureDevicesAvailableCore(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
         {
             if (!_driverStoreChecked)
             {
@@ -882,11 +980,27 @@ namespace PadForge.Common.Input
                 EnsureFfbRegistryKeys();
             }
 
-            // Fast path: if the count hasn't changed, skip expensive pnputil
-            // enumeration and registry writes. For requiredCount > 0, also
-            // require DLL loaded. For requiredCount == 0, just check count match
-            // (no DLL needed, node already removed).
-            if (_currentDescriptorCount == requiredCount &&
+            // Detect whether per-device configs have changed from last call.
+            bool configsChanged = false;
+            if (perDeviceConfigs != null)
+            {
+                if (_lastDeviceConfigs == null || _lastDeviceConfigs.Length != perDeviceConfigs.Length)
+                    configsChanged = true;
+                else
+                {
+                    for (int i = 0; i < perDeviceConfigs.Length; i++)
+                    {
+                        if (_lastDeviceConfigs[i].Axes != perDeviceConfigs[i].Axes ||
+                            _lastDeviceConfigs[i].Buttons != perDeviceConfigs[i].Buttons ||
+                            _lastDeviceConfigs[i].Povs != perDeviceConfigs[i].Povs)
+                        { configsChanged = true; break; }
+                    }
+                }
+            }
+
+            // Fast path: if the count hasn't changed and configs match, skip expensive
+            // pnputil enumeration and registry writes.
+            if (_currentDescriptorCount == requiredCount && !configsChanged &&
                 (requiredCount == 0 || _dllLoaded))
                 return true;
 
@@ -897,9 +1011,12 @@ namespace PadForge.Common.Input
 
             // Write registry descriptors for the required count.
             // WriteDeviceDescriptors returns true only if actual registry changes occurred.
-            bool registryChanged = WriteDeviceDescriptors(requiredCount, nAxes: 6, nButtons: 11, nPovs: 1);
+            bool registryChanged = WriteDeviceDescriptors(requiredCount, perDeviceConfigs);
             bool countMismatch = _currentDescriptorCount != requiredCount;
             _currentDescriptorCount = requiredCount;
+            _lastDeviceConfigs = perDeviceConfigs != null
+                ? (VJoyDeviceConfig[])perDeviceConfigs.Clone()
+                : null;
 
             // Need restart if registry actually changed, OR if this is the first call
             // in the process and the node is disabled (DLL can't communicate).
@@ -1331,8 +1448,7 @@ public static class PF_SetupApi {{
         /// <summary>
         /// Returns true if any registry keys were actually modified (written or deleted).
         /// </summary>
-        private static bool WriteDeviceDescriptors(int requiredCount,
-            int nAxes = 6, int nButtons = 11, int nPovs = 1)
+        private static bool WriteDeviceDescriptors(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
         {
             bool anyChanged = false;
             try
@@ -1357,6 +1473,15 @@ public static class PF_SetupApi {{
                 // disturbing live device nodes whose driver has already read the registry.
                 for (int i = 1; i <= requiredCount; i++)
                 {
+                    // Use per-device config if available, otherwise default Xbox 360 layout.
+                    int nAxes = 6, nButtons = 11, nPovs = 1;
+                    if (perDeviceConfigs != null && i - 1 < perDeviceConfigs.Length)
+                    {
+                        nAxes = perDeviceConfigs[i - 1].Axes;
+                        nButtons = perDeviceConfigs[i - 1].Buttons;
+                        nPovs = perDeviceConfigs[i - 1].Povs;
+                    }
+
                     byte[] descriptor = BuildHidDescriptor((byte)i, nAxes, nButtons, nPovs);
                     string keyName = $"Device{i:D2}";
                     using var devKey = baseKey.CreateSubKey(keyName);
@@ -1407,7 +1532,7 @@ public static class PF_SetupApi {{
         /// </summary>
         private static byte[] BuildHidDescriptor(byte reportId, int nAxes, int nButtons, int nPovs)
         {
-            nAxes = Math.Clamp(nAxes, 0, 6);
+            nAxes = Math.Clamp(nAxes, 0, 16);
             nButtons = Math.Clamp(nButtons, 0, 128);
             nPovs = Math.Clamp(nPovs, 0, 4);
 

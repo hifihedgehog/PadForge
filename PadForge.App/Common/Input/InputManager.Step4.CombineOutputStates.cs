@@ -35,9 +35,13 @@ namespace PadForge.Common.Input
                     // Use non-allocating overload with pre-allocated buffer.
                     int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 
+                    bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.VJoy
+                                     && SlotVJoyIsCustom[padIndex];
+
                     if (slotCount == 0)
                     {
                         CombinedOutputStates[padIndex].Clear();
+                        if (isCustomVJoy) CombinedVJoyRawStates[padIndex].Clear();
                         continue;
                     }
 
@@ -45,11 +49,14 @@ namespace PadForge.Common.Input
                     {
                         // Single device — no combination needed, direct copy.
                         CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
+                        if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = _padIndexBuffer[0].VJoyRawOutputState;
                         continue;
                     }
 
                     // Multiple devices — merge all states.
                     var combined = new Gamepad();
+                    VJoyRawState combinedRaw = default;
+                    bool firstRaw = true;
 
                     for (int si = 0; si < slotCount; si++)
                     {
@@ -59,9 +66,24 @@ namespace PadForge.Common.Input
 
                         var gp = us.OutputState;
                         MergeGamepad(ref combined, ref gp);
+
+                        if (isCustomVJoy)
+                        {
+                            var rawState = us.VJoyRawOutputState;
+                            if (firstRaw)
+                            {
+                                combinedRaw = rawState;
+                                firstRaw = false;
+                            }
+                            else
+                            {
+                                MergeVJoyRaw(ref combinedRaw, ref rawState);
+                            }
+                        }
                     }
 
                     CombinedOutputStates[padIndex] = combined;
+                    if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = combinedRaw;
                 }
                 catch (Exception ex)
                 {
@@ -101,6 +123,40 @@ namespace PadForge.Common.Input
                 dest.ThumbRX = src.ThumbRX;
             if (Math.Abs((int)src.ThumbRY) > Math.Abs((int)dest.ThumbRY))
                 dest.ThumbRY = src.ThumbRY;
+        }
+
+        /// <summary>
+        /// Merges a source VJoyRawState into a destination.
+        /// Axes: largest magnitude wins. Buttons: OR. POVs: first non-centered.
+        /// </summary>
+        private static void MergeVJoyRaw(ref VJoyRawState dest, ref VJoyRawState src)
+        {
+            if (src.Axes != null && dest.Axes != null)
+            {
+                int len = Math.Min(src.Axes.Length, dest.Axes.Length);
+                for (int i = 0; i < len; i++)
+                {
+                    if (Math.Abs((int)src.Axes[i]) > Math.Abs((int)dest.Axes[i]))
+                        dest.Axes[i] = src.Axes[i];
+                }
+            }
+
+            if (src.Buttons != null && dest.Buttons != null)
+            {
+                int len = Math.Min(src.Buttons.Length, dest.Buttons.Length);
+                for (int i = 0; i < len; i++)
+                    dest.Buttons[i] |= src.Buttons[i];
+            }
+
+            if (src.Povs != null && dest.Povs != null)
+            {
+                int len = Math.Min(src.Povs.Length, dest.Povs.Length);
+                for (int i = 0; i < len; i++)
+                {
+                    if (dest.Povs[i] < 0 && src.Povs[i] >= 0)
+                        dest.Povs[i] = src.Povs[i];
+                }
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 
 namespace PadForge.ViewModels
 {
@@ -95,26 +96,9 @@ namespace PadForge.ViewModels
                         : $"{combo} ({deviceName})";
                 }
 
-                // Legacy Xbox bitmask path.
+                // Output controller bitmask path — use type-aware names.
                 if (_triggerButtons == 0) return "Not set \u2014 click Record";
-                var parts = new System.Collections.Generic.List<string>();
-                if ((_triggerButtons & 0x1000) != 0) parts.Add("A");
-                if ((_triggerButtons & 0x2000) != 0) parts.Add("B");
-                if ((_triggerButtons & 0x4000) != 0) parts.Add("X");
-                if ((_triggerButtons & 0x8000) != 0) parts.Add("Y");
-                if ((_triggerButtons & 0x0100) != 0) parts.Add("LB");
-                if ((_triggerButtons & 0x0200) != 0) parts.Add("RB");
-                if ((_triggerButtons & 0x0020) != 0) parts.Add("Back");
-                if ((_triggerButtons & 0x0010) != 0) parts.Add("Start");
-                if ((_triggerButtons & 0x0040) != 0) parts.Add("LS");
-                if ((_triggerButtons & 0x0080) != 0) parts.Add("RS");
-                if ((_triggerButtons & 0x0400) != 0) parts.Add("Guide");
-                if ((_triggerButtons & 0x0800) != 0) parts.Add("Share");
-                if ((_triggerButtons & 0x0001) != 0) parts.Add("Up");
-                if ((_triggerButtons & 0x0002) != 0) parts.Add("Down");
-                if ((_triggerButtons & 0x0004) != 0) parts.Add("Left");
-                if ((_triggerButtons & 0x0008) != 0) parts.Add("Right");
-                return parts.Count > 0 ? string.Join(" + ", parts) : "Not set";
+                return MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle);
             }
         }
 
@@ -195,6 +179,28 @@ namespace PadForge.ViewModels
         {
             get => _recordingLiveText;
             set => SetProperty(ref _recordingLiveText, value ?? "");
+        }
+
+        private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
+
+        /// <summary>
+        /// Determines button display names based on output controller type.
+        /// Set by PadViewModel when OutputType/VJoyPreset changes.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MacroButtonStyle ButtonStyle
+        {
+            get => _buttonStyle;
+            set
+            {
+                if (SetProperty(ref _buttonStyle, value))
+                {
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+                    // Propagate to all actions so their button labels update.
+                    foreach (var action in Actions)
+                        action.ButtonStyle = value;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -313,7 +319,7 @@ namespace PadForge.ViewModels
         public RelayCommand AddActionCommand =>
             _addActionCommand ??= new RelayCommand(() =>
             {
-                var action = new MacroAction { Type = MacroActionType.ButtonPress };
+                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle };
                 Actions.Add(action);
                 SelectedAction = action;
             });
@@ -374,6 +380,25 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAxisType => _type == MacroActionType.AxisSet;
 
+        private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
+
+        /// <summary>
+        /// Determines button display names. Synced from parent MacroItem.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MacroButtonStyle ButtonStyle
+        {
+            get => _buttonStyle;
+            set
+            {
+                if (SetProperty(ref _buttonStyle, value))
+                {
+                    RebuildButtonLabels();
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
         private ushort _buttonFlags;
 
         /// <summary>
@@ -396,14 +421,6 @@ namespace PadForge.ViewModels
 
         // ── Button checkbox options ──
 
-        private static readonly (string Label, ushort Flag)[] _buttonDefs =
-        {
-            ("A", 0x1000), ("B", 0x2000), ("X", 0x4000), ("Y", 0x8000),
-            ("LB", 0x0100), ("RB", 0x0200), ("Back", 0x0020), ("Start", 0x0010),
-            ("LS", 0x0040), ("RS", 0x0080), ("Guide", 0x0400),
-            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
-        };
-
         private IReadOnlyList<GamepadButtonOption> _buttonOptions;
 
         /// <summary>Checkbox-bindable options for each gamepad button.</summary>
@@ -412,17 +429,27 @@ namespace PadForge.ViewModels
         {
             get
             {
-                _buttonOptions ??= _buttonDefs
-                    .Select(d => new GamepadButtonOption(this, d.Label, d.Flag))
-                    .ToList().AsReadOnly();
+                if (_buttonOptions == null)
+                {
+                    var defs = MacroButtonNames.GetButtonDefs(_buttonStyle);
+                    _buttonOptions = defs
+                        .Select(d => new GamepadButtonOption(this, d.Label, d.Flag))
+                        .ToList().AsReadOnly();
+                }
                 return _buttonOptions;
             }
         }
 
-        private static string FormatButtonNames(ushort flags)
+        /// <summary>Rebuilds button option labels when ButtonStyle changes.</summary>
+        private void RebuildButtonLabels()
         {
-            if (flags == 0) return "(none)";
-            return string.Join("+", _buttonDefs.Where(d => (flags & d.Flag) != 0).Select(d => d.Label));
+            if (_buttonOptions == null) return;
+            var defs = MacroButtonNames.GetButtonDefs(_buttonStyle);
+            for (int i = 0; i < _buttonOptions.Count && i < defs.Length; i++)
+            {
+                _buttonOptions[i].Label = defs[i].Label;
+                _buttonOptions[i].Refresh();
+            }
         }
 
         private int _keyCode;
@@ -596,8 +623,8 @@ namespace PadForge.ViewModels
                 var keyDisplay = !string.IsNullOrEmpty(_keyString) ? _keyString : ResolveKeyName(_keyCode);
                 return _type switch
                 {
-                    MacroActionType.ButtonPress => $"Press {FormatButtonNames(_buttonFlags)} for {_durationMs}ms",
-                    MacroActionType.ButtonRelease => $"Release {FormatButtonNames(_buttonFlags)}",
+                    MacroActionType.ButtonPress => $"Press {MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle)} for {_durationMs}ms",
+                    MacroActionType.ButtonRelease => $"Release {MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle)}",
                     MacroActionType.KeyPress => $"Keys {keyDisplay} for {_durationMs}ms",
                     MacroActionType.KeyRelease => $"Release keys {keyDisplay}",
                     MacroActionType.Delay => $"Wait {_durationMs}ms",
@@ -696,7 +723,12 @@ namespace PadForge.ViewModels
     {
         private readonly MacroAction _parent;
 
-        public string Label { get; }
+        private string _label;
+        public string Label
+        {
+            get => _label;
+            internal set => SetProperty(ref _label, value);
+        }
         public ushort Flag { get; }
 
         public bool IsChecked
@@ -715,11 +747,85 @@ namespace PadForge.ViewModels
         public GamepadButtonOption(MacroAction parent, string label, ushort flag)
         {
             _parent = parent;
-            Label = label;
+            _label = label;
             Flag = flag;
         }
 
         /// <summary>Re-evaluates IsChecked when ButtonFlags is changed externally.</summary>
         public void Refresh() => OnPropertyChanged(nameof(IsChecked));
+    }
+
+    /// <summary>
+    /// Determines which set of button labels to display in macros.
+    /// </summary>
+    public enum MacroButtonStyle
+    {
+        Xbox360,
+        DualShock4,
+        Numbered  // vJoy Custom: "Btn 1", "Btn 2", etc.
+    }
+
+    public static class MacroButtonNames
+    {
+        /// <summary>
+        /// Returns the button label/flag pairs for the given style.
+        /// Flags are always the same Xbox-standard bitmask; only labels differ.
+        /// </summary>
+        public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style) => style switch
+        {
+            MacroButtonStyle.DualShock4 => _ds4Defs,
+            MacroButtonStyle.Numbered => _numberedDefs,
+            _ => _xboxDefs
+        };
+
+        /// <summary>Formats a button bitmask into a human-readable string.</summary>
+        public static string FormatButtons(ushort flags, MacroButtonStyle style)
+        {
+            if (flags == 0) return "(none)";
+            var defs = GetButtonDefs(style);
+            return string.Join(" + ", defs.Where(d => (flags & d.Flag) != 0).Select(d => d.Label));
+        }
+
+        /// <summary>
+        /// Derives the button style from the output controller type and vJoy preset.
+        /// </summary>
+        public static MacroButtonStyle DeriveStyle(
+            VirtualControllerType outputType, VJoyPreset vJoyPreset = VJoyPreset.Xbox360) => outputType switch
+        {
+            VirtualControllerType.DualShock4 => MacroButtonStyle.DualShock4,
+            VirtualControllerType.VJoy => vJoyPreset switch
+            {
+                VJoyPreset.DualShock4 => MacroButtonStyle.DualShock4,
+                VJoyPreset.Custom => MacroButtonStyle.Numbered,
+                _ => MacroButtonStyle.Xbox360
+            },
+            _ => MacroButtonStyle.Xbox360
+        };
+
+        private static readonly (string Label, ushort Flag)[] _xboxDefs =
+        {
+            ("A", 0x1000), ("B", 0x2000), ("X", 0x4000), ("Y", 0x8000),
+            ("LB", 0x0100), ("RB", 0x0200), ("Back", 0x0020), ("Start", 0x0010),
+            ("LS", 0x0040), ("RS", 0x0080), ("Guide", 0x0400),
+            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
+        };
+
+        private static readonly (string Label, ushort Flag)[] _ds4Defs =
+        {
+            ("Cross", 0x1000), ("Circle", 0x2000), ("Square", 0x4000), ("Triangle", 0x8000),
+            ("L1", 0x0100), ("R1", 0x0200), ("Share", 0x0020), ("Options", 0x0010),
+            ("L3", 0x0040), ("R3", 0x0080), ("PS", 0x0400), ("Touchpad", 0x0800),
+            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
+        };
+
+        // vJoy Custom: Xbox bitmask bits → vJoy button numbers (see SubmitGamepadState mapping).
+        // D-pad still shows direction names (they map to POV, not buttons).
+        private static readonly (string Label, ushort Flag)[] _numberedDefs =
+        {
+            ("Btn 1", 0x1000), ("Btn 2", 0x2000), ("Btn 3", 0x4000), ("Btn 4", 0x8000),
+            ("Btn 5", 0x0100), ("Btn 6", 0x0200), ("Btn 7", 0x0020), ("Btn 8", 0x0010),
+            ("Btn 9", 0x0040), ("Btn 10", 0x0080), ("Btn 11", 0x0400),
+            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
+        };
     }
 }

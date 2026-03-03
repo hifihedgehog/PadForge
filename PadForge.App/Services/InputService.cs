@@ -1883,9 +1883,14 @@ namespace PadForge.Services
                     }
                 }
 
-                // Update live display text.
+                // Update live display text with device name.
                 if (_recordedRawButtons.Count > 0)
-                    _recordingMacro.RecordingLiveText = string.Join(" + ", _recordedRawButtons.OrderBy(x => x).Select(b => $"Btn {b}"));
+                {
+                    string combo = string.Join(" + ", _recordedRawButtons.OrderBy(x => x).Select(b => $"Btn {b}"));
+                    string deviceName = ResolveDeviceName(_recordingDeviceGuid);
+                    _recordingMacro.RecordingLiveText = string.IsNullOrEmpty(deviceName)
+                        ? combo : $"{combo} ({deviceName})";
+                }
                 else
                     _recordingMacro.RecordingLiveText = "Press buttons...";
             }
@@ -1895,35 +1900,20 @@ namespace PadForge.Services
                 ushort xboxButtons = _inputManager.CombinedOutputStates[_recordingPadIndex].Buttons;
                 _recordedButtons |= xboxButtons;
 
-                // Update live display text.
+                // Update live display text using type-aware button names.
                 if (_recordedButtons != 0)
-                    _recordingMacro.RecordingLiveText = FormatXboxButtons(_recordedButtons);
+                    _recordingMacro.RecordingLiveText = MacroButtonNames.FormatButtons(
+                        _recordedButtons, _recordingMacro.ButtonStyle);
                 else
                     _recordingMacro.RecordingLiveText = "Press buttons...";
             }
         }
 
-        /// <summary>Formats an Xbox button bitmask into a human-readable string.</summary>
-        private static string FormatXboxButtons(ushort flags)
+        /// <summary>Resolves a device GUID to a human-readable name.</summary>
+        private static string ResolveDeviceName(Guid deviceGuid)
         {
-            var parts = new List<string>();
-            if ((flags & 0x1000) != 0) parts.Add("A");
-            if ((flags & 0x2000) != 0) parts.Add("B");
-            if ((flags & 0x4000) != 0) parts.Add("X");
-            if ((flags & 0x8000) != 0) parts.Add("Y");
-            if ((flags & 0x0100) != 0) parts.Add("LB");
-            if ((flags & 0x0200) != 0) parts.Add("RB");
-            if ((flags & 0x0020) != 0) parts.Add("Back");
-            if ((flags & 0x0010) != 0) parts.Add("Start");
-            if ((flags & 0x0040) != 0) parts.Add("LS");
-            if ((flags & 0x0080) != 0) parts.Add("RS");
-            if ((flags & 0x0400) != 0) parts.Add("Guide");
-            if ((flags & 0x0800) != 0) parts.Add("Share");
-            if ((flags & 0x0001) != 0) parts.Add("Up");
-            if ((flags & 0x0002) != 0) parts.Add("Down");
-            if ((flags & 0x0004) != 0) parts.Add("Left");
-            if ((flags & 0x0008) != 0) parts.Add("Right");
-            return string.Join(" + ", parts);
+            if (deviceGuid == Guid.Empty) return null;
+            return SettingsManager.FindDeviceByInstanceGuid(deviceGuid)?.ResolvedName;
         }
 
         // ─────────────────────────────────────────────

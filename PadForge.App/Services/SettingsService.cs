@@ -422,6 +422,7 @@ namespace PadForge.Services
                     continue;
 
                 var padVm = _mainVm.Pads[md.PadIndex];
+                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
                 var macro = new MacroItem
                 {
                     Name = md.Name ?? "Macro",
@@ -435,7 +436,8 @@ namespace PadForge.Services
                     ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                     RepeatMode = md.RepeatMode,
                     RepeatCount = md.RepeatCount,
-                    RepeatDelayMs = md.RepeatDelayMs
+                    RepeatDelayMs = md.RepeatDelayMs,
+                    ButtonStyle = style
                 };
 
                 if (md.Actions != null)

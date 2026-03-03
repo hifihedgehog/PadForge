@@ -61,6 +61,7 @@ namespace PadForge.ViewModels
                     RebuildMappings();
                     RebuildStickConfigs();
                     RebuildTriggerConfigs();
+                    SyncMacroButtonStyle();
                 }
             }
         }
@@ -118,6 +119,7 @@ namespace PadForge.ViewModels
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
+                        SyncMacroButtonStyle();
                         break;
                     case nameof(VJoySlotConfig.ThumbstickCount):
                     case nameof(VJoySlotConfig.TriggerCount):
@@ -810,7 +812,11 @@ namespace PadForge.ViewModels
         public RelayCommand AddMacroCommand =>
             _addMacroCommand ??= new RelayCommand(() =>
             {
-                var macro = new MacroItem { Name = $"Macro {Macros.Count + 1}" };
+                var macro = new MacroItem
+                {
+                    Name = $"Macro {Macros.Count + 1}",
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _vJoyConfig?.Preset ?? VJoyPreset.Xbox360)
+                };
                 Macros.Add(macro);
                 SelectedMacro = macro;
             });
@@ -825,6 +831,17 @@ namespace PadForge.ViewModels
                     SelectedMacro = Macros.LastOrDefault();
                 }
             }, () => HasSelectedMacro);
+
+        /// <summary>
+        /// Syncs macro button display style to all macros when the output
+        /// controller type or vJoy preset changes.
+        /// </summary>
+        private void SyncMacroButtonStyle()
+        {
+            var style = MacroButtonNames.DeriveStyle(_outputType, _vJoyConfig?.Preset ?? VJoyPreset.Xbox360);
+            foreach (var macro in Macros)
+                macro.ButtonStyle = style;
+        }
 
         // ═══════════════════════════════════════════════
         //  Active config tab

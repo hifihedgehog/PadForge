@@ -244,6 +244,32 @@ namespace PadForge.Views
             Canvas.SetTop(dot, y + StickSize / 2 - 5);
             SchematicCanvas.Children.Add(dot);
 
+            // Direction arrow (hidden until recording flash) — inside a Canvas for centered rotation
+            double arrowLen = StickSize * 0.35;
+            double arrowBase = 6;
+            var dirArrow = new Polygon
+            {
+                Points = new PointCollection
+                {
+                    new Point(StickSize / 2, StickSize / 2 - arrowLen),
+                    new Point(StickSize / 2 - arrowBase, StickSize / 2 - arrowLen * 0.5),
+                    new Point(StickSize / 2 + arrowBase, StickSize / 2 - arrowLen * 0.5)
+                },
+                Fill = FlashBrush,
+                IsHitTestVisible = false,
+                Visibility = Visibility.Collapsed
+            };
+            var stickArrowCanvas = new Canvas
+            {
+                Width = StickSize,
+                Height = StickSize,
+                IsHitTestVisible = false
+            };
+            stickArrowCanvas.Children.Add(dirArrow);
+            Canvas.SetLeft(stickArrowCanvas, x);
+            Canvas.SetTop(stickArrowCanvas, y);
+            SchematicCanvas.Children.Add(stickArrowCanvas);
+
             // Label
             var label = CreateLabel($"Stick {index + 1}", x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
@@ -267,6 +293,9 @@ namespace PadForge.Views
                 AxisXIndex = axisXIdx,
                 AxisYIndex = axisYIdx,
                 Dot = dot,
+                DirectionArrow = dirArrow,
+                ArrowCanvas = stickArrowCanvas,
+                OuterCircle = outer,
                 X = x,
                 Y = y
             };
@@ -344,23 +373,34 @@ namespace PadForge.Views
             Canvas.SetTop(outer, y);
             SchematicCanvas.Children.Add(outer);
 
-            // Direction arrow (initially hidden)
+            // Direction arrow (initially hidden) — placed inside a small Canvas
+            // so rotation always pivots around the POV center.
+            double arrowTip = PovSize * 0.35;
+            double arrowBase = PovSize * 0.15;
             var arrow = new Polygon
             {
                 Points = new PointCollection
                 {
-                    new Point(0, -PovSize * 0.35),
-                    new Point(-6, -PovSize * 0.15),
-                    new Point(6, -PovSize * 0.15)
+                    new Point(PovSize / 2, PovSize / 2 - arrowTip),
+                    new Point(PovSize / 2 - 6, PovSize / 2 - arrowBase),
+                    new Point(PovSize / 2 + 6, PovSize / 2 - arrowBase)
                 },
                 Fill = AccentBrush,
                 IsHitTestVisible = false,
                 Visibility = Visibility.Collapsed,
                 RenderTransformOrigin = new Point(0.5, 0.5)
             };
-            Canvas.SetLeft(arrow, x + PovSize / 2);
-            Canvas.SetTop(arrow, y + PovSize / 2);
-            SchematicCanvas.Children.Add(arrow);
+            // Use a fixed-size Canvas so RenderTransformOrigin (0.5,0.5) = POV center
+            var arrowCanvas = new Canvas
+            {
+                Width = PovSize,
+                Height = PovSize,
+                IsHitTestVisible = false
+            };
+            arrowCanvas.Children.Add(arrow);
+            Canvas.SetLeft(arrowCanvas, x);
+            Canvas.SetTop(arrowCanvas, y);
+            SchematicCanvas.Children.Add(arrowCanvas);
 
             // Label
             string povLabel = _vm.VJoyConfig.PovCount == 1 ? "D-Pad" : $"POV {index + 1}";
@@ -387,6 +427,7 @@ namespace PadForge.Views
             {
                 PovIndex = index,
                 Arrow = arrow,
+                ArrowCanvas = arrowCanvas,
                 CenterX = x + PovSize / 2,
                 CenterY = y + PovSize / 2
             };
@@ -478,7 +519,21 @@ namespace PadForge.Views
             {
                 if (baseTarget == $"VJoyAxis{w.AxisXIndex}" || baseTarget == $"VJoyAxis{w.AxisYIndex}")
                 {
-                    w.Dot.Fill = highlight ? FlashBrush : AccentBrush;
+                    bool isNeg = t.EndsWith("Neg", StringComparison.Ordinal);
+                    bool isX = baseTarget == $"VJoyAxis{w.AxisXIndex}";
+                    // Determine arrow angle: right=90, left=270, up=0, down=180
+                    double angle;
+                    if (isX)
+                        angle = isNeg ? 270 : 90; // left or right
+                    else
+                        angle = isNeg ? 180 : 0; // down or up
+
+                    w.OuterCircle.Stroke = highlight ? FlashBrush : DimBrush;
+                    w.OuterCircle.StrokeThickness = highlight ? 2.5 : 1.5;
+                    w.DirectionArrow.Visibility = highlight ? Visibility.Visible : Visibility.Collapsed;
+                    w.DirectionArrow.Fill = FlashBrush;
+                    w.ArrowCanvas.RenderTransform = new RotateTransform(angle,
+                        StickSize / 2, StickSize / 2);
                     return;
                 }
             }
@@ -521,7 +576,8 @@ namespace PadForge.Views
                         "Left" => 270,
                         _ => 0
                     };
-                    w.Arrow.RenderTransform = new RotateTransform(angle);
+                    w.ArrowCanvas.RenderTransform = new RotateTransform(angle,
+                        PovSize / 2, PovSize / 2);
                     return;
                 }
             }
@@ -580,7 +636,8 @@ namespace PadForge.Views
                 else
                 {
                     w.Arrow.Visibility = Visibility.Visible;
-                    w.Arrow.RenderTransform = new RotateTransform(povValue / 100.0);
+                    w.ArrowCanvas.RenderTransform = new RotateTransform(povValue / 100.0,
+                        PovSize / 2, PovSize / 2);
                 }
             }
 
@@ -618,6 +675,9 @@ namespace PadForge.Views
         {
             public int AxisXIndex, AxisYIndex;
             public Ellipse Dot;
+            public Polygon DirectionArrow;
+            public Canvas ArrowCanvas;
+            public Ellipse OuterCircle;
             public double X, Y;
         }
 
@@ -632,6 +692,7 @@ namespace PadForge.Views
         {
             public int PovIndex;
             public Polygon Arrow;
+            public Canvas ArrowCanvas;
             public double CenterX, CenterY;
         }
 

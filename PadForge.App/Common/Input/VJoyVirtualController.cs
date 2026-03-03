@@ -316,7 +316,7 @@ namespace PadForge.Common.Input
             // wThrottle at offset 4 maps to axis index 15 (last usage in the descriptor).
             if (raw.Axes != null)
             {
-                for (int i = 0; i < raw.Axes.Length && i < 16; i++)
+                for (int i = 0; i < raw.Axes.Length && i < 8; i++)
                 {
                     int v = (raw.Axes[i] + 32768) / 2;
                     switch (i)
@@ -956,6 +956,10 @@ namespace PadForge.Common.Input
             public int Axes;
             public int Buttons;
             public int Povs;
+            /// <summary>Number of thumbsticks (each uses 2 axes: X+Y).</summary>
+            public int Sticks;
+            /// <summary>Number of triggers (each uses 1 axis).</summary>
+            public int Triggers;
         }
 
         /// <summary>Cached per-device configs from last EnsureDevicesAvailable call.</summary>
@@ -1532,7 +1536,7 @@ public static class PF_SetupApi {{
         /// </summary>
         private static byte[] BuildHidDescriptor(byte reportId, int nAxes, int nButtons, int nPovs)
         {
-            nAxes = Math.Clamp(nAxes, 0, 16);
+            nAxes = Math.Clamp(nAxes, 0, 8);
             nButtons = Math.Clamp(nButtons, 0, 128);
             nPovs = Math.Clamp(nPovs, 0, 4);
 

@@ -185,7 +185,17 @@ namespace PadForge.ViewModels
         }
 
         public string RecordTriggerButtonText =>
-            IsRecordingTrigger ? "Recording..." : "Record Trigger";
+            IsRecordingTrigger ? "Stop" : "Record Trigger";
+
+        private string _recordingLiveText = "";
+
+        /// <summary>Live display of buttons being pressed during recording.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string RecordingLiveText
+        {
+            get => _recordingLiveText;
+            set => SetProperty(ref _recordingLiveText, value ?? "");
+        }
 
         // ─────────────────────────────────────────────
         //  Trigger options
@@ -338,9 +348,31 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _type, value))
+                {
                     OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(IsButtonType));
+                    OnPropertyChanged(nameof(IsKeyType));
+                    OnPropertyChanged(nameof(IsDurationType));
+                    OnPropertyChanged(nameof(IsAxisType));
+                }
             }
         }
+
+        /// <summary>True when Type is ButtonPress or ButtonRelease.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsButtonType => _type == MacroActionType.ButtonPress || _type == MacroActionType.ButtonRelease;
+
+        /// <summary>True when Type is KeyPress or KeyRelease.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsKeyType => _type == MacroActionType.KeyPress || _type == MacroActionType.KeyRelease;
+
+        /// <summary>True when Type is ButtonPress, KeyPress, or Delay.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay;
+
+        /// <summary>True when Type is AxisSet.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisType => _type == MacroActionType.AxisSet;
 
         private ushort _buttonFlags;
 

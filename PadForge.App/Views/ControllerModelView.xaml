@@ -17,8 +17,9 @@
                                ZoomExtentsWhenLoaded="False"
                                Background="Transparent"
                                MouseLeftButtonDown="Viewport_MouseLeftButtonDown"
-                               MouseRightButtonDown="Viewport_MouseRightButtonDown"
-                               MouseRightButtonUp="Viewport_MouseRightButtonUp"
+                               PreviewMouseRightButtonDown="Viewport_MouseRightButtonDown"
+                               PreviewMouseRightButtonUp="Viewport_MouseRightButtonUp"
+                               PreviewMouseMove="Viewport_PreviewMouseMove"
                                MouseMove="Viewport_MouseMove"
                                MouseLeave="Viewport_MouseLeave">
 

@@ -686,123 +686,124 @@
                     <ItemsControl ItemsSource="{Binding StickConfigs}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:StickConfigItem}">
-                                <StackPanel Margin="0,0,0,16">
+                                <StackPanel Margin="0,0,0,4">
                                     <TextBlock Text="{Binding Title}"
                                                FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
                                                Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
-                                    <!-- Dead Zone X -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding DeadZoneX, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding DeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <!-- Dead Zone Y -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding DeadZoneY, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding DeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    </StackPanel>
+                                        <!-- Sliders (left) -->
+                                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding DeadZoneX, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding DeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding DeadZoneY, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding DeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding AntiDeadZoneX, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding AntiDeadZoneY, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding Linear, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding Linear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                        </StackPanel>
 
-                                    <!-- Anti-Dead Zone X -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding AntiDeadZoneX, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding AntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    </StackPanel>
-
-                                    <!-- Anti-Dead Zone Y -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding AntiDeadZoneY, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding AntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    </StackPanel>
-
-                                    <!-- Linear -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding Linear, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding Linear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    </StackPanel>
+                                        <!-- Live preview (right) -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                                            <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
+                                                    Padding="4" Width="212" Height="212"
+                                                    ClipToBounds="True">
+                                                <Grid Width="200" Height="200">
+                                                    <Ellipse Width="200" Height="200"
+                                                             Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
+                                                    <Canvas>
+                                                        <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
+                                                                 Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                                 StrokeThickness="1.5" Fill="Transparent"/>
+                                                        <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
+                                                                 Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                                 StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
+                                                        <!-- Dead zone ring -->
+                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
+                                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Ellipse.Width>
+                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Width>
+                                                            <Ellipse.Height>
+                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Height>
+                                                            <Ellipse.RenderTransform>
+                                                                <TranslateTransform>
+                                                                    <TranslateTransform.X>
+                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.X>
+                                                                    <TranslateTransform.Y>
+                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.Y>
+                                                                </TranslateTransform>
+                                                            </Ellipse.RenderTransform>
+                                                            <Canvas.Left>100</Canvas.Left>
+                                                            <Canvas.Top>100</Canvas.Top>
+                                                        </Ellipse>
+                                                        <!-- Crosshair -->
+                                                        <Line X1="100" Y1="0" X2="100" Y2="200"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeThickness="0.5"/>
+                                                        <Line X1="0" Y1="100" X2="200" Y2="100"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeThickness="0.5"/>
+                                                        <!-- Stick position dot -->
+                                                        <Ellipse Width="11" Height="11" Fill="#FF2196F3"
+                                                                 Stroke="#FF1976D2" StrokeThickness="1"
+                                                                 Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
+                                                                 Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
+                                                    </Canvas>
+                                                </Grid>
+                                            </Border>
+                                            <TextBlock Margin="0,4,0,0" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
+                                                <Run Text="X:"/>
+                                                <Run Text="{Binding RawX, Mode=OneWay}"/>
+                                                <Run Text="  Y:"/>
+                                                <Run Text="{Binding RawY, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
 
                                     <Separator Margin="0,8,0,12"/>
-
-                                    <!-- Live preview -->
-                                    <TextBlock Text="Live Preview" FontWeight="SemiBold" Margin="0,0,0,8"
-                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                                    <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                            Padding="4" Width="212" Height="212" HorizontalAlignment="Left"
-                                            ClipToBounds="True">
-                                        <Grid Width="200" Height="200">
-                                            <Ellipse Width="200" Height="200"
-                                                     Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
-                                            <Canvas>
-                                                <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
-                                                         Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                                         StrokeThickness="1.5" Fill="Transparent"/>
-                                                <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
-                                                         Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                         StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
-                                                <!-- Dead zone ring -->
-                                                <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <Ellipse.Width>
-                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                    </Ellipse.Width>
-                                                    <Ellipse.Height>
-                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                    </Ellipse.Height>
-                                                    <Ellipse.RenderTransform>
-                                                        <TranslateTransform>
-                                                            <TranslateTransform.X>
-                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                            </TranslateTransform.X>
-                                                            <TranslateTransform.Y>
-                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                            </TranslateTransform.Y>
-                                                        </TranslateTransform>
-                                                    </Ellipse.RenderTransform>
-                                                    <Canvas.Left>100</Canvas.Left>
-                                                    <Canvas.Top>100</Canvas.Top>
-                                                </Ellipse>
-                                                <!-- Crosshair -->
-                                                <Line X1="100" Y1="0" X2="100" Y2="200"
-                                                      Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                      StrokeThickness="0.5"/>
-                                                <Line X1="0" Y1="100" X2="200" Y2="100"
-                                                      Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                      StrokeThickness="0.5"/>
-                                                <!-- Stick position dot -->
-                                                <Ellipse Width="11" Height="11" Fill="#FF2196F3"
-                                                         Stroke="#FF1976D2" StrokeThickness="1"
-                                                         Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
-                                                         Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
-                                            </Canvas>
-                                        </Grid>
-                                    </Border>
-                                    <TextBlock Margin="0,4,0,0"
-                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
-                                        <Run Text="X:"/>
-                                        <Run Text="{Binding RawX, Mode=OneWay}"/>
-                                        <Run Text="  Y:"/>
-                                        <Run Text="{Binding RawY, Mode=OneWay}"/>
-                                    </TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

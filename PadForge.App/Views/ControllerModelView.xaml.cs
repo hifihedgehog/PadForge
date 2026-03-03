@@ -52,9 +52,9 @@ namespace PadForge.Views
         // Axis arrow overlay (visible until mapping finishes)
         private ModelVisual3D _arrowVisual;
 
-        // Quadrant highlight overlay (flashing wedge on stick ring)
-        private ModelVisual3D _quadrantVisual;
-        private DiffuseMaterial _quadrantMaterial;
+        // Quadrant ring overlay (subset of ring triangles for the target quadrant)
+        private ModelVisual3D _quadrantRingVisual;
+        private DiffuseMaterial _quadrantRingMaterial;
 
         // Hover highlight state
         private Model3DGroup _hoverGroup;            // Currently highlighted group (button/trigger)
@@ -104,9 +104,7 @@ namespace PadForge.Views
                 {
                     string target = _vm.CurrentRecordingTarget;
                     UpdateFlashTarget(target);
-                    // Always show the arrow and quadrant highlight for the current target.
                     ShowArrowForTarget(target);
-                    ShowQuadrantForTarget(target);
                 });
                 return;
             }
@@ -149,7 +147,6 @@ namespace PadForge.Views
                 };
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
-                ModelViewPort.ZoomExtents();
                 _dirty = true;
             }
             catch (Exception ex)
@@ -501,20 +498,59 @@ namespace PadForge.Views
         {
             RemoveHoverQuadrant();
 
+            if (_currentModel == null) return;
+
             bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
             string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
             bool isX = baseTarget.Contains("AxisX");
             bool isLeft = baseTarget.StartsWith("Left", StringComparison.Ordinal);
 
+            var ring = isLeft ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
+            if (ring == null) return;
+
             Vector3D center = isLeft
                 ? _currentModel.JoystickRotationPointCenterLeftMillimeter
                 : _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            double angleDeg;
-            if (isX)
-                angleDeg = isNeg ? 180.0 : 0.0;
-            else
-                angleDeg = isNeg ? 90.0 : 270.0;
+            // Extract quadrant triangles from the ring mesh
+            var quadrantMesh = new MeshGeometry3D();
+            foreach (var child in ring.Children)
+            {
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
+                    continue;
+
+                var positions = srcMesh.Positions;
+                var indices = srcMesh.TriangleIndices;
+                for (int t = 0; t + 2 < indices.Count; t += 3)
+                {
+                    var p0 = positions[indices[t]];
+                    var p1 = positions[indices[t + 1]];
+                    var p2 = positions[indices[t + 2]];
+
+                    double cx = (p0.X + p1.X + p2.X) / 3.0 - center.X;
+                    double cz = (p0.Z + p1.Z + p2.Z) / 3.0 - center.Z;
+
+                    bool inQuadrant;
+                    if (isX)
+                        inQuadrant = isNeg ? (cx < 0 && Math.Abs(cx) >= Math.Abs(cz))
+                                           : (cx >= 0 && Math.Abs(cx) >= Math.Abs(cz));
+                    else
+                        inQuadrant = isNeg ? (cz >= 0 && Math.Abs(cz) > Math.Abs(cx))
+                                           : (cz < 0 && Math.Abs(cz) > Math.Abs(cx));
+
+                    if (!inQuadrant) continue;
+
+                    int baseIdx = quadrantMesh.Positions.Count;
+                    quadrantMesh.Positions.Add(p0);
+                    quadrantMesh.Positions.Add(p1);
+                    quadrantMesh.Positions.Add(p2);
+                    quadrantMesh.TriangleIndices.Add(baseIdx);
+                    quadrantMesh.TriangleIndices.Add(baseIdx + 1);
+                    quadrantMesh.TriangleIndices.Add(baseIdx + 2);
+                }
+            }
+
+            if (quadrantMesh.Positions.Count == 0) return;
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
@@ -524,12 +560,10 @@ namespace PadForge.Views
             }
             catch { }
 
-            var color = Color.FromArgb(100, accentColor.R, accentColor.G, accentColor.B);
+            var color = Color.FromArgb(120, accentColor.R, accentColor.G, accentColor.B);
             var material = new DiffuseMaterial(new SolidColorBrush(color));
-            var wedgeCenter = new Point3D(center.X, center.Y - 25, center.Z);
-            var mesh = CreateWedgeMesh(wedgeCenter, radius: 10.0, angleDeg - 45, angleDeg + 45, segments: 12);
-            var geo = new GeometryModel3D(mesh, material) { BackMaterial = material };
-            _hoverQuadrantVisual = new ModelVisual3D { Content = geo };
+            var quadrantGeo = new GeometryModel3D(quadrantMesh, material) { BackMaterial = material };
+            _hoverQuadrantVisual = new ModelVisual3D { Content = quadrantGeo };
             ModelViewPort.Children.Add(_hoverQuadrantVisual);
         }
 
@@ -615,7 +649,6 @@ namespace PadForge.Views
         private void ShowAxisArrow(Point3D hitPos, string axis)
         {
             ShowArrowForTarget(axis);
-            ShowQuadrantForTarget(axis);
         }
 
         /// <summary>
@@ -738,12 +771,13 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Shows or updates a semi-transparent wedge over one quadrant of a stick ring.
-        /// The wedge indicates which direction the user should push for recording.
+        /// Builds a quadrant overlay from the stick ring's actual mesh triangles.
+        /// Extracts only triangles whose centroid falls in the target quadrant,
+        /// creating an overlay that matches the ring geometry exactly.
         /// </summary>
-        private void ShowQuadrantForTarget(string target)
+        private void ShowQuadrantRingOverlay(string target)
         {
-            RemoveQuadrant();
+            RemoveQuadrantRing();
 
             if (_currentModel == null || string.IsNullOrEmpty(target))
                 return;
@@ -757,19 +791,54 @@ namespace PadForge.Views
                 return;
 
             bool isX = baseTarget.Contains("AxisX");
+            var ring = isLeftStick ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
+            if (ring == null) return;
 
             Vector3D center = isLeftStick
                 ? _currentModel.JoystickRotationPointCenterLeftMillimeter
                 : _currentModel.JoystickRotationPointCenterRightMillimeter;
 
-            // Determine the angular center of the quadrant (degrees from +X, CCW).
-            // X axis: pos(right)=0°, neg(left)=180°.
-            // Y axis (NegateAxis): neg(up)=90°, pos(down)=270°.
-            double angleDeg;
-            if (isX)
-                angleDeg = isNeg ? 180.0 : 0.0;
-            else
-                angleDeg = isNeg ? 90.0 : 270.0;
+            // Extract quadrant triangles from all geometries in the ring group
+            var quadrantMesh = new MeshGeometry3D();
+            foreach (var child in ring.Children)
+            {
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
+                    continue;
+
+                var positions = srcMesh.Positions;
+                var indices = srcMesh.TriangleIndices;
+                for (int t = 0; t + 2 < indices.Count; t += 3)
+                {
+                    var p0 = positions[indices[t]];
+                    var p1 = positions[indices[t + 1]];
+                    var p2 = positions[indices[t + 2]];
+
+                    // Triangle centroid
+                    double cx = (p0.X + p1.X + p2.X) / 3.0 - center.X;
+                    double cz = (p0.Z + p1.Z + p2.Z) / 3.0 - center.Z;
+
+                    // Test if centroid is in the target quadrant
+                    bool inQuadrant;
+                    if (isX)
+                        inQuadrant = isNeg ? (cx < 0 && Math.Abs(cx) >= Math.Abs(cz))
+                                           : (cx >= 0 && Math.Abs(cx) >= Math.Abs(cz));
+                    else
+                        inQuadrant = isNeg ? (cz >= 0 && Math.Abs(cz) > Math.Abs(cx))
+                                           : (cz < 0 && Math.Abs(cz) > Math.Abs(cx));
+
+                    if (!inQuadrant) continue;
+
+                    int baseIdx = quadrantMesh.Positions.Count;
+                    quadrantMesh.Positions.Add(p0);
+                    quadrantMesh.Positions.Add(p1);
+                    quadrantMesh.Positions.Add(p2);
+                    quadrantMesh.TriangleIndices.Add(baseIdx);
+                    quadrantMesh.TriangleIndices.Add(baseIdx + 1);
+                    quadrantMesh.TriangleIndices.Add(baseIdx + 2);
+                }
+            }
+
+            if (quadrantMesh.Positions.Count == 0) return;
 
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
@@ -779,77 +848,34 @@ namespace PadForge.Views
             }
             catch { }
 
-            // Semi-transparent accent blue
-            var color = Color.FromArgb(160, accentColor.R, accentColor.G, accentColor.B);
-            _quadrantMaterial = new DiffuseMaterial(new SolidColorBrush(color));
-
-            // Build a pie-wedge disc: 90° arc from (angleDeg-45) to (angleDeg+45)
-            var wedgeCenter = new Point3D(center.X, center.Y - 25, center.Z);
-            var mesh = CreateWedgeMesh(wedgeCenter, radius: 10.0, angleDeg - 45, angleDeg + 45, segments: 12);
-            var geo = new GeometryModel3D(mesh, _quadrantMaterial) { BackMaterial = _quadrantMaterial };
-            _quadrantVisual = new ModelVisual3D { Content = geo };
-            ModelViewPort.Children.Add(_quadrantVisual);
+            var color = Color.FromArgb(200, accentColor.R, accentColor.G, accentColor.B);
+            _quadrantRingMaterial = new DiffuseMaterial(new SolidColorBrush(color));
+            var quadrantGeo = new GeometryModel3D(quadrantMesh, _quadrantRingMaterial)
+            {
+                BackMaterial = _quadrantRingMaterial
+            };
+            _quadrantRingVisual = new ModelVisual3D { Content = quadrantGeo };
+            ModelViewPort.Children.Add(_quadrantRingVisual);
         }
 
-        /// <summary>
-        /// Creates a flat pie-wedge mesh in the XZ plane at the given Y height.
-        /// Angles are in degrees, measured from +X axis (right), counter-clockwise.
-        /// +X = right, +Z = up on screen (model coordinates).
-        /// </summary>
-        private static MeshGeometry3D CreateWedgeMesh(Point3D center, double radius,
-            double startDeg, double endDeg, int segments)
+        /// <summary>Toggles the quadrant ring overlay visibility for flashing.</summary>
+        private void FlashQuadrantRing(bool on)
         {
-            var mesh = new MeshGeometry3D();
-            double startRad = startDeg * Math.PI / 180.0;
-            double step = (endDeg - startDeg) * Math.PI / 180.0 / segments;
+            if (_quadrantRingVisual == null || _quadrantRingMaterial == null) return;
 
-            // Center vertex
-            mesh.Positions.Add(center);
-
-            // Arc vertices
-            for (int i = 0; i <= segments; i++)
-            {
-                double angle = startRad + step * i;
-                mesh.Positions.Add(new Point3D(
-                    center.X + radius * Math.Cos(angle),
-                    center.Y,
-                    center.Z + radius * Math.Sin(angle)));
-            }
-
-            // Triangle fan from center to arc
-            for (int i = 0; i < segments; i++)
-            {
-                mesh.TriangleIndices.Add(0);
-                mesh.TriangleIndices.Add(i + 1);
-                mesh.TriangleIndices.Add(i + 2);
-                // Back face
-                mesh.TriangleIndices.Add(0);
-                mesh.TriangleIndices.Add(i + 2);
-                mesh.TriangleIndices.Add(i + 1);
-            }
-
-            return mesh;
-        }
-
-        /// <summary>Toggles the quadrant wedge visibility for flashing.</summary>
-        private void FlashQuadrant(bool on)
-        {
-            if (_quadrantVisual == null || _quadrantMaterial == null) return;
-
-            var brush = (SolidColorBrush)_quadrantMaterial.Brush;
+            var brush = (SolidColorBrush)_quadrantRingMaterial.Brush;
             var c = brush.Color;
-            // Toggle between visible (alpha 160) and hidden (alpha 0).
-            _quadrantMaterial.Brush = new SolidColorBrush(
-                Color.FromArgb(on ? (byte)160 : (byte)0, c.R, c.G, c.B));
+            _quadrantRingMaterial.Brush = new SolidColorBrush(
+                Color.FromArgb(on ? (byte)200 : (byte)0, c.R, c.G, c.B));
         }
 
-        private void RemoveQuadrant()
+        private void RemoveQuadrantRing()
         {
-            if (_quadrantVisual != null)
+            if (_quadrantRingVisual != null)
             {
-                ModelViewPort.Children.Remove(_quadrantVisual);
-                _quadrantVisual = null;
-                _quadrantMaterial = null;
+                ModelViewPort.Children.Remove(_quadrantRingVisual);
+                _quadrantRingVisual = null;
+                _quadrantRingMaterial = null;
             }
         }
 
@@ -866,6 +892,10 @@ namespace PadForge.Views
 
             _flashTarget = target;
             _flashOn = false;
+
+            // For stick axis targets, build a quadrant ring overlay from the actual ring mesh
+            ShowQuadrantRingOverlay(target);
+
             _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
             _flashTimer.Tick += FlashTick;
             _flashTimer.Start();
@@ -911,6 +941,13 @@ namespace PadForge.Views
 
             _flashOn = !_flashOn;
 
+            // For stick axis targets, flash the quadrant ring overlay instead of the full ring
+            if (_quadrantRingVisual != null)
+            {
+                FlashQuadrantRing(_flashOn);
+                return;
+            }
+
             var groups = ResolveFlashGroups(_flashTarget);
             if (groups == null) return;
 
@@ -930,9 +967,6 @@ namespace PadForge.Views
                     geo.BackMaterial = defMat;
                 }
             }
-
-            // Flash the quadrant wedge in sync
-            FlashQuadrant(_flashOn);
         }
 
         private void StopFlash()
@@ -965,8 +999,8 @@ namespace PadForge.Views
 
             _flashTarget = null;
 
-            // Remove quadrant overlay
-            RemoveQuadrant();
+            // Remove quadrant ring overlay
+            RemoveQuadrantRing();
             RemoveArrow();
         }
 
@@ -978,10 +1012,10 @@ namespace PadForge.Views
         {
             if (ModelViewPort.Camera is PerspectiveCamera cam)
             {
-                cam.Position = new Point3D(0, -86.5, 50);
+                cam.Position = new Point3D(0, -173, 100);
                 cam.LookDirection = new Vector3D(0, 0.866, -0.5);
                 cam.UpDirection = new Vector3D(0, 0, 1);
-                cam.FieldOfView = 35;
+                cam.FieldOfView = 45;
             }
         }
 

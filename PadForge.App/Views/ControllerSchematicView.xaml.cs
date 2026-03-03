@@ -284,7 +284,7 @@ namespace PadForge.Views
                 if (Math.Abs(cx) > Math.Abs(cy))
                     target = cx > 0 ? $"VJoyAxis{axisXIdx}" : $"VJoyAxis{axisXIdx}Neg";
                 else
-                    target = cy > 0 ? $"VJoyAxis{axisYIdx}Neg" : $"VJoyAxis{axisYIdx}";
+                    target = cy > 0 ? $"VJoyAxis{axisYIdx}" : $"VJoyAxis{axisYIdx}Neg";
                 ControllerElementRecordRequested?.Invoke(this, target);
             };
 

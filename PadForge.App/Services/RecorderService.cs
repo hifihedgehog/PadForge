@@ -399,9 +399,17 @@ namespace PadForge.Services
                       or "LeftThumbAxisY" or "RightThumbAxisY")
                 return negRecording ? axisPositive : !axisPositive;
 
+            // VJoy bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
+            if (target.StartsWith("VJoyAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
+                return negRecording ? axisPositive : !axisPositive;
+
             // Trigger targets: increasing value is natural.
             // Negative delta = reverse polarity = needs inversion.
             if (target == "LeftTrigger" || target == "RightTrigger")
+                return !axisPositive;
+
+            // VJoy trigger axes (unidirectional, no neg direction): same as gamepad triggers.
+            if (target.StartsWith("VJoyAxis", StringComparison.Ordinal))
                 return !axisPositive;
 
             // All other targets (buttons, d-pad, etc.): invert when the user pushed

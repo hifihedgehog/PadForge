@@ -127,7 +127,8 @@ namespace PadForge.Views
             string needed = type switch
             {
                 VirtualControllerType.DualShock4 => "DS4",
-                _ => "XBOX360"     // Xbox360 and VJoy both use Xbox model
+                VirtualControllerType.VJoy when _vm.VJoyConfig?.Preset == VJoyPreset.DualShock4 => "DS4",
+                _ => "XBOX360"
             };
 
             if (_currentModel?.ModelName == needed)

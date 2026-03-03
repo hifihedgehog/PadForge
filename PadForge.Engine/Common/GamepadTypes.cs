@@ -90,7 +90,7 @@ namespace PadForge.Engine
         {
             return new VJoyRawState
             {
-                Axes = new short[Math.Min(nAxes, 16)],
+                Axes = new short[Math.Min(nAxes, 8)],
                 Buttons = new uint[(Math.Min(nButtons, 128) + 31) / 32],
                 Povs = new int[Math.Min(nPovs, 4)]
             };

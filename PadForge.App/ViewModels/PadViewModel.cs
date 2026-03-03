@@ -353,6 +353,12 @@ namespace PadForge.ViewModels
             new ObservableCollection<MappingItem>();
 
         /// <summary>
+        /// Raised after RebuildMappings completes so listeners (e.g. InputService) can
+        /// reload mapping descriptors from the active PadSetting into the new MappingItems.
+        /// </summary>
+        public event EventHandler MappingsRebuilt;
+
+        /// <summary>
         /// Rebuilds the Mappings collection based on the current OutputType and vJoy config.
         /// Labels follow the output type's convention (Xbox 360/DS4/vJoy numbered).
         /// </summary>
@@ -365,6 +371,8 @@ namespace PadForge.ViewModels
                 InitializeVJoyCustomMappings();
             else
                 InitializeGamepadMappings();
+
+            MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

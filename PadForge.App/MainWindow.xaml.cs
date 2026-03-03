@@ -186,45 +186,24 @@ namespace PadForge
             }
 
             // Wire recorder for each pad's mapping rows.
+            // Also listen for CollectionChanged so new mappings (from RebuildMappings) get wired.
             foreach (var pad in _viewModel.Pads)
             {
+                var capturedPad = pad;
+
+                // Wire existing mappings.
                 foreach (var mapping in pad.Mappings)
+                    WireMappingItemEvents(mapping, capturedPad);
+
+                // Re-wire when mappings are rebuilt (OutputType or vJoy config change).
+                pad.Mappings.CollectionChanged += (s, e) =>
                 {
-                    var capturedPad = pad;
-                    mapping.StartRecordingRequested += (s, e) =>
+                    if (e.NewItems != null)
                     {
-                        if (s is MappingItem mi)
-                        {
-                            Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-
-                            // Y axes: record neg (up in game) first due to NegateAxis inversion.
-                            bool isYAxis = mi.HasNegDirection && mi.TargetSettingName.Contains("AxisY");
-                            if (isYAxis)
-                            {
-                                capturedPad.CurrentRecordingTarget = mi.NegSettingName;
-                                _pendingNegMapping = mi;
-                            }
-                            else
-                            {
-                                capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
-                            }
-
-                            _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid,
-                                negRecording: isYAxis);
-                        }
-                    };
-                    mapping.StopRecordingRequested += (s, e) =>
-                        _recorderService.CancelRecording();
-
-                    // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.
-                    mapping.PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName is nameof(MappingItem.SourceDescriptor)
-                            or nameof(MappingItem.IsInverted)
-                            or nameof(MappingItem.IsHalfAxis))
-                            _settingsService.MarkDirty();
-                    };
-                }
+                        foreach (MappingItem mi in e.NewItems)
+                            WireMappingItemEvents(mi, capturedPad);
+                    }
+                };
 
                 // Pad setting changes (dead zones, force feedback, etc.) trigger autosave.
                 pad.PropertyChanged += (s, e) =>
@@ -243,6 +222,9 @@ namespace PadForge
                         nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };
+
+                // VJoyConfig property changes (preset, counts) trigger autosave.
+                pad.VJoyConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
             }
 
             // Recorder completion marks settings dirty + clear flash + advance Map All.
@@ -308,8 +290,9 @@ namespace PadForge
                     {
                         // Came from a neg-quadrant click — now auto-prompt for the positive direction.
                         // (Map All handles the second phase itself via MapAllRecordingNeg.)
-                        string dirHint = negMapping.TargetSettingName.Contains("AxisX")
-                            ? "(\u2192 right)" : "(\u2193 down)";
+                        bool isXAxis = negMapping.TargetSettingName.Contains("AxisX")
+                            || negMapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
+                        string dirHint = isXAxis ? "(\u2192 right)" : "(\u2193 down)";
                         _viewModel.StatusText = $"Now map: {negMapping.TargetLabel} {dirHint}";
 
                         // Switch to Controller tab so the 3D directional arrow is visible.
@@ -363,8 +346,9 @@ namespace PadForge
                     _pendingNegMapping = result.Mapping;
 
                     // Neg X = left, Neg Y = up (Y inverted by NegateAxis in Step 3).
-                    string dirHint = result.Mapping.TargetSettingName.Contains("AxisX")
-                        ? "(\u2190 left)" : "(\u2191 up)";
+                    bool isXAxis2 = result.Mapping.TargetSettingName.Contains("AxisX")
+                        || result.Mapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
+                    string dirHint = isXAxis2 ? "(\u2190 left)" : "(\u2191 up)";
                     _viewModel.StatusText = $"Now map: {result.Mapping.TargetLabel} {dirHint}";
 
                     if (activePad.IsMapAllActive)
@@ -455,8 +439,10 @@ namespace PadForge
 
                     // Y axes record neg (up in game) first due to NegateAxis inversion.
                     // Pre-set _pendingNegMapping so the recorder result goes to NegSourceDescriptor.
+                    // For vJoy custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
                     bool isYFirstPhase = mapping.HasNegDirection
-                        && mapping.TargetSettingName.Contains("AxisY")
+                        && (mapping.TargetSettingName.Contains("AxisY")
+                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal))
                         && !capturedPad.MapAllRecordingNeg;
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
@@ -2298,6 +2284,52 @@ namespace PadForge
             _viewModel.Settings.ActiveProfileInfo = "Default";
             _inputService.ApplyDefaultProfile();
             _viewModel.StatusText = "Profile reverted to Default";
+        }
+
+        /// <summary>
+        /// Wires StartRecordingRequested, StopRecordingRequested, and PropertyChanged
+        /// for a single MappingItem. Called both on initial setup and when Mappings
+        /// are rebuilt (OutputType change, vJoy config change).
+        /// </summary>
+        private void WireMappingItemEvents(MappingItem mapping, PadViewModel capturedPad)
+        {
+            mapping.StartRecordingRequested += (s, e) =>
+            {
+                if (s is MappingItem mi)
+                {
+                    Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                    // Y axes: record neg (up in game) first due to NegateAxis inversion.
+                    // For standard gamepad: TargetSettingName contains "AxisY".
+                    // For vJoy custom sticks: TargetSettingName is "VJoyAxisN" — check label for "Y".
+                    bool isYAxis = mi.HasNegDirection
+                        && (mi.TargetSettingName.Contains("AxisY")
+                            || mi.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                    if (isYAxis)
+                    {
+                        capturedPad.CurrentRecordingTarget = mi.NegSettingName;
+                        _pendingNegMapping = mi;
+                    }
+                    else
+                    {
+                        capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
+                    }
+
+                    _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid,
+                        negRecording: isYAxis);
+                }
+            };
+            mapping.StopRecordingRequested += (s, e) =>
+                _recorderService.CancelRecording();
+
+            // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.
+            mapping.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName is nameof(MappingItem.SourceDescriptor)
+                    or nameof(MappingItem.IsInverted)
+                    or nameof(MappingItem.IsHalfAxis))
+                    _settingsService.MarkDirty();
+            };
         }
 
         private void WireMacroRecording(MacroItem macro, int padIndex)

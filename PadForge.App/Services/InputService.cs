@@ -91,6 +91,7 @@ namespace PadForge.Services
             foreach (var padVm in _mainVm.Pads)
             {
                 padVm.SelectedDeviceChanged += OnSelectedDeviceChanged;
+                padVm.MappingsRebuilt += OnMappingsRebuilt;
             }
 
             // Subscribe to Devices page selection changes for offline detail display.
@@ -736,7 +737,9 @@ namespace PadForge.Services
             {
                 Axes = cfg.TotalAxes,
                 Buttons = cfg.ButtonCount,
-                Povs = cfg.PovCount
+                Povs = cfg.PovCount,
+                Sticks = cfg.ThumbstickCount,
+                Triggers = cfg.TriggerCount
             };
             _inputManager.SlotVJoyIsCustom[slotIndex] = !cfg.IsGamepadPreset;
         }
@@ -1135,18 +1138,37 @@ namespace PadForge.Services
             if (sender is not PadViewModel padVm)
                 return;
 
-            // Save ViewModel state to the PREVIOUSLY selected device's PadSetting.
+            Guid newGuid = newDevice?.InstanceGuid ?? Guid.Empty;
+
+            // Save ViewModel state to the PREVIOUSLY selected device's PadSetting,
+            // but only when switching to a DIFFERENT device. When the same device is
+            // re-added to the slot (remove + re-add), saving would overwrite the
+            // freshly created automap PadSetting with stale empty ViewModel state.
             if (_previousSelectedDevice.TryGetValue(padVm.PadIndex, out Guid previousGuid)
-                && previousGuid != Guid.Empty)
+                && previousGuid != Guid.Empty
+                && previousGuid != newGuid)
             {
                 SaveViewModelToPadSetting(padVm, previousGuid);
             }
 
             // Load the new device's PadSetting into the ViewModel.
-            if (newDevice != null && newDevice.InstanceGuid != Guid.Empty)
+            if (newGuid != Guid.Empty)
             {
-                LoadPadSettingToViewModel(padVm, newDevice.InstanceGuid);
-                _previousSelectedDevice[padVm.PadIndex] = newDevice.InstanceGuid;
+                LoadPadSettingToViewModel(padVm, newGuid);
+                _previousSelectedDevice[padVm.PadIndex] = newGuid;
+            }
+        }
+
+        /// <summary>
+        /// Called when a pad's mappings are rebuilt (e.g., OutputType or vJoy preset changed).
+        /// Reloads mapping descriptors from the PadSetting so auto-mapped inputs are preserved.
+        /// </summary>
+        private void OnMappingsRebuilt(object sender, EventArgs e)
+        {
+            if (sender is PadViewModel padVm && padVm.SelectedMappedDevice != null
+                && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
+            {
+                LoadPadSettingToViewModel(padVm, padVm.SelectedMappedDevice.InstanceGuid);
             }
         }
 

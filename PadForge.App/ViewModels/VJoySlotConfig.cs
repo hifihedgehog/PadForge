@@ -9,9 +9,14 @@ namespace PadForge.ViewModels
     /// Per-slot vJoy configuration. Drives stick/trigger/POV/button counts,
     /// HID descriptor generation, and mapping item generation.
     /// For Xbox360/DS4 presets, counts are fixed. For Custom, user-chosen.
+    /// DirectInput limit: 8 axes max (shared between sticks and triggers),
+    /// 128 buttons, 4 POVs.
     /// </summary>
     public class VJoySlotConfig : ObservableObject
     {
+        /// <summary>DirectInput maximum axis count (shared between sticks and triggers).</summary>
+        public const int MaxAxes = 8;
+
         private VJoyPreset _preset = VJoyPreset.Xbox360;
         public VJoyPreset Preset
         {
@@ -27,14 +32,24 @@ namespace PadForge.ViewModels
         public int ThumbstickCount
         {
             get => _thumbstickCount;
-            set => SetProperty(ref _thumbstickCount, Math.Clamp(value, 0, 8));
+            set
+            {
+                // Each stick uses 2 axes. Clamp so total axes (sticks*2 + triggers) <= MaxAxes.
+                int maxSticks = (MaxAxes - _triggerCount) / 2;
+                SetProperty(ref _thumbstickCount, Math.Clamp(value, 0, Math.Max(maxSticks, 0)));
+            }
         }
 
         private int _triggerCount = 2;
         public int TriggerCount
         {
             get => _triggerCount;
-            set => SetProperty(ref _triggerCount, Math.Clamp(value, 0, 6));
+            set
+            {
+                // Each trigger uses 1 axis. Clamp so total axes (sticks*2 + triggers) <= MaxAxes.
+                int maxTriggers = MaxAxes - _thumbstickCount * 2;
+                SetProperty(ref _triggerCount, Math.Clamp(value, 0, Math.Max(maxTriggers, 0)));
+            }
         }
 
         private int _povCount = 1;
@@ -51,8 +66,14 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _buttonCount, Math.Clamp(value, 0, 128));
         }
 
-        /// <summary>Total vJoy axes = ThumbstickCount * 2 + TriggerCount (max 16).</summary>
-        public int TotalAxes => Math.Min(ThumbstickCount * 2 + TriggerCount, 16);
+        /// <summary>Total vJoy axes = ThumbstickCount * 2 + TriggerCount (max 8).</summary>
+        public int TotalAxes => Math.Min(ThumbstickCount * 2 + TriggerCount, MaxAxes);
+
+        /// <summary>Maximum thumbstick count given current TriggerCount.</summary>
+        public int MaxThumbsticks => (MaxAxes - _triggerCount) / 2;
+
+        /// <summary>Maximum trigger count given current ThumbstickCount.</summary>
+        public int MaxTriggers => MaxAxes - _thumbstickCount * 2;
 
         /// <summary>
         /// Whether this config uses a gamepad-style layout (Xbox 360 or DS4 preset)

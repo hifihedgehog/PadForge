@@ -32,7 +32,7 @@
             <ModelVisual3D x:Name="ModelVisual3D" />
 
             <helix:HelixViewport3D.Camera>
-                <PerspectiveCamera FieldOfView="45"
+                <PerspectiveCamera FieldOfView="46"
                                    LookDirection="0,0.866,-0.5"
                                    Position="0,-173,100"
                                    UpDirection="0,0,1" />

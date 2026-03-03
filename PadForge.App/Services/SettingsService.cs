@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using System.Xml.Serialization;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
@@ -89,6 +90,11 @@ namespace PadForge.Services
             if (File.Exists(_settingsFilePath))
             {
                 LoadFromFile(_settingsFilePath);
+            }
+            else
+            {
+                // No settings file — initialize profiles with the Default entry.
+                LoadProfiles(null, null);
             }
 
             // Push file path to ViewModel.
@@ -191,6 +197,9 @@ namespace PadForge.Services
                     }
                 }
 
+                // Purge orphaned UserSettings (MapTo == -1) left by older versions.
+                SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
+
                 // Load app settings into ViewModel.
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);
@@ -228,6 +237,94 @@ namespace PadForge.Services
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
+
+            // Load per-slot created/enabled state BEFORE OutputType,
+            // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
+            // which reads SlotCreated[]. If SlotCreated isn't loaded yet, the sidebar
+            // gets built with the wrong slot set and triggers a double-rebuild crash.
+            if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length >= 1)
+            {
+                int count = Math.Min(appSettings.SlotCreated.Length, SettingsManager.SlotCreated.Length);
+                Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, count);
+            }
+            else
+            {
+                // Backward compat: auto-create slots for existing device assignments.
+                AutoCreateSlotsFromExistingAssignments();
+            }
+
+            if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length >= 1)
+            {
+                int count = Math.Min(appSettings.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
+                Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, count);
+            }
+            // else: defaults are all true, which is correct for migration.
+
+            // Load per-slot virtual controller types (after SlotCreated/SlotEnabled).
+            if (appSettings.SlotControllerTypes != null)
+            {
+                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotControllerTypes.Length; i++)
+                {
+                    // Only load types for created slots. Uncreated slots keep the
+                    // default (Xbox360) to prevent stale values from previous sessions
+                    // leaking into the engine's SlotControllerTypes array.
+                    if (SettingsManager.SlotCreated[i] &&
+                        Enum.IsDefined(typeof(Engine.VirtualControllerType), appSettings.SlotControllerTypes[i]))
+                        _mainVm.Pads[i].OutputType = (Engine.VirtualControllerType)appSettings.SlotControllerTypes[i];
+                }
+            }
+
+            // Load per-slot vJoy configurations (after OutputType so we know which slots are vJoy).
+            if (appSettings.VJoyConfigs != null)
+            {
+                foreach (var cfgData in appSettings.VJoyConfigs)
+                {
+                    if (cfgData.SlotIndex >= 0 && cfgData.SlotIndex < _mainVm.Pads.Count)
+                    {
+                        var cfg = _mainVm.Pads[cfgData.SlotIndex].VJoyConfig;
+                        // Load preset first (applies defaults for Xbox360/DS4),
+                        // then override with saved counts (matters for Custom preset).
+                        cfg.Preset = cfgData.Preset;
+                        if (cfgData.Preset == ViewModels.VJoyPreset.Custom)
+                        {
+                            cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                            cfg.TriggerCount = cfgData.TriggerCount;
+                            cfg.PovCount = cfgData.PovCount;
+                            cfg.ButtonCount = cfgData.ButtonCount;
+                        }
+                    }
+                }
+            }
+
+            // Load DSU motion server settings (now on Dashboard VM).
+            _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
+            _mainVm.Dashboard.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
+                ? appSettings.DsuMotionServerPort : 26760;
+
+            vm.Use2DControllerView = appSettings.Use2DControllerView;
+        }
+
+        /// <summary>
+        /// For old settings files without SlotCreated: creates slots for any
+        /// indices that have device assignments.
+        /// </summary>
+        private static void AutoCreateSlotsFromExistingAssignments()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    int idx = us.MapTo;
+                    if (idx >= 0 && idx < InputManager.MaxPads)
+                    {
+                        SettingsManager.SlotCreated[idx] = true;
+                        SettingsManager.SlotEnabled[idx] = true;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -282,6 +379,11 @@ namespace PadForge.Services
                 padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
                 padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
                 padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+                padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
+                padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
+
+                // Sync dynamic stick/trigger config items from the loaded VM properties.
+                padVm.SyncAllConfigItemsFromVm();
 
                 // Load mapping descriptors into mapping rows.
                 LoadMappingDescriptors(padVm, ps);
@@ -297,6 +399,12 @@ namespace PadForge.Services
             {
                 string value = GetPadSettingProperty(ps, mapping.TargetSettingName);
                 mapping.SourceDescriptor = value ?? string.Empty;
+
+                if (mapping.NegSettingName != null)
+                {
+                    string negValue = GetPadSettingProperty(ps, mapping.NegSettingName);
+                    mapping.NegSourceDescriptor = negValue ?? string.Empty;
+                }
             }
         }
 
@@ -320,6 +428,7 @@ namespace PadForge.Services
                     Name = md.Name ?? "Macro",
                     IsEnabled = md.IsEnabled,
                     TriggerButtons = md.TriggerButtons,
+                    TriggerCustomButtons = md.TriggerCustomButtons,
                     TriggerDeviceGuid = Guid.TryParse(md.TriggerDeviceGuid, out var parsedGuid)
                         ? parsedGuid : Guid.Empty,
                     TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
@@ -339,8 +448,8 @@ namespace PadForge.Services
                         {
                             Type = ad.Type,
                             ButtonFlags = ad.ButtonFlags,
+                            CustomButtons = ad.CustomButtons,
                             KeyCode = ad.KeyCode,
-                            // Migrate legacy single KeyCode to KeyString format.
                             KeyString = !string.IsNullOrEmpty(ad.KeyString)
                                 ? ad.KeyString
                                 : (ad.KeyCode != 0 ? $"{{{(VirtualKey)ad.KeyCode}}}" : ""),
@@ -350,6 +459,14 @@ namespace PadForge.Services
                         });
                     }
                 }
+
+                // Set after actions are populated so propagation reaches all of them.
+                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
+                int btnCount = (padVm.OutputType == VirtualControllerType.VJoy ? padVm.VJoyConfig?.ButtonCount : null) ?? 11;
+                macro.CustomButtonCount = btnCount;
+                macro.ButtonStyle = style;
+                foreach (var action in macro.Actions)
+                    action.CustomButtonCount = btnCount;
 
                 padVm.Macros.Add(macro);
             }
@@ -381,17 +498,30 @@ namespace PadForge.Services
             SettingsManager.Profiles.Clear();
             _mainVm.Settings.ProfileItems.Clear();
 
+            // Always include the built-in Default profile at the top.
+            var defaultItem = new ViewModels.ProfileListItem
+            {
+                Id = ViewModels.ProfileListItem.DefaultProfileId,
+                Name = "Default",
+            };
+            var slotTypes = Enumerable.Range(0, SettingsManager.SlotCreated.Length)
+                .Select(i => i < _mainVm.Pads.Count ? (int)_mainVm.Pads[i].OutputType : 0).ToArray();
+            UpdateTopologyCounts(defaultItem, SettingsManager.SlotCreated, slotTypes);
+            _mainVm.Settings.ProfileItems.Add(defaultItem);
+
             if (profiles != null)
             {
                 foreach (var p in profiles)
                 {
                     SettingsManager.Profiles.Add(p);
-                    _mainVm.Settings.ProfileItems.Add(new ViewModels.ProfileListItem
+                    var item = new ViewModels.ProfileListItem
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Executables = FormatExePaths(p.ExecutableNames)
-                    });
+                        Executables = FormatExePaths(p.ExecutableNames),
+                    };
+                    UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
+                    _mainVm.Settings.ProfileItems.Add(item);
                 }
             }
 
@@ -431,6 +561,7 @@ namespace PadForge.Services
                     entries.Add(new ProfileEntry
                     {
                         InstanceGuid = us.InstanceGuid,
+                        ProductGuid = us.ProductGuid,
                         MapTo = us.MapTo,
                         PadSettingChecksum = ps.PadSettingChecksum
                     });
@@ -442,6 +573,55 @@ namespace PadForge.Services
 
             profile.Entries = entries.ToArray();
             profile.PadSettings = padSettings.ToArray();
+            profile.SlotCreated = (bool[])SettingsManager.SlotCreated.Clone();
+            profile.SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
+            profile.SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
+                .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
+            profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
+            profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
+        }
+
+        /// <summary>
+        /// Formats a profile's topology into a compact label like "2x Xbox, 1x DS4".
+        /// Returns empty string for old profiles without topology data.
+        /// </summary>
+        internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
+        {
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy);
+            var parts = new System.Collections.Generic.List<string>();
+            if (xbox > 0) parts.Add($"{xbox}x Xbox");
+            if (ds4 > 0) parts.Add($"{ds4}x DS4");
+            if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
+            return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
+        }
+
+        internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
+            bool[] slotCreated, int[] slotControllerTypes)
+        {
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy);
+            item.XboxCount = xbox;
+            item.DS4Count = ds4;
+            item.VJoyCount = vjoy;
+            item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
+        }
+
+        private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
+            out int xbox, out int ds4, out int vjoy)
+        {
+            xbox = 0; ds4 = 0; vjoy = 0;
+            if (slotCreated == null) return;
+            for (int i = 0; i < slotCreated.Length; i++)
+            {
+                if (!slotCreated[i]) continue;
+                int type = (slotControllerTypes != null && i < slotControllerTypes.Length)
+                    ? slotControllerTypes[i] : 0;
+                switch (type)
+                {
+                    case 1: ds4++; break;
+                    case 2: vjoy++; break;
+                    default: xbox++; break;
+                }
+            }
         }
 
         /// <summary>
@@ -485,9 +665,8 @@ namespace PadForge.Services
                 // before collecting data for serialization.
                 UpdatePadSettingsFromViewModels();
 
-                // Recompute checksums for ALL PadSettings and sync to UserSettings.
-                // This ensures each PadSetting's checksum reflects its actual content,
-                // preventing checksum collisions that cause settings to be swapped on reload.
+                // Flush vJoy mappings from in-memory dictionaries to serializable arrays,
+                // then recompute checksums for ALL PadSettings and sync to UserSettings.
                 lock (SettingsManager.UserSettings.SyncRoot)
                 {
                     foreach (var us in SettingsManager.UserSettings.Items)
@@ -495,6 +674,7 @@ namespace PadForge.Services
                         var ps = us.GetPadSetting();
                         if (ps != null)
                         {
+                            ps.FlushVJoyMappings();
                             ps.UpdateChecksum();
                             us.PadSettingChecksum = ps.PadSettingChecksum;
                         }
@@ -566,6 +746,28 @@ namespace PadForge.Services
             var vm = _mainVm.Settings;
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
+
+            // Collect per-slot controller types from PadViewModels.
+            var slotTypes = new int[_mainVm.Pads.Count];
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+                slotTypes[i] = (int)_mainVm.Pads[i].OutputType;
+
+            // Collect per-slot vJoy configurations.
+            var vjoyConfigs = new System.Collections.Generic.List<ViewModels.VJoySlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var cfg = _mainVm.Pads[i].VJoyConfig;
+                vjoyConfigs.Add(new ViewModels.VJoySlotConfigData
+                {
+                    SlotIndex = i,
+                    Preset = cfg.Preset,
+                    ThumbstickCount = cfg.ThumbstickCount,
+                    TriggerCount = cfg.TriggerCount,
+                    PovCount = cfg.PovCount,
+                    ButtonCount = cfg.ButtonCount
+                });
+            }
+
             return new AppSettingsData
             {
                 AutoStartEngine = vm.AutoStartEngine,
@@ -576,7 +778,14 @@ namespace PadForge.Services
                 PollingRateMs = vm.PollingRateMs,
                 ThemeIndex = vm.SelectedThemeIndex,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
-                ActiveProfileId = SettingsManager.ActiveProfileId
+                ActiveProfileId = SettingsManager.ActiveProfileId,
+                SlotControllerTypes = slotTypes,
+                SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
+                SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
+                EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
+                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                Use2DControllerView = vm.Use2DControllerView,
+                VJoyConfigs = vjoyConfigs.ToArray()
             };
         }
 
@@ -608,10 +817,12 @@ namespace PadForge.Services
                         RepeatMode = macro.RepeatMode,
                         RepeatCount = macro.RepeatCount,
                         RepeatDelayMs = macro.RepeatDelayMs,
+                        TriggerCustomButtons = macro.TriggerCustomButtons,
                         Actions = macro.Actions.Select(a => new ActionData
                         {
                             Type = a.Type,
                             ButtonFlags = a.ButtonFlags,
+                            CustomButtons = a.CustomButtons,
                             KeyCode = a.ParsedKeyCodes.Length > 0 ? a.ParsedKeyCodes[0] : a.KeyCode,
                             KeyString = a.KeyString,
                             DurationMs = a.DurationMs,
@@ -640,7 +851,7 @@ namespace PadForge.Services
                     if (selected == null || selected.InstanceGuid == Guid.Empty)
                         continue;
 
-                    var us = SettingsManager.FindSettingByInstanceGuid(selected.InstanceGuid);
+                    var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                     if (us == null) continue;
 
                     var ps = us.GetPadSetting();
@@ -669,11 +880,15 @@ namespace PadForge.Services
                     ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
                     ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
                     ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
+                    ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString();
+                    ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString();
 
                     // Write mapping descriptors.
                     foreach (var mapping in padVm.Mappings)
                     {
                         SetPadSettingProperty(ps, mapping.TargetSettingName, mapping.SourceDescriptor);
+                        if (mapping.NegSettingName != null)
+                            SetPadSettingProperty(ps, mapping.NegSettingName, mapping.NegSourceDescriptor);
                     }
                 }
             }
@@ -722,6 +937,10 @@ namespace PadForge.Services
                 padVm.RightTriggerDeadZone = 0;
                 padVm.LeftTriggerAntiDeadZone = 0;
                 padVm.RightTriggerAntiDeadZone = 0;
+                padVm.LeftTriggerMaxRange = 100;
+                padVm.RightTriggerMaxRange = 100;
+
+                padVm.SyncAllConfigItemsFromVm();
             }
 
             var settingsVm = _mainVm.Settings;
@@ -733,10 +952,17 @@ namespace PadForge.Services
             settingsVm.PollingRateMs = 1;
             settingsVm.SelectedThemeIndex = 0;
             settingsVm.EnableAutoProfileSwitching = false;
+            _mainVm.Dashboard.EnableDsuMotionServer = false;
+            _mainVm.Dashboard.DsuMotionServerPort = 26760;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
             settingsVm.ProfileItems.Clear();
+            settingsVm.ProfileItems.Add(new ViewModels.ProfileListItem
+            {
+                Id = ViewModels.ProfileListItem.DefaultProfileId,
+                Name = "Default",
+            });
             settingsVm.ActiveProfileInfo = "Default";
 
             IsDirty = true;
@@ -804,11 +1030,16 @@ namespace PadForge.Services
 
         /// <summary>
         /// Gets a string property value from a PadSetting by property name.
+        /// For keys starting with "VJoy", uses the dictionary-based VJoy mapping system.
         /// </summary>
         private static string GetPadSettingProperty(PadSetting ps, string propertyName)
         {
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return string.Empty;
+
+            // vJoy custom mappings use dictionary-based storage
+            if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
+                return ps.GetVJoyMapping(propertyName);
 
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string))
@@ -819,11 +1050,19 @@ namespace PadForge.Services
 
         /// <summary>
         /// Sets a string property value on a PadSetting by property name.
+        /// For keys starting with "VJoy", uses the dictionary-based VJoy mapping system.
         /// </summary>
         private static void SetPadSettingProperty(PadSetting ps, string propertyName, string value)
         {
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return;
+
+            // vJoy custom mappings use dictionary-based storage
+            if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
+            {
+                ps.SetVJoyMapping(propertyName, value ?? string.Empty);
+                return;
+            }
 
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string) || !prop.CanWrite)
@@ -909,6 +1148,47 @@ namespace PadForge.Services
 
         [XmlElement]
         public string ActiveProfileId { get; set; }
+
+        /// <summary>
+        /// Per-slot virtual controller output types (Xbox 360 or DualShock 4).
+        /// Array of 4 ints matching VirtualControllerType enum values.
+        /// </summary>
+        [XmlArray("SlotControllerTypes")]
+        [XmlArrayItem("Type")]
+        public int[] SlotControllerTypes { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots have been explicitly created.
+        /// Null on old settings files — auto-populated from existing assignments.
+        /// </summary>
+        [XmlArray("SlotCreated")]
+        [XmlArrayItem("Created")]
+        public bool[] SlotCreated { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots are enabled for ViGEm output.
+        /// Null on old settings files — defaults to all true.
+        /// </summary>
+        [XmlArray("SlotEnabled")]
+        [XmlArrayItem("Enabled")]
+        public bool[] SlotEnabled { get; set; }
+
+        [XmlElement]
+        public bool EnableDsuMotionServer { get; set; }
+
+        [XmlElement]
+        public int DsuMotionServerPort { get; set; } = 26760;
+
+        [XmlElement]
+        public bool Use2DControllerView { get; set; }
+
+        /// <summary>
+        /// Per-slot vJoy configuration (preset, axis/button counts).
+        /// Null on old settings files — uses Xbox360 preset defaults.
+        /// </summary>
+        [XmlArray("VJoyConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.VJoySlotConfigData[] VJoyConfigs { get; set; }
     }
 
     /// <summary>
@@ -960,6 +1240,10 @@ namespace PadForge.Services
         [XmlElement]
         public int RepeatDelayMs { get; set; } = 100;
 
+        /// <summary>Hex-encoded custom vJoy trigger button words (e.g. "00000003,00000000,00000000,00000000").</summary>
+        [XmlElement]
+        public string TriggerCustomButtons { get; set; }
+
         [XmlArray("Actions")]
         [XmlArrayItem("Action")]
         public ActionData[] Actions { get; set; }
@@ -975,6 +1259,10 @@ namespace PadForge.Services
 
         [XmlElement]
         public ushort ButtonFlags { get; set; }
+
+        /// <summary>Hex-encoded custom vJoy button words for this action.</summary>
+        [XmlElement]
+        public string CustomButtons { get; set; }
 
         [XmlElement]
         public int KeyCode { get; set; }
@@ -1026,15 +1314,51 @@ namespace PadForge.Services
         [XmlArray("ProfileMacros")]
         [XmlArrayItem("Macro")]
         public MacroData[] Macros { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots were created when this profile was saved.
+        /// Null on old profiles — topology application is skipped.
+        /// </summary>
+        [XmlArray("ProfileSlotCreated")]
+        [XmlArrayItem("Created")]
+        public bool[] SlotCreated { get; set; }
+
+        /// <summary>
+        /// Which virtual controller slots were enabled when this profile was saved.
+        /// Null on old profiles — topology application is skipped.
+        /// </summary>
+        [XmlArray("ProfileSlotEnabled")]
+        [XmlArrayItem("Enabled")]
+        public bool[] SlotEnabled { get; set; }
+
+        /// <summary>
+        /// Per-slot virtual controller output types (VirtualControllerType enum cast to int).
+        /// Null on old profiles — topology application is skipped.
+        /// </summary>
+        [XmlArray("ProfileSlotControllerTypes")]
+        [XmlArrayItem("Type")]
+        public int[] SlotControllerTypes { get; set; }
+
+        /// <summary>Whether the DSU motion server was enabled in this profile.</summary>
+        [XmlElement]
+        public bool EnableDsuMotionServer { get; set; }
+
+        /// <summary>DSU motion server port for this profile.</summary>
+        [XmlElement]
+        public int DsuMotionServerPort { get; set; } = 26760;
     }
 
     /// <summary>
     /// Links a device (by instance GUID) to a slot and PadSetting within a profile.
+    /// ProductGuid enables fallback matching when InstanceGuid changes (BT reconnect).
     /// </summary>
     public class ProfileEntry
     {
         [XmlElement]
         public Guid InstanceGuid { get; set; }
+
+        [XmlElement]
+        public Guid ProductGuid { get; set; }
 
         [XmlElement]
         public int MapTo { get; set; }

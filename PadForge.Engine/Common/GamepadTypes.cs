@@ -3,8 +3,8 @@ namespace PadForge.Engine
     /// <summary>
     /// Minimal Gamepad struct matching XInput XINPUT_GAMEPAD layout.
     /// Used as the output of the mapping pipeline (Step 3 → Step 4 → Step 5).
-    /// 
-    /// Lives in the Engine assembly so both Engine (UserSetting.XiState) and
+    ///
+    /// Lives in the Engine assembly so both Engine (UserSetting.OutputState) and
     /// App (InputManager, PadViewModel) can reference it.
     /// </summary>
     public struct Gamepad
@@ -29,7 +29,6 @@ namespace PadForge.Engine
         public const ushort LEFT_SHOULDER = 0x0100;
         public const ushort RIGHT_SHOULDER = 0x0200;
         public const ushort GUIDE = 0x0400;
-        public const ushort SHARE = 0x0800;
         public const ushort A = 0x1000;
         public const ushort B = 0x2000;
         public const ushort X = 0x4000;
@@ -68,5 +67,66 @@ namespace PadForge.Engine
     {
         public uint PacketNumber;
         public Gamepad Gamepad;
+    }
+
+    /// <summary>
+    /// Raw vJoy output state for custom (non-gamepad) configurations.
+    /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
+    /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.
+    /// </summary>
+    public struct VJoyRawState
+    {
+        /// <summary>Up to 16 axes (short range). Index = axis number.</summary>
+        public short[] Axes;
+
+        /// <summary>Button state as 4 × 32-bit words = 128 buttons max.</summary>
+        public uint[] Buttons;
+
+        /// <summary>Up to 4 POV hat switches. -1 = centered, 0-35900 = direction in hundredths of degrees.</summary>
+        public int[] Povs;
+
+        /// <summary>Creates a zeroed VJoyRawState with the specified capacities.</summary>
+        public static VJoyRawState Create(int nAxes, int nButtons, int nPovs)
+        {
+            return new VJoyRawState
+            {
+                Axes = new short[Math.Min(nAxes, 8)],
+                Buttons = new uint[(Math.Min(nButtons, 128) + 31) / 32],
+                Povs = new int[Math.Min(nPovs, 4)]
+            };
+        }
+
+        /// <summary>Sets the specified button (0-based index).</summary>
+        public void SetButton(int index, bool pressed)
+        {
+            if (Buttons == null) return;
+            int word = index / 32;
+            int bit = index % 32;
+            if (word >= Buttons.Length) return;
+            if (pressed)
+                Buttons[word] |= (uint)(1 << bit);
+            else
+                Buttons[word] &= ~(uint)(1 << bit);
+        }
+
+        /// <summary>Returns true if the specified button is pressed.</summary>
+        public bool IsButtonPressed(int index)
+        {
+            if (Buttons == null) return false;
+            int word = index / 32;
+            int bit = index % 32;
+            if (word >= Buttons.Length) return false;
+            return (Buttons[word] & (uint)(1 << bit)) != 0;
+        }
+
+        /// <summary>Resets all axes to 0, buttons to 0, POVs to centered (-1).</summary>
+        public void Clear()
+        {
+            if (Axes != null) Array.Clear(Axes, 0, Axes.Length);
+            if (Buttons != null) Array.Clear(Buttons, 0, Buttons.Length);
+            if (Povs != null)
+                for (int i = 0; i < Povs.Length; i++)
+                    Povs[i] = -1;
+        }
     }
 }

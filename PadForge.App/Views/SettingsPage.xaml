@@ -6,15 +6,22 @@
     <ScrollViewer Padding="24,16">
         <StackPanel MaxWidth="700">
 
-            <TextBlock Text="Settings" Style="{StaticResource TitleTextBlockStyle}"
-                       Margin="0,0,0,20"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Settings" Style="{StaticResource TitleTextBlockStyle}"/>
+            </StackPanel>
 
             <!-- ═══ Appearance ═══ -->
-            <TextBlock Text="Appearance" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Appearance" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Choose your preferred visual theme."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <TextBlock Text="Theme" FontSize="13" Margin="0,0,0,6"/>
                     <ComboBox SelectedIndex="{Binding SelectedThemeIndex}" Width="200">
                         <ComboBoxItem Content="System Default"/>
@@ -25,11 +32,15 @@
             </Border>
 
             <!-- ═══ Engine ═══ -->
-            <TextBlock Text="Input Engine" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE9F5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Input Engine" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Configure polling behavior and background processing."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="Auto-start engine on launch"
                               IsChecked="{Binding AutoStartEngine}" Margin="0,0,0,8"/>
                     <CheckBox Content="Continue polling when window loses focus"
@@ -46,62 +57,16 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ Profiles ═══ -->
-            <TextBlock Text="Profiles" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
-                <StackPanel>
-                    <CheckBox Content="Auto-switch profiles based on foreground application"
-                              IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Active profile:" VerticalAlignment="Center"
-                                   Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
-                                   VerticalAlignment="Center"/>
-                        <Button Content="Revert to Default" Margin="12,0,0,0"
-                                Padding="8,2"
-                                Command="{Binding RevertToDefaultCommand}"/>
-                    </StackPanel>
-
-                    <ListBox ItemsSource="{Binding ProfileItems}"
-                             SelectedItem="{Binding SelectedProfile}"
-                             MinHeight="60" MaxHeight="200"
-                             Margin="0,0,0,8">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="4,2">
-                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding Executables}" FontSize="12"
-                                               Opacity="0.6" TextTrimming="CharacterEllipsis"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Save Current as Profile"
-                                Command="{Binding SaveAsProfileCommand}"
-                                Margin="0,0,8,0"/>
-                        <Button Content="Edit"
-                                Command="{Binding EditProfileCommand}"
-                                Margin="0,0,8,0"/>
-                        <Button Content="Load"
-                                Command="{Binding LoadProfileCommand}"
-                                Margin="0,0,8,0"/>
-                        <Button Content="Delete"
-                                Command="{Binding DeleteProfileCommand}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
             <!-- ═══ Window ═══ -->
-            <TextBlock Text="Window" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE737;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Window" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Startup and minimize behavior."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="Minimize to system tray"
                               IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
                     <CheckBox Content="Start minimized"
@@ -111,82 +76,141 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ ViGEmBus ═══ -->
-            <TextBlock Text="ViGEmBus Driver" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+            <!-- ═══ HidHide ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xED1A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="HidHide Driver" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Hide physical devices from games to prevent double input."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8"
-                                     Fill="{Binding IsViGEmInstalled, Converter={StaticResource BoolToColorConverter}}"
-                                     VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="{Binding ViGEmStatusText}" FontWeight="SemiBold"/>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="8" Height="8"
+                                         Fill="{Binding IsHidHideInstalled, Converter={StaticResource BoolToColorConverter}}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding HidHideStatusText}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding HidHideVersion}" FontSize="12"
+                                       Opacity="0.6" Margin="0,4,0,0"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding ViGEmVersion}" FontSize="12"
-                                   Opacity="0.6" Margin="0,4,0,0"/>
-                    </StackPanel>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal"
-                                VerticalAlignment="Center">
-                        <Button Content="Install"
-                                Command="{Binding InstallViGEmCommand}"
-                                Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
-                                Margin="0,0,8,0"/>
-                        <Button Content="Uninstall"
-                                Command="{Binding UninstallViGEmCommand}"
-                                Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </StackPanel>
-                </Grid>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="Install"
+                                    Command="{Binding InstallHidHideCommand}"
+                                    Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Uninstall"
+                                    Command="{Binding UninstallHidHideCommand}"
+                                    Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </Border>
 
-            <!-- ═══ HidHide ═══ -->
-            <TextBlock Text="HidHide Driver" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+            <!-- ═══ ViGEmBus ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="ViGEmBus Driver" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Virtual controller driver for Xbox 360 and DualShock 4 output."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8"
-                                     Fill="{Binding IsHidHideInstalled, Converter={StaticResource BoolToColorConverter}}"
-                                     VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="{Binding HidHideStatusText}" FontWeight="SemiBold"/>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="8" Height="8"
+                                         Fill="{Binding IsViGEmInstalled, Converter={StaticResource BoolToColorConverter}}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding ViGEmStatusText}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding ViGEmVersion}" FontSize="12"
+                                       Opacity="0.6" Margin="0,4,0,0"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding HidHideVersion}" FontSize="12"
-                                   Opacity="0.6" Margin="0,4,0,0"/>
-                    </StackPanel>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal"
-                                VerticalAlignment="Center">
-                        <Button Content="Install"
-                                Command="{Binding InstallHidHideCommand}"
-                                Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
-                                Margin="0,0,8,0"/>
-                        <Button Content="Uninstall"
-                                Command="{Binding UninstallHidHideCommand}"
-                                Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="Install"
+                                    Command="{Binding InstallViGEmCommand}"
+                                    Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Uninstall"
+                                    Command="{Binding UninstallViGEmCommand}"
+                                    Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ vJoy ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Path Data="M11.915 15H13V9.874A4.002 4.002 0 0 1 14 2a4 4 0 0 1 1 7.874V15h2a3 3 0 0 1 3 3v4H4v-4a3 3 0 0 1 3-3h.085A1.5 1.5 0 0 1 8.5 14h2a1.5 1.5 0 0 1 1.415 1z"
+                              Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                              Width="16" Height="16" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="vJoy Driver" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                </Grid>
+                    <TextBlock Text="Virtual joystick driver for custom HID device output."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="8" Height="8"
+                                         Fill="{Binding IsVJoyInstalled, Converter={StaticResource BoolToColorConverter}}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding VJoyStatusText}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding VJoyVersion}" FontSize="12"
+                                       Opacity="0.6" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="Install"
+                                    Command="{Binding InstallVJoyCommand}"
+                                    Visibility="{Binding IsVJoyInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Uninstall"
+                                    Command="{Binding UninstallVJoyCommand}"
+                                    Visibility="{Binding IsVJoyInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </Border>
 
             <!-- ═══ Settings File ═══ -->
-            <TextBlock Text="Settings File" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Settings File" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Save, reload, or reset your configuration."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <TextBlock Text="{Binding SettingsFilePath}" FontSize="12"
                                FontFamily="Consolas" Opacity="0.7" TextWrapping="Wrap"
                                Margin="0,0,0,12"/>
@@ -202,41 +226,46 @@
                     </StackPanel>
 
                     <TextBlock Visibility="{Binding HasUnsavedChanges, Converter={StaticResource BoolToVisibilityConverter}}"
-                               Text="⚠ Unsaved changes" Foreground="Orange"
+                               Text="Unsaved changes" Foreground="Orange"
                                FontSize="12" Margin="0,8,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- ═══ Diagnostics ═══ -->
-            <TextBlock Text="Diagnostics" Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    CornerRadius="8" Padding="16" Margin="0,0,0,20">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Diagnostics" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Application and runtime version information."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Text="App Version" FontSize="12" Opacity="0.6"/>
-                    <TextBlock Grid.Column="1" Text="{Binding ApplicationVersion}" FontSize="12"/>
+                        <TextBlock Text="App Version" FontSize="12" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ApplicationVersion}" FontSize="12"/>
 
-                    <TextBlock Grid.Row="1" Text=".NET Runtime" FontSize="12"
-                               Opacity="0.6" Margin="0,4,0,0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1"
-                               Text="{Binding RuntimeVersion}" FontSize="12" Margin="0,4,0,0"/>
+                        <TextBlock Grid.Row="1" Text=".NET Runtime" FontSize="12"
+                                   Opacity="0.6" Margin="0,4,0,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding RuntimeVersion}" FontSize="12" Margin="0,4,0,0"/>
 
-                    <TextBlock Grid.Row="2" Text="SDL Version" FontSize="12"
-                               Opacity="0.6" Margin="0,4,0,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1"
-                               Text="{Binding SdlVersion}" FontSize="12" Margin="0,4,0,0"/>
-                </Grid>
+                        <TextBlock Grid.Row="2" Text="SDL Version" FontSize="12"
+                                   Opacity="0.6" Margin="0,4,0,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding SdlVersion}" FontSize="12" Margin="0,4,0,0"/>
+                    </Grid>
+                </StackPanel>
             </Border>
 
         </StackPanel>

@@ -27,49 +27,10 @@
                            PaneTitle="PadForge"
                            OpenPaneLength="200">
 
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="Home"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItemSeparator/>
-
-                <ui:NavigationViewItem Content="Controller 1" Tag="Pad1">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Controller 2" Tag="Pad2">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Controller 3" Tag="Pad3">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItem Content="Controller 4" Tag="Pad4">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE7FC;"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-
-                <ui:NavigationViewItemSeparator/>
-
-                <ui:NavigationViewItem Content="Devices" Tag="Devices">
-                    <ui:NavigationViewItem.Icon>
-                        <ui:SymbolIcon Symbol="AllApps"/>
-                    </ui:NavigationViewItem.Icon>
-                </ui:NavigationViewItem>
-            </ui:NavigationView.MenuItems>
+            <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
             <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItemSeparator/>
                 <ui:NavigationViewItem Content="About" Tag="About">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Help"/>
@@ -83,6 +44,7 @@
                 <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                 <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>
                 <views:SettingsPage x:Name="SettingsPageView" Visibility="Collapsed"/>
+                <views:ProfilesPage x:Name="ProfilesPageView" Visibility="Collapsed"/>
                 <views:AboutPage x:Name="AboutPageView" Visibility="Collapsed"/>
             </Grid>
 
@@ -137,5 +99,32 @@
                 </StackPanel>
             </Grid>
         </Border>
+        <!-- ═══════════════════════════════════════════
+             Driver operation overlay (blocks UI during install/uninstall)
+             ═══════════════════════════════════════════ -->
+        <Grid x:Name="DriverOverlay"
+              Grid.RowSpan="2"
+              Visibility="Collapsed"
+              Panel.ZIndex="1000">
+            <Border Background="#80000000"/>
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="8"
+                    Padding="32,24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="280">
+                <StackPanel HorizontalAlignment="Center">
+                    <ui:ProgressRing IsActive="True"
+                                     Width="40" Height="40"
+                                     HorizontalAlignment="Center"
+                                     Margin="0,0,0,16"/>
+                    <TextBlock x:Name="DriverOverlayText"
+                               Text="Please wait..."
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

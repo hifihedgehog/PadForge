@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Microsoft.Win32;
+using System.Diagnostics;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using SDL3;
@@ -28,11 +26,8 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly HashSet<uint> _openedSdlInstanceIds = new HashSet<uint>();
 
-        /// <summary>Tracked keyboard SDL instance IDs.</summary>
-        private readonly HashSet<uint> _openedKeyboardIds = new HashSet<uint>();
-
-        /// <summary>Tracked mouse SDL instance IDs.</summary>
-        private readonly HashSet<uint> _openedMouseIds = new HashSet<uint>();
+        // Keyboard/mouse tracking moved to _openedKeyboardHandles / _openedMouseHandles
+        // (Raw Input IntPtr handles instead of SDL uint IDs).
 
         /// <summary>
         /// SDL instance IDs identified as ViGEm virtual controllers.
@@ -65,9 +60,6 @@ namespace PadForge.Common.Input
 
             bool changed = false;
 
-            // Reset per-cycle caches for ViGEm PnP detection.
-            _vigemPnPCount = -1;
-
             // SDL3: Get array of instance IDs for all connected joysticks.
             uint[] joystickIds = SDL_GetJoysticks();
 
@@ -80,29 +72,14 @@ namespace PadForge.Common.Input
                 try
                 {
                     // Skip devices already identified as ViGEm virtual controllers.
-                    // Opening and closing them resets their XInput rumble state,
-                    // which kills any active vibration feedback from games.
                     if (_filteredVigemInstanceIds.Contains(instanceId))
                         continue;
 
-                    // Get pre-open identification to check if already tracked.
-                    ushort vid = SDL_GetJoystickVendorForID(instanceId);
-                    ushort pid = SDL_GetJoystickProductForID(instanceId);
-                    string path = SDL_GetJoystickPathForID(instanceId);
-                    Guid instanceGuid = SdlDeviceWrapper.BuildInstanceGuid(path, vid, pid, instanceId);
-
-                    // Check if we already have this device online.
-                    UserDevice existingUd = FindOnlineDeviceByInstanceGuid(instanceGuid);
-                    if (existingUd != null && existingUd.IsOnline && existingUd.Device != null)
-                    {
-                        // Already open — verify still attached.
-                        if (!existingUd.Device.IsAttached)
-                        {
-                            MarkDeviceOffline(existingUd);
-                            changed = true;
-                        }
+                    // Skip devices we already have open (by SDL instance ID).
+                    // This is more reliable than GUID matching because serial-based
+                    // GUIDs aren't available until after the device is opened.
+                    if (_openedSdlInstanceIds.Contains(instanceId))
                         continue;
-                    }
 
                     // Open the device by instance ID.
                     var wrapper = new SdlDeviceWrapper();
@@ -116,13 +93,18 @@ namespace PadForge.Common.Input
                     // Skip ViGEm virtual controllers (our own output devices).
                     if (IsViGEmVirtualDevice(wrapper))
                     {
+                        Debug.WriteLine($"[Step1] Filtered ViGEm device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                         _filteredVigemInstanceIds.Add(instanceId);
                         wrapper.Dispose();
                         continue;
                     }
 
+                    Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
+
                     // Find or create the UserDevice record.
-                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
+                    // Passes ProductGuid for fallback matching when InstanceGuid changes
+                    // (e.g. Bluetooth device reconnects with a different device path).
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
 
                     // Populate from the SDL device.
                     ud.LoadFromSdlDevice(wrapper);
@@ -174,10 +156,10 @@ namespace PadForge.Common.Input
             }
 
             // Detect disconnected keyboards.
-            changed |= DetectDisconnected(_openedKeyboardIds, SDL_GetKeyboards());
+            changed |= DetectDisconnectedHandles(_openedKeyboardHandles, RawInputListener.EnumerateKeyboards());
 
             // Detect disconnected mice.
-            changed |= DetectDisconnected(_openedMouseIds, SDL_GetMice());
+            changed |= DetectDisconnectedHandles(_openedMouseHandles, RawInputListener.EnumerateMice());
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
             _filteredVigemInstanceIds.IntersectWith(currentInstanceIds);
@@ -194,22 +176,19 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Cached count of ViGEm Xbox 360 devices from PnP detection.
-        /// Refreshed once per enumeration cycle (not per device).
-        /// -1 = not yet computed this cycle.
-        /// </summary>
-        private int _vigemPnPCount = -1;
-        private int _xbox360FilteredThisCycle;
-
-        /// <summary>
         /// Checks whether an SDL device is a ViGEm virtual controller
         /// (our own output device that must not be opened as an input device).
         ///
         /// Detection methods:
-        ///   1. Device path containing ViGEm signatures
-        ///   2. Zero VID/PID + SDL game controller (likely virtual)
-        ///   3. Xbox 360 VID/PID (045E:028E) — uses PnP device tree walk
-        ///      to distinguish real Xbox 360 controllers from ViGEm emulation
+        ///   1. Device path containing ViGEm signatures ("vigem", "virtual")
+        ///   2. Zero VID/PID + SDL game controller + active ViGEm count > 0
+        ///   3. Xbox 360 VID/PID (045E:028E) — filter up to _activeXbox360Count
+        ///   4. DS4 VID/PID (054C:05C4) — filter up to _activeDs4Count
+        ///
+        /// For Xbox 360 and DS4, we use our own count of virtual controllers
+        /// created by Step 5 rather than walking the PnP device tree. ViGEm DS4
+        /// devices don't register under USB\VID_054C&amp;PID_05C4 in the registry
+        /// (they use ViGEmBus's own bus enumerator), making PnP tree walks unreliable.
         /// </summary>
         private bool IsViGEmVirtualDevice(SdlDeviceWrapper wrapper)
         {
@@ -226,146 +205,47 @@ namespace PadForge.Common.Input
             // ViGEm devices may report VID/PID as 0 through SDL's
             // pre-open enumeration. If a device has no VID/PID but SDL
             // recognizes it as a standard game controller, AND we currently
-            // have ViGEm virtual controllers active, it's very likely virtual.
+            // have ViGEm virtual controllers active (or expect to), it's very likely virtual.
             if (wrapper.VendorId == 0 && wrapper.ProductId == 0)
             {
-                if (_activeVigemCount > 0 && wrapper.IsGameController)
+                if ((_activeVigemCount > 0 || _expectedXbox360Count > 0 || _expectedDs4Count > 0)
+                    && wrapper.IsGameController)
                     return true;
             }
+
+            // ── vJoy VID/PID — our own virtual joystick output device ──
+            // vJoy devices (VID=1234 PID=BEAD) must not be opened as input devices.
+            // SDL opening the HID device can interfere with vJoyInterface.dll's
+            // write path (the driver's HID report mechanism).
+            if (wrapper.VendorId == 0x1234 && wrapper.ProductId == 0xBEAD)
+                return true;
 
             // ── Xbox 360 VID/PID — ViGEm emulates exactly this ──
-            // Real Xbox 360 controllers and ViGEm virtual controllers both
-            // report VID=045E PID=028E. We distinguish them by walking the
-            // Windows PnP device tree: ViGEm devices have ViGEmBus as an
-            // ancestor. The PnP count is cached per enumeration cycle.
-            if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E
-                && _activeVigemCount > 0)
+            // ViGEm Xbox 360 virtual controllers report VID=045E PID=028E.
+            // Modern real Xbox controllers use different PIDs (0B12, 0B13, 0B20, etc.)
+            // — only the original Xbox 360 controller from 2005 uses 028E.
+            // When we have any active/expected Xbox VCs, filter ALL 045E:028E devices
+            // to prevent feedback loops where stale ViGEm nodes slip through a
+            // counter-based filter and cause exponential virtual controller creation.
+            if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E)
             {
-                // Lazy-compute the PnP count once per cycle.
-                if (_vigemPnPCount < 0)
-                {
-                    _vigemPnPCount = CountViGEmXbox360Devices();
-                    _xbox360FilteredThisCycle = 0;
-                }
-
-                // Filter up to _vigemPnPCount devices (keep the rest as real).
-                if (_xbox360FilteredThisCycle < _vigemPnPCount)
-                {
-                    _xbox360FilteredThisCycle++;
+                int filterCount = Math.Max(_activeXbox360Count, _expectedXbox360Count);
+                if (filterCount > 0)
                     return true;
-                }
+            }
+
+            // ── DS4 VID/PID — ViGEm emulates Sony DS4 ──
+            // Same logic: filter ALL 054C:05C4 devices when we have active/expected DS4 VCs.
+            // Real DS4 controllers with this exact PID are rare (original DualShock 4 v1);
+            // newer DS4s and DualSense use different PIDs.
+            if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4)
+            {
+                int filterCount = Math.Max(_activeDs4Count, _expectedDs4Count);
+                if (filterCount > 0)
+                    return true;
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Counts how many VID_045E/PID_028E devices in the Windows PnP tree
-        /// are ViGEm virtual controllers (have ViGEmBus as an ancestor).
-        /// Returns 0 if detection fails or no ViGEm devices are found.
-        /// </summary>
-        private static int CountViGEmXbox360Devices()
-        {
-            int count = 0;
-            try
-            {
-                using var key = Registry.LocalMachine.OpenSubKey(
-                    @"SYSTEM\CurrentControlSet\Enum\USB\VID_045E&PID_028E", false);
-                if (key == null)
-                    return 0;
-
-                foreach (var instanceName in key.GetSubKeyNames())
-                {
-                    var instanceId = @"USB\VID_045E&PID_028E\" + instanceName;
-
-                    // Skip devices that are not currently present.
-                    if (!IsDevicePresent(instanceId))
-                        continue;
-
-                    if (IsUnderViGEmBus(instanceId))
-                        count++;
-                }
-            }
-            catch
-            {
-                return 0;
-            }
-            return count;
-        }
-
-        // ─────────────────────────────────────────────
-        //  PnP helpers (cfgmgr32) for ViGEm detection
-        // ─────────────────────────────────────────────
-
-        private const int CR_SUCCESS = 0;
-        private const uint DN_DEVICE_IS_PRESENT = 0x00000002;
-
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Locate_DevNodeW(
-            out uint pdnDevInst, string pDeviceID, int ulFlags);
-
-        [DllImport("cfgmgr32.dll")]
-        private static extern int CM_Get_Parent(
-            out uint pdnDevInst, uint dnDevInst, int ulFlags);
-
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Get_Device_IDW(
-            uint dnDevInst, StringBuilder Buffer, int BufferLen, int ulFlags);
-
-        [DllImport("cfgmgr32.dll")]
-        private static extern int CM_Get_DevNode_Status(
-            out uint pulStatus, out uint pulProblemNumber, uint dnDevInst, int ulFlags);
-
-        private static bool IsDevicePresent(string deviceInstanceId)
-        {
-            if (CM_Locate_DevNodeW(out var devInst, deviceInstanceId, 0) != CR_SUCCESS)
-                return false;
-            if (CM_Get_DevNode_Status(out var status, out _, devInst, 0) != CR_SUCCESS)
-                return false;
-            return (status & DN_DEVICE_IS_PRESENT) != 0;
-        }
-
-        private static bool IsUnderViGEmBus(string deviceInstanceId)
-        {
-            if (CM_Locate_DevNodeW(out var devInst, deviceInstanceId, 0) != CR_SUCCESS)
-                return false;
-
-            // Walk up the device tree (max 64 levels).
-            for (int depth = 0; depth < 64; depth++)
-            {
-                var id = GetDeviceInstanceId(devInst);
-                if (!string.IsNullOrEmpty(id))
-                {
-                    // Check registry for ViGEmBus service name.
-                    try
-                    {
-                        using var regKey = Registry.LocalMachine.OpenSubKey(
-                            @"SYSTEM\CurrentControlSet\Enum\" + id, false);
-                        if (regKey != null)
-                        {
-                            var service = regKey.GetValue("Service") as string;
-                            if (!string.IsNullOrEmpty(service) &&
-                                service.Equals("ViGEmBus", StringComparison.OrdinalIgnoreCase))
-                                return true;
-                        }
-                    }
-                    catch { }
-                }
-
-                if (CM_Get_Parent(out var parent, devInst, 0) != CR_SUCCESS)
-                    break;
-                devInst = parent;
-            }
-
-            return false;
-        }
-
-        private static string GetDeviceInstanceId(uint devInst)
-        {
-            var sb = new StringBuilder(1024);
-            return CM_Get_Device_IDW(devInst, sb, sb.Capacity, 0) == CR_SUCCESS
-                ? sb.ToString()
-                : null;
         }
 
         // ─────────────────────────────────────────────
@@ -414,25 +294,81 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Finds an existing UserDevice by instance GUID or creates a new one
-        /// and adds it to the SettingsManager collection.
+        /// Finds an existing UserDevice by instance GUID, with fallback matching
+        /// by ProductGuid for devices whose InstanceGuid changed (e.g. Bluetooth
+        /// controllers that get a different device path after reboot).
+        /// When a fallback match is found, migrates the old device and its
+        /// UserSetting to the new InstanceGuid.
         /// </summary>
-        private UserDevice FindOrCreateUserDevice(Guid instanceGuid)
+        private UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default)
         {
             var devices = SettingsManager.UserDevices;
             if (devices == null) return new UserDevice();
 
             lock (devices.SyncRoot)
             {
+                // 1. Exact match by InstanceGuid.
                 for (int i = 0; i < devices.Items.Count; i++)
                 {
                     if (devices.Items[i].InstanceGuid == instanceGuid)
                         return devices.Items[i];
                 }
 
+                // 2. Fallback: find an offline device with the same ProductGuid.
+                //    This handles BT controllers that reconnect with a new device path.
+                if (productGuid != Guid.Empty)
+                {
+                    UserDevice fallback = null;
+                    for (int i = 0; i < devices.Items.Count; i++)
+                    {
+                        var d = devices.Items[i];
+                        if (!d.IsOnline && d.ProductGuid == productGuid)
+                        {
+                            fallback = d;
+                            break;
+                        }
+                    }
+
+                    if (fallback != null)
+                    {
+                        // Migrate the device to its new InstanceGuid.
+                        Guid oldGuid = fallback.InstanceGuid;
+                        fallback.InstanceGuid = instanceGuid;
+
+                        // Also migrate the linked UserSetting so slot assignment
+                        // and PadSetting are preserved.
+                        MigrateUserSettingGuid(oldGuid, instanceGuid);
+
+                        return fallback;
+                    }
+                }
+
+                // 3. No match — create a new device.
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
                 return ud;
+            }
+        }
+
+        /// <summary>
+        /// Updates a UserSetting's InstanceGuid when the physical device's
+        /// identity changes (e.g. Bluetooth reconnect with different path).
+        /// </summary>
+        private static void MigrateUserSettingGuid(Guid oldGuid, Guid newGuid)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    if (settings.Items[i].InstanceGuid == oldGuid)
+                    {
+                        settings.Items[i].InstanceGuid = newGuid;
+                        break; // One UserSetting per device.
+                    }
+                }
             }
         }
 
@@ -465,23 +401,36 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Enumerates connected keyboards via SDL_GetKeyboards and creates UserDevice
+        /// Tracked Raw Input keyboard device handles.
+        /// </summary>
+        private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
+
+        /// <summary>
+        /// Tracked Raw Input mouse device handles.
+        /// </summary>
+        private readonly HashSet<IntPtr> _openedMouseHandles = new HashSet<IntPtr>();
+
+        /// <summary>
+        /// Enumerates connected keyboards via Raw Input and creates UserDevice
         /// records for any new keyboards. Returns true if a new keyboard was found.
         /// </summary>
         private bool EnumerateKeyboards()
         {
-            uint[] keyboardIds = SDL_GetKeyboards();
+            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
+            PruneOrphanedHandles(_openedKeyboardHandles);
+
+            var keyboards = RawInputListener.EnumerateKeyboards();
             bool changed = false;
 
-            foreach (uint kbId in keyboardIds)
+            foreach (var kb in keyboards)
             {
-                if (_openedKeyboardIds.Contains(kbId))
+                if (_openedKeyboardHandles.Contains(kb.Handle))
                     continue;
 
                 try
                 {
                     var wrapper = new SdlKeyboardWrapper();
-                    if (!wrapper.Open(kbId))
+                    if (!wrapper.Open(kb))
                     {
                         wrapper.Dispose();
                         continue;
@@ -491,12 +440,12 @@ namespace PadForge.Common.Input
                     ud.LoadFromKeyboardDevice(wrapper);
                     ud.IsOnline = true;
 
-                    _openedKeyboardIds.Add(kbId);
+                    _openedKeyboardHandles.Add(kb.Handle);
                     changed = true;
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening keyboard (instance {kbId})", ex);
+                    RaiseError($"Error opening keyboard ({kb.Name})", ex);
                 }
             }
 
@@ -504,23 +453,26 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Enumerates connected mice via SDL_GetMice and creates UserDevice
+        /// Enumerates connected mice via Raw Input and creates UserDevice
         /// records for any new mice. Returns true if a new mouse was found.
         /// </summary>
         private bool EnumerateMice()
         {
-            uint[] mouseIds = SDL_GetMice();
+            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
+            PruneOrphanedHandles(_openedMouseHandles);
+
+            var mice = RawInputListener.EnumerateMice();
             bool changed = false;
 
-            foreach (uint mouseId in mouseIds)
+            foreach (var mouse in mice)
             {
-                if (_openedMouseIds.Contains(mouseId))
+                if (_openedMouseHandles.Contains(mouse.Handle))
                     continue;
 
                 try
                 {
                     var wrapper = new SdlMouseWrapper();
-                    if (!wrapper.Open(mouseId))
+                    if (!wrapper.Open(mouse))
                     {
                         wrapper.Dispose();
                         continue;
@@ -530,12 +482,12 @@ namespace PadForge.Common.Input
                     ud.LoadFromMouseDevice(wrapper);
                     ud.IsOnline = true;
 
-                    _openedMouseIds.Add(mouseId);
+                    _openedMouseHandles.Add(mouse.Handle);
                     changed = true;
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening mouse (instance {mouseId})", ex);
+                    RaiseError($"Error opening mouse ({mouse.Name})", ex);
                 }
             }
 
@@ -543,37 +495,93 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Detects disconnected keyboards or mice by comparing tracked IDs to current SDL IDs.
-        /// Marks disconnected devices offline and removes them from tracking.
+        /// Detects disconnected keyboards or mice by comparing tracked handles
+        /// to current Raw Input device handles. Marks disconnected devices offline
+        /// and removes their tracking entries so they can be re-opened on reconnect.
         /// </summary>
-        private bool DetectDisconnected(HashSet<uint> trackedIds, uint[] currentIds)
+        private bool DetectDisconnectedHandles(
+            HashSet<IntPtr> trackedHandles, RawInputListener.DeviceInfo[] currentDevices)
         {
-            if (trackedIds.Count == 0)
+            if (trackedHandles.Count == 0)
                 return false;
 
-            var currentSet = new HashSet<uint>(currentIds);
-            var disconnected = new List<uint>();
+            var currentSet = new HashSet<IntPtr>();
+            for (int i = 0; i < currentDevices.Length; i++)
+                currentSet.Add(currentDevices[i].Handle);
+
+            var disconnected = new List<IntPtr>();
             bool changed = false;
 
-            foreach (uint id in trackedIds)
+            foreach (IntPtr handle in trackedHandles)
             {
-                if (!currentSet.Contains(id))
+                if (!currentSet.Contains(handle))
                 {
-                    // Find by checking all devices whose SdlInstanceId matches.
-                    UserDevice ud = FindOnlineDeviceBySdlInstanceId(id);
+                    // Find by InstanceGuid (built from device path, same as wrapper).
+                    UserDevice ud = FindOnlineDeviceByHandle(handle);
                     if (ud != null)
                     {
                         MarkDeviceOffline(ud);
                         changed = true;
                     }
-                    disconnected.Add(id);
+                    disconnected.Add(handle);
                 }
             }
 
-            foreach (uint id in disconnected)
-                trackedIds.Remove(id);
+            foreach (IntPtr handle in disconnected)
+                trackedHandles.Remove(handle);
 
             return changed;
+        }
+
+        /// <summary>
+        /// Removes tracked handles that no longer have a corresponding UserDevice.
+        /// This handles the case where the user removes a device via the UI while
+        /// it's still physically connected — the tracking must be cleared so the
+        /// device can be re-detected on the next enumeration cycle.
+        /// </summary>
+        private void PruneOrphanedHandles(HashSet<IntPtr> trackedHandles)
+        {
+            if (trackedHandles.Count == 0)
+                return;
+
+            var toRemove = new List<IntPtr>();
+            foreach (IntPtr handle in trackedHandles)
+            {
+                if (FindOnlineDeviceByHandle(handle) == null)
+                    toRemove.Add(handle);
+            }
+
+            for (int i = 0; i < toRemove.Count; i++)
+                trackedHandles.Remove(toRemove[i]);
+        }
+
+        /// <summary>
+        /// Finds an online device that was opened from the given Raw Input handle.
+        /// Checks the RawInputHandle property on keyboard/mouse wrappers.
+        /// </summary>
+        private UserDevice FindOnlineDeviceByHandle(IntPtr handle)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return null;
+
+            // The keyboard/mouse wrappers store _sdlId = (uint)devicePath.GetHashCode().
+            // We need to match on the device reference since we can't recover the path
+            // from just the handle. Check Device.RawInputHandle for keyboard/mouse wrappers.
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (!d.IsOnline || d.Device == null)
+                        continue;
+
+                    if (d.Device is SdlKeyboardWrapper kb && kb.RawInputHandle == handle)
+                        return d;
+                    if (d.Device is SdlMouseWrapper mouse && mouse.RawInputHandle == handle)
+                        return d;
+                }
+                return null;
+            }
         }
     }
 
@@ -637,6 +645,25 @@ namespace PadForge.Common.Input
                 }
             }
             return results;
+        }
+
+        /// <summary>
+        /// Non-allocating overload: fills a pre-allocated buffer with all UserSettings
+        /// for a given device (by InstanceGuid) that have a valid MapTo (>= 0).
+        /// Returns the count of matches. Skips orphaned entries (MapTo == -1).
+        /// </summary>
+        public int FindByInstanceGuid(Guid instanceGuid, UserSetting[] buffer)
+        {
+            int count = 0;
+            lock (SyncRoot)
+            {
+                for (int i = 0; i < Items.Count && count < buffer.Length; i++)
+                {
+                    if (Items[i].InstanceGuid == instanceGuid && Items[i].MapTo >= 0)
+                        buffer[count++] = Items[i];
+                }
+            }
+            return count;
         }
 
         /// <summary>

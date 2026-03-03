@@ -11,7 +11,7 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 4b: EvaluateMacros
-        //  After Step 4 (CombineXiStates) merges all devices into a single
+        //  After Step 4 (CombineOutputStates) merges all devices into a single
         //  Gamepad per slot, this step evaluates macro trigger conditions and
         //  injects macro actions into the Gamepad state.
         //
@@ -29,7 +29,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Step 4b: Evaluate macros for all pad slots.
-        /// Called after CombineXiStates and before VirtualDevices.
+        /// Called after CombineOutputStates and before VirtualDevices.
         /// </summary>
         private void EvaluateMacros()
         {
@@ -41,7 +41,10 @@ namespace PadForge.Common.Input
 
                 try
                 {
-                    EvaluateSlotMacros(ref CombinedXiStates[i], macros);
+                    if (SlotVJoyIsCustom[i])
+                        EvaluateSlotMacrosCustomVJoy(ref CombinedVJoyRawStates[i], macros);
+                    else
+                        EvaluateSlotMacros(ref CombinedOutputStates[i], macros);
                 }
                 catch (Exception ex)
                 {
@@ -271,6 +274,210 @@ namespace PadForge.Common.Input
                     gp.RightTrigger = (byte)Math.Clamp((int)action.AxisValue, 0, 255);
                     break;
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Custom vJoy macro evaluation
+        //  Mirrors EvaluateSlotMacros but operates on VJoyRawState
+        //  with uint[] button words instead of ushort Gamepad.Buttons.
+        // ─────────────────────────────────────────────
+
+        private void EvaluateSlotMacrosCustomVJoy(ref VJoyRawState raw, MacroItem[] macros)
+        {
+            for (int m = 0; m < macros.Length; m++)
+            {
+                var macro = macros[m];
+                if (macro == null || !macro.IsEnabled)
+                    continue;
+
+                // Skip macros with no trigger configured.
+                if (!macro.UsesRawTrigger && !macro.UsesCustomTrigger && macro.TriggerButtons == 0)
+                    continue;
+
+                // Check trigger condition.
+                bool triggerActive;
+                if (macro.UsesRawTrigger)
+                    triggerActive = CheckRawButtonTrigger(macro);
+                else if (macro.UsesCustomTrigger)
+                    triggerActive = CheckCustomButtonTrigger(raw, macro);
+                else
+                    triggerActive = false; // Xbox bitmask triggers don't apply to custom vJoy
+
+                bool wasTriggerActive = macro.WasTriggerActive;
+                macro.WasTriggerActive = triggerActive;
+
+                bool shouldStart = false;
+                switch (macro.TriggerMode)
+                {
+                    case MacroTriggerMode.OnPress:
+                        shouldStart = triggerActive && !wasTriggerActive;
+                        break;
+                    case MacroTriggerMode.OnRelease:
+                        shouldStart = !triggerActive && wasTriggerActive;
+                        break;
+                    case MacroTriggerMode.WhileHeld:
+                        shouldStart = triggerActive;
+                        break;
+                }
+
+                if (shouldStart && !macro.IsExecuting)
+                {
+                    macro.IsExecuting = true;
+                    macro.CurrentActionIndex = 0;
+                    macro.ActionStartTime = DateTime.UtcNow;
+                    macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
+                        ? macro.RepeatCount : 1;
+                }
+
+                if (macro.IsExecuting &&
+                    macro.RepeatMode == MacroRepeatMode.UntilRelease &&
+                    !triggerActive)
+                {
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                }
+
+                if (macro.IsExecuting && macro.Actions.Count > 0)
+                    ExecuteMacroActionsCustomVJoy(ref raw, macro);
+
+                // Consume trigger buttons.
+                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
+                    && macro.UsesCustomTrigger)
+                {
+                    var tw = macro.TriggerCustomButtonWords;
+                    if (raw.Buttons != null)
+                        for (int w = 0; w < raw.Buttons.Length && w < tw.Length; w++)
+                            raw.Buttons[w] &= ~tw[w];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks whether all custom trigger buttons are currently pressed in the raw state.
+        /// </summary>
+        private static bool CheckCustomButtonTrigger(in VJoyRawState raw, MacroItem macro)
+        {
+            var tw = macro.TriggerCustomButtonWords;
+            if (raw.Buttons == null) return false;
+            for (int w = 0; w < tw.Length; w++)
+            {
+                if (tw[w] == 0) continue;
+                if (w >= raw.Buttons.Length) return false;
+                if ((raw.Buttons[w] & tw[w]) != tw[w]) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Executes macro actions against a VJoyRawState (custom vJoy button words).
+        /// </summary>
+        private static void ExecuteMacroActionsCustomVJoy(ref VJoyRawState raw, MacroItem macro)
+        {
+            if (macro.CurrentActionIndex >= macro.Actions.Count)
+            {
+                macro.RemainingRepeats--;
+                if (macro.RemainingRepeats > 0 ||
+                    macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                {
+                    double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
+                    if (elapsed >= macro.RepeatDelayMs)
+                    {
+                        macro.CurrentActionIndex = 0;
+                        macro.ActionStartTime = DateTime.UtcNow;
+                    }
+                }
+                else
+                {
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                }
+                return;
+            }
+
+            var action = macro.Actions[macro.CurrentActionIndex];
+            double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
+
+            switch (action.Type)
+            {
+                case MacroActionType.ButtonPress:
+                    // OR custom button words into the raw state.
+                    if (raw.Buttons != null)
+                    {
+                        var cw = action.CustomButtonWords;
+                        for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                            raw.Buttons[w] |= cw[w];
+                    }
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ButtonRelease:
+                    // AND-NOT: clear custom button words from the raw state.
+                    if (raw.Buttons != null)
+                    {
+                        var cw = action.CustomButtonWords;
+                        for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                            raw.Buttons[w] &= ~cw[w];
+                    }
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.KeyPress:
+                {
+                    var keyCodes = action.ParsedKeyCodes;
+                    if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
+                    if (actionElapsed < 1)
+                    {
+                        for (int k = 0; k < keyCodes.Length; k++)
+                            SendKeyInput((ushort)keyCodes[k], keyUp: false);
+                    }
+                    if (actionElapsed >= action.DurationMs)
+                    {
+                        for (int k = keyCodes.Length - 1; k >= 0; k--)
+                            SendKeyInput((ushort)keyCodes[k], keyUp: true);
+                        AdvanceAction(macro);
+                    }
+                    break;
+                }
+
+                case MacroActionType.KeyRelease:
+                {
+                    var keyCodes = action.ParsedKeyCodes;
+                    for (int k = keyCodes.Length - 1; k >= 0; k--)
+                        SendKeyInput((ushort)keyCodes[k], keyUp: true);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.Delay:
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisSet:
+                    // Set axis on the raw state.
+                    if (raw.Axes != null)
+                        ApplyAxisActionRaw(ref raw, action);
+                    AdvanceAction(macro);
+                    break;
+            }
+        }
+
+        /// <summary>Applies an AxisSet action to a VJoyRawState.</summary>
+        private static void ApplyAxisActionRaw(ref VJoyRawState raw, MacroAction action)
+        {
+            int axisIndex = action.AxisTarget switch
+            {
+                MacroAxisTarget.LeftStickX => 0,
+                MacroAxisTarget.LeftStickY => 1,
+                MacroAxisTarget.RightStickX => 3,
+                MacroAxisTarget.RightStickY => 4,
+                MacroAxisTarget.LeftTrigger => 2,
+                MacroAxisTarget.RightTrigger => 5,
+                _ => -1
+            };
+            if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
+                raw.Axes[axisIndex] = action.AxisValue;
         }
 
         // ─────────────────────────────────────────────

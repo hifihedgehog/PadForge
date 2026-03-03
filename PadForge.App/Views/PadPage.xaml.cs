@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.ComponentModel;
 using PadForge.ViewModels;
 
@@ -19,86 +17,171 @@ namespace PadForge.Views
         /// </summary>
         public event EventHandler<string> ControllerElementRecordRequested;
 
-        /// <summary>Tag → FrameworkElement lookup, built on first Loaded.</summary>
-        private Dictionary<string, FrameworkElement> _taggedElements;
-
-        /// <summary>Saved opacity values for non-bound elements (restored on MouseLeave).</summary>
-        private readonly Dictionary<FrameworkElement, double> _savedOpacities = new();
-
-        /// <summary>The element currently being flash-animated during Map All.</summary>
-        private FrameworkElement _flashingElement;
-        private Storyboard _flashStoryboard;
+        private PadViewModel _currentPadVm;
 
         public PadPage()
         {
             InitializeComponent();
             Loaded += PadPage_Loaded;
+            DataContextChanged += OnDataContextChanged;
         }
 
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
         {
-            // Build the tag → element dictionary by walking the visual tree.
-            _taggedElements = new Dictionary<string, FrameworkElement>(StringComparer.OrdinalIgnoreCase);
-            CollectTaggedElements(this);
+            ApplyViewMode();
+            SyncTabStripSelection();
+        }
 
-            // Subscribe to DataContext changes to wire Map All flash animation.
-            WireMapAllFlash();
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_currentPadVm != null)
+                _currentPadVm.PropertyChanged -= OnPadVmPropertyChanged;
+
+            _currentPadVm = DataContext as PadViewModel;
+            if (_currentPadVm != null)
+                _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
+
+            ApplyViewMode();
+            SyncTabStripSelection();
+            SyncVJoyConfigBar();
         }
 
         // ─────────────────────────────────────────────
-        //  Hover highlight
+        //  2D / 3D Model View
         // ─────────────────────────────────────────────
 
-        private void ControllerElement_MouseEnter(object sender, MouseEventArgs e)
+        private SettingsViewModel GetSettingsVm()
         {
-            if (sender is FrameworkElement el)
-            {
-                // Save original opacity for non-bound elements so we can restore it.
-                if (BindingOperations.GetBindingExpression(el, OpacityProperty) == null)
-                    _savedOpacities[el] = el.Opacity;
+            if (Application.Current.MainWindow?.DataContext is MainViewModel mainVm)
+                return mainVm.Settings;
+            return null;
+        }
 
-                // SetCurrentValue changes the displayed value WITHOUT removing
-                // the underlying binding — the binding stays attached.
-                el.SetCurrentValue(OpacityProperty, 0.7);
+        private void ViewModeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            var settingsVm = GetSettingsVm();
+            if (settingsVm != null)
+                settingsVm.Use2DControllerView = !settingsVm.Use2DControllerView;
+            ApplyViewMode();
+        }
+
+        private bool IsCustomVJoy()
+        {
+            if (DataContext is PadViewModel vm &&
+                vm.OutputType == Engine.VirtualControllerType.VJoy &&
+                !vm.VJoyConfig.IsGamepadPreset)
+                return true;
+            return false;
+        }
+
+        private void ApplyViewMode()
+        {
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null) return;
+
+            bool isSchematic = IsCustomVJoy();
+            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
+
+            if (isSchematic)
+            {
+                // Custom vJoy: always show schematic view, hide 2D/3D toggle
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
+                ControllerSchematic.Visibility = Visibility.Visible;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                // Gamepad preset: standard 2D/3D toggle
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
+                ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
+                ViewModeToggle.Visibility = Visibility.Visible;
+
+                // E8B9 = Photo/flat icon (shown in 3D mode, click to switch TO 2D)
+                // F158 = 3D/cube icon (shown in 2D mode, click to switch TO 3D)
+                ViewModeIcon.Text = is2D ? "\uF158" : "\uE8B9";
+                ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
+            }
+
+            BindActiveModelView();
+        }
+
+        private void BindActiveModelView()
+        {
+            bool isSchematic = IsCustomVJoy();
+            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
+
+            // Unbind all first
+            ControllerModel3D.Unbind();
+            ControllerModel2D.Unbind();
+            ControllerSchematic.Unbind();
+
+            if (DataContext is not PadViewModel vm) return;
+
+            if (isSchematic)
+            {
+                ControllerSchematic.ControllerElementRecordRequested -= OnModelRecordRequested;
+                ControllerSchematic.ControllerElementRecordRequested += OnModelRecordRequested;
+                ControllerSchematic.Bind(vm);
+            }
+            else if (is2D)
+            {
+                ControllerModel2D.ControllerElementRecordRequested -= OnModelRecordRequested;
+                ControllerModel2D.ControllerElementRecordRequested += OnModelRecordRequested;
+                ControllerModel2D.Bind(vm);
+            }
+            else
+            {
+                ControllerModel3D.ControllerElementRecordRequested -= OnModelRecordRequested;
+                ControllerModel3D.ControllerElementRecordRequested += OnModelRecordRequested;
+                ControllerModel3D.Bind(vm);
             }
         }
 
-        private void ControllerElement_MouseLeave(object sender, MouseEventArgs e)
+        private void OnModelRecordRequested(object sender, string targetName)
         {
-            if (sender is FrameworkElement el)
-            {
-                // Don't restore opacity if this element is currently flash-animated.
-                if (el == _flashingElement)
-                    return;
-
-                var expr = BindingOperations.GetBindingExpression(el, OpacityProperty);
-                if (expr != null)
-                {
-                    // Force the binding to re-read from its source.
-                    expr.UpdateTarget();
-                }
-                else if (_savedOpacities.TryGetValue(el, out double orig))
-                {
-                    // Restore the original XAML-specified opacity (e.g. 0.15 for arrows).
-                    el.SetCurrentValue(OpacityProperty, orig);
-                    _savedOpacities.Remove(el);
-                }
-                else
-                {
-                    el.ClearValue(OpacityProperty);
-                }
-            }
+            ControllerElementRecordRequested?.Invoke(this, targetName);
         }
 
         // ─────────────────────────────────────────────
-        //  Click-to-record
+        //  Custom tab strip
         // ─────────────────────────────────────────────
 
-        private void ControllerElement_Click(object sender, MouseButtonEventArgs e)
+        private void TabBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement el && el.Tag is string targetName && !string.IsNullOrEmpty(targetName))
+            if (sender is RadioButton rb && TryGetTagIndex(rb, out int idx) && DataContext is PadViewModel vm)
+                vm.SelectedConfigTab = idx;
+        }
+
+        private void SyncTabStripSelection()
+        {
+            if (DataContext is not PadViewModel vm) return;
+            int selected = vm.SelectedConfigTab;
+
+            foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
-                ControllerElementRecordRequested?.Invoke(this, targetName);
+                if (rb.GroupName == "PadTab" && TryGetTagIndex(rb, out int idx))
+                    rb.IsChecked = idx == selected;
+            }
+        }
+
+        private static bool TryGetTagIndex(FrameworkElement el, out int index)
+        {
+            if (el.Tag is int i) { index = i; return true; }
+            if (el.Tag is string s && int.TryParse(s, out i)) { index = i; return true; }
+            index = -1;
+            return false;
+        }
+
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T t) yield return t;
+                foreach (var desc in FindVisualChildren<T>(child))
+                    yield return desc;
             }
         }
 
@@ -141,125 +224,97 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Map All flash animation
+        //  ViewModel property changed
         // ─────────────────────────────────────────────
-
-        private PadViewModel _currentPadVm;
-
-        private void WireMapAllFlash()
-        {
-            // When DataContext changes (pad selection), re-subscribe.
-            DataContextChanged += (s, e) =>
-            {
-                if (_currentPadVm != null)
-                    _currentPadVm.PropertyChanged -= OnPadVmPropertyChanged;
-
-                _currentPadVm = DataContext as PadViewModel;
-                if (_currentPadVm != null)
-                    _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
-            };
-
-            // Wire current DataContext.
-            _currentPadVm = DataContext as PadViewModel;
-            if (_currentPadVm != null)
-                _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
-        }
 
         private void OnPadVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != nameof(PadViewModel.CurrentRecordingTarget))
-                return;
-
-            // Ensure we're on the UI thread (PropertyChanged may fire from any thread).
-            if (!Dispatcher.CheckAccess())
+            if (e.PropertyName == nameof(PadViewModel.SelectedConfigTab))
+                SyncTabStripSelection();
+            else if (e.PropertyName == nameof(PadViewModel.OutputType))
             {
-                Dispatcher.BeginInvoke(new Action(() => OnPadVmPropertyChanged(sender, e)));
-                return;
-            }
-
-            var target = _currentPadVm?.CurrentRecordingTarget;
-            StopFlash();
-
-            if (!string.IsNullOrEmpty(target))
-            {
-                // Rebuild the element dictionary every time — the TabControl may have
-                // recycled its content since the last collection, making old references stale.
-                _taggedElements = new Dictionary<string, FrameworkElement>(StringComparer.OrdinalIgnoreCase);
-                CollectTaggedElements(this);
-
-                if (_taggedElements.TryGetValue(target, out var element))
-                    StartFlash(element);
-            }
-        }
-
-        private void StartFlash(FrameworkElement element)
-        {
-            _flashingElement = element;
-
-            // Save original opacity for non-bound elements before animating.
-            if (BindingOperations.GetBindingExpression(element, OpacityProperty) == null
-                && !_savedOpacities.ContainsKey(element))
-                _savedOpacities[element] = element.Opacity;
-
-            var animation = new DoubleAnimation
-            {
-                From = 0.1,
-                To = 0.7,
-                Duration = TimeSpan.FromMilliseconds(400),
-                AutoReverse = true,
-                RepeatBehavior = RepeatBehavior.Forever
-            };
-
-            _flashStoryboard = new Storyboard();
-            Storyboard.SetTarget(animation, element);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(OpacityProperty));
-            _flashStoryboard.Children.Add(animation);
-            _flashStoryboard.Begin();
-        }
-
-        private void StopFlash()
-        {
-            if (_flashStoryboard != null && _flashingElement != null)
-            {
-                _flashStoryboard.Remove();
-                _flashStoryboard = null;
-
-                // Restore opacity: binding → UpdateTarget, non-bound → saved value.
-                var expr = BindingOperations.GetBindingExpression(_flashingElement, OpacityProperty);
-                if (expr != null)
-                {
-                    expr.UpdateTarget();
-                }
-                else if (_savedOpacities.TryGetValue(_flashingElement, out double orig))
-                {
-                    _flashingElement.SetCurrentValue(OpacityProperty, orig);
-                    _savedOpacities.Remove(_flashingElement);
-                }
-                else
-                {
-                    _flashingElement.ClearValue(OpacityProperty);
-                }
-
-                _flashingElement = null;
+                SyncVJoyConfigBar();
+                ApplyViewMode();
             }
         }
 
         // ─────────────────────────────────────────────
-        //  Visual tree helper
+        //  vJoy configuration bar
         // ─────────────────────────────────────────────
 
-        private void CollectTaggedElements(DependencyObject parent)
+        private bool _syncingVJoyConfig;
+
+        private void SyncVJoyConfigBar()
         {
-            int count = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
+            if (DataContext is not PadViewModel vm) return;
+
+            bool isVJoy = vm.OutputType == Engine.VirtualControllerType.VJoy;
+            VJoyConfigBar.Visibility = isVJoy ? Visibility.Visible : Visibility.Collapsed;
+
+            if (isVJoy)
             {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is FrameworkElement fe && fe.Tag is string tag && !string.IsNullOrEmpty(tag))
-                {
-                    _taggedElements[tag] = fe;
-                }
-                CollectTaggedElements(child);
+                _syncingVJoyConfig = true;
+                VJoyPresetCombo.SelectedIndex = (int)vm.VJoyConfig.Preset;
+                SyncVJoyCustomFields(vm);
+                _syncingVJoyConfig = false;
             }
+        }
+
+        private void SyncVJoyCustomFields(PadViewModel vm)
+        {
+            bool isCustom = vm.VJoyConfig.Preset == VJoyPreset.Custom;
+            VJoyCustomPanel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
+
+            if (isCustom)
+            {
+                VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
+                VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
+                VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
+                VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+            }
+        }
+
+        private void VJoyPresetCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingVJoyConfig) return;
+            if (DataContext is not PadViewModel vm) return;
+            if (VJoyPresetCombo.SelectedIndex < 0) return;
+
+            vm.VJoyConfig.Preset = (VJoyPreset)VJoyPresetCombo.SelectedIndex;
+            SyncVJoyCustomFields(vm);
+            ApplyViewMode();
+        }
+
+        private void VJoyCustomValue_Changed(object sender, RoutedEventArgs e)
+        {
+            ApplyVJoyCustomValues();
+        }
+
+        private void VJoyCustomValue_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                ApplyVJoyCustomValues();
+        }
+
+        private void ApplyVJoyCustomValues()
+        {
+            if (DataContext is not PadViewModel vm) return;
+            if (vm.VJoyConfig.Preset != VJoyPreset.Custom) return;
+
+            if (int.TryParse(VJoyStickCountBox.Text, out int sticks))
+                vm.VJoyConfig.ThumbstickCount = sticks;
+            if (int.TryParse(VJoyTriggerCountBox.Text, out int triggers))
+                vm.VJoyConfig.TriggerCount = triggers;
+            if (int.TryParse(VJoyPovCountBox.Text, out int povs))
+                vm.VJoyConfig.PovCount = povs;
+            if (int.TryParse(VJoyButtonCountBox.Text, out int buttons))
+                vm.VJoyConfig.ButtonCount = buttons;
+
+            // Reflect clamped values back into text boxes
+            VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
+            VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
+            VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
+            VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
         }
     }
 }

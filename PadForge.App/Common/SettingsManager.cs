@@ -44,6 +44,28 @@ namespace PadForge.Common.Input
         public static bool EnableAutoProfileSwitching { get; set; }
 
         // ─────────────────────────────────────────────
+        //  Virtual Controller Slots
+        // ─────────────────────────────────────────────
+
+        /// <summary>Maximum number of Xbox 360 virtual controllers.
+        /// XInput only sees 4, but SDL/ViGEm support up to MaxPads.</summary>
+        public const int MaxXbox360Slots = InputManager.MaxPads;
+
+        /// <summary>Maximum number of DualShock 4 virtual controllers.</summary>
+        public const int MaxDS4Slots = InputManager.MaxPads;
+
+        /// <summary>Maximum number of vJoy virtual controllers (vJoy driver limit).</summary>
+        public const int MaxVJoySlots = 16;
+
+        /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
+        public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
+
+        /// <summary>Whether each slot is enabled for ViGEm output. Persisted to settings.</summary>
+        public static bool[] SlotEnabled { get; set; } = new bool[InputManager.MaxPads]
+            { true, true, true, true, true, true, true, true,
+              true, true, true, true, true, true, true, true };
+
+        // ─────────────────────────────────────────────
         //  Initialization
         // ─────────────────────────────────────────────
 
@@ -167,32 +189,52 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Finds the UserSetting for a device on a specific pad slot. Thread-safe.
+        /// Required when the same device is mapped to multiple slots.
+        /// Returns null if the device is not assigned to the specified slot.
+        /// </summary>
+        public static UserSetting FindSettingByInstanceGuidAndSlot(Guid instanceGuid, int padIndex)
+        {
+            var settings = UserSettings;
+            if (settings == null) return null;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us.InstanceGuid == instanceGuid && us.MapTo == padIndex)
+                        return us;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Creates or retrieves a UserSetting that links a device to a pad slot.
-        /// If a UserSetting already exists for the device, its MapTo is updated.
+        /// Supports multi-slot: if the device is already assigned to other slots,
+        /// a new UserSetting is created for the additional slot.
         /// Thread-safe.
         /// </summary>
         /// <param name="instanceGuid">Device instance GUID.</param>
-        /// <param name="padIndex">Target pad slot (0–3).</param>
+        /// <param name="padIndex">Target pad slot (0–7).</param>
         /// <returns>The UserSetting (existing or new).</returns>
         public static UserSetting AssignDeviceToSlot(Guid instanceGuid, int padIndex)
         {
-            if (padIndex < 0 || padIndex > 3)
-                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–3.");
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads)
+                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–7.");
 
             var settings = UserSettings;
             if (settings == null) return null;
 
             lock (settings.SyncRoot)
             {
-                var existing = settings.Items.FirstOrDefault(
-                    s => s.InstanceGuid == instanceGuid);
+                // Check if already assigned to this exact slot — return existing.
+                var exactMatch = settings.Items.FirstOrDefault(
+                    s => s.InstanceGuid == instanceGuid && s.MapTo == padIndex);
 
-                if (existing != null)
-                {
-                    existing.MapTo = padIndex;
-                    return existing;
-                }
+                if (exactMatch != null)
+                    return exactMatch;
 
+                // Create a new UserSetting for this slot (supports multi-slot assignment).
                 var us = new UserSetting
                 {
                     InstanceGuid = instanceGuid,
@@ -224,6 +266,66 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Toggles a device's assignment to a specific slot.
+        /// If assigned → removes that UserSetting (unassign). If not → creates one (assign).
+        /// Supports multi-slot: a device can have UserSettings for multiple slots.
+        /// Thread-safe.
+        /// </summary>
+        /// <returns>(true, UserSetting) if assigned; (false, null) if unassigned.</returns>
+        public static (bool Assigned, UserSetting Setting) ToggleDeviceSlotAssignment(Guid instanceGuid, int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads)
+                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–3.");
+
+            var settings = UserSettings;
+            if (settings == null) return (false, null);
+
+            lock (settings.SyncRoot)
+            {
+                var existing = settings.Items.FirstOrDefault(
+                    s => s.InstanceGuid == instanceGuid && s.MapTo == padIndex);
+
+                if (existing != null)
+                {
+                    // Unassign from this slot.
+                    settings.Items.Remove(existing);
+                    return (false, null);
+                }
+
+                // Assign to this slot (new UserSetting entry).
+                var us = new UserSetting
+                {
+                    InstanceGuid = instanceGuid,
+                    MapTo = padIndex
+                };
+                settings.Items.Add(us);
+                return (true, us);
+            }
+        }
+
+        /// <summary>
+        /// Returns all slot indices that a device is assigned to.
+        /// Thread-safe.
+        /// </summary>
+        public static List<int> GetAssignedSlots(Guid instanceGuid)
+        {
+            var result = new List<int>();
+            var settings = UserSettings;
+            if (settings == null) return result;
+
+            lock (settings.SyncRoot)
+            {
+                foreach (var s in settings.Items)
+                {
+                    if (s.InstanceGuid == instanceGuid && s.MapTo >= 0)
+                        result.Add(s.MapTo);
+                }
+            }
+            result.Sort();
+            return result;
+        }
+
+        /// <summary>
         /// Returns a snapshot of all UserSettings assigned to a pad slot.
         /// Thread-safe.
         /// </summary>
@@ -232,6 +334,40 @@ namespace PadForge.Common.Input
             var settings = UserSettings;
             if (settings == null) return new List<UserSetting>();
             return settings.FindByPadIndex(padIndex);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Slot swap
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Swaps all persisted slot data between two indices:
+        /// SlotCreated, SlotEnabled, and UserSettings MapTo values.
+        /// Thread-safe.
+        /// </summary>
+        public static void SwapSlots(int slotA, int slotB)
+        {
+            if (slotA == slotB) return;
+
+            (SlotCreated[slotA], SlotCreated[slotB]) =
+                (SlotCreated[slotB], SlotCreated[slotA]);
+            (SlotEnabled[slotA], SlotEnabled[slotB]) =
+                (SlotEnabled[slotB], SlotEnabled[slotA]);
+
+            var settings = UserSettings;
+            if (settings != null)
+            {
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                    {
+                        if (us.MapTo == slotA)
+                            us.MapTo = slotB;
+                        else if (us.MapTo == slotB)
+                            us.MapTo = slotA;
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -269,8 +405,11 @@ namespace PadForge.Common.Input
                 ps.RightThumbAxisY = "Axis 4";
                 ps.RightTrigger = "Axis 5";
 
-                // D-pad from hat switch.
-                ps.DPad = "POV 0";
+                // D-pad from hat switch (individual directions for UI display and remapping).
+                ps.DPadUp = "POV 0 Up";
+                ps.DPadDown = "POV 0 Down";
+                ps.DPadLeft = "POV 0 Left";
+                ps.DPadRight = "POV 0 Right";
 
                 // SDL3 XInput backend button indices.
                 ps.ButtonA = "Button 0";

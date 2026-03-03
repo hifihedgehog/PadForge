@@ -86,7 +86,7 @@ namespace PadForge.ViewModels
         public RelayCommand UninstallViGEmCommand =>
             _uninstallViGEmCommand ??= new RelayCommand(
                 () => UninstallViGEmRequested?.Invoke(this, EventArgs.Empty),
-                () => _isViGEmInstalled);
+                () => _isViGEmInstalled && !HasAnyViGEmSlots());
 
         /// <summary>Raised when the user requests ViGEmBus installation.</summary>
         public event EventHandler InstallViGEmRequested;
@@ -148,6 +148,87 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user requests HidHide uninstallation.</summary>
         public event EventHandler UninstallHidHideRequested;
+
+        // ─────────────────────────────────────────────
+        //  vJoy driver
+        // ─────────────────────────────────────────────
+
+        private bool _isVJoyInstalled;
+
+        /// <summary>Whether the vJoy driver is installed and the DLL is accessible.</summary>
+        public bool IsVJoyInstalled
+        {
+            get => _isVJoyInstalled;
+            set
+            {
+                if (SetProperty(ref _isVJoyInstalled, value))
+                {
+                    OnPropertyChanged(nameof(VJoyStatusText));
+                    _installVJoyCommand?.NotifyCanExecuteChanged();
+                    _uninstallVJoyCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>vJoy status display text.</summary>
+        public string VJoyStatusText => _isVJoyInstalled ? "Installed" : "Not Installed";
+
+        private string _vjoyVersion = string.Empty;
+
+        /// <summary>vJoy driver version string.</summary>
+        public string VJoyVersion
+        {
+            get => _vjoyVersion;
+            set => SetProperty(ref _vjoyVersion, value);
+        }
+
+        private RelayCommand _installVJoyCommand;
+
+        /// <summary>Command to install the vJoy driver.</summary>
+        public RelayCommand InstallVJoyCommand =>
+            _installVJoyCommand ??= new RelayCommand(
+                () => InstallVJoyRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isVJoyInstalled);
+
+        private RelayCommand _uninstallVJoyCommand;
+
+        /// <summary>Command to uninstall the vJoy driver.</summary>
+        public RelayCommand UninstallVJoyCommand =>
+            _uninstallVJoyCommand ??= new RelayCommand(
+                () => UninstallVJoyRequested?.Invoke(this, EventArgs.Empty),
+                () => _isVJoyInstalled && !HasAnyVJoySlots());
+
+        /// <summary>Raised when the user requests vJoy installation.</summary>
+        public event EventHandler InstallVJoyRequested;
+
+        /// <summary>Raised when the user requests vJoy uninstallation.</summary>
+        public event EventHandler UninstallVJoyRequested;
+
+        // ─────────────────────────────────────────────
+        //  Driver uninstall guards
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Set by MainWindow to provide slot-type queries for uninstall guards.
+        /// Returns true if any created slot uses ViGEm (Xbox 360 or DS4).
+        /// </summary>
+        internal Func<bool> HasAnyViGEmSlots { get; set; } = () => false;
+
+        /// <summary>
+        /// Set by MainWindow to provide slot-type queries for uninstall guards.
+        /// Returns true if any created slot uses vJoy.
+        /// </summary>
+        internal Func<bool> HasAnyVJoySlots { get; set; } = () => false;
+
+        /// <summary>
+        /// Re-evaluates uninstall button CanExecute state.
+        /// Call after slot creation/deletion/type changes.
+        /// </summary>
+        public void RefreshDriverGuards()
+        {
+            _uninstallViGEmCommand?.NotifyCanExecuteChanged();
+            _uninstallVJoyCommand?.NotifyCanExecuteChanged();
+        }
 
         // ─────────────────────────────────────────────
         //  Engine settings
@@ -316,6 +397,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableAutoProfileSwitching, value);
         }
 
+        private bool _use2DControllerView;
+
+        /// <summary>Whether to show the 2D controller view instead of 3D.</summary>
+        public bool Use2DControllerView
+        {
+            get => _use2DControllerView;
+            set => SetProperty(ref _use2DControllerView, value);
+        }
+
         /// <summary>Observable list of profile names for the UI.</summary>
         public ObservableCollection<ProfileListItem> ProfileItems { get; } = new();
 
@@ -344,13 +434,15 @@ namespace PadForge.ViewModels
             get => _activeProfileInfo;
             set
             {
-                if (SetProperty(ref _activeProfileInfo, value ?? "Default"))
-                    _revertToDefaultCommand?.NotifyCanExecuteChanged();
+                SetProperty(ref _activeProfileInfo, value ?? "Default");
             }
         }
 
         /// <summary>Raised when the user requests reverting to the default profile.</summary>
         public event EventHandler RevertToDefaultRequested;
+
+        /// <summary>Raised when the user requests creating a new empty profile.</summary>
+        public event EventHandler NewProfileRequested;
 
         /// <summary>Raised when the user requests saving current settings as a new profile.</summary>
         public event EventHandler SaveAsProfileRequested;
@@ -363,6 +455,13 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user requests loading the selected profile into the editor.</summary>
         public event EventHandler LoadProfileRequested;
+
+        private RelayCommand _newProfileCommand;
+
+        /// <summary>Command to create a new empty profile.</summary>
+        public RelayCommand NewProfileCommand =>
+            _newProfileCommand ??= new RelayCommand(
+                () => NewProfileRequested?.Invoke(this, EventArgs.Empty));
 
         private RelayCommand _saveAsProfileCommand;
 
@@ -377,7 +476,7 @@ namespace PadForge.ViewModels
         public RelayCommand DeleteProfileCommand =>
             _deleteProfileCommand ??= new RelayCommand(
                 () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null);
+                () => _selectedProfile != null && !_selectedProfile.IsDefault);
 
         private RelayCommand _editProfileCommand;
 
@@ -385,23 +484,21 @@ namespace PadForge.ViewModels
         public RelayCommand EditProfileCommand =>
             _editProfileCommand ??= new RelayCommand(
                 () => EditProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null);
+                () => _selectedProfile != null && !_selectedProfile.IsDefault);
 
         private RelayCommand _loadProfileCommand;
 
         /// <summary>Command to load the selected profile's settings into the editor.</summary>
         public RelayCommand LoadProfileCommand =>
             _loadProfileCommand ??= new RelayCommand(
-                () => LoadProfileRequested?.Invoke(this, EventArgs.Empty),
+                () =>
+                {
+                    if (_selectedProfile?.IsDefault == true)
+                        RevertToDefaultRequested?.Invoke(this, EventArgs.Empty);
+                    else
+                        LoadProfileRequested?.Invoke(this, EventArgs.Empty);
+                },
                 () => _selectedProfile != null);
-
-        private RelayCommand _revertToDefaultCommand;
-
-        /// <summary>Command to revert to the default profile.</summary>
-        public RelayCommand RevertToDefaultCommand =>
-            _revertToDefaultCommand ??= new RelayCommand(
-                () => RevertToDefaultRequested?.Invoke(this, EventArgs.Empty),
-                () => _activeProfileInfo != "Default");
 
         /// <summary>Refreshes the can-execute state of profile commands.</summary>
         public void RefreshProfileCommands()
@@ -409,7 +506,6 @@ namespace PadForge.ViewModels
             _deleteProfileCommand?.NotifyCanExecuteChanged();
             _editProfileCommand?.NotifyCanExecuteChanged();
             _loadProfileCommand?.NotifyCanExecuteChanged();
-            _revertToDefaultCommand?.NotifyCanExecuteChanged();
         }
     }
 
@@ -418,6 +514,12 @@ namespace PadForge.ViewModels
     /// </summary>
     public class ProfileListItem : ObservableObject
     {
+        /// <summary>Sentinel ID for the built-in Default profile entry.</summary>
+        public const string DefaultProfileId = "__default__";
+
+        /// <summary>Whether this is the built-in Default profile entry.</summary>
+        public bool IsDefault => Id == DefaultProfileId;
+
         private string _id;
         public string Id
         {
@@ -437,6 +539,34 @@ namespace PadForge.ViewModels
         {
             get => _executables;
             set => SetProperty(ref _executables, value);
+        }
+
+        private string _topologyLabel;
+        public string TopologyLabel
+        {
+            get => _topologyLabel;
+            set => SetProperty(ref _topologyLabel, value);
+        }
+
+        private int _xboxCount;
+        public int XboxCount
+        {
+            get => _xboxCount;
+            set => SetProperty(ref _xboxCount, value);
+        }
+
+        private int _ds4Count;
+        public int DS4Count
+        {
+            get => _ds4Count;
+            set => SetProperty(ref _ds4Count, value);
+        }
+
+        private int _vjoyCount;
+        public int VJoyCount
+        {
+            get => _vjoyCount;
+            set => SetProperty(ref _vjoyCount, value);
         }
     }
 }

@@ -95,6 +95,15 @@ namespace PadForge.Engine.Data
         /// <summary>Anti-dead zone for the right trigger (0–100%).</summary>
         [XmlElement] public string RightTriggerAntiDeadZone { get; set; } = "0";
 
+        /// <summary>
+        /// Max range for the left trigger (1–100%). Caps the output ceiling so full
+        /// physical press maps to this percentage of the output range.
+        /// </summary>
+        [XmlElement] public string LeftTriggerMaxRange { get; set; } = "100";
+
+        /// <summary>Max range for the right trigger (1–100%).</summary>
+        [XmlElement] public string RightTriggerMaxRange { get; set; } = "100";
+
         // ─────────────────────────────────────────────
         //  Thumbstick axis mappings
         // ─────────────────────────────────────────────
@@ -103,6 +112,12 @@ namespace PadForge.Engine.Data
         [XmlElement] public string LeftThumbAxisY { get; set; } = "";
         [XmlElement] public string RightThumbAxisX { get; set; } = "";
         [XmlElement] public string RightThumbAxisY { get; set; } = "";
+
+        /// <summary>Negative-direction descriptor for stick axes (used when buttons map to bidirectional axes).</summary>
+        [XmlElement] public string LeftThumbAxisXNeg { get; set; } = "";
+        [XmlElement] public string LeftThumbAxisYNeg { get; set; } = "";
+        [XmlElement] public string RightThumbAxisXNeg { get; set; } = "";
+        [XmlElement] public string RightThumbAxisYNeg { get; set; } = "";
 
         // ─────────────────────────────────────────────
         //  Dead zone settings
@@ -226,6 +241,67 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightThumbAxisYInvert { get; set; } = "0";
 
         // ─────────────────────────────────────────────
+        //  vJoy custom mappings (dictionary-based)
+        //  Used for custom vJoy configurations with arbitrary axis/button/POV counts.
+        //  Keys use target names like "VJoyAxis0", "VJoyAxis0Neg", "VJoyBtn0",
+        //  "VJoyPov0Up", etc. Values are mapping descriptors (same format as above).
+        // ─────────────────────────────────────────────
+
+        /// <summary>Serializable array for XML persistence of vJoy mappings.</summary>
+        [XmlArray("VJoyMappings")]
+        [XmlArrayItem("Map")]
+        public VJoyMappingEntry[] VJoyMappingEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _vjoyMappingDict;
+
+        /// <summary>Gets a vJoy mapping value by key (e.g., "VJoyAxis0", "VJoyBtn5").</summary>
+        public string GetVJoyMapping(string key)
+        {
+            EnsureVJoyDict();
+            return _vjoyMappingDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        /// <summary>Sets a vJoy mapping value by key.</summary>
+        public void SetVJoyMapping(string key, string value)
+        {
+            EnsureVJoyDict();
+            if (string.IsNullOrEmpty(value))
+                _vjoyMappingDict.Remove(key);
+            else
+                _vjoyMappingDict[key] = value;
+        }
+
+        /// <summary>Flushes the in-memory dictionary back to the serializable array.</summary>
+        public void FlushVJoyMappings()
+        {
+            if (_vjoyMappingDict == null || _vjoyMappingDict.Count == 0)
+            {
+                VJoyMappingEntries = null;
+                return;
+            }
+            var entries = new VJoyMappingEntry[_vjoyMappingDict.Count];
+            int i = 0;
+            foreach (var kvp in _vjoyMappingDict)
+                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            VJoyMappingEntries = entries;
+        }
+
+        private void EnsureVJoyDict()
+        {
+            if (_vjoyMappingDict != null) return;
+            _vjoyMappingDict = new Dictionary<string, string>(StringComparer.Ordinal);
+            if (VJoyMappingEntries != null)
+            {
+                foreach (var e in VJoyMappingEntries)
+                {
+                    if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                        _vjoyMappingDict[e.Key] = e.Value;
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Game-specific overrides
         // ─────────────────────────────────────────────
 
@@ -302,12 +378,18 @@ namespace PadForge.Engine.Data
             sb.Append(RightTriggerDeadZone); sb.Append('|');
             sb.Append(LeftTriggerAntiDeadZone); sb.Append('|');
             sb.Append(RightTriggerAntiDeadZone); sb.Append('|');
+            sb.Append(LeftTriggerMaxRange); sb.Append('|');
+            sb.Append(RightTriggerMaxRange); sb.Append('|');
 
             // Thumbstick axes
             sb.Append(LeftThumbAxisX); sb.Append('|');
             sb.Append(LeftThumbAxisY); sb.Append('|');
             sb.Append(RightThumbAxisX); sb.Append('|');
             sb.Append(RightThumbAxisY); sb.Append('|');
+            sb.Append(LeftThumbAxisXNeg); sb.Append('|');
+            sb.Append(LeftThumbAxisYNeg); sb.Append('|');
+            sb.Append(RightThumbAxisXNeg); sb.Append('|');
+            sb.Append(RightThumbAxisYNeg); sb.Append('|');
 
             // Dead zones
             sb.Append(LeftThumbDeadZoneX); sb.Append('|');
@@ -340,7 +422,19 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAxisXInvert); sb.Append('|');
             sb.Append(RightThumbAxisYInvert); sb.Append('|');
 
-            sb.Append(AxisToButtonThreshold);
+            sb.Append(AxisToButtonThreshold); sb.Append('|');
+
+            // vJoy custom mappings (sorted for deterministic checksum)
+            EnsureVJoyDict();
+            if (_vjoyMappingDict.Count > 0)
+            {
+                var keys = new List<string>(_vjoyMappingDict.Keys);
+                keys.Sort(StringComparer.Ordinal);
+                foreach (var key in keys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_vjoyMappingDict[key]); sb.Append('|');
+                }
+            }
 
             byte[] hash = MD5.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
             return BitConverter.ToString(hash, 0, 4).Replace("-", "").ToUpperInvariant();
@@ -385,7 +479,12 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbAxisX) ||
             !string.IsNullOrEmpty(LeftThumbAxisY) ||
             !string.IsNullOrEmpty(RightThumbAxisX) ||
-            !string.IsNullOrEmpty(RightThumbAxisY);
+            !string.IsNullOrEmpty(RightThumbAxisY) ||
+            !string.IsNullOrEmpty(LeftThumbAxisXNeg) ||
+            !string.IsNullOrEmpty(LeftThumbAxisYNeg) ||
+            !string.IsNullOrEmpty(RightThumbAxisXNeg) ||
+            !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
+            (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0);
 
         // ─────────────────────────────────────────────
         //  Display
@@ -426,9 +525,12 @@ namespace PadForge.Engine.Data
             nameof(LeftTrigger), nameof(RightTrigger),
             nameof(LeftTriggerDeadZone), nameof(RightTriggerDeadZone),
             nameof(LeftTriggerAntiDeadZone), nameof(RightTriggerAntiDeadZone),
+            nameof(LeftTriggerMaxRange), nameof(RightTriggerMaxRange),
             // Sticks
             nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
             nameof(RightThumbAxisX), nameof(RightThumbAxisY),
+            nameof(LeftThumbAxisXNeg), nameof(LeftThumbAxisYNeg),
+            nameof(RightThumbAxisXNeg), nameof(RightThumbAxisYNeg),
             // Dead zones
             nameof(LeftThumbDeadZoneX), nameof(LeftThumbDeadZoneY),
             nameof(RightThumbDeadZoneX), nameof(RightThumbDeadZoneY),
@@ -525,7 +627,27 @@ namespace PadForge.Engine.Data
             clone.CopyFrom(this);
             clone.PadSettingChecksum = PadSettingChecksum;
             clone.GameFileName = GameFileName;
+            // Deep-copy vJoy mappings
+            if (VJoyMappingEntries != null)
+            {
+                clone.VJoyMappingEntries = new VJoyMappingEntry[VJoyMappingEntries.Length];
+                for (int i = 0; i < VJoyMappingEntries.Length; i++)
+                    clone.VJoyMappingEntries[i] = new VJoyMappingEntry
+                    {
+                        Key = VJoyMappingEntries[i].Key,
+                        Value = VJoyMappingEntries[i].Value
+                    };
+            }
             return clone;
         }
+    }
+
+    /// <summary>
+    /// Key-value entry for vJoy mapping persistence in XML.
+    /// </summary>
+    public class VJoyMappingEntry
+    {
+        [XmlAttribute] public string Key { get; set; } = "";
+        [XmlAttribute] public string Value { get; set; } = "";
     }
 }

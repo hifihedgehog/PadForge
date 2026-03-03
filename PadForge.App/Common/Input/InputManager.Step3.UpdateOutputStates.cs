@@ -823,7 +823,70 @@ namespace PadForge.Common.Input
                 raw.Povs[p] = DirectionToContinuousPov(up, down, left, right);
             }
 
-            // TODO: Dead zones for custom vJoy axes (future enhancement)
+            // ── Dead zones ──
+            // Apply stick/trigger dead zones using the same axis layout as
+            // VJoySlotConfig.ComputeAxisLayout (interleaved groups of X,Y,T).
+            int interleave = Math.Min(cfg.Sticks, cfg.Triggers);
+            for (int g = 0; g < cfg.Sticks; g++)
+            {
+                int xi = g < interleave ? g * 3 : interleave * 3 + (g - interleave) * 2;
+                int yi = xi + 1;
+                if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
+
+                int dzX, dzY, adzX, adzY, lin;
+                switch (g)
+                {
+                    case 0:
+                        dzX = TryParseIntStatic(ps.LeftThumbDeadZoneX, 0);
+                        dzY = TryParseIntStatic(ps.LeftThumbDeadZoneY, 0);
+                        adzX = TryParseIntStatic(ps.LeftThumbAntiDeadZoneX, 0);
+                        adzY = TryParseIntStatic(ps.LeftThumbAntiDeadZoneY, 0);
+                        lin = TryParseIntStatic(ps.LeftThumbLinear, 0);
+                        break;
+                    case 1:
+                        dzX = TryParseIntStatic(ps.RightThumbDeadZoneX, 0);
+                        dzY = TryParseIntStatic(ps.RightThumbDeadZoneY, 0);
+                        adzX = TryParseIntStatic(ps.RightThumbAntiDeadZoneX, 0);
+                        adzY = TryParseIntStatic(ps.RightThumbAntiDeadZoneY, 0);
+                        lin = TryParseIntStatic(ps.RightThumbLinear, 0);
+                        break;
+                    default:
+                        continue; // No dead zone properties for sticks 2+ yet
+                }
+                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin);
+                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin);
+            }
+
+            for (int g = 0; g < cfg.Triggers; g++)
+            {
+                int ti = g < interleave ? g * 3 + 2
+                       : interleave * 3 + Math.Max(0, cfg.Sticks - interleave) * 2 + (g - interleave);
+                if (ti >= raw.Axes.Length) break;
+
+                int dz, adz, maxR;
+                switch (g)
+                {
+                    case 0:
+                        dz = TryParseIntStatic(ps.LeftTriggerDeadZone, 0);
+                        adz = TryParseIntStatic(ps.LeftTriggerAntiDeadZone, 0);
+                        maxR = TryParseIntStatic(ps.LeftTriggerMaxRange, 100);
+                        break;
+                    case 1:
+                        dz = TryParseIntStatic(ps.RightTriggerDeadZone, 0);
+                        adz = TryParseIntStatic(ps.RightTriggerAntiDeadZone, 0);
+                        maxR = TryParseIntStatic(ps.RightTriggerMaxRange, 100);
+                        break;
+                    default:
+                        continue; // No dead zone properties for triggers 2+ yet
+                }
+                // Triggers use signed short in raw path; convert to byte-like range,
+                // apply trigger dead zone, then convert back.
+                double norm = (raw.Axes[ti] - (double)short.MinValue) / 65535.0;
+                byte asByte = (byte)Math.Clamp((int)(norm * 255), 0, 255);
+                asByte = ApplyTriggerDeadZone(asByte, dz, adz, maxR);
+                // Back to signed short range
+                raw.Axes[ti] = (short)(asByte / 255.0 * 65535.0 + short.MinValue);
+            }
 
             return raw;
         }

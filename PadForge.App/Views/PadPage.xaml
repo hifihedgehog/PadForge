@@ -400,9 +400,16 @@
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{Binding TriggerDisplayText}"
-                                           VerticalAlignment="Center" Margin="0,0,8,0"
-                                           MinWidth="150"/>
+                                <Grid MinWidth="150" Margin="0,0,8,0">
+                                    <TextBlock Text="{Binding TriggerDisplayText}"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                    <TextBlock Text="{Binding RecordingLiveText}"
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SystemControlHighlightAccentBrush}"
+                                               FontWeight="SemiBold"
+                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </Grid>
                                 <Button Content="{Binding RecordTriggerButtonText}"
                                         Command="{Binding RecordTriggerCommand}"
                                         Padding="8,4"/>
@@ -466,7 +473,8 @@
                                     </StackPanel>
 
                                     <!-- Button flags — checkbox grid for ButtonPress / ButtonRelease -->
-                                    <StackPanel Margin="0,0,0,6">
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="Buttons:" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <ItemsControl ItemsSource="{Binding ButtonOptions}">
                                             <ItemsControl.ItemsPanel>
@@ -485,7 +493,8 @@
                                     </StackPanel>
 
                                     <!-- Key combo — for KeyPress / KeyRelease -->
-                                    <StackPanel Margin="0,0,0,6">
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="Key Combo:" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <TextBox Text="{Binding KeyString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  FontFamily="Consolas" Margin="0,0,0,4"
@@ -504,7 +513,8 @@
                                     </StackPanel>
 
                                     <!-- Duration — for ButtonPress / KeyPress / Delay -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="Duration:" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
@@ -512,7 +522,8 @@
                                     </StackPanel>
 
                                     <!-- Axis target + value — for AxisSet -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsAxisType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="Axis:" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"

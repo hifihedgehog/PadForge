@@ -741,7 +741,8 @@ namespace PadForge.Services
                 Sticks = cfg.ThumbstickCount,
                 Triggers = cfg.TriggerCount
             };
-            _inputManager.SlotVJoyIsCustom[slotIndex] = !cfg.IsGamepadPreset;
+            _inputManager.SlotVJoyIsCustom[slotIndex] =
+                padVm.OutputType == VirtualControllerType.VJoy && !cfg.IsGamepadPreset;
         }
 
         /// <summary>

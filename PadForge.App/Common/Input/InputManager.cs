@@ -70,6 +70,12 @@ namespace PadForge.Common.Input
         public Gamepad[] CombinedOutputStates { get; } = new Gamepad[MaxPads];
 
         /// <summary>
+        /// Combined vJoy raw output states for custom vJoy slots.
+        /// Written by Step 4 (background thread), read by Step 5.
+        /// </summary>
+        public VJoyRawState[] CombinedVJoyRawStates { get; } = new VJoyRawState[MaxPads];
+
+        /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
         public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];

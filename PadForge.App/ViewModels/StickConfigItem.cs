@@ -76,10 +76,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _rawY, value);
         }
 
-        public StickConfigItem(int index, string title)
+        /// <summary>Raw axis index for X in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
+        public int AxisXIndex { get; }
+
+        /// <summary>Raw axis index for Y in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
+        public int AxisYIndex { get; }
+
+        public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1)
         {
             Index = index;
             Title = title;
+            AxisXIndex = axisXIndex;
+            AxisYIndex = axisYIndex;
         }
     }
 }

@@ -128,12 +128,13 @@ namespace PadForge.Services
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
 
-            // Copy controller types immediately so Step 5 creates the correct
-            // VC types from the first polling cycle (don't wait for UI timer sync).
+            // Copy controller types and vJoy configs immediately so Step 5 creates
+            // the correct VC types from the first polling cycle (don't wait for UI timer sync).
             int expectedXbox = 0, expectedDs4 = 0;
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
+                SyncVJoyConfigToSlot(i, _mainVm.Pads[i]);
                 if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
                 {
                     if (_mainVm.Pads[i].OutputType == VirtualControllerType.Xbox360) expectedXbox++;
@@ -279,14 +280,21 @@ namespace PadForge.Services
 
                 padVm.UpdateFromEngineState(gp, vibration);
 
+                // For custom vJoy slots, also push the combined VJoyRawState.
+                if (_inputManager.SlotVJoyIsCustom[i])
+                    padVm.UpdateFromVJoyRawState(_inputManager.CombinedVJoyRawStates[i]);
+
                 // Per-device state for stick/trigger tab previews.
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                 {
                     var us = SettingsManager.UserSettings?.FindByInstanceGuid(selected.InstanceGuid);
-                    padVm.UpdateDeviceState(us?.OutputState ?? default);
+                    if (_inputManager.SlotVJoyIsCustom[i] && us != null)
+                        padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
+                    else
+                        padVm.UpdateDeviceState(us?.OutputState ?? default);
                 }
-                else
+                else if (!_inputManager.SlotVJoyIsCustom[i])
                 {
                     padVm.UpdateDeviceState(gp);
                 }
@@ -702,9 +710,12 @@ namespace PadForge.Services
             {
                 var padVm = _mainVm.Pads[i];
 
-                // Sync output type to engine (always, even when no device is selected).
+                // Sync output type and vJoy config to engine (always, even when no device is selected).
                 if (_inputManager != null && i < InputManager.MaxPads)
+                {
                     _inputManager.SlotControllerTypes[i] = padVm.OutputType;
+                    SyncVJoyConfigToSlot(i, padVm);
+                }
 
                 var selected = padVm.SelectedMappedDevice;
                 if (selected == null || selected.InstanceGuid == Guid.Empty)
@@ -712,6 +723,22 @@ namespace PadForge.Services
 
                 SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
             }
+        }
+
+        /// <summary>
+        /// Syncs a PadViewModel's VJoyConfig to the InputManager's per-slot config array.
+        /// </summary>
+        private void SyncVJoyConfigToSlot(int slotIndex, PadViewModel padVm)
+        {
+            if (_inputManager == null || slotIndex >= InputManager.MaxPads) return;
+            var cfg = padVm.VJoyConfig;
+            _inputManager.SlotVJoyConfigs[slotIndex] = new VJoyVirtualController.VJoyDeviceConfig
+            {
+                Axes = cfg.TotalAxes,
+                Buttons = cfg.ButtonCount,
+                Povs = cfg.PovCount
+            };
+            _inputManager.SlotVJoyIsCustom[slotIndex] = !cfg.IsGamepadPreset;
         }
 
         /// <summary>
@@ -758,9 +785,17 @@ namespace PadForge.Services
             // Mapping descriptors.
             foreach (var mapping in padVm.Mappings)
             {
-                var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
-                if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
-                    prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+                string target = mapping.TargetSettingName;
+                if (target.StartsWith("VJoy", StringComparison.Ordinal))
+                {
+                    ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                }
+                else
+                {
+                    var prop = typeof(PadSetting).GetProperty(target);
+                    if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
+                        prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+                }
             }
         }
 
@@ -808,19 +843,33 @@ namespace PadForge.Services
             var ud = FindUserDevice(instanceGuid);
             foreach (var mapping in padVm.Mappings)
             {
-                var prop = typeof(PadSetting).GetProperty(mapping.TargetSettingName);
-                string value = (prop != null && prop.PropertyType == typeof(string))
-                    ? prop.GetValue(ps) as string ?? string.Empty
-                    : string.Empty;
+                string target = mapping.TargetSettingName;
+                string value;
+                if (target.StartsWith("VJoy", StringComparison.Ordinal))
+                    value = ps.GetVJoyMapping(target);
+                else
+                {
+                    var prop = typeof(PadSetting).GetProperty(target);
+                    value = (prop != null && prop.PropertyType == typeof(string))
+                        ? prop.GetValue(ps) as string ?? string.Empty
+                        : string.Empty;
+                }
                 mapping.LoadDescriptor(value);
                 ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
-                    var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
-                    string negValue = (negProp != null && negProp.PropertyType == typeof(string))
-                        ? negProp.GetValue(ps) as string ?? string.Empty
-                        : string.Empty;
+                    string negTarget = mapping.NegSettingName;
+                    string negValue;
+                    if (negTarget.StartsWith("VJoy", StringComparison.Ordinal))
+                        negValue = ps.GetVJoyMapping(negTarget);
+                    else
+                    {
+                        var negProp = typeof(PadSetting).GetProperty(negTarget);
+                        negValue = (negProp != null && negProp.PropertyType == typeof(string))
+                            ? negProp.GetValue(ps) as string ?? string.Empty
+                            : string.Empty;
+                    }
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }

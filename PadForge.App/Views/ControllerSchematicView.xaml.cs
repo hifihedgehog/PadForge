@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using PadForge.Engine;
 using PadForge.ViewModels;
 
@@ -25,10 +26,16 @@ namespace PadForge.Views
 
         // Accent color for pressed/active elements
         private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
+        private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
         private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
         private static readonly Brush BgBrush = new SolidColorBrush(Color.FromRgb(0x2D, 0x2D, 0x2D));
         private static readonly Brush LabelBrush = new SolidColorBrush(Color.FromRgb(0xBB, 0xBB, 0xBB));
         private static readonly Brush DotBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
+
+        // Flash state
+        private DispatcherTimer _flashTimer;
+        private string _flashTarget;
+        private bool _flashOn;
 
         // Widget tracking
         private readonly List<StickWidget> _stickWidgets = new();
@@ -100,6 +107,12 @@ namespace PadForge.Views
             if (e.PropertyName == nameof(PadViewModel.OutputType))
             {
                 Dispatcher.Invoke(RebuildLayout);
+                return;
+            }
+
+            if (e.PropertyName == nameof(PadViewModel.CurrentRecordingTarget))
+            {
+                Dispatcher.Invoke(() => UpdateFlashTarget(_vm?.CurrentRecordingTarget));
                 return;
             }
         }
@@ -354,12 +367,21 @@ namespace PadForge.Views
             var label = CreateLabel(povLabel, x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
-            // Clickable direction quadrants (overlay 4 invisible rectangles)
-            double qSize = PovSize / 2;
-            CreatePovClickZone(x, y, qSize, "Up", index, 0, 0, qSize * 2, qSize);          // top half
-            CreatePovClickZone(x, y + qSize, qSize, "Down", index, 0, 0, qSize * 2, qSize); // bottom half
-            CreatePovClickZone(x, y, qSize, "Left", index, 0, 0, qSize, qSize * 2);          // left half
-            CreatePovClickZone(x + qSize, y, qSize, "Right", index, 0, 0, qSize, qSize * 2); // right half
+            // Click-to-record: detect direction by click position relative to center
+            outer.Cursor = Cursors.Hand;
+            outer.MouseLeftButtonDown += (s, e) =>
+            {
+                var pos = e.GetPosition(outer);
+                double cx = pos.X - PovSize / 2;
+                double cy = pos.Y - PovSize / 2;
+                string dir;
+                if (Math.Abs(cx) > Math.Abs(cy))
+                    dir = cx > 0 ? "Right" : "Left";
+                else
+                    dir = cy > 0 ? "Down" : "Up";
+                ControllerElementRecordRequested?.Invoke(this, $"VJoyPov{index}{dir}");
+                e.Handled = true;
+            };
 
             return new PovWidget
             {
@@ -368,26 +390,6 @@ namespace PadForge.Views
                 CenterX = x + PovSize / 2,
                 CenterY = y + PovSize / 2
             };
-        }
-
-        private void CreatePovClickZone(double x, double y, double qSize, string dir, int povIdx,
-            double offX, double offY, double width, double height)
-        {
-            var zone = new Rectangle
-            {
-                Width = width,
-                Height = height,
-                Fill = Brushes.Transparent,
-                Cursor = Cursors.Hand
-            };
-            Canvas.SetLeft(zone, x + offX);
-            Canvas.SetTop(zone, y + offY);
-            zone.MouseLeftButtonDown += (s, e) =>
-            {
-                ControllerElementRecordRequested?.Invoke(this, $"VJoyPov{povIdx}{dir}");
-                e.Handled = true;
-            };
-            SchematicCanvas.Children.Add(zone);
         }
 
         // ─────────────────────────────────────────────
@@ -428,6 +430,101 @@ namespace PadForge.Views
             };
 
             return new ButtonWidget { ButtonIndex = index, Circle = circle };
+        }
+
+        // ─────────────────────────────────────────────
+        //  Flash animation for recording target
+        // ─────────────────────────────────────────────
+
+        private void UpdateFlashTarget(string target)
+        {
+            // Stop existing flash
+            if (_flashTimer != null)
+            {
+                _flashTimer.Stop();
+                _flashTimer = null;
+            }
+
+            // Reset previous flash element
+            ApplyFlashState(false);
+
+            _flashTarget = target;
+
+            if (string.IsNullOrEmpty(target))
+                return;
+
+            // Start flash timer (blink at ~3Hz)
+            _flashOn = true;
+            _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(170) };
+            _flashTimer.Tick += (s, e) =>
+            {
+                _flashOn = !_flashOn;
+                ApplyFlashState(_flashOn);
+            };
+            _flashTimer.Start();
+            ApplyFlashState(true);
+        }
+
+        private void ApplyFlashState(bool highlight)
+        {
+            if (string.IsNullOrEmpty(_flashTarget)) return;
+
+            string t = _flashTarget;
+            // Strip "Neg" suffix for matching
+            string baseTarget = t.EndsWith("Neg", StringComparison.Ordinal) ? t[..^3] : t;
+
+            // Check sticks (match VJoyAxisN where N is either X or Y index)
+            foreach (var w in _stickWidgets)
+            {
+                if (baseTarget == $"VJoyAxis{w.AxisXIndex}" || baseTarget == $"VJoyAxis{w.AxisYIndex}")
+                {
+                    w.Dot.Fill = highlight ? FlashBrush : AccentBrush;
+                    return;
+                }
+            }
+
+            // Check triggers
+            foreach (var w in _triggerWidgets)
+            {
+                if (baseTarget == $"VJoyAxis{w.AxisIndex}")
+                {
+                    w.Fill.Fill = highlight ? FlashBrush : AccentBrush;
+                    return;
+                }
+            }
+
+            // Check buttons
+            foreach (var w in _buttonWidgets)
+            {
+                if (t == $"VJoyBtn{w.ButtonIndex}")
+                {
+                    w.Circle.Stroke = highlight ? FlashBrush : DimBrush;
+                    w.Circle.StrokeThickness = highlight ? 2.5 : 1.5;
+                    return;
+                }
+            }
+
+            // Check POVs (match VJoyPov{N}Up/Down/Left/Right)
+            foreach (var w in _povWidgets)
+            {
+                if (t.StartsWith($"VJoyPov{w.PovIndex}", StringComparison.Ordinal))
+                {
+                    w.Arrow.Fill = highlight ? FlashBrush : AccentBrush;
+                    w.Arrow.Visibility = Visibility.Visible;
+                    // Show arrow pointing in the target direction
+                    string dir = t.Substring($"VJoyPov{w.PovIndex}".Length);
+                    double angle = dir switch
+                    {
+                        "Up" => 0,
+                        "Right" => 90,
+                        "Down" => 180,
+                        "Left" => 270,
+                        _ => 0
+                    };
+                    w.Arrow.RenderTransform = new RotateTransform(angle);
+                    return;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────

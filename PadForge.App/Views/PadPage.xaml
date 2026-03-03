@@ -239,7 +239,7 @@
                             <!-- Preset selector -->
                             <TextBlock Text="Preset" VerticalAlignment="Center" Margin="0,0,6,0"
                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" FontSize="13"/>
-                            <ComboBox x:Name="VJoyPresetCombo" Width="110" VerticalAlignment="Center"
+                            <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
                                       SelectionChanged="VJoyPresetCombo_SelectionChanged">
                                 <ComboBoxItem Content="Xbox 360"/>
                                 <ComboBoxItem Content="DualShock 4"/>
@@ -269,7 +269,7 @@
 
                                 <TextBlock Text="Buttons" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                <TextBox x:Name="VJoyButtonCountBox" Width="48" VerticalAlignment="Center"
+                                <TextBox x:Name="VJoyButtonCountBox" Width="56" VerticalAlignment="Center"
                                          TextAlignment="Center" Text="11"
                                          LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
                             </StackPanel>

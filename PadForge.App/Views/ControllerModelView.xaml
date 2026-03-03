@@ -14,7 +14,7 @@
                                IsMoveEnabled="False"
                                IsZoomEnabled="True"
                                ShowViewCube="False"
-                               ZoomExtentsWhenLoaded="True"
+                               ZoomExtentsWhenLoaded="False"
                                Background="Transparent"
                                MouseLeftButtonDown="Viewport_MouseLeftButtonDown"
                                MouseMove="Viewport_MouseMove"
@@ -28,7 +28,7 @@
             <helix:HelixViewport3D.Camera>
                 <PerspectiveCamera FieldOfView="35"
                                    LookDirection="0,0.866,-0.5"
-                                   Position="0,-173,100"
+                                   Position="0,-86.5,50"
                                    UpDirection="0,0,1" />
             </helix:HelixViewport3D.Camera>
         </helix:HelixViewport3D>

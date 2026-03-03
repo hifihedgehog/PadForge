@@ -69,6 +69,16 @@ namespace PadForge.Common.Input
 
                     // Map the input state to a gamepad.
                     us.OutputState = MapInputToGamepad(ud.InputState, ps);
+
+                    // For custom vJoy slots, also produce the raw vJoy output state.
+                    int slot = us.MapTo;
+                    if (slot >= 0 && slot < MaxPads &&
+                        SlotControllerTypes[slot] == VirtualControllerType.VJoy &&
+                        SlotVJoyIsCustom[slot])
+                    {
+                        var cfg = SlotVJoyConfigs[slot];
+                        us.VJoyRawOutputState = MapInputToVJoyRaw(ud.InputState, ps, cfg);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -761,6 +771,72 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
             return int.TryParse(value, out int result) ? result : defaultValue;
+        }
+
+        // ─────────────────────────────────────────────
+        //  vJoy Custom mapping engine
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Maps a CustomInputState to a VJoyRawState using the PadSetting's vJoy
+        /// dictionary-based mappings. Used for custom vJoy configurations with
+        /// arbitrary numbers of axes, buttons, and POVs.
+        /// </summary>
+        private static VJoyRawState MapInputToVJoyRaw(CustomInputState state, PadSetting ps,
+            VJoyVirtualController.VJoyDeviceConfig cfg)
+        {
+            var raw = VJoyRawState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
+            raw.Clear(); // POVs need to start centered
+
+            // ── Axes ──
+            // Stick axes are in pairs: VJoyAxis0/VJoyAxis1 = Stick 1 X/Y, etc.
+            // Trigger axes fill after sticks: VJoyAxis{stickAxes + i}
+            for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
+            {
+                string posDesc = ps.GetVJoyMapping($"VJoyAxis{i}");
+                string negDesc = ps.GetVJoyMapping($"VJoyAxis{i}Neg");
+                raw.Axes[i] = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+            }
+
+            // ── Buttons ──
+            for (int i = 0; i < cfg.Buttons; i++)
+            {
+                string desc = ps.GetVJoyMapping($"VJoyBtn{i}");
+                if (MapToButtonPressed(state, desc))
+                    raw.SetButton(i, true);
+            }
+
+            // ── POVs ──
+            for (int p = 0; p < cfg.Povs && p < raw.Povs.Length; p++)
+            {
+                // Individual direction buttons → continuous POV value
+                bool up = MapToButtonPressed(state, ps.GetVJoyMapping($"VJoyPov{p}Up"));
+                bool down = MapToButtonPressed(state, ps.GetVJoyMapping($"VJoyPov{p}Down"));
+                bool left = MapToButtonPressed(state, ps.GetVJoyMapping($"VJoyPov{p}Left"));
+                bool right = MapToButtonPressed(state, ps.GetVJoyMapping($"VJoyPov{p}Right"));
+
+                raw.Povs[p] = DirectionToContinuousPov(up, down, left, right);
+            }
+
+            // TODO: Dead zones for custom vJoy axes (future enhancement)
+
+            return raw;
+        }
+
+        /// <summary>
+        /// Converts 4 direction booleans to a continuous POV value (0-35900, -1=centered).
+        /// </summary>
+        private static int DirectionToContinuousPov(bool up, bool down, bool left, bool right)
+        {
+            if (up && right) return 4500;
+            if (right && down) return 13500;
+            if (down && left) return 22500;
+            if (left && up) return 31500;
+            if (up) return 0;
+            if (right) return 9000;
+            if (down) return 18000;
+            if (left) return 27000;
+            return -1; // Centered
         }
     }
 }

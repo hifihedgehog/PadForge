@@ -48,10 +48,14 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _rawValue, value);
         }
 
-        public TriggerConfigItem(int index, string title)
+        /// <summary>Raw axis index in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
+        public int AxisIndex { get; }
+
+        public TriggerConfigItem(int index, string title, int axisIndex = -1)
         {
             Index = index;
             Title = title;
+            AxisIndex = axisIndex;
         }
     }
 }

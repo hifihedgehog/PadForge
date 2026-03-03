@@ -147,6 +147,14 @@ namespace PadForge.Engine.Data
         public Gamepad OutputState { get; set; }
 
         /// <summary>
+        /// The mapped vJoy raw output state computed in Step 3 for custom vJoy slots.
+        /// Only populated when the slot uses VJoy with Custom preset.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public VJoyRawState VJoyRawOutputState { get; set; }
+
+        /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.
         /// </summary>
         [XmlIgnore]

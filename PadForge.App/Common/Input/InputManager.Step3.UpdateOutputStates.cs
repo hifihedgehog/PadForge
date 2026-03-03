@@ -788,37 +788,19 @@ namespace PadForge.Common.Input
             var raw = VJoyRawState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
             raw.Clear(); // POVs need to start centered
 
-            // Compute which axis indices are stick Y axes so we can apply NegateAxis.
-            // HID Y-axis convention: 0=up, max=down. But our signed short pipeline uses
-            // positive=down. Without NegateAxis, pushing up gives negative → HID low → up (correct).
-            // The gamepad path applies NegateAxis to Y so positive=up, but for vJoy custom we
-            // need to apply the same inversion so the schematic/recording conventions are consistent.
-            var stickYAxes = new System.Collections.Generic.HashSet<int>();
-            if (cfg.Sticks > 0)
-            {
-                int interleave = Math.Min(cfg.Sticks, cfg.Triggers);
-                for (int g = 0; g < interleave; g++)
-                    stickYAxes.Add(g * 3 + 1); // Y axis in interleaved group
-                int offset = interleave * 3;
-                for (int i = interleave; i < cfg.Sticks; i++)
-                {
-                    stickYAxes.Add(offset + 1); // Y axis after interleaved groups
-                    offset += 2;
-                }
-            }
-
             // ── Axes ──
-            // Stick axes are in pairs: VJoyAxis0/VJoyAxis1 = Stick 1 X/Y, etc.
-            // Trigger axes fill after sticks: VJoyAxis{stickAxes + i}
+            // Raw vJoy axes use signed short internally. SubmitRawState converts to unsigned
+            // HID range via (signed + 32768) / 2, preserving the natural direction:
+            //   signed negative → HID low (0 = up/left)
+            //   signed positive → HID high (32767 = down/right)
+            // No NegateAxis needed here — unlike the gamepad path (which applies NegateAxis
+            // + HID Y inversion in SubmitGamepadState), the raw path has no second inversion.
+            // The display layer (UpdateFromVJoyRawState) applies its own 1.0-Y for LiveY.
             for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
             {
                 string posDesc = ps.GetVJoyMapping($"VJoyAxis{i}");
                 string negDesc = ps.GetVJoyMapping($"VJoyAxis{i}Neg");
-                short value = MapToThumbAxisWithNeg(state, posDesc, negDesc);
-                // Apply Y-axis inversion for stick Y axes (same as gamepad NegateAxis)
-                if (stickYAxes.Contains(i))
-                    value = NegateAxis(value);
-                raw.Axes[i] = value;
+                raw.Axes[i] = MapToThumbAxisWithNeg(state, posDesc, negDesc);
             }
 
             // ── Buttons ──

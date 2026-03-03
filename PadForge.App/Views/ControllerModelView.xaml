@@ -9,7 +9,7 @@
 
     <Grid>
         <helix:HelixViewport3D x:Name="ModelViewPort"
-                               IsRotationEnabled="True"
+                               IsRotationEnabled="False"
                                IsPanEnabled="False"
                                IsMoveEnabled="False"
                                IsZoomEnabled="True"
@@ -17,6 +17,8 @@
                                ZoomExtentsWhenLoaded="False"
                                Background="Transparent"
                                MouseLeftButtonDown="Viewport_MouseLeftButtonDown"
+                               MouseRightButtonDown="Viewport_MouseRightButtonDown"
+                               MouseRightButtonUp="Viewport_MouseRightButtonUp"
                                MouseMove="Viewport_MouseMove"
                                MouseLeave="Viewport_MouseLeave">
 

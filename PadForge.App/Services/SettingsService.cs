@@ -422,7 +422,6 @@ namespace PadForge.Services
                     continue;
 
                 var padVm = _mainVm.Pads[md.PadIndex];
-                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
                 var macro = new MacroItem
                 {
                     Name = md.Name ?? "Macro",
@@ -436,8 +435,7 @@ namespace PadForge.Services
                     ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                     RepeatMode = md.RepeatMode,
                     RepeatCount = md.RepeatCount,
-                    RepeatDelayMs = md.RepeatDelayMs,
-                    ButtonStyle = style
+                    RepeatDelayMs = md.RepeatDelayMs
                 };
 
                 if (md.Actions != null)
@@ -459,6 +457,10 @@ namespace PadForge.Services
                         });
                     }
                 }
+
+                // Set after actions are populated so propagation reaches all of them.
+                macro.ButtonStyle = MacroButtonNames.DeriveStyle(
+                    padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
 
                 padVm.Macros.Add(macro);
             }

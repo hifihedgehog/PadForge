@@ -40,13 +40,15 @@ namespace PadForge.Views
         // Flash animation
         private DispatcherTimer _flashTimer;
         private string _flashTarget;
+        private string _flashRawTarget; // Original target before resolution (e.g., "LeftThumbAxisXNeg")
+        private Geometry _flashStickClip; // Stored clip for re-application on each tick
         private bool _flashOn;
 
         // Hover state
         private string _hoverTarget;
 
-        // Stick quadrant highlight
-        private readonly Dictionary<string, Path> _stickHighlights = new();
+        // Stick quadrant highlight (uses stick click overlay image, clipped to quadrant)
+        private readonly Dictionary<string, Image> _stickHighlights = new();
 
         // Layout data
         private double _stickMaxTravel;
@@ -219,23 +221,26 @@ namespace PadForge.Views
                 hitRect.MouseLeave += HitArea_MouseLeave;
                 ModelCanvas.Children.Add(hitRect);
 
-                // Stick quadrant highlight path (hidden until hover)
                 if (ov.ElementType == OverlayElementType.StickRing)
-                {
-                    var highlight = new Path
-                    {
-                        Fill = new SolidColorBrush(Color.FromArgb(80, 255, 255, 255)),
-                        IsHitTestVisible = false,
-                        Visibility = Visibility.Collapsed,
-                    };
-                    Canvas.SetLeft(highlight, ov.X);
-                    Canvas.SetTop(highlight, ov.Y);
-                    Panel.SetZIndex(highlight, 5);
-                    _stickHighlights[ov.TargetName] = highlight;
-                    ModelCanvas.Children.Add(highlight);
-
                     hitRect.MouseMove += StickHitArea_MouseMove;
-                }
+            }
+
+            // Create stick quadrant highlights using the stick click overlay image
+            foreach (var ov in overlays)
+            {
+                if (ov.ElementType != OverlayElementType.StickClick) continue;
+
+                // Map stick click target to its ring target
+                string ringTarget = ov.TargetName == "LeftThumbButton" ? "LeftThumbRing" : "RightThumbRing";
+
+                string clickImgPath = $"2DModels/{folder}/{ov.ImageFile}";
+                var highlight = CreateImage(clickImgPath, ov.X, ov.Y, ov.Width, ov.Height);
+                highlight.IsHitTestVisible = false;
+                highlight.Opacity = 0.4;
+                highlight.Visibility = Visibility.Collapsed;
+                Panel.SetZIndex(highlight, 5);
+                _stickHighlights[ringTarget] = highlight;
+                ModelCanvas.Children.Add(highlight);
             }
         }
 
@@ -419,6 +424,7 @@ namespace PadForge.Views
                 _stickHighlights.TryGetValue(target, out var highlight))
             {
                 highlight.Visibility = Visibility.Collapsed;
+                highlight.Clip = null;
             }
             _hoverTarget = null;
             _dirty = true; // Next render frame restores proper state
@@ -431,46 +437,48 @@ namespace PadForge.Views
             if (!_stickHighlights.TryGetValue(target, out var highlight))
                 return;
 
-            var pos = e.GetPosition(rect);
-            double w = rect.Width, h = rect.Height;
-            double cx = w / 2, cy = h / 2;
-            double dx = pos.X - cx, dy = pos.Y - cy;
-            double dist = Math.Sqrt(dx * dx + dy * dy);
-            double radius = Math.Min(w, h) / 2;
+            // Hit rect is stick ring coords; highlight image is stick click coords (slightly larger)
+            // Compute clip in the highlight image's local coordinate space
+            double hw = highlight.Width, hh = highlight.Height;
+            double hcx = hw / 2, hcy = hh / 2;
+            double hrx = hw / 2, hry = hh / 2;
 
-            Geometry geom;
-            if (dist < radius * 0.3)
+            // Mouse position relative to stick ring hit rect
+            var pos = e.GetPosition(rect);
+            double rw = rect.Width, rh = rect.Height;
+            double rcx = rw / 2, rcy = rh / 2;
+            double dx = pos.X - rcx, dy = pos.Y - rcy;
+            double rdist = Math.Sqrt(dx * dx / (rcx * rcx) + dy * dy / (rcy * rcy));
+            double centerR = 0.3;
+
+            Geometry clip;
+            if (rdist < centerR)
             {
-                // Center — circle for stick click
-                geom = new EllipseGeometry(new Point(cx, cy), radius * 0.3, radius * 0.3);
-            }
-            else if (Math.Abs(dx) >= Math.Abs(dy))
-            {
-                if (dx >= 0)
-                    geom = CreateWedge(cx, cy, w, 0, w, h); // Right
-                else
-                    geom = CreateWedge(cx, cy, 0, 0, 0, h); // Left
+                clip = new EllipseGeometry(new Point(hcx, hcy), hrx * centerR, hry * centerR);
             }
             else
             {
-                if (dy >= 0)
-                    geom = CreateWedge(cx, cy, 0, h, w, h); // Bottom
+                var fullEllipse = new EllipseGeometry(new Point(hcx, hcy), hrx, hry);
+                var centerEllipse = new EllipseGeometry(new Point(hcx, hcy), hrx * centerR, hry * centerR);
+
+                Rect halfRect;
+                if (Math.Abs(dx) >= Math.Abs(dy))
+                    halfRect = dx >= 0
+                        ? new Rect(hcx, 0, hw / 2, hh)
+                        : new Rect(0, 0, hw / 2, hh);
                 else
-                    geom = CreateWedge(cx, cy, 0, 0, w, 0); // Top
+                    halfRect = dy >= 0
+                        ? new Rect(0, hcy, hw, hh / 2)
+                        : new Rect(0, 0, hw, hh / 2);
+
+                var quadrant = new CombinedGeometry(GeometryCombineMode.Intersect,
+                    fullEllipse, new RectangleGeometry(halfRect));
+                clip = new CombinedGeometry(GeometryCombineMode.Exclude,
+                    quadrant, centerEllipse);
             }
 
-            highlight.Data = geom;
+            highlight.Clip = clip;
             highlight.Visibility = Visibility.Visible;
-        }
-
-        private static Geometry CreateWedge(double cx, double cy, double x1, double y1, double x2, double y2)
-        {
-            var fig = new PathFigure { StartPoint = new Point(cx, cy), IsClosed = true };
-            fig.Segments.Add(new LineSegment(new Point(x1, y1), true));
-            fig.Segments.Add(new LineSegment(new Point(x2, y2), true));
-            var pathGeom = new PathGeometry();
-            pathGeom.Figures.Add(fig);
-            return pathGeom;
         }
 
         // ─────────────────────────────────────────────
@@ -482,7 +490,18 @@ namespace PadForge.Views
             StopFlash();
             if (string.IsNullOrEmpty(target)) return;
 
+            _flashRawTarget = target;
             _flashTarget = ResolveFlashTarget(target);
+
+            // For stick axes, compute and store the quadrant clip
+            _flashStickClip = null;
+            if (IsStickAxisTarget(target) && _stickHighlights.TryGetValue(_flashTarget, out var highlight))
+            {
+                _flashStickClip = GetStickQuadrantClip(target, highlight.Width, highlight.Height);
+                highlight.Clip = _flashStickClip;
+                highlight.Opacity = 0.4;
+            }
+
             _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
             _flashTimer.Tick += FlashTick;
             _flashTimer.Start();
@@ -491,24 +510,83 @@ namespace PadForge.Views
 
         private string ResolveFlashTarget(string target)
         {
-            // Axis targets -> stick ring
             if (target.Contains("LeftThumbAxis")) return "LeftThumbRing";
             if (target.Contains("RightThumbAxis")) return "RightThumbRing";
+            if (target == "LeftThumbButton") return "LeftThumbRing";
+            if (target == "RightThumbButton") return "RightThumbRing";
             return target;
+        }
+
+        private static bool IsStickAxisTarget(string target) =>
+            target.Contains("ThumbAxis") || target == "LeftThumbButton" || target == "RightThumbButton";
+
+        private static Geometry GetStickQuadrantClip(string target, double w, double h)
+        {
+            double cx = w / 2, cy = h / 2;
+            double rx = w / 2, ry = h / 2;
+            double centerR = 0.3;
+            var fullEllipse = new EllipseGeometry(new Point(cx, cy), rx, ry);
+            var centerEllipse = new EllipseGeometry(new Point(cx, cy), rx * centerR, ry * centerR);
+
+            if (target == "LeftThumbButton" || target == "RightThumbButton")
+                return centerEllipse;
+
+            // Determine quadrant from axis name
+            Rect halfRect;
+            if (target.Contains("AxisX"))
+            {
+                bool neg = target.EndsWith("Neg");
+                halfRect = neg
+                    ? new Rect(0, 0, w / 2, h)        // Left
+                    : new Rect(cx, 0, w / 2, h);      // Right
+            }
+            else // AxisY
+            {
+                bool neg = target.EndsWith("Neg");
+                halfRect = neg
+                    ? new Rect(0, 0, w, h / 2)        // Top (Neg = up in screen coords)
+                    : new Rect(0, cy, w, h / 2);      // Bottom
+            }
+
+            var quadrant = new CombinedGeometry(GeometryCombineMode.Intersect,
+                fullEllipse, new RectangleGeometry(halfRect));
+            return new CombinedGeometry(GeometryCombineMode.Exclude,
+                quadrant, centerEllipse);
         }
 
         private void FlashTick(object sender, EventArgs e)
         {
             _flashOn = !_flashOn;
-            if (_flashTarget != null && _overlayImages.TryGetValue(_flashTarget, out var img))
+            if (_flashTarget == null) return;
+
+            // Stick axis/button targets: flash the quadrant highlight image
+            if (IsStickAxisTarget(_flashRawTarget) && _stickHighlights.TryGetValue(_flashTarget, out var highlight))
             {
-                img.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
-                if (_flashOn)
+                // Re-apply clip on every tick to guard against it being cleared
+                if (_flashStickClip != null)
+                    highlight.Clip = _flashStickClip;
+                highlight.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
+                return;
+            }
+
+            // All other targets: flash the overlay image
+            if (_overlayImages.TryGetValue(_flashTarget, out var img))
+            {
+                _elementTypes.TryGetValue(_flashTarget, out var elemType);
+
+                if (elemType == OverlayElementType.StickRing)
                 {
-                    img.Opacity = 1.0;
-                    // For triggers, show full image during flash
-                    if (_triggerClips.TryGetValue(_flashTarget, out var clip))
-                        clip.Rect = new Rect(0, 0, img.Width, img.Height);
+                    img.Opacity = _flashOn ? 1.0 : 0.2;
+                }
+                else
+                {
+                    img.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
+                    if (_flashOn)
+                    {
+                        img.Opacity = 1.0;
+                        if (_triggerClips.TryGetValue(_flashTarget, out var clip))
+                            clip.Rect = new Rect(0, 0, img.Width, img.Height);
+                    }
                 }
             }
         }
@@ -522,13 +600,25 @@ namespace PadForge.Views
                 _flashTimer = null;
             }
 
+            // Hide stick quadrant highlight (don't clear clip — UpdateFlashTarget will set it fresh)
+            if (_flashTarget != null && _stickHighlights.TryGetValue(_flashTarget, out var highlight))
+            {
+                highlight.Visibility = Visibility.Collapsed;
+            }
+            _flashStickClip = null;
+
             // Restore the flashed element to its default state
             if (_flashTarget != null && _overlayImages.TryGetValue(_flashTarget, out var img))
             {
+                _elementTypes.TryGetValue(_flashTarget, out var elemType);
+
                 if (_triggerClips.TryGetValue(_flashTarget, out var clip))
                 {
-                    // Reset trigger clip to empty — next dirty update will set correct fill
                     clip.Rect = new Rect(0, img.Height, img.Width, 0);
+                }
+                else if (elemType == OverlayElementType.StickRing)
+                {
+                    img.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -537,6 +627,7 @@ namespace PadForge.Views
                 img.Opacity = 1.0;
             }
             _flashTarget = null;
+            _flashRawTarget = null;
             _flashOn = false;
             _dirty = true;
         }

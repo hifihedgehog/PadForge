@@ -57,6 +57,7 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _outputType, value))
                 {
+                    ResetDeadZoneSettings();
                     RebuildMappings();
                     RebuildStickConfigs();
                     RebuildTriggerConfigs();
@@ -113,12 +114,14 @@ namespace PadForge.ViewModels
                 switch (e.PropertyName)
                 {
                     case nameof(VJoySlotConfig.Preset):
+                        ResetDeadZoneSettings();
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
                         break;
                     case nameof(VJoySlotConfig.ThumbstickCount):
                     case nameof(VJoySlotConfig.TriggerCount):
+                        ResetDeadZoneSettings();
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
@@ -496,6 +499,19 @@ namespace PadForge.ViewModels
         //  #2: Expanded dead zone settings
         //  Per-axis X/Y, anti-dead zone, linear, trigger dead zones
         // ═══════════════════════════════════════════════
+
+        /// <summary>Resets all dead zone, anti-dead zone, linear, and trigger settings to defaults.</summary>
+        private void ResetDeadZoneSettings()
+        {
+            LeftDeadZoneX = 0; LeftDeadZoneY = 0;
+            LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
+            LeftLinear = 0;
+            RightDeadZoneX = 0; RightDeadZoneY = 0;
+            RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
+            RightLinear = 0;
+            LeftTriggerDeadZone = 0; LeftTriggerAntiDeadZone = 0; LeftTriggerMaxRange = 100;
+            RightTriggerDeadZone = 0; RightTriggerAntiDeadZone = 0; RightTriggerMaxRange = 100;
+        }
 
         // ── Left Stick ──
         private int _leftDeadZoneX;

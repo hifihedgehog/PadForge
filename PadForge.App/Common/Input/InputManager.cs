@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine;
@@ -182,6 +183,11 @@ namespace PadForge.Common.Input
                     RaiseError($"SDL_Init failed: {error}", null);
                     return false;
                 }
+
+                // Load PadForge community mappings (extends SDL's built-in gamecontrollerdb).
+                string mappingsPath = Path.Combine(AppContext.BaseDirectory, "gamecontrollerdb_padforge.txt");
+                if (File.Exists(mappingsPath))
+                    SDL_AddGamepadMappingsFromFile(mappingsPath);
 
                 _sdlInitialized = true;
                 return true;

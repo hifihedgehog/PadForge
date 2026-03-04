@@ -1,0 +1,3 @@
+# PadForge Community Gamepad Mappings
+# Format: SDL gamecontrollerdb.txt (https://github.com/mdqinc/SDL_GameControllerDB)
+# Submit new mappings: https://github.com/hifihedgehog/PadForge/issues/new?template=device_mapping.yml

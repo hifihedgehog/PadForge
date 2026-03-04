@@ -247,6 +247,40 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Input hiding toggles
+        // ─────────────────────────────────────────────
+
+        private bool _hidHideEnabled;
+
+        /// <summary>Whether this device is hidden from games via HidHide (driver-level).</summary>
+        public bool HidHideEnabled
+        {
+            get => _hidHideEnabled;
+            set => SetProperty(ref _hidHideEnabled, value);
+        }
+
+        private bool _consumeInputEnabled;
+
+        /// <summary>Whether this device's mapped inputs are consumed via low-level hooks.</summary>
+        public bool ConsumeInputEnabled
+        {
+            get => _consumeInputEnabled;
+            set => SetProperty(ref _consumeInputEnabled, value);
+        }
+
+        private bool _isHidHideAvailable;
+
+        /// <summary>Whether HidHide is installed and available (controls IsEnabled on the toggle).</summary>
+        public bool IsHidHideAvailable
+        {
+            get => _isHidHideAvailable;
+            set => SetProperty(ref _isHidHideAvailable, value);
+        }
+
+        /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
+        public bool ShowConsumeToggle => _deviceType == "Keyboard" || _deviceType == "Mouse";
+
+        // ─────────────────────────────────────────────
         //  Device path
         // ─────────────────────────────────────────────
 

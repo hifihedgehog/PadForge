@@ -1,0 +1,66 @@
+name: "Game Config Submission"
+description: "Submit a recommended controller configuration for a specific game"
+title: "[Game Config] "
+labels: ["game-config"]
+body:
+  - type: input
+    id: game_name
+    attributes:
+      label: Game Name
+      description: "Full name of the game or emulator"
+      placeholder: "e.g. Cemu (Wii U Emulator)"
+    validations:
+      required: true
+
+  - type: input
+    id: exe_names
+    attributes:
+      label: Executable Name(s)
+      description: "Comma-separated executable filenames (just the filename, not the full path)"
+      placeholder: "e.g. cemu.exe, game.exe"
+    validations:
+      required: true
+
+  - type: input
+    id: config_label
+    attributes:
+      label: Config Label
+      description: "Short label to distinguish this config from others for the same game"
+      placeholder: "e.g. DS4 with gyro, Xbox basic"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: output_type
+    attributes:
+      label: Recommended Output Type
+      description: "Which virtual controller type works best?"
+      options:
+        - Xbox 360
+        - DualShock 4
+        - vJoy
+        - No preference
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Settings / Notes
+      description: "Describe recommended settings, tips, or quirks for this configuration. Include any specific PadForge settings that should be enabled (e.g. DSU motion server, dead zone values, axis mappings)."
+      placeholder: |
+        - Enable DSU motion server for gyro support
+        - Set left stick dead zone to 15%
+        - Use DS4 output for touchpad-as-touchscreen support
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: I tested these settings with PadForge
+          required: true
+        - label: The game works correctly with these settings
+          required: true

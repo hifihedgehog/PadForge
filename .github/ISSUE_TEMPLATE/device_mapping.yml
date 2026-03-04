@@ -1,0 +1,151 @@
+name: Device Mapping Submission
+description: Submit a gamepad mapping for a device not recognized by PadForge
+title: "[Device Mapping] "
+labels: ["device-mapping"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing a device mapping! This helps PadForge automatically recognize your controller.
+
+        **How to fill this out:**
+        1. Connect your device and open PadForge's **Devices** page
+        2. Select your device to see the raw input visualization
+        3. Press each physical button/axis and note which raw index lights up
+        4. Fill in the mapping tables below
+
+  - type: input
+    id: device_name
+    attributes:
+      label: Device Name
+      description: As shown in PadForge's Devices page
+      placeholder: "e.g., HORIPAD S"
+    validations:
+      required: true
+
+  - type: input
+    id: vid
+    attributes:
+      label: USB Vendor ID (hex)
+      description: From the VID:PID line on the Devices page
+      placeholder: "e.g., 0F0D"
+    validations:
+      required: true
+
+  - type: input
+    id: pid
+    attributes:
+      label: USB Product ID (hex)
+      description: From the VID:PID line on the Devices page
+      placeholder: "e.g., 00C1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+
+  - type: input
+    id: axes
+    attributes:
+      label: Axis Count
+      description: Number of axes shown in the raw input visualization
+      placeholder: "e.g., 6"
+
+  - type: input
+    id: buttons
+    attributes:
+      label: Button Count
+      description: Number of buttons shown in the raw input visualization
+      placeholder: "e.g., 14"
+
+  - type: input
+    id: hats
+    attributes:
+      label: Hat/POV Count
+      description: Number of D-Pad hat switches
+      placeholder: "e.g., 1"
+
+  - type: textarea
+    id: button_mapping
+    attributes:
+      label: Button Mapping
+      description: |
+        For each physical button, note which raw button index lights up in PadForge's Devices page.
+        Leave blank for buttons your controller doesn't have.
+      value: |
+        | Physical Button | Raw Button Index |
+        |----------------|-----------------|
+        | A (South)      |                 |
+        | B (East)       |                 |
+        | X (West)       |                 |
+        | Y (North)      |                 |
+        | Left Bumper    |                 |
+        | Right Bumper   |                 |
+        | Back/Select    |                 |
+        | Start/Menu     |                 |
+        | Left Stick Click  |              |
+        | Right Stick Click |              |
+        | Guide/Home     |                 |
+    validations:
+      required: true
+
+  - type: textarea
+    id: axis_mapping
+    attributes:
+      label: Axis Mapping
+      description: |
+        For each physical axis, note which raw axis index moves in PadForge's Devices page.
+        Also note the direction: does pushing the stick right/up increase or decrease the value?
+      value: |
+        | Physical Axis    | Raw Axis Index | Inverted? |
+        |-----------------|---------------|-----------|
+        | Left Stick X    |               | No        |
+        | Left Stick Y    |               | No        |
+        | Right Stick X   |               | No        |
+        | Right Stick Y   |               | No        |
+        | Left Trigger    |               | No        |
+        | Right Trigger   |               | No        |
+    validations:
+      required: true
+
+  - type: textarea
+    id: dpad_config
+    attributes:
+      label: D-Pad Configuration
+      description: |
+        How does the D-Pad report? Check one:
+        - **Hat switch**: Which hat index? (usually Hat 0)
+        - **Buttons**: Which raw button indices for Up/Down/Left/Right?
+      placeholder: |
+        Hat 0
+        -- or --
+        Up: button 12, Down: button 13, Left: button 14, Right: button 15
+
+  - type: textarea
+    id: sdl_mapping_string
+    attributes:
+      label: SDL Mapping String (optional)
+      description: |
+        If you have SDL's `testcontroller` utility, paste the complete mapping string here.
+        This is optional but makes adding the mapping much easier.
+      placeholder: "030000000f0d00000001000000000000,HORIPAD S,a:b0,b:b1,..."
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      description: Please confirm before submitting
+      options:
+        - label: All buttons I mapped respond correctly in PadForge's raw input visualization
+          required: true
+        - label: All axes I mapped move in the expected direction
+          required: true
+        - label: I tested with the device connected directly (not through a hub/adapter that might change the mapping)

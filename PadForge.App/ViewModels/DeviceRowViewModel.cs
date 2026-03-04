@@ -293,6 +293,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _devicePath, value);
         }
 
+        private string _hidHideInstancePath = string.Empty;
+
+        /// <summary>Resolved HID instance path used for HidHide blacklisting.</summary>
+        public string HidHideInstancePath
+        {
+            get => _hidHideInstancePath;
+            set => SetProperty(ref _hidHideInstancePath, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Display
         // ─────────────────────────────────────────────

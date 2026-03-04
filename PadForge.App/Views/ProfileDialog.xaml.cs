@@ -15,6 +15,8 @@ namespace PadForge.Views
 
         public List<GameConfigEntry> MatchedConfigs { get; } = new();
 
+        public bool MatchByFilenameOnly => FilenameOnlyCheckBox.IsChecked == true;
+
         public ProfileDialog()
         {
             InitializeComponent();
@@ -26,12 +28,13 @@ namespace PadForge.Views
         /// <summary>
         /// Pre-populates the dialog for editing an existing profile.
         /// </summary>
-        public void LoadForEdit(string name, IEnumerable<string> exePaths)
+        public void LoadForEdit(string name, IEnumerable<string> exePaths, bool matchByFilenameOnly)
         {
             NameBox.Text = name;
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
+            FilenameOnlyCheckBox.IsChecked = matchByFilenameOnly;
             Title = "Edit Profile";
             UpdateConfigHint();
         }

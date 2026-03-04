@@ -28,6 +28,12 @@ namespace PadForge.Common
 
         [JsonPropertyName("settings")]
         public Dictionary<string, JsonElement> Settings { get; set; }
+
+        [JsonIgnore]
+        public bool EnableDsuMotionServer =>
+            Settings != null &&
+            Settings.TryGetValue("enableDsuMotionServer", out var val) &&
+            val.ValueKind == JsonValueKind.True;
     }
 
     public static class GameConfigDatabase

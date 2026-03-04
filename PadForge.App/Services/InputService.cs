@@ -1743,8 +1743,12 @@ namespace PadForge.Services
             row.DevicePath = ud.DevicePath;
 
             // Resolve the HID instance path for display.
-            string instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
-            if (instancePath != null && instancePath.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+            // Individual devices have real HID paths; merged devices (aggregate://) do not.
+            string instancePath = null;
+            if (!string.IsNullOrEmpty(ud.DevicePath) && !ud.DevicePath.StartsWith("aggregate://"))
+                instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+
+            if (!string.IsNullOrEmpty(instancePath) && instancePath.Length > 3)
                 row.HidHideInstancePath = instancePath;
             else if (ud.HidHideInstanceIds.Count > 0)
                 row.HidHideInstancePath = ud.HidHideInstanceIds[0];

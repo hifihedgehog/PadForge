@@ -1429,10 +1429,23 @@ namespace PadForge.Services
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
                     {
                         string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
-                        if (instanceId != null)
+
+                        // If the DevicePath produced a valid HID instance ID, use it directly.
+                        if (instanceId != null && instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase))
                         {
                             HidHideController.AddToBlacklist(instanceId);
                             anyHidHide = true;
+                        }
+                        // Fallback: synthetic paths (e.g., "XInput#0") — look up by VID/PID.
+                        else if (ud.VendorId > 0 && ud.ProdId > 0)
+                        {
+                            var realIds = HidHideController.FindInstanceIdsByVidPid(
+                                (ushort)ud.VendorId, (ushort)ud.ProdId);
+                            foreach (var realId in realIds)
+                            {
+                                HidHideController.AddToBlacklist(realId);
+                                anyHidHide = true;
+                            }
                         }
                     }
                 }

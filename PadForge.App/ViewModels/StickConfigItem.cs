@@ -113,6 +113,12 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _rawY, value);
         }
 
+        /// <summary>Unprocessed hardware value for calibration (not affected by offset/dead zone).</summary>
+        public short HardwareRawX { get; set; }
+
+        /// <summary>Unprocessed hardware value for calibration (not affected by offset/dead zone).</summary>
+        public short HardwareRawY { get; set; }
+
         /// <summary>Raw axis index for X in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisXIndex { get; }
 
@@ -141,8 +147,8 @@ namespace PadForge.ViewModels
             var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             timer.Tick += (s, e) =>
             {
-                samplesX.Add(RawX);
-                samplesY.Add(RawY);
+                samplesX.Add(HardwareRawX);
+                samplesY.Add(HardwareRawY);
                 if (samplesX.Count >= 15)
                 {
                     timer.Stop();

@@ -207,7 +207,7 @@
                         </TextBlock>
 
                         <!-- Submit mapping (only for non-gamepad devices) -->
-                        <Button Content="Submit Device Mapping" Margin="0,6,0,0"
+                        <Button Content="Submit Device Mapping" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="SubmitMapping_Click"
                                 Visibility="{Binding SelectedDevice.IsGamepad, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">

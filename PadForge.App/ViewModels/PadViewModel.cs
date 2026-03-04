@@ -1239,6 +1239,8 @@ namespace PadForge.ViewModels
                 StickConfigs[0].LiveY = ly;
                 StickConfigs[0].RawX = (short)Math.Clamp((lx - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].RawY = (short)Math.Clamp((0.5 - ly) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[0].HardwareRawX = gp.ThumbLX;
+                StickConfigs[0].HardwareRawY = gp.ThumbLY;
             }
             if (StickConfigs.Count > 1)
             {
@@ -1252,6 +1254,8 @@ namespace PadForge.ViewModels
                 StickConfigs[1].LiveY = ry;
                 StickConfigs[1].RawX = (short)Math.Clamp((rx - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].RawY = (short)Math.Clamp((0.5 - ry) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[1].HardwareRawX = gp.ThumbRX;
+                StickConfigs[1].HardwareRawY = gp.ThumbRY;
             }
             if (TriggerConfigs.Count > 0)
             {
@@ -1321,6 +1325,7 @@ namespace PadForge.ViewModels
             {
                 if (stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length)
                 {
+                    stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
                     double normX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
                     double px = ProcessAxisForPreview(
                         normX + stick.CenterOffsetX / 200.0,
@@ -1330,6 +1335,7 @@ namespace PadForge.ViewModels
                 }
                 if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
                 {
+                    stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
                     double normY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
                     double py = ProcessAxisForPreview(
                         normY - stick.CenterOffsetY / 200.0,

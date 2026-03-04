@@ -26,6 +26,9 @@
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
             <Setter Property="TickFrequency" Value="1"/>
         </Style>
+        <Style x:Key="OffsetSlider" TargetType="Slider" BasedOn="{StaticResource DzSlider}">
+            <Setter Property="Minimum" Value="-100"/>
+        </Style>
         <Style x:Key="DzValue" TargetType="TextBlock">
             <Setter Property="Width" Value="35"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -710,6 +713,38 @@
 
                                         <!-- Sliders (left) -->
                                         <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                            <!-- Center Offset Calibration -->
+                                            <Button Margin="0,0,0,8"
+                                                    Click="CalibrateCenter_Click"
+                                                    Padding="8,4" HorizontalAlignment="Left">
+                                                <Button.Style>
+                                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                        <Setter Property="Content" Value="Calibrate Center"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCalibrating}" Value="True">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                                <Setter Property="Content" Value="Sampling..."/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Center Offset X:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding CenterOffsetX, Mode=TwoWay}"
+                                                        Style="{StaticResource OffsetSlider}"/>
+                                                <TextBox Text="{Binding CenterOffsetX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Center Offset Y:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding CenterOffsetY, Mode=TwoWay}"
+                                                        Style="{StaticResource OffsetSlider}"/>
+                                                <TextBox Text="{Binding CenterOffsetY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding DeadZoneX, Mode=TwoWay}"
@@ -747,6 +782,24 @@
                                                 <Slider Value="{Binding Linear, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding Linear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Max Range X:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding MaxRangeX, Mode=TwoWay}"
+                                                        Minimum="1" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding MaxRangeX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Max Range Y:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding MaxRangeY, Mode=TwoWay}"
+                                                        Minimum="1" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding MaxRangeY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                             </StackPanel>

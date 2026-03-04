@@ -44,21 +44,25 @@ namespace PadForge.Views
                 if (!string.IsNullOrEmpty(selected.Executables))
                     url += $"&exe_names={Uri.EscapeDataString(selected.Executables)}";
 
-                // Determine output type label for the template field
                 var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
                 if (profile != null)
                 {
-                    // Use slot 0's output type for the "Output Type" template field
                     if (profile.SlotControllerTypes != null && profile.SlotCreated != null
                         && profile.SlotCreated.Length > 0 && profile.SlotCreated[0])
                     {
                         url += $"&output_type={Uri.EscapeDataString(FormatOutputType((VirtualControllerType)profile.SlotControllerTypes[0]))}";
                     }
 
-                    // Build per-slot structured export
+                    // Copy settings JSON to clipboard (too large for URL params).
                     string exportJson = BuildPerSlotExport(profile);
                     if (!string.IsNullOrEmpty(exportJson))
-                        url += $"&notes={Uri.EscapeDataString(exportJson)}";
+                    {
+                        Clipboard.SetText(exportJson);
+                        MessageBox.Show(
+                            "Your profile settings have been copied to the clipboard.\n\n" +
+                            "Paste them into the \"Exported Settings\" field on the GitHub issue form.",
+                            "Settings Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
             }
 

@@ -1742,6 +1742,15 @@ namespace PadForge.Services
             row.HasAccel = ud.HasAccel;
             row.DevicePath = ud.DevicePath;
 
+            // Resolve the HID instance path for display.
+            string instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+            if (instancePath != null && instancePath.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+                row.HidHideInstancePath = instancePath;
+            else if (ud.HidHideInstanceIds.Count > 0)
+                row.HidHideInstancePath = ud.HidHideInstanceIds[0];
+            else
+                row.HidHideInstancePath = string.Empty;
+
             // Input hiding toggle state.
             row.HidHideEnabled = ud.HidHideEnabled;
             row.ConsumeInputEnabled = ud.ConsumeInputEnabled;

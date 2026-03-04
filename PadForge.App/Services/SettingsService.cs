@@ -1381,6 +1381,13 @@ namespace PadForge.Services
         /// <summary>DSU motion server port for this profile.</summary>
         [XmlElement]
         public int DsuMotionServerPort { get; set; } = 26760;
+
+        /// <summary>
+        /// When true, matches foreground window by filename only (e.g. "cemu.exe")
+        /// instead of full path. Useful for portable/emulator apps without fixed install paths.
+        /// </summary>
+        [XmlElement]
+        public bool MatchByFilenameOnly { get; set; }
     }
 
     /// <summary>

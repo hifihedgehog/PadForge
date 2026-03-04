@@ -95,11 +95,15 @@ namespace PadForge
                 // Refresh default snapshot so future profile reverts use the latest saved state.
                 if (SettingsManager.ActiveProfileId == null)
                     _inputService.RefreshDefaultSnapshot();
+                // Recalculate input suppression sets after save pushes ViewModel mappings to PadSettings.
+                _inputService.ApplyDeviceHiding();
             };
             _settingsService.AutoSaved += (s, e) =>
             {
                 if (SettingsManager.ActiveProfileId == null)
                     _inputService.RefreshDefaultSnapshot();
+                // Recalculate input suppression sets after save pushes ViewModel mappings to PadSettings.
+                _inputService.ApplyDeviceHiding();
             };
             _viewModel.Settings.ReloadRequested += (s, e) => _settingsService.Reload();
             _viewModel.Settings.ResetRequested += (s, e) => _settingsService.ResetToDefaults();

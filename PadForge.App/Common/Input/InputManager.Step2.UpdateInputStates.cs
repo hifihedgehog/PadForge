@@ -57,7 +57,7 @@ namespace PadForge.Common.Input
                     if (ud.Device != null)
                     {
                         // SDL device — read via wrapper.
-                        newState = ud.Device.GetCurrentState();
+                        newState = ud.Device.GetCurrentState(ud.ForceRawJoystickMode);
                     }
                     else
                     {

@@ -1758,6 +1758,7 @@ namespace PadForge.Services
             // Input hiding toggle state.
             row.HidHideEnabled = ud.HidHideEnabled;
             row.ConsumeInputEnabled = ud.ConsumeInputEnabled;
+            row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
             // Resolve device type name.

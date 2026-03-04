@@ -35,6 +35,7 @@ PadForge.sln
 │   │   ├── GamepadTypes.cs        Gamepad/OutputState/VJoyRawState types
 │   │   ├── VirtualControllerTypes.cs  IVirtualController + VirtualControllerType enum
 │   │   ├── RawInputListener.cs    Windows Raw Input listener
+│   │   ├── InputHookManager.cs    WH_KEYBOARD_LL / WH_MOUSE_LL input suppression hooks
 │   │   └── RumbleLogger.cs        Diagnostic rumble event logger
 │   ├── Data/
 │   │   ├── UserDevice.cs          Physical device record (serializable + runtime)
@@ -51,6 +52,7 @@ PadForge.sln
 │   │   ├── SettingsManager.cs     Static: device/setting collections, assignment, defaults
 │   │   ├── ControllerIcons.cs     SVG path data for controller type icons
 │   │   ├── DriverInstaller.cs     ViGEmBus, HidHide, vJoy driver install/uninstall
+│   │   ├── HidHideController.cs   HidHide IOCTL API (blacklist, whitelist, cloaking)
 │   │   ├── StartupHelper.cs       Windows startup registry management
 │   │   ├── VirtualKey.cs          Virtual key code definitions
 │   │   └── Input/

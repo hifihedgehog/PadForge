@@ -15,7 +15,8 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 - **Macro system** -- Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
 - **Per-app profile switching** -- Automatically switch controller configurations when specific applications gain focus
 - **DSU/Cemuhook motion server** -- Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
-- **Driver management** -- One-click install/uninstall for ViGEmBus, HidHide, and vJoy
+- **Input hiding** -- Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with smart defaults when assigning to a slot
+- **Driver management** -- One-click install/uninstall for ViGEmBus, HidHide, and vJoy. Built-in HidHide device blacklisting and app whitelisting — no external configuration tool needed
 - **System tray** -- Minimize to tray, start minimized, start at login
 - **Portable** -- Single-file self-contained executable
 
@@ -51,11 +52,11 @@ Create macros triggered by button combinations from either the output controller
 
 ### Device List
 ![Devices](screenshots/devices.jpg)
-Card-based device list showing all detected gamepads, joysticks, keyboards, and mice with status, type, VID/PID, and slot assignment. Select a device to see its raw input state -- axes as progress bars, buttons as indicator circles, POV as a compass, and gyro/accelerometer values.
+Card-based device list showing all detected gamepads, joysticks, keyboards, and mice with status, type, VID/PID, and slot assignment. Per-device input hiding toggles: "Hide from games" (HidHide driver-level) and "Consume mapped inputs" (low-level hooks for keyboards/mice). Select a device to see its raw input state -- axes as progress bars, buttons as indicator circles, POV as a compass, and gyro/accelerometer values.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Appearance theme, input engine options (auto-start, background polling, configurable polling interval), and window behavior (system tray, start minimized, start at login).
+Appearance theme, input engine options (auto-start, background polling, configurable polling interval, master input hiding toggle), and window behavior (system tray, start minimized, start at login).
 
 ### Settings -- Drivers and Diagnostics
 ![Settings -- Drivers](screenshots/settings-drivers.jpg)

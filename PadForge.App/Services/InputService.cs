@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Common;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
@@ -45,6 +47,7 @@ namespace PadForge.Services
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
+        private InputHookManager _hookManager;
         private bool _disposed;
         private bool _preservedVJoyNodes;
 
@@ -171,6 +174,9 @@ namespace PadForge.Services
             // Start DSU motion server if enabled.
             StartDsuServerIfEnabled();
 
+            // Apply device hiding (HidHide + input hooks) if master switch is on.
+            ApplyDeviceHiding();
+
             // Create UI update timer on the dispatcher.
             _uiTimer = new DispatcherTimer(DispatcherPriority.Render)
             {
@@ -212,6 +218,9 @@ namespace PadForge.Services
 
             // Stop DSU server.
             StopDsuServer();
+
+            // Remove device hiding (HidHide blacklist entries + input hooks).
+            RemoveDeviceHiding();
 
             // Stop and dispose engine.
             if (_inputManager != null)
@@ -1304,6 +1313,13 @@ namespace PadForge.Services
             {
                 _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
             }
+            else if (e.PropertyName == nameof(SettingsViewModel.EnableInputHiding))
+            {
+                if (_mainVm.Settings.EnableInputHiding)
+                    ApplyDeviceHiding();
+                else
+                    RemoveDeviceHiding();
+            }
         }
 
         private void OnDashboardPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -1368,6 +1384,158 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Device hiding (HidHide + input hooks)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Applies device hiding based on per-device toggle settings.
+        /// HidHide: Adds devices with HidHideEnabled to the blacklist, whitelists PadForge, activates cloaking.
+        /// Hooks: Starts input hook manager for devices with ConsumeInputEnabled.
+        /// Only acts if the master switch (EnableInputHiding) is on.
+        /// </summary>
+        public void ApplyDeviceHiding()
+        {
+            if (!_mainVm.Settings.EnableInputHiding)
+                return;
+
+            var userDevices = SettingsManager.UserDevices?.Items;
+            if (userDevices == null) return;
+
+            UserDevice[] snapshot;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                snapshot = userDevices.ToArray();
+            }
+
+            // ── HidHide ──
+            bool anyHidHide = false;
+            if (HidHideController.IsAvailable())
+            {
+                // Whitelist PadForge itself.
+                string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+                if (!string.IsNullOrEmpty(exePath))
+                    HidHideController.EnsureWhitelisted(exePath);
+
+                // Add devices with HidHideEnabled to the blacklist.
+                foreach (var ud in snapshot)
+                {
+                    if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
+                    {
+                        string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+                        if (instanceId != null)
+                        {
+                            HidHideController.AddToBlacklist(instanceId);
+                            anyHidHide = true;
+                        }
+                    }
+                }
+
+                if (anyHidHide)
+                    HidHideController.SetActive(true);
+            }
+
+            // ── Input hooks ──
+            var suppressedKeys = new HashSet<int>();
+            var suppressedMouse = new HashSet<int>();
+
+            foreach (var ud in snapshot)
+            {
+                if (!ud.ConsumeInputEnabled) continue;
+                if (!HasAnySlotAssignment(ud.InstanceGuid)) continue;
+
+                // Collect all mapped virtual key codes / mouse buttons from this device's mappings.
+                CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
+            }
+
+            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
+            {
+                if (_hookManager == null)
+                {
+                    _hookManager = new InputHookManager();
+                    _hookManager.Start();
+                }
+                _hookManager.SetSuppressedKeys(suppressedKeys);
+                _hookManager.SetSuppressedMouseButtons(suppressedMouse);
+            }
+            else
+            {
+                // No inputs to suppress — stop hooks if running.
+                if (_hookManager != null)
+                {
+                    _hookManager.Stop();
+                    _hookManager.Dispose();
+                    _hookManager = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all device hiding: clears PadForge-managed HidHide blacklist entries
+        /// and stops input hooks.
+        /// </summary>
+        public void RemoveDeviceHiding()
+        {
+            // ── HidHide ──
+            try
+            {
+                if (HidHideController.IsAvailable())
+                    HidHideController.RemoveManagedDevices();
+            }
+            catch { /* Best effort — driver may not be available */ }
+
+            // ── Input hooks ──
+            if (_hookManager != null)
+            {
+                _hookManager.Stop();
+                _hookManager.Dispose();
+                _hookManager = null;
+            }
+        }
+
+        /// <summary>
+        /// Checks whether a device is assigned to any virtual controller slot.
+        /// </summary>
+        private static bool HasAnySlotAssignment(Guid instanceGuid)
+        {
+            var slots = SettingsManager.GetAssignedSlots(instanceGuid);
+            return slots != null && slots.Count > 0;
+        }
+
+        /// <summary>
+        /// Collects the virtual key codes and mouse button IDs that should be
+        /// suppressed based on the device's active mappings across all assigned slots.
+        /// Parses "Button {index}" descriptors from PadSetting properties.
+        /// </summary>
+        private static void CollectSuppressedInputs(UserDevice ud, HashSet<int> keys, HashSet<int> mouseButtons)
+        {
+            var assignedSlots = SettingsManager.GetAssignedSlots(ud.InstanceGuid);
+            if (assignedSlots == null) return;
+
+            foreach (int slotIndex in assignedSlots)
+            {
+                // Find the UserSetting for this device + slot.
+                var us = SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, slotIndex);
+                if (us == null) continue;
+
+                var ps = us.GetPadSetting();
+                if (ps == null) continue;
+
+                foreach (string descriptor in ps.GetAllMappingDescriptors())
+                {
+                    // Parse "Button {index}" descriptors.
+                    if (descriptor.StartsWith("Button ", StringComparison.Ordinal) &&
+                        int.TryParse(descriptor.AsSpan(7), out int buttonIndex))
+                    {
+                        if (ud.IsKeyboard)
+                            keys.Add(buttonIndex); // buttonIndex is the VKey code
+                        else if (ud.IsMouse)
+                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=R, 2=M, etc.
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1514,6 +1682,11 @@ namespace PadForge.Services
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.DevicePath = ud.DevicePath;
+
+            // Input hiding toggle state.
+            row.HidHideEnabled = ud.HidHideEnabled;
+            row.ConsumeInputEnabled = ud.ConsumeInputEnabled;
+            row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
             // Resolve device type name.
             row.DeviceType = ud.CapType switch

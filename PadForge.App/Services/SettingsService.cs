@@ -234,6 +234,7 @@ namespace PadForge.Services
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
             vm.PollingRateMs = appSettings.PollingRateMs;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
+            vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -785,6 +786,7 @@ namespace PadForge.Services
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 Use2DControllerView = vm.Use2DControllerView,
+                EnableInputHiding = vm.EnableInputHiding,
                 VJoyConfigs = vjoyConfigs.ToArray()
             };
         }
@@ -951,6 +953,7 @@ namespace PadForge.Services
             settingsVm.EnablePollingOnFocusLoss = true;
             settingsVm.PollingRateMs = 1;
             settingsVm.SelectedThemeIndex = 0;
+            settingsVm.EnableInputHiding = true;
             settingsVm.EnableAutoProfileSwitching = false;
             _mainVm.Dashboard.EnableDsuMotionServer = false;
             _mainVm.Dashboard.DsuMotionServerPort = 26760;
@@ -1181,6 +1184,14 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool Use2DControllerView { get; set; }
+
+        /// <summary>
+        /// Global master switch for device hiding (HidHide + input hooks).
+        /// When false, no HidHide blacklisting or hook suppression occurs
+        /// regardless of per-device toggles.
+        /// </summary>
+        [XmlElement]
+        public bool EnableInputHiding { get; set; } = true;
 
         /// <summary>
         /// Per-slot vJoy configuration (preset, axis/button counts).

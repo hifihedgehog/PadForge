@@ -259,6 +259,17 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user toggles a slot assignment. Arg = slot index.</summary>
         public event EventHandler<int> ToggleSlotRequested;
 
+        /// <summary>Raised when a device's input hiding toggle changes. Arg = instance GUID.</summary>
+        public event EventHandler<Guid> DeviceHidingChanged;
+
+        /// <summary>
+        /// Notifies that a device's HidHide or ConsumeInput toggle was changed.
+        /// </summary>
+        public void NotifyDeviceHidingChanged(Guid instanceGuid)
+        {
+            DeviceHidingChanged?.Invoke(this, instanceGuid);
+        }
+
         // ─────────────────────────────────────────────
         //  Dynamic slot buttons
         // ─────────────────────────────────────────────

@@ -45,7 +45,7 @@
                               IsChecked="{Binding AutoStartEngine}" Margin="0,0,0,8"/>
                     <CheckBox Content="Continue polling when window loses focus"
                               IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="Polling interval:" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
@@ -54,6 +54,9 @@
                         <TextBlock Text="ms" VerticalAlignment="Center" Margin="6,0,0,0"
                                    Opacity="0.6"/>
                     </StackPanel>
+                    <CheckBox Content="Hide devices from games"
+                              IsChecked="{Binding EnableInputHiding}"
+                              ToolTip="Master switch for HidHide device hiding and low-level input hooks. When off, no devices are hidden regardless of per-device settings."/>
                 </StackPanel>
             </Border>
 

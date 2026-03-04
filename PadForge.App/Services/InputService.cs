@@ -789,6 +789,18 @@ namespace PadForge.Services
             ps.LeftThumbLinear = padVm.LeftLinear.ToString();
             ps.RightThumbLinear = padVm.RightLinear.ToString();
 
+            // Center offsets.
+            ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString();
+            ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString();
+            ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString();
+            ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString();
+
+            // Max range.
+            ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString();
+            ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
+            ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
+            ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
+
             // Trigger dead zones.
             ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
             ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();

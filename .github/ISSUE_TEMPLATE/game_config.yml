@@ -26,7 +26,7 @@ body:
     attributes:
       label: Config Label
       description: "Short label to distinguish this config from others for the same game"
-      placeholder: "e.g. DS4 with gyro, Xbox basic"
+      placeholder: "e.g. DS4 with gyro, Xbox basic, vJoy DirectInput"
     validations:
       required: true
 
@@ -46,14 +46,18 @@ body:
   - type: textarea
     id: notes
     attributes:
-      label: Settings / Notes
-      description: "Describe recommended settings, tips, or quirks for this configuration. Include any specific PadForge settings that should be enabled (e.g. DSU motion server, dead zone values, axis mappings)."
-      placeholder: |
-        - Enable DSU motion server for gyro support
-        - Set left stick dead zone to 15%
-        - Use DS4 output for touchpad-as-touchscreen support
+      label: Exported Settings
+      description: "Use the 'Submit Game Config' button in PadForge to auto-fill this field with your profile's controller settings (button mappings, dead zones, force feedback, vJoy mappings, etc.). If submitting manually, paste the PadSetting JSON block here."
+      render: json
     validations:
       required: true
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes
+      description: "Any extra tips, quirks, or game-specific instructions not captured in the settings export."
+      placeholder: "e.g. Requires specific axis inversion for camera controls, game has its own dead zone so set PadForge dead zone to 0"
 
   - type: checkboxes
     id: verification

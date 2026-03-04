@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using PadForge.Common.Input;
 
@@ -54,7 +53,7 @@ namespace PadForge.Services
             {
                 foreach (var profile in profiles)
                 {
-                    if (MatchesExecutables(exePath, profile.ExecutableNames, profile.MatchByFilenameOnly))
+                    if (MatchesExecutables(exePath, profile.ExecutableNames))
                     {
                         matchedId = profile.Id;
                         break;
@@ -93,10 +92,9 @@ namespace PadForge.Services
 
         /// <summary>
         /// Matches the foreground process path against a pipe-separated list of
-        /// executable paths. When <paramref name="matchByFilenameOnly"/> is true,
-        /// compares only filenames (for portable/emulator apps without fixed install paths).
+        /// full executable paths (e.g. "C:\Games\game.exe|D:\Other\game2.exe").
         /// </summary>
-        private static bool MatchesExecutables(string foregroundPath, string executables, bool matchByFilenameOnly)
+        private static bool MatchesExecutables(string foregroundPath, string executables)
         {
             if (string.IsNullOrEmpty(executables))
                 return false;
@@ -104,18 +102,8 @@ namespace PadForge.Services
             var parts = executables.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             foreach (var exePath in parts)
             {
-                if (matchByFilenameOnly)
-                {
-                    var fgName = Path.GetFileName(foregroundPath);
-                    var profName = Path.GetFileName(exePath);
-                    if (string.Equals(fgName, profName, StringComparison.OrdinalIgnoreCase))
-                        return true;
-                }
-                else
-                {
-                    if (string.Equals(exePath, foregroundPath, StringComparison.OrdinalIgnoreCase))
-                        return true;
-                }
+                if (string.Equals(exePath, foregroundPath, StringComparison.OrdinalIgnoreCase))
+                    return true;
             }
 
             return false;

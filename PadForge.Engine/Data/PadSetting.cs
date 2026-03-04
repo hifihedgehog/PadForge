@@ -633,7 +633,7 @@ namespace PadForge.Engine.Data
         /// </summary>
         public string ToJson()
         {
-            var dict = new Dictionary<string, object>();
+            var dict = new Dictionary<string, string>();
             var type = GetType();
 
             foreach (string name in CopyablePropertyNames)
@@ -641,14 +641,6 @@ namespace PadForge.Engine.Data
                 var prop = type.GetProperty(name);
                 if (prop != null)
                     dict[name] = prop.GetValue(this) as string ?? "";
-            }
-
-            // Include vJoy custom mappings
-            EnsureVJoyDict();
-            if (_vjoyMappingDict.Count > 0)
-            {
-                var vjoy = new Dictionary<string, string>(_vjoyMappingDict);
-                dict["VJoyMappings"] = vjoy;
             }
 
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
@@ -665,30 +657,18 @@ namespace PadForge.Engine.Data
 
             try
             {
-                var doc = JsonDocument.Parse(json);
-                var root = doc.RootElement;
-                if (root.ValueKind != JsonValueKind.Object)
+                var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                if (dict == null || dict.Count == 0)
                     return null;
 
                 var ps = new PadSetting();
                 var type = typeof(PadSetting);
 
-                foreach (var prop in root.EnumerateObject())
+                foreach (var kvp in dict)
                 {
-                    if (prop.Name == "VJoyMappings" && prop.Value.ValueKind == JsonValueKind.Object)
-                    {
-                        foreach (var vjProp in prop.Value.EnumerateObject())
-                            ps.SetVJoyMapping(vjProp.Name, vjProp.Value.GetString() ?? "");
-                        ps.FlushVJoyMappings();
-                        continue;
-                    }
-
-                    if (prop.Value.ValueKind == JsonValueKind.String)
-                    {
-                        var pi = type.GetProperty(prop.Name);
-                        if (pi != null && pi.PropertyType == typeof(string) && pi.CanWrite)
-                            pi.SetValue(ps, prop.Value.GetString() ?? "");
-                    }
+                    var prop = type.GetProperty(kvp.Key);
+                    if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
+                        prop.SetValue(ps, kvp.Value ?? "");
                 }
 
                 return ps;

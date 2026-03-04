@@ -618,9 +618,6 @@ namespace PadForge
             // Settings and tray icon are already initialized in the constructor
             // (before Show) so that App.OnStartup can decide whether to show the window.
 
-            // Load community game config database.
-            GameConfigDatabase.Load();
-
             // Populate diagnostic info.
             _viewModel.Settings.ApplicationVersion =
                 System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
@@ -2126,7 +2123,6 @@ namespace PadForge
                 Id = Guid.NewGuid().ToString("N"),
                 Name = name.Trim(),
                 ExecutableNames = exePaths,
-                MatchByFilenameOnly = dialog.MatchByFilenameOnly,
                 Entries = Array.Empty<ProfileEntry>(),
                 PadSettings = Array.Empty<PadSetting>(),
                 SlotCreated = new bool[InputManager.MaxPads],
@@ -2147,8 +2143,6 @@ namespace PadForge
 
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created (empty).";
-
-            OfferGameConfig(dialog.MatchedConfigs, profile, listItem);
         }
 
         private void OnSaveAsProfile(object sender, EventArgs e)
@@ -2166,7 +2160,6 @@ namespace PadForge
             snapshot.Id = Guid.NewGuid().ToString("N");
             snapshot.Name = name.Trim();
             snapshot.ExecutableNames = exePaths;
-            snapshot.MatchByFilenameOnly = dialog.MatchByFilenameOnly;
 
             SettingsManager.Profiles.Add(snapshot);
 
@@ -2181,162 +2174,7 @@ namespace PadForge
 
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created.";
-
-            OfferGameConfig(dialog.MatchedConfigs, snapshot, listItem);
         }
-
-        private void OfferGameConfig(List<GameConfigEntry> configs, ProfileData profile, ViewModels.ProfileListItem listItem)
-        {
-            if (configs == null || configs.Count == 0)
-                return;
-
-            GameConfigEntry chosen;
-            if (configs.Count == 1)
-            {
-                chosen = configs[0];
-            }
-            else
-            {
-                var selDialog = new ConfigSelectionDialog(configs) { Owner = this };
-                if (selDialog.ShowDialog() != true || selDialog.SelectedConfig == null)
-                    return;
-                chosen = selDialog.SelectedConfig;
-            }
-
-            string message = $"Community config: {chosen.Label} by {chosen.Author}\n\n{chosen.Notes}";
-            if (!string.IsNullOrEmpty(chosen.RecommendedOutputType))
-                message += $"\n\nRecommended output: {chosen.RecommendedOutputType}";
-            message += "\n\nApply this configuration to the profile?";
-
-            if (MessageBox.Show(this, message, "Game Config Available",
-                MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
-                return;
-
-            // Ensure topology arrays exist.
-            if (profile.SlotCreated == null)
-                profile.SlotCreated = new bool[InputManager.MaxPads];
-            if (profile.SlotEnabled == null)
-                profile.SlotEnabled = new bool[InputManager.MaxPads];
-            if (profile.SlotControllerTypes == null)
-                profile.SlotControllerTypes = new int[InputManager.MaxPads];
-
-            // Apply DSU setting
-            if (chosen.EnableDsuMotionServer)
-                profile.EnableDsuMotionServer = true;
-
-            // Check for per-slot config (multi-device format).
-            if (chosen.Settings != null && chosen.Settings.TryGetValue("slots", out var slotsJson)
-                && slotsJson.ValueKind == System.Text.Json.JsonValueKind.Array)
-            {
-                ApplyPerSlotConfig(slotsJson, profile);
-            }
-            else
-            {
-                // Legacy single-slot format: recommendedOutputType + optional padSetting for slot 0.
-                if (!string.IsNullOrEmpty(chosen.RecommendedOutputType))
-                {
-                    profile.SlotCreated[0] = true;
-                    profile.SlotEnabled[0] = true;
-                    profile.SlotControllerTypes[0] = ParseOutputType(chosen.RecommendedOutputType);
-                }
-
-                if (chosen.Settings != null && chosen.Settings.TryGetValue("padSetting", out var padJson)
-                    && padJson.ValueKind == System.Text.Json.JsonValueKind.Object)
-                {
-                    ApplyPadSettingToSlot(padJson, 0, profile);
-                }
-            }
-
-            // Update UI topology counts
-            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
-            _settingsService.MarkDirty();
-            _viewModel.StatusText = $"Applied config: {chosen.Label} by {chosen.Author}. Load the profile to activate.";
-        }
-
-        private static void ApplyPerSlotConfig(System.Text.Json.JsonElement slotsJson, ProfileData profile)
-        {
-            foreach (var slotElement in slotsJson.EnumerateArray())
-            {
-                if (!slotElement.TryGetProperty("slot", out var slotProp))
-                    continue;
-                int slot = slotProp.GetInt32();
-                if (slot < 0 || slot >= InputManager.MaxPads)
-                    continue;
-
-                // Set output type for this slot.
-                if (slotElement.TryGetProperty("outputType", out var typeProp))
-                {
-                    profile.SlotCreated[slot] = true;
-                    profile.SlotEnabled[slot] = true;
-                    profile.SlotControllerTypes[slot] = ParseOutputType(typeProp.GetString());
-                }
-
-                // Apply PadSetting(s) for this slot.
-                // Multi-device: "padSettings" array (plural) — one per device on this slot.
-                // Single-device: "padSetting" object (singular) — one device on this slot.
-                if (slotElement.TryGetProperty("padSettings", out var padArrayJson)
-                    && padArrayJson.ValueKind == System.Text.Json.JsonValueKind.Array)
-                {
-                    foreach (var padJson in padArrayJson.EnumerateArray())
-                    {
-                        if (padJson.ValueKind == System.Text.Json.JsonValueKind.Object)
-                            ApplyPadSettingToSlot(padJson, slot, profile);
-                    }
-                }
-                else if (slotElement.TryGetProperty("padSetting", out var padJson)
-                    && padJson.ValueKind == System.Text.Json.JsonValueKind.Object)
-                {
-                    ApplyPadSettingToSlot(padJson, slot, profile);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a single PadSetting to the profile for the given slot.
-        /// For Save-As profiles with existing entries on this slot, replaces the
-        /// next unmatched entry's PadSetting. For new profiles, adds a wildcard entry.
-        /// Can be called multiple times per slot for multi-device configs.
-        /// </summary>
-        private static void ApplyPadSettingToSlot(System.Text.Json.JsonElement padJson, int slot, ProfileData profile)
-        {
-            var ps = PadSetting.FromJson(padJson.GetRawText());
-            if (ps == null) return;
-
-            ps.UpdateChecksum();
-            var padList = profile.PadSettings?.ToList() ?? new List<PadSetting>();
-            var entryList = profile.Entries?.ToList() ?? new List<ProfileEntry>();
-
-            // For Save-As profiles: replace the next unmatched entry on this slot.
-            // (Each call claims one entry so multi-device configs map 1:1.)
-            var nextEntry = entryList.FirstOrDefault(en =>
-                en.MapTo == slot && en.InstanceGuid != Guid.Empty && en.PadSettingChecksum != ps.PadSettingChecksum);
-            if (nextEntry != null)
-            {
-                nextEntry.PadSettingChecksum = ps.PadSettingChecksum;
-            }
-            else
-            {
-                // New profile or no more entries to replace: add a wildcard.
-                entryList.Add(new ProfileEntry
-                {
-                    InstanceGuid = Guid.Empty,
-                    ProductGuid = Guid.Empty,
-                    MapTo = slot,
-                    PadSettingChecksum = ps.PadSettingChecksum
-                });
-            }
-
-            padList.Add(ps);
-            profile.PadSettings = padList.ToArray();
-            profile.Entries = entryList.ToArray();
-        }
-
-        private static int ParseOutputType(string outputType) => outputType switch
-        {
-            "DS4" => (int)VirtualControllerType.DualShock4,
-            "vJoy" => (int)VirtualControllerType.VJoy,
-            _ => (int)VirtualControllerType.Xbox360,
-        };
 
         /// <summary>
         /// Formats pipe-separated full paths into a display string showing just file names.
@@ -2390,7 +2228,7 @@ namespace PadForge
                 : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries);
 
             var dialog = new Views.ProfileDialog { Owner = this };
-            dialog.LoadForEdit(profile.Name, exePaths, profile.MatchByFilenameOnly);
+            dialog.LoadForEdit(profile.Name, exePaths);
 
             if (dialog.ShowDialog() != true)
                 return;
@@ -2400,7 +2238,6 @@ namespace PadForge
 
             profile.Name = newName;
             profile.ExecutableNames = newExePaths;
-            profile.MatchByFilenameOnly = dialog.MatchByFilenameOnly;
 
             selected.Name = newName;
             selected.Executables = FormatExePaths(newExePaths);

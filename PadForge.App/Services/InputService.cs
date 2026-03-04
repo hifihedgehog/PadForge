@@ -2319,9 +2319,11 @@ namespace PadForge.Services
                 if (profile.Entries != null && profile.Entries.Length > 0 &&
                     profile.PadSettings != null && profile.PadSettings.Length > 0)
                 {
+                    // First pass: device-specific entries (normal profile entries).
                     foreach (var entry in profile.Entries)
                     {
-                        // Find the PadSetting template by checksum first — skip if missing.
+                        if (entry.InstanceGuid == Guid.Empty) continue; // wildcard — handled below
+
                         var template = profile.PadSettings
                             .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
                         if (template == null) continue;
@@ -2349,7 +2351,30 @@ namespace PadForge.Services
                             SettingsManager.UserSettings.Items.Add(us);
                         }
 
-                        // Clone and apply PadSetting + slot assignment.
+                        var ps = template.CloneDeep();
+                        us.SetPadSetting(ps);
+                        us.MapTo = entry.MapTo;
+                    }
+
+                    // Second pass: wildcard entries (from game configs — no specific device).
+                    // Apply PadSetting to first available real device on the target slot.
+                    foreach (var entry in profile.Entries)
+                    {
+                        if (entry.InstanceGuid != Guid.Empty) continue;
+
+                        var template = profile.PadSettings
+                            .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
+                        if (template == null) continue;
+
+                        // Skip if a device-specific entry already claimed this slot.
+                        if (SettingsManager.UserSettings.Items.Any(s => s.MapTo == entry.MapTo))
+                            continue;
+
+                        // Find first real (non-ViGEm) unassigned device.
+                        var us = SettingsManager.UserSettings.Items
+                            .FirstOrDefault(s => s.MapTo < 0 && s.InstanceGuid != Guid.Empty);
+                        if (us == null) continue;
+
                         var ps = template.CloneDeep();
                         us.SetPadSetting(ps);
                         us.MapTo = entry.MapTo;

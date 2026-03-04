@@ -129,15 +129,6 @@ body:
         -- or --
         Up: button 12, Down: button 13, Left: button 14, Right: button 15
 
-  - type: textarea
-    id: sdl_mapping_string
-    attributes:
-      label: SDL Mapping String (optional)
-      description: |
-        If you have SDL's `testcontroller` utility, paste the complete mapping string here.
-        This is optional but makes adding the mapping much easier.
-      placeholder: "030000000f0d00000001000000000000,HORIPAD S,a:b0,b:b1,..."
-
   - type: checkboxes
     id: verification
     attributes:

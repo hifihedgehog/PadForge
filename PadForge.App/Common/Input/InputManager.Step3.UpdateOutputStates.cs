@@ -68,7 +68,8 @@ namespace PadForge.Common.Input
                     }
 
                     // Map the input state to a gamepad.
-                    us.OutputState = MapInputToGamepad(ud.InputState, ps);
+                    us.OutputState = MapInputToGamepad(ud.InputState, ps, out var rawMapped);
+                    us.RawMappedState = rawMapped;
 
                     // For custom vJoy slots, also produce the raw vJoy output state.
                     int slot = us.MapTo;
@@ -99,8 +100,9 @@ namespace PadForge.Common.Input
         /// <param name="state">The device's current input state.</param>
         /// <param name="ps">The PadSetting containing mapping rules.</param>
         /// <returns>A populated Gamepad struct.</returns>
-        private static Gamepad MapInputToGamepad(CustomInputState state, PadSetting ps)
+        private static Gamepad MapInputToGamepad(CustomInputState state, PadSetting ps, out Gamepad rawMapped)
         {
+            rawMapped = default;
             var gp = new Gamepad();
 
             // ── Buttons ──
@@ -175,6 +177,10 @@ namespace PadForge.Common.Input
             gp.ThumbLY = NegateAxis(MapToThumbAxisWithNeg(state, ps.LeftThumbAxisY, ps.LeftThumbAxisYNeg));
             gp.ThumbRX = MapToThumbAxisWithNeg(state, ps.RightThumbAxisX, ps.RightThumbAxisXNeg);
             gp.ThumbRY = NegateAxis(MapToThumbAxisWithNeg(state, ps.RightThumbAxisY, ps.RightThumbAxisYNeg));
+
+            // Snapshot raw mapped state (after axis selection, before offset/DZ processing)
+            // for the UI preview so it can apply its own pipeline without double-processing.
+            rawMapped = gp;
 
             // ── Center offsets (applied before dead zone) ──
             gp.ThumbLX = ApplyCenterOffset(gp.ThumbLX, TryParseIntStatic(ps.LeftThumbCenterOffsetX, 0));

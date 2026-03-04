@@ -147,6 +147,14 @@ namespace PadForge.Engine.Data
         public Gamepad OutputState { get; set; }
 
         /// <summary>
+        /// Raw mapped state: axis-selected and Y-negated but BEFORE center offset,
+        /// dead zone, anti-dead zone, linear, and max range processing.
+        /// Used by the UI preview to apply its own pipeline without double-processing.
+        /// </summary>
+        [XmlIgnore]
+        public Gamepad RawMappedState { get; set; }
+
+        /// <summary>
         /// The mapped vJoy raw output state computed in Step 3 for custom vJoy slots.
         /// Only populated when the slot uses VJoy with Custom preset.
         /// Written by the background thread, read by Step 4.

@@ -310,7 +310,7 @@ namespace PadForge.Services
                     if (_inputManager.SlotVJoyIsCustom[i] && us != null)
                         padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
                     else
-                        padVm.UpdateDeviceState(us?.OutputState ?? default);
+                        padVm.UpdateDeviceState(us?.RawMappedState ?? default);
                 }
                 else if (!_inputManager.SlotVJoyIsCustom[i])
                 {

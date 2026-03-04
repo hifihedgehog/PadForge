@@ -374,6 +374,14 @@ namespace PadForge.Services
                 padVm.RightAntiDeadZoneY = TryParseInt(ps.RightThumbAntiDeadZoneY, 0);
                 padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
                 padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
+                padVm.LeftMaxRangeX = TryParseInt(ps.LeftThumbMaxRangeX, 100);
+                padVm.LeftMaxRangeY = TryParseInt(ps.LeftThumbMaxRangeY, 100);
+                padVm.RightMaxRangeX = TryParseInt(ps.RightThumbMaxRangeX, 100);
+                padVm.RightMaxRangeY = TryParseInt(ps.RightThumbMaxRangeY, 100);
+                padVm.LeftCenterOffsetX = TryParseInt(ps.LeftThumbCenterOffsetX, 0);
+                padVm.LeftCenterOffsetY = TryParseInt(ps.LeftThumbCenterOffsetY, 0);
+                padVm.RightCenterOffsetX = TryParseInt(ps.RightThumbCenterOffsetX, 0);
+                padVm.RightCenterOffsetY = TryParseInt(ps.RightThumbCenterOffsetY, 0);
 
                 // Load trigger dead zone settings.
                 padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
@@ -876,6 +884,14 @@ namespace PadForge.Services
                     ps.RightThumbAntiDeadZoneY = padVm.RightAntiDeadZoneY.ToString();
                     ps.LeftThumbLinear = padVm.LeftLinear.ToString();
                     ps.RightThumbLinear = padVm.RightLinear.ToString();
+                    ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString();
+                    ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
+                    ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
+                    ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
+                    ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString();
+                    ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString();
+                    ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString();
+                    ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString();
 
                     // Write trigger dead zone settings.
                     ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
@@ -935,6 +951,14 @@ namespace PadForge.Services
                 padVm.RightAntiDeadZoneY = 0;
                 padVm.LeftLinear = 0;
                 padVm.RightLinear = 0;
+                padVm.LeftMaxRangeX = 100;
+                padVm.LeftMaxRangeY = 100;
+                padVm.RightMaxRangeX = 100;
+                padVm.RightMaxRangeY = 100;
+                padVm.LeftCenterOffsetX = 0;
+                padVm.LeftCenterOffsetY = 0;
+                padVm.RightCenterOffsetX = 0;
+                padVm.RightCenterOffsetY = 0;
                 padVm.LeftTriggerDeadZone = 0;
                 padVm.RightTriggerDeadZone = 0;
                 padVm.LeftTriggerAntiDeadZone = 0;

@@ -1,8 +1,6 @@
 using System;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -12,6 +10,10 @@ namespace PadForge.Common
     /// Attached behavior that creates a ticker/marquee effect on a TextBlock
     /// when its text exceeds the available width. Text scrolls left to reveal
     /// the overflow, pauses, then scrolls back.
+    ///
+    /// Usage: Place the TextBlock inside a horizontal StackPanel inside a
+    /// Border with ClipToBounds="True". The StackPanel gives the TextBlock
+    /// infinite width (so ActualWidth = true text width). The Border clips.
     /// </summary>
     public static class MarqueeBehavior
     {
@@ -32,7 +34,6 @@ namespace PadForge.Common
                     tb.Loaded += OnTextBlockLoaded;
                     tb.SizeChanged += OnTextBlockSizeChanged;
 
-                    // If already loaded, evaluate immediately.
                     if (tb.IsLoaded)
                         EvaluateMarquee(tb);
                 }
@@ -59,26 +60,27 @@ namespace PadForge.Common
 
         private static void EvaluateMarquee(TextBlock tb)
         {
-            // Find the clipping parent (Border or Panel with ClipToBounds).
-            var parent = VisualTreeHelper.GetParent(tb) as FrameworkElement;
-            if (parent == null || parent.ActualWidth <= 0)
+            // Walk up the visual tree to find the first ancestor with ClipToBounds.
+            // That ancestor's width is the visible container width.
+            double containerWidth = 0;
+            DependencyObject current = VisualTreeHelper.GetParent(tb);
+            while (current != null)
+            {
+                if (current is UIElement uie && uie.ClipToBounds &&
+                    current is FrameworkElement fe && fe.ActualWidth > 0)
+                {
+                    containerWidth = fe.ActualWidth;
+                    break;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            if (containerWidth <= 0)
                 return;
 
-            // Measure the actual rendered text width using FormattedText.
-            // tb.Measure() is unreliable for TextBlocks with Run elements after layout.
-            double dpiScale = VisualTreeHelper.GetDpi(tb).PixelsPerDip;
-            var formatted = new FormattedText(
-                new TextRange(tb.ContentStart, tb.ContentEnd).Text,
-                CultureInfo.CurrentCulture,
-                tb.FlowDirection,
-                new Typeface(tb.FontFamily, tb.FontStyle, tb.FontWeight, tb.FontStretch),
-                tb.FontSize,
-                Brushes.Black,
-                dpiScale);
-            double textWidth = formatted.WidthIncludingTrailingWhitespace;
-            double containerWidth = parent.ActualWidth;
-
-            if (textWidth <= containerWidth)
+            // The TextBlock must be inside a horizontal StackPanel (or similar
+            // unconstrained panel) so that ActualWidth reflects the full text width.
+            double textWidth = tb.ActualWidth;
+            if (textWidth <= 0 || textWidth <= containerWidth)
             {
                 StopMarquee(tb);
                 return;
@@ -93,7 +95,7 @@ namespace PadForge.Common
                 tb.RenderTransform = transform;
             }
 
-            // Speed: ~40px/sec, with 1.5s pause at each end.
+            // Speed: ~40px/sec, with 2s pause at each end.
             double durationSeconds = overflow / 40.0;
 
             var animation = new DoubleAnimationUsingKeyFrames

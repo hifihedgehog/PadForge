@@ -291,6 +291,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _pollingRateMs, Math.Clamp(value, 1, 16));
         }
 
+        private bool _enableInputHiding = true;
+
+        /// <summary>
+        /// Global master switch for device hiding (HidHide + input hooks).
+        /// When false, no HidHide blacklisting or hook suppression occurs.
+        /// </summary>
+        public bool EnableInputHiding
+        {
+            get => _enableInputHiding;
+            set => SetProperty(ref _enableInputHiding, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Settings file
         // ─────────────────────────────────────────────

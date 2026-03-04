@@ -27,6 +27,17 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>
+        /// Handles CheckBox Checked/Unchecked for HidHide and ConsumeInput toggles.
+        /// Propagates the change back through DevicesViewModel → DeviceService → InputService.
+        /// </summary>
+        private void HidingToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            if (vm?.SelectedDevice != null)
+                vm.NotifyDeviceHidingChanged(vm.SelectedDevice.InstanceGuid);
+        }
+
         // ── Device card drag (to sidebar controller cards) ──
 
         private Point _deviceDragStart;

@@ -486,6 +486,43 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
             (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0);
 
+        /// <summary>
+        /// Returns all non-empty mapping descriptor strings from this PadSetting.
+        /// Includes standard button/axis/dpad/trigger mappings and vJoy custom entries.
+        /// </summary>
+        public List<string> GetAllMappingDescriptors()
+        {
+            var result = new List<string>();
+            void Add(string d) { if (!string.IsNullOrEmpty(d)) result.Add(d); }
+
+            // Buttons
+            Add(ButtonA); Add(ButtonB); Add(ButtonX); Add(ButtonY);
+            Add(LeftShoulder); Add(RightShoulder);
+            Add(ButtonBack); Add(ButtonStart); Add(ButtonGuide);
+            Add(LeftThumbButton); Add(RightThumbButton);
+
+            // D-Pad
+            Add(DPad); Add(DPadUp); Add(DPadDown); Add(DPadLeft); Add(DPadRight);
+
+            // Triggers
+            Add(LeftTrigger); Add(RightTrigger);
+
+            // Thumbstick axes
+            Add(LeftThumbAxisX); Add(LeftThumbAxisY);
+            Add(RightThumbAxisX); Add(RightThumbAxisY);
+            Add(LeftThumbAxisXNeg); Add(LeftThumbAxisYNeg);
+            Add(RightThumbAxisXNeg); Add(RightThumbAxisYNeg);
+
+            // vJoy custom mappings
+            if (VJoyMappingEntries != null)
+            {
+                foreach (var e in VJoyMappingEntries)
+                    Add(e.Value);
+            }
+
+            return result;
+        }
+
         // ─────────────────────────────────────────────
         //  Display
         // ─────────────────────────────────────────────

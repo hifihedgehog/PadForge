@@ -223,6 +223,50 @@
 
                         <Separator Margin="0,2,0,8"/>
 
+                        <!-- ─── Input Hiding ─── -->
+                        <TextBlock Text="Input Hiding" FontWeight="SemiBold"
+                                   FontSize="13" Margin="0,0,0,6"/>
+
+                        <CheckBox Content="Hide from games (HidHide)"
+                                  IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
+                                  IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
+                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  Margin="0,0,0,4">
+                            <CheckBox.ToolTip>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="Completely hides this device from other applications via the HidHide driver"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedDevice.IsHidHideAvailable}" Value="False">
+                                                    <Setter Property="Text" Value="Install the HidHide driver to enable this option"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+
+                        <CheckBox Content="Consume mapped inputs (hooks)"
+                                  IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
+                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  ToolTip="Suppresses only the specific keys/buttons that are mapped, letting unmapped inputs pass through"
+                                  Margin="0,0,0,4">
+                            <CheckBox.Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedDevice.ShowConsumeToggle}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+
+                        <Separator Margin="0,4,0,8"/>
+
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="Raw Input State" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,8"/>

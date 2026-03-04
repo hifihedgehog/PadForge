@@ -155,6 +155,12 @@ namespace PadForge
                 _viewModel.Devices.RefreshSlotButtons();
             };
 
+            // Re-apply device hiding when a toggle changes.
+            _deviceService.DeviceHidingStateChanged += (s, e) =>
+            {
+                _inputService.ApplyDeviceHiding();
+            };
+
             // After assigning a device to a slot, navigate to that controller page.
             _deviceService.NavigateToSlotRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
 

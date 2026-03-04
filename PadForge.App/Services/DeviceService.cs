@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -50,6 +51,7 @@ namespace PadForge.Services
             _mainVm.Devices.ToggleSlotRequested += OnToggleSlot;
             _mainVm.Devices.HideDeviceRequested += OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested += OnRemoveDevice;
+            _mainVm.Devices.DeviceHidingChanged += OnDeviceHidingChanged;
         }
 
         /// <summary>
@@ -61,6 +63,7 @@ namespace PadForge.Services
             _mainVm.Devices.ToggleSlotRequested -= OnToggleSlot;
             _mainVm.Devices.HideDeviceRequested -= OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested -= OnRemoveDevice;
+            _mainVm.Devices.DeviceHidingChanged -= OnDeviceHidingChanged;
         }
 
         // ─────────────────────────────────────────────
@@ -120,6 +123,9 @@ namespace PadForge.Services
             // Update the row display.
             selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 
+            // Auto-enable input hiding defaults for newly assigned devices.
+            AutoEnableHidingDefaults(udForGuid, selectedRow);
+
             // Mark settings as dirty.
             _settingsService.MarkDirty();
 
@@ -127,6 +133,9 @@ namespace PadForge.Services
 
             // Notify listeners so PadPage dropdowns refresh immediately.
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+
+            // Re-apply hiding with the new device included.
+            DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
 
             // Navigate to the assigned controller page.
             NavigateToSlotRequested?.Invoke(this, slotIndex);
@@ -215,10 +224,28 @@ namespace PadForge.Services
                     us.PadSettingChecksum = ps.PadSettingChecksum;
                 }
 
+                // Auto-enable input hiding defaults for newly assigned devices.
+                AutoEnableHidingDefaults(udForGuid, selectedRow);
+
                 _mainVm.StatusText = $"Assigned \"{selectedRow.DeviceName}\" to slot #{slotIndex + 1}.";
             }
             else
             {
+                // Device was unassigned from this slot.
+                // If device has no more slot assignments, auto-disable hiding.
+                var remainingSlots = SettingsManager.GetAssignedSlots(instanceGuid);
+                if (remainingSlots == null || remainingSlots.Count == 0)
+                {
+                    var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+                    if (udForGuid != null)
+                    {
+                        udForGuid.HidHideEnabled = false;
+                        udForGuid.ConsumeInputEnabled = false;
+                        selectedRow.HidHideEnabled = false;
+                        selectedRow.ConsumeInputEnabled = false;
+                    }
+                }
+
                 _mainVm.StatusText = $"Unassigned \"{selectedRow.DeviceName}\" from slot #{slotIndex + 1}.";
             }
 
@@ -227,6 +254,7 @@ namespace PadForge.Services
 
             _settingsService.MarkDirty();
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+            DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────
@@ -274,6 +302,36 @@ namespace PadForge.Services
 
             // Refresh sidebar/dashboard device info (slot persists, just empty now).
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Device hiding toggle
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Raised when a device's hiding toggle (HidHide or ConsumeInput) changes.
+        /// InputService subscribes to re-apply device hiding.
+        /// </summary>
+        public event EventHandler DeviceHidingStateChanged;
+
+        /// <summary>
+        /// Handles a device hiding toggle change from the UI. Writes the new state
+        /// to UserDevice and notifies listeners to re-apply hiding.
+        /// </summary>
+        private void OnDeviceHidingChanged(object sender, Guid instanceGuid)
+        {
+            var row = _mainVm.Devices.FindByGuid(instanceGuid);
+            if (row == null) return;
+
+            var ud = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+            if (ud != null)
+            {
+                ud.HidHideEnabled = row.HidHideEnabled;
+                ud.ConsumeInputEnabled = row.ConsumeInputEnabled;
+            }
+
+            _settingsService.MarkDirty();
+            DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────
@@ -371,6 +429,41 @@ namespace PadForge.Services
 
             SettingsManager.SlotEnabled[slotIndex] = enabled;
             _settingsService.MarkDirty();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Auto-enable hiding defaults
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Sets default input hiding options when a device is newly assigned to a slot.
+        /// Gamepads: HidHide auto-ON (if installed). Keyboards/Mice: ConsumeInput auto-ON.
+        /// </summary>
+        private void AutoEnableHidingDefaults(UserDevice ud, DeviceRowViewModel row)
+        {
+            if (ud == null || row == null) return;
+
+            bool isGamepad = ud.CapType == InputDeviceType.Gamepad ||
+                             ud.CapType == InputDeviceType.Joystick ||
+                             ud.CapType == InputDeviceType.Driving ||
+                             ud.CapType == InputDeviceType.Flight ||
+                             ud.CapType == InputDeviceType.FirstPerson;
+
+            if (isGamepad)
+            {
+                // Auto-enable HidHide if the driver is available.
+                if (HidHideController.IsAvailable())
+                {
+                    ud.HidHideEnabled = true;
+                    row.HidHideEnabled = true;
+                }
+            }
+            else if (ud.IsKeyboard || ud.IsMouse)
+            {
+                // Auto-enable hook-based input consumption for keyboards and mice.
+                ud.ConsumeInputEnabled = true;
+                row.ConsumeInputEnabled = true;
+            }
         }
 
     }

@@ -135,6 +135,14 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public string DisplayName { get; set; } = string.Empty;
 
+        /// <summary>Whether this device should be hidden from games via HidHide when assigned to a slot.</summary>
+        [XmlElement]
+        public bool HidHideEnabled { get; set; }
+
+        /// <summary>Whether this device's mapped inputs should be consumed via low-level hooks (keyboards and mice).</summary>
+        [XmlElement]
+        public bool ConsumeInputEnabled { get; set; }
+
         // ─────────────────────────────────────────────────────────────
         //  Runtime-only fields (NOT serialized)
         // ─────────────────────────────────────────────────────────────

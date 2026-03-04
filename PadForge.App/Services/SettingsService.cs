@@ -214,9 +214,6 @@ namespace PadForge.Services
 
                 // Load profiles.
                 LoadProfiles(data.Profiles, data.AppSettings);
-
-                // Restore persisted default profile snapshot (survives restart with non-default active).
-                SettingsManager.DefaultProfileSnapshot = data.DefaultProfileSnapshot;
             }
             catch (Exception ex)
             {
@@ -729,12 +726,6 @@ namespace PadForge.Services
                 if (SettingsManager.Profiles.Count > 0)
                     data.Profiles = SettingsManager.Profiles.ToArray();
 
-                // Persist default profile snapshot so it survives restart with a
-                // non-default profile active (otherwise the default gets overwritten
-                // by the active profile's PadSettings in the root UserSettings).
-                if (!string.IsNullOrEmpty(SettingsManager.ActiveProfileId))
-                    data.DefaultProfileSnapshot = SettingsManager.DefaultProfileSnapshot;
-
                 // Serialize.
                 var serializer = new XmlSerializer(typeof(SettingsFileData));
                 string dir = Path.GetDirectoryName(filePath);
@@ -1151,15 +1142,6 @@ namespace PadForge.Services
         [XmlArray("Profiles")]
         [XmlArrayItem("Profile")]
         public ProfileData[] Profiles { get; set; }
-
-        /// <summary>
-        /// Snapshot of the default (root) profile state, stored when a named profile
-        /// is active at save time. Without this, restarting with a non-default profile
-        /// active would make the default profile's settings unrecoverable because the
-        /// XML root-level UserSettings already contain the active profile's PadSettings.
-        /// </summary>
-        [XmlElement("DefaultProfileSnapshot")]
-        public ProfileData DefaultProfileSnapshot { get; set; }
     }
 
     /// <summary>
@@ -1399,13 +1381,6 @@ namespace PadForge.Services
         /// <summary>DSU motion server port for this profile.</summary>
         [XmlElement]
         public int DsuMotionServerPort { get; set; } = 26760;
-
-        /// <summary>
-        /// When true, matches foreground window by filename only (e.g. "cemu.exe")
-        /// instead of full path. Useful for portable/emulator apps without fixed install paths.
-        /// </summary>
-        [XmlElement]
-        public bool MatchByFilenameOnly { get; set; }
     }
 
     /// <summary>

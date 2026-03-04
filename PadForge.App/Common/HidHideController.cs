@@ -61,6 +61,38 @@ namespace PadForge.Common
             [Out] char[] lpTargetPath,
             uint ucchMax);
 
+        // SetupAPI for enumerating HID devices by VID/PID.
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern IntPtr SetupDiGetClassDevsW(
+            ref Guid ClassGuid, IntPtr Enumerator, IntPtr hwndParent, uint Flags);
+
+        [DllImport("setupapi.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetupDiEnumDeviceInfo(
+            IntPtr DeviceInfoSet, uint MemberIndex, ref SP_DEVINFO_DATA DeviceInfoData);
+
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetupDiGetDeviceInstanceIdW(
+            IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData,
+            char[] DeviceInstanceId, uint DeviceInstanceIdSize, out uint RequiredSize);
+
+        [DllImport("setupapi.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public int DevInst;
+            public IntPtr Reserved;
+        }
+
+        private static readonly Guid GUID_DEVCLASS_HIDCLASS = new("745a17a0-74d3-11d0-b6fe-00a0c90f57da");
+        private const uint DIGCF_PRESENT = 0x02;
+
         private const uint GENERIC_READ = 0x80000000;
         private const uint GENERIC_WRITE = 0x40000000;
         private const uint OPEN_EXISTING = 3;
@@ -227,6 +259,45 @@ namespace PadForge.Common
                 SetBlacklist(list);
                 _managedDeviceIds.Clear();
             }
+        }
+
+        /// <summary>
+        /// Finds all present HID device instance IDs matching the given VID/PID.
+        /// Used as a fallback when a device has a synthetic path (e.g., XInput#0)
+        /// that can't be converted to a valid instance ID.
+        /// </summary>
+        public static List<string> FindInstanceIdsByVidPid(ushort vendorId, ushort productId)
+        {
+            var result = new List<string>();
+            string vidPid = $"VID_{vendorId:X4}&PID_{productId:X4}";
+
+            var guid = GUID_DEVCLASS_HIDCLASS;
+            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT);
+            if (devInfoSet == (IntPtr)(-1)) return result;
+
+            try
+            {
+                var devInfoData = new SP_DEVINFO_DATA();
+                devInfoData.cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>();
+
+                for (uint i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
+                {
+                    char[] buffer = new char[512];
+                    if (SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, buffer, (uint)buffer.Length, out _))
+                    {
+                        int nullIdx = Array.IndexOf(buffer, '\0');
+                        string instanceId = nullIdx >= 0 ? new string(buffer, 0, nullIdx) : new string(buffer);
+                        if (instanceId.Contains(vidPid, StringComparison.OrdinalIgnoreCase))
+                            result.Add(instanceId);
+                    }
+                }
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(devInfoSet);
+            }
+
+            return result;
         }
 
         /// <summary>

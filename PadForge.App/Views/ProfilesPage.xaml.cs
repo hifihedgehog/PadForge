@@ -57,7 +57,14 @@ namespace PadForge.Views
                     string exportJson = BuildPerSlotExport(profile);
                     if (!string.IsNullOrEmpty(exportJson))
                     {
-                        Clipboard.SetText(exportJson);
+                        try
+                        {
+                            Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, exportJson), true);
+                        }
+                        catch
+                        {
+                            // Clipboard locked — ignore, user will see the message and can retry.
+                        }
                         MessageBox.Show(
                             "Your profile settings have been copied to the clipboard.\n\n" +
                             "Paste them into the \"Exported Settings\" field on the GitHub issue form.",

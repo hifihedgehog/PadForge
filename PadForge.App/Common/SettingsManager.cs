@@ -40,6 +40,13 @@ namespace PadForge.Common.Input
         /// <summary>The ID of the currently active profile, or null for the default (root) profile.</summary>
         public static string ActiveProfileId { get; set; }
 
+        /// <summary>
+        /// Snapshot of the default (root) profile state. Set by InputService on startup
+        /// and updated when the user saves/auto-saves while on the default profile.
+        /// Persisted to XML so the default survives restart with a non-default profile active.
+        /// </summary>
+        public static ProfileData DefaultProfileSnapshot { get; set; }
+
         /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
         public static bool EnableAutoProfileSwitching { get; set; }
 

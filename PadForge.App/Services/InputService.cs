@@ -45,7 +45,6 @@ namespace PadForge.Services
         private InputManager _inputManager;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
-        private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
@@ -173,7 +172,17 @@ namespace PadForge.Services
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
 
             // Capture default profile snapshot before any profile switches.
-            _defaultProfileSnapshot = SnapshotCurrentProfile();
+            // If a non-default profile was active at last save, use the persisted
+            // snapshot (current runtime state is the active profile's data, not the default).
+            if (!string.IsNullOrEmpty(SettingsManager.ActiveProfileId)
+                && SettingsManager.DefaultProfileSnapshot != null)
+            {
+                // Already loaded from XML — keep it.
+            }
+            else
+            {
+                SettingsManager.DefaultProfileSnapshot = SnapshotCurrentProfile();
+            }
 
             // Start engine background thread.
             _inputManager.Start();
@@ -2435,8 +2444,8 @@ namespace PadForge.Services
                 // Revert to default (root) profile using the startup snapshot.
                 SettingsManager.ActiveProfileId = null;
                 _mainVm.Settings.ActiveProfileInfo = "Default";
-                if (_defaultProfileSnapshot != null)
-                    ApplyProfile(_defaultProfileSnapshot);
+                if (SettingsManager.DefaultProfileSnapshot != null)
+                    ApplyProfile(SettingsManager.DefaultProfileSnapshot);
                 _mainVm.StatusText = "Profile switched: Default";
             }
         }
@@ -2454,7 +2463,7 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(activeId))
             {
                 // Currently on the default profile — update the default snapshot.
-                _defaultProfileSnapshot = snapshot;
+                SettingsManager.DefaultProfileSnapshot = snapshot;
             }
             else
             {
@@ -2480,7 +2489,7 @@ namespace PadForge.Services
         /// </summary>
         public void RefreshDefaultSnapshot()
         {
-            _defaultProfileSnapshot = SnapshotCurrentProfile();
+            SettingsManager.DefaultProfileSnapshot = SnapshotCurrentProfile();
         }
 
         /// <summary>
@@ -2489,8 +2498,8 @@ namespace PadForge.Services
         /// </summary>
         public void ApplyDefaultProfile()
         {
-            if (_defaultProfileSnapshot != null)
-                ApplyProfile(_defaultProfileSnapshot);
+            if (SettingsManager.DefaultProfileSnapshot != null)
+                ApplyProfile(SettingsManager.DefaultProfileSnapshot);
         }
 
         /// <summary>

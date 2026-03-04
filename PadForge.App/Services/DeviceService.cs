@@ -111,11 +111,33 @@ namespace PadForge.Services
             if (udForGuid != null)
                 us.ProductGuid = udForGuid.ProductGuid;
 
-            // If no PadSetting exists, create defaults.
+            // If no PadSetting exists, check for a wildcard entry from a game config
+            // on the active profile, then fall back to defaults.
             var existingPs = us.GetPadSetting();
             if (existingPs == null)
             {
-                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+                PadSetting ps = null;
+
+                // Check active profile for wildcard PadSetting on this slot.
+                var activeProfile = !string.IsNullOrEmpty(SettingsManager.ActiveProfileId)
+                    ? SettingsManager.Profiles.Find(p => p.Id == SettingsManager.ActiveProfileId)
+                    : null;
+                if (activeProfile?.Entries != null && activeProfile.PadSettings != null)
+                {
+                    var wildcard = activeProfile.Entries.FirstOrDefault(
+                        en => en.MapTo == slotIndex && en.InstanceGuid == Guid.Empty);
+                    if (wildcard != null)
+                    {
+                        var template = activeProfile.PadSettings.FirstOrDefault(
+                            p => p.PadSettingChecksum == wildcard.PadSettingChecksum);
+                        if (template != null)
+                            ps = template.CloneDeep();
+                    }
+                }
+
+                if (ps == null)
+                    ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }

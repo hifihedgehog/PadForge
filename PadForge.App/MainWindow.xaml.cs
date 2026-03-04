@@ -2236,6 +2236,43 @@ namespace PadForge
             if (chosen.EnableDsuMotionServer)
                 profile.EnableDsuMotionServer = true;
 
+            // Apply PadSetting from config (button mappings, dead zones, etc.)
+            if (chosen.Settings != null && chosen.Settings.TryGetValue("padSetting", out var padJson)
+                && padJson.ValueKind == System.Text.Json.JsonValueKind.Object)
+            {
+                var ps = PadSetting.FromJson(padJson.GetRawText());
+                if (ps != null)
+                {
+                    ps.UpdateChecksum();
+                    var padList = profile.PadSettings?.ToList() ?? new List<PadSetting>();
+                    var entryList = profile.Entries?.ToList() ?? new List<ProfileEntry>();
+
+                    // For Save-As profiles: replace slot 0 entries' PadSetting
+                    var slot0Entries = entryList.Where(en => en.MapTo == 0).ToList();
+                    if (slot0Entries.Count > 0)
+                    {
+                        foreach (var en in slot0Entries)
+                            en.PadSettingChecksum = ps.PadSettingChecksum;
+                    }
+                    else
+                    {
+                        // New profile: add a wildcard entry (empty GUID) for slot 0.
+                        // ApplyProfile will apply this to the first available device.
+                        entryList.Add(new ProfileEntry
+                        {
+                            InstanceGuid = Guid.Empty,
+                            ProductGuid = Guid.Empty,
+                            MapTo = 0,
+                            PadSettingChecksum = ps.PadSettingChecksum
+                        });
+                    }
+
+                    padList.Add(ps);
+                    profile.PadSettings = padList.ToArray();
+                    profile.Entries = entryList.ToArray();
+                }
+            }
+
             // Update UI topology counts
             SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
             _settingsService.MarkDirty();

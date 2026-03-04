@@ -55,6 +55,9 @@
     <Content Include="gamecontrollerdb_padforge.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="gameconfigs.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
     <EmbeddedResource Include="Resources\vJoyDriver.zip" />

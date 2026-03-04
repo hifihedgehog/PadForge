@@ -159,6 +159,17 @@
                         <Button Content="Delete"
                                 Command="{Binding DeleteProfileCommand}"/>
                     </StackPanel>
+
+                    <Separator Margin="0,8,0,8"/>
+                    <Button Click="SubmitGameConfig_Click"
+                            ToolTip="Submit a game configuration to the community database"
+                            Margin="0,0,0,4">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE898;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="Submit Game Config" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Border>
 

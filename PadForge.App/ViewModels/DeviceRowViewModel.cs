@@ -306,6 +306,9 @@ namespace PadForge.ViewModels
         //  Display
         // ─────────────────────────────────────────────
 
+        /// <summary>True if this device is recognized as a gamepad (SDL or custom mapping).</summary>
+        public bool IsGamepad => _deviceType == "Gamepad";
+
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
             $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} POV" +

@@ -251,6 +251,18 @@ namespace SDL3
         public static bool SDL_IsGamepad(uint instance_id) => _SDL_IsGamepad(instance_id);
 
         // ─────────────────────────────────────────────
+        //  Custom gamepad mappings
+        // ─────────────────────────────────────────────
+
+        /// <summary>Load gamepad mappings from a file (SDL gamecontrollerdb.txt format). Returns number of mappings added, or -1 on error.</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_AddGamepadMappingsFromFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+
+        /// <summary>Add a single gamepad mapping string. Returns 1 if new, 0 if updated, -1 on error.</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_AddGamepadMapping([MarshalAs(UnmanagedType.LPUTF8Str)] string mapping);
+
+        // ─────────────────────────────────────────────
         //  Joystick instance (opened device)
         // ─────────────────────────────────────────────
 

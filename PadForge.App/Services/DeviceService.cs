@@ -178,9 +178,14 @@ namespace PadForge.Services
             }
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
+
+            // Auto-enable input hiding defaults for newly assigned devices.
+            AutoEnableHidingDefaults(udForGuid, row);
+
             _settingsService.MarkDirty();
             _mainVm.StatusText = $"Assigned \"{row.DeviceName}\" to Player {slotIndex + 1}.";
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+            DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────

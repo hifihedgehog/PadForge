@@ -1467,6 +1467,10 @@ namespace PadForge.Services
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
             }
 
+            System.Diagnostics.Debug.WriteLine(
+                $"[ApplyDeviceHiding] suppressedKeys={string.Join(",", suppressedKeys)} " +
+                $"suppressedMouse={string.Join(",", suppressedMouse)}");
+
             if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
             {
                 if (_hookManager == null)

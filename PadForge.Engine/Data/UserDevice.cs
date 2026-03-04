@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -142,6 +143,14 @@ namespace PadForge.Engine.Data
         /// <summary>Whether this device's mapped inputs should be consumed via low-level hooks (keyboards and mice).</summary>
         [XmlElement]
         public bool ConsumeInputEnabled { get; set; }
+
+        /// <summary>
+        /// Cached HID device instance IDs resolved via SetupAPI for HidHide blacklisting.
+        /// Persisted so devices can be pre-emptively blacklisted at startup even if powered off.
+        /// </summary>
+        [XmlArray]
+        [XmlArrayItem("Id")]
+        public List<string> HidHideInstanceIds { get; set; } = new();
 
         // ─────────────────────────────────────────────────────────────
         //  Runtime-only fields (NOT serialized)

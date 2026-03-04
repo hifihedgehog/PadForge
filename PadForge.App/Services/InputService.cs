@@ -48,6 +48,7 @@ namespace PadForge.Services
         private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
         private InputHookManager _hookManager;
+        private SettingsService _settingsService;
         private bool _disposed;
         private bool _preservedVJoyNodes;
 
@@ -63,6 +64,12 @@ namespace PadForge.Services
         /// When true, the UI timer updates mapping row live values.
         /// </summary>
         public bool IsPadPageVisible { get; set; }
+
+        /// <summary>
+        /// Optional reference to the settings service for triggering saves
+        /// when cached data (e.g. HidHide instance IDs) is updated.
+        /// </summary>
+        public SettingsService SettingsService { set => _settingsService = value; }
 
         // ── Macro trigger recording state ──
         private MacroItem _recordingMacro;
@@ -1282,6 +1289,10 @@ namespace PadForge.Services
             {
                 SyncDevicesList();
                 UpdatePadDeviceInfo();
+
+                // Re-apply device hiding so newly-connected devices get blacklisted
+                // and their instance IDs get cached for future sessions.
+                ApplyDeviceHiding();
             }));
         }
 
@@ -1424,6 +1435,7 @@ namespace PadForge.Services
                     HidHideController.EnsureWhitelisted(exePath);
 
                 // Add devices with HidHideEnabled to the blacklist.
+                bool cacheUpdated = false;
                 foreach (var ud in snapshot)
                 {
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
@@ -1441,14 +1453,40 @@ namespace PadForge.Services
                         {
                             var realIds = HidHideController.FindInstanceIdsByVidPid(
                                 (ushort)ud.VendorId, (ushort)ud.ProdId);
-                            foreach (var realId in realIds)
+
+                            if (realIds.Count > 0)
                             {
-                                HidHideController.AddToBlacklist(realId);
-                                anyHidHide = true;
+                                // Device is present — cache the resolved IDs for future use.
+                                if (!new HashSet<string>(ud.HidHideInstanceIds, StringComparer.OrdinalIgnoreCase)
+                                        .SetEquals(realIds))
+                                {
+                                    ud.HidHideInstanceIds = realIds;
+                                    cacheUpdated = true;
+                                }
+                                foreach (var realId in realIds)
+                                {
+                                    HidHideController.AddToBlacklist(realId);
+                                    anyHidHide = true;
+                                }
+                            }
+                            else if (ud.HidHideInstanceIds.Count > 0)
+                            {
+                                // Device is offline — use cached IDs to pre-emptively blacklist.
+                                System.Diagnostics.Debug.WriteLine(
+                                    $"[ApplyDeviceHiding] Using {ud.HidHideInstanceIds.Count} cached instance IDs for offline device {ud.ResolvedName}");
+                                foreach (var cachedId in ud.HidHideInstanceIds)
+                                {
+                                    HidHideController.AddToBlacklist(cachedId);
+                                    anyHidHide = true;
+                                }
                             }
                         }
                     }
                 }
+
+                // Persist updated cache to settings.
+                if (cacheUpdated)
+                    _settingsService?.MarkDirty();
 
                 if (anyHidHide)
                     HidHideController.SetActive(true);

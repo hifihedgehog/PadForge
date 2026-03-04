@@ -868,6 +868,8 @@
                                         <TextBlock Text="{Binding RawValue, Mode=OneWay}"
                                                    Style="{StaticResource DzValue}"/>
                                     </StackPanel>
+
+                                    <Separator Margin="0,8,0,12"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

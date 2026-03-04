@@ -95,7 +95,7 @@ namespace PadForge.Engine
         /// <summary>Pre-allocated buffer for mouse button reads.</summary>
         private readonly bool[] _mouseButtonBuffer = new bool[5];
 
-        public CustomInputState GetCurrentState()
+        public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             var state = new CustomInputState();
 

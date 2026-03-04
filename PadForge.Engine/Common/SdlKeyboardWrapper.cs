@@ -92,7 +92,7 @@ namespace PadForge.Engine
             return true;
         }
 
-        public CustomInputState GetCurrentState()
+        public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             var state = new CustomInputState();
             RawInputListener.GetKeyboardState(_rawInputHandle, state.Buttons, state.Buttons.Length);

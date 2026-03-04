@@ -116,8 +116,8 @@
                                             Orientation="Horizontal" Margin="16,3,0,0">
                                     <TextBlock Text="{Binding DeviceType}" FontSize="11" Opacity="0.55"/>
                                     <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
-                                    <TextBlock FontSize="11" Opacity="0.45" FontFamily="Consolas">
-                                        <Run Text="{Binding VendorIdHex, Mode=OneWay}"/>:<Run Text="{Binding ProductIdHex, Mode=OneWay}"/>
+                                    <TextBlock FontSize="11" Opacity="0.45">
+                                        <Run Text="{Binding VendorIdHex, Mode=OneWay}"/><Run Text=":"/><Run Text="{Binding ProductIdHex, Mode=OneWay}"/>
                                     </TextBlock>
                                     <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
                                     <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Opacity="0.45"/>

@@ -1,6 +1,8 @@
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -62,9 +64,18 @@ namespace PadForge.Common
             if (parent == null || parent.ActualWidth <= 0)
                 return;
 
-            // Measure unconstrained text width.
-            tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            double textWidth = tb.DesiredSize.Width;
+            // Measure the actual rendered text width using FormattedText.
+            // tb.Measure() is unreliable for TextBlocks with Run elements after layout.
+            double dpiScale = VisualTreeHelper.GetDpi(tb).PixelsPerDip;
+            var formatted = new FormattedText(
+                new TextRange(tb.ContentStart, tb.ContentEnd).Text,
+                CultureInfo.CurrentCulture,
+                tb.FlowDirection,
+                new Typeface(tb.FontFamily, tb.FontStyle, tb.FontWeight, tb.FontStretch),
+                tb.FontSize,
+                Brushes.Black,
+                dpiScale);
+            double textWidth = formatted.WidthIncludingTrailingWhitespace;
             double containerWidth = parent.ActualWidth;
 
             if (textWidth <= containerWidth)

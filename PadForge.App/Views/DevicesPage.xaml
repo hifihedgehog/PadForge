@@ -186,8 +186,8 @@
                         <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,1">
                             <Run Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
                         </TextBlock>
-                        <TextBlock FontSize="10" Opacity="0.4" Margin="0,0,0,4"
-                                   TextWrapping="Wrap" FontFamily="Consolas">
+                        <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,4"
+                                   TextWrapping="Wrap">
                             <Run Text="GUID:"/>
                             <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
                         </TextBlock>

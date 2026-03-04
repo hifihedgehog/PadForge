@@ -2271,8 +2271,19 @@ namespace PadForge
                     profile.SlotControllerTypes[slot] = ParseOutputType(typeProp.GetString());
                 }
 
-                // Apply PadSetting for this slot.
-                if (slotElement.TryGetProperty("padSetting", out var padJson)
+                // Apply PadSetting(s) for this slot.
+                // Multi-device: "padSettings" array (plural) — one per device on this slot.
+                // Single-device: "padSetting" object (singular) — one device on this slot.
+                if (slotElement.TryGetProperty("padSettings", out var padArrayJson)
+                    && padArrayJson.ValueKind == System.Text.Json.JsonValueKind.Array)
+                {
+                    foreach (var padJson in padArrayJson.EnumerateArray())
+                    {
+                        if (padJson.ValueKind == System.Text.Json.JsonValueKind.Object)
+                            ApplyPadSettingToSlot(padJson, slot, profile);
+                    }
+                }
+                else if (slotElement.TryGetProperty("padSetting", out var padJson)
                     && padJson.ValueKind == System.Text.Json.JsonValueKind.Object)
                 {
                     ApplyPadSettingToSlot(padJson, slot, profile);
@@ -2280,6 +2291,12 @@ namespace PadForge
             }
         }
 
+        /// <summary>
+        /// Adds a single PadSetting to the profile for the given slot.
+        /// For Save-As profiles with existing entries on this slot, replaces the
+        /// next unmatched entry's PadSetting. For new profiles, adds a wildcard entry.
+        /// Can be called multiple times per slot for multi-device configs.
+        /// </summary>
         private static void ApplyPadSettingToSlot(System.Text.Json.JsonElement padJson, int slot, ProfileData profile)
         {
             var ps = PadSetting.FromJson(padJson.GetRawText());
@@ -2289,17 +2306,17 @@ namespace PadForge
             var padList = profile.PadSettings?.ToList() ?? new List<PadSetting>();
             var entryList = profile.Entries?.ToList() ?? new List<ProfileEntry>();
 
-            // For Save-As profiles: replace existing entries on this slot.
-            var slotEntries = entryList.Where(en => en.MapTo == slot).ToList();
-            if (slotEntries.Count > 0)
+            // For Save-As profiles: replace the next unmatched entry on this slot.
+            // (Each call claims one entry so multi-device configs map 1:1.)
+            var nextEntry = entryList.FirstOrDefault(en =>
+                en.MapTo == slot && en.InstanceGuid != Guid.Empty && en.PadSettingChecksum != ps.PadSettingChecksum);
+            if (nextEntry != null)
             {
-                foreach (var en in slotEntries)
-                    en.PadSettingChecksum = ps.PadSettingChecksum;
+                nextEntry.PadSettingChecksum = ps.PadSettingChecksum;
             }
             else
             {
-                // New profile: add a wildcard entry (empty GUID) for this slot.
-                // ApplyProfile will assign the first available device.
+                // New profile or no more entries to replace: add a wildcard.
                 entryList.Add(new ProfileEntry
                 {
                     InstanceGuid = Guid.Empty,

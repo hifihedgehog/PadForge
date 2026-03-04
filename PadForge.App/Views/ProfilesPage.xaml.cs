@@ -72,31 +72,52 @@ namespace PadForge.Views
             if (profile.Entries != null && profile.PadSettings != null &&
                 profile.SlotCreated != null && profile.SlotControllerTypes != null)
             {
-                // Group entries by slot, export each slot's PadSetting
-                var seenSlots = new HashSet<int>();
-                foreach (var entry in profile.Entries)
+                // Group entries by slot — multiple devices can share a slot.
+                var grouped = profile.Entries
+                    .Where(en => en.MapTo >= 0)
+                    .GroupBy(en => en.MapTo);
+
+                foreach (var group in grouped)
                 {
-                    if (entry.MapTo < 0) continue;
-                    if (!seenSlots.Add(entry.MapTo)) continue; // one export per slot
-
-                    var ps = profile.PadSettings
-                        .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
-                    if (ps == null) continue;
-
-                    var outputType = entry.MapTo < profile.SlotControllerTypes.Length
-                        ? (VirtualControllerType)profile.SlotControllerTypes[entry.MapTo]
+                    int slot = group.Key;
+                    var outputType = slot < profile.SlotControllerTypes.Length
+                        ? (VirtualControllerType)profile.SlotControllerTypes[slot]
                         : VirtualControllerType.Xbox360;
 
-                    // Parse the PadSetting JSON back to a JsonElement so it nests properly
-                    var psJsonStr = ps.ToJson();
-                    var psElement = JsonDocument.Parse(psJsonStr).RootElement;
-
-                    slots.Add(new
+                    // Collect each device's PadSetting for this slot.
+                    var padSettings = new List<JsonElement>();
+                    foreach (var entry in group)
                     {
-                        slot = entry.MapTo,
-                        outputType = FormatOutputTypeShort(outputType),
-                        padSetting = psElement
-                    });
+                        var ps = profile.PadSettings
+                            .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
+                        if (ps == null) continue;
+
+                        var psElement = JsonDocument.Parse(ps.ToJson()).RootElement;
+                        padSettings.Add(psElement);
+                    }
+
+                    if (padSettings.Count == 0) continue;
+
+                    if (padSettings.Count == 1)
+                    {
+                        // Single device on this slot — use singular padSetting for simplicity.
+                        slots.Add(new
+                        {
+                            slot,
+                            outputType = FormatOutputTypeShort(outputType),
+                            padSetting = padSettings[0]
+                        });
+                    }
+                    else
+                    {
+                        // Multiple devices on this slot — use padSettings array.
+                        slots.Add(new
+                        {
+                            slot,
+                            outputType = FormatOutputTypeShort(outputType),
+                            padSettings
+                        });
+                    }
                 }
             }
 

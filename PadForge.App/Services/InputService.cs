@@ -45,6 +45,7 @@ namespace PadForge.Services
         private InputManager _inputManager;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
+        private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
@@ -172,17 +173,7 @@ namespace PadForge.Services
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
 
             // Capture default profile snapshot before any profile switches.
-            // If a non-default profile was active at last save, use the persisted
-            // snapshot (current runtime state is the active profile's data, not the default).
-            if (!string.IsNullOrEmpty(SettingsManager.ActiveProfileId)
-                && SettingsManager.DefaultProfileSnapshot != null)
-            {
-                // Already loaded from XML — keep it.
-            }
-            else
-            {
-                SettingsManager.DefaultProfileSnapshot = SnapshotCurrentProfile();
-            }
+            _defaultProfileSnapshot = SnapshotCurrentProfile();
 
             // Start engine background thread.
             _inputManager.Start();
@@ -2328,11 +2319,9 @@ namespace PadForge.Services
                 if (profile.Entries != null && profile.Entries.Length > 0 &&
                     profile.PadSettings != null && profile.PadSettings.Length > 0)
                 {
-                    // First pass: device-specific entries (normal profile entries).
                     foreach (var entry in profile.Entries)
                     {
-                        if (entry.InstanceGuid == Guid.Empty) continue; // wildcard — handled below
-
+                        // Find the PadSetting template by checksum first — skip if missing.
                         var template = profile.PadSettings
                             .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
                         if (template == null) continue;
@@ -2360,30 +2349,7 @@ namespace PadForge.Services
                             SettingsManager.UserSettings.Items.Add(us);
                         }
 
-                        var ps = template.CloneDeep();
-                        us.SetPadSetting(ps);
-                        us.MapTo = entry.MapTo;
-                    }
-
-                    // Second pass: wildcard entries (from game configs — no specific device).
-                    // Apply PadSetting to first available real device on the target slot.
-                    foreach (var entry in profile.Entries)
-                    {
-                        if (entry.InstanceGuid != Guid.Empty) continue;
-
-                        var template = profile.PadSettings
-                            .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
-                        if (template == null) continue;
-
-                        // Skip if a device-specific entry already claimed this slot.
-                        if (SettingsManager.UserSettings.Items.Any(s => s.MapTo == entry.MapTo))
-                            continue;
-
-                        // Find first real (non-ViGEm) unassigned device.
-                        var us = SettingsManager.UserSettings.Items
-                            .FirstOrDefault(s => s.MapTo < 0 && s.InstanceGuid != Guid.Empty);
-                        if (us == null) continue;
-
+                        // Clone and apply PadSetting + slot assignment.
                         var ps = template.CloneDeep();
                         us.SetPadSetting(ps);
                         us.MapTo = entry.MapTo;
@@ -2444,8 +2410,8 @@ namespace PadForge.Services
                 // Revert to default (root) profile using the startup snapshot.
                 SettingsManager.ActiveProfileId = null;
                 _mainVm.Settings.ActiveProfileInfo = "Default";
-                if (SettingsManager.DefaultProfileSnapshot != null)
-                    ApplyProfile(SettingsManager.DefaultProfileSnapshot);
+                if (_defaultProfileSnapshot != null)
+                    ApplyProfile(_defaultProfileSnapshot);
                 _mainVm.StatusText = "Profile switched: Default";
             }
         }
@@ -2463,7 +2429,7 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(activeId))
             {
                 // Currently on the default profile — update the default snapshot.
-                SettingsManager.DefaultProfileSnapshot = snapshot;
+                _defaultProfileSnapshot = snapshot;
             }
             else
             {
@@ -2489,7 +2455,7 @@ namespace PadForge.Services
         /// </summary>
         public void RefreshDefaultSnapshot()
         {
-            SettingsManager.DefaultProfileSnapshot = SnapshotCurrentProfile();
+            _defaultProfileSnapshot = SnapshotCurrentProfile();
         }
 
         /// <summary>
@@ -2498,8 +2464,8 @@ namespace PadForge.Services
         /// </summary>
         public void ApplyDefaultProfile()
         {
-            if (SettingsManager.DefaultProfileSnapshot != null)
-                ApplyProfile(SettingsManager.DefaultProfileSnapshot);
+            if (_defaultProfileSnapshot != null)
+                ApplyProfile(_defaultProfileSnapshot);
         }
 
         /// <summary>

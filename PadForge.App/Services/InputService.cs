@@ -1414,6 +1414,10 @@ namespace PadForge.Services
             bool anyHidHide = false;
             if (HidHideController.IsAvailable())
             {
+                // Clear previous PadForge-managed entries before re-adding,
+                // so devices that had HidHideEnabled turned off get removed.
+                HidHideController.RemoveManagedDevices();
+
                 // Whitelist PadForge itself.
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
                 if (!string.IsNullOrEmpty(exePath))

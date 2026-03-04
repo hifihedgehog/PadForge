@@ -272,7 +272,10 @@ namespace PadForge.Common
                 IntPtr.Zero);
 
             if (handle.IsInvalid)
+            {
+                handle.Dispose();
                 return null;
+            }
 
             return handle;
         }

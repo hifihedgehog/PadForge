@@ -200,7 +200,12 @@ namespace PadForge.Engine.Common
             _mouseProc = MouseHookCallback;
 
             _keyboardHook = SetWindowsHookExW(WH_KEYBOARD_LL, _keyboardProc, hModule, 0);
+            if (_keyboardHook == IntPtr.Zero)
+                Debug.WriteLine($"InputHookManager: Failed to install keyboard hook (error {Marshal.GetLastWin32Error()})");
+
             _mouseHook = SetWindowsHookExW(WH_MOUSE_LL, _mouseProc, hModule, 0);
+            if (_mouseHook == IntPtr.Zero)
+                Debug.WriteLine($"InputHookManager: Failed to install mouse hook (error {Marshal.GetLastWin32Error()})");
 
             ready.Set();
 

@@ -618,6 +618,9 @@ namespace PadForge
             // Settings and tray icon are already initialized in the constructor
             // (before Show) so that App.OnStartup can decide whether to show the window.
 
+            // Load community game config database.
+            GameConfigDatabase.Load();
+
             // Populate diagnostic info.
             _viewModel.Settings.ApplicationVersion =
                 System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
@@ -2143,6 +2146,8 @@ namespace PadForge
 
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created (empty).";
+
+            OfferGameConfig(dialog.MatchedConfigs);
         }
 
         private void OnSaveAsProfile(object sender, EventArgs e)
@@ -2174,6 +2179,44 @@ namespace PadForge
 
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created.";
+
+            OfferGameConfig(dialog.MatchedConfigs);
+        }
+
+        private void OfferGameConfig(List<GameConfigEntry> configs)
+        {
+            if (configs == null || configs.Count == 0)
+                return;
+
+            GameConfigEntry chosen;
+            if (configs.Count == 1)
+            {
+                chosen = configs[0];
+            }
+            else
+            {
+                var selDialog = new ConfigSelectionDialog(configs) { Owner = this };
+                if (selDialog.ShowDialog() != true || selDialog.SelectedConfig == null)
+                    return;
+                chosen = selDialog.SelectedConfig;
+            }
+
+            string message = $"Community config: {chosen.Label} by {chosen.Author}\n\n{chosen.Notes}";
+            if (!string.IsNullOrEmpty(chosen.RecommendedOutputType))
+                message += $"\n\nRecommended output: {chosen.RecommendedOutputType}";
+            message += "\n\nWould you like to apply these recommendations?";
+
+            var result = MessageBox.Show(this, message, "Game Config Available",
+                MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            // Apply recommended output type if specified
+            if (!string.IsNullOrEmpty(chosen.RecommendedOutputType))
+            {
+                _viewModel.StatusText = $"Applied config: {chosen.Label} by {chosen.Author}";
+            }
         }
 
         /// <summary>

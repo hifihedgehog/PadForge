@@ -4,7 +4,7 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Save As Profile"
-        Height="420" Width="500"
+        Height="450" Width="500"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -14,6 +14,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -39,14 +40,18 @@
                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                    Visibility="Collapsed"/>
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,12">
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,8">
             <Button Content="Browse..." Click="BrowseButton_Click"
                     MinWidth="80" Margin="0,0,8,0"/>
             <Button Content="Remove" Click="RemoveButton_Click"
                     MinWidth="80"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="6" Orientation="Horizontal"
+        <CheckBox Grid.Row="6" x:Name="FilenameOnlyCheckBox"
+                  Content="Match by filename only (for portable/emulator apps)"
+                  Margin="0,0,0,4"/>
+
+        <StackPanel Grid.Row="7" Orientation="Horizontal"
                     HorizontalAlignment="Right" Margin="0,12,0,0">
             <Button Content="Save" MinWidth="80" Margin="0,0,8,0"
                     IsDefault="True" Click="SaveButton_Click"

@@ -2126,6 +2126,7 @@ namespace PadForge
                 Id = Guid.NewGuid().ToString("N"),
                 Name = name.Trim(),
                 ExecutableNames = exePaths,
+                MatchByFilenameOnly = dialog.MatchByFilenameOnly,
                 Entries = Array.Empty<ProfileEntry>(),
                 PadSettings = Array.Empty<PadSetting>(),
                 SlotCreated = new bool[InputManager.MaxPads],
@@ -2147,7 +2148,7 @@ namespace PadForge
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created (empty).";
 
-            OfferGameConfig(dialog.MatchedConfigs);
+            OfferGameConfig(dialog.MatchedConfigs, profile, listItem);
         }
 
         private void OnSaveAsProfile(object sender, EventArgs e)
@@ -2165,6 +2166,7 @@ namespace PadForge
             snapshot.Id = Guid.NewGuid().ToString("N");
             snapshot.Name = name.Trim();
             snapshot.ExecutableNames = exePaths;
+            snapshot.MatchByFilenameOnly = dialog.MatchByFilenameOnly;
 
             SettingsManager.Profiles.Add(snapshot);
 
@@ -2180,10 +2182,10 @@ namespace PadForge
             _settingsService.MarkDirty();
             _viewModel.StatusText = $"Profile \"{name}\" created.";
 
-            OfferGameConfig(dialog.MatchedConfigs);
+            OfferGameConfig(dialog.MatchedConfigs, snapshot, listItem);
         }
 
-        private void OfferGameConfig(List<GameConfigEntry> configs)
+        private void OfferGameConfig(List<GameConfigEntry> configs, ProfileData profile, ViewModels.ProfileListItem listItem)
         {
             if (configs == null || configs.Count == 0)
                 return;
@@ -2204,19 +2206,40 @@ namespace PadForge
             string message = $"Community config: {chosen.Label} by {chosen.Author}\n\n{chosen.Notes}";
             if (!string.IsNullOrEmpty(chosen.RecommendedOutputType))
                 message += $"\n\nRecommended output: {chosen.RecommendedOutputType}";
-            message += "\n\nWould you like to apply these recommendations?";
+            message += "\n\nApply this configuration to the profile?";
 
-            var result = MessageBox.Show(this, message, "Game Config Available",
-                MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-            if (result != MessageBoxResult.Yes)
+            if (MessageBox.Show(this, message, "Game Config Available",
+                MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
                 return;
 
-            // Apply recommended output type if specified
+            // Apply recommended output type to slot 0
             if (!string.IsNullOrEmpty(chosen.RecommendedOutputType))
             {
-                _viewModel.StatusText = $"Applied config: {chosen.Label} by {chosen.Author}";
+                if (profile.SlotCreated == null)
+                    profile.SlotCreated = new bool[InputManager.MaxPads];
+                if (profile.SlotEnabled == null)
+                    profile.SlotEnabled = new bool[InputManager.MaxPads];
+                if (profile.SlotControllerTypes == null)
+                    profile.SlotControllerTypes = new int[InputManager.MaxPads];
+
+                profile.SlotCreated[0] = true;
+                profile.SlotEnabled[0] = true;
+                profile.SlotControllerTypes[0] = chosen.RecommendedOutputType switch
+                {
+                    "DS4" => (int)VirtualControllerType.DualShock4,
+                    "vJoy" => (int)VirtualControllerType.VJoy,
+                    _ => (int)VirtualControllerType.Xbox360,
+                };
             }
+
+            // Apply DSU setting
+            if (chosen.EnableDsuMotionServer)
+                profile.EnableDsuMotionServer = true;
+
+            // Update UI topology counts
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = $"Applied config: {chosen.Label} by {chosen.Author}. Load the profile to activate.";
         }
 
         /// <summary>
@@ -2271,7 +2294,7 @@ namespace PadForge
                 : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries);
 
             var dialog = new Views.ProfileDialog { Owner = this };
-            dialog.LoadForEdit(profile.Name, exePaths);
+            dialog.LoadForEdit(profile.Name, exePaths, profile.MatchByFilenameOnly);
 
             if (dialog.ShowDialog() != true)
                 return;
@@ -2281,6 +2304,7 @@ namespace PadForge
 
             profile.Name = newName;
             profile.ExecutableNames = newExePaths;
+            profile.MatchByFilenameOnly = dialog.MatchByFilenameOnly;
 
             selected.Name = newName;
             selected.Executables = FormatExePaths(newExePaths);

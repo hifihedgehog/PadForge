@@ -333,6 +333,7 @@ namespace PadForge.Services
             {
                 ud.HidHideEnabled = row.HidHideEnabled;
                 ud.ConsumeInputEnabled = row.ConsumeInputEnabled;
+                ud.ForceRawJoystickMode = row.ForceRawJoystickMode;
             }
 
             _settingsService.MarkDirty();

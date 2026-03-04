@@ -144,6 +144,10 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool ConsumeInputEnabled { get; set; }
 
+        /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices instead.</summary>
+        [XmlElement]
+        public bool ForceRawJoystickMode { get; set; }
+
         /// <summary>
         /// Cached HID device instance IDs resolved via SetupAPI for HidHide blacklisting.
         /// Persisted so devices can be pre-emptively blacklisted at startup even if powered off.

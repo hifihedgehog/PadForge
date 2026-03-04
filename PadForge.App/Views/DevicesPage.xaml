@@ -291,6 +291,23 @@
                             </CheckBox.Style>
                         </CheckBox>
 
+                        <CheckBox Content="Force raw joystick mode (bypass gamepad remapping)"
+                                  IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
+                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  ToolTip="Read raw HID indices instead of SDL's gamepad mapping — use when SDL misidentifies button/axis layout"
+                                  Margin="0,0,0,4">
+                            <CheckBox.Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedDevice.IsGamepad}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+
                         <Separator Margin="0,4,0,8"/>
 
                         <!-- ─── Raw Input State (Visual) ─── -->

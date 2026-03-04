@@ -268,6 +268,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _consumeInputEnabled, value);
         }
 
+        private bool _forceRawJoystickMode;
+
+        /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices.</summary>
+        public bool ForceRawJoystickMode
+        {
+            get => _forceRawJoystickMode;
+            set => SetProperty(ref _forceRawJoystickMode, value);
+        }
+
         private bool _isHidHideAvailable;
 
         /// <summary>Whether HidHide is installed and available (controls IsEnabled on the toggle).</summary>

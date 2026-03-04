@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "games": [
+    {
+      "name": "Cemu (Wii U Emulator)",
+      "exeNames": ["cemu.exe"],
+      "label": "DS4 with gyro",
+      "author": "hifihedgehog",
+      "notes": "Enable DSU motion server for gyro-enabled games like Zelda: Breath of the Wild and Splatoon. Use DS4 output for touchpad support.",
+      "recommendedOutputType": "DS4",
+      "settings": {
+        "enableDsuMotionServer": true
+      }
+    },
+    {
+      "name": "Cemu (Wii U Emulator)",
+      "exeNames": ["cemu.exe"],
+      "label": "Xbox basic",
+      "author": "hifihedgehog",
+      "notes": "Standard Xbox 360 layout for games without motion controls.",
+      "recommendedOutputType": "Xbox360"
+    },
+    {
+      "name": "Dolphin (Wii/GameCube Emulator)",
+      "exeNames": ["dolphin.exe"],
+      "label": "DS4 with gyro",
+      "author": "hifihedgehog",
+      "notes": "Enable DSU motion server for Wii games with motion controls. Use DS4 output type.",
+      "recommendedOutputType": "DS4",
+      "settings": {
+        "enableDsuMotionServer": true
+      }
+    },
+    {
+      "name": "Yuzu / Suyu (Switch Emulator)",
+      "exeNames": ["yuzu.exe", "suyu.exe"],
+      "label": "DS4 with gyro",
+      "author": "hifihedgehog",
+      "notes": "Enable DSU motion server for gyro-enabled Switch titles. Use DS4 output for touchpad-as-touchscreen support.",
+      "recommendedOutputType": "DS4",
+      "settings": {
+        "enableDsuMotionServer": true
+      }
+    },
+    {
+      "name": "Ryujinx (Switch Emulator)",
+      "exeNames": ["ryujinx.exe"],
+      "label": "DS4 with gyro",
+      "author": "hifihedgehog",
+      "notes": "Enable DSU motion server for gyro-enabled Switch titles.",
+      "recommendedOutputType": "DS4",
+      "settings": {
+        "enableDsuMotionServer": true
+      }
+    }
+  ]
+}

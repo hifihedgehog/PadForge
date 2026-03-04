@@ -250,6 +250,9 @@
                         <Separator Margin="0,2,0,8"/>
 
                         <!-- ─── Input Mode ─── -->
+                        <TextBlock Text="Input Mode" FontWeight="SemiBold"
+                                   FontSize="13" Margin="0,0,0,6"/>
+
                         <CheckBox Content="Force raw joystick mode (bypass gamepad remapping)"
                                   IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
                                   Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"

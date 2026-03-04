@@ -61,7 +61,7 @@ namespace PadForge
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);
-            _inputService = new InputService(_viewModel);
+            _inputService = new InputService(_viewModel) { SettingsService = _settingsService };
             _recorderService = new RecorderService(_viewModel);
             _deviceService = new DeviceService(_viewModel, _settingsService);
 

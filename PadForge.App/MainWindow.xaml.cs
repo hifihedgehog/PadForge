@@ -922,6 +922,7 @@ namespace PadForge
         private NavigationViewItem CreateControllerNavItem(NavControllerItemViewModel navItem)
         {
             var menuItem = new NavigationViewItem { Tag = navItem.Tag };
+            System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
             return menuItem;
         }

@@ -512,10 +512,12 @@ namespace PadForge.ViewModels
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
+            LeftMaxRangeX = 100; LeftMaxRangeY = 100;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
             RightLinear = 0;
             RightCenterOffsetX = 0; RightCenterOffsetY = 0;
+            RightMaxRangeX = 100; RightMaxRangeY = 100;
             LeftTriggerDeadZone = 0; LeftTriggerAntiDeadZone = 0; LeftTriggerMaxRange = 100;
             RightTriggerDeadZone = 0; RightTriggerAntiDeadZone = 0; RightTriggerMaxRange = 100;
         }

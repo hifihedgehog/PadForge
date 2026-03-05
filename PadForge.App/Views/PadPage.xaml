@@ -176,7 +176,8 @@
                 <TextBlock Style="{StaticResource TabStripSeparator}"/>
 
                 <!-- Config tabs -->
-                <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             AutomationProperties.AutomationId="MappingsTab">
                     <TextBlock Text="Mappings" FontSize="13"/>
                 </RadioButton>
                 <RadioButton Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
@@ -245,6 +246,11 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
+        <!-- Expose Mappings count for UI Automation tests (invisible but accessible) -->
+        <TextBlock AutomationProperties.AutomationId="MappingsCountIndicator"
+                   AutomationProperties.Name="{Binding Mappings.Count}"
+                   Width="0" Height="0" Opacity="0"/>
 
         <!-- ═══════════════════════════════════════════
              ROW 2: Configuration TabControl

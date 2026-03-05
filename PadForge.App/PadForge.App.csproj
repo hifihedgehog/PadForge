@@ -62,6 +62,8 @@
     <EmbeddedResource Include="3DModels\**\*.obj" />
     <!-- 2D controller model assets (Gamepad-Asset-Pack by AL2009man, MIT license) -->
     <Resource Include="2DModels\**\*.png" />
+    <!-- Web controller frontend assets (embedded, served by WebControllerServer) -->
+    <EmbeddedResource Include="WebAssets\**\*" />
   </ItemGroup>
 
   <ItemGroup>

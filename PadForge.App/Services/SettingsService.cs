@@ -302,6 +302,11 @@ namespace PadForge.Services
             _mainVm.Dashboard.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
                 ? appSettings.DsuMotionServerPort : 26760;
 
+            // Load web controller server settings.
+            _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
+            _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
+                ? appSettings.WebControllerPort : 8080;
+
             vm.Use2DControllerView = appSettings.Use2DControllerView;
         }
 
@@ -588,6 +593,8 @@ namespace PadForge.Services
                 .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
+            profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
+            profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
         }
 
         /// <summary>
@@ -793,6 +800,8 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                EnableWebController = _mainVm.Dashboard.EnableWebController,
+                WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
                 VJoyConfigs = vjoyConfigs.ToArray()
@@ -981,6 +990,8 @@ namespace PadForge.Services
             settingsVm.EnableAutoProfileSwitching = false;
             _mainVm.Dashboard.EnableDsuMotionServer = false;
             _mainVm.Dashboard.DsuMotionServerPort = 26760;
+            _mainVm.Dashboard.EnableWebController = false;
+            _mainVm.Dashboard.WebControllerPort = 8080;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
@@ -1207,6 +1218,12 @@ namespace PadForge.Services
         public int DsuMotionServerPort { get; set; } = 26760;
 
         [XmlElement]
+        public bool EnableWebController { get; set; }
+
+        [XmlElement]
+        public int WebControllerPort { get; set; } = 8080;
+
+        [XmlElement]
         public bool Use2DControllerView { get; set; }
 
         /// <summary>
@@ -1381,6 +1398,14 @@ namespace PadForge.Services
         /// <summary>DSU motion server port for this profile.</summary>
         [XmlElement]
         public int DsuMotionServerPort { get; set; } = 26760;
+
+        /// <summary>Whether the web controller server was enabled in this profile.</summary>
+        [XmlElement]
+        public bool EnableWebController { get; set; }
+
+        /// <summary>Web controller server port for this profile.</summary>
+        [XmlElement]
+        public int WebControllerPort { get; set; } = 8080;
     }
 
     /// <summary>

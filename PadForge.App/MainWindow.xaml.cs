@@ -123,11 +123,13 @@ namespace PadForge
                     Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
             };
 
-            // Persist DSU server settings on change (now on Dashboard VM).
+            // Persist DSU / web controller server settings on change (Dashboard VM).
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
-                     or nameof(DashboardViewModel.DsuMotionServerPort))
+                     or nameof(DashboardViewModel.DsuMotionServerPort)
+                     or nameof(DashboardViewModel.EnableWebController)
+                     or nameof(DashboardViewModel.WebControllerPort))
                     _settingsService.MarkDirty();
             };
 

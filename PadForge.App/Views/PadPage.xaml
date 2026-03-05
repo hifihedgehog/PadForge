@@ -92,7 +92,9 @@
         <Grid.RowDefinitions>
             <!-- Row 0: Device selector header -->
             <RowDefinition Height="Auto"/>
-            <!-- Row 1: Configuration tabs -->
+            <!-- Row 1: vJoy config bar (visible only for vJoy slots) -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 2: Configuration tabs -->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -189,11 +191,66 @@
             </WrapPanel>
         </Border>
 
+        <!-- ══════════════════════════════════════
+             ROW 1: VJOY CONFIGURATION BAR
+             (visible only when OutputType == VJoy)
+             ══════════════════════════════════════ -->
+        <Border x:Name="VJoyConfigBar" Grid.Row="1" Margin="4,4,4,0"
+                Padding="10,6" CornerRadius="4"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
+                Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!-- Preset selector -->
+                <TextBlock Text="Preset" VerticalAlignment="Center" Margin="0,0,6,0"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" FontSize="13"/>
+                <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
+                          AutomationProperties.AutomationId="VJoyPresetCombo"
+                          SelectionChanged="VJoyPresetCombo_SelectionChanged">
+                    <ComboBoxItem Content="Xbox 360"/>
+                    <ComboBoxItem Content="DualShock 4"/>
+                    <ComboBoxItem Content="Custom"/>
+                </ComboBox>
+
+                <!-- Custom config spinners (visible when Custom preset) -->
+                <StackPanel x:Name="VJoyCustomPanel" Orientation="Horizontal" Margin="16,0,0,0"
+                            Visibility="Collapsed">
+                    <TextBlock Text="Sticks" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="VJoyStickCountBox"
+                             TextAlignment="Center" Text="2"
+                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+
+                    <TextBlock Text="Triggers" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="VJoyTriggerCountBox"
+                             TextAlignment="Center" Text="2"
+                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+
+                    <TextBlock Text="POVs" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="VJoyPovCountBox"
+                             TextAlignment="Center" Text="1"
+                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+
+                    <TextBlock Text="Buttons" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="VJoyButtonCountBox"
+                             TextAlignment="Center" Text="11"
+                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
         <!-- ═══════════════════════════════════════════
-             ROW 1: Configuration TabControl
+             ROW 2: Configuration TabControl
              Tabs: Controller | Mappings | Left Stick | Right Stick | Triggers | Force Feedback | Macros
              ═══════════════════════════════════════════ -->
-        <TabControl Grid.Row="1"
+        <TabControl Grid.Row="2"
                     SelectedIndex="{Binding SelectedConfigTab, Mode=TwoWay}">
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">
@@ -207,7 +264,6 @@
                 <Grid Margin="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>      <!-- 3D viewport -->
-                        <RowDefinition Height="Auto"/>   <!-- vJoy config bar -->
                         <RowDefinition Height="Auto"/>   <!-- Motor bars -->
                         <RowDefinition Height="Auto"/>   <!-- Map All -->
                     </Grid.RowDefinitions>
@@ -230,59 +286,9 @@
                     </Grid>
 
                     <!-- ══════════════════════════════════════
-                         VJOY CONFIGURATION BAR
-                         (visible only when OutputType == VJoy)
-                         ══════════════════════════════════════ -->
-                    <Border x:Name="VJoyConfigBar" Grid.Row="1" Margin="4,4,4,0"
-                            Padding="10,6" CornerRadius="4"
-                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
-                            Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <!-- Preset selector -->
-                            <TextBlock Text="Preset" VerticalAlignment="Center" Margin="0,0,6,0"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" FontSize="13"/>
-                            <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
-                                      SelectionChanged="VJoyPresetCombo_SelectionChanged">
-                                <ComboBoxItem Content="Xbox 360"/>
-                                <ComboBoxItem Content="DualShock 4"/>
-                                <ComboBoxItem Content="Custom"/>
-                            </ComboBox>
-
-                            <!-- Custom config spinners (visible when Custom preset) -->
-                            <StackPanel x:Name="VJoyCustomPanel" Orientation="Horizontal" Margin="16,0,0,0"
-                                        Visibility="Collapsed">
-                                <TextBlock Text="Sticks" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
-                                         TextAlignment="Center" Text="2"
-                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
-
-                                <TextBlock Text="Triggers" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
-                                         TextAlignment="Center" Text="2"
-                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
-
-                                <TextBlock Text="POVs" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
-                                         TextAlignment="Center" Text="1"
-                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
-
-                                <TextBlock Text="Buttons" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
-                                         TextAlignment="Center" Text="11"
-                                         LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- ══════════════════════════════════════
                          MOTOR ACTIVITY INDICATORS
                          ══════════════════════════════════════ -->
-                    <Grid Grid.Row="2" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                    <Grid Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="24"/>
@@ -329,7 +335,7 @@
                     <!-- ══════════════════════════════════════
                          MAP ALL — Controller tab controls
                          ══════════════════════════════════════ -->
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
                         <Button Content="Map All" Command="{Binding MapAllCommand}"
                                 Padding="16,8" Margin="0,0,8,0" FontSize="14"
                                 ToolTip="Sequentially record all mappings — press a button/axis for each prompt"/>

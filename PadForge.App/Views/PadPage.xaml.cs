@@ -30,6 +30,7 @@ namespace PadForge.Views
         {
             ApplyViewMode();
             SyncTabStripSelection();
+            SyncVJoyConfigBar();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -1394,8 +1394,12 @@ namespace PadForge.Common.Input
             // re-reads the registry and creates the right number of collections.
             if (descriptorsChanged && existingNodes >= 1)
             {
-                DiagLog($"Restarting device node (descriptor count changed to {requiredCount})");
-                RestartDeviceNode();
+                // HID descriptors define button/axis/POV counts — these are only parsed
+                // during device node creation (EvtDeviceAdd). DICS_PROPCHANGE restarts
+                // the driver stack in-place but does NOT re-parse HID descriptors.
+                // Always do full remove+create to apply descriptor changes.
+                DiagLog($"Restarting device node (descriptors changed, count={requiredCount}, countMismatch={countMismatch})");
+                RestartDeviceNode(countChanged: true);
                 _dllLoaded = false;
 
                 for (int attempt = 0; attempt < 20; attempt++)
@@ -1652,7 +1656,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static void RestartDeviceNode()
+        private static void RestartDeviceNode(bool countChanged = true)
         {
             try
             {
@@ -1660,29 +1664,45 @@ namespace PadForge.Common.Input
                 if (instanceIds.Count == 0) return;
 
                 string id = instanceIds[0];
-                DiagLog($"RestartDeviceNode: restarting {id}");
+                DiagLog($"RestartDeviceNode: restarting {id} (countChanged={countChanged})");
 
                 // Release all device handles before any restart operation.
                 RelinquishAllDevices();
 
-                // HIDCLASS only creates child PDOs during EvtDeviceAdd (device creation).
-                // A disable/enable (stop/start) re-reads the HID descriptor but does NOT
-                // recreate child PDOs — so descriptor count changes are invisible.
-                // The ONLY reliable way to change the device count is to fully remove the
-                // device node and create a fresh one, which triggers EvtDeviceAdd.
-                //
-                // Strategy: Close DLL handles first (via QUERYREMOVE message to unblock),
-                // then disable (should be fast without blocking handles), then remove,
-                // then create a fresh node, then refresh DLL handles for new node.
-
                 // Pre-close vJoyInterface.dll's internal h0 handle so it doesn't block
-                // the subsequent disable/remove operations. Without this, DICS_DISABLE
+                // the subsequent operations. Without this, DICS_DISABLE/PROPCHANGE
                 // takes ~5 seconds waiting for the handle to time out.
                 RefreshVJoyDllHandles();
 
+                // Strategy depends on whether the descriptor count changed:
+                //
+                // Content-only change (same device count): Use DICS_PROPCHANGE to restart
+                // the driver stack in-place. This re-reads the HID descriptor from registry
+                // without recreating child PDOs. Works on Win11 builds where DICS_DISABLE
+                // fails (e.g., Build 26200+).
+                //
+                // Count change: Must fully remove + recreate the device node because
+                // HIDCLASS only creates child PDOs during EvtDeviceAdd (device creation).
+                // A stop/start re-reads descriptors but does NOT recreate child PDOs.
+
+                if (!countChanged)
+                {
+                    // Fast path: DICS_PROPCHANGE restarts the driver without removing the node.
+                    if (SetupApiRestart.RestartDevice(id))
+                    {
+                        DiagLog("RestartDeviceNode: DICS_PROPCHANGE succeeded");
+                        _generation++;
+                        _dllLoaded = false;
+                        Thread.Sleep(500);
+                        RefreshVJoyDllHandles();
+                        return;
+                    }
+                    DiagLog("RestartDeviceNode: DICS_PROPCHANGE failed, falling through to full restart");
+                }
+
+                // Full restart: disable → remove → create.
                 bool disabled = false;
 
-                // Step 1: Disable the device node to unload the driver.
                 if (SetupApiRestart.DisableDevice(id))
                 {
                     DiagLog("RestartDeviceNode: SetupAPI DICS_DISABLE succeeded");
@@ -1705,18 +1725,15 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                // Step 2: Remove the (now disabled) device node.
                 bool removed = false;
                 if (disabled)
                 {
-                    // Try SetupDiRemoveDevice first (works on disabled devices).
                     removed = SetupApiRestart.RemoveDevice(id);
                     DiagLog($"RestartDeviceNode: SetupDiRemoveDevice={removed}");
                 }
 
                 if (!removed)
                 {
-                    // Fallback: pnputil /remove-device (exit 3010 = reboot required but node gone).
                     int exitCode = RunPnputil($"/remove-device \"{id}\" /subtree");
                     DiagLog($"RestartDeviceNode: pnputil /remove-device exit={exitCode}");
                     removed = exitCode == 0 || exitCode == 3010;
@@ -1724,26 +1741,37 @@ namespace PadForge.Common.Input
 
                 if (!removed)
                 {
-                    // Last resort: try direct remove without prior disable.
                     removed = SetupApiRestart.RemoveDevice(id);
                     DiagLog($"RestartDeviceNode: SetupDiRemoveDevice (no disable)={removed}");
                 }
 
                 if (!removed)
                 {
-                    DiagLog("RestartDeviceNode: FAILED to remove device node — falling back to disable/enable");
-                    // Fall back to disable/enable (won't change PDO count but at least re-reads descriptors).
+                    // All remove attempts failed. Try DICS_PROPCHANGE as last resort —
+                    // won't change PDO count but at least re-reads descriptor contents.
+                    DiagLog("RestartDeviceNode: remove failed — trying DICS_PROPCHANGE fallback");
+                    if (SetupApiRestart.RestartDevice(id))
+                    {
+                        DiagLog("RestartDeviceNode: DICS_PROPCHANGE fallback succeeded");
+                        _generation++;
+                        _dllLoaded = false;
+                        Thread.Sleep(500);
+                        RefreshVJoyDllHandles();
+                        return;
+                    }
+
+                    // Truly stuck — re-enable if we disabled.
                     if (disabled)
                     {
                         bool enabled = SetupApiRestart.EnableDevice(id);
-                        DiagLog($"RestartDeviceNode: SetupAPI DICS_ENABLE fallback={enabled}");
+                        DiagLog($"RestartDeviceNode: DICS_ENABLE fallback={enabled}");
                     }
                     _generation++;
                     _dllLoaded = false;
                     return;
                 }
 
-                // Step 3: Create a fresh device node.
+                // Create a fresh device node.
                 _dllLoaded = false;
                 _generation++;
                 DiagLog($"RestartDeviceNode: node removed, creating fresh node, generation={_generation}");
@@ -1758,7 +1786,6 @@ namespace PadForge.Common.Input
                     return;
                 }
 
-                // Wait for the new node to become ready (DLL loadable).
                 for (int attempt = 0; attempt < 20; attempt++)
                 {
                     Thread.Sleep(250);
@@ -1766,9 +1793,6 @@ namespace PadForge.Common.Input
                     if (_dllLoaded)
                     {
                         DiagLog($"RestartDeviceNode: new node ready after {(attempt + 1) * 250 + 500}ms");
-                        // Force vJoyInterface.dll to close its stale h0 handle and re-open
-                        // for the new device node. Without this, the DLL uses the old handle
-                        // from the removed node and all API calls (GetVJDStatus, AcquireVJD) fail.
                         RefreshVJoyDllHandles();
                         return;
                     }

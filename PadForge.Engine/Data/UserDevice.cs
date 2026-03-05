@@ -449,6 +449,16 @@ namespace PadForge.Engine.Data
         }
 
         /// <summary>
+        /// Populates the device identity and capabilities from a <see cref="WebControllerDevice"/>.
+        /// </summary>
+        public void LoadFromWebDevice(WebControllerDevice wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
         /// Clears all runtime state when the device is disconnected.
         /// The serializable identity and capability properties are preserved.
         /// </summary>

@@ -47,6 +47,7 @@ namespace PadForge.Services
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
+        private WebControllerServer _webServer;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -181,6 +182,19 @@ namespace PadForge.Services
             // Start DSU motion server if enabled.
             StartDsuServerIfEnabled();
 
+            // Start web controller server if enabled.
+            StartWebServerIfEnabled();
+
+            // Clear stale HidHide blacklist entries from previous crash/kill.
+            // _managedDeviceIds is in-memory so entries are lost on restart,
+            // making RemoveManagedDevices() unable to clean up stale entries.
+            try
+            {
+                if (HidHideController.IsAvailable())
+                    HidHideController.ClearAll();
+            }
+            catch { /* best effort */ }
+
             // Apply device hiding (HidHide + input hooks) if master switch is on.
             ApplyDeviceHiding();
 
@@ -225,6 +239,9 @@ namespace PadForge.Services
 
             // Stop DSU server.
             StopDsuServer();
+
+            // Stop web controller server.
+            StopWebServer();
 
             // Remove device hiding (HidHide blacklist entries + input hooks).
             RemoveDeviceHiding();
@@ -1362,6 +1379,21 @@ namespace PadForge.Services
                     StartDsuServerIfEnabled();
                 }
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
+            {
+                if (_mainVm.Dashboard.EnableWebController)
+                    StartWebServerIfEnabled();
+                else
+                    StopWebServer();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.WebControllerPort))
+            {
+                if (_mainVm.Dashboard.EnableWebController)
+                {
+                    StopWebServer();
+                    StartWebServerIfEnabled();
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1407,6 +1439,56 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Web Controller Server lifecycle
+        // ─────────────────────────────────────────────
+
+        private void StartWebServerIfEnabled()
+        {
+            if (!_mainVm.Dashboard.EnableWebController || _inputManager == null)
+                return;
+
+            if (_webServer != null)
+                return; // Already running.
+
+            _webServer = new WebControllerServer();
+            _webServer.StatusChanged += (_, status) =>
+            {
+                _dispatcher.BeginInvoke(() =>
+                {
+                    _mainVm.Dashboard.WebControllerStatus = status;
+                    _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
+                });
+            };
+            _webServer.DeviceConnected += device =>
+            {
+                _inputManager.RegisterExternalDevice(device);
+            };
+            _webServer.DeviceDisconnected += device =>
+            {
+                _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+            };
+
+            int port = _mainVm.Dashboard.WebControllerPort;
+            if (port < 1024 || port > 65535)
+                port = 8080;
+
+            if (!_webServer.Start(port))
+            {
+                _webServer.Dispose();
+                _webServer = null;
+            }
+        }
+
+        private void StopWebServer()
+        {
+            if (_webServer == null)
+                return;
+
+            _webServer.Dispose();
+            _webServer = null;
         }
 
         // ─────────────────────────────────────────────
@@ -2256,7 +2338,9 @@ namespace PadForge.Services
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
-                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort
+                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                EnableWebController = _mainVm.Dashboard.EnableWebController,
+                WebControllerPort = _mainVm.Dashboard.WebControllerPort
             };
         }
 
@@ -2362,6 +2446,11 @@ namespace PadForge.Services
             if (profile.DsuMotionServerPort >= 1024 && profile.DsuMotionServerPort <= 65535)
                 _mainVm.Dashboard.DsuMotionServerPort = profile.DsuMotionServerPort;
 
+            // ── Apply web controller server settings ──
+            _mainVm.Dashboard.EnableWebController = profile.EnableWebController;
+            if (profile.WebControllerPort >= 1024 && profile.WebControllerPort <= 65535)
+                _mainVm.Dashboard.WebControllerPort = profile.WebControllerPort;
+
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
 
@@ -2444,6 +2533,8 @@ namespace PadForge.Services
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
+                    profile.EnableWebController = snapshot.EnableWebController;
+                    profile.WebControllerPort = snapshot.WebControllerPort;
                 }
             }
         }

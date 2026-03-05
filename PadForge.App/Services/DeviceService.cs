@@ -379,6 +379,13 @@ namespace PadForge.Services
                     // handler's call to RefreshNavControllerItems() sees SlotCreated[i]=false
                     // and doesn't trigger a premature sidebar rebuild.
                     _mainVm.Pads[i].OutputType = controllerType;
+
+                    // Reset vJoy config to Xbox 360 default for fresh slots.
+                    // Without this, stale custom configs from previously-deleted vJoy slots
+                    // (still in XML) leak into newly-created slots.
+                    if (controllerType == VirtualControllerType.VJoy)
+                        _mainVm.Pads[i].VJoyConfig.Preset = VJoyPreset.Xbox360;
+
                     SettingsManager.SlotCreated[i] = true;
                     SettingsManager.SlotEnabled[i] = true;
                     _settingsService.MarkDirty();

@@ -2608,8 +2608,7 @@ namespace PadForge.Services
             if (padIndexA == padIndexB) return;
             _inputManager?.SwapSlots(padIndexA, padIndexB);
             SettingsManager.SwapSlots(padIndexA, padIndexB);
-            (_mainVm.Pads[padIndexA].OutputType, _mainVm.Pads[padIndexB].OutputType) =
-                (_mainVm.Pads[padIndexB].OutputType, _mainVm.Pads[padIndexA].OutputType);
+            SwapPadViewModelSlotData(padIndexA, padIndexB);
             RefreshAfterSlotReorder();
         }
 
@@ -2632,8 +2631,7 @@ namespace PadForge.Services
                 int a = activeSlots[i], b = activeSlots[i + step];
                 _inputManager?.SwapSlots(a, b);
                 SettingsManager.SwapSlots(a, b);
-                (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
-                    (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+                SwapPadViewModelSlotData(a, b);
             }
 
             RefreshAfterSlotReorder();
@@ -2689,8 +2687,7 @@ namespace PadForge.Services
                         // all-VCs-destroyed-at-once race that causes phantom controllers.
                         _inputManager?.SwapSlotData(a, b);
                         SettingsManager.SwapSlots(a, b);
-                        (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
-                            (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+                        SwapPadViewModelSlotData(a, b);
                         swapped = true;
                     }
                 }
@@ -2699,6 +2696,22 @@ namespace PadForge.Services
             if (!silent)
                 RefreshAfterSlotReorder();
             return true;
+        }
+
+        /// <summary>
+        /// Swaps ViewModel-side slot data that must travel with the slot during reorder:
+        /// OutputType and VJoyConfig. Engine-side arrays are swapped separately by
+        /// InputManager.SwapSlotData/SwapSlots.
+        /// </summary>
+        private void SwapPadViewModelSlotData(int a, int b)
+        {
+            (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
+                (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+
+            // Swap the entire VJoySlotConfig objects so the UI shows the correct
+            // config after reorder. The setter re-subscribes PropertyChanged.
+            (_mainVm.Pads[a].VJoyConfig, _mainVm.Pads[b].VJoyConfig) =
+                (_mainVm.Pads[b].VJoyConfig, _mainVm.Pads[a].VJoyConfig);
         }
 
         private static int GetTypePriority(VirtualControllerType type) => type switch

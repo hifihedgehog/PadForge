@@ -276,13 +276,19 @@ namespace PadForge.Services
             }
 
             // Load per-slot vJoy configurations (after OutputType so we know which slots are vJoy).
+            // Only restore configs for slots that are currently created as vJoy — otherwise
+            // stale custom configs from deleted slots leak into fresh slots when the user
+            // later adds a new vJoy at the same index.
             if (appSettings.VJoyConfigs != null)
             {
                 foreach (var cfgData in appSettings.VJoyConfigs)
                 {
-                    if (cfgData.SlotIndex >= 0 && cfgData.SlotIndex < _mainVm.Pads.Count)
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.VJoy)
                     {
-                        var cfg = _mainVm.Pads[cfgData.SlotIndex].VJoyConfig;
+                        var cfg = _mainVm.Pads[idx].VJoyConfig;
                         // Load preset first (applies defaults for Xbox360/DS4),
                         // then override with saved counts (matters for Custom preset).
                         cfg.Preset = cfgData.Preset;

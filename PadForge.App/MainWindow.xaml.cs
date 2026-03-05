@@ -1880,6 +1880,7 @@ namespace PadForge
                 IsEnabled = !xboxDisabled,
                 Opacity = xboxDisabled ? 0.35 : 1.0
             };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(xboxBtn, "AddXbox360Btn");
             xboxBtn.Click += (s, e) =>
             {
                 popup.IsOpen = false;
@@ -1917,6 +1918,7 @@ namespace PadForge
                 IsEnabled = !ds4Disabled,
                 Opacity = ds4Disabled ? 0.35 : 1.0
             };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(ds4Btn, "AddDS4Btn");
             ds4Btn.Click += (s, e) =>
             {
                 popup.IsOpen = false;
@@ -1955,6 +1957,7 @@ namespace PadForge
                 IsEnabled = !vjoyDisabled,
                 Opacity = vjoyDisabled ? 0.35 : 1.0
             };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(vjoyBtn, "AddVJoyBtn");
             vjoyBtn.Click += (s, e) =>
             {
                 popup.IsOpen = false;

@@ -7,6 +7,297 @@ using PadForge.Engine;
 
 namespace PadForge.Common.Input
 {
+    // CfgMgr32 P/Invoke for direct device node management.
+    internal static class CfgMgr32
+    {
+        private const string Dll = "cfgmgr32.dll";
+
+        [DllImport(Dll, CharSet = CharSet.Unicode)]
+        internal static extern int CM_Locate_DevNodeW(out int pdnDevInst, string pDeviceID, int ulFlags);
+
+        [DllImport(Dll)]
+        internal static extern int CM_Disable_DevNode(int dnDevInst, int ulFlags);
+
+        [DllImport(Dll)]
+        internal static extern int CM_Enable_DevNode(int dnDevInst, int ulFlags);
+
+        [DllImport(Dll)]
+        internal static extern int CM_Reenumerate_DevNode(int dnDevInst, int ulFlags);
+
+        [DllImport(Dll)]
+        internal static extern int CM_Get_DevNode_Status(out int pulStatus, out int pulProblemNumber, int dnDevInst, int ulFlags);
+
+        internal const int CM_LOCATE_DEVNODE_NORMAL = 0;
+        internal const int CM_LOCATE_DEVNODE_PHANTOM = 1;
+        internal const int CM_DISABLE_HARDWARE = 0x4;
+        internal const int CM_REENUMERATE_SYNCHRONOUS = 0x1;
+        internal const int CR_SUCCESS = 0;
+        internal const int DN_STARTED = 0x00000008;
+    }
+
+    // SetupAPI P/Invoke for DICS_PROPCHANGE device restart.
+    // This is the mechanism used by "devcon.exe restart" — it tells PnP that a device
+    // property changed and the device should be restarted. Unlike CM_Disable_DevNode,
+    // DICS_PROPCHANGE does NOT go through the full disable/enable veto path.
+    internal static class SetupApiRestart
+    {
+        private const string Dll = "setupapi.dll";
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public int DevInst;
+            public IntPtr Reserved;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SP_CLASSINSTALL_HEADER
+        {
+            public int cbSize;
+            public int InstallFunction; // DIF_PROPERTYCHANGE
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SP_PROPCHANGE_PARAMS
+        {
+            public SP_CLASSINSTALL_HEADER ClassInstallHeader;
+            public int StateChange;  // DICS_PROPCHANGE
+            public int Scope;        // DICS_FLAG_CONFIGSPECIFIC
+            public int HwProfile;    // 0 = current
+        }
+
+        [DllImport(Dll, SetLastError = true, CharSet = CharSet.Unicode)]
+        internal static extern IntPtr SetupDiGetClassDevsW(ref Guid ClassGuid, string Enumerator, IntPtr hwndParent, int Flags);
+
+        [DllImport(Dll, SetLastError = true)]
+        internal static extern bool SetupDiEnumDeviceInfo(IntPtr DeviceInfoSet, int MemberIndex, ref SP_DEVINFO_DATA DeviceInfoData);
+
+        [DllImport(Dll, SetLastError = true, CharSet = CharSet.Unicode)]
+        internal static extern bool SetupDiGetDeviceInstanceIdW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, char[] DeviceInstanceId, int DeviceInstanceIdSize, out int RequiredSize);
+
+        [DllImport(Dll, SetLastError = true)]
+        internal static extern bool SetupDiSetClassInstallParamsW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, ref SP_PROPCHANGE_PARAMS ClassInstallParams, int ClassInstallParamsSize);
+
+        [DllImport(Dll, SetLastError = true)]
+        internal static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+
+        [DllImport(Dll, SetLastError = true)]
+        internal static extern bool SetupDiRemoveDevice(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+
+        [DllImport(Dll, SetLastError = true)]
+        internal static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
+
+        internal const int DIGCF_PRESENT = 0x2;
+        internal const int DIF_REMOVE = 0x05;
+        internal const int DIF_PROPERTYCHANGE = 0x12;
+        internal const int DICS_PROPCHANGE = 0x3;
+        internal const int DICS_DISABLE = 0x2;
+        internal const int DICS_ENABLE = 0x1;
+        internal const int DICS_FLAG_CONFIGSPECIFIC = 0x2;
+        internal const int DICS_FLAG_GLOBAL = 0x1;
+
+        // HIDClass GUID: {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+        internal static readonly Guid GUID_DEVCLASS_HIDCLASS = new Guid(
+            0x745a17a0, 0x74d3, 0x11d0, 0xb6, 0xfe, 0x00, 0xa0, 0xc9, 0x0f, 0x57, 0xda);
+
+        /// <summary>
+        /// Restart a device via DICS_PROPCHANGE (same as devcon.exe restart).
+        /// Returns true if the restart succeeded.
+        /// </summary>
+        internal static bool RestartDevice(string instanceId)
+        {
+            var guid = GUID_DEVCLASS_HIDCLASS;
+            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, null, IntPtr.Zero, DIGCF_PRESENT);
+            if (devInfoSet == new IntPtr(-1)) return false;
+
+            try
+            {
+                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                char[] idBuf = new char[256];
+                for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
+                {
+                    if (!SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, idBuf, idBuf.Length, out int reqSize))
+                        continue;
+                    string devId = new string(idBuf, 0, reqSize - 1); // strip null terminator
+                    if (!devId.Equals(instanceId, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    // Found the device — apply DICS_PROPCHANGE.
+                    var propChangeParams = new SP_PROPCHANGE_PARAMS
+                    {
+                        ClassInstallHeader = new SP_CLASSINSTALL_HEADER
+                        {
+                            cbSize = Marshal.SizeOf<SP_CLASSINSTALL_HEADER>(),
+                            InstallFunction = DIF_PROPERTYCHANGE
+                        },
+                        StateChange = DICS_PROPCHANGE,
+                        Scope = DICS_FLAG_CONFIGSPECIFIC,
+                        HwProfile = 0
+                    };
+
+                    if (!SetupDiSetClassInstallParamsW(devInfoSet, ref devInfoData, ref propChangeParams,
+                            Marshal.SizeOf<SP_PROPCHANGE_PARAMS>()))
+                    {
+                        VJoyVirtualController.DiagLog($"SetupDiSetClassInstallParams failed: {Marshal.GetLastWin32Error()}");
+                        return false;
+                    }
+
+                    bool ok = SetupDiCallClassInstaller(DIF_PROPERTYCHANGE, devInfoSet, ref devInfoData);
+                    if (!ok)
+                        VJoyVirtualController.DiagLog($"SetupDiCallClassInstaller(DIF_PROPERTYCHANGE) failed: {Marshal.GetLastWin32Error()}");
+                    return ok;
+                }
+                VJoyVirtualController.DiagLog($"RestartDevice: instance '{instanceId}' not found");
+                return false;
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(devInfoSet);
+            }
+        }
+
+        /// <summary>
+        /// Disable a device via DICS_DISABLE (SetupAPI path, different from CM_Disable_DevNode).
+        /// </summary>
+        internal static bool DisableDevice(string instanceId)
+        {
+            var guid = GUID_DEVCLASS_HIDCLASS;
+            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, null, IntPtr.Zero, DIGCF_PRESENT);
+            if (devInfoSet == new IntPtr(-1)) return false;
+
+            try
+            {
+                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                char[] idBuf = new char[256];
+                for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
+                {
+                    if (!SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, idBuf, idBuf.Length, out int reqSize))
+                        continue;
+                    string devId = new string(idBuf, 0, reqSize - 1);
+                    if (!devId.Equals(instanceId, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var propChangeParams = new SP_PROPCHANGE_PARAMS
+                    {
+                        ClassInstallHeader = new SP_CLASSINSTALL_HEADER
+                        {
+                            cbSize = Marshal.SizeOf<SP_CLASSINSTALL_HEADER>(),
+                            InstallFunction = DIF_PROPERTYCHANGE
+                        },
+                        StateChange = DICS_DISABLE,
+                        Scope = DICS_FLAG_CONFIGSPECIFIC,
+                        HwProfile = 0
+                    };
+
+                    if (!SetupDiSetClassInstallParamsW(devInfoSet, ref devInfoData, ref propChangeParams,
+                            Marshal.SizeOf<SP_PROPCHANGE_PARAMS>()))
+                        return false;
+
+                    bool ok = SetupDiCallClassInstaller(DIF_PROPERTYCHANGE, devInfoSet, ref devInfoData);
+                    if (!ok)
+                        VJoyVirtualController.DiagLog($"SetupDiCallClassInstaller(DICS_DISABLE) failed: {Marshal.GetLastWin32Error()}");
+                    return ok;
+                }
+                return false;
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(devInfoSet);
+            }
+        }
+
+        /// <summary>
+        /// Remove a device via SetupDiRemoveDevice (more forceful than pnputil).
+        /// Works best on already-disabled devices where the driver is unloaded.
+        /// </summary>
+        internal static bool RemoveDevice(string instanceId)
+        {
+            var guid = GUID_DEVCLASS_HIDCLASS;
+            // Include non-present devices (disabled devices aren't DIGCF_PRESENT)
+            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, null, IntPtr.Zero, 0);
+            if (devInfoSet == new IntPtr(-1)) return false;
+
+            try
+            {
+                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                char[] idBuf = new char[256];
+                for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
+                {
+                    if (!SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, idBuf, idBuf.Length, out int reqSize))
+                        continue;
+                    string devId = new string(idBuf, 0, reqSize - 1);
+                    if (!devId.Equals(instanceId, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    bool ok = SetupDiRemoveDevice(devInfoSet, ref devInfoData);
+                    if (!ok)
+                        VJoyVirtualController.DiagLog($"SetupDiRemoveDevice failed: {Marshal.GetLastWin32Error()}");
+                    else
+                        VJoyVirtualController.DiagLog($"SetupDiRemoveDevice succeeded for {instanceId}");
+                    return ok;
+                }
+                VJoyVirtualController.DiagLog($"RemoveDevice: instance '{instanceId}' not found");
+                return false;
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(devInfoSet);
+            }
+        }
+
+        /// <summary>
+        /// Enable a device via DICS_ENABLE.
+        /// </summary>
+        internal static bool EnableDevice(string instanceId)
+        {
+            var guid = GUID_DEVCLASS_HIDCLASS;
+            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, null, IntPtr.Zero, 0); // 0 = include non-present
+            if (devInfoSet == new IntPtr(-1)) return false;
+
+            try
+            {
+                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                char[] idBuf = new char[256];
+                for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
+                {
+                    if (!SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, idBuf, idBuf.Length, out int reqSize))
+                        continue;
+                    string devId = new string(idBuf, 0, reqSize - 1);
+                    if (!devId.Equals(instanceId, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var propChangeParams = new SP_PROPCHANGE_PARAMS
+                    {
+                        ClassInstallHeader = new SP_CLASSINSTALL_HEADER
+                        {
+                            cbSize = Marshal.SizeOf<SP_CLASSINSTALL_HEADER>(),
+                            InstallFunction = DIF_PROPERTYCHANGE
+                        },
+                        StateChange = DICS_ENABLE,
+                        Scope = DICS_FLAG_CONFIGSPECIFIC,
+                        HwProfile = 0
+                    };
+
+                    if (!SetupDiSetClassInstallParamsW(devInfoSet, ref devInfoData, ref propChangeParams,
+                            Marshal.SizeOf<SP_PROPCHANGE_PARAMS>()))
+                        return false;
+
+                    bool ok = SetupDiCallClassInstaller(DIF_PROPERTYCHANGE, devInfoSet, ref devInfoData);
+                    if (!ok)
+                        VJoyVirtualController.DiagLog($"SetupDiCallClassInstaller(DICS_ENABLE) failed: {Marshal.GetLastWin32Error()}");
+                    return ok;
+                }
+                return false;
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(devInfoSet);
+            }
+        }
+    }
+
     /// <summary>
     /// Virtual joystick controller via the vJoy driver.
     /// Uses direct P/Invoke to vJoyInterface.dll (no NuGet dependency).
@@ -93,6 +384,8 @@ namespace PadForge.Common.Input
         private readonly uint _deviceId;
         private bool _connected;
         private int _connectedGeneration;
+        private int _reacquireFailCount;
+        private const int MaxReacquireRetries = 50; // ~50ms at 1kHz before giving up
 
         public VirtualControllerType Type => VirtualControllerType.VJoy;
         public bool IsConnected => _connected;
@@ -121,6 +414,7 @@ namespace PadForge.Common.Input
             VJoyNative.ResetVJD(_deviceId);
             _connected = true;
             _connectedGeneration = _generation;
+            _reacquireFailCount = 0;
 
             // Verify output works: send a single test frame with non-zero axes.
             var testPos = new JoystickPositionV2 { bDevice = (byte)_deviceId, wAxisX = 16383, wAxisY = 16383 };
@@ -165,9 +459,13 @@ namespace PadForge.Common.Input
         private int _submitCallCount;
         private int _submitFailCount;
 
+        private static readonly string _logPath = System.IO.Path.Combine(
+            AppContext.BaseDirectory, "vjoy_diag.log");
+
         internal static void DiagLog(string msg)
         {
-            Debug.Write($"[vJoy {DateTime.Now:HH:mm:ss.fff}] {msg}\n");
+            var line = $"[vJoy {DateTime.Now:HH:mm:ss.fff}] {msg}";
+            try { System.IO.File.AppendAllText(_logPath, line + Environment.NewLine); } catch { }
         }
 
         /// <summary>
@@ -181,15 +479,27 @@ namespace PadForge.Common.Input
             if (!_connected || _connectedGeneration == _generation)
                 return;
 
-            DiagLog($"ReAcquireIfNeeded: generation mismatch ({_connectedGeneration}→{_generation}), re-acquiring device {_deviceId}");
+            _reacquireFailCount++;
+            if (_reacquireFailCount > MaxReacquireRetries)
+            {
+                // Give up — disconnect so Step 5 can recreate a fresh controller.
+                if (_reacquireFailCount == MaxReacquireRetries + 1)
+                    DiagLog($"ReAcquireIfNeeded: giving up after {MaxReacquireRetries} retries for device {_deviceId}, disconnecting");
+                Disconnect();
+                return;
+            }
+
+            if (_reacquireFailCount == 1)
+                DiagLog($"ReAcquireIfNeeded: generation mismatch ({_connectedGeneration}→{_generation}), re-acquiring device {_deviceId}");
             try
             {
                 VJoyNative.RelinquishVJD(_deviceId);
                 bool acquired = VJoyNative.AcquireVJD(_deviceId);
-                DiagLog($"Re-AcquireVJD({_deviceId}): {acquired}");
-                if (!acquired) return; // Don't kill VC — retry next cycle
+                if (!acquired) return; // retry next cycle
+                DiagLog($"Re-AcquireVJD({_deviceId}): success after {_reacquireFailCount} attempts");
                 VJoyNative.ResetVJD(_deviceId);
                 _connectedGeneration = _generation;
+                _reacquireFailCount = 0;
             }
             catch { /* retry next cycle */ }
         }
@@ -199,20 +509,12 @@ namespace PadForge.Common.Input
             if (!_connected) return;
 
             // If the device node was restarted (descriptor count changed),
-            // our AcquireVJD handle is stale. Re-acquire transparently.
+            // our AcquireVJD handle is stale. ReAcquireIfNeeded handles retries
+            // and will disconnect after MaxReacquireRetries failures.
             if (_connectedGeneration != _generation)
             {
-                DiagLog($"SubmitGamepadState: generation mismatch ({_connectedGeneration}→{_generation}), re-acquiring device {_deviceId}");
-                try
-                {
-                    VJoyNative.RelinquishVJD(_deviceId);
-                    bool acquired = VJoyNative.AcquireVJD(_deviceId);
-                    DiagLog($"Re-AcquireVJD({_deviceId}): {acquired}");
-                    if (!acquired) return; // Skip this frame, retry next cycle
-                    VJoyNative.ResetVJD(_deviceId);
-                    _connectedGeneration = _generation;
-                }
-                catch { return; /* retry next cycle */ }
+                ReAcquireIfNeeded();
+                if (!_connected || _connectedGeneration != _generation) return;
             }
 
             uint id = _deviceId;
@@ -297,14 +599,8 @@ namespace PadForge.Common.Input
 
             if (_connectedGeneration != _generation)
             {
-                try
-                {
-                    VJoyNative.RelinquishVJD(_deviceId);
-                    if (!VJoyNative.AcquireVJD(_deviceId)) return;
-                    VJoyNative.ResetVJD(_deviceId);
-                    _connectedGeneration = _generation;
-                }
-                catch { return; }
+                ReAcquireIfNeeded();
+                if (!_connected || _connectedGeneration != _generation) return;
             }
 
             var pos = new JoystickPositionV2 { bDevice = (byte)_deviceId };
@@ -1006,7 +1302,10 @@ namespace PadForge.Common.Input
             // pnputil enumeration and registry writes.
             if (_currentDescriptorCount == requiredCount && !configsChanged &&
                 (requiredCount == 0 || _dllLoaded))
+            {
+                // Only log fast-path occasionally to avoid log spam at 1000Hz
                 return true;
+            }
 
             EnsureDllLoaded();
             int existingNodes = CountExistingDevices();
@@ -1029,21 +1328,25 @@ namespace PadForge.Common.Input
             // unnecessary restart that disrupts live devices.
             bool descriptorsChanged = registryChanged || (countMismatch && !_dllLoaded);
 
-            // If no vJoy devices are needed, disable the device node (don't remove it).
-            // With 0 DeviceNN keys, the driver falls back to a hardcoded default
-            // controller — so a disable/enable restart still shows 1 controller.
-            // Disabling the node makes all HID children disappear from joy.cpl.
-            // Keeping the node alive avoids the stale-DLL-handle problem that
-            // occurs when removing and recreating nodes (vJoyInterface.dll caches
-            // device handles internally and can't reconnect after node removal).
-            // RestartDeviceNode will re-enable it when requiredCount > 0.
+            // If no vJoy devices are needed, fully remove the device node.
+            // This ensures child PDOs (VJOYRAWPDO) are gone from the PnP tree,
+            // not just disabled. A mere DICS_DISABLE leaves them visible in WMI.
+            // The stale-DLL-handle concern (cached device namespace) is resolved
+            // by the modified vJoyInterface.dll (StatNS_global cleared on QUERYREMOVE).
+            // On next EnsureDevicesAvailable(N>0), the existingNodes==0 path
+            // creates a fresh node.
             if (requiredCount == 0)
             {
+                DiagLog($"requiredCount=0 path: descriptorsChanged={descriptorsChanged}, registryChanged={registryChanged}, countMismatch={countMismatch}, _dllLoaded={_dllLoaded}, existingNodes={existingNodes}");
                 if (descriptorsChanged && existingNodes >= 1)
                 {
                     DiagLog("Disabling device node (all vJoy slots inactive)");
                     DisableDeviceNode();
                     _dllLoaded = false;
+                }
+                else
+                {
+                    DiagLog($"SKIPPED DisableDeviceNode: descriptorsChanged={descriptorsChanged}, existingNodes={existingNodes}");
                 }
                 return true;
             }
@@ -1168,42 +1471,124 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Disables the vJoy device node without removing it. All HID children
-        /// disappear from joy.cpl, but the node remains in PnP (enumerable).
-        /// On next EnsureDevicesAvailable(N>0), RestartDeviceNode re-enables it
-        /// with fresh descriptors. The DLL keeps working because the node was
-        /// never fully removed — no stale handle problem.
+        /// Removes the vJoy device node entirely. All HID children (VJOYRAWPDO)
+        /// are fully removed from the PnP tree, so they disappear from both
+        /// joy.cpl AND WMI/CIM queries. On next EnsureDevicesAvailable(N>0),
+        /// the existingNodes==0 path creates a fresh node.
+        /// The stale-DLL-handle issue (cached device namespace) is fixed in the
+        /// modified vJoyInterface.dll (StatNS_global cleared on QUERYREMOVE).
         /// </summary>
         internal static void DisableDeviceNode()
         {
             try
             {
                 var instanceIds = EnumerateVJoyInstanceIds();
-                if (instanceIds.Count == 0) return;
+                DiagLog($"DisableDeviceNode: found {instanceIds.Count} node(s)");
+                if (instanceIds.Count == 0)
+                {
+                    DiagLog("DisableDeviceNode: NO NODES FOUND — nothing to do");
+                    return;
+                }
 
                 string id = instanceIds[0];
-                DiagLog($"DisableDeviceNode: disabling {id}");
 
+                // Release all device handles before any node operation.
+                RelinquishAllDevices();
+                // Close vJoyInterface.dll's internal h0 handle to prevent blocking
+                // the disable operation (otherwise takes ~5s for handle timeout).
+                RefreshVJoyDllHandles();
+
+                // Step 1: Disable the device node to unload the driver.
+                bool disabled = SetupApiRestart.DisableDevice(id);
+                DiagLog($"DisableDeviceNode: SetupAPI DICS_DISABLE={disabled}");
+
+                if (!disabled)
+                {
+                    // Fallback: CfgMgr32 CM_Disable.
+                    int cr = CfgMgr32.CM_Locate_DevNodeW(out int devInst, id, CfgMgr32.CM_LOCATE_DEVNODE_NORMAL);
+                    if (cr == CfgMgr32.CR_SUCCESS && devInst != 0)
+                    {
+                        cr = CfgMgr32.CM_Disable_DevNode(devInst, CfgMgr32.CM_DISABLE_HARDWARE);
+                        disabled = cr == CfgMgr32.CR_SUCCESS;
+                        DiagLog($"DisableDeviceNode: CM_Disable_DevNode={cr}");
+                    }
+                }
+
+                // Step 2: Fully remove the node so child PDOs (VJOYRAWPDO) are gone
+                // from the PnP tree. A mere DICS_DISABLE leaves them enumerable in WMI.
+                bool removed = false;
+                if (disabled)
+                {
+                    Thread.Sleep(500);
+                    removed = SetupApiRestart.RemoveDevice(id);
+                    DiagLog($"DisableDeviceNode: SetupDiRemoveDevice={removed}");
+                }
+
+                if (!removed)
+                {
+                    // Fallback: pnputil /remove-device.
+                    int exitCode = RunPnputil($"/remove-device \"{id}\" /subtree");
+                    removed = exitCode == 0 || exitCode == 3010;
+                    DiagLog($"DisableDeviceNode: pnputil /remove-device exit={exitCode}");
+                }
+
+                if (!removed && !disabled)
+                {
+                    // Last resort: try direct remove without prior disable.
+                    removed = SetupApiRestart.RemoveDevice(id);
+                    DiagLog($"DisableDeviceNode: SetupDiRemoveDevice (no disable)={removed}");
+                }
+
+                _generation++;
+                _dllLoaded = false;
+
+                if (removed)
+                {
+                    DiagLog($"DisableDeviceNode: node fully removed, generation={_generation}");
+                    // Scan for hardware changes to clean up ghost child PDOs.
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        try { RunPnputil("/scan-devices"); }
+                        catch { /* best effort */ }
+                    });
+                }
+                else
+                {
+                    DiagLog($"DisableDeviceNode: remove failed, node only disabled, generation={_generation}");
+                }
+            }
+            catch (Exception ex)
+            {
+                DiagLog($"DisableDeviceNode EXCEPTION: {ex.Message}");
+            }
+        }
+
+        /// <summary>Runs a pnputil command as a fallback, logging output.</summary>
+        private static int RunPnputil(string arguments)
+        {
+            try
+            {
                 var psi = new ProcessStartInfo
                 {
                     FileName = "pnputil.exe",
-                    Arguments = $"/disable-device \"{id}\"",
+                    Arguments = arguments,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true
                 };
-                using (var proc = Process.Start(psi))
-                {
-                    proc?.WaitForExit(5_000);
-                }
-
-                _generation++;
-                DiagLog($"DisableDeviceNode: generation={_generation}");
+                using var proc = Process.Start(psi);
+                if (proc == null) return -1;
+                string stdout = proc.StandardOutput.ReadToEnd();
+                string stderr = proc.StandardError.ReadToEnd();
+                proc.WaitForExit(5_000);
+                DiagLog($"pnputil {arguments}: exit={proc.ExitCode}, stdout={stdout.Trim()}, stderr={stderr.Trim()}");
+                return proc.ExitCode;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] DisableDeviceNode exception: {ex.Message}");
+                DiagLog($"pnputil EXCEPTION: {ex.Message}");
+                return -1;
             }
         }
 
@@ -1213,6 +1598,60 @@ namespace PadForge.Common.Input
         /// top-level collections. This invalidates all AcquireVJD handles — callers
         /// must re-acquire after restart.
         /// </summary>
+        /// <summary>
+        /// Relinquishes all vJoy device IDs (1–16) so the driver releases its handles.
+        /// Must be called before disabling/removing the device node, otherwise
+        /// CM_Disable_DevNode returns CR_REMOVE_VETOED (23) because vJoyInterface.dll
+        /// still holds the device open.
+        /// </summary>
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr FindWindowW(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr SendMessageW(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        private const uint WM_DEVICECHANGE = 0x0219;
+        private const int DBT_DEVICEQUERYREMOVE = 0x8001;
+
+        /// <summary>
+        /// Forces vJoyInterface.dll to close its stale internal control device handle (h0)
+        /// and clear its cached device namespace by sending WM_DEVICECHANGE / DBT_DEVICEQUERYREMOVE
+        /// to the DLL's hidden window. The Brunner fork creates a hidden desktop window with
+        /// class "win32app_vJoyInterface_DLL" on a dedicated thread during InitDll(). Its WndProc
+        /// handles DBT_DEVICEQUERYREMOVE by closing all handles, clearing namespace cache, and
+        /// setting h0 = INVALID_HANDLE_VALUE. After this, the next GetVJDStatus/AcquireVJD call
+        /// triggers GetGenControlHadle() which lazily re-opens h0 for the current device node.
+        /// Note: only works after the first vJoy API call (which triggers InitDll/window creation).
+        /// Before that, the window doesn't exist yet — this is fine because the DLL has no stale
+        /// state to clear on a fresh start.
+        /// </summary>
+        private static void RefreshVJoyDllHandles()
+        {
+            try
+            {
+                IntPtr vjoyWnd = FindWindowW("win32app_vJoyInterface_DLL", null);
+                if (vjoyWnd == IntPtr.Zero)
+                    return; // Window not created yet (InitDll not called) — no stale state to clear
+
+                SendMessageW(vjoyWnd, WM_DEVICECHANGE, (IntPtr)DBT_DEVICEQUERYREMOVE, IntPtr.Zero);
+                DiagLog("RefreshVJoyDllHandles: sent QUERYREMOVE — h0 + namespace cleared");
+            }
+            catch (Exception ex)
+            {
+                DiagLog($"RefreshVJoyDllHandles EXCEPTION: {ex.Message}");
+            }
+        }
+
+        internal static void RelinquishAllDevices()
+        {
+            if (!_dllLoaded) return;
+            for (uint i = 1; i <= 16; i++)
+            {
+                try { VJoyNative.RelinquishVJD(i); }
+                catch { /* best effort */ }
+            }
+        }
+
         private static void RestartDeviceNode()
         {
             try
@@ -1221,38 +1660,124 @@ namespace PadForge.Common.Input
                 if (instanceIds.Count == 0) return;
 
                 string id = instanceIds[0];
-                DiagLog($"RestartDeviceNode: disabling {id}");
+                DiagLog($"RestartDeviceNode: restarting {id}");
 
-                var psi = new ProcessStartInfo
+                // Release all device handles before any restart operation.
+                RelinquishAllDevices();
+
+                // HIDCLASS only creates child PDOs during EvtDeviceAdd (device creation).
+                // A disable/enable (stop/start) re-reads the HID descriptor but does NOT
+                // recreate child PDOs — so descriptor count changes are invisible.
+                // The ONLY reliable way to change the device count is to fully remove the
+                // device node and create a fresh one, which triggers EvtDeviceAdd.
+                //
+                // Strategy: Close DLL handles first (via QUERYREMOVE message to unblock),
+                // then disable (should be fast without blocking handles), then remove,
+                // then create a fresh node, then refresh DLL handles for new node.
+
+                // Pre-close vJoyInterface.dll's internal h0 handle so it doesn't block
+                // the subsequent disable/remove operations. Without this, DICS_DISABLE
+                // takes ~5 seconds waiting for the handle to time out.
+                RefreshVJoyDllHandles();
+
+                bool disabled = false;
+
+                // Step 1: Disable the device node to unload the driver.
+                if (SetupApiRestart.DisableDevice(id))
                 {
-                    FileName = "pnputil.exe",
-                    Arguments = $"/disable-device \"{id}\"",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                };
-                using (var proc = Process.Start(psi))
+                    DiagLog("RestartDeviceNode: SetupAPI DICS_DISABLE succeeded");
+                    disabled = true;
+                    Thread.Sleep(500);
+                }
+                else
                 {
-                    proc?.WaitForExit(5_000);
+                    DiagLog("RestartDeviceNode: SetupAPI DICS_DISABLE failed, trying CfgMgr32");
+                    int cr = CfgMgr32.CM_Locate_DevNodeW(out int devInst, id, CfgMgr32.CM_LOCATE_DEVNODE_NORMAL);
+                    if (cr == CfgMgr32.CR_SUCCESS && devInst != 0)
+                    {
+                        cr = CfgMgr32.CM_Disable_DevNode(devInst, CfgMgr32.CM_DISABLE_HARDWARE);
+                        DiagLog($"RestartDeviceNode: CM_Disable_DevNode={cr}");
+                        if (cr == CfgMgr32.CR_SUCCESS)
+                        {
+                            disabled = true;
+                            Thread.Sleep(500);
+                        }
+                    }
                 }
 
-                Thread.Sleep(200);
-
-                DiagLog($"RestartDeviceNode: enabling {id}");
-                psi.Arguments = $"/enable-device \"{id}\"";
-                using (var proc = Process.Start(psi))
+                // Step 2: Remove the (now disabled) device node.
+                bool removed = false;
+                if (disabled)
                 {
-                    proc?.WaitForExit(5_000);
+                    // Try SetupDiRemoveDevice first (works on disabled devices).
+                    removed = SetupApiRestart.RemoveDevice(id);
+                    DiagLog($"RestartDeviceNode: SetupDiRemoveDevice={removed}");
                 }
 
-                // Increment generation so existing controllers know to re-acquire.
+                if (!removed)
+                {
+                    // Fallback: pnputil /remove-device (exit 3010 = reboot required but node gone).
+                    int exitCode = RunPnputil($"/remove-device \"{id}\" /subtree");
+                    DiagLog($"RestartDeviceNode: pnputil /remove-device exit={exitCode}");
+                    removed = exitCode == 0 || exitCode == 3010;
+                }
+
+                if (!removed)
+                {
+                    // Last resort: try direct remove without prior disable.
+                    removed = SetupApiRestart.RemoveDevice(id);
+                    DiagLog($"RestartDeviceNode: SetupDiRemoveDevice (no disable)={removed}");
+                }
+
+                if (!removed)
+                {
+                    DiagLog("RestartDeviceNode: FAILED to remove device node — falling back to disable/enable");
+                    // Fall back to disable/enable (won't change PDO count but at least re-reads descriptors).
+                    if (disabled)
+                    {
+                        bool enabled = SetupApiRestart.EnableDevice(id);
+                        DiagLog($"RestartDeviceNode: SetupAPI DICS_ENABLE fallback={enabled}");
+                    }
+                    _generation++;
+                    _dllLoaded = false;
+                    return;
+                }
+
+                // Step 3: Create a fresh device node.
+                _dllLoaded = false;
                 _generation++;
-                DiagLog($"RestartDeviceNode: generation={_generation}");
+                DiagLog($"RestartDeviceNode: node removed, creating fresh node, generation={_generation}");
+
+                Thread.Sleep(500);
+                RunPnputil("/scan-devices");
+                Thread.Sleep(500);
+
+                if (!CreateVJoyDevices(1))
+                {
+                    DiagLog("RestartDeviceNode: CreateVJoyDevices FAILED after remove");
+                    return;
+                }
+
+                // Wait for the new node to become ready (DLL loadable).
+                for (int attempt = 0; attempt < 20; attempt++)
+                {
+                    Thread.Sleep(250);
+                    EnsureDllLoaded();
+                    if (_dllLoaded)
+                    {
+                        DiagLog($"RestartDeviceNode: new node ready after {(attempt + 1) * 250 + 500}ms");
+                        // Force vJoyInterface.dll to close its stale h0 handle and re-open
+                        // for the new device node. Without this, the DLL uses the old handle
+                        // from the removed node and all API calls (GetVJDStatus, AcquireVJD) fail.
+                        RefreshVJoyDllHandles();
+                        return;
+                    }
+                }
+                DiagLog("RestartDeviceNode: new node not ready after timeout");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] RestartDeviceNode exception: {ex.Message}");
+                DiagLog($"RestartDeviceNode EXCEPTION: {ex.Message}");
             }
         }
 
@@ -1260,30 +1785,32 @@ namespace PadForge.Common.Input
         /// Removes a single device node by instance ID via pnputil.
         /// App must be running elevated (which it is when vJoy is installed).
         /// </summary>
-        internal static bool RemoveDeviceNode(string instanceId)
+        internal static bool RemoveDeviceNode(string instanceId, bool skipScanDevices = false)
         {
             try
             {
-                var psi = new ProcessStartInfo
-                {
-                    FileName = "pnputil.exe",
-                    Arguments = $"/remove-device \"{instanceId}\" /subtree",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                };
+                DiagLog($"RemoveDeviceNode: removing {instanceId}");
+                int exitCode = RunPnputil($"/remove-device \"{instanceId}\" /subtree");
+                // Exit code 3010 = success but reboot required — still counts as removed.
+                bool removed = exitCode == 0 || exitCode == 3010;
 
-                Debug.WriteLine($"[vJoy] Removing device node: {instanceId}");
-                using var proc = Process.Start(psi);
-                if (proc == null) return false;
-                proc.WaitForExit(5_000);
-                Debug.WriteLine($"[vJoy] pnputil exit code: {proc.ExitCode}");
-                return proc.ExitCode == 0;
+                if (removed && !skipScanDevices)
+                {
+                    // Scan for hardware changes to clean up ghost child PDOs (VJOYRAWPDO
+                    // entries) that linger in joy.cpl after removal on Win11 26200+.
+                    // Run async to avoid blocking the polling thread (scan takes 5-10 seconds).
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        try { RunPnputil("/scan-devices"); }
+                        catch { /* best effort */ }
+                    });
+                }
+
+                return removed;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] RemoveDeviceNode exception: {ex.Message}");
+                DiagLog($"RemoveDeviceNode EXCEPTION: {ex.Message}");
                 return false;
             }
         }
@@ -1454,12 +1981,19 @@ public static class PF_SetupApi {{
         /// </summary>
         private static bool WriteDeviceDescriptors(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
         {
+            DiagLog($"WriteDeviceDescriptors: requiredCount={requiredCount}, perDeviceConfigs={(perDeviceConfigs != null ? perDeviceConfigs.Length.ToString() : "null")}");
             bool anyChanged = false;
             try
             {
                 using var baseKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
                     @"SYSTEM\CurrentControlSet\services\vjoy\Parameters", writable: true);
-                if (baseKey == null) return false;
+                if (baseKey == null)
+                {
+                    DiagLog("WriteDeviceDescriptors: FAILED — baseKey is null (cannot open registry for write)");
+                    return false;
+                }
+
+                DiagLog($"WriteDeviceDescriptors: existing subkeys=[{string.Join(",", baseKey.GetSubKeyNames())}]");
 
                 // Remove DeviceNN keys beyond the required count.
                 foreach (string subKeyName in baseKey.GetSubKeyNames())
@@ -1468,7 +2002,16 @@ public static class PF_SetupApi {{
                         int.TryParse(subKeyName.Substring(6), out int keyNum) &&
                         keyNum > requiredCount)
                     {
-                        try { baseKey.DeleteSubKeyTree(subKeyName, false); anyChanged = true; } catch { }
+                        try
+                        {
+                            DiagLog($"WriteDeviceDescriptors: deleting {subKeyName} (keyNum={keyNum} > requiredCount={requiredCount})");
+                            baseKey.DeleteSubKeyTree(subKeyName, false);
+                            anyChanged = true;
+                        }
+                        catch (Exception delEx)
+                        {
+                            DiagLog($"WriteDeviceDescriptors: FAILED to delete {subKeyName}: {delEx.Message}");
+                        }
                     }
                 }
 
@@ -1523,8 +2066,9 @@ public static class PF_SetupApi {{
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[vJoy] WriteDeviceDescriptors exception: {ex.Message}");
+                DiagLog($"WriteDeviceDescriptors EXCEPTION: {ex.Message}");
             }
+            DiagLog($"WriteDeviceDescriptors: returning anyChanged={anyChanged}");
             return anyChanged;
         }
 

@@ -128,14 +128,13 @@ namespace PadForge.Services
             // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
             InputManager.CleanupStaleVigemDevices();
 
-            // Remove stale vJoy device nodes from previous sessions (crash without cleanup).
-            // Skip if Stop(preserveVJoyNodes: true) disabled the node instead of removing
-            // it — the DLL's internal handles are still valid and EnsureDevicesAvailable
-            // will re-enable the node when vJoy slots become active.
-            if (_preservedVJoyNodes)
-                _preservedVJoyNodes = false; // consumed — next Stop+Start will do full removal
-            else
-                VJoyVirtualController.RemoveAllDeviceNodes();
+            // Don't remove vJoy nodes on startup — Step 5's EnsureDevicesAvailable
+            // handles the correct descriptor count, creates missing nodes, removes excess,
+            // and restarts when descriptors change. Removing here causes an unnecessary
+            // 10+ second remove+recreate cycle on every normal restart (especially on
+            // Win11 builds where pnputil /remove-device returns 3010 and scan-devices
+            // takes ~10 seconds to clean up ghost PDOs).
+            _preservedVJoyNodes = false;
 
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
@@ -873,11 +872,27 @@ namespace PadForge.Services
             padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
             padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
 
+            // Max range.
+            padVm.LeftMaxRangeX = TryParseInt(ps.LeftThumbMaxRangeX, 100);
+            padVm.LeftMaxRangeY = TryParseInt(ps.LeftThumbMaxRangeY, 100);
+            padVm.RightMaxRangeX = TryParseInt(ps.RightThumbMaxRangeX, 100);
+            padVm.RightMaxRangeY = TryParseInt(ps.RightThumbMaxRangeY, 100);
+
+            // Center offsets.
+            padVm.LeftCenterOffsetX = TryParseInt(ps.LeftThumbCenterOffsetX, 0);
+            padVm.LeftCenterOffsetY = TryParseInt(ps.LeftThumbCenterOffsetY, 0);
+            padVm.RightCenterOffsetX = TryParseInt(ps.RightThumbCenterOffsetX, 0);
+            padVm.RightCenterOffsetY = TryParseInt(ps.RightThumbCenterOffsetY, 0);
+
             // Trigger dead zones.
             padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
             padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
             padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
             padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+
+            // Trigger max range.
+            padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
+            padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
 
             // Force feedback.
             padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
@@ -1842,10 +1857,19 @@ namespace PadForge.Services
             if (!string.IsNullOrEmpty(ud.DevicePath) && !ud.DevicePath.StartsWith("aggregate://"))
                 instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
-            if (!string.IsNullOrEmpty(instancePath) && instancePath.Length > 3)
+            if (!string.IsNullOrEmpty(instancePath) &&
+                instancePath.Contains("VID_", StringComparison.OrdinalIgnoreCase))
                 row.HidHideInstancePath = instancePath;
             else if (ud.HidHideInstanceIds.Count > 0)
                 row.HidHideInstancePath = ud.HidHideInstanceIds[0];
+            else if (ud.VendorId > 0 && ud.ProdId > 0)
+            {
+                // XInput devices have synthetic paths (e.g. "XInput#0") that can't be
+                // resolved directly. Look up the real HID instance path by VID/PID.
+                var realIds = HidHideController.FindInstanceIdsByVidPid(
+                    (ushort)ud.VendorId, (ushort)ud.ProdId);
+                row.HidHideInstancePath = realIds.Count > 0 ? realIds[0] : string.Empty;
+            }
             else
                 row.HidHideInstancePath = string.Empty;
 

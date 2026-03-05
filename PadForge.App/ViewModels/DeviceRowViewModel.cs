@@ -318,6 +318,9 @@ namespace PadForge.ViewModels
         /// <summary>True if this device is recognized as a gamepad (SDL or custom mapping).</summary>
         public bool IsGamepad => _deviceType == "Gamepad";
 
+        /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
+        public bool ShowSubmitMapping => _deviceType != "Gamepad" && _deviceType != "Mouse" && _deviceType != "Keyboard";
+
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
             $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} POV" +

@@ -555,6 +555,51 @@ namespace PadForge.Common.Input
                 trackedHandles.Remove(toRemove[i]);
         }
 
+        // ─────────────────────────────────────────────
+        //  External device registration (web controllers)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Registers an external (non-SDL) input device into the device list.
+        /// Called by WebControllerServer when a browser client connects.
+        /// Thread-safe via UserDevices.SyncRoot.
+        /// </summary>
+        public void RegisterExternalDevice(WebControllerDevice device)
+        {
+            if (device == null) return;
+
+            UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
+            ud.LoadFromWebDevice(device);
+            ud.IsOnline = true;
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Marks an external device as offline when its connection is lost.
+        /// Called by WebControllerServer when a browser client disconnects.
+        /// </summary>
+        public void UnregisterExternalDevice(Guid instanceGuid)
+        {
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return;
+
+            lock (devices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Items.Count; i++)
+                {
+                    var d = devices.Items[i];
+                    if (d.IsOnline && d.InstanceGuid == instanceGuid)
+                    {
+                        MarkDeviceOffline(d);
+                        break;
+                    }
+                }
+            }
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <summary>
         /// Finds an online device that was opened from the given Raw Input handle.
         /// Checks the RawInputHandle property on keyboard/mouse wrappers.

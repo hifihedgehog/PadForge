@@ -262,6 +262,21 @@ namespace PadForge.Common
         }
 
         /// <summary>
+        /// Clears the entire HidHide blacklist and disables cloaking.
+        /// Called on startup to remove stale entries from a previous crash
+        /// (since <see cref="_managedDeviceIds"/> is in-memory and lost on restart).
+        /// </summary>
+        public static void ClearAll()
+        {
+            lock (_lock)
+            {
+                SetBlacklist(new List<string>());
+                SetActive(false);
+                _managedDeviceIds.Clear();
+            }
+        }
+
+        /// <summary>
         /// Finds all present HID device instance IDs matching the given VID/PID.
         /// Used as a fallback when a device has a synthetic path (e.g., XInput#0)
         /// that can't be converted to a valid instance ID.

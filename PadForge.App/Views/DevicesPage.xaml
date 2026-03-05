@@ -206,11 +206,11 @@
                             <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/><Run Text=":"/><Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                         </TextBlock>
 
-                        <!-- Submit mapping (only for non-gamepad devices) -->
+                        <!-- Submit mapping (joysticks only — not gamepads, mice, or keyboards) -->
                         <Button Content="Submit Device Mapping" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="SubmitMapping_Click"
-                                Visibility="{Binding SelectedDevice.IsGamepad, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                Visibility="{Binding SelectedDevice.ShowSubmitMapping, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>

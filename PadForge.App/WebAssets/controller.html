@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PadForge - Controller</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="/css/controller.css">
+</head>
+<body>
+
+<div id="statusBar"></div>
+
+<div id="controller-viewport">
+    <div id="controller-container">
+        <img id="base-image" class="base" />
+        <!-- Overlay images injected dynamically by controller_client.js -->
+    </div>
+    <div id="touch-layer">
+        <div id="left-stick-zone" class="stick-zone"></div>
+        <div id="right-stick-zone" class="stick-zone"></div>
+        <!-- Button/trigger/d-pad touch zones injected dynamically -->
+    </div>
+</div>
+
+<div id="warning-portrait">
+    <h2>Rotate to landscape mode</h2>
+</div>
+<div id="disconnect-message">
+    <h2>Disconnected. Tap to reconnect.</h2>
+</div>
+
+<script src="/js/nipplejs.min.js"></script>
+<script src="/js/controller_client.js"></script>
+
+</body>
+</html>

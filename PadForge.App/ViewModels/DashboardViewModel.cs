@@ -240,6 +240,46 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _dsuServerStatus, value ?? "Stopped");
         }
 
+        // ─────────────────────────────────────────────
+        //  Web Controller Server
+        // ─────────────────────────────────────────────
+
+        private bool _enableWebController;
+
+        /// <summary>Whether the web controller server is enabled.</summary>
+        public bool EnableWebController
+        {
+            get => _enableWebController;
+            set => SetProperty(ref _enableWebController, value);
+        }
+
+        private int _webControllerPort = 8080;
+
+        /// <summary>HTTP/WebSocket port for the web controller server (default 8080).</summary>
+        public int WebControllerPort
+        {
+            get => _webControllerPort;
+            set => SetProperty(ref _webControllerPort, Math.Clamp(value, 1024, 65535));
+        }
+
+        private string _webControllerStatus = "Stopped";
+
+        /// <summary>Current status of the web controller server for UI display.</summary>
+        public string WebControllerStatus
+        {
+            get => _webControllerStatus;
+            set => SetProperty(ref _webControllerStatus, value ?? "Stopped");
+        }
+
+        private int _webControllerClientCount;
+
+        /// <summary>Number of currently connected web controller clients.</summary>
+        public int WebControllerClientCount
+        {
+            get => _webControllerClientCount;
+            set => SetProperty(ref _webControllerClientCount, value);
+        }
+
     }
 
     /// <summary>

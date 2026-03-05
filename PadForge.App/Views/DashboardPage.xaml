@@ -355,6 +355,37 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Web Controller ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="Web Controller" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Serve a gamepad UI to browsers on your local network."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="Enable web controller server"
+                              IsChecked="{Binding EnableWebController}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Port:" VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <ui:NumberBox Value="{Binding WebControllerPort, Mode=TwoWay}"
+                                      Minimum="1024" Maximum="65535"
+                                      SpinButtonPlacementMode="Inline" Width="140"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Ellipse Width="8" Height="8"
+                                 Fill="{Binding EnableWebController, Converter={StaticResource BoolToColorConverter}}"
+                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding WebControllerStatus}" FontSize="12"/>
+                    </StackPanel>
+                    <TextBlock Text="Connect from a phone or tablet browser to use as a gamepad."
+                               FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Driver status ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE964;" FontFamily="Segoe MDL2 Assets" FontSize="16"

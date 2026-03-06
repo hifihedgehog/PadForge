@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using PadForge.Engine.Common;
 using static SDL3.SDL;
 
 namespace PadForge.Engine
@@ -96,6 +97,10 @@ namespace PadForge.Engine
         {
             var state = new CustomInputState();
             RawInputListener.GetKeyboardState(_rawInputHandle, state.Buttons, state.Buttons.Length);
+            // Merge keys captured by the low-level hook. WH_KEYBOARD_LL runs
+            // in the RIT before WM_INPUT is generated, so suppressed keys never
+            // reach RawInputListener. The hook records their state separately.
+            InputHookManager.MergeHookedKeyState(state.Buttons, state.Buttons.Length);
             return state;
         }
 

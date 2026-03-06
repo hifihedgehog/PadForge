@@ -88,7 +88,7 @@ namespace PadForge.Engine
             ProductId = deviceInfo.ProductId;
 
             // Use a hash of the device path as a pseudo SDL instance ID for tracking.
-            _sdlId = (uint)deviceInfo.DevicePath.GetHashCode();
+            _sdlId = (uint)(deviceInfo.DevicePath.GetHashCode() & 0x7FFFFFFF);
 
             return true;
         }

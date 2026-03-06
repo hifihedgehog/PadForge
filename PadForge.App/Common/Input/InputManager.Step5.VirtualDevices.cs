@@ -129,6 +129,9 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly bool[] _slotInitializing = new bool[MaxPads];
 
+        /// <summary>Cached per-slot vJoy configs for detecting content changes in Step 5.</summary>
+        private VJoyVirtualController.VJoyDeviceConfig[] _lastStep5VJoyConfigs;
+
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
@@ -376,6 +379,40 @@ namespace PadForge.Common.Input
                                 deviceConfigs[cfgIdx++] = SlotVJoyConfigs[i];
                         }
                     }
+
+                    // Detect per-device config content changes (axes/buttons/POVs changed
+                    // without changing the number of vJoy slots). This triggers a device
+                    // node restart inside EnsureDevicesAvailable, so mark slots as initializing.
+                    if (!descriptorCountChanged && deviceConfigs != null)
+                    {
+                        bool vjoyConfigContentChanged = false;
+                        if (_lastStep5VJoyConfigs == null || _lastStep5VJoyConfigs.Length != deviceConfigs.Length)
+                            vjoyConfigContentChanged = true;
+                        else
+                        {
+                            for (int i = 0; i < deviceConfigs.Length; i++)
+                            {
+                                if (_lastStep5VJoyConfigs[i].Axes != deviceConfigs[i].Axes ||
+                                    _lastStep5VJoyConfigs[i].Buttons != deviceConfigs[i].Buttons ||
+                                    _lastStep5VJoyConfigs[i].Povs != deviceConfigs[i].Povs)
+                                { vjoyConfigContentChanged = true; break; }
+                            }
+                        }
+                        if (vjoyConfigContentChanged)
+                        {
+                            for (int i = 0; i < MaxPads; i++)
+                            {
+                                if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                    SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                                    _slotInitializing[i] = true;
+                            }
+                        }
+                    }
+                    // Cache configs for next cycle's comparison.
+                    _lastStep5VJoyConfigs = deviceConfigs != null
+                        ? (VJoyVirtualController.VJoyDeviceConfig[])deviceConfigs.Clone()
+                        : null;
+
                     VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded, deviceConfigs);
 
                     // After EnsureDevicesAvailable (which may restart the device node),

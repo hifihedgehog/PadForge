@@ -99,7 +99,7 @@ namespace PadForge.Engine
         /// <summary>Sets the specified button (0-based index).</summary>
         public void SetButton(int index, bool pressed)
         {
-            if (Buttons == null) return;
+            if (Buttons == null || index < 0) return;
             int word = index / 32;
             int bit = index % 32;
             if (word >= Buttons.Length) return;
@@ -112,7 +112,7 @@ namespace PadForge.Engine
         /// <summary>Returns true if the specified button is pressed.</summary>
         public bool IsButtonPressed(int index)
         {
-            if (Buttons == null) return false;
+            if (Buttons == null || index < 0) return false;
             int word = index / 32;
             int bit = index % 32;
             if (word >= Buttons.Length) return false;

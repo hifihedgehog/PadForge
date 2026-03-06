@@ -196,15 +196,7 @@ namespace PadForge.Common.Input
 
                 bool slotActive = IsSlotActive(padIndex);
 
-                // vJoy virtual controllers persist as long as the slot is created+enabled,
-                // regardless of whether a physical device is mapped or online. They must
-                // appear in joy.cpl immediately when added. Only Xbox 360/DS4 require
-                // an active device to justify virtual controller existence.
-                bool isVJoySlot = SlotControllerTypes[padIndex] == VirtualControllerType.VJoy &&
-                                  SettingsManager.SlotCreated[padIndex] &&
-                                  SettingsManager.SlotEnabled[padIndex];
-
-                if (slotActive || isVJoySlot)
+                if (slotActive)
                 {
                     if (_slotInactiveCounter[padIndex] > 0)
                         RumbleLogger.Log($"[Step5] Pad{padIndex} active again after {_slotInactiveCounter[padIndex]} inactive cycles");
@@ -262,8 +254,9 @@ namespace PadForge.Common.Input
                         totalVJoyNeeded++;  // Already running — always count
                     else if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                              SettingsManager.SlotCreated[i] &&
-                             SettingsManager.SlotEnabled[i])
-                        totalVJoyNeeded++;  // Slot exists — vJoy must appear in joy.cpl immediately
+                             SettingsManager.SlotEnabled[i] &&
+                             IsSlotActive(i))
+                        totalVJoyNeeded++;  // Active device mapped — will create soon
                 }
                 // Enter sync block whenever vJoy slots exist (to handle future creation),
                 // OR when stale descriptors need cleanup (count mismatch or leftover from

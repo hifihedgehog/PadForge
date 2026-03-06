@@ -30,7 +30,7 @@ namespace PadForge.Engine
         string DevicePath { get; }
         string SerialNumber { get; }
 
-        CustomInputState GetCurrentState();
+        CustomInputState GetCurrentState(bool forceRaw = false);
         DeviceObjectItem[] GetDeviceObjects();
         int GetInputDeviceType();
 

@@ -1,0 +1,137 @@
+/* PadForge Web Controller — 2D Controller Overlay Styles */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: #1a1a2e;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+#statusBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 0;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+#controller-viewport {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#controller-container {
+    position: relative;
+}
+
+#controller-container img {
+    position: absolute;
+    pointer-events: none;
+}
+
+#controller-container img.base {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Overlay images: hidden by default, shown when .active */
+#controller-container img.overlay {
+    opacity: 0;
+    transition: opacity 0.05s;
+}
+#controller-container img.overlay.active {
+    opacity: 1;
+}
+
+/* Trigger overlays: always visible, clipped to show fill level */
+#controller-container img.overlay.trigger {
+    opacity: 1;
+    clip-path: inset(100% 0 0 0);
+}
+
+/* Stick overlays: always visible, translated by JS */
+#controller-container img.overlay.stick-ring {
+    opacity: 1;
+}
+
+/* Touch layer covers entire viewport, above the controller images */
+#touch-layer {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 10;
+}
+
+.touch-zone {
+    position: absolute;
+}
+
+.stick-zone {
+    position: absolute;
+    z-index: 11;
+}
+
+/* Portrait warning */
+#warning-portrait {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #1a1a2e;
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 10000;
+}
+
+#disconnect-message {
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    background: #1a1a2e;
+    z-index: 10001;
+}
+
+#disconnect-message h2 {
+    color: white;
+    font-size: 18px;
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    margin: auto;
+    width: 80%;
+    height: 40px;
+    text-align: center;
+}
+
+@media only screen and (orientation: portrait) {
+    #controller-viewport, #disconnect-message {
+        display: none;
+    }
+    #warning-portrait {
+        display: flex;
+    }
+}
+
+@media only screen and (orientation: landscape) {
+    #warning-portrait {
+        display: none;
+    }
+}

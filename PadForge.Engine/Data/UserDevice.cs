@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -134,6 +135,26 @@ namespace PadForge.Engine.Data
         /// <summary>User-assigned display name (overrides InstanceName in the UI if set).</summary>
         [XmlElement]
         public string DisplayName { get; set; } = string.Empty;
+
+        /// <summary>Whether this device should be hidden from games via HidHide when assigned to a slot.</summary>
+        [XmlElement]
+        public bool HidHideEnabled { get; set; }
+
+        /// <summary>Whether this device's mapped inputs should be consumed via low-level hooks (keyboards and mice).</summary>
+        [XmlElement]
+        public bool ConsumeInputEnabled { get; set; }
+
+        /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices instead.</summary>
+        [XmlElement]
+        public bool ForceRawJoystickMode { get; set; }
+
+        /// <summary>
+        /// Cached HID device instance IDs resolved via SetupAPI for HidHide blacklisting.
+        /// Persisted so devices can be pre-emptively blacklisted at startup even if powered off.
+        /// </summary>
+        [XmlArray]
+        [XmlArrayItem("Id")]
+        public List<string> HidHideInstanceIds { get; set; } = new();
 
         // ─────────────────────────────────────────────────────────────
         //  Runtime-only fields (NOT serialized)
@@ -421,6 +442,16 @@ namespace PadForge.Engine.Data
         /// Populates the device identity and capabilities from a <see cref="SdlMouseWrapper"/>.
         /// </summary>
         public void LoadFromMouseDevice(SdlMouseWrapper wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
+        /// Populates the device identity and capabilities from a <see cref="WebControllerDevice"/>.
+        /// </summary>
+        public void LoadFromWebDevice(WebControllerDevice wrapper)
         {
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));

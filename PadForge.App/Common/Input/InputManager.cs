@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine;
@@ -182,6 +183,11 @@ namespace PadForge.Common.Input
                     RaiseError($"SDL_Init failed: {error}", null);
                     return false;
                 }
+
+                // Load PadForge community mappings (extends SDL's built-in gamecontrollerdb).
+                string mappingsPath = Path.Combine(AppContext.BaseDirectory, "gamecontrollerdb_padforge.txt");
+                if (File.Exists(mappingsPath))
+                    SDL_AddGamepadMappingsFromFile(mappingsPath);
 
                 _sdlInitialized = true;
                 return true;
@@ -429,6 +435,10 @@ namespace PadForge.Common.Input
             // travels with the card (not recomputed from MapTo).
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (SlotVJoyConfigs[slotA], SlotVJoyConfigs[slotB]) =
+                (SlotVJoyConfigs[slotB], SlotVJoyConfigs[slotA]);
+            (SlotVJoyIsCustom[slotA], SlotVJoyIsCustom[slotB]) =
+                (SlotVJoyIsCustom[slotB], SlotVJoyIsCustom[slotA]);
             (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
                 (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
@@ -437,8 +447,8 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Swaps only data arrays between two slots: SlotControllerTypes,
-        /// TestRumbleTargetGuid, MacroSnapshots. Does NOT touch virtual
-        /// controllers or their lifecycle.
+        /// SlotVJoyConfigs, SlotVJoyIsCustom, TestRumbleTargetGuid, MacroSnapshots.
+        /// Does NOT touch virtual controllers or their lifecycle.
         /// Used by EnsureTypeGroupOrder so Step 5 detects the type mismatch
         /// and handles VC recreation naturally on the polling thread,
         /// avoiding the all-VCs-destroyed-at-once race that causes phantom
@@ -452,6 +462,10 @@ namespace PadForge.Common.Input
 
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (SlotVJoyConfigs[slotA], SlotVJoyConfigs[slotB]) =
+                (SlotVJoyConfigs[slotB], SlotVJoyConfigs[slotA]);
+            (SlotVJoyIsCustom[slotA], SlotVJoyIsCustom[slotB]) =
+                (SlotVJoyIsCustom[slotB], SlotVJoyIsCustom[slotA]);
             (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
                 (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =

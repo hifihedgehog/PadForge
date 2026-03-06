@@ -67,6 +67,14 @@ namespace PadForge.ViewModels
             get => _connectedDeviceCount;
             set => SetProperty(ref _connectedDeviceCount, value);
         }
+
+        private bool _isInitializing;
+        /// <summary>Whether the virtual controller for this slot is currently initializing.</summary>
+        public bool IsInitializing
+        {
+            get => _isInitializing;
+            set => SetProperty(ref _isInitializing, value);
+        }
     }
 
     /// <summary>

@@ -234,6 +234,7 @@ namespace PadForge.Services
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
             vm.PollingRateMs = appSettings.PollingRateMs;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
+            vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -275,13 +276,19 @@ namespace PadForge.Services
             }
 
             // Load per-slot vJoy configurations (after OutputType so we know which slots are vJoy).
+            // Only restore configs for slots that are currently created as vJoy — otherwise
+            // stale custom configs from deleted slots leak into fresh slots when the user
+            // later adds a new vJoy at the same index.
             if (appSettings.VJoyConfigs != null)
             {
                 foreach (var cfgData in appSettings.VJoyConfigs)
                 {
-                    if (cfgData.SlotIndex >= 0 && cfgData.SlotIndex < _mainVm.Pads.Count)
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.VJoy)
                     {
-                        var cfg = _mainVm.Pads[cfgData.SlotIndex].VJoyConfig;
+                        var cfg = _mainVm.Pads[idx].VJoyConfig;
                         // Load preset first (applies defaults for Xbox360/DS4),
                         // then override with saved counts (matters for Custom preset).
                         cfg.Preset = cfgData.Preset;
@@ -300,6 +307,11 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
             _mainVm.Dashboard.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
                 ? appSettings.DsuMotionServerPort : 26760;
+
+            // Load web controller server settings.
+            _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
+            _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
+                ? appSettings.WebControllerPort : 8080;
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
         }
@@ -373,6 +385,14 @@ namespace PadForge.Services
                 padVm.RightAntiDeadZoneY = TryParseInt(ps.RightThumbAntiDeadZoneY, 0);
                 padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
                 padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
+                padVm.LeftMaxRangeX = TryParseInt(ps.LeftThumbMaxRangeX, 100);
+                padVm.LeftMaxRangeY = TryParseInt(ps.LeftThumbMaxRangeY, 100);
+                padVm.RightMaxRangeX = TryParseInt(ps.RightThumbMaxRangeX, 100);
+                padVm.RightMaxRangeY = TryParseInt(ps.RightThumbMaxRangeY, 100);
+                padVm.LeftCenterOffsetX = TryParseInt(ps.LeftThumbCenterOffsetX, 0);
+                padVm.LeftCenterOffsetY = TryParseInt(ps.LeftThumbCenterOffsetY, 0);
+                padVm.RightCenterOffsetX = TryParseInt(ps.RightThumbCenterOffsetX, 0);
+                padVm.RightCenterOffsetY = TryParseInt(ps.RightThumbCenterOffsetY, 0);
 
                 // Load trigger dead zone settings.
                 padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
@@ -579,6 +599,8 @@ namespace PadForge.Services
                 .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
+            profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
+            profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
         }
 
         /// <summary>
@@ -784,7 +806,10 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                EnableWebController = _mainVm.Dashboard.EnableWebController,
+                WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 Use2DControllerView = vm.Use2DControllerView,
+                EnableInputHiding = vm.EnableInputHiding,
                 VJoyConfigs = vjoyConfigs.ToArray()
             };
         }
@@ -874,6 +899,14 @@ namespace PadForge.Services
                     ps.RightThumbAntiDeadZoneY = padVm.RightAntiDeadZoneY.ToString();
                     ps.LeftThumbLinear = padVm.LeftLinear.ToString();
                     ps.RightThumbLinear = padVm.RightLinear.ToString();
+                    ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString();
+                    ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
+                    ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
+                    ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
+                    ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString();
+                    ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString();
+                    ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString();
+                    ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString();
 
                     // Write trigger dead zone settings.
                     ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
@@ -933,6 +966,14 @@ namespace PadForge.Services
                 padVm.RightAntiDeadZoneY = 0;
                 padVm.LeftLinear = 0;
                 padVm.RightLinear = 0;
+                padVm.LeftMaxRangeX = 100;
+                padVm.LeftMaxRangeY = 100;
+                padVm.RightMaxRangeX = 100;
+                padVm.RightMaxRangeY = 100;
+                padVm.LeftCenterOffsetX = 0;
+                padVm.LeftCenterOffsetY = 0;
+                padVm.RightCenterOffsetX = 0;
+                padVm.RightCenterOffsetY = 0;
                 padVm.LeftTriggerDeadZone = 0;
                 padVm.RightTriggerDeadZone = 0;
                 padVm.LeftTriggerAntiDeadZone = 0;
@@ -951,9 +992,12 @@ namespace PadForge.Services
             settingsVm.EnablePollingOnFocusLoss = true;
             settingsVm.PollingRateMs = 1;
             settingsVm.SelectedThemeIndex = 0;
+            settingsVm.EnableInputHiding = true;
             settingsVm.EnableAutoProfileSwitching = false;
             _mainVm.Dashboard.EnableDsuMotionServer = false;
             _mainVm.Dashboard.DsuMotionServerPort = 26760;
+            _mainVm.Dashboard.EnableWebController = false;
+            _mainVm.Dashboard.WebControllerPort = 8080;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
@@ -1180,7 +1224,21 @@ namespace PadForge.Services
         public int DsuMotionServerPort { get; set; } = 26760;
 
         [XmlElement]
+        public bool EnableWebController { get; set; }
+
+        [XmlElement]
+        public int WebControllerPort { get; set; } = 8080;
+
+        [XmlElement]
         public bool Use2DControllerView { get; set; }
+
+        /// <summary>
+        /// Global master switch for device hiding (HidHide + input hooks).
+        /// When false, no HidHide blacklisting or hook suppression occurs
+        /// regardless of per-device toggles.
+        /// </summary>
+        [XmlElement]
+        public bool EnableInputHiding { get; set; } = true;
 
         /// <summary>
         /// Per-slot vJoy configuration (preset, axis/button counts).
@@ -1346,6 +1404,14 @@ namespace PadForge.Services
         /// <summary>DSU motion server port for this profile.</summary>
         [XmlElement]
         public int DsuMotionServerPort { get; set; } = 26760;
+
+        /// <summary>Whether the web controller server was enabled in this profile.</summary>
+        [XmlElement]
+        public bool EnableWebController { get; set; }
+
+        /// <summary>Web controller server port for this profile.</summary>
+        [XmlElement]
+        public int WebControllerPort { get; set; } = 8080;
     }
 
     /// <summary>

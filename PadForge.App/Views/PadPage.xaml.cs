@@ -30,6 +30,7 @@ namespace PadForge.Views
         {
             ApplyViewMode();
             SyncTabStripSelection();
+            SyncVJoyConfigBar();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -221,6 +222,12 @@ namespace PadForge.Views
         {
             if (DataContext is PadViewModel padVm)
                 padVm.StopMapAll();
+        }
+
+        private void CalibrateCenter_Click(object sender, RoutedEventArgs e)
+        {
+            if (((System.Windows.Controls.Button)sender).DataContext is ViewModels.StickConfigItem item)
+                item.StartCalibration();
         }
 
         // ─────────────────────────────────────────────

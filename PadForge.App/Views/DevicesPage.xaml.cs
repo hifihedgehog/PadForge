@@ -27,6 +27,46 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>
+        /// Handles CheckBox Checked/Unchecked for HidHide and ConsumeInput toggles.
+        /// Propagates the change back through DevicesViewModel → DeviceService → InputService.
+        /// </summary>
+        private void HidingToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            if (vm?.SelectedDevice != null)
+                vm.NotifyDeviceHidingChanged(vm.SelectedDevice.InstanceGuid);
+        }
+
+        private void SubmitMapping_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm || vm.SelectedDevice is not { } dev)
+                return;
+
+            var sb = new System.Text.StringBuilder();
+            sb.Append("https://github.com/hifihedgehog/PadForge/issues/new?template=device_mapping.yml");
+            sb.Append("&title=");
+            sb.Append(Uri.EscapeDataString($"[Device Mapping] {dev.DeviceName}"));
+            sb.Append("&device_name=");
+            sb.Append(Uri.EscapeDataString(dev.DeviceName));
+            sb.Append("&vid=");
+            sb.Append(Uri.EscapeDataString(dev.VendorIdHex));
+            sb.Append("&pid=");
+            sb.Append(Uri.EscapeDataString(dev.ProductIdHex));
+            sb.Append("&axes=");
+            sb.Append(dev.AxisCount);
+            sb.Append("&buttons=");
+            sb.Append(dev.ButtonCount);
+            sb.Append("&hats=");
+            sb.Append(dev.PovCount);
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = sb.ToString(),
+                UseShellExecute = true
+            });
+        }
+
         // ── Device card drag (to sidebar controller cards) ──
 
         private Point _deviceDragStart;

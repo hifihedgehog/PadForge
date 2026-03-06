@@ -511,9 +511,13 @@ namespace PadForge.ViewModels
             LeftDeadZoneX = 0; LeftDeadZoneY = 0;
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
+            LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
+            LeftMaxRangeX = 100; LeftMaxRangeY = 100;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
             RightLinear = 0;
+            RightCenterOffsetX = 0; RightCenterOffsetY = 0;
+            RightMaxRangeX = 100; RightMaxRangeY = 100;
             LeftTriggerDeadZone = 0; LeftTriggerAntiDeadZone = 0; LeftTriggerMaxRange = 100;
             RightTriggerDeadZone = 0; RightTriggerAntiDeadZone = 0; RightTriggerMaxRange = 100;
         }
@@ -549,6 +553,32 @@ namespace PadForge.ViewModels
 
         private int _rightLinear;
         public int RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
+
+        // ── Max Range ──
+        private int _leftMaxRangeX = 100;
+        public int LeftMaxRangeX { get => _leftMaxRangeX; set => SetProperty(ref _leftMaxRangeX, Math.Clamp(value, 1, 100)); }
+
+        private int _leftMaxRangeY = 100;
+        public int LeftMaxRangeY { get => _leftMaxRangeY; set => SetProperty(ref _leftMaxRangeY, Math.Clamp(value, 1, 100)); }
+
+        private int _rightMaxRangeX = 100;
+        public int RightMaxRangeX { get => _rightMaxRangeX; set => SetProperty(ref _rightMaxRangeX, Math.Clamp(value, 1, 100)); }
+
+        private int _rightMaxRangeY = 100;
+        public int RightMaxRangeY { get => _rightMaxRangeY; set => SetProperty(ref _rightMaxRangeY, Math.Clamp(value, 1, 100)); }
+
+        // ── Center Offsets ──
+        private int _leftCenterOffsetX;
+        public int LeftCenterOffsetX { get => _leftCenterOffsetX; set => SetProperty(ref _leftCenterOffsetX, Math.Clamp(value, -100, 100)); }
+
+        private int _leftCenterOffsetY;
+        public int LeftCenterOffsetY { get => _leftCenterOffsetY; set => SetProperty(ref _leftCenterOffsetY, Math.Clamp(value, -100, 100)); }
+
+        private int _rightCenterOffsetX;
+        public int RightCenterOffsetX { get => _rightCenterOffsetX; set => SetProperty(ref _rightCenterOffsetX, Math.Clamp(value, -100, 100)); }
+
+        private int _rightCenterOffsetY;
+        public int RightCenterOffsetY { get => _rightCenterOffsetY; set => SetProperty(ref _rightCenterOffsetY, Math.Clamp(value, -100, 100)); }
 
         // ── Triggers ──
         private int _leftTriggerDeadZone;
@@ -680,6 +710,10 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = LeftAntiDeadZoneX;
                         item.AntiDeadZoneY = LeftAntiDeadZoneY;
                         item.Linear = LeftLinear;
+                        item.MaxRangeX = LeftMaxRangeX;
+                        item.MaxRangeY = LeftMaxRangeY;
+                        item.CenterOffsetX = LeftCenterOffsetX;
+                        item.CenterOffsetY = LeftCenterOffsetY;
                         break;
                     case 1:
                         item.DeadZoneX = RightDeadZoneX;
@@ -687,6 +721,10 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = RightAntiDeadZoneX;
                         item.AntiDeadZoneY = RightAntiDeadZoneY;
                         item.Linear = RightLinear;
+                        item.MaxRangeX = RightMaxRangeX;
+                        item.MaxRangeY = RightMaxRangeY;
+                        item.CenterOffsetX = RightCenterOffsetX;
+                        item.CenterOffsetY = RightCenterOffsetY;
                         break;
                 }
             }
@@ -746,6 +784,10 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
+                        case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;
+                        case nameof(StickConfigItem.MaxRangeY): LeftMaxRangeY = item.MaxRangeY; break;
+                        case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
+                        case nameof(StickConfigItem.CenterOffsetY): LeftCenterOffsetY = item.CenterOffsetY; break;
                     }
                     break;
                 case 1:
@@ -756,6 +798,10 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): RightAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): RightLinear = item.Linear; break;
+                        case nameof(StickConfigItem.MaxRangeX): RightMaxRangeX = item.MaxRangeX; break;
+                        case nameof(StickConfigItem.MaxRangeY): RightMaxRangeY = item.MaxRangeY; break;
+                        case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
+                        case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
                     }
                     break;
             }
@@ -1182,20 +1228,36 @@ namespace PadForge.ViewModels
             DeviceThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
             DeviceThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
 
-            // Sync live values to dynamic config items
+            // Sync live values to dynamic config items (full processing pipeline for preview)
             if (StickConfigs.Count > 0)
             {
-                StickConfigs[0].LiveX = DeviceThumbLX;
-                StickConfigs[0].LiveY = DeviceThumbLY;
-                StickConfigs[0].RawX = gp.ThumbLX;
-                StickConfigs[0].RawY = gp.ThumbLY;
+                double lx = ProcessAxisForPreview(
+                    DeviceThumbLX + LeftCenterOffsetX / 200.0,
+                    LeftDeadZoneX, LeftAntiDeadZoneX, LeftLinear, LeftMaxRangeX);
+                double ly = ProcessAxisForPreview(
+                    DeviceThumbLY - LeftCenterOffsetY / 200.0,
+                    LeftDeadZoneY, LeftAntiDeadZoneY, LeftLinear, LeftMaxRangeY);
+                StickConfigs[0].LiveX = lx;
+                StickConfigs[0].LiveY = ly;
+                StickConfigs[0].RawX = (short)Math.Clamp((lx - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[0].RawY = (short)Math.Clamp((0.5 - ly) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[0].HardwareRawX = gp.ThumbLX;
+                StickConfigs[0].HardwareRawY = gp.ThumbLY;
             }
             if (StickConfigs.Count > 1)
             {
-                StickConfigs[1].LiveX = DeviceThumbRX;
-                StickConfigs[1].LiveY = DeviceThumbRY;
-                StickConfigs[1].RawX = gp.ThumbRX;
-                StickConfigs[1].RawY = gp.ThumbRY;
+                double rx = ProcessAxisForPreview(
+                    DeviceThumbRX + RightCenterOffsetX / 200.0,
+                    RightDeadZoneX, RightAntiDeadZoneX, RightLinear, RightMaxRangeX);
+                double ry = ProcessAxisForPreview(
+                    DeviceThumbRY - RightCenterOffsetY / 200.0,
+                    RightDeadZoneY, RightAntiDeadZoneY, RightLinear, RightMaxRangeY);
+                StickConfigs[1].LiveX = rx;
+                StickConfigs[1].LiveY = ry;
+                StickConfigs[1].RawX = (short)Math.Clamp((rx - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[1].RawY = (short)Math.Clamp((0.5 - ry) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[1].HardwareRawX = gp.ThumbRX;
+                StickConfigs[1].HardwareRawY = gp.ThumbRY;
             }
             if (TriggerConfigs.Count > 0)
             {
@@ -1207,6 +1269,39 @@ namespace PadForge.ViewModels
                 TriggerConfigs[1].LiveValue = DeviceRightTrigger;
                 TriggerConfigs[1].RawValue = gp.RightTrigger;
             }
+        }
+
+        /// <summary>
+        /// Applies the full stick processing pipeline (dead zone, max range, anti-dead zone, linear)
+        /// to a normalized 0–1 axis value for preview display. Mirrors Step3's ApplySingleDeadZone.
+        /// </summary>
+        private static double ProcessAxisForPreview(double adjustedNorm, int deadZone, int antiDeadZone, int linear, int maxRange)
+        {
+            double signed = (adjustedNorm - 0.5) * 2.0;
+            double sign = Math.Sign(signed);
+            double mag = Math.Abs(signed);
+
+            double dzNorm = deadZone / 100.0;
+            if (mag < dzNorm)
+                return 0.5;
+
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
+                return Math.Clamp(adjustedNorm, 0.0, 1.0);
+
+            double mrNorm = maxRange / 100.0;
+            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
+            double remapped = Math.Min((mag - dzNorm) / (mrNorm - dzNorm), 1.0);
+
+            double adzNorm = antiDeadZone / 100.0;
+            double output = adzNorm + remapped * (1.0 - adzNorm);
+
+            if (linear > 0)
+            {
+                double lf = linear / 100.0;
+                output = remapped * lf + output * (1.0 - lf);
+            }
+
+            return Math.Clamp(0.5 + sign * output * 0.5, 0.0, 1.0);
         }
 
         // ═══════════════════════════════════════════════
@@ -1232,13 +1327,23 @@ namespace PadForge.ViewModels
             {
                 if (stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length)
                 {
-                    stick.RawX = raw.Axes[stick.AxisXIndex];
-                    stick.LiveX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
+                    stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
+                    double normX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
+                    double px = ProcessAxisForPreview(
+                        normX + stick.CenterOffsetX / 200.0,
+                        stick.DeadZoneX, stick.AntiDeadZoneX, stick.Linear, stick.MaxRangeX);
+                    stick.LiveX = px;
+                    stick.RawX = (short)Math.Clamp((px - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 }
                 if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
                 {
-                    stick.RawY = raw.Axes[stick.AxisYIndex];
-                    stick.LiveY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
+                    stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
+                    double normY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
+                    double py = ProcessAxisForPreview(
+                        normY - stick.CenterOffsetY / 200.0,
+                        stick.DeadZoneY, stick.AntiDeadZoneY, stick.Linear, stick.MaxRangeY);
+                    stick.LiveY = py;
+                    stick.RawY = (short)Math.Clamp((0.5 - py) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 }
             }
 

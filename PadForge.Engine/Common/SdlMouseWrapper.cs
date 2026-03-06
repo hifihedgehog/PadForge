@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using PadForge.Engine.Common;
 using static SDL3.SDL;
 
 namespace PadForge.Engine
@@ -95,7 +96,7 @@ namespace PadForge.Engine
         /// <summary>Pre-allocated buffer for mouse button reads.</summary>
         private readonly bool[] _mouseButtonBuffer = new bool[5];
 
-        public CustomInputState GetCurrentState()
+        public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             var state = new CustomInputState();
 
@@ -104,6 +105,9 @@ namespace PadForge.Engine
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);
 
             RawInputListener.GetMouseButtons(_rawInputHandle, _mouseButtonBuffer);
+            // Merge buttons captured by the low-level mouse hook (same reason
+            // as keyboard — WH_MOUSE_LL suppression blocks WM_INPUT).
+            InputHookManager.MergeHookedMouseState(_mouseButtonBuffer, 5);
             state.Buttons[0] = _mouseButtonBuffer[0]; // Left
             state.Buttons[1] = _mouseButtonBuffer[1]; // Middle
             state.Buttons[2] = _mouseButtonBuffer[2]; // Right

@@ -334,7 +334,7 @@ namespace PadForge.Engine
         /// (-1 for centered), matching the DirectInput POV convention.
         /// </summary>
         /// <returns>A new <see cref="CustomInputState"/> snapshot, or null if the device is not attached.</returns>
-        public CustomInputState GetCurrentState()
+        public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             if (Joystick == IntPtr.Zero)
                 return null;
@@ -343,7 +343,9 @@ namespace PadForge.Engine
             // through SDL's built-in mapping layer (gamecontrollerdb). This remaps
             // DualSense, DualShock, Switch Pro, etc. to the standardized Xbox layout
             // so the same auto-mapping works for all recognized controllers.
-            if (GameController != IntPtr.Zero)
+            // ForceRaw bypasses this for devices whose SDL mapping is wrong
+            // (e.g., DsHidMini DS3 in SDF mode).
+            if (!forceRaw && GameController != IntPtr.Zero)
                 return GetGamepadState();
 
             return GetJoystickState();

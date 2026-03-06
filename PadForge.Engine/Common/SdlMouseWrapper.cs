@@ -88,7 +88,7 @@ namespace PadForge.Engine
             VendorId = deviceInfo.VendorId;
             ProductId = deviceInfo.ProductId;
 
-            _sdlId = (uint)deviceInfo.DevicePath.GetHashCode();
+            _sdlId = (uint)(deviceInfo.DevicePath.GetHashCode() & 0x7FFFFFFF);
 
             return true;
         }

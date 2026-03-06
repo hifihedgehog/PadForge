@@ -18,21 +18,11 @@ namespace PadForge.Common.Input
         [DllImport(Dll)]
         internal static extern int CM_Disable_DevNode(int dnDevInst, int ulFlags);
 
-        [DllImport(Dll)]
-        internal static extern int CM_Enable_DevNode(int dnDevInst, int ulFlags);
-
-        [DllImport(Dll)]
-        internal static extern int CM_Reenumerate_DevNode(int dnDevInst, int ulFlags);
-
-        [DllImport(Dll)]
-        internal static extern int CM_Get_DevNode_Status(out int pulStatus, out int pulProblemNumber, int dnDevInst, int ulFlags);
 
         internal const int CM_LOCATE_DEVNODE_NORMAL = 0;
         internal const int CM_LOCATE_DEVNODE_PHANTOM = 1;
         internal const int CM_DISABLE_HARDWARE = 0x4;
-        internal const int CM_REENUMERATE_SYNCHRONOUS = 0x1;
         internal const int CR_SUCCESS = 0;
-        internal const int DN_STARTED = 0x00000008;
     }
 
     // SetupAPI P/Invoke for DICS_PROPCHANGE device restart.
@@ -629,14 +619,6 @@ namespace PadForge.Common.Input
                         case 5:  pos.wAxisZRot = v; break;
                         case 6:  pos.wSlider   = v; break;
                         case 7:  pos.wDial     = v; break;
-                        case 8:  pos.wWheel    = v; break;
-                        case 9:  pos.wAxisVX   = v; break;
-                        case 10: pos.wAxisVY   = v; break;
-                        case 11: pos.wAxisVZ   = v; break;
-                        case 12: pos.wAxisVBRX = v; break;
-                        case 13: pos.wAileron  = v; break;
-                        case 14: pos.wRudder   = v; break;
-                        case 15: pos.wThrottle = v; break;
                     }
                 }
             }
@@ -796,7 +778,7 @@ namespace PadForge.Common.Input
                         if (VJoyNative.Ffb_h_Eff_Constant(data, ref cst) == 0)
                         {
                             int rawMag = cst.Magnitude;
-                            int absMag = Math.Abs(rawMag);
+                            int absMag = rawMag == int.MinValue ? int.MaxValue : Math.Abs(rawMag);
                             bool found = devState.Effects.TryGetValue(cst.EffectBlockIndex, out var es);
                             if (found)
                                 es.Magnitude = absMag; // -10000..+10000 → 0..10000

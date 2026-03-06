@@ -237,8 +237,9 @@ namespace PadForge.ViewModels
                 // not raw padIndex+1. Without this, gaps in SlotCreated[] (e.g.,
                 // slot 1 uncreated) cause badge numbers to skip (1, 3, 4...).
                 int globalNum = 0;
-                for (int i = 0; i <= slot; i++)
-                    if (Common.Input.SettingsManager.SlotCreated[i])
+                var slotCreated = Common.Input.SettingsManager.SlotCreated;
+                for (int i = 0; i <= slot && i < slotCreated.Length; i++)
+                    if (slotCreated[i])
                         globalNum++;
                 SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = globalNum });
             }

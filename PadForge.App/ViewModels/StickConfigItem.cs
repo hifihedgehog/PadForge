@@ -147,23 +147,31 @@ namespace PadForge.ViewModels
             var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             timer.Tick += (s, e) =>
             {
-                samplesX.Add(HardwareRawX);
-                samplesY.Add(HardwareRawY);
-                if (samplesX.Count >= 15)
+                try
+                {
+                    samplesX.Add(HardwareRawX);
+                    samplesY.Add(HardwareRawY);
+                    if (samplesX.Count >= 15)
+                    {
+                        timer.Stop();
+                        double avgX = 0, avgY = 0;
+                        for (int i = 0; i < samplesX.Count; i++)
+                        {
+                            avgX += samplesX[i];
+                            avgY += samplesY[i];
+                        }
+                        avgX /= samplesX.Count;
+                        avgY /= samplesY.Count;
+
+                        // Negate the drift and convert to percentage of full range
+                        CenterOffsetX = -(int)Math.Round(avgX / 32768.0 * 100.0);
+                        CenterOffsetY = -(int)Math.Round(avgY / 32768.0 * 100.0);
+                        IsCalibrating = false;
+                    }
+                }
+                catch
                 {
                     timer.Stop();
-                    double avgX = 0, avgY = 0;
-                    for (int i = 0; i < samplesX.Count; i++)
-                    {
-                        avgX += samplesX[i];
-                        avgY += samplesY[i];
-                    }
-                    avgX /= samplesX.Count;
-                    avgY /= samplesY.Count;
-
-                    // Negate the drift and convert to percentage of full range
-                    CenterOffsetX = -(int)Math.Round(avgX / 32768.0 * 100.0);
-                    CenterOffsetY = -(int)Math.Round(avgY / 32768.0 * 100.0);
                     IsCalibrating = false;
                 }
             };

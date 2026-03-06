@@ -68,6 +68,9 @@ One-click ViGEmBus, HidHide, and vJoy driver management with version info, setti
 Application information, technology stack, and license details.
 
 ### Web Controller
+![Web Controller - Landing](screenshots/web-landing.jpg)
+![Web Controller - Xbox 360](screenshots/web-controller.jpg)
+
 Built-in web server lets any touchscreen device act as a virtual controller. Choose Xbox 360 or DS4 layout, with responsive touch controls including dual virtual analog sticks, 8-way D-pad, and real-time visual feedback matching the desktop 2D controller view.
 
 ## Requirements

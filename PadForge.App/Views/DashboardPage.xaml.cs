@@ -462,7 +462,10 @@ namespace PadForge.Views
                         result.Add(new CardBounds(padIndex, topLeft.X, topLeft.Y,
                             topLeft.X + card.ActualWidth, topLeft.Y + card.ActualHeight));
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[Dashboard] GetCardBounds error: {ex.Message}");
+                    }
                 }
             }
             return result;

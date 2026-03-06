@@ -315,17 +315,24 @@ namespace PadForge.Engine.Data
             VJoyMappingEntries = entries;
         }
 
+        private readonly object _vjoyDictLock = new();
+
         private void EnsureVJoyDict()
         {
             if (_vjoyMappingDict != null) return;
-            _vjoyMappingDict = new Dictionary<string, string>(StringComparer.Ordinal);
-            if (VJoyMappingEntries != null)
+            lock (_vjoyDictLock)
             {
-                foreach (var e in VJoyMappingEntries)
+                if (_vjoyMappingDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (VJoyMappingEntries != null)
                 {
-                    if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                        _vjoyMappingDict[e.Key] = e.Value;
+                    foreach (var e in VJoyMappingEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
                 }
+                _vjoyMappingDict = dict;
             }
         }
 

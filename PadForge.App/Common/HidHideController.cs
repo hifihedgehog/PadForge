@@ -388,7 +388,7 @@ namespace PadForge.Common
                     return result;
             }
 
-            if (bytesReturned < 4) // At minimum double-null terminator (4 bytes in UTF-16)
+            if (bytesReturned < 4 || bytesReturned % 2 != 0) // At minimum double-null terminator (4 bytes in UTF-16)
                 return result;
 
             // Parse multi-SZ: null-separated UTF-16 strings, double-null terminated.

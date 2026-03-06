@@ -359,13 +359,15 @@ namespace PadForge.Common.Input
         {
             var tw = macro.TriggerCustomButtonWords;
             if (raw.Buttons == null) return false;
+            bool anyTriggerBit = false;
             for (int w = 0; w < tw.Length; w++)
             {
                 if (tw[w] == 0) continue;
+                anyTriggerBit = true;
                 if (w >= raw.Buttons.Length) return false;
                 if ((raw.Buttons[w] & tw[w]) != tw[w]) return false;
             }
-            return true;
+            return anyTriggerBit;
         }
 
         /// <summary>

@@ -114,7 +114,15 @@ PadForge.sln
 │   │   ├── RecorderService.cs          Input recording: baseline -> detection -> descriptor
 │   │   ├── DeviceService.cs            Device assignment and hiding
 │   │   ├── DsuMotionServer.cs          DSU/Cemuhook UDP motion server (port 26760)
-│   │   └── ForegroundMonitorService.cs Per-app profile switching via foreground detection
+│   │   ├── ForegroundMonitorService.cs Per-app profile switching via foreground detection
+│   │   └── WebControllerServer.cs     Embedded HTTP+WebSocket server for browser virtual controllers
+│   │
+│   ├── WebAssets/
+│   │   ├── index.html                Landing page (Xbox 360 / DS4 layout selection)
+│   │   ├── controller.html           Controller UI shell (dynamic PNG overlay layout)
+│   │   ├── css/controller.css        Dark responsive touch-optimized styles
+│   │   ├── js/controller_client.js   WebSocket client + touch input handling
+│   │   └── js/nipplejs.min.js        Virtual joystick library for analog sticks
 │   │
 │   ├── Converter/                      WPF value converters (bool, axis, visibility, etc.)
 │   ├── Controls/

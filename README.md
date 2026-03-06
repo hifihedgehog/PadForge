@@ -8,9 +8,10 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 
 - **Any input to any virtual controller** -- Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom DirectInput controllers with up to 8 axes (sticks and triggers combined), 128 buttons, and 4 POV hats
 - **Up to 16 virtual controller slots** -- Mix and match Xbox 360, DualShock 4, and custom DirectInput across up to 16 simultaneous slots, each combining input from multiple physical devices
-- **3D and 2D controller visualization** -- Interactive 3D controller model (rotate, zoom, pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time
-- **Interactive mapping** -- Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads
-- **Dead zones and response curves** -- Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview
+- **3D and 2D controller visualization** -- Interactive 3D controller model with mouse and touch gestures (rotate, pinch-to-zoom, two-finger pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time
+- **Web browser virtual controller** -- Use any touchscreen device as a controller via a built-in web server. Serves Xbox 360 and DS4 layouts with real-time touch input over WebSocket, including dual analog sticks, 8-way D-pad, triggers, and rumble feedback
+- **Interactive mapping** -- Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
+- **Dead zones and response curves** -- Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview, plus stick center offset calibration and max range
 - **Force feedback** -- Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
 - **Macro system** -- Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
 - **Per-app profile switching** -- Automatically switch controller configurations when specific applications gain focus
@@ -65,6 +66,9 @@ One-click ViGEmBus, HidHide, and vJoy driver management with version info, setti
 ### About
 ![About](screenshots/about.jpg)
 Application information, technology stack, and license details.
+
+### Web Controller
+Built-in web server lets any touchscreen device act as a virtual controller. Choose Xbox 360 or DS4 layout, with responsive touch controls including dual virtual analog sticks, 8-way D-pad, and real-time visual feedback matching the desktop 2D controller view.
 
 ## Requirements
 

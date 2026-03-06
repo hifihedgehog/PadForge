@@ -488,7 +488,7 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Preview handler for left/right-drag model rotation + hover highlighting.</summary>
+        /// <summary>Preview handler for left-drag rotation, right-drag pan + hover highlighting.</summary>
         private void Viewport_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             // Promote left-button hold to drag once past threshold
@@ -524,11 +524,23 @@ namespace PadForge.Views
                 double dy = p.Y - _rightDragLast.Y;
                 _rightDragLast = p;
 
-                _modelYaw += dx * 0.5;
-                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+                if (ModelViewPort.Camera is PerspectiveCamera cam && (Math.Abs(dx) > 0.1 || Math.Abs(dy) > 0.1))
+                {
+                    var look = cam.LookDirection;
+                    look.Normalize();
+                    var up = cam.UpDirection;
+                    up.Normalize();
+                    var right = Vector3D.CrossProduct(look, up);
+                    right.Normalize();
+                    var trueUp = Vector3D.CrossProduct(right, look);
+                    trueUp.Normalize();
 
-                _yawRotation.Angle = _modelYaw;
-                _pitchRotation.Angle = _modelPitch;
+                    double panScale = 0.5;
+                    cam.Position = new Point3D(
+                        cam.Position.X - right.X * dx * panScale + trueUp.X * dy * panScale,
+                        cam.Position.Y - right.Y * dx * panScale + trueUp.Y * dy * panScale,
+                        cam.Position.Z - right.Z * dx * panScale + trueUp.Z * dy * panScale);
+                }
                 e.Handled = true;
                 return;
             }

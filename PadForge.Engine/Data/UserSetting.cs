@@ -66,17 +66,9 @@ namespace PadForge.Engine.Data
                 {
                     _mapTo = value;
                     OnPropertyChanged(nameof(MapTo));
-                    OnPropertyChanged(nameof(MapToLabel));
                 }
             }
         }
-
-        /// <summary>
-        /// Display label for the slot assignment: "Player 1"–"Player 16" or "Unmapped".
-        /// </summary>
-        [XmlIgnore]
-        public string MapToLabel =>
-            _mapTo >= 0 && _mapTo < 16 ? $"Player {_mapTo + 1}" : "Unmapped";
 
         // ─────────────────────────────────────────────
         //  PadSetting linkage
@@ -197,14 +189,5 @@ namespace PadForge.Engine.Data
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        // ─────────────────────────────────────────────
-        //  Display
-        // ─────────────────────────────────────────────
-
-        public override string ToString()
-        {
-            string name = !string.IsNullOrEmpty(InstanceName) ? InstanceName : ProductName;
-            return $"{name} → {MapToLabel}";
-        }
     }
 }

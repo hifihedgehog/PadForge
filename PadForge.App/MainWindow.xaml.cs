@@ -258,7 +258,7 @@ namespace PadForge
                     {
                         // A full analog axis covers both directions,
                         // so write it to the primary descriptor and clear neg.
-                        negMapping.SourceDescriptor = result.Descriptor;
+                        negMapping.LoadDescriptor(result.Descriptor);
                         negMapping.NegSourceDescriptor = string.Empty;
                         _savedPosDescriptor = null;
                         if (deviceGuid != Guid.Empty)

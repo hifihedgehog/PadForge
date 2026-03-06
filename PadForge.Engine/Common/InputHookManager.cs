@@ -149,7 +149,8 @@ namespace PadForge.Engine.Common
             _hookThread.Start();
 
             // Wait for hooks to be installed before returning.
-            ready.Wait(TimeSpan.FromSeconds(5));
+            if (!ready.Wait(TimeSpan.FromSeconds(5)))
+                Debug.WriteLine("[InputHookManager] WARNING: Hook installation timed out after 5 seconds");
         }
 
         /// <summary>

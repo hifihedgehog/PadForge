@@ -743,7 +743,7 @@ namespace PadForge.Common.Input
             // Max range: cap the input ceiling so full output is reached at this %.
             double maxNorm = maxRange / 100.0;
             if (maxNorm <= dzNorm)
-                maxNorm = dzNorm + 0.01;
+                maxNorm = Math.Min(dzNorm + 0.01, 1.0);
 
             // Remap from [dzNorm, maxNorm] to [0, 1].
             double remapped = Math.Min((magnitude - dzNorm) / (maxNorm - dzNorm), 1.0);

@@ -269,6 +269,7 @@ namespace PadForge.Views
 
         private void SyncVJoyCustomFields(PadViewModel vm)
         {
+            if (vm?.VJoyConfig == null) return;
             bool isCustom = vm.VJoyConfig.Preset == VJoyPreset.Custom;
             VJoyCustomPanel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
 

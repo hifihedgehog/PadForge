@@ -1,7 +1,8 @@
 <UserControl x:Class="PadForge.Views.DevicesPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ui="http://schemas.modernwpf.com/2019">
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:common="clr-namespace:PadForge.Common">
 
     <Grid Margin="24,16">
         <Grid.RowDefinitions>
@@ -115,8 +116,8 @@
                                             Orientation="Horizontal" Margin="16,3,0,0">
                                     <TextBlock Text="{Binding DeviceType}" FontSize="11" Opacity="0.55"/>
                                     <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
-                                    <TextBlock FontSize="11" Opacity="0.45" FontFamily="Consolas">
-                                        <Run Text="{Binding VendorIdHex, Mode=OneWay}"/>:<Run Text="{Binding ProductIdHex, Mode=OneWay}"/>
+                                    <TextBlock FontSize="11" Opacity="0.45">
+                                        <Run Text="{Binding VendorIdHex, Mode=OneWay}"/><Run Text=":"/><Run Text="{Binding ProductIdHex, Mode=OneWay}"/>
                                     </TextBlock>
                                     <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
                                     <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Opacity="0.45"/>
@@ -174,27 +175,52 @@
                             <Run Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
                         </TextBlock>
                         <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
-                            <Run Text="VID:PID:"/>
-                            <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
-                            <Run Text=":"/>
-                            <Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
-                        </TextBlock>
-                        <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
                             <Run Text="Type:"/>
                             <Run Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
                         </TextBlock>
-                        <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,1">
+                        <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,8">
                             <Run Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
                         </TextBlock>
-                        <TextBlock FontSize="10" Opacity="0.4" Margin="0,0,0,4"
-                                   TextWrapping="Wrap" FontFamily="Consolas">
-                            <Run Text="GUID:"/>
-                            <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
+
+                        <Border ClipToBounds="True" Margin="0,0,0,1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="11" Opacity="0.6"
+                                           common:MarqueeBehavior.IsEnabled="True">
+                                    <Run Text="GUID:"/>
+                                    <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border ClipToBounds="True" Margin="0,0,0,1"
+                                Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="11" Opacity="0.6"
+                                           common:MarqueeBehavior.IsEnabled="True">
+                                    <Run Text="Instance Path:"/>
+                                    <Run Text="{Binding SelectedDevice.HidHideInstancePath, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,4">
+                            <Run Text="VID:PID:"/>
+                            <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/><Run Text=":"/><Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                         </TextBlock>
+
+                        <!-- Submit mapping (joysticks only — not gamepads, mice, or keyboards) -->
+                        <Button Content="Submit Device Mapping" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="SubmitMapping_Click"
+                                Visibility="{Binding SelectedDevice.ShowSubmitMapping, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
 
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->
+                        <TextBlock Text="Virtual Controller Assignment" FontWeight="SemiBold"
+                                   FontSize="13" Margin="0,0,0,6"/>
                         <WrapPanel Margin="0,0,0,6">
                             <ItemsControl ItemsSource="{Binding ActiveSlotItems}">
                                 <ItemsControl.ItemsPanel>
@@ -222,6 +248,64 @@
                         </WrapPanel>
 
                         <Separator Margin="0,2,0,8"/>
+
+                        <!-- ─── Input Mode (gamepads only) ─── -->
+                        <StackPanel Visibility="{Binding SelectedDevice.IsGamepad, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="Input Mode" FontWeight="SemiBold"
+                                       FontSize="13" Margin="0,0,0,6"/>
+
+                            <CheckBox Content="Force raw joystick mode (bypass gamepad remapping)"
+                                      IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
+                                      Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                      ToolTip="Read raw HID indices instead of SDL's gamepad mapping — use when SDL misidentifies button/axis layout"
+                                      Margin="0,0,0,4"/>
+
+                            <Separator Margin="0,2,0,8"/>
+                        </StackPanel>
+
+                        <!-- ─── Input Hiding ─── -->
+                        <TextBlock Text="Input Hiding" FontWeight="SemiBold"
+                                   FontSize="13" Margin="0,0,0,6"/>
+
+                        <CheckBox Content="Hide from games (HidHide)"
+                                  IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
+                                  IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
+                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  Margin="0,0,0,4">
+                            <CheckBox.ToolTip>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="Completely hides this device from other applications via the HidHide driver"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedDevice.IsHidHideAvailable}" Value="False">
+                                                    <Setter Property="Text" Value="Install the HidHide driver to enable this option"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+
+                        <CheckBox Content="Consume mapped inputs (hooks)"
+                                  IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
+                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  ToolTip="Suppresses only the specific keys/buttons that are mapped, letting unmapped inputs pass through"
+                                  Margin="0,0,0,4">
+                            <CheckBox.Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedDevice.ShowConsumeToggle}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+
+                        <Separator Margin="0,4,0,8"/>
 
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="Raw Input State" FontWeight="SemiBold"

@@ -93,6 +93,18 @@ namespace PadForge.Common.Input
         /// destroying/recreating controllers (which kills vibration feedback).
         /// </summary>
         private readonly int[] _slotInactiveCounter = new int[MaxPads];
+        private int _lastLoggedVJoyNeeded = -1;
+        private bool _lastLoggedEnterSync;
+
+        /// <summary>
+        /// Grace period counter for vJoy sync. On startup, device enumeration may not
+        /// have completed yet, causing a transient totalVJoyNeeded=0. This counter
+        /// tracks total vJoy sync cycles since process start to skip descriptor
+        /// cleanup (node removal) during the startup window.
+        /// At 1000Hz, 5000 cycles = 5 seconds of grace.
+        /// </summary>
+        private int _vJoySyncCycleCount;
+        private const int VJoyStartupGraceCycles = 5000;
 
         /// <summary>
         /// Number of consecutive inactive cycles before a virtual controller is destroyed.
@@ -109,6 +121,17 @@ namespace PadForge.Common.Input
         private readonly int[] _createCooldown = new int[MaxPads];
         private const int CreateCooldownCycles = 2000;
 
+        /// <summary>
+        /// Per-slot flag: true while a virtual controller is being created or
+        /// reconfigured (e.g., vJoy descriptor change → node restart). Set true
+        /// just before creation, cleared when the controller reports IsConnected.
+        /// Read by the UI thread via <see cref="IsVirtualControllerInitializing"/>.
+        /// </summary>
+        private readonly bool[] _slotInitializing = new bool[MaxPads];
+
+        /// <summary>Cached per-slot vJoy configs for detecting content changes in Step 5.</summary>
+        private VJoyVirtualController.VJoyDeviceConfig[] _lastStep5VJoyConfigs;
+
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
@@ -124,6 +147,17 @@ namespace PadForge.Common.Input
             if (padIndex < 0 || padIndex >= MaxPads) return false;
             var vc = _virtualControllers[padIndex];
             return vc != null && vc.IsConnected;
+        }
+
+        /// <summary>
+        /// Returns true if the specified pad slot is currently initializing
+        /// (creating a virtual controller or reconfiguring vJoy descriptors).
+        /// Used by the UI to show a flashing green indicator.
+        /// </summary>
+        public bool IsVirtualControllerInitializing(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            return _slotInitializing[padIndex];
         }
 
         /// <summary>
@@ -160,10 +194,12 @@ namespace PadForge.Common.Input
                 // Detect controller type change — destroy old if type differs.
                 if (vc != null && vc.Type != SlotControllerTypes[padIndex])
                 {
+                    VJoyVirtualController.DiagLog($"Pass1: Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, destroying old VC");
                     RumbleLogger.Log($"[Step5] Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, recreating");
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _createCooldown[padIndex] = 0; // Reset cooldown on type change
+                    _slotInitializing[padIndex] = true; // Will be recreated as new type
                     vc = null;
                 }
 
@@ -176,6 +212,7 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
+                    _slotInitializing[padIndex] = false;
                     VibrationStates[padIndex].LeftMotorSpeed = 0;
                     VibrationStates[padIndex].RightMotorSpeed = 0;
                     continue;
@@ -191,7 +228,10 @@ namespace PadForge.Common.Input
                     _slotInactiveCounter[padIndex] = 0;
 
                     if (vc == null)
+                    {
                         anyNeedsCreate = true;
+                        _slotInitializing[padIndex] = true;
+                    }
                 }
                 else if (vc != null && !HasAnyDeviceMapped(padIndex))
                 {
@@ -241,16 +281,56 @@ namespace PadForge.Common.Input
                         totalVJoyNeeded++;  // Already running — always count
                     else if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                              SettingsManager.SlotCreated[i] &&
-                             _slotInactiveCounter[i] == 0 &&
+                             SettingsManager.SlotEnabled[i] &&
                              IsSlotActive(i))
-                        totalVJoyNeeded++;  // About to be created — has active device
+                        totalVJoyNeeded++;  // Active device mapped — will create soon
                 }
                 // Enter sync block whenever vJoy slots exist (to handle future creation),
                 // OR when stale descriptors need cleanup (count mismatch or leftover from
                 // previous session). This ensures deletion of the last vJoy slot always
                 // triggers descriptor cleanup even when _currentDescriptorCount was never set.
-                if (anyVJoySlotExists || totalVJoyNeeded > 0 ||
-                    VJoyVirtualController.CurrentDescriptorCount > 0)
+                bool enterVJoySync = anyVJoySlotExists || totalVJoyNeeded > 0 ||
+                    VJoyVirtualController.CurrentDescriptorCount > 0;
+                // Only log Pass1b when state actually changes to avoid 1000Hz log spam.
+                if (totalVJoyNeeded != _lastLoggedVJoyNeeded || enterVJoySync != _lastLoggedEnterSync)
+                {
+                    // Diagnostic: log per-slot detail when totalVJoyNeeded=0 but vJoy slots exist
+                    if (totalVJoyNeeded == 0 && anyVJoySlotExists)
+                    {
+                        for (int dbg = 0; dbg < MaxPads; dbg++)
+                        {
+                            if (SlotControllerTypes[dbg] == VirtualControllerType.VJoy && SettingsManager.SlotCreated[dbg])
+                            {
+                                bool slotActive = IsSlotActive(dbg);
+                                int inactiveCount = _slotInactiveCounter[dbg];
+                                var settings = SettingsManager.UserSettings;
+                                int mappedCount = settings?.FindByPadIndex(dbg, _padIndexBuffer) ?? 0;
+                                VJoyVirtualController.DiagLog(
+                                    $"  vJoy slot {dbg}: active={slotActive}, inactive={inactiveCount}, " +
+                                    $"mappedDevices={mappedCount}, enabled={SettingsManager.SlotEnabled[dbg]}");
+                            }
+                        }
+                    }
+                    VJoyVirtualController.DiagLog(
+                        $"Pass1b: totalVJoyNeeded={totalVJoyNeeded}, anyVJoySlotExists={anyVJoySlotExists}, " +
+                        $"currentDescCount={VJoyVirtualController.CurrentDescriptorCount}, enterSync={enterVJoySync}");
+                    _lastLoggedVJoyNeeded = totalVJoyNeeded;
+                    _lastLoggedEnterSync = enterVJoySync;
+                }
+                // Grace period: don't remove vJoy descriptors during startup.
+                // On first few polling cycles, device enumeration may not have
+                // completed yet, causing a transient totalVJoyNeeded=0 that would
+                // delete the node only to recreate it moments later.
+                if (enterVJoySync)
+                    _vJoySyncCycleCount++;
+
+                if (totalVJoyNeeded == 0 && enterVJoySync &&
+                    _vJoySyncCycleCount < VJoyStartupGraceCycles)
+                {
+                    goto AfterVJoySync;
+                }
+
+                if (enterVJoySync)
                 {
                     bool descriptorCountChanged = totalVJoyNeeded != VJoyVirtualController.CurrentDescriptorCount;
 
@@ -269,8 +349,16 @@ namespace PadForge.Common.Input
                                 DestroyVirtualController(i);
                                 _virtualControllers[i] = null;
                             }
+                            // Mark all vJoy slots as initializing during descriptor change
+                            if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                                _slotInitializing[i] = true;
                         }
-                        anyNeedsCreate = totalVJoyNeeded > 0;
+                        // Use |= to preserve any true state from Pass 1 (non-vJoy slots
+                        // that need creation). Previously this unconditional assignment
+                        // would override anyNeedsCreate=true from a vJoy→Xbox type switch,
+                        // delaying creation of the Xbox VC by 1 cycle.
+                        anyNeedsCreate |= totalVJoyNeeded > 0;
                     }
 
                     // Build per-device HID descriptor configs from slot configs.
@@ -286,12 +374,45 @@ namespace PadForge.Common.Input
                                 _virtualControllers[i] is VJoyVirtualController ||
                                 (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                                  SettingsManager.SlotCreated[i] &&
-                                 _slotInactiveCounter[i] == 0 &&
-                                 IsSlotActive(i));
+                                 SettingsManager.SlotEnabled[i]);
                             if (countsAsVjoy)
                                 deviceConfigs[cfgIdx++] = SlotVJoyConfigs[i];
                         }
                     }
+
+                    // Detect per-device config content changes (axes/buttons/POVs changed
+                    // without changing the number of vJoy slots). This triggers a device
+                    // node restart inside EnsureDevicesAvailable, so mark slots as initializing.
+                    if (!descriptorCountChanged && deviceConfigs != null)
+                    {
+                        bool vjoyConfigContentChanged = false;
+                        if (_lastStep5VJoyConfigs == null || _lastStep5VJoyConfigs.Length != deviceConfigs.Length)
+                            vjoyConfigContentChanged = true;
+                        else
+                        {
+                            for (int i = 0; i < deviceConfigs.Length; i++)
+                            {
+                                if (_lastStep5VJoyConfigs[i].Axes != deviceConfigs[i].Axes ||
+                                    _lastStep5VJoyConfigs[i].Buttons != deviceConfigs[i].Buttons ||
+                                    _lastStep5VJoyConfigs[i].Povs != deviceConfigs[i].Povs)
+                                { vjoyConfigContentChanged = true; break; }
+                            }
+                        }
+                        if (vjoyConfigContentChanged)
+                        {
+                            for (int i = 0; i < MaxPads; i++)
+                            {
+                                if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                    SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                                    _slotInitializing[i] = true;
+                            }
+                        }
+                    }
+                    // Cache configs for next cycle's comparison.
+                    _lastStep5VJoyConfigs = deviceConfigs != null
+                        ? (VJoyVirtualController.VJoyDeviceConfig[])deviceConfigs.Clone()
+                        : null;
+
                     VJoyVirtualController.EnsureDevicesAvailable(totalVJoyNeeded, deviceConfigs);
 
                     // After EnsureDevicesAvailable (which may restart the device node),
@@ -317,8 +438,7 @@ namespace PadForge.Common.Input
                                 _virtualControllers[i] is VJoyVirtualController ||
                                 (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                                  SettingsManager.SlotCreated[i] &&
-                                 _slotInactiveCounter[i] == 0 &&
-                                 IsSlotActive(i));
+                                 SettingsManager.SlotEnabled[i]);
 
                             if (countsAsVjoy)
                             {
@@ -333,6 +453,45 @@ namespace PadForge.Common.Input
                                     anyNeedsCreate = true;
                                 }
                             }
+                        }
+                    }
+                }
+            }
+            AfterVJoySync:
+
+            // --- Pass 1c: Ensure ViGEm VC ordering across cycles ---
+            // ViGEm assigns XInput/DS4 indices based on Connect() call order.
+            // When a lower-numbered slot needs a new VC but higher-numbered slots
+            // already have same-type VCs (created in a previous cycle), the new VC
+            // would get a higher index than the existing ones — wrong order.
+            // Fix: destroy any same-type VCs at higher slot indices so they can be
+            // recreated in ascending order alongside the new one in Pass 2.
+            if (anyNeedsCreate)
+            {
+                for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                {
+                    // Is this slot about to create a ViGEm VC in Pass 2?
+                    if (_virtualControllers[padIndex] != null ||
+                        _slotInactiveCounter[padIndex] != 0 ||
+                        _createCooldown[padIndex] > 0)
+                        continue;
+
+                    var newType = SlotControllerTypes[padIndex];
+                    if (newType != VirtualControllerType.Xbox360 &&
+                        newType != VirtualControllerType.DualShock4)
+                        continue;
+
+                    // Destroy any same-type VCs at higher slot indices.
+                    for (int j = padIndex + 1; j < MaxPads; j++)
+                    {
+                        var existingVc = _virtualControllers[j];
+                        if (existingVc != null && existingVc.Type == newType)
+                        {
+                            RumbleLogger.Log($"[Step5] Pad{j} destroying {newType} VC for ordering (Pad{padIndex} needs creation first)");
+                            DestroyVirtualController(j);
+                            _virtualControllers[j] = null;
+                            // Don't touch _slotInactiveCounter — slot is still active,
+                            // Pass 2 will recreate it in the correct order.
                         }
                     }
                 }
@@ -360,7 +519,9 @@ namespace PadForge.Common.Input
                         var vc = CreateVirtualController(padIndex);
                         _virtualControllers[padIndex] = vc;
 
-                        if (vc == null)
+                        if (vc != null && vc.IsConnected)
+                            _slotInitializing[padIndex] = false;
+                        else if (vc == null)
                             _createCooldown[padIndex] = CreateCooldownCycles;
                     }
                 }
@@ -372,6 +533,10 @@ namespace PadForge.Common.Input
                 try
                 {
                     var vc = _virtualControllers[padIndex];
+                    // Clear initializing flag once the controller is connected.
+                    if (vc != null && vc.IsConnected && _slotInitializing[padIndex])
+                        _slotInitializing[padIndex] = false;
+
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
                         // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.

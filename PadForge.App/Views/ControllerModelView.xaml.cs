@@ -68,6 +68,10 @@ namespace PadForge.Views
         private double _modelYaw;    // degrees around Z axis (horizontal drag)
         private double _modelPitch;  // degrees around X axis (vertical drag)
         private int? _touchDragId;   // active touch device ID for rotation
+        private int? _touchSecondId; // second touch device ID for pinch-to-zoom
+        private Point _touchSecondLast;
+        private double _pinchStartDist;
+        private Point _pinchMidpoint;  // midpoint of two fingers for panning
         private readonly Transform3DGroup _modelRotation = new();
         private readonly AxisAngleRotation3D _yawRotation = new(new Vector3D(0, 0, 1), 0);
         private readonly AxisAngleRotation3D _pitchRotation = new(new Vector3D(1, 0, 0), 0);
@@ -81,6 +85,20 @@ namespace PadForge.Views
             _modelRotation.Children.Add(new RotateTransform3D(_yawRotation));
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
             ModelVisual3D.Transform = _modelRotation;
+
+            // Subscribe touch on the UserControl so we intercept BEFORE HelixToolkit's
+            // CameraController can capture/consume touch events.
+            PreviewTouchDown += Viewport_PreviewTouchDown;
+            PreviewTouchMove += Viewport_PreviewTouchMove;
+            PreviewTouchUp += Viewport_PreviewTouchUp;
+
+            // Block WPF stylus system gestures (press-and-hold → right-click, flicks)
+            // that delay or swallow touch events.
+            PreviewStylusSystemGesture += (s, e) => e.Handled = true;
+
+            // Belt-and-suspenders: cancel any WPF manipulation that tries to start
+            // (HelixToolkit may re-enable IsManipulationEnabled internally).
+            ModelViewPort.ManipulationStarting += (s, e) => { e.Cancel(); e.Handled = true; };
         }
 
         // ─────────────────────────────────────────────
@@ -459,42 +477,160 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Mouse wheel zoom (replaces HelixToolkit zoom)
+        // ─────────────────────────────────────────────
+
+        private void Viewport_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (ModelViewPort.Camera is PerspectiveCamera cam)
+            {
+                var look = cam.LookDirection;
+                look.Normalize();
+                double zoomDelta = e.Delta * 0.05;
+                cam.Position = new Point3D(
+                    cam.Position.X + look.X * zoomDelta,
+                    cam.Position.Y + look.Y * zoomDelta,
+                    cam.Position.Z + look.Z * zoomDelta);
+                e.Handled = true;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Touch rotation (single-finger drag)
         // ─────────────────────────────────────────────
 
         private void Viewport_PreviewTouchDown(object sender, TouchEventArgs e)
         {
-            if (_touchDragId != null) return; // already tracking a finger
-            _touchDragId = e.TouchDevice.Id;
-            _rightDragLast = e.GetTouchPoint(ModelViewPort).Position;
-            e.TouchDevice.Capture(ModelViewPort);
-            e.Handled = true;
+            if (_touchDragId == null)
+            {
+                // First finger — start rotation tracking.
+                // Capture to UserControl (not HelixViewport3D) so the toolkit's
+                // CameraController never sees the touch.
+                _touchDragId = e.TouchDevice.Id;
+                _rightDragLast = e.GetTouchPoint(this).Position;
+                e.TouchDevice.Capture(this);
+                e.Handled = true;
+            }
+            else if (_touchSecondId == null && e.TouchDevice.Id != _touchDragId)
+            {
+                // Second finger — start pinch-to-zoom + pan.
+                _touchSecondId = e.TouchDevice.Id;
+                _touchSecondLast = e.GetTouchPoint(this).Position;
+                _pinchStartDist = Distance(_rightDragLast, _touchSecondLast);
+                _pinchMidpoint = Midpoint(_rightDragLast, _touchSecondLast);
+                e.TouchDevice.Capture(this);
+                e.Handled = true;
+            }
         }
 
         private void Viewport_PreviewTouchMove(object sender, TouchEventArgs e)
         {
-            if (_touchDragId != e.TouchDevice.Id) return;
+            var pos = e.GetTouchPoint(this).Position;
 
-            var pos = e.GetTouchPoint(ModelViewPort).Position;
-            double dx = pos.X - _rightDragLast.X;
-            double dy = pos.Y - _rightDragLast.Y;
-            _rightDragLast = pos;
+            if (_touchSecondId != null)
+            {
+                // Two fingers down — pinch-to-zoom mode.
+                if (e.TouchDevice.Id == _touchDragId.Value)
+                    _rightDragLast = pos;
+                else if (e.TouchDevice.Id == _touchSecondId.Value)
+                    _touchSecondLast = pos;
+                else
+                    return;
 
-            _modelYaw += dx * 0.5;
-            _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+                double dist = Distance(_rightDragLast, _touchSecondLast);
+                var mid = Midpoint(_rightDragLast, _touchSecondLast);
+                if (ModelViewPort.Camera is PerspectiveCamera cam)
+                {
+                    // Zoom by moving camera along look direction.
+                    if (_pinchStartDist > 1)
+                    {
+                        double scale = dist / _pinchStartDist;
+                        double zoomDelta = (scale - 1.0) * 50;
+                        var look = cam.LookDirection;
+                        look.Normalize();
+                        cam.Position = new System.Windows.Media.Media3D.Point3D(
+                            cam.Position.X + look.X * zoomDelta,
+                            cam.Position.Y + look.Y * zoomDelta,
+                            cam.Position.Z + look.Z * zoomDelta);
+                    }
 
-            _yawRotation.Angle = _modelYaw;
-            _pitchRotation.Angle = _modelPitch;
-            e.Handled = true;
+                    // Pan by moving camera perpendicular to look direction.
+                    double panDx = mid.X - _pinchMidpoint.X;
+                    double panDy = mid.Y - _pinchMidpoint.Y;
+                    if (Math.Abs(panDx) > 0.5 || Math.Abs(panDy) > 0.5)
+                    {
+                        var look2 = cam.LookDirection;
+                        look2.Normalize();
+                        var up = cam.UpDirection;
+                        up.Normalize();
+                        var right = System.Windows.Media.Media3D.Vector3D.CrossProduct(look2, up);
+                        right.Normalize();
+                        var trueUp = System.Windows.Media.Media3D.Vector3D.CrossProduct(right, look2);
+                        trueUp.Normalize();
+
+                        double panScale = 0.5;
+                        cam.Position = new System.Windows.Media.Media3D.Point3D(
+                            cam.Position.X - right.X * panDx * panScale + trueUp.X * panDy * panScale,
+                            cam.Position.Y - right.Y * panDx * panScale + trueUp.Y * panDy * panScale,
+                            cam.Position.Z - right.Z * panDx * panScale + trueUp.Z * panDy * panScale);
+                    }
+                }
+                _pinchStartDist = dist;
+                _pinchMidpoint = mid;
+                e.Handled = true;
+            }
+            else if (e.TouchDevice.Id == _touchDragId)
+            {
+                // Single finger — rotation.
+                double dx = pos.X - _rightDragLast.X;
+                double dy = pos.Y - _rightDragLast.Y;
+                _rightDragLast = pos;
+
+                _modelYaw += dx * 0.5;
+                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+
+                _yawRotation.Angle = _modelYaw;
+                _pitchRotation.Angle = _modelPitch;
+                e.Handled = true;
+            }
         }
 
         private void Viewport_PreviewTouchUp(object sender, TouchEventArgs e)
         {
-            if (_touchDragId != e.TouchDevice.Id) return;
-            _touchDragId = null;
-            e.TouchDevice.Capture(null);
-            e.Handled = true;
+            if (_touchSecondId != null && e.TouchDevice.Id == _touchSecondId.Value)
+            {
+                // Second finger lifted — return to single-finger rotation.
+                _touchSecondId = null;
+                e.TouchDevice.Capture(null);
+                e.Handled = true;
+            }
+            else if (_touchDragId != null && e.TouchDevice.Id == _touchDragId.Value)
+            {
+                if (_touchSecondId != null)
+                {
+                    // First finger lifted while second still down — promote second to primary.
+                    _touchDragId = _touchSecondId;
+                    _rightDragLast = _touchSecondLast;
+                    _touchSecondId = null;
+                }
+                else
+                {
+                    _touchDragId = null;
+                }
+                e.TouchDevice.Capture(null);
+                e.Handled = true;
+            }
         }
+
+        private static double Distance(Point a, Point b)
+        {
+            double dx = a.X - b.X;
+            double dy = a.Y - b.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        private static Point Midpoint(Point a, Point b)
+            => new((a.X + b.X) * 0.5, (a.Y + b.Y) * 0.5);
 
         // ─────────────────────────────────────────────
         //  Hover highlighting

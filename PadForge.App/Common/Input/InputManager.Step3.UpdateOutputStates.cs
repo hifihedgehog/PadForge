@@ -68,7 +68,8 @@ namespace PadForge.Common.Input
                     }
 
                     // Map the input state to a gamepad.
-                    us.OutputState = MapInputToGamepad(ud.InputState, ps);
+                    us.OutputState = MapInputToGamepad(ud.InputState, ps, out var rawMapped);
+                    us.RawMappedState = rawMapped;
 
                     // For custom vJoy slots, also produce the raw vJoy output state.
                     int slot = us.MapTo;
@@ -99,8 +100,9 @@ namespace PadForge.Common.Input
         /// <param name="state">The device's current input state.</param>
         /// <param name="ps">The PadSetting containing mapping rules.</param>
         /// <returns>A populated Gamepad struct.</returns>
-        private static Gamepad MapInputToGamepad(CustomInputState state, PadSetting ps)
+        private static Gamepad MapInputToGamepad(CustomInputState state, PadSetting ps, out Gamepad rawMapped)
         {
+            rawMapped = default;
             var gp = new Gamepad();
 
             // ── Buttons ──
@@ -176,20 +178,34 @@ namespace PadForge.Common.Input
             gp.ThumbRX = MapToThumbAxisWithNeg(state, ps.RightThumbAxisX, ps.RightThumbAxisXNeg);
             gp.ThumbRY = NegateAxis(MapToThumbAxisWithNeg(state, ps.RightThumbAxisY, ps.RightThumbAxisYNeg));
 
+            // Snapshot raw mapped state (after axis selection, before offset/DZ processing)
+            // for the UI preview so it can apply its own pipeline without double-processing.
+            rawMapped = gp;
+
+            // ── Center offsets (applied before dead zone) ──
+            gp.ThumbLX = ApplyCenterOffset(gp.ThumbLX, TryParseIntStatic(ps.LeftThumbCenterOffsetX, 0));
+            gp.ThumbLY = ApplyCenterOffset(gp.ThumbLY, TryParseIntStatic(ps.LeftThumbCenterOffsetY, 0));
+            gp.ThumbRX = ApplyCenterOffset(gp.ThumbRX, TryParseIntStatic(ps.RightThumbCenterOffsetX, 0));
+            gp.ThumbRY = ApplyCenterOffset(gp.ThumbRY, TryParseIntStatic(ps.RightThumbCenterOffsetY, 0));
+
             // ── Dead zones ──
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
                 TryParseIntStatic(ps.LeftThumbDeadZoneX, 0),
                 TryParseIntStatic(ps.LeftThumbDeadZoneY, 0),
                 ps.LeftThumbAntiDeadZoneX,
                 ps.LeftThumbAntiDeadZoneY,
-                ps.LeftThumbLinear);
+                ps.LeftThumbLinear,
+                TryParseIntStatic(ps.LeftThumbMaxRangeX, 100),
+                TryParseIntStatic(ps.LeftThumbMaxRangeY, 100));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseIntStatic(ps.RightThumbDeadZoneX, 0),
                 TryParseIntStatic(ps.RightThumbDeadZoneY, 0),
                 ps.RightThumbAntiDeadZoneX,
                 ps.RightThumbAntiDeadZoneY,
-                ps.RightThumbLinear);
+                ps.RightThumbLinear,
+                TryParseIntStatic(ps.RightThumbMaxRangeX, 100),
+                TryParseIntStatic(ps.RightThumbMaxRangeY, 100));
 
             return gp;
         }
@@ -683,23 +699,35 @@ namespace PadForge.Common.Input
         /// </summary>
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             int deadZoneX, int deadZoneY,
-            string antiDeadZoneXStr, string antiDeadZoneYStr, string linearStr)
+            string antiDeadZoneXStr, string antiDeadZoneYStr, string linearStr,
+            int maxRangeX = 100, int maxRangeY = 100)
         {
             int antiDeadZoneX = TryParseIntStatic(antiDeadZoneXStr, 0);
             int antiDeadZoneY = TryParseIntStatic(antiDeadZoneYStr, 0);
             int linear = TryParseIntStatic(linearStr, 0);
 
             // Apply dead zone independently to each axis.
-            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear);
-            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear);
+            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX);
+            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY);
+        }
+
+        /// <summary>
+        /// Applies a center offset correction to a single axis. The offset is a percentage
+        /// of the full axis range (-100 to 100). Applied before dead zone processing.
+        /// </summary>
+        private static short ApplyCenterOffset(short value, int offsetPercent)
+        {
+            if (offsetPercent == 0) return value;
+            int offsetRaw = (int)(offsetPercent / 100.0 * 32768);
+            return (short)Math.Clamp(value + offsetRaw, short.MinValue, short.MaxValue);
         }
 
         /// <summary>
         /// Applies dead zone processing to a single axis.
         /// </summary>
-        private static short ApplySingleDeadZone(short value, int deadZone, int antiDeadZone, int linear)
+        private static short ApplySingleDeadZone(short value, int deadZone, int antiDeadZone, int linear, int maxRange = 100)
         {
-            if (deadZone <= 0 && antiDeadZone <= 0)
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
                 return value;
 
             // Normalize to float (-1.0 to 1.0).
@@ -712,8 +740,13 @@ namespace PadForge.Common.Input
             if (magnitude < dzNorm)
                 return 0;
 
-            // Remap from dead zone edge to 1.0.
-            double remapped = (magnitude - dzNorm) / (1.0 - dzNorm);
+            // Max range: cap the input ceiling so full output is reached at this %.
+            double maxNorm = maxRange / 100.0;
+            if (maxNorm <= dzNorm)
+                maxNorm = dzNorm + 0.01;
+
+            // Remap from [dzNorm, maxNorm] to [0, 1].
+            double remapped = Math.Min((magnitude - dzNorm) / (maxNorm - dzNorm), 1.0);
 
             // Anti-dead zone: offset the output minimum.
             double adzNorm = antiDeadZone / 100.0;
@@ -833,7 +866,7 @@ namespace PadForge.Common.Input
                 int yi = xi + 1;
                 if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
 
-                int dzX, dzY, adzX, adzY, lin;
+                int dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100;
                 switch (g)
                 {
                     case 0:
@@ -842,6 +875,10 @@ namespace PadForge.Common.Input
                         adzX = TryParseIntStatic(ps.LeftThumbAntiDeadZoneX, 0);
                         adzY = TryParseIntStatic(ps.LeftThumbAntiDeadZoneY, 0);
                         lin = TryParseIntStatic(ps.LeftThumbLinear, 0);
+                        cofX = TryParseIntStatic(ps.LeftThumbCenterOffsetX, 0);
+                        cofY = TryParseIntStatic(ps.LeftThumbCenterOffsetY, 0);
+                        mrX = TryParseIntStatic(ps.LeftThumbMaxRangeX, 100);
+                        mrY = TryParseIntStatic(ps.LeftThumbMaxRangeY, 100);
                         break;
                     case 1:
                         dzX = TryParseIntStatic(ps.RightThumbDeadZoneX, 0);
@@ -849,12 +886,18 @@ namespace PadForge.Common.Input
                         adzX = TryParseIntStatic(ps.RightThumbAntiDeadZoneX, 0);
                         adzY = TryParseIntStatic(ps.RightThumbAntiDeadZoneY, 0);
                         lin = TryParseIntStatic(ps.RightThumbLinear, 0);
+                        cofX = TryParseIntStatic(ps.RightThumbCenterOffsetX, 0);
+                        cofY = TryParseIntStatic(ps.RightThumbCenterOffsetY, 0);
+                        mrX = TryParseIntStatic(ps.RightThumbMaxRangeX, 100);
+                        mrY = TryParseIntStatic(ps.RightThumbMaxRangeY, 100);
                         break;
                     default:
                         continue; // No dead zone properties for sticks 2+ yet
                 }
-                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin);
-                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin);
+                raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
+                raw.Axes[yi] = ApplyCenterOffset(raw.Axes[yi], cofY);
+                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin, mrX);
+                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin, mrY);
             }
 
             for (int g = 0; g < cfg.Triggers; g++)

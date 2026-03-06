@@ -164,6 +164,34 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
 
+        /// <summary>Left stick X max range (1–100%). Full physical deflection maps to this ceiling.</summary>
+        [XmlElement] public string LeftThumbMaxRangeX { get; set; } = "100";
+
+        /// <summary>Left stick Y max range (1–100%).</summary>
+        [XmlElement] public string LeftThumbMaxRangeY { get; set; } = "100";
+
+        /// <summary>Right stick X max range (1–100%).</summary>
+        [XmlElement] public string RightThumbMaxRangeX { get; set; } = "100";
+
+        /// <summary>Right stick Y max range (1–100%).</summary>
+        [XmlElement] public string RightThumbMaxRangeY { get; set; } = "100";
+
+        // ─────────────────────────────────────────────
+        //  Stick center offset calibration
+        // ─────────────────────────────────────────────
+
+        /// <summary>Left stick X center offset (-100 to 100%). Corrects stick drift before dead zone.</summary>
+        [XmlElement] public string LeftThumbCenterOffsetX { get; set; } = "0";
+
+        /// <summary>Left stick Y center offset (-100 to 100%).</summary>
+        [XmlElement] public string LeftThumbCenterOffsetY { get; set; } = "0";
+
+        /// <summary>Right stick X center offset (-100 to 100%).</summary>
+        [XmlElement] public string RightThumbCenterOffsetX { get; set; } = "0";
+
+        /// <summary>Right stick Y center offset (-100 to 100%).</summary>
+        [XmlElement] public string RightThumbCenterOffsetY { get; set; } = "0";
+
         // ─────────────────────────────────────────────
         //  Force feedback settings
         // ─────────────────────────────────────────────
@@ -404,6 +432,14 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAntiDeadZoneY); sb.Append('|');
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
+            sb.Append(LeftThumbMaxRangeX); sb.Append('|');
+            sb.Append(LeftThumbMaxRangeY); sb.Append('|');
+            sb.Append(RightThumbMaxRangeX); sb.Append('|');
+            sb.Append(RightThumbMaxRangeY); sb.Append('|');
+            sb.Append(LeftThumbCenterOffsetX); sb.Append('|');
+            sb.Append(LeftThumbCenterOffsetY); sb.Append('|');
+            sb.Append(RightThumbCenterOffsetX); sb.Append('|');
+            sb.Append(RightThumbCenterOffsetY); sb.Append('|');
 
             // Force feedback
             sb.Append(ForceType); sb.Append('|');
@@ -486,6 +522,43 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
             (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0);
 
+        /// <summary>
+        /// Returns all non-empty mapping descriptor strings from this PadSetting.
+        /// Includes standard button/axis/dpad/trigger mappings and vJoy custom entries.
+        /// </summary>
+        public List<string> GetAllMappingDescriptors()
+        {
+            var result = new List<string>();
+            void Add(string d) { if (!string.IsNullOrEmpty(d)) result.Add(d); }
+
+            // Buttons
+            Add(ButtonA); Add(ButtonB); Add(ButtonX); Add(ButtonY);
+            Add(LeftShoulder); Add(RightShoulder);
+            Add(ButtonBack); Add(ButtonStart); Add(ButtonGuide);
+            Add(LeftThumbButton); Add(RightThumbButton);
+
+            // D-Pad
+            Add(DPad); Add(DPadUp); Add(DPadDown); Add(DPadLeft); Add(DPadRight);
+
+            // Triggers
+            Add(LeftTrigger); Add(RightTrigger);
+
+            // Thumbstick axes
+            Add(LeftThumbAxisX); Add(LeftThumbAxisY);
+            Add(RightThumbAxisX); Add(RightThumbAxisY);
+            Add(LeftThumbAxisXNeg); Add(LeftThumbAxisYNeg);
+            Add(RightThumbAxisXNeg); Add(RightThumbAxisYNeg);
+
+            // vJoy custom mappings
+            if (VJoyMappingEntries != null)
+            {
+                foreach (var e in VJoyMappingEntries)
+                    Add(e.Value);
+            }
+
+            return result;
+        }
+
         // ─────────────────────────────────────────────
         //  Display
         // ─────────────────────────────────────────────
@@ -538,6 +611,10 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),
             nameof(LeftThumbLinear), nameof(RightThumbLinear),
+            nameof(LeftThumbMaxRangeX), nameof(LeftThumbMaxRangeY),
+            nameof(RightThumbMaxRangeX), nameof(RightThumbMaxRangeY),
+            nameof(LeftThumbCenterOffsetX), nameof(LeftThumbCenterOffsetY),
+            nameof(RightThumbCenterOffsetX), nameof(RightThumbCenterOffsetY),
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),

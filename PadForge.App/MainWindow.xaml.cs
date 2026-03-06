@@ -61,7 +61,7 @@ namespace PadForge
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);
-            _inputService = new InputService(_viewModel);
+            _inputService = new InputService(_viewModel) { SettingsService = _settingsService };
             _recorderService = new RecorderService(_viewModel);
             _deviceService = new DeviceService(_viewModel, _settingsService);
 
@@ -95,11 +95,15 @@ namespace PadForge
                 // Refresh default snapshot so future profile reverts use the latest saved state.
                 if (SettingsManager.ActiveProfileId == null)
                     _inputService.RefreshDefaultSnapshot();
+                // Recalculate input suppression sets after save pushes ViewModel mappings to PadSettings.
+                _inputService.ApplyDeviceHiding();
             };
             _settingsService.AutoSaved += (s, e) =>
             {
                 if (SettingsManager.ActiveProfileId == null)
                     _inputService.RefreshDefaultSnapshot();
+                // Recalculate input suppression sets after save pushes ViewModel mappings to PadSettings.
+                _inputService.ApplyDeviceHiding();
             };
             _viewModel.Settings.ReloadRequested += (s, e) => _settingsService.Reload();
             _viewModel.Settings.ResetRequested += (s, e) => _settingsService.ResetToDefaults();
@@ -119,11 +123,13 @@ namespace PadForge
                     Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
             };
 
-            // Persist DSU server settings on change (now on Dashboard VM).
+            // Persist DSU / web controller server settings on change (Dashboard VM).
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
-                     or nameof(DashboardViewModel.DsuMotionServerPort))
+                     or nameof(DashboardViewModel.DsuMotionServerPort)
+                     or nameof(DashboardViewModel.EnableWebController)
+                     or nameof(DashboardViewModel.WebControllerPort))
                     _settingsService.MarkDirty();
             };
 
@@ -153,6 +159,12 @@ namespace PadForge
             {
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
+            };
+
+            // Re-apply device hiding when a toggle changes.
+            _deviceService.DeviceHidingStateChanged += (s, e) =>
+            {
+                _inputService.ApplyDeviceHiding();
             };
 
             // After assigning a device to a slot, navigate to that controller page.
@@ -246,7 +258,7 @@ namespace PadForge
                     {
                         // A full analog axis covers both directions,
                         // so write it to the primary descriptor and clear neg.
-                        negMapping.SourceDescriptor = result.Descriptor;
+                        negMapping.LoadDescriptor(result.Descriptor);
                         negMapping.NegSourceDescriptor = string.Empty;
                         _savedPosDescriptor = null;
                         if (deviceGuid != Guid.Empty)
@@ -853,7 +865,8 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.IconKey)
                             or nameof(NavControllerItemViewModel.IsEnabled)
                             or nameof(NavControllerItemViewModel.SlotNumber)
-                            or nameof(NavControllerItemViewModel.ConnectedDeviceCount))
+                            or nameof(NavControllerItemViewModel.ConnectedDeviceCount)
+                            or nameof(NavControllerItemViewModel.IsInitializing))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
                         }
@@ -910,6 +923,7 @@ namespace PadForge
         private NavigationViewItem CreateControllerNavItem(NavControllerItemViewModel navItem)
         {
             var menuItem = new NavigationViewItem { Tag = navItem.Tag };
+            System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
             return menuItem;
         }
@@ -948,14 +962,22 @@ namespace PadForge
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
 
-            // Power button (green = enabled + active, yellow = enabled + warning, red = disabled).
+            // Power button (green = enabled + active, yellow = enabled + warning, red = disabled,
+            // flashing green = initializing).
             var outputType = _viewModel.Pads[navItem.PadIndex].OutputType;
             System.Windows.Media.SolidColorBrush powerColor;
             string powerTooltip;
+            bool isInitializing = navItem.IsInitializing;
             if (!navItem.IsEnabled)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
                 powerTooltip = "Disabled";
+                isInitializing = false;
+            }
+            else if (isInitializing)
+            {
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
+                powerTooltip = "Initializing";
             }
             else if (!_viewModel.IsEngineRunning)
             {
@@ -978,15 +1000,31 @@ namespace PadForge
                 powerTooltip = "Active";
             }
 
+            var powerTextBlock = new System.Windows.Controls.TextBlock
+            {
+                Text = PowerGlyph,
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 12,
+                Foreground = powerColor
+            };
+
+            // Apply flashing opacity animation when initializing.
+            if (isInitializing)
+            {
+                var flashAnimation = new System.Windows.Media.Animation.DoubleAnimation
+                {
+                    From = 1.0,
+                    To = 0.15,
+                    Duration = new Duration(TimeSpan.FromMilliseconds(500)),
+                    AutoReverse = true,
+                    RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+                };
+                powerTextBlock.BeginAnimation(System.Windows.UIElement.OpacityProperty, flashAnimation);
+            }
+
             var powerBtn = new System.Windows.Controls.Button
             {
-                Content = new System.Windows.Controls.TextBlock
-                {
-                    Text = PowerGlyph,
-                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    FontSize = 12,
-                    Foreground = powerColor
-                },
+                Content = powerTextBlock,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
@@ -1867,6 +1905,7 @@ namespace PadForge
                 IsEnabled = !xboxDisabled,
                 Opacity = xboxDisabled ? 0.35 : 1.0
             };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(xboxBtn, "AddXbox360Btn");
             xboxBtn.Click += (s, e) =>
             {
                 popup.IsOpen = false;
@@ -1904,6 +1943,7 @@ namespace PadForge
                 IsEnabled = !ds4Disabled,
                 Opacity = ds4Disabled ? 0.35 : 1.0
             };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(ds4Btn, "AddDS4Btn");
             ds4Btn.Click += (s, e) =>
             {
                 popup.IsOpen = false;
@@ -1942,6 +1982,7 @@ namespace PadForge
                 IsEnabled = !vjoyDisabled,
                 Opacity = vjoyDisabled ? 0.35 : 1.0
             };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(vjoyBtn, "AddVJoyBtn");
             vjoyBtn.Click += (s, e) =>
             {
                 popup.IsOpen = false;

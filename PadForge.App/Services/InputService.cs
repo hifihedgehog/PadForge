@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Common;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
@@ -45,6 +47,9 @@ namespace PadForge.Services
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
         private DsuMotionServer _dsuServer;
+        private WebControllerServer _webServer;
+        private InputHookManager _hookManager;
+        private SettingsService _settingsService;
         private bool _disposed;
         private bool _preservedVJoyNodes;
 
@@ -60,6 +65,12 @@ namespace PadForge.Services
         /// When true, the UI timer updates mapping row live values.
         /// </summary>
         public bool IsPadPageVisible { get; set; }
+
+        /// <summary>
+        /// Optional reference to the settings service for triggering saves
+        /// when cached data (e.g. HidHide instance IDs) is updated.
+        /// </summary>
+        public SettingsService SettingsService { set => _settingsService = value; }
 
         // ── Macro trigger recording state ──
         private MacroItem _recordingMacro;
@@ -117,14 +128,13 @@ namespace PadForge.Services
             // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
             InputManager.CleanupStaleVigemDevices();
 
-            // Remove stale vJoy device nodes from previous sessions (crash without cleanup).
-            // Skip if Stop(preserveVJoyNodes: true) disabled the node instead of removing
-            // it — the DLL's internal handles are still valid and EnsureDevicesAvailable
-            // will re-enable the node when vJoy slots become active.
-            if (_preservedVJoyNodes)
-                _preservedVJoyNodes = false; // consumed — next Stop+Start will do full removal
-            else
-                VJoyVirtualController.RemoveAllDeviceNodes();
+            // Don't remove vJoy nodes on startup — Step 5's EnsureDevicesAvailable
+            // handles the correct descriptor count, creates missing nodes, removes excess,
+            // and restarts when descriptors change. Removing here causes an unnecessary
+            // 10+ second remove+recreate cycle on every normal restart (especially on
+            // Win11 builds where pnputil /remove-device returns 3010 and scan-devices
+            // takes ~10 seconds to clean up ghost PDOs).
+            _preservedVJoyNodes = false;
 
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
@@ -171,6 +181,22 @@ namespace PadForge.Services
             // Start DSU motion server if enabled.
             StartDsuServerIfEnabled();
 
+            // Start web controller server if enabled.
+            StartWebServerIfEnabled();
+
+            // Clear stale HidHide blacklist entries from previous crash/kill.
+            // _managedDeviceIds is in-memory so entries are lost on restart,
+            // making RemoveManagedDevices() unable to clean up stale entries.
+            try
+            {
+                if (HidHideController.IsAvailable())
+                    HidHideController.ClearAll();
+            }
+            catch { /* best effort */ }
+
+            // Apply device hiding (HidHide + input hooks) if master switch is on.
+            ApplyDeviceHiding();
+
             // Create UI update timer on the dispatcher.
             _uiTimer = new DispatcherTimer(DispatcherPriority.Render)
             {
@@ -212,6 +238,12 @@ namespace PadForge.Services
 
             // Stop DSU server.
             StopDsuServer();
+
+            // Stop web controller server.
+            StopWebServer();
+
+            // Remove device hiding (HidHide blacklist entries + input hooks).
+            RemoveDeviceHiding();
 
             // Stop and dispose engine.
             if (_inputManager != null)
@@ -294,7 +326,7 @@ namespace PadForge.Services
                     if (_inputManager.SlotVJoyIsCustom[i] && us != null)
                         padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
                     else
-                        padVm.UpdateDeviceState(us?.OutputState ?? default);
+                        padVm.UpdateDeviceState(us?.RawMappedState ?? default);
                 }
                 else if (!_inputManager.SlotVJoyIsCustom[i])
                 {
@@ -427,8 +459,10 @@ namespace PadForge.Services
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
+                slot.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
                 slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? "Disabled"
+                    : slot.IsInitializing ? "Initializing"
                     : mappedCount == 0 ? "No mapping"
                     : padVm.IsDeviceOnline ? "Active"
                     : "Idle";
@@ -493,6 +527,7 @@ namespace PadForge.Services
                     }
                 }
                 nav.ConnectedDeviceCount = connCount;
+                nav.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
             }
         }
 
@@ -773,6 +808,18 @@ namespace PadForge.Services
             ps.LeftThumbLinear = padVm.LeftLinear.ToString();
             ps.RightThumbLinear = padVm.RightLinear.ToString();
 
+            // Center offsets.
+            ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString();
+            ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString();
+            ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString();
+            ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString();
+
+            // Max range.
+            ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString();
+            ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
+            ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
+            ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
+
             // Trigger dead zones.
             ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
             ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
@@ -828,11 +875,27 @@ namespace PadForge.Services
             padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
             padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
 
+            // Max range.
+            padVm.LeftMaxRangeX = TryParseInt(ps.LeftThumbMaxRangeX, 100);
+            padVm.LeftMaxRangeY = TryParseInt(ps.LeftThumbMaxRangeY, 100);
+            padVm.RightMaxRangeX = TryParseInt(ps.RightThumbMaxRangeX, 100);
+            padVm.RightMaxRangeY = TryParseInt(ps.RightThumbMaxRangeY, 100);
+
+            // Center offsets.
+            padVm.LeftCenterOffsetX = TryParseInt(ps.LeftThumbCenterOffsetX, 0);
+            padVm.LeftCenterOffsetY = TryParseInt(ps.LeftThumbCenterOffsetY, 0);
+            padVm.RightCenterOffsetX = TryParseInt(ps.RightThumbCenterOffsetX, 0);
+            padVm.RightCenterOffsetY = TryParseInt(ps.RightThumbCenterOffsetY, 0);
+
             // Trigger dead zones.
             padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
             padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
             padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
             padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+
+            // Trigger max range.
+            padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
+            padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
 
             // Force feedback.
             padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
@@ -1273,6 +1336,10 @@ namespace PadForge.Services
             {
                 SyncDevicesList();
                 UpdatePadDeviceInfo();
+
+                // Re-apply device hiding so newly-connected devices get blacklisted
+                // and their instance IDs get cached for future sessions.
+                ApplyDeviceHiding();
             }));
         }
 
@@ -1304,6 +1371,13 @@ namespace PadForge.Services
             {
                 _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
             }
+            else if (e.PropertyName == nameof(SettingsViewModel.EnableInputHiding))
+            {
+                if (_mainVm.Settings.EnableInputHiding)
+                    ApplyDeviceHiding();
+                else
+                    RemoveDeviceHiding();
+            }
         }
 
         private void OnDashboardPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -1321,6 +1395,21 @@ namespace PadForge.Services
                 {
                     StopDsuServer();
                     StartDsuServerIfEnabled();
+                }
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
+            {
+                if (_mainVm.Dashboard.EnableWebController)
+                    StartWebServerIfEnabled();
+                else
+                    StopWebServer();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.WebControllerPort))
+            {
+                if (_mainVm.Dashboard.EnableWebController)
+                {
+                    StopWebServer();
+                    StartWebServerIfEnabled();
                 }
             }
         }
@@ -1368,6 +1457,256 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Web Controller Server lifecycle
+        // ─────────────────────────────────────────────
+
+        private void StartWebServerIfEnabled()
+        {
+            if (!_mainVm.Dashboard.EnableWebController || _inputManager == null)
+                return;
+
+            if (_webServer != null)
+                return; // Already running.
+
+            _webServer = new WebControllerServer();
+            _webServer.StatusChanged += (_, status) =>
+            {
+                _dispatcher.BeginInvoke(() =>
+                {
+                    _mainVm.Dashboard.WebControllerStatus = status;
+                    _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
+                });
+            };
+            _webServer.DeviceConnected += device =>
+            {
+                _inputManager.RegisterExternalDevice(device);
+            };
+            _webServer.DeviceDisconnected += device =>
+            {
+                _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+            };
+
+            int port = _mainVm.Dashboard.WebControllerPort;
+            if (port < 1024 || port > 65535)
+                port = 8080;
+
+            if (!_webServer.Start(port))
+            {
+                _webServer.Dispose();
+                _webServer = null;
+            }
+        }
+
+        private void StopWebServer()
+        {
+            if (_webServer == null)
+                return;
+
+            _webServer.Dispose();
+            _webServer = null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Device hiding (HidHide + input hooks)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Applies device hiding based on per-device toggle settings.
+        /// HidHide: Adds devices with HidHideEnabled to the blacklist, whitelists PadForge, activates cloaking.
+        /// Hooks: Starts input hook manager for devices with ConsumeInputEnabled.
+        /// Only acts if the master switch (EnableInputHiding) is on.
+        /// </summary>
+        public void ApplyDeviceHiding()
+        {
+            if (!_mainVm.Settings.EnableInputHiding)
+                return;
+
+            var userDevices = SettingsManager.UserDevices?.Items;
+            if (userDevices == null) return;
+
+            UserDevice[] snapshot;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                snapshot = userDevices.ToArray();
+            }
+
+            // ── HidHide ──
+            bool anyHidHide = false;
+            if (HidHideController.IsAvailable())
+            {
+                // Clear previous PadForge-managed entries before re-adding,
+                // so devices that had HidHideEnabled turned off get removed.
+                HidHideController.RemoveManagedDevices();
+
+                // Whitelist PadForge itself.
+                string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+                if (!string.IsNullOrEmpty(exePath))
+                    HidHideController.EnsureWhitelisted(exePath);
+
+                // Add devices with HidHideEnabled to the blacklist.
+                bool cacheUpdated = false;
+                foreach (var ud in snapshot)
+                {
+                    if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
+                    {
+                        string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+
+                        // If the DevicePath produced a valid HID instance ID, use it directly.
+                        if (instanceId != null && instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+                        {
+                            HidHideController.AddToBlacklist(instanceId);
+                            anyHidHide = true;
+                        }
+                        // Fallback: synthetic paths (e.g., "XInput#0") — look up by VID/PID.
+                        else if (ud.VendorId > 0 && ud.ProdId > 0)
+                        {
+                            var realIds = HidHideController.FindInstanceIdsByVidPid(
+                                (ushort)ud.VendorId, (ushort)ud.ProdId);
+
+                            if (realIds.Count > 0)
+                            {
+                                // Device is present — cache the resolved IDs for future use.
+                                if (!new HashSet<string>(ud.HidHideInstanceIds, StringComparer.OrdinalIgnoreCase)
+                                        .SetEquals(realIds))
+                                {
+                                    ud.HidHideInstanceIds = realIds;
+                                    cacheUpdated = true;
+                                }
+                                foreach (var realId in realIds)
+                                {
+                                    HidHideController.AddToBlacklist(realId);
+                                    anyHidHide = true;
+                                }
+                            }
+                            else if (ud.HidHideInstanceIds.Count > 0)
+                            {
+                                // Device is offline — use cached IDs to pre-emptively blacklist.
+                                System.Diagnostics.Debug.WriteLine(
+                                    $"[ApplyDeviceHiding] Using {ud.HidHideInstanceIds.Count} cached instance IDs for offline device {ud.ResolvedName}");
+                                foreach (var cachedId in ud.HidHideInstanceIds)
+                                {
+                                    HidHideController.AddToBlacklist(cachedId);
+                                    anyHidHide = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Persist updated cache to settings.
+                if (cacheUpdated)
+                    _settingsService?.MarkDirty();
+
+                if (anyHidHide)
+                    HidHideController.SetActive(true);
+            }
+
+            // ── Input hooks ──
+            var suppressedKeys = new HashSet<int>();
+            var suppressedMouse = new HashSet<int>();
+
+            foreach (var ud in snapshot)
+            {
+                if (!ud.ConsumeInputEnabled) continue;
+                if (!HasAnySlotAssignment(ud.InstanceGuid)) continue;
+
+                // Collect all mapped virtual key codes / mouse buttons from this device's mappings.
+                CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
+            }
+
+            System.Diagnostics.Debug.WriteLine(
+                $"[ApplyDeviceHiding] suppressedKeys={string.Join(",", suppressedKeys)} " +
+                $"suppressedMouse={string.Join(",", suppressedMouse)}");
+
+            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
+            {
+                if (_hookManager == null)
+                {
+                    _hookManager = new InputHookManager();
+                    _hookManager.Start();
+                }
+                _hookManager.SetSuppressedKeys(suppressedKeys);
+                _hookManager.SetSuppressedMouseButtons(suppressedMouse);
+            }
+            else
+            {
+                // No inputs to suppress — stop hooks if running.
+                if (_hookManager != null)
+                {
+                    _hookManager.Stop();
+                    _hookManager.Dispose();
+                    _hookManager = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all device hiding: clears PadForge-managed HidHide blacklist entries
+        /// and stops input hooks.
+        /// </summary>
+        public void RemoveDeviceHiding()
+        {
+            // ── HidHide ──
+            try
+            {
+                if (HidHideController.IsAvailable())
+                    HidHideController.RemoveManagedDevices();
+            }
+            catch { /* Best effort — driver may not be available */ }
+
+            // ── Input hooks ──
+            if (_hookManager != null)
+            {
+                _hookManager.Stop();
+                _hookManager.Dispose();
+                _hookManager = null;
+            }
+        }
+
+        /// <summary>
+        /// Checks whether a device is assigned to any virtual controller slot.
+        /// </summary>
+        private static bool HasAnySlotAssignment(Guid instanceGuid)
+        {
+            var slots = SettingsManager.GetAssignedSlots(instanceGuid);
+            return slots != null && slots.Count > 0;
+        }
+
+        /// <summary>
+        /// Collects the virtual key codes and mouse button IDs that should be
+        /// suppressed based on the device's active mappings across all assigned slots.
+        /// Parses "Button {index}" descriptors from PadSetting properties.
+        /// </summary>
+        private static void CollectSuppressedInputs(UserDevice ud, HashSet<int> keys, HashSet<int> mouseButtons)
+        {
+            var assignedSlots = SettingsManager.GetAssignedSlots(ud.InstanceGuid);
+            if (assignedSlots == null) return;
+
+            foreach (int slotIndex in assignedSlots)
+            {
+                // Find the UserSetting for this device + slot.
+                var us = SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, slotIndex);
+                if (us == null) continue;
+
+                var ps = us.GetPadSetting();
+                if (ps == null) continue;
+
+                foreach (string descriptor in ps.GetAllMappingDescriptors())
+                {
+                    // Parse "Button {index}" descriptors.
+                    if (descriptor.StartsWith("Button ", StringComparison.Ordinal) &&
+                        int.TryParse(descriptor.AsSpan(7), out int buttonIndex))
+                    {
+                        if (ud.IsKeyboard)
+                            keys.Add(buttonIndex); // buttonIndex is the VKey code
+                        else if (ud.IsMouse)
+                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=R, 2=M, etc.
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1514,6 +1853,34 @@ namespace PadForge.Services
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.DevicePath = ud.DevicePath;
+
+            // Resolve the HID instance path for display.
+            // Individual devices have real HID paths; merged devices (aggregate://) do not.
+            string instancePath = null;
+            if (!string.IsNullOrEmpty(ud.DevicePath) && !ud.DevicePath.StartsWith("aggregate://"))
+                instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+
+            if (!string.IsNullOrEmpty(instancePath) &&
+                instancePath.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+                row.HidHideInstancePath = instancePath;
+            else if (ud.HidHideInstanceIds.Count > 0)
+                row.HidHideInstancePath = ud.HidHideInstanceIds[0];
+            else if (ud.VendorId > 0 && ud.ProdId > 0)
+            {
+                // XInput devices have synthetic paths (e.g. "XInput#0") that can't be
+                // resolved directly. Look up the real HID instance path by VID/PID.
+                var realIds = HidHideController.FindInstanceIdsByVidPid(
+                    (ushort)ud.VendorId, (ushort)ud.ProdId);
+                row.HidHideInstancePath = realIds.Count > 0 ? realIds[0] : string.Empty;
+            }
+            else
+                row.HidHideInstancePath = string.Empty;
+
+            // Input hiding toggle state.
+            row.HidHideEnabled = ud.HidHideEnabled;
+            row.ConsumeInputEnabled = ud.ConsumeInputEnabled;
+            row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
+            row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
             // Resolve device type name.
             row.DeviceType = ud.CapType switch
@@ -1998,7 +2365,9 @@ namespace PadForge.Services
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
-                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort
+                DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                EnableWebController = _mainVm.Dashboard.EnableWebController,
+                WebControllerPort = _mainVm.Dashboard.WebControllerPort
             };
         }
 
@@ -2104,6 +2473,11 @@ namespace PadForge.Services
             if (profile.DsuMotionServerPort >= 1024 && profile.DsuMotionServerPort <= 65535)
                 _mainVm.Dashboard.DsuMotionServerPort = profile.DsuMotionServerPort;
 
+            // ── Apply web controller server settings ──
+            _mainVm.Dashboard.EnableWebController = profile.EnableWebController;
+            if (profile.WebControllerPort >= 1024 && profile.WebControllerPort <= 65535)
+                _mainVm.Dashboard.WebControllerPort = profile.WebControllerPort;
+
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
 
@@ -2186,6 +2560,8 @@ namespace PadForge.Services
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
+                    profile.EnableWebController = snapshot.EnableWebController;
+                    profile.WebControllerPort = snapshot.WebControllerPort;
                 }
             }
         }
@@ -2235,8 +2611,7 @@ namespace PadForge.Services
             if (padIndexA == padIndexB) return;
             _inputManager?.SwapSlots(padIndexA, padIndexB);
             SettingsManager.SwapSlots(padIndexA, padIndexB);
-            (_mainVm.Pads[padIndexA].OutputType, _mainVm.Pads[padIndexB].OutputType) =
-                (_mainVm.Pads[padIndexB].OutputType, _mainVm.Pads[padIndexA].OutputType);
+            SwapPadViewModelSlotData(padIndexA, padIndexB);
             RefreshAfterSlotReorder();
         }
 
@@ -2259,8 +2634,7 @@ namespace PadForge.Services
                 int a = activeSlots[i], b = activeSlots[i + step];
                 _inputManager?.SwapSlots(a, b);
                 SettingsManager.SwapSlots(a, b);
-                (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
-                    (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+                SwapPadViewModelSlotData(a, b);
             }
 
             RefreshAfterSlotReorder();
@@ -2316,8 +2690,7 @@ namespace PadForge.Services
                         // all-VCs-destroyed-at-once race that causes phantom controllers.
                         _inputManager?.SwapSlotData(a, b);
                         SettingsManager.SwapSlots(a, b);
-                        (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
-                            (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+                        SwapPadViewModelSlotData(a, b);
                         swapped = true;
                     }
                 }
@@ -2326,6 +2699,22 @@ namespace PadForge.Services
             if (!silent)
                 RefreshAfterSlotReorder();
             return true;
+        }
+
+        /// <summary>
+        /// Swaps ViewModel-side slot data that must travel with the slot during reorder:
+        /// OutputType and VJoyConfig. Engine-side arrays are swapped separately by
+        /// InputManager.SwapSlotData/SwapSlots.
+        /// </summary>
+        private void SwapPadViewModelSlotData(int a, int b)
+        {
+            (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
+                (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
+
+            // Swap the entire VJoySlotConfig objects so the UI shows the correct
+            // config after reorder. The setter re-subscribes PropertyChanged.
+            (_mainVm.Pads[a].VJoyConfig, _mainVm.Pads[b].VJoyConfig) =
+                (_mainVm.Pads[b].VJoyConfig, _mainVm.Pads[a].VJoyConfig);
         }
 
         private static int GetTypePriority(VirtualControllerType type) => type switch

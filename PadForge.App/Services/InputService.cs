@@ -459,8 +459,10 @@ namespace PadForge.Services
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
+                slot.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
                 slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? "Disabled"
+                    : slot.IsInitializing ? "Initializing"
                     : mappedCount == 0 ? "No mapping"
                     : padVm.IsDeviceOnline ? "Active"
                     : "Idle";
@@ -525,6 +527,7 @@ namespace PadForge.Services
                     }
                 }
                 nav.ConnectedDeviceCount = connCount;
+                nav.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
             }
         }
 

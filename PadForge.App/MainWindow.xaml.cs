@@ -748,6 +748,9 @@ namespace PadForge
         /// <summary>Re-entrancy guard for <see cref="RebuildControllerSection"/>.</summary>
         private bool _rebuildingControllerSection;
 
+        /// <summary>Tracks PropertyChanged subscriptions so they can be unsubscribed on rebuild.</summary>
+        private readonly List<(System.ComponentModel.INotifyPropertyChanged Source, System.ComponentModel.PropertyChangedEventHandler Handler)> _navItemHandlers = new();
+
         /// <summary>
         /// Programmatically builds the NavigationView menu items.
         /// Static items: Dashboard, separators, Devices, Profiles.
@@ -844,6 +847,11 @@ namespace PadForge
             _rebuildingControllerSection = true;
             try
             {
+                // Unsubscribe old PropertyChanged handlers to prevent leaks.
+                foreach (var (source, handler) in _navItemHandlers)
+                    source.PropertyChanged -= handler;
+                _navItemHandlers.Clear();
+
                 // Remove everything from ControllerInsertIndex onward.
                 // This fires NavView_SelectionChanged for intermediate states —
                 // the flag suppresses those events (see guard in that handler).
@@ -858,9 +866,8 @@ namespace PadForge
 
                     var capturedMenuItem = menuItem;
                     var capturedNavItem = navItem;
-                    navItem.PropertyChanged += (s, e) =>
+                    System.ComponentModel.PropertyChangedEventHandler handler = (s, e) =>
                     {
-                        // Rebuild content for any visual property change.
                         if (e.PropertyName is nameof(NavControllerItemViewModel.InstanceLabel)
                             or nameof(NavControllerItemViewModel.IconKey)
                             or nameof(NavControllerItemViewModel.IsEnabled)
@@ -871,6 +878,8 @@ namespace PadForge
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
                         }
                     };
+                    navItem.PropertyChanged += handler;
+                    _navItemHandlers.Add((navItem, handler));
                 }
 
                 // "Add Controller" button (visible if any controller type has remaining capacity).

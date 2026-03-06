@@ -482,6 +482,7 @@ namespace PadForge.Services
         private List<EndPoint> GetSubscribers(int slot)
         {
             var result = new List<EndPoint>();
+            var seen = new HashSet<EndPoint>();
             long now = Stopwatch.GetTimestamp();
             long timeoutTicks = Stopwatch.Frequency * ClientTimeoutMs / 1000;
             List<(EndPoint, int)> expired = null;
@@ -514,9 +515,10 @@ namespace PadForge.Services
                         expiredAll ??= new();
                         expiredAll.Add(kvp.Key);
                     }
-                    else if (!result.Contains(kvp.Key))
+                    else if (!seen.Contains(kvp.Key))
                     {
                         result.Add(kvp.Key);
+                        seen.Add(kvp.Key);
                     }
                 }
 

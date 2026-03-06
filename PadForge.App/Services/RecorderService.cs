@@ -237,9 +237,11 @@ namespace PadForge.Services
                 if (anyHeld)
                     return; // Still held — wait for release
 
-                // Everything released — capture fresh baseline and start detecting.
+                // Everything released — capture fresh baseline and reset axis tracking.
                 _waitForRelease = false;
                 _baseline = current;
+                _axisHoldCounter = 0;
+                _axisCandidateIndex = -1;
                 return;
             }
 

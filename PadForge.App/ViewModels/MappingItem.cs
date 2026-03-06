@@ -89,6 +89,12 @@ namespace PadForge.ViewModels
 
         private string _resolvedSourceText;
 
+        /// <summary>
+        /// Cached base object name without any prefix (e.g., "X Axis", "Button A").
+        /// Used by RebuildDescriptor to reconstruct resolved text after prefix changes.
+        /// </summary>
+        private string _resolvedBaseName;
+
         // ─────────────────────────────────────────────
         //  Negative direction source (for bidirectional stick axes)
         // ─────────────────────────────────────────────
@@ -159,6 +165,18 @@ namespace PadForge.ViewModels
         public void SetResolvedSourceText(string text)
         {
             _resolvedSourceText = text;
+            // Cache the base name (without prefix) for RebuildDescriptor.
+            if (text != null)
+            {
+                if (text.StartsWith("Inv. Half ", StringComparison.Ordinal))
+                    _resolvedBaseName = text.Substring(10);
+                else if (text.StartsWith("Inv. ", StringComparison.Ordinal))
+                    _resolvedBaseName = text.Substring(5);
+                else if (text.StartsWith("Half ", StringComparison.Ordinal))
+                    _resolvedBaseName = text.Substring(5);
+                else
+                    _resolvedBaseName = text;
+            }
             OnPropertyChanged(nameof(SourceDisplayText));
         }
 
@@ -306,6 +324,23 @@ namespace PadForge.ViewModels
             if (_isHalfAxis) prefix += "H";
 
             SourceDescriptor = prefix + clean;
+
+            // Rebuild resolved display text from cached base name so the UI
+            // doesn't fall back to the raw descriptor (e.g., "IAxis 0").
+            if (_resolvedBaseName != null)
+            {
+                string prefixLabel = prefix.ToUpperInvariant() switch
+                {
+                    "I" => "Inv.",
+                    "H" => "Half",
+                    "IH" => "Inv. Half",
+                    _ => null
+                };
+                _resolvedSourceText = prefixLabel != null
+                    ? $"{prefixLabel} {_resolvedBaseName}"
+                    : _resolvedBaseName;
+                OnPropertyChanged(nameof(SourceDisplayText));
+            }
         }
 
         // ─────────────────────────────────────────────

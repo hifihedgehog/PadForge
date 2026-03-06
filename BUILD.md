@@ -35,6 +35,7 @@ PadForge.sln
 │   │   ├── GamepadTypes.cs        Gamepad/OutputState/VJoyRawState types
 │   │   ├── VirtualControllerTypes.cs  IVirtualController + VirtualControllerType enum
 │   │   ├── RawInputListener.cs    Windows Raw Input listener
+│   │   ├── InputHookManager.cs    WH_KEYBOARD_LL / WH_MOUSE_LL input suppression hooks
 │   │   └── RumbleLogger.cs        Diagnostic rumble event logger
 │   ├── Data/
 │   │   ├── UserDevice.cs          Physical device record (serializable + runtime)
@@ -51,6 +52,7 @@ PadForge.sln
 │   │   ├── SettingsManager.cs     Static: device/setting collections, assignment, defaults
 │   │   ├── ControllerIcons.cs     SVG path data for controller type icons
 │   │   ├── DriverInstaller.cs     ViGEmBus, HidHide, vJoy driver install/uninstall
+│   │   ├── HidHideController.cs   HidHide IOCTL API (blacklist, whitelist, cloaking)
 │   │   ├── StartupHelper.cs       Windows startup registry management
 │   │   ├── VirtualKey.cs          Virtual key code definitions
 │   │   └── Input/
@@ -112,7 +114,15 @@ PadForge.sln
 │   │   ├── RecorderService.cs          Input recording: baseline -> detection -> descriptor
 │   │   ├── DeviceService.cs            Device assignment and hiding
 │   │   ├── DsuMotionServer.cs          DSU/Cemuhook UDP motion server (port 26760)
-│   │   └── ForegroundMonitorService.cs Per-app profile switching via foreground detection
+│   │   ├── ForegroundMonitorService.cs Per-app profile switching via foreground detection
+│   │   └── WebControllerServer.cs     Embedded HTTP+WebSocket server for browser virtual controllers
+│   │
+│   ├── WebAssets/
+│   │   ├── index.html                Landing page (Xbox 360 / DS4 layout selection)
+│   │   ├── controller.html           Controller UI shell (dynamic PNG overlay layout)
+│   │   ├── css/controller.css        Dark responsive touch-optimized styles
+│   │   ├── js/controller_client.js   WebSocket client + touch input handling
+│   │   └── js/nipplejs.min.js        Virtual joystick library for analog sticks
 │   │
 │   ├── Converter/                      WPF value converters (bool, axis, visibility, etc.)
 │   ├── Controls/

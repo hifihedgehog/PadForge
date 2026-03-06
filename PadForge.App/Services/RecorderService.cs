@@ -358,14 +358,16 @@ namespace PadForge.Services
             _activePadIndex = -1;
             _baseline = null;
 
-            // Assign the clean descriptor first (no prefix).
-            mapping.SourceDescriptor = descriptor;
-
             // Auto-detect inversion for axis/slider recordings based on movement direction.
+            // Build the final descriptor with prefix, then use LoadDescriptor to atomically
+            // set both the descriptor string and the IsInverted flag.
             if (type == MapType.Axis || type == MapType.Slider)
-                mapping.IsInverted = ShouldAutoInvert(mapping, axisPositive, _negRecording);
+            {
+                bool shouldInvert = ShouldAutoInvert(mapping, axisPositive, _negRecording);
+                descriptor = (shouldInvert ? "I" : "") + descriptor;
+            }
+            mapping.LoadDescriptor(descriptor);
 
-            // Read back the final descriptor (may have "I" prefix from auto-inversion).
             string finalDescriptor = mapping.SourceDescriptor;
 
             _mainVm.StatusText = $"Recorded \"{mapping.TargetLabel}\" ← {finalDescriptor}";

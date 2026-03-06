@@ -247,6 +247,49 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Input hiding toggles
+        // ─────────────────────────────────────────────
+
+        private bool _hidHideEnabled;
+
+        /// <summary>Whether this device is hidden from games via HidHide (driver-level).</summary>
+        public bool HidHideEnabled
+        {
+            get => _hidHideEnabled;
+            set => SetProperty(ref _hidHideEnabled, value);
+        }
+
+        private bool _consumeInputEnabled;
+
+        /// <summary>Whether this device's mapped inputs are consumed via low-level hooks.</summary>
+        public bool ConsumeInputEnabled
+        {
+            get => _consumeInputEnabled;
+            set => SetProperty(ref _consumeInputEnabled, value);
+        }
+
+        private bool _forceRawJoystickMode;
+
+        /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices.</summary>
+        public bool ForceRawJoystickMode
+        {
+            get => _forceRawJoystickMode;
+            set => SetProperty(ref _forceRawJoystickMode, value);
+        }
+
+        private bool _isHidHideAvailable;
+
+        /// <summary>Whether HidHide is installed and available (controls IsEnabled on the toggle).</summary>
+        public bool IsHidHideAvailable
+        {
+            get => _isHidHideAvailable;
+            set => SetProperty(ref _isHidHideAvailable, value);
+        }
+
+        /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
+        public bool ShowConsumeToggle => _deviceType == "Keyboard" || _deviceType == "Mouse";
+
+        // ─────────────────────────────────────────────
         //  Device path
         // ─────────────────────────────────────────────
 
@@ -259,9 +302,24 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _devicePath, value);
         }
 
+        private string _hidHideInstancePath = string.Empty;
+
+        /// <summary>Resolved HID instance path used for HidHide blacklisting.</summary>
+        public string HidHideInstancePath
+        {
+            get => _hidHideInstancePath;
+            set => SetProperty(ref _hidHideInstancePath, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Display
         // ─────────────────────────────────────────────
+
+        /// <summary>True if this device is recognized as a gamepad (SDL or custom mapping).</summary>
+        public bool IsGamepad => _deviceType == "Gamepad";
+
+        /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
+        public bool ShowSubmitMapping => _deviceType != "Gamepad" && _deviceType != "Mouse" && _deviceType != "Keyboard";
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>

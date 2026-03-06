@@ -12,7 +12,7 @@
                                IsRotationEnabled="False"
                                IsPanEnabled="False"
                                IsMoveEnabled="False"
-                               IsZoomEnabled="True"
+                               IsZoomEnabled="False"
                                ShowViewCube="False"
                                ZoomExtentsWhenLoaded="False"
                                Background="Transparent"
@@ -22,9 +22,8 @@
                                PreviewMouseMove="Viewport_PreviewMouseMove"
                                MouseMove="Viewport_MouseMove"
                                MouseLeave="Viewport_MouseLeave"
-                               PreviewTouchDown="Viewport_PreviewTouchDown"
-                               PreviewTouchMove="Viewport_PreviewTouchMove"
-                               PreviewTouchUp="Viewport_PreviewTouchUp">
+                               PreviewMouseWheel="Viewport_PreviewMouseWheel"
+                               IsManipulationEnabled="False">
 
             <helix:SunLight />
             <helix:DirectionalHeadLight Brightness="0.35" />

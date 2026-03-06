@@ -71,6 +71,7 @@ namespace PadForge.Views
         private int? _touchSecondId; // second touch device ID for pinch-to-zoom
         private Point _touchSecondLast;
         private double _pinchStartDist;
+        private Point _pinchMidpoint;  // midpoint of two fingers for panning
         private readonly Transform3DGroup _modelRotation = new();
         private readonly AxisAngleRotation3D _yawRotation = new(new Vector3D(0, 0, 1), 0);
         private readonly AxisAngleRotation3D _pitchRotation = new(new Vector3D(1, 0, 0), 0);
@@ -84,6 +85,20 @@ namespace PadForge.Views
             _modelRotation.Children.Add(new RotateTransform3D(_yawRotation));
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
             ModelVisual3D.Transform = _modelRotation;
+
+            // Subscribe touch on the UserControl so we intercept BEFORE HelixToolkit's
+            // CameraController can capture/consume touch events.
+            PreviewTouchDown += Viewport_PreviewTouchDown;
+            PreviewTouchMove += Viewport_PreviewTouchMove;
+            PreviewTouchUp += Viewport_PreviewTouchUp;
+
+            // Block WPF stylus system gestures (press-and-hold → right-click, flicks)
+            // that delay or swallow touch events.
+            PreviewStylusSystemGesture += (s, e) => e.Handled = true;
+
+            // Belt-and-suspenders: cancel any WPF manipulation that tries to start
+            // (HelixToolkit may re-enable IsManipulationEnabled internally).
+            ModelViewPort.ManipulationStarting += (s, e) => { e.Cancel(); e.Handled = true; };
         }
 
         // ─────────────────────────────────────────────
@@ -462,6 +477,25 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Mouse wheel zoom (replaces HelixToolkit zoom)
+        // ─────────────────────────────────────────────
+
+        private void Viewport_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (ModelViewPort.Camera is PerspectiveCamera cam)
+            {
+                var look = cam.LookDirection;
+                look.Normalize();
+                double zoomDelta = e.Delta * 0.05;
+                cam.Position = new Point3D(
+                    cam.Position.X + look.X * zoomDelta,
+                    cam.Position.Y + look.Y * zoomDelta,
+                    cam.Position.Z + look.Z * zoomDelta);
+                e.Handled = true;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Touch rotation (single-finger drag)
         // ─────────────────────────────────────────────
 
@@ -470,25 +504,28 @@ namespace PadForge.Views
             if (_touchDragId == null)
             {
                 // First finger — start rotation tracking.
+                // Capture to UserControl (not HelixViewport3D) so the toolkit's
+                // CameraController never sees the touch.
                 _touchDragId = e.TouchDevice.Id;
-                _rightDragLast = e.GetTouchPoint(ModelViewPort).Position;
-                e.TouchDevice.Capture(ModelViewPort);
+                _rightDragLast = e.GetTouchPoint(this).Position;
+                e.TouchDevice.Capture(this);
                 e.Handled = true;
             }
             else if (_touchSecondId == null && e.TouchDevice.Id != _touchDragId)
             {
-                // Second finger — start pinch-to-zoom.
+                // Second finger — start pinch-to-zoom + pan.
                 _touchSecondId = e.TouchDevice.Id;
-                _touchSecondLast = e.GetTouchPoint(ModelViewPort).Position;
+                _touchSecondLast = e.GetTouchPoint(this).Position;
                 _pinchStartDist = Distance(_rightDragLast, _touchSecondLast);
-                e.TouchDevice.Capture(ModelViewPort);
+                _pinchMidpoint = Midpoint(_rightDragLast, _touchSecondLast);
+                e.TouchDevice.Capture(this);
                 e.Handled = true;
             }
         }
 
         private void Viewport_PreviewTouchMove(object sender, TouchEventArgs e)
         {
-            var pos = e.GetTouchPoint(ModelViewPort).Position;
+            var pos = e.GetTouchPoint(this).Position;
 
             if (_touchSecondId != null)
             {
@@ -501,12 +538,13 @@ namespace PadForge.Views
                     return;
 
                 double dist = Distance(_rightDragLast, _touchSecondLast);
-                if (_pinchStartDist > 1)
+                var mid = Midpoint(_rightDragLast, _touchSecondLast);
+                if (ModelViewPort.Camera is PerspectiveCamera cam)
                 {
-                    double scale = dist / _pinchStartDist;
-                    if (ModelViewPort.Camera is PerspectiveCamera cam)
+                    // Zoom by moving camera along look direction.
+                    if (_pinchStartDist > 1)
                     {
-                        // Zoom by moving camera along look direction.
+                        double scale = dist / _pinchStartDist;
                         double zoomDelta = (scale - 1.0) * 50;
                         var look = cam.LookDirection;
                         look.Normalize();
@@ -515,8 +553,30 @@ namespace PadForge.Views
                             cam.Position.Y + look.Y * zoomDelta,
                             cam.Position.Z + look.Z * zoomDelta);
                     }
-                    _pinchStartDist = dist;
+
+                    // Pan by moving camera perpendicular to look direction.
+                    double panDx = mid.X - _pinchMidpoint.X;
+                    double panDy = mid.Y - _pinchMidpoint.Y;
+                    if (Math.Abs(panDx) > 0.5 || Math.Abs(panDy) > 0.5)
+                    {
+                        var look2 = cam.LookDirection;
+                        look2.Normalize();
+                        var up = cam.UpDirection;
+                        up.Normalize();
+                        var right = System.Windows.Media.Media3D.Vector3D.CrossProduct(look2, up);
+                        right.Normalize();
+                        var trueUp = System.Windows.Media.Media3D.Vector3D.CrossProduct(right, look2);
+                        trueUp.Normalize();
+
+                        double panScale = 0.5;
+                        cam.Position = new System.Windows.Media.Media3D.Point3D(
+                            cam.Position.X - right.X * panDx * panScale + trueUp.X * panDy * panScale,
+                            cam.Position.Y - right.Y * panDx * panScale + trueUp.Y * panDy * panScale,
+                            cam.Position.Z - right.Z * panDx * panScale + trueUp.Z * panDy * panScale);
+                    }
                 }
+                _pinchStartDist = dist;
+                _pinchMidpoint = mid;
                 e.Handled = true;
             }
             else if (e.TouchDevice.Id == _touchDragId)
@@ -568,6 +628,9 @@ namespace PadForge.Views
             double dy = a.Y - b.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
+
+        private static Point Midpoint(Point a, Point b)
+            => new((a.X + b.X) * 0.5, (a.Y + b.Y) * 0.5);
 
         // ─────────────────────────────────────────────
         //  Hover highlighting

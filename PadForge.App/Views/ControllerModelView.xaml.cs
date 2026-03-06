@@ -89,8 +89,16 @@ namespace PadForge.Views
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
             ModelVisual3D.Transform = _modelRotation;
 
-            // Subscribe touch on the UserControl so we intercept BEFORE HelixToolkit's
-            // CameraController can capture/consume touch events.
+            // Subscribe all input on the UserControl so we intercept BEFORE HelixToolkit's
+            // CameraController class handlers can capture/consume events.
+            PreviewMouseLeftButtonDown += Viewport_PreviewMouseLeftButtonDown;
+            PreviewMouseLeftButtonUp += Viewport_PreviewMouseLeftButtonUp;
+            PreviewMouseRightButtonDown += Viewport_MouseRightButtonDown;
+            PreviewMouseRightButtonUp += Viewport_MouseRightButtonUp;
+            PreviewMouseMove += Viewport_PreviewMouseMove;
+            PreviewMouseWheel += Viewport_PreviewMouseWheel;
+            MouseLeave += Viewport_MouseLeave;
+
             PreviewTouchDown += Viewport_PreviewTouchDown;
             PreviewTouchMove += Viewport_PreviewTouchMove;
             PreviewTouchUp += Viewport_PreviewTouchUp;
@@ -410,7 +418,7 @@ namespace PadForge.Views
             _leftDragStart = e.GetPosition(ModelViewPort);
             _isLeftDragging = false;
             _rightDragLast = _leftDragStart;
-            Mouse.Capture(ModelViewPort, CaptureMode.Element);
+            Mouse.Capture(this, CaptureMode.SubTree);
             e.Handled = true;
         }
 
@@ -466,7 +474,7 @@ namespace PadForge.Views
         {
             _isRightDragging = true;
             _rightDragLast = e.GetPosition(ModelViewPort);
-            Mouse.Capture(ModelViewPort, CaptureMode.Element);
+            Mouse.Capture(this, CaptureMode.SubTree);
             e.Handled = true;
         }
 
@@ -480,7 +488,7 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Preview handler for left/right-drag model rotation (fires before HelixToolkit).</summary>
+        /// <summary>Preview handler for left/right-drag model rotation + hover highlighting.</summary>
         private void Viewport_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             // Promote left-button hold to drag once past threshold
@@ -493,19 +501,40 @@ namespace PadForge.Views
                     _isLeftDragging = true;
             }
 
-            if (!_isRightDragging && !_isLeftDragging) return;
+            if (_isLeftDragging)
+            {
+                var p = e.GetPosition(ModelViewPort);
+                double dx = p.X - _rightDragLast.X;
+                double dy = p.Y - _rightDragLast.Y;
+                _rightDragLast = p;
 
-            var p = e.GetPosition(ModelViewPort);
-            double dx = p.X - _rightDragLast.X;
-            double dy = p.Y - _rightDragLast.Y;
-            _rightDragLast = p;
+                _modelYaw += dx * 0.5;
+                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
 
-            _modelYaw += dx * 0.5;
-            _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+                _yawRotation.Angle = _modelYaw;
+                _pitchRotation.Angle = _modelPitch;
+                e.Handled = true;
+                return;
+            }
 
-            _yawRotation.Angle = _modelYaw;
-            _pitchRotation.Angle = _modelPitch;
-            e.Handled = true;
+            if (_isRightDragging)
+            {
+                var p = e.GetPosition(ModelViewPort);
+                double dx = p.X - _rightDragLast.X;
+                double dy = p.Y - _rightDragLast.Y;
+                _rightDragLast = p;
+
+                _modelYaw += dx * 0.5;
+                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+
+                _yawRotation.Angle = _modelYaw;
+                _pitchRotation.Angle = _modelPitch;
+                e.Handled = true;
+                return;
+            }
+
+            // Hover highlighting (no button held)
+            UpdateHoverHighlight(e);
         }
 
         // ─────────────────────────────────────────────
@@ -668,7 +697,7 @@ namespace PadForge.Views
         //  Hover highlighting
         // ─────────────────────────────────────────────
 
-        private void Viewport_MouseMove(object sender, MouseEventArgs e)
+        private void UpdateHoverHighlight(MouseEventArgs e)
         {
             if (_currentModel == null) return;
 

@@ -118,6 +118,15 @@ namespace PadForge.Engine.Common
         private volatile HashSet<int> _suppressedVKeys = new();
         private volatile HashSet<int> _suppressedMouseButtons = new();
 
+        // Key/button state captured from suppressed inputs. WH_KEYBOARD_LL and
+        // WH_MOUSE_LL run in the RIT before WM_INPUT is generated — suppressed
+        // inputs never reach RawInputListener. These arrays bridge that gap so
+        // the polling loop still sees the input.
+        private static readonly bool[] _hookedKeyState = new bool[256];
+        private static volatile bool _hasHookedKeys;
+        private static readonly bool[] _hookedMouseState = new bool[5]; // L, R, M, X1, X2
+        private static volatile bool _hasHookedMouse;
+
         // ─────────────────────────────────────────────
         //  Public API
         // ─────────────────────────────────────────────
@@ -158,15 +167,29 @@ namespace PadForge.Engine.Common
             _hookThread?.Join(TimeSpan.FromSeconds(2));
             _hookThread = null;
             _hookThreadId = 0;
+
+            // Clear hooked state so stale keys/buttons don't persist.
+            Array.Clear(_hookedKeyState, 0, 256);
+            _hasHookedKeys = false;
+            Array.Clear(_hookedMouseState, 0, 5);
+            _hasHookedMouse = false;
         }
 
         /// <summary>
         /// Updates the set of virtual key codes to suppress from keyboard hooks.
         /// Pass an empty set to stop suppressing keyboard input.
+        /// Clears hooked state for keys no longer in the suppression set.
         /// </summary>
         public void SetSuppressedKeys(HashSet<int> vkCodes)
         {
-            _suppressedVKeys = vkCodes ?? new HashSet<int>();
+            var newSet = vkCodes ?? new HashSet<int>();
+            // Clear hooked state for keys removed from suppression.
+            for (int i = 0; i < 256; i++)
+            {
+                if (_hookedKeyState[i] && !newSet.Contains(i))
+                    _hookedKeyState[i] = false;
+            }
+            _suppressedVKeys = newSet;
         }
 
         /// <summary>
@@ -176,7 +199,13 @@ namespace PadForge.Engine.Common
         /// </summary>
         public void SetSuppressedMouseButtons(HashSet<int> buttons)
         {
-            _suppressedMouseButtons = buttons ?? new HashSet<int>();
+            var newSet = buttons ?? new HashSet<int>();
+            for (int i = 0; i < 5; i++)
+            {
+                if (_hookedMouseState[i] && !newSet.Contains(i))
+                    _hookedMouseState[i] = false;
+            }
+            _suppressedMouseButtons = newSet;
         }
 
         /// <summary>
@@ -184,6 +213,39 @@ namespace PadForge.Engine.Common
         /// </summary>
         public bool HasAnySuppression =>
             _suppressedVKeys.Count > 0 || _suppressedMouseButtons.Count > 0;
+
+        /// <summary>
+        /// Merges suppressed-key state into a destination boolean array.
+        /// Called by keyboard wrappers to recover input that WH_KEYBOARD_LL
+        /// prevented from reaching Raw Input (WM_INPUT is not generated for
+        /// keys suppressed by a low-level hook).
+        /// </summary>
+        public static void MergeHookedKeyState(bool[] dest, int count)
+        {
+            if (!_hasHookedKeys) return;
+            int n = Math.Min(count, 256);
+            for (int i = 0; i < n; i++)
+            {
+                if (_hookedKeyState[i])
+                    dest[i] = true;
+            }
+        }
+
+        /// <summary>
+        /// Merges suppressed mouse-button state into a destination boolean array.
+        /// Same principle as <see cref="MergeHookedKeyState"/> but for WH_MOUSE_LL.
+        /// Button IDs: 0=Left, 1=Right, 2=Middle, 3=X1, 4=X2.
+        /// </summary>
+        public static void MergeHookedMouseState(bool[] dest, int count)
+        {
+            if (!_hasHookedMouse) return;
+            int n = Math.Min(count, 5);
+            for (int i = 0; i < n; i++)
+            {
+                if (_hookedMouseState[i])
+                    dest[i] = true;
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Hook thread
@@ -240,8 +302,20 @@ namespace PadForge.Engine.Common
                 if (msg == WM_KEYDOWN || msg == WM_KEYUP || msg == WM_SYSKEYDOWN || msg == WM_SYSKEYUP)
                 {
                     var kb = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
-                    if (_suppressedVKeys.Contains((int)kb.vkCode))
+                    int vk = (int)kb.vkCode;
+                    if (_suppressedVKeys.Contains(vk))
+                    {
+                        // Capture key state before suppressing — WH_KEYBOARD_LL
+                        // runs in the RIT before WM_INPUT is posted, so suppressed
+                        // keys never reach RawInputListener. Write state here so
+                        // the polling loop can still read it.
+                        if (vk >= 0 && vk < 256)
+                        {
+                            _hookedKeyState[vk] = (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN);
+                            _hasHookedKeys = true;
+                        }
                         return (IntPtr)1; // Suppress
+                    }
                 }
             }
             return CallNextHookEx(_keyboardHook, nCode, wParam, lParam);
@@ -254,9 +328,24 @@ namespace PadForge.Engine.Common
                 int msg = (int)wParam;
                 int buttonId = MouseMessageToButtonId(msg, lParam);
                 if (buttonId >= 0 && _suppressedMouseButtons.Contains(buttonId))
+                {
+                    // Capture button state before suppressing (same reason as keyboard).
+                    if (buttonId < 5)
+                    {
+                        bool isDown = IsMouseDown(msg);
+                        _hookedMouseState[buttonId] = isDown;
+                        _hasHookedMouse = true;
+                    }
                     return (IntPtr)1; // Suppress
+                }
             }
             return CallNextHookEx(_mouseHook, nCode, wParam, lParam);
+        }
+
+        private static bool IsMouseDown(int msg)
+        {
+            return msg == WM_LBUTTONDOWN || msg == WM_RBUTTONDOWN ||
+                   msg == WM_MBUTTONDOWN || msg == WM_XBUTTONDOWN;
         }
 
         /// <summary>

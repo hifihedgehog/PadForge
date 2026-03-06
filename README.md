@@ -6,20 +6,20 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 
 ## Features
 
-- **Any input to any virtual controller** -- Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom DirectInput controllers with up to 8 axes (sticks and triggers combined), 128 buttons, and 4 POV hats
-- **Up to 16 virtual controller slots** -- Mix and match Xbox 360, DualShock 4, and custom DirectInput across up to 16 simultaneous slots, each combining input from multiple physical devices
-- **3D and 2D controller visualization** -- Interactive 3D controller model with mouse and touch gestures (rotate, pinch-to-zoom, two-finger pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time
-- **Web browser virtual controller** -- Use any touchscreen device as a controller via a built-in web server. Serves Xbox 360 and DS4 layouts with real-time touch input over WebSocket, including dual analog sticks, 8-way D-pad, triggers, and rumble feedback
-- **Interactive mapping** -- Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
-- **Dead zones and response curves** -- Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview, plus stick center offset calibration and max range
-- **Force feedback** -- Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
-- **Macro system** -- Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
-- **Per-app profile switching** -- Automatically switch controller configurations when specific applications gain focus
-- **DSU/Cemuhook motion server** -- Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
-- **Input hiding** -- Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with smart defaults when assigning to a slot
-- **Driver management** -- One-click install/uninstall for ViGEmBus, HidHide, and vJoy. Built-in HidHide device blacklisting and app whitelisting — no external configuration tool needed
-- **System tray** -- Minimize to tray, start minimized, start at login
-- **Portable** -- Single-file self-contained executable
+- **Any input to any virtual controller** — Joysticks, gamepads, keyboards, and mice map to Xbox 360, DualShock 4, or fully custom DirectInput controllers with up to 8 axes (sticks and triggers combined), 128 buttons, and 4 POV hats
+- **Up to 16 virtual controller slots** — Mix and match Xbox 360, DualShock 4, and custom DirectInput across up to 16 simultaneous slots, each combining input from multiple physical devices
+- **3D and 2D controller visualization** — Interactive 3D controller model with mouse and touch gestures (rotate, pinch-to-zoom, two-finger pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time
+- **Web browser virtual controller** — Use any touchscreen device as a controller via a built-in web server. Serves Xbox 360 and DS4 layouts with real-time touch input over WebSocket, including dual analog sticks, 8-way D-pad, triggers, and rumble feedback
+- **Interactive mapping** — Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
+- **Dead zones and response curves** — Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview, plus stick center offset calibration and max range
+- **Force feedback** — Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
+- **Macro system** — Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
+- **Per-app profile switching** — Automatically switch controller configurations when specific applications gain focus
+- **DSU/Cemuhook motion server** — Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
+- **Input hiding** — Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with smart defaults when assigning to a slot
+- **Driver management** — One-click install/uninstall for ViGEmBus, HidHide, and vJoy. Built-in HidHide device blacklisting and app whitelisting — no external configuration tool needed
+- **System tray** — Minimize to tray, start minimized, start at login
+- **Portable** — Single-file self-contained executable
 
 ## Screenshots
 
@@ -53,14 +53,14 @@ Create macros triggered by button combinations from either the output controller
 
 ### Device List
 ![Devices](screenshots/devices.jpg)
-Card-based device list showing all detected gamepads, joysticks, keyboards, and mice with status, type, VID/PID, and slot assignment. Per-device input hiding toggles: "Hide from games" (HidHide driver-level) and "Consume mapped inputs" (low-level hooks for keyboards/mice). Select a device to see its raw input state -- axes as progress bars, buttons as indicator circles, POV as a compass, and gyro/accelerometer values.
+Card-based device list showing all detected gamepads, joysticks, keyboards, and mice with status, type, VID/PID, and slot assignment. Per-device input hiding toggles: "Hide from games" (HidHide driver-level) and "Consume mapped inputs" (low-level hooks for keyboards/mice). Select a device to see its raw input state — axes as progress bars, buttons as indicator circles, POV as a compass, and gyro/accelerometer values.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
 Appearance theme, input engine options (auto-start, background polling, configurable polling interval, master input hiding toggle), and window behavior (system tray, start minimized, start at login).
 
-### Settings -- Drivers and Diagnostics
-![Settings -- Drivers](screenshots/settings-drivers.jpg)
+### Settings — Drivers and Diagnostics
+![Settings — Drivers](screenshots/settings-drivers.jpg)
 One-click ViGEmBus, HidHide, and vJoy driver management with version info, settings file controls (save, reload, reset, open folder), and diagnostics showing app version, .NET runtime, and SDL version.
 
 ### About
@@ -80,9 +80,9 @@ Built-in web server lets any touchscreen device act as a virtual controller. Cho
 
 Optional drivers (PadForge can install all of these for you):
 
-- [ViGEmBus](https://github.com/nefarius/ViGEmBus) -- Virtual Xbox 360 and DualShock 4 output
-- [vJoy](https://github.com/BrunnerInnovation/vJoy) -- Custom DirectInput joystick/gamepad output with configurable axes, buttons, POVs, and force feedback
-- [HidHide](https://github.com/nefarius/HidHide) -- Hide physical controllers from games to prevent double input
+- [ViGEmBus](https://github.com/nefarius/ViGEmBus) — Virtual Xbox 360 and DualShock 4 output
+- [vJoy](https://github.com/BrunnerInnovation/vJoy) — Custom DirectInput joystick/gamepad output with configurable axes, buttons, POVs, and force feedback
+- [HidHide](https://github.com/nefarius/HidHide) — Hide physical controllers from games to prevent double input
 
 ## Build
 
@@ -101,7 +101,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 | Project | Role in PadForge | License |
 |---|---|---|
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this project was forked from | MIT |
-| [SDL3](https://github.com/libsdl-org/SDL) | All device input -- joystick, gamepad, keyboard, mouse, sensors | zlib |
+| [SDL3](https://github.com/libsdl-org/SDL) | All device input — joystick, gamepad, keyboard, mouse, sensors | zlib |
 | [ViGEmBus](https://github.com/nefarius/ViGEmBus) | Virtual Xbox 360 and DualShock 4 controller driver | MIT |
 | [Nefarius.ViGEm.Client](https://github.com/nefarius/ViGEm.NET) | .NET client library for ViGEmBus | MIT |
 | [vJoy](https://github.com/BrunnerInnovation/vJoy) | Custom DirectInput joystick/gamepad driver with configurable HID descriptors and force feedback | MIT |
@@ -114,7 +114,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 
 ## Donations
 
-Just knowing you find PadForge useful is reward enough for me. If you truly insist on donating, please donate to your charity of choice and bless humanity. Also consider donating directly to the upstream projects listed above -- they made all of this possible.
+Just knowing you find PadForge useful is reward enough for me. If you truly insist on donating, please donate to your charity of choice and bless humanity. Also consider donating directly to the upstream projects listed above — they made all of this possible.
 
 **My promise:** I will never make PadForge a paid, freemium, or Patreon early-access paywalled product. Free means free.
 
@@ -122,8 +122,8 @@ Just knowing you find PadForge useful is reward enough for me. If you truly insi
 
 This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International).
 
-- **3D controller models** adapted from [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) (CC BY-NC-SA 4.0) -- Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
-- **2D controller assets** from [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) (MIT) -- by AL2009man
+- **3D controller models** adapted from [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) (CC BY-NC-SA 4.0) — Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
+- **2D controller assets** from [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) (MIT) — by AL2009man
 - **Original codebase** forked from [x360ce](https://github.com/x360ce/x360ce) (MIT)
 - **SDL3** is licensed under the [zlib License](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt)
 - **ViGEmBus** and **Nefarius.ViGEm.Client** are licensed under the MIT License

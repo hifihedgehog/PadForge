@@ -220,7 +220,7 @@ namespace PadForge.Common.Input
         public static UserSetting AssignDeviceToSlot(Guid instanceGuid, int padIndex)
         {
             if (padIndex < 0 || padIndex >= InputManager.MaxPads)
-                throw new ArgumentOutOfRangeException(nameof(padIndex), "Must be 0–7.");
+                throw new ArgumentOutOfRangeException(nameof(padIndex), $"Must be 0–{InputManager.MaxPads - 1}.");
 
             var settings = UserSettings;
             if (settings == null) return null;

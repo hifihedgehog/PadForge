@@ -72,11 +72,11 @@ namespace PadForge.Engine.Data
         }
 
         /// <summary>
-        /// Display label for the slot assignment: "Player 1"–"Player 4" or "Unmapped".
+        /// Display label for the slot assignment: "Player 1"–"Player 16" or "Unmapped".
         /// </summary>
         [XmlIgnore]
         public string MapToLabel =>
-            _mapTo >= 0 && _mapTo < 4 ? $"Player {_mapTo + 1}" : "Unmapped";
+            _mapTo >= 0 && _mapTo < 16 ? $"Player {_mapTo + 1}" : "Unmapped";
 
         // ─────────────────────────────────────────────
         //  PadSetting linkage

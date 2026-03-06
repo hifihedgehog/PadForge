@@ -501,7 +501,23 @@ namespace PadForge.Views
                     _isLeftDragging = true;
             }
 
-            if (_isRightDragging || _isLeftDragging)
+            if (_isLeftDragging)
+            {
+                var p = e.GetPosition(ModelViewPort);
+                double dx = p.X - _rightDragLast.X;
+                double dy = p.Y - _rightDragLast.Y;
+                _rightDragLast = p;
+
+                _modelYaw += dx * 0.5;
+                _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
+
+                _yawRotation.Angle = _modelYaw;
+                _pitchRotation.Angle = _modelPitch;
+                e.Handled = true;
+                return;
+            }
+
+            if (_isRightDragging)
             {
                 var p = e.GetPosition(ModelViewPort);
                 double dx = p.X - _rightDragLast.X;

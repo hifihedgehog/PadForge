@@ -62,8 +62,11 @@ namespace PadForge.Views
         private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
         private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
 
-        // Model rotation via right-drag or single-touch drag (turntable-style)
+        // Model rotation via left/right-drag or single-touch drag (turntable-style)
         private bool _isRightDragging;
+        private bool _isLeftDragging;
+        private Point _leftDragStart;          // initial left-down position (for click vs drag threshold)
+        private const double DragThreshold = 5; // pixels before left-click becomes a drag
         private Point _rightDragLast;
         private double _modelYaw;    // degrees around Z axis (horizontal drag)
         private double _modelPitch;  // degrees around X axis (vertical drag)
@@ -402,8 +405,29 @@ namespace PadForge.Views
         //  Click-to-record hit testing
         // ─────────────────────────────────────────────
 
-        private void Viewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Viewport_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            _leftDragStart = e.GetPosition(ModelViewPort);
+            _isLeftDragging = false;
+            _rightDragLast = _leftDragStart;
+            Mouse.Capture(ModelViewPort, CaptureMode.Element);
+            e.Handled = true;
+        }
+
+        private void Viewport_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(null);
+
+            if (_isLeftDragging)
+            {
+                // Was a drag — just end rotation, no hit-test.
+                _isLeftDragging = false;
+                e.Handled = true;
+                return;
+            }
+
+            // Was a click (no significant drag) — do hit-test for click-to-record.
+            _isLeftDragging = false;
             if (_currentModel == null) return;
 
             var pos = e.GetPosition(ModelViewPort);
@@ -414,7 +438,6 @@ namespace PadForge.Views
                 if (hit.Model is not GeometryModel3D hitGeo)
                     continue;
 
-                // Check if hit is on a stick ring — use quadrant detection for X vs Y
                 if (IsStickRingHit(hitGeo, hit.Position, out string stickAxis))
                 {
                     ControllerElementRecordRequested?.Invoke(this, stickAxis);
@@ -423,7 +446,6 @@ namespace PadForge.Views
                     return;
                 }
 
-                // Walk ClickMap to find which Model3DGroup contains this geometry
                 foreach (var kv in _currentModel.ClickMap)
                 {
                     if (kv.Key.Children.Contains(hitGeo))
@@ -458,15 +480,25 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Preview handler for right-drag model rotation (fires before HelixToolkit).</summary>
+        /// <summary>Preview handler for left/right-drag model rotation (fires before HelixToolkit).</summary>
         private void Viewport_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (!_isRightDragging) return;
+            // Promote left-button hold to drag once past threshold
+            if (!_isLeftDragging && e.LeftButton == MouseButtonState.Pressed)
+            {
+                var pos = e.GetPosition(ModelViewPort);
+                double ddx = pos.X - _leftDragStart.X;
+                double ddy = pos.Y - _leftDragStart.Y;
+                if (ddx * ddx + ddy * ddy > DragThreshold * DragThreshold)
+                    _isLeftDragging = true;
+            }
 
-            var pos = e.GetPosition(ModelViewPort);
-            double dx = pos.X - _rightDragLast.X;
-            double dy = pos.Y - _rightDragLast.Y;
-            _rightDragLast = pos;
+            if (!_isRightDragging && !_isLeftDragging) return;
+
+            var p = e.GetPosition(ModelViewPort);
+            double dx = p.X - _rightDragLast.X;
+            double dy = p.Y - _rightDragLast.Y;
+            _rightDragLast = p;
 
             _modelYaw += dx * 0.5;
             _modelPitch = Math.Clamp(_modelPitch + dy * 0.5, -60, 60);
@@ -687,9 +719,10 @@ namespace PadForge.Views
 
         private void Viewport_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (_isRightDragging)
+            if (_isRightDragging || _isLeftDragging)
             {
                 _isRightDragging = false;
+                _isLeftDragging = false;
                 Mouse.Capture(null);
             }
             ClearHover();

@@ -865,7 +865,8 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.IconKey)
                             or nameof(NavControllerItemViewModel.IsEnabled)
                             or nameof(NavControllerItemViewModel.SlotNumber)
-                            or nameof(NavControllerItemViewModel.ConnectedDeviceCount))
+                            or nameof(NavControllerItemViewModel.ConnectedDeviceCount)
+                            or nameof(NavControllerItemViewModel.IsInitializing))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
                         }
@@ -961,14 +962,22 @@ namespace PadForge
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
 
-            // Power button (green = enabled + active, yellow = enabled + warning, red = disabled).
+            // Power button (green = enabled + active, yellow = enabled + warning, red = disabled,
+            // flashing green = initializing).
             var outputType = _viewModel.Pads[navItem.PadIndex].OutputType;
             System.Windows.Media.SolidColorBrush powerColor;
             string powerTooltip;
+            bool isInitializing = navItem.IsInitializing;
             if (!navItem.IsEnabled)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
                 powerTooltip = "Disabled";
+                isInitializing = false;
+            }
+            else if (isInitializing)
+            {
+                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
+                powerTooltip = "Initializing";
             }
             else if (!_viewModel.IsEngineRunning)
             {
@@ -991,15 +1000,31 @@ namespace PadForge
                 powerTooltip = "Active";
             }
 
+            var powerTextBlock = new System.Windows.Controls.TextBlock
+            {
+                Text = PowerGlyph,
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 12,
+                Foreground = powerColor
+            };
+
+            // Apply flashing opacity animation when initializing.
+            if (isInitializing)
+            {
+                var flashAnimation = new System.Windows.Media.Animation.DoubleAnimation
+                {
+                    From = 1.0,
+                    To = 0.15,
+                    Duration = new Duration(TimeSpan.FromMilliseconds(500)),
+                    AutoReverse = true,
+                    RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+                };
+                powerTextBlock.BeginAnimation(System.Windows.UIElement.OpacityProperty, flashAnimation);
+            }
+
             var powerBtn = new System.Windows.Controls.Button
             {
-                Content = new System.Windows.Controls.TextBlock
-                {
-                    Text = PowerGlyph,
-                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    FontSize = 12,
-                    Foreground = powerColor
-                },
+                Content = powerTextBlock,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,

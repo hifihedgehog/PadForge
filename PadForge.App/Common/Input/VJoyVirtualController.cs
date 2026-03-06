@@ -459,11 +459,15 @@ namespace PadForge.Common.Input
         private int _submitCallCount;
         private int _submitFailCount;
 
+        /// <summary>Enable to write vJoy diagnostic log to vjoy_diag.log.</summary>
+        internal static bool DiagLogEnabled { get; set; }
+
         private static readonly string _logPath = System.IO.Path.Combine(
             AppContext.BaseDirectory, "vjoy_diag.log");
 
         internal static void DiagLog(string msg)
         {
+            if (!DiagLogEnabled) return;
             var line = $"[vJoy {DateTime.Now:HH:mm:ss.fff}] {msg}";
             try { System.IO.File.AppendAllText(_logPath, line + Environment.NewLine); } catch { }
         }
@@ -1550,11 +1554,11 @@ namespace PadForge.Common.Input
                 {
                     DiagLog($"DisableDeviceNode: node fully removed, generation={_generation}");
                     // Scan for hardware changes to clean up ghost child PDOs.
-                    System.Threading.Tasks.Task.Run(() =>
-                    {
-                        try { RunPnputil("/scan-devices"); }
-                        catch { /* best effort */ }
-                    });
+                    // Must be synchronous — an async scan races with ViGEm VC creation
+                    // on the next polling cycle, causing IoInvalidateDeviceRelations to
+                    // hit the ViGEm bus mid-creation and duplicate existing Xbox 360 devices.
+                    try { RunPnputil("/scan-devices"); }
+                    catch { /* best effort */ }
                 }
                 else
                 {

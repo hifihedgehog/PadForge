@@ -121,6 +121,14 @@ namespace PadForge.Common.Input
         private readonly int[] _createCooldown = new int[MaxPads];
         private const int CreateCooldownCycles = 2000;
 
+        /// <summary>
+        /// Per-slot flag: true while a virtual controller is being created or
+        /// reconfigured (e.g., vJoy descriptor change → node restart). Set true
+        /// just before creation, cleared when the controller reports IsConnected.
+        /// Read by the UI thread via <see cref="IsVirtualControllerInitializing"/>.
+        /// </summary>
+        private readonly bool[] _slotInitializing = new bool[MaxPads];
+
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
@@ -136,6 +144,17 @@ namespace PadForge.Common.Input
             if (padIndex < 0 || padIndex >= MaxPads) return false;
             var vc = _virtualControllers[padIndex];
             return vc != null && vc.IsConnected;
+        }
+
+        /// <summary>
+        /// Returns true if the specified pad slot is currently initializing
+        /// (creating a virtual controller or reconfiguring vJoy descriptors).
+        /// Used by the UI to show a flashing green indicator.
+        /// </summary>
+        public bool IsVirtualControllerInitializing(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            return _slotInitializing[padIndex];
         }
 
         /// <summary>
@@ -177,6 +196,7 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _createCooldown[padIndex] = 0; // Reset cooldown on type change
+                    _slotInitializing[padIndex] = true; // Will be recreated as new type
                     vc = null;
                 }
 
@@ -189,6 +209,7 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
+                    _slotInitializing[padIndex] = false;
                     VibrationStates[padIndex].LeftMotorSpeed = 0;
                     VibrationStates[padIndex].RightMotorSpeed = 0;
                     continue;
@@ -204,7 +225,10 @@ namespace PadForge.Common.Input
                     _slotInactiveCounter[padIndex] = 0;
 
                     if (vc == null)
+                    {
                         anyNeedsCreate = true;
+                        _slotInitializing[padIndex] = true;
+                    }
                 }
                 else if (vc != null && !HasAnyDeviceMapped(padIndex))
                 {
@@ -322,8 +346,16 @@ namespace PadForge.Common.Input
                                 DestroyVirtualController(i);
                                 _virtualControllers[i] = null;
                             }
+                            // Mark all vJoy slots as initializing during descriptor change
+                            if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                                _slotInitializing[i] = true;
                         }
-                        anyNeedsCreate = totalVJoyNeeded > 0;
+                        // Use |= to preserve any true state from Pass 1 (non-vJoy slots
+                        // that need creation). Previously this unconditional assignment
+                        // would override anyNeedsCreate=true from a vJoy→Xbox type switch,
+                        // delaying creation of the Xbox VC by 1 cycle.
+                        anyNeedsCreate |= totalVJoyNeeded > 0;
                     }
 
                     // Build per-device HID descriptor configs from slot configs.
@@ -390,6 +422,44 @@ namespace PadForge.Common.Input
             }
             AfterVJoySync:
 
+            // --- Pass 1c: Ensure ViGEm VC ordering across cycles ---
+            // ViGEm assigns XInput/DS4 indices based on Connect() call order.
+            // When a lower-numbered slot needs a new VC but higher-numbered slots
+            // already have same-type VCs (created in a previous cycle), the new VC
+            // would get a higher index than the existing ones — wrong order.
+            // Fix: destroy any same-type VCs at higher slot indices so they can be
+            // recreated in ascending order alongside the new one in Pass 2.
+            if (anyNeedsCreate)
+            {
+                for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+                {
+                    // Is this slot about to create a ViGEm VC in Pass 2?
+                    if (_virtualControllers[padIndex] != null ||
+                        _slotInactiveCounter[padIndex] != 0 ||
+                        _createCooldown[padIndex] > 0)
+                        continue;
+
+                    var newType = SlotControllerTypes[padIndex];
+                    if (newType != VirtualControllerType.Xbox360 &&
+                        newType != VirtualControllerType.DualShock4)
+                        continue;
+
+                    // Destroy any same-type VCs at higher slot indices.
+                    for (int j = padIndex + 1; j < MaxPads; j++)
+                    {
+                        var existingVc = _virtualControllers[j];
+                        if (existingVc != null && existingVc.Type == newType)
+                        {
+                            RumbleLogger.Log($"[Step5] Pad{j} destroying {newType} VC for ordering (Pad{padIndex} needs creation first)");
+                            DestroyVirtualController(j);
+                            _virtualControllers[j] = null;
+                            // Don't touch _slotInactiveCounter — slot is still active,
+                            // Pass 2 will recreate it in the correct order.
+                        }
+                    }
+                }
+            }
+
             // --- Pass 2: Create virtual controllers in ascending slot order ---
             // ViGEm assigns indices sequentially on Connect(), so creation order
             // must match slot order. This applies to both Xbox 360 (XInput index)
@@ -412,7 +482,9 @@ namespace PadForge.Common.Input
                         var vc = CreateVirtualController(padIndex);
                         _virtualControllers[padIndex] = vc;
 
-                        if (vc == null)
+                        if (vc != null && vc.IsConnected)
+                            _slotInitializing[padIndex] = false;
+                        else if (vc == null)
                             _createCooldown[padIndex] = CreateCooldownCycles;
                     }
                 }
@@ -424,6 +496,10 @@ namespace PadForge.Common.Input
                 try
                 {
                     var vc = _virtualControllers[padIndex];
+                    // Clear initializing flag once the controller is connected.
+                    if (vc != null && vc.IsConnected && _slotInitializing[padIndex])
+                        _slotInitializing[padIndex] = false;
+
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
                         // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.

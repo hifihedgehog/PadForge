@@ -133,6 +133,10 @@
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="Engine stopped"/>
                                                     </MultiDataTrigger>
+                                                    <!-- Initializing: override tooltip -->
+                                                    <DataTrigger Binding="{Binding IsInitializing}" Value="True">
+                                                        <Setter Property="ToolTip" Value="Initializing"/>
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -170,6 +174,25 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                                         </MultiDataTrigger>
+                                                        <!-- Initializing: flashing green -->
+                                                        <DataTrigger Binding="{Binding IsInitializing}" Value="True">
+                                                            <Setter Property="Foreground" Value="#FF4CAF50"/>
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard x:Name="FlashGreenStoryboard">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation
+                                                                            Storyboard.TargetProperty="Opacity"
+                                                                            From="1.0" To="0.15"
+                                                                            Duration="0:0:0.5"
+                                                                            AutoReverse="True"
+                                                                            RepeatBehavior="Forever"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+                                                            <DataTrigger.ExitActions>
+                                                                <StopStoryboard BeginStoryboardName="FlashGreenStoryboard"/>
+                                                            </DataTrigger.ExitActions>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>

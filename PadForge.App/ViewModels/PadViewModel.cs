@@ -391,7 +391,9 @@ namespace PadForge.ViewModels
             Mappings.Clear();
 
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
-            if (isCustomVJoy)
+            if (OutputType == VirtualControllerType.Midi)
+                InitializeMidiMappings();
+            else if (isCustomVJoy)
                 InitializeVJoyCustomMappings();
             else
                 InitializeGamepadMappings();
@@ -453,6 +455,42 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
             Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+        }
+
+        /// <summary>
+        /// MIDI mappings — labels use CC numbers for axes and Note numbers for buttons.
+        /// Uses the same PadSetting property keys as gamepad so the pipeline works unchanged.
+        /// </summary>
+        private void InitializeMidiMappings()
+        {
+            var mc = MidiConfig;
+
+            // Axes → CC messages
+            Mappings.Add(new MappingItem($"CC {mc.CcLeftX} (LX)", "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
+            Mappings.Add(new MappingItem($"CC {mc.CcLeftY} (LY)", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
+            Mappings.Add(new MappingItem($"CC {mc.CcRightX} (RX)", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
+            Mappings.Add(new MappingItem($"CC {mc.CcRightY} (RY)", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+            Mappings.Add(new MappingItem($"CC {mc.CcLeftTrigger} (LT)", "LeftTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem($"CC {mc.CcRightTrigger} (RT)", "RightTrigger", MappingCategory.Triggers));
+
+            // Buttons → Note On/Off
+            Mappings.Add(new MappingItem($"Note {mc.NoteA} (A)", "ButtonA", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteB} (B)", "ButtonB", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteX} (X)", "ButtonX", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteY} (Y)", "ButtonY", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteLB} (LB)", "LeftShoulder", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteRB} (RB)", "RightShoulder", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteBack} (Back)", "ButtonBack", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteStart} (Start)", "ButtonStart", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteGuide} (Guide)", "ButtonGuide", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteLS} (LS)", "LeftThumbButton", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem($"Note {mc.NoteRS} (RS)", "RightThumbButton", MappingCategory.Buttons));
+
+            // MIDI has no D-Pad concept, but keep them so users can still map POV if desired
+            Mappings.Add(new MappingItem("D-Pad Up", "DPadUp", MappingCategory.DPad));
+            Mappings.Add(new MappingItem("D-Pad Down", "DPadDown", MappingCategory.DPad));
+            Mappings.Add(new MappingItem("D-Pad Left", "DPadLeft", MappingCategory.DPad));
+            Mappings.Add(new MappingItem("D-Pad Right", "DPadRight", MappingCategory.DPad));
         }
 
         /// <summary>

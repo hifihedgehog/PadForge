@@ -77,6 +77,12 @@ namespace PadForge.Common.Input
         public VJoyRawState[] CombinedVJoyRawStates { get; } = new VJoyRawState[MaxPads];
 
         /// <summary>
+        /// Combined MIDI raw output states for MIDI slots.
+        /// Written by Step 4 (background thread), read by Step 5.
+        /// </summary>
+        public MidiRawState[] CombinedMidiRawStates { get; } = new MidiRawState[MaxPads];
+
+        /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
         public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];

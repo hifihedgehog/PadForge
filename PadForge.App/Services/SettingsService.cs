@@ -314,26 +314,12 @@ namespace PadForge.Services
                         _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Midi)
                     {
                         var cfg = _mainVm.Pads[idx].MidiConfig;
-                        cfg.PortName = cfgData.PortName ?? "";
                         cfg.Channel = cfgData.Channel;
                         cfg.Velocity = cfgData.Velocity;
-                        cfg.CcLeftX = cfgData.CcLX;
-                        cfg.CcLeftY = cfgData.CcLY;
-                        cfg.CcLeftTrigger = cfgData.CcLT;
-                        cfg.CcRightX = cfgData.CcRX;
-                        cfg.CcRightY = cfgData.CcRY;
-                        cfg.CcRightTrigger = cfgData.CcRT;
-                        cfg.NoteA = cfgData.NoteA;
-                        cfg.NoteB = cfgData.NoteB;
-                        cfg.NoteX = cfgData.NoteX;
-                        cfg.NoteY = cfgData.NoteY;
-                        cfg.NoteLB = cfgData.NoteLB;
-                        cfg.NoteRB = cfgData.NoteRB;
-                        cfg.NoteBack = cfgData.NoteBack;
-                        cfg.NoteStart = cfgData.NoteStart;
-                        cfg.NoteLS = cfgData.NoteLS;
-                        cfg.NoteRS = cfgData.NoteRS;
-                        cfg.NoteGuide = cfgData.NoteGuide;
+                        cfg.CcCount = cfgData.CcCount;
+                        cfg.StartCc = cfgData.StartCc;
+                        cfg.NoteCount = cfgData.NoteCount;
+                        cfg.StartNote = cfgData.StartNote;
                     }
                 }
             }
@@ -732,6 +718,7 @@ namespace PadForge.Services
                         if (ps != null)
                         {
                             ps.FlushVJoyMappings();
+                            ps.FlushMidiMappings();
                             ps.UpdateChecksum();
                             us.PadSettingChecksum = ps.PadSettingChecksum;
                         }
@@ -859,15 +846,12 @@ namespace PadForge.Services
                 list.Add(new ViewModels.MidiSlotConfigData
                 {
                     SlotIndex = i,
-                    PortName = cfg.PortName,
                     Channel = cfg.Channel,
                     Velocity = cfg.Velocity,
-                    CcLX = cfg.CcLeftX, CcLY = cfg.CcLeftY, CcLT = cfg.CcLeftTrigger,
-                    CcRX = cfg.CcRightX, CcRY = cfg.CcRightY, CcRT = cfg.CcRightTrigger,
-                    NoteA = cfg.NoteA, NoteB = cfg.NoteB, NoteX = cfg.NoteX, NoteY = cfg.NoteY,
-                    NoteLB = cfg.NoteLB, NoteRB = cfg.NoteRB, NoteBack = cfg.NoteBack,
-                    NoteStart = cfg.NoteStart, NoteLS = cfg.NoteLS, NoteRS = cfg.NoteRS,
-                    NoteGuide = cfg.NoteGuide
+                    CcCount = cfg.CcCount,
+                    StartCc = cfg.StartCc,
+                    NoteCount = cfg.NoteCount,
+                    StartNote = cfg.StartNote
                 });
             }
             return list.ToArray();
@@ -1165,6 +1149,13 @@ namespace PadForge.Services
             if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
             {
                 ps.SetVJoyMapping(propertyName, value ?? string.Empty);
+                return;
+            }
+
+            // MIDI mappings use dictionary-based storage
+            if (propertyName.StartsWith("Midi", StringComparison.Ordinal))
+            {
+                ps.SetMidiMapping(propertyName, value ?? string.Empty);
                 return;
             }
 

@@ -848,6 +848,10 @@ namespace PadForge.Services
                 {
                     ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
                 }
+                else if (target.StartsWith("Midi", StringComparison.Ordinal))
+                {
+                    ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                }
                 else
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
@@ -918,36 +922,30 @@ namespace PadForge.Services
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
-                string value;
-                if (target.StartsWith("VJoy", StringComparison.Ordinal))
-                    value = ps.GetVJoyMapping(target);
-                else
-                {
-                    var prop = typeof(PadSetting).GetProperty(target);
-                    value = (prop != null && prop.PropertyType == typeof(string))
-                        ? prop.GetValue(ps) as string ?? string.Empty
-                        : string.Empty;
-                }
+                string value = GetMappingValue(ps, target);
                 mapping.LoadDescriptor(value);
                 ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
-                    string negValue;
-                    if (negTarget.StartsWith("VJoy", StringComparison.Ordinal))
-                        negValue = ps.GetVJoyMapping(negTarget);
-                    else
-                    {
-                        var negProp = typeof(PadSetting).GetProperty(negTarget);
-                        negValue = (negProp != null && negProp.PropertyType == typeof(string))
-                            ? negProp.GetValue(ps) as string ?? string.Empty
-                            : string.Empty;
-                    }
+                    string negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }
             }
+        }
+
+        private static string GetMappingValue(PadSetting ps, string key)
+        {
+            if (key.StartsWith("VJoy", StringComparison.Ordinal))
+                return ps.GetVJoyMapping(key);
+            if (key.StartsWith("Midi", StringComparison.Ordinal))
+                return ps.GetMidiMapping(key);
+            var prop = typeof(PadSetting).GetProperty(key);
+            return (prop != null && prop.PropertyType == typeof(string))
+                ? prop.GetValue(ps) as string ?? string.Empty
+                : string.Empty;
         }
 
         private static int TryParseInt(string value, int defaultValue)
@@ -1262,32 +1260,14 @@ namespace PadForge.Services
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
-                string value;
-                if (target.StartsWith("VJoy", StringComparison.Ordinal))
-                    value = ps.GetVJoyMapping(target);
-                else
-                {
-                    var prop = typeof(PadSetting).GetProperty(target);
-                    value = (prop != null && prop.PropertyType == typeof(string))
-                        ? prop.GetValue(ps) as string ?? string.Empty
-                        : string.Empty;
-                }
+                string value = GetMappingValue(ps, target);
                 mapping.LoadDescriptor(value);
                 ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
-                    string negValue;
-                    if (negTarget.StartsWith("VJoy", StringComparison.Ordinal))
-                        negValue = ps.GetVJoyMapping(negTarget);
-                    else
-                    {
-                        var negProp = typeof(PadSetting).GetProperty(negTarget);
-                        negValue = (negProp != null && negProp.PropertyType == typeof(string))
-                            ? negProp.GetValue(ps) as string ?? string.Empty
-                            : string.Empty;
-                    }
+                    string negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }

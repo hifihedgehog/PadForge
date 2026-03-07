@@ -741,6 +741,7 @@ namespace PadForge
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
         private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
+        private const string MidiSvgPath = Common.ControllerIcons.MidiSvgPath;
 
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
         private const int ControllerInsertIndex = 3;
@@ -950,6 +951,7 @@ namespace PadForge
             bool isXbox = iconKey == "XboxControllerIcon";
             bool isDS4 = iconKey == "DS4ControllerIcon";
             bool isVJoy = iconKey == "VJoyControllerIcon";
+            bool isMidi = iconKey == "MidiControllerIcon";
 
             var row = new System.Windows.Controls.DockPanel();
 
@@ -993,7 +995,7 @@ namespace PadForge
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = "Engine stopped";
             }
-            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy)
+            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = "ViGEmBus not installed";
@@ -1151,6 +1153,32 @@ namespace PadForge
             vjoyBtn.Click += OnSidebarTypeVJoy;
             row.Children.Add(vjoyBtn);
 
+            // MIDI type button — use SetResourceReference for theme-aware Fill.
+            var midiPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(MidiSvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            midiPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var midiBtn = new System.Windows.Controls.Button
+            {
+                Content = midiPath,
+                ToolTip = "MIDI",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isMidi ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            midiBtn.Click += OnSidebarTypeMidi;
+            row.Children.Add(midiBtn);
+
             // Per-type instance label.
             row.Children.Add(new System.Windows.Controls.TextBlock
             {
@@ -1234,6 +1262,18 @@ namespace PadForge
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                _inputService.EnsureTypeGroupOrder();
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar MIDI type button click.</summary>
+        private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -1800,7 +1840,7 @@ namespace PadForge
         /// </summary>
         private bool HasAnyControllerTypeCapacity()
         {
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -1809,11 +1849,13 @@ namespace PadForge
                     case VirtualControllerType.Xbox360: xboxCount++; break;
                     case VirtualControllerType.DualShock4: ds4Count++; break;
                     case VirtualControllerType.VJoy: vjoyCount++; break;
+                    case VirtualControllerType.Midi: midiCount++; break;
                 }
             }
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
-                || vjoyCount < SettingsManager.MaxVJoySlots;
+                || vjoyCount < SettingsManager.MaxVJoySlots
+                || midiCount < SettingsManager.MaxMidiSlots;
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -1877,7 +1919,7 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Count existing slots by type for per-type capacity check.
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -1886,6 +1928,7 @@ namespace PadForge
                     case VirtualControllerType.Xbox360: xboxCount++; break;
                     case VirtualControllerType.DualShock4: ds4Count++; break;
                     case VirtualControllerType.VJoy: vjoyCount++; break;
+                    case VirtualControllerType.Midi: midiCount++; break;
                 }
             }
 
@@ -2007,6 +2050,41 @@ namespace PadForge
                 }
             };
             stack.Children.Add(vjoyBtn);
+
+            // MIDI button — theme-aware icon fill.
+            var midiPopupPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(MidiSvgPath),
+                Width = 28,
+                Height = 28,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            midiPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
+            var midiBtn = new System.Windows.Controls.Button
+            {
+                Content = midiPopupPath,
+                ToolTip = midiAtCapacity ? $"MIDI (max {SettingsManager.MaxMidiSlots})" : "MIDI",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                IsEnabled = !midiAtCapacity,
+                Opacity = midiAtCapacity ? 0.35 : 1.0
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(midiBtn, "AddMidiBtn");
+            midiBtn.Click += (s, e) =>
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Midi);
+                if (newSlot >= 0)
+                {
+                    _inputService.EnsureTypeGroupOrder();
+                    int nav = FindLastSlotOfType(VirtualControllerType.Midi);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(midiBtn);
 
             border.Child = stack;
             popup.Child = border;
@@ -2597,7 +2675,7 @@ namespace PadForge
         private void RefreshDashboardActiveSlots()
         {
             var activeSlots = new System.Collections.Generic.List<int>();
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
             for (int i = 0; i < _viewModel.Pads.Count; i++)
             {
                 if (SettingsManager.SlotCreated[i])
@@ -2608,12 +2686,14 @@ namespace PadForge
                         case VirtualControllerType.Xbox360: xboxCount++; break;
                         case VirtualControllerType.DualShock4: ds4Count++; break;
                         case VirtualControllerType.VJoy: vjoyCount++; break;
+                        case VirtualControllerType.Midi: midiCount++; break;
                     }
                 }
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots
-                           || vjoyCount < SettingsManager.MaxVJoySlots;
+                           || vjoyCount < SettingsManager.MaxVJoySlots
+                           || midiCount < SettingsManager.MaxMidiSlots;
             _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 

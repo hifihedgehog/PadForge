@@ -373,50 +373,8 @@ namespace PadForge.Views
                 MidiChannelBox.Text = vm.MidiConfig.Channel.ToString();
                 MidiVelocityBox.Text = vm.MidiConfig.Velocity.ToString();
 
-                // Populate port list and select current port.
-                RefreshMidiPorts(vm);
                 _syncingMidiConfig = false;
             }
-        }
-
-        private void RefreshMidiPorts(PadViewModel vm)
-        {
-            MidiPortCombo.Items.Clear();
-            var ports = Common.Input.MidiVirtualController.GetOutputPortNames();
-            int selectedIdx = -1;
-            for (int i = 0; i < ports.Length; i++)
-            {
-                MidiPortCombo.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = ports[i] });
-                if (string.Equals(ports[i], vm.MidiConfig.PortName, StringComparison.OrdinalIgnoreCase))
-                    selectedIdx = i;
-            }
-            if (ports.Length == 0)
-                MidiPortCombo.Items.Add(new System.Windows.Controls.ComboBoxItem
-                {
-                    Content = "(no MIDI ports — install loopMIDI)",
-                    IsEnabled = false
-                });
-
-            MidiPortCombo.SelectedIndex = selectedIdx >= 0 ? selectedIdx : (ports.Length > 0 ? 0 : -1);
-        }
-
-        private void MidiPortCombo_DropDownOpened(object sender, EventArgs e)
-        {
-            // Refresh port list when dropdown opens (user may have started loopMIDI).
-            if (DataContext is PadViewModel vm)
-            {
-                _syncingMidiConfig = true;
-                RefreshMidiPorts(vm);
-                _syncingMidiConfig = false;
-            }
-        }
-
-        private void MidiPortCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_syncingMidiConfig) return;
-            if (DataContext is not PadViewModel vm) return;
-            if (MidiPortCombo.SelectedItem is System.Windows.Controls.ComboBoxItem item && item.IsEnabled)
-                vm.MidiConfig.PortName = item.Content?.ToString() ?? "";
         }
 
         private void MidiConfig_Changed(object sender, RoutedEventArgs e) => ApplyMidiConfigValues();

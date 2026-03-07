@@ -756,24 +756,13 @@ namespace PadForge.Common.Input
             var midiConfig = _midiConfigs[padIndex];
             if (midiConfig == null) return null;
 
-            var deviceId = MidiVirtualController.FindDeviceIdByName(midiConfig.PortName);
-            if (deviceId == null)
+            if (!MidiVirtualController.IsAvailable())
             {
-                // Auto-select the first available port if none configured or configured port missing.
-                var ports = MidiVirtualController.GetOutputPortNames();
-                if (ports.Length > 0)
-                {
-                    midiConfig.PortName = ports[0];
-                    deviceId = MidiVirtualController.FindDeviceIdByName(midiConfig.PortName);
-                }
-            }
-            if (deviceId == null)
-            {
-                RaiseError($"No MIDI output ports available. Install loopMIDI or connect a MIDI device.", null);
+                RaiseError("Windows MIDI Services is not available. MIDI output requires Windows 11 with MIDI Services enabled.", null);
                 return null;
             }
 
-            var vc = new MidiVirtualController(deviceId.Value, midiConfig.Channel - 1);
+            var vc = new MidiVirtualController(padIndex, midiConfig.Channel - 1);
             vc.CcNumbers = midiConfig.GetCcNumbers();
             vc.NoteNumbers = midiConfig.GetNoteNumbers();
             vc.Velocity = midiConfig.Velocity;

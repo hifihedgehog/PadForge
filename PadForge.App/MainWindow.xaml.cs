@@ -151,6 +151,32 @@ namespace PadForge
             _viewModel.Settings.UninstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
                 "Uninstalling vJoy…", DriverInstaller.UninstallVJoy, OnVJoyDriverChanged);
 
+            // Wire MIDI Services install command.
+            _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
+            {
+                _viewModel.StatusText = "Downloading Windows MIDI Services…";
+                DriverOverlayText.Text = "Downloading and installing Windows MIDI Services…";
+                DriverOverlay.Visibility = Visibility.Visible;
+                try
+                {
+                    await DriverInstaller.InstallMidiServicesAsync();
+                    _viewModel.StatusText = "Ready";
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    _viewModel.StatusText = "Operation cancelled by user.";
+                }
+                catch (Exception ex)
+                {
+                    _viewModel.StatusText = $"MIDI Services install failed: {ex.Message}";
+                }
+                finally
+                {
+                    DriverOverlay.Visibility = Visibility.Collapsed;
+                    RefreshMidiServicesStatus();
+                }
+            };
+
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
 
@@ -636,6 +662,9 @@ namespace PadForge
             RefreshVJoyStatus();
             _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
 
+            // Detect MIDI Services.
+            RefreshMidiServicesStatus();
+
             // Periodically refresh driver install states (every 5 seconds).
             _driverStatusTimer = new System.Windows.Threading.DispatcherTimer
             {
@@ -647,6 +676,7 @@ namespace PadForge
                 RefreshViGEmStatus();
                 RefreshHidHideStatus();
                 RefreshVJoyStatus();
+                RefreshMidiServicesStatus();
 
                 bool nowViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
                 _previousViGEmInstalled = nowViGEmInstalled;
@@ -2742,6 +2772,20 @@ namespace PadForge
             {
                 _viewModel.Settings.IsVJoyInstalled = false;
                 _viewModel.Dashboard.IsVJoyInstalled = false;
+            }
+        }
+
+        private void RefreshMidiServicesStatus()
+        {
+            try
+            {
+                bool installed = DriverInstaller.IsMidiServicesInstalled();
+                _viewModel.Settings.IsMidiServicesInstalled = installed;
+                _viewModel.Settings.MidiServicesVersion = installed ? "Windows MIDI Services" : string.Empty;
+            }
+            catch
+            {
+                _viewModel.Settings.IsMidiServicesInstalled = false;
             }
         }
 

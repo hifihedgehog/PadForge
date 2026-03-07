@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 using PadForge.Common.Input;
 
@@ -552,6 +554,99 @@ public static class PF_SetupApi {{
             }
 
             return null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Windows MIDI Services
+        // ─────────────────────────────────────────────
+
+        private const string MidiServicesGitHubApi =
+            "https://api.github.com/repos/microsoft/MIDI/releases/latest";
+
+        private static string GetMidiServicesTempDir()
+            => Path.Combine(Path.GetTempPath(), "PadForge_MidiServices");
+
+        /// <summary>
+        /// Downloads and runs the latest Windows MIDI Services SDK Runtime installer.
+        /// Uses the GitHub API to find the latest release asset dynamically.
+        /// The installer is ~210MB so it must be downloaded rather than embedded.
+        /// </summary>
+        public static async Task InstallMidiServicesAsync()
+        {
+            var tempDir = GetMidiServicesTempDir();
+            Directory.CreateDirectory(tempDir);
+
+            var installerPath = Path.Combine(tempDir, "MidiServicesSdkRuntime.exe");
+            try
+            {
+                using var http = new HttpClient();
+                http.DefaultRequestHeaders.UserAgent.ParseAdd("PadForge");
+                http.Timeout = TimeSpan.FromMinutes(10);
+
+                // Query GitHub API for the latest release and find the SDK Runtime installer asset.
+                var downloadUrl = await FindMidiServicesDownloadUrl(http);
+
+                using var response = await http.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                using var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write);
+                await stream.CopyToAsync(fs);
+
+                // Run the installer elevated.
+                RunElevated(installerPath, "/install /quiet /norestart");
+
+                // Reset the cached availability check so IsAvailable() re-evaluates.
+                MidiVirtualController.ResetAvailability();
+            }
+            finally
+            {
+                CleanupTempDir(tempDir);
+            }
+        }
+
+        /// <summary>
+        /// Queries the GitHub API for the latest microsoft/MIDI release and returns
+        /// the download URL for the SDK Runtime x64 installer asset.
+        /// </summary>
+        private static async Task<string> FindMidiServicesDownloadUrl(HttpClient http)
+        {
+            var json = await http.GetStringAsync(MidiServicesGitHubApi);
+
+            // Simple JSON parsing — find the browser_download_url for the SDK Runtime x64 exe.
+            // Asset name pattern: "Windows.MIDI.Services.SDK.Runtime.and.Tools.*-x64.exe"
+            const string needle = "browser_download_url";
+            int pos = 0;
+            while ((pos = json.IndexOf(needle, pos, StringComparison.Ordinal)) >= 0)
+            {
+                // Find the URL value after the key.
+                int urlStart = json.IndexOf("\"http", pos, StringComparison.Ordinal);
+                if (urlStart < 0) break;
+                urlStart++; // skip opening quote
+                int urlEnd = json.IndexOf('"', urlStart);
+                if (urlEnd < 0) break;
+
+                string url = json.Substring(urlStart, urlEnd - urlStart);
+                if (url.Contains("SDK.Runtime", StringComparison.OrdinalIgnoreCase) &&
+                    url.Contains("x64", StringComparison.OrdinalIgnoreCase) &&
+                    url.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    return url;
+                }
+
+                pos = urlEnd;
+            }
+
+            throw new InvalidOperationException(
+                "Could not find Windows MIDI Services SDK Runtime installer in the latest GitHub release.");
+        }
+
+        /// <summary>
+        /// Checks whether Windows MIDI Services is available on this system.
+        /// </summary>
+        public static bool IsMidiServicesInstalled()
+        {
+            return MidiVirtualController.IsAvailable();
         }
 
         // ─────────────────────────────────────────────

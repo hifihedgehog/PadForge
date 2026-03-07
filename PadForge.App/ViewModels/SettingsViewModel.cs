@@ -205,6 +205,49 @@ namespace PadForge.ViewModels
         public event EventHandler UninstallVJoyRequested;
 
         // ─────────────────────────────────────────────
+        //  Windows MIDI Services
+        // ─────────────────────────────────────────────
+
+        private bool _isMidiServicesInstalled;
+
+        /// <summary>Whether Windows MIDI Services is available.</summary>
+        public bool IsMidiServicesInstalled
+        {
+            get => _isMidiServicesInstalled;
+            set
+            {
+                if (SetProperty(ref _isMidiServicesInstalled, value))
+                {
+                    OnPropertyChanged(nameof(MidiServicesStatusText));
+                    _installMidiServicesCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>MIDI Services status display text.</summary>
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Available" : "Not Available";
+
+        private string _midiServicesVersion = string.Empty;
+
+        /// <summary>MIDI Services version string.</summary>
+        public string MidiServicesVersion
+        {
+            get => _midiServicesVersion;
+            set => SetProperty(ref _midiServicesVersion, value);
+        }
+
+        private RelayCommand _installMidiServicesCommand;
+
+        /// <summary>Command to download and install Windows MIDI Services.</summary>
+        public RelayCommand InstallMidiServicesCommand =>
+            _installMidiServicesCommand ??= new RelayCommand(
+                () => InstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isMidiServicesInstalled);
+
+        /// <summary>Raised when the user requests MIDI Services installation.</summary>
+        public event EventHandler InstallMidiServicesRequested;
+
+        // ─────────────────────────────────────────────
         //  Driver uninstall guards
         // ─────────────────────────────────────────────
 

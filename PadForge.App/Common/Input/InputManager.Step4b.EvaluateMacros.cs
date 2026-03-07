@@ -539,10 +539,15 @@ namespace PadForge.Common.Input
         private IAudioEndpointVolume _audioEndpointVolume;
         private bool _audioEndpointFailed;
         private float _lastSetVolume = -1f;
+        private DateTime _lastOsdTriggerTime;
+
+        private const ushort VK_VOLUME_UP = 0xAF;
+        private const ushort VK_VOLUME_DOWN = 0xAE;
 
         /// <summary>
         /// Sets the Windows system master volume. Uses change detection to avoid
-        /// redundant COM calls every polling cycle.
+        /// redundant COM calls every polling cycle. Triggers the modern volume
+        /// flyout OSD via a net-zero volume key pair, rate-limited to ~5 Hz.
         /// </summary>
         private void SetSystemVolume(float volume)
         {
@@ -568,6 +573,22 @@ namespace PadForge.Common.Input
 
                 var emptyGuid = Guid.Empty;
                 _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+
+                // Trigger the modern Windows volume flyout OSD by sending a
+                // net-zero VK_VOLUME_UP + VK_VOLUME_DOWN pair, then immediately
+                // re-setting the exact target volume to correct any rounding.
+                // Rate-limited to every 200ms (~5 Hz) to avoid input queue spam.
+                var now = DateTime.UtcNow;
+                if ((now - _lastOsdTriggerTime).TotalMilliseconds >= 200)
+                {
+                    SendKeyInput(VK_VOLUME_UP, keyUp: false);
+                    SendKeyInput(VK_VOLUME_UP, keyUp: true);
+                    SendKeyInput(VK_VOLUME_DOWN, keyUp: false);
+                    SendKeyInput(VK_VOLUME_DOWN, keyUp: true);
+                    // Re-set exact volume to undo the ±2% from the key events.
+                    _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+                    _lastOsdTriggerTime = now;
+                }
             }
             catch
             {

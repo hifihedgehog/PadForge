@@ -168,7 +168,6 @@ namespace PadForge.ViewModels
             int xboxCount = 0;
             int ds4Count = 0;
             int vjoyCount = 0;
-            int midiCount = 0;
             int globalCount = 0;
 
             foreach (var nav in NavControllerItems)
@@ -191,11 +190,6 @@ namespace PadForge.ViewModels
                         vjoyCount++;
                         instanceNum = vjoyCount;
                         iconKey = "VJoyControllerIcon";
-                        break;
-                    case VirtualControllerType.Midi:
-                        midiCount++;
-                        instanceNum = midiCount;
-                        iconKey = "MidiControllerIcon";
                         break;
                     default:
                         xboxCount++;

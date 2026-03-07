@@ -12,8 +12,5 @@ namespace PadForge.Common
 
         // Joystick icon from svgrepo.com (viewBox -4 -2 24 24, translated to 0,0 origin → 20x22 effective)
         public const string VJoySvgPath = "M11.915 15H13V9.874A4.002 4.002 0 0 1 14 2a4 4 0 0 1 1 7.874V15h2a3 3 0 0 1 3 3v4H4v-4a3 3 0 0 1 3-3h.085A1.5 1.5 0 0 1 8.5 14h2a1.5 1.5 0 0 1 1.415 1z";
-
-        // MIDI note icon (quarter note / beamed eighth notes, 24x24 viewBox)
-        public const string MidiSvgPath = "M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6zM10 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4z";
     }
 }

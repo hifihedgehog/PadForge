@@ -33,6 +33,14 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <!-- MIDI note icon (24x24 viewBox) -->
+    <DrawingImage x:Key="MidiControllerIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                             Geometry="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6zM10 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <!-- Generic gamepad icon (512x512 viewBox, scaled to ~32x32) -->
     <DrawingImage x:Key="GenericControllerIcon">
         <DrawingImage.Drawing>

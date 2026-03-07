@@ -147,6 +147,7 @@ namespace PadForge.Services
             {
                 _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
                 SyncVJoyConfigToSlot(i, _mainVm.Pads[i]);
+                _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
                 if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
                 {
                     if (_mainVm.Pads[i].OutputType == VirtualControllerType.Xbox360) expectedXbox++;
@@ -468,7 +469,7 @@ namespace PadForge.Services
                     : "Idle";
             }
 
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, globalCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
@@ -486,6 +487,10 @@ namespace PadForge.Services
                     case VirtualControllerType.VJoy:
                         vjoyCount++;
                         slot.TypeInstanceLabel = vjoyCount.ToString();
+                        break;
+                    case VirtualControllerType.Midi:
+                        midiCount++;
+                        slot.TypeInstanceLabel = midiCount.ToString();
                         break;
                     default:
                         xboxCount++;
@@ -752,6 +757,7 @@ namespace PadForge.Services
                 {
                     _inputManager.SlotControllerTypes[i] = padVm.OutputType;
                     SyncVJoyConfigToSlot(i, padVm);
+                    _inputManager._midiConfigs[i] = padVm.MidiConfig;
                 }
 
                 var selected = padVm.SelectedMappedDevice;
@@ -2005,7 +2011,7 @@ namespace PadForge.Services
 
             // Build the list of created slot indices for the dashboard.
             var activeSlots = new List<int>();
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (SettingsManager.SlotCreated[i])
@@ -2016,12 +2022,14 @@ namespace PadForge.Services
                         case VirtualControllerType.Xbox360: xboxCount++; break;
                         case VirtualControllerType.DualShock4: ds4Count++; break;
                         case VirtualControllerType.VJoy: vjoyCount++; break;
+                        case VirtualControllerType.Midi: midiCount++; break;
                     }
                 }
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots
-                           || vjoyCount < SettingsManager.MaxVJoySlots;
+                           || vjoyCount < SettingsManager.MaxVJoySlots
+                           || midiCount < SettingsManager.MaxMidiSlots;
             _mainVm.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
 
             // Update slot summary properties so dashboard cards reflect current state
@@ -2715,6 +2723,9 @@ namespace PadForge.Services
             // config after reorder. The setter re-subscribes PropertyChanged.
             (_mainVm.Pads[a].VJoyConfig, _mainVm.Pads[b].VJoyConfig) =
                 (_mainVm.Pads[b].VJoyConfig, _mainVm.Pads[a].VJoyConfig);
+
+            (_mainVm.Pads[a].MidiConfig, _mainVm.Pads[b].MidiConfig) =
+                (_mainVm.Pads[b].MidiConfig, _mainVm.Pads[a].MidiConfig);
         }
 
         private static int GetTypePriority(VirtualControllerType type) => type switch
@@ -2722,7 +2733,8 @@ namespace PadForge.Services
             VirtualControllerType.Xbox360 => 0,
             VirtualControllerType.DualShock4 => 1,
             VirtualControllerType.VJoy => 2,
-            _ => 3
+            VirtualControllerType.Midi => 3,
+            _ => 4
         };
 
         private void RefreshAfterSlotReorder()

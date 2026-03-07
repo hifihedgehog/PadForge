@@ -337,6 +337,70 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
+        //  MIDI mappings (dictionary-based)
+        //  Used for MIDI output with arbitrary CC/note counts.
+        //  Keys: "MidiCC0", "MidiCC0Neg", "MidiNote0", etc.
+        //  Values: mapping descriptors (same format as above).
+        // ─────────────────────────────────────────────
+
+        [XmlArray("MidiMappings")]
+        [XmlArrayItem("Map")]
+        public VJoyMappingEntry[] MidiMappingEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _midiMappingDict;
+
+        public string GetMidiMapping(string key)
+        {
+            EnsureMidiDict();
+            return _midiMappingDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetMidiMapping(string key, string value)
+        {
+            EnsureMidiDict();
+            if (string.IsNullOrEmpty(value))
+                _midiMappingDict.Remove(key);
+            else
+                _midiMappingDict[key] = value;
+        }
+
+        public void FlushMidiMappings()
+        {
+            if (_midiMappingDict == null || _midiMappingDict.Count == 0)
+            {
+                MidiMappingEntries = null;
+                return;
+            }
+            var entries = new VJoyMappingEntry[_midiMappingDict.Count];
+            int i = 0;
+            foreach (var kvp in _midiMappingDict)
+                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            MidiMappingEntries = entries;
+        }
+
+        private readonly object _midiDictLock = new();
+
+        private void EnsureMidiDict()
+        {
+            if (_midiMappingDict != null) return;
+            lock (_midiDictLock)
+            {
+                if (_midiMappingDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (MidiMappingEntries != null)
+                {
+                    foreach (var e in MidiMappingEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _midiMappingDict = dict;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Game-specific overrides
         // ─────────────────────────────────────────────
 
@@ -722,12 +786,23 @@ namespace PadForge.Engine.Data
                         Value = VJoyMappingEntries[i].Value
                     };
             }
+            // Deep-copy MIDI mappings
+            if (MidiMappingEntries != null)
+            {
+                clone.MidiMappingEntries = new VJoyMappingEntry[MidiMappingEntries.Length];
+                for (int i = 0; i < MidiMappingEntries.Length; i++)
+                    clone.MidiMappingEntries[i] = new VJoyMappingEntry
+                    {
+                        Key = MidiMappingEntries[i].Key,
+                        Value = MidiMappingEntries[i].Value
+                    };
+            }
             return clone;
         }
     }
 
     /// <summary>
-    /// Key-value entry for vJoy mapping persistence in XML.
+    /// Key-value entry for vJoy/MIDI mapping persistence in XML.
     /// </summary>
     public class VJoyMappingEntry
     {

@@ -547,8 +547,11 @@ namespace PadForge.Common.Input
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
                         // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.
+                        // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         if (vc is VJoyVirtualController vjoyVc && SlotVJoyIsCustom[padIndex])
                             vjoyVc.SubmitRawState(CombinedVJoyRawStates[padIndex]);
+                        else if (vc is MidiVirtualController midiVc)
+                            midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }

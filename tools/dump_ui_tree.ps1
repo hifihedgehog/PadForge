@@ -11,7 +11,7 @@ if (-not $proc) { Write-Host "PadForge not running"; Stop-Transcript; exit 1 }
 $root = [System.Windows.Automation.AutomationElement]::FromHandle($proc.MainWindowHandle)
 
 function Dump-Tree($el, $depth) {
-    if ($depth -gt 4) { return }
+    if ($depth -gt 8) { return }
     $indent = "  " * $depth
     $n = $el.Current.Name
     $t = $el.Current.ControlType.ProgrammaticName

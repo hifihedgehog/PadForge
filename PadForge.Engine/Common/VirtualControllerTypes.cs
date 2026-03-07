@@ -22,6 +22,14 @@ namespace PadForge.Engine
     {
         VirtualControllerType Type { get; }
         bool IsConnected { get; }
+
+        /// <summary>
+        /// The pad slot index this VC currently occupies. Updated by SwapSlotData
+        /// so feedback callbacks write to the correct VibrationStates element
+        /// after a slot reorder.
+        /// </summary>
+        int FeedbackPadIndex { get; set; }
+
         void Connect();
         void Disconnect();
         void SubmitGamepadState(Gamepad gp);

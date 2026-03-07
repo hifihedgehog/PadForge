@@ -319,6 +319,10 @@ namespace PadForge.Services
                 if (_inputManager.SlotVJoyIsCustom[i])
                     padVm.UpdateFromVJoyRawState(_inputManager.CombinedVJoyRawStates[i]);
 
+                // For MIDI slots, push the combined MidiRawState.
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
+                    padVm.UpdateFromMidiRawState(_inputManager.CombinedMidiRawStates[i]);
+
                 // Per-device state for stick/trigger tab previews.
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
@@ -476,6 +480,7 @@ namespace PadForge.Services
                 slot.SlotNumber = globalCount;
 
                 var padVm = _mainVm.Pads[slot.PadIndex];
+                padVm.SlotNumber = globalCount;
                 slot.OutputType = padVm.OutputType;
 
                 switch (padVm.OutputType)

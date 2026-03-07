@@ -356,10 +356,41 @@ function Get-RegDeviceCount {
 }
 
 function Get-JoyCplVJoyCount {
-    # Only count active/running VJOYRAWPDO devices (ConfigManagerErrorCode 0 = working).
-    # After node removal, child PDOs may linger in PnP tree with non-zero error code.
-    return (Get-CimInstance Win32_PnPEntity -ErrorAction SilentlyContinue |
-        Where-Object { $_.DeviceID -like '*VJOYRAWPDO*' -and $_.ConfigManagerErrorCode -eq 0 } | Measure-Object).Count
+    # Count actual vJoy joysticks visible to WinMM (joyGetDevCapsW).
+    # This is the authoritative count — it matches what joy.cpl and games see.
+    # VJOYRAWPDO is the sideband IOCTL PDO (always 1 per device node, NOT per joystick).
+    # HID collection children (HID\HIDCLASS&ColNN\...) are the real joystick devices,
+    # but WinMM is the easiest and most reliable way to count them.
+    if (-not ('WinMM_VJoy' -as [type])) {
+        Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public static class WinMM_VJoy {
+    [DllImport("winmm.dll")] public static extern int joyGetNumDevs();
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct JOYCAPSW {
+        public ushort wMid; public ushort wPid;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string szPname;
+        public uint wXmin, wXmax, wYmin, wYmax, wZmin, wZmax;
+        public uint wNumButtons, wPeriodMin, wPeriodMax;
+        public uint wRmin, wRmax, wUmin, wUmax, wVmin, wVmax;
+        public uint wCaps, wMaxAxes, wNumAxes, wMaxButtons;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string szRegKey;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)] public string szOEMVxD;
+    }
+    [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
+    public static extern int joyGetDevCapsW(uint uJoyID, ref JOYCAPSW pjc, int cbjc);
+}
+'@
+    }
+    $count = 0
+    $numDevs = [WinMM_VJoy]::joyGetNumDevs()
+    for ($i = 0; $i -lt $numDevs; $i++) {
+        $caps = New-Object WinMM_VJoy+JOYCAPSW
+        $res = [WinMM_VJoy]::joyGetDevCapsW($i, [ref]$caps, [Runtime.InteropServices.Marshal]::SizeOf($caps))
+        if ($res -eq 0 -and $caps.wMid -eq 0x1234 -and $caps.wPid -eq 0xBEAD) { $count++ }
+    }
+    return $count
 }
 
 function Get-VJoyNodeId {

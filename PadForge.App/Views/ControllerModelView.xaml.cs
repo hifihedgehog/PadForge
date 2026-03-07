@@ -65,6 +65,7 @@ namespace PadForge.Views
         // Model rotation via left/right-drag or single-touch drag (turntable-style)
         private bool _isRightDragging;
         private bool _isLeftDragging;
+        private bool _leftMouseActive;   // true only when our handler captured the mouse (not button clicks)
         private Point _leftDragStart;          // initial left-down position (for click vs drag threshold)
         private const double DragThreshold = 5; // pixels before left-click becomes a drag
         private Point _rightDragLast;
@@ -89,15 +90,15 @@ namespace PadForge.Views
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
             ModelVisual3D.Transform = _modelRotation;
 
-            // Subscribe all input on the UserControl so we intercept BEFORE HelixToolkit's
-            // CameraController class handlers can capture/consume events.
-            PreviewMouseLeftButtonDown += Viewport_PreviewMouseLeftButtonDown;
-            PreviewMouseLeftButtonUp += Viewport_PreviewMouseLeftButtonUp;
-            PreviewMouseRightButtonDown += Viewport_MouseRightButtonDown;
-            PreviewMouseRightButtonUp += Viewport_MouseRightButtonUp;
-            PreviewMouseMove += Viewport_PreviewMouseMove;
-            PreviewMouseWheel += Viewport_PreviewMouseWheel;
-            MouseLeave += Viewport_MouseLeave;
+            // Subscribe Preview events on the viewport itself (not the UserControl) so
+            // overlay controls like the Reset View button are never intercepted.
+            ModelViewPort.PreviewMouseLeftButtonDown += Viewport_PreviewMouseLeftButtonDown;
+            ModelViewPort.PreviewMouseLeftButtonUp += Viewport_PreviewMouseLeftButtonUp;
+            ModelViewPort.PreviewMouseRightButtonDown += Viewport_MouseRightButtonDown;
+            ModelViewPort.PreviewMouseRightButtonUp += Viewport_MouseRightButtonUp;
+            ModelViewPort.PreviewMouseMove += Viewport_PreviewMouseMove;
+            ModelViewPort.PreviewMouseWheel += Viewport_PreviewMouseWheel;
+            ModelViewPort.MouseLeave += Viewport_MouseLeave;
 
             PreviewTouchDown += Viewport_PreviewTouchDown;
             PreviewTouchMove += Viewport_PreviewTouchMove;
@@ -415,27 +416,27 @@ namespace PadForge.Views
 
         private void Viewport_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            _leftMouseActive = true;
             _leftDragStart = e.GetPosition(ModelViewPort);
             _isLeftDragging = false;
             _rightDragLast = _leftDragStart;
-            Mouse.Capture(this, CaptureMode.SubTree);
+            Mouse.Capture(ModelViewPort, CaptureMode.SubTree);
             e.Handled = true;
         }
 
         private void Viewport_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            bool wasDragging = _isLeftDragging;
+            _isLeftDragging = false;
+            _leftMouseActive = false;
             Mouse.Capture(null);
 
-            if (_isLeftDragging)
+            if (wasDragging)
             {
                 // Was a drag — just end rotation, no hit-test.
-                _isLeftDragging = false;
                 e.Handled = true;
                 return;
             }
-
-            // Was a click (no significant drag) — do hit-test for click-to-record.
-            _isLeftDragging = false;
             if (_currentModel == null) return;
 
             var pos = e.GetPosition(ModelViewPort);
@@ -474,7 +475,7 @@ namespace PadForge.Views
         {
             _isRightDragging = true;
             _rightDragLast = e.GetPosition(ModelViewPort);
-            Mouse.Capture(this, CaptureMode.SubTree);
+            Mouse.Capture(ModelViewPort, CaptureMode.SubTree);
             e.Handled = true;
         }
 
@@ -492,7 +493,7 @@ namespace PadForge.Views
         private void Viewport_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             // Promote left-button hold to drag once past threshold
-            if (!_isLeftDragging && e.LeftButton == MouseButtonState.Pressed)
+            if (_leftMouseActive && !_isLeftDragging && e.LeftButton == MouseButtonState.Pressed)
             {
                 var pos = e.GetPosition(ModelViewPort);
                 double ddx = pos.X - _leftDragStart.X;
@@ -577,8 +578,6 @@ namespace PadForge.Views
             if (_touchDragId == null)
             {
                 // First finger — start rotation tracking.
-                // Capture to UserControl (not HelixViewport3D) so the toolkit's
-                // CameraController never sees the touch.
                 _touchDragId = e.TouchDevice.Id;
                 _rightDragLast = e.GetTouchPoint(this).Position;
                 e.TouchDevice.Capture(this);

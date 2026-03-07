@@ -835,14 +835,14 @@ namespace PadForge.Views
             var material = new DiffuseMaterial(new SolidColorBrush(color));
             var quadrantGeo = new GeometryModel3D(quadrantMesh, material) { BackMaterial = material };
             _hoverQuadrantVisual = new ModelVisual3D { Content = quadrantGeo };
-            ModelViewPort.Children.Add(_hoverQuadrantVisual);
+            ModelVisual3D.Children.Add(_hoverQuadrantVisual);
         }
 
         private void RemoveHoverQuadrant()
         {
             if (_hoverQuadrantVisual != null)
             {
-                ModelViewPort.Children.Remove(_hoverQuadrantVisual);
+                ModelVisual3D.Children.Remove(_hoverQuadrantVisual);
                 _hoverQuadrantVisual = null;
             }
         }
@@ -1025,14 +1025,14 @@ namespace PadForge.Views
 
             var arrowGeo = CreateFlatArrow(arrowCenter, isX, isNeg, accentColor);
             _arrowVisual = new ModelVisual3D { Content = arrowGeo };
-            ModelViewPort.Children.Add(_arrowVisual);
+            ModelVisual3D.Children.Add(_arrowVisual);
         }
 
         private void RemoveArrow()
         {
             if (_arrowVisual != null)
             {
-                ModelViewPort.Children.Remove(_arrowVisual);
+                ModelVisual3D.Children.Remove(_arrowVisual);
                 _arrowVisual = null;
             }
         }
@@ -1087,7 +1087,7 @@ namespace PadForge.Views
                 BackMaterial = _quadrantRingMaterial
             };
             _quadrantRingVisual = new ModelVisual3D { Content = quadrantGeo };
-            ModelViewPort.Children.Add(_quadrantRingVisual);
+            ModelVisual3D.Children.Add(_quadrantRingVisual);
         }
 
         /// <summary>Toggles the quadrant ring overlay visibility for flashing.</summary>
@@ -1105,7 +1105,7 @@ namespace PadForge.Views
         {
             if (_quadrantRingVisual != null)
             {
-                ModelViewPort.Children.Remove(_quadrantRingVisual);
+                ModelVisual3D.Children.Remove(_quadrantRingVisual);
                 _quadrantRingVisual = null;
                 _quadrantRingMaterial = null;
             }

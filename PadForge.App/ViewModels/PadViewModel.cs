@@ -21,6 +21,7 @@ namespace PadForge.ViewModels
         public PadViewModel(int padIndex)
         {
             PadIndex = padIndex;
+            _slotNumber = padIndex + 1;
             Title = $"Virtual Controller {padIndex + 1}";
             SlotLabel = $"Virtual Controller {padIndex + 1}";
             _vJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
@@ -32,8 +33,13 @@ namespace PadForge.ViewModels
         /// <summary>Zero-based pad slot index (0–7).</summary>
         public int PadIndex { get; }
 
-        /// <summary>One-based slot number for display (1–8).</summary>
-        public int SlotNumber => PadIndex + 1;
+        private int _slotNumber;
+        /// <summary>One-based sequential number among active slots, for display.</summary>
+        public int SlotNumber
+        {
+            get => _slotNumber;
+            set => SetProperty(ref _slotNumber, value);
+        }
 
         private string _slotLabel;
         /// <summary>Display label (e.g., "Virtual Controller 1").</summary>
@@ -1396,6 +1402,18 @@ namespace PadForge.ViewModels
             }
 
             OnPropertyChanged(nameof(VJoyOutputSnapshot));
+        }
+
+        // ═══════════════════════════════════════════════
+        //  MIDI raw state snapshot (for MIDI preview view)
+        // ═══════════════════════════════════════════════
+
+        public MidiRawState MidiOutputSnapshot { get; private set; }
+
+        public void UpdateFromMidiRawState(MidiRawState raw)
+        {
+            MidiOutputSnapshot = raw;
+            OnPropertyChanged(nameof(MidiOutputSnapshot));
         }
 
         public void RefreshCommands()

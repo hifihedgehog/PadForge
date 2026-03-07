@@ -27,6 +27,7 @@ namespace PadForge.Common.Input
 
         private readonly int _padIndex;
         private readonly int _channel; // 0-15
+        private readonly int _instanceNum; // 1-based MIDI-type instance number
 
         // Change detection — only send messages when values actually change.
         private byte[] _lastCcValues;
@@ -43,23 +44,25 @@ namespace PadForge.Common.Input
 
         public VirtualControllerType Type => VirtualControllerType.Midi;
         public bool IsConnected => _connected;
+        public int FeedbackPadIndex { get; set; }
 
-        public MidiVirtualController(int padIndex, int channel)
+        public MidiVirtualController(int padIndex, int channel, int instanceNum)
         {
             _padIndex = padIndex;
             _channel = Math.Clamp(channel, 0, 15);
+            _instanceNum = instanceNum;
         }
 
         public void Connect()
         {
             if (_connected) return;
 
-            var deviceName = $"PadForge MIDI {_padIndex + 1}";
+            var deviceName = $"PadForge MIDI {_instanceNum}";
 
             // Define the virtual device.
             var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
             declaredEndpointInfo.Name = deviceName;
-            declaredEndpointInfo.ProductInstanceId = $"PADFORGE_MIDI_{_padIndex}";
+            declaredEndpointInfo.ProductInstanceId = $"PADFORGE_MIDI_{_instanceNum}";
             declaredEndpointInfo.SpecificationVersionMajor = 1;
             declaredEndpointInfo.SpecificationVersionMinor = 1;
             declaredEndpointInfo.SupportsMidi10Protocol = true;

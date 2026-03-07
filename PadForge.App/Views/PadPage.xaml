@@ -260,45 +260,45 @@
                 BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Ch" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                <TextBlock Text="Channel" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                            ToolTip="MIDI channel (1-16)"/>
-                <TextBox x:Name="MidiChannelBox" Width="35" VerticalAlignment="Center"
+                <TextBox x:Name="MidiChannelBox" Width="40" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="CCs" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="CC Count" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="Number of CC outputs"/>
-                <TextBox x:Name="MidiCcCountBox" Width="35" VerticalAlignment="Center"
+                           ToolTip="Number of CC outputs (max depends on Start CC)"/>
+                <TextBox x:Name="MidiCcCountBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="6"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="Start CC" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="First CC number (0-127)"/>
-                <TextBox x:Name="MidiStartCcBox" Width="35" VerticalAlignment="Center"
+                           ToolTip="First CC number (0-127). Higher values reduce max CC Count."/>
+                <TextBox x:Name="MidiStartCcBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="Notes" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="Note Count" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="Number of note outputs"/>
-                <TextBox x:Name="MidiNoteCountBox" Width="35" VerticalAlignment="Center"
+                           ToolTip="Number of note outputs (max depends on Start Note)"/>
+                <TextBox x:Name="MidiNoteCountBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="11"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="Start Note" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="First note number (0-127)"/>
-                <TextBox x:Name="MidiStartNoteBox" Width="35" VerticalAlignment="Center"
+                           ToolTip="First MIDI note number (0-127, 60 = Middle C). Higher values reduce max Note Count."/>
+                <TextBox x:Name="MidiStartNoteBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="60"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="Vel" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="Velocity" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="Note velocity (0-127)"/>
-                <TextBox x:Name="MidiVelocityBox" Width="35" VerticalAlignment="Center"
+                           ToolTip="Note-on velocity (0-127). How hard virtual keys are pressed."/>
+                <TextBox x:Name="MidiVelocityBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="127"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
             </StackPanel>
@@ -338,6 +338,7 @@
                         <views:ControllerModelView x:Name="ControllerModel3D" />
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
+                        <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
 
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
                         <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"

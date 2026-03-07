@@ -206,7 +206,10 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _createCooldown[padIndex] = 0; // Reset cooldown on type change
-                    _slotInitializing[padIndex] = true; // Will be recreated as new type
+                    // Only show initializing if the slot has an active device that
+                    // will trigger VC recreation. Empty slots (no device assigned)
+                    // should show "Awaiting controllers" (yellow), not "Initializing".
+                    _slotInitializing[padIndex] = IsSlotActive(padIndex);
                     vc = null;
                 }
 
@@ -765,7 +768,13 @@ namespace PadForge.Common.Input
                 return null;
             }
 
-            var vc = new MidiVirtualController(padIndex, midiConfig.Channel - 1);
+            // Compute 1-based MIDI instance number (count of MIDI slots up to and including this one)
+            int midiInstanceNum = 0;
+            for (int i = 0; i <= padIndex; i++)
+                if (SlotControllerTypes[i] == VirtualControllerType.Midi)
+                    midiInstanceNum++;
+
+            var vc = new MidiVirtualController(padIndex, midiConfig.Channel - 1, midiInstanceNum);
             vc.CcNumbers = midiConfig.GetCcNumbers();
             vc.NoteNumbers = midiConfig.GetNoteNumbers();
             vc.Velocity = midiConfig.Velocity;

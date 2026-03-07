@@ -82,27 +82,37 @@ namespace PadForge.Views
             return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Midi;
         }
 
-        private bool UseSchematicView() => IsCustomVJoy() || IsMidi();
-
         private void ApplyViewMode()
         {
-            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null) return;
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null) return;
 
-            bool isSchematic = UseSchematicView();
+            bool isMidi = IsMidi();
+            bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
-            if (isSchematic)
+            if (isMidi)
             {
-                // Custom vJoy / MIDI: always show schematic view, hide 2D/3D toggle
+                // MIDI: show MIDI preview, hide everything else
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                MidiPreview.Visibility = Visibility.Visible;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
+            else if (isSchematic)
+            {
+                // Custom vJoy: show schematic view, hide 2D/3D toggle
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Visible;
+                MidiPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else
             {
                 // Gamepad preset: standard 2D/3D toggle
                 ControllerSchematic.Visibility = Visibility.Collapsed;
+                MidiPreview.Visibility = Visibility.Collapsed;
                 ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
                 ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Visible;
@@ -137,17 +147,25 @@ namespace PadForge.Views
 
         private void BindActiveModelView()
         {
-            bool isSchematic = UseSchematicView();
+            bool isMidi = IsMidi();
+            bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             // Unbind all first
             ControllerModel3D.Unbind();
             ControllerModel2D.Unbind();
             ControllerSchematic.Unbind();
+            MidiPreview.Unbind();
 
             if (DataContext is not PadViewModel vm) return;
 
-            if (isSchematic)
+            if (isMidi)
+            {
+                MidiPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
+                MidiPreview.ControllerElementRecordRequested += OnModelRecordRequested;
+                MidiPreview.Bind(vm);
+            }
+            else if (isSchematic)
             {
                 ControllerSchematic.ControllerElementRecordRequested -= OnModelRecordRequested;
                 ControllerSchematic.ControllerElementRecordRequested += OnModelRecordRequested;
@@ -400,14 +418,15 @@ namespace PadForge.Views
 
             if (int.TryParse(MidiChannelBox.Text, out int ch))
                 vm.MidiConfig.Channel = ch;
-            if (int.TryParse(MidiCcCountBox.Text, out int ccCount))
-                vm.MidiConfig.CcCount = ccCount;
+            // Set start values first — they re-clamp counts automatically
             if (int.TryParse(MidiStartCcBox.Text, out int startCc))
                 vm.MidiConfig.StartCc = startCc;
-            if (int.TryParse(MidiNoteCountBox.Text, out int noteCount))
-                vm.MidiConfig.NoteCount = noteCount;
+            if (int.TryParse(MidiCcCountBox.Text, out int ccCount))
+                vm.MidiConfig.CcCount = ccCount;
             if (int.TryParse(MidiStartNoteBox.Text, out int startNote))
                 vm.MidiConfig.StartNote = startNote;
+            if (int.TryParse(MidiNoteCountBox.Text, out int noteCount))
+                vm.MidiConfig.NoteCount = noteCount;
             if (byte.TryParse(MidiVelocityBox.Text, out byte vel))
                 vm.MidiConfig.Velocity = vel;
 

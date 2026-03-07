@@ -543,6 +543,18 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // MIDI custom mappings (sorted for deterministic checksum)
+            EnsureMidiDict();
+            if (_midiMappingDict.Count > 0)
+            {
+                var midiKeys = new List<string>(_midiMappingDict.Keys);
+                midiKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in midiKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_midiMappingDict[key]); sb.Append('|');
+                }
+            }
+
             byte[] hash = MD5.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
             return BitConverter.ToString(hash, 0, 4).Replace("-", "").ToUpperInvariant();
         }

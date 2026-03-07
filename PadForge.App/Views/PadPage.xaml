@@ -261,9 +261,38 @@
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Ch" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="MIDI channel (1-16)"/>
                 <TextBox x:Name="MidiChannelBox" Width="35" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="CCs" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="Number of CC outputs"/>
+                <TextBox x:Name="MidiCcCountBox" Width="35" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="6"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Start CC" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="First CC number (0-127)"/>
+                <TextBox x:Name="MidiStartCcBox" Width="35" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="1"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Notes" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="Number of note outputs"/>
+                <TextBox x:Name="MidiNoteCountBox" Width="35" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="11"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Start Note" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="First note number (0-127)"/>
+                <TextBox x:Name="MidiStartNoteBox" Width="35" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="60"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="Vel" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"

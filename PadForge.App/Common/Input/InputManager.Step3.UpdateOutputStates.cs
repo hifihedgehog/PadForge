@@ -80,6 +80,15 @@ namespace PadForge.Common.Input
                         var cfg = SlotVJoyConfigs[slot];
                         us.VJoyRawOutputState = MapInputToVJoyRaw(ud.InputState, ps, cfg);
                     }
+
+                    // For MIDI slots, produce the raw MIDI output state.
+                    if (slot >= 0 && slot < MaxPads &&
+                        SlotControllerTypes[slot] == VirtualControllerType.Midi)
+                    {
+                        var mc = _midiConfigs[slot];
+                        if (mc != null)
+                            us.MidiRawOutputState = MapInputToMidiRaw(ud.InputState, ps, mc.CcCount, mc.NoteCount);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -955,6 +964,41 @@ namespace PadForge.Common.Input
             if (down) return 18000;
             if (left) return 27000;
             return -1; // Centered
+        }
+
+        // ─────────────────────────────────────────────
+        //  MIDI mapping engine
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Maps a CustomInputState to a MidiRawState using Midi dictionary-based
+        /// mappings. CC values are mapped from signed axis range to 0-127 MIDI range.
+        /// Notes are mapped as boolean on/off.
+        /// </summary>
+        private static MidiRawState MapInputToMidiRaw(CustomInputState state, PadSetting ps,
+            int ccCount, int noteCount)
+        {
+            var raw = MidiRawState.Create(ccCount, noteCount);
+            raw.Clear();
+
+            // CCs — map each from input axis to 0-127
+            for (int i = 0; i < ccCount; i++)
+            {
+                string posDesc = ps.GetMidiMapping($"MidiCC{i}");
+                string negDesc = ps.GetMidiMapping($"MidiCC{i}Neg");
+                short axisValue = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                // Convert signed short (-32768..32767) to MIDI range (0..127)
+                raw.CcValues[i] = (byte)((axisValue + 32768) * 127 / 65535);
+            }
+
+            // Notes — map each as boolean
+            for (int i = 0; i < noteCount; i++)
+            {
+                string desc = ps.GetMidiMapping($"MidiNote{i}");
+                raw.Notes[i] = MapToButtonPressed(state, desc);
+            }
+
+            return raw;
         }
     }
 }

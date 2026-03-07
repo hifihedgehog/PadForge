@@ -183,13 +183,13 @@
                              AutomationProperties.AutomationId="MappingsTab">
                     <TextBlock Text="Mappings" FontSize="13"/>
                 </RadioButton>
-                <RadioButton Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton x:Name="TabSticks" Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
                     <TextBlock Text="Sticks" FontSize="13"/>
                 </RadioButton>
-                <RadioButton Tag="4" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton x:Name="TabTriggers" Tag="4" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
                     <TextBlock Text="Triggers" FontSize="13"/>
                 </RadioButton>
-                <RadioButton Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton x:Name="TabForceFeedback" Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
                     <TextBlock Text="Force Feedback" FontSize="13"/>
                 </RadioButton>
             </WrapPanel>
@@ -328,7 +328,7 @@
                     <!-- ══════════════════════════════════════
                          MOTOR ACTIVITY INDICATORS
                          ══════════════════════════════════════ -->
-                    <Grid Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="24"/>

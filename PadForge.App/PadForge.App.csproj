@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <WindowsSdkPackageVersion>10.0.26100.57</WindowsSdkPackageVersion>
     <RootNamespace>PadForge</RootNamespace>
     <AssemblyName>PadForge</AssemblyName>
     <UseWPF>true</UseWPF>
@@ -71,6 +73,7 @@
     <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.27.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Nefarius.ViGEm.Client" Version="1.21.256" />
+    <PackageReference Include="Microsoft.Windows.Devices.Midi2" Version="1.0.16-rc.3.7" />
   </ItemGroup>
 
   <ItemGroup>

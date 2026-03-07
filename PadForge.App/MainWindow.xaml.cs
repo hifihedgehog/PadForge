@@ -731,6 +731,9 @@ namespace PadForge
             // Stop engine and dispose services.
             _recorderService?.Dispose();
             _inputService?.Dispose();
+
+            // Shut down MIDI Services SDK.
+            Common.Input.MidiVirtualController.Shutdown();
         }
 
         // ─────────────────────────────────────────────
@@ -1840,7 +1843,7 @@ namespace PadForge
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
                 || vjoyCount < SettingsManager.MaxVJoySlots
-                || midiCount < SettingsManager.MaxMidiSlots;
+                || (Common.Input.MidiVirtualController.IsAvailable() && midiCount < SettingsManager.MaxMidiSlots);
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -2045,17 +2048,22 @@ namespace PadForge
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
             midiPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            bool midiAvailable = Common.Input.MidiVirtualController.IsAvailable();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
+            bool midiDisabled = !midiAvailable || midiAtCapacity;
+            string midiTooltip = !midiAvailable ? "MIDI (requires Windows MIDI Services)"
+                               : midiAtCapacity ? $"MIDI (max {SettingsManager.MaxMidiSlots})"
+                               : "MIDI";
             var midiBtn = new System.Windows.Controls.Button
             {
                 Content = midiPopupPath,
-                ToolTip = midiAtCapacity ? $"MIDI (max {SettingsManager.MaxMidiSlots})" : "MIDI",
+                ToolTip = midiTooltip,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !midiAtCapacity,
-                Opacity = midiAtCapacity ? 0.35 : 1.0
+                IsEnabled = !midiDisabled,
+                Opacity = midiDisabled ? 0.35 : 1.0
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(midiBtn, "AddMidiBtn");
             midiBtn.Click += (s, e) =>

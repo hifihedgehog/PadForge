@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Nefarius.ViGEm.Client;
 using PadForge.Engine;
+using PadForge.ViewModels;
 
 namespace PadForge.Common.Input
 {
@@ -44,6 +45,12 @@ namespace PadForge.Common.Input
         /// Written by InputService from PadViewModel.VJoyConfig.IsGamepadPreset.
         /// </summary>
         internal bool[] SlotVJoyIsCustom { get; } = new bool[MaxPads];
+
+        /// <summary>
+        /// Per-slot MIDI configuration snapshot. Written by InputService at 30Hz.
+        /// Read by Step 5 to configure MIDI controllers on creation.
+        /// </summary>
+        internal ViewModels.MidiSlotConfig[] _midiConfigs = new ViewModels.MidiSlotConfig[MaxPads];
 
         /// <summary>
         /// Count of currently active ViGEm virtual controllers.
@@ -653,8 +660,10 @@ namespace PadForge.Common.Input
         {
             var controllerType = SlotControllerTypes[padIndex];
 
-            // vJoy doesn't need ViGEm, but Xbox 360 and DS4 do.
-            if (controllerType != VirtualControllerType.VJoy && _vigemClient == null)
+            // vJoy and MIDI don't need ViGEm, but Xbox 360 and DS4 do.
+            if (controllerType != VirtualControllerType.VJoy
+                && controllerType != VirtualControllerType.Midi
+                && _vigemClient == null)
                 return null;
 
             try
@@ -668,6 +677,7 @@ namespace PadForge.Common.Input
                 {
                     VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
                     VirtualControllerType.VJoy => CreateVJoyController(),
+                    VirtualControllerType.Midi => CreateMidiController(padIndex),
                     _ => new Xbox360VirtualController(_vigemClient)
                 };
 
@@ -734,6 +744,30 @@ namespace PadForge.Common.Input
                 return null;
             }
             return new VJoyVirtualController(deviceId);
+        }
+
+        /// <summary>
+        /// Creates a MIDI virtual controller for the given pad slot.
+        /// Reads port name and config from the PadViewModel's MidiConfig.
+        /// Returns null if the configured port is not found.
+        /// </summary>
+        private IVirtualController CreateMidiController(int padIndex)
+        {
+            var midiConfig = _midiConfigs[padIndex];
+            if (midiConfig == null) return null;
+
+            var deviceId = MidiVirtualController.FindDeviceIdByName(midiConfig.PortName);
+            if (deviceId == null)
+            {
+                RaiseError($"MIDI port \"{midiConfig.PortName}\" not found for pad {padIndex}.", null);
+                return null;
+            }
+
+            var vc = new MidiVirtualController(deviceId.Value, midiConfig.Channel - 1);
+            vc.CcNumbers = midiConfig.GetCcNumbers();
+            vc.NoteNumbers = midiConfig.GetNoteNumbers();
+            vc.Velocity = midiConfig.Velocity;
+            return vc;
         }
 
         private void DestroyVirtualController(int padIndex)

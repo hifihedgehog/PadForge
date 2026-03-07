@@ -76,7 +76,7 @@ namespace PadForge.Engine
     /// </summary>
     public struct VJoyRawState
     {
-        /// <summary>Up to 16 axes (short range). Index = axis number.</summary>
+        /// <summary>Up to 8 axes (short range). Index = axis number.</summary>
         public short[] Axes;
 
         /// <summary>Button state as 4 × 32-bit words = 128 buttons max.</summary>

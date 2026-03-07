@@ -77,16 +77,23 @@ namespace PadForge.Views
             return false;
         }
 
+        private bool IsMidi()
+        {
+            return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Midi;
+        }
+
+        private bool UseSchematicView() => IsCustomVJoy() || IsMidi();
+
         private void ApplyViewMode()
         {
             if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null) return;
 
-            bool isSchematic = IsCustomVJoy();
+            bool isSchematic = UseSchematicView();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             if (isSchematic)
             {
-                // Custom vJoy: always show schematic view, hide 2D/3D toggle
+                // Custom vJoy / MIDI: always show schematic view, hide 2D/3D toggle
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Visible;
@@ -106,12 +113,13 @@ namespace PadForge.Views
                 ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
             }
 
+            SyncTabVisibility();
             BindActiveModelView();
         }
 
         private void BindActiveModelView()
         {
-            bool isSchematic = IsCustomVJoy();
+            bool isSchematic = UseSchematicView();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             // Unbind all first
@@ -139,6 +147,24 @@ namespace PadForge.Views
                 ControllerModel3D.ControllerElementRecordRequested += OnModelRecordRequested;
                 ControllerModel3D.Bind(vm);
             }
+        }
+
+        private void SyncTabVisibility()
+        {
+            if (TabSticks == null || TabTriggers == null || TabForceFeedback == null) return;
+
+            bool isMidi = IsMidi();
+            var vis = isMidi ? Visibility.Collapsed : Visibility.Visible;
+            TabSticks.Visibility = vis;
+            TabTriggers.Visibility = vis;
+            TabForceFeedback.Visibility = vis;
+
+            if (MotorBarsGrid != null)
+                MotorBarsGrid.Visibility = vis;
+
+            // If on a hidden tab, switch back to Controller tab
+            if (isMidi && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
+                vm.SelectedConfigTab = 0;
         }
 
         private void OnModelRecordRequested(object sender, string targetName)

@@ -314,10 +314,10 @@ namespace PadForge.Common.Input
                     gp.ThumbRY = action.AxisValue;
                     break;
                 case MacroAxisTarget.LeftTrigger:
-                    gp.LeftTrigger = (byte)Math.Clamp((int)action.AxisValue, 0, 255);
+                    gp.LeftTrigger = (ushort)Math.Clamp((int)action.AxisValue, 0, 65535);
                     break;
                 case MacroAxisTarget.RightTrigger:
-                    gp.RightTrigger = (byte)Math.Clamp((int)action.AxisValue, 0, 255);
+                    gp.RightTrigger = (ushort)Math.Clamp((int)action.AxisValue, 0, 65535);
                     break;
             }
         }
@@ -609,9 +609,9 @@ namespace PadForge.Common.Input
                 MacroAxisTarget.LeftStickY => (gp.ThumbLY + 32768f) / 65535f,
                 MacroAxisTarget.RightStickX => (gp.ThumbRX + 32768f) / 65535f,
                 MacroAxisTarget.RightStickY => (gp.ThumbRY + 32768f) / 65535f,
-                // Triggers: 0..255 → 0..1
-                MacroAxisTarget.LeftTrigger => gp.LeftTrigger / 255f,
-                MacroAxisTarget.RightTrigger => gp.RightTrigger / 255f,
+                // Triggers: 0..65535 → 0..1
+                MacroAxisTarget.LeftTrigger => gp.LeftTrigger / 65535f,
+                MacroAxisTarget.RightTrigger => gp.RightTrigger / 65535f,
                 _ => 0f
             };
         }

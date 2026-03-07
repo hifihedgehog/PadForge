@@ -13,6 +13,7 @@ namespace PadForge.Common.Input
 
         public VirtualControllerType Type => VirtualControllerType.Xbox360;
         public bool IsConnected { get; private set; }
+        public int FeedbackPadIndex { get; set; }
 
         public Xbox360VirtualController(ViGEmClient client)
         {
@@ -73,21 +74,22 @@ namespace PadForge.Common.Input
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
-            int capturedIndex = padIndex;
+            FeedbackPadIndex = padIndex;
             _controller.FeedbackReceived += (sender, args) =>
             {
-                if (capturedIndex >= 0 && capturedIndex < vibrationStates.Length)
+                int idx = FeedbackPadIndex;
+                if (idx >= 0 && idx < vibrationStates.Length)
                 {
                     ushort newL = (ushort)(args.LargeMotor * 257);
                     ushort newR = (ushort)(args.SmallMotor * 257);
-                    ushort oldL = vibrationStates[capturedIndex].LeftMotorSpeed;
-                    ushort oldR = vibrationStates[capturedIndex].RightMotorSpeed;
+                    ushort oldL = vibrationStates[idx].LeftMotorSpeed;
+                    ushort oldR = vibrationStates[idx].RightMotorSpeed;
 
-                    vibrationStates[capturedIndex].LeftMotorSpeed = newL;
-                    vibrationStates[capturedIndex].RightMotorSpeed = newR;
+                    vibrationStates[idx].LeftMotorSpeed = newL;
+                    vibrationStates[idx].RightMotorSpeed = newR;
 
                     if (newL != oldL || newR != oldR)
-                        RumbleLogger.Log($"[ViGEm Xbox] Pad{capturedIndex} feedback L:{oldL}->{newL} R:{oldR}->{newR}");
+                        RumbleLogger.Log($"[ViGEm Xbox] Pad{idx} feedback L:{oldL}->{newL} R:{oldR}->{newR}");
                 }
             };
         }

@@ -1,67 +1,41 @@
 using System;
-using System.Runtime.InteropServices;
 using PadForge.Engine;
+
+using Microsoft.Windows.Devices.Midi2;
+using Microsoft.Windows.Devices.Midi2.Endpoints.Virtual;
+using Microsoft.Windows.Devices.Midi2.Messages;
 
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Virtual controller that sends MIDI messages (CC for axes, Note On/Off for buttons)
-    /// to a Windows MIDI output port (e.g., loopMIDI virtual port).
-    /// Uses winmm P/Invoke — no external dependencies.
+    /// Virtual controller that creates a Windows MIDI Services virtual device
+    /// and sends MIDI 1.0 messages (CC for axes, Note On/Off for buttons).
+    /// The device appears system-wide as a MIDI endpoint that DAWs and synths can connect to.
+    /// Falls back gracefully on systems without Windows MIDI Services.
     /// </summary>
     internal sealed class MidiVirtualController : IVirtualController
     {
-        // winmm P/Invoke
-        [DllImport("winmm.dll")]
-        private static extern int midiOutGetNumDevs();
+        private static bool? _isAvailable;
+        private static readonly object _availLock = new();
+        private static Microsoft.Windows.Devices.Midi2.Initialization.MidiDesktopAppSdkInitializer _initializer;
 
-        [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
-        private static extern int midiOutGetDevCapsW(uint uDeviceID, ref MIDIOUTCAPS lpMidiOutCaps, int cbMidiOutCaps);
-
-        [DllImport("winmm.dll")]
-        private static extern int midiOutOpen(out IntPtr lphmo, uint uDeviceID, IntPtr dwCallback, IntPtr dwCallbackInstance, int dwFlags);
-
-        [DllImport("winmm.dll")]
-        private static extern int midiOutClose(IntPtr hmo);
-
-        [DllImport("winmm.dll")]
-        private static extern int midiOutShortMsg(IntPtr hmo, uint dwMsg);
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        private struct MIDIOUTCAPS
-        {
-            public ushort wMid;
-            public ushort wPid;
-            public uint vDriverVersion;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string szPname;
-            public ushort wTechnology;
-            public ushort wVoices;
-            public ushort wNotes;
-            public ushort wChannelMask;
-            public uint dwSupport;
-        }
-
-        // MIDI status bytes
-        private const byte NoteOff = 0x80;
-        private const byte NoteOn = 0x90;
-        private const byte ControlChange = 0xB0;
-
-        private IntPtr _handle;
-        private readonly uint _deviceId;
-        private readonly int _channel; // 0-15
+        private MidiSession _session;
+        private MidiEndpointConnection _connection;
+        private MidiVirtualDevice _virtualDevice;
         private bool _connected;
         private bool _disposed;
+
+        private readonly int _padIndex;
+        private readonly int _channel; // 0-15
 
         // Change detection — only send messages when values actually change.
         private readonly byte[] _lastCcValues = new byte[6]; // LX, LY, LT, RX, RY, RT
         private ushort _lastButtons;
 
-        // Default CC mappings: LX=1, LY=2, LT=3, RX=4, RY=5, RT=6
-        // These can be customized via MidiSlotConfig.
+        // Default CC mappings: CC 1-6 for the 6 analog axes.
         internal int[] CcNumbers { get; set; } = { 1, 2, 3, 4, 5, 6 };
 
-        // Default note mappings: A=60, B=61, X=62, Y=63, LB=64, RB=65, Back=66, Start=67, LS=68, RS=69, Guide=70
+        // Default note mappings: Note 60-70 for 11 buttons.
         internal int[] NoteNumbers { get; set; } = { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70 };
 
         // Note velocity for button presses.
@@ -70,18 +44,90 @@ namespace PadForge.Common.Input
         public VirtualControllerType Type => VirtualControllerType.Midi;
         public bool IsConnected => _connected;
 
-        public MidiVirtualController(uint deviceId, int channel)
+        public MidiVirtualController(int padIndex, int channel)
         {
-            _deviceId = deviceId;
+            _padIndex = padIndex;
             _channel = Math.Clamp(channel, 0, 15);
         }
 
         public void Connect()
         {
             if (_connected) return;
-            int result = midiOutOpen(out _handle, _deviceId, IntPtr.Zero, IntPtr.Zero, 0);
-            if (result != 0)
-                throw new InvalidOperationException($"midiOutOpen failed with error {result} for device {_deviceId}");
+
+            var deviceName = $"PadForge MIDI {_padIndex + 1}";
+
+            // Define the virtual device.
+            var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
+            declaredEndpointInfo.Name = deviceName;
+            declaredEndpointInfo.ProductInstanceId = $"PADFORGE_MIDI_{_padIndex}";
+            declaredEndpointInfo.SpecificationVersionMajor = 1;
+            declaredEndpointInfo.SpecificationVersionMinor = 1;
+            declaredEndpointInfo.SupportsMidi10Protocol = true;
+            declaredEndpointInfo.SupportsMidi20Protocol = false;
+            declaredEndpointInfo.SupportsReceivingJitterReductionTimestamps = false;
+            declaredEndpointInfo.SupportsSendingJitterReductionTimestamps = false;
+            declaredEndpointInfo.HasStaticFunctionBlocks = true;
+
+            var declaredDeviceIdentity = new MidiDeclaredDeviceIdentity();
+
+            var userSuppliedInfo = new MidiEndpointUserSuppliedInfo();
+            userSuppliedInfo.Name = deviceName;
+            userSuppliedInfo.Description = $"PadForge virtual MIDI controller (slot {_padIndex + 1})";
+
+            var config = new MidiVirtualDeviceCreationConfig(
+                deviceName,
+                "Virtual MIDI controller from PadForge",
+                "PadForge",
+                declaredEndpointInfo,
+                declaredDeviceIdentity,
+                userSuppliedInfo
+            );
+
+            // Single function block for MIDI 1.0 output.
+            var block = new MidiFunctionBlock();
+            block.Number = 0;
+            block.Name = "Controller Output";
+            block.IsActive = true;
+            block.UIHint = MidiFunctionBlockUIHint.Sender;
+            block.FirstGroup = new MidiGroup(0);
+            block.GroupCount = 1;
+            block.Direction = MidiFunctionBlockDirection.Bidirectional;
+            block.RepresentsMidi10Connection = MidiFunctionBlockRepresentsMidi10Connection.YesBandwidthUnrestricted;
+            block.MaxSystemExclusive8Streams = 0;
+            block.MidiCIMessageVersionFormat = 0;
+            config.FunctionBlocks.Add(block);
+
+            _session = MidiSession.Create(deviceName);
+            if (_session == null)
+                throw new InvalidOperationException("Failed to create MIDI session.");
+
+            _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
+            if (_virtualDevice == null)
+            {
+                _session.Dispose();
+                _session = null;
+                throw new InvalidOperationException("Failed to create virtual MIDI device.");
+            }
+
+            _virtualDevice.SuppressHandledMessages = true;
+
+            _connection = _session.CreateEndpointConnection(_virtualDevice.DeviceEndpointDeviceId);
+            if (_connection == null)
+            {
+                _session.Dispose();
+                _session = null;
+                throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
+            }
+
+            _connection.AddMessageProcessingPlugin(_virtualDevice);
+
+            if (!_connection.Open())
+            {
+                _session.Dispose();
+                _session = null;
+                throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
+            }
+
             _connected = true;
 
             // Initialize change detection to neutral values.
@@ -96,27 +142,32 @@ namespace PadForge.Common.Input
             _connected = false;
 
             // Send Note Off for any held buttons.
-            for (int i = 0; i < 11 && i < NoteNumbers.Length; i++)
+            if (_connection != null)
             {
-                if ((_lastButtons & (1 << i)) != 0)
-                    SendNoteOff(NoteNumbers[i]);
+                for (int i = 0; i < 11 && i < NoteNumbers.Length; i++)
+                {
+                    if ((_lastButtons & (1 << i)) != 0)
+                        SendNoteOff(NoteNumbers[i]);
+                }
             }
             _lastButtons = 0;
 
-            if (_handle != IntPtr.Zero)
+            if (_connection != null && _session != null)
             {
-                midiOutClose(_handle);
-                _handle = IntPtr.Zero;
+                _session.DisconnectEndpointConnection(_connection.ConnectionId);
+                _connection = null;
             }
+
+            _session?.Dispose();
+            _session = null;
+            _virtualDevice = null;
         }
 
         public void SubmitGamepadState(Gamepad gp)
         {
-            if (!_connected || _handle == IntPtr.Zero) return;
+            if (!_connected || _connection == null) return;
 
             // Axes → CC messages (convert to 0-127 range)
-            // Stick axes: -32768..32767 → 0..127
-            // Trigger axes: 0..65535 → 0..127
             byte lx = AxisToMidi(gp.ThumbLX);
             byte ly = AxisToMidi(gp.ThumbLY);
             byte lt = TriggerToMidi(gp.LeftTrigger);
@@ -163,26 +214,43 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  MIDI message helpers
+        //  MIDI message helpers (MIDI 1.0 via UMP)
         // ─────────────────────────────────────────────
 
         private void SendCC(int ccNumber, byte value)
         {
-            // CC message: [status | channel] [cc#] [value]
-            uint msg = (uint)((ControlChange | _channel) | (ccNumber << 8) | (value << 16));
-            midiOutShortMsg(_handle, msg);
+            var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
+                0,
+                new MidiGroup(0),
+                Midi1ChannelVoiceMessageStatus.ControlChange,
+                new MidiChannel((byte)_channel),
+                (byte)ccNumber,
+                value);
+            _connection.SendSingleMessagePacket(msg);
         }
 
         private void SendNoteOn(int note, byte velocity)
         {
-            uint msg = (uint)((NoteOn | _channel) | (note << 8) | (velocity << 16));
-            midiOutShortMsg(_handle, msg);
+            var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
+                0,
+                new MidiGroup(0),
+                Midi1ChannelVoiceMessageStatus.NoteOn,
+                new MidiChannel((byte)_channel),
+                (byte)note,
+                velocity);
+            _connection.SendSingleMessagePacket(msg);
         }
 
         private void SendNoteOff(int note)
         {
-            uint msg = (uint)((NoteOff | _channel) | (note << 8));
-            midiOutShortMsg(_handle, msg);
+            var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
+                0,
+                new MidiGroup(0),
+                Midi1ChannelVoiceMessageStatus.NoteOff,
+                new MidiChannel((byte)_channel),
+                (byte)note,
+                0);
+            _connection.SendSingleMessagePacket(msg);
         }
 
         // ─────────────────────────────────────────────
@@ -202,42 +270,59 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  Static helpers for port enumeration
+        //  Static availability check
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Returns available MIDI output port names.
+        /// Returns true if Windows MIDI Services is available on this system.
+        /// Caches the result after first check.
         /// </summary>
-        public static string[] GetOutputPortNames()
+        public static bool IsAvailable()
         {
-            int count = midiOutGetNumDevs();
-            var names = new string[count];
-            for (uint i = 0; i < count; i++)
+            if (_isAvailable.HasValue) return _isAvailable.Value;
+
+            lock (_availLock)
             {
-                var caps = new MIDIOUTCAPS();
-                if (midiOutGetDevCapsW(i, ref caps, Marshal.SizeOf<MIDIOUTCAPS>()) == 0)
-                    names[i] = caps.szPname;
-                else
-                    names[i] = $"MIDI Out {i}";
+                if (_isAvailable.HasValue) return _isAvailable.Value;
+
+                try
+                {
+                    _initializer = Microsoft.Windows.Devices.Midi2.Initialization.MidiDesktopAppSdkInitializer.Create();
+                    if (!_initializer.InitializeSdkRuntime())
+                    {
+                        _initializer.Dispose();
+                        _initializer = null;
+                        _isAvailable = false;
+                        return false;
+                    }
+                    if (!_initializer.EnsureServiceAvailable())
+                    {
+                        _initializer.Dispose();
+                        _initializer = null;
+                        _isAvailable = false;
+                        return false;
+                    }
+                    _isAvailable = true;
+                    return true;
+                }
+                catch
+                {
+                    _isAvailable = false;
+                    return false;
+                }
             }
-            return names;
         }
 
         /// <summary>
-        /// Finds the device ID for a port by name. Returns null if not found.
+        /// Shuts down the MIDI Services SDK initializer. Call on app exit.
         /// </summary>
-        public static uint? FindDeviceIdByName(string portName)
+        public static void Shutdown()
         {
-            if (string.IsNullOrEmpty(portName)) return null;
-            int count = midiOutGetNumDevs();
-            for (uint i = 0; i < count; i++)
+            if (_initializer != null)
             {
-                var caps = new MIDIOUTCAPS();
-                if (midiOutGetDevCapsW(i, ref caps, Marshal.SizeOf<MIDIOUTCAPS>()) == 0
-                    && string.Equals(caps.szPname, portName, StringComparison.OrdinalIgnoreCase))
-                    return i;
+                _initializer.Dispose();
+                _initializer = null;
             }
-            return null;
         }
     }
 }

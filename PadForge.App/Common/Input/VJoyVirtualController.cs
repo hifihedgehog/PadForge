@@ -518,8 +518,8 @@ namespace PadForge.Common.Input
             int ly = 32767 - (gp.ThumbLY + 32768) / 2;   // Y inverted (HID Y-down=max)
             int rx = (gp.ThumbRX + 32768) / 2;
             int ry = 32767 - (gp.ThumbRY + 32768) / 2;   // Y inverted
-            int lt = gp.LeftTrigger * 32767 / 255;
-            int rt = gp.RightTrigger * 32767 / 255;
+            int lt = gp.LeftTrigger * 32767 / 65535;
+            int rt = gp.RightTrigger * 32767 / 65535;
 
             // Buttons 1–11 bitmask (Xbox 360 layout: A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
             int buttons = 0;

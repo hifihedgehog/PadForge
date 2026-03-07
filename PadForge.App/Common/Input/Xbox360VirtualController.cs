@@ -65,8 +65,8 @@ namespace PadForge.Common.Input
             _controller.SetAxisValue(Xbox360Axis.RightThumbX, gp.ThumbRX);
             _controller.SetAxisValue(Xbox360Axis.RightThumbY, gp.ThumbRY);
 
-            _controller.SetSliderValue(Xbox360Slider.LeftTrigger, gp.LeftTrigger);
-            _controller.SetSliderValue(Xbox360Slider.RightTrigger, gp.RightTrigger);
+            _controller.SetSliderValue(Xbox360Slider.LeftTrigger, (byte)(gp.LeftTrigger >> 8));
+            _controller.SetSliderValue(Xbox360Slider.RightTrigger, (byte)(gp.RightTrigger >> 8));
 
             _controller.SubmitReport();
         }

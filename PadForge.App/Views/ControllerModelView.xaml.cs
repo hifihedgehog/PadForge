@@ -872,11 +872,15 @@ namespace PadForge.Views
         {
             axis = null;
 
+            // Transform hit position from world space back to model-local space
+            // so quadrant detection works correctly when the model is rotated.
+            var localHitPos = TransformToLocal(hitPos);
+
             // Check left stick ring
             if (_currentModel.LeftThumbRing?.Children.Contains(hitGeo) == true)
             {
                 var center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
-                axis = DetermineAxisFromQuadrant(hitPos, center, "LeftThumbAxisX", "LeftThumbAxisY");
+                axis = DetermineAxisFromQuadrant(localHitPos, center, "LeftThumbAxisX", "LeftThumbAxisY");
                 return true;
             }
 
@@ -884,11 +888,29 @@ namespace PadForge.Views
             if (_currentModel.RightThumbRing?.Children.Contains(hitGeo) == true)
             {
                 var center = _currentModel.JoystickRotationPointCenterRightMillimeter;
-                axis = DetermineAxisFromQuadrant(hitPos, center, "RightThumbAxisX", "RightThumbAxisY");
+                axis = DetermineAxisFromQuadrant(localHitPos, center, "RightThumbAxisX", "RightThumbAxisY");
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Transforms a world-space point back to model-local space by applying
+        /// the inverse of the model rotation transform.
+        /// </summary>
+        private Point3D TransformToLocal(Point3D worldPoint)
+        {
+            var transform = ModelVisual3D.Transform;
+            if (transform == null || transform == Transform3D.Identity)
+                return worldPoint;
+
+            var inverse = transform.Value;
+            if (!inverse.HasInverse)
+                return worldPoint;
+
+            inverse.Invert();
+            return inverse.Transform(worldPoint);
         }
 
         /// <summary>
@@ -1191,7 +1213,7 @@ namespace PadForge.Views
         /// </summary>
         private static Point3D OffsetTorusOutward(Point3D p, Vector3D center, double majorR)
         {
-            const double offset = 0.4;
+            const double offset = 0.8;
             double dx = p.X - center.X, dz = p.Z - center.Z;
             double dist = Math.Sqrt(dx * dx + dz * dz);
             if (dist < 0.001) return p;

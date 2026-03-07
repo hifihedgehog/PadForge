@@ -759,7 +759,17 @@ namespace PadForge.Common.Input
             var deviceId = MidiVirtualController.FindDeviceIdByName(midiConfig.PortName);
             if (deviceId == null)
             {
-                RaiseError($"MIDI port \"{midiConfig.PortName}\" not found for pad {padIndex}.", null);
+                // Auto-select the first available port if none configured or configured port missing.
+                var ports = MidiVirtualController.GetOutputPortNames();
+                if (ports.Length > 0)
+                {
+                    midiConfig.PortName = ports[0];
+                    deviceId = MidiVirtualController.FindDeviceIdByName(midiConfig.PortName);
+                }
+            }
+            if (deviceId == null)
+            {
+                RaiseError($"No MIDI output ports available. Install loopMIDI or connect a MIDI device.", null);
                 return null;
             }
 

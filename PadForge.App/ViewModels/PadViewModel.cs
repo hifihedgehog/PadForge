@@ -140,22 +140,6 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
-        //  MIDI per-slot configuration
-        // ═══════════════════════════════════════════════
-
-        private MidiSlotConfig _midiConfig = new();
-
-        /// <summary>
-        /// Per-slot MIDI configuration (port, channel, CC/note mappings).
-        /// Always present — only meaningful when OutputType == Midi.
-        /// </summary>
-        public MidiSlotConfig MidiConfig
-        {
-            get => _midiConfig;
-            set => SetProperty(ref _midiConfig, value ?? new());
-        }
-
-        // ═══════════════════════════════════════════════
         //  #1: Multi-device selection within a slot
         // ═══════════════════════════════════════════════
 
@@ -391,9 +375,7 @@ namespace PadForge.ViewModels
             Mappings.Clear();
 
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
-            if (OutputType == VirtualControllerType.Midi)
-                InitializeMidiMappings();
-            else if (isCustomVJoy)
+            if (isCustomVJoy)
                 InitializeVJoyCustomMappings();
             else
                 InitializeGamepadMappings();
@@ -455,35 +437,6 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
             Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
-        }
-
-        /// <summary>
-        /// MIDI mappings — labels use CC numbers for axes and Note numbers for buttons.
-        /// Uses the same PadSetting property keys as gamepad so the pipeline works unchanged.
-        /// </summary>
-        private void InitializeMidiMappings()
-        {
-            var mc = MidiConfig;
-
-            // Axes → CC messages
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftX}", "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftY}", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightX}", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightY}", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftTrigger}", "LeftTrigger", MappingCategory.Triggers));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightTrigger}", "RightTrigger", MappingCategory.Triggers));
-
-            // Buttons → Note On/Off (10 notes, no Guide — pure MIDI)
-            Mappings.Add(new MappingItem($"Note {mc.NoteA}", "ButtonA", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteB}", "ButtonB", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteX}", "ButtonX", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteY}", "ButtonY", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteLB}", "LeftShoulder", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteRB}", "RightShoulder", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteBack}", "ButtonBack", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteStart}", "ButtonStart", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteLS}", "LeftThumbButton", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteRS}", "RightThumbButton", MappingCategory.Buttons));
         }
 
         /// <summary>

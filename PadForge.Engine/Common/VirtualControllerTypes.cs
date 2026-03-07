@@ -9,8 +9,7 @@ namespace PadForge.Engine
     {
         Xbox360 = 0,
         DualShock4 = 1,
-        VJoy = 2,
-        Midi = 3
+        VJoy = 2
     }
 
     /// <summary>

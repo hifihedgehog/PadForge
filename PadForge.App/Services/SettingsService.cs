@@ -303,6 +303,41 @@ namespace PadForge.Services
                 }
             }
 
+            // Load per-slot MIDI configurations.
+            if (appSettings.MidiConfigs != null)
+            {
+                foreach (var cfgData in appSettings.MidiConfigs)
+                {
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Midi)
+                    {
+                        var cfg = _mainVm.Pads[idx].MidiConfig;
+                        cfg.PortName = cfgData.PortName ?? "";
+                        cfg.Channel = cfgData.Channel;
+                        cfg.Velocity = cfgData.Velocity;
+                        cfg.CcLeftX = cfgData.CcLX;
+                        cfg.CcLeftY = cfgData.CcLY;
+                        cfg.CcLeftTrigger = cfgData.CcLT;
+                        cfg.CcRightX = cfgData.CcRX;
+                        cfg.CcRightY = cfgData.CcRY;
+                        cfg.CcRightTrigger = cfgData.CcRT;
+                        cfg.NoteA = cfgData.NoteA;
+                        cfg.NoteB = cfgData.NoteB;
+                        cfg.NoteX = cfgData.NoteX;
+                        cfg.NoteY = cfgData.NoteY;
+                        cfg.NoteLB = cfgData.NoteLB;
+                        cfg.NoteRB = cfgData.NoteRB;
+                        cfg.NoteBack = cfgData.NoteBack;
+                        cfg.NoteStart = cfgData.NoteStart;
+                        cfg.NoteLS = cfgData.NoteLS;
+                        cfg.NoteRS = cfgData.NoteRS;
+                        cfg.NoteGuide = cfgData.NoteGuide;
+                    }
+                }
+            }
+
             // Load DSU motion server settings (now on Dashboard VM).
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
             _mainVm.Dashboard.DsuMotionServerPort = appSettings.DsuMotionServerPort > 0
@@ -810,8 +845,32 @@ namespace PadForge.Services
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
-                VJoyConfigs = vjoyConfigs.ToArray()
+                VJoyConfigs = vjoyConfigs.ToArray(),
+                MidiConfigs = BuildMidiConfigs()
             };
+        }
+
+        private ViewModels.MidiSlotConfigData[] BuildMidiConfigs()
+        {
+            var list = new System.Collections.Generic.List<ViewModels.MidiSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var cfg = _mainVm.Pads[i].MidiConfig;
+                list.Add(new ViewModels.MidiSlotConfigData
+                {
+                    SlotIndex = i,
+                    PortName = cfg.PortName,
+                    Channel = cfg.Channel,
+                    Velocity = cfg.Velocity,
+                    CcLX = cfg.CcLeftX, CcLY = cfg.CcLeftY, CcLT = cfg.CcLeftTrigger,
+                    CcRX = cfg.CcRightX, CcRY = cfg.CcRightY, CcRT = cfg.CcRightTrigger,
+                    NoteA = cfg.NoteA, NoteB = cfg.NoteB, NoteX = cfg.NoteX, NoteY = cfg.NoteY,
+                    NoteLB = cfg.NoteLB, NoteRB = cfg.NoteRB, NoteBack = cfg.NoteBack,
+                    NoteStart = cfg.NoteStart, NoteLS = cfg.NoteLS, NoteRS = cfg.NoteRS,
+                    NoteGuide = cfg.NoteGuide
+                });
+            }
+            return list.ToArray();
         }
 
         /// <summary>
@@ -1256,6 +1315,14 @@ namespace PadForge.Services
         [XmlArray("VJoyConfigs")]
         [XmlArrayItem("Config")]
         public ViewModels.VJoySlotConfigData[] VJoyConfigs { get; set; }
+
+        /// <summary>
+        /// Per-slot MIDI configuration (port, channel, CC/note mappings).
+        /// Null on old settings files — uses defaults.
+        /// </summary>
+        [XmlArray("MidiConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.MidiSlotConfigData[] MidiConfigs { get; set; }
     }
 
     /// <summary>

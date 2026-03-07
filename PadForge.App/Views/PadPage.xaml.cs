@@ -31,6 +31,7 @@ namespace PadForge.Views
             ApplyViewMode();
             SyncTabStripSelection();
             SyncVJoyConfigBar();
+            SyncMidiConfigBar();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -45,6 +46,7 @@ namespace PadForge.Views
             ApplyViewMode();
             SyncTabStripSelection();
             SyncVJoyConfigBar();
+            SyncMidiConfigBar();
         }
 
         // ─────────────────────────────────────────────
@@ -75,16 +77,23 @@ namespace PadForge.Views
             return false;
         }
 
+        private bool IsMidi()
+        {
+            return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Midi;
+        }
+
+        private bool UseSchematicView() => IsCustomVJoy() || IsMidi();
+
         private void ApplyViewMode()
         {
             if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null) return;
 
-            bool isSchematic = IsCustomVJoy();
+            bool isSchematic = UseSchematicView();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             if (isSchematic)
             {
-                // Custom vJoy: always show schematic view, hide 2D/3D toggle
+                // Custom vJoy / MIDI: always show schematic view, hide 2D/3D toggle
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Visible;
@@ -104,12 +113,31 @@ namespace PadForge.Views
                 ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
             }
 
+            SyncTabVisibility();
             BindActiveModelView();
+        }
+
+        private void SyncTabVisibility()
+        {
+            if (TabSticks == null || TabTriggers == null || TabForceFeedback == null) return;
+
+            bool isMidi = IsMidi();
+            var vis = isMidi ? Visibility.Collapsed : Visibility.Visible;
+            TabSticks.Visibility = vis;
+            TabTriggers.Visibility = vis;
+            TabForceFeedback.Visibility = vis;
+
+            if (MotorBarsGrid != null)
+                MotorBarsGrid.Visibility = vis;
+
+            // If on a hidden tab, switch back to Controller tab
+            if (isMidi && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
+                vm.SelectedConfigTab = 0;
         }
 
         private void BindActiveModelView()
         {
-            bool isSchematic = IsCustomVJoy();
+            bool isSchematic = UseSchematicView();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             // Unbind all first
@@ -241,6 +269,7 @@ namespace PadForge.Views
             else if (e.PropertyName == nameof(PadViewModel.OutputType))
             {
                 SyncVJoyConfigBar();
+                SyncMidiConfigBar();
                 ApplyViewMode();
             }
         }
@@ -323,6 +352,92 @@ namespace PadForge.Views
             VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
             VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
             VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+        }
+
+        // ─────────────────────────────────────────────
+        //  MIDI configuration bar
+        // ─────────────────────────────────────────────
+
+        private bool _syncingMidiConfig;
+
+        private void SyncMidiConfigBar()
+        {
+            if (DataContext is not PadViewModel vm) return;
+
+            bool isMidi = vm.OutputType == Engine.VirtualControllerType.Midi;
+            MidiConfigBar.Visibility = isMidi ? Visibility.Visible : Visibility.Collapsed;
+
+            if (isMidi)
+            {
+                _syncingMidiConfig = true;
+                MidiChannelBox.Text = vm.MidiConfig.Channel.ToString();
+                MidiVelocityBox.Text = vm.MidiConfig.Velocity.ToString();
+
+                // Populate port list and select current port.
+                RefreshMidiPorts(vm);
+                _syncingMidiConfig = false;
+            }
+        }
+
+        private void RefreshMidiPorts(PadViewModel vm)
+        {
+            MidiPortCombo.Items.Clear();
+            var ports = Common.Input.MidiVirtualController.GetOutputPortNames();
+            int selectedIdx = -1;
+            for (int i = 0; i < ports.Length; i++)
+            {
+                MidiPortCombo.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = ports[i] });
+                if (string.Equals(ports[i], vm.MidiConfig.PortName, StringComparison.OrdinalIgnoreCase))
+                    selectedIdx = i;
+            }
+            if (ports.Length == 0)
+                MidiPortCombo.Items.Add(new System.Windows.Controls.ComboBoxItem
+                {
+                    Content = "(no MIDI ports — install loopMIDI)",
+                    IsEnabled = false
+                });
+
+            MidiPortCombo.SelectedIndex = selectedIdx >= 0 ? selectedIdx : (ports.Length > 0 ? 0 : -1);
+        }
+
+        private void MidiPortCombo_DropDownOpened(object sender, EventArgs e)
+        {
+            // Refresh port list when dropdown opens (user may have started loopMIDI).
+            if (DataContext is PadViewModel vm)
+            {
+                _syncingMidiConfig = true;
+                RefreshMidiPorts(vm);
+                _syncingMidiConfig = false;
+            }
+        }
+
+        private void MidiPortCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingMidiConfig) return;
+            if (DataContext is not PadViewModel vm) return;
+            if (MidiPortCombo.SelectedItem is System.Windows.Controls.ComboBoxItem item && item.IsEnabled)
+                vm.MidiConfig.PortName = item.Content?.ToString() ?? "";
+        }
+
+        private void MidiConfig_Changed(object sender, RoutedEventArgs e) => ApplyMidiConfigValues();
+
+        private void MidiConfig_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                ApplyMidiConfigValues();
+        }
+
+        private void ApplyMidiConfigValues()
+        {
+            if (DataContext is not PadViewModel vm) return;
+            if (int.TryParse(MidiChannelBox.Text, out int ch))
+                vm.MidiConfig.Channel = ch;
+            if (byte.TryParse(MidiVelocityBox.Text, out byte vel))
+                vm.MidiConfig.Velocity = vel;
+
+            // Reflect clamped values
+            MidiChannelBox.Text = vm.MidiConfig.Channel.ToString();
+            MidiVelocityBox.Text = vm.MidiConfig.Velocity.ToString();
         }
     }
 }

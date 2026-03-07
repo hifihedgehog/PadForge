@@ -289,27 +289,6 @@
                                               Width="14" Height="14" Stretch="Uniform"/>
                                     </Button>
 
-                                    <!-- MIDI type button -->
-                                    <Button ToolTip="MIDI" Background="Transparent"
-                                            Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
-                                            VerticalAlignment="Center" Margin="2,0,0,0"
-                                            Click="MidiType_Click" Tag="{Binding PadIndex}">
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Opacity" Value="0.3"/>
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding OutputType}" Value="Midi">
-                                                        <Setter Property="Opacity" Value="1.0"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                        <Path Data="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6zM10 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
-                                              Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
-                                              Width="14" Height="14" Stretch="Uniform"/>
-                                    </Button>
-
                                     <!-- Per-type instance # -->
                                     <TextBlock Text="{Binding TypeInstanceLabel}"
                                                FontWeight="SemiBold" FontSize="13"

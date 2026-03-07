@@ -371,8 +371,11 @@ namespace PadForge.Views
             {
                 _syncingMidiConfig = true;
                 MidiChannelBox.Text = vm.MidiConfig.Channel.ToString();
+                MidiCcCountBox.Text = vm.MidiConfig.CcCount.ToString();
+                MidiStartCcBox.Text = vm.MidiConfig.StartCc.ToString();
+                MidiNoteCountBox.Text = vm.MidiConfig.NoteCount.ToString();
+                MidiStartNoteBox.Text = vm.MidiConfig.StartNote.ToString();
                 MidiVelocityBox.Text = vm.MidiConfig.Velocity.ToString();
-
                 _syncingMidiConfig = false;
             }
         }
@@ -388,14 +391,38 @@ namespace PadForge.Views
         private void ApplyMidiConfigValues()
         {
             if (DataContext is not PadViewModel vm) return;
+            if (_syncingMidiConfig) return;
+
+            int oldCcCount = vm.MidiConfig.CcCount;
+            int oldNoteCount = vm.MidiConfig.NoteCount;
+            int oldStartCc = vm.MidiConfig.StartCc;
+            int oldStartNote = vm.MidiConfig.StartNote;
+
             if (int.TryParse(MidiChannelBox.Text, out int ch))
                 vm.MidiConfig.Channel = ch;
+            if (int.TryParse(MidiCcCountBox.Text, out int ccCount))
+                vm.MidiConfig.CcCount = ccCount;
+            if (int.TryParse(MidiStartCcBox.Text, out int startCc))
+                vm.MidiConfig.StartCc = startCc;
+            if (int.TryParse(MidiNoteCountBox.Text, out int noteCount))
+                vm.MidiConfig.NoteCount = noteCount;
+            if (int.TryParse(MidiStartNoteBox.Text, out int startNote))
+                vm.MidiConfig.StartNote = startNote;
             if (byte.TryParse(MidiVelocityBox.Text, out byte vel))
                 vm.MidiConfig.Velocity = vel;
 
             // Reflect clamped values
             MidiChannelBox.Text = vm.MidiConfig.Channel.ToString();
+            MidiCcCountBox.Text = vm.MidiConfig.CcCount.ToString();
+            MidiStartCcBox.Text = vm.MidiConfig.StartCc.ToString();
+            MidiNoteCountBox.Text = vm.MidiConfig.NoteCount.ToString();
+            MidiStartNoteBox.Text = vm.MidiConfig.StartNote.ToString();
             MidiVelocityBox.Text = vm.MidiConfig.Velocity.ToString();
+
+            // Reinitialize mapping rows when counts or start numbers change
+            if (vm.MidiConfig.CcCount != oldCcCount || vm.MidiConfig.NoteCount != oldNoteCount ||
+                vm.MidiConfig.StartCc != oldStartCc || vm.MidiConfig.StartNote != oldStartNote)
+                vm.RebuildMappings();
         }
     }
 }

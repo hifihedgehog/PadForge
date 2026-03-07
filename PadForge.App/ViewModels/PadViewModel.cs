@@ -464,26 +464,16 @@ namespace PadForge.ViewModels
         private void InitializeMidiMappings()
         {
             var mc = MidiConfig;
+            var ccNumbers = mc.GetCcNumbers();
+            var noteNumbers = mc.GetNoteNumbers();
 
-            // CC outputs (continuous controllers, sequential by CC number)
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftX}", "LeftThumbAxisX", MappingCategory.Triggers, "LeftThumbAxisXNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftY}", "LeftThumbAxisY", MappingCategory.Triggers, "LeftThumbAxisYNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftTrigger}", "LeftTrigger", MappingCategory.Triggers));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightX}", "RightThumbAxisX", MappingCategory.Triggers, "RightThumbAxisXNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightY}", "RightThumbAxisY", MappingCategory.Triggers, "RightThumbAxisYNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightTrigger}", "RightTrigger", MappingCategory.Triggers));
+            // CC outputs — each CC is a bipolar axis with positive and negative mapping keys.
+            for (int i = 0; i < mc.CcCount; i++)
+                Mappings.Add(new MappingItem($"CC {ccNumbers[i]}", $"MidiCC{i}", MappingCategory.Triggers, $"MidiCC{i}Neg"));
 
-            // Buttons → Note On/Off
-            Mappings.Add(new MappingItem($"Note {mc.NoteA}", "ButtonA", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteB}", "ButtonB", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteX}", "ButtonX", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteY}", "ButtonY", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteLB}", "LeftShoulder", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteRB}", "RightShoulder", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteBack}", "ButtonBack", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteStart}", "ButtonStart", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteLS}", "LeftThumbButton", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem($"Note {mc.NoteRS}", "RightThumbButton", MappingCategory.Buttons));
+            // Note outputs — each note is a button (Note On/Off).
+            for (int i = 0; i < mc.NoteCount; i++)
+                Mappings.Add(new MappingItem($"Note {noteNumbers[i]}", $"MidiNote{i}", MappingCategory.Buttons));
         }
 
         /// <summary>

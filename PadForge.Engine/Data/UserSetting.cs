@@ -155,6 +155,13 @@ namespace PadForge.Engine.Data
         public VJoyRawState VJoyRawOutputState { get; set; }
 
         /// <summary>
+        /// The mapped MIDI raw output state computed in Step 3 for MIDI slots.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public MidiRawState MidiRawOutputState { get; set; }
+
+        /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.
         /// </summary>
         [XmlIgnore]

@@ -301,6 +301,7 @@ namespace PadForge.Services
                 // Handle rumble feedback → send to browser.
                 device.RumbleRequested += (low, high) =>
                 {
+                    if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
                     _ = SendJsonAsync(ws, new { type = "rumble", left = (int)low, right = (int)high }, cts.Token);
                 };
 
@@ -354,6 +355,10 @@ namespace PadForge.Services
                         await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
                 }
                 catch { /* best effort */ }
+                finally
+                {
+                    cts.Dispose();
+                }
             }
             catch (Exception ex)
             {

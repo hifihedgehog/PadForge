@@ -184,10 +184,8 @@ namespace PadForge.Services
                                     p => p.PadSettingChecksum == us.PadSettingChecksum);
                                 if (template != null)
                                 {
-                                    var ps = new PadSetting();
-                                    ps.CopyFrom(template);
-                                    ps.PadSettingChecksum = template.PadSettingChecksum;
-                                    ps.GameFileName = template.GameFileName;
+                                    // CloneDeep copies all properties + mapping arrays
+                                    var ps = template.CloneDeep();
                                     us.SetPadSetting(ps);
                                 }
                             }
@@ -316,10 +314,41 @@ namespace PadForge.Services
                         var cfg = _mainVm.Pads[idx].MidiConfig;
                         cfg.Channel = cfgData.Channel;
                         cfg.Velocity = cfgData.Velocity;
-                        cfg.CcCount = cfgData.CcCount;
+                        // Set start values BEFORE counts — counts clamp against start
                         cfg.StartCc = cfgData.StartCc;
-                        cfg.NoteCount = cfgData.NoteCount;
+                        cfg.CcCount = cfgData.CcCount;
                         cfg.StartNote = cfgData.StartNote;
+                        cfg.NoteCount = cfgData.NoteCount;
+                        _mainVm.Pads[idx].RebuildMappings();
+
+                        // Reload mapping descriptors from all devices assigned to this slot.
+                        // Must happen immediately after RebuildMappings to restore saved mappings,
+                        // because SelectedMappedDevice is null at this point in the load sequence.
+                        lock (SettingsManager.UserSettings.SyncRoot)
+                        {
+                            foreach (var us in SettingsManager.UserSettings.Items)
+                            {
+                                if (us.MapTo != idx) continue;
+                                var ps = us.GetPadSetting();
+                                if (ps == null) continue;
+                                foreach (var mapping in _mainVm.Pads[idx].Mappings)
+                                {
+                                    string target = mapping.TargetSettingName;
+                                    string value = target.StartsWith("Midi", StringComparison.Ordinal)
+                                        ? ps.GetMidiMapping(target) : string.Empty;
+                                    if (!string.IsNullOrEmpty(value))
+                                        mapping.LoadDescriptor(value);
+                                    if (mapping.NegSettingName != null)
+                                    {
+                                        string negValue = mapping.NegSettingName.StartsWith("Midi", StringComparison.Ordinal)
+                                            ? ps.GetMidiMapping(mapping.NegSettingName) : string.Empty;
+                                        if (!string.IsNullOrEmpty(negValue))
+                                            mapping.LoadNegDescriptor(negValue);
+                                    }
+                                }
+                                break; // first device is enough for descriptors
+                            }
+                        }
                     }
                 }
             }

@@ -6,6 +6,8 @@ namespace PadForge.ViewModels
     /// <summary>
     /// Per-slot MIDI output configuration. Dynamic CC and note counts
     /// with configurable starting CC/note numbers, channel, and velocity.
+    /// Ranges are interdependent: CcCount is clamped to 0..(128 - StartCc),
+    /// and NoteCount is clamped to 0..(128 - StartNote).
     /// </summary>
     public class MidiSlotConfig : ObservableObject
     {
@@ -18,35 +20,43 @@ namespace PadForge.ViewModels
         }
 
         private int _ccCount = 6;
-        /// <summary>Number of CC outputs (0-128).</summary>
+        /// <summary>Number of CC outputs. Max is 128 - StartCc.</summary>
         public int CcCount
         {
             get => _ccCount;
-            set => SetProperty(ref _ccCount, Math.Clamp(value, 0, 128));
+            set => SetProperty(ref _ccCount, Math.Clamp(value, 0, 128 - _startCc));
         }
 
         private int _startCc = 1;
-        /// <summary>Starting CC number. CCs are numbered sequentially from this value.</summary>
+        /// <summary>Starting CC number (0-127). Changing this re-clamps CcCount.</summary>
         public int StartCc
         {
             get => _startCc;
-            set => SetProperty(ref _startCc, Math.Clamp(value, 0, 127));
+            set
+            {
+                if (SetProperty(ref _startCc, Math.Clamp(value, 0, 127)))
+                    CcCount = _ccCount; // re-clamp against new start
+            }
         }
 
         private int _noteCount = 11;
-        /// <summary>Number of note outputs (0-128).</summary>
+        /// <summary>Number of note outputs. Max is 128 - StartNote.</summary>
         public int NoteCount
         {
             get => _noteCount;
-            set => SetProperty(ref _noteCount, Math.Clamp(value, 0, 128));
+            set => SetProperty(ref _noteCount, Math.Clamp(value, 0, 128 - _startNote));
         }
 
         private int _startNote = 60;
-        /// <summary>Starting note number. Notes are numbered sequentially from this value.</summary>
+        /// <summary>Starting note number (0-127). Changing this re-clamps NoteCount.</summary>
         public int StartNote
         {
             get => _startNote;
-            set => SetProperty(ref _startNote, Math.Clamp(value, 0, 127));
+            set
+            {
+                if (SetProperty(ref _startNote, Math.Clamp(value, 0, 127)))
+                    NoteCount = _noteCount; // re-clamp against new start
+            }
         }
 
         private byte _velocity = 127;
@@ -62,7 +72,7 @@ namespace PadForge.ViewModels
         {
             var arr = new int[_ccCount];
             for (int i = 0; i < _ccCount; i++)
-                arr[i] = Math.Min(_startCc + i, 127);
+                arr[i] = _startCc + i;
             return arr;
         }
 
@@ -71,7 +81,7 @@ namespace PadForge.ViewModels
         {
             var arr = new int[_noteCount];
             for (int i = 0; i < _noteCount; i++)
-                arr[i] = Math.Min(_startNote + i, 127);
+                arr[i] = _startNote + i;
             return arr;
         }
     }

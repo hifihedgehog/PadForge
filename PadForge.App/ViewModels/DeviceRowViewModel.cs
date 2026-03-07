@@ -324,7 +324,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
-            $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} POV" +
+            $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} {(_povCount == 1 ? "POV" : "POVs")}" +
             (_hasRumble ? ", Rumble" : "") +
             (_hasGyro ? ", Gyro" : "") +
             (_hasAccel ? ", Accel" : "");

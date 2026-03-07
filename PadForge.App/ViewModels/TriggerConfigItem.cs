@@ -12,22 +12,22 @@ namespace PadForge.ViewModels
         public string Title { get; }
         public int Index { get; }
 
-        private int _deadZone;
-        public int DeadZone
+        private double _deadZone;
+        public double DeadZone
         {
             get => _deadZone;
             set => SetProperty(ref _deadZone, Math.Clamp(value, 0, 100));
         }
 
-        private int _maxRange = 100;
-        public int MaxRange
+        private double _maxRange = 100;
+        public double MaxRange
         {
             get => _maxRange;
             set => SetProperty(ref _maxRange, Math.Clamp(value, 1, 100));
         }
 
-        private int _antiDeadZone;
-        public int AntiDeadZone
+        private double _antiDeadZone;
+        public double AntiDeadZone
         {
             get => _antiDeadZone;
             set => SetProperty(ref _antiDeadZone, Math.Clamp(value, 0, 100));
@@ -41,12 +41,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _liveValue, value);
         }
 
-        private byte _rawValue;
-        public byte RawValue
+        private ushort _rawValue;
+        public ushort RawValue
         {
             get => _rawValue;
-            set => SetProperty(ref _rawValue, value);
+            set { if (SetProperty(ref _rawValue, value)) OnPropertyChanged(nameof(RawDisplay)); }
         }
+
+        /// <summary>Formatted display: "32768 (50.0%)"</summary>
+        public string RawDisplay => $"{_rawValue} ({_rawValue / 655.35:F1}%)";
 
         /// <summary>Raw axis index in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisIndex { get; }

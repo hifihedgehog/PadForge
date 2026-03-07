@@ -2370,7 +2370,10 @@ namespace PadForge
                 }
             };
             mapping.StopRecordingRequested += (s, e) =>
+            {
                 _recorderService.CancelRecording();
+                capturedPad.CurrentRecordingTarget = null;
+            };
 
             // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.
             mapping.PropertyChanged += (s, e) =>

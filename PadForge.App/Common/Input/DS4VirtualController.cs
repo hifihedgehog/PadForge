@@ -84,9 +84,9 @@ namespace PadForge.Common.Input
             _controller.SetAxisValue(DualShock4Axis.RightThumbX, ShortToByte(gp.ThumbRX));
             _controller.SetAxisValue(DualShock4Axis.RightThumbY, ShortToByteInvertY(gp.ThumbRY));
 
-            // ── Triggers (byte 0-255 direct) ──
-            _controller.SetSliderValue(DualShock4Slider.LeftTrigger, gp.LeftTrigger);
-            _controller.SetSliderValue(DualShock4Slider.RightTrigger, gp.RightTrigger);
+            // ── Triggers (ushort 0-65535 → byte 0-255 for DS4) ──
+            _controller.SetSliderValue(DualShock4Slider.LeftTrigger, (byte)(gp.LeftTrigger >> 8));
+            _controller.SetSliderValue(DualShock4Slider.RightTrigger, (byte)(gp.RightTrigger >> 8));
 
             _controller.SubmitReport();
         }

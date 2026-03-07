@@ -560,8 +560,10 @@ public static class PF_SetupApi {{
         //  Windows MIDI Services
         // ─────────────────────────────────────────────
 
+        // Note: /releases/latest returns 404 because microsoft/MIDI only publishes
+        // pre-releases. Use /releases (returns array) and parse the first entry.
         private const string MidiServicesGitHubApi =
-            "https://api.github.com/repos/microsoft/MIDI/releases/latest";
+            "https://api.github.com/repos/microsoft/MIDI/releases";
 
         private static string GetMidiServicesTempDir()
             => Path.Combine(Path.GetTempPath(), "PadForge_MidiServices");

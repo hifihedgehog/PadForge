@@ -26,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.x
+          dotnet-version: 10.x
 
       - name: Publish
         run: dotnet publish PadForge.App/PadForge.App.csproj -c Release
@@ -41,14 +41,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PadForge_r${{ env.COMMIT_COUNT }}@${{ env.COMMIT_SHORT }}
-          path: PadForge.App/bin/Release/net8.0-windows/win-x64/publish/
+          path: PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/
 
       - name: Package release zip
         if: github.event_name == 'push'
         shell: bash
         run: |
           mkdir -p release
-          cd PadForge.App/bin/Release/net8.0-windows/win-x64/publish
+          cd PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish
           rm -f *.pdb
           7z a -mx=9 "$GITHUB_WORKSPACE/release/PadForge.zip" ./*
           cp "$GITHUB_WORKSPACE/release/PadForge.zip" \

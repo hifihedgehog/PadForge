@@ -64,6 +64,9 @@ namespace PadForge.Services
         /// <summary>True when recording for the negative direction of an axis.</summary>
         private bool _negRecording;
 
+        /// <summary>True when the active device is a mouse (skip axis hold confirmation).</summary>
+        private bool _activeDeviceIsMouse;
+
         /// <summary>The baseline input state captured at the start of recording.</summary>
         private CustomInputState _baseline;
 
@@ -138,6 +141,18 @@ namespace PadForge.Services
             _activePadIndex = padIndex;
             _activeDeviceGuid = deviceGuid;
             _negRecording = negRecording;
+
+            // Check if the device is a mouse (skip axis hold confirmation).
+            _activeDeviceIsMouse = false;
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices != null)
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
+                    _activeDeviceIsMouse = ud?.IsMouse == true;
+                }
+            }
             _axisHoldCounter = 0;
             _axisCandidateType = MapType.None;
             _axisCandidateIndex = -1;
@@ -237,9 +252,11 @@ namespace PadForge.Services
                 if (anyHeld)
                     return; // Still held — wait for release
 
-                // Everything released — capture fresh baseline and start detecting.
+                // Everything released — capture fresh baseline and reset axis tracking.
                 _waitForRelease = false;
                 _baseline = current;
+                _axisHoldCounter = 0;
+                _axisCandidateIndex = -1;
                 return;
             }
 
@@ -299,6 +316,14 @@ namespace PadForge.Services
 
             if (bestAxisIndex >= 0)
             {
+                // Mouse axes are instantaneous deltas that return to center each frame,
+                // so they can never sustain a hold. Accept immediately.
+                if (_activeDeviceIsMouse)
+                {
+                    CompleteRecording(bestAxisType, bestAxisIndex, null, bestAxisSignedDelta > 0);
+                    return;
+                }
+
                 // Is this the same candidate as last cycle?
                 if (bestAxisType == _axisCandidateType && bestAxisIndex == _axisCandidateIndex)
                 {

@@ -416,6 +416,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsKeyType));
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
+                    OnPropertyChanged(nameof(IsSystemVolumeType));
                 }
             }
         }
@@ -435,6 +436,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is AxisSet.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAxisType => _type == MacroActionType.AxisSet;
+
+        /// <summary>True when Type is SystemVolume.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsSystemVolumeType => _type == MacroActionType.SystemVolume;
 
         private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
 
@@ -772,6 +777,7 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyRelease => $"Release keys {keyDisplay}",
                     MacroActionType.Delay => $"Wait {_durationMs}ms",
                     MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
+                    MacroActionType.SystemVolume => $"System Volume \u2190 {_axisTarget}",
                     _ => "Unknown action"
                 };
             }
@@ -844,7 +850,10 @@ namespace PadForge.ViewModels
         Delay,
 
         /// <summary>Set an axis to a specific value.</summary>
-        AxisSet
+        AxisSet,
+
+        /// <summary>Continuously map a source axis value to the Windows system volume.</summary>
+        SystemVolume
     }
 
     public enum MacroAxisTarget

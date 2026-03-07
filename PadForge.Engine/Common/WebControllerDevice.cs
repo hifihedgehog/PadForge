@@ -83,11 +83,11 @@ namespace PadForge.Engine
             InstanceGuid = BuildGuid(clientId);
             SdlInstanceId = (uint)clientId.GetHashCode();
 
-            // Center all axes at midpoint.
+            // Center all axes at midpoint — initialize fully before publishing.
             var state = new CustomInputState();
             for (int i = 0; i < NumGamepadAxes; i++)
                 state.Axis[i] = 32767;
-            _currentState = state;
+            Volatile.Write(ref _currentState, state);
         }
 
         /// <summary>Updates an axis value. Called from WebSocket receive thread.</summary>

@@ -484,6 +484,7 @@
                                             <ComboBoxItem Content="Key Release" Tag="{x:Static vm:MacroActionType.KeyRelease}"/>
                                             <ComboBoxItem Content="Delay" Tag="{x:Static vm:MacroActionType.Delay}"/>
                                             <ComboBoxItem Content="Set Axis" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
+                                            <ComboBoxItem Content="System Volume" Tag="{x:Static vm:MacroActionType.SystemVolume}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -554,6 +555,27 @@
                                         <TextBlock Text="Value:" VerticalAlignment="Center"
                                                    Margin="12,0,8,0"/>
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
+                                    </StackPanel>
+
+                                    <!-- Source axis — for SystemVolume -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsSystemVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Source axis:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag" MinWidth="150">
+                                                <ComboBoxItem Content="Left Stick X" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                                <ComboBoxItem Content="Left Stick Y" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                                <ComboBoxItem Content="Right Stick X" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                                <ComboBoxItem Content="Right Stick Y" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                                <ComboBoxItem Content="Left Trigger" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                                <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume. Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat for continuous control."
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>

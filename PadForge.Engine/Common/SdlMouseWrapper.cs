@@ -20,7 +20,7 @@ namespace PadForge.Engine
         private const int MouseButtons = 5;
         private const int MouseAxes = 2;
         private const int AxisCenter = 32767;
-        private const float MotionScale = 256f;
+        private const float MotionScale = 2048f;
 
         public uint SdlInstanceId => _sdlId;
         public string Name { get; private set; } = "Mouse";

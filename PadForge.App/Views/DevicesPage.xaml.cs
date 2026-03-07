@@ -29,13 +29,64 @@ namespace PadForge.Views
 
         /// <summary>
         /// Handles CheckBox Checked/Unchecked for HidHide and ConsumeInput toggles.
+        /// Shows a warning dialog for mice and keyboards before enabling.
         /// Propagates the change back through DevicesViewModel → DeviceService → InputService.
         /// </summary>
         private void HidingToggle_Changed(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;
-            if (vm?.SelectedDevice != null)
-                vm.NotifyDeviceHidingChanged(vm.SelectedDevice.InstanceGuid);
+            var dev = vm?.SelectedDevice;
+            if (dev == null) return;
+
+            // Warn when enabling input blocking on a mouse or keyboard.
+            if (e.RoutedEvent == CheckBox.CheckedEvent && dev.ShowConsumeToggle)
+            {
+                var cb = sender as CheckBox;
+                bool isHidHide = cb?.Content?.ToString()?.Contains("HidHide") == true;
+                string action = isHidHide
+                    ? "hide this device from all applications"
+                    : "block mapped inputs from this device";
+                string deviceKind = dev.DeviceType == "Mouse" ? "mouse" : "keyboard";
+                bool isMerged = dev.DeviceName?.Contains("(Merged)") == true ||
+                                dev.DeviceName?.Contains("All ") == true;
+
+                string scope = isMerged
+                    ? $" for all connected {deviceKind}s"
+                    : "";
+
+                string consequence;
+                if (isHidHide)
+                {
+                    consequence = $"If this is your only {deviceKind}, you will lose the ability to " +
+                        $"interact with your system. Only proceed if you have another " +
+                        $"input device available.";
+                }
+                else
+                {
+                    consequence = $"If you map inputs that are critical for system interaction " +
+                        (dev.DeviceType == "Mouse"
+                            ? "(e.g. left/right click, X/Y movement)"
+                            : "(e.g. common keys)") +
+                        $", you may lose the ability to control your system. " +
+                        $"Only proceed if you have another input device available.";
+                }
+
+                var result = MessageBox.Show(
+                    $"WARNING\n\nThis will {action}{scope}.\n\n{consequence}",
+                    "Input Blocking Warning",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning);
+
+                if (result != MessageBoxResult.OK)
+                {
+                    // Revert the toggle.
+                    if (cb != null)
+                        cb.IsChecked = false;
+                    return;
+                }
+            }
+
+            vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 
         private void SubmitMapping_Click(object sender, RoutedEventArgs e)

@@ -16,7 +16,7 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 - **Macro system** — Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
 - **Per-app profile switching** — Automatically switch controller configurations when specific applications gain focus
 - **DSU/Cemuhook motion server** — Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
-- **Input hiding** — Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with smart defaults when assigning to a slot
+- **Input hiding** — Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with auto-enable for gamepads and safety warnings for mice/keyboards
 - **Driver management** — One-click install/uninstall for ViGEmBus, HidHide, and vJoy. Built-in HidHide device blacklisting and app whitelisting — no external configuration tool needed
 - **Flight-sim-grade input precision** — 1000 Hz polling with sub-millisecond jitter, bit-perfect axis passthrough at default settings, double-precision dead zone math, and 15-bit (32768-position) vJoy axis output that exceeds the resolution of physical controller ADCs
 - **System tray** — Minimize to tray, start minimized, start at login

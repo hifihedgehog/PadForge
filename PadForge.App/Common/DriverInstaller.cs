@@ -595,8 +595,19 @@ public static class PF_SetupApi {{
                 using var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write);
                 await stream.CopyToAsync(fs);
 
-                // Run the installer elevated.
-                RunElevated(installerPath, "/install /quiet /norestart");
+                // Run the WiX Burn bootstrapper. PadForge is already elevated,
+                // so run directly (no runas) to avoid Win32Exception on some systems.
+                // Close the file stream before launching the installer.
+                fs.Close();
+                var psi = new ProcessStartInfo
+                {
+                    FileName = installerPath,
+                    Arguments = "/install /quiet /norestart",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+                using var proc = Process.Start(psi);
+                proc?.WaitForExit(300_000); // 5 minutes — Burn bundles can take a while
 
                 // Reset the cached availability check so IsAvailable() re-evaluates.
                 MidiVirtualController.ResetAvailability();

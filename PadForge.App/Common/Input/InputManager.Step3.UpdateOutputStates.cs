@@ -164,13 +164,13 @@ namespace PadForge.Common.Input
 
             // ── Trigger dead zones ──
             gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
-                TryParseIntStatic(ps.LeftTriggerDeadZone, 0),
-                TryParseIntStatic(ps.LeftTriggerAntiDeadZone, 0),
-                TryParseIntStatic(ps.LeftTriggerMaxRange, 100));
+                TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
+                TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0),
+                TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100));
             gp.RightTrigger = ApplyTriggerDeadZone(gp.RightTrigger,
-                TryParseIntStatic(ps.RightTriggerDeadZone, 0),
-                TryParseIntStatic(ps.RightTriggerAntiDeadZone, 0),
-                TryParseIntStatic(ps.RightTriggerMaxRange, 100));
+                TryParseDoubleStatic(ps.RightTriggerDeadZone, 0),
+                TryParseDoubleStatic(ps.RightTriggerAntiDeadZone, 0),
+                TryParseDoubleStatic(ps.RightTriggerMaxRange, 100));
 
             // ── Thumbsticks ──
             gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg);
@@ -183,29 +183,29 @@ namespace PadForge.Common.Input
             rawMapped = gp;
 
             // ── Center offsets (applied before dead zone) ──
-            gp.ThumbLX = ApplyCenterOffset(gp.ThumbLX, TryParseIntStatic(ps.LeftThumbCenterOffsetX, 0));
-            gp.ThumbLY = ApplyCenterOffset(gp.ThumbLY, TryParseIntStatic(ps.LeftThumbCenterOffsetY, 0));
-            gp.ThumbRX = ApplyCenterOffset(gp.ThumbRX, TryParseIntStatic(ps.RightThumbCenterOffsetX, 0));
-            gp.ThumbRY = ApplyCenterOffset(gp.ThumbRY, TryParseIntStatic(ps.RightThumbCenterOffsetY, 0));
+            gp.ThumbLX = ApplyCenterOffset(gp.ThumbLX, TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0));
+            gp.ThumbLY = ApplyCenterOffset(gp.ThumbLY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
+            gp.ThumbRX = ApplyCenterOffset(gp.ThumbRX, TryParseDoubleStatic(ps.RightThumbCenterOffsetX, 0));
+            gp.ThumbRY = ApplyCenterOffset(gp.ThumbRY, TryParseDoubleStatic(ps.RightThumbCenterOffsetY, 0));
 
             // ── Dead zones ──
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
-                TryParseIntStatic(ps.LeftThumbDeadZoneX, 0),
-                TryParseIntStatic(ps.LeftThumbDeadZoneY, 0),
+                TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
+                TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0),
                 ps.LeftThumbAntiDeadZoneX,
                 ps.LeftThumbAntiDeadZoneY,
                 ps.LeftThumbLinear,
-                TryParseIntStatic(ps.LeftThumbMaxRangeX, 100),
-                TryParseIntStatic(ps.LeftThumbMaxRangeY, 100));
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
-                TryParseIntStatic(ps.RightThumbDeadZoneX, 0),
-                TryParseIntStatic(ps.RightThumbDeadZoneY, 0),
+                TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
+                TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0),
                 ps.RightThumbAntiDeadZoneX,
                 ps.RightThumbAntiDeadZoneY,
                 ps.RightThumbLinear,
-                TryParseIntStatic(ps.RightThumbMaxRangeX, 100),
-                TryParseIntStatic(ps.RightThumbMaxRangeY, 100));
+                TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
+                TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100));
 
             return gp;
         }
@@ -485,14 +485,14 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Maps a descriptor (or pipe-separated list) to a trigger value (0–255).
+        /// Maps a descriptor (or pipe-separated list) to a trigger value (0–65535).
         /// Multiple descriptors: the highest value wins.
-        /// 
+        ///
         /// Examples:
         ///   "Axis 4"               → single source
-        ///   "Axis 4|Button 8"      → max of axis value or button (0 or 255)
+        ///   "Axis 4|Button 8"      → max of axis value or button (0 or 65535)
         /// </summary>
-        private static byte MapToTrigger(CustomInputState state, string descriptor)
+        private static ushort MapToTrigger(CustomInputState state, string descriptor)
         {
             if (string.IsNullOrWhiteSpace(descriptor))
                 return 0;
@@ -500,10 +500,10 @@ namespace PadForge.Common.Input
             // Support multiple descriptors separated by '|' (max value wins).
             if (descriptor.Contains('|'))
             {
-                byte best = 0;
+                ushort best = 0;
                 foreach (string part in descriptor.Split('|'))
                 {
-                    byte val = MapToTriggerSingle(state, part.Trim());
+                    ushort val = MapToTriggerSingle(state, part.Trim());
                     if (val > best)
                         best = val;
                 }
@@ -514,9 +514,9 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Maps a single descriptor to a trigger value (0–255).
+        /// Maps a single descriptor to a trigger value (0–65535).
         /// </summary>
-        private static byte MapToTriggerSingle(CustomInputState state, string descriptor)
+        private static ushort MapToTriggerSingle(CustomInputState state, string descriptor)
         {
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid)
@@ -524,19 +524,19 @@ namespace PadForge.Common.Input
 
             int rawValue = GetRawValue(state, desc);
 
-            // Convert unsigned 16-bit (0–65535) to trigger range (0–255).
+            // Keep full unsigned 16-bit range (0–65535) for trigger precision.
             if (desc.Inverted)
                 rawValue = 65535 - rawValue;
 
             if (desc.HalfAxis)
             {
-                // Half-axis: only use the upper half (32768–65535 → 0–255).
+                // Half-axis: only use the upper half (32768–65535 → 0–65535).
                 rawValue = Math.Max(0, rawValue - 32768);
-                return (byte)Math.Clamp(rawValue * 255 / 32767, 0, 255);
+                return (ushort)Math.Clamp(rawValue * 65535 / 32767, 0, 65535);
             }
 
-            // Full axis: 0–65535 → 0–255.
-            return (byte)Math.Clamp(rawValue * 255 / 65535, 0, 255);
+            // Full axis: already 0–65535.
+            return (ushort)Math.Clamp(rawValue, 0, 65535);
         }
 
         // ─────────────────────────────────────────────
@@ -698,13 +698,13 @@ namespace PadForge.Common.Input
         /// Linear: adjusts the response curve (0 = default, positive = more linear).
         /// </summary>
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
-            int deadZoneX, int deadZoneY,
+            double deadZoneX, double deadZoneY,
             string antiDeadZoneXStr, string antiDeadZoneYStr, string linearStr,
-            int maxRangeX = 100, int maxRangeY = 100)
+            double maxRangeX = 100, double maxRangeY = 100)
         {
-            int antiDeadZoneX = TryParseIntStatic(antiDeadZoneXStr, 0);
-            int antiDeadZoneY = TryParseIntStatic(antiDeadZoneYStr, 0);
-            int linear = TryParseIntStatic(linearStr, 0);
+            double antiDeadZoneX = TryParseDoubleStatic(antiDeadZoneXStr, 0);
+            double antiDeadZoneY = TryParseDoubleStatic(antiDeadZoneYStr, 0);
+            double linear = TryParseDoubleStatic(linearStr, 0);
 
             // Apply dead zone independently to each axis.
             axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX);
@@ -715,7 +715,7 @@ namespace PadForge.Common.Input
         /// Applies a center offset correction to a single axis. The offset is a percentage
         /// of the full axis range (-100 to 100). Applied before dead zone processing.
         /// </summary>
-        private static short ApplyCenterOffset(short value, int offsetPercent)
+        private static short ApplyCenterOffset(short value, double offsetPercent)
         {
             if (offsetPercent == 0) return value;
             int offsetRaw = (int)(offsetPercent / 100.0 * 32768);
@@ -725,7 +725,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Applies dead zone processing to a single axis.
         /// </summary>
-        private static short ApplySingleDeadZone(short value, int deadZone, int antiDeadZone, int linear, int maxRange = 100)
+        private static short ApplySingleDeadZone(short value, double deadZone, double antiDeadZone, double linear, double maxRange = 100)
         {
             if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
                 return value;
@@ -766,18 +766,18 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Applies dead zone, anti-dead zone, and max range processing to a trigger value (0–255).
+        /// Applies dead zone, anti-dead zone, and max range processing to a trigger value (0–65535).
         /// Dead zone: values below the threshold percentage are zeroed.
         /// Max range: caps the input so full physical press maps to this percentage ceiling.
         /// Anti-dead zone: remaps the output so small presses register past the game's dead zone.
         /// </summary>
-        private static byte ApplyTriggerDeadZone(byte value, int deadZone, int antiDeadZone, int maxRange)
+        private static ushort ApplyTriggerDeadZone(ushort value, double deadZone, double antiDeadZone, double maxRange)
         {
             if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
                 return value;
 
             // Normalize to 0.0–1.0.
-            double norm = value / 255.0;
+            double norm = value / 65535.0;
 
             // Dead zone: values below threshold are zeroed.
             double dzNorm = deadZone / 100.0;
@@ -796,7 +796,7 @@ namespace PadForge.Common.Input
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
 
-            return (byte)Math.Clamp((int)(output * 255.0), 0, 255);
+            return (ushort)Math.Clamp((int)(output * 65535.0), 0, 65535);
         }
 
         private static int TryParseIntStatic(string value, int defaultValue)
@@ -804,6 +804,14 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
             return int.TryParse(value, out int result) ? result : defaultValue;
+        }
+
+        private static double TryParseDoubleStatic(string value, double defaultValue)
+        {
+            if (string.IsNullOrEmpty(value))
+                return defaultValue;
+            return double.TryParse(value, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
         }
 
         // ─────────────────────────────────────────────
@@ -866,30 +874,30 @@ namespace PadForge.Common.Input
                 int yi = xi + 1;
                 if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
 
-                int dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100;
+                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100;
                 switch (g)
                 {
                     case 0:
-                        dzX = TryParseIntStatic(ps.LeftThumbDeadZoneX, 0);
-                        dzY = TryParseIntStatic(ps.LeftThumbDeadZoneY, 0);
-                        adzX = TryParseIntStatic(ps.LeftThumbAntiDeadZoneX, 0);
-                        adzY = TryParseIntStatic(ps.LeftThumbAntiDeadZoneY, 0);
-                        lin = TryParseIntStatic(ps.LeftThumbLinear, 0);
-                        cofX = TryParseIntStatic(ps.LeftThumbCenterOffsetX, 0);
-                        cofY = TryParseIntStatic(ps.LeftThumbCenterOffsetY, 0);
-                        mrX = TryParseIntStatic(ps.LeftThumbMaxRangeX, 100);
-                        mrY = TryParseIntStatic(ps.LeftThumbMaxRangeY, 100);
+                        dzX = TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0);
+                        dzY = TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0);
+                        adzX = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0);
+                        adzY = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0);
+                        lin = TryParseDoubleStatic(ps.LeftThumbLinear, 0);
+                        cofX = TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0);
+                        cofY = TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0);
+                        mrX = TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100);
+                        mrY = TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100);
                         break;
                     case 1:
-                        dzX = TryParseIntStatic(ps.RightThumbDeadZoneX, 0);
-                        dzY = TryParseIntStatic(ps.RightThumbDeadZoneY, 0);
-                        adzX = TryParseIntStatic(ps.RightThumbAntiDeadZoneX, 0);
-                        adzY = TryParseIntStatic(ps.RightThumbAntiDeadZoneY, 0);
-                        lin = TryParseIntStatic(ps.RightThumbLinear, 0);
-                        cofX = TryParseIntStatic(ps.RightThumbCenterOffsetX, 0);
-                        cofY = TryParseIntStatic(ps.RightThumbCenterOffsetY, 0);
-                        mrX = TryParseIntStatic(ps.RightThumbMaxRangeX, 100);
-                        mrY = TryParseIntStatic(ps.RightThumbMaxRangeY, 100);
+                        dzX = TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0);
+                        dzY = TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0);
+                        adzX = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0);
+                        adzY = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneY, 0);
+                        lin = TryParseDoubleStatic(ps.RightThumbLinear, 0);
+                        cofX = TryParseDoubleStatic(ps.RightThumbCenterOffsetX, 0);
+                        cofY = TryParseDoubleStatic(ps.RightThumbCenterOffsetY, 0);
+                        mrX = TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100);
+                        mrY = TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100);
                         break;
                     default:
                         continue; // No dead zone properties for sticks 2+ yet
@@ -906,29 +914,28 @@ namespace PadForge.Common.Input
                        : interleave * 3 + Math.Max(0, cfg.Sticks - interleave) * 2 + (g - interleave);
                 if (ti >= raw.Axes.Length) break;
 
-                int dz, adz, maxR;
+                double dz, adz, maxR;
                 switch (g)
                 {
                     case 0:
-                        dz = TryParseIntStatic(ps.LeftTriggerDeadZone, 0);
-                        adz = TryParseIntStatic(ps.LeftTriggerAntiDeadZone, 0);
-                        maxR = TryParseIntStatic(ps.LeftTriggerMaxRange, 100);
+                        dz = TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0);
+                        adz = TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0);
+                        maxR = TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100);
                         break;
                     case 1:
-                        dz = TryParseIntStatic(ps.RightTriggerDeadZone, 0);
-                        adz = TryParseIntStatic(ps.RightTriggerAntiDeadZone, 0);
-                        maxR = TryParseIntStatic(ps.RightTriggerMaxRange, 100);
+                        dz = TryParseDoubleStatic(ps.RightTriggerDeadZone, 0);
+                        adz = TryParseDoubleStatic(ps.RightTriggerAntiDeadZone, 0);
+                        maxR = TryParseDoubleStatic(ps.RightTriggerMaxRange, 100);
                         break;
                     default:
                         continue; // No dead zone properties for triggers 2+ yet
                 }
-                // Triggers use signed short in raw path; convert to byte-like range,
+                // Triggers use signed short in raw path; convert to unsigned 16-bit range,
                 // apply trigger dead zone, then convert back.
-                double norm = (raw.Axes[ti] - (double)short.MinValue) / 65535.0;
-                byte asByte = (byte)Math.Clamp((int)(norm * 255), 0, 255);
-                asByte = ApplyTriggerDeadZone(asByte, dz, adz, maxR);
+                ushort asUshort = (ushort)(raw.Axes[ti] - short.MinValue);
+                asUshort = ApplyTriggerDeadZone(asUshort, dz, adz, maxR);
                 // Back to signed short range
-                raw.Axes[ti] = (short)(asByte / 255.0 * 65535.0 + short.MinValue);
+                raw.Axes[ti] = (short)(asUshort + short.MinValue);
             }
 
             return raw;

@@ -308,11 +308,11 @@ namespace PadForge.ViewModels
         private short _rawThumbRY;
         public short RawThumbRY { get => _rawThumbRY; set => SetProperty(ref _rawThumbRY, value); }
 
-        private byte _rawLeftTrigger;
-        public byte RawLeftTrigger { get => _rawLeftTrigger; set => SetProperty(ref _rawLeftTrigger, value); }
+        private ushort _rawLeftTrigger;
+        public ushort RawLeftTrigger { get => _rawLeftTrigger; set => SetProperty(ref _rawLeftTrigger, value); }
 
-        private byte _rawRightTrigger;
-        public byte RawRightTrigger { get => _rawRightTrigger; set => SetProperty(ref _rawRightTrigger, value); }
+        private ushort _rawRightTrigger;
+        public ushort RawRightTrigger { get => _rawRightTrigger; set => SetProperty(ref _rawRightTrigger, value); }
 
         // ── Per-device values for stick/trigger tab previews ──
         // These show the selected device only, not the combined slot.
@@ -347,11 +347,11 @@ namespace PadForge.ViewModels
         private double _deviceRightTrigger;
         public double DeviceRightTrigger { get => _deviceRightTrigger; set => SetProperty(ref _deviceRightTrigger, value); }
 
-        private byte _deviceRawLeftTrigger;
-        public byte DeviceRawLeftTrigger { get => _deviceRawLeftTrigger; set => SetProperty(ref _deviceRawLeftTrigger, value); }
+        private ushort _deviceRawLeftTrigger;
+        public ushort DeviceRawLeftTrigger { get => _deviceRawLeftTrigger; set => SetProperty(ref _deviceRawLeftTrigger, value); }
 
-        private byte _deviceRawRightTrigger;
-        public byte DeviceRawRightTrigger { get => _deviceRawRightTrigger; set => SetProperty(ref _deviceRawRightTrigger, value); }
+        private ushort _deviceRawRightTrigger;
+        public ushort DeviceRawRightTrigger { get => _deviceRawRightTrigger; set => SetProperty(ref _deviceRawRightTrigger, value); }
 
         // ═══════════════════════════════════════════════
         //  Mapping rows — unchanged
@@ -523,92 +523,92 @@ namespace PadForge.ViewModels
         }
 
         // ── Left Stick ──
-        private int _leftDeadZoneX;
-        public int LeftDeadZoneX { get => _leftDeadZoneX; set => SetProperty(ref _leftDeadZoneX, Math.Clamp(value, 0, 100)); }
+        private double _leftDeadZoneX;
+        public double LeftDeadZoneX { get => _leftDeadZoneX; set => SetProperty(ref _leftDeadZoneX, Math.Clamp(value, 0, 100)); }
 
-        private int _leftDeadZoneY;
-        public int LeftDeadZoneY { get => _leftDeadZoneY; set => SetProperty(ref _leftDeadZoneY, Math.Clamp(value, 0, 100)); }
+        private double _leftDeadZoneY;
+        public double LeftDeadZoneY { get => _leftDeadZoneY; set => SetProperty(ref _leftDeadZoneY, Math.Clamp(value, 0, 100)); }
 
-        private int _leftAntiDeadZoneX;
-        public int LeftAntiDeadZoneX { get => _leftAntiDeadZoneX; set => SetProperty(ref _leftAntiDeadZoneX, Math.Clamp(value, 0, 100)); }
+        private double _leftAntiDeadZoneX;
+        public double LeftAntiDeadZoneX { get => _leftAntiDeadZoneX; set => SetProperty(ref _leftAntiDeadZoneX, Math.Clamp(value, 0, 100)); }
 
-        private int _leftAntiDeadZoneY;
-        public int LeftAntiDeadZoneY { get => _leftAntiDeadZoneY; set => SetProperty(ref _leftAntiDeadZoneY, Math.Clamp(value, 0, 100)); }
+        private double _leftAntiDeadZoneY;
+        public double LeftAntiDeadZoneY { get => _leftAntiDeadZoneY; set => SetProperty(ref _leftAntiDeadZoneY, Math.Clamp(value, 0, 100)); }
 
-        private int _leftLinear;
-        public int LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
+        private double _leftLinear;
+        public double LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
 
         // ── Right Stick ──
-        private int _rightDeadZoneX;
-        public int RightDeadZoneX { get => _rightDeadZoneX; set => SetProperty(ref _rightDeadZoneX, Math.Clamp(value, 0, 100)); }
+        private double _rightDeadZoneX;
+        public double RightDeadZoneX { get => _rightDeadZoneX; set => SetProperty(ref _rightDeadZoneX, Math.Clamp(value, 0, 100)); }
 
-        private int _rightDeadZoneY;
-        public int RightDeadZoneY { get => _rightDeadZoneY; set => SetProperty(ref _rightDeadZoneY, Math.Clamp(value, 0, 100)); }
+        private double _rightDeadZoneY;
+        public double RightDeadZoneY { get => _rightDeadZoneY; set => SetProperty(ref _rightDeadZoneY, Math.Clamp(value, 0, 100)); }
 
-        private int _rightAntiDeadZoneX;
-        public int RightAntiDeadZoneX { get => _rightAntiDeadZoneX; set => SetProperty(ref _rightAntiDeadZoneX, Math.Clamp(value, 0, 100)); }
+        private double _rightAntiDeadZoneX;
+        public double RightAntiDeadZoneX { get => _rightAntiDeadZoneX; set => SetProperty(ref _rightAntiDeadZoneX, Math.Clamp(value, 0, 100)); }
 
-        private int _rightAntiDeadZoneY;
-        public int RightAntiDeadZoneY { get => _rightAntiDeadZoneY; set => SetProperty(ref _rightAntiDeadZoneY, Math.Clamp(value, 0, 100)); }
+        private double _rightAntiDeadZoneY;
+        public double RightAntiDeadZoneY { get => _rightAntiDeadZoneY; set => SetProperty(ref _rightAntiDeadZoneY, Math.Clamp(value, 0, 100)); }
 
-        private int _rightLinear;
-        public int RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
+        private double _rightLinear;
+        public double RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
 
         // ── Max Range ──
-        private int _leftMaxRangeX = 100;
-        public int LeftMaxRangeX { get => _leftMaxRangeX; set => SetProperty(ref _leftMaxRangeX, Math.Clamp(value, 1, 100)); }
+        private double _leftMaxRangeX = 100;
+        public double LeftMaxRangeX { get => _leftMaxRangeX; set => SetProperty(ref _leftMaxRangeX, Math.Clamp(value, 1, 100)); }
 
-        private int _leftMaxRangeY = 100;
-        public int LeftMaxRangeY { get => _leftMaxRangeY; set => SetProperty(ref _leftMaxRangeY, Math.Clamp(value, 1, 100)); }
+        private double _leftMaxRangeY = 100;
+        public double LeftMaxRangeY { get => _leftMaxRangeY; set => SetProperty(ref _leftMaxRangeY, Math.Clamp(value, 1, 100)); }
 
-        private int _rightMaxRangeX = 100;
-        public int RightMaxRangeX { get => _rightMaxRangeX; set => SetProperty(ref _rightMaxRangeX, Math.Clamp(value, 1, 100)); }
+        private double _rightMaxRangeX = 100;
+        public double RightMaxRangeX { get => _rightMaxRangeX; set => SetProperty(ref _rightMaxRangeX, Math.Clamp(value, 1, 100)); }
 
-        private int _rightMaxRangeY = 100;
-        public int RightMaxRangeY { get => _rightMaxRangeY; set => SetProperty(ref _rightMaxRangeY, Math.Clamp(value, 1, 100)); }
+        private double _rightMaxRangeY = 100;
+        public double RightMaxRangeY { get => _rightMaxRangeY; set => SetProperty(ref _rightMaxRangeY, Math.Clamp(value, 1, 100)); }
 
         // ── Center Offsets ──
-        private int _leftCenterOffsetX;
-        public int LeftCenterOffsetX { get => _leftCenterOffsetX; set => SetProperty(ref _leftCenterOffsetX, Math.Clamp(value, -100, 100)); }
+        private double _leftCenterOffsetX;
+        public double LeftCenterOffsetX { get => _leftCenterOffsetX; set => SetProperty(ref _leftCenterOffsetX, Math.Clamp(value, -100, 100)); }
 
-        private int _leftCenterOffsetY;
-        public int LeftCenterOffsetY { get => _leftCenterOffsetY; set => SetProperty(ref _leftCenterOffsetY, Math.Clamp(value, -100, 100)); }
+        private double _leftCenterOffsetY;
+        public double LeftCenterOffsetY { get => _leftCenterOffsetY; set => SetProperty(ref _leftCenterOffsetY, Math.Clamp(value, -100, 100)); }
 
-        private int _rightCenterOffsetX;
-        public int RightCenterOffsetX { get => _rightCenterOffsetX; set => SetProperty(ref _rightCenterOffsetX, Math.Clamp(value, -100, 100)); }
+        private double _rightCenterOffsetX;
+        public double RightCenterOffsetX { get => _rightCenterOffsetX; set => SetProperty(ref _rightCenterOffsetX, Math.Clamp(value, -100, 100)); }
 
-        private int _rightCenterOffsetY;
-        public int RightCenterOffsetY { get => _rightCenterOffsetY; set => SetProperty(ref _rightCenterOffsetY, Math.Clamp(value, -100, 100)); }
+        private double _rightCenterOffsetY;
+        public double RightCenterOffsetY { get => _rightCenterOffsetY; set => SetProperty(ref _rightCenterOffsetY, Math.Clamp(value, -100, 100)); }
 
         // ── Triggers ──
-        private int _leftTriggerDeadZone;
-        public int LeftTriggerDeadZone { get => _leftTriggerDeadZone; set => SetProperty(ref _leftTriggerDeadZone, Math.Clamp(value, 0, 100)); }
+        private double _leftTriggerDeadZone;
+        public double LeftTriggerDeadZone { get => _leftTriggerDeadZone; set => SetProperty(ref _leftTriggerDeadZone, Math.Clamp(value, 0, 100)); }
 
-        private int _rightTriggerDeadZone;
-        public int RightTriggerDeadZone { get => _rightTriggerDeadZone; set => SetProperty(ref _rightTriggerDeadZone, Math.Clamp(value, 0, 100)); }
+        private double _rightTriggerDeadZone;
+        public double RightTriggerDeadZone { get => _rightTriggerDeadZone; set => SetProperty(ref _rightTriggerDeadZone, Math.Clamp(value, 0, 100)); }
 
-        private int _leftTriggerAntiDeadZone;
-        public int LeftTriggerAntiDeadZone { get => _leftTriggerAntiDeadZone; set => SetProperty(ref _leftTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
+        private double _leftTriggerAntiDeadZone;
+        public double LeftTriggerAntiDeadZone { get => _leftTriggerAntiDeadZone; set => SetProperty(ref _leftTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
 
-        private int _rightTriggerAntiDeadZone;
-        public int RightTriggerAntiDeadZone { get => _rightTriggerAntiDeadZone; set => SetProperty(ref _rightTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
+        private double _rightTriggerAntiDeadZone;
+        public double RightTriggerAntiDeadZone { get => _rightTriggerAntiDeadZone; set => SetProperty(ref _rightTriggerAntiDeadZone, Math.Clamp(value, 0, 100)); }
 
-        private int _leftTriggerMaxRange = 100;
-        public int LeftTriggerMaxRange { get => _leftTriggerMaxRange; set => SetProperty(ref _leftTriggerMaxRange, Math.Clamp(value, 1, 100)); }
+        private double _leftTriggerMaxRange = 100;
+        public double LeftTriggerMaxRange { get => _leftTriggerMaxRange; set => SetProperty(ref _leftTriggerMaxRange, Math.Clamp(value, 1, 100)); }
 
-        private int _rightTriggerMaxRange = 100;
-        public int RightTriggerMaxRange { get => _rightTriggerMaxRange; set => SetProperty(ref _rightTriggerMaxRange, Math.Clamp(value, 1, 100)); }
+        private double _rightTriggerMaxRange = 100;
+        public double RightTriggerMaxRange { get => _rightTriggerMaxRange; set => SetProperty(ref _rightTriggerMaxRange, Math.Clamp(value, 1, 100)); }
 
         // ── Backward compatibility shims ──
         // SettingsService and existing PadPage.xaml use LeftDeadZone/RightDeadZone.
         // Route to both X and Y axes so old code works transparently.
-        public int LeftDeadZone
+        public double LeftDeadZone
         {
             get => _leftDeadZoneX;
             set { LeftDeadZoneX = value; LeftDeadZoneY = value; }
         }
 
-        public int RightDeadZone
+        public double RightDeadZone
         {
             get => _rightDeadZoneX;
             set { RightDeadZoneX = value; RightDeadZoneY = value; }
@@ -1180,8 +1180,8 @@ namespace PadForge.ViewModels
 
             RawLeftTrigger = gp.LeftTrigger;
             RawRightTrigger = gp.RightTrigger;
-            LeftTrigger = gp.LeftTrigger / 255.0;
-            RightTrigger = gp.RightTrigger / 255.0;
+            LeftTrigger = gp.LeftTrigger / 65535.0;
+            RightTrigger = gp.RightTrigger / 65535.0;
 
             RawThumbLX = gp.ThumbLX;
             RawThumbLY = gp.ThumbLY;
@@ -1216,8 +1216,8 @@ namespace PadForge.ViewModels
         {
             DeviceRawLeftTrigger = gp.LeftTrigger;
             DeviceRawRightTrigger = gp.RightTrigger;
-            DeviceLeftTrigger = gp.LeftTrigger / 255.0;
-            DeviceRightTrigger = gp.RightTrigger / 255.0;
+            DeviceLeftTrigger = gp.LeftTrigger / 65535.0;
+            DeviceRightTrigger = gp.RightTrigger / 65535.0;
 
             DeviceRawThumbLX = gp.ThumbLX;
             DeviceRawThumbLY = gp.ThumbLY;
@@ -1275,7 +1275,7 @@ namespace PadForge.ViewModels
         /// Applies the full stick processing pipeline (dead zone, max range, anti-dead zone, linear)
         /// to a normalized 0–1 axis value for preview display. Mirrors Step3's ApplySingleDeadZone.
         /// </summary>
-        private static double ProcessAxisForPreview(double adjustedNorm, int deadZone, int antiDeadZone, int linear, int maxRange)
+        private static double ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange)
         {
             double signed = (adjustedNorm - 0.5) * 2.0;
             double sign = Math.Sign(signed);
@@ -1354,7 +1354,7 @@ namespace PadForge.ViewModels
                 {
                     // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
                     trig.LiveValue = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
-                    trig.RawValue = (byte)Math.Clamp((int)(trig.LiveValue * 255), 0, 255);
+                    trig.RawValue = (ushort)Math.Clamp((int)(trig.LiveValue * 65535), 0, 65535);
                 }
             }
 

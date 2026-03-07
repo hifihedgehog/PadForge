@@ -13,7 +13,7 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 - **Interactive mapping** — Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
 - **Dead zones and response curves** — Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview, plus stick center offset calibration and max range
 - **Force feedback** — Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
-- **Macro system** — Trigger combos that execute button presses, key presses, delays, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
+- **Macro system** — Trigger combos that execute button presses, key presses, delays, system volume control, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
 - **Per-app profile switching** — Automatically switch controller configurations when specific applications gain focus
 - **DSU/Cemuhook motion server** — Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
 - **Input hiding** — Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with auto-enable for gamepads and safety warnings for mice/keyboards
@@ -50,7 +50,7 @@ Rumble configuration with overall gain, per-motor strength sliders, and a swap o
 
 ### Macro Editor
 ![Macros](screenshots/macros.jpg)
-Create macros triggered by button combinations from either the output controller or a physical input device. Each macro supports an action sequence of button presses, key presses, delays, and axis manipulation. Configurable fire mode (on press, on release, repeat) with type-aware button names for Xbox 360, DualShock 4, and custom DirectInput controllers (up to 128 buttons).
+Create macros triggered by button combinations from either the output controller or a physical input device. Each macro supports an action sequence of button presses, key presses, delays, system volume adjustments, and axis manipulation. Configurable fire mode (on press, on release, repeat) with type-aware button names for Xbox 360, DualShock 4, and custom DirectInput controllers (up to 128 buttons).
 
 ### Device List
 ![Devices](screenshots/devices.jpg)

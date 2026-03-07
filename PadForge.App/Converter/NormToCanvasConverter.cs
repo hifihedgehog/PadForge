@@ -13,7 +13,7 @@ namespace PadForge.Converters
     ///   "canvasDim,dotSize"   — explicit dot size.
     /// Output = value * (canvasDim - dotSize), clamped to [0, canvasDim - dotSize].
     /// </summary>
-    public class NormToCanvasConverter : IValueConverter
+    public sealed class NormToCanvasConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

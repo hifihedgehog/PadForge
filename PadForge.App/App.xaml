@@ -31,16 +31,11 @@
             <!-- Global Converters -->
             <conv:BoolToColorConverter x:Key="BoolToColorConverter" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <conv:AxisToPercentConverter x:Key="AxisToPercentConverter" />
-            <conv:PovToAngleConverter x:Key="PovToAngleConverter" />
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
-            <conv:StatusToColorConverter x:Key="StatusToColorConverter" />
-            <conv:BoolToInstallTextConverter x:Key="BoolToInstallTextConverter" />
             <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
             <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
-            <conv:NormToTriggerSlideConverter x:Key="NormToTriggerSlideConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
             <conv:StringToGeometryConverter x:Key="StringToGeometry" />
 

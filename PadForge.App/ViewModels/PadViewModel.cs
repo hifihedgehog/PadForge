@@ -465,12 +465,12 @@ namespace PadForge.ViewModels
         {
             var mc = MidiConfig;
 
-            // Axes → CC messages
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftX}", "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcLeftY}", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightX}", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
-            Mappings.Add(new MappingItem($"CC {mc.CcRightY}", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+            // CC outputs (continuous controllers, sequential by CC number)
+            Mappings.Add(new MappingItem($"CC {mc.CcLeftX}", "LeftThumbAxisX", MappingCategory.Triggers, "LeftThumbAxisXNeg"));
+            Mappings.Add(new MappingItem($"CC {mc.CcLeftY}", "LeftThumbAxisY", MappingCategory.Triggers, "LeftThumbAxisYNeg"));
             Mappings.Add(new MappingItem($"CC {mc.CcLeftTrigger}", "LeftTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem($"CC {mc.CcRightX}", "RightThumbAxisX", MappingCategory.Triggers, "RightThumbAxisXNeg"));
+            Mappings.Add(new MappingItem($"CC {mc.CcRightY}", "RightThumbAxisY", MappingCategory.Triggers, "RightThumbAxisYNeg"));
             Mappings.Add(new MappingItem($"CC {mc.CcRightTrigger}", "RightTrigger", MappingCategory.Triggers));
 
             // Buttons → Note On/Off

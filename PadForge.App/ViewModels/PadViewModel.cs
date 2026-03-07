@@ -140,6 +140,22 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
+        //  MIDI per-slot configuration
+        // ═══════════════════════════════════════════════
+
+        private MidiSlotConfig _midiConfig = new();
+
+        /// <summary>
+        /// Per-slot MIDI configuration (port, channel, CC/note mappings).
+        /// Always present — only meaningful when OutputType == Midi.
+        /// </summary>
+        public MidiSlotConfig MidiConfig
+        {
+            get => _midiConfig;
+            set => SetProperty(ref _midiConfig, value ?? new());
+        }
+
+        // ═══════════════════════════════════════════════
         //  #1: Multi-device selection within a slot
         // ═══════════════════════════════════════════════
 

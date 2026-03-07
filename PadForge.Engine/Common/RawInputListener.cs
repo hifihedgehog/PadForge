@@ -88,16 +88,17 @@ namespace PadForge.Engine
             public uint ExtraInformation;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Explicit)]
         private struct RAWMOUSE
         {
-            public ushort usFlags;
-            public ushort usButtonFlags;
-            public ushort usButtonData;
-            public uint ulRawButtons;
-            public int lLastX;
-            public int lLastY;
-            public uint ulExtraInformation;
+            [FieldOffset(0)]  public ushort usFlags;
+            [FieldOffset(4)]  public uint ulButtons;        // union with usButtonFlags + usButtonData
+            [FieldOffset(4)]  public ushort usButtonFlags;
+            [FieldOffset(6)]  public ushort usButtonData;
+            [FieldOffset(8)]  public uint ulRawButtons;
+            [FieldOffset(12)] public int lLastX;
+            [FieldOffset(16)] public int lLastY;
+            [FieldOffset(20)] public uint ulExtraInformation;
         }
 
         [StructLayout(LayoutKind.Sequential)]

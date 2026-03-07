@@ -68,7 +68,11 @@ namespace PadForge.ViewModels
 
             // Update display labels to use sequential global numbering.
             for (int i = 0; i < SlotSummaries.Count; i++)
-                SlotSummaries[i].SlotLabel = $"Virtual Controller {i + 1}";
+            {
+                var label = $"Virtual Controller {i + 1}";
+                if (SlotSummaries[i].SlotLabel != label)
+                    SlotSummaries[i].SlotLabel = label;
+            }
 
             ShowAddController = canAddMore;
         }

@@ -471,12 +471,8 @@ namespace PadForge.Services
                     row.HidHideEnabled = true;
                 }
             }
-            else if (ud.IsKeyboard || ud.IsMouse)
-            {
-                // Auto-enable hook-based input consumption for keyboards and mice.
-                ud.ConsumeInputEnabled = true;
-                row.ConsumeInputEnabled = true;
-            }
+            // Keyboards and mice: do NOT auto-enable consumption — blocking
+            // someone's only mouse/keyboard locks them out of Windows.
         }
 
     }

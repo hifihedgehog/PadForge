@@ -32,7 +32,8 @@
         </helix:HelixViewport3D>
 
         <!-- Reset View button -->
-        <Button Content="Reset View"
+        <Button x:Name="ResetViewButton"
+                Content="Reset View"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Margin="0,8,8,0"

@@ -20,7 +20,7 @@ namespace PadForge.Engine
         private const int MouseButtons = 5;
         private const int MouseAxes = 2;
         private const int AxisCenter = 32767;
-        private const float MotionScale = 256f;
+        private const float MotionScale = 2048f;
 
         public uint SdlInstanceId => _sdlId;
         public string Name { get; private set; } = "Mouse";
@@ -88,7 +88,7 @@ namespace PadForge.Engine
             VendorId = deviceInfo.VendorId;
             ProductId = deviceInfo.ProductId;
 
-            _sdlId = (uint)deviceInfo.DevicePath.GetHashCode();
+            _sdlId = (uint)(deviceInfo.DevicePath.GetHashCode() & 0x7FFFFFFF);
 
             return true;
         }

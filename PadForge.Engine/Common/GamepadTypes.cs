@@ -10,8 +10,8 @@ namespace PadForge.Engine
     public struct Gamepad
     {
         public ushort Buttons;
-        public byte LeftTrigger;
-        public byte RightTrigger;
+        public ushort LeftTrigger;
+        public ushort RightTrigger;
         public short ThumbLX;
         public short ThumbLY;
         public short ThumbRX;

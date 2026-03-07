@@ -24,7 +24,7 @@
             <Setter Property="Width" Value="200"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
-            <Setter Property="TickFrequency" Value="1"/>
+            <Setter Property="TickFrequency" Value="0.1"/>
         </Style>
         <Style x:Key="OffsetSlider" TargetType="Slider" BasedOn="{StaticResource DzSlider}">
             <Setter Property="Minimum" Value="-100"/>
@@ -892,12 +892,8 @@
                                                 </Grid>
                                             </Border>
                                             <TextBlock Margin="0,4,0,0" HorizontalAlignment="Center"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
-                                                <Run Text="X:"/>
-                                                <Run Text="{Binding RawX, Mode=OneWay}"/>
-                                                <Run Text="  Y:"/>
-                                                <Run Text="{Binding RawY, Mode=OneWay}"/>
-                                            </TextBlock>
+                                                       Text="{Binding RawDisplay, Mode=OneWay}"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                         </StackPanel>
                                     </Grid>
 
@@ -952,7 +948,7 @@
                                         <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
                                                      Minimum="0" Maximum="1"
                                                      Width="200" Height="16" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding RawValue, Mode=OneWay}"
+                                        <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
                                                    Style="{StaticResource DzValue}"/>
                                     </StackPanel>
 

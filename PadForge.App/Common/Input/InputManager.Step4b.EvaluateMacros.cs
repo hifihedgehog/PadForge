@@ -5,6 +5,46 @@ using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
+// ─────────────────────────────────────────────
+//  Windows Core Audio COM interfaces for system volume control.
+//  Used by the SystemVolume macro action type.
+// ─────────────────────────────────────────────
+
+namespace PadForge.Common.Input
+{
+    [ComImport, Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
+    internal class MMDeviceEnumeratorClass { }
+
+    [ComImport, Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IMMDeviceEnumerator
+    {
+        int EnumAudioEndpoints(int dataFlow, int stateMask, out IntPtr devices);
+        int GetDefaultAudioEndpoint(int dataFlow, int role, out IMMDevice device);
+    }
+
+    [ComImport, Guid("D666063F-1587-4E43-81F1-B948E807363F"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IMMDevice
+    {
+        int Activate([In] ref Guid iid, int clsCtx, IntPtr activationParams,
+                     [MarshalAs(UnmanagedType.IUnknown)] out object iface);
+    }
+
+    [ComImport, Guid("5CDF2C82-841E-4546-9722-0CF74078229A"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioEndpointVolume
+    {
+        int RegisterControlChangeNotify(IntPtr notify);
+        int UnregisterControlChangeNotify(IntPtr notify);
+        int GetChannelCount(out uint count);
+        int SetMasterVolumeLevel(float levelDb, ref Guid eventContext);
+        int SetMasterVolumeLevelScalar(float level, ref Guid eventContext);
+        int GetMasterVolumeLevel(out float levelDb);
+        int GetMasterVolumeLevelScalar(out float level);
+    }
+}
+
 namespace PadForge.Common.Input
 {
     public partial class InputManager
@@ -153,7 +193,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Advances and executes the macro's action sequence.
         /// </summary>
-        private static void ExecuteMacroActions(ref Gamepad gp, MacroItem macro)
+        private void ExecuteMacroActions(ref Gamepad gp, MacroItem macro)
         {
             if (macro.CurrentActionIndex >= macro.Actions.Count)
             {
@@ -235,6 +275,12 @@ namespace PadForge.Common.Input
                     // Set the specified axis to the given value.
                     ApplyAxisAction(ref gp, action);
                     AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.SystemVolume:
+                    // Continuously read the source axis and set system volume.
+                    // Does NOT advance — stays on this action while the macro is executing.
+                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget));
                     break;
             }
         }
@@ -373,7 +419,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Executes macro actions against a VJoyRawState (custom vJoy button words).
         /// </summary>
-        private static void ExecuteMacroActionsCustomVJoy(ref VJoyRawState raw, MacroItem macro)
+        private void ExecuteMacroActionsCustomVJoy(ref VJoyRawState raw, MacroItem macro)
         {
             if (macro.CurrentActionIndex >= macro.Actions.Count)
             {
@@ -462,6 +508,10 @@ namespace PadForge.Common.Input
                         ApplyAxisActionRaw(ref raw, action);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.SystemVolume:
+                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget));
+                    break;
             }
         }
 
@@ -480,6 +530,91 @@ namespace PadForge.Common.Input
             };
             if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
                 raw.Axes[axisIndex] = action.AxisValue;
+        }
+
+        // ─────────────────────────────────────────────
+        //  System volume control for SystemVolume macro action
+        // ─────────────────────────────────────────────
+
+        private IAudioEndpointVolume _audioEndpointVolume;
+        private bool _audioEndpointFailed;
+        private float _lastSetVolume = -1f;
+
+        /// <summary>
+        /// Sets the Windows system master volume. Uses change detection to avoid
+        /// redundant COM calls every polling cycle.
+        /// </summary>
+        private void SetSystemVolume(float volume)
+        {
+            volume = Math.Clamp(volume, 0f, 1f);
+
+            // Skip if the volume hasn't changed (within ~0.4% tolerance = 1/256).
+            if (Math.Abs(volume - _lastSetVolume) < 0.004f)
+                return;
+            _lastSetVolume = volume;
+
+            if (_audioEndpointFailed) return;
+
+            try
+            {
+                if (_audioEndpointVolume == null)
+                {
+                    var enumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorClass();
+                    enumerator.GetDefaultAudioEndpoint(0 /* eRender */, 1 /* eMultimedia */, out var device);
+                    var iid = typeof(IAudioEndpointVolume).GUID;
+                    device.Activate(ref iid, 1 /* CLSCTX_INPROC_SERVER */, IntPtr.Zero, out var iface);
+                    _audioEndpointVolume = (IAudioEndpointVolume)iface;
+                }
+
+                var emptyGuid = Guid.Empty;
+                _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+            }
+            catch
+            {
+                _audioEndpointFailed = true;
+            }
+        }
+
+        /// <summary>
+        /// Reads the current value of a source axis from the Gamepad state
+        /// and returns it as a 0.0–1.0 float suitable for volume.
+        /// </summary>
+        private static float ReadAxisAsVolume(in Gamepad gp, MacroAxisTarget target)
+        {
+            return target switch
+            {
+                // Sticks: -32768..32767 → 0..1
+                MacroAxisTarget.LeftStickX => (gp.ThumbLX + 32768f) / 65535f,
+                MacroAxisTarget.LeftStickY => (gp.ThumbLY + 32768f) / 65535f,
+                MacroAxisTarget.RightStickX => (gp.ThumbRX + 32768f) / 65535f,
+                MacroAxisTarget.RightStickY => (gp.ThumbRY + 32768f) / 65535f,
+                // Triggers: 0..255 → 0..1
+                MacroAxisTarget.LeftTrigger => gp.LeftTrigger / 255f,
+                MacroAxisTarget.RightTrigger => gp.RightTrigger / 255f,
+                _ => 0f
+            };
+        }
+
+        /// <summary>
+        /// Reads the current value of a source axis from a VJoyRawState
+        /// and returns it as a 0.0–1.0 float suitable for volume.
+        /// </summary>
+        private static float ReadAxisAsVolumeRaw(in VJoyRawState raw, MacroAxisTarget target)
+        {
+            int axisIndex = target switch
+            {
+                MacroAxisTarget.LeftStickX => 0,
+                MacroAxisTarget.LeftStickY => 1,
+                MacroAxisTarget.RightStickX => 3,
+                MacroAxisTarget.RightStickY => 4,
+                MacroAxisTarget.LeftTrigger => 2,
+                MacroAxisTarget.RightTrigger => 5,
+                _ => -1
+            };
+            if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length)
+                return 0f;
+            // Raw axes are short (-32768..32767) → 0..1
+            return (raw.Axes[axisIndex] + 32768f) / 65535f;
         }
 
         // ─────────────────────────────────────────────

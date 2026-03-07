@@ -314,6 +314,23 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Resets the cached availability check so the next call to IsAvailable()
+        /// re-evaluates. Call after installing MIDI Services.
+        /// </summary>
+        public static void ResetAvailability()
+        {
+            lock (_availLock)
+            {
+                if (_initializer != null)
+                {
+                    _initializer.Dispose();
+                    _initializer = null;
+                }
+                _isAvailable = null;
+            }
+        }
+
+        /// <summary>
         /// Shuts down the MIDI Services SDK initializer. Call on app exit.
         /// </summary>
         public static void Shutdown()

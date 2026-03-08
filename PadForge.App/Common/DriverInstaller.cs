@@ -655,11 +655,90 @@ public static class PF_SetupApi {{
         }
 
         /// <summary>
-        /// Checks whether Windows MIDI Services is available on this system.
+        /// Uninstalls Windows MIDI Services by finding the cached WiX Burn bootstrapper
+        /// via the registry UninstallString and launching it with /uninstall /quiet.
+        /// The uninstaller is launched fire-and-forget because the MIDI Services SDK
+        /// DLLs are loaded in-process — waiting for the uninstaller to finish would
+        /// cause a native crash when the backing service is removed mid-session.
+        /// </summary>
+        public static void UninstallMidiServices()
+        {
+            string uninstallCmd = FindMidiServicesUninstallString();
+            if (string.IsNullOrEmpty(uninstallCmd))
+                throw new InvalidOperationException("Could not find Windows MIDI Services uninstall entry in registry.");
+
+            // UninstallString is e.g.: "C:\...\Setup.exe"  /uninstall
+            // Parse the quoted exe path and any existing arguments, then append /quiet.
+            string exePath;
+            string existingArgs = "";
+            if (uninstallCmd.StartsWith('"'))
+            {
+                int closeQuote = uninstallCmd.IndexOf('"', 1);
+                exePath = uninstallCmd.Substring(1, closeQuote - 1);
+                existingArgs = uninstallCmd.Substring(closeQuote + 1).Trim();
+            }
+            else
+            {
+                int space = uninstallCmd.IndexOf(' ');
+                exePath = space > 0 ? uninstallCmd.Substring(0, space) : uninstallCmd;
+                if (space > 0) existingArgs = uninstallCmd.Substring(space + 1).Trim();
+            }
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = exePath,
+                Arguments = $"{existingArgs} /quiet /norestart".Trim(),
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            proc?.WaitForExit(300_000);
+        }
+
+        /// <summary>
+        /// Searches the registry Uninstall keys for the Windows MIDI Services entry
+        /// and returns its UninstallString value.
+        /// </summary>
+        private static string FindMidiServicesUninstallString()
+        {
+            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
+
+            foreach (var view in views)
+            {
+                try
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var uninstallKey = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                    if (uninstallKey == null) continue;
+
+                    foreach (var subName in uninstallKey.GetSubKeyNames())
+                    {
+                        using var sub = uninstallKey.OpenSubKey(subName, false);
+                        var name = sub?.GetValue("DisplayName") as string;
+                        if (string.IsNullOrEmpty(name)) continue;
+
+                        // Match the WiX Burn bootstrapper bundle entry, not the individual MSI components.
+                        if (name.Equals("Windows MIDI Services Runtime and Tools", StringComparison.OrdinalIgnoreCase))
+                        {
+                            return sub.GetValue("UninstallString") as string;
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Checks whether Windows MIDI Services is installed by looking for the
+        /// registry uninstall entry. Does NOT load the SDK runtime — that would
+        /// lock native DLLs in-process and prevent clean uninstallation.
         /// </summary>
         public static bool IsMidiServicesInstalled()
         {
-            return MidiVirtualController.IsAvailable();
+            return FindMidiServicesUninstallString() != null;
         }
 
         // ─────────────────────────────────────────────

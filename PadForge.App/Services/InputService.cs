@@ -1528,20 +1528,18 @@ namespace PadForge.Services
             }
 
             // ── HidHide ──
-            bool anyHidHide = false;
             if (HidHideController.IsAvailable())
             {
-                // Clear previous PadForge-managed entries before re-adding,
-                // so devices that had HidHideEnabled turned off get removed.
-                HidHideController.RemoveManagedDevices();
-
                 // Whitelist PadForge itself.
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
                 if (!string.IsNullOrEmpty(exePath))
                     HidHideController.EnsureWhitelisted(exePath);
 
-                // Add devices with HidHideEnabled to the blacklist.
+                // Collect all desired blacklist IDs first, then sync atomically
+                // to avoid a window where devices briefly become visible.
+                var desiredIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 bool cacheUpdated = false;
+
                 foreach (var ud in snapshot)
                 {
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
@@ -1551,8 +1549,7 @@ namespace PadForge.Services
                         // If the DevicePath produced a valid HID instance ID, use it directly.
                         if (instanceId != null && instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase))
                         {
-                            HidHideController.AddToBlacklist(instanceId);
-                            anyHidHide = true;
+                            desiredIds.Add(instanceId);
                         }
                         // Fallback: synthetic paths (e.g., "XInput#0") — look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
@@ -1570,10 +1567,7 @@ namespace PadForge.Services
                                     cacheUpdated = true;
                                 }
                                 foreach (var realId in realIds)
-                                {
-                                    HidHideController.AddToBlacklist(realId);
-                                    anyHidHide = true;
-                                }
+                                    desiredIds.Add(realId);
                             }
                             else if (ud.HidHideInstanceIds.Count > 0)
                             {
@@ -1581,20 +1575,20 @@ namespace PadForge.Services
                                 System.Diagnostics.Debug.WriteLine(
                                     $"[ApplyDeviceHiding] Using {ud.HidHideInstanceIds.Count} cached instance IDs for offline device {ud.ResolvedName}");
                                 foreach (var cachedId in ud.HidHideInstanceIds)
-                                {
-                                    HidHideController.AddToBlacklist(cachedId);
-                                    anyHidHide = true;
-                                }
+                                    desiredIds.Add(cachedId);
                             }
                         }
                     }
                 }
 
+                // Atomically sync — only adds/removes the diff, never clears the blacklist.
+                HidHideController.SyncManagedDevices(desiredIds);
+
                 // Persist updated cache to settings.
                 if (cacheUpdated)
                     _settingsService?.MarkDirty();
 
-                if (anyHidHide)
+                if (desiredIds.Count > 0)
                     HidHideController.SetActive(true);
             }
 
@@ -1855,7 +1849,7 @@ namespace PadForge.Services
                 instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
             if (!string.IsNullOrEmpty(instancePath) &&
-                instancePath.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+                !instancePath.StartsWith("XInput", StringComparison.OrdinalIgnoreCase))
                 row.HidHideInstancePath = instancePath;
             else if (ud.HidHideInstanceIds.Count > 0)
                 row.HidHideInstancePath = ud.HidHideInstanceIds[0];

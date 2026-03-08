@@ -262,6 +262,47 @@ namespace PadForge.Common
         }
 
         /// <summary>
+        /// Atomically syncs the blacklist to match the desired set of managed device IDs.
+        /// Only adds/removes the diff — never clears the entire blacklist, avoiding a
+        /// window where HidHide briefly un-hides devices.
+        /// </summary>
+        public static void SyncManagedDevices(HashSet<string> desiredIds)
+        {
+            lock (_lock)
+            {
+                var toAdd = new List<string>();
+                var toRemove = new List<string>();
+
+                foreach (var id in desiredIds)
+                {
+                    if (!_managedDeviceIds.Contains(id))
+                        toAdd.Add(id);
+                }
+                foreach (var id in _managedDeviceIds)
+                {
+                    if (!desiredIds.Contains(id))
+                        toRemove.Add(id);
+                }
+
+                if (toAdd.Count == 0 && toRemove.Count == 0) return;
+
+                var list = GetBlacklist();
+                foreach (var id in toRemove)
+                    list.RemoveAll(x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
+                foreach (var id in toAdd)
+                {
+                    if (!list.Contains(id, StringComparer.OrdinalIgnoreCase))
+                        list.Add(id);
+                }
+                SetBlacklist(list);
+
+                _managedDeviceIds.Clear();
+                foreach (var id in desiredIds)
+                    _managedDeviceIds.Add(id);
+            }
+        }
+
+        /// <summary>
         /// Clears the entire HidHide blacklist and disables cloaking.
         /// Called on startup to remove stale entries from a previous crash
         /// (since <see cref="_managedDeviceIds"/> is in-memory and lost on restart).

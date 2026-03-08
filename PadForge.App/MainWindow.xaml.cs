@@ -1234,7 +1234,7 @@ namespace PadForge
                 var vjoyBtn = new System.Windows.Controls.Button
                 {
                     Content = vjoyPath,
-                    ToolTip = "vJoy",
+                    ToolTip = "DirectInput",
                     Background = System.Windows.Media.Brushes.Transparent,
                     Padding = new Thickness(2),
                     MinWidth = 0,
@@ -2082,9 +2082,9 @@ namespace PadForge
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPopupPath,
-                ToolTip = !vjoyInstalled ? "vJoy (driver not installed)"
-                        : vjoyAtCapacity ? $"vJoy (max {SettingsManager.MaxVJoySlots})"
-                        : "vJoy",
+                ToolTip = !vjoyInstalled ? "DirectInput (driver not installed)"
+                        : vjoyAtCapacity ? $"DirectInput (max {SettingsManager.MaxVJoySlots})"
+                        : "DirectInput",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
@@ -2821,11 +2821,13 @@ namespace PadForge
             {
                 bool installed = DriverInstaller.IsMidiServicesInstalled();
                 _viewModel.Settings.IsMidiServicesInstalled = installed;
+                _viewModel.Dashboard.IsMidiServicesInstalled = installed;
                 _viewModel.Settings.MidiServicesVersion = installed ? "Windows MIDI Services" : string.Empty;
             }
             catch
             {
                 _viewModel.Settings.IsMidiServicesInstalled = false;
+                _viewModel.Dashboard.IsMidiServicesInstalled = false;
             }
         }
 

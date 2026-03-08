@@ -1,6 +1,6 @@
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 
-Copyright (c) 2025 PadForge Contributors
+Copyright (c) 2025-2026 PadForge Contributors
 
 This work is licensed under the Creative Commons
 Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -85,4 +85,8 @@ CommunityToolkit.Mvvm
 
 HidHide
   https://github.com/nefarius/HidHide
+  Licensed under MIT License
+
+Windows MIDI Services
+  https://github.com/microsoft/MIDI
   Licensed under MIT License

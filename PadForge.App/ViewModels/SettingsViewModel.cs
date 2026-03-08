@@ -226,7 +226,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>MIDI Services status display text.</summary>
-        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Available" : "Not Available";
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Installed" : "Not Installed";
 
         private string _midiServicesVersion = string.Empty;
 

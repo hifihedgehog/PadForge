@@ -115,7 +115,8 @@ namespace PadForge.Services
             var existingPs = us.GetPadSetting();
             if (existingPs == null)
             {
-                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+                var outputType = _mainVm.Pads[slotIndex].OutputType;
+                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
@@ -172,7 +173,8 @@ namespace PadForge.Services
             var existingPs = us.GetPadSetting();
             if (existingPs == null)
             {
-                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+                var outputType = _mainVm.Pads[slotIndex].OutputType;
+                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
@@ -224,7 +226,8 @@ namespace PadForge.Services
                 var existingPs = us.GetPadSetting();
                 if (existingPs == null)
                 {
-                    var ps = SettingsManager.CreateDefaultPadSetting(udForGuid);
+                    var outputType = _mainVm.Pads[slotIndex].OutputType;
+                    var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                     us.SetPadSetting(ps);
                     us.PadSettingChecksum = ps.PadSettingChecksum;
                 }

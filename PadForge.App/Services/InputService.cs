@@ -122,6 +122,8 @@ namespace PadForge.Services
             if (_inputManager != null)
                 return; // Already running.
 
+            _stopped = false;
+
             // Remove stale ViGEm USB device nodes left over from previous sessions
             // (e.g., app crash without Dispose, or old builds that didn't call Dispose).
             // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
@@ -213,8 +215,13 @@ namespace PadForge.Services
         /// <summary>
         /// Stops the UI timer and engine, releases resources.
         /// </summary>
+        private bool _stopped;
+
         public void Stop(bool preserveVJoyNodes = false)
         {
+            if (_stopped) return;
+            _stopped = true;
+
             // Stop UI timer.
             if (_uiTimer != null)
             {
@@ -2772,7 +2779,7 @@ namespace PadForge.Services
             if (_disposed)
                 return;
 
-            Stop();
+            try { Stop(); } catch { /* Best effort on shutdown */ }
             _disposed = true;
         }
     }

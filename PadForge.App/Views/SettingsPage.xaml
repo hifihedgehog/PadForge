@@ -235,7 +235,11 @@
                                     VerticalAlignment="Center">
                             <Button Content="Install"
                                     Command="{Binding InstallMidiServicesCommand}"
-                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Uninstall"
+                                    Command="{Binding UninstallMidiServicesCommand}"
+                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>

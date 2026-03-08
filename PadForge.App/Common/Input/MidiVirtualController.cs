@@ -329,13 +329,20 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Shuts down the MIDI Services SDK initializer. Call on app exit.
         /// </summary>
-        public static void Shutdown()
+        /// <param name="skipDispose">
+        /// When true, abandons the initializer without calling Dispose().
+        /// Use before uninstalling MIDI Services — Dispose() calls into the
+        /// runtime which triggers a native crash if the service is being removed.
+        /// </param>
+        public static void Shutdown(bool skipDispose = false)
         {
             if (_initializer != null)
             {
-                _initializer.Dispose();
+                if (!skipDispose)
+                    try { _initializer.Dispose(); } catch { }
                 _initializer = null;
             }
+            lock (_availLock) { _isAvailable = null; }
         }
     }
 }

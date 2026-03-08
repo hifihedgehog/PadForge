@@ -171,7 +171,7 @@
                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="vJoy Driver" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="Virtual joystick driver for custom HID device output."
+                    <TextBlock Text="Virtual joystick driver for custom DirectInput device output."
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>

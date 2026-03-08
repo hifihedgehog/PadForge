@@ -214,6 +214,26 @@ namespace PadForge.ViewModels
         public string VJoyStatusText => IsVJoyInstalled ? "Installed" : "Not Installed";
 
         // ─────────────────────────────────────────────
+        //  Windows MIDI Services status
+        // ─────────────────────────────────────────────
+
+        private bool _isMidiServicesInstalled;
+
+        /// <summary>Whether Windows MIDI Services is installed.</summary>
+        public bool IsMidiServicesInstalled
+        {
+            get => _isMidiServicesInstalled;
+            set
+            {
+                if (SetProperty(ref _isMidiServicesInstalled, value))
+                    OnPropertyChanged(nameof(MidiServicesStatusText));
+            }
+        }
+
+        /// <summary>Display text for MIDI Services status.</summary>
+        public string MidiServicesStatusText => IsMidiServicesInstalled ? "Installed" : "Not Installed";
+
+        // ─────────────────────────────────────────────
         //  DSU Motion Server
         // ─────────────────────────────────────────────
 

@@ -2,7 +2,7 @@
 
 Modern controller mapping utility for Windows. Maps any controller, keyboard, or mouse to virtual Xbox 360, DualShock 4, or custom DirectInput controllers that games see as real hardware.
 
-Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 10 WPF, and Fluent Design. Modern fork of [x360ce](https://github.com/x360ce/x360ce).
+Built with SDL3, Windows Raw Input, ViGEmBus, vJoy, Windows MIDI Services, HelixToolkit, .NET 10 WPF, and Fluent Design. Modern fork of [x360ce](https://github.com/x360ce/x360ce).
 
 ## Features
 
@@ -104,7 +104,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 | Project | Role in PadForge | License |
 |---|---|---|
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this project was forked from | MIT |
-| [SDL3](https://github.com/libsdl-org/SDL) | All device input — joystick, gamepad, keyboard, mouse, sensors | zlib |
+| [SDL3](https://github.com/libsdl-org/SDL) | Controller input — joystick, gamepad, and sensor enumeration and reading | zlib |
 | [ViGEmBus](https://github.com/nefarius/ViGEmBus) | Virtual Xbox 360 and DualShock 4 controller driver | MIT |
 | [Nefarius.ViGEm.Client](https://github.com/nefarius/ViGEm.NET) | .NET client library for ViGEmBus | MIT |
 | [vJoy](https://github.com/BrunnerInnovation/vJoy) | Custom DirectInput joystick/gamepad driver with configurable HID descriptors and force feedback | MIT |
@@ -132,5 +132,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **SDL3** is licensed under the [zlib License](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt)
 - **ViGEmBus** and **Nefarius.ViGEm.Client** are licensed under the MIT License
 - **vJoy** is licensed under the MIT License
+- **Windows MIDI Services** is licensed under the MIT License
+- **HidHide** is licensed under the MIT License
 
 See [LICENSE](LICENSE) for the full license text.

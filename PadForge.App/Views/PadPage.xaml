@@ -30,18 +30,26 @@
             <Setter Property="Minimum" Value="-100"/>
         </Style>
         <Style x:Key="DzValue" TargetType="TextBlock">
-            <Setter Property="Width" Value="35"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
             <Setter Property="Margin" Value="4,0,0,0"/>
         </Style>
         <Style x:Key="DzValueEdit" TargetType="TextBox">
-            <Setter Property="Width" Value="40"/>
+            <Setter Property="Width" Value="48"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Margin" Value="4,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
+        </Style>
+        <Style x:Key="DzDigitEdit" TargetType="TextBox">
+            <Setter Property="Width" Value="52"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Padding" Value="2,1"/>
+            <Setter Property="ToolTip" Value="Raw axis value"/>
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
         <Style x:Key="DzPercent" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -108,8 +116,9 @@
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
                 <!-- [Gamepad #  TypeIcon TypeName] — Controller tab -->
-                <RadioButton Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
-                             IsChecked="True">
+                <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             IsChecked="True"
+                             AutomationProperties.AutomationId="TabController">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                    VerticalAlignment="Center" Margin="0,0,4,0"/>
@@ -260,16 +269,45 @@
                 BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Ch" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                <TextBox x:Name="MidiChannelBox" Width="35" VerticalAlignment="Center"
+                <TextBlock Text="Channel" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="MIDI channel (1-16)"/>
+                <TextBox x:Name="MidiChannelBox" Width="40" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="Vel" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="CC Count" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="Note velocity (0-127)"/>
-                <TextBox x:Name="MidiVelocityBox" Width="35" VerticalAlignment="Center"
+                           ToolTip="Number of CC outputs (max depends on Start CC)"/>
+                <TextBox x:Name="MidiCcCountBox" Width="54" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="6"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Start CC" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="First CC number (0-127). Higher values reduce max CC Count."/>
+                <TextBox x:Name="MidiStartCcBox" Width="54" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="1"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Note Count" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="Number of note outputs (max depends on Start Note)"/>
+                <TextBox x:Name="MidiNoteCountBox" Width="54" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="11"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Start Note" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="First MIDI note number (0-127, 60 = Middle C). Higher values reduce max Note Count."/>
+                <TextBox x:Name="MidiStartNoteBox" Width="54" VerticalAlignment="Center"
+                         TextAlignment="Center" Text="60"
+                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+
+                <TextBlock Text="Velocity" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           ToolTip="Note-on velocity (0-127). How hard virtual keys are pressed."/>
+                <TextBox x:Name="MidiVelocityBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="127"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
             </StackPanel>
@@ -309,6 +347,7 @@
                         <views:ControllerModelView x:Name="ControllerModel3D" />
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
+                        <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
 
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
                         <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -798,6 +837,8 @@
                                                 <TextBox Text="{Binding CenterOffsetX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding CenterOffsetXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Center Offset Y:" Style="{StaticResource DzLabel}"/>
@@ -806,6 +847,8 @@
                                                 <TextBox Text="{Binding CenterOffsetY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding CenterOffsetYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
@@ -814,6 +857,8 @@
                                                 <TextBox Text="{Binding DeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding DeadZoneXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
@@ -822,6 +867,8 @@
                                                 <TextBox Text="{Binding DeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding DeadZoneYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
@@ -830,6 +877,8 @@
                                                 <TextBox Text="{Binding AntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
@@ -838,6 +887,8 @@
                                                 <TextBox Text="{Binding AntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
@@ -855,6 +906,8 @@
                                                 <TextBox Text="{Binding MaxRangeX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding MaxRangeXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Max Range Y:" Style="{StaticResource DzLabel}"/>
@@ -864,11 +917,13 @@
                                                 <TextBox Text="{Binding MaxRangeY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding MaxRangeYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
                                             </StackPanel>
                                         </StackPanel>
 
                                         <!-- Live preview (right) -->
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="212">
                                             <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
                                                     Padding="4" Width="212" Height="212"
                                                     ClipToBounds="True">
@@ -882,16 +937,16 @@
                                                         <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                                                  StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
-                                                        <!-- Dead zone ring -->
-                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                            <Ellipse.Width>
+                                                        <!-- Dead zone rectangle (per-axis dead zone is rectangular, not circular) -->
+                                                        <Rectangle Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
+                                                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Rectangle.Width>
                                                                 <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                            </Ellipse.Width>
-                                                            <Ellipse.Height>
+                                                            </Rectangle.Width>
+                                                            <Rectangle.Height>
                                                                 <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                            </Ellipse.Height>
-                                                            <Ellipse.RenderTransform>
+                                                            </Rectangle.Height>
+                                                            <Rectangle.RenderTransform>
                                                                 <TranslateTransform>
                                                                     <TranslateTransform.X>
                                                                         <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
@@ -900,10 +955,10 @@
                                                                         <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
                                                                     </TranslateTransform.Y>
                                                                 </TranslateTransform>
-                                                            </Ellipse.RenderTransform>
+                                                            </Rectangle.RenderTransform>
                                                             <Canvas.Left>100</Canvas.Left>
                                                             <Canvas.Top>100</Canvas.Top>
-                                                        </Ellipse>
+                                                        </Rectangle>
                                                         <!-- Crosshair -->
                                                         <Line X1="100" Y1="0" X2="100" Y2="200"
                                                               Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
@@ -921,6 +976,7 @@
                                             </Border>
                                             <TextBlock Margin="0,4,0,0" HorizontalAlignment="Center"
                                                        Text="{Binding RawDisplay, Mode=OneWay}"
+                                                       TextWrapping="Wrap" TextAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                         </StackPanel>
                                     </Grid>
@@ -959,6 +1015,12 @@
                                         <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzDigitEdit}"/>
+                                        <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                        <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzDigitEdit}"/>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -968,6 +1030,8 @@
                                         <TextBox Text="{Binding AntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzDigitEdit}"/>
                                     </StackPanel>
 
                                     <!-- Live value bar -->
@@ -977,7 +1041,8 @@
                                                      Minimum="0" Maximum="1"
                                                      Width="200" Height="16" VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
-                                                   Style="{StaticResource DzValue}"/>
+                                                   Margin="8,0,0,0" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
 
                                     <Separator Margin="0,8,0,12"/>

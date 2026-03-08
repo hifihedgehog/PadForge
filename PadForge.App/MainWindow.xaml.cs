@@ -83,6 +83,25 @@ namespace PadForge
                         return true;
                 return false;
             };
+            _viewModel.Settings.HasAnyMidiSlots = () =>
+            {
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                    if (SettingsManager.SlotCreated[i] &&
+                        _viewModel.Pads[i].OutputType == VirtualControllerType.Midi)
+                        return true;
+                return false;
+            };
+            _viewModel.Settings.HasAnyHidHideDevices = () =>
+            {
+                var devices = SettingsManager.UserDevices;
+                if (devices == null) return false;
+                lock (devices.SyncRoot)
+                {
+                    foreach (var ud in devices.Items)
+                        if (ud.HidHideEnabled) return true;
+                }
+                return false;
+            };
 
             // Wire engine start/stop commands.
             _viewModel.StartEngineRequested += (s, e) => _inputService.Start();
@@ -116,11 +135,23 @@ namespace PadForge
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
 
-            // Apply registry Run key when Start at Login is toggled.
+            // Persist Settings VM changes (theme, polling, checkboxes) and handle login toggle.
             _viewModel.Settings.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin))
                     Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
+
+                if (e.PropertyName is nameof(SettingsViewModel.SelectedThemeIndex)
+                     or nameof(SettingsViewModel.AutoStartEngine)
+                     or nameof(SettingsViewModel.MinimizeToTray)
+                     or nameof(SettingsViewModel.StartMinimized)
+                     or nameof(SettingsViewModel.StartAtLogin)
+                     or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
+                     or nameof(SettingsViewModel.PollingRateMs)
+                     or nameof(SettingsViewModel.EnableInputHiding)
+                     or nameof(SettingsViewModel.Use2DControllerView)
+                     or nameof(SettingsViewModel.EnableAutoProfileSwitching))
+                    _settingsService.MarkDirty();
             };
 
             // Persist DSU / web controller server settings on change (Dashboard VM).
@@ -151,6 +182,41 @@ namespace PadForge
             _viewModel.Settings.UninstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
                 "Uninstalling vJoy…", DriverInstaller.UninstallVJoy, OnVJoyDriverChanged);
 
+            // Wire MIDI Services install/uninstall commands.
+            _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
+            {
+                _viewModel.StatusText = "Downloading Windows MIDI Services…";
+                DriverOverlayText.Text = "Downloading and installing Windows MIDI Services…";
+                DriverOverlay.Visibility = Visibility.Visible;
+                try
+                {
+                    await DriverInstaller.InstallMidiServicesAsync();
+                    _viewModel.StatusText = "Ready";
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    _viewModel.StatusText = "Operation cancelled by user.";
+                }
+                catch (Exception ex)
+                {
+                    _viewModel.StatusText = $"MIDI Services install failed: {ex.Message}";
+                }
+                finally
+                {
+                    DriverOverlay.Visibility = Visibility.Collapsed;
+                    RefreshMidiServicesStatus();
+                }
+            };
+            _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
+            {
+                // The uninstall guard prevents this when MIDI slots are active, so the
+                // SDK runtime won't be loaded in-process. Safe to wait for the uninstaller.
+                // Abandon the initializer just in case (e.g. IsAvailable was called elsewhere).
+                Common.Input.MidiVirtualController.Shutdown(skipDispose: true);
+                await RunDriverOperationAsync(
+                    "Uninstalling Windows MIDI Services…", DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
+            };
+
             // Wire device service events (assign to slot, hide, etc.).
             _deviceService.WireEvents();
 
@@ -165,6 +231,7 @@ namespace PadForge
             _deviceService.DeviceHidingStateChanged += (s, e) =>
             {
                 _inputService.ApplyDeviceHiding();
+                _viewModel.Settings.RefreshDriverGuards();
             };
 
             // After assigning a device to a slot, navigate to that controller page.
@@ -636,6 +703,9 @@ namespace PadForge
             RefreshVJoyStatus();
             _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
 
+            // Detect MIDI Services.
+            RefreshMidiServicesStatus();
+
             // Periodically refresh driver install states (every 5 seconds).
             _driverStatusTimer = new System.Windows.Threading.DispatcherTimer
             {
@@ -647,6 +717,7 @@ namespace PadForge
                 RefreshViGEmStatus();
                 RefreshHidHideStatus();
                 RefreshVJoyStatus();
+                RefreshMidiServicesStatus();
 
                 bool nowViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
                 _previousViGEmInstalled = nowViGEmInstalled;
@@ -1843,7 +1914,7 @@ namespace PadForge
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
                 || vjoyCount < SettingsManager.MaxVJoySlots
-                || (Common.Input.MidiVirtualController.IsAvailable() && midiCount < SettingsManager.MaxMidiSlots);
+                || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots);
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -2048,7 +2119,7 @@ namespace PadForge
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
             midiPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-            bool midiAvailable = Common.Input.MidiVirtualController.IsAvailable();
+            bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || midiAtCapacity;
             string midiTooltip = !midiAvailable ? "MIDI (requires Windows MIDI Services)"
@@ -2742,6 +2813,20 @@ namespace PadForge
             {
                 _viewModel.Settings.IsVJoyInstalled = false;
                 _viewModel.Dashboard.IsVJoyInstalled = false;
+            }
+        }
+
+        private void RefreshMidiServicesStatus()
+        {
+            try
+            {
+                bool installed = DriverInstaller.IsMidiServicesInstalled();
+                _viewModel.Settings.IsMidiServicesInstalled = installed;
+                _viewModel.Settings.MidiServicesVersion = installed ? "Windows MIDI Services" : string.Empty;
+            }
+            catch
+            {
+                _viewModel.Settings.IsMidiServicesInstalled = false;
             }
         }
 

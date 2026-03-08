@@ -38,6 +38,7 @@ bld/
 **/[Pp]ackages/*
 !**/[Pp]ackages/build/
 *.nupkg
+!nuget-local/*.nupkg
 **/packages/repositories.config
 project.lock.json
 project.fragment.lock.json

@@ -51,7 +51,6 @@ namespace PadForge.Services
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
-        private bool _preservedVJoyNodes;
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -123,6 +122,8 @@ namespace PadForge.Services
             if (_inputManager != null)
                 return; // Already running.
 
+            _stopped = false;
+
             // Remove stale ViGEm USB device nodes left over from previous sessions
             // (e.g., app crash without Dispose, or old builds that didn't call Dispose).
             // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
@@ -134,8 +135,6 @@ namespace PadForge.Services
             // 10+ second remove+recreate cycle on every normal restart (especially on
             // Win11 builds where pnputil /remove-device returns 3010 and scan-devices
             // takes ~10 seconds to clean up ghost PDOs).
-            _preservedVJoyNodes = false;
-
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
@@ -216,8 +215,13 @@ namespace PadForge.Services
         /// <summary>
         /// Stops the UI timer and engine, releases resources.
         /// </summary>
+        private bool _stopped;
+
         public void Stop(bool preserveVJoyNodes = false)
         {
+            if (_stopped) return;
+            _stopped = true;
+
             // Stop UI timer.
             if (_uiTimer != null)
             {
@@ -273,7 +277,6 @@ namespace PadForge.Services
                 row.IsOnline = false;
             _mainVm.Devices.RefreshCounts();
 
-            _preservedVJoyNodes = preserveVJoyNodes;
             if (!preserveVJoyNodes)
             {
                 // Remove vJoy device nodes so dormant devices don't appear in
@@ -318,6 +321,10 @@ namespace PadForge.Services
                 // For custom vJoy slots, also push the combined VJoyRawState.
                 if (_inputManager.SlotVJoyIsCustom[i])
                     padVm.UpdateFromVJoyRawState(_inputManager.CombinedVJoyRawStates[i]);
+
+                // For MIDI slots, push the combined MidiRawState.
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
+                    padVm.UpdateFromMidiRawState(_inputManager.CombinedMidiRawStates[i]);
 
                 // Per-device state for stick/trigger tab previews.
                 var selected = padVm.SelectedMappedDevice;
@@ -476,6 +483,7 @@ namespace PadForge.Services
                 slot.SlotNumber = globalCount;
 
                 var padVm = _mainVm.Pads[slot.PadIndex];
+                padVm.SlotNumber = globalCount;
                 slot.OutputType = padVm.OutputType;
 
                 switch (padVm.OutputType)
@@ -848,6 +856,10 @@ namespace PadForge.Services
                 {
                     ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
                 }
+                else if (target.StartsWith("Midi", StringComparison.Ordinal))
+                {
+                    ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                }
                 else
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
@@ -918,36 +930,30 @@ namespace PadForge.Services
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
-                string value;
-                if (target.StartsWith("VJoy", StringComparison.Ordinal))
-                    value = ps.GetVJoyMapping(target);
-                else
-                {
-                    var prop = typeof(PadSetting).GetProperty(target);
-                    value = (prop != null && prop.PropertyType == typeof(string))
-                        ? prop.GetValue(ps) as string ?? string.Empty
-                        : string.Empty;
-                }
+                string value = GetMappingValue(ps, target);
                 mapping.LoadDescriptor(value);
                 ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
-                    string negValue;
-                    if (negTarget.StartsWith("VJoy", StringComparison.Ordinal))
-                        negValue = ps.GetVJoyMapping(negTarget);
-                    else
-                    {
-                        var negProp = typeof(PadSetting).GetProperty(negTarget);
-                        negValue = (negProp != null && negProp.PropertyType == typeof(string))
-                            ? negProp.GetValue(ps) as string ?? string.Empty
-                            : string.Empty;
-                    }
+                    string negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }
             }
+        }
+
+        private static string GetMappingValue(PadSetting ps, string key)
+        {
+            if (key.StartsWith("VJoy", StringComparison.Ordinal))
+                return ps.GetVJoyMapping(key);
+            if (key.StartsWith("Midi", StringComparison.Ordinal))
+                return ps.GetMidiMapping(key);
+            var prop = typeof(PadSetting).GetProperty(key);
+            return (prop != null && prop.PropertyType == typeof(string))
+                ? prop.GetValue(ps) as string ?? string.Empty
+                : string.Empty;
         }
 
         private static int TryParseInt(string value, int defaultValue)
@@ -1262,32 +1268,14 @@ namespace PadForge.Services
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
-                string value;
-                if (target.StartsWith("VJoy", StringComparison.Ordinal))
-                    value = ps.GetVJoyMapping(target);
-                else
-                {
-                    var prop = typeof(PadSetting).GetProperty(target);
-                    value = (prop != null && prop.PropertyType == typeof(string))
-                        ? prop.GetValue(ps) as string ?? string.Empty
-                        : string.Empty;
-                }
+                string value = GetMappingValue(ps, target);
                 mapping.LoadDescriptor(value);
                 ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
-                    string negValue;
-                    if (negTarget.StartsWith("VJoy", StringComparison.Ordinal))
-                        negValue = ps.GetVJoyMapping(negTarget);
-                    else
-                    {
-                        var negProp = typeof(PadSetting).GetProperty(negTarget);
-                        negValue = (negProp != null && negProp.PropertyType == typeof(string))
-                            ? negProp.GetValue(ps) as string ?? string.Empty
-                            : string.Empty;
-                    }
+                    string negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }
@@ -2791,7 +2779,7 @@ namespace PadForge.Services
             if (_disposed)
                 return;
 
-            Stop();
+            try { Stop(); } catch { /* Best effort on shutdown */ }
             _disposed = true;
         }
     }

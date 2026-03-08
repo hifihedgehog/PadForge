@@ -204,6 +204,47 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Windows MIDI Services ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xEC4F;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Windows MIDI Services" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="SDK runtime for virtual MIDI device output. Downloaded from GitHub (~210 MB)."
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="8" Height="8"
+                                         Fill="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToColorConverter}}"
+                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding MidiServicesStatusText}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12"
+                                       Opacity="0.6" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="Install"
+                                    Command="{Binding InstallMidiServicesCommand}"
+                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Uninstall"
+                                    Command="{Binding UninstallMidiServicesCommand}"
+                                    Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Settings File ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

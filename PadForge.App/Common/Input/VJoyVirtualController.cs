@@ -379,6 +379,7 @@ namespace PadForge.Common.Input
 
         public VirtualControllerType Type => VirtualControllerType.VJoy;
         public bool IsConnected => _connected;
+        public int FeedbackPadIndex { get; set; }
 
         public VJoyVirtualController(uint deviceId)
         {
@@ -442,9 +443,6 @@ namespace PadForge.Common.Input
         {
             Disconnect();
         }
-
-        // TrimDeviceNodes removed — single-node model means there's always
-        // exactly 0 or 1 device nodes. Scaling is done via registry descriptors.
 
         private int _submitCallCount;
         private int _submitFailCount;
@@ -647,6 +645,7 @@ namespace PadForge.Common.Input
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
+            FeedbackPadIndex = padIndex;
             // Register this device for FFB routing: vJoy device ID → pad index + vibration array.
             lock (_ffbLock)
             {
@@ -695,6 +694,25 @@ namespace PadForge.Common.Input
         /// <summary>Maps vJoy device ID → (padIndex, vibrationStates array).</summary>
         private static readonly System.Collections.Generic.Dictionary<uint, (int padIndex, Vibration[] states)>
             _ffbDeviceMap = new();
+
+        /// <summary>
+        /// Updates FFB device map entries after a slot swap. Any entry that
+        /// referenced slotA now references slotB, and vice versa.
+        /// </summary>
+        internal static void UpdateFfbPadIndex(int slotA, int slotB)
+        {
+            lock (_ffbLock)
+            {
+                foreach (var key in new System.Collections.Generic.List<uint>(_ffbDeviceMap.Keys))
+                {
+                    var entry = _ffbDeviceMap[key];
+                    if (entry.padIndex == slotA)
+                        _ffbDeviceMap[key] = (slotB, entry.states);
+                    else if (entry.padIndex == slotB)
+                        _ffbDeviceMap[key] = (slotA, entry.states);
+                }
+            }
+        }
 
         /// <summary>
         /// Per-device FFB effect state. Tracks the most recently set constant/periodic
@@ -1247,6 +1265,12 @@ namespace PadForge.Common.Input
         /// <summary>Cached per-device configs from last EnsureDevicesAvailable call.</summary>
         private static VJoyDeviceConfig[] _lastDeviceConfigs;
 
+        /// <summary>
+        /// Cached vJoy instance IDs from the last successful enumeration.
+        /// Used by shutdown to skip the expensive pnputil enumeration.
+        /// </summary>
+        private static System.Collections.Generic.List<string> _cachedInstanceIds;
+
         public static bool EnsureDevicesAvailable(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
         {
             return EnsureDevicesAvailableCore(requiredCount, perDeviceConfigs);
@@ -1457,6 +1481,8 @@ namespace PadForge.Common.Input
             {
                 Debug.WriteLine($"[vJoy] EnumerateVJoyInstanceIds exception: {ex.Message}");
             }
+            if (results.Count > 0)
+                _cachedInstanceIds = new System.Collections.Generic.List<string>(results);
             return results;
         }
 
@@ -1834,19 +1860,43 @@ namespace PadForge.Common.Input
         {
             try
             {
-                var instanceIds = EnumerateVJoyInstanceIds();
-                Debug.WriteLine($"[vJoy] RemoveAllDeviceNodes: found {instanceIds.Count} device(s)");
+                // Use cached instance IDs when available to skip the expensive
+                // pnputil /enum-devices enumeration (saves ~5s on shutdown).
+                var instanceIds = _cachedInstanceIds ?? EnumerateVJoyInstanceIds();
+                Debug.WriteLine($"[vJoy] RemoveAllDeviceNodes: found {instanceIds.Count} device(s), fromCache={_cachedInstanceIds != null}");
+
+                // Release all device handles before removal to avoid blocking.
+                RelinquishAllDevices();
+                RefreshVJoyDllHandles();
 
                 int removed = 0;
                 foreach (var id in instanceIds)
                 {
-                    if (RemoveDeviceNode(id))
+                    // Try SetupAPI first (direct API call, no process spawn).
+                    // Falls back to pnputil if SetupAPI fails.
+                    bool ok = SetupApiRestart.RemoveDevice(id);
+                    if (!ok)
+                        ok = RemoveDeviceNode(id, skipScanDevices: true);
+                    if (ok)
                         removed++;
                 }
 
                 Debug.WriteLine($"[vJoy] Removed {removed}/{instanceIds.Count} device node(s)");
                 _dllLoaded = false;
                 _currentDescriptorCount = 0;
+                _cachedInstanceIds = null;
+
+                // Fire-and-forget scan to clean up ghost PDOs in joy.cpl.
+                // Don't block shutdown waiting for this.
+                if (removed > 0)
+                {
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        try { RunPnputil("/scan-devices"); }
+                        catch { /* best effort */ }
+                    });
+                }
+
                 return true;
             }
             catch (Exception ex)
@@ -2579,20 +2629,6 @@ public static class PF_SetupApi {{
         [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UpdateVJD(uint rID, ref JoystickPositionV2 pData);
-
-        // ── Individual axis/button/POV setters ──
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetAxis(int value, uint rID, uint axis);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetBtn([MarshalAs(UnmanagedType.Bool)] bool value, uint rID, byte nBtn);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetDiscPov(int value, uint rID, byte nPov);
 
         // HID Usage IDs for axes (Generic Desktop page 0x01)
         public const uint HID_USAGE_X  = 0x30;

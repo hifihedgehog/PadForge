@@ -141,7 +141,7 @@ namespace PadForge.ViewModels
         public RelayCommand UninstallHidHideCommand =>
             _uninstallHidHideCommand ??= new RelayCommand(
                 () => UninstallHidHideRequested?.Invoke(this, EventArgs.Empty),
-                () => _isHidHideInstalled);
+                () => _isHidHideInstalled && !HasAnyHidHideDevices());
 
         /// <summary>Raised when the user requests HidHide installation.</summary>
         public event EventHandler InstallHidHideRequested;
@@ -205,6 +205,61 @@ namespace PadForge.ViewModels
         public event EventHandler UninstallVJoyRequested;
 
         // ─────────────────────────────────────────────
+        //  Windows MIDI Services
+        // ─────────────────────────────────────────────
+
+        private bool _isMidiServicesInstalled;
+
+        /// <summary>Whether Windows MIDI Services is available.</summary>
+        public bool IsMidiServicesInstalled
+        {
+            get => _isMidiServicesInstalled;
+            set
+            {
+                if (SetProperty(ref _isMidiServicesInstalled, value))
+                {
+                    OnPropertyChanged(nameof(MidiServicesStatusText));
+                    _installMidiServicesCommand?.NotifyCanExecuteChanged();
+                    _uninstallMidiServicesCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>MIDI Services status display text.</summary>
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Available" : "Not Available";
+
+        private string _midiServicesVersion = string.Empty;
+
+        /// <summary>MIDI Services version string.</summary>
+        public string MidiServicesVersion
+        {
+            get => _midiServicesVersion;
+            set => SetProperty(ref _midiServicesVersion, value);
+        }
+
+        private RelayCommand _installMidiServicesCommand;
+
+        /// <summary>Command to download and install Windows MIDI Services.</summary>
+        public RelayCommand InstallMidiServicesCommand =>
+            _installMidiServicesCommand ??= new RelayCommand(
+                () => InstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isMidiServicesInstalled);
+
+        private RelayCommand _uninstallMidiServicesCommand;
+
+        /// <summary>Command to uninstall Windows MIDI Services.</summary>
+        public RelayCommand UninstallMidiServicesCommand =>
+            _uninstallMidiServicesCommand ??= new RelayCommand(
+                () => UninstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
+                () => _isMidiServicesInstalled && !HasAnyMidiSlots());
+
+        /// <summary>Raised when the user requests MIDI Services installation.</summary>
+        public event EventHandler InstallMidiServicesRequested;
+
+        /// <summary>Raised when the user requests MIDI Services uninstallation.</summary>
+        public event EventHandler UninstallMidiServicesRequested;
+
+        // ─────────────────────────────────────────────
         //  Driver uninstall guards
         // ─────────────────────────────────────────────
 
@@ -221,6 +276,18 @@ namespace PadForge.ViewModels
         internal Func<bool> HasAnyVJoySlots { get; set; } = () => false;
 
         /// <summary>
+        /// Set by MainWindow to provide slot-type queries for uninstall guards.
+        /// Returns true if any created slot uses MIDI.
+        /// </summary>
+        internal Func<bool> HasAnyMidiSlots { get; set; } = () => false;
+
+        /// <summary>
+        /// Set by MainWindow to provide device-state queries for uninstall guards.
+        /// Returns true if any device has HidHide enabled.
+        /// </summary>
+        internal Func<bool> HasAnyHidHideDevices { get; set; } = () => false;
+
+        /// <summary>
         /// Re-evaluates uninstall button CanExecute state.
         /// Call after slot creation/deletion/type changes.
         /// </summary>
@@ -228,6 +295,8 @@ namespace PadForge.ViewModels
         {
             _uninstallViGEmCommand?.NotifyCanExecuteChanged();
             _uninstallVJoyCommand?.NotifyCanExecuteChanged();
+            _uninstallHidHideCommand?.NotifyCanExecuteChanged();
+            _uninstallMidiServicesCommand?.NotifyCanExecuteChanged();
         }
 
         // ─────────────────────────────────────────────

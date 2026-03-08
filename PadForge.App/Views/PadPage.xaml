@@ -108,8 +108,9 @@
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
                 <!-- [Gamepad #  TypeIcon TypeName] — Controller tab -->
-                <RadioButton Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
-                             IsChecked="True">
+                <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             IsChecked="True"
+                             AutomationProperties.AutomationId="TabController">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                    VerticalAlignment="Center" Margin="0,0,4,0"/>

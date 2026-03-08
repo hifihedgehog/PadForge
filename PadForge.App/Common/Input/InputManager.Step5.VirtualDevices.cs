@@ -206,7 +206,10 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _createCooldown[padIndex] = 0; // Reset cooldown on type change
-                    _slotInitializing[padIndex] = true; // Will be recreated as new type
+                    // Only show initializing if the slot has an active device that
+                    // will trigger VC recreation. Empty slots (no device assigned)
+                    // should show "Awaiting controllers" (yellow), not "Initializing".
+                    _slotInitializing[padIndex] = IsSlotActive(padIndex);
                     vc = null;
                 }
 
@@ -547,8 +550,11 @@ namespace PadForge.Common.Input
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
                         // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.
+                        // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         if (vc is VJoyVirtualController vjoyVc && SlotVJoyIsCustom[padIndex])
                             vjoyVc.SubmitRawState(CombinedVJoyRawStates[padIndex]);
+                        else if (vc is MidiVirtualController midiVc)
+                            midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
@@ -666,6 +672,7 @@ namespace PadForge.Common.Input
                 && _vigemClient == null)
                 return null;
 
+            IVirtualController vc = null;
             try
             {
                 // Snapshot XInput slot mask BEFORE connecting (Xbox 360 only).
@@ -673,7 +680,7 @@ namespace PadForge.Common.Input
                 if (controllerType == VirtualControllerType.Xbox360)
                     maskBefore = GetXInputConnectedSlotMask();
 
-                IVirtualController vc = controllerType switch
+                vc = controllerType switch
                 {
                     VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
                     VirtualControllerType.VJoy => CreateVJoyController(),
@@ -714,6 +721,7 @@ namespace PadForge.Common.Input
             }
             catch (Exception ex)
             {
+                vc?.Dispose();
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }
@@ -762,7 +770,13 @@ namespace PadForge.Common.Input
                 return null;
             }
 
-            var vc = new MidiVirtualController(padIndex, midiConfig.Channel - 1);
+            // Compute 1-based MIDI instance number (count of MIDI slots up to and including this one)
+            int midiInstanceNum = 0;
+            for (int i = 0; i <= padIndex; i++)
+                if (SlotControllerTypes[i] == VirtualControllerType.Midi)
+                    midiInstanceNum++;
+
+            var vc = new MidiVirtualController(padIndex, midiConfig.Channel - 1, midiInstanceNum);
             vc.CcNumbers = midiConfig.GetCcNumbers();
             vc.NoteNumbers = midiConfig.GetNoteNumbers();
             vc.Velocity = midiConfig.Velocity;

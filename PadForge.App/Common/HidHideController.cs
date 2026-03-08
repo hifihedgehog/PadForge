@@ -451,7 +451,9 @@ namespace PadForge.Common
                 if (result == 0) return null;
 
                 // QueryDosDevice returns a multi-SZ; take the first entry.
-                string dosDevice = new string(buffer, 0, Array.IndexOf(buffer, '\0'));
+                int nullIdx = Array.IndexOf(buffer, '\0');
+                if (nullIdx < 0) return null;
+                string dosDevice = new string(buffer, 0, nullIdx);
 
                 // Build full DOS path: \Device\HarddiskVolumeN + \rest\of\path
                 string relativePath = fullPath.Substring(drive.Length);

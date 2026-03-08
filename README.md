@@ -2,7 +2,7 @@
 
 Modern controller mapping utility for Windows. Maps any controller, keyboard, or mouse to virtual Xbox 360, DualShock 4, or custom DirectInput controllers that games see as real hardware.
 
-Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Modern fork of [x360ce](https://github.com/x360ce/x360ce).
+Built with SDL3, Windows Raw Input, ViGEmBus, vJoy, Windows MIDI Services, HelixToolkit, .NET 10 WPF, and Fluent Design. Modern fork of [x360ce](https://github.com/x360ce/x360ce).
 
 ## Features
 
@@ -13,6 +13,7 @@ Built with SDL3, ViGEmBus, vJoy, HelixToolkit, .NET 8 WPF, and Fluent Design. Mo
 - **Interactive mapping** — Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
 - **Dead zones and response curves** — Per-axis dead zone, anti-dead zone, and linear response curve for sticks and triggers, with live preview, plus stick center offset calibration and max range
 - **Force feedback** — Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
+- **MIDI virtual controller output** — Map any input to virtual MIDI devices. Axes send Control Change messages, buttons send Note On/Off. Configurable MIDI channel (1–16), CC mapping, note mapping, and velocity. Requires Windows MIDI Services (PadForge can install it for you)
 - **Macro system** — Trigger combos that execute button presses, key presses, delays, system volume control, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
 - **Per-app profile switching** — Automatically switch controller configurations when specific applications gain focus
 - **DSU/Cemuhook motion server** — Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
@@ -77,13 +78,14 @@ Built-in web server lets any touchscreen device act as a virtual controller. Cho
 ## Requirements
 
 - Windows 10 or 11 (x64)
-- [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) (included in the single-file publish)
+- [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) (included in the single-file publish)
 
 Optional drivers (PadForge can install all of these for you):
 
 - [ViGEmBus](https://github.com/nefarius/ViGEmBus) — Virtual Xbox 360 and DualShock 4 output
 - [vJoy](https://github.com/BrunnerInnovation/vJoy) — Custom DirectInput joystick/gamepad output with configurable axes, buttons, POVs, and force feedback
 - [HidHide](https://github.com/nefarius/HidHide) — Hide physical controllers from games to prevent double input
+- [Windows MIDI Services](https://github.com/microsoft/MIDI) — Virtual MIDI device output for MIDI virtual controllers
 
 ## Build
 
@@ -91,7 +93,7 @@ Optional drivers (PadForge can install all of these for you):
 dotnet publish PadForge.App/PadForge.App.csproj -c Release
 ```
 
-Output: `PadForge.App/bin/Release/net8.0-windows/win-x64/publish/PadForge.exe`
+Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/PadForge.exe`
 
 See [BUILD.md](BUILD.md) for full project structure, architecture details, and developer reference.
 
@@ -102,7 +104,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 | Project | Role in PadForge | License |
 |---|---|---|
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this project was forked from | MIT |
-| [SDL3](https://github.com/libsdl-org/SDL) | All device input — joystick, gamepad, keyboard, mouse, sensors | zlib |
+| [SDL3](https://github.com/libsdl-org/SDL) | Controller input — joystick, gamepad, and sensor enumeration and reading | zlib |
 | [ViGEmBus](https://github.com/nefarius/ViGEmBus) | Virtual Xbox 360 and DualShock 4 controller driver | MIT |
 | [Nefarius.ViGEm.Client](https://github.com/nefarius/ViGEm.NET) | .NET client library for ViGEmBus | MIT |
 | [vJoy](https://github.com/BrunnerInnovation/vJoy) | Custom DirectInput joystick/gamepad driver with configurable HID descriptors and force feedback | MIT |
@@ -112,6 +114,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 | [ModernWpf](https://github.com/Kinnara/ModernWpf) | Fluent Design theme for WPF | MIT |
 | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM data binding framework | MIT |
 | [HidHide](https://github.com/nefarius/HidHide) | Device hiding driver to prevent double input | MIT |
+| [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device SDK for MIDI controller output | MIT |
 
 ## Donations
 
@@ -129,5 +132,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **SDL3** is licensed under the [zlib License](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt)
 - **ViGEmBus** and **Nefarius.ViGEm.Client** are licensed under the MIT License
 - **vJoy** is licensed under the MIT License
+- **Windows MIDI Services** is licensed under the MIT License
+- **HidHide** is licensed under the MIT License
 
 See [LICENSE](LICENSE) for the full license text.

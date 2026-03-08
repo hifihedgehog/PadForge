@@ -60,16 +60,6 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// Represents the raw XInput state as returned by XInputGetStateEx.
-    /// Layout matches XINPUT_STATE (packet number + Gamepad).
-    /// </summary>
-    public struct XInputState
-    {
-        public uint PacketNumber;
-        public Gamepad Gamepad;
-    }
-
-    /// <summary>
     /// Raw vJoy output state for custom (non-gamepad) configurations.
     /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
     /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.
@@ -127,6 +117,63 @@ namespace PadForge.Engine
             if (Povs != null)
                 for (int i = 0; i < Povs.Length; i++)
                     Povs[i] = -1;
+        }
+    }
+
+    /// <summary>
+    /// Raw MIDI output state with dynamic CC and note counts.
+    /// CC values are 0-127 (MIDI range). Notes are boolean (on/off).
+    /// </summary>
+    public struct MidiRawState
+    {
+        public byte[] CcValues;
+        public bool[] Notes;
+
+        public static MidiRawState Create(int ccCount, int noteCount)
+        {
+            return new MidiRawState
+            {
+                CcValues = new byte[ccCount],
+                Notes = new bool[noteCount]
+            };
+        }
+
+        public void Clear()
+        {
+            if (CcValues != null)
+                for (int i = 0; i < CcValues.Length; i++)
+                    CcValues[i] = 64; // center value
+            if (Notes != null)
+                for (int i = 0; i < Notes.Length; i++)
+                    Notes[i] = false;
+        }
+
+        /// <summary>
+        /// Combines two MIDI raw states. CCs take the value furthest from center; notes are OR'd.
+        /// </summary>
+        public static MidiRawState Combine(MidiRawState a, MidiRawState b)
+        {
+            int ccCount = a.CcValues?.Length ?? b.CcValues?.Length ?? 0;
+            int noteCount = a.Notes?.Length ?? b.Notes?.Length ?? 0;
+            var result = Create(ccCount, noteCount);
+
+            for (int i = 0; i < ccCount; i++)
+            {
+                byte va = (a.CcValues != null && i < a.CcValues.Length) ? a.CcValues[i] : (byte)64;
+                byte vb = (b.CcValues != null && i < b.CcValues.Length) ? b.CcValues[i] : (byte)64;
+                int distA = Math.Abs(va - 64);
+                int distB = Math.Abs(vb - 64);
+                result.CcValues[i] = distA >= distB ? va : vb;
+            }
+
+            for (int i = 0; i < noteCount; i++)
+            {
+                bool na = a.Notes != null && i < a.Notes.Length && a.Notes[i];
+                bool nb = b.Notes != null && i < b.Notes.Length && b.Notes[i];
+                result.Notes[i] = na || nb;
+            }
+
+            return result;
         }
     }
 }

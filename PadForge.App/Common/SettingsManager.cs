@@ -383,7 +383,8 @@ namespace PadForge.Common.Input
         /// </summary>
         /// <param name="ud">The device to create defaults for.</param>
         /// <returns>A PadSetting with sensible default mappings.</returns>
-        public static PadSetting CreateDefaultPadSetting(UserDevice ud)
+        public static PadSetting CreateDefaultPadSetting(UserDevice ud,
+            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Xbox360)
         {
             var ps = new PadSetting();
 
@@ -401,6 +402,20 @@ namespace PadForge.Common.Input
             //   Hats: 1 (D-pad)
             if (ud.CapType == InputDeviceType.Gamepad)
             {
+                if (outputType == Engine.VirtualControllerType.Midi)
+                {
+                    // MIDI auto-mapping: 6 CCs for axes, 11 notes for buttons.
+                    // Maps SDL3 gamepad axes to CC0-CC5 and buttons to Note0-Note10.
+                    for (int i = 0; i < 6; i++)
+                        ps.SetMidiMapping($"MidiCC{i}", $"Axis {i}");
+                    for (int i = 0; i < 11; i++)
+                        ps.SetMidiMapping($"MidiNote{i}", $"Button {i}");
+                    ps.FlushMidiMappings();
+
+                    ps.UpdateChecksum();
+                    return ps;
+                }
+
                 ps.LeftThumbAxisX = "Axis 0";
                 ps.LeftThumbAxisY = "Axis 1";
                 ps.LeftTrigger = "Axis 2";

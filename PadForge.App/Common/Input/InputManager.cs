@@ -77,6 +77,12 @@ namespace PadForge.Common.Input
         public VJoyRawState[] CombinedVJoyRawStates { get; } = new VJoyRawState[MaxPads];
 
         /// <summary>
+        /// Combined MIDI raw output states for MIDI slots.
+        /// Written by Step 4 (background thread), read by Step 5.
+        /// </summary>
+        public MidiRawState[] CombinedMidiRawStates { get; } = new MidiRawState[MaxPads];
+
+        /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
         public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
@@ -460,6 +466,7 @@ namespace PadForge.Common.Input
             if (slotA < 0 || slotA >= MaxPads) return;
             if (slotB < 0 || slotB >= MaxPads) return;
 
+            // Swap engine config arrays.
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
             (SlotVJoyConfigs[slotA], SlotVJoyConfigs[slotB]) =
@@ -470,6 +477,37 @@ namespace PadForge.Common.Input
                 (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
                 (MacroSnapshots[slotB], MacroSnapshots[slotA]);
+            (_midiConfigs[slotA], _midiConfigs[slotB]) =
+                (_midiConfigs[slotB], _midiConfigs[slotA]);
+
+            // Swap virtual controllers so Step 5 doesn't see a type mismatch
+            // and needlessly destroy/recreate VCs for cross-type reorders.
+            (_virtualControllers[slotA], _virtualControllers[slotB]) =
+                (_virtualControllers[slotB], _virtualControllers[slotA]);
+            (_slotInactiveCounter[slotA], _slotInactiveCounter[slotB]) =
+                (_slotInactiveCounter[slotB], _slotInactiveCounter[slotA]);
+            (_slotInitializing[slotA], _slotInitializing[slotB]) =
+                (_slotInitializing[slotB], _slotInitializing[slotA]);
+            (_createCooldown[slotA], _createCooldown[slotB]) =
+                (_createCooldown[slotB], _createCooldown[slotA]);
+            (VibrationStates[slotA], VibrationStates[slotB]) =
+                (VibrationStates[slotB], VibrationStates[slotA]);
+            (CombinedOutputStates[slotA], CombinedOutputStates[slotB]) =
+                (CombinedOutputStates[slotB], CombinedOutputStates[slotA]);
+            (CombinedVJoyRawStates[slotA], CombinedVJoyRawStates[slotB]) =
+                (CombinedVJoyRawStates[slotB], CombinedVJoyRawStates[slotA]);
+            (CombinedMidiRawStates[slotA], CombinedMidiRawStates[slotB]) =
+                (CombinedMidiRawStates[slotB], CombinedMidiRawStates[slotA]);
+
+            // Update FeedbackPadIndex so rumble callbacks write to the correct
+            // VibrationStates element after the swap.
+            if (_virtualControllers[slotA] != null)
+                _virtualControllers[slotA].FeedbackPadIndex = slotA;
+            if (_virtualControllers[slotB] != null)
+                _virtualControllers[slotB].FeedbackPadIndex = slotB;
+
+            // Update vJoy FFB device map entries that reference the swapped indices.
+            VJoyVirtualController.UpdateFfbPadIndex(slotA, slotB);
         }
 
         // ─────────────────────────────────────────────

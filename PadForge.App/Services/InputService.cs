@@ -51,7 +51,6 @@ namespace PadForge.Services
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
-        private bool _preservedVJoyNodes;
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -134,8 +133,6 @@ namespace PadForge.Services
             // 10+ second remove+recreate cycle on every normal restart (especially on
             // Win11 builds where pnputil /remove-device returns 3010 and scan-devices
             // takes ~10 seconds to clean up ghost PDOs).
-            _preservedVJoyNodes = false;
-
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
@@ -273,7 +270,6 @@ namespace PadForge.Services
                 row.IsOnline = false;
             _mainVm.Devices.RefreshCounts();
 
-            _preservedVJoyNodes = preserveVJoyNodes;
             if (!preserveVJoyNodes)
             {
                 // Remove vJoy device nodes so dormant devices don't appear in

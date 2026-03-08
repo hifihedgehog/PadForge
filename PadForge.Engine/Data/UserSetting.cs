@@ -53,7 +53,7 @@ namespace PadForge.Engine.Data
         private int _mapTo = -1;
 
         /// <summary>
-        /// Virtual controller slot index this device is mapped to (0–3).
+        /// Virtual controller slot index this device is mapped to (0–15).
         /// A value of -1 means the device is not mapped to any slot.
         /// </summary>
         [XmlElement]

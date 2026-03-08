@@ -104,31 +104,32 @@ namespace PadForge.Common.Input
             if (_session == null)
                 throw new InvalidOperationException("Failed to create MIDI session.");
 
-            _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
-            if (_virtualDevice == null)
+            try
             {
-                _session.Dispose();
-                _session = null;
-                throw new InvalidOperationException("Failed to create virtual MIDI device.");
+                _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
+                if (_virtualDevice == null)
+                    throw new InvalidOperationException("Failed to create virtual MIDI device.");
+
+                _virtualDevice.SuppressHandledMessages = true;
+
+                _connection = _session.CreateEndpointConnection(_virtualDevice.DeviceEndpointDeviceId);
+                if (_connection == null)
+                    throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
+
+                _connection.AddMessageProcessingPlugin(_virtualDevice);
+
+                if (!_connection.Open())
+                    throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
             }
-
-            _virtualDevice.SuppressHandledMessages = true;
-
-            _connection = _session.CreateEndpointConnection(_virtualDevice.DeviceEndpointDeviceId);
-            if (_connection == null)
+            catch
             {
-                _session.Dispose();
+                if (_connection != null && _session != null)
+                    _session.DisconnectEndpointConnection(_connection.ConnectionId);
+                _connection = null;
+                _virtualDevice = null;
+                _session?.Dispose();
                 _session = null;
-                throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
-            }
-
-            _connection.AddMessageProcessingPlugin(_virtualDevice);
-
-            if (!_connection.Open())
-            {
-                _session.Dispose();
-                _session = null;
-                throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
+                throw;
             }
 
             _connected = true;

@@ -34,10 +34,7 @@ namespace PadForge.Engine
     [Flags]
     public enum ObjectAspect : int
     {
-        Position = 0x100,
-        Velocity = 0x200,
-        Acceleration = 0x300,
-        Force = 0x400
+        Position = 0x100
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -49,21 +46,7 @@ namespace PadForge.Engine
     [Flags]
     public enum EffectParameterFlags : int
     {
-        None = 0,
-        Duration = 1,
-        SamplePeriod = 2,
-        Gain = 4,
-        TriggerButton = 8,
-        TriggerRepeatInterval = 16,
-        Axes = 32,
-        Direction = 64,
-        Envelope = 128,
-        TypeSpecificParameters = 256,
-        StartDelay = 512,
-        AllParameters = 1023,                // 0x3FF
-        Start = 536870912,                   // 0x20000000
-        NoRestart = 1073741824,              // 0x40000000
-        NoDownload = unchecked((int)0x80000000)
+        None = 0
     }
 
     // ─────────────────────────────────────────────────────────────────

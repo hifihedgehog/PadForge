@@ -60,16 +60,6 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// Represents the raw XInput state as returned by XInputGetStateEx.
-    /// Layout matches XINPUT_STATE (packet number + Gamepad).
-    /// </summary>
-    public struct XInputState
-    {
-        public uint PacketNumber;
-        public Gamepad Gamepad;
-    }
-
-    /// <summary>
     /// Raw vJoy output state for custom (non-gamepad) configurations.
     /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
     /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.

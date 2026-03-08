@@ -1274,31 +1274,31 @@ namespace PadForge.ViewModels
             // Sync live values to dynamic config items (full processing pipeline for preview)
             if (StickConfigs.Count > 0)
             {
-                double lx = ProcessAxisForPreview(
+                var (lvx, lox) = ProcessAxisForPreview(
                     DeviceThumbLX + LeftCenterOffsetX / 200.0,
                     LeftDeadZoneX, LeftAntiDeadZoneX, LeftLinear, LeftMaxRangeX);
-                double ly = ProcessAxisForPreview(
+                var (lvy, loy) = ProcessAxisForPreview(
                     DeviceThumbLY - LeftCenterOffsetY / 200.0,
                     LeftDeadZoneY, LeftAntiDeadZoneY, LeftLinear, LeftMaxRangeY);
-                StickConfigs[0].LiveX = lx;
-                StickConfigs[0].LiveY = ly;
-                StickConfigs[0].RawX = (short)Math.Clamp((lx - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                StickConfigs[0].RawY = (short)Math.Clamp((0.5 - ly) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[0].LiveX = lvx;
+                StickConfigs[0].LiveY = lvy;
+                StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[0].RawY = (short)Math.Clamp((0.5 - loy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].HardwareRawX = gp.ThumbLX;
                 StickConfigs[0].HardwareRawY = gp.ThumbLY;
             }
             if (StickConfigs.Count > 1)
             {
-                double rx = ProcessAxisForPreview(
+                var (rvx, rox) = ProcessAxisForPreview(
                     DeviceThumbRX + RightCenterOffsetX / 200.0,
                     RightDeadZoneX, RightAntiDeadZoneX, RightLinear, RightMaxRangeX);
-                double ry = ProcessAxisForPreview(
+                var (rvy, roy) = ProcessAxisForPreview(
                     DeviceThumbRY - RightCenterOffsetY / 200.0,
                     RightDeadZoneY, RightAntiDeadZoneY, RightLinear, RightMaxRangeY);
-                StickConfigs[1].LiveX = rx;
-                StickConfigs[1].LiveY = ry;
-                StickConfigs[1].RawX = (short)Math.Clamp((rx - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                StickConfigs[1].RawY = (short)Math.Clamp((0.5 - ry) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[1].LiveX = rvx;
+                StickConfigs[1].LiveY = rvy;
+                StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[1].RawY = (short)Math.Clamp((0.5 - roy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].HardwareRawX = gp.ThumbRX;
                 StickConfigs[1].HardwareRawY = gp.ThumbRY;
             }
@@ -1318,7 +1318,13 @@ namespace PadForge.ViewModels
         /// Applies the full stick processing pipeline (dead zone, max range, anti-dead zone, linear)
         /// to a normalized 0–1 axis value for preview display. Mirrors Step3's ApplySingleDeadZone.
         /// </summary>
-        private static double ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange)
+        /// <summary>
+        /// Processes an axis value through the dead zone pipeline for preview.
+        /// Returns (visualPosition, outputPosition) where visualPosition maps the dot
+        /// to outside the dead zone ring, and outputPosition is the actual processed value.
+        /// Both are in 0-1 range where 0.5 = center.
+        /// </summary>
+        private static (double visual, double output) ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange)
         {
             double signed = (adjustedNorm - 0.5) * 2.0;
             double sign = Math.Sign(signed);
@@ -1326,10 +1332,13 @@ namespace PadForge.ViewModels
 
             double dzNorm = deadZone / 100.0;
             if (mag < dzNorm)
-                return 0.5;
+                return (0.5, 0.5);
 
             if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
-                return Math.Clamp(adjustedNorm, 0.0, 1.0);
+            {
+                double v = Math.Clamp(adjustedNorm, 0.0, 1.0);
+                return (v, v);
+            }
 
             double mrNorm = maxRange / 100.0;
             if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
@@ -1344,7 +1353,14 @@ namespace PadForge.ViewModels
                 output = remapped * lf + output * (1.0 - lf);
             }
 
-            return Math.Clamp(0.5 + sign * output * 0.5, 0.0, 1.0);
+            double outputPos = Math.Clamp(0.5 + sign * output * 0.5, 0.0, 1.0);
+
+            // Map output [0,1] to visual position [dzNorm,1] so the dot jumps to
+            // just outside the dead zone ring and scales outward from there.
+            double visual = dzNorm + output * (1.0 - dzNorm);
+            double visualPos = Math.Clamp(0.5 + sign * visual * 0.5, 0.0, 1.0);
+
+            return (visualPos, outputPos);
         }
 
         // ═══════════════════════════════════════════════
@@ -1372,21 +1388,21 @@ namespace PadForge.ViewModels
                 {
                     stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
                     double normX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
-                    double px = ProcessAxisForPreview(
+                    var (vx, ox) = ProcessAxisForPreview(
                         normX + stick.CenterOffsetX / 200.0,
                         stick.DeadZoneX, stick.AntiDeadZoneX, stick.Linear, stick.MaxRangeX);
-                    stick.LiveX = px;
-                    stick.RawX = (short)Math.Clamp((px - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                    stick.LiveX = vx;
+                    stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 }
                 if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
                 {
                     stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
                     double normY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
-                    double py = ProcessAxisForPreview(
+                    var (vy, oy) = ProcessAxisForPreview(
                         normY - stick.CenterOffsetY / 200.0,
                         stick.DeadZoneY, stick.AntiDeadZoneY, stick.Linear, stick.MaxRangeY);
-                    stick.LiveY = py;
-                    stick.RawY = (short)Math.Clamp((0.5 - py) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                    stick.LiveY = vy;
+                    stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 }
             }
 

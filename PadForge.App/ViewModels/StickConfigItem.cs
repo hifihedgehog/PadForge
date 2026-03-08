@@ -14,32 +14,56 @@ namespace PadForge.ViewModels
         public string Title { get; }
         public int Index { get; }
 
+        // ── Digit conversion helpers (stick axes use signed 16-bit: ±32768) ──
+        private static int PctToDigit(double pct) => (int)Math.Round(pct / 100.0 * 32768.0);
+        private static double DigitToPct(int digit) => digit / 32768.0 * 100.0;
+
         private double _deadZoneX;
         public double DeadZoneX
         {
             get => _deadZoneX;
-            set => SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100));
+            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(DeadZoneXDigit)); }
+        }
+        public int DeadZoneXDigit
+        {
+            get => PctToDigit(_deadZoneX);
+            set => DeadZoneX = DigitToPct(value);
         }
 
         private double _deadZoneY;
         public double DeadZoneY
         {
             get => _deadZoneY;
-            set => SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100));
+            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(DeadZoneYDigit)); }
+        }
+        public int DeadZoneYDigit
+        {
+            get => PctToDigit(_deadZoneY);
+            set => DeadZoneY = DigitToPct(value);
         }
 
         private double _antiDeadZoneX;
         public double AntiDeadZoneX
         {
             get => _antiDeadZoneX;
-            set => SetProperty(ref _antiDeadZoneX, Math.Clamp(value, 0, 100));
+            set { if (SetProperty(ref _antiDeadZoneX, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(AntiDeadZoneXDigit)); }
+        }
+        public int AntiDeadZoneXDigit
+        {
+            get => PctToDigit(_antiDeadZoneX);
+            set => AntiDeadZoneX = DigitToPct(value);
         }
 
         private double _antiDeadZoneY;
         public double AntiDeadZoneY
         {
             get => _antiDeadZoneY;
-            set => SetProperty(ref _antiDeadZoneY, Math.Clamp(value, 0, 100));
+            set { if (SetProperty(ref _antiDeadZoneY, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(AntiDeadZoneYDigit)); }
+        }
+        public int AntiDeadZoneYDigit
+        {
+            get => PctToDigit(_antiDeadZoneY);
+            set => AntiDeadZoneY = DigitToPct(value);
         }
 
         private double _linear;
@@ -53,28 +77,48 @@ namespace PadForge.ViewModels
         public double MaxRangeX
         {
             get => _maxRangeX;
-            set => SetProperty(ref _maxRangeX, Math.Clamp(value, 1, 100));
+            set { if (SetProperty(ref _maxRangeX, Math.Clamp(value, 1, 100))) OnPropertyChanged(nameof(MaxRangeXDigit)); }
+        }
+        public int MaxRangeXDigit
+        {
+            get => PctToDigit(_maxRangeX);
+            set => MaxRangeX = DigitToPct(value);
         }
 
         private double _maxRangeY = 100;
         public double MaxRangeY
         {
             get => _maxRangeY;
-            set => SetProperty(ref _maxRangeY, Math.Clamp(value, 1, 100));
+            set { if (SetProperty(ref _maxRangeY, Math.Clamp(value, 1, 100))) OnPropertyChanged(nameof(MaxRangeYDigit)); }
+        }
+        public int MaxRangeYDigit
+        {
+            get => PctToDigit(_maxRangeY);
+            set => MaxRangeY = DigitToPct(value);
         }
 
         private double _centerOffsetX;
         public double CenterOffsetX
         {
             get => _centerOffsetX;
-            set => SetProperty(ref _centerOffsetX, Math.Clamp(value, -100, 100));
+            set { if (SetProperty(ref _centerOffsetX, Math.Clamp(value, -100, 100))) OnPropertyChanged(nameof(CenterOffsetXDigit)); }
+        }
+        public int CenterOffsetXDigit
+        {
+            get => PctToDigit(_centerOffsetX);
+            set => CenterOffsetX = DigitToPct(value);
         }
 
         private double _centerOffsetY;
         public double CenterOffsetY
         {
             get => _centerOffsetY;
-            set => SetProperty(ref _centerOffsetY, Math.Clamp(value, -100, 100));
+            set { if (SetProperty(ref _centerOffsetY, Math.Clamp(value, -100, 100))) OnPropertyChanged(nameof(CenterOffsetYDigit)); }
+        }
+        public int CenterOffsetYDigit
+        {
+            get => PctToDigit(_centerOffsetY);
+            set => CenterOffsetY = DigitToPct(value);
         }
 
         private bool _isCalibrating;

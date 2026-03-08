@@ -53,7 +53,7 @@ namespace PadForge.Engine.Data
         private int _mapTo = -1;
 
         /// <summary>
-        /// Virtual controller slot index this device is mapped to (0–3).
+        /// Virtual controller slot index this device is mapped to (0–15).
         /// A value of -1 means the device is not mapped to any slot.
         /// </summary>
         [XmlElement]
@@ -153,6 +153,13 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public VJoyRawState VJoyRawOutputState { get; set; }
+
+        /// <summary>
+        /// The mapped MIDI raw output state computed in Step 3 for MIDI slots.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public MidiRawState MidiRawOutputState { get; set; }
 
         /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.

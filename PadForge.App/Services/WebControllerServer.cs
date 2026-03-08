@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -88,6 +89,8 @@ namespace PadForge.Services
                     else
                         _imageCache = LoadImageCache();
                 }
+
+                EnsureFirewallRule(port);
 
                 _listener = new HttpListener();
                 _listener.Prefixes.Add($"http://+:{port}/");
@@ -558,6 +561,44 @@ namespace PadForge.Services
             {
                 return "localhost";
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Firewall
+        // ─────────────────────────────────────────────
+
+        private const string FirewallRuleName = "PadForge Web Controller";
+
+        private static void EnsureFirewallRule(int port)
+        {
+            try
+            {
+                // Check if rule already exists.
+                var check = RunNetsh($"advfirewall firewall show rule name=\"{FirewallRuleName}\"");
+                if (check.Contains(port.ToString()))
+                    return;
+
+                // Add inbound TCP rule for the web server port.
+                RunNetsh($"advfirewall firewall add rule name=\"{FirewallRuleName}\" dir=in action=allow protocol=TCP localport={port}");
+            }
+            catch { /* best effort — app may not be elevated */ }
+        }
+
+        private static string RunNetsh(string arguments)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "netsh.exe",
+                Arguments = arguments,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            if (proc == null) return string.Empty;
+            string output = proc.StandardOutput.ReadToEnd();
+            proc.WaitForExit(5_000);
+            return output;
         }
 
         // ─────────────────────────────────────────────

@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 using PadForge.Common.Input;
 
@@ -552,6 +554,191 @@ public static class PF_SetupApi {{
             }
 
             return null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Windows MIDI Services
+        // ─────────────────────────────────────────────
+
+        // Note: /releases/latest returns 404 because microsoft/MIDI only publishes
+        // pre-releases. Use /releases (returns array) and parse the first entry.
+        private const string MidiServicesGitHubApi =
+            "https://api.github.com/repos/microsoft/MIDI/releases";
+
+        private static string GetMidiServicesTempDir()
+            => Path.Combine(Path.GetTempPath(), "PadForge_MidiServices");
+
+        /// <summary>
+        /// Downloads and runs the latest Windows MIDI Services SDK Runtime installer.
+        /// Uses the GitHub API to find the latest release asset dynamically.
+        /// The installer is ~210MB so it must be downloaded rather than embedded.
+        /// </summary>
+        public static async Task InstallMidiServicesAsync()
+        {
+            var tempDir = GetMidiServicesTempDir();
+            Directory.CreateDirectory(tempDir);
+
+            var installerPath = Path.Combine(tempDir, "MidiServicesSdkRuntime.exe");
+            try
+            {
+                using var http = new HttpClient();
+                http.DefaultRequestHeaders.UserAgent.ParseAdd("PadForge");
+                http.Timeout = TimeSpan.FromMinutes(10);
+
+                // Query GitHub API for the latest release and find the SDK Runtime installer asset.
+                var downloadUrl = await FindMidiServicesDownloadUrl(http);
+
+                using var response = await http.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                using var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write);
+                await stream.CopyToAsync(fs);
+
+                // Run the WiX Burn bootstrapper. PadForge is already elevated,
+                // so run directly (no runas) to avoid Win32Exception on some systems.
+                // Close the file stream before launching the installer.
+                fs.Close();
+                var psi = new ProcessStartInfo
+                {
+                    FileName = installerPath,
+                    Arguments = "/install /quiet /norestart",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+                using var proc = Process.Start(psi);
+                proc?.WaitForExit(300_000); // 5 minutes — Burn bundles can take a while
+
+                // Reset the cached availability check so IsAvailable() re-evaluates.
+                MidiVirtualController.ResetAvailability();
+            }
+            finally
+            {
+                CleanupTempDir(tempDir);
+            }
+        }
+
+        /// <summary>
+        /// Queries the GitHub API for the latest microsoft/MIDI release and returns
+        /// the download URL for the SDK Runtime x64 installer asset.
+        /// </summary>
+        private static async Task<string> FindMidiServicesDownloadUrl(HttpClient http)
+        {
+            var json = await http.GetStringAsync(MidiServicesGitHubApi);
+
+            // Simple JSON parsing — find the browser_download_url for the SDK Runtime x64 exe.
+            // Asset name pattern: "Windows.MIDI.Services.SDK.Runtime.and.Tools.*-x64.exe"
+            const string needle = "browser_download_url";
+            int pos = 0;
+            while ((pos = json.IndexOf(needle, pos, StringComparison.Ordinal)) >= 0)
+            {
+                // Find the URL value after the key.
+                int urlStart = json.IndexOf("\"http", pos, StringComparison.Ordinal);
+                if (urlStart < 0) break;
+                urlStart++; // skip opening quote
+                int urlEnd = json.IndexOf('"', urlStart);
+                if (urlEnd < 0) break;
+
+                string url = json.Substring(urlStart, urlEnd - urlStart);
+                if (url.Contains("SDK.Runtime", StringComparison.OrdinalIgnoreCase) &&
+                    url.Contains("x64", StringComparison.OrdinalIgnoreCase) &&
+                    url.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    return url;
+                }
+
+                pos = urlEnd;
+            }
+
+            throw new InvalidOperationException(
+                "Could not find Windows MIDI Services SDK Runtime installer in the latest GitHub release.");
+        }
+
+        /// <summary>
+        /// Uninstalls Windows MIDI Services by finding the cached WiX Burn bootstrapper
+        /// via the registry UninstallString and launching it with /uninstall /quiet.
+        /// The uninstaller is launched fire-and-forget because the MIDI Services SDK
+        /// DLLs are loaded in-process — waiting for the uninstaller to finish would
+        /// cause a native crash when the backing service is removed mid-session.
+        /// </summary>
+        public static void UninstallMidiServices()
+        {
+            string uninstallCmd = FindMidiServicesUninstallString();
+            if (string.IsNullOrEmpty(uninstallCmd))
+                throw new InvalidOperationException("Could not find Windows MIDI Services uninstall entry in registry.");
+
+            // UninstallString is e.g.: "C:\...\Setup.exe"  /uninstall
+            // Parse the quoted exe path and any existing arguments, then append /quiet.
+            string exePath;
+            string existingArgs = "";
+            if (uninstallCmd.StartsWith('"'))
+            {
+                int closeQuote = uninstallCmd.IndexOf('"', 1);
+                exePath = uninstallCmd.Substring(1, closeQuote - 1);
+                existingArgs = uninstallCmd.Substring(closeQuote + 1).Trim();
+            }
+            else
+            {
+                int space = uninstallCmd.IndexOf(' ');
+                exePath = space > 0 ? uninstallCmd.Substring(0, space) : uninstallCmd;
+                if (space > 0) existingArgs = uninstallCmd.Substring(space + 1).Trim();
+            }
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = exePath,
+                Arguments = $"{existingArgs} /quiet /norestart".Trim(),
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using var proc = Process.Start(psi);
+            proc?.WaitForExit(300_000);
+        }
+
+        /// <summary>
+        /// Searches the registry Uninstall keys for the Windows MIDI Services entry
+        /// and returns its UninstallString value.
+        /// </summary>
+        private static string FindMidiServicesUninstallString()
+        {
+            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
+
+            foreach (var view in views)
+            {
+                try
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var uninstallKey = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                    if (uninstallKey == null) continue;
+
+                    foreach (var subName in uninstallKey.GetSubKeyNames())
+                    {
+                        using var sub = uninstallKey.OpenSubKey(subName, false);
+                        var name = sub?.GetValue("DisplayName") as string;
+                        if (string.IsNullOrEmpty(name)) continue;
+
+                        // Match the WiX Burn bootstrapper bundle entry, not the individual MSI components.
+                        if (name.Equals("Windows MIDI Services Runtime and Tools", StringComparison.OrdinalIgnoreCase))
+                        {
+                            return sub.GetValue("UninstallString") as string;
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Checks whether Windows MIDI Services is installed by looking for the
+        /// registry uninstall entry. Does NOT load the SDK runtime — that would
+        /// lock native DLLs in-process and prevent clean uninstallation.
+        /// </summary>
+        public static bool IsMidiServicesInstalled()
+        {
+            return FindMidiServicesUninstallString() != null;
         }
 
         // ─────────────────────────────────────────────

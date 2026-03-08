@@ -37,11 +37,13 @@ namespace PadForge.Common.Input
 
                     bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.VJoy
                                      && SlotVJoyIsCustom[padIndex];
+                    bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
 
                     if (slotCount == 0)
                     {
                         CombinedOutputStates[padIndex].Clear();
                         if (isCustomVJoy) CombinedVJoyRawStates[padIndex].Clear();
+                        if (isMidi) CombinedMidiRawStates[padIndex].Clear();
                         continue;
                     }
 
@@ -50,6 +52,7 @@ namespace PadForge.Common.Input
                         // Single device — no combination needed, direct copy.
                         CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
                         if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = _padIndexBuffer[0].VJoyRawOutputState;
+                        if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
                         continue;
                     }
 
@@ -57,6 +60,8 @@ namespace PadForge.Common.Input
                     var combined = new Gamepad();
                     VJoyRawState combinedRaw = default;
                     bool firstRaw = true;
+                    MidiRawState combinedMidi = default;
+                    bool firstMidi = true;
 
                     for (int si = 0; si < slotCount; si++)
                     {
@@ -80,10 +85,24 @@ namespace PadForge.Common.Input
                                 MergeVJoyRaw(ref combinedRaw, ref rawState);
                             }
                         }
+
+                        if (isMidi)
+                        {
+                            if (firstMidi)
+                            {
+                                combinedMidi = us.MidiRawOutputState;
+                                firstMidi = false;
+                            }
+                            else
+                            {
+                                combinedMidi = MidiRawState.Combine(combinedMidi, us.MidiRawOutputState);
+                            }
+                        }
                     }
 
                     CombinedOutputStates[padIndex] = combined;
                     if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = combinedRaw;
+                    if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
                 }
                 catch (Exception ex)
                 {

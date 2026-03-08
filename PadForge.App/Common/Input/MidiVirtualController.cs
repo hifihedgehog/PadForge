@@ -27,15 +27,16 @@ namespace PadForge.Common.Input
 
         private readonly int _padIndex;
         private readonly int _channel; // 0-15
+        private readonly int _instanceNum; // 1-based MIDI-type instance number
 
         // Change detection — only send messages when values actually change.
-        private readonly byte[] _lastCcValues = new byte[6]; // LX, LY, LT, RX, RY, RT
-        private ushort _lastButtons;
+        private byte[] _lastCcValues;
+        private bool[] _lastNotes;
 
-        // Default CC mappings: CC 1-6 for the 6 analog axes.
+        // CC numbers for each CC slot (index → MIDI CC number).
         internal int[] CcNumbers { get; set; } = { 1, 2, 3, 4, 5, 6 };
 
-        // Default note mappings: Note 60-70 for 11 buttons.
+        // Note numbers for each note slot (index → MIDI note number).
         internal int[] NoteNumbers { get; set; } = { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70 };
 
         // Note velocity for button presses.
@@ -43,23 +44,25 @@ namespace PadForge.Common.Input
 
         public VirtualControllerType Type => VirtualControllerType.Midi;
         public bool IsConnected => _connected;
+        public int FeedbackPadIndex { get; set; }
 
-        public MidiVirtualController(int padIndex, int channel)
+        public MidiVirtualController(int padIndex, int channel, int instanceNum)
         {
             _padIndex = padIndex;
             _channel = Math.Clamp(channel, 0, 15);
+            _instanceNum = instanceNum;
         }
 
         public void Connect()
         {
             if (_connected) return;
 
-            var deviceName = $"PadForge MIDI {_padIndex + 1}";
+            var deviceName = $"PadForge MIDI {_instanceNum}";
 
             // Define the virtual device.
             var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
             declaredEndpointInfo.Name = deviceName;
-            declaredEndpointInfo.ProductInstanceId = $"PADFORGE_MIDI_{_padIndex}";
+            declaredEndpointInfo.ProductInstanceId = $"PADFORGE_MIDI_{_instanceNum}";
             declaredEndpointInfo.SpecificationVersionMajor = 1;
             declaredEndpointInfo.SpecificationVersionMinor = 1;
             declaredEndpointInfo.SupportsMidi10Protocol = true;
@@ -101,39 +104,41 @@ namespace PadForge.Common.Input
             if (_session == null)
                 throw new InvalidOperationException("Failed to create MIDI session.");
 
-            _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
-            if (_virtualDevice == null)
+            try
             {
-                _session.Dispose();
-                _session = null;
-                throw new InvalidOperationException("Failed to create virtual MIDI device.");
+                _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
+                if (_virtualDevice == null)
+                    throw new InvalidOperationException("Failed to create virtual MIDI device.");
+
+                _virtualDevice.SuppressHandledMessages = true;
+
+                _connection = _session.CreateEndpointConnection(_virtualDevice.DeviceEndpointDeviceId);
+                if (_connection == null)
+                    throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
+
+                _connection.AddMessageProcessingPlugin(_virtualDevice);
+
+                if (!_connection.Open())
+                    throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
             }
-
-            _virtualDevice.SuppressHandledMessages = true;
-
-            _connection = _session.CreateEndpointConnection(_virtualDevice.DeviceEndpointDeviceId);
-            if (_connection == null)
+            catch
             {
-                _session.Dispose();
+                if (_connection != null && _session != null)
+                    _session.DisconnectEndpointConnection(_connection.ConnectionId);
+                _connection = null;
+                _virtualDevice = null;
+                _session?.Dispose();
                 _session = null;
-                throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
-            }
-
-            _connection.AddMessageProcessingPlugin(_virtualDevice);
-
-            if (!_connection.Open())
-            {
-                _session.Dispose();
-                _session = null;
-                throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
+                throw;
             }
 
             _connected = true;
 
-            // Initialize change detection to neutral values.
+            // Initialize change detection arrays sized to match configured CC/note counts.
+            _lastCcValues = new byte[CcNumbers.Length];
             for (int i = 0; i < _lastCcValues.Length; i++)
                 _lastCcValues[i] = 64; // center for axes
-            _lastButtons = 0;
+            _lastNotes = new bool[NoteNumbers.Length];
         }
 
         public void Disconnect()
@@ -141,16 +146,16 @@ namespace PadForge.Common.Input
             if (!_connected) return;
             _connected = false;
 
-            // Send Note Off for any held buttons.
-            if (_connection != null)
+            // Send Note Off for any held notes.
+            if (_connection != null && _lastNotes != null)
             {
-                for (int i = 0; i < 11 && i < NoteNumbers.Length; i++)
+                for (int i = 0; i < _lastNotes.Length && i < NoteNumbers.Length; i++)
                 {
-                    if ((_lastButtons & (1 << i)) != 0)
+                    if (_lastNotes[i])
                         SendNoteOff(NoteNumbers[i]);
                 }
             }
-            _lastButtons = 0;
+            _lastNotes = null;
 
             if (_connection != null && _session != null)
             {
@@ -165,40 +170,47 @@ namespace PadForge.Common.Input
 
         public void SubmitGamepadState(Gamepad gp)
         {
+            // Legacy path — not used for dynamic MIDI. Kept for IVirtualController interface.
+        }
+
+        /// <summary>
+        /// Sends MIDI messages from a MidiRawState with arbitrary CC and note counts.
+        /// Only sends messages when values change (change detection per CC and per note).
+        /// </summary>
+        public void SubmitMidiRawState(MidiRawState state)
+        {
             if (!_connected || _connection == null) return;
 
-            // Axes → CC messages (convert to 0-127 range)
-            byte lx = AxisToMidi(gp.ThumbLX);
-            byte ly = AxisToMidi(gp.ThumbLY);
-            byte lt = TriggerToMidi(gp.LeftTrigger);
-            byte rx = AxisToMidi(gp.ThumbRX);
-            byte ry = AxisToMidi(gp.ThumbRY);
-            byte rt = TriggerToMidi(gp.RightTrigger);
-
-            byte[] ccValues = { lx, ly, lt, rx, ry, rt };
-            for (int i = 0; i < 6 && i < CcNumbers.Length; i++)
+            // CCs
+            if (state.CcValues != null && _lastCcValues != null)
             {
-                if (ccValues[i] != _lastCcValues[i])
+                int ccCount = Math.Min(state.CcValues.Length, Math.Min(_lastCcValues.Length, CcNumbers.Length));
+                for (int i = 0; i < ccCount; i++)
                 {
-                    SendCC(CcNumbers[i], ccValues[i]);
-                    _lastCcValues[i] = ccValues[i];
+                    if (state.CcValues[i] != _lastCcValues[i])
+                    {
+                        SendCC(CcNumbers[i], state.CcValues[i]);
+                        _lastCcValues[i] = state.CcValues[i];
+                    }
                 }
             }
 
-            // Buttons → Note On/Off
-            ushort buttons = gp.Buttons;
-            ushort changed = (ushort)(buttons ^ _lastButtons);
-            for (int i = 0; i < 11 && i < NoteNumbers.Length; i++)
+            // Notes
+            if (state.Notes != null && _lastNotes != null)
             {
-                ushort mask = (ushort)(1 << i);
-                if ((changed & mask) == 0) continue;
-
-                if ((buttons & mask) != 0)
-                    SendNoteOn(NoteNumbers[i], Velocity);
-                else
-                    SendNoteOff(NoteNumbers[i]);
+                int noteCount = Math.Min(state.Notes.Length, Math.Min(_lastNotes.Length, NoteNumbers.Length));
+                for (int i = 0; i < noteCount; i++)
+                {
+                    if (state.Notes[i] != _lastNotes[i])
+                    {
+                        if (state.Notes[i])
+                            SendNoteOn(NoteNumbers[i], Velocity);
+                        else
+                            SendNoteOff(NoteNumbers[i]);
+                        _lastNotes[i] = state.Notes[i];
+                    }
+                }
             }
-            _lastButtons = buttons;
         }
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
@@ -254,22 +266,6 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  Value conversion
-        // ─────────────────────────────────────────────
-
-        private static byte AxisToMidi(short value)
-        {
-            // -32768..32767 → 0..127
-            return (byte)((value + 32768) * 127 / 65535);
-        }
-
-        private static byte TriggerToMidi(ushort value)
-        {
-            // 0..65535 → 0..127
-            return (byte)(value * 127 / 65535);
-        }
-
-        // ─────────────────────────────────────────────
         //  Static availability check
         // ─────────────────────────────────────────────
 
@@ -314,15 +310,39 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Resets the cached availability check so the next call to IsAvailable()
+        /// re-evaluates. Call after installing MIDI Services.
+        /// </summary>
+        public static void ResetAvailability()
+        {
+            lock (_availLock)
+            {
+                if (_initializer != null)
+                {
+                    _initializer.Dispose();
+                    _initializer = null;
+                }
+                _isAvailable = null;
+            }
+        }
+
+        /// <summary>
         /// Shuts down the MIDI Services SDK initializer. Call on app exit.
         /// </summary>
-        public static void Shutdown()
+        /// <param name="skipDispose">
+        /// When true, abandons the initializer without calling Dispose().
+        /// Use before uninstalling MIDI Services — Dispose() calls into the
+        /// runtime which triggers a native crash if the service is being removed.
+        /// </param>
+        public static void Shutdown(bool skipDispose = false)
         {
             if (_initializer != null)
             {
-                _initializer.Dispose();
+                if (!skipDispose)
+                    try { _initializer.Dispose(); } catch { }
                 _initializer = null;
             }
+            lock (_availLock) { _isAvailable = null; }
         }
     }
 }

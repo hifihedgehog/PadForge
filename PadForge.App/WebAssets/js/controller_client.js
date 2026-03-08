@@ -437,7 +437,7 @@
         });
 
         joystick.on("move", function (evt, data) {
-            var maxDist = 75;
+            var maxDist = 50;
             var norm = Math.min(data.distance / maxDist, 1.0);
             var rad = data.angle.radian;
             var dx = Math.cos(rad) * norm;

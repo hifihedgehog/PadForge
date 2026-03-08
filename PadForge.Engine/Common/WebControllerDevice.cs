@@ -83,10 +83,10 @@ namespace PadForge.Engine
             InstanceGuid = BuildGuid(clientId);
             SdlInstanceId = (uint)clientId.GetHashCode();
 
-            // Center all axes at midpoint — initialize fully before publishing.
+            // Center stick axes at midpoint, triggers at 0 (full off).
             var state = new CustomInputState();
             for (int i = 0; i < NumGamepadAxes; i++)
-                state.Axis[i] = 32767;
+                state.Axis[i] = (i == 2 || i == 5) ? 0 : 32767;
             Volatile.Write(ref _currentState, state);
         }
 

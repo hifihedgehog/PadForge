@@ -12,6 +12,7 @@
     <Company>PadForge</Company>
     <Copyright>Copyright © PadForge Contributors</Copyright>
     <Description>PadForge input engine — SDL3, XInput, and ViGEmBus integration.</Description>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
 </Project>

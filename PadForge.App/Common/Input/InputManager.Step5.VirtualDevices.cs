@@ -672,6 +672,7 @@ namespace PadForge.Common.Input
                 && _vigemClient == null)
                 return null;
 
+            IVirtualController vc = null;
             try
             {
                 // Snapshot XInput slot mask BEFORE connecting (Xbox 360 only).
@@ -679,7 +680,7 @@ namespace PadForge.Common.Input
                 if (controllerType == VirtualControllerType.Xbox360)
                     maskBefore = GetXInputConnectedSlotMask();
 
-                IVirtualController vc = controllerType switch
+                vc = controllerType switch
                 {
                     VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
                     VirtualControllerType.VJoy => CreateVJoyController(),
@@ -720,6 +721,7 @@ namespace PadForge.Common.Input
             }
             catch (Exception ex)
             {
+                vc?.Dispose();
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }

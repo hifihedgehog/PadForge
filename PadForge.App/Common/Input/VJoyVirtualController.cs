@@ -444,9 +444,6 @@ namespace PadForge.Common.Input
             Disconnect();
         }
 
-        // TrimDeviceNodes removed — single-node model means there's always
-        // exactly 0 or 1 device nodes. Scaling is done via registry descriptors.
-
         private int _submitCallCount;
         private int _submitFailCount;
 
@@ -2632,20 +2629,6 @@ public static class PF_SetupApi {{
         [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UpdateVJD(uint rID, ref JoystickPositionV2 pData);
-
-        // ── Individual axis/button/POV setters ──
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetAxis(int value, uint rID, uint axis);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetBtn([MarshalAs(UnmanagedType.Bool)] bool value, uint rID, byte nBtn);
-
-        [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetDiscPov(int value, uint rID, byte nPov);
 
         // HID Usage IDs for axes (Generic Desktop page 0x01)
         public const uint HID_USAGE_X  = 0x30;

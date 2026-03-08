@@ -239,6 +239,21 @@ namespace PadForge.Services
             }
             else
             {
+                // Device was unassigned from this slot.
+                // If device has no more slot assignments, auto-disable hiding.
+                var remainingSlots = SettingsManager.GetAssignedSlots(instanceGuid);
+                if (remainingSlots == null || remainingSlots.Count == 0)
+                {
+                    var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+                    if (udForGuid != null)
+                    {
+                        udForGuid.HidHideEnabled = false;
+                        udForGuid.ConsumeInputEnabled = false;
+                        selectedRow.HidHideEnabled = false;
+                        selectedRow.ConsumeInputEnabled = false;
+                    }
+                }
+
                 _mainVm.StatusText = $"Unassigned \"{selectedRow.DeviceName}\" from slot #{slotIndex + 1}.";
             }
 

@@ -661,6 +661,16 @@ namespace PadForge
             if (_inputService.EnsureTypeGroupOrder(silent: true))
                 _settingsService.MarkDirty();
 
+            // Detect drivers early (before sidebar rebuild) so power icons show correct
+            // colors even when starting minimized to tray (where OnLoaded never fires).
+            RefreshViGEmStatus();
+            _previousViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
+            RefreshHidHideStatus();
+            RefreshVJoyStatus();
+            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
+            RefreshMidiServicesStatus();
+            StartDriverStatusTimer();
+
             // Populate sidebar and dashboard with saved slots regardless of engine state,
             // so virtual controllers are visible for configuration even when the engine is off.
             _viewModel.RefreshNavControllerItems();
@@ -682,31 +692,9 @@ namespace PadForge
         //  Lifecycle
         // ─────────────────────────────────────────────
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void StartDriverStatusTimer()
         {
-            // Settings and tray icon are already initialized in the constructor
-            // (before Show) so that App.OnStartup can decide whether to show the window.
-
-            // Populate diagnostic info.
-            _viewModel.Settings.ApplicationVersion =
-                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
-            _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
-
-            // Detect ViGEmBus driver.
-            RefreshViGEmStatus();
-            _previousViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
-
-            // Detect HidHide driver.
-            RefreshHidHideStatus();
-
-            // Detect vJoy driver.
-            RefreshVJoyStatus();
-            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
-
-            // Detect MIDI Services.
-            RefreshMidiServicesStatus();
-
-            // Periodically refresh driver install states (every 5 seconds).
+            if (_driverStatusTimer != null) return;
             _driverStatusTimer = new System.Windows.Threading.DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(5)
@@ -753,6 +741,17 @@ namespace PadForge
                 }
             };
             _driverStatusTimer.Start();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // Driver detection and timer are initialized in the constructor so they
+            // work even when starting minimized to tray (where OnLoaded never fires).
+
+            // Populate diagnostic info.
+            _viewModel.Settings.ApplicationVersion =
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
+            _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
 
             // Check SDL3.dll availability.
             try

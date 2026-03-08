@@ -19,9 +19,6 @@ namespace PadForge.Engine
         /// <summary>GUID_ConstantForce — {13541C20-8E33-11D0-9AD0-00A0C9A06E35}</summary>
         public static readonly Guid ConstantForce = new Guid("13541C20-8E33-11D0-9AD0-00A0C9A06E35");
 
-        /// <summary>GUID_RampForce — {13541C21-8E33-11D0-9AD0-00A0C9A06E35}</summary>
-        public static readonly Guid RampForce = new Guid("13541C21-8E33-11D0-9AD0-00A0C9A06E35");
-
         /// <summary>GUID_Square — {13541C22-8E33-11D0-9AD0-00A0C9A06E35}</summary>
         public static readonly Guid Square = new Guid("13541C22-8E33-11D0-9AD0-00A0C9A06E35");
 
@@ -31,26 +28,11 @@ namespace PadForge.Engine
         /// <summary>GUID_Triangle — {13541C24-8E33-11D0-9AD0-00A0C9A06E35}</summary>
         public static readonly Guid Triangle = new Guid("13541C24-8E33-11D0-9AD0-00A0C9A06E35");
 
-        /// <summary>GUID_SawtoothUp — {13541C25-8E33-11D0-9AD0-00A0C9A06E35}</summary>
-        public static readonly Guid SawtoothUp = new Guid("13541C25-8E33-11D0-9AD0-00A0C9A06E35");
-
-        /// <summary>GUID_SawtoothDown — {13541C26-8E33-11D0-9AD0-00A0C9A06E35}</summary>
-        public static readonly Guid SawtoothDown = new Guid("13541C26-8E33-11D0-9AD0-00A0C9A06E35");
-
         /// <summary>GUID_Spring — {13541C27-8E33-11D0-9AD0-00A0C9A06E35}</summary>
         public static readonly Guid Spring = new Guid("13541C27-8E33-11D0-9AD0-00A0C9A06E35");
 
         /// <summary>GUID_Damper — {13541C28-8E33-11D0-9AD0-00A0C9A06E35}</summary>
         public static readonly Guid Damper = new Guid("13541C28-8E33-11D0-9AD0-00A0C9A06E35");
-
-        /// <summary>GUID_Inertia — {13541C29-8E33-11D0-9AD0-00A0C9A06E35}</summary>
-        public static readonly Guid Inertia = new Guid("13541C29-8E33-11D0-9AD0-00A0C9A06E35");
-
-        /// <summary>GUID_Friction — {13541C2A-8E33-11D0-9AD0-00A0C9A06E35}</summary>
-        public static readonly Guid Friction = new Guid("13541C2A-8E33-11D0-9AD0-00A0C9A06E35");
-
-        /// <summary>GUID_CustomForce — {13541C2B-8E33-11D0-9AD0-00A0C9A06E35}</summary>
-        public static readonly Guid CustomForce = new Guid("13541C2B-8E33-11D0-9AD0-00A0C9A06E35");
 
         /// <summary>Synthetic GUID for SDL rumble (no DirectInput equivalent).</summary>
         public static readonly Guid SdlRumble = new Guid("53444C52-554D-424C-0000-000000000000"); // "SDLRUMBL"

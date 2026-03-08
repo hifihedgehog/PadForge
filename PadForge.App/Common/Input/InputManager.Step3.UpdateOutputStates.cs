@@ -11,7 +11,7 @@ namespace PadForge.Common.Input
         //  Maps each device's CustomInputState to a Gamepad struct
         //  based on the PadSetting mapping rules configured for that device.
         //
-        //  Each UserSetting links a device (InstanceGuid) to a pad slot (MapTo 0–3)
+        //  Each UserSetting links a device (InstanceGuid) to a pad slot (MapTo 0–15)
         //  and references a PadSetting that contains the mapping rules.
         //
         //  PadSetting string fields like "ButtonA", "LeftThumbAxisX", etc. contain

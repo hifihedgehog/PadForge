@@ -72,7 +72,7 @@ namespace PadForge.Controls
             double v = (double)value;
             v = Math.Max(v, slider.Minimum);
             v = Math.Min(v, slider.UpperValue);
-            return Math.Round(v);
+            return Math.Round(v, 1);
         }
 
         private static object CoerceUpperValue(DependencyObject d, object value)
@@ -81,7 +81,7 @@ namespace PadForge.Controls
             double v = (double)value;
             v = Math.Max(v, slider.LowerValue);
             v = Math.Min(v, slider.Maximum);
-            return Math.Round(v);
+            return Math.Round(v, 1);
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -117,7 +117,7 @@ namespace PadForge.Controls
             if (usable <= 0) return;
 
             double delta = e.HorizontalChange / usable * (Maximum - Minimum);
-            LowerValue = Math.Round(Math.Clamp(LowerValue + delta, Minimum, UpperValue));
+            LowerValue = Math.Round(Math.Clamp(LowerValue + delta, Minimum, UpperValue), 1);
         }
 
         private void OnUpperThumbDragDelta(object sender, DragDeltaEventArgs e)
@@ -126,7 +126,7 @@ namespace PadForge.Controls
             if (usable <= 0) return;
 
             double delta = e.HorizontalChange / usable * (Maximum - Minimum);
-            UpperValue = Math.Round(Math.Clamp(UpperValue + delta, LowerValue, Maximum));
+            UpperValue = Math.Round(Math.Clamp(UpperValue + delta, LowerValue, Maximum), 1);
         }
 
         private double GetUsableWidth()

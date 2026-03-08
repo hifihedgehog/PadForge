@@ -22,7 +22,7 @@
                                HorizontalAlignment="Center" Margin="0,4,0,12"/>
 
                     <TextBlock HorizontalAlignment="Center" Opacity="0.5" FontSize="12">
-                        <Run Text="Modern fork of x360ce — rebuilt with SDL3, WPF, and .NET 8"/>
+                        <Run Text="Modern fork of x360ce — rebuilt with SDL3, WPF, and .NET 10"/>
                     </TextBlock>
                 </StackPanel>
             </Border>
@@ -30,10 +30,12 @@
             <!-- Description -->
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Opacity="0.85">
-                    PadForge maps any controller to virtually any other controller type
-                    via ViGEmBus and vJoy. It uses SDL3 for robust device enumeration and input,
-                    and provides a modern Fluent Design interface for mapping, dead zone
-                    configuration, and force feedback management.
+                    PadForge maps any controller, keyboard, or mouse to virtual Xbox 360,
+                    DualShock 4, custom DirectInput, or MIDI controllers via ViGEmBus, vJoy,
+                    and Windows MIDI Services. It uses SDL3 for controller input, Windows
+                    Raw Input for keyboard and mouse input, and provides a modern Fluent
+                    Design interface for mapping, dead zone configuration, and force feedback
+                    management.
                 </TextBlock>
             </Border>
 
@@ -56,32 +58,50 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text=".NET 8" FontWeight="SemiBold"/>
+                    <TextBlock Text=".NET 10" FontWeight="SemiBold"/>
                     <TextBlock Grid.Column="1" Text="Runtime and WPF framework" Opacity="0.7"/>
 
                     <TextBlock Grid.Row="1" Text="SDL3" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Cross-platform device input"
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Controller input and enumeration"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="2" Text="ViGEmBus" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="2" Text="Raw Input" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="2" Grid.Column="1"
+                               Text="Per-device keyboard and mouse input"
+                               Opacity="0.7" Margin="0,6,0,0"/>
+
+                    <TextBlock Grid.Row="3" Text="ViGEmBus" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1"
                                Text="Virtual controller driver (Xbox 360, DualShock 4)"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="3" Text="vJoy" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1"
+                    <TextBlock Grid.Row="4" Text="vJoy" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1"
                                Text="Virtual joystick driver for custom HID output"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="4" Text="ModernWpf" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1"
+                    <TextBlock Grid.Row="5" Text="MIDI Services" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1"
+                               Text="Virtual MIDI device output (Windows MIDI Services)"
+                               Opacity="0.7" Margin="0,6,0,0"/>
+
+                    <TextBlock Grid.Row="6" Text="HelixToolkit" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="6" Grid.Column="1"
+                               Text="3D controller visualization"
+                               Opacity="0.7" Margin="0,6,0,0"/>
+
+                    <TextBlock Grid.Row="7" Text="ModernWpf" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1"
                                Text="Fluent Design theme for WPF"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="5" Text="MVVM Toolkit" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="5" Grid.Column="1"
+                    <TextBlock Grid.Row="8" Text="MVVM Toolkit" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="8" Grid.Column="1"
                                Text="CommunityToolkit.Mvvm for data binding"
                                Opacity="0.7" Margin="0,6,0,0"/>
                 </Grid>
@@ -101,6 +121,7 @@
                     2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT).
                     Original codebase forked from x360ce (MIT).
                     SDL3 is licensed under the zlib License.
+                    Windows MIDI Services is licensed under the MIT License.
                     ViGEmBus, vJoy, HelixToolkit, and ModernWpf are licensed under the MIT License.
                 </TextBlock>
             </Border>

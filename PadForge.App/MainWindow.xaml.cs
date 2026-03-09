@@ -2637,6 +2637,9 @@ namespace PadForge
 
         private void OnCopyFrom(PadViewModel padVm)
         {
+            // Flush all pad UIs to storage so source PadSettings reflect current state.
+            _inputService.FlushAllPadViewModels();
+
             // Build list of all devices that have configured settings.
             var entries = new List<CopyFromDialog.DeviceEntry>();
             var settings = SettingsManager.UserSettings?.Items;

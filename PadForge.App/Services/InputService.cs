@@ -848,6 +848,10 @@ namespace PadForge.Services
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
+            // Clear all mapping descriptors first to prevent stale leftovers from a
+            // previous layout (e.g., switching from Xbox 360 preset to custom vJoy).
+            ps.ClearMappingDescriptors();
+
             // Mapping descriptors.
             foreach (var mapping in padVm.Mappings)
             {

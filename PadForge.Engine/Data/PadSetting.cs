@@ -611,6 +611,33 @@ namespace PadForge.Engine.Data
             (_midiMappingDict != null && _midiMappingDict.Count > 0);
 
         /// <summary>
+        /// Clears all mapping descriptors (standard, vJoy, and MIDI) while preserving
+        /// dead zone, force feedback, and other non-mapping configuration.
+        /// Call before writing a new set of mappings to prevent stale leftovers
+        /// from a previous mapping layout (e.g., switching Xbox 360 preset → custom vJoy).
+        /// </summary>
+        public void ClearMappingDescriptors()
+        {
+            // Standard mapping properties.
+            ButtonA = ButtonB = ButtonX = ButtonY = "";
+            LeftShoulder = RightShoulder = "";
+            ButtonBack = ButtonStart = ButtonGuide = "";
+            LeftThumbButton = RightThumbButton = "";
+            DPad = DPadUp = DPadDown = DPadLeft = DPadRight = "";
+            LeftTrigger = RightTrigger = "";
+            LeftThumbAxisX = LeftThumbAxisY = "";
+            RightThumbAxisX = RightThumbAxisY = "";
+            LeftThumbAxisXNeg = LeftThumbAxisYNeg = "";
+            RightThumbAxisXNeg = RightThumbAxisYNeg = "";
+
+            // vJoy/MIDI mapping dictionaries and arrays.
+            VJoyMappingEntries = null;
+            _vjoyMappingDict = null;
+            MidiMappingEntries = null;
+            _midiMappingDict = null;
+        }
+
+        /// <summary>
         /// Returns all non-empty mapping descriptor strings from this PadSetting.
         /// Includes standard button/axis/dpad/trigger mappings and vJoy custom entries.
         /// </summary>

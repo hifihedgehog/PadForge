@@ -375,6 +375,10 @@ namespace PadForge.Common.Input
 
                     // Build per-device HID descriptor configs from slot configs.
                     // The order is sequential: 1st vJoy slot → Device01, 2nd → Device02, etc.
+                    // IMPORTANT: Must use the SAME condition as totalVJoyNeeded above —
+                    // only include slots that have a running VC or an active device.
+                    // Otherwise a device-less vJoy at a lower index contributes its
+                    // descriptor instead of the active slot's, causing layout mismatches.
                     VJoyVirtualController.VJoyDeviceConfig[] deviceConfigs = null;
                     if (totalVJoyNeeded > 0)
                     {
@@ -386,7 +390,8 @@ namespace PadForge.Common.Input
                                 _virtualControllers[i] is VJoyVirtualController ||
                                 (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                                  SettingsManager.SlotCreated[i] &&
-                                 SettingsManager.SlotEnabled[i]);
+                                 SettingsManager.SlotEnabled[i] &&
+                                 IsSlotActive(i));
                             if (countsAsVjoy)
                                 deviceConfigs[cfgIdx++] = SlotVJoyConfigs[i];
                         }

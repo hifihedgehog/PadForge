@@ -12,7 +12,7 @@
 
         <!-- Header -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-            <TextBlock Text="&#xE71D;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+            <TextBlock Text="&#xE772;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                        VerticalAlignment="Center" Margin="0,0,10,0"/>
             <TextBlock Text="Devices" Style="{StaticResource TitleTextBlockStyle}"/>
             <Button Content="Refresh" Margin="16,0,0,0"

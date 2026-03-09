@@ -384,27 +384,49 @@ namespace PadForge.Common.Input
                         anyNeedsCreate |= totalVJoyNeeded > 0;
                     }
 
-                    // Build per-device HID descriptor configs from slot configs.
-                    // The order is sequential: 1st vJoy slot → Device01, 2nd → Device02, etc.
-                    // IMPORTANT: Must use the SAME condition as totalVJoyNeeded above —
-                    // only include slots that have a running VC or an active device.
-                    // Otherwise a device-less vJoy at a lower index contributes its
-                    // descriptor instead of the active slot's, causing layout mismatches.
+                    // Build per-device HID descriptor configs indexed by DEVICE ID, not slot.
+                    // Existing VCs have fixed device IDs (1-based). After a slot swap,
+                    // the VC's device ID doesn't change, but its slot position does.
+                    // Building by slot order would reassign descriptors to wrong device IDs,
+                    // causing a spurious content change → node restart → VC failure.
                     VJoyVirtualController.VJoyDeviceConfig[] deviceConfigs = null;
                     if (totalVJoyNeeded > 0)
                     {
                         deviceConfigs = new VJoyVirtualController.VJoyDeviceConfig[totalVJoyNeeded];
-                        int cfgIdx = 0;
-                        for (int i = 0; i < MaxPads && cfgIdx < totalVJoyNeeded; i++)
+                        var usedIndices = new HashSet<int>();
+
+                        // Pass A: place configs for existing VCs at their device ID position.
+                        for (int i = 0; i < MaxPads; i++)
                         {
-                            bool countsAsVjoy =
-                                _virtualControllers[i] is VJoyVirtualController ||
-                                (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
-                                 SettingsManager.SlotCreated[i] &&
-                                 SettingsManager.SlotEnabled[i] &&
-                                 IsSlotActive(i));
-                            if (countsAsVjoy)
-                                deviceConfigs[cfgIdx++] = SlotVJoyConfigs[i];
+                            if (_virtualControllers[i] is VJoyVirtualController vjoy)
+                            {
+                                int idx = (int)vjoy.DeviceId - 1; // DeviceId is 1-based
+                                if (idx >= 0 && idx < totalVJoyNeeded)
+                                {
+                                    deviceConfigs[idx] = SlotVJoyConfigs[i];
+                                    usedIndices.Add(idx);
+                                }
+                            }
+                        }
+
+                        // Pass B: fill remaining positions with new (not-yet-created) VCs.
+                        int cfgIdx = 0;
+                        for (int i = 0; i < MaxPads; i++)
+                        {
+                            if (_virtualControllers[i] is not VJoyVirtualController &&
+                                SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                SettingsManager.SlotCreated[i] &&
+                                SettingsManager.SlotEnabled[i] &&
+                                IsSlotActive(i))
+                            {
+                                while (cfgIdx < totalVJoyNeeded && usedIndices.Contains(cfgIdx))
+                                    cfgIdx++;
+                                if (cfgIdx < totalVJoyNeeded)
+                                {
+                                    deviceConfigs[cfgIdx] = SlotVJoyConfigs[i];
+                                    cfgIdx++;
+                                }
+                            }
                         }
                     }
 

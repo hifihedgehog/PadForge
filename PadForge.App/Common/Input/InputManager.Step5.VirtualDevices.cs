@@ -139,6 +139,14 @@ namespace PadForge.Common.Input
         /// <summary>Cached per-slot vJoy configs for detecting content changes in Step 5.</summary>
         private VJoyVirtualController.VJoyDeviceConfig[] _lastStep5VJoyConfigs;
 
+        /// <summary>
+        /// Lock protecting vJoy descriptor sync from concurrent SwapSlotData.
+        /// Without this, the polling thread can observe a half-swapped state
+        /// (configs from one slot paired with the VC from another), causing
+        /// spurious descriptor changes and device node restarts.
+        /// </summary>
+        internal readonly object VJoySyncLock = new();
+
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
@@ -279,6 +287,9 @@ namespace PadForge.Common.Input
             // Only count vJoy slots that have an actual running controller or are
             // about to create one (active device mapped). Empty vJoy slots with no
             // device assigned should NOT register descriptors in joy.cpl.
+            // Hold VJoySyncLock to prevent SwapSlotData from changing configs/VCs
+            // mid-scan, which would cause spurious descriptor changes.
+            lock (VJoySyncLock)
             {
                 int totalVJoyNeeded = 0;
                 bool anyVJoySlotExists = false;

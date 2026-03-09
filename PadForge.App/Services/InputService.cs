@@ -1181,6 +1181,21 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Flushes all active pad ViewModels back to their PadSettings so that
+        /// stored PadSettings reflect the latest UI state. Call before reading
+        /// PadSettings across multiple slots (e.g., Copy From dialog).
+        /// </summary>
+        public void FlushAllPadViewModels()
+        {
+            foreach (var padVm in _mainVm.Pads)
+            {
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+            }
+        }
+
+        /// <summary>
         /// Gets the PadSetting for the currently selected device in the given pad slot.
         /// Returns null if no device is selected.
         /// </summary>

@@ -726,6 +726,22 @@ namespace PadForge.Engine.Data
                     dict[name] = prop.GetValue(this) as string ?? "";
             }
 
+            // Include vJoy/MIDI mapping arrays if present.
+            if (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0)
+            {
+                var vjoyList = new List<Dictionary<string, string>>();
+                foreach (var e in VJoyMappingEntries)
+                    vjoyList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__VJoyMappings"] = JsonSerializer.Serialize(vjoyList);
+            }
+            if (MidiMappingEntries != null && MidiMappingEntries.Length > 0)
+            {
+                var midiList = new List<Dictionary<string, string>>();
+                foreach (var e in MidiMappingEntries)
+                    midiList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__MidiMappings"] = JsonSerializer.Serialize(midiList);
+            }
+
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
         }
 
@@ -749,6 +765,16 @@ namespace PadForge.Engine.Data
 
                 foreach (var kvp in dict)
                 {
+                    if (kvp.Key == "__VJoyMappings")
+                    {
+                        ps.VJoyMappingEntries = DeserializeMappingArray(kvp.Value);
+                        continue;
+                    }
+                    if (kvp.Key == "__MidiMappings")
+                    {
+                        ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
+                        continue;
+                    }
                     var prop = type.GetProperty(kvp.Key);
                     if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
                         prop.SetValue(ps, kvp.Value ?? "");
@@ -760,6 +786,26 @@ namespace PadForge.Engine.Data
             {
                 return null;
             }
+        }
+
+        private static VJoyMappingEntry[] DeserializeMappingArray(string json)
+        {
+            try
+            {
+                var list = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(json);
+                if (list == null) return null;
+                var arr = new VJoyMappingEntry[list.Count];
+                for (int i = 0; i < list.Count; i++)
+                {
+                    arr[i] = new VJoyMappingEntry
+                    {
+                        Key = list[i].TryGetValue("Key", out var k) ? k : "",
+                        Value = list[i].TryGetValue("Value", out var v) ? v : ""
+                    };
+                }
+                return arr;
+            }
+            catch { return null; }
         }
 
         /// <summary>
@@ -776,6 +822,19 @@ namespace PadForge.Engine.Data
                 if (prop != null && prop.CanWrite)
                     prop.SetValue(this, prop.GetValue(source) ?? "");
             }
+
+            // Deep-copy vJoy/MIDI mapping arrays.
+            VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
+            MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
+        }
+
+        private static VJoyMappingEntry[] DeepCopyMappings(VJoyMappingEntry[] src)
+        {
+            if (src == null || src.Length == 0) return null;
+            var arr = new VJoyMappingEntry[src.Length];
+            for (int i = 0; i < src.Length; i++)
+                arr[i] = new VJoyMappingEntry { Key = src[i].Key, Value = src[i].Value };
+            return arr;
         }
 
         /// <summary>
@@ -787,28 +846,6 @@ namespace PadForge.Engine.Data
             clone.CopyFrom(this);
             clone.PadSettingChecksum = PadSettingChecksum;
             clone.GameFileName = GameFileName;
-            // Deep-copy vJoy mappings
-            if (VJoyMappingEntries != null)
-            {
-                clone.VJoyMappingEntries = new VJoyMappingEntry[VJoyMappingEntries.Length];
-                for (int i = 0; i < VJoyMappingEntries.Length; i++)
-                    clone.VJoyMappingEntries[i] = new VJoyMappingEntry
-                    {
-                        Key = VJoyMappingEntries[i].Key,
-                        Value = VJoyMappingEntries[i].Value
-                    };
-            }
-            // Deep-copy MIDI mappings
-            if (MidiMappingEntries != null)
-            {
-                clone.MidiMappingEntries = new VJoyMappingEntry[MidiMappingEntries.Length];
-                for (int i = 0; i < MidiMappingEntries.Length; i++)
-                    clone.MidiMappingEntries[i] = new VJoyMappingEntry
-                    {
-                        Key = MidiMappingEntries[i].Key,
-                        Value = MidiMappingEntries[i].Value
-                    };
-            }
             return clone;
         }
     }

@@ -356,17 +356,17 @@ namespace PadForge.Common.Input
                 {
                     bool descriptorCountChanged = totalVJoyNeeded != VJoyVirtualController.CurrentDescriptorCount;
 
-                    // If descriptor count is changing, destroy vJoy VCs whose device
-                    // IDs exceed the new count. Registry descriptors are always
-                    // Device01..DeviceN (contiguous), so any VC with ID > N would
-                    // reference a non-existent descriptor after the restart.
-                    // VCs with IDs 1..N survive and re-acquire after the restart.
+                    // If descriptor count is changing, destroy vJoy VCs that are no
+                    // longer needed (slot inactive). VCs in active slots survive even
+                    // if their DeviceId exceeds the new count — they'll re-acquire a
+                    // lower ID after the node restart. This prevents destroying the
+                    // only remaining active VC just because a swap gave it DeviceId=2.
                     if (descriptorCountChanged)
                     {
                         for (int i = 0; i < MaxPads; i++)
                         {
                             if (_virtualControllers[i] is VJoyVirtualController vjoy &&
-                                vjoy.DeviceId > (uint)totalVJoyNeeded)
+                                !IsSlotActive(i))
                             {
                                 DestroyVirtualController(i);
                                 _virtualControllers[i] = null;
@@ -396,6 +396,10 @@ namespace PadForge.Common.Input
                         var usedIndices = new HashSet<int>();
 
                         // Pass A: place configs for existing VCs at their device ID position.
+                        // If the VC's DeviceId exceeds the new count (e.g., DeviceId=2 but
+                        // totalVJoyNeeded=1 after a slot was deactivated), it will be
+                        // reassigned to a lower ID — queue its config for Pass B instead.
+                        var overflowConfigs = new List<VJoyVirtualController.VJoyDeviceConfig>();
                         for (int i = 0; i < MaxPads; i++)
                         {
                             if (_virtualControllers[i] is VJoyVirtualController vjoy)
@@ -406,11 +410,30 @@ namespace PadForge.Common.Input
                                     deviceConfigs[idx] = SlotVJoyConfigs[i];
                                     usedIndices.Add(idx);
                                 }
+                                else if (IsSlotActive(i))
+                                {
+                                    // VC will be destroyed and recreated with a lower ID.
+                                    // Preserve its config so the new descriptor matches.
+                                    overflowConfigs.Add(SlotVJoyConfigs[i]);
+                                }
                             }
                         }
 
-                        // Pass B: fill remaining positions with new (not-yet-created) VCs.
+                        // Pass B: fill remaining positions with overflow VCs and new slots.
                         int cfgIdx = 0;
+                        // First, place overflow configs (active VCs that exceeded the count).
+                        foreach (var cfg in overflowConfigs)
+                        {
+                            while (cfgIdx < totalVJoyNeeded && usedIndices.Contains(cfgIdx))
+                                cfgIdx++;
+                            if (cfgIdx < totalVJoyNeeded)
+                            {
+                                deviceConfigs[cfgIdx] = cfg;
+                                usedIndices.Add(cfgIdx);
+                                cfgIdx++;
+                            }
+                        }
+                        // Then, place configs for slots that don't have VCs yet.
                         for (int i = 0; i < MaxPads; i++)
                         {
                             if (_virtualControllers[i] is not VJoyVirtualController &&
@@ -484,11 +507,15 @@ namespace PadForge.Common.Input
                         int expectedId = 0;
                         for (int i = 0; i < MaxPads; i++)
                         {
+                            // Only count slots that actually have (or will have) a VC.
+                            // Inactive vJoy slots don't get VCs and don't consume device IDs,
+                            // so they must not inflate the expectedId sequence.
                             bool countsAsVjoy =
                                 _virtualControllers[i] is VJoyVirtualController ||
                                 (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                                  SettingsManager.SlotCreated[i] &&
-                                 SettingsManager.SlotEnabled[i]);
+                                 SettingsManager.SlotEnabled[i] &&
+                                 IsSlotActive(i));
 
                             if (countsAsVjoy)
                             {
@@ -558,6 +585,15 @@ namespace PadForge.Common.Input
                     if (_virtualControllers[padIndex] == null &&
                         _slotInactiveCounter[padIndex] == 0)
                     {
+                        // vJoy slots only get a VC when a physical device is assigned.
+                        // Unlike ViGEm (Xbox/DS4), vJoy device IDs are scarce and the
+                        // registry descriptor count must match exactly. Creating a VC
+                        // for an inactive vJoy slot would consume a device ID that the
+                        // active slot needs.
+                        if (SlotControllerTypes[padIndex] == VirtualControllerType.VJoy &&
+                            !IsSlotActive(padIndex))
+                            continue;
+
                         // Skip if still in cooldown from a previous failed creation.
                         if (_createCooldown[padIndex] > 0)
                         {

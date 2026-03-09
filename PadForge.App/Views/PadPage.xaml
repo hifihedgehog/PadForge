@@ -139,12 +139,25 @@
                                             <Setter Property="Source" Value="{StaticResource VJoyControllerIcon}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
-                                            <Setter Property="Source" Value="{StaticResource MidiControllerIcon}"/>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Image.Style>
                         </Image>
+                        <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,4,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Midi">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="15" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
                     </StackPanel>

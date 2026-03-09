@@ -814,7 +814,7 @@ namespace PadForge
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
         private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
-        private const string MidiSvgPath = Common.ControllerIcons.MidiSvgPath;
+
 
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
         private const int ControllerInsertIndex = 3;
@@ -844,7 +844,7 @@ namespace PadForge
             {
                 Content = "Dashboard",
                 Tag = "Dashboard",
-                Icon = new SymbolIcon(Symbol.Home)
+                Icon = new FontIcon { Glyph = "\uF404" }
             });
 
             // Profiles.
@@ -861,7 +861,7 @@ namespace PadForge
             {
                 Content = "Devices",
                 Tag = "Devices",
-                Icon = new SymbolIcon(Symbol.AllApps)
+                Icon = new FontIcon { Glyph = "\uE772" }
             });
 
             // Controller entries (initially none — populated dynamically).
@@ -1152,21 +1152,15 @@ namespace PadForge
             if (isMidi)
             {
                 // MIDI cards show only a static MIDI icon — no type switching to game controllers.
-                var midiIcon = new System.Windows.Shapes.Path
+                var midiIcon = new System.Windows.Controls.TextBlock
                 {
-                    Data = System.Windows.Media.Geometry.Parse(MidiSvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
+                    Text = "\uE8D6",
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 13,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    ToolTip = "MIDI"
                 };
-                midiIcon.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                row.Children.Add(new System.Windows.Controls.Border
-                {
-                    Child = midiIcon,
-                    Padding = new Thickness(2),
-                    ToolTip = "MIDI",
-                    VerticalAlignment = VerticalAlignment.Center
-                });
+                row.Children.Add(midiIcon);
             }
             else
             {
@@ -2110,14 +2104,14 @@ namespace PadForge
             stack.Children.Add(vjoyBtn);
 
             // MIDI button — theme-aware icon fill.
-            var midiPopupPath = new System.Windows.Shapes.Path
+            var midiPopupIcon = new System.Windows.Controls.TextBlock
             {
-                Data = System.Windows.Media.Geometry.Parse(MidiSvgPath),
-                Width = 28,
-                Height = 28,
-                Stretch = System.Windows.Media.Stretch.Uniform
+                Text = "\uE8D6",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 28,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
-            midiPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
             bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || midiAtCapacity;
@@ -2126,7 +2120,7 @@ namespace PadForge
                                : "MIDI";
             var midiBtn = new System.Windows.Controls.Button
             {
-                Content = midiPopupPath,
+                Content = midiPopupIcon,
                 ToolTip = midiTooltip,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),

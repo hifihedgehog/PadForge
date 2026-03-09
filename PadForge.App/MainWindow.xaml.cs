@@ -2646,9 +2646,10 @@ namespace PadForge
                 {
                     foreach (var us in settings)
                     {
-                        // Skip the currently selected device.
+                        // Skip the same device+slot combination (allow same device on other slots).
                         if (padVm.SelectedMappedDevice != null &&
-                            us.InstanceGuid == padVm.SelectedMappedDevice.InstanceGuid)
+                            us.InstanceGuid == padVm.SelectedMappedDevice.InstanceGuid &&
+                            us.MapTo == padVm.PadIndex)
                             continue;
 
                         var ps = us.GetPadSetting();

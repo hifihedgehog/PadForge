@@ -823,9 +823,12 @@ namespace PadForge.Engine.Data
                     prop.SetValue(this, prop.GetValue(source) ?? "");
             }
 
-            // Deep-copy vJoy/MIDI mapping arrays.
+            // Deep-copy vJoy/MIDI mapping arrays and invalidate cached dictionaries
+            // so EnsureVJoyDict/EnsureMidiDict rebuild from the new arrays.
             VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
+            _vjoyMappingDict = null;
             MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
+            _midiMappingDict = null;
         }
 
         private static VJoyMappingEntry[] DeepCopyMappings(VJoyMappingEntry[] src)

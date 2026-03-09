@@ -1,5 +1,5 @@
 # Diagnostic: what's visible after clicking MappingsTab
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\mappings_diag_log.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\mappings_diag_log.txt"
 try {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes

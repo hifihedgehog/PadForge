@@ -9,7 +9,7 @@
 
             <!-- Page header -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                <TextBlock Text="&#xF404;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <TextBlock Text="Dashboard" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
@@ -303,12 +303,10 @@
                                     </StackPanel>
 
                                     <!-- MIDI icon (shown only for MIDI slots, no type switching) -->
-                                    <Path Data="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6zM10 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
-                                          Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
-                                          Width="14" Height="14" Stretch="Uniform"
-                                          VerticalAlignment="Center" ToolTip="MIDI">
-                                        <Path.Style>
-                                            <Style TargetType="Path">
+                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               VerticalAlignment="Center" ToolTip="MIDI">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding OutputType}" Value="Midi">
@@ -316,8 +314,8 @@
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Path.Style>
-                                    </Path>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
                                     <!-- Per-type instance # -->
                                     <TextBlock Text="{Binding TypeInstanceLabel}"
@@ -441,7 +439,7 @@
 
             <!-- ═══ Driver status ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE964;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                <TextBlock Text="&#xED5D;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <TextBlock Text="Drivers" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>

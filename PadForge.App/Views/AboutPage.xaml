@@ -7,9 +7,9 @@
         <StackPanel MaxWidth="600">
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                <TextBlock Text="&#xE897;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="About PadForge" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="About" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
 
             <!-- App identity -->

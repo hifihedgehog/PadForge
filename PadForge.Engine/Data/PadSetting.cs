@@ -303,7 +303,8 @@ namespace PadForge.Engine.Data
         /// <summary>Flushes the in-memory dictionary back to the serializable array.</summary>
         public void FlushVJoyMappings()
         {
-            if (_vjoyMappingDict == null || _vjoyMappingDict.Count == 0)
+            if (_vjoyMappingDict == null) return; // Not initialized — array is canonical.
+            if (_vjoyMappingDict.Count == 0)
             {
                 VJoyMappingEntries = null;
                 return;
@@ -367,7 +368,8 @@ namespace PadForge.Engine.Data
 
         public void FlushMidiMappings()
         {
-            if (_midiMappingDict == null || _midiMappingDict.Count == 0)
+            if (_midiMappingDict == null) return; // Not initialized — array is canonical.
+            if (_midiMappingDict.Count == 0)
             {
                 MidiMappingEntries = null;
                 return;
@@ -603,7 +605,10 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbAxisYNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisXNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
-            (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0);
+            (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0) ||
+            (_vjoyMappingDict != null && _vjoyMappingDict.Count > 0) ||
+            (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
+            (_midiMappingDict != null && _midiMappingDict.Count > 0);
 
         /// <summary>
         /// Returns all non-empty mapping descriptor strings from this PadSetting.
@@ -716,6 +721,10 @@ namespace PadForge.Engine.Data
         /// </summary>
         public string ToJson()
         {
+            // Flush live dicts to arrays before serializing.
+            FlushVJoyMappings();
+            FlushMidiMappings();
+
             var dict = new Dictionary<string, string>();
             var type = GetType();
 
@@ -823,8 +832,12 @@ namespace PadForge.Engine.Data
                     prop.SetValue(this, prop.GetValue(source) ?? "");
             }
 
-            // Deep-copy vJoy/MIDI mapping arrays and invalidate cached dictionaries
-            // so EnsureVJoyDict/EnsureMidiDict rebuild from the new arrays.
+            // Flush source dicts to arrays so we copy the latest live data
+            // (SetVJoyMapping/SetMidiMapping update the dict, not the array).
+            source.FlushVJoyMappings();
+            source.FlushMidiMappings();
+
+            // Deep-copy arrays and invalidate our cached dictionaries.
             VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
             _vjoyMappingDict = null;
             MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);

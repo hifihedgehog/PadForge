@@ -11,7 +11,7 @@
 #>
 
 param(
-    [string]$OutputDir = "C:\Users\sonic\GitHub\PadForge.wiki\images",
+    [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images",
     [string]$PadForgeExe = "C:\PadForge\PadForge.exe",
     [string]$PadForgeXml = "C:\PadForge\PadForge.xml"
 )

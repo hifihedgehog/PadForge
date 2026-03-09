@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $workDir = "C:\Users\sonic\AppData\Local\Temp\fix-zips2"
-$txtSource = "C:\Users\sonic\GitHub\PadForge\PadForge.App\gamecontrollerdb_padforge.txt"
+$txtSource = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\gamecontrollerdb_padforge.txt"
 
 foreach ($tag in @("v2.0.0-RC4", "v2.0.0-RC3", "v2.0.0-RC2")) {
     $zipName = "PadForge-$tag-win-x64.zip"

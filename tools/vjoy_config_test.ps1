@@ -2,11 +2,11 @@
 # Modifies PadForge.xml, launches PadForge, queries vJoyInterface.dll in fresh process.
 # Must run elevated (PadForge runs elevated when vJoy installed).
 
-$logFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_config_test_log.txt'
+$logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_config_test_log.txt'
 $padForgeExe = 'C:\PadForge\PadForge.exe'
 $padForgeXml = 'C:\PadForge\PadForge.xml'
-$queryScript = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_query_device.ps1'
-$toolsDir = 'C:\Users\sonic\GitHub\PadForge\tools'
+$queryScript = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_query_device.ps1'
+$toolsDir = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools'
 
 $R = [System.Collections.Generic.List[string]]::new()
 $R.Add("=== vJoy Config Test via PadForge $(Get-Date) ===")

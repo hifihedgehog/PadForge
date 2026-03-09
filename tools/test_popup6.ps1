@@ -1,5 +1,5 @@
 # Test: Click "Add Controller" nav item, then search RootElement for popup buttons
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\popup_test6.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\popup_test6.txt"
 
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes

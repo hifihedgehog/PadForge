@@ -12,7 +12,7 @@ $x.Save('C:\PadForge\PadForge.xml')
 Write-Host 'Fixed XML - only slot 0 created'
 
 # Deploy
-Copy-Item 'C:\Users\sonic\GitHub\PadForge\PadForge.App\bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\PadForge.exe' 'C:\PadForge\PadForge.exe' -Force
+Copy-Item 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\PadForge.exe' 'C:\PadForge\PadForge.exe' -Force
 Write-Host 'Deployed PadForge.exe'
 
 # Start PadForge

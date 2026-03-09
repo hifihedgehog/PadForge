@@ -6,7 +6,7 @@ $ae = [System.Windows.Automation.AutomationElement]
 $ct = [System.Windows.Automation.ControlType]
 $tree = [System.Windows.Automation.TreeScope]
 
-$logFile = "C:\Users\sonic\GitHub\PadForge\tools\vjoy_stale_test_log.txt"
+$logFile = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_stale_test_log.txt"
 function Log($msg) { $msg | Out-File $logFile -Append -Encoding utf8; Write-Host $msg }
 
 "" | Out-File $logFile -Encoding utf8 -Force

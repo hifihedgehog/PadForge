@@ -75,5 +75,5 @@ foreach ($line in ($pnp -split "`n")) {
     elseif (-not $t) { $currentId = $null }
 }
 
-$out | Out-File 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_purge_log.txt' -Encoding utf8 -Force
+$out | Out-File 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_purge_log.txt' -Encoding utf8 -Force
 $out | ForEach-Object { Write-Host $_ }

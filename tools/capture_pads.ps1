@@ -6,7 +6,7 @@
 #>
 
 param(
-    [string]$OutputDir = "C:\Users\sonic\GitHub\PadForge.wiki\images"
+    [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images"
 )
 
 Set-StrictMode -Version Latest

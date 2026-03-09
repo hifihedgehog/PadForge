@@ -15,7 +15,7 @@ Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern bool 
 Start-Sleep -Milliseconds 500
 
 $root = [System.Windows.Automation.AutomationElement]::FromHandle($proc.MainWindowHandle)
-$out = "C:\Users\sonic\GitHub\PadForge\tools\ui_tree2.txt"
+$out = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\ui_tree2.txt"
 
 $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
 function Dump($el, $depth) {

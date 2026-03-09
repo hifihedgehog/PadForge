@@ -1,5 +1,5 @@
 # Dump all nav items - writes output to file (for elevated execution)
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\popup_test5.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\popup_test5.txt"
 
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes

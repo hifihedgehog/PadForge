@@ -2,7 +2,7 @@ Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes
 $ae = [System.Windows.Automation.AutomationElement]
 $tree = [System.Windows.Automation.TreeScope]
-$out = "C:\Users\sonic\GitHub\PadForge\tools\nav_dump.txt"
+$out = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\nav_dump.txt"
 $cond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, "PadForge")
 $win = $ae::RootElement.FindFirst($tree::Children, $cond)
 $lines = @()

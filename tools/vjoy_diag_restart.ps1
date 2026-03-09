@@ -87,5 +87,5 @@ $afterEnable = Count-VJoy
 $out += "AFTER ENABLE: $($afterEnable.Count) vJoy devices"
 $afterEnable.Details | ForEach-Object { $out += $_ }
 
-$out | Out-File 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_diag_restart_log.txt' -Encoding utf8 -Force
+$out | Out-File 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_diag_restart_log.txt' -Encoding utf8 -Force
 $out | ForEach-Object { Write-Host $_ }

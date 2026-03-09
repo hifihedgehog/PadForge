@@ -208,7 +208,7 @@
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <TextBlock Text="&#xEC4F;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                        <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="Windows MIDI Services" Style="{StaticResource CardTitle}"/>
                     </StackPanel>

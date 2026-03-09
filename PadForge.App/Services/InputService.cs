@@ -2742,7 +2742,14 @@ namespace PadForge.Services
         {
             UpdatePadDeviceInfo();
 
-            // Reload PadSettings into ViewModels so deadzones, mappings, etc. follow the device.
+            // Rebuild mapping item collections and reload PadSettings into ViewModels.
+            // RebuildMappings must come first: SwapPadViewModelSlotData swaps OutputType
+            // and VJoyConfig, but when both slots are vJoy (same OutputType), the setter's
+            // SetProperty returns false and RebuildMappings is never called. This leaves
+            // the wrong mapping layout (e.g., custom VJoyBtn0 items in an Xbox 360 preset slot).
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+                _mainVm.Pads[i].RebuildMappings();
+
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];

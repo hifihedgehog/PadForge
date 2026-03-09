@@ -837,6 +837,9 @@ namespace PadForge
             NavView.PreviewMouseLeftButtonUp += OnNavViewDragEnd;
             NavView.PreviewKeyDown += OnNavViewDragKeyDown;
 
+            // ItemInvoked fires even when SelectsOnInvoked=false (used for AddController).
+            NavView.ItemInvoked += NavView_ItemInvoked;
+
             NavView.MenuItems.Clear();
 
             // Dashboard.
@@ -963,7 +966,8 @@ namespace PadForge
                     {
                         Tag = "AddController",
                         Icon = new FontIcon { Glyph = "\uE710" }, // + icon
-                        Content = "Add Controller"
+                        Content = "Add Controller",
+                        SelectsOnInvoked = false
                     };
                     NavView.MenuItems.Add(addItem);
                 }
@@ -2175,6 +2179,12 @@ namespace PadForge
         /// </summary>
         private void SelectNavItemByTag(string tag)
         {
+            if (tag == "Settings")
+            {
+                NavView.SelectedItem = NavView.SettingsItem;
+                return;
+            }
+
             foreach (var mi in NavView.MenuItems)
             {
                 if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
@@ -2182,6 +2192,30 @@ namespace PadForge
                     NavView.SelectedItem = nvi;
                     return;
                 }
+            }
+
+            foreach (var mi in NavView.FooterMenuItems)
+            {
+                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
+                {
+                    NavView.SelectedItem = nvi;
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles clicks on non-selectable NavigationView items (e.g. "Add Controller").
+        /// SelectsOnInvoked=false prevents the blue indicator from moving to these items,
+        /// but ItemInvoked still fires so we can show the popup.
+        /// </summary>
+        private void NavView_ItemInvoked(NavigationView sender,
+            NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.InvokedItemContainer is NavigationViewItem nvi
+                && nvi.Tag?.ToString() == "AddController")
+            {
+                ShowControllerTypePopup(nvi);
             }
         }
 
@@ -2206,37 +2240,6 @@ namespace PadForge
             }
             else
             {
-                return;
-            }
-
-            // "Add Controller" shows a type-selection popup, then creates a slot.
-            // Deferred to next dispatcher frame because CreateSlot() triggers
-            // RebuildControllerSection() which modifies NavView.MenuItems —
-            // doing that synchronously inside SelectionChanged crashes ModernWpf's
-            // internal ItemsRepeater layout.
-            if (tag == "AddController")
-            {
-                // Immediately reselect the previous page so the blue selection
-                // indicator never visually lands on the "Add Controller" item.
-                SelectNavItemByTag(_viewModel.SelectedNavTag ?? "Dashboard");
-
-                // Defer the popup + CreateSlot because they trigger
-                // RebuildControllerSection() which modifies NavView.MenuItems —
-                // doing that synchronously inside SelectionChanged crashes ModernWpf's
-                // internal ItemsRepeater layout.
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    NavigationViewItem addItem = null;
-                    foreach (var mi in NavView.MenuItems)
-                    {
-                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == "AddController")
-                        {
-                            addItem = nvi;
-                            break;
-                        }
-                    }
-                    ShowControllerTypePopup(addItem);
-                }));
                 return;
             }
 

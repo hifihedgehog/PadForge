@@ -2,6 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ModernWpf.Controls;
+using ModernWpf.Controls.Primitives;
 
 namespace PadForge.Views
 {
@@ -29,7 +31,7 @@ namespace PadForge.Views
 
         /// <summary>
         /// Handles CheckBox Checked/Unchecked for HidHide and ConsumeInput toggles.
-        /// Shows a warning dialog for mice and keyboards before enabling.
+        /// Shows a warning flyout for mice and keyboards before enabling.
         /// Propagates the change back through DevicesViewModel → DeviceService → InputService.
         /// </summary>
         private void HidingToggle_Changed(object sender, RoutedEventArgs e)
@@ -71,22 +73,95 @@ namespace PadForge.Views
                         $"Only proceed if you have another input device available.";
                 }
 
-                var result = MessageBox.Show(
-                    $"WARNING\n\nThis will {action}{scope}.\n\n{consequence}",
-                    "Input Blocking Warning",
-                    MessageBoxButton.OKCancel,
-                    MessageBoxImage.Warning);
+                // Immediately revert — only re-check if the user confirms.
+                if (cb != null)
+                    cb.IsChecked = false;
 
-                if (result != MessageBoxResult.OK)
-                {
-                    // Revert the toggle.
-                    if (cb != null)
-                        cb.IsChecked = false;
-                    return;
-                }
+                ShowHidingWarningFlyout(cb, vm, dev,
+                    $"This will {action}{scope}.\n\n{consequence}",
+                    isHidHide);
+                return;
             }
 
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+        }
+
+        /// <summary>
+        /// Shows a ModernWpf Flyout with a warning and Proceed/Cancel buttons.
+        /// Re-checks the toggle and notifies only if the user clicks Proceed.
+        /// </summary>
+        private void ShowHidingWarningFlyout(CheckBox cb, ViewModels.DevicesViewModel vm,
+            ViewModels.DeviceRowViewModel dev, string message, bool isHidHide)
+        {
+            var warningIcon = new TextBlock
+            {
+                Text = "\uE7BA",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 20,
+                Foreground = System.Windows.Media.Brushes.Orange,
+                Margin = new Thickness(0, 0, 0, 8)
+            };
+
+            var messageText = new TextBlock
+            {
+                Text = message,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 320,
+                Margin = new Thickness(0, 0, 0, 12)
+            };
+
+            var proceedBtn = new Button
+            {
+                Content = "Proceed",
+                Margin = new Thickness(0, 0, 8, 0),
+                MinWidth = 80
+            };
+            proceedBtn.SetResourceReference(Control.StyleProperty, "AccentButtonStyle");
+
+            var cancelBtn = new Button
+            {
+                Content = "Cancel",
+                MinWidth = 80
+            };
+
+            var buttonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
+            buttonPanel.Children.Add(proceedBtn);
+            buttonPanel.Children.Add(cancelBtn);
+
+            var content = new StackPanel();
+            content.Children.Add(warningIcon);
+            content.Children.Add(messageText);
+            content.Children.Add(buttonPanel);
+
+            var flyout = new Flyout
+            {
+                Content = content,
+                Placement = FlyoutPlacementMode.Bottom
+            };
+
+            proceedBtn.Click += (s, ev) =>
+            {
+                flyout.Hide();
+                if (cb != null)
+                {
+                    // Temporarily unhook to avoid re-entering HidingToggle_Changed.
+                    cb.Checked -= HidingToggle_Changed;
+                    if (isHidHide)
+                        dev.HidHideEnabled = true;
+                    else
+                        dev.ConsumeInputEnabled = true;
+                    cb.Checked += HidingToggle_Changed;
+                }
+                vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+            };
+
+            cancelBtn.Click += (s, ev) => flyout.Hide();
+
+            flyout.ShowAt(cb ?? (FrameworkElement)this);
         }
 
         private void SubmitMapping_Click(object sender, RoutedEventArgs e)

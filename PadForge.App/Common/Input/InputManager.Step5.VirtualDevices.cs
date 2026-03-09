@@ -251,6 +251,7 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
+                    _slotInitializing[padIndex] = false;
                     VibrationStates[padIndex].LeftMotorSpeed = 0;
                     VibrationStates[padIndex].RightMotorSpeed = 0;
                 }
@@ -359,10 +360,11 @@ namespace PadForge.Common.Input
                                 DestroyVirtualController(i);
                                 _virtualControllers[i] = null;
                             }
-                            // Mark all vJoy slots as initializing during descriptor change
+                            // Mark active vJoy slots as initializing during descriptor change.
+                            // Slots with no device assigned stay yellow ("Awaiting controllers").
                             if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                                 SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
-                                _slotInitializing[i] = true;
+                                _slotInitializing[i] = IsSlotActive(i);
                         }
                         // Use |= to preserve any true state from Pass 1 (non-vJoy slots
                         // that need creation). Previously this unconditional assignment
@@ -414,7 +416,7 @@ namespace PadForge.Common.Input
                             {
                                 if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
                                     SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
-                                    _slotInitializing[i] = true;
+                                    _slotInitializing[i] = IsSlotActive(i);
                             }
                         }
                     }

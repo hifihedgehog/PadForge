@@ -5,7 +5,7 @@
     Must run elevated. PadForge must be running with a slot.
 #>
 
-param([string]$OutputDir = "C:\Users\sonic\GitHub\PadForge.wiki\images")
+param([string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images")
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"

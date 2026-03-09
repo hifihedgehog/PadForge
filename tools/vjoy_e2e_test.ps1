@@ -3,7 +3,7 @@
 
 $padForgeXml = 'C:\PadForge\PadForge.xml'
 $padForgeExe = 'C:\PadForge\PadForge.exe'
-$logFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_e2e_test_log.txt'
+$logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_e2e_test_log.txt'
 
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes

@@ -435,7 +435,7 @@ Log ""
 Log "=== BUILD & DEPLOY ==="
 Stop-PadForge
 
-$publishExe = "C:\Users\sonic\GitHub\PadForge\PadForge.App\bin\Release\net8.0-windows\win-x64\publish\PadForge.exe"
+$publishExe = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\PadForge.exe"
 if (Test-Path $publishExe) {
     Copy-Item $publishExe $deployPath -Force
     Log "Deployed PadForge.exe"

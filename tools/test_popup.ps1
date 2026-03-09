@@ -3,7 +3,7 @@ Add-Type -AssemblyName UIAutomationTypes
 $ae = [System.Windows.Automation.AutomationElement]
 $ct = [System.Windows.Automation.ControlType]
 $tree = [System.Windows.Automation.TreeScope]
-$out = "C:\Users\sonic\GitHub\PadForge\tools\popup_test.txt"
+$out = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\popup_test.txt"
 $lines = @()
 
 $cond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, "PadForge")

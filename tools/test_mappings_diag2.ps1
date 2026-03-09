@@ -1,5 +1,5 @@
 # Diagnostic: use SelectionItemPattern or mouse click for MappingsTab
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\mappings_diag2_log.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\mappings_diag2_log.txt"
 try {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes

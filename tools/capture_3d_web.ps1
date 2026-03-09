@@ -5,7 +5,7 @@
     Strategy: Navigate Dashboard -> Slot to reset to 3D default view.
 #>
 
-param([string]$OutputDir = "C:\Users\sonic\GitHub\PadForge.wiki\images")
+param([string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images")
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"

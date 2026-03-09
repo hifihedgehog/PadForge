@@ -1,4 +1,4 @@
-$out = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_hid_enum.txt'
+$out = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_hid_enum.txt'
 $results = @()
 $results += "=== All HID children of ROOT\HIDCLASS\0000 ==="
 # Get child devices of the vJoy node

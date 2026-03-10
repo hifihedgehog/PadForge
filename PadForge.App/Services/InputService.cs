@@ -388,25 +388,29 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Sets the engine to idle when no virtual controller slots are created,
-        /// and wakes it when at least one slot exists. Idle mode skips the expensive
-        /// input/mapping/output pipeline and sleeps at ~20Hz, reducing CPU to ~0%.
+        /// Sets the engine to idle when no virtual controller slots have active
+        /// mappings, and wakes it when at least one slot does. A slot counts as
+        /// active when it is created, enabled, and has at least one device assigned.
+        /// Idle mode skips the expensive input/mapping/output pipeline and sleeps
+        /// at ~20Hz, reducing CPU to ~0%.
         /// </summary>
         private void UpdateIdleState()
         {
             if (_inputManager == null) return;
 
-            bool anySlotCreated = false;
-            for (int i = 0; i < InputManager.MaxPads; i++)
+            bool anyActive = false;
+            for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
-                if (SettingsManager.SlotCreated[i])
+                if (SettingsManager.SlotCreated[i]
+                    && SettingsManager.SlotEnabled[i]
+                    && _mainVm.Pads[i].MappedDevices.Count > 0)
                 {
-                    anySlotCreated = true;
+                    anyActive = true;
                     break;
                 }
             }
 
-            _inputManager.IsIdle = !anySlotCreated;
+            _inputManager.IsIdle = !anyActive;
         }
 
         // ─────────────────────────────────────────────

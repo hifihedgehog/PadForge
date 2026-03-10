@@ -207,9 +207,11 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = true;
-            _mainVm.Dashboard.EngineStatus = "Running";
             _mainVm.StatusText = "Engine started.";
             _mainVm.RefreshCommands();
+
+            // Enter idle immediately if no slots are created.
+            UpdateIdleState();
         }
 
         /// <summary>
@@ -374,8 +376,37 @@ namespace PadForge.Services
             // ── Sync macro snapshots to engine ──
             SyncMacroSnapshots();
 
+            // ── Auto-idle engine when no slots are created ──
+            UpdateIdleState();
+
             // ── Auto-profile switching (check foreground window) ──
             _foregroundMonitor?.CheckForegroundWindow();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Auto-idle
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Sets the engine to idle when no virtual controller slots are created,
+        /// and wakes it when at least one slot exists. Idle mode skips the expensive
+        /// input/mapping/output pipeline and sleeps at ~20Hz, reducing CPU to ~0%.
+        /// </summary>
+        private void UpdateIdleState()
+        {
+            if (_inputManager == null) return;
+
+            bool anySlotCreated = false;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (SettingsManager.SlotCreated[i])
+                {
+                    anySlotCreated = true;
+                    break;
+                }
+            }
+
+            _inputManager.IsIdle = !anySlotCreated;
         }
 
         // ─────────────────────────────────────────────
@@ -389,7 +420,8 @@ namespace PadForge.Services
         {
             var dash = _mainVm.Dashboard;
 
-            dash.EngineStatus = _inputManager.IsRunning ? "Running" : "Stopped";
+            dash.EngineStatus = !_inputManager.IsRunning ? "Stopped"
+                : _inputManager.IsIdle ? "Idle" : "Running";
             dash.PollingFrequency = _inputManager.CurrentFrequency;
 
             // Snapshot devices under lock to avoid cross-thread collection-modified

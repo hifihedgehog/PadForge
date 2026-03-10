@@ -126,5 +126,39 @@
                 </StackPanel>
             </Border>
         </Grid>
+        <!-- ═══════════════════════════════════════════
+             Shutdown overlay (shown while disposing controllers on close)
+             ═══════════════════════════════════════════ -->
+        <Grid x:Name="ShutdownOverlay"
+              Grid.RowSpan="2"
+              Visibility="Collapsed"
+              Panel.ZIndex="1001">
+            <Border Background="#CC000000"/>
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="8"
+                    Padding="32,24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="300">
+                <StackPanel HorizontalAlignment="Center">
+                    <ui:ProgressRing IsActive="True"
+                                     Width="40" Height="40"
+                                     HorizontalAlignment="Center"
+                                     Margin="0,0,0,16"/>
+                    <TextBlock Text="Closing PadForge..."
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,4"/>
+                    <TextBlock x:Name="ShutdownOverlayText"
+                               Text="Releasing virtual controllers"
+                               FontSize="13"
+                               Opacity="0.7"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

@@ -852,23 +852,35 @@ namespace PadForge.Services
             // previous layout (e.g., switching from Xbox 360 preset to custom vJoy).
             ps.ClearMappingDescriptors();
 
-            // Mapping descriptors.
+            // Mapping descriptors (pos + neg).
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
                 if (target.StartsWith("VJoy", StringComparison.Ordinal))
                 {
                     ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                    if (mapping.NegSettingName != null)
+                        ps.SetVJoyMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                 }
                 else if (target.StartsWith("Midi", StringComparison.Ordinal))
                 {
                     ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                    if (mapping.NegSettingName != null)
+                        ps.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                 }
                 else
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
                     if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
                         prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+
+                    // Write neg descriptor (e.g., LeftThumbAxisYNeg).
+                    if (mapping.NegSettingName != null)
+                    {
+                        var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
+                        if (negProp != null && negProp.PropertyType == typeof(string) && negProp.CanWrite)
+                            negProp.SetValue(ps, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
                 }
             }
         }

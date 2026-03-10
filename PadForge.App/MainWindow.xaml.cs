@@ -775,13 +775,27 @@ namespace PadForge
                 NavView.SelectedItem = NavView.MenuItems[0];
         }
 
-        private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private bool _shutdownComplete;
+
+        private async void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Save settings if dirty.
-            if (_settingsService.IsDirty)
+            if (_shutdownComplete)
+                return; // Second close call after async shutdown — let it through.
+
+            // Cancel the close so the window stays visible during shutdown.
+            e.Cancel = true;
+
+            // Show shutdown overlay and ensure window is visible.
+            ShutdownOverlay.Visibility = System.Windows.Visibility.Visible;
+            if (WindowState == WindowState.Minimized || !IsVisible)
             {
-                _settingsService.Save();
+                Show();
+                WindowState = WindowState.Normal;
             }
+
+            // Save settings synchronously (fast, UI-bound data).
+            if (_settingsService.IsDirty)
+                _settingsService.Save();
 
             // Stop driver status polling.
             _driverStatusTimer?.Stop();
@@ -798,12 +812,17 @@ namespace PadForge
             // Unwire device service.
             _deviceService?.UnwireEvents();
 
-            // Stop engine and dispose services.
-            _recorderService?.Dispose();
-            _inputService?.Dispose();
+            // Run the slow shutdown work (controller disposal, vJoy node removal) off the UI thread.
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                _recorderService?.Dispose();
+                _inputService?.Dispose();
+                Common.Input.MidiVirtualController.Shutdown();
+            });
 
-            // Shut down MIDI Services SDK.
-            Common.Input.MidiVirtualController.Shutdown();
+            // All done — close for real.
+            _shutdownComplete = true;
+            Close();
         }
 
         // ─────────────────────────────────────────────

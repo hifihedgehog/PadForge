@@ -1115,17 +1115,21 @@ namespace PadForge.ViewModels
             if (mapping.HasNegDirection)
                 SelectedConfigTab = 0;
 
+            // Detect Y axis: standard controllers use "AxisY" in the setting name,
+            // custom vJoy uses "Stick N Y" in the label (setting name is "VJoyAxisN").
+            bool isYAxis = mapping.TargetSettingName.Contains("AxisY")
+                        || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal);
+
             if (MapAllRecordingNeg)
             {
                 // Second phase: opposite direction from the first.
                 // X: second=left (neg). Y: second=down (pos, because NegateAxis inverts).
                 // Keep MapAllRecordingNeg=true until MapAllRecordRequested fires, so the
                 // handler can distinguish Y second phase from Y first phase.
-                bool isY = mapping.TargetSettingName.Contains("AxisY");
-                string dirHint = isY ? "(\u2193)" : "(\u2190)";
+                string dirHint = isYAxis ? "(\u2193)" : "(\u2190)";
                 // Y: second phase targets pos descriptor (down in game).
                 // X: second phase targets neg descriptor (left).
-                string target = isY ? mapping.TargetSettingName : mapping.NegSettingName;
+                string target = isYAxis ? mapping.TargetSettingName : mapping.NegSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
                 MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
@@ -1137,13 +1141,11 @@ namespace PadForge.ViewModels
                 {
                     // First phase: natural primary direction.
                     // X: first=right (pos). Y: first=up (neg, because NegateAxis inverts).
-                    bool isY = mapping.TargetSettingName.Contains("AxisY");
-                    suffix = isY ? " (\u2191)" : " (\u2192)";
+                    suffix = isYAxis ? " (\u2191)" : " (\u2192)";
                 }
                 // Y: first phase targets neg descriptor (up in game).
                 // X: first phase targets pos descriptor (right).
-                bool yStartNeg = mapping.HasNegDirection && mapping.TargetSettingName.Contains("AxisY");
-                string target = yStartNeg ? mapping.NegSettingName : mapping.TargetSettingName;
+                string target = (mapping.HasNegDirection && isYAxis) ? mapping.NegSettingName : mapping.TargetSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
                 MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";

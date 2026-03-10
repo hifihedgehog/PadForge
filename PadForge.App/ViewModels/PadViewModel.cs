@@ -544,7 +544,8 @@ namespace PadForge.ViewModels
         private bool _swapMotors;
         public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
 
-        public ICommand ResetForceAllCommand => new RelayCommand(() =>
+        private ICommand _resetForceAllCommand;
+        public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
         {
             ForceOverallGain = 100;
             LeftMotorStrength = 100;
@@ -552,9 +553,12 @@ namespace PadForge.ViewModels
             SwapMotors = false;
         });
 
-        public ICommand ResetOverallGainCommand => new RelayCommand(() => ForceOverallGain = 100);
-        public ICommand ResetLeftMotorCommand => new RelayCommand(() => LeftMotorStrength = 100);
-        public ICommand ResetRightMotorCommand => new RelayCommand(() => RightMotorStrength = 100);
+        private ICommand _resetOverallGainCommand;
+        public ICommand ResetOverallGainCommand => _resetOverallGainCommand ??= new RelayCommand(() => ForceOverallGain = 100);
+        private ICommand _resetLeftMotorCommand;
+        public ICommand ResetLeftMotorCommand => _resetLeftMotorCommand ??= new RelayCommand(() => LeftMotorStrength = 100);
+        private ICommand _resetRightMotorCommand;
+        public ICommand ResetRightMotorCommand => _resetRightMotorCommand ??= new RelayCommand(() => RightMotorStrength = 100);
 
         private double _leftMotorDisplay;
         public double LeftMotorDisplay { get => _leftMotorDisplay; set => SetProperty(ref _leftMotorDisplay, value); }

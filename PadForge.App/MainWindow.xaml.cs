@@ -382,6 +382,7 @@ namespace PadForge
 
                         // Start recording — result will go to SourceDescriptor via normal path.
                         // Neutralize baseline so the previous POV/button press doesn't block detection.
+                        _savedPosDescriptor = null;
                         _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
                         return;
                     }

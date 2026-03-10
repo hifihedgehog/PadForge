@@ -230,9 +230,17 @@ namespace PadForge.Services
                 _uiTimer = null;
             }
 
-            // Unsubscribe from settings/dashboard changes.
+            // Unsubscribe from ViewModel property changes.
             _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
+            _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
+
+            // Unsubscribe from per-pad events.
+            foreach (var padVm in _mainVm.Pads)
+            {
+                padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
+                padVm.MappingsRebuilt -= OnMappingsRebuilt;
+            }
 
             // Dispose foreground monitor.
             if (_foregroundMonitor != null)

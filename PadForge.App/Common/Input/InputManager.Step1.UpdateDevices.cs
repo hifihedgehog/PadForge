@@ -609,9 +609,7 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return null;
 
-            // The keyboard/mouse wrappers store _sdlId = (uint)devicePath.GetHashCode().
-            // We need to match on the device reference since we can't recover the path
-            // from just the handle. Check Device.RawInputHandle for keyboard/mouse wrappers.
+            // Match on the RawInputHandle property stored by keyboard/mouse wrappers.
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 for (int i = 0; i < devices.Count; i++)

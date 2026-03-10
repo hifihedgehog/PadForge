@@ -106,15 +106,19 @@ namespace PadForge.ViewModels
 
         // ── Reset commands ──
 
-        public ICommand ResetAllCommand => new RelayCommand(() =>
+        private ICommand _resetAllCommand;
+        public ICommand ResetAllCommand => _resetAllCommand ??= new RelayCommand(() =>
         {
             DeadZone = 0; MaxRange = 100;
             AntiDeadZone = 0; SensitivityCurve = 0;
         });
 
-        public ICommand ResetRangeCommand => new RelayCommand(() => { DeadZone = 0; MaxRange = 100; });
-        public ICommand ResetAntiDeadZoneCommand => new RelayCommand(() => AntiDeadZone = 0);
-        public ICommand ResetSensitivityCommand => new RelayCommand(() => SensitivityCurve = 0);
+        private ICommand _resetRangeCommand;
+        public ICommand ResetRangeCommand => _resetRangeCommand ??= new RelayCommand(() => { DeadZone = 0; MaxRange = 100; });
+        private ICommand _resetAntiDeadZoneCommand;
+        public ICommand ResetAntiDeadZoneCommand => _resetAntiDeadZoneCommand ??= new RelayCommand(() => AntiDeadZone = 0);
+        private ICommand _resetSensitivityCommand;
+        public ICommand ResetSensitivityCommand => _resetSensitivityCommand ??= new RelayCommand(() => SensitivityCurve = 0);
 
         public TriggerConfigItem(int index, string title, int axisIndex = -1)
         {

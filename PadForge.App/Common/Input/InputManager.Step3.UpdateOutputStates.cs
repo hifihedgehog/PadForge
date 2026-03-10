@@ -171,6 +171,16 @@ namespace PadForge.Common.Input
             gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger);
             gp.RightTrigger = MapToTrigger(state, ps.RightTrigger);
 
+            // ── Thumbsticks ──
+            gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg);
+            gp.ThumbLY = NegateAxis(MapToThumbAxisWithNeg(state, ps.LeftThumbAxisY, ps.LeftThumbAxisYNeg));
+            gp.ThumbRX = MapToThumbAxisWithNeg(state, ps.RightThumbAxisX, ps.RightThumbAxisXNeg);
+            gp.ThumbRY = NegateAxis(MapToThumbAxisWithNeg(state, ps.RightThumbAxisY, ps.RightThumbAxisYNeg));
+
+            // Snapshot raw mapped state (after axis selection, before DZ processing)
+            // for the UI preview so it can apply its own pipeline without double-processing.
+            rawMapped = gp;
+
             // ── Trigger dead zones ──
             gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
                 TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
@@ -182,16 +192,6 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.RightTriggerAntiDeadZone, 0),
                 TryParseDoubleStatic(ps.RightTriggerMaxRange, 100),
                 TryParseDoubleStatic(ps.RightTriggerSensitivityCurve, 0));
-
-            // ── Thumbsticks ──
-            gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg);
-            gp.ThumbLY = NegateAxis(MapToThumbAxisWithNeg(state, ps.LeftThumbAxisY, ps.LeftThumbAxisYNeg));
-            gp.ThumbRX = MapToThumbAxisWithNeg(state, ps.RightThumbAxisX, ps.RightThumbAxisXNeg);
-            gp.ThumbRY = NegateAxis(MapToThumbAxisWithNeg(state, ps.RightThumbAxisY, ps.RightThumbAxisYNeg));
-
-            // Snapshot raw mapped state (after axis selection, before offset/DZ processing)
-            // for the UI preview so it can apply its own pipeline without double-processing.
-            rawMapped = gp;
 
             // ── Center offsets (applied before dead zone) ──
             gp.ThumbLX = ApplyCenterOffset(gp.ThumbLX, TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0));

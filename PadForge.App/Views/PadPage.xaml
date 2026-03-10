@@ -985,7 +985,7 @@
                                         </StackPanel>
 
                                         <!-- Live preview (right) -->
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="212">
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" MinWidth="216">
                                             <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
                                                     Padding="4" Width="212" Height="212"
                                                     ClipToBounds="True">
@@ -1182,8 +1182,8 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Right: sensitivity curve chart (aligned to top with Range row) -->
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,0,0,0">
+                                        <!-- Right: sensitivity curve chart (aligned to top line) -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,-26,0,0">
                                             <TextBlock Text="Sensitivity Curve" Margin="0,0,0,4"
                                                        HorizontalAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"

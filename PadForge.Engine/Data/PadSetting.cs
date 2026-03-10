@@ -164,11 +164,15 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
 
-        /// <summary>Left stick sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
-        [XmlElement] public string LeftThumbSensitivityCurve { get; set; } = "0";
+        /// <summary>Left stick X-axis sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
+        [XmlElement] public string LeftThumbSensitivityCurveX { get; set; } = "0";
+        /// <summary>Left stick Y-axis sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string LeftThumbSensitivityCurveY { get; set; } = "0";
 
-        /// <summary>Right stick sensitivity curve (-100 to 100).</summary>
-        [XmlElement] public string RightThumbSensitivityCurve { get; set; } = "0";
+        /// <summary>Right stick X-axis sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightThumbSensitivityCurveX { get; set; } = "0";
+        /// <summary>Right stick Y-axis sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightThumbSensitivityCurveY { get; set; } = "0";
 
         /// <summary>Left trigger sensitivity curve (-100 to 100).</summary>
         [XmlElement] public string LeftTriggerSensitivityCurve { get; set; } = "0";
@@ -517,8 +521,10 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAntiDeadZoneY); sb.Append('|');
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
-            sb.Append(LeftThumbSensitivityCurve); sb.Append('|');
-            sb.Append(RightThumbSensitivityCurve); sb.Append('|');
+            sb.Append(LeftThumbSensitivityCurveX); sb.Append('|');
+            sb.Append(LeftThumbSensitivityCurveY); sb.Append('|');
+            sb.Append(RightThumbSensitivityCurveX); sb.Append('|');
+            sb.Append(RightThumbSensitivityCurveY); sb.Append('|');
             sb.Append(LeftTriggerSensitivityCurve); sb.Append('|');
             sb.Append(RightTriggerSensitivityCurve); sb.Append('|');
             sb.Append(LeftThumbMaxRangeX); sb.Append('|');
@@ -742,7 +748,8 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),
             nameof(LeftThumbLinear), nameof(RightThumbLinear),
-            nameof(LeftThumbSensitivityCurve), nameof(RightThumbSensitivityCurve),
+            nameof(LeftThumbSensitivityCurveX), nameof(LeftThumbSensitivityCurveY),
+            nameof(RightThumbSensitivityCurveX), nameof(RightThumbSensitivityCurveY),
             nameof(LeftTriggerSensitivityCurve), nameof(RightTriggerSensitivityCurve),
             nameof(LeftThumbMaxRangeX), nameof(LeftThumbMaxRangeY),
             nameof(RightThumbMaxRangeX), nameof(RightThumbMaxRangeY),

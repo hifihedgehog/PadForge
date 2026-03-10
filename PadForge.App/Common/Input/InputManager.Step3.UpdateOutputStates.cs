@@ -208,7 +208,8 @@ namespace PadForge.Common.Input
                 ps.LeftThumbLinear,
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100),
-                TryParseDoubleStatic(ps.LeftThumbSensitivityCurve, 0));
+                TryParseDoubleStatic(ps.LeftThumbSensitivityCurveX, 0),
+                TryParseDoubleStatic(ps.LeftThumbSensitivityCurveY, 0));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
@@ -218,7 +219,8 @@ namespace PadForge.Common.Input
                 ps.RightThumbLinear,
                 TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
-                TryParseDoubleStatic(ps.RightThumbSensitivityCurve, 0));
+                TryParseDoubleStatic(ps.RightThumbSensitivityCurveX, 0),
+                TryParseDoubleStatic(ps.RightThumbSensitivityCurveY, 0));
 
             return gp;
         }
@@ -713,15 +715,16 @@ namespace PadForge.Common.Input
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             double deadZoneX, double deadZoneY,
             string antiDeadZoneXStr, string antiDeadZoneYStr, string linearStr,
-            double maxRangeX = 100, double maxRangeY = 100, double curve = 0)
+            double maxRangeX = 100, double maxRangeY = 100,
+            double curveX = 0, double curveY = 0)
         {
             double antiDeadZoneX = TryParseDoubleStatic(antiDeadZoneXStr, 0);
             double antiDeadZoneY = TryParseDoubleStatic(antiDeadZoneYStr, 0);
             double linear = TryParseDoubleStatic(linearStr, 0);
 
             // Apply dead zone independently to each axis.
-            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curve);
-            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curve);
+            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curveX);
+            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curveY);
         }
 
         /// <summary>
@@ -762,10 +765,10 @@ namespace PadForge.Common.Input
             double remapped = Math.Min((magnitude - dzNorm) / (maxNorm - dzNorm), 1.0);
 
             // Sensitivity curve: shape the response before anti-dead zone and linear.
-            // 0 = linear, +100 = exponential (less sensitive center), -100 = logarithmic.
+            // 0 = linear, +100 = more sensitive center (logarithmic), -100 = less sensitive center (exponential).
             if (curve != 0)
             {
-                double exponent = Math.Pow(4.0, curve / 100.0);
+                double exponent = Math.Pow(4.0, -curve / 100.0);
                 remapped = Math.Pow(remapped, exponent);
             }
 
@@ -812,10 +815,10 @@ namespace PadForge.Common.Input
             // Remap from [dzNorm, maxNorm] to [0, 1].
             double remapped = Math.Clamp((norm - dzNorm) / (maxNorm - dzNorm), 0.0, 1.0);
 
-            // Sensitivity curve.
+            // Sensitivity curve: +100 = more sensitive, -100 = less sensitive.
             if (curve != 0)
             {
-                double exponent = Math.Pow(4.0, curve / 100.0);
+                double exponent = Math.Pow(4.0, -curve / 100.0);
                 remapped = Math.Pow(remapped, exponent);
             }
 
@@ -894,7 +897,7 @@ namespace PadForge.Common.Input
                 int yi = xi + 1;
                 if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
 
-                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100, crv = 0;
+                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100, crvX = 0, crvY = 0;
                 switch (g)
                 {
                     case 0:
@@ -903,7 +906,8 @@ namespace PadForge.Common.Input
                         adzX = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0);
                         adzY = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0);
                         lin = TryParseDoubleStatic(ps.LeftThumbLinear, 0);
-                        crv = TryParseDoubleStatic(ps.LeftThumbSensitivityCurve, 0);
+                        crvX = TryParseDoubleStatic(ps.LeftThumbSensitivityCurveX, 0);
+                        crvY = TryParseDoubleStatic(ps.LeftThumbSensitivityCurveY, 0);
                         cofX = TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0);
                         cofY = TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0);
                         mrX = TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100);
@@ -915,7 +919,8 @@ namespace PadForge.Common.Input
                         adzX = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0);
                         adzY = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneY, 0);
                         lin = TryParseDoubleStatic(ps.RightThumbLinear, 0);
-                        crv = TryParseDoubleStatic(ps.RightThumbSensitivityCurve, 0);
+                        crvX = TryParseDoubleStatic(ps.RightThumbSensitivityCurveX, 0);
+                        crvY = TryParseDoubleStatic(ps.RightThumbSensitivityCurveY, 0);
                         cofX = TryParseDoubleStatic(ps.RightThumbCenterOffsetX, 0);
                         cofY = TryParseDoubleStatic(ps.RightThumbCenterOffsetY, 0);
                         mrX = TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100);
@@ -928,7 +933,8 @@ namespace PadForge.Common.Input
                         adzX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
                         adzY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}AdzY"), 0);
                         lin = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}Linear"), 0);
-                        crv = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}Curve"), 0);
+                        crvX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CurveX"), 0);
+                        crvY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CurveY"), 0);
                         cofX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CofX"), 0);
                         cofY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
                         mrX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
@@ -937,8 +943,8 @@ namespace PadForge.Common.Input
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
                 raw.Axes[yi] = ApplyCenterOffset(raw.Axes[yi], cofY);
-                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin, mrX, crv);
-                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin, mrY, crv);
+                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin, mrX, crvX);
+                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin, mrY, crvY);
             }
 
             for (int g = 0; g < cfg.Triggers; g++)

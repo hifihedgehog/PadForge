@@ -941,39 +941,47 @@ namespace PadForge.Services
             if (ps == null) return;
 
             // Dead zones.
-            padVm.LeftDeadZoneX = TryParseInt(ps.LeftThumbDeadZoneX, 0);
-            padVm.LeftDeadZoneY = TryParseInt(ps.LeftThumbDeadZoneY, 0);
-            padVm.RightDeadZoneX = TryParseInt(ps.RightThumbDeadZoneX, 0);
-            padVm.RightDeadZoneY = TryParseInt(ps.RightThumbDeadZoneY, 0);
+            padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
+            padVm.LeftDeadZoneY = TryParseDouble(ps.LeftThumbDeadZoneY, 0);
+            padVm.RightDeadZoneX = TryParseDouble(ps.RightThumbDeadZoneX, 0);
+            padVm.RightDeadZoneY = TryParseDouble(ps.RightThumbDeadZoneY, 0);
             ps.MigrateAntiDeadZones();
-            padVm.LeftAntiDeadZoneX = TryParseInt(ps.LeftThumbAntiDeadZoneX, 0);
-            padVm.LeftAntiDeadZoneY = TryParseInt(ps.LeftThumbAntiDeadZoneY, 0);
-            padVm.RightAntiDeadZoneX = TryParseInt(ps.RightThumbAntiDeadZoneX, 0);
-            padVm.RightAntiDeadZoneY = TryParseInt(ps.RightThumbAntiDeadZoneY, 0);
-            padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
-            padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
+            padVm.LeftAntiDeadZoneX = TryParseDouble(ps.LeftThumbAntiDeadZoneX, 0);
+            padVm.LeftAntiDeadZoneY = TryParseDouble(ps.LeftThumbAntiDeadZoneY, 0);
+            padVm.RightAntiDeadZoneX = TryParseDouble(ps.RightThumbAntiDeadZoneX, 0);
+            padVm.RightAntiDeadZoneY = TryParseDouble(ps.RightThumbAntiDeadZoneY, 0);
+            padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
+            padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
+
+            // Sensitivity curves.
+            padVm.LeftSensitivityCurveX = TryParseDouble(ps.LeftThumbSensitivityCurveX, 0);
+            padVm.LeftSensitivityCurveY = TryParseDouble(ps.LeftThumbSensitivityCurveY, 0);
+            padVm.RightSensitivityCurveX = TryParseDouble(ps.RightThumbSensitivityCurveX, 0);
+            padVm.RightSensitivityCurveY = TryParseDouble(ps.RightThumbSensitivityCurveY, 0);
+            padVm.LeftTriggerSensitivityCurve = TryParseDouble(ps.LeftTriggerSensitivityCurve, 0);
+            padVm.RightTriggerSensitivityCurve = TryParseDouble(ps.RightTriggerSensitivityCurve, 0);
 
             // Max range.
-            padVm.LeftMaxRangeX = TryParseInt(ps.LeftThumbMaxRangeX, 100);
-            padVm.LeftMaxRangeY = TryParseInt(ps.LeftThumbMaxRangeY, 100);
-            padVm.RightMaxRangeX = TryParseInt(ps.RightThumbMaxRangeX, 100);
-            padVm.RightMaxRangeY = TryParseInt(ps.RightThumbMaxRangeY, 100);
+            padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);
+            padVm.LeftMaxRangeY = TryParseDouble(ps.LeftThumbMaxRangeY, 100);
+            padVm.RightMaxRangeX = TryParseDouble(ps.RightThumbMaxRangeX, 100);
+            padVm.RightMaxRangeY = TryParseDouble(ps.RightThumbMaxRangeY, 100);
 
             // Center offsets.
-            padVm.LeftCenterOffsetX = TryParseInt(ps.LeftThumbCenterOffsetX, 0);
-            padVm.LeftCenterOffsetY = TryParseInt(ps.LeftThumbCenterOffsetY, 0);
-            padVm.RightCenterOffsetX = TryParseInt(ps.RightThumbCenterOffsetX, 0);
-            padVm.RightCenterOffsetY = TryParseInt(ps.RightThumbCenterOffsetY, 0);
+            padVm.LeftCenterOffsetX = TryParseDouble(ps.LeftThumbCenterOffsetX, 0);
+            padVm.LeftCenterOffsetY = TryParseDouble(ps.LeftThumbCenterOffsetY, 0);
+            padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
+            padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
 
             // Trigger dead zones.
-            padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
-            padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
-            padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
-            padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+            padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
+            padVm.RightTriggerDeadZone = TryParseDouble(ps.RightTriggerDeadZone, 0);
+            padVm.LeftTriggerAntiDeadZone = TryParseDouble(ps.LeftTriggerAntiDeadZone, 0);
+            padVm.RightTriggerAntiDeadZone = TryParseDouble(ps.RightTriggerAntiDeadZone, 0);
 
             // Trigger max range.
-            padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
-            padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
+            padVm.LeftTriggerMaxRange = TryParseDouble(ps.LeftTriggerMaxRange, 100);
+            padVm.RightTriggerMaxRange = TryParseDouble(ps.RightTriggerMaxRange, 100);
 
             // Force feedback.
             padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
@@ -1020,6 +1028,13 @@ namespace PadForge.Services
         {
             if (string.IsNullOrEmpty(value)) return defaultValue;
             return int.TryParse(value, out int result) ? result : defaultValue;
+        }
+
+        private static double TryParseDouble(string value, double defaultValue)
+        {
+            if (string.IsNullOrEmpty(value)) return defaultValue;
+            return double.TryParse(value, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
         }
 
         /// <summary>

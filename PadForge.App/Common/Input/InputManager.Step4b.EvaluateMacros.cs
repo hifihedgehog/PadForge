@@ -64,14 +64,18 @@ namespace PadForge.Common.Input
     internal interface IAudioSessionEnumerator
     {
         int GetCount(out int sessionCount);
-        int GetSession(int sessionIndex, out IAudioSessionControl session);
+        int GetSession(int sessionIndex, out IAudioSessionControl2 session);
     }
 
-    [ComImport, Guid("F4B1A599-7266-4319-A8CA-E70ACB11E8CD"),
+    // Flat layout — no inheritance. COM interop with InterfaceIsIUnknown + C#
+    // interface inheritance + 'new' redeclarations doubles vtable entries,
+    // causing method calls to hit wrong slots.
+    [ComImport, Guid("BFB7B31D-7D78-4AF3-B235-E591A62B4B28"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IAudioSessionControl
+    internal interface IAudioSessionControl2
     {
-        int QueryState(out int state);
+        // IAudioSessionControl methods (vtable slots 0–8).
+        int GetState(out int state);
         int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
         int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
         int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string iconPath);
@@ -80,24 +84,8 @@ namespace PadForge.Common.Input
         int SetGroupingParam(ref Guid groupingParam, ref Guid eventContext);
         int RegisterAudioSessionNotification(IntPtr notify);
         int UnregisterAudioSessionNotification(IntPtr notify);
-    }
 
-    [ComImport, Guid("BFB7B31D-7D78-4AF3-B235-E591A62B4B28"),
-     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IAudioSessionControl2 : IAudioSessionControl
-    {
-        // Inherited from IAudioSessionControl (must re-declare for correct vtable layout).
-        new int QueryState(out int state);
-        new int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
-        new int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
-        new int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string iconPath);
-        new int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
-        new int GetGroupingParam(out Guid groupingParam);
-        new int SetGroupingParam(ref Guid groupingParam, ref Guid eventContext);
-        new int RegisterAudioSessionNotification(IntPtr notify);
-        new int UnregisterAudioSessionNotification(IntPtr notify);
-
-        // IAudioSessionControl2 methods.
+        // IAudioSessionControl2 methods (vtable slots 9–13).
         int GetSessionIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string sessionId);
         int GetSessionInstanceIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string sessionInstanceId);
         int GetProcessId(out uint processId);
@@ -141,10 +129,9 @@ namespace PadForge.Common.Input
                 {
                     try
                     {
-                        sessionEnum.GetSession(i, out var ctl);
-                        if (ctl == null) continue;
-                        var ctl2 = (IAudioSessionControl2)ctl;
-                        ctl2.GetProcessId(out uint pid);
+                        sessionEnum.GetSession(i, out var session);
+                        if (session == null) continue;
+                        session.GetProcessId(out uint pid);
                         if (pid == 0) continue;
                         using var proc = System.Diagnostics.Process.GetProcessById((int)pid);
                         if (seen.Add(proc.ProcessName))
@@ -763,13 +750,12 @@ namespace PadForge.Common.Input
 
                 for (int i = 0; i < count; i++)
                 {
-                    sessionEnum.GetSession(i, out var sessionCtl);
-                    if (sessionCtl == null) continue;
+                    sessionEnum.GetSession(i, out var session);
+                    if (session == null) continue;
 
                     try
                     {
-                        var session2 = (IAudioSessionControl2)sessionCtl;
-                        session2.GetProcessId(out uint pid);
+                        session.GetProcessId(out uint pid);
                         if (pid == 0) continue;
 
                         string exeName;
@@ -780,12 +766,11 @@ namespace PadForge.Common.Input
                         }
                         catch { continue; } // Process may have exited.
 
-                        if (!exeName.Equals(targetLower, StringComparison.OrdinalIgnoreCase)
-                            && !exeName.Equals(processName, StringComparison.OrdinalIgnoreCase))
+                        if (!exeName.Equals(processName, StringComparison.OrdinalIgnoreCase))
                             continue;
 
                         // QI for ISimpleAudioVolume from the session control.
-                        var simpleVol = (ISimpleAudioVolume)sessionCtl;
+                        var simpleVol = (ISimpleAudioVolume)session;
                         simpleVol.SetMasterVolume(volume, ref emptyGuid);
                     }
                     catch

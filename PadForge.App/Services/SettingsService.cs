@@ -435,8 +435,10 @@ namespace PadForge.Services
                 padVm.RightAntiDeadZoneY = TryParseDouble(ps.RightThumbAntiDeadZoneY, 0);
                 padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
                 padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
-                padVm.LeftSensitivityCurve = TryParseDouble(ps.LeftThumbSensitivityCurve, 0);
-                padVm.RightSensitivityCurve = TryParseDouble(ps.RightThumbSensitivityCurve, 0);
+                padVm.LeftSensitivityCurveX = TryParseDouble(ps.LeftThumbSensitivityCurveX, 0);
+                padVm.LeftSensitivityCurveY = TryParseDouble(ps.LeftThumbSensitivityCurveY, 0);
+                padVm.RightSensitivityCurveX = TryParseDouble(ps.RightThumbSensitivityCurveX, 0);
+                padVm.RightSensitivityCurveY = TryParseDouble(ps.RightThumbSensitivityCurveY, 0);
                 padVm.LeftTriggerSensitivityCurve = TryParseDouble(ps.LeftTriggerSensitivityCurve, 0);
                 padVm.RightTriggerSensitivityCurve = TryParseDouble(ps.RightTriggerSensitivityCurve, 0);
                 padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);
@@ -469,7 +471,8 @@ namespace PadForge.Services
                     stick.AntiDeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
                     stick.AntiDeadZoneY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzY"), 0);
                     stick.Linear = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}Linear"), 0);
-                    stick.SensitivityCurve = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}Curve"), 0);
+                    stick.SensitivityCurveX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CurveX"), 0);
+                    stick.SensitivityCurveY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CurveY"), 0);
                     stick.CenterOffsetX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofX"), 0);
                     stick.CenterOffsetY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
                     stick.MaxRangeX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
@@ -1004,8 +1007,10 @@ namespace PadForge.Services
                     ps.RightThumbAntiDeadZoneY = padVm.RightAntiDeadZoneY.ToString(ic);
                     ps.LeftThumbLinear = padVm.LeftLinear.ToString(ic);
                     ps.RightThumbLinear = padVm.RightLinear.ToString(ic);
-                    ps.LeftThumbSensitivityCurve = padVm.LeftSensitivityCurve.ToString(ic);
-                    ps.RightThumbSensitivityCurve = padVm.RightSensitivityCurve.ToString(ic);
+                    ps.LeftThumbSensitivityCurveX = padVm.LeftSensitivityCurveX.ToString(ic);
+                    ps.LeftThumbSensitivityCurveY = padVm.LeftSensitivityCurveY.ToString(ic);
+                    ps.RightThumbSensitivityCurveX = padVm.RightSensitivityCurveX.ToString(ic);
+                    ps.RightThumbSensitivityCurveY = padVm.RightSensitivityCurveY.ToString(ic);
                     ps.LeftTriggerSensitivityCurve = padVm.LeftTriggerSensitivityCurve.ToString(ic);
                     ps.RightTriggerSensitivityCurve = padVm.RightTriggerSensitivityCurve.ToString(ic);
                     ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString(ic);
@@ -1035,7 +1040,8 @@ namespace PadForge.Services
                         ps.SetVJoyMapping($"VJoyStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}Linear", stick.Linear.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}Curve", stick.SensitivityCurve.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}CurveX", stick.SensitivityCurveX.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}CurveY", stick.SensitivityCurveY.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}CofX", stick.CenterOffsetX.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}CofY", stick.CenterOffsetY.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}MrX", stick.MaxRangeX.ToString(ic));

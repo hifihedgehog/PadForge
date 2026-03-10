@@ -24,7 +24,7 @@ namespace PadForge.ViewModels
         public double DeadZoneX
         {
             get => _deadZoneX;
-            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(DeadZoneXDigit)); }
+            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneXDigit)); RebuildCurvePoints(); } }
         }
         public int DeadZoneXDigit
         {
@@ -36,7 +36,7 @@ namespace PadForge.ViewModels
         public double DeadZoneY
         {
             get => _deadZoneY;
-            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(DeadZoneYDigit)); }
+            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneYDigit)); RebuildCurvePoints(); } }
         }
         public int DeadZoneYDigit
         {
@@ -75,18 +75,25 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _linear, Math.Clamp(value, 0, 100))) RebuildCurvePoints(); }
         }
 
-        private double _sensitivityCurve;
-        public double SensitivityCurve
+        private double _sensitivityCurveX;
+        public double SensitivityCurveX
         {
-            get => _sensitivityCurve;
-            set { if (SetProperty(ref _sensitivityCurve, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
+            get => _sensitivityCurveX;
+            set { if (SetProperty(ref _sensitivityCurveX, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
+        }
+
+        private double _sensitivityCurveY;
+        public double SensitivityCurveY
+        {
+            get => _sensitivityCurveY;
+            set { if (SetProperty(ref _sensitivityCurveY, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
         }
 
         private double _maxRangeX = 100;
         public double MaxRangeX
         {
             get => _maxRangeX;
-            set { if (SetProperty(ref _maxRangeX, Math.Clamp(value, 1, 100))) OnPropertyChanged(nameof(MaxRangeXDigit)); }
+            set { if (SetProperty(ref _maxRangeX, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeXDigit)); RebuildCurvePoints(); } }
         }
         public int MaxRangeXDigit
         {
@@ -98,7 +105,7 @@ namespace PadForge.ViewModels
         public double MaxRangeY
         {
             get => _maxRangeY;
-            set { if (SetProperty(ref _maxRangeY, Math.Clamp(value, 1, 100))) OnPropertyChanged(nameof(MaxRangeYDigit)); }
+            set { if (SetProperty(ref _maxRangeY, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeYDigit)); RebuildCurvePoints(); } }
         }
         public int MaxRangeYDigit
         {
@@ -182,35 +189,106 @@ namespace PadForge.ViewModels
         /// <summary>Raw axis index for Y in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisYIndex { get; }
 
-        // ── Sensitivity curve chart ──
+        // ── Sensitivity curve charts (one per axis, signed with dead zone) ──
 
-        private PointCollection _curvePoints;
-        public PointCollection CurvePoints
+        private PointCollection _curvePointsX;
+        public PointCollection CurvePointsX
         {
-            get => _curvePoints ??= BuildCurvePoints(_sensitivityCurve);
-            private set => SetProperty(ref _curvePoints, value);
+            get => _curvePointsX ??= BuildSignedCurvePoints(_sensitivityCurveX, _deadZoneX, _maxRangeX);
+            private set => SetProperty(ref _curvePointsX, value);
         }
 
-        private double _liveCurveX;
-        public double LiveCurveX { get => _liveCurveX; set => SetProperty(ref _liveCurveX, value); }
+        private PointCollection _curvePointsY;
+        public PointCollection CurvePointsY
+        {
+            get => _curvePointsY ??= BuildSignedCurvePoints(_sensitivityCurveY, _deadZoneY, _maxRangeY);
+            private set => SetProperty(ref _curvePointsY, value);
+        }
 
-        private double _liveCurveY;
-        public double LiveCurveY { get => _liveCurveY; set => SetProperty(ref _liveCurveY, value); }
+        private double _curveXDotLeft;
+        public double CurveXDotLeft { get => _curveXDotLeft; set => SetProperty(ref _curveXDotLeft, value); }
+        private double _curveXDotTop;
+        public double CurveXDotTop { get => _curveXDotTop; set => SetProperty(ref _curveXDotTop, value); }
+
+        private double _curveYDotLeft;
+        public double CurveYDotLeft { get => _curveYDotLeft; set => SetProperty(ref _curveYDotLeft, value); }
+        private double _curveYDotTop;
+        public double CurveYDotTop { get => _curveYDotTop; set => SetProperty(ref _curveYDotTop, value); }
 
         public void RebuildCurvePoints()
         {
-            CurvePoints = BuildCurvePoints(_sensitivityCurve);
+            CurvePointsX = BuildSignedCurvePoints(_sensitivityCurveX, _deadZoneX, _maxRangeX);
+            CurvePointsY = BuildSignedCurvePoints(_sensitivityCurveY, _deadZoneY, _maxRangeY);
         }
 
-        internal static PointCollection BuildCurvePoints(double curve, int chartSize = 120, int sampleCount = 64)
+        /// <summary>
+        /// Builds a signed response curve (-1..+1 → -1..+1) showing dead zone flattening.
+        /// The curve is an odd function (antisymmetric about the origin).
+        /// </summary>
+        internal static PointCollection BuildSignedCurvePoints(double curve, double deadZone, double maxRange, int chartSize = 96, int sampleCount = 80)
         {
-            double exponent = Math.Pow(4.0, curve / 100.0);
+            double exponent = Math.Pow(4.0, -curve / 100.0);
+            double dzNorm = deadZone / 100.0;
+            double mrNorm = maxRange / 100.0;
+            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
+            double half = chartSize / 2.0;
+
             var pts = new PointCollection(sampleCount + 1);
             for (int i = 0; i <= sampleCount; i++)
             {
-                double t = i / (double)sampleCount;
-                double y = Math.Pow(t, exponent);
-                pts.Add(new Point(t * chartSize, (1.0 - y) * chartSize));
+                double input = (i / (double)sampleCount) * 2.0 - 1.0; // -1 to +1
+                double sign = Math.Sign(input);
+                double mag = Math.Abs(input);
+
+                double output;
+                if (mag < dzNorm)
+                {
+                    output = 0;
+                }
+                else
+                {
+                    double remapped = Math.Min((mag - dzNorm) / (mrNorm - dzNorm), 1.0);
+                    if (curve != 0)
+                        remapped = Math.Pow(remapped, exponent);
+                    output = sign * remapped;
+                }
+
+                // Map: input -1..+1 → x 0..chartSize, output -1..+1 → y chartSize..0
+                pts.Add(new Point(
+                    (input + 1.0) * half,
+                    (1.0 - output) * half));
+            }
+            return pts;
+        }
+
+        /// <summary>
+        /// Builds a 0..1 → 0..1 curve for triggers (unsigned, dead zone flattened).
+        /// </summary>
+        internal static PointCollection BuildTriggerCurvePoints(double curve, double deadZone, double maxRange, int chartSize = 120, int sampleCount = 64)
+        {
+            double exponent = Math.Pow(4.0, -curve / 100.0);
+            double dzNorm = deadZone / 100.0;
+            double mrNorm = maxRange / 100.0;
+            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
+
+            var pts = new PointCollection(sampleCount + 1);
+            for (int i = 0; i <= sampleCount; i++)
+            {
+                double t = i / (double)sampleCount; // 0..1
+                double output;
+                if (t < dzNorm)
+                {
+                    output = 0;
+                }
+                else
+                {
+                    double remapped = Math.Min((t - dzNorm) / (mrNorm - dzNorm), 1.0);
+                    if (curve != 0)
+                        output = Math.Pow(remapped, exponent);
+                    else
+                        output = remapped;
+                }
+                pts.Add(new Point(t * chartSize, (1.0 - output) * chartSize));
             }
             return pts;
         }
@@ -218,7 +296,7 @@ namespace PadForge.ViewModels
         internal static double ApplyCurve(double magnitude, double curve)
         {
             if (curve == 0) return magnitude;
-            double exponent = Math.Pow(4.0, curve / 100.0);
+            double exponent = Math.Pow(4.0, -curve / 100.0);
             return Math.Pow(Math.Clamp(magnitude, 0, 1), exponent);
         }
 

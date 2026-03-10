@@ -370,7 +370,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Creates the next available virtual controller slot with the specified type.
-        /// Returns the slot index (0–3) or -1 if all slots are taken.
+        /// Returns the slot index (0–15) or -1 if all slots are taken.
         /// </summary>
         public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox360)
         {

@@ -227,7 +227,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Per-slot macro snapshot arrays. Set by InputService at 30Hz.
-        /// Each element is a snapshot of MacroItem[] for that slot (0–3).
+        /// Each element is a snapshot of MacroItem[] for that slot (0–15).
         /// Null means no macros for that slot.
         /// </summary>
         public MacroItem[][] MacroSnapshots { get; } = new MacroItem[MaxPads][];

@@ -199,7 +199,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Command to assign the selected device to a pad slot.
-        /// Parameter is the slot index (0–3).
+        /// Parameter is the slot index (0–15).
         /// </summary>
         public RelayCommand<int> AssignToSlotCommand =>
             _assignToSlotCommand ??= new RelayCommand<int>(
@@ -387,7 +387,7 @@ namespace PadForge.ViewModels
     public class SlotButtonItem : ObservableObject
     {
         private int _padIndex;
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex
         {
             get => _padIndex;

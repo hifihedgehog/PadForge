@@ -11,7 +11,7 @@ using PadForge.Engine;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// ViewModel for a single virtual controller slot (one of 4 pads).
+    /// ViewModel for a single virtual controller slot (one of 16 pads).
     /// Features:
     ///   #1 — Multi-device selection: SelectedMappedDevice picks which device to configure
     ///   #2 — Expanded dead zones: per-axis X/Y, trigger dead zones, anti-dead zone, linear

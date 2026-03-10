@@ -114,6 +114,50 @@ namespace PadForge.Common.Input
         int SetMute(bool mute, ref Guid eventContext);
         int GetMute(out bool mute);
     }
+
+    /// <summary>
+    /// Enumerates process names that currently have active audio sessions
+    /// on the default render device. Used by the macro editor UI to
+    /// populate the AppVolume process name suggestions.
+    /// </summary>
+    internal static class AudioSessionHelper
+    {
+        public static List<string> GetActiveAudioProcessNames()
+        {
+            var names = new List<string>();
+            try
+            {
+                var enumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorClass();
+                enumerator.GetDefaultAudioEndpoint(0, 1, out var device);
+                var iid = typeof(IAudioSessionManager2).GUID;
+                device.Activate(ref iid, 1, IntPtr.Zero, out var iface);
+                var mgr = (IAudioSessionManager2)iface;
+
+                mgr.GetSessionEnumerator(out var sessionEnum);
+                sessionEnum.GetCount(out int count);
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                for (int i = 0; i < count; i++)
+                {
+                    try
+                    {
+                        sessionEnum.GetSession(i, out var ctl);
+                        if (ctl == null) continue;
+                        var ctl2 = (IAudioSessionControl2)ctl;
+                        ctl2.GetProcessId(out uint pid);
+                        if (pid == 0) continue;
+                        using var proc = System.Diagnostics.Process.GetProcessById((int)pid);
+                        if (seen.Add(proc.ProcessName))
+                            names.Add(proc.ProcessName);
+                    }
+                    catch { }
+                }
+            }
+            catch { }
+            names.Sort(StringComparer.OrdinalIgnoreCase);
+            return names;
+        }
+    }
 }
 
 namespace PadForge.Common.Input

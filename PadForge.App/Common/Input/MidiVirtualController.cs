@@ -231,6 +231,8 @@ namespace PadForge.Common.Input
 
         private void SendCC(int ccNumber, byte value)
         {
+            var conn = _connection;
+            if (conn == null) return;
             var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
                 0,
                 new MidiGroup(0),
@@ -238,11 +240,13 @@ namespace PadForge.Common.Input
                 new MidiChannel((byte)_channel),
                 (byte)ccNumber,
                 value);
-            _connection.SendSingleMessagePacket(msg);
+            conn.SendSingleMessagePacket(msg);
         }
 
         private void SendNoteOn(int note, byte velocity)
         {
+            var conn = _connection;
+            if (conn == null) return;
             var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
                 0,
                 new MidiGroup(0),
@@ -250,11 +254,13 @@ namespace PadForge.Common.Input
                 new MidiChannel((byte)_channel),
                 (byte)note,
                 velocity);
-            _connection.SendSingleMessagePacket(msg);
+            conn.SendSingleMessagePacket(msg);
         }
 
         private void SendNoteOff(int note)
         {
+            var conn = _connection;
+            if (conn == null) return;
             var msg = MidiMessageBuilder.BuildMidi1ChannelVoiceMessage(
                 0,
                 new MidiGroup(0),
@@ -262,7 +268,7 @@ namespace PadForge.Common.Input
                 new MidiChannel((byte)_channel),
                 (byte)note,
                 0);
-            _connection.SendSingleMessagePacket(msg);
+            conn.SendSingleMessagePacket(msg);
         }
 
         // ─────────────────────────────────────────────

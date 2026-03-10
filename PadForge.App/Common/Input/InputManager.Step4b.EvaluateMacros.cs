@@ -64,7 +64,7 @@ namespace PadForge.Common.Input
     internal interface IAudioSessionEnumerator
     {
         int GetCount(out int sessionCount);
-        int GetSession(int sessionIndex, out IAudioSessionControl2 session);
+        int GetSession(int sessionIndex, out IntPtr session);
     }
 
     // Flat layout — no inheritance. COM interop with InterfaceIsIUnknown + C#
@@ -110,6 +110,61 @@ namespace PadForge.Common.Input
     /// </summary>
     internal static class AudioSessionHelper
     {
+        // Direct vtable call delegate for IAudioSessionControl2::GetProcessId.
+        // Slot 14 = IUnknown(3) + IAudioSessionControl(9) + GetSessionIdentifier(1) + GetSessionInstanceIdentifier(1) = 14.
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int GetProcessIdFn(IntPtr @this, out uint processId);
+
+        // Direct vtable call delegate for ISimpleAudioVolume::SetMasterVolume.
+        // Slot 3 = IUnknown(3) + SetMasterVolume(0) = slot 3.
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int SetMasterVolumeFn(IntPtr @this, float level, ref Guid eventContext);
+
+        private static readonly Guid IID_SimpleAudioVolume = new("87CE5498-68D6-44E5-9215-6DA47EF883D8");
+
+        /// <summary>
+        /// Calls GetProcessId directly through the COM vtable at slot 14,
+        /// bypassing QueryInterface which fails from elevated processes.
+        /// </summary>
+        internal static bool TryGetSessionProcessId(IntPtr pSession, out uint pid)
+        {
+            pid = 0;
+            try
+            {
+                IntPtr vtable = Marshal.ReadIntPtr(pSession);
+                IntPtr fnPtr = Marshal.ReadIntPtr(vtable, 14 * IntPtr.Size);
+                var fn = Marshal.GetDelegateForFunctionPointer<GetProcessIdFn>(fnPtr);
+                int hr = fn(pSession, out pid);
+                return hr == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sets volume on a session via direct vtable call to ISimpleAudioVolume::SetMasterVolume,
+        /// obtained through QI for ISimpleAudioVolume (which IS supported from elevated processes).
+        /// </summary>
+        internal static bool TrySetSessionVolume(IntPtr pSession, float volume)
+        {
+            var iidVol = IID_SimpleAudioVolume;
+            int hr = Marshal.QueryInterface(pSession, ref iidVol, out IntPtr pVol);
+            if (hr != 0) return false;
+            try
+            {
+                IntPtr vtable = Marshal.ReadIntPtr(pVol);
+                IntPtr fnPtr = Marshal.ReadIntPtr(vtable, 3 * IntPtr.Size); // slot 3 = SetMasterVolume
+                var fn = Marshal.GetDelegateForFunctionPointer<SetMasterVolumeFn>(fnPtr);
+                var empty = Guid.Empty;
+                fn(pVol, volume, ref empty);
+                return true;
+            }
+            catch { return false; }
+            finally { Marshal.Release(pVol); }
+        }
+
         public static List<string> GetActiveAudioProcessNames()
         {
             var names = new List<string>();
@@ -127,17 +182,25 @@ namespace PadForge.Common.Input
 
                 for (int i = 0; i < count; i++)
                 {
+                    IntPtr pSession = IntPtr.Zero;
                     try
                     {
-                        sessionEnum.GetSession(i, out var session);
-                        if (session == null) continue;
-                        session.GetProcessId(out uint pid);
-                        if (pid == 0) continue;
+                        sessionEnum.GetSession(i, out pSession);
+                        if (pSession == IntPtr.Zero) continue;
+
+                        if (!TryGetSessionProcessId(pSession, out uint pid) || pid == 0)
+                            continue;
+
                         using var proc = System.Diagnostics.Process.GetProcessById((int)pid);
                         if (seen.Add(proc.ProcessName))
                             names.Add(proc.ProcessName);
                     }
                     catch { }
+                    finally
+                    {
+                        if (pSession != IntPtr.Zero)
+                            Marshal.Release(pSession);
+                    }
                 }
             }
             catch { }
@@ -383,6 +446,11 @@ namespace PadForge.Common.Input
                     // Continuously read the source axis and set system volume.
                     // Does NOT advance — stays on this action while the macro is executing.
                     SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget));
+                    break;
+
+                case MacroActionType.AppVolume:
+                    if (!string.IsNullOrEmpty(action.ProcessName))
+                        SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget), action.ProcessName);
                     break;
             }
         }
@@ -745,18 +813,17 @@ namespace PadForge.Common.Input
                 _audioSessionManager.GetSessionEnumerator(out var sessionEnum);
                 sessionEnum.GetCount(out int count);
 
-                var emptyGuid = Guid.Empty;
-                string targetLower = processName.ToLowerInvariant();
-
                 for (int i = 0; i < count; i++)
                 {
-                    sessionEnum.GetSession(i, out var session);
-                    if (session == null) continue;
-
+                    IntPtr pSession = IntPtr.Zero;
                     try
                     {
-                        session.GetProcessId(out uint pid);
-                        if (pid == 0) continue;
+                        sessionEnum.GetSession(i, out pSession);
+                        if (pSession == IntPtr.Zero) continue;
+
+                        // Direct vtable call — QI for IAudioSessionControl2 fails from elevated processes.
+                        if (!AudioSessionHelper.TryGetSessionProcessId(pSession, out uint pid) || pid == 0)
+                            continue;
 
                         string exeName;
                         try
@@ -764,18 +831,18 @@ namespace PadForge.Common.Input
                             using var proc = Process.GetProcessById((int)pid);
                             exeName = proc.ProcessName;
                         }
-                        catch { continue; } // Process may have exited.
+                        catch { continue; }
 
                         if (!exeName.Equals(processName, StringComparison.OrdinalIgnoreCase))
                             continue;
 
-                        // QI for ISimpleAudioVolume from the session control.
-                        var simpleVol = (ISimpleAudioVolume)session;
-                        simpleVol.SetMasterVolume(volume, ref emptyGuid);
+                        AudioSessionHelper.TrySetSessionVolume(pSession, volume);
                     }
-                    catch
+                    catch { }
+                    finally
                     {
-                        // Individual session failure — skip, try others.
+                        if (pSession != IntPtr.Zero)
+                            Marshal.Release(pSession);
                     }
                 }
             }

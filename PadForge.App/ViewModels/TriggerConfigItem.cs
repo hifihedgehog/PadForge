@@ -1,3 +1,5 @@
+using System.Windows;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
@@ -50,6 +52,33 @@ namespace PadForge.ViewModels
         {
             get => PctToDigit(_antiDeadZone);
             set => AntiDeadZone = DigitToPct(value);
+        }
+
+        private double _sensitivityCurve;
+        public double SensitivityCurve
+        {
+            get => _sensitivityCurve;
+            set { if (SetProperty(ref _sensitivityCurve, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
+        }
+
+        // ── Sensitivity curve chart ──
+
+        private PointCollection _curvePoints;
+        public PointCollection CurvePoints
+        {
+            get => _curvePoints ??= StickConfigItem.BuildCurvePoints(_sensitivityCurve);
+            private set => SetProperty(ref _curvePoints, value);
+        }
+
+        private double _liveCurveX;
+        public double LiveCurveX { get => _liveCurveX; set => SetProperty(ref _liveCurveX, value); }
+
+        private double _liveCurveY;
+        public double LiveCurveY { get => _liveCurveY; set => SetProperty(ref _liveCurveY, value); }
+
+        public void RebuildCurvePoints()
+        {
+            CurvePoints = StickConfigItem.BuildCurvePoints(_sensitivityCurve);
         }
 
         // Live preview value (0.0-1.0 normalized)

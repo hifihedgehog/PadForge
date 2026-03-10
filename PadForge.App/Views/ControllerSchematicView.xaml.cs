@@ -576,9 +576,8 @@ namespace PadForge.Views
             if (string.IsNullOrEmpty(target))
                 return;
 
-            // Start flash timer (blink at ~3Hz)
             _flashOn = true;
-            _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(170) };
+            _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
             _flashTimer.Tick += (s, e) =>
             {
                 _flashOn = !_flashOn;

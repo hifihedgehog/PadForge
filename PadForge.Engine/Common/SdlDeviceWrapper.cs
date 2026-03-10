@@ -547,31 +547,6 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Builds a product GUID in the classic PIDVID format that DirectInput uses
-        /// for XInput-over-DirectInput wrapper devices. Only used when creating
-        /// UserDevice records for native XInput controllers (slots 0–3).
-        /// </summary>
-        public static Guid BuildXInputProductGuid(ushort vid, ushort pid)
-        {
-            byte[] bytes = new byte[16];
-
-            bytes[0] = (byte)(vid & 0xFF);
-            bytes[1] = (byte)((vid >> 8) & 0xFF);
-            bytes[2] = (byte)(pid & 0xFF);
-            bytes[3] = (byte)((pid >> 8) & 0xFF);
-
-            // ASCII "PIDVID" at bytes 10-15.
-            bytes[10] = 0x50; // P
-            bytes[11] = 0x49; // I
-            bytes[12] = 0x44; // D
-            bytes[13] = 0x56; // V
-            bytes[14] = 0x49; // I
-            bytes[15] = 0x44; // D
-
-            return new Guid(bytes);
-        }
-
-        /// <summary>
         /// Builds a deterministic instance GUID for a physical device.
         /// Priority: VID+PID+Serial (stable across reboots for BT devices),
         /// then device path, then VID+PID+SDL instance ID as last resort.

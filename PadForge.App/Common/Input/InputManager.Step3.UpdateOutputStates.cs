@@ -808,13 +808,6 @@ namespace PadForge.Common.Input
             return (ushort)Math.Clamp((int)(output * 65535.0), 0, 65535);
         }
 
-        private static int TryParseIntStatic(string value, int defaultValue)
-        {
-            if (string.IsNullOrEmpty(value))
-                return defaultValue;
-            return int.TryParse(value, out int result) ? result : defaultValue;
-        }
-
         private static double TryParseDoubleStatic(string value, double defaultValue)
         {
             if (string.IsNullOrEmpty(value))

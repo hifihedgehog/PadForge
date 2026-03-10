@@ -43,6 +43,9 @@
                                         <DataTrigger Binding="{Binding EngineStatus}" Value="Running">
                                             <Setter Property="Foreground" Value="#FF4CAF50"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding EngineStatus}" Value="Idle">
+                                            <Setter Property="Foreground" Value="#FFFFC107"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>

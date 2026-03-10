@@ -22,7 +22,7 @@ namespace PadForge.ViewModels
         public double DeadZone
         {
             get => _deadZone;
-            set { if (SetProperty(ref _deadZone, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(DeadZoneDigit)); }
+            set { if (SetProperty(ref _deadZone, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneDigit)); RebuildCurvePoints(); } }
         }
         public int DeadZoneDigit
         {
@@ -34,7 +34,7 @@ namespace PadForge.ViewModels
         public double MaxRange
         {
             get => _maxRange;
-            set { if (SetProperty(ref _maxRange, Math.Clamp(value, 1, 100))) OnPropertyChanged(nameof(MaxRangeDigit)); }
+            set { if (SetProperty(ref _maxRange, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeDigit)); RebuildCurvePoints(); } }
         }
         public int MaxRangeDigit
         {
@@ -66,7 +66,7 @@ namespace PadForge.ViewModels
         private PointCollection _curvePoints;
         public PointCollection CurvePoints
         {
-            get => _curvePoints ??= StickConfigItem.BuildCurvePoints(_sensitivityCurve);
+            get => _curvePoints ??= StickConfigItem.BuildTriggerCurvePoints(_sensitivityCurve, _deadZone, _maxRange);
             private set => SetProperty(ref _curvePoints, value);
         }
 
@@ -78,7 +78,7 @@ namespace PadForge.ViewModels
 
         public void RebuildCurvePoints()
         {
-            CurvePoints = StickConfigItem.BuildCurvePoints(_sensitivityCurve);
+            CurvePoints = StickConfigItem.BuildTriggerCurvePoints(_sensitivityCurve, _deadZone, _maxRange);
         }
 
         // Live preview value (0.0-1.0 normalized)

@@ -1,6 +1,8 @@
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace PadForge.ViewModels
 {
@@ -101,6 +103,18 @@ namespace PadForge.ViewModels
 
         /// <summary>Raw axis index in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisIndex { get; }
+
+        // ── Reset commands ──
+
+        public ICommand ResetAllCommand => new RelayCommand(() =>
+        {
+            DeadZone = 0; MaxRange = 100;
+            AntiDeadZone = 0; SensitivityCurve = 0;
+        });
+
+        public ICommand ResetRangeCommand => new RelayCommand(() => { DeadZone = 0; MaxRange = 100; });
+        public ICommand ResetAntiDeadZoneCommand => new RelayCommand(() => AntiDeadZone = 0);
+        public ICommand ResetSensitivityCommand => new RelayCommand(() => SensitivityCurve = 0);
 
         public TriggerConfigItem(int index, string title, int axisIndex = -1)
         {

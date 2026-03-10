@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace PadForge.ViewModels
 {
@@ -307,6 +309,25 @@ namespace PadForge.ViewModels
             AxisXIndex = axisXIndex;
             AxisYIndex = axisYIndex;
         }
+
+        // ── Reset commands ──
+
+        public ICommand ResetAllCommand => new RelayCommand(() =>
+        {
+            CenterOffsetX = 0; CenterOffsetY = 0;
+            DeadZoneX = 0; DeadZoneY = 0;
+            AntiDeadZoneX = 0; AntiDeadZoneY = 0;
+            Linear = 0;
+            SensitivityCurveX = 0; SensitivityCurveY = 0;
+            MaxRangeX = 100; MaxRangeY = 100;
+        });
+
+        public ICommand ResetCenterOffsetCommand => new RelayCommand(() => { CenterOffsetX = 0; CenterOffsetY = 0; });
+        public ICommand ResetDeadZoneCommand => new RelayCommand(() => { DeadZoneX = 0; DeadZoneY = 0; });
+        public ICommand ResetAntiDeadZoneCommand => new RelayCommand(() => { AntiDeadZoneX = 0; AntiDeadZoneY = 0; });
+        public ICommand ResetLinearCommand => new RelayCommand(() => Linear = 0);
+        public ICommand ResetSensitivityCommand => new RelayCommand(() => { SensitivityCurveX = 0; SensitivityCurveY = 0; });
+        public ICommand ResetMaxRangeCommand => new RelayCommand(() => { MaxRangeX = 100; MaxRangeY = 100; });
 
         /// <summary>
         /// Starts center calibration by sampling RawX/RawY over ~0.5s (15 frames)

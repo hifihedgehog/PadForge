@@ -1353,14 +1353,16 @@ namespace PadForge.ViewModels
             }
             if (TriggerConfigs.Count > 0)
             {
-                TriggerConfigs[0].LiveValue = DeviceLeftTrigger;
-                TriggerConfigs[0].RawValue = gp.LeftTrigger;
+                var processed = ProcessTriggerForPreview(DeviceLeftTrigger, TriggerConfigs[0]);
+                TriggerConfigs[0].LiveValue = processed;
+                TriggerConfigs[0].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
                 UpdateTriggerCurveDot(TriggerConfigs[0], DeviceLeftTrigger);
             }
             if (TriggerConfigs.Count > 1)
             {
-                TriggerConfigs[1].LiveValue = DeviceRightTrigger;
-                TriggerConfigs[1].RawValue = gp.RightTrigger;
+                var processed = ProcessTriggerForPreview(DeviceRightTrigger, TriggerConfigs[1]);
+                TriggerConfigs[1].LiveValue = processed;
+                TriggerConfigs[1].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
                 UpdateTriggerCurveDot(TriggerConfigs[1], DeviceRightTrigger);
             }
         }
@@ -1429,19 +1431,37 @@ namespace PadForge.ViewModels
             const double dotHalf = 3.5;
             double half = chartSize / 2.0;
 
-            // X axis chart: signed input → signed output
+            // X axis: match BuildSignedCurvePoints logic (dead zone + max range + curve)
             double signedX = (normX - 0.5) * 2.0;
             double signX = Math.Sign(signedX);
             double magX = Math.Abs(signedX);
-            double outX = signX * StickConfigItem.ApplyCurve(magX, stick.SensitivityCurveX);
+            double dzX = stick.DeadZoneX / 100.0;
+            double mrX = stick.MaxRangeX / 100.0;
+            if (mrX <= dzX) mrX = dzX + 0.01;
+            double outX;
+            if (magX < dzX) { outX = 0; }
+            else
+            {
+                double remapped = Math.Min((magX - dzX) / (mrX - dzX), 1.0);
+                outX = signX * StickConfigItem.ApplyCurve(remapped, stick.SensitivityCurveX);
+            }
             stick.CurveXDotLeft = (signedX + 1.0) * half - dotHalf;
             stick.CurveXDotTop = (1.0 - outX) * half - dotHalf;
 
-            // Y axis chart: signed input → signed output
+            // Y axis: same logic with Y parameters
             double signedY = (normY - 0.5) * 2.0;
             double signY = Math.Sign(signedY);
             double magY = Math.Abs(signedY);
-            double outY = signY * StickConfigItem.ApplyCurve(magY, stick.SensitivityCurveY);
+            double dzY = stick.DeadZoneY / 100.0;
+            double mrY = stick.MaxRangeY / 100.0;
+            if (mrY <= dzY) mrY = dzY + 0.01;
+            double outY;
+            if (magY < dzY) { outY = 0; }
+            else
+            {
+                double remapped = Math.Min((magY - dzY) / (mrY - dzY), 1.0);
+                outY = signY * StickConfigItem.ApplyCurve(remapped, stick.SensitivityCurveY);
+            }
             stick.CurveYDotLeft = (signedY + 1.0) * half - dotHalf;
             stick.CurveYDotTop = (1.0 - outY) * half - dotHalf;
         }
@@ -1451,9 +1471,42 @@ namespace PadForge.ViewModels
             const int chartSize = 120;
             const double dotHalf = 4;
             double t = Math.Clamp(inputNorm, 0, 1);
-            double y = StickConfigItem.ApplyCurve(t, trig.SensitivityCurve);
+            double dz = trig.DeadZone / 100.0;
+            double mr = trig.MaxRange / 100.0;
+            if (mr <= dz) mr = dz + 0.01;
+            double y;
+            if (t < dz) { y = 0; }
+            else
+            {
+                double remapped = Math.Min((t - dz) / (mr - dz), 1.0);
+                y = StickConfigItem.ApplyCurve(remapped, trig.SensitivityCurve);
+            }
             trig.LiveCurveX = t * chartSize - dotHalf;
             trig.LiveCurveY = (1.0 - y) * chartSize - dotHalf;
+        }
+
+        /// <summary>
+        /// Applies the trigger processing pipeline (dead zone, max range, curve, anti-dead zone)
+        /// to a raw 0–1 trigger value for preview display. Mirrors Step3's ApplyTriggerDeadZone.
+        /// </summary>
+        private static double ProcessTriggerForPreview(double rawNorm, TriggerConfigItem trig)
+        {
+            double t = Math.Clamp(rawNorm, 0, 1);
+            double dz = trig.DeadZone / 100.0;
+            double mr = trig.MaxRange / 100.0;
+            if (mr <= dz) mr = dz + 0.01;
+
+            if (t < dz) return 0;
+
+            double remapped = Math.Min((t - dz) / (mr - dz), 1.0);
+            double output = StickConfigItem.ApplyCurve(remapped, trig.SensitivityCurve);
+
+            // Anti-dead zone: offset the output minimum
+            double adz = trig.AntiDeadZone / 100.0;
+            if (adz > 0)
+                output = adz + output * (1.0 - adz);
+
+            return Math.Clamp(output, 0, 1);
         }
 
         // ═══════════════════════════════════════════════
@@ -1507,9 +1560,11 @@ namespace PadForge.ViewModels
                 if (trig.AxisIndex >= 0 && raw.Axes != null && trig.AxisIndex < raw.Axes.Length)
                 {
                     // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
-                    trig.LiveValue = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
-                    trig.RawValue = (ushort)Math.Clamp((int)(trig.LiveValue * 65535), 0, 65535);
-                    UpdateTriggerCurveDot(trig, trig.LiveValue);
+                    double rawNorm = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
+                    var processed = ProcessTriggerForPreview(rawNorm, trig);
+                    trig.LiveValue = processed;
+                    trig.RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
+                    UpdateTriggerCurveDot(trig, rawNorm);
                 }
             }
 

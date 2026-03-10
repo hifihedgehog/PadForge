@@ -48,6 +48,7 @@ namespace PadForge.Common.Input
 
         private Thread _pollingThread;
         private volatile bool _running;
+        private volatile bool _idle;
         private bool _sdlInitialized;
         private bool _disposed;
 
@@ -119,6 +120,18 @@ namespace PadForge.Common.Input
         /// Whether the manager is currently running the polling loop.
         /// </summary>
         public bool IsRunning => _running;
+
+        /// <summary>
+        /// When true, the polling loop skips the expensive pipeline steps and sleeps
+        /// at a low rate (~20Hz) to minimize CPU usage. Device enumeration continues
+        /// at a reduced rate so new controllers still appear on the Devices page.
+        /// Set by InputService when no virtual controller slots are created.
+        /// </summary>
+        public bool IsIdle
+        {
+            get => _idle;
+            set => _idle = value;
+        }
 
         // ─────────────────────────────────────────────
         //  Events
@@ -316,6 +329,35 @@ namespace PadForge.Common.Input
 
                 while (_running)
                 {
+                    // ── Idle mode: skip expensive pipeline, sleep at ~20Hz ──
+                    if (_idle)
+                    {
+                        try
+                        {
+                            SDL_UpdateJoysticks();
+
+                            // Keep device enumeration at a reduced rate so the
+                            // Devices page still discovers newly connected controllers.
+                            if (_enumerationTimer.ElapsedMilliseconds >= 5000)
+                            {
+                                _enumerationTimer.Restart();
+                                UpdateDevices();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            RaiseError("Idle polling error", ex);
+                        }
+
+                        CurrentFrequency = 0;
+                        _frequencyCounter = 0;
+                        _frequencyTimer.Restart();
+                        FrequencyUpdated?.Invoke(this, EventArgs.Empty);
+                        Thread.Sleep(50);
+                        firstCycle = true; // Ensure immediate enumeration on wake
+                        continue;
+                    }
+
                     // Calculate target ticks each cycle so PollingIntervalMs can be
                     // changed at runtime from the Settings UI.
                     long targetTicks = Stopwatch.Frequency / 1000 * PollingIntervalMs;

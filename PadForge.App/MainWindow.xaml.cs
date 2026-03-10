@@ -293,7 +293,8 @@ namespace PadForge
                         nameof(PadViewModel.LeftAntiDeadZoneX) or nameof(PadViewModel.LeftAntiDeadZoneY) or
                         nameof(PadViewModel.RightAntiDeadZoneX) or nameof(PadViewModel.RightAntiDeadZoneY) or
                         nameof(PadViewModel.LeftLinear) or nameof(PadViewModel.RightLinear) or
-                        nameof(PadViewModel.LeftSensitivityCurve) or nameof(PadViewModel.RightSensitivityCurve) or
+                        nameof(PadViewModel.LeftSensitivityCurveX) or nameof(PadViewModel.LeftSensitivityCurveY) or
+                        nameof(PadViewModel.RightSensitivityCurveX) or nameof(PadViewModel.RightSensitivityCurveY) or
                         nameof(PadViewModel.LeftTriggerSensitivityCurve) or nameof(PadViewModel.RightTriggerSensitivityCurve) or
                         nameof(PadViewModel.LeftMaxRangeX) or nameof(PadViewModel.LeftMaxRangeY) or
                         nameof(PadViewModel.RightMaxRangeX) or nameof(PadViewModel.RightMaxRangeY) or

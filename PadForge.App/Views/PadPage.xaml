@@ -665,9 +665,13 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Text="Process:" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
-                                            <TextBox Text="{Binding ProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     MinWidth="180"
-                                                     ToolTip="Process name without .exe (e.g., firefox, spotify, chrome)"/>
+                                            <ComboBox IsEditable="True"
+                                                      Text="{Binding ProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding AudioProcessNames}"
+                                                      MinWidth="180" MaxDropDownHeight="200"
+                                                      IsTextSearchEnabled="True"
+                                                      ToolTip="Process name without .exe — dropdown shows processes with active audio sessions"
+                                                      DropDownOpened="AppVolumeProcessDropDown_Opened"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Text="Source axis:" VerticalAlignment="Center"

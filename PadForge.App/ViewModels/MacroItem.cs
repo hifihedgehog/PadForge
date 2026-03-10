@@ -781,6 +781,25 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>
+        /// Process names with active audio sessions, populated on demand.
+        /// Used as suggestion items in the editable ComboBox.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public ObservableCollection<string> AudioProcessNames { get; } = new();
+
+        private RelayCommand _refreshAudioProcessesCommand;
+
+        /// <summary>Refreshes the list of processes with active audio sessions.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand RefreshAudioProcessesCommand =>
+            _refreshAudioProcessesCommand ??= new RelayCommand(() =>
+            {
+                AudioProcessNames.Clear();
+                foreach (var name in AudioSessionHelper.GetActiveAudioProcessNames())
+                    AudioProcessNames.Add(name);
+            });
+
         /// <summary>Human-readable display text for the action list.</summary>
         public string DisplayText
         {

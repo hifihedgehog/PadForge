@@ -443,5 +443,15 @@ namespace PadForge.Views
                 vm.MidiConfig.StartCc != oldStartCc || vm.MidiConfig.StartNote != oldStartNote)
                 vm.RebuildMappings();
         }
+
+        // ─────────────────────────────────────────────
+        //  AppVolume process dropdown
+        // ─────────────────────────────────────────────
+
+        private void AppVolumeProcessDropDown_Opened(object sender, EventArgs e)
+        {
+            if (sender is ComboBox cb && cb.DataContext is MacroAction action)
+                action.RefreshAudioProcessesCommand.Execute(null);
+        }
     }
 }

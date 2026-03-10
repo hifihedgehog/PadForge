@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -70,7 +72,14 @@ namespace PadForge.ViewModels
         public double Linear
         {
             get => _linear;
-            set => SetProperty(ref _linear, Math.Clamp(value, 0, 100));
+            set { if (SetProperty(ref _linear, Math.Clamp(value, 0, 100))) RebuildCurvePoints(); }
+        }
+
+        private double _sensitivityCurve;
+        public double SensitivityCurve
+        {
+            get => _sensitivityCurve;
+            set { if (SetProperty(ref _sensitivityCurve, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
         }
 
         private double _maxRangeX = 100;
@@ -172,6 +181,46 @@ namespace PadForge.ViewModels
 
         /// <summary>Raw axis index for Y in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisYIndex { get; }
+
+        // ── Sensitivity curve chart ──
+
+        private PointCollection _curvePoints;
+        public PointCollection CurvePoints
+        {
+            get => _curvePoints ??= BuildCurvePoints(_sensitivityCurve);
+            private set => SetProperty(ref _curvePoints, value);
+        }
+
+        private double _liveCurveX;
+        public double LiveCurveX { get => _liveCurveX; set => SetProperty(ref _liveCurveX, value); }
+
+        private double _liveCurveY;
+        public double LiveCurveY { get => _liveCurveY; set => SetProperty(ref _liveCurveY, value); }
+
+        public void RebuildCurvePoints()
+        {
+            CurvePoints = BuildCurvePoints(_sensitivityCurve);
+        }
+
+        internal static PointCollection BuildCurvePoints(double curve, int chartSize = 120, int sampleCount = 64)
+        {
+            double exponent = Math.Pow(4.0, curve / 100.0);
+            var pts = new PointCollection(sampleCount + 1);
+            for (int i = 0; i <= sampleCount; i++)
+            {
+                double t = i / (double)sampleCount;
+                double y = Math.Pow(t, exponent);
+                pts.Add(new Point(t * chartSize, (1.0 - y) * chartSize));
+            }
+            return pts;
+        }
+
+        internal static double ApplyCurve(double magnitude, double curve)
+        {
+            if (curve == 0) return magnitude;
+            double exponent = Math.Pow(4.0, curve / 100.0);
+            return Math.Pow(Math.Clamp(magnitude, 0, 1), exponent);
+        }
 
         public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1)
         {

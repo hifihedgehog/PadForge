@@ -520,17 +520,17 @@ namespace PadForge
                     // Y axes record neg (up in game) first due to NegateAxis inversion.
                     // Pre-set _pendingNegMapping so the recorder result goes to NegSourceDescriptor.
                     // For vJoy custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
-                    bool isYFirstPhase = mapping.HasNegDirection
+                    bool isYAxis = mapping.HasNegDirection
                         && (mapping.TargetSettingName.Contains("AxisY")
-                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal))
-                        && !capturedPad.MapAllRecordingNeg;
+                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                    bool isYFirstPhase = isYAxis && !capturedPad.MapAllRecordingNeg;
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
 
                     // For non-Y bidirectional axes (X), clear stale neg descriptor so the
                     // auto-prompt for the opposite direction fires after the first button
                     // is recorded (auto-prompt is gated by NegSourceDescriptor being empty).
-                    if (mapping.HasNegDirection && !isYFirstPhase)
+                    if (mapping.HasNegDirection && !isYAxis)
                         mapping.NegSourceDescriptor = string.Empty;
 
                     _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid,

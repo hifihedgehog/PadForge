@@ -945,6 +945,14 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Sensitivity:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding SensitivityCurve, Mode=TwoWay}"
+                                                        Minimum="-100" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding SensitivityCurve, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Max Range X:" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeX, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
@@ -1024,6 +1032,31 @@
                                                        Text="{Binding RawDisplay, Mode=OneWay}"
                                                        TextWrapping="Wrap" TextAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+
+                                            <!-- Sensitivity curve chart -->
+                                            <TextBlock Text="Sensitivity Curve" Margin="0,12,0,4"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       FontSize="11"/>
+                                            <Border BorderBrush="#FF3F3F46" BorderThickness="1" CornerRadius="2"
+                                                    Width="128" Height="128" HorizontalAlignment="Center">
+                                                <Canvas Width="120" Height="120" Margin="4"
+                                                        ClipToBounds="True">
+                                                    <!-- Linear reference diagonal -->
+                                                    <Line X1="0" Y1="120" X2="120" Y2="0"
+                                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                          StrokeDashArray="4 2" StrokeThickness="0.5"/>
+                                                    <!-- Curve line -->
+                                                    <Polyline Points="{Binding CurvePoints}"
+                                                              Stroke="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                              StrokeThickness="1.5" Fill="Transparent"/>
+                                                    <!-- Live position dot -->
+                                                    <Ellipse Width="8" Height="8"
+                                                             Fill="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                             Canvas.Left="{Binding LiveCurveX}"
+                                                             Canvas.Top="{Binding LiveCurveY}"/>
+                                                </Canvas>
+                                            </Border>
                                         </StackPanel>
                                     </Grid>
 
@@ -1080,16 +1113,58 @@
                                                  Style="{StaticResource DzDigitEdit}"/>
                                     </StackPanel>
 
-                                    <!-- Live value bar -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                        <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
-                                        <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
-                                                     Minimum="0" Maximum="1"
-                                                     Width="200" Height="16" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
-                                                   Margin="8,0,0,0" VerticalAlignment="Center"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="Sensitivity:" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding SensitivityCurve, Mode=TwoWay}"
+                                                Minimum="-100" Maximum="100"
+                                                Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding SensitivityCurve, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
                                     </StackPanel>
+
+                                    <!-- Live value bar + curve chart side by side -->
+                                    <Grid Margin="0,0,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
+                                                <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
+                                                             Minimum="0" Maximum="1"
+                                                             Width="200" Height="16" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
+                                                           Margin="8,0,0,0" VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Sensitivity curve chart -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,0,0,0">
+                                            <TextBlock Text="Sensitivity Curve" Margin="0,0,0,4"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       FontSize="11"/>
+                                            <Border BorderBrush="#FF3F3F46" BorderThickness="1" CornerRadius="2"
+                                                    Width="128" Height="128" HorizontalAlignment="Center">
+                                                <Canvas Width="120" Height="120" Margin="4"
+                                                        ClipToBounds="True">
+                                                    <Line X1="0" Y1="120" X2="120" Y2="0"
+                                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                          StrokeDashArray="4 2" StrokeThickness="0.5"/>
+                                                    <Polyline Points="{Binding CurvePoints}"
+                                                              Stroke="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                              StrokeThickness="1.5" Fill="Transparent"/>
+                                                    <Ellipse Width="8" Height="8"
+                                                             Fill="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                             Canvas.Left="{Binding LiveCurveX}"
+                                                             Canvas.Top="{Binding LiveCurveY}"/>
+                                                </Canvas>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
 
                                     <Separator Margin="0,8,0,12"/>
                                 </StackPanel>

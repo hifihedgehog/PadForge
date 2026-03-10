@@ -164,6 +164,18 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
 
+        /// <summary>Left stick sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
+        [XmlElement] public string LeftThumbSensitivityCurve { get; set; } = "0";
+
+        /// <summary>Right stick sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightThumbSensitivityCurve { get; set; } = "0";
+
+        /// <summary>Left trigger sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string LeftTriggerSensitivityCurve { get; set; } = "0";
+
+        /// <summary>Right trigger sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightTriggerSensitivityCurve { get; set; } = "0";
+
         /// <summary>Left stick X max range (1–100%). Full physical deflection maps to this ceiling.</summary>
         [XmlElement] public string LeftThumbMaxRangeX { get; set; } = "100";
 
@@ -505,6 +517,10 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAntiDeadZoneY); sb.Append('|');
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
+            sb.Append(LeftThumbSensitivityCurve); sb.Append('|');
+            sb.Append(RightThumbSensitivityCurve); sb.Append('|');
+            sb.Append(LeftTriggerSensitivityCurve); sb.Append('|');
+            sb.Append(RightTriggerSensitivityCurve); sb.Append('|');
             sb.Append(LeftThumbMaxRangeX); sb.Append('|');
             sb.Append(LeftThumbMaxRangeY); sb.Append('|');
             sb.Append(RightThumbMaxRangeX); sb.Append('|');
@@ -726,6 +742,8 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),
             nameof(LeftThumbLinear), nameof(RightThumbLinear),
+            nameof(LeftThumbSensitivityCurve), nameof(RightThumbSensitivityCurve),
+            nameof(LeftTriggerSensitivityCurve), nameof(RightTriggerSensitivityCurve),
             nameof(LeftThumbMaxRangeX), nameof(LeftThumbMaxRangeY),
             nameof(RightThumbMaxRangeX), nameof(RightThumbMaxRangeY),
             nameof(LeftThumbCenterOffsetX), nameof(LeftThumbCenterOffsetY),

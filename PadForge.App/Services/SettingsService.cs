@@ -435,6 +435,10 @@ namespace PadForge.Services
                 padVm.RightAntiDeadZoneY = TryParseDouble(ps.RightThumbAntiDeadZoneY, 0);
                 padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
                 padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
+                padVm.LeftSensitivityCurve = TryParseDouble(ps.LeftThumbSensitivityCurve, 0);
+                padVm.RightSensitivityCurve = TryParseDouble(ps.RightThumbSensitivityCurve, 0);
+                padVm.LeftTriggerSensitivityCurve = TryParseDouble(ps.LeftTriggerSensitivityCurve, 0);
+                padVm.RightTriggerSensitivityCurve = TryParseDouble(ps.RightTriggerSensitivityCurve, 0);
                 padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);
                 padVm.LeftMaxRangeY = TryParseDouble(ps.LeftThumbMaxRangeY, 100);
                 padVm.RightMaxRangeX = TryParseDouble(ps.RightThumbMaxRangeX, 100);
@@ -454,6 +458,32 @@ namespace PadForge.Services
 
                 // Sync dynamic stick/trigger config items from the loaded VM properties.
                 padVm.SyncAllConfigItemsFromVm();
+
+                // Load vJoy custom stick/trigger settings for indices 2+ from dictionary.
+                foreach (var stick in padVm.StickConfigs)
+                {
+                    if (stick.Index < 2) continue;
+                    int g = stick.Index;
+                    stick.DeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}DzX"), 0);
+                    stick.DeadZoneY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}DzY"), 0);
+                    stick.AntiDeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
+                    stick.AntiDeadZoneY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzY"), 0);
+                    stick.Linear = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}Linear"), 0);
+                    stick.SensitivityCurve = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}Curve"), 0);
+                    stick.CenterOffsetX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofX"), 0);
+                    stick.CenterOffsetY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
+                    stick.MaxRangeX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
+                    stick.MaxRangeY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrY"), 100);
+                }
+                foreach (var trig in padVm.TriggerConfigs)
+                {
+                    if (trig.Index < 2) continue;
+                    int g = trig.Index;
+                    trig.DeadZone = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Dz"), 0);
+                    trig.AntiDeadZone = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Adz"), 0);
+                    trig.MaxRange = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Mr"), 100);
+                    trig.SensitivityCurve = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Curve"), 0);
+                }
 
                 // Load mapping descriptors into mapping rows.
                 LoadMappingDescriptors(padVm, ps);
@@ -974,6 +1004,10 @@ namespace PadForge.Services
                     ps.RightThumbAntiDeadZoneY = padVm.RightAntiDeadZoneY.ToString(ic);
                     ps.LeftThumbLinear = padVm.LeftLinear.ToString(ic);
                     ps.RightThumbLinear = padVm.RightLinear.ToString(ic);
+                    ps.LeftThumbSensitivityCurve = padVm.LeftSensitivityCurve.ToString(ic);
+                    ps.RightThumbSensitivityCurve = padVm.RightSensitivityCurve.ToString(ic);
+                    ps.LeftTriggerSensitivityCurve = padVm.LeftTriggerSensitivityCurve.ToString(ic);
+                    ps.RightTriggerSensitivityCurve = padVm.RightTriggerSensitivityCurve.ToString(ic);
                     ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString(ic);
                     ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString(ic);
                     ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString(ic);
@@ -990,6 +1024,32 @@ namespace PadForge.Services
                     ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString(ic);
                     ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString(ic);
                     ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString(ic);
+
+                    // Write vJoy custom stick/trigger settings for indices 2+ to dictionary.
+                    foreach (var stick in padVm.StickConfigs)
+                    {
+                        if (stick.Index < 2) continue;
+                        int g = stick.Index;
+                        ps.SetVJoyMapping($"VJoyStick{g}DzX", stick.DeadZoneX.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}DzY", stick.DeadZoneY.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}Linear", stick.Linear.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}Curve", stick.SensitivityCurve.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}CofX", stick.CenterOffsetX.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}CofY", stick.CenterOffsetY.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}MrX", stick.MaxRangeX.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                    }
+                    foreach (var trig in padVm.TriggerConfigs)
+                    {
+                        if (trig.Index < 2) continue;
+                        int g = trig.Index;
+                        ps.SetVJoyMapping($"VJoyTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve.ToString(ic));
+                    }
 
                     // Write mapping descriptors.
                     foreach (var mapping in padVm.Mappings)

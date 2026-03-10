@@ -417,6 +417,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
+                    OnPropertyChanged(nameof(IsAppVolumeType));
                 }
             }
         }
@@ -440,6 +441,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is SystemVolume.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsSystemVolumeType => _type == MacroActionType.SystemVolume;
+
+        /// <summary>True when Type is AppVolume.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAppVolumeType => _type == MacroActionType.AppVolume;
 
         private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
 
@@ -753,11 +758,27 @@ namespace PadForge.ViewModels
 
         private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
 
-        /// <summary>For AxisSet: which axis to modify.</summary>
+        /// <summary>For AxisSet/SystemVolume/AppVolume: which axis to use.</summary>
         public MacroAxisTarget AxisTarget
         {
             get => _axisTarget;
             set => SetProperty(ref _axisTarget, value);
+        }
+
+        private string _processName = "";
+
+        /// <summary>
+        /// For AppVolume: the process name (e.g., "firefox", "spotify") whose
+        /// volume in the Windows mixer should be controlled.
+        /// </summary>
+        public string ProcessName
+        {
+            get => _processName;
+            set
+            {
+                if (SetProperty(ref _processName, value ?? ""))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
         }
 
         /// <summary>Human-readable display text for the action list.</summary>
@@ -778,6 +799,9 @@ namespace PadForge.ViewModels
                     MacroActionType.Delay => $"Wait {_durationMs}ms",
                     MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
                     MacroActionType.SystemVolume => $"System Volume \u2190 {_axisTarget}",
+                    MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
+                        ? $"App Volume \u2190 {_axisTarget}"
+                        : $"App Volume ({_processName}) \u2190 {_axisTarget}",
                     _ => "Unknown action"
                 };
             }
@@ -853,7 +877,10 @@ namespace PadForge.ViewModels
         AxisSet,
 
         /// <summary>Continuously map a source axis value to the Windows system volume.</summary>
-        SystemVolume
+        SystemVolume,
+
+        /// <summary>Continuously map a source axis value to a specific application's volume in the Windows mixer.</summary>
+        AppVolume
     }
 
     public enum MacroAxisTarget

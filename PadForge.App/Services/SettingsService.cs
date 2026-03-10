@@ -525,7 +525,8 @@ namespace PadForge.Services
                                 : (ad.KeyCode != 0 ? $"{{{(VirtualKey)ad.KeyCode}}}" : ""),
                             DurationMs = ad.DurationMs,
                             AxisValue = ad.AxisValue,
-                            AxisTarget = ad.AxisTarget
+                            AxisTarget = ad.AxisTarget,
+                            ProcessName = ad.ProcessName ?? ""
                         });
                     }
                 }
@@ -924,7 +925,8 @@ namespace PadForge.Services
                             KeyString = a.KeyString,
                             DurationMs = a.DurationMs,
                             AxisValue = a.AxisValue,
-                            AxisTarget = a.AxisTarget
+                            AxisTarget = a.AxisTarget,
+                            ProcessName = a.ProcessName
                         }).ToArray()
                     });
                 }
@@ -1435,6 +1437,10 @@ namespace PadForge.Services
 
         [XmlElement]
         public MacroAxisTarget AxisTarget { get; set; }
+
+        /// <summary>Process name for AppVolume action (e.g., "firefox", "spotify").</summary>
+        [XmlElement]
+        public string ProcessName { get; set; }
     }
 
     /// <summary>

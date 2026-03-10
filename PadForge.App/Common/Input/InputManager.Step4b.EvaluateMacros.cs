@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PadForge.Common;
 using PadForge.Engine;
@@ -42,6 +44,75 @@ namespace PadForge.Common.Input
         int SetMasterVolumeLevelScalar(float level, ref Guid eventContext);
         int GetMasterVolumeLevel(out float levelDb);
         int GetMasterVolumeLevelScalar(out float level);
+    }
+
+    // ─────────────────────────────────────────────
+    //  Per-app audio session COM interfaces for AppVolume macro action.
+    // ─────────────────────────────────────────────
+
+    [ComImport, Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionManager2
+    {
+        int GetAudioSessionControl(IntPtr audioSessionGuid, int streamFlags, out IntPtr sessionControl);
+        int GetSimpleAudioVolume(IntPtr audioSessionGuid, int streamFlags, out IntPtr simpleVolume);
+        int GetSessionEnumerator(out IAudioSessionEnumerator sessionEnum);
+    }
+
+    [ComImport, Guid("E2F5BB11-0570-40CA-ACDD-3AA01277DEE8"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionEnumerator
+    {
+        int GetCount(out int sessionCount);
+        int GetSession(int sessionIndex, out IAudioSessionControl session);
+    }
+
+    [ComImport, Guid("F4B1A599-7266-4319-A8CA-E70ACB11E8CD"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionControl
+    {
+        int QueryState(out int state);
+        int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
+        int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
+        int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string iconPath);
+        int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
+        int GetGroupingParam(out Guid groupingParam);
+        int SetGroupingParam(ref Guid groupingParam, ref Guid eventContext);
+        int RegisterAudioSessionNotification(IntPtr notify);
+        int UnregisterAudioSessionNotification(IntPtr notify);
+    }
+
+    [ComImport, Guid("BFB7B31D-7D78-4AF3-B235-E591A62B4B28"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionControl2 : IAudioSessionControl
+    {
+        // Inherited from IAudioSessionControl (must re-declare for correct vtable layout).
+        new int QueryState(out int state);
+        new int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
+        new int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
+        new int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string iconPath);
+        new int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
+        new int GetGroupingParam(out Guid groupingParam);
+        new int SetGroupingParam(ref Guid groupingParam, ref Guid eventContext);
+        new int RegisterAudioSessionNotification(IntPtr notify);
+        new int UnregisterAudioSessionNotification(IntPtr notify);
+
+        // IAudioSessionControl2 methods.
+        int GetSessionIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string sessionId);
+        int GetSessionInstanceIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string sessionInstanceId);
+        int GetProcessId(out uint processId);
+        int IsSystemSoundsSession();
+        int SetDuckingPreference(bool optOut);
+    }
+
+    [ComImport, Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface ISimpleAudioVolume
+    {
+        int SetMasterVolume(float level, ref Guid eventContext);
+        int GetMasterVolume(out float level);
+        int SetMute(bool mute, ref Guid eventContext);
+        int GetMute(out bool mute);
     }
 }
 
@@ -512,6 +583,11 @@ namespace PadForge.Common.Input
                 case MacroActionType.SystemVolume:
                     SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget));
                     break;
+
+                case MacroActionType.AppVolume:
+                    if (!string.IsNullOrEmpty(action.ProcessName))
+                        SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget), action.ProcessName);
+                    break;
             }
         }
 
@@ -593,6 +669,90 @@ namespace PadForge.Common.Input
             catch
             {
                 _audioEndpointFailed = true;
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Per-app volume control for AppVolume macro action
+        // ─────────────────────────────────────────────
+
+        private IAudioSessionManager2 _audioSessionManager;
+        private bool _audioSessionFailed;
+
+        /// <summary>
+        /// Per-process change-detection: tracks the last volume set for each process name
+        /// to avoid redundant COM enumeration every polling cycle.
+        /// </summary>
+        private readonly Dictionary<string, float> _lastAppVolumes = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Sets the volume for all audio sessions belonging to the specified process name
+        /// in the Windows audio mixer. Enumerates sessions via IAudioSessionManager2.
+        /// </summary>
+        private void SetAppVolume(float volume, string processName)
+        {
+            volume = Math.Clamp(volume, 0f, 1f);
+
+            // Change detection per process name.
+            if (_lastAppVolumes.TryGetValue(processName, out float last) && Math.Abs(volume - last) < 0.004f)
+                return;
+            _lastAppVolumes[processName] = volume;
+
+            if (_audioSessionFailed) return;
+
+            try
+            {
+                if (_audioSessionManager == null)
+                {
+                    var enumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorClass();
+                    enumerator.GetDefaultAudioEndpoint(0 /* eRender */, 1 /* eMultimedia */, out var device);
+                    var iid = typeof(IAudioSessionManager2).GUID;
+                    device.Activate(ref iid, 1 /* CLSCTX_INPROC_SERVER */, IntPtr.Zero, out var iface);
+                    _audioSessionManager = (IAudioSessionManager2)iface;
+                }
+
+                _audioSessionManager.GetSessionEnumerator(out var sessionEnum);
+                sessionEnum.GetCount(out int count);
+
+                var emptyGuid = Guid.Empty;
+                string targetLower = processName.ToLowerInvariant();
+
+                for (int i = 0; i < count; i++)
+                {
+                    sessionEnum.GetSession(i, out var sessionCtl);
+                    if (sessionCtl == null) continue;
+
+                    try
+                    {
+                        var session2 = (IAudioSessionControl2)sessionCtl;
+                        session2.GetProcessId(out uint pid);
+                        if (pid == 0) continue;
+
+                        string exeName;
+                        try
+                        {
+                            using var proc = Process.GetProcessById((int)pid);
+                            exeName = proc.ProcessName;
+                        }
+                        catch { continue; } // Process may have exited.
+
+                        if (!exeName.Equals(targetLower, StringComparison.OrdinalIgnoreCase)
+                            && !exeName.Equals(processName, StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        // QI for ISimpleAudioVolume from the session control.
+                        var simpleVol = (ISimpleAudioVolume)sessionCtl;
+                        simpleVol.SetMasterVolume(volume, ref emptyGuid);
+                    }
+                    catch
+                    {
+                        // Individual session failure — skip, try others.
+                    }
+                }
+            }
+            catch
+            {
+                _audioSessionFailed = true;
             }
         }
 

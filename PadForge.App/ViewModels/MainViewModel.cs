@@ -22,10 +22,10 @@ namespace PadForge.ViewModels
             _iconKey = "XboxControllerIcon";
         }
 
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex { get; }
 
-        /// <summary>Navigation tag for this item ("Pad1"–"Pad4").</summary>
+        /// <summary>Navigation tag for this item ("Pad1"–"Pad16").</summary>
         public string Tag => $"Pad{PadIndex + 1}";
 
         private int _slotNumber;
@@ -111,7 +111,7 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// The 4 virtual controller pad ViewModels (Player 1–4).
+        /// The 16 virtual controller pad ViewModels (Player 1–16).
         /// </summary>
         public ObservableCollection<PadViewModel> Pads { get; } = new ObservableCollection<PadViewModel>();
 
@@ -248,7 +248,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// The tag string of the currently selected navigation item.
         /// Used by MainWindow to determine which page to display.
-        /// Values: "Dashboard", "Pad1"–"Pad4", "Devices", "Settings", "About"
+        /// Values: "Dashboard", "Pad1"–"Pad16", "Devices", "Settings", "About"
         /// </summary>
         public string SelectedNavTag
         {

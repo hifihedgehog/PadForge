@@ -609,7 +609,9 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return null;
 
-            // Match on the RawInputHandle property stored by keyboard/mouse wrappers.
+            // The keyboard/mouse wrappers store _sdlId = (uint)devicePath.GetHashCode().
+            // We need to match on the device reference since we can't recover the path
+            // from just the handle. Check Device.RawInputHandle for keyboard/mouse wrappers.
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 for (int i = 0; i < devices.Count; i++)
@@ -672,7 +674,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Returns all UserSettings assigned to a specific pad slot (0–3).
+        /// Returns all UserSettings assigned to a specific pad slot (0–15).
         /// Allocates a new List — use <see cref="FindByPadIndex(int, UserSetting[], out int)"/>
         /// in the hot path to avoid allocations.
         /// </summary>

@@ -1039,18 +1039,19 @@
                                             <TextBlock Margin="0,4,0,0" HorizontalAlignment="Center"
                                                        Text="{Binding RawDisplay, Mode=OneWay}"
                                                        TextWrapping="Wrap" TextAlignment="Center"
+                                                       FontSize="10"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
 
                                             <!-- Per-axis sensitivity curve charts -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                                                 <!-- X axis curve chart -->
-                                                <StackPanel Margin="0,0,6,0">
-                                                    <TextBlock Text="Curve X" HorizontalAlignment="Center"
+                                                <StackPanel Margin="0,0,4,0">
+                                                    <TextBlock Text="X Sensitivity Curve" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
-                                                    <Border BorderBrush="#FF3F3F46" BorderThickness="1" CornerRadius="2"
+                                                    <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
                                                             Width="104" Height="104">
-                                                        <Canvas Width="96" Height="96" Margin="4" ClipToBounds="True">
+                                                        <Canvas Width="96" Height="96" Margin="2" ClipToBounds="True">
                                                             <!-- Origin crosshairs -->
                                                             <Line X1="48" Y1="0" X2="48" Y2="96"
                                                                   Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}" StrokeThickness="0.5"/>
@@ -1071,13 +1072,13 @@
                                                     </Border>
                                                 </StackPanel>
                                                 <!-- Y axis curve chart -->
-                                                <StackPanel Margin="6,0,0,0">
-                                                    <TextBlock Text="Curve Y" HorizontalAlignment="Center"
+                                                <StackPanel Margin="4,0,0,0">
+                                                    <TextBlock Text="Y Sensitivity Curve" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
-                                                    <Border BorderBrush="#FF3F3F46" BorderThickness="1" CornerRadius="2"
+                                                    <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
                                                             Width="104" Height="104">
-                                                        <Canvas Width="96" Height="96" Margin="4" ClipToBounds="True">
+                                                        <Canvas Width="96" Height="96" Margin="2" ClipToBounds="True">
                                                             <Line X1="48" Y1="0" X2="48" Y2="96"
                                                                   Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}" StrokeThickness="0.5"/>
                                                             <Line X1="0" Y1="48" X2="96" Y2="48"
@@ -1118,57 +1119,58 @@
                                                FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"
                                                Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
-                                    <!-- Range (dual-thumb: dead zone floor — max range ceiling) -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Range:" Style="{StaticResource DzLabel}"/>
-                                        <controls:RangeSlider
-                                            LowerValue="{Binding DeadZone, Mode=TwoWay}"
-                                            UpperValue="{Binding MaxRange, Mode=TwoWay}"
-                                            Minimum="0" Maximum="100"
-                                            Width="200" VerticalAlignment="Center"/>
-                                        <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                        <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                        <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzDigitEdit}"/>
-                                        <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                                        <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzDigitEdit}"/>
-                                    </StackPanel>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding AntiDeadZone, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding AntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                        <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzDigitEdit}"/>
-                                    </StackPanel>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Sensitivity:" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding SensitivityCurve, Mode=TwoWay}"
-                                                Minimum="-100" Maximum="100"
-                                                Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding SensitivityCurve, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                    </StackPanel>
-
-                                    <!-- Live value bar + curve chart side by side -->
-                                    <Grid Margin="0,0,0,4">
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                                        <!-- Left: sliders and live bar -->
+                                        <StackPanel Grid.Column="0">
+                                            <!-- Range (dual-thumb: dead zone floor — max range ceiling) -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Range:" Style="{StaticResource DzLabel}"/>
+                                                <controls:RangeSlider
+                                                    LowerValue="{Binding DeadZone, Mode=TwoWay}"
+                                                    UpperValue="{Binding MaxRange, Mode=TwoWay}"
+                                                    Minimum="0" Maximum="100"
+                                                    Width="200" VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
+                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
+                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding AntiDeadZone, Mode=TwoWay}"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding AntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Sensitivity:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding SensitivityCurve, Mode=TwoWay}"
+                                                        Minimum="-100" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding SensitivityCurve, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                            </StackPanel>
+
+                                            <!-- Live value bar -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                 <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
                                                 <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
@@ -1180,15 +1182,15 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Sensitivity curve chart -->
+                                        <!-- Right: sensitivity curve chart (aligned to top with Range row) -->
                                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,0,0,0">
                                             <TextBlock Text="Sensitivity Curve" Margin="0,0,0,4"
                                                        HorizontalAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="11"/>
-                                            <Border BorderBrush="#FF3F3F46" BorderThickness="1" CornerRadius="2"
+                                            <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
                                                     Width="128" Height="128" HorizontalAlignment="Center">
-                                                <Canvas Width="120" Height="120" Margin="4"
+                                                <Canvas Width="120" Height="120" Margin="2"
                                                         ClipToBounds="True">
                                                     <Line X1="0" Y1="120" X2="120" Y2="0"
                                                           Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"

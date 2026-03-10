@@ -293,6 +293,12 @@ namespace PadForge
                         nameof(PadViewModel.LeftAntiDeadZoneX) or nameof(PadViewModel.LeftAntiDeadZoneY) or
                         nameof(PadViewModel.RightAntiDeadZoneX) or nameof(PadViewModel.RightAntiDeadZoneY) or
                         nameof(PadViewModel.LeftLinear) or nameof(PadViewModel.RightLinear) or
+                        nameof(PadViewModel.LeftSensitivityCurve) or nameof(PadViewModel.RightSensitivityCurve) or
+                        nameof(PadViewModel.LeftTriggerSensitivityCurve) or nameof(PadViewModel.RightTriggerSensitivityCurve) or
+                        nameof(PadViewModel.LeftMaxRangeX) or nameof(PadViewModel.LeftMaxRangeY) or
+                        nameof(PadViewModel.RightMaxRangeX) or nameof(PadViewModel.RightMaxRangeY) or
+                        nameof(PadViewModel.LeftCenterOffsetX) or nameof(PadViewModel.LeftCenterOffsetY) or
+                        nameof(PadViewModel.RightCenterOffsetX) or nameof(PadViewModel.RightCenterOffsetY) or
                         nameof(PadViewModel.LeftTriggerDeadZone) or nameof(PadViewModel.RightTriggerDeadZone) or
                         nameof(PadViewModel.LeftTriggerAntiDeadZone) or nameof(PadViewModel.RightTriggerAntiDeadZone) or
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
@@ -301,6 +307,9 @@ namespace PadForge
                         nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };
+
+                // vJoy custom stick/trigger config changes (indices 2+) trigger autosave.
+                pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
 
                 // VJoyConfig property changes (preset, counts) trigger autosave.
                 pad.VJoyConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
@@ -547,16 +556,23 @@ namespace PadForge
 
                 // Wire existing macros.
                 foreach (var macro in pad.Macros)
+                {
                     WireMacroRecording(macro, capturedPad.PadIndex);
+                    WireMacroDirty(macro);
+                }
 
-                // Wire macros added later.
+                // Wire macros added later + mark dirty on add/remove.
                 pad.Macros.CollectionChanged += (s, e) =>
                 {
                     if (e.NewItems != null)
                     {
                         foreach (MacroItem macro in e.NewItems)
+                        {
                             WireMacroRecording(macro, capturedPad.PadIndex);
+                            WireMacroDirty(macro);
+                        }
                     }
+                    _settingsService.MarkDirty();
                 };
             }
 
@@ -2560,6 +2576,23 @@ namespace PadForge
                     else
                         _inputService.StopMacroTriggerRecording();
                 }
+            };
+        }
+
+        /// <summary>
+        /// Wires a macro and its actions to trigger auto-save on any property change.
+        /// </summary>
+        private void WireMacroDirty(MacroItem macro)
+        {
+            macro.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+            foreach (var action in macro.Actions)
+                action.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+            macro.Actions.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (MacroAction action in e.NewItems)
+                        action.PropertyChanged += (s2, e2) => _settingsService.MarkDirty();
+                _settingsService.MarkDirty();
             };
         }
 

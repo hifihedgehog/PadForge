@@ -175,11 +175,13 @@ namespace PadForge.Common.Input
             gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
                 TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
                 TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0),
-                TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100));
+                TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100),
+                TryParseDoubleStatic(ps.LeftTriggerSensitivityCurve, 0));
             gp.RightTrigger = ApplyTriggerDeadZone(gp.RightTrigger,
                 TryParseDoubleStatic(ps.RightTriggerDeadZone, 0),
                 TryParseDoubleStatic(ps.RightTriggerAntiDeadZone, 0),
-                TryParseDoubleStatic(ps.RightTriggerMaxRange, 100));
+                TryParseDoubleStatic(ps.RightTriggerMaxRange, 100),
+                TryParseDoubleStatic(ps.RightTriggerSensitivityCurve, 0));
 
             // ── Thumbsticks ──
             gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg);
@@ -205,7 +207,8 @@ namespace PadForge.Common.Input
                 ps.LeftThumbAntiDeadZoneY,
                 ps.LeftThumbLinear,
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
-                TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100));
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100),
+                TryParseDoubleStatic(ps.LeftThumbSensitivityCurve, 0));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
@@ -214,7 +217,8 @@ namespace PadForge.Common.Input
                 ps.RightThumbAntiDeadZoneY,
                 ps.RightThumbLinear,
                 TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
-                TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100));
+                TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
+                TryParseDoubleStatic(ps.RightThumbSensitivityCurve, 0));
 
             return gp;
         }
@@ -709,15 +713,15 @@ namespace PadForge.Common.Input
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             double deadZoneX, double deadZoneY,
             string antiDeadZoneXStr, string antiDeadZoneYStr, string linearStr,
-            double maxRangeX = 100, double maxRangeY = 100)
+            double maxRangeX = 100, double maxRangeY = 100, double curve = 0)
         {
             double antiDeadZoneX = TryParseDoubleStatic(antiDeadZoneXStr, 0);
             double antiDeadZoneY = TryParseDoubleStatic(antiDeadZoneYStr, 0);
             double linear = TryParseDoubleStatic(linearStr, 0);
 
             // Apply dead zone independently to each axis.
-            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX);
-            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY);
+            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curve);
+            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curve);
         }
 
         /// <summary>
@@ -734,9 +738,9 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Applies dead zone processing to a single axis.
         /// </summary>
-        private static short ApplySingleDeadZone(short value, double deadZone, double antiDeadZone, double linear, double maxRange = 100)
+        private static short ApplySingleDeadZone(short value, double deadZone, double antiDeadZone, double linear, double maxRange = 100, double curve = 0)
         {
-            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100 && curve == 0)
                 return value;
 
             // Normalize to float (-1.0 to 1.0).
@@ -757,12 +761,19 @@ namespace PadForge.Common.Input
             // Remap from [dzNorm, maxNorm] to [0, 1].
             double remapped = Math.Min((magnitude - dzNorm) / (maxNorm - dzNorm), 1.0);
 
+            // Sensitivity curve: shape the response before anti-dead zone and linear.
+            // 0 = linear, +100 = exponential (less sensitive center), -100 = logarithmic.
+            if (curve != 0)
+            {
+                double exponent = Math.Pow(4.0, curve / 100.0);
+                remapped = Math.Pow(remapped, exponent);
+            }
+
             // Anti-dead zone: offset the output minimum.
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
 
             // Linear adjustment (simplified: 0 = default curve, 100 = fully linear).
-            // A full implementation would use a more complex curve; this is a simplified version.
             if (linear > 0)
             {
                 double linearFactor = linear / 100.0;
@@ -780,9 +791,9 @@ namespace PadForge.Common.Input
         /// Max range: caps the input so full physical press maps to this percentage ceiling.
         /// Anti-dead zone: remaps the output so small presses register past the game's dead zone.
         /// </summary>
-        private static ushort ApplyTriggerDeadZone(ushort value, double deadZone, double antiDeadZone, double maxRange)
+        private static ushort ApplyTriggerDeadZone(ushort value, double deadZone, double antiDeadZone, double maxRange, double curve = 0)
         {
-            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100 && curve == 0)
                 return value;
 
             // Normalize to 0.0–1.0.
@@ -800,6 +811,13 @@ namespace PadForge.Common.Input
 
             // Remap from [dzNorm, maxNorm] to [0, 1].
             double remapped = Math.Clamp((norm - dzNorm) / (maxNorm - dzNorm), 0.0, 1.0);
+
+            // Sensitivity curve.
+            if (curve != 0)
+            {
+                double exponent = Math.Pow(4.0, curve / 100.0);
+                remapped = Math.Pow(remapped, exponent);
+            }
 
             // Anti-dead zone: offset the output minimum.
             double adzNorm = antiDeadZone / 100.0;
@@ -876,7 +894,7 @@ namespace PadForge.Common.Input
                 int yi = xi + 1;
                 if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
 
-                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100;
+                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100, crv = 0;
                 switch (g)
                 {
                     case 0:
@@ -885,6 +903,7 @@ namespace PadForge.Common.Input
                         adzX = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0);
                         adzY = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0);
                         lin = TryParseDoubleStatic(ps.LeftThumbLinear, 0);
+                        crv = TryParseDoubleStatic(ps.LeftThumbSensitivityCurve, 0);
                         cofX = TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0);
                         cofY = TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0);
                         mrX = TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100);
@@ -896,18 +915,30 @@ namespace PadForge.Common.Input
                         adzX = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0);
                         adzY = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneY, 0);
                         lin = TryParseDoubleStatic(ps.RightThumbLinear, 0);
+                        crv = TryParseDoubleStatic(ps.RightThumbSensitivityCurve, 0);
                         cofX = TryParseDoubleStatic(ps.RightThumbCenterOffsetX, 0);
                         cofY = TryParseDoubleStatic(ps.RightThumbCenterOffsetY, 0);
                         mrX = TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100);
                         mrY = TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100);
                         break;
                     default:
-                        continue; // No dead zone properties for sticks 2+ yet
+                        // Custom vJoy sticks 2+: read all settings from vJoy dictionary.
+                        dzX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}DzX"), 0);
+                        dzY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}DzY"), 0);
+                        adzX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
+                        adzY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}AdzY"), 0);
+                        lin = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}Linear"), 0);
+                        crv = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}Curve"), 0);
+                        cofX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CofX"), 0);
+                        cofY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
+                        mrX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
+                        mrY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrY"), 100);
+                        break;
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
                 raw.Axes[yi] = ApplyCenterOffset(raw.Axes[yi], cofY);
-                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin, mrX);
-                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin, mrY);
+                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin, mrX, crv);
+                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin, mrY, crv);
             }
 
             for (int g = 0; g < cfg.Triggers; g++)
@@ -916,26 +947,33 @@ namespace PadForge.Common.Input
                        : interleave * 3 + Math.Max(0, cfg.Sticks - interleave) * 2 + (g - interleave);
                 if (ti >= raw.Axes.Length) break;
 
-                double dz, adz, maxR;
+                double dz, adz, maxR, tcrv;
                 switch (g)
                 {
                     case 0:
                         dz = TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0);
                         adz = TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0);
                         maxR = TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100);
+                        tcrv = TryParseDoubleStatic(ps.LeftTriggerSensitivityCurve, 0);
                         break;
                     case 1:
                         dz = TryParseDoubleStatic(ps.RightTriggerDeadZone, 0);
                         adz = TryParseDoubleStatic(ps.RightTriggerAntiDeadZone, 0);
                         maxR = TryParseDoubleStatic(ps.RightTriggerMaxRange, 100);
+                        tcrv = TryParseDoubleStatic(ps.RightTriggerSensitivityCurve, 0);
                         break;
                     default:
-                        continue; // No dead zone properties for triggers 2+ yet
+                        // Custom vJoy triggers 2+: read from vJoy dictionary.
+                        dz = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyTrigger{g}Dz"), 0);
+                        adz = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyTrigger{g}Adz"), 0);
+                        maxR = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyTrigger{g}Mr"), 100);
+                        tcrv = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyTrigger{g}Curve"), 0);
+                        break;
                 }
                 // Triggers use signed short in raw path; convert to unsigned 16-bit range,
                 // apply trigger dead zone, then convert back.
                 ushort asUshort = (ushort)(raw.Axes[ti] - short.MinValue);
-                asUshort = ApplyTriggerDeadZone(asUshort, dz, adz, maxR);
+                asUshort = ApplyTriggerDeadZone(asUshort, dz, adz, maxR, tcrv);
                 // Back to signed short range
                 raw.Axes[ti] = (short)(asUshort + short.MinValue);
             }

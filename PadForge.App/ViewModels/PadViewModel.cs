@@ -33,6 +33,12 @@ namespace PadForge.ViewModels
         /// <summary>Zero-based pad slot index (0–7).</summary>
         public int PadIndex { get; }
 
+        /// <summary>
+        /// Callback invoked when a config item property changes that needs to be persisted.
+        /// Wired by MainWindow to call SettingsService.MarkDirty().
+        /// </summary>
+        public Action ConfigItemDirtyCallback { get; set; }
+
         private int _slotNumber;
         /// <summary>One-based sequential number among active slots, for display.</summary>
         public int SlotNumber
@@ -597,6 +603,19 @@ namespace PadForge.ViewModels
         private double _rightLinear;
         public double RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
 
+        // ── Sensitivity Curves ──
+        private double _leftSensitivityCurve;
+        public double LeftSensitivityCurve { get => _leftSensitivityCurve; set => SetProperty(ref _leftSensitivityCurve, Math.Clamp(value, -100, 100)); }
+
+        private double _rightSensitivityCurve;
+        public double RightSensitivityCurve { get => _rightSensitivityCurve; set => SetProperty(ref _rightSensitivityCurve, Math.Clamp(value, -100, 100)); }
+
+        private double _leftTriggerSensitivityCurve;
+        public double LeftTriggerSensitivityCurve { get => _leftTriggerSensitivityCurve; set => SetProperty(ref _leftTriggerSensitivityCurve, Math.Clamp(value, -100, 100)); }
+
+        private double _rightTriggerSensitivityCurve;
+        public double RightTriggerSensitivityCurve { get => _rightTriggerSensitivityCurve; set => SetProperty(ref _rightTriggerSensitivityCurve, Math.Clamp(value, -100, 100)); }
+
         // ── Max Range ──
         private double _leftMaxRangeX = 100;
         public double LeftMaxRangeX { get => _leftMaxRangeX; set => SetProperty(ref _leftMaxRangeX, Math.Clamp(value, 1, 100)); }
@@ -753,6 +772,7 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = LeftAntiDeadZoneX;
                         item.AntiDeadZoneY = LeftAntiDeadZoneY;
                         item.Linear = LeftLinear;
+                        item.SensitivityCurve = LeftSensitivityCurve;
                         item.MaxRangeX = LeftMaxRangeX;
                         item.MaxRangeY = LeftMaxRangeY;
                         item.CenterOffsetX = LeftCenterOffsetX;
@@ -764,6 +784,7 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = RightAntiDeadZoneX;
                         item.AntiDeadZoneY = RightAntiDeadZoneY;
                         item.Linear = RightLinear;
+                        item.SensitivityCurve = RightSensitivityCurve;
                         item.MaxRangeX = RightMaxRangeX;
                         item.MaxRangeY = RightMaxRangeY;
                         item.CenterOffsetX = RightCenterOffsetX;
@@ -788,11 +809,13 @@ namespace PadForge.ViewModels
                         item.DeadZone = LeftTriggerDeadZone;
                         item.MaxRange = LeftTriggerMaxRange;
                         item.AntiDeadZone = LeftTriggerAntiDeadZone;
+                        item.SensitivityCurve = LeftTriggerSensitivityCurve;
                         break;
                     case 1:
                         item.DeadZone = RightTriggerDeadZone;
                         item.MaxRange = RightTriggerMaxRange;
                         item.AntiDeadZone = RightTriggerAntiDeadZone;
+                        item.SensitivityCurve = RightTriggerSensitivityCurve;
                         break;
                 }
             }
@@ -827,6 +850,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
+                        case nameof(StickConfigItem.SensitivityCurve): LeftSensitivityCurve = item.SensitivityCurve; break;
                         case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;
                         case nameof(StickConfigItem.MaxRangeY): LeftMaxRangeY = item.MaxRangeY; break;
                         case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
@@ -841,11 +865,17 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): RightAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): RightLinear = item.Linear; break;
+                        case nameof(StickConfigItem.SensitivityCurve): RightSensitivityCurve = item.SensitivityCurve; break;
                         case nameof(StickConfigItem.MaxRangeX): RightMaxRangeX = item.MaxRangeX; break;
                         case nameof(StickConfigItem.MaxRangeY): RightMaxRangeY = item.MaxRangeY; break;
                         case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
                     }
+                    break;
+                default:
+                    // vJoy custom sticks 2+: values stored directly on ConfigItem,
+                    // persisted via SettingsService.UpdatePadSettingsFromViewModels.
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
             }
         }
@@ -863,6 +893,7 @@ namespace PadForge.ViewModels
                         case nameof(TriggerConfigItem.DeadZone): LeftTriggerDeadZone = item.DeadZone; break;
                         case nameof(TriggerConfigItem.MaxRange): LeftTriggerMaxRange = item.MaxRange; break;
                         case nameof(TriggerConfigItem.AntiDeadZone): LeftTriggerAntiDeadZone = item.AntiDeadZone; break;
+                        case nameof(TriggerConfigItem.SensitivityCurve): LeftTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
                     break;
                 case 1:
@@ -871,7 +902,13 @@ namespace PadForge.ViewModels
                         case nameof(TriggerConfigItem.DeadZone): RightTriggerDeadZone = item.DeadZone; break;
                         case nameof(TriggerConfigItem.MaxRange): RightTriggerMaxRange = item.MaxRange; break;
                         case nameof(TriggerConfigItem.AntiDeadZone): RightTriggerAntiDeadZone = item.AntiDeadZone; break;
+                        case nameof(TriggerConfigItem.SensitivityCurve): RightTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
+                    break;
+                default:
+                    // vJoy custom triggers 2+: values stored directly on ConfigItem,
+                    // persisted via SettingsService.UpdatePadSettingsFromViewModels.
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
             }
         }
@@ -1278,41 +1315,45 @@ namespace PadForge.ViewModels
             {
                 var (lvx, lox) = ProcessAxisForPreview(
                     DeviceThumbLX + LeftCenterOffsetX / 200.0,
-                    LeftDeadZoneX, LeftAntiDeadZoneX, LeftLinear, LeftMaxRangeX);
+                    LeftDeadZoneX, LeftAntiDeadZoneX, LeftLinear, LeftMaxRangeX, LeftSensitivityCurve);
                 var (lvy, loy) = ProcessAxisForPreview(
                     DeviceThumbLY - LeftCenterOffsetY / 200.0,
-                    LeftDeadZoneY, LeftAntiDeadZoneY, LeftLinear, LeftMaxRangeY);
+                    LeftDeadZoneY, LeftAntiDeadZoneY, LeftLinear, LeftMaxRangeY, LeftSensitivityCurve);
                 StickConfigs[0].LiveX = lvx;
                 StickConfigs[0].LiveY = lvy;
                 StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].RawY = (short)Math.Clamp((0.5 - loy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].HardwareRawX = gp.ThumbLX;
                 StickConfigs[0].HardwareRawY = gp.ThumbLY;
+                UpdateStickCurveDot(StickConfigs[0], DeviceThumbLX, DeviceThumbLY);
             }
             if (StickConfigs.Count > 1)
             {
                 var (rvx, rox) = ProcessAxisForPreview(
                     DeviceThumbRX + RightCenterOffsetX / 200.0,
-                    RightDeadZoneX, RightAntiDeadZoneX, RightLinear, RightMaxRangeX);
+                    RightDeadZoneX, RightAntiDeadZoneX, RightLinear, RightMaxRangeX, RightSensitivityCurve);
                 var (rvy, roy) = ProcessAxisForPreview(
                     DeviceThumbRY - RightCenterOffsetY / 200.0,
-                    RightDeadZoneY, RightAntiDeadZoneY, RightLinear, RightMaxRangeY);
+                    RightDeadZoneY, RightAntiDeadZoneY, RightLinear, RightMaxRangeY, RightSensitivityCurve);
                 StickConfigs[1].LiveX = rvx;
                 StickConfigs[1].LiveY = rvy;
                 StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].RawY = (short)Math.Clamp((0.5 - roy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].HardwareRawX = gp.ThumbRX;
                 StickConfigs[1].HardwareRawY = gp.ThumbRY;
+                UpdateStickCurveDot(StickConfigs[1], DeviceThumbRX, DeviceThumbRY);
             }
             if (TriggerConfigs.Count > 0)
             {
                 TriggerConfigs[0].LiveValue = DeviceLeftTrigger;
                 TriggerConfigs[0].RawValue = gp.LeftTrigger;
+                UpdateTriggerCurveDot(TriggerConfigs[0], DeviceLeftTrigger);
             }
             if (TriggerConfigs.Count > 1)
             {
                 TriggerConfigs[1].LiveValue = DeviceRightTrigger;
                 TriggerConfigs[1].RawValue = gp.RightTrigger;
+                UpdateTriggerCurveDot(TriggerConfigs[1], DeviceRightTrigger);
             }
         }
 
@@ -1326,7 +1367,7 @@ namespace PadForge.ViewModels
         /// to outside the dead zone ring, and outputPosition is the actual processed value.
         /// Both are in 0-1 range where 0.5 = center.
         /// </summary>
-        private static (double visual, double output) ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange)
+        private static (double visual, double output) ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange, double curve = 0)
         {
             double signed = (adjustedNorm - 0.5) * 2.0;
             double sign = Math.Sign(signed);
@@ -1336,7 +1377,7 @@ namespace PadForge.ViewModels
             if (mag < dzNorm)
                 return (0.5, 0.5);
 
-            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100 && curve == 0)
             {
                 double v = Math.Clamp(adjustedNorm, 0.0, 1.0);
                 return (v, v);
@@ -1345,6 +1386,10 @@ namespace PadForge.ViewModels
             double mrNorm = maxRange / 100.0;
             if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
             double remapped = Math.Min((mag - dzNorm) / (mrNorm - dzNorm), 1.0);
+
+            // Apply sensitivity curve to the remapped value.
+            if (curve != 0)
+                remapped = StickConfigItem.ApplyCurve(remapped, curve);
 
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
@@ -1363,6 +1408,38 @@ namespace PadForge.ViewModels
             double visualPos = Math.Clamp(0.5 + sign * visual * 0.5, 0.0, 1.0);
 
             return (visualPos, outputPos);
+        }
+
+        /// <summary>
+        /// Updates the curve chart live dot for a stick config item.
+        /// Uses max(|X|, |Y|) as the input magnitude.
+        /// </summary>
+        private static void UpdateStickCurveDot(StickConfigItem stick, double normX, double normY)
+        {
+            double magX = Math.Abs(normX - 0.5) * 2.0;
+            double magY = Math.Abs(normY - 0.5) * 2.0;
+            double mag = Math.Max(magX, magY);
+            UpdateCurveDot(stick, mag);
+        }
+
+        private static void UpdateCurveDot(StickConfigItem stick, double inputMag)
+        {
+            const int chartSize = 120;
+            const double dotHalf = 4;
+            double t = Math.Clamp(inputMag, 0, 1);
+            double y = StickConfigItem.ApplyCurve(t, stick.SensitivityCurve);
+            stick.LiveCurveX = t * chartSize - dotHalf;
+            stick.LiveCurveY = (1.0 - y) * chartSize - dotHalf;
+        }
+
+        private static void UpdateTriggerCurveDot(TriggerConfigItem trig, double inputNorm)
+        {
+            const int chartSize = 120;
+            const double dotHalf = 4;
+            double t = Math.Clamp(inputNorm, 0, 1);
+            double y = StickConfigItem.ApplyCurve(t, trig.SensitivityCurve);
+            trig.LiveCurveX = t * chartSize - dotHalf;
+            trig.LiveCurveY = (1.0 - y) * chartSize - dotHalf;
         }
 
         // ═══════════════════════════════════════════════
@@ -1392,7 +1469,7 @@ namespace PadForge.ViewModels
                     double normX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
                     var (vx, ox) = ProcessAxisForPreview(
                         normX + stick.CenterOffsetX / 200.0,
-                        stick.DeadZoneX, stick.AntiDeadZoneX, stick.Linear, stick.MaxRangeX);
+                        stick.DeadZoneX, stick.AntiDeadZoneX, stick.Linear, stick.MaxRangeX, stick.SensitivityCurve);
                     stick.LiveX = vx;
                     stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 }
@@ -1402,10 +1479,15 @@ namespace PadForge.ViewModels
                     double normY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
                     var (vy, oy) = ProcessAxisForPreview(
                         normY - stick.CenterOffsetY / 200.0,
-                        stick.DeadZoneY, stick.AntiDeadZoneY, stick.Linear, stick.MaxRangeY);
+                        stick.DeadZoneY, stick.AntiDeadZoneY, stick.Linear, stick.MaxRangeY, stick.SensitivityCurve);
                     stick.LiveY = vy;
                     stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 }
+                // Update curve dot from current stick LiveX/LiveY (already normalized 0-1)
+                double sxMag = Math.Abs(stick.LiveX - 0.5) * 2.0;
+                double syMag = Math.Abs(stick.LiveY - 0.5) * 2.0;
+                double sMag = Math.Max(sxMag, syMag);
+                UpdateCurveDot(stick, sMag);
             }
 
             // Sync trigger config items from raw axes
@@ -1416,6 +1498,7 @@ namespace PadForge.ViewModels
                     // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
                     trig.LiveValue = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
                     trig.RawValue = (ushort)Math.Clamp((int)(trig.LiveValue * 65535), 0, 65535);
+                    UpdateTriggerCurveDot(trig, trig.LiveValue);
                 }
             }
 

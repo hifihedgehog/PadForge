@@ -527,6 +527,12 @@ namespace PadForge
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
 
+                    // For non-Y bidirectional axes (X), clear stale neg descriptor so the
+                    // auto-prompt for the opposite direction fires after the first button
+                    // is recorded (auto-prompt is gated by NegSourceDescriptor being empty).
+                    if (mapping.HasNegDirection && !isYFirstPhase)
+                        mapping.NegSourceDescriptor = string.Empty;
+
                     _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid,
                         negRecording: isYFirstPhase);
                 };

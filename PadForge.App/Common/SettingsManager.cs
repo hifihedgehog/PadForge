@@ -104,44 +104,6 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Finds all online devices. Thread-safe.
-        /// Returns a snapshot (safe to iterate outside the lock).
-        /// </summary>
-        public static List<UserDevice> GetOnlineDevices()
-        {
-            var devices = UserDevices;
-            if (devices == null) return new List<UserDevice>();
-
-            lock (devices.SyncRoot)
-            {
-                return devices.Items.Where(d => d.IsOnline).ToList();
-            }
-        }
-
-        /// <summary>
-        /// Adds a UserDevice if it doesn't already exist (by InstanceGuid).
-        /// Returns the existing or newly added device. Thread-safe.
-        /// </summary>
-        public static UserDevice AddOrGetDevice(UserDevice device)
-        {
-            if (device == null) throw new ArgumentNullException(nameof(device));
-
-            var devices = UserDevices;
-            if (devices == null) return device;
-
-            lock (devices.SyncRoot)
-            {
-                var existing = devices.Items.FirstOrDefault(
-                    d => d.InstanceGuid == device.InstanceGuid);
-                if (existing != null)
-                    return existing;
-
-                devices.Items.Add(device);
-                return device;
-            }
-        }
-
-        /// <summary>
         /// Removes a UserDevice by instance GUID. Thread-safe.
         /// Also removes any associated UserSettings.
         /// </summary>

@@ -9,7 +9,7 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  Step 4: CombineOutputStates
         //  Merges the mapped Gamepad states from all devices assigned to
-        //  each virtual controller slot (0–3) into a single combined state.
+        //  each virtual controller slot (0–15) into a single combined state.
         //
         //  Combination rules:
         //    - Buttons: OR (any device pressing a button activates it)
@@ -18,7 +18,7 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Step 4: For each of the 4 virtual controller slots, find all UserSettings
+        /// Step 4: For each of the 16 virtual controller slots, find all UserSettings
         /// mapped to that slot and combine their output gamepads into a single
         /// <see cref="CombinedOutputStates"/> entry.
         /// </summary>

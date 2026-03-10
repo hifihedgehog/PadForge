@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -542,6 +543,18 @@ namespace PadForge.ViewModels
 
         private bool _swapMotors;
         public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
+
+        public ICommand ResetForceAllCommand => new RelayCommand(() =>
+        {
+            ForceOverallGain = 100;
+            LeftMotorStrength = 100;
+            RightMotorStrength = 100;
+            SwapMotors = false;
+        });
+
+        public ICommand ResetOverallGainCommand => new RelayCommand(() => ForceOverallGain = 100);
+        public ICommand ResetLeftMotorCommand => new RelayCommand(() => LeftMotorStrength = 100);
+        public ICommand ResetRightMotorCommand => new RelayCommand(() => RightMotorStrength = 100);
 
         private double _leftMotorDisplay;
         public double LeftMotorDisplay { get => _leftMotorDisplay; set => SetProperty(ref _leftMotorDisplay, value); }

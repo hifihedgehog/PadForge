@@ -18,10 +18,10 @@ namespace PadForge.Common.Input
     /// Pipeline (runs at ~1000Hz on a background thread):
     ///   Step 1: Enumerate SDL devices, open new ones, close disconnected ones
     ///   Step 2: Read input states from SDL
-    ///   Step 3: Map CustomInputState → XInput Gamepad via PadSetting rules
+    ///   Step 3: Map CustomInputState → OutputState via PadSetting rules
     ///   Step 4: Combine multiple devices per virtual controller slot
-    ///   Step 5: Feed ViGEmBus virtual Xbox 360 controllers
-    ///   Step 6: Retrieve XInput states for UI display
+    ///   Step 5: Feed virtual controllers (ViGEm, vJoy, MIDI)
+    ///   Step 6: Copy combined output states for UI display
     /// 
     /// Thread safety: the background thread writes UserDevice.InputState (atomic reference swap).
     /// The UI thread reads it. Collection modifications to UserDevices use SyncRoot locking.

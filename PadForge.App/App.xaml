@@ -37,7 +37,6 @@
             <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
-            <conv:StringToGeometryConverter x:Key="StringToGeometry" />
 
         </ResourceDictionary>
     </Application.Resources>

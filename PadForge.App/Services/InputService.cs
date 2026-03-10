@@ -2190,7 +2190,7 @@ namespace PadForge.Services
         /// <summary>
         /// Sends a brief test rumble to a specific device (or all devices in a slot).
         /// </summary>
-        /// <param name="padIndex">Pad slot index (0–3).</param>
+        /// <param name="padIndex">Pad slot index (0–15).</param>
         /// <param name="deviceGuid">Optional device GUID to target. When null, rumbles all devices in the slot.</param>
         public void SendTestRumble(int padIndex, Guid? deviceGuid)
         {

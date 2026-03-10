@@ -7,7 +7,7 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// ViewModel for the Dashboard page. Shows an at-a-glance overview
-    /// of all 4 controller slots, engine status, connected devices, and
+    /// of all 16 controller slots, engine status, connected devices, and
     /// ViGEmBus driver status.
     /// </summary>
     public partial class DashboardViewModel : ViewModelBase

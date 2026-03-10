@@ -56,21 +56,19 @@
             <Setter Property="Margin" Value="2,0,0,0"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
-        <Style x:Key="ResetButton" TargetType="Button">
+        <Style x:Key="ResetButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Content" Value="&#xE72C;"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="FontSize" Value="10"/>
             <Setter Property="Padding" Value="4,2"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="ToolTip" Value="Reset"/>
-            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
         </Style>
-        <Style x:Key="ResetAllButton" TargetType="Button">
+        <Style x:Key="ResetAllButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Padding" Value="8,3"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
 
@@ -907,7 +905,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding CenterOffsetXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetCenterOffsetCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset"/>
+                                                <Button Command="{Binding ResetCenterOffsetXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset X"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Center Offset Y:" Style="{StaticResource DzLabel}"/>
@@ -918,6 +916,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding CenterOffsetYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
@@ -928,7 +927,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding DeadZoneXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Dead Zones"/>
+                                                <Button Command="{Binding ResetDeadZoneXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Dead Zone X"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
@@ -939,6 +938,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding DeadZoneYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetDeadZoneYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Dead Zone Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
@@ -949,7 +949,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zones"/>
+                                                <Button Command="{Binding ResetAntiDeadZoneXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zone X"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
@@ -960,6 +960,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetAntiDeadZoneYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zone Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
@@ -977,7 +978,7 @@
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding SensitivityCurveX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity"/>
+                                                <Button Command="{Binding ResetSensitivityXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity X"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Sensitivity Y:" Style="{StaticResource DzLabel}"/>
@@ -986,6 +987,7 @@
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding SensitivityCurveY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
+                                                <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Max Range X:" Style="{StaticResource DzLabel}"/>
@@ -997,7 +999,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range"/>
+                                                <Button Command="{Binding ResetMaxRangeXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range X"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Max Range Y:" Style="{StaticResource DzLabel}"/>
@@ -1009,6 +1011,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range Y"/>
                                             </StackPanel>
                                         </StackPanel>
 

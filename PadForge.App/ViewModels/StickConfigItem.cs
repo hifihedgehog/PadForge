@@ -322,12 +322,17 @@ namespace PadForge.ViewModels
             MaxRangeX = 100; MaxRangeY = 100;
         });
 
-        public ICommand ResetCenterOffsetCommand => new RelayCommand(() => { CenterOffsetX = 0; CenterOffsetY = 0; });
-        public ICommand ResetDeadZoneCommand => new RelayCommand(() => { DeadZoneX = 0; DeadZoneY = 0; });
-        public ICommand ResetAntiDeadZoneCommand => new RelayCommand(() => { AntiDeadZoneX = 0; AntiDeadZoneY = 0; });
+        public ICommand ResetCenterOffsetXCommand => new RelayCommand(() => CenterOffsetX = 0);
+        public ICommand ResetCenterOffsetYCommand => new RelayCommand(() => CenterOffsetY = 0);
+        public ICommand ResetDeadZoneXCommand => new RelayCommand(() => DeadZoneX = 0);
+        public ICommand ResetDeadZoneYCommand => new RelayCommand(() => DeadZoneY = 0);
+        public ICommand ResetAntiDeadZoneXCommand => new RelayCommand(() => AntiDeadZoneX = 0);
+        public ICommand ResetAntiDeadZoneYCommand => new RelayCommand(() => AntiDeadZoneY = 0);
         public ICommand ResetLinearCommand => new RelayCommand(() => Linear = 0);
-        public ICommand ResetSensitivityCommand => new RelayCommand(() => { SensitivityCurveX = 0; SensitivityCurveY = 0; });
-        public ICommand ResetMaxRangeCommand => new RelayCommand(() => { MaxRangeX = 100; MaxRangeY = 100; });
+        public ICommand ResetSensitivityXCommand => new RelayCommand(() => SensitivityCurveX = 0);
+        public ICommand ResetSensitivityYCommand => new RelayCommand(() => SensitivityCurveY = 0);
+        public ICommand ResetMaxRangeXCommand => new RelayCommand(() => MaxRangeX = 100);
+        public ICommand ResetMaxRangeYCommand => new RelayCommand(() => MaxRangeY = 100);
 
         /// <summary>
         /// Starts center calibration by sampling RawX/RawY over ~0.5s (15 frames)

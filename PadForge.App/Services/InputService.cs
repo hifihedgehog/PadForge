@@ -856,6 +856,10 @@ namespace PadForge.Services
             ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
             ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
 
+            // Dead zone shapes.
+            ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
+            ps.RightThumbDeadZoneShape = padVm.RightDeadZoneShape.ToString();
+
             // Anti-dead zones (per-axis).
             ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString();
             ps.LeftThumbAntiDeadZoneY = padVm.LeftAntiDeadZoneY.ToString();
@@ -941,6 +945,8 @@ namespace PadForge.Services
             if (ps == null) return;
 
             // Dead zones.
+            padVm.LeftDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
+            padVm.RightDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
             padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
             padVm.LeftDeadZoneY = TryParseDouble(ps.LeftThumbDeadZoneY, 0);
             padVm.RightDeadZoneX = TryParseDouble(ps.RightThumbDeadZoneX, 0);

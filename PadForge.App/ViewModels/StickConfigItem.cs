@@ -18,7 +18,10 @@ namespace PadForge.ViewModels
     public class StickConfigItem : ObservableObject
     {
         public static string[] CurvePresetNames { get; } =
-            Array.ConvertAll(Common.CurveLut.Presets, p => p.Name);
+            [.. Array.ConvertAll(Common.CurveLut.Presets, p => p.Name), "Custom"];
+
+        public string PresetNameX => Common.CurveLut.MatchPreset(SensitivityCurveX);
+        public string PresetNameY => Common.CurveLut.MatchPreset(SensitivityCurveY);
 
         public string Title { get; }
         public int Index { get; }
@@ -86,14 +89,14 @@ namespace PadForge.ViewModels
         public string SensitivityCurveX
         {
             get => _sensitivityCurveX;
-            set { if (SetProperty(ref _sensitivityCurveX, value ?? "0,0;1,1")) RebuildCurvePoints(); }
+            set { if (SetProperty(ref _sensitivityCurveX, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetNameX)); } }
         }
 
         private string _sensitivityCurveY = "0,0;1,1";
         public string SensitivityCurveY
         {
             get => _sensitivityCurveY;
-            set { if (SetProperty(ref _sensitivityCurveY, value ?? "0,0;1,1")) RebuildCurvePoints(); }
+            set { if (SetProperty(ref _sensitivityCurveY, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetNameY)); } }
         }
 
         private double _maxRangeX = 100;

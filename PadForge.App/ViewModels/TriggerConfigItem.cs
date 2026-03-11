@@ -15,7 +15,9 @@ namespace PadForge.ViewModels
     public class TriggerConfigItem : ObservableObject
     {
         public static string[] CurvePresetNames { get; } =
-            Array.ConvertAll(Common.CurveLut.Presets, p => p.Name);
+            [.. Array.ConvertAll(Common.CurveLut.Presets, p => p.Name), "Custom"];
+
+        public string PresetName => Common.CurveLut.MatchPreset(SensitivityCurve);
 
         public string Title { get; }
         public int Index { get; }
@@ -64,7 +66,7 @@ namespace PadForge.ViewModels
         public string SensitivityCurve
         {
             get => _sensitivityCurve;
-            set { if (SetProperty(ref _sensitivityCurve, value ?? "0,0;1,1")) RebuildCurvePoints(); }
+            set { if (SetProperty(ref _sensitivityCurve, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetName)); } }
         }
 
         // ── Live input for CurveEditor binding ──

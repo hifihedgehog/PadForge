@@ -424,8 +424,10 @@ namespace PadForge.Services
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
                 // Load dead zone settings (independent X/Y).
+                padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
                 padVm.LeftDeadZoneY = TryParseDouble(ps.LeftThumbDeadZoneY, 0);
+                padVm.RightDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
                 padVm.RightDeadZoneX = TryParseDouble(ps.RightThumbDeadZoneX, 0);
                 padVm.RightDeadZoneY = TryParseDouble(ps.RightThumbDeadZoneY, 0);
                 ps.MigrateAntiDeadZones();
@@ -466,6 +468,7 @@ namespace PadForge.Services
                 {
                     if (stick.Index < 2) continue;
                     int g = stick.Index;
+                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetVJoyMapping($"VJoyStick{g}DzShape"));
                     stick.DeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}DzX"), 0);
                     stick.DeadZoneY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}DzY"), 0);
                     stick.AntiDeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
@@ -997,8 +1000,10 @@ namespace PadForge.Services
 
                     // Write dead zone settings (independent X/Y).
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
+                    ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
                     ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString(ic);
                     ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString(ic);
+                    ps.RightThumbDeadZoneShape = padVm.RightDeadZoneShape.ToString();
                     ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString(ic);
                     ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString(ic);
                     ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString(ic);
@@ -1035,6 +1040,7 @@ namespace PadForge.Services
                     {
                         if (stick.Index < 2) continue;
                         int g = stick.Index;
+                        ps.SetVJoyMapping($"VJoyStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
                         ps.SetVJoyMapping($"VJoyStick{g}DzX", stick.DeadZoneX.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}DzY", stick.DeadZoneY.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Data;
 
 namespace PadForge.ViewModels
 {
@@ -574,11 +575,13 @@ namespace PadForge.ViewModels
         /// <summary>Resets all dead zone, anti-dead zone, linear, and trigger settings to defaults.</summary>
         private void ResetDeadZoneSettings()
         {
+            LeftDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             LeftDeadZoneX = 0; LeftDeadZoneY = 0;
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
             LeftMaxRangeX = 100; LeftMaxRangeY = 100;
+            RightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
             RightLinear = 0;
@@ -589,6 +592,9 @@ namespace PadForge.ViewModels
         }
 
         // ── Left Stick ──
+        private int _leftDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
+        public int LeftDeadZoneShape { get => _leftDeadZoneShape; set => SetProperty(ref _leftDeadZoneShape, Math.Clamp(value, 0, 5)); }
+
         private double _leftDeadZoneX;
         public double LeftDeadZoneX { get => _leftDeadZoneX; set => SetProperty(ref _leftDeadZoneX, Math.Clamp(value, 0, 100)); }
 
@@ -605,6 +611,9 @@ namespace PadForge.ViewModels
         public double LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
 
         // ── Right Stick ──
+        private int _rightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
+        public int RightDeadZoneShape { get => _rightDeadZoneShape; set => SetProperty(ref _rightDeadZoneShape, Math.Clamp(value, 0, 5)); }
+
         private double _rightDeadZoneX;
         public double RightDeadZoneX { get => _rightDeadZoneX; set => SetProperty(ref _rightDeadZoneX, Math.Clamp(value, 0, 100)); }
 
@@ -788,6 +797,7 @@ namespace PadForge.ViewModels
                 switch (item.Index)
                 {
                     case 0:
+                        item.DeadZoneShape = (DeadZoneShape)LeftDeadZoneShape;
                         item.DeadZoneX = LeftDeadZoneX;
                         item.DeadZoneY = LeftDeadZoneY;
                         item.AntiDeadZoneX = LeftAntiDeadZoneX;
@@ -801,6 +811,7 @@ namespace PadForge.ViewModels
                         item.CenterOffsetY = LeftCenterOffsetY;
                         break;
                     case 1:
+                        item.DeadZoneShape = (DeadZoneShape)RightDeadZoneShape;
                         item.DeadZoneX = RightDeadZoneX;
                         item.DeadZoneY = RightDeadZoneY;
                         item.AntiDeadZoneX = RightAntiDeadZoneX;
@@ -868,6 +879,7 @@ namespace PadForge.ViewModels
                 case 0:
                     switch (e.PropertyName)
                     {
+                        case nameof(StickConfigItem.DeadZoneShape): LeftDeadZoneShape = (int)item.DeadZoneShape; break;
                         case nameof(StickConfigItem.DeadZoneX): LeftDeadZoneX = item.DeadZoneX; break;
                         case nameof(StickConfigItem.DeadZoneY): LeftDeadZoneY = item.DeadZoneY; break;
                         case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
@@ -884,6 +896,7 @@ namespace PadForge.ViewModels
                 case 1:
                     switch (e.PropertyName)
                     {
+                        case nameof(StickConfigItem.DeadZoneShape): RightDeadZoneShape = (int)item.DeadZoneShape; break;
                         case nameof(StickConfigItem.DeadZoneX): RightDeadZoneX = item.DeadZoneX; break;
                         case nameof(StickConfigItem.DeadZoneY): RightDeadZoneY = item.DeadZoneY; break;
                         case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
@@ -1338,12 +1351,14 @@ namespace PadForge.ViewModels
             // Sync live values to dynamic config items (full processing pipeline for preview)
             if (StickConfigs.Count > 0)
             {
-                var (lvx, lox) = ProcessAxisForPreview(
+                var (lvx, lox, lvy, loy) = ProcessStickForPreview(
                     DeviceThumbLX + LeftCenterOffsetX / 200.0,
-                    LeftDeadZoneX, LeftAntiDeadZoneX, LeftLinear, LeftMaxRangeX, LeftSensitivityCurveX);
-                var (lvy, loy) = ProcessAxisForPreview(
                     DeviceThumbLY - LeftCenterOffsetY / 200.0,
-                    LeftDeadZoneY, LeftAntiDeadZoneY, LeftLinear, LeftMaxRangeY, LeftSensitivityCurveY);
+                    LeftDeadZoneX, LeftDeadZoneY,
+                    LeftAntiDeadZoneX, LeftAntiDeadZoneY,
+                    LeftLinear, LeftMaxRangeX, LeftMaxRangeY,
+                    LeftSensitivityCurveX, LeftSensitivityCurveY,
+                    (DeadZoneShape)LeftDeadZoneShape);
                 StickConfigs[0].LiveX = lvx;
                 StickConfigs[0].LiveY = lvy;
                 StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
@@ -1354,12 +1369,14 @@ namespace PadForge.ViewModels
             }
             if (StickConfigs.Count > 1)
             {
-                var (rvx, rox) = ProcessAxisForPreview(
+                var (rvx, rox, rvy, roy) = ProcessStickForPreview(
                     DeviceThumbRX + RightCenterOffsetX / 200.0,
-                    RightDeadZoneX, RightAntiDeadZoneX, RightLinear, RightMaxRangeX, RightSensitivityCurveX);
-                var (rvy, roy) = ProcessAxisForPreview(
                     DeviceThumbRY - RightCenterOffsetY / 200.0,
-                    RightDeadZoneY, RightAntiDeadZoneY, RightLinear, RightMaxRangeY, RightSensitivityCurveY);
+                    RightDeadZoneX, RightDeadZoneY,
+                    RightAntiDeadZoneX, RightAntiDeadZoneY,
+                    RightLinear, RightMaxRangeX, RightMaxRangeY,
+                    RightSensitivityCurveX, RightSensitivityCurveY,
+                    (DeadZoneShape)RightDeadZoneShape);
                 StickConfigs[1].LiveX = rvx;
                 StickConfigs[1].LiveY = rvy;
                 StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
@@ -1435,6 +1452,93 @@ namespace PadForge.ViewModels
             double visualPos = Math.Clamp(0.5 + sign * visual * 0.5, 0.0, 1.0);
 
             return (visualPos, outputPos);
+        }
+
+        /// <summary>
+        /// Processes both stick axes together through the shape-aware dead zone pipeline.
+        /// Uses the same algorithms as Step3's ApplyDeadZone for preview consistency.
+        /// </summary>
+        private static (double visualX, double outputX, double visualY, double outputY)
+            ProcessStickForPreview(
+                double adjNormX, double adjNormY,
+                double deadZoneX, double deadZoneY,
+                double antiDeadZoneX, double antiDeadZoneY,
+                double linear, double maxRangeX, double maxRangeY,
+                double curveX, double curveY,
+                DeadZoneShape shape)
+        {
+            // Axial: use independent per-axis processing (matches legacy behavior exactly).
+            if (shape == DeadZoneShape.Axial)
+            {
+                var (vx, ox) = ProcessAxisForPreview(adjNormX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curveX);
+                var (vy, oy) = ProcessAxisForPreview(adjNormY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curveY);
+                return (vx, ox, vy, oy);
+            }
+
+            // Convert to signed [-1, 1]
+            double sx = (adjNormX - 0.5) * 2.0;
+            double sy = (adjNormY - 0.5) * 2.0;
+            double signX = Math.Sign(sx), signY = Math.Sign(sy);
+            double magX = Math.Abs(sx), magY = Math.Abs(sy);
+            double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
+            double mrXn = maxRangeX / 100.0, mrYn = maxRangeY / 100.0;
+            if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
+            if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
+
+            double remX, remY;
+            switch (shape)
+            {
+                case DeadZoneShape.Radial:
+                    Common.Input.InputManager.ComputeRadial(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn, false, out remX, out remY);
+                    break;
+                case DeadZoneShape.ScaledRadial:
+                    Common.Input.InputManager.ComputeRadial(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn, true, out remX, out remY);
+                    break;
+                case DeadZoneShape.SlopedAxial:
+                    Common.Input.InputManager.ComputeSloped(magX, magY, dzXn, dzYn, mrXn, mrYn, false, out remX, out remY);
+                    break;
+                case DeadZoneShape.SlopedScaledAxial:
+                    Common.Input.InputManager.ComputeSloped(magX, magY, dzXn, dzYn, mrXn, mrYn, true, out remX, out remY);
+                    break;
+                case DeadZoneShape.Hybrid:
+                    Common.Input.InputManager.ComputeHybrid(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn, out remX, out remY, out signX, out signY);
+                    break;
+                default:
+                    remX = magX; remY = magY;
+                    break;
+            }
+
+            // Post-DZ per axis: curve → ADZ → linear (mirrors ApplyPostDeadZone)
+            double outX = PostDzForPreview(remX, curveX, antiDeadZoneX, linear);
+            double outY = PostDzForPreview(remY, curveY, antiDeadZoneY, linear);
+
+            double outputPosX = Math.Clamp(0.5 + signX * outX * 0.5, 0.0, 1.0);
+            double outputPosY = Math.Clamp(0.5 + signY * outY * 0.5, 0.0, 1.0);
+
+            // Visual: map output to [dz..1] range so dot jumps to outside DZ ring.
+            // For radial shapes, use the average DZ for the visual ring offset.
+            double avgDz = Math.Max(dzXn, dzYn);
+            double visX = avgDz + outX * (1.0 - avgDz);
+            double visY = avgDz + outY * (1.0 - avgDz);
+            double visualPosX = Math.Clamp(0.5 + signX * visX * 0.5, 0.0, 1.0);
+            double visualPosY = Math.Clamp(0.5 + signY * visY * 0.5, 0.0, 1.0);
+
+            return (visualPosX, outputPosX, visualPosY, outputPosY);
+        }
+
+        private static double PostDzForPreview(double remapped, double curve, double antiDeadZone, double linear)
+        {
+            if (remapped <= 0 && antiDeadZone <= 0) return 0;
+            if (curve != 0)
+                remapped = StickConfigItem.ApplyCurve(remapped, curve);
+            double adzNorm = antiDeadZone / 100.0;
+            double output = adzNorm + remapped * (1.0 - adzNorm);
+            if (linear > 0)
+            {
+                double lf = linear / 100.0;
+                output = remapped * lf + output * (1.0 - lf);
+            }
+            return output;
         }
 
         /// <summary>
@@ -1548,27 +1652,27 @@ namespace PadForge.ViewModels
             // Sync stick config items from raw axes
             foreach (var stick in StickConfigs)
             {
-                if (stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length)
-                {
-                    stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
-                    double normX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
-                    var (vx, ox) = ProcessAxisForPreview(
-                        normX + stick.CenterOffsetX / 200.0,
-                        stick.DeadZoneX, stick.AntiDeadZoneX, stick.Linear, stick.MaxRangeX, stick.SensitivityCurveX);
-                    stick.LiveX = vx;
-                    stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                }
-                if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
-                {
-                    stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
-                    double normY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
-                    var (vy, oy) = ProcessAxisForPreview(
-                        normY - stick.CenterOffsetY / 200.0,
-                        stick.DeadZoneY, stick.AntiDeadZoneY, stick.Linear, stick.MaxRangeY, stick.SensitivityCurveY);
-                    stick.LiveY = vy;
-                    stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                }
-                // Update per-axis curve dots from current stick position
+                bool hasX = stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length;
+                bool hasY = stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length;
+
+                if (hasX) stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
+                if (hasY) stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
+
+                double normX = hasX ? (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+                double normY = hasY ? (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+
+                var (vx, ox, vy, oy) = ProcessStickForPreview(
+                    normX + stick.CenterOffsetX / 200.0,
+                    normY - stick.CenterOffsetY / 200.0,
+                    stick.DeadZoneX, stick.DeadZoneY,
+                    stick.AntiDeadZoneX, stick.AntiDeadZoneY,
+                    stick.Linear, stick.MaxRangeX, stick.MaxRangeY,
+                    stick.SensitivityCurveX, stick.SensitivityCurveY,
+                    stick.DeadZoneShape);
+
+                if (hasX) { stick.LiveX = vx; stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue); }
+                if (hasY) { stick.LiveY = vy; stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue); }
+
                 UpdateStickCurveDots(stick, stick.LiveX, stick.LiveY);
             }
 

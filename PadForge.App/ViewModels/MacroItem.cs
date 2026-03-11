@@ -418,6 +418,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsAxisType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
                     OnPropertyChanged(nameof(IsAppVolumeType));
+                    OnPropertyChanged(nameof(IsMouseMoveType));
+                    OnPropertyChanged(nameof(IsMouseButtonType));
                 }
             }
         }
@@ -432,7 +434,7 @@ namespace PadForge.ViewModels
 
         /// <summary>True when Type is ButtonPress, KeyPress, or Delay.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
 
         /// <summary>True when Type is AxisSet.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -445,6 +447,14 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is AppVolume.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAppVolumeType => _type == MacroActionType.AppVolume;
+
+        /// <summary>True when Type is MouseMove or MouseScroll (continuous axis-to-mouse).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseMoveType => _type == MacroActionType.MouseMove || _type == MacroActionType.MouseScroll;
+
+        /// <summary>True when Type is MouseButtonPress or MouseButtonRelease.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseButtonType => _type == MacroActionType.MouseButtonPress || _type == MacroActionType.MouseButtonRelease;
 
         private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
 
@@ -800,6 +810,38 @@ namespace PadForge.ViewModels
                     AudioProcessNames.Add(name);
             });
 
+        // ── Mouse properties ──
+
+        private float _mouseSensitivity = 10f;
+
+        /// <summary>For MouseMove/MouseScroll: pixels (or scroll units) per frame at full deflection. Range 1-100.</summary>
+        public float MouseSensitivity
+        {
+            get => _mouseSensitivity;
+            set
+            {
+                if (SetProperty(ref _mouseSensitivity, Math.Clamp(value, 1f, 100f)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>Fractional pixel/scroll accumulator for sub-pixel precision.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal float MouseAccumulator;
+
+        private MacroMouseButton _mouseButton = MacroMouseButton.Left;
+
+        /// <summary>For MouseButtonPress/MouseButtonRelease: which mouse button.</summary>
+        public MacroMouseButton MouseButton
+        {
+            get => _mouseButton;
+            set
+            {
+                if (SetProperty(ref _mouseButton, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         /// <summary>Human-readable display text for the action list.</summary>
         public string DisplayText
         {
@@ -821,6 +863,10 @@ namespace PadForge.ViewModels
                     MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
                         ? $"App Volume \u2190 {_axisTarget}"
                         : $"App Volume ({_processName}) \u2190 {_axisTarget}",
+                    MacroActionType.MouseMove => $"Mouse Move \u2190 {_axisTarget} (speed {_mouseSensitivity:F0})",
+                    MacroActionType.MouseButtonPress => $"Mouse Press {_mouseButton}",
+                    MacroActionType.MouseButtonRelease => $"Mouse Release {_mouseButton}",
+                    MacroActionType.MouseScroll => $"Mouse Scroll \u2190 {_axisTarget} (speed {_mouseSensitivity:F0})",
                     _ => "Unknown action"
                 };
             }
@@ -899,7 +945,28 @@ namespace PadForge.ViewModels
         SystemVolume,
 
         /// <summary>Continuously map a source axis value to a specific application's volume in the Windows mixer.</summary>
-        AppVolume
+        AppVolume,
+
+        /// <summary>Continuously map a source axis to mouse cursor movement.</summary>
+        MouseMove,
+
+        /// <summary>Press a mouse button via SendInput.</summary>
+        MouseButtonPress,
+
+        /// <summary>Release a mouse button via SendInput.</summary>
+        MouseButtonRelease,
+
+        /// <summary>Continuously map a source axis to mouse scroll wheel.</summary>
+        MouseScroll
+    }
+
+    public enum MacroMouseButton
+    {
+        Left,
+        Right,
+        Middle,
+        X1,
+        X2
     }
 
     public enum MacroAxisTarget

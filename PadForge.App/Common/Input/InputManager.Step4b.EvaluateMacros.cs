@@ -307,6 +307,7 @@ namespace PadForge.Common.Input
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
+                    ResetMouseAccumulators(macro);
                 }
 
                 // For WhileHeld + UntilRelease: stop when trigger is released.
@@ -452,7 +453,51 @@ namespace PadForge.Common.Input
                     if (!string.IsNullOrEmpty(action.ProcessName))
                         SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget), action.ProcessName);
                     break;
+
+                case MacroActionType.MouseMove:
+                {
+                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
+                    break;
+                }
+
+                case MacroActionType.MouseButtonPress:
+                    if (actionElapsed < 1)
+                        SendMouseButtonInput(action.MouseButton, down: true);
+                    if (actionElapsed >= action.DurationMs)
+                    {
+                        SendMouseButtonInput(action.MouseButton, down: false);
+                        AdvanceAction(macro);
+                    }
+                    break;
+
+                case MacroActionType.MouseButtonRelease:
+                    SendMouseButtonInput(action.MouseButton, down: false);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.MouseScroll:
+                {
+                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    if (delta != 0)
+                        SendMouseScrollInput(delta * 120);
+                    break;
+                }
             }
+        }
+
+        /// <summary>Resets mouse accumulators on all actions when a macro starts/restarts.</summary>
+        private static void ResetMouseAccumulators(MacroItem macro)
+        {
+            foreach (var action in macro.Actions)
+                action.MouseAccumulator = 0f;
         }
 
         /// <summary>
@@ -543,6 +588,7 @@ namespace PadForge.Common.Input
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
+                    ResetMouseAccumulators(macro);
                 }
 
                 if (macro.IsExecuting &&
@@ -687,6 +733,43 @@ namespace PadForge.Common.Input
                     if (!string.IsNullOrEmpty(action.ProcessName))
                         SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget), action.ProcessName);
                     break;
+
+                case MacroActionType.MouseMove:
+                {
+                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
+                    break;
+                }
+
+                case MacroActionType.MouseButtonPress:
+                    if (actionElapsed < 1)
+                        SendMouseButtonInput(action.MouseButton, down: true);
+                    if (actionElapsed >= action.DurationMs)
+                    {
+                        SendMouseButtonInput(action.MouseButton, down: false);
+                        AdvanceAction(macro);
+                    }
+                    break;
+
+                case MacroActionType.MouseButtonRelease:
+                    SendMouseButtonInput(action.MouseButton, down: false);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.MouseScroll:
+                {
+                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    if (delta != 0)
+                        SendMouseScrollInput(delta * 120);
+                    break;
+                }
             }
         }
 
@@ -892,6 +975,95 @@ namespace PadForge.Common.Input
                 return 0f;
             // Raw axes are short (-32768..32767) → 0..1
             return (raw.Axes[axisIndex] + 32768f) / 65535f;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Mouse output for MouseMove / MouseButton / MouseScroll
+        // ─────────────────────────────────────────────
+
+        private const uint INPUT_MOUSE = 0;
+        private const uint MOUSEEVENTF_MOVE = 0x0001;
+        private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
+        private const uint MOUSEEVENTF_LEFTUP = 0x0004;
+        private const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        private const uint MOUSEEVENTF_RIGHTUP = 0x0010;
+        private const uint MOUSEEVENTF_MIDDLEDOWN = 0x0020;
+        private const uint MOUSEEVENTF_MIDDLEUP = 0x0040;
+        private const uint MOUSEEVENTF_XDOWN = 0x0080;
+        private const uint MOUSEEVENTF_XUP = 0x0100;
+        private const uint MOUSEEVENTF_WHEEL = 0x0800;
+
+        private static void SendMouseMoveInput(int dx, int dy)
+        {
+            if (dx == 0 && dy == 0) return;
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        private static void SendMouseButtonInput(MacroMouseButton button, bool down)
+        {
+            uint flags;
+            uint mouseData = 0;
+            switch (button)
+            {
+                case MacroMouseButton.Left:   flags = down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP; break;
+                case MacroMouseButton.Right:  flags = down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP; break;
+                case MacroMouseButton.Middle: flags = down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP; break;
+                case MacroMouseButton.X1:     flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; mouseData = 1; break;
+                case MacroMouseButton.X2:     flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; mouseData = 2; break;
+                default: return;
+            }
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion { mi = new MOUSEINPUT { dwFlags = flags, mouseData = mouseData } }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        private static void SendMouseScrollInput(int amount)
+        {
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)amount, dwFlags = MOUSEEVENTF_WHEEL } }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        /// <summary>
+        /// Reads a source axis as a signed float (-1.0..+1.0) for mouse delta calculation.
+        /// Sticks: -32768..32767 → -1..+1. Triggers: 0..65535 → 0..+1 (unidirectional).
+        /// </summary>
+        private static float ReadAxisAsMouse(in Gamepad gp, MacroAxisTarget target) => target switch
+        {
+            MacroAxisTarget.LeftStickX   => gp.ThumbLX / 32767f,
+            MacroAxisTarget.LeftStickY   => gp.ThumbLY / 32767f,
+            MacroAxisTarget.RightStickX  => gp.ThumbRX / 32767f,
+            MacroAxisTarget.RightStickY  => gp.ThumbRY / 32767f,
+            MacroAxisTarget.LeftTrigger  => gp.LeftTrigger / 65535f,
+            MacroAxisTarget.RightTrigger => gp.RightTrigger / 65535f,
+            _ => 0f
+        };
+
+        private static float ReadAxisAsMouseRaw(in VJoyRawState raw, MacroAxisTarget target)
+        {
+            int axisIndex = target switch
+            {
+                MacroAxisTarget.LeftStickX   => 0,
+                MacroAxisTarget.LeftStickY   => 1,
+                MacroAxisTarget.RightStickX  => 3,
+                MacroAxisTarget.RightStickY  => 4,
+                MacroAxisTarget.LeftTrigger   => 2,
+                MacroAxisTarget.RightTrigger  => 5,
+                _ => -1
+            };
+            if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length) return 0f;
+            return raw.Axes[axisIndex] / 32767f;
         }
 
         // ─────────────────────────────────────────────

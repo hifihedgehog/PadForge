@@ -33,6 +33,8 @@
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
             <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
+            <conv:CrossGeometryConverter x:Key="CrossGeometryConverter" />
+            <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />

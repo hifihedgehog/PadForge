@@ -630,22 +630,22 @@ namespace PadForge.ViewModels
         private double _rightLinear;
         public double RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
 
-        // ── Sensitivity Curves (per-axis for sticks) ──
-        private double _leftSensitivityCurveX;
-        public double LeftSensitivityCurveX { get => _leftSensitivityCurveX; set => SetProperty(ref _leftSensitivityCurveX, Math.Clamp(value, -100, 100)); }
-        private double _leftSensitivityCurveY;
-        public double LeftSensitivityCurveY { get => _leftSensitivityCurveY; set => SetProperty(ref _leftSensitivityCurveY, Math.Clamp(value, -100, 100)); }
+        // ── Sensitivity Curves (per-axis for sticks, serialized control point strings) ──
+        private string _leftSensitivityCurveX = "0,0;1,1";
+        public string LeftSensitivityCurveX { get => _leftSensitivityCurveX; set => SetProperty(ref _leftSensitivityCurveX, value ?? "0,0;1,1"); }
+        private string _leftSensitivityCurveY = "0,0;1,1";
+        public string LeftSensitivityCurveY { get => _leftSensitivityCurveY; set => SetProperty(ref _leftSensitivityCurveY, value ?? "0,0;1,1"); }
 
-        private double _rightSensitivityCurveX;
-        public double RightSensitivityCurveX { get => _rightSensitivityCurveX; set => SetProperty(ref _rightSensitivityCurveX, Math.Clamp(value, -100, 100)); }
-        private double _rightSensitivityCurveY;
-        public double RightSensitivityCurveY { get => _rightSensitivityCurveY; set => SetProperty(ref _rightSensitivityCurveY, Math.Clamp(value, -100, 100)); }
+        private string _rightSensitivityCurveX = "0,0;1,1";
+        public string RightSensitivityCurveX { get => _rightSensitivityCurveX; set => SetProperty(ref _rightSensitivityCurveX, value ?? "0,0;1,1"); }
+        private string _rightSensitivityCurveY = "0,0;1,1";
+        public string RightSensitivityCurveY { get => _rightSensitivityCurveY; set => SetProperty(ref _rightSensitivityCurveY, value ?? "0,0;1,1"); }
 
-        private double _leftTriggerSensitivityCurve;
-        public double LeftTriggerSensitivityCurve { get => _leftTriggerSensitivityCurve; set => SetProperty(ref _leftTriggerSensitivityCurve, Math.Clamp(value, -100, 100)); }
+        private string _leftTriggerSensitivityCurve = "0,0;1,1";
+        public string LeftTriggerSensitivityCurve { get => _leftTriggerSensitivityCurve; set => SetProperty(ref _leftTriggerSensitivityCurve, value ?? "0,0;1,1"); }
 
-        private double _rightTriggerSensitivityCurve;
-        public double RightTriggerSensitivityCurve { get => _rightTriggerSensitivityCurve; set => SetProperty(ref _rightTriggerSensitivityCurve, Math.Clamp(value, -100, 100)); }
+        private string _rightTriggerSensitivityCurve = "0,0;1,1";
+        public string RightTriggerSensitivityCurve { get => _rightTriggerSensitivityCurve; set => SetProperty(ref _rightTriggerSensitivityCurve, value ?? "0,0;1,1"); }
 
         // ── Max Range ──
         private double _leftMaxRangeX = 100;
@@ -1599,11 +1599,10 @@ namespace PadForge.ViewModels
             return (outputPosX, outputPosX, outputPosY, outputPosY);
         }
 
-        private static double PostDzForPreview(double remapped, double curve, double antiDeadZone, double linear)
+        private static double PostDzForPreview(double remapped, string curveString, double antiDeadZone, double linear)
         {
             if (remapped <= 0 && antiDeadZone <= 0) return 0;
-            if (curve != 0)
-                remapped = StickConfigItem.ApplyCurve(remapped, curve);
+            remapped = StickConfigItem.ApplyCurve(remapped, curveString);
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
             if (linear > 0)
@@ -1615,69 +1614,23 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Updates the curve chart live dots for a stick config item (one per axis).
+        /// <summary>
+        /// Updates the CurveEditor live input values for a stick config item.
         /// normX/normY are 0-1 normalized where 0.5 = center.
-        /// Charts are signed (-1..+1), so the dot position reflects the signed input.
+        /// CurveEditor handles the dot rendering internally.
         /// </summary>
         private static void UpdateStickCurveDots(StickConfigItem stick, double normX, double normY)
         {
-            const int chartSize = 96;
-            const double dotHalf = 3.5;
-            double half = chartSize / 2.0;
-
-            // X axis: match BuildSignedCurvePoints logic (dead zone + max range + curve)
+            // Signed input for the CurveEditor LiveInput property
             double signedX = (normX - 0.5) * 2.0;
-            double signX = Math.Sign(signedX);
-            double magX = Math.Abs(signedX);
-            double dzX = stick.DeadZoneX / 100.0;
-            double mrX = stick.MaxRangeX / 100.0;
-            if (mrX <= dzX) mrX = dzX + 0.01;
-            double outX;
-            if (magX < dzX) { outX = 0; }
-            else
-            {
-                double remapped = Math.Min((magX - dzX) / (mrX - dzX), 1.0);
-                outX = signX * StickConfigItem.ApplyCurve(remapped, stick.SensitivityCurveX);
-            }
-            stick.CurveXDotLeft = (signedX + 1.0) * half - dotHalf;
-            stick.CurveXDotTop = (1.0 - outX) * half - dotHalf;
-
-            // Y axis: same logic with Y parameters.
-            // Negate so stick-up (normY→0) plots on the positive (right) side of the chart.
             double signedY = -((normY - 0.5) * 2.0);
-            double signY = Math.Sign(signedY);
-            double magY = Math.Abs(signedY);
-            double dzY = stick.DeadZoneY / 100.0;
-            double mrY = stick.MaxRangeY / 100.0;
-            if (mrY <= dzY) mrY = dzY + 0.01;
-            double outY;
-            if (magY < dzY) { outY = 0; }
-            else
-            {
-                double remapped = Math.Min((magY - dzY) / (mrY - dzY), 1.0);
-                outY = signY * StickConfigItem.ApplyCurve(remapped, stick.SensitivityCurveY);
-            }
-            stick.CurveYDotLeft = (signedY + 1.0) * half - dotHalf;
-            stick.CurveYDotTop = (1.0 - outY) * half - dotHalf;
+            stick.LiveInputX = signedX;
+            stick.LiveInputY = signedY;
         }
 
         private static void UpdateTriggerCurveDot(TriggerConfigItem trig, double inputNorm)
         {
-            const int chartSize = 120;
-            const double dotHalf = 4;
-            double t = Math.Clamp(inputNorm, 0, 1);
-            double dz = trig.DeadZone / 100.0;
-            double mr = trig.MaxRange / 100.0;
-            if (mr <= dz) mr = dz + 0.01;
-            double y;
-            if (t < dz) { y = 0; }
-            else
-            {
-                double remapped = Math.Min((t - dz) / (mr - dz), 1.0);
-                y = StickConfigItem.ApplyCurve(remapped, trig.SensitivityCurve);
-            }
-            trig.LiveCurveX = t * chartSize - dotHalf;
-            trig.LiveCurveY = (1.0 - y) * chartSize - dotHalf;
+            trig.LiveInputForCurve = Math.Clamp(inputNorm, 0, 1);
         }
 
         /// <summary>

@@ -959,13 +959,13 @@ namespace PadForge.Services
             padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
             padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
 
-            // Sensitivity curves.
-            padVm.LeftSensitivityCurveX = TryParseDouble(ps.LeftThumbSensitivityCurveX, 0);
-            padVm.LeftSensitivityCurveY = TryParseDouble(ps.LeftThumbSensitivityCurveY, 0);
-            padVm.RightSensitivityCurveX = TryParseDouble(ps.RightThumbSensitivityCurveX, 0);
-            padVm.RightSensitivityCurveY = TryParseDouble(ps.RightThumbSensitivityCurveY, 0);
-            padVm.LeftTriggerSensitivityCurve = TryParseDouble(ps.LeftTriggerSensitivityCurve, 0);
-            padVm.RightTriggerSensitivityCurve = TryParseDouble(ps.RightTriggerSensitivityCurve, 0);
+            // Sensitivity curves (string format: control points "x,y;x,y;..." or legacy single number).
+            padVm.LeftSensitivityCurveX = ps.LeftThumbSensitivityCurveX ?? "0,0;1,1";
+            padVm.LeftSensitivityCurveY = ps.LeftThumbSensitivityCurveY ?? "0,0;1,1";
+            padVm.RightSensitivityCurveX = ps.RightThumbSensitivityCurveX ?? "0,0;1,1";
+            padVm.RightSensitivityCurveY = ps.RightThumbSensitivityCurveY ?? "0,0;1,1";
+            padVm.LeftTriggerSensitivityCurve = ps.LeftTriggerSensitivityCurve ?? "0,0;1,1";
+            padVm.RightTriggerSensitivityCurve = ps.RightTriggerSensitivityCurve ?? "0,0;1,1";
 
             // Max range.
             padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);

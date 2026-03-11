@@ -922,13 +922,14 @@
                                                 <TextBlock Text="Dead Zone Shape:" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox SelectedIndex="{Binding DeadZoneShapeIndex, Mode=TwoWay}"
                                                           Width="200" VerticalAlignment="Center">
-                                                    <ComboBoxItem Content="Axial"/>
-                                                    <ComboBoxItem Content="Radial"/>
                                                     <ComboBoxItem Content="Scaled Radial"/>
-                                                    <ComboBoxItem Content="Sloped Axial"/>
-                                                    <ComboBoxItem Content="Sloped Scaled Axial"/>
+                                                    <ComboBoxItem Content="Radial"/>
+                                                    <ComboBoxItem Content="Axial"/>
                                                     <ComboBoxItem Content="Hybrid"/>
+                                                    <ComboBoxItem Content="Sloped Scaled Axial"/>
+                                                    <ComboBoxItem Content="Sloped Axial"/>
                                                 </ComboBox>
+                                                <Button Command="{Binding ResetDeadZoneShapeCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset to Scaled Radial"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
@@ -1042,9 +1043,21 @@
                                                         <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                                                  StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
-                                                        <!-- Dead zone rectangle (per-axis dead zone is rectangular, not circular) -->
+                                                        <!-- Dead zone overlay: Cross for Axial, Ellipse for Radial, Rectangle for Sloped -->
+
+                                                        <!-- Axial: cross arms (yellow) — movement occurs but snapped to axis -->
+                                                        <Path Fill="#20FFC107" Stroke="#50FFC107" StrokeThickness="1"
+                                                              Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Path.Data>
+                                                                <MultiBinding Converter="{StaticResource CrossGeometryConverter}">
+                                                                    <Binding Path="DeadZoneX"/>
+                                                                    <Binding Path="DeadZoneY"/>
+                                                                </MultiBinding>
+                                                            </Path.Data>
+                                                        </Path>
+                                                        <!-- Axial: center rectangle (red) — fully dead, no output -->
                                                         <Rectangle Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                   Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Rectangle.Width>
                                                                 <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
                                                             </Rectangle.Width>
@@ -1064,6 +1077,63 @@
                                                             <Canvas.Left>100</Canvas.Left>
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Rectangle>
+
+                                                        <!-- Radial: ellipse/circle -->
+                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
+                                                                 Visibility="{Binding IsRadialShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Ellipse.Width>
+                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Width>
+                                                            <Ellipse.Height>
+                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Height>
+                                                            <Ellipse.RenderTransform>
+                                                                <TranslateTransform>
+                                                                    <TranslateTransform.X>
+                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.X>
+                                                                    <TranslateTransform.Y>
+                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.Y>
+                                                                </TranslateTransform>
+                                                            </Ellipse.RenderTransform>
+                                                            <Canvas.Left>100</Canvas.Left>
+                                                            <Canvas.Top>100</Canvas.Top>
+                                                        </Ellipse>
+
+                                                        <!-- Sloped / Hybrid: 4 triangular wedges (yellow) — axis-snapped regions -->
+                                                        <Path Fill="#20FFC107" Stroke="#50FFC107" StrokeThickness="1"
+                                                              Visibility="{Binding HasSlopedWedges, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Path.Data>
+                                                                <MultiBinding Converter="{StaticResource SlopedWedgeGeometryConverter}">
+                                                                    <Binding Path="DeadZoneX"/>
+                                                                    <Binding Path="DeadZoneY"/>
+                                                                </MultiBinding>
+                                                            </Path.Data>
+                                                        </Path>
+
+                                                        <!-- Hybrid: circle (red) — fully dead center from radial stage -->
+                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
+                                                                 Visibility="{Binding IsHybridShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Ellipse.Width>
+                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Width>
+                                                            <Ellipse.Height>
+                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Height>
+                                                            <Ellipse.RenderTransform>
+                                                                <TranslateTransform>
+                                                                    <TranslateTransform.X>
+                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.X>
+                                                                    <TranslateTransform.Y>
+                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.Y>
+                                                                </TranslateTransform>
+                                                            </Ellipse.RenderTransform>
+                                                            <Canvas.Left>100</Canvas.Left>
+                                                            <Canvas.Top>100</Canvas.Top>
+                                                        </Ellipse>
                                                         <!-- Crosshair -->
                                                         <Line X1="100" Y1="0" X2="100" Y2="200"
                                                               Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"

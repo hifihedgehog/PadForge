@@ -917,7 +917,7 @@ namespace PadForge.Common.Input
         internal static DeadZoneShape ParseDeadZoneShape(string value)
         {
             if (string.IsNullOrEmpty(value)) return DeadZoneShape.ScaledRadial;
-            if (int.TryParse(value, out int v) && v >= 0 && v <= 5)
+            if (int.TryParse(value, out int v) && Enum.IsDefined(typeof(DeadZoneShape), v))
                 return (DeadZoneShape)v;
             return DeadZoneShape.ScaledRadial;
         }

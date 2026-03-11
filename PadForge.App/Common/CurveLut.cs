@@ -92,12 +92,22 @@ namespace PadForge.Common
             return false;
         }
 
+        /// <summary>Normalizes a curve string by round-tripping through Parse→Serialize.
+        /// Converts old-format values (e.g. "0") to canonical form (e.g. "0,0;1,1").</summary>
+        public static string Normalize(string curveString)
+        {
+            if (string.IsNullOrEmpty(curveString)) return "0,0;1,1";
+            var points = Parse(curveString);
+            return Serialize(points);
+        }
+
         /// <summary>Returns the preset name matching a curve string, or "Custom" if none match.</summary>
         public static string MatchPreset(string curveString)
         {
             if (string.IsNullOrEmpty(curveString)) return Presets[0].Name; // Linear
+            var normalized = Normalize(curveString);
             foreach (var (name, serialized) in Presets)
-                if (curveString == serialized) return name;
+                if (normalized == serialized) return name;
             return "Custom";
         }
 

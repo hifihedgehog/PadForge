@@ -66,6 +66,8 @@ namespace PadForge.Controls
         private readonly Line _gridV25 = new();
         private readonly Line _gridV75 = new();
         private readonly Ellipse _liveDot = new();
+        private Brush _gridBrush;
+        private Brush _accentBrush;
 
         private const double PointRadius = 5;
         private const double HitRadius = 8;
@@ -86,8 +88,14 @@ namespace PadForge.Controls
             canvas.Children.Clear();
             _pointEllipses.Clear();
 
-            var gridBrush = (Brush)FindResource("ControlStrokeColorSecondaryBrush");
-            var accentBrush = (Brush)FindResource("SystemControlHighlightAccentBrush");
+            var gridBrush = TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
+                ?? Application.Current.TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
+                ?? new SolidColorBrush(Color.FromRgb(0x5C, 0x5C, 0x5C));
+            var accentBrush = TryFindResource("SystemControlHighlightAccentBrush") as Brush
+                ?? Application.Current.TryFindResource("SystemControlHighlightAccentBrush") as Brush
+                ?? new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD7));
+            _gridBrush = gridBrush;
+            _accentBrush = accentBrush;
 
             // Grid lines at 25%/75%
             SetupLine(_gridV25, gridBrush, 0.5, true); canvas.Children.Add(_gridV25);
@@ -281,7 +289,7 @@ namespace PadForge.Controls
                 ChartCanvas.Children.Remove(e);
             _pointEllipses.Clear();
 
-            var accentBrush = (Brush)FindResource("SystemControlHighlightAccentBrush");
+            var accentBrush = _accentBrush ?? Brushes.DodgerBlue;
 
             for (int i = 0; i < _controlPoints.Count; i++)
             {

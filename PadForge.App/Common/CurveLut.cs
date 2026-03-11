@@ -92,6 +92,15 @@ namespace PadForge.Common
             return false;
         }
 
+        /// <summary>Returns the preset name matching a curve string, or "Custom" if none match.</summary>
+        public static string MatchPreset(string curveString)
+        {
+            if (string.IsNullOrEmpty(curveString)) return Presets[0].Name; // Linear
+            foreach (var (name, serialized) in Presets)
+                if (curveString == serialized) return name;
+            return "Custom";
+        }
+
         /// <summary>Named presets for the UI.</summary>
         public static readonly (string Name, string Serialized)[] Presets =
         {

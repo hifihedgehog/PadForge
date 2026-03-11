@@ -1515,13 +1515,34 @@ namespace PadForge.ViewModels
             double outputPosX = Math.Clamp(0.5 + signX * outX * 0.5, 0.0, 1.0);
             double outputPosY = Math.Clamp(0.5 + signY * outY * 0.5, 0.0, 1.0);
 
-            // Visual: map output to [dz..1] range so dot jumps to outside DZ ring.
-            // For radial shapes, use the average DZ for the visual ring offset.
-            double avgDz = Math.Max(dzXn, dzYn);
-            double visX = avgDz + outX * (1.0 - avgDz);
-            double visY = avgDz + outY * (1.0 - avgDz);
-            double visualPosX = Math.Clamp(0.5 + signX * visX * 0.5, 0.0, 1.0);
-            double visualPosY = Math.Clamp(0.5 + signY * visY * 0.5, 0.0, 1.0);
+            // Visual: map output to [dz..1] range so dot jumps to just outside DZ boundary.
+            double visualPosX, visualPosY;
+            bool isRadialShape = shape == DeadZoneShape.Radial || shape == DeadZoneShape.ScaledRadial || shape == DeadZoneShape.Hybrid;
+
+            if (isRadialShape && (outX > 0 || outY > 0))
+            {
+                // Radial visual: compute magnitude and direction so the dot traces
+                // a circle at the DZ boundary, not a square.
+                double dirX = signX * outX;
+                double dirY = signY * outY;
+                double outMag = Math.Sqrt(dirX * dirX + dirY * dirY);
+                double avgDz = Math.Max(dzXn, dzYn);
+                double visMag = avgDz + outMag * (1.0 - avgDz);
+                double ndx = dirX / outMag;
+                double ndy = dirY / outMag;
+                visualPosX = Math.Clamp(0.5 + ndx * visMag * 0.5, 0.0, 1.0);
+                visualPosY = Math.Clamp(0.5 + ndy * visMag * 0.5, 0.0, 1.0);
+            }
+            else
+            {
+                // Axial / Sloped: per-axis visual mapping (matches DZ box shape).
+                double visX = dzXn + outX * (1.0 - dzXn);
+                double visY = dzYn + outY * (1.0 - dzYn);
+                visualPosX = (outX > 0 || outY > 0)
+                    ? Math.Clamp(0.5 + signX * visX * 0.5, 0.0, 1.0) : 0.5;
+                visualPosY = (outX > 0 || outY > 0)
+                    ? Math.Clamp(0.5 + signY * visY * 0.5, 0.0, 1.0) : 0.5;
+            }
 
             return (visualPosX, outputPosX, visualPosY, outputPosY);
         }

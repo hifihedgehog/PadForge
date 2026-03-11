@@ -991,13 +991,15 @@
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Preset X:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox Width="140" SelectedIndex="-1"
+                                                <ComboBox Width="140"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
+                                                          SelectedItem="{Binding PresetNameX, Mode=OneWay}"
                                                           SelectionChanged="StickPresetX_SelectionChanged"
                                                           Tag="{Binding}"/>
                                                 <TextBlock Text="Preset Y:" Style="{StaticResource DzLabel}" Margin="12,0,0,0"/>
-                                                <ComboBox Width="140" SelectedIndex="-1"
+                                                <ComboBox Width="140"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
+                                                          SelectedItem="{Binding PresetNameY, Mode=OneWay}"
                                                           SelectionChanged="StickPresetY_SelectionChanged"
                                                           Tag="{Binding}"/>
                                             </StackPanel>
@@ -1259,8 +1261,9 @@
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Preset:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox Width="140" SelectedIndex="-1"
+                                                <ComboBox Width="140"
                                                           ItemsSource="{x:Static vm:TriggerConfigItem.CurvePresetNames}"
+                                                          SelectedItem="{Binding PresetName, Mode=OneWay}"
                                                           SelectionChanged="TriggerPreset_SelectionChanged"
                                                           Tag="{Binding}"/>
                                             </StackPanel>

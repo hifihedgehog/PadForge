@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Common;
 using PadForge.Engine.Data;
 
 namespace PadForge.ViewModels
@@ -16,6 +17,9 @@ namespace PadForge.ViewModels
     /// </summary>
     public class StickConfigItem : ObservableObject
     {
+        public static string[] CurvePresetNames { get; } =
+            Array.ConvertAll(Common.CurveLut.Presets, p => p.Name);
+
         public string Title { get; }
         public int Index { get; }
 
@@ -78,18 +82,18 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _linear, Math.Clamp(value, 0, 100))) RebuildCurvePoints(); }
         }
 
-        private double _sensitivityCurveX;
-        public double SensitivityCurveX
+        private string _sensitivityCurveX = "0,0;1,1";
+        public string SensitivityCurveX
         {
             get => _sensitivityCurveX;
-            set { if (SetProperty(ref _sensitivityCurveX, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
+            set { if (SetProperty(ref _sensitivityCurveX, value ?? "0,0;1,1")) RebuildCurvePoints(); }
         }
 
-        private double _sensitivityCurveY;
-        public double SensitivityCurveY
+        private string _sensitivityCurveY = "0,0;1,1";
+        public string SensitivityCurveY
         {
             get => _sensitivityCurveY;
-            set { if (SetProperty(ref _sensitivityCurveY, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
+            set { if (SetProperty(ref _sensitivityCurveY, value ?? "0,0;1,1")) RebuildCurvePoints(); }
         }
 
         private double _maxRangeX = 100;
@@ -251,115 +255,49 @@ namespace PadForge.ViewModels
         /// <summary>Raw axis index for Y in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisYIndex { get; }
 
-        // ── Sensitivity curve charts (one per axis, signed with dead zone) ──
+        // ── Sensitivity curve charts (using CurveEditor UserControl now) ──
 
-        private PointCollection _curvePointsX;
-        public PointCollection CurvePointsX
+        // Live input values for the CurveEditor's LiveInput binding (normalized 0-1 unsigned).
+        private double _liveInputX;
+        public double LiveInputX { get => _liveInputX; set => SetProperty(ref _liveInputX, value); }
+        private double _liveInputY;
+        public double LiveInputY { get => _liveInputY; set => SetProperty(ref _liveInputY, value); }
+
+        public void RebuildCurvePoints() { /* CurveEditor redraws via CurveString binding */ }
+
+        /// <summary>Apply curve using spline LUT. Used by preview and vJoy processing.</summary>
+        internal static double ApplyCurve(double magnitude, string curveString)
         {
-            get => _curvePointsX ??= BuildSignedCurvePoints(_sensitivityCurveX, _deadZoneX, _maxRangeX);
-            private set => SetProperty(ref _curvePointsX, value);
-        }
-
-        private PointCollection _curvePointsY;
-        public PointCollection CurvePointsY
-        {
-            get => _curvePointsY ??= BuildSignedCurvePoints(_sensitivityCurveY, _deadZoneY, _maxRangeY);
-            private set => SetProperty(ref _curvePointsY, value);
-        }
-
-        private double _curveXDotLeft;
-        public double CurveXDotLeft { get => _curveXDotLeft; set => SetProperty(ref _curveXDotLeft, value); }
-        private double _curveXDotTop;
-        public double CurveXDotTop { get => _curveXDotTop; set => SetProperty(ref _curveXDotTop, value); }
-
-        private double _curveYDotLeft;
-        public double CurveYDotLeft { get => _curveYDotLeft; set => SetProperty(ref _curveYDotLeft, value); }
-        private double _curveYDotTop;
-        public double CurveYDotTop { get => _curveYDotTop; set => SetProperty(ref _curveYDotTop, value); }
-
-        public void RebuildCurvePoints()
-        {
-            CurvePointsX = BuildSignedCurvePoints(_sensitivityCurveX, _deadZoneX, _maxRangeX);
-            CurvePointsY = BuildSignedCurvePoints(_sensitivityCurveY, _deadZoneY, _maxRangeY);
-        }
-
-        /// <summary>
-        /// Builds a signed response curve (-1..+1 → -1..+1) showing dead zone flattening.
-        /// The curve is an odd function (antisymmetric about the origin).
-        /// </summary>
-        internal static PointCollection BuildSignedCurvePoints(double curve, double deadZone, double maxRange, int chartSize = 96, int sampleCount = 80)
-        {
-            double exponent = Math.Pow(4.0, -curve / 100.0);
-            double dzNorm = deadZone / 100.0;
-            double mrNorm = maxRange / 100.0;
-            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
-            double half = chartSize / 2.0;
-
-            var pts = new PointCollection(sampleCount + 1);
-            for (int i = 0; i <= sampleCount; i++)
-            {
-                double input = (i / (double)sampleCount) * 2.0 - 1.0; // -1 to +1
-                double sign = Math.Sign(input);
-                double mag = Math.Abs(input);
-
-                double output;
-                if (mag < dzNorm)
-                {
-                    output = 0;
-                }
-                else
-                {
-                    double remapped = Math.Min((mag - dzNorm) / (mrNorm - dzNorm), 1.0);
-                    if (curve != 0)
-                        remapped = Math.Pow(remapped, exponent);
-                    output = sign * remapped;
-                }
-
-                // Map: input -1..+1 → x 0..chartSize, output -1..+1 → y chartSize..0
-                pts.Add(new Point(
-                    (input + 1.0) * half,
-                    (1.0 - output) * half));
-            }
-            return pts;
+            var lut = CurveLut.GetOrBuild(curveString);
+            if (lut == null) return magnitude;
+            return CurveLut.Lookup(lut, Math.Clamp(magnitude, 0, 1));
         }
 
         /// <summary>
         /// Builds a 0..1 → 0..1 curve for triggers (unsigned, dead zone flattened).
         /// </summary>
-        internal static PointCollection BuildTriggerCurvePoints(double curve, double deadZone, double maxRange, int chartSize = 120, int sampleCount = 64)
+        internal static PointCollection BuildTriggerCurvePoints(string curveString, double deadZone, double maxRange, int chartSize = 120, int sampleCount = 64)
         {
-            double exponent = Math.Pow(4.0, -curve / 100.0);
             double dzNorm = deadZone / 100.0;
             double mrNorm = maxRange / 100.0;
             if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
+            var lut = CurveLut.GetOrBuild(curveString);
 
             var pts = new PointCollection(sampleCount + 1);
             for (int i = 0; i <= sampleCount; i++)
             {
-                double t = i / (double)sampleCount; // 0..1
+                double t = i / (double)sampleCount;
                 double output;
                 if (t < dzNorm)
-                {
                     output = 0;
-                }
                 else
                 {
                     double remapped = Math.Min((t - dzNorm) / (mrNorm - dzNorm), 1.0);
-                    if (curve != 0)
-                        output = Math.Pow(remapped, exponent);
-                    else
-                        output = remapped;
+                    output = lut != null ? CurveLut.Lookup(lut, remapped) : remapped;
                 }
                 pts.Add(new Point(t * chartSize, (1.0 - output) * chartSize));
             }
             return pts;
-        }
-
-        internal static double ApplyCurve(double magnitude, double curve)
-        {
-            if (curve == 0) return magnitude;
-            double exponent = Math.Pow(4.0, -curve / 100.0);
-            return Math.Pow(Math.Clamp(magnitude, 0, 1), exponent);
         }
 
         public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1)
@@ -380,7 +318,7 @@ namespace PadForge.ViewModels
             DeadZoneX = 0; DeadZoneY = 0;
             AntiDeadZoneX = 0; AntiDeadZoneY = 0;
             Linear = 0;
-            SensitivityCurveX = 0; SensitivityCurveY = 0;
+            SensitivityCurveX = "0,0;1,1"; SensitivityCurveY = "0,0;1,1";
             MaxRangeX = 100; MaxRangeY = 100;
         });
 
@@ -399,8 +337,8 @@ namespace PadForge.ViewModels
         private ICommand _resetLinearCommand;
         public ICommand ResetLinearCommand => _resetLinearCommand ??= new RelayCommand(() => Linear = 0);
         private ICommand _resetSensitivityXCommand, _resetSensitivityYCommand;
-        public ICommand ResetSensitivityXCommand => _resetSensitivityXCommand ??= new RelayCommand(() => SensitivityCurveX = 0);
-        public ICommand ResetSensitivityYCommand => _resetSensitivityYCommand ??= new RelayCommand(() => SensitivityCurveY = 0);
+        public ICommand ResetSensitivityXCommand => _resetSensitivityXCommand ??= new RelayCommand(() => SensitivityCurveX = "0,0;1,1");
+        public ICommand ResetSensitivityYCommand => _resetSensitivityYCommand ??= new RelayCommand(() => SensitivityCurveY = "0,0;1,1");
         private ICommand _resetMaxRangeXCommand, _resetMaxRangeYCommand;
         public ICommand ResetMaxRangeXCommand => _resetMaxRangeXCommand ??= new RelayCommand(() => MaxRangeX = 100);
         public ICommand ResetMaxRangeYCommand => _resetMaxRangeYCommand ??= new RelayCommand(() => MaxRangeY = 100);

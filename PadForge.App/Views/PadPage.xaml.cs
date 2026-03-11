@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
+using PadForge.Common;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -442,6 +443,37 @@ namespace PadForge.Views
             if (vm.MidiConfig.CcCount != oldCcCount || vm.MidiConfig.NoteCount != oldNoteCount ||
                 vm.MidiConfig.StartCc != oldStartCc || vm.MidiConfig.StartNote != oldStartNote)
                 vm.RebuildMappings();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Sensitivity curve presets
+        // ─────────────────────────────────────────────
+
+        private void StickPresetX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedIndex >= 0 && cb.Tag is StickConfigItem item)
+            {
+                item.SensitivityCurveX = Common.CurveLut.Presets[cb.SelectedIndex].Serialized;
+                cb.SelectedIndex = -1; // reset so same preset can be re-applied
+            }
+        }
+
+        private void StickPresetY_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedIndex >= 0 && cb.Tag is StickConfigItem item)
+            {
+                item.SensitivityCurveY = Common.CurveLut.Presets[cb.SelectedIndex].Serialized;
+                cb.SelectedIndex = -1;
+            }
+        }
+
+        private void TriggerPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedIndex >= 0 && cb.Tag is TriggerConfigItem item)
+            {
+                item.SensitivityCurve = Common.CurveLut.Presets[cb.SelectedIndex].Serialized;
+                cb.SelectedIndex = -1;
+            }
         }
 
         // ─────────────────────────────────────────────

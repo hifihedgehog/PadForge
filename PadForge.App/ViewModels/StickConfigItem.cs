@@ -144,15 +144,60 @@ namespace PadForge.ViewModels
         public DeadZoneShape DeadZoneShape
         {
             get => _deadZoneShape;
-            set { if (SetProperty(ref _deadZoneShape, value)) OnPropertyChanged(nameof(DeadZoneShapeIndex)); }
+            set
+            {
+                if (SetProperty(ref _deadZoneShape, value))
+                {
+                    OnPropertyChanged(nameof(DeadZoneShapeIndex));
+                    OnPropertyChanged(nameof(IsAxialShape));
+                    OnPropertyChanged(nameof(IsRadialShape));
+                    OnPropertyChanged(nameof(IsSlopedShape));
+                    OnPropertyChanged(nameof(IsHybridShape));
+                    OnPropertyChanged(nameof(HasSlopedWedges));
+                }
+            }
         }
 
-        /// <summary>Int wrapper for ComboBox SelectedIndex binding.</summary>
+        /// <summary>Display order for the DZ shape dropdown (default first, then grouped by type).</summary>
+        private static readonly DeadZoneShape[] ShapeDisplayOrder =
+        {
+            DeadZoneShape.ScaledRadial,      // 0 — default
+            DeadZoneShape.Radial,            // 1
+            DeadZoneShape.Axial,             // 2
+            DeadZoneShape.Hybrid,            // 3
+            DeadZoneShape.SlopedScaledAxial, // 4
+            DeadZoneShape.SlopedAxial,       // 5
+        };
+
+        /// <summary>Int wrapper for ComboBox SelectedIndex binding (maps display order ↔ enum).</summary>
         public int DeadZoneShapeIndex
         {
-            get => (int)_deadZoneShape;
-            set => DeadZoneShape = (DeadZoneShape)Math.Clamp(value, 0, 5);
+            get => Array.IndexOf(ShapeDisplayOrder, _deadZoneShape) is int i and >= 0 ? i : 0;
+            set
+            {
+                if (value >= 0 && value < ShapeDisplayOrder.Length)
+                    DeadZoneShape = ShapeDisplayOrder[value];
+            }
         }
+
+        /// <summary>True for Axial (independent per-axis, cross-shaped DZ region).</summary>
+        public bool IsAxialShape => _deadZoneShape == DeadZoneShape.Axial;
+
+        /// <summary>True for Radial / Scaled Radial (circle/ellipse DZ gate only).</summary>
+        public bool IsRadialShape => _deadZoneShape == DeadZoneShape.Radial
+                                  || _deadZoneShape == DeadZoneShape.ScaledRadial;
+
+        /// <summary>True for Sloped Axial / Sloped Scaled Axial (wedge-only DZ).</summary>
+        public bool IsSlopedShape => _deadZoneShape == DeadZoneShape.SlopedAxial
+                                  || _deadZoneShape == DeadZoneShape.SlopedScaledAxial;
+
+        /// <summary>True for Hybrid (circle + wedges).</summary>
+        public bool IsHybridShape => _deadZoneShape == DeadZoneShape.Hybrid;
+
+        /// <summary>True for shapes with sloped wedge regions (Sloped, Sloped Scaled, Hybrid).</summary>
+        public bool HasSlopedWedges => _deadZoneShape == DeadZoneShape.SlopedAxial
+                                    || _deadZoneShape == DeadZoneShape.SlopedScaledAxial
+                                    || _deadZoneShape == DeadZoneShape.Hybrid;
 
         private bool _isCalibrating;
         public bool IsCalibrating
@@ -338,6 +383,9 @@ namespace PadForge.ViewModels
             SensitivityCurveX = 0; SensitivityCurveY = 0;
             MaxRangeX = 100; MaxRangeY = 100;
         });
+
+        private ICommand _resetDeadZoneShapeCommand;
+        public ICommand ResetDeadZoneShapeCommand => _resetDeadZoneShapeCommand ??= new RelayCommand(() => DeadZoneShape = DeadZoneShape.ScaledRadial);
 
         private ICommand _resetCenterOffsetXCommand, _resetCenterOffsetYCommand;
         public ICommand ResetCenterOffsetXCommand => _resetCenterOffsetXCommand ??= new RelayCommand(() => CenterOffsetX = 0);

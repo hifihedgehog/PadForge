@@ -1035,6 +1035,13 @@
                                                 <Grid Width="200" Height="200">
                                                     <Ellipse Width="200" Height="200"
                                                              Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
+                                                    <!-- Grid lines (Grid layer, behind Canvas) -->
+                                                    <Line X1="50" Y1="0" X2="50" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                    <Line X1="150" Y1="0" X2="150" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                    <Line X1="0" Y1="50" X2="200" Y2="50" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                    <Line X1="0" Y1="150" X2="200" Y2="150" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                    <Line X1="100" Y1="0" X2="100" Y2="200" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
+                                                    <Line X1="0" Y1="100" X2="200" Y2="100" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
                                                     <Canvas>
                                                         <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
                                                                  Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
@@ -1133,26 +1140,6 @@
                                                             <Canvas.Left>100</Canvas.Left>
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
-                                                        <!-- Grid lines at 25%/75% -->
-                                                        <Line X1="50" Y1="0" X2="50" Y2="200"
-                                                              Stroke="#40FFFFFF"
-                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                        <Line X1="150" Y1="0" X2="150" Y2="200"
-                                                              Stroke="#40FFFFFF"
-                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                        <Line X1="0" Y1="50" X2="200" Y2="50"
-                                                              Stroke="#40FFFFFF"
-                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                        <Line X1="0" Y1="150" X2="200" Y2="150"
-                                                              Stroke="#40FFFFFF"
-                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                        <!-- Crosshair at center -->
-                                                        <Line X1="100" Y1="0" X2="100" Y2="200"
-                                                              Stroke="#60FFFFFF"
-                                                              StrokeThickness="0.75"/>
-                                                        <Line X1="0" Y1="100" X2="200" Y2="100"
-                                                              Stroke="#60FFFFFF"
-                                                              StrokeThickness="0.75"/>
                                                         <!-- Stick position dot -->
                                                         <Ellipse Width="11" Height="11" Fill="#FF2196F3"
                                                                  Stroke="#FF1976D2" StrokeThickness="1"

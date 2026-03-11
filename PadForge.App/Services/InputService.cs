@@ -1537,7 +1537,6 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
-            _mainVm.Dashboard.DsuServerStatus = string.Empty;
         }
 
         // ─────────────────────────────────────────────
@@ -1553,14 +1552,7 @@ namespace PadForge.Services
                 return; // Already running.
 
             _webServer = new WebControllerServer();
-            _webServer.StatusChanged += (_, status) =>
-            {
-                _dispatcher.BeginInvoke(() =>
-                {
-                    _mainVm.Dashboard.WebControllerStatus = status;
-                    _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
-                });
-            };
+            _webServer.StatusChanged += OnWebServerStatusChanged;
             _webServer.DeviceConnected += device =>
             {
                 _inputManager.RegisterExternalDevice(device);
@@ -1581,14 +1573,24 @@ namespace PadForge.Services
             }
         }
 
+        private void OnWebServerStatusChanged(object sender, string status)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Dashboard.WebControllerStatus = status;
+                _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
+            });
+        }
+
         private void StopWebServer()
         {
             if (_webServer == null)
                 return;
 
+            _webServer.StatusChanged -= OnWebServerStatusChanged;
             _webServer.Dispose();
             _webServer = null;
-            _mainVm.Dashboard.WebControllerStatus = string.Empty;
+            _mainVm.Dashboard.WebControllerStatus = "Stopped";
             _mainVm.Dashboard.WebControllerClientCount = 0;
         }
 

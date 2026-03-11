@@ -1077,7 +1077,7 @@
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                                                 <!-- X axis curve chart -->
                                                 <StackPanel Margin="0,0,4,0">
-                                                    <TextBlock Text="X Sensitivity Curve" HorizontalAlignment="Center"
+                                                    <TextBlock Text="X Axis" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
                                                     <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
@@ -1104,7 +1104,7 @@
                                                 </StackPanel>
                                                 <!-- Y axis curve chart -->
                                                 <StackPanel Margin="4,0,0,0">
-                                                    <TextBlock Text="Y Sensitivity Curve" HorizontalAlignment="Center"
+                                                    <TextBlock Text="Y Axis" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
                                                     <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
@@ -1223,7 +1223,7 @@
 
                                         <!-- Right: sensitivity curve chart (aligned to top line) -->
                                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,-26,0,0">
-                                            <TextBlock Text="Sensitivity Curve" Margin="0,0,0,4"
+                                            <TextBlock Text="Trigger Axis" Margin="0,0,0,4"
                                                        HorizontalAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="11"/>

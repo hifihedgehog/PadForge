@@ -813,7 +813,7 @@ namespace PadForge
             ShutdownOverlay.Visibility = System.Windows.Visibility.Visible;
             if (WindowState == WindowState.Minimized || !IsVisible)
             {
-                Show();
+                try { Show(); } catch (InvalidOperationException) { }
                 WindowState = WindowState.Normal;
             }
 
@@ -1480,7 +1480,7 @@ namespace PadForge
             if (_cardDragSource == null || _cardDragSource.Tag is not int padIndex) return;
 
             var cards = GetControllerCardBounds();
-            if (cards.Count < 2) return;
+            if (cards.Count == 0) return;
 
             _dragSourcePadIndex = padIndex;
             _dragSourceVisualPos = cards.FindIndex(c => c.PadIndex == padIndex);
@@ -1511,12 +1511,11 @@ namespace PadForge
             _dragAdorner?.UpdatePosition(navViewPos);
 
             var cards = GetControllerCardBounds();
-            if (cards.Count < 2) return;
+            if (cards.Count == 0) return;
 
             // If cursor has moved outside the card column horizontally (e.g. dragged
             // into the main content area for cross-panel assignment), don't trigger
             // any swap/insert reordering — just clear indicators.
-            if (cards.Count > 0)
             {
                 double colLeft = cards[0].Left;
                 double colRight = cards[0].Left + cards[0].Width;
@@ -2800,7 +2799,7 @@ namespace PadForge
         {
             var activeSlots = new System.Collections.Generic.List<int>();
             int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
-            for (int i = 0; i < _viewModel.Pads.Count; i++)
+            for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (SettingsManager.SlotCreated[i])
                 {

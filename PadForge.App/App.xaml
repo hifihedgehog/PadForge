@@ -34,7 +34,6 @@
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
             <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
-            <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
 

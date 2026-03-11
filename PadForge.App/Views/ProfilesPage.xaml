@@ -4,7 +4,7 @@
              xmlns:ui="http://schemas.modernwpf.com/2019">
 
     <ScrollViewer Padding="24,16">
-        <StackPanel MaxWidth="700">
+        <StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="20"

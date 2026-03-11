@@ -240,23 +240,6 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string RightMotorStrength { get; set; } = "100";
 
-        /// <summary>
-        /// Motor period in milliseconds. Used by some force feedback implementations
-        /// to control the update frequency. Default 0 = automatic.
-        /// </summary>
-        [XmlElement] public string LeftMotorPeriod { get; set; } = "0";
-
-        /// <summary>Right motor period in milliseconds.</summary>
-        [XmlElement] public string RightMotorPeriod { get; set; } = "0";
-
-        /// <summary>
-        /// Left motor direction. 0 = normal, 1 = inverted.
-        /// </summary>
-        [XmlElement] public string LeftMotorDirection { get; set; } = "0";
-
-        /// <summary>Right motor direction.</summary>
-        [XmlElement] public string RightMotorDirection { get; set; } = "0";
-
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold
         // ─────────────────────────────────────────────
@@ -542,10 +525,6 @@ namespace PadForge.Engine.Data
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
-            sb.Append(LeftMotorPeriod); sb.Append('|');
-            sb.Append(RightMotorPeriod); sb.Append('|');
-            sb.Append(LeftMotorDirection); sb.Append('|');
-            sb.Append(RightMotorDirection); sb.Append('|');
 
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
@@ -661,7 +640,7 @@ namespace PadForge.Engine.Data
 
         /// <summary>
         /// Returns all non-empty mapping descriptor strings from this PadSetting.
-        /// Includes standard button/axis/dpad/trigger mappings and vJoy custom entries.
+        /// Includes standard button/axis/dpad/trigger mappings, vJoy, and MIDI custom entries.
         /// </summary>
         public List<string> GetAllMappingDescriptors()
         {
@@ -690,6 +669,13 @@ namespace PadForge.Engine.Data
             if (VJoyMappingEntries != null)
             {
                 foreach (var e in VJoyMappingEntries)
+                    Add(e.Value);
+            }
+
+            // MIDI custom mappings
+            if (MidiMappingEntries != null)
+            {
+                foreach (var e in MidiMappingEntries)
                     Add(e.Value);
             }
 
@@ -758,8 +744,6 @@ namespace PadForge.Engine.Data
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
-            nameof(LeftMotorPeriod), nameof(RightMotorPeriod),
-            nameof(LeftMotorDirection), nameof(RightMotorDirection),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),

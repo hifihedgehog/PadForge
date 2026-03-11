@@ -31,7 +31,7 @@ namespace PadForge.ViewModels
             RebuildTriggerConfigs();
         }
 
-        /// <summary>Zero-based pad slot index (0–7).</summary>
+        /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex { get; }
 
         /// <summary>
@@ -1465,8 +1465,9 @@ namespace PadForge.ViewModels
             stick.CurveXDotLeft = (signedX + 1.0) * half - dotHalf;
             stick.CurveXDotTop = (1.0 - outX) * half - dotHalf;
 
-            // Y axis: same logic with Y parameters
-            double signedY = (normY - 0.5) * 2.0;
+            // Y axis: same logic with Y parameters.
+            // Negate so stick-up (normY→0) plots on the positive (right) side of the chart.
+            double signedY = -((normY - 0.5) * 2.0);
             double signY = Math.Sign(signedY);
             double magY = Math.Abs(signedY);
             double dzY = stick.DeadZoneY / 100.0;

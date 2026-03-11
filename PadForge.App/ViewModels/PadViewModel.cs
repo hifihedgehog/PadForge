@@ -593,7 +593,8 @@ namespace PadForge.ViewModels
 
         // ── Left Stick ──
         private int _leftDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
-        public int LeftDeadZoneShape { get => _leftDeadZoneShape; set => SetProperty(ref _leftDeadZoneShape, Math.Clamp(value, 0, 5)); }
+        private static readonly int MaxDeadZoneShape = Enum.GetValues(typeof(DeadZoneShape)).Length - 1;
+        public int LeftDeadZoneShape { get => _leftDeadZoneShape; set => SetProperty(ref _leftDeadZoneShape, Math.Clamp(value, 0, MaxDeadZoneShape)); }
 
         private double _leftDeadZoneX;
         public double LeftDeadZoneX { get => _leftDeadZoneX; set => SetProperty(ref _leftDeadZoneX, Math.Clamp(value, 0, 100)); }
@@ -612,7 +613,7 @@ namespace PadForge.ViewModels
 
         // ── Right Stick ──
         private int _rightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
-        public int RightDeadZoneShape { get => _rightDeadZoneShape; set => SetProperty(ref _rightDeadZoneShape, Math.Clamp(value, 0, 5)); }
+        public int RightDeadZoneShape { get => _rightDeadZoneShape; set => SetProperty(ref _rightDeadZoneShape, Math.Clamp(value, 0, MaxDeadZoneShape)); }
 
         private double _rightDeadZoneX;
         public double RightDeadZoneX { get => _rightDeadZoneX; set => SetProperty(ref _rightDeadZoneX, Math.Clamp(value, 0, 100)); }
@@ -1402,59 +1403,6 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Applies the full stick processing pipeline (dead zone, max range, anti-dead zone, linear)
-        /// to a normalized 0–1 axis value for preview display. Mirrors Step3's ApplySingleDeadZone.
-        /// </summary>
-        /// <summary>
-        /// Processes an axis value through the dead zone pipeline for preview.
-        /// Returns (visualPosition, outputPosition) where visualPosition maps the dot
-        /// to outside the dead zone ring, and outputPosition is the actual processed value.
-        /// Both are in 0-1 range where 0.5 = center.
-        /// </summary>
-        private static (double visual, double output) ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange, double curve = 0)
-        {
-            double signed = (adjustedNorm - 0.5) * 2.0;
-            double sign = Math.Sign(signed);
-            double mag = Math.Abs(signed);
-
-            double dzNorm = deadZone / 100.0;
-            if (mag < dzNorm)
-                return (0.5, 0.5);
-
-            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100 && curve == 0)
-            {
-                double v = Math.Clamp(adjustedNorm, 0.0, 1.0);
-                return (v, v);
-            }
-
-            double mrNorm = maxRange / 100.0;
-            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
-            double remapped = Math.Min((mag - dzNorm) / (mrNorm - dzNorm), 1.0);
-
-            // Apply sensitivity curve to the remapped value.
-            if (curve != 0)
-                remapped = StickConfigItem.ApplyCurve(remapped, curve);
-
-            double adzNorm = antiDeadZone / 100.0;
-            double output = adzNorm + remapped * (1.0 - adzNorm);
-
-            if (linear > 0)
-            {
-                double lf = linear / 100.0;
-                output = remapped * lf + output * (1.0 - lf);
-            }
-
-            double outputPos = Math.Clamp(0.5 + sign * output * 0.5, 0.0, 1.0);
-
-            // Map output [0,1] to visual position [dzNorm,1] so the dot jumps to
-            // just outside the dead zone ring and scales outward from there.
-            double visual = dzNorm + output * (1.0 - dzNorm);
-            double visualPos = Math.Clamp(0.5 + sign * visual * 0.5, 0.0, 1.0);
-
-            return (visualPos, outputPos);
-        }
-
-        /// <summary>
         /// Processes both stick axes together through the shape-aware dead zone pipeline.
         /// Uses the same algorithms as Step3's ApplyDeadZone for preview consistency.
         /// </summary>
@@ -1467,14 +1415,6 @@ namespace PadForge.ViewModels
                 double curveX, double curveY,
                 DeadZoneShape shape)
         {
-            // Axial: use independent per-axis processing (matches legacy behavior exactly).
-            if (shape == DeadZoneShape.Axial)
-            {
-                var (vx, ox) = ProcessAxisForPreview(adjNormX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curveX);
-                var (vy, oy) = ProcessAxisForPreview(adjNormY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curveY);
-                return (vx, ox, vy, oy);
-            }
-
             // Convert to signed [-1, 1]
             double sx = (adjNormX - 0.5) * 2.0;
             double sy = (adjNormY - 0.5) * 2.0;
@@ -1485,6 +1425,36 @@ namespace PadForge.ViewModels
             if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
             if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
 
+            // ── Axial: cross-shaped DZ visualization ──
+            if (shape == DeadZoneShape.Axial)
+            {
+                bool xInDz = magX < dzXn, yInDz = magY < dzYn;
+
+                // Center rectangle (both in DZ) → dot at center.
+                if (xInDz && yInDz)
+                    return (0.5, 0.5, 0.5, 0.5);
+
+                // Per-axis DZ gate + rescale (mirrors ApplySingleDeadZone).
+                double remAx = xInDz ? 0 : Math.Min((magX - dzXn) / (mrXn - dzXn), 1.0);
+                double remAy = yInDz ? 0 : Math.Min((magY - dzYn) / (mrYn - dzYn), 1.0);
+                double oAx = PostDzForPreview(remAx, curveX, antiDeadZoneX, linear);
+                double oAy = PostDzForPreview(remAy, curveY, antiDeadZoneY, linear);
+
+                double outPosX = Math.Clamp(0.5 + signX * oAx * 0.5, 0.0, 1.0);
+                double outPosY = Math.Clamp(0.5 + signY * oAy * 0.5, 0.0, 1.0);
+
+                // Visual: each axis jumps to its DZ boundary, scales outward.
+                // In the cross arms, the zeroed axis stays at center (snapped to axis).
+                // In the corners, both jump to boundary.
+                double visAx = xInDz ? 0.0 : dzXn + oAx * (1.0 - dzXn);
+                double visAy = yInDz ? 0.0 : dzYn + oAy * (1.0 - dzYn);
+                double visPosX = xInDz ? 0.5 : Math.Clamp(0.5 + signX * visAx * 0.5, 0.0, 1.0);
+                double visPosY = yInDz ? 0.5 : Math.Clamp(0.5 + signY * visAy * 0.5, 0.0, 1.0);
+
+                return (visPosX, outPosX, visPosY, outPosY);
+            }
+
+            // ── 2D shapes (Radial, Sloped, Hybrid) ──
             double remX, remY;
             switch (shape)
             {
@@ -1515,36 +1485,118 @@ namespace PadForge.ViewModels
             double outputPosX = Math.Clamp(0.5 + signX * outX * 0.5, 0.0, 1.0);
             double outputPosY = Math.Clamp(0.5 + signY * outY * 0.5, 0.0, 1.0);
 
-            // Visual: map output to [dz..1] range so dot jumps to just outside DZ boundary.
-            double visualPosX, visualPosY;
-            bool isRadialShape = shape == DeadZoneShape.Radial || shape == DeadZoneShape.ScaledRadial || shape == DeadZoneShape.Hybrid;
+            // ── Shape-specific visual mapping ──
+            // Principle: dot at center inside red zones, axis-constrained in yellow zones,
+            // and jumps to zone boundary when exiting (never appears inside a colored zone).
 
-            if (isRadialShape && (outX > 0 || outY > 0))
+            const double visEps = 1e-10;
+
+            // ── Sloped Axial (non-scaled): output position directly ──
+            // Natural boundary at wedge edge (raw magnitude ≈ effDz at boundary).
+            if (shape == DeadZoneShape.SlopedAxial)
             {
-                // Radial visual: compute magnitude and direction so the dot traces
-                // a circle at the DZ boundary, not a square.
-                double dirX = signX * outX;
-                double dirY = signY * outY;
-                double outMag = Math.Sqrt(dirX * dirX + dirY * dirY);
-                double avgDz = Math.Max(dzXn, dzYn);
-                double visMag = avgDz + outMag * (1.0 - avgDz);
-                double ndx = dirX / outMag;
-                double ndy = dirY / outMag;
-                visualPosX = Math.Clamp(0.5 + ndx * visMag * 0.5, 0.0, 1.0);
-                visualPosY = Math.Clamp(0.5 + ndy * visMag * 0.5, 0.0, 1.0);
-            }
-            else
-            {
-                // Axial / Sloped: per-axis visual mapping (matches DZ box shape).
-                double visX = dzXn + outX * (1.0 - dzXn);
-                double visY = dzYn + outY * (1.0 - dzYn);
-                visualPosX = (outX > 0 || outY > 0)
-                    ? Math.Clamp(0.5 + signX * visX * 0.5, 0.0, 1.0) : 0.5;
-                visualPosY = (outX > 0 || outY > 0)
-                    ? Math.Clamp(0.5 + signY * visY * 0.5, 0.0, 1.0) : 0.5;
+                bool xZeroed = magX < dzXn * magY;
+                bool yZeroed = magY < dzYn * magX;
+                double visX = xZeroed ? 0.5 : outputPosX;
+                double visY = yZeroed ? 0.5 : outputPosY;
+                return (visX, outputPosX, visY, outputPosY);
             }
 
-            return (visualPosX, outputPosX, visualPosY, outputPosY);
+            // ── Sloped Scaled Axial: wedge boundary jump ──
+            // Rescaled output starts from 0 — jump to wedge edge like Scaled Radial
+            // jumps to circle edge.
+            if (shape == DeadZoneShape.SlopedScaledAxial)
+            {
+                bool xZeroed = magX < dzXn * magY;
+                bool yZeroed = magY < dzYn * magX;
+                double visX, visY;
+                if (xZeroed)
+                    visX = 0.5;
+                else
+                {
+                    double effDz = dzXn * magY;
+                    double vis = effDz + outX * (1.0 - effDz);
+                    visX = Math.Clamp(0.5 + signX * vis * 0.5, 0.0, 1.0);
+                }
+                if (yZeroed)
+                    visY = 0.5;
+                else
+                {
+                    double effDz = dzYn * magX;
+                    double vis = effDz + outY * (1.0 - effDz);
+                    visY = Math.Clamp(0.5 + signY * vis * 0.5, 0.0, 1.0);
+                }
+                return (visX, outputPosX, visY, outputPosY);
+            }
+
+            // ── Scaled Radial: radial boundary jump ──
+            if (shape == DeadZoneShape.ScaledRadial)
+            {
+                double eDzX = Math.Max(dzXn, visEps), eDzY = Math.Max(dzYn, visEps);
+                double edx = sx / eDzX, edy = sy / eDzY;
+                if (edx * edx + edy * edy < 1.0)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+
+                // DZ boundary radius in the direction of the stick.
+                double rawMag = Math.Sqrt(magX * magX + magY * magY);
+                if (rawMag < visEps)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+                double ux = magX / rawMag, uy = magY / rawMag;
+                double dxu = ux / eDzX, dyu = uy / eDzY;
+                double dzR = 1.0 / Math.Sqrt(dxu * dxu + dyu * dyu);
+
+                // Map output magnitude [0,max] → visual [dzR, 1] so dot starts at circle edge.
+                double outMag = Math.Sqrt(outX * outX + outY * outY);
+                double visMag = dzR + outMag * (1.0 - dzR);
+
+                double visX = Math.Clamp(0.5 + signX * ux * visMag * 0.5, 0.0, 1.0);
+                double visY = Math.Clamp(0.5 + signY * uy * visMag * 0.5, 0.0, 1.0);
+                return (visX, outputPosX, visY, outputPosY);
+            }
+
+            // ── Hybrid: circle (red center) + wedge (yellow axis-snap) ──
+            if (shape == DeadZoneShape.Hybrid)
+            {
+                double eDzX = Math.Max(dzXn, visEps), eDzY = Math.Max(dzYn, visEps);
+                double edx = sx / eDzX, edy = sy / eDzY;
+                if (edx * edx + edy * edy < 1.0)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+
+                // DZ boundary radius in the direction of the stick.
+                double rawMag = Math.Sqrt(magX * magX + magY * magY);
+                if (rawMag < visEps)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+                double ux = magX / rawMag, uy = magY / rawMag;
+                double dxu = ux / eDzX, dyu = uy / eDzY;
+                double dzR = 1.0 / Math.Sqrt(dxu * dxu + dyu * dyu);
+
+                // Check wedge conditions from the sloped stage.
+                Common.Input.InputManager.ComputeRadial(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn,
+                    true, out double srX, out double srY);
+                bool xZeroed = srX < dzXn * srY;
+                bool yZeroed = srY < dzYn * srX;
+
+                if (xZeroed || yZeroed)
+                {
+                    // Wedge zone: zeroed axis at center, alive axis jumps to circle edge.
+                    double visX = xZeroed ? 0.5
+                        : Math.Clamp(0.5 + signX * (dzXn + outX * (1.0 - dzXn)) * 0.5, 0.0, 1.0);
+                    double visY = yZeroed ? 0.5
+                        : Math.Clamp(0.5 + signY * (dzYn + outY * (1.0 - dzYn)) * 0.5, 0.0, 1.0);
+                    return (visX, outputPosX, visY, outputPosY);
+                }
+
+                // Free zone: radial boundary jump in stick direction.
+                double outMag = Math.Sqrt(outX * outX + outY * outY);
+                double visMag = dzR + outMag * (1.0 - dzR);
+                double vfX = Math.Clamp(0.5 + signX * ux * visMag * 0.5, 0.0, 1.0);
+                double vfY = Math.Clamp(0.5 + signY * uy * visMag * 0.5, 0.0, 1.0);
+                return (vfX, outputPosX, vfY, outputPosY);
+            }
+
+            // ── Radial (non-scaled): output position directly ──
+            // Natural boundary jump: raw magnitude at DZ edge ≈ DZ radius.
+            return (outputPosX, outputPosX, outputPosY, outputPosY);
         }
 
         private static double PostDzForPreview(double remapped, double curve, double antiDeadZone, double linear)

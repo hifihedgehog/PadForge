@@ -581,6 +581,10 @@
                                             <ComboBoxItem Content="Set Axis" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
                                             <ComboBoxItem Content="System Volume" Tag="{x:Static vm:MacroActionType.SystemVolume}"/>
                                             <ComboBoxItem Content="App Volume" Tag="{x:Static vm:MacroActionType.AppVolume}"/>
+                                            <ComboBoxItem Content="Mouse Move" Tag="{x:Static vm:MacroActionType.MouseMove}"/>
+                                            <ComboBoxItem Content="Mouse Button Press" Tag="{x:Static vm:MacroActionType.MouseButtonPress}"/>
+                                            <ComboBoxItem Content="Mouse Button Release" Tag="{x:Static vm:MacroActionType.MouseButtonRelease}"/>
+                                            <ComboBoxItem Content="Mouse Scroll" Tag="{x:Static vm:MacroActionType.MouseScroll}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -704,6 +708,54 @@
                                         <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer. Enter the process name (visible in Task Manager). Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat."
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Source axis + sensitivity — for MouseMove / MouseScroll -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseMoveType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Source axis:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag" MinWidth="150">
+                                                <ComboBoxItem Content="Left Stick X" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                                <ComboBoxItem Content="Left Stick Y" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                                <ComboBoxItem Content="Right Stick X" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                                <ComboBoxItem Content="Right Stick Y" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                                <ComboBoxItem Content="Left Trigger" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                                <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Speed:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <Slider Value="{Binding MouseSensitivity, Mode=TwoWay}"
+                                                    Minimum="1" Maximum="100" Width="180"
+                                                    TickPlacement="None" IsSnapToTickEnabled="False"
+                                                    VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding MouseSensitivity, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="50" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Text="Continuously maps the selected axis to mouse movement (or scroll). Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat. For stick-to-mouse, create two actions: one for X axis, one for Y axis."
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Mouse button — for MouseButtonPress / MouseButtonRelease -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Button:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <ComboBox SelectedValue="{Binding MouseButton, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag" MinWidth="120">
+                                                <ComboBoxItem Content="Left" Tag="{x:Static vm:MacroMouseButton.Left}"/>
+                                                <ComboBoxItem Content="Right" Tag="{x:Static vm:MacroMouseButton.Right}"/>
+                                                <ComboBoxItem Content="Middle" Tag="{x:Static vm:MacroMouseButton.Middle}"/>
+                                                <ComboBoxItem Content="X1 (Back)" Tag="{x:Static vm:MacroMouseButton.X1}"/>
+                                                <ComboBoxItem Content="X2 (Forward)" Tag="{x:Static vm:MacroMouseButton.X2}"/>
+                                            </ComboBox>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>

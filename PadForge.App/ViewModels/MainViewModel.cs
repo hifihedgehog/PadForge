@@ -79,7 +79,7 @@ namespace PadForge.ViewModels
 
     /// <summary>
     /// Root ViewModel for the application. Manages navigation state,
-    /// the collection of 4 pad ViewModels, and app-wide status information.
+    /// the collection of 16 pad ViewModels, and app-wide status information.
     /// Serves as the DataContext for MainWindow.
     /// </summary>
     public partial class MainViewModel : ViewModelBase

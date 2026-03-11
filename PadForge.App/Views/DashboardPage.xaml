@@ -5,7 +5,7 @@
              xmlns:common="clr-namespace:PadForge.Common">
 
     <ScrollViewer Padding="24,16">
-        <StackPanel MaxWidth="960">
+        <StackPanel>
 
             <!-- Page header -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">

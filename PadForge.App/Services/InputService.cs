@@ -1039,12 +1039,8 @@ namespace PadForge.Services
 
         /// <summary>
         /// Resolves a mapping descriptor to a human-friendly display name using
-        /// the device's object metadata. For keyboards, "Button 65" becomes "A".
-        /// For mice, "Button 0" becomes "Left Click".
-        /// </summary>
-        /// <summary>
-        /// Resolves a mapping descriptor to a human-friendly display name using
         /// the device identified by the given instance GUID.
+        /// For keyboards, "Button 65" becomes "A". For mice, "Button 0" becomes "Left Click".
         /// </summary>
         internal static void ResolveDisplayText(MappingItem mapping, Guid instanceGuid)
         {
@@ -1541,6 +1537,7 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
+            _mainVm.Dashboard.DsuServerStatus = string.Empty;
         }
 
         // ─────────────────────────────────────────────
@@ -1591,6 +1588,8 @@ namespace PadForge.Services
 
             _webServer.Dispose();
             _webServer = null;
+            _mainVm.Dashboard.WebControllerStatus = string.Empty;
+            _mainVm.Dashboard.WebControllerClientCount = 0;
         }
 
         // ─────────────────────────────────────────────

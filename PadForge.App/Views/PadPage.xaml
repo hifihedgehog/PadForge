@@ -1133,7 +1133,20 @@
                                                             <Canvas.Left>100</Canvas.Left>
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
-                                                        <!-- Crosshair -->
+                                                        <!-- Grid lines at 25%/75% -->
+                                                        <Line X1="50" Y1="0" X2="50" Y2="200"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                        <Line X1="150" Y1="0" X2="150" Y2="200"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                        <Line X1="0" Y1="50" X2="200" Y2="50"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                        <Line X1="0" Y1="150" X2="200" Y2="150"
+                                                              Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
+                                                              StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                                        <!-- Crosshair at center -->
                                                         <Line X1="100" Y1="0" X2="100" Y2="200"
                                                               Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
                                                               StrokeThickness="0.5"/>

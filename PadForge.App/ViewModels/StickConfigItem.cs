@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Engine.Data;
 
 namespace PadForge.ViewModels
 {
@@ -137,6 +138,20 @@ namespace PadForge.ViewModels
         {
             get => PctToDigit(_centerOffsetY);
             set => CenterOffsetY = DigitToPct(value);
+        }
+
+        private DeadZoneShape _deadZoneShape = DeadZoneShape.ScaledRadial;
+        public DeadZoneShape DeadZoneShape
+        {
+            get => _deadZoneShape;
+            set { if (SetProperty(ref _deadZoneShape, value)) OnPropertyChanged(nameof(DeadZoneShapeIndex)); }
+        }
+
+        /// <summary>Int wrapper for ComboBox SelectedIndex binding.</summary>
+        public int DeadZoneShapeIndex
+        {
+            get => (int)_deadZoneShape;
+            set => DeadZoneShape = (DeadZoneShape)Math.Clamp(value, 0, 5);
         }
 
         private bool _isCalibrating;
@@ -315,6 +330,7 @@ namespace PadForge.ViewModels
         private ICommand _resetAllCommand;
         public ICommand ResetAllCommand => _resetAllCommand ??= new RelayCommand(() =>
         {
+            DeadZoneShape = DeadZoneShape.ScaledRadial;
             CenterOffsetX = 0; CenterOffsetY = 0;
             DeadZoneX = 0; DeadZoneY = 0;
             AntiDeadZoneX = 0; AntiDeadZoneY = 0;

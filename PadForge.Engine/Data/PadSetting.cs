@@ -135,6 +135,12 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick dead zone Y (0–100%).</summary>
         [XmlElement] public string RightThumbDeadZoneY { get; set; } = "0";
 
+        /// <summary>Left stick dead zone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
+        [XmlElement] public string LeftThumbDeadZoneShape { get; set; } = "2";
+
+        /// <summary>Right stick dead zone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
+        [XmlElement] public string RightThumbDeadZoneShape { get; set; } = "2";
+
         /// <summary>
         /// Left stick anti-dead zone (0–100%). Offsets the output range minimum
         /// so small physical movements register past the game's built-in dead zone.
@@ -496,6 +502,8 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbDeadZoneY); sb.Append('|');
             sb.Append(RightThumbDeadZoneX); sb.Append('|');
             sb.Append(RightThumbDeadZoneY); sb.Append('|');
+            sb.Append(LeftThumbDeadZoneShape); sb.Append('|');
+            sb.Append(RightThumbDeadZoneShape); sb.Append('|');
             sb.Append(LeftThumbAntiDeadZone); sb.Append('|');
             sb.Append(RightThumbAntiDeadZone); sb.Append('|');
             sb.Append(LeftThumbAntiDeadZoneX); sb.Append('|');
@@ -730,6 +738,7 @@ namespace PadForge.Engine.Data
             // Dead zones
             nameof(LeftThumbDeadZoneX), nameof(LeftThumbDeadZoneY),
             nameof(RightThumbDeadZoneX), nameof(RightThumbDeadZoneY),
+            nameof(LeftThumbDeadZoneShape), nameof(RightThumbDeadZoneShape),
             nameof(LeftThumbAntiDeadZone), nameof(RightThumbAntiDeadZone),
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),

@@ -203,24 +203,26 @@ namespace PadForge.Common.Input
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
                 TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
                 TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0),
-                ps.LeftThumbAntiDeadZoneX,
-                ps.LeftThumbAntiDeadZoneY,
-                ps.LeftThumbLinear,
+                TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0),
+                TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0),
+                TryParseDoubleStatic(ps.LeftThumbLinear, 0),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100),
                 TryParseDoubleStatic(ps.LeftThumbSensitivityCurveX, 0),
-                TryParseDoubleStatic(ps.LeftThumbSensitivityCurveY, 0));
+                TryParseDoubleStatic(ps.LeftThumbSensitivityCurveY, 0),
+                ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
                 TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0),
-                ps.RightThumbAntiDeadZoneX,
-                ps.RightThumbAntiDeadZoneY,
-                ps.RightThumbLinear,
+                TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0),
+                TryParseDoubleStatic(ps.RightThumbAntiDeadZoneY, 0),
+                TryParseDoubleStatic(ps.RightThumbLinear, 0),
                 TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
                 TryParseDoubleStatic(ps.RightThumbSensitivityCurveX, 0),
-                TryParseDoubleStatic(ps.RightThumbSensitivityCurveY, 0));
+                TryParseDoubleStatic(ps.RightThumbSensitivityCurveY, 0),
+                ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
 
             return gp;
         }
@@ -705,26 +707,219 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Applies dead zone, anti-dead zone, and linear scaling to a pair
-        /// of thumbstick axes (X and Y).
-        /// 
-        /// Dead zone: values within ±deadZone are forced to 0.
-        /// Anti-dead zone: remaps the output range to start above the game's
-        ///   expected dead zone (so small physical movements register in-game).
-        /// Linear: adjusts the response curve (0 = default, positive = more linear).
+        /// of thumbstick axes (X and Y) using the specified dead zone shape algorithm.
         /// </summary>
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             double deadZoneX, double deadZoneY,
-            string antiDeadZoneXStr, string antiDeadZoneYStr, string linearStr,
-            double maxRangeX = 100, double maxRangeY = 100,
-            double curveX = 0, double curveY = 0)
+            double antiDeadZoneX, double antiDeadZoneY, double linear,
+            double maxRangeX, double maxRangeY,
+            double curveX, double curveY,
+            DeadZoneShape shape)
         {
-            double antiDeadZoneX = TryParseDoubleStatic(antiDeadZoneXStr, 0);
-            double antiDeadZoneY = TryParseDoubleStatic(antiDeadZoneYStr, 0);
-            double linear = TryParseDoubleStatic(linearStr, 0);
+            // Axial: existing independent per-axis behavior.
+            if (shape == DeadZoneShape.Axial)
+            {
+                axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curveX);
+                axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curveY);
+                return;
+            }
 
-            // Apply dead zone independently to each axis.
-            axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, curveX);
-            axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, curveY);
+            // ── Common normalization to [-1, 1] ──
+            double nx = axisX / 32768.0;
+            double ny = axisY / 32768.0;
+            double signX = Math.Sign(nx), signY = Math.Sign(ny);
+            double magX = Math.Abs(nx), magY = Math.Abs(ny);
+            double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
+            double mrXn = maxRangeX / 100.0, mrYn = maxRangeY / 100.0;
+            if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
+            if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
+
+            double remX, remY;
+
+            switch (shape)
+            {
+                case DeadZoneShape.Radial:
+                    ComputeRadial(nx, ny, magX, magY, dzXn, dzYn, mrXn, mrYn,
+                        rescale: false, out remX, out remY);
+                    break;
+                case DeadZoneShape.ScaledRadial:
+                    ComputeRadial(nx, ny, magX, magY, dzXn, dzYn, mrXn, mrYn,
+                        rescale: true, out remX, out remY);
+                    break;
+                case DeadZoneShape.SlopedAxial:
+                    ComputeSloped(magX, magY, dzXn, dzYn, mrXn, mrYn,
+                        rescale: false, out remX, out remY);
+                    break;
+                case DeadZoneShape.SlopedScaledAxial:
+                    ComputeSloped(magX, magY, dzXn, dzYn, mrXn, mrYn,
+                        rescale: true, out remX, out remY);
+                    break;
+                case DeadZoneShape.Hybrid:
+                    ComputeHybrid(nx, ny, magX, magY, dzXn, dzYn, mrXn, mrYn,
+                        out remX, out remY, out signX, out signY);
+                    break;
+                default:
+                    remX = magX; remY = magY;
+                    break;
+            }
+
+            // ── Post-DZ per-axis pipeline: curve → anti-DZ → linear → output ──
+            axisX = ApplyPostDeadZone(remX, signX, antiDeadZoneX, linear, curveX);
+            axisY = ApplyPostDeadZone(remY, signY, antiDeadZoneY, linear, curveY);
+        }
+
+        /// <summary>
+        /// Post-deadzone per-axis processing: sensitivity curve, anti-dead zone, linear.
+        /// Input remapped is [0,1], sign is ±1.
+        /// </summary>
+        private static short ApplyPostDeadZone(double remapped, double sign,
+            double antiDeadZone, double linear, double curve)
+        {
+            if (remapped <= 0 && antiDeadZone <= 0)
+                return 0;
+
+            if (curve != 0)
+            {
+                double exponent = Math.Pow(4.0, -curve / 100.0);
+                remapped = Math.Pow(Math.Clamp(remapped, 0, 1), exponent);
+            }
+
+            double adzNorm = antiDeadZone / 100.0;
+            double output = adzNorm + remapped * (1.0 - adzNorm);
+
+            if (linear > 0)
+            {
+                double linearFactor = linear / 100.0;
+                output = remapped * linearFactor + output * (1.0 - linearFactor);
+            }
+
+            double result = sign * output * 32767.0;
+            return (short)Math.Clamp(result, short.MinValue, short.MaxValue);
+        }
+
+        /// <summary>
+        /// Radial / Scaled Radial deadzone with elliptical support.
+        /// </summary>
+        internal static void ComputeRadial(double nx, double ny,
+            double magX, double magY,
+            double dzXn, double dzYn, double mrXn, double mrYn,
+            bool rescale, out double remX, out double remY)
+        {
+            // If both DZs are zero, no deadzone gating needed.
+            if (dzXn <= 0 && dzYn <= 0)
+            {
+                remX = Math.Min(magX / mrXn, 1.0);
+                remY = Math.Min(magY / mrYn, 1.0);
+                return;
+            }
+
+            // Elliptical distance: (nx/dzX)² + (ny/dzY)² < 1 means inside DZ.
+            const double eps = 1e-10;
+            double effDzX = Math.Max(dzXn, eps);
+            double effDzY = Math.Max(dzYn, eps);
+            double edx = nx / effDzX;
+            double edy = ny / effDzY;
+            double ellipDist = Math.Sqrt(edx * edx + edy * edy);
+
+            if (ellipDist < 1.0)
+            {
+                remX = 0; remY = 0;
+                return;
+            }
+
+            if (!rescale)
+            {
+                // Radial (no rescale): pass through raw magnitudes, clamped at max range.
+                remX = Math.Min(magX / mrXn, 1.0);
+                remY = Math.Min(magY / mrYn, 1.0);
+                return;
+            }
+
+            // Scaled Radial: rescale magnitude from [dzR, mrR] to [0, 1].
+            double rawMag = Math.Sqrt(nx * nx + ny * ny);
+            if (rawMag < eps) { remX = 0; remY = 0; return; }
+
+            double ux = nx / rawMag, uy = ny / rawMag; // unit direction
+
+            // DZ ellipse radius in this direction.
+            double dxu = ux / effDzX, dyu = uy / effDzY;
+            double dzR = 1.0 / Math.Sqrt(dxu * dxu + dyu * dyu);
+
+            // Max-range ellipse radius in this direction.
+            double mxu = ux / mrXn, myu = uy / mrYn;
+            double mrR = 1.0 / Math.Sqrt(mxu * mxu + myu * myu);
+            if (mrR <= dzR) mrR = dzR + 0.01;
+
+            double scaledMag = Math.Clamp((rawMag - dzR) / (mrR - dzR), 0, 1);
+
+            // Project back to per-axis, maintaining direction.
+            remX = scaledMag * Math.Abs(ux);
+            remY = scaledMag * Math.Abs(uy);
+        }
+
+        /// <summary>
+        /// Sloped Axial / Sloped Scaled Axial deadzone.
+        /// DZ on each axis scales with the other axis magnitude.
+        /// </summary>
+        internal static void ComputeSloped(double magX, double magY,
+            double dzXn, double dzYn, double mrXn, double mrYn,
+            bool rescale, out double remX, out double remY)
+        {
+            // Effective DZ: when other axis is large, DZ grows → easier cardinal lock.
+            // When both are small (near center), DZ shrinks → less center filtering.
+            double effDzX = dzXn * magY;
+            double effDzY = dzYn * magX;
+
+            if (magX < effDzX)
+                remX = 0;
+            else if (rescale)
+            {
+                double range = mrXn - effDzX;
+                remX = range > 0 ? Math.Min((magX - effDzX) / range, 1.0) : 0;
+            }
+            else
+                remX = Math.Min(magX / mrXn, 1.0);
+
+            if (magY < effDzY)
+                remY = 0;
+            else if (rescale)
+            {
+                double range = mrYn - effDzY;
+                remY = range > 0 ? Math.Min((magY - effDzY) / range, 1.0) : 0;
+            }
+            else
+                remY = Math.Min(magY / mrYn, 1.0);
+        }
+
+        /// <summary>
+        /// Hybrid: Scaled Radial first (center noise), then Sloped Scaled Axial (cardinal precision).
+        /// </summary>
+        internal static void ComputeHybrid(double nx, double ny,
+            double magX, double magY,
+            double dzXn, double dzYn, double mrXn, double mrYn,
+            out double remX, out double remY, out double signX, out double signY)
+        {
+            // Stage 1: Scaled Radial
+            ComputeRadial(nx, ny, magX, magY, dzXn, dzYn, mrXn, mrYn,
+                rescale: true, out double srX, out double srY);
+
+            // Stage 2: Sloped Scaled Axial on the radial output
+            // Signs are from the original input.
+            signX = Math.Sign(nx);
+            signY = Math.Sign(ny);
+            ComputeSloped(srX, srY, dzXn, dzYn, 1.0, 1.0,
+                rescale: true, out remX, out remY);
+        }
+
+        /// <summary>
+        /// Parses a DeadZoneShape from a string. Returns ScaledRadial for null/empty/invalid.
+        /// </summary>
+        internal static DeadZoneShape ParseDeadZoneShape(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return DeadZoneShape.ScaledRadial;
+            if (int.TryParse(value, out int v) && v >= 0 && v <= 5)
+                return (DeadZoneShape)v;
+            return DeadZoneShape.ScaledRadial;
         }
 
         /// <summary>
@@ -898,9 +1093,11 @@ namespace PadForge.Common.Input
                 if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
 
                 double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100, crvX = 0, crvY = 0;
+                DeadZoneShape dzShape;
                 switch (g)
                 {
                     case 0:
+                        dzShape = ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                         dzX = TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0);
                         dzY = TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0);
                         adzX = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0);
@@ -914,6 +1111,7 @@ namespace PadForge.Common.Input
                         mrY = TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100);
                         break;
                     case 1:
+                        dzShape = ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
                         dzX = TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0);
                         dzY = TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0);
                         adzX = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0);
@@ -928,6 +1126,7 @@ namespace PadForge.Common.Input
                         break;
                     default:
                         // Custom vJoy sticks 2+: read all settings from vJoy dictionary.
+                        dzShape = ParseDeadZoneShape(ps.GetVJoyMapping($"VJoyStick{g}DzShape"));
                         dzX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}DzX"), 0);
                         dzY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}DzY"), 0);
                         adzX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
@@ -943,8 +1142,8 @@ namespace PadForge.Common.Input
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
                 raw.Axes[yi] = ApplyCenterOffset(raw.Axes[yi], cofY);
-                raw.Axes[xi] = ApplySingleDeadZone(raw.Axes[xi], dzX, adzX, lin, mrX, crvX);
-                raw.Axes[yi] = ApplySingleDeadZone(raw.Axes[yi], dzY, adzY, lin, mrY, crvY);
+                ApplyDeadZone(ref raw.Axes[xi], ref raw.Axes[yi],
+                    dzX, dzY, adzX, adzY, lin, mrX, mrY, crvX, crvY, dzShape);
             }
 
             for (int g = 0; g < cfg.Triggers; g++)

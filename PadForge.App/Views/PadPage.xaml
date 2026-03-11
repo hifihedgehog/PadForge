@@ -919,6 +919,18 @@
                                                 <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Dead Zone Shape:" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox SelectedIndex="{Binding DeadZoneShapeIndex, Mode=TwoWay}"
+                                                          Width="200" VerticalAlignment="Center">
+                                                    <ComboBoxItem Content="Axial"/>
+                                                    <ComboBoxItem Content="Radial"/>
+                                                    <ComboBoxItem Content="Scaled Radial"/>
+                                                    <ComboBoxItem Content="Sloped Axial"/>
+                                                    <ComboBoxItem Content="Sloped Scaled Axial"/>
+                                                    <ComboBoxItem Content="Hybrid"/>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding DeadZoneX, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>

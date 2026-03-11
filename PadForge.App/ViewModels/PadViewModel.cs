@@ -1412,7 +1412,7 @@ namespace PadForge.ViewModels
                 double deadZoneX, double deadZoneY,
                 double antiDeadZoneX, double antiDeadZoneY,
                 double linear, double maxRangeX, double maxRangeY,
-                double curveX, double curveY,
+                string curveX, string curveY,
                 DeadZoneShape shape)
         {
             // Convert to signed [-1, 1]

@@ -1350,8 +1350,8 @@ namespace PadForge.Services
         public string ActiveProfileId { get; set; }
 
         /// <summary>
-        /// Per-slot virtual controller output types (Xbox 360 or DualShock 4).
-        /// Array of 4 ints matching VirtualControllerType enum values.
+        /// Per-slot virtual controller output types.
+        /// Array of ints matching VirtualControllerType enum values.
         /// </summary>
         [XmlArray("SlotControllerTypes")]
         [XmlArrayItem("Type")]

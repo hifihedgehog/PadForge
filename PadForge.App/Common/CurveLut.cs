@@ -107,7 +107,7 @@ namespace PadForge.Common
             if (string.IsNullOrEmpty(curveString)) return Presets[0].Name; // Linear
             var normalized = Normalize(curveString);
             foreach (var (name, serialized) in Presets)
-                if (normalized == serialized) return name;
+                if (normalized == Normalize(serialized)) return name;
             return "Custom";
         }
 

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Common;
 
 namespace PadForge.ViewModels
 {
@@ -13,6 +14,9 @@ namespace PadForge.ViewModels
     /// </summary>
     public class TriggerConfigItem : ObservableObject
     {
+        public static string[] CurvePresetNames { get; } =
+            Array.ConvertAll(Common.CurveLut.Presets, p => p.Name);
+
         public string Title { get; }
         public int Index { get; }
 
@@ -56,32 +60,19 @@ namespace PadForge.ViewModels
             set => AntiDeadZone = DigitToPct(value);
         }
 
-        private double _sensitivityCurve;
-        public double SensitivityCurve
+        private string _sensitivityCurve = "0,0;1,1";
+        public string SensitivityCurve
         {
             get => _sensitivityCurve;
-            set { if (SetProperty(ref _sensitivityCurve, Math.Clamp(value, -100, 100))) RebuildCurvePoints(); }
+            set { if (SetProperty(ref _sensitivityCurve, value ?? "0,0;1,1")) RebuildCurvePoints(); }
         }
 
-        // ── Sensitivity curve chart ──
+        // ── Live input for CurveEditor binding ──
 
-        private PointCollection _curvePoints;
-        public PointCollection CurvePoints
-        {
-            get => _curvePoints ??= StickConfigItem.BuildTriggerCurvePoints(_sensitivityCurve, _deadZone, _maxRange);
-            private set => SetProperty(ref _curvePoints, value);
-        }
+        private double _liveInput;
+        public double LiveInputForCurve { get => _liveInput; set => SetProperty(ref _liveInput, value); }
 
-        private double _liveCurveX;
-        public double LiveCurveX { get => _liveCurveX; set => SetProperty(ref _liveCurveX, value); }
-
-        private double _liveCurveY;
-        public double LiveCurveY { get => _liveCurveY; set => SetProperty(ref _liveCurveY, value); }
-
-        public void RebuildCurvePoints()
-        {
-            CurvePoints = StickConfigItem.BuildTriggerCurvePoints(_sensitivityCurve, _deadZone, _maxRange);
-        }
+        public void RebuildCurvePoints() { /* CurveEditor redraws via CurveString binding */ }
 
         // Live preview value (0.0-1.0 normalized)
         private double _liveValue;
@@ -110,7 +101,7 @@ namespace PadForge.ViewModels
         public ICommand ResetAllCommand => _resetAllCommand ??= new RelayCommand(() =>
         {
             DeadZone = 0; MaxRange = 100;
-            AntiDeadZone = 0; SensitivityCurve = 0;
+            AntiDeadZone = 0; SensitivityCurve = "0,0;1,1";
         });
 
         private ICommand _resetRangeCommand;
@@ -118,7 +109,7 @@ namespace PadForge.ViewModels
         private ICommand _resetAntiDeadZoneCommand;
         public ICommand ResetAntiDeadZoneCommand => _resetAntiDeadZoneCommand ??= new RelayCommand(() => AntiDeadZone = 0);
         private ICommand _resetSensitivityCommand;
-        public ICommand ResetSensitivityCommand => _resetSensitivityCommand ??= new RelayCommand(() => SensitivityCurve = 0);
+        public ICommand ResetSensitivityCommand => _resetSensitivityCommand ??= new RelayCommand(() => SensitivityCurve = "0,0;1,1");
 
         public TriggerConfigItem(int index, string title, int axisIndex = -1)
         {

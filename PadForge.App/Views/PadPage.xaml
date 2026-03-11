@@ -984,23 +984,22 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Linear"/>
                                             </StackPanel>
+                                            <TextBlock Text="Sensitivity Curves" FontWeight="SemiBold" Margin="0,4,0,4"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" FontSize="11"/>
+                                            <TextBlock Text="Double-click chart to add point. Right-click to remove. Drag to adjust."
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Sensitivity X:" Style="{StaticResource DzLabel}"/>
-                                                <Slider Value="{Binding SensitivityCurveX, Mode=TwoWay}"
-                                                        Minimum="-100" Maximum="100"
-                                                        Style="{StaticResource DzSlider}"/>
-                                                <TextBox Text="{Binding SensitivityCurveX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <Button Command="{Binding ResetSensitivityXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity X"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Sensitivity Y:" Style="{StaticResource DzLabel}"/>
-                                                <Slider Value="{Binding SensitivityCurveY, Mode=TwoWay}"
-                                                        Minimum="-100" Maximum="100"
-                                                        Style="{StaticResource DzSlider}"/>
-                                                <TextBox Text="{Binding SensitivityCurveY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity Y"/>
+                                                <TextBlock Text="Preset X:" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox Width="140" SelectedIndex="-1"
+                                                          ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
+                                                          SelectionChanged="StickPresetX_SelectionChanged"
+                                                          Tag="{Binding}"/>
+                                                <TextBlock Text="Preset Y:" Style="{StaticResource DzLabel}" Margin="12,0,0,0"/>
+                                                <ComboBox Width="140" SelectedIndex="-1"
+                                                          ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
+                                                          SelectionChanged="StickPresetY_SelectionChanged"
+                                                          Tag="{Binding}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Max Range X:" Style="{StaticResource DzLabel}"/>
@@ -1155,59 +1154,31 @@
                                                        FontSize="10"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
 
-                                            <!-- Per-axis sensitivity curve charts -->
+                                            <!-- Per-axis sensitivity curve editors -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                                                <!-- X axis curve chart -->
+                                                <!-- X axis curve editor -->
                                                 <StackPanel Margin="0,0,4,0">
                                                     <TextBlock Text="X Axis" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
-                                                    <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                                            Width="104" Height="104">
-                                                        <Canvas Width="96" Height="96" Margin="2" ClipToBounds="True">
-                                                            <!-- Origin crosshairs -->
-                                                            <Line X1="48" Y1="0" X2="48" Y2="96"
-                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}" StrokeThickness="0.5"/>
-                                                            <Line X1="0" Y1="48" X2="96" Y2="48"
-                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}" StrokeThickness="0.5"/>
-                                                            <!-- Linear reference diagonal -->
-                                                            <Line X1="0" Y1="96" X2="96" Y2="0"
-                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                                  StrokeDashArray="4 2" StrokeThickness="0.5"/>
-                                                            <Polyline Points="{Binding CurvePointsX}"
-                                                                      Stroke="{DynamicResource SystemControlHighlightAccentBrush}"
-                                                                      StrokeThickness="1.5" Fill="Transparent"/>
-                                                            <Ellipse Width="7" Height="7"
-                                                                     Fill="{DynamicResource SystemControlHighlightAccentBrush}"
-                                                                     Canvas.Left="{Binding CurveXDotLeft}"
-                                                                     Canvas.Top="{Binding CurveXDotTop}"/>
-                                                        </Canvas>
-                                                    </Border>
+                                                    <controls:CurveEditor
+                                                        CurveString="{Binding SensitivityCurveX, Mode=TwoWay}"
+                                                        DeadZone="{Binding DeadZoneX}"
+                                                        MaxRange="{Binding MaxRangeX}"
+                                                        LiveInput="{Binding LiveInputX}"
+                                                        IsSigned="True" ChartSize="96"/>
                                                 </StackPanel>
-                                                <!-- Y axis curve chart -->
+                                                <!-- Y axis curve editor -->
                                                 <StackPanel Margin="4,0,0,0">
                                                     <TextBlock Text="Y Axis" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
-                                                    <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                                            Width="104" Height="104">
-                                                        <Canvas Width="96" Height="96" Margin="2" ClipToBounds="True">
-                                                            <Line X1="48" Y1="0" X2="48" Y2="96"
-                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}" StrokeThickness="0.5"/>
-                                                            <Line X1="0" Y1="48" X2="96" Y2="48"
-                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}" StrokeThickness="0.5"/>
-                                                            <Line X1="0" Y1="96" X2="96" Y2="0"
-                                                                  Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                                  StrokeDashArray="4 2" StrokeThickness="0.5"/>
-                                                            <Polyline Points="{Binding CurvePointsY}"
-                                                                      Stroke="{DynamicResource SystemControlHighlightAccentBrush}"
-                                                                      StrokeThickness="1.5" Fill="Transparent"/>
-                                                            <Ellipse Width="7" Height="7"
-                                                                     Fill="{DynamicResource SystemControlHighlightAccentBrush}"
-                                                                     Canvas.Left="{Binding CurveYDotLeft}"
-                                                                     Canvas.Top="{Binding CurveYDotTop}"/>
-                                                        </Canvas>
-                                                    </Border>
+                                                    <controls:CurveEditor
+                                                        CurveString="{Binding SensitivityCurveY, Mode=TwoWay}"
+                                                        DeadZone="{Binding DeadZoneY}"
+                                                        MaxRange="{Binding MaxRangeY}"
+                                                        LiveInput="{Binding LiveInputY}"
+                                                        IsSigned="True" ChartSize="96"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
@@ -1281,14 +1252,17 @@
                                                 <Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zone"/>
                                             </StackPanel>
 
+                                            <TextBlock Text="Sensitivity Curve" FontWeight="SemiBold" Margin="0,4,0,4"
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" FontSize="11"/>
+                                            <TextBlock Text="Double-click to add point. Right-click to remove. Drag to adjust."
+                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Sensitivity:" Style="{StaticResource DzLabel}"/>
-                                                <Slider Value="{Binding SensitivityCurve, Mode=TwoWay}"
-                                                        Minimum="-100" Maximum="100"
-                                                        Style="{StaticResource DzSlider}"/>
-                                                <TextBox Text="{Binding SensitivityCurve, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity"/>
+                                                <TextBlock Text="Preset:" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox Width="140" SelectedIndex="-1"
+                                                          ItemsSource="{x:Static vm:TriggerConfigItem.CurvePresetNames}"
+                                                          SelectionChanged="TriggerPreset_SelectionChanged"
+                                                          Tag="{Binding}"/>
                                             </StackPanel>
 
                                             <!-- Live value bar -->
@@ -1303,28 +1277,18 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Right: sensitivity curve chart (aligned to top line) -->
+                                        <!-- Right: sensitivity curve editor -->
                                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,-26,0,0">
                                             <TextBlock Text="Trigger Axis" Margin="0,0,0,4"
                                                        HorizontalAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="11"/>
-                                            <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
-                                                    Width="128" Height="128" HorizontalAlignment="Center">
-                                                <Canvas Width="120" Height="120" Margin="2"
-                                                        ClipToBounds="True">
-                                                    <Line X1="0" Y1="120" X2="120" Y2="0"
-                                                          Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                          StrokeDashArray="4 2" StrokeThickness="0.5"/>
-                                                    <Polyline Points="{Binding CurvePoints}"
-                                                              Stroke="{DynamicResource SystemControlHighlightAccentBrush}"
-                                                              StrokeThickness="1.5" Fill="Transparent"/>
-                                                    <Ellipse Width="8" Height="8"
-                                                             Fill="{DynamicResource SystemControlHighlightAccentBrush}"
-                                                             Canvas.Left="{Binding LiveCurveX}"
-                                                             Canvas.Top="{Binding LiveCurveY}"/>
-                                                </Canvas>
-                                            </Border>
+                                            <controls:CurveEditor
+                                                CurveString="{Binding SensitivityCurve, Mode=TwoWay}"
+                                                DeadZone="{Binding DeadZone}"
+                                                MaxRange="{Binding MaxRange}"
+                                                LiveInput="{Binding LiveInputForCurve}"
+                                                IsSigned="False" ChartSize="120"/>
                                         </StackPanel>
                                     </Grid>
 

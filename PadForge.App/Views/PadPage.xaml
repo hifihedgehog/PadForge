@@ -990,18 +990,22 @@
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Preset X:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox Width="140"
+                                                <TextBlock Text="Sensitivity X:" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox Width="120"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetNameX, Mode=OneWay}"
                                                           SelectionChanged="StickPresetX_SelectionChanged"
                                                           Tag="{Binding}"/>
-                                                <TextBlock Text="Preset Y:" Style="{StaticResource DzLabel}" Margin="12,0,0,0"/>
-                                                <ComboBox Width="140"
+                                                <Button Command="{Binding ResetSensitivityXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity X"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Sensitivity Y:" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox Width="120"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetNameY, Mode=OneWay}"
                                                           SelectionChanged="StickPresetY_SelectionChanged"
                                                           Tag="{Binding}"/>
+                                                <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Max Range X:" Style="{StaticResource DzLabel}"/>
@@ -1261,11 +1265,12 @@
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Preset:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox Width="140"
+                                                <ComboBox Width="120"
                                                           ItemsSource="{x:Static vm:TriggerConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetName, Mode=OneWay}"
                                                           SelectionChanged="TriggerPreset_SelectionChanged"
                                                           Tag="{Binding}"/>
+                                                <Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity"/>
                                             </StackPanel>
 
                                             <!-- Live value bar -->

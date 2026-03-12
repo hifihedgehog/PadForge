@@ -664,6 +664,24 @@ namespace PadForge.ViewModels
         //  Per-axis X/Y, anti-dead zone, linear, trigger dead zones
         // ═══════════════════════════════════════════════
 
+        /// <summary>
+        /// Resets all per-slot settings to defaults. Called when a slot is deleted
+        /// so the next controller created in the same slot starts clean.
+        /// </summary>
+        public void ResetAllSettings()
+        {
+            ResetDeadZoneSettings();
+            LeftSensitivityCurveX = "0,0;1,1";
+            LeftSensitivityCurveY = "0,0;1,1";
+            RightSensitivityCurveX = "0,0;1,1";
+            RightSensitivityCurveY = "0,0;1,1";
+            LeftTriggerSensitivityCurve = "0,0;1,1";
+            RightTriggerSensitivityCurve = "0,0;1,1";
+            ForceOverallGain = 100;
+            LeftMotorStrength = 100;
+            RightMotorStrength = 100;
+        }
+
         /// <summary>Resets all dead zone, anti-dead zone, linear, and trigger settings to defaults.</summary>
         private void ResetDeadZoneSettings()
         {

@@ -1196,99 +1196,106 @@ namespace PadForge
                 Margin = new Thickness(6, 0, 6, 0)
             });
 
-            if (isMidi)
+            // Type-switch buttons: Xbox / DS4 / vJoy / MIDI — shown for all cards.
+            // Xbox type button — use SetResourceReference for theme-aware Fill.
+            var xboxPath = new System.Windows.Shapes.Path
             {
-                // MIDI cards show only a static MIDI icon — no type switching to game controllers.
-                var midiIcon = new System.Windows.Controls.TextBlock
+                Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var xboxBtn = new System.Windows.Controls.Button
+            {
+                Content = xboxPath,
+                ToolTip = "Xbox 360",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isXbox ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            xboxBtn.Click += OnSidebarTypeXbox;
+            row.Children.Add(xboxBtn);
+
+            // PS type button — use SetResourceReference for theme-aware Fill.
+            var ds4Path = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var ds4Btn = new System.Windows.Controls.Button
+            {
+                Content = ds4Path,
+                ToolTip = "DualShock 4",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isDS4 ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            ds4Btn.Click += OnSidebarTypeDS4;
+            row.Children.Add(ds4Btn);
+
+            // vJoy type button — use SetResourceReference for theme-aware Fill.
+            var vjoyPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var vjoyBtn = new System.Windows.Controls.Button
+            {
+                Content = vjoyPath,
+                ToolTip = "DirectInput",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isVJoy ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            vjoyBtn.Click += OnSidebarTypeVJoy;
+            row.Children.Add(vjoyBtn);
+
+            // MIDI type button — MDL2 glyph (music note).
+            var midiBtn = new System.Windows.Controls.Button
+            {
+                Content = new System.Windows.Controls.TextBlock
                 {
                     Text = "\uE8D6",
                     FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    FontSize = 13,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    ToolTip = "MIDI"
-                };
-                row.Children.Add(midiIcon);
-            }
-            else
-            {
-                // Game controller cards: Xbox / DS4 / vJoy type-switch buttons (no MIDI).
-                // Xbox type button — use SetResourceReference for theme-aware Fill.
-                var xboxPath = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                var xboxBtn = new System.Windows.Controls.Button
-                {
-                    Content = xboxPath,
-                    ToolTip = "Xbox 360",
-                    Background = System.Windows.Media.Brushes.Transparent,
-                    Padding = new Thickness(2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    Opacity = isXbox ? 1.0 : 0.3,
-                    Cursor = System.Windows.Input.Cursors.Hand,
-                    Tag = navItem.PadIndex,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                xboxBtn.Click += OnSidebarTypeXbox;
-                row.Children.Add(xboxBtn);
-
-                // PS type button — use SetResourceReference for theme-aware Fill.
-                var ds4Path = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                var ds4Btn = new System.Windows.Controls.Button
-                {
-                    Content = ds4Path,
-                    ToolTip = "DualShock 4",
-                    Background = System.Windows.Media.Brushes.Transparent,
-                    Padding = new Thickness(2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    Opacity = isDS4 ? 1.0 : 0.3,
-                    Cursor = System.Windows.Input.Cursors.Hand,
-                    Margin = new Thickness(1, 0, 0, 0),
-                    Tag = navItem.PadIndex,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                ds4Btn.Click += OnSidebarTypeDS4;
-                row.Children.Add(ds4Btn);
-
-                // vJoy type button — use SetResourceReference for theme-aware Fill.
-                var vjoyPath = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                var vjoyBtn = new System.Windows.Controls.Button
-                {
-                    Content = vjoyPath,
-                    ToolTip = "DirectInput",
-                    Background = System.Windows.Media.Brushes.Transparent,
-                    Padding = new Thickness(2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    Opacity = isVJoy ? 1.0 : 0.3,
-                    Cursor = System.Windows.Input.Cursors.Hand,
-                    Margin = new Thickness(1, 0, 0, 0),
-                    Tag = navItem.PadIndex,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                vjoyBtn.Click += OnSidebarTypeVJoy;
-                row.Children.Add(vjoyBtn);
-            }
+                    FontSize = 13
+                },
+                ToolTip = "MIDI",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isMidi ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            midiBtn.Click += OnSidebarTypeMidi;
+            row.Children.Add(midiBtn);
 
             // Per-type instance label.
             row.Children.Add(new System.Windows.Controls.TextBlock
@@ -1373,6 +1380,18 @@ namespace PadForge
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                _inputService.EnsureTypeGroupOrder();
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar MIDI type button click.</summary>
+        private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }

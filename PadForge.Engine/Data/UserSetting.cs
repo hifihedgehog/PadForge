@@ -141,6 +141,13 @@ namespace PadForge.Engine.Data
         public MidiRawState MidiRawOutputState { get; set; }
 
         /// <summary>
+        /// The mapped KBM raw output state computed in Step 3 for KeyboardMouse slots.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public KbmRawState KbmRawOutputState { get; set; }
+
+        /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.
         /// </summary>
         [XmlIgnore]

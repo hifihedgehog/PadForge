@@ -627,10 +627,13 @@ namespace PadForge.Common.Input
                     {
                         // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
+                        // KBM slots use SubmitKbmState for keyboard/mouse output.
                         if (vc is VJoyVirtualController vjoyVc && SlotVJoyIsCustom[padIndex])
                             vjoyVc.SubmitRawState(CombinedVJoyRawStates[padIndex]);
                         else if (vc is MidiVirtualController midiVc)
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
+                        else if (vc is KeyboardMouseVirtualController kbmVc)
+                            kbmVc.SubmitKbmState(CombinedKbmRawStates[padIndex]);
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
@@ -742,9 +745,10 @@ namespace PadForge.Common.Input
         {
             var controllerType = SlotControllerTypes[padIndex];
 
-            // vJoy and MIDI don't need ViGEm, but Xbox 360 and DS4 do.
+            // vJoy, MIDI, and KeyboardMouse don't need ViGEm, but Xbox 360 and DS4 do.
             if (controllerType != VirtualControllerType.VJoy
                 && controllerType != VirtualControllerType.Midi
+                && controllerType != VirtualControllerType.KeyboardMouse
                 && _vigemClient == null)
                 return null;
 
@@ -761,6 +765,7 @@ namespace PadForge.Common.Input
                     VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
                     VirtualControllerType.VJoy => CreateVJoyController(),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
+                    VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
                     _ => new Xbox360VirtualController(_vigemClient)
                 };
 

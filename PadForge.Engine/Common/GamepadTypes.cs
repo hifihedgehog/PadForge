@@ -121,6 +121,91 @@ namespace PadForge.Engine
     }
 
     /// <summary>
+    /// Raw keyboard + mouse output state for the KeyboardMouse virtual controller type.
+    /// Key states are packed into 4 × 64-bit words = 256 virtual key codes.
+    /// Mouse axes are signed short range for delta movement per frame.
+    /// </summary>
+    public struct KbmRawState
+    {
+        /// <summary>256 virtual key states packed into 4 ulongs.</summary>
+        public ulong Keys0, Keys1, Keys2, Keys3;
+
+        /// <summary>Mouse X delta (signed, pixels per frame).</summary>
+        public short MouseDeltaX;
+
+        /// <summary>Mouse Y delta (signed, pixels per frame).</summary>
+        public short MouseDeltaY;
+
+        /// <summary>Mouse scroll delta (signed, positive = up).</summary>
+        public short ScrollDelta;
+
+        /// <summary>Mouse button states: bit 0 = LMB, bit 1 = RMB, bit 2 = MMB, bit 3 = X1, bit 4 = X2.</summary>
+        public byte MouseButtons;
+
+        public bool GetKey(byte vk)
+        {
+            int word = vk / 64;
+            int bit = vk % 64;
+            return word switch
+            {
+                0 => (Keys0 & (1UL << bit)) != 0,
+                1 => (Keys1 & (1UL << bit)) != 0,
+                2 => (Keys2 & (1UL << bit)) != 0,
+                3 => (Keys3 & (1UL << bit)) != 0,
+                _ => false
+            };
+        }
+
+        public void SetKey(byte vk, bool pressed)
+        {
+            int word = vk / 64;
+            int bit = vk % 64;
+            ulong mask = 1UL << bit;
+            switch (word)
+            {
+                case 0: if (pressed) Keys0 |= mask; else Keys0 &= ~mask; break;
+                case 1: if (pressed) Keys1 |= mask; else Keys1 &= ~mask; break;
+                case 2: if (pressed) Keys2 |= mask; else Keys2 &= ~mask; break;
+                case 3: if (pressed) Keys3 |= mask; else Keys3 &= ~mask; break;
+            }
+        }
+
+        public bool GetMouseButton(int index) => (MouseButtons & (1 << index)) != 0;
+
+        public void SetMouseButton(int index, bool pressed)
+        {
+            if (pressed) MouseButtons |= (byte)(1 << index);
+            else MouseButtons &= (byte)~(1 << index);
+        }
+
+        public void Clear()
+        {
+            Keys0 = Keys1 = Keys2 = Keys3 = 0;
+            MouseDeltaX = MouseDeltaY = ScrollDelta = 0;
+            MouseButtons = 0;
+        }
+
+        /// <summary>
+        /// Combines two KBM states. Keys and mouse buttons are OR'd.
+        /// Mouse deltas take the largest magnitude value.
+        /// </summary>
+        public static KbmRawState Combine(KbmRawState a, KbmRawState b)
+        {
+            return new KbmRawState
+            {
+                Keys0 = a.Keys0 | b.Keys0,
+                Keys1 = a.Keys1 | b.Keys1,
+                Keys2 = a.Keys2 | b.Keys2,
+                Keys3 = a.Keys3 | b.Keys3,
+                MouseDeltaX = Math.Abs(a.MouseDeltaX) >= Math.Abs(b.MouseDeltaX) ? a.MouseDeltaX : b.MouseDeltaX,
+                MouseDeltaY = Math.Abs(a.MouseDeltaY) >= Math.Abs(b.MouseDeltaY) ? a.MouseDeltaY : b.MouseDeltaY,
+                ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
+                MouseButtons = (byte)(a.MouseButtons | b.MouseButtons)
+            };
+        }
+    }
+
+    /// <summary>
     /// Raw MIDI output state with dynamic CC and note counts.
     /// CC values are 0-127 (MIDI range). Notes are boolean (on/off).
     /// </summary>

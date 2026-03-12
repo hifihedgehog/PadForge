@@ -405,7 +405,9 @@ namespace PadForge.ViewModels
             Mappings.Clear();
 
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
-            if (OutputType == VirtualControllerType.Midi)
+            if (OutputType == VirtualControllerType.KeyboardMouse)
+                InitializeKeyboardMouseMappings();
+            else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
             else if (isCustomVJoy)
                 InitializeVJoyCustomMappings();
@@ -488,6 +490,96 @@ namespace PadForge.ViewModels
             // Note outputs — each note is a button (Note On/Off).
             for (int i = 0; i < mc.NoteCount; i++)
                 Mappings.Add(new MappingItem($"Note {noteNumbers[i]}", $"MidiNote{i}", MappingCategory.Buttons));
+        }
+
+        /// <summary>
+        /// Keyboard + Mouse mappings — full keyboard keys, mouse buttons, and mouse axes.
+        /// Targets use "Kbm" prefix for dictionary-based PadSetting storage.
+        /// Key targets: "KbmKey{vk}" where vk is the Windows virtual-key code (hex).
+        /// Mouse buttons: "KbmMBtn{0-4}" (LMB, RMB, MMB, X1, X2).
+        /// Mouse axes: "KbmMouseX"/"KbmMouseY" (bidirectional), "KbmScroll" (bidirectional).
+        /// </summary>
+        private void InitializeKeyboardMouseMappings()
+        {
+            // Helper to add a keyboard key mapping target
+            void AddKey(string label, byte vk)
+                => Mappings.Add(new MappingItem(label, $"KbmKey{vk:X2}", MappingCategory.Buttons));
+
+            // ── Letters ──
+            for (int i = 0; i < 26; i++)
+                AddKey(((char)('A' + i)).ToString(), (byte)(0x41 + i));
+
+            // ── Numbers ──
+            for (int i = 0; i <= 9; i++)
+                AddKey(i.ToString(), (byte)(0x30 + i));
+
+            // ── Function keys ──
+            for (int i = 1; i <= 12; i++)
+                AddKey($"F{i}", (byte)(0x6F + i)); // VK_F1=0x70 .. VK_F12=0x7B
+
+            // ── Modifiers ──
+            AddKey("Left Shift", 0xA0);
+            AddKey("Right Shift", 0xA1);
+            AddKey("Left Ctrl", 0xA2);
+            AddKey("Right Ctrl", 0xA3);
+            AddKey("Left Alt", 0xA4);
+            AddKey("Right Alt", 0xA5);
+
+            // ── Special keys ──
+            AddKey("Space", 0x20);
+            AddKey("Enter", 0x0D);
+            AddKey("Escape", 0x1B);
+            AddKey("Tab", 0x09);
+            AddKey("Backspace", 0x08);
+            AddKey("Caps Lock", 0x14);
+
+            // ── Navigation ──
+            AddKey("Up", 0x26);
+            AddKey("Down", 0x28);
+            AddKey("Left", 0x25);
+            AddKey("Right", 0x27);
+            AddKey("Home", 0x24);
+            AddKey("End", 0x23);
+            AddKey("Page Up", 0x21);
+            AddKey("Page Down", 0x22);
+            AddKey("Insert", 0x2D);
+            AddKey("Delete", 0x2E);
+
+            // ── Punctuation ──
+            AddKey(";", 0xBA);
+            AddKey("=", 0xBB);
+            AddKey(",", 0xBC);
+            AddKey("-", 0xBD);
+            AddKey(".", 0xBE);
+            AddKey("/", 0xBF);
+            AddKey("`", 0xC0);
+            AddKey("[", 0xDB);
+            AddKey("\\", 0xDC);
+            AddKey("]", 0xDD);
+            AddKey("'", 0xDE);
+
+            // ── Numpad ──
+            for (int i = 0; i <= 9; i++)
+                AddKey($"Num {i}", (byte)(0x60 + i));
+            AddKey("Num *", 0x6A);
+            AddKey("Num +", 0x6B);
+            AddKey("Num -", 0x6D);
+            AddKey("Num .", 0x6E);
+            AddKey("Num /", 0x6F);
+
+            // ── Mouse buttons ──
+            Mappings.Add(new MappingItem("Left Click", "KbmMBtn0", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Right Click", "KbmMBtn1", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Middle Click", "KbmMBtn2", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Mouse 4", "KbmMBtn3", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Mouse 5", "KbmMBtn4", MappingCategory.Buttons));
+
+            // ── Mouse movement axes (bidirectional) ──
+            Mappings.Add(new MappingItem("Mouse X", "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
+            Mappings.Add(new MappingItem("Mouse Y", "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
+
+            // ── Mouse scroll (bidirectional) ──
+            Mappings.Add(new MappingItem("Scroll", "KbmScroll", MappingCategory.Triggers, negSettingName: "KbmScrollNeg"));
         }
 
         /// <summary>
@@ -730,6 +822,17 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnStickConfigPropertyChanged;
             StickConfigs.Clear();
 
+            bool isKbm = OutputType == VirtualControllerType.KeyboardMouse;
+            if (isKbm)
+            {
+                // KBM: 1 stick config for Mouse X/Y
+                var item = new StickConfigItem(0, "Mouse Movement", -1, -1);
+                SyncStickItemFromVm(item);
+                item.PropertyChanged += OnStickConfigPropertyChanged;
+                StickConfigs.Add(item);
+                return;
+            }
+
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
             if (isCustomVJoy)
@@ -763,6 +866,17 @@ namespace PadForge.ViewModels
             foreach (var item in TriggerConfigs)
                 item.PropertyChanged -= OnTriggerConfigPropertyChanged;
             TriggerConfigs.Clear();
+
+            bool isKbm = OutputType == VirtualControllerType.KeyboardMouse;
+            if (isKbm)
+            {
+                // KBM: 1 trigger config for Scroll Wheel
+                var item = new TriggerConfigItem(0, "Scroll Wheel", -1);
+                SyncTriggerItemFromVm(item);
+                item.PropertyChanged += OnTriggerConfigPropertyChanged;
+                TriggerConfigs.Add(item);
+                return;
+            }
 
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
@@ -1666,6 +1780,12 @@ namespace PadForge.ViewModels
         /// Updated at 30Hz alongside UpdateFromEngineState.
         /// </summary>
         public VJoyRawState VJoyOutputSnapshot { get; private set; }
+
+        /// <summary>
+        /// Latest KbmRawState snapshot for KBM preview display.
+        /// Updated at 30Hz alongside UpdateFromEngineState.
+        /// </summary>
+        public KbmRawState KbmOutputSnapshot { get; set; }
 
         /// <summary>
         /// Updates the combined output display from a VJoyRawState (custom vJoy slots).

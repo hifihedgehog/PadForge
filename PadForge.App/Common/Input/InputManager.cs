@@ -84,9 +84,20 @@ namespace PadForge.Common.Input
         public MidiRawState[] CombinedMidiRawStates { get; } = new MidiRawState[MaxPads];
 
         /// <summary>
+        /// Combined KBM raw output states for KeyboardMouse slots.
+        /// Written by Step 4 (background thread), read by Step 5.
+        /// </summary>
+        public KbmRawState[] CombinedKbmRawStates { get; } = new KbmRawState[MaxPads];
+
+        /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
         public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
+
+        /// <summary>
+        /// Retrieved KBM raw states for UI display (keyboard key + mouse state preview).
+        /// </summary>
+        public KbmRawState[] RetrievedKbmRawStates { get; } = new KbmRawState[MaxPads];
 
         /// <summary>
         /// Per-slot vibration states received from games via ViGEmBus.
@@ -545,6 +556,8 @@ namespace PadForge.Common.Input
                 (CombinedVJoyRawStates[slotB], CombinedVJoyRawStates[slotA]);
             (CombinedMidiRawStates[slotA], CombinedMidiRawStates[slotB]) =
                 (CombinedMidiRawStates[slotB], CombinedMidiRawStates[slotA]);
+            (CombinedKbmRawStates[slotA], CombinedKbmRawStates[slotB]) =
+                (CombinedKbmRawStates[slotB], CombinedKbmRawStates[slotA]);
 
             // Update FeedbackPadIndex so rumble callbacks write to the correct
             // VibrationStates element after the swap.

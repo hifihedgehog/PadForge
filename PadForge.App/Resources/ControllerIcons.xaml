@@ -50,6 +50,16 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <!-- Keyboard+Mouse icon (Segoe MDL2 Assets E961 "Input" glyph, rendered as GlyphRun) -->
+    <!-- Uses a TextBlock in code-behind instead — MDL2 glyphs don't have SVG paths. -->
+    <!-- Placeholder DrawingImage so resource lookup doesn't fail; actual rendering uses MDL2 glyph. -->
+    <DrawingImage x:Key="KeyboardMouseControllerIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                             Geometry="M2 6a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm4 2v2h2V8H6zm0 4v2h2v-2H6zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zM8 16v2h16v-2H8z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <!-- ═══════════════════════════════════════════
          Shared Card Styles
          ═══════════════════════════════════════════ -->

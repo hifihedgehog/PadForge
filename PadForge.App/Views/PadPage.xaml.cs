@@ -83,21 +83,38 @@ namespace PadForge.Views
             return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Midi;
         }
 
+        private bool IsKBM()
+        {
+            return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.KeyboardMouse;
+        }
+
         private void ApplyViewMode()
         {
-            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null) return;
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null) return;
 
             bool isMidi = IsMidi();
+            bool isKBM = IsKBM();
             bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
-            if (isMidi)
+            if (isKBM)
+            {
+                // KB+Mouse: show KBM preview, hide everything else
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Visible;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
+            else if (isMidi)
             {
                 // MIDI: show MIDI preview, hide everything else
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Visible;
+                KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (isSchematic)
@@ -107,6 +124,7 @@ namespace PadForge.Views
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Visible;
                 MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else
@@ -114,6 +132,7 @@ namespace PadForge.Views
                 // Gamepad preset: standard 2D/3D toggle
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Collapsed;
                 ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
                 ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Visible;
@@ -132,23 +151,27 @@ namespace PadForge.Views
         {
             if (TabSticks == null || TabTriggers == null || TabForceFeedback == null) return;
 
+            bool isKbm = IsKBM();
             bool isMidi = IsMidi();
-            var vis = isMidi ? Visibility.Collapsed : Visibility.Visible;
-            TabSticks.Visibility = vis;
-            TabTriggers.Visibility = vis;
-            TabForceFeedback.Visibility = vis;
+            bool hideAllGamepadTabs = isMidi;
+            var vis = hideAllGamepadTabs ? Visibility.Collapsed : Visibility.Visible;
+            // KBM shows Sticks (Mouse X/Y) and Triggers (Scroll) but hides FFB
+            TabSticks.Visibility = (isMidi) ? Visibility.Collapsed : Visibility.Visible;
+            TabTriggers.Visibility = (isMidi) ? Visibility.Collapsed : Visibility.Visible;
+            TabForceFeedback.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
 
             if (MotorBarsGrid != null)
-                MotorBarsGrid.Visibility = vis;
+                MotorBarsGrid.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
 
             // If on a hidden tab, switch back to Controller tab
-            if (isMidi && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
+            if ((isMidi || isKbm) && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
                 vm.SelectedConfigTab = 0;
         }
 
         private void BindActiveModelView()
         {
             bool isMidi = IsMidi();
+            bool isKBM = IsKBM();
             bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
@@ -157,10 +180,15 @@ namespace PadForge.Views
             ControllerModel2D.Unbind();
             ControllerSchematic.Unbind();
             MidiPreview.Unbind();
+            KBMPreview.Unbind();
 
             if (DataContext is not PadViewModel vm) return;
 
-            if (isMidi)
+            if (isKBM)
+            {
+                KBMPreview.Bind(vm);
+            }
+            else if (isMidi)
             {
                 MidiPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
                 MidiPreview.ControllerElementRecordRequested += OnModelRecordRequested;

@@ -1184,7 +1184,9 @@ namespace PadForge
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0)
+                Margin = new Thickness(3, 0, 0, 0),
+                Width = 16,
+                TextAlignment = TextAlignment.Center
             });
 
             // Separator.
@@ -1328,7 +1330,9 @@ namespace PadForge
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0)
+                Margin = new Thickness(3, 0, 0, 0),
+                Width = 12,
+                TextAlignment = TextAlignment.Center
             });
 
             // Wrap in a rounded card border.

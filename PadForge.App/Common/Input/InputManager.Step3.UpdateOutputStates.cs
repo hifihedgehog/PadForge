@@ -1322,12 +1322,44 @@ namespace PadForge.Common.Input
                     raw.MouseDeltaY = MapToThumbAxisWithNeg(state, posDesc, negDesc);
             }
 
+            // ── Mouse movement dead zone + sensitivity (uses Left Thumb settings) ──
+            ApplyDeadZone(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
+                TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
+                TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0),
+                TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0),
+                TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0),
+                TryParseDoubleStatic(ps.LeftThumbLinear, 0),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100),
+                Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
+                Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
+                ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
+
             // Map scroll axis (bidirectional)
             {
                 string posDesc = ps.GetKbmMapping("KbmScroll");
                 string negDesc = ps.GetKbmMapping("KbmScrollNeg");
                 if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                     raw.ScrollDelta = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+            }
+
+            // ── Scroll dead zone + sensitivity (uses Left Trigger settings) ──
+            // Scroll is bidirectional (signed), so apply DZ on absolute value, preserve sign.
+            if (raw.ScrollDelta != 0)
+            {
+                int sign = raw.ScrollDelta >= 0 ? 1 : -1;
+                int absDelta = Math.Abs((int)raw.ScrollDelta);
+                if (absDelta > 32767) absDelta = 32767;
+                // Scale to 0-65535 unsigned range for trigger DZ
+                ushort scaled = (ushort)(absDelta * 2);
+                scaled = ApplyTriggerDeadZone(scaled,
+                    TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
+                    TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0),
+                    TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100),
+                    Common.CurveLut.GetOrBuild(ps.LeftTriggerSensitivityCurve));
+                int result = scaled / 2;
+                if (result > 32767) result = 32767;
+                raw.ScrollDelta = (short)(sign * result);
             }
 
             return raw;

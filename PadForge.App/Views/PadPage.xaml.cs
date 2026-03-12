@@ -186,6 +186,8 @@ namespace PadForge.Views
 
             if (isKBM)
             {
+                KBMPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
+                KBMPreview.ControllerElementRecordRequested += OnModelRecordRequested;
                 KBMPreview.Bind(vm);
             }
             else if (isMidi)

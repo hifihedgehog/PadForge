@@ -214,17 +214,8 @@
                                     <TextBlock Text="|" FontSize="12" Opacity="0.3"
                                                VerticalAlignment="Center" Margin="8,0,8,0"/>
 
-                                    <!-- Game controller type buttons (hidden for MIDI slots) -->
+                                    <!-- Game controller type buttons (all types shown for all cards) -->
                                     <StackPanel Orientation="Horizontal">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding OutputType}" Value="Midi">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
 
                                         <!-- Xbox type button -->
                                         <Button ToolTip="Xbox 360" Background="Transparent"
@@ -303,22 +294,45 @@
                                                   Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                                   Width="14" Height="14" Stretch="Uniform"/>
                                         </Button>
-                                    </StackPanel>
 
-                                    <!-- MIDI icon (shown only for MIDI slots, no type switching) -->
-                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                               VerticalAlignment="Center" ToolTip="MIDI">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding OutputType}" Value="Midi">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                        <!-- Keyboard+Mouse type button -->
+                                        <Button ToolTip="Keyboard + Mouse" Background="Transparent"
+                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
+                                                VerticalAlignment="Center" Margin="2,0,0,0"
+                                                Click="KeyboardMouseType_Click" Tag="{Binding PadIndex}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
+                                                            <Setter Property="Opacity" Value="1.0"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <TextBlock Text="&#xE961;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                                        </Button>
+
+                                        <!-- MIDI type button -->
+                                        <Button ToolTip="MIDI" Background="Transparent"
+                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
+                                                VerticalAlignment="Center" Margin="2,0,0,0"
+                                                Click="MidiType_Click" Tag="{Binding PadIndex}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Midi">
+                                                            <Setter Property="Opacity" Value="1.0"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                                        </Button>
+                                    </StackPanel>
 
                                     <!-- Per-type instance # -->
                                     <TextBlock Text="{Binding TypeInstanceLabel}"

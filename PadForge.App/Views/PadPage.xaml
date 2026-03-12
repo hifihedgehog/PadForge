@@ -156,10 +156,14 @@
                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Image.Style>
                         </Image>
+                        <!-- MIDI glyph icon (visible only when OutputType == Midi) -->
                         <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                    VerticalAlignment="Center" Margin="0,0,4,0">
                             <TextBlock.Style>
@@ -167,6 +171,20 @@
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <!-- Keyboard+Mouse glyph icon (visible only when OutputType == KeyboardMouse) -->
+                        <TextBlock Text="&#xE961;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,4,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -376,6 +394,7 @@
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
                         <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
+                        <views:KBMPreviewView x:Name="KBMPreview" Visibility="Collapsed" />
 
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
                         <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"

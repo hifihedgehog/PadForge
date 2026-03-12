@@ -98,6 +98,18 @@ namespace PadForge.Views
             }
         }
 
+        private void KeyboardMouseType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int slotIndex)
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.KeyboardMouse));
+        }
+
+        private void MidiType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int slotIndex)
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Midi));
+        }
+
         // ─────────────────────────────────────────────
         //  Dashboard card drag reordering
         // ─────────────────────────────────────────────

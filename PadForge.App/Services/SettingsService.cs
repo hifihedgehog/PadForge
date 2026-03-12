@@ -785,6 +785,7 @@ namespace PadForge.Services
                         {
                             ps.FlushVJoyMappings();
                             ps.FlushMidiMappings();
+                            ps.FlushKbmMappings();
                             ps.UpdateChecksum();
                             us.PadSettingChecksum = ps.PadSettingChecksum;
                         }

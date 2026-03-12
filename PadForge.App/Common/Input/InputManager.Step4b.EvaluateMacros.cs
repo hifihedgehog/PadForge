@@ -356,56 +356,125 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>Returns true for action types that run every frame without advancing.</summary>
+        private static bool IsContinuousAction(MacroActionType type) =>
+            type is MacroActionType.SystemVolume or MacroActionType.AppVolume
+                 or MacroActionType.MouseMove or MacroActionType.MouseScroll;
+
         /// <summary>
         /// Advances and executes the macro's action sequence.
+        /// Continuous actions (MouseMove, MouseScroll, SystemVolume, AppVolume) all run
+        /// every frame regardless of position — this allows e.g. MouseMove X + MouseMove Y
+        /// in the same macro to both execute simultaneously.
         /// </summary>
         private void ExecuteMacroActions(ref Gamepad gp, MacroItem macro)
         {
-            if (macro.CurrentActionIndex >= macro.Actions.Count)
+            // 1. Always run ALL continuous actions every frame.
+            for (int i = 0; i < macro.Actions.Count; i++)
             {
-                // Sequence complete — handle repeat.
-                macro.RemainingRepeats--;
-                if (macro.RemainingRepeats > 0 ||
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                var ca = macro.Actions[i];
+                if (!IsContinuousAction(ca.Type)) continue;
+                ExecuteSingleAction(ref gp, ca);
+            }
+
+            // 2. Process the current sequential action (skip over continuous ones).
+            while (macro.CurrentActionIndex < macro.Actions.Count)
+            {
+                var action = macro.Actions[macro.CurrentActionIndex];
+                if (IsContinuousAction(action.Type))
                 {
-                    // Restart sequence after repeat delay.
-                    double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
-                    if (elapsed >= macro.RepeatDelayMs)
-                    {
-                        macro.CurrentActionIndex = 0;
-                        macro.ActionStartTime = DateTime.UtcNow;
-                    }
+                    // Already handled above — skip to next.
+                    AdvanceAction(macro);
+                    continue;
                 }
-                else
-                {
-                    // Done.
-                    macro.IsExecuting = false;
-                    macro.CurrentActionIndex = 0;
-                }
+                // Execute the sequential action.
+                ExecuteSequentialAction(ref gp, macro, action);
                 return;
             }
 
-            var action = macro.Actions[macro.CurrentActionIndex];
+            // 3. Sequence complete — handle repeat or stop.
+            // If all actions are continuous, we stay "executing" and keep running them.
+            bool allContinuous = true;
+            for (int i = 0; i < macro.Actions.Count; i++)
+            {
+                if (!IsContinuousAction(macro.Actions[i].Type))
+                { allContinuous = false; break; }
+            }
+            if (allContinuous) return; // Keep running — continuous actions handled above.
+
+            macro.RemainingRepeats--;
+            if (macro.RemainingRepeats > 0 ||
+                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+            {
+                double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
+                if (elapsed >= macro.RepeatDelayMs)
+                {
+                    macro.CurrentActionIndex = 0;
+                    macro.ActionStartTime = DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                macro.IsExecuting = false;
+                macro.CurrentActionIndex = 0;
+            }
+        }
+
+        /// <summary>Executes a single continuous action (no advance logic).</summary>
+        private void ExecuteSingleAction(ref Gamepad gp, MacroAction action)
+        {
+            switch (action.Type)
+            {
+                case MacroActionType.SystemVolume:
+                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget));
+                    break;
+                case MacroActionType.AppVolume:
+                    if (!string.IsNullOrEmpty(action.ProcessName))
+                        SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget), action.ProcessName);
+                    break;
+                case MacroActionType.MouseMove:
+                {
+                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
+                    break;
+                }
+                case MacroActionType.MouseScroll:
+                {
+                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    if (delta != 0)
+                        SendMouseScrollInput(delta * 120);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
+        private void ExecuteSequentialAction(ref Gamepad gp, MacroItem macro, MacroAction action)
+        {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
             switch (action.Type)
             {
                 case MacroActionType.ButtonPress:
-                    // OR button flags into the gamepad for the specified duration.
                     gp.Buttons |= action.ButtonFlags;
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
 
                 case MacroActionType.ButtonRelease:
-                    // AND-NOT: clear the specified button flags.
                     gp.Buttons &= (ushort)~action.ButtonFlags;
                     AdvanceAction(macro);
                     break;
 
                 case MacroActionType.KeyPress:
                 {
-                    // Multi-key: press all keys in forward order, release in reverse.
                     var keyCodes = action.ParsedKeyCodes;
                     if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
                     if (actionElapsed < 1)
@@ -432,38 +501,14 @@ namespace PadForge.Common.Input
                 }
 
                 case MacroActionType.Delay:
-                    // Wait for the specified duration.
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
 
                 case MacroActionType.AxisSet:
-                    // Set the specified axis to the given value.
                     ApplyAxisAction(ref gp, action);
                     AdvanceAction(macro);
                     break;
-
-                case MacroActionType.SystemVolume:
-                    // Continuously read the source axis and set system volume.
-                    // Does NOT advance — stays on this action while the macro is executing.
-                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget));
-                    break;
-
-                case MacroActionType.AppVolume:
-                    if (!string.IsNullOrEmpty(action.ProcessName))
-                        SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget), action.ProcessName);
-                    break;
-
-                case MacroActionType.MouseMove:
-                {
-                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
-                    action.MouseAccumulator += deflection * action.MouseSensitivity;
-                    int delta = (int)action.MouseAccumulator;
-                    action.MouseAccumulator -= delta;
-                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
-                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
-                    break;
-                }
 
                 case MacroActionType.MouseButtonPress:
                     if (actionElapsed < 1)
@@ -479,17 +524,6 @@ namespace PadForge.Common.Input
                     SendMouseButtonInput(action.MouseButton, down: false);
                     AdvanceAction(macro);
                     break;
-
-                case MacroActionType.MouseScroll:
-                {
-                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
-                    action.MouseAccumulator += deflection * action.MouseSensitivity;
-                    int delta = (int)action.MouseAccumulator;
-                    action.MouseAccumulator -= delta;
-                    if (delta != 0)
-                        SendMouseScrollInput(delta * 120);
-                    break;
-                }
             }
         }
 
@@ -634,37 +668,101 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Executes macro actions against a VJoyRawState (custom vJoy button words).
+        /// Same parallel-continuous pattern as ExecuteMacroActions.
         /// </summary>
         private void ExecuteMacroActionsCustomVJoy(ref VJoyRawState raw, MacroItem macro)
         {
-            if (macro.CurrentActionIndex >= macro.Actions.Count)
+            // 1. Always run ALL continuous actions every frame.
+            for (int i = 0; i < macro.Actions.Count; i++)
             {
-                macro.RemainingRepeats--;
-                if (macro.RemainingRepeats > 0 ||
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                var ca = macro.Actions[i];
+                if (!IsContinuousAction(ca.Type)) continue;
+                ExecuteSingleActionRaw(ref raw, ca);
+            }
+
+            // 2. Process the current sequential action (skip over continuous ones).
+            while (macro.CurrentActionIndex < macro.Actions.Count)
+            {
+                var action = macro.Actions[macro.CurrentActionIndex];
+                if (IsContinuousAction(action.Type))
                 {
-                    double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
-                    if (elapsed >= macro.RepeatDelayMs)
-                    {
-                        macro.CurrentActionIndex = 0;
-                        macro.ActionStartTime = DateTime.UtcNow;
-                    }
+                    AdvanceAction(macro);
+                    continue;
                 }
-                else
-                {
-                    macro.IsExecuting = false;
-                    macro.CurrentActionIndex = 0;
-                }
+                ExecuteSequentialActionRaw(ref raw, macro, action);
                 return;
             }
 
-            var action = macro.Actions[macro.CurrentActionIndex];
+            // 3. Sequence complete — handle repeat or stop.
+            bool allContinuous = true;
+            for (int i = 0; i < macro.Actions.Count; i++)
+            {
+                if (!IsContinuousAction(macro.Actions[i].Type))
+                { allContinuous = false; break; }
+            }
+            if (allContinuous) return;
+
+            macro.RemainingRepeats--;
+            if (macro.RemainingRepeats > 0 ||
+                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+            {
+                double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
+                if (elapsed >= macro.RepeatDelayMs)
+                {
+                    macro.CurrentActionIndex = 0;
+                    macro.ActionStartTime = DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                macro.IsExecuting = false;
+                macro.CurrentActionIndex = 0;
+            }
+        }
+
+        /// <summary>Executes a single continuous action for vJoy raw state.</summary>
+        private void ExecuteSingleActionRaw(ref VJoyRawState raw, MacroAction action)
+        {
+            switch (action.Type)
+            {
+                case MacroActionType.SystemVolume:
+                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget));
+                    break;
+                case MacroActionType.AppVolume:
+                    if (!string.IsNullOrEmpty(action.ProcessName))
+                        SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget), action.ProcessName);
+                    break;
+                case MacroActionType.MouseMove:
+                {
+                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
+                    break;
+                }
+                case MacroActionType.MouseScroll:
+                {
+                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    if (delta != 0)
+                        SendMouseScrollInput(delta * 120);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>Executes a sequential action for vJoy raw state.</summary>
+        private void ExecuteSequentialActionRaw(ref VJoyRawState raw, MacroItem macro, MacroAction action)
+        {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
             switch (action.Type)
             {
                 case MacroActionType.ButtonPress:
-                    // OR custom button words into the raw state.
                     if (raw.Buttons != null)
                     {
                         var cw = action.CustomButtonWords;
@@ -676,7 +774,6 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ButtonRelease:
-                    // AND-NOT: clear custom button words from the raw state.
                     if (raw.Buttons != null)
                     {
                         var cw = action.CustomButtonWords;
@@ -719,31 +816,10 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.AxisSet:
-                    // Set axis on the raw state.
                     if (raw.Axes != null)
                         ApplyAxisActionRaw(ref raw, action);
                     AdvanceAction(macro);
                     break;
-
-                case MacroActionType.SystemVolume:
-                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget));
-                    break;
-
-                case MacroActionType.AppVolume:
-                    if (!string.IsNullOrEmpty(action.ProcessName))
-                        SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget), action.ProcessName);
-                    break;
-
-                case MacroActionType.MouseMove:
-                {
-                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
-                    action.MouseAccumulator += deflection * action.MouseSensitivity;
-                    int delta = (int)action.MouseAccumulator;
-                    action.MouseAccumulator -= delta;
-                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
-                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
-                    break;
-                }
 
                 case MacroActionType.MouseButtonPress:
                     if (actionElapsed < 1)
@@ -759,17 +835,6 @@ namespace PadForge.Common.Input
                     SendMouseButtonInput(action.MouseButton, down: false);
                     AdvanceAction(macro);
                     break;
-
-                case MacroActionType.MouseScroll:
-                {
-                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
-                    action.MouseAccumulator += deflection * action.MouseSensitivity;
-                    int delta = (int)action.MouseAccumulator;
-                    action.MouseAccumulator -= delta;
-                    if (delta != 0)
-                        SendMouseScrollInput(delta * 120);
-                    break;
-                }
             }
         }
 

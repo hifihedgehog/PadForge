@@ -51,7 +51,7 @@ namespace PadForge.Views
 
         // Button area (used by both build and render)
         private const double BtnBottom = 58;
-        private const double MoveTop = 74;  // top of movement circle
+        private const double MoveTop = 86;  // top of movement circle
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;
@@ -149,7 +149,7 @@ namespace PadForge.Views
             const double mW = 100;              // mouse body width
             double mL = MC - mW / 2;            // 30
             double mR = MC + mW / 2;            // 130
-            const double mH = 160;              // mouse body height
+            const double mH = 185;              // mouse body height (taller)
 
             // Scroll wheel dimensions (longer + slightly wider per request)
             const double swW = 14, swH = 36;
@@ -248,10 +248,6 @@ namespace PadForge.Views
             _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
             _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
             _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
-
-            // ── Button labels ──
-            Lbl("LMB", (mL + gapL) / 2 - 8, BtnBottom - 14);
-            Lbl("RMB", (gapR + mR) / 2 - 9, BtnBottom - 14);
 
             // ── Separator between buttons and movement area ──
             MouseCanvas.Children.Add(new Line

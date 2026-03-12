@@ -1535,6 +1535,47 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
+        /// Updates stick/trigger preview from already-processed KBM values (post-deadzone).
+        /// Bypasses ProcessStickForPreview to avoid double-applying center offset, deadzone, etc.
+        /// </summary>
+        public void UpdateDeviceStateFromKbm(KbmRawState kbm)
+        {
+            // Mouse deltas are already post-processing (Step 3 applied center offset + deadzone + curves).
+            // Normalize from short range to 0.0-1.0 for the preview dot.
+            double lx = (kbm.MouseDeltaX - (double)short.MinValue) / 65535.0;
+            double ly = 1.0 - ((kbm.MouseDeltaY - (double)short.MinValue) / 65535.0);
+
+            DeviceRawThumbLX = kbm.MouseDeltaX;
+            DeviceRawThumbLY = kbm.MouseDeltaY;
+            DeviceThumbLX = lx;
+            DeviceThumbLY = ly;
+
+            if (StickConfigs.Count > 0)
+            {
+                StickConfigs[0].LiveX = lx;
+                StickConfigs[0].LiveY = ly;
+                StickConfigs[0].RawX = kbm.MouseDeltaX;
+                StickConfigs[0].RawY = kbm.MouseDeltaY;
+                StickConfigs[0].HardwareRawX = kbm.MouseDeltaX;
+                StickConfigs[0].HardwareRawY = kbm.MouseDeltaY;
+                UpdateStickCurveDots(StickConfigs[0], lx, ly);
+            }
+
+            // Scroll → left trigger (absolute value, bidirectional)
+            ushort trigVal = (ushort)Math.Min(Math.Abs((int)kbm.ScrollDelta) * 2, 65535);
+            double trigNorm = trigVal / 65535.0;
+            DeviceRawLeftTrigger = trigVal;
+            DeviceLeftTrigger = trigNorm;
+
+            if (TriggerConfigs.Count > 0)
+            {
+                TriggerConfigs[0].LiveValue = trigNorm;
+                TriggerConfigs[0].RawValue = trigVal;
+                UpdateTriggerCurveDot(TriggerConfigs[0], trigNorm);
+            }
+        }
+
+        /// <summary>
         /// Processes both stick axes together through the shape-aware dead zone pipeline.
         /// Uses the same algorithms as Step3's ApplyDeadZone for preview consistency.
         /// </summary>

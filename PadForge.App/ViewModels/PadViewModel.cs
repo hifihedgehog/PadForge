@@ -578,8 +578,8 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem("Mouse X", "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
             Mappings.Add(new MappingItem("Mouse Y", "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
 
-            // ── Mouse scroll (bidirectional) ──
-            Mappings.Add(new MappingItem("Scroll", "KbmScroll", MappingCategory.Triggers, negSettingName: "KbmScrollNeg"));
+            // ── Mouse scroll (bidirectional, visualized as Right Stick Y) ──
+            Mappings.Add(new MappingItem("Scroll", "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
         }
 
         /// <summary>
@@ -843,11 +843,16 @@ namespace PadForge.ViewModels
             bool isKbm = OutputType == VirtualControllerType.KeyboardMouse;
             if (isKbm)
             {
-                // KBM: 1 stick config for Mouse X/Y
-                var item = new StickConfigItem(0, "Mouse Movement", -1, -1);
-                SyncStickItemFromVm(item);
-                item.PropertyChanged += OnStickConfigPropertyChanged;
-                StickConfigs.Add(item);
+                // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
+                var mouse = new StickConfigItem(0, "Mouse Movement", -1, -1);
+                SyncStickItemFromVm(mouse);
+                mouse.PropertyChanged += OnStickConfigPropertyChanged;
+                StickConfigs.Add(mouse);
+
+                var scroll = new StickConfigItem(1, "Scroll Wheel", -1, -1);
+                SyncStickItemFromVm(scroll);
+                scroll.PropertyChanged += OnStickConfigPropertyChanged;
+                StickConfigs.Add(scroll);
                 return;
             }
 
@@ -885,16 +890,9 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnTriggerConfigPropertyChanged;
             TriggerConfigs.Clear();
 
-            bool isKbm = OutputType == VirtualControllerType.KeyboardMouse;
-            if (isKbm)
-            {
-                // KBM: 1 trigger config for Scroll Wheel
-                var item = new TriggerConfigItem(0, "Scroll Wheel", -1);
-                SyncTriggerItemFromVm(item);
-                item.PropertyChanged += OnTriggerConfigPropertyChanged;
-                TriggerConfigs.Add(item);
+            // KBM has no triggers — scroll is on Right Stick Y.
+            if (OutputType == VirtualControllerType.KeyboardMouse)
                 return;
-            }
 
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
@@ -1531,47 +1529,6 @@ namespace PadForge.ViewModels
                 TriggerConfigs[1].LiveValue = processed;
                 TriggerConfigs[1].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
                 UpdateTriggerCurveDot(TriggerConfigs[1], DeviceRightTrigger);
-            }
-        }
-
-        /// <summary>
-        /// Updates stick/trigger preview from already-processed KBM values (post-deadzone).
-        /// Bypasses ProcessStickForPreview to avoid double-applying center offset, deadzone, etc.
-        /// </summary>
-        public void UpdateDeviceStateFromKbm(KbmRawState kbm)
-        {
-            // Mouse deltas are already post-processing (Step 3 applied center offset + deadzone + curves).
-            // Normalize from short range to 0.0-1.0 for the preview dot.
-            double lx = (kbm.MouseDeltaX - (double)short.MinValue) / 65535.0;
-            double ly = 1.0 - ((kbm.MouseDeltaY - (double)short.MinValue) / 65535.0);
-
-            DeviceRawThumbLX = kbm.MouseDeltaX;
-            DeviceRawThumbLY = kbm.MouseDeltaY;
-            DeviceThumbLX = lx;
-            DeviceThumbLY = ly;
-
-            if (StickConfigs.Count > 0)
-            {
-                StickConfigs[0].LiveX = lx;
-                StickConfigs[0].LiveY = ly;
-                StickConfigs[0].RawX = kbm.MouseDeltaX;
-                StickConfigs[0].RawY = kbm.MouseDeltaY;
-                StickConfigs[0].HardwareRawX = kbm.MouseDeltaX;
-                StickConfigs[0].HardwareRawY = kbm.MouseDeltaY;
-                UpdateStickCurveDots(StickConfigs[0], lx, ly);
-            }
-
-            // Scroll → left trigger (absolute value, bidirectional)
-            ushort trigVal = (ushort)Math.Min(Math.Abs((int)kbm.ScrollDelta) * 2, 65535);
-            double trigNorm = trigVal / 65535.0;
-            DeviceRawLeftTrigger = trigVal;
-            DeviceLeftTrigger = trigNorm;
-
-            if (TriggerConfigs.Count > 0)
-            {
-                TriggerConfigs[0].LiveValue = trigNorm;
-                TriggerConfigs[0].RawValue = trigVal;
-                UpdateTriggerCurveDot(TriggerConfigs[0], trigNorm);
             }
         }
 

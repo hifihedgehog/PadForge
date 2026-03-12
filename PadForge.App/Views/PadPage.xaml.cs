@@ -155,9 +155,9 @@ namespace PadForge.Views
             bool isMidi = IsMidi();
             bool hideAllGamepadTabs = isMidi;
             var vis = hideAllGamepadTabs ? Visibility.Collapsed : Visibility.Visible;
-            // KBM shows Sticks (Mouse X/Y) and Triggers (Scroll) but hides FFB
+            // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers and FFB
             TabSticks.Visibility = (isMidi) ? Visibility.Collapsed : Visibility.Visible;
-            TabTriggers.Visibility = (isMidi) ? Visibility.Collapsed : Visibility.Visible;
+            TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
             TabForceFeedback.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
 
             if (MotorBarsGrid != null)

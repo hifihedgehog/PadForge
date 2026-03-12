@@ -236,7 +236,17 @@
                             <Button Content="Install"
                                     Command="{Binding InstallMidiServicesCommand}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
-                                    Margin="0,0,8,0"/>
+                                    Margin="0,0,8,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMidiOsSupported}" Value="False">
+                                                <Setter Property="ToolTip" Value="Requires Windows 11 24H2 (build 26100) or later"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                             <Button Content="Uninstall"
                                     Command="{Binding UninstallMidiServicesCommand}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>

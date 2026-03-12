@@ -763,7 +763,11 @@ namespace PadForge.ViewModels
         public short AxisValue
         {
             get => _axisValue;
-            set => SetProperty(ref _axisValue, value);
+            set
+            {
+                if (SetProperty(ref _axisValue, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
         }
 
         private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
@@ -772,7 +776,11 @@ namespace PadForge.ViewModels
         public MacroAxisTarget AxisTarget
         {
             get => _axisTarget;
-            set => SetProperty(ref _axisTarget, value);
+            set
+            {
+                if (SetProperty(ref _axisTarget, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
         }
 
         private string _processName = "";

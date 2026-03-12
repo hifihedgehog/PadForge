@@ -219,6 +219,11 @@ namespace PadForge.Common.Input
                 if (File.Exists(mappingsPath))
                     SDL_AddGamepadMappingsFromFile(mappingsPath);
 
+                // SDL_INIT_VIDEO disables the screensaver and system sleep by
+                // default.  Re-enable both so the PC can sleep when idle.
+                SDL_EnableScreenSaver();
+                SetThreadExecutionState(ES_CONTINUOUS);
+
                 _sdlInitialized = true;
                 return true;
             }
@@ -327,11 +332,6 @@ namespace PadForge.Common.Input
             // Keep timeBeginPeriod(1) — it still helps multimedia timers and
             // other system timing used by SDL, ViGEm, and the UI dispatcher.
             timeBeginPeriod(1);
-
-            // Tell Windows that the spin-wait loop is NOT a reason to prevent
-            // system sleep. Without this, the continuous CPU activity from
-            // Thread.SpinWait tricks Windows into thinking the system is busy.
-            SetThreadExecutionState(ES_CONTINUOUS);
 
             try
             {

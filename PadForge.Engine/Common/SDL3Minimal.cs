@@ -155,6 +155,14 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SDL_Quit();
 
+        /// <summary>
+        /// Re-enables the screensaver and system sleep.  SDL disables both by
+        /// default when SDL_INIT_VIDEO is used.
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool SDL_EnableScreenSaver();
+
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetError")]
         private static extern IntPtr _SDL_GetError();
 

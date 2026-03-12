@@ -24,18 +24,20 @@ namespace PadForge.Views
         // Mouse elements
         private Path _lmbPath;
         private Path _rmbPath;
-        private Path _mmbPath;
+        private Rectangle _scrollWheelPill;
+        private Polygon _scrollUpArrow;
+        private Polygon _scrollDownArrow;
         private Ellipse _movementDot;
         private Ellipse _moveCircle;
         private Polygon _moveArrow;
         private Canvas _moveArrowCanvas;
-        private Ellipse _scrollCircle;
 
         // Colors
         private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x40, 0x40, 0x40));
         private static readonly Brush MouseBodyBrush = new SolidColorBrush(Color.FromRgb(0x50, 0x50, 0x50));
         private static readonly Brush MouseButtonBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
         private static readonly Brush MmbBrush = new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
+        private static readonly Brush ScrollWheelBrush = new SolidColorBrush(Color.FromRgb(0x38, 0x38, 0x38));
         private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
         private static readonly Brush DotBrush = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
         private static readonly Brush KeyNormalBrush = new SolidColorBrush(Color.FromArgb(0x28, 0x88, 0x88, 0x88));
@@ -43,13 +45,13 @@ namespace PadForge.Views
         private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
 
-        // Movement circle size
-        private const double MoveSize = 55;
-        private const double ScrollSize = 28;
-        // Mouse body layout constants (used in build + render)
-        private const double MC = 80; // center X
-        private const double MBodyH = 190; // total mouse height (buttons + body with embedded movement)
-        private const double MBtnBottom = 60; // button area bottom Y
+        // Layout constants
+        private const double MC = 80;       // mouse center X
+        private const double MoveSize = 55; // movement circle diameter
+
+        // Button area (used by both build and render)
+        private const double BtnBottom = 58;
+        private const double MoveTop = 74;  // top of movement circle
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;
@@ -137,73 +139,128 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Mouse — movement circle INSIDE the body
+        //  Mouse — buttons contour around scroll wheel
         // ─────────────────────────────────────────────
 
         private void BuildMouseCanvas()
         {
             MouseCanvas.Children.Clear();
 
-            // Mouse body dimensions — moderate width, tall to contain movement area
-            const double mW = 90;
-            double mL = MC - mW / 2, mR = MC + mW / 2;
+            const double mW = 100;              // mouse body width
+            double mL = MC - mW / 2;            // 30
+            double mR = MC + mW / 2;            // 130
+            const double mH = 160;              // mouse body height
 
-            // ── Body outline (tall, rounded, contains everything) ──
+            // Scroll wheel dimensions (longer + slightly wider per request)
+            const double swW = 14, swH = 36;
+            double swL = MC - swW / 2;          // 73
+            double swR = MC + swW / 2;          // 87
+            const double swTop = 13;
+            const double swBot = swTop + swH;   // 49
+
+            // Button gap edges (1px margin outside scroll wheel)
+            double gapL = swL - 1;              // 72
+            double gapR = swR + 1;              // 88
+
+            // ── Mouse body outline ──
             var mouseBody = new Path
             {
                 Data = Geometry.Parse(
-                    $"M {mL},22 C {mL},8 {mL + 12},0 {MC},0 C {mR - 12},0 {mR},8 {mR},22" +
-                    $" L {mR},{MBodyH - 22} C {mR},{MBodyH - 6} {mR - 12},{MBodyH} {MC},{MBodyH}" +
-                    $" C {mL + 12},{MBodyH} {mL},{MBodyH - 6} {mL},{MBodyH - 22} Z"),
+                    $"M {mL},18 C {mL},6 {mL + 14},0 {MC},0 C {mR - 14},0 {mR},6 {mR},18" +
+                    $" L {mR},{mH - 18} C {mR},{mH - 4} {mR - 14},{mH} {MC},{mH}" +
+                    $" C {mL + 14},{mH} {mL},{mH - 4} {mL},{mH - 18} Z"),
                 Fill = MouseBodyBrush, Stroke = DimBrush, StrokeThickness = 2
             };
             MouseCanvas.Children.Add(mouseBody);
 
-            // ── Button area: LMB | MMB (scroll) | RMB ──
-            double btnDiv1 = MC - 8, btnDiv2 = MC + 8;
-
+            // ── LMB — contours around scroll wheel ──
+            // Path: top near center → curves outward to gap edge → down → across to body edge → up along body → curves back
             _lmbPath = new Path
             {
-                Data = Geometry.Parse($"M {mL + 2},22 C {mL + 2},10 {mL + 12},2 {btnDiv1},2 L {btnDiv1},{MBtnBottom} L {mL + 2},{MBtnBottom} Z"),
+                Data = Geometry.Parse(
+                    $"M {MC - 2},2 " +
+                    $"Q {gapL},{swTop - 4} {gapL},{swTop + 4} " +
+                    $"L {gapL},{BtnBottom} " +
+                    $"L {mL + 2},{BtnBottom} " +
+                    $"L {mL + 2},18 " +
+                    $"C {mL + 2},8 {mL + 14},2 {MC - 2},2 Z"),
                 Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_lmbPath);
             AddButtonHandlers(_lmbPath, "KbmMBtn0");
 
-            _mmbPath = new Path
-            {
-                Data = Geometry.Parse($"M {btnDiv1},2 L {btnDiv2},2 L {btnDiv2},{MBtnBottom} L {btnDiv1},{MBtnBottom} Z"),
-                Fill = MmbBrush, Stroke = Brushes.Transparent, StrokeThickness = 0, Cursor = Cursors.Hand
-            };
-            MouseCanvas.Children.Add(_mmbPath);
-            AddButtonHandlers(_mmbPath, "KbmMBtn2");
-
-            // Scroll wheel pill on MMB
-            MouseCanvas.Children.Add(MakeRect(10, 16, MC - 5, 18,
-                new SolidColorBrush(Color.FromRgb(0x38, 0x38, 0x38)), DimBrush, 5, 5));
-
+            // ── RMB — mirror of LMB ──
             _rmbPath = new Path
             {
-                Data = Geometry.Parse($"M {btnDiv2},2 C {mR - 12},2 {mR - 2},10 {mR - 2},22 L {mR - 2},{MBtnBottom} L {btnDiv2},{MBtnBottom} Z"),
+                Data = Geometry.Parse(
+                    $"M {MC + 2},2 " +
+                    $"Q {gapR},{swTop - 4} {gapR},{swTop + 4} " +
+                    $"L {gapR},{BtnBottom} " +
+                    $"L {mR - 2},{BtnBottom} " +
+                    $"L {mR - 2},18 " +
+                    $"C {mR - 2},8 {mR - 14},2 {MC + 2},2 Z"),
                 Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_rmbPath);
             AddButtonHandlers(_rmbPath, "KbmMBtn1");
 
-            // Button labels
-            Lbl("LMB", (mL + btnDiv1) / 2 - 9, MBtnBottom - 15);
-            Lbl("MMB", MC - 9, MBtnBottom - 15, 6);
-            Lbl("RMB", (btnDiv2 + mR) / 2 - 9, MBtnBottom - 15);
+            // ── MMB channel background (between buttons) ──
+            MouseCanvas.Children.Add(new Rectangle
+            {
+                Width = gapR - gapL, Height = BtnBottom - 2,
+                Fill = MmbBrush, RadiusX = 3, RadiusY = 3, IsHitTestVisible = false
+            });
+            Canvas.SetLeft(MouseCanvas.Children[^1], gapL);
+            Canvas.SetTop(MouseCanvas.Children[^1], 2);
 
-            // Thin horizontal separator between buttons and movement area
+            // ── Scroll wheel pill (MMB click target) ──
+            _scrollWheelPill = new Rectangle
+            {
+                Width = swW, Height = swH,
+                RadiusX = swW / 2, RadiusY = swW / 2,
+                Fill = ScrollWheelBrush, Stroke = DimBrush, StrokeThickness = 1,
+                Cursor = Cursors.Hand
+            };
+            Canvas.SetLeft(_scrollWheelPill, swL);
+            Canvas.SetTop(_scrollWheelPill, swTop);
+            MouseCanvas.Children.Add(_scrollWheelPill);
+            _scrollWheelPill.MouseEnter += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = HoverBrush; _scrollWheelPill.StrokeThickness = 2; } };
+            _scrollWheelPill.MouseLeave += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = DimBrush; _scrollWheelPill.StrokeThickness = 1; } };
+            _scrollWheelPill.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn2"); e.Handled = true; };
+
+            // ── Scroll direction arrows (on the scroll wheel) ──
+            _scrollUpArrow = new Polygon
+            {
+                Points = new PointCollection { new Point(MC, swTop + 4), new Point(MC - 4, swTop + 10), new Point(MC + 4, swTop + 10) },
+                Fill = DimBrush, Cursor = Cursors.Hand
+            };
+            MouseCanvas.Children.Add(_scrollUpArrow);
+            _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
+            _scrollUpArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
+            _scrollUpArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScroll"); e.Handled = true; };
+
+            _scrollDownArrow = new Polygon
+            {
+                Points = new PointCollection { new Point(MC, swBot - 4), new Point(MC - 4, swBot - 10), new Point(MC + 4, swBot - 10) },
+                Fill = DimBrush, Cursor = Cursors.Hand
+            };
+            MouseCanvas.Children.Add(_scrollDownArrow);
+            _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
+            _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
+            _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
+
+            // ── Button labels ──
+            Lbl("LMB", (mL + gapL) / 2 - 8, BtnBottom - 14);
+            Lbl("RMB", (gapR + mR) / 2 - 9, BtnBottom - 14);
+
+            // ── Separator between buttons and movement area ──
             MouseCanvas.Children.Add(new Line
             {
-                X1 = mL + 8, Y1 = MBtnBottom + 4, X2 = mR - 8, Y2 = MBtnBottom + 4,
+                X1 = mL + 8, Y1 = BtnBottom + 6, X2 = mR - 8, Y2 = BtnBottom + 6,
                 Stroke = DimBrush, StrokeThickness = 0.5
             });
 
-            // ── Movement circle — embedded in the body center ──
-            double moveY = MBtnBottom + 12;
+            // ── Movement circle — embedded in the body ──
             double moveX = MC - MoveSize / 2;
 
             _moveCircle = new Ellipse
@@ -213,12 +270,12 @@ namespace PadForge.Views
                 Stroke = DimBrush, StrokeThickness = 1.5, Cursor = Cursors.Hand
             };
             Canvas.SetLeft(_moveCircle, moveX);
-            Canvas.SetTop(_moveCircle, moveY);
+            Canvas.SetTop(_moveCircle, MoveTop);
             MouseCanvas.Children.Add(_moveCircle);
 
             _movementDot = new Ellipse { Width = 10, Height = 10, Fill = DotBrush, IsHitTestVisible = false };
             Canvas.SetLeft(_movementDot, moveX + MoveSize / 2 - 5);
-            Canvas.SetTop(_movementDot, moveY + MoveSize / 2 - 5);
+            Canvas.SetTop(_movementDot, MoveTop + MoveSize / 2 - 5);
             MouseCanvas.Children.Add(_movementDot);
 
             // Direction arrow (hidden until hover/flash)
@@ -236,7 +293,7 @@ namespace PadForge.Views
             _moveArrowCanvas = new Canvas { Width = MoveSize, Height = MoveSize, IsHitTestVisible = false };
             _moveArrowCanvas.Children.Add(_moveArrow);
             Canvas.SetLeft(_moveArrowCanvas, moveX);
-            Canvas.SetTop(_moveArrowCanvas, moveY);
+            Canvas.SetTop(_moveArrowCanvas, MoveTop);
             MouseCanvas.Children.Add(_moveArrowCanvas);
 
             // Hover: directional arrow in quadrant
@@ -268,39 +325,30 @@ namespace PadForge.Views
                 e.Handled = true;
             };
 
-            // ── Scroll circle — below the mouse body ──
-            double scrollY = MBodyH + 10;
-            double scrollX = MC - ScrollSize / 2;
-
-            _scrollCircle = new Ellipse
+            // Side buttons (X1, X2) — small areas on the left side of the body
+            var x1Rect = new Rectangle
             {
-                Width = ScrollSize, Height = ScrollSize,
-                Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
-                Stroke = DimBrush, StrokeThickness = 1.5, Cursor = Cursors.Hand
+                Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
+                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
-            Canvas.SetLeft(_scrollCircle, scrollX);
-            Canvas.SetTop(_scrollCircle, scrollY);
-            MouseCanvas.Children.Add(_scrollCircle);
+            Canvas.SetLeft(x1Rect, mL - 4); Canvas.SetTop(x1Rect, 70);
+            MouseCanvas.Children.Add(x1Rect);
+            x1Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { x1Rect.Stroke = HoverBrush; x1Rect.StrokeThickness = 2; } };
+            x1Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { x1Rect.Stroke = DimBrush; x1Rect.StrokeThickness = 1; } };
+            x1Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn3"); e.Handled = true; };
 
-            var upA = MakeArrow(ScrollSize / 2, 5, ScrollSize / 2 - 4, 11, ScrollSize / 2 + 4, 11);
-            var dnA = MakeArrow(ScrollSize / 2, ScrollSize - 5, ScrollSize / 2 - 4, ScrollSize - 11, ScrollSize / 2 + 4, ScrollSize - 11);
-            var sac = new Canvas { Width = ScrollSize, Height = ScrollSize, IsHitTestVisible = false };
-            sac.Children.Add(upA); sac.Children.Add(dnA);
-            Canvas.SetLeft(sac, scrollX); Canvas.SetTop(sac, scrollY);
-            MouseCanvas.Children.Add(sac);
-
-            Lbl("Scroll", scrollX + ScrollSize / 2 - 14, scrollY + ScrollSize + 1);
-
-            _scrollCircle.MouseEnter += (s, e) => { if (_flashTarget != null) return; _scrollCircle.Stroke = HoverBrush; _scrollCircle.StrokeThickness = 2.5; upA.Fill = HoverBrush; dnA.Fill = HoverBrush; };
-            _scrollCircle.MouseLeave += (s, e) => { if (_flashTarget != null) return; _scrollCircle.Stroke = DimBrush; _scrollCircle.StrokeThickness = 1.5; upA.Fill = DimBrush; dnA.Fill = DimBrush; };
-            _scrollCircle.MouseLeftButtonDown += (s, e) =>
+            var x2Rect = new Rectangle
             {
-                var pos = e.GetPosition(_scrollCircle);
-                ControllerElementRecordRequested?.Invoke(this, pos.Y < ScrollSize / 2 ? "KbmScroll" : "KbmScrollNeg");
-                e.Handled = true;
+                Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
+                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
+            Canvas.SetLeft(x2Rect, mL - 4); Canvas.SetTop(x2Rect, 88);
+            MouseCanvas.Children.Add(x2Rect);
+            x2Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { x2Rect.Stroke = HoverBrush; x2Rect.StrokeThickness = 2; } };
+            x2Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { x2Rect.Stroke = DimBrush; x2Rect.StrokeThickness = 1; } };
+            x2Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn4"); e.Handled = true; };
 
-            MouseCanvas.Height = scrollY + ScrollSize + 16;
+            MouseCanvas.Height = mH + 6;
         }
 
         // ─────────────────────────────────────────────
@@ -319,22 +367,6 @@ namespace PadForge.Views
             var tb = new TextBlock { Text = text, FontSize = fs, Foreground = Brushes.Gray, IsHitTestVisible = false };
             Canvas.SetLeft(tb, x); Canvas.SetTop(tb, y);
             MouseCanvas.Children.Add(tb);
-        }
-
-        private static Rectangle MakeRect(double w, double h, double x, double y, Brush fill, Brush stroke, double rx = 0, double ry = 0)
-        {
-            var r = new Rectangle { Width = w, Height = h, RadiusX = rx, RadiusY = ry, Fill = fill, Stroke = stroke, StrokeThickness = 1, IsHitTestVisible = false };
-            Canvas.SetLeft(r, x); Canvas.SetTop(r, y);
-            return r;
-        }
-
-        private static Polygon MakeArrow(double tipX, double tipY, double lx, double ly, double rx, double ry)
-        {
-            return new Polygon
-            {
-                Points = new PointCollection { new Point(tipX, tipY), new Point(lx, ly), new Point(rx, ry) },
-                Fill = DimBrush, IsHitTestVisible = false
-            };
         }
 
         // ─────────────────────────────────────────────
@@ -363,7 +395,7 @@ namespace PadForge.Views
 
             if (_flashTarget == "KbmMBtn0") { _lmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn1") { _rmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
-            if (_flashTarget == "KbmMBtn2") { _mmbPath.Fill = highlight ? FlashBrush : MmbBrush; return; }
+            if (_flashTarget == "KbmMBtn2") { _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush; return; }
 
             if (_flashTarget.StartsWith("KbmMouse"))
             {
@@ -380,10 +412,19 @@ namespace PadForge.Views
                 return;
             }
 
-            if (_flashTarget.StartsWith("KbmScroll"))
+            if (_flashTarget == "KbmScroll")
             {
-                _scrollCircle.Stroke = highlight ? FlashBrush : DimBrush;
-                _scrollCircle.StrokeThickness = highlight ? 2.5 : 1.5;
+                _scrollUpArrow.Fill = highlight ? FlashBrush : DimBrush;
+                _scrollWheelPill.Stroke = highlight ? FlashBrush : DimBrush;
+                _scrollWheelPill.StrokeThickness = highlight ? 2 : 1;
+                return;
+            }
+            if (_flashTarget == "KbmScrollNeg")
+            {
+                _scrollDownArrow.Fill = highlight ? FlashBrush : DimBrush;
+                _scrollWheelPill.Stroke = highlight ? FlashBrush : DimBrush;
+                _scrollWheelPill.StrokeThickness = highlight ? 2 : 1;
+                return;
             }
         }
 
@@ -397,6 +438,7 @@ namespace PadForge.Views
             _dirty = false;
             var kbm = _vm.KbmOutputSnapshot;
 
+            // Keyboard keys
             foreach (var w in _keyWidgets)
             {
                 if (_flashTarget == w.TargetName && _flashOn) continue;
@@ -404,31 +446,38 @@ namespace PadForge.Views
                 w.Border.Background = pressed ? KeyPressedBrush : KeyNormalBrush;
             }
 
+            // Mouse buttons
             if (_flashTarget != "KbmMBtn0" || !_flashOn)
                 _lmbPath.Fill = kbm.GetMouseButton(0) ? AccentBrush : MouseButtonBrush;
             if (_flashTarget != "KbmMBtn1" || !_flashOn)
                 _rmbPath.Fill = kbm.GetMouseButton(1) ? AccentBrush : MouseButtonBrush;
             if (_flashTarget != "KbmMBtn2" || !_flashOn)
-                _mmbPath.Fill = kbm.GetMouseButton(2) ? AccentBrush : MmbBrush;
+                _scrollWheelPill.Fill = kbm.GetMouseButton(2) ? AccentBrush : ScrollWheelBrush;
 
+            // Movement dot — map output values directly (deadzone already applied in Step 3)
             if (_flashTarget == null || !_flashTarget.StartsWith("KbmMouse"))
             {
-                double moveY = MBtnBottom + 12;
                 double moveX = MC - MoveSize / 2;
                 double centerX = moveX + MoveSize / 2 - 5;
-                double centerY = moveY + MoveSize / 2 - 5;
-                double dotX = centerX, dotY = centerY;
-                const short deadZone = 7849;
+                double centerY = MoveTop + MoveSize / 2 - 5;
                 double maxDeflect = MoveSize / 2 - 8;
                 short mx = kbm.MouseDeltaX, my = kbm.MouseDeltaY;
-                if (Math.Abs(mx) > deadZone)
-                    dotX += (mx - Math.Sign(mx) * deadZone) / (double)(32767 - deadZone) * maxDeflect;
-                if (Math.Abs(my) > deadZone)
-                    dotY -= (my - Math.Sign(my) * deadZone) / (double)(32767 - deadZone) * maxDeflect;
+
+                double dotX = centerX + mx / 32767.0 * maxDeflect;
+                double dotY = centerY - my / 32767.0 * maxDeflect;
+
                 Canvas.SetLeft(_movementDot, dotX);
                 Canvas.SetTop(_movementDot, dotY);
-                _movementDot.Fill = (Math.Abs(mx) > deadZone || Math.Abs(my) > deadZone) ? AccentBrush : DotBrush;
+                _movementDot.Fill = (mx != 0 || my != 0) ? AccentBrush : DotBrush;
                 if (_flashTarget == null) _moveArrow.Visibility = Visibility.Collapsed;
+            }
+
+            // Scroll direction visual feedback
+            if (_flashTarget == null || !_flashTarget.StartsWith("KbmScroll"))
+            {
+                short scroll = kbm.ScrollDelta;
+                _scrollUpArrow.Fill = scroll > 0 ? AccentBrush : DimBrush;
+                _scrollDownArrow.Fill = scroll < 0 ? AccentBrush : DimBrush;
             }
         }
 

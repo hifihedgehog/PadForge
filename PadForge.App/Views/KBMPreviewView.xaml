@@ -8,19 +8,20 @@
              Background="Transparent">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>      <!-- Keyboard (majority) -->
-            <ColumnDefinition Width="Auto"/>   <!-- Mouse panel -->
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>       <!-- Keyboard (majority) -->
+            <RowDefinition Height="Auto"/>    <!-- Mouse below -->
+        </Grid.RowDefinitions>
 
-        <!-- QWERTY keyboard -->
-        <Viewbox Grid.Column="0" Stretch="Uniform" Margin="8">
+        <!-- QWERTY keyboard — full width -->
+        <Viewbox Grid.Row="0" Stretch="Uniform" Margin="8">
             <Canvas x:Name="KeyboardCanvas" Width="556" Height="136" ClipToBounds="True"/>
         </Viewbox>
 
-        <!-- Mouse panel (body + movement + scroll, vertically stacked, tight) -->
-        <Viewbox Grid.Column="1" Stretch="Uniform" Margin="0,8,8,8" MaxWidth="200">
-            <Canvas x:Name="MouseCanvas" Width="160" Height="280" ClipToBounds="True"/>
+        <!-- Mouse — centered below keyboard -->
+        <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center"
+                 Margin="8,0,8,8" MaxHeight="180">
+            <Canvas x:Name="MouseCanvas" Width="160" Height="170" ClipToBounds="True"/>
         </Viewbox>
     </Grid>
 

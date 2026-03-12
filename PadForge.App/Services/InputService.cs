@@ -341,18 +341,26 @@ namespace PadForge.Services
                     padVm.KbmOutputSnapshot = _inputManager.CombinedKbmRawStates[i];
 
                 // Per-device state for stick/trigger tab previews.
-                var selected = padVm.SelectedMappedDevice;
-                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
                 {
-                    var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
-                    if (_inputManager.SlotVJoyIsCustom[i] && us != null)
-                        padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
-                    else
-                        padVm.UpdateDeviceState(us?.RawMappedState ?? default);
+                    // KBM values are already post-deadzone — use direct method to avoid double-processing.
+                    padVm.UpdateDeviceStateFromKbm(_inputManager.CombinedKbmRawStates[i]);
                 }
-                else if (!_inputManager.SlotVJoyIsCustom[i])
+                else
                 {
-                    padVm.UpdateDeviceState(gp);
+                    var selected = padVm.SelectedMappedDevice;
+                    if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    {
+                        var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
+                        if (_inputManager.SlotVJoyIsCustom[i] && us != null)
+                            padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
+                        else
+                            padVm.UpdateDeviceState(us?.RawMappedState ?? default);
+                    }
+                    else if (!_inputManager.SlotVJoyIsCustom[i])
+                    {
+                        padVm.UpdateDeviceState(gp);
+                    }
                 }
             }
 

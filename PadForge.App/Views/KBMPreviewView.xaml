@@ -21,7 +21,7 @@
         <!-- Mouse — centered below keyboard -->
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center"
                  Margin="8,0,8,8" MaxHeight="180">
-            <Canvas x:Name="MouseCanvas" Width="160" Height="170" ClipToBounds="True"/>
+            <Canvas x:Name="MouseCanvas" Width="160" Height="195" ClipToBounds="True"/>
         </Viewbox>
     </Grid>
 

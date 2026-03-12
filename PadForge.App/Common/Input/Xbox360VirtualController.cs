@@ -10,6 +10,7 @@ namespace PadForge.Common.Input
     {
         private readonly IXbox360Controller _controller;
         private bool _disposed;
+        private Gamepad _lastState;
 
         public VirtualControllerType Type => VirtualControllerType.Xbox360;
         public bool IsConnected { get; private set; }
@@ -45,6 +46,9 @@ namespace PadForge.Common.Input
 
         public void SubmitGamepadState(Gamepad gp)
         {
+            if (gp.Equals(_lastState)) return;
+            _lastState = gp;
+
             _controller.SetButtonState(Xbox360Button.A, (gp.Buttons & Gamepad.A) != 0);
             _controller.SetButtonState(Xbox360Button.B, (gp.Buttons & Gamepad.B) != 0);
             _controller.SetButtonState(Xbox360Button.X, (gp.Buttons & Gamepad.X) != 0);

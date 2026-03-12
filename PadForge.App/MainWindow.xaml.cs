@@ -2744,12 +2744,20 @@ namespace PadForge
             }
         }
 
+        private bool _isRestoring;
+
         private void RestoreFromTray()
         {
-            Show();
-            WindowState = WindowState.Normal;
-            Activate();
-            _notifyIcon.Visible = false;
+            if (_isRestoring || IsVisible) return;
+            _isRestoring = true;
+            try
+            {
+                Show();
+                WindowState = WindowState.Normal;
+                Activate();
+                _notifyIcon.Visible = false;
+            }
+            finally { _isRestoring = false; }
         }
 
         // ─────────────────────────────────────────────

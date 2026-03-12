@@ -60,6 +60,9 @@ namespace PadForge.Common.Input
         /// <summary>Maximum number of MIDI virtual controllers.</summary>
         public const int MaxMidiSlots = InputManager.MaxPads;
 
+        /// <summary>Maximum number of Keyboard+Mouse virtual controllers.</summary>
+        public const int MaxKeyboardMouseSlots = InputManager.MaxPads;
+
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 

@@ -33,10 +33,13 @@ namespace PadForge.Common.Input
                     if (vc != null && vc.IsConnected)
                     {
                         RetrievedOutputStates[padIndex] = CombinedOutputStates[padIndex];
+                        if (vc is KeyboardMouseVirtualController)
+                            RetrievedKbmRawStates[padIndex] = CombinedKbmRawStates[padIndex];
                     }
                     else
                     {
                         RetrievedOutputStates[padIndex].Clear();
+                        RetrievedKbmRawStates[padIndex].Clear();
                     }
                 }
                 catch (Exception ex)

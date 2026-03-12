@@ -1072,6 +1072,7 @@ namespace PadForge
             bool isDS4 = iconKey == "DS4ControllerIcon";
             bool isVJoy = iconKey == "VJoyControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
+            bool isKbm = iconKey == "KeyboardMouseControllerIcon";
 
             var row = new System.Windows.Controls.DockPanel();
 
@@ -1115,7 +1116,7 @@ namespace PadForge
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = "Engine stopped";
             }
-            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi)
+            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi && outputType != VirtualControllerType.KeyboardMouse)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = "ViGEmBus not installed";
@@ -1274,6 +1275,29 @@ namespace PadForge
             vjoyBtn.Click += OnSidebarTypeVJoy;
             row.Children.Add(vjoyBtn);
 
+            // Keyboard+Mouse type button — MDL2 glyph E961.
+            var kbmBtn = new System.Windows.Controls.Button
+            {
+                Content = new System.Windows.Controls.TextBlock
+                {
+                    Text = "\uE961",
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 13
+                },
+                ToolTip = "Keyboard + Mouse",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isKbm ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            kbmBtn.Click += OnSidebarTypeKeyboardMouse;
+            row.Children.Add(kbmBtn);
+
             // MIDI type button — MDL2 glyph (music note).
             var midiBtn = new System.Windows.Controls.Button
             {
@@ -1380,6 +1404,18 @@ namespace PadForge
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                _inputService.EnsureTypeGroupOrder();
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar Keyboard+Mouse type button click.</summary>
+        private void OnSidebarTypeKeyboardMouse(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -1957,7 +1993,7 @@ namespace PadForge
         /// </summary>
         private bool HasAnyControllerTypeCapacity()
         {
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -1967,12 +2003,14 @@ namespace PadForge
                     case VirtualControllerType.DualShock4: ds4Count++; break;
                     case VirtualControllerType.VJoy: vjoyCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
+                    case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
             }
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
                 || vjoyCount < SettingsManager.MaxVJoySlots
-                || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots);
+                || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots)
+                || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -2036,7 +2074,7 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Count existing slots by type for per-type capacity check.
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -2046,6 +2084,7 @@ namespace PadForge
                     case VirtualControllerType.DualShock4: ds4Count++; break;
                     case VirtualControllerType.VJoy: vjoyCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
+                    case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
             }
 
@@ -2167,6 +2206,42 @@ namespace PadForge
                 }
             };
             stack.Children.Add(vjoyBtn);
+
+            // Keyboard+Mouse button — MDL2 glyph E961.
+            var kbmPopupIcon = new System.Windows.Controls.TextBlock
+            {
+                Text = "\uE961",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 28,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            bool kbmAtCapacity = kbmCount >= SettingsManager.MaxKeyboardMouseSlots;
+            var kbmPopupBtn = new System.Windows.Controls.Button
+            {
+                Content = kbmPopupIcon,
+                ToolTip = kbmAtCapacity ? $"Keyboard + Mouse (max {SettingsManager.MaxKeyboardMouseSlots})"
+                        : "Keyboard + Mouse",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                IsEnabled = !kbmAtCapacity,
+                Opacity = kbmAtCapacity ? 0.35 : 1.0
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(kbmPopupBtn, "AddKeyboardMouseBtn");
+            kbmPopupBtn.Click += (s, e) =>
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.KeyboardMouse);
+                if (newSlot >= 0)
+                {
+                    _inputService.EnsureTypeGroupOrder();
+                    int nav = FindLastSlotOfType(VirtualControllerType.KeyboardMouse);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(kbmPopupBtn);
 
             // MIDI button — theme-aware icon fill.
             var midiPopupIcon = new System.Windows.Controls.TextBlock
@@ -2817,7 +2892,7 @@ namespace PadForge
         private void RefreshDashboardActiveSlots()
         {
             var activeSlots = new System.Collections.Generic.List<int>();
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (SettingsManager.SlotCreated[i])
@@ -2829,13 +2904,15 @@ namespace PadForge
                         case VirtualControllerType.DualShock4: ds4Count++; break;
                         case VirtualControllerType.VJoy: vjoyCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
+                        case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                     }
                 }
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots
                            || vjoyCount < SettingsManager.MaxVJoySlots
-                           || midiCount < SettingsManager.MaxMidiSlots;
+                           || midiCount < SettingsManager.MaxMidiSlots
+                           || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
             _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 

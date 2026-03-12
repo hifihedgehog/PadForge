@@ -89,6 +89,13 @@ namespace PadForge.Common.Input
                         if (mc != null)
                             us.MidiRawOutputState = MapInputToMidiRaw(ud.InputState, ps, mc.CcCount, mc.NoteCount);
                     }
+
+                    // For KeyboardMouse slots, produce the raw KBM output state.
+                    if (slot >= 0 && slot < MaxPads &&
+                        SlotControllerTypes[slot] == VirtualControllerType.KeyboardMouse)
+                    {
+                        us.KbmRawOutputState = MapInputToKbmRaw(ud.InputState, ps);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1224,6 +1231,103 @@ namespace PadForge.Common.Input
             {
                 string desc = ps.GetMidiMapping($"MidiNote{i}");
                 raw.Notes[i] = MapToButtonPressed(state, desc);
+            }
+
+            return raw;
+        }
+
+        // ─────────────────────────────────────────────
+        //  KBM raw state mapping
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Virtual key codes used for KBM mapping targets.
+        /// Order matches InitializeKeyboardMouseMappings() in PadViewModel.
+        /// </summary>
+        private static readonly byte[] KbmKeyVkCodes;
+        private static readonly int KbmKeyCount;
+
+        static InputManager()
+        {
+            // Build the full list of VK codes that KBM supports
+            var vks = new System.Collections.Generic.List<byte>(128);
+
+            // Letters A-Z (0x41-0x5A)
+            for (int i = 0; i < 26; i++) vks.Add((byte)(0x41 + i));
+            // Numbers 0-9 (0x30-0x39)
+            for (int i = 0; i <= 9; i++) vks.Add((byte)(0x30 + i));
+            // Function keys F1-F12 (0x70-0x7B)
+            for (int i = 0; i < 12; i++) vks.Add((byte)(0x70 + i));
+            // Modifiers
+            vks.Add(0xA0); vks.Add(0xA1); // L/R Shift
+            vks.Add(0xA2); vks.Add(0xA3); // L/R Ctrl
+            vks.Add(0xA4); vks.Add(0xA5); // L/R Alt
+            // Special keys
+            vks.Add(0x20); vks.Add(0x0D); vks.Add(0x1B); vks.Add(0x09); vks.Add(0x08); vks.Add(0x14);
+            // Navigation
+            vks.Add(0x26); vks.Add(0x28); vks.Add(0x25); vks.Add(0x27); // arrows
+            vks.Add(0x24); vks.Add(0x23); vks.Add(0x21); vks.Add(0x22); // home/end/pgup/pgdn
+            vks.Add(0x2D); vks.Add(0x2E); // insert/delete
+            // Punctuation
+            vks.Add(0xBA); vks.Add(0xBB); vks.Add(0xBC); vks.Add(0xBD);
+            vks.Add(0xBE); vks.Add(0xBF); vks.Add(0xC0); vks.Add(0xDB);
+            vks.Add(0xDC); vks.Add(0xDD); vks.Add(0xDE);
+            // Numpad 0-9
+            for (int i = 0; i <= 9; i++) vks.Add((byte)(0x60 + i));
+            // Numpad operators
+            vks.Add(0x6A); vks.Add(0x6B); vks.Add(0x6D); vks.Add(0x6E); vks.Add(0x6F);
+
+            KbmKeyVkCodes = vks.ToArray();
+            KbmKeyCount = KbmKeyVkCodes.Length;
+        }
+
+        /// <summary>
+        /// Maps a CustomInputState to a KbmRawState using KBM dictionary-based mappings.
+        /// Keys are mapped as button presses, mouse axes as signed deltas.
+        /// </summary>
+        private static KbmRawState MapInputToKbmRaw(CustomInputState state, PadSetting ps)
+        {
+            var raw = new KbmRawState();
+
+            // Map keyboard keys
+            for (int i = 0; i < KbmKeyCount; i++)
+            {
+                byte vk = KbmKeyVkCodes[i];
+                string desc = ps.GetKbmMapping($"KbmKey{vk:X2}");
+                if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc))
+                    raw.SetKey(vk, true);
+            }
+
+            // Map mouse buttons (0=LMB, 1=RMB, 2=MMB, 3=X1, 4=X2)
+            for (int i = 0; i < 5; i++)
+            {
+                string desc = ps.GetKbmMapping($"KbmMBtn{i}");
+                if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc))
+                    raw.SetMouseButton(i, true);
+            }
+
+            // Map mouse X axis (bidirectional)
+            {
+                string posDesc = ps.GetKbmMapping("KbmMouseX");
+                string negDesc = ps.GetKbmMapping("KbmMouseXNeg");
+                if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                    raw.MouseDeltaX = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+            }
+
+            // Map mouse Y axis (bidirectional)
+            {
+                string posDesc = ps.GetKbmMapping("KbmMouseY");
+                string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
+                if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                    raw.MouseDeltaY = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+            }
+
+            // Map scroll axis (bidirectional)
+            {
+                string posDesc = ps.GetKbmMapping("KbmScroll");
+                string negDesc = ps.GetKbmMapping("KbmScrollNeg");
+                if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                    raw.ScrollDelta = MapToThumbAxisWithNeg(state, posDesc, negDesc);
             }
 
             return raw;

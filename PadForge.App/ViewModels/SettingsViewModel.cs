@@ -239,11 +239,14 @@ namespace PadForge.ViewModels
 
         private RelayCommand _installMidiServicesCommand;
 
+        /// <summary>True if the OS meets the minimum version for Windows MIDI Services (Win11 24H2, build 26100).</summary>
+        public static bool IsMidiOsSupported => Environment.OSVersion.Version.Build >= 26100;
+
         /// <summary>Command to download and install Windows MIDI Services.</summary>
         public RelayCommand InstallMidiServicesCommand =>
             _installMidiServicesCommand ??= new RelayCommand(
                 () => InstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
-                () => !_isMidiServicesInstalled);
+                () => !_isMidiServicesInstalled && IsMidiOsSupported);
 
         private RelayCommand _uninstallMidiServicesCommand;
 

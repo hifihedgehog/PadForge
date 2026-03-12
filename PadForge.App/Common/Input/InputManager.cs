@@ -328,6 +328,11 @@ namespace PadForge.Common.Input
             // other system timing used by SDL, ViGEm, and the UI dispatcher.
             timeBeginPeriod(1);
 
+            // Tell Windows that the spin-wait loop is NOT a reason to prevent
+            // system sleep. Without this, the continuous CPU activity from
+            // Thread.SpinWait tricks Windows into thinking the system is busy.
+            SetThreadExecutionState(ES_CONTINUOUS);
+
             try
             {
                 var cycleTimer = new Stopwatch();
@@ -716,7 +721,7 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  Win32 timer resolution
+        //  Win32 timer resolution + power management
         // ─────────────────────────────────────────────
 
         [DllImport("winmm.dll", ExactSpelling = true)]
@@ -724,6 +729,11 @@ namespace PadForge.Common.Input
 
         [DllImport("winmm.dll", ExactSpelling = true)]
         private static extern uint timeEndPeriod(uint uPeriod);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint SetThreadExecutionState(uint esFlags);
+
+        private const uint ES_CONTINUOUS = 0x80000000;
 
         // ─────────────────────────────────────────────
         //  IDisposable

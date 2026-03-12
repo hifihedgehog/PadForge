@@ -408,6 +408,71 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
+        //  KBM mappings (dictionary-based)
+        //  Used for KeyboardMouse output with keyboard key + mouse targets.
+        //  Keys: "KbmKey41" (VK_A), "KbmMouseX", "KbmMouseXNeg", "KbmMBtn0", etc.
+        //  Values: mapping descriptors (same format as above).
+        // ─────────────────────────────────────────────
+
+        [XmlArray("KbmMappings")]
+        [XmlArrayItem("Map")]
+        public VJoyMappingEntry[] KbmMappingEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _kbmMappingDict;
+
+        public string GetKbmMapping(string key)
+        {
+            EnsureKbmDict();
+            return _kbmMappingDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetKbmMapping(string key, string value)
+        {
+            EnsureKbmDict();
+            if (string.IsNullOrEmpty(value))
+                _kbmMappingDict.Remove(key);
+            else
+                _kbmMappingDict[key] = value;
+        }
+
+        public void FlushKbmMappings()
+        {
+            if (_kbmMappingDict == null) return;
+            if (_kbmMappingDict.Count == 0)
+            {
+                KbmMappingEntries = null;
+                return;
+            }
+            var entries = new VJoyMappingEntry[_kbmMappingDict.Count];
+            int i = 0;
+            foreach (var kvp in _kbmMappingDict)
+                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            KbmMappingEntries = entries;
+        }
+
+        private readonly object _kbmDictLock = new();
+
+        private void EnsureKbmDict()
+        {
+            if (_kbmMappingDict != null) return;
+            lock (_kbmDictLock)
+            {
+                if (_kbmMappingDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (KbmMappingEntries != null)
+                {
+                    foreach (var e in KbmMappingEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _kbmMappingDict = dict;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Game-specific overrides
         // ─────────────────────────────────────────────
 
@@ -563,6 +628,18 @@ namespace PadForge.Engine.Data
                 foreach (var key in midiKeys)
                 {
                     sb.Append(key); sb.Append('='); sb.Append(_midiMappingDict[key]); sb.Append('|');
+                }
+            }
+
+            // KBM custom mappings (sorted for deterministic checksum)
+            EnsureKbmDict();
+            if (_kbmMappingDict.Count > 0)
+            {
+                var kbmKeys = new List<string>(_kbmMappingDict.Keys);
+                kbmKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in kbmKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_kbmMappingDict[key]); sb.Append('|');
                 }
             }
 
@@ -769,6 +846,7 @@ namespace PadForge.Engine.Data
             // Flush live dicts to arrays before serializing.
             FlushVJoyMappings();
             FlushMidiMappings();
+            FlushKbmMappings();
 
             var dict = new Dictionary<string, string>();
             var type = GetType();
@@ -881,12 +959,15 @@ namespace PadForge.Engine.Data
             // (SetVJoyMapping/SetMidiMapping update the dict, not the array).
             source.FlushVJoyMappings();
             source.FlushMidiMappings();
+            source.FlushKbmMappings();
 
             // Deep-copy arrays and invalidate our cached dictionaries.
             VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
             _vjoyMappingDict = null;
             MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
             _midiMappingDict = null;
+            KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
+            _kbmMappingDict = null;
         }
 
         private static VJoyMappingEntry[] DeepCopyMappings(VJoyMappingEntry[] src)

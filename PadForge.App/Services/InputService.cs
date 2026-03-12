@@ -336,6 +336,10 @@ namespace PadForge.Services
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
                     padVm.UpdateFromMidiRawState(_inputManager.CombinedMidiRawStates[i]);
 
+                // For KBM slots, push the combined KbmRawState.
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
+                    padVm.KbmOutputSnapshot = _inputManager.CombinedKbmRawStates[i];
+
                 // Per-device state for stick/trigger tab previews.
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
@@ -916,6 +920,12 @@ namespace PadForge.Services
                     if (mapping.NegSettingName != null)
                         ps.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                 }
+                else if (target.StartsWith("Kbm", StringComparison.Ordinal))
+                {
+                    ps.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                    if (mapping.NegSettingName != null)
+                        ps.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                }
                 else
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
@@ -1024,6 +1034,8 @@ namespace PadForge.Services
                 return ps.GetVJoyMapping(key);
             if (key.StartsWith("Midi", StringComparison.Ordinal))
                 return ps.GetMidiMapping(key);
+            if (key.StartsWith("Kbm", StringComparison.Ordinal))
+                return ps.GetKbmMapping(key);
             var prop = typeof(PadSetting).GetProperty(key);
             return (prop != null && prop.PropertyType == typeof(string))
                 ? prop.GetValue(ps) as string ?? string.Empty
@@ -2812,8 +2824,9 @@ namespace PadForge.Services
             VirtualControllerType.Xbox360 => 0,
             VirtualControllerType.DualShock4 => 1,
             VirtualControllerType.VJoy => 2,
-            VirtualControllerType.Midi => 3,
-            _ => 4
+            VirtualControllerType.KeyboardMouse => 3,
+            VirtualControllerType.Midi => 4,
+            _ => 5
         };
 
         private void RefreshAfterSlotReorder()

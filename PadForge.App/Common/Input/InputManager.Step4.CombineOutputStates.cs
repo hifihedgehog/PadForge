@@ -38,12 +38,14 @@ namespace PadForge.Common.Input
                     bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.VJoy
                                      && SlotVJoyIsCustom[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
+                    bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
 
                     if (slotCount == 0)
                     {
                         CombinedOutputStates[padIndex].Clear();
                         if (isCustomVJoy) CombinedVJoyRawStates[padIndex].Clear();
                         if (isMidi) CombinedMidiRawStates[padIndex].Clear();
+                        if (isKbm) CombinedKbmRawStates[padIndex].Clear();
                         continue;
                     }
 
@@ -53,6 +55,7 @@ namespace PadForge.Common.Input
                         CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
                         if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = _padIndexBuffer[0].VJoyRawOutputState;
                         if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
+                        if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
                         continue;
                     }
 
@@ -62,6 +65,8 @@ namespace PadForge.Common.Input
                     bool firstRaw = true;
                     MidiRawState combinedMidi = default;
                     bool firstMidi = true;
+                    KbmRawState combinedKbm = default;
+                    bool firstKbm = true;
 
                     for (int si = 0; si < slotCount; si++)
                     {
@@ -98,11 +103,25 @@ namespace PadForge.Common.Input
                                 combinedMidi = MidiRawState.Combine(combinedMidi, us.MidiRawOutputState);
                             }
                         }
+
+                        if (isKbm)
+                        {
+                            if (firstKbm)
+                            {
+                                combinedKbm = us.KbmRawOutputState;
+                                firstKbm = false;
+                            }
+                            else
+                            {
+                                combinedKbm = KbmRawState.Combine(combinedKbm, us.KbmRawOutputState);
+                            }
+                        }
                     }
 
                     CombinedOutputStates[padIndex] = combined;
                     if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = combinedRaw;
                     if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
+                    if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
                 }
                 catch (Exception ex)
                 {

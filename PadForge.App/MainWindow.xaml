@@ -25,7 +25,7 @@
                            IsSettingsVisible="True"
                            SelectionChanged="NavView_SelectionChanged"
                            PaneTitle="PadForge"
-                           OpenPaneLength="241">
+                           OpenPaneLength="261">
 
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 

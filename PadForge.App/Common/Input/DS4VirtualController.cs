@@ -10,6 +10,7 @@ namespace PadForge.Common.Input
     {
         private readonly IDualShock4Controller _controller;
         private bool _disposed;
+        private Gamepad _lastState;
 
         public VirtualControllerType Type => VirtualControllerType.DualShock4;
         public bool IsConnected { get; private set; }
@@ -45,6 +46,9 @@ namespace PadForge.Common.Input
 
         public void SubmitGamepadState(Gamepad gp)
         {
+            if (gp.Equals(_lastState)) return;
+            _lastState = gp;
+
             // ── Face buttons ──
             _controller.SetButtonState(DualShock4Button.Cross, (gp.Buttons & Gamepad.A) != 0);
             _controller.SetButtonState(DualShock4Button.Circle, (gp.Buttons & Gamepad.B) != 0);

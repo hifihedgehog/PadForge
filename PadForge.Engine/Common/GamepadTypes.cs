@@ -142,6 +142,15 @@ namespace PadForge.Engine
         /// <summary>Mouse button states: bit 0 = LMB, bit 1 = RMB, bit 2 = MMB, bit 3 = X1, bit 4 = X2.</summary>
         public byte MouseButtons;
 
+        /// <summary>Mouse X delta before center offset + deadzone (for stick preview).</summary>
+        public short PreDzMouseDeltaX;
+
+        /// <summary>Mouse Y delta before center offset + deadzone (for stick preview).</summary>
+        public short PreDzMouseDeltaY;
+
+        /// <summary>Scroll delta before deadzone (for stick preview).</summary>
+        public short PreDzScrollDelta;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -183,6 +192,7 @@ namespace PadForge.Engine
             Keys0 = Keys1 = Keys2 = Keys3 = 0;
             MouseDeltaX = MouseDeltaY = ScrollDelta = 0;
             MouseButtons = 0;
+            PreDzMouseDeltaX = PreDzMouseDeltaY = PreDzScrollDelta = 0;
         }
 
         /// <summary>
@@ -200,7 +210,10 @@ namespace PadForge.Engine
                 MouseDeltaX = Math.Abs(a.MouseDeltaX) >= Math.Abs(b.MouseDeltaX) ? a.MouseDeltaX : b.MouseDeltaX,
                 MouseDeltaY = Math.Abs(a.MouseDeltaY) >= Math.Abs(b.MouseDeltaY) ? a.MouseDeltaY : b.MouseDeltaY,
                 ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
-                MouseButtons = (byte)(a.MouseButtons | b.MouseButtons)
+                MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
+                PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,
+                PreDzMouseDeltaY = Math.Abs(a.PreDzMouseDeltaY) >= Math.Abs(b.PreDzMouseDeltaY) ? a.PreDzMouseDeltaY : b.PreDzMouseDeltaY,
+                PreDzScrollDelta = Math.Abs(a.PreDzScrollDelta) >= Math.Abs(b.PreDzScrollDelta) ? a.PreDzScrollDelta : b.PreDzScrollDelta
             };
         }
     }

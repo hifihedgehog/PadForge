@@ -25,7 +25,6 @@ namespace PadForge.Common.Input
 
         // Mouse sensitivity: pixels per frame at full axis deflection.
         private const float MouseSensitivity = 15.0f;
-        private const short MouseDeadZone = 7849;
 
         // Scroll sensitivity: lines per frame at full axis deflection.
         private const float ScrollSensitivity = 3.0f;
@@ -81,26 +80,19 @@ namespace PadForge.Common.Input
             ProcessMouseButtons(raw.MouseButtons);
             _prevMouseButtons = raw.MouseButtons;
 
-            // --- Mouse movement ---
+            // --- Mouse movement (deadzone already applied in Step 3) ---
             if (raw.MouseDeltaX != 0 || raw.MouseDeltaY != 0)
             {
-                // Apply dead zone and scale
-                float mx = 0, my = 0;
-                if (Math.Abs(raw.MouseDeltaX) > MouseDeadZone)
-                    mx = (raw.MouseDeltaX - Math.Sign(raw.MouseDeltaX) * MouseDeadZone) / (float)(32767 - MouseDeadZone) * MouseSensitivity;
-                if (Math.Abs(raw.MouseDeltaY) > MouseDeadZone)
-                    my = -(raw.MouseDeltaY - Math.Sign(raw.MouseDeltaY) * MouseDeadZone) / (float)(32767 - MouseDeadZone) * MouseSensitivity;
-
+                float mx = raw.MouseDeltaX / 32767.0f * MouseSensitivity;
+                float my = -(raw.MouseDeltaY / 32767.0f * MouseSensitivity);
                 if (mx != 0 || my != 0)
                     SendMouseMove((int)mx, (int)my);
             }
 
-            // --- Mouse scroll ---
+            // --- Mouse scroll (deadzone already applied in Step 3) ---
             if (raw.ScrollDelta != 0)
             {
-                float scroll = 0;
-                if (Math.Abs(raw.ScrollDelta) > MouseDeadZone)
-                    scroll = (raw.ScrollDelta - Math.Sign(raw.ScrollDelta) * MouseDeadZone) / (float)(32767 - MouseDeadZone) * ScrollSensitivity;
+                float scroll = raw.ScrollDelta / 32767.0f * ScrollSensitivity;
                 if (scroll != 0)
                     SendMouseWheel((int)(scroll * 120)); // 120 = WHEEL_DELTA
             }
@@ -174,6 +166,13 @@ namespace PadForge.Common.Input
 
         // ─────────────────────────────────────────────
         //  SendInput P/Invoke
+        //
+        //  The INPUT struct uses a union (MOUSEINPUT / KEYBDINPUT)
+        //  that contains IntPtr (ULONG_PTR). On x64, IntPtr is 8 bytes
+        //  with 8-byte alignment, so the union must start at offset 8
+        //  (after DWORD type + 4 bytes padding). Using LayoutKind.Sequential
+        //  with a separate Explicit union struct lets the CLR handle
+        //  platform-correct alignment automatically.
         // ─────────────────────────────────────────────
 
         private const int INPUT_MOUSE = 0;
@@ -217,11 +216,17 @@ namespace PadForge.Common.Input
         }
 
         [StructLayout(LayoutKind.Explicit)]
+        private struct InputUnion
+        {
+            [FieldOffset(0)] public MOUSEINPUT mi;
+            [FieldOffset(0)] public KEYBDINPUT ki;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
         private struct INPUT
         {
-            [FieldOffset(0)] public int type;
-            [FieldOffset(4)] public MOUSEINPUT mi;
-            [FieldOffset(4)] public KEYBDINPUT ki;
+            public int type;
+            public InputUnion u;
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -235,11 +240,14 @@ namespace PadForge.Common.Input
             var input = new INPUT
             {
                 type = INPUT_KEYBOARD,
-                ki = new KEYBDINPUT
+                u = new InputUnion
                 {
-                    wVk = vk,
-                    wScan = (ushort)MapVirtualKeyW(vk, 0),
-                    dwFlags = down ? 0u : KEYEVENTF_KEYUP
+                    ki = new KEYBDINPUT
+                    {
+                        wVk = vk,
+                        wScan = (ushort)MapVirtualKeyW(vk, 0),
+                        dwFlags = down ? 0u : KEYEVENTF_KEYUP
+                    }
                 }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
@@ -250,11 +258,14 @@ namespace PadForge.Common.Input
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
-                mi = new MOUSEINPUT
+                u = new InputUnion
                 {
-                    dx = dx,
-                    dy = dy,
-                    dwFlags = MOUSEEVENTF_MOVE
+                    mi = new MOUSEINPUT
+                    {
+                        dx = dx,
+                        dy = dy,
+                        dwFlags = MOUSEEVENTF_MOVE
+                    }
                 }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
@@ -265,7 +276,10 @@ namespace PadForge.Common.Input
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
-                mi = new MOUSEINPUT { dwFlags = down ? downFlag : upFlag }
+                u = new InputUnion
+                {
+                    mi = new MOUSEINPUT { dwFlags = down ? downFlag : upFlag }
+                }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
         }
@@ -275,10 +289,13 @@ namespace PadForge.Common.Input
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
-                mi = new MOUSEINPUT
+                u = new InputUnion
                 {
-                    dwFlags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP,
-                    mouseData = xButton
+                    mi = new MOUSEINPUT
+                    {
+                        dwFlags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP,
+                        mouseData = xButton
+                    }
                 }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
@@ -289,10 +306,13 @@ namespace PadForge.Common.Input
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
-                mi = new MOUSEINPUT
+                u = new InputUnion
                 {
-                    dwFlags = MOUSEEVENTF_WHEEL,
-                    mouseData = (uint)delta
+                    mi = new MOUSEINPUT
+                    {
+                        dwFlags = MOUSEEVENTF_WHEEL,
+                        mouseData = (uint)delta
+                    }
                 }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());

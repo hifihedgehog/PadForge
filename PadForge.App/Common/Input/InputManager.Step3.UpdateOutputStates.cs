@@ -1330,6 +1330,10 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // Snapshot pre-deadzone values for stick tab preview.
+            raw.PreDzMouseDeltaX = raw.MouseDeltaX;
+            raw.PreDzMouseDeltaY = raw.MouseDeltaY;
+
             // ── Center offsets (applied before dead zone, same as gamepad path) ──
             raw.MouseDeltaX = ApplyCenterOffset(raw.MouseDeltaX, TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0));
             raw.MouseDeltaY = ApplyCenterOffset(raw.MouseDeltaY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
@@ -1352,26 +1356,33 @@ namespace PadForge.Common.Input
                 string posDesc = ps.GetKbmMapping("KbmScroll");
                 string negDesc = ps.GetKbmMapping("KbmScrollNeg");
                 if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                {
                     raw.ScrollDelta = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                    // Full analog axis: SDL Y positive=down, but KbmScroll positive=UP.
+                    // Negate so physical up → scroll up (same fix as MouseDeltaY).
+                    if (string.IsNullOrWhiteSpace(negDesc))
+                        raw.ScrollDelta = NegateAxis(raw.ScrollDelta);
+                }
             }
 
-            // ── Scroll dead zone + sensitivity (uses Left Trigger settings) ──
-            // Scroll is bidirectional (signed), so apply DZ on absolute value, preserve sign.
-            if (raw.ScrollDelta != 0)
+            // Snapshot pre-deadzone scroll for stick preview.
+            raw.PreDzScrollDelta = raw.ScrollDelta;
+
+            // ── Scroll dead zone + sensitivity (uses Right Thumb settings, scroll on Y axis) ──
+            // Scroll is a signed bidirectional axis — use stick deadzone with X=0.
             {
-                int sign = raw.ScrollDelta >= 0 ? 1 : -1;
-                int absDelta = Math.Abs((int)raw.ScrollDelta);
-                if (absDelta > 32767) absDelta = 32767;
-                // Scale to 0-65535 unsigned range for trigger DZ
-                ushort scaled = (ushort)(absDelta * 2);
-                scaled = ApplyTriggerDeadZone(scaled,
-                    TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
-                    TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0),
-                    TryParseDoubleStatic(ps.LeftTriggerMaxRange, 100),
-                    Common.CurveLut.GetOrBuild(ps.LeftTriggerSensitivityCurve));
-                int result = scaled / 2;
-                if (result > 32767) result = 32767;
-                raw.ScrollDelta = (short)(sign * result);
+                short scrollX = 0;
+                ApplyDeadZone(ref scrollX, ref raw.ScrollDelta,
+                    TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
+                    TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0),
+                    TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0),
+                    TryParseDoubleStatic(ps.RightThumbAntiDeadZoneY, 0),
+                    TryParseDoubleStatic(ps.RightThumbLinear, 0),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
+                    Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
+                    Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
+                    ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
             }
 
             return raw;

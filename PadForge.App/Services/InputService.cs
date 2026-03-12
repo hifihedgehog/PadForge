@@ -343,8 +343,15 @@ namespace PadForge.Services
                 // Per-device state for stick/trigger tab previews.
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
                 {
-                    // KBM values are already post-deadzone — use direct method to avoid double-processing.
-                    padVm.UpdateDeviceStateFromKbm(_inputManager.CombinedKbmRawStates[i]);
+                    // Feed PRE-deadzone KBM values so ProcessStickForPreview applies the
+                    // full pipeline once (center offset → deadzone → curves) with correct
+                    // jump-to-boundary visual behavior.
+                    var kbm = _inputManager.CombinedKbmRawStates[i];
+                    var synth = new Gamepad();
+                    synth.ThumbLX = kbm.PreDzMouseDeltaX;
+                    synth.ThumbLY = kbm.PreDzMouseDeltaY;
+                    synth.ThumbRY = kbm.PreDzScrollDelta;
+                    padVm.UpdateDeviceState(synth);
                 }
                 else
                 {

@@ -46,6 +46,7 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
         public const string SDL_HINT_JOYSTICK_XINPUT = "SDL_JOYSTICK_XINPUT"; // was SDL_HINT_XINPUT_ENABLED
         public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 = "SDL_JOYSTICK_HIDAPI_SWITCH2";
+        public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
         // ─────────────────────────────────────────────
         //  Property constants

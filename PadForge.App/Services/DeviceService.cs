@@ -409,6 +409,10 @@ namespace PadForge.Services
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
 
+            // Reset PadViewModel so stale settings (deadzone, sensitivity, etc.)
+            // don't leak into the next controller created in this slot.
+            _mainVm.Pads[slotIndex].ResetAllSettings();
+
             // Unassign all devices mapped to this slot.
             // Remove entries that are ONLY mapped to this slot (orphans).
             // Keep entries that are also mapped to other slots via separate UserSetting instances.

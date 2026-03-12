@@ -1319,8 +1319,20 @@ namespace PadForge.Common.Input
                 string posDesc = ps.GetKbmMapping("KbmMouseY");
                 string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
                 if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                {
                     raw.MouseDeltaY = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                    // For a full analog axis (no neg descriptor), SDL Y convention has
+                    // positive=down. KBM convention: KbmMouseY positive=UP (matching
+                    // gamepad path's NegateAxis on ThumbLY). Negate so the VC's
+                    // screen-Y negation produces correct cursor direction.
+                    if (string.IsNullOrWhiteSpace(negDesc))
+                        raw.MouseDeltaY = NegateAxis(raw.MouseDeltaY);
+                }
             }
+
+            // ── Center offsets (applied before dead zone, same as gamepad path) ──
+            raw.MouseDeltaX = ApplyCenterOffset(raw.MouseDeltaX, TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0));
+            raw.MouseDeltaY = ApplyCenterOffset(raw.MouseDeltaY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
 
             // ── Mouse movement dead zone + sensitivity (uses Left Thumb settings) ──
             ApplyDeadZone(ref raw.MouseDeltaX, ref raw.MouseDeltaY,

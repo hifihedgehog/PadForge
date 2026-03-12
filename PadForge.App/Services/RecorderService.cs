@@ -430,6 +430,14 @@ namespace PadForge.Services
             if (target.StartsWith("VJoyAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
                 return negRecording ? axisPositive : !axisPositive;
 
+            // KBM bidirectional axes: never auto-invert. The full analog axis
+            // maps directly to mouse/scroll movement — positive raw = right/down,
+            // which is the correct screen convention. MainWindow already clears
+            // the neg descriptor for full-axis recordings on bidirectional targets.
+            if (target.StartsWith("KbmMouse", StringComparison.Ordinal)
+                || target.StartsWith("KbmScroll", StringComparison.Ordinal))
+                return false;
+
             // Trigger targets: increasing value is natural.
             // Negative delta = reverse polarity = needs inversion.
             if (target == "LeftTrigger" || target == "RightTrigger")

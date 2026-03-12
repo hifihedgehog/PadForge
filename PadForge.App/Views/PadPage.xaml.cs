@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
 using PadForge.Common;
+using PadForge.Common.Input;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -366,7 +367,11 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm) return;
             if (VJoyPresetCombo.SelectedIndex < 0) return;
 
+            // Re-automap devices BEFORE setting preset so that when
+            // RebuildMappings → OnMappingsRebuilt fires, PadSetting is already correct.
+            SettingsManager.ReAutoMapSlot(vm.PadIndex, vm.OutputType);
             vm.VJoyConfig.Preset = (VJoyPreset)VJoyPresetCombo.SelectedIndex;
+
             SyncVJoyCustomFields(vm);
             ApplyViewMode();
         }

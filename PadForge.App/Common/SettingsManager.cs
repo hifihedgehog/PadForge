@@ -432,6 +432,28 @@ namespace PadForge.Common.Input
             return ps;
         }
 
+        /// <summary>
+        /// Re-automaps all devices assigned to a slot for the given output type.
+        /// Called when switching virtual controller type so mappings match the new type.
+        /// </summary>
+        public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType)
+        {
+            var settings = UserSettings;
+            if (settings == null) return;
+
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us.MapTo != padIndex) continue;
+                    var ud = FindDeviceByInstanceGuid(us.InstanceGuid);
+                    var ps = CreateDefaultPadSetting(ud, outputType);
+                    us.SetPadSetting(ps);
+                    us.PadSettingChecksum = ps.PadSettingChecksum;
+                }
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Diagnostics
         // ─────────────────────────────────────────────

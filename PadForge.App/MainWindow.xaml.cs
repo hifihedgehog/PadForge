@@ -630,8 +630,9 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
-                // Device nodes are created on demand by the engine (CreateVJoyController)
-                // when the slot becomes active — same pattern as ViGEm.
+                // Re-automap devices before setting OutputType so that when
+                // RebuildMappings fires, the PadSetting already has correct mappings.
+                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1381,6 +1382,7 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox360);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox360;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1393,6 +1395,7 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.DualShock4);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.DualShock4;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1407,6 +1410,7 @@ namespace PadForge
             {
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.VJoy);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1419,6 +1423,7 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1431,6 +1436,7 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();

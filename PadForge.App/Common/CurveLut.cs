@@ -115,8 +115,8 @@ namespace PadForge.Common
         public static readonly (string Name, string Serialized)[] Presets =
         {
             ("Linear",     "0,0;1,1"),
-            ("Aggressive", "0,0;0.5,0.2;1,1"),
-            ("Smooth",     "0,0;0.5,0.8;1,1"),
+            ("Smooth",     "0,0;0.5,0.2;1,1"),
+            ("Aggressive", "0,0;0.5,0.8;1,1"),
             ("Instant",    "0,0;0.1,0.9;1,1"),
             ("S-Curve",    "0,0;0.3,0.1;0.7,0.9;1,1"),
             ("Delay",      "0,0;0.8,0.2;1,1"),

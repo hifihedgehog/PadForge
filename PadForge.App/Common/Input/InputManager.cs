@@ -204,6 +204,9 @@ namespace PadForge.Common.Input
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");
 
+                // Allow screensaver/sleep even while SDL video is active.
+                SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
+
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
                 // SDL_INIT_VIDEO is required for keyboard/mouse enumeration.
@@ -333,10 +336,22 @@ namespace PadForge.Common.Input
             // other system timing used by SDL, ViGEm, and the UI dispatcher.
             timeBeginPeriod(1);
 
+            // High-resolution waitable timer for sub-ms sleeps without
+            // burning CPU.  Available on Windows 10 1803+.  Falls back
+            // to Thread.Sleep(1) + spin if unavailable.
+            IntPtr hTimer = CreateWaitableTimerExW(
+                IntPtr.Zero, IntPtr.Zero,
+                CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+
             try
             {
                 var cycleTimer = new Stopwatch();
                 cycleTimer.Start();
+
+                // Periodically clear any execution-state flags that SDL may
+                // re-assert during SDL_JoystickUpdate / event processing.
+                var sleepGuardTimer = new Stopwatch();
+                sleepGuardTimer.Start();
 
                 // Run device enumeration immediately on the first cycle so that
                 // controllers are detected, virtual devices are created, and force
@@ -409,42 +424,57 @@ namespace PadForge.Common.Input
                             _frequencyTimer.Restart();
                             FrequencyUpdated?.Invoke(this, EventArgs.Empty);
                         }
+
+                        // Clear any execution-state flags SDL may have re-set
+                        // during event processing so the PC can still sleep.
+                        if (sleepGuardTimer.ElapsedMilliseconds >= 5000)
+                        {
+                            sleepGuardTimer.Restart();
+                            SetThreadExecutionState(ES_CONTINUOUS);
+                        }
                     }
                     catch (Exception ex)
                     {
                         RaiseError("Polling loop error", ex);
                     }
 
-                    // Hybrid sleep/spin-wait for precise timing with low CPU usage.
+                    // Precision wait using high-resolution waitable timer + spin.
                     //
-                    // Strategy depends on how much time remains:
-                    //   - >1.5ms remaining: Thread.Sleep(1) — real sleep, near-zero CPU.
-                    //     With timeBeginPeriod(1), wakes in ~1.0-1.5ms.
-                    //   - >0ms remaining: Thread.SpinWait(1) — precise busy-wait using
-                    //     CPU PAUSE instructions for sub-ms accuracy.
-                    //
-                    // At PollingIntervalMs=1: mostly spin-wait (work takes ~0.3-0.5ms,
-                    //   ~0.5-0.7ms of spinning). CPU is ~1-3% of one core.
-                    // At PollingIntervalMs=2+: Thread.Sleep(1) absorbs the bulk of the
-                    //   wait, CPU drops to near-zero while maintaining accurate timing.
+                    // The HR timer sleeps with ~0.5ms granularity at near-zero CPU.
+                    // A short spin-wait finishes the last ~0.2ms for sub-ms accuracy.
+                    // Falls back to Thread.Sleep(1) + spin if the timer isn't available.
+                    long spinThresholdTicks = Stopwatch.Frequency / 5000; // 0.2ms in ticks
                     long sleepThresholdTicks = Stopwatch.Frequency * 3 / 2000; // 1.5ms in ticks
                     long remaining = targetTicks - cycleTimer.ElapsedTicks;
-                    while (remaining > 0)
+
+                    if (remaining > spinThresholdTicks && hTimer != IntPtr.Zero)
                     {
-                        if (remaining > sleepThresholdTicks)
+                        // Convert (remaining - spinThreshold) to negative 100ns units
+                        // for a relative wait.
+                        long waitTicks = remaining - spinThresholdTicks;
+                        long dueTime = -(waitTicks * 10_000_000 / Stopwatch.Frequency);
+                        if (dueTime < -1) // at least 100ns
                         {
-                            Thread.Sleep(1);
+                            SetWaitableTimerEx(hTimer, ref dueTime, 0,
+                                IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0);
+                            WaitForSingleObject(hTimer, INFINITE);
                         }
-                        else
-                        {
-                            Thread.SpinWait(1);
-                        }
-                        remaining = targetTicks - cycleTimer.ElapsedTicks;
                     }
+                    else if (remaining > sleepThresholdTicks)
+                    {
+                        // Fallback for systems without HR timer support.
+                        Thread.Sleep(1);
+                    }
+
+                    // Spin for the final sub-ms portion.
+                    while (cycleTimer.ElapsedTicks < targetTicks)
+                        Thread.SpinWait(1);
                 }
             }
             finally
             {
+                if (hTimer != IntPtr.Zero)
+                    CloseHandle(hTimer);
                 timeEndPeriod(1);
             }
         }
@@ -734,6 +764,26 @@ namespace PadForge.Common.Input
         private static extern uint SetThreadExecutionState(uint esFlags);
 
         private const uint ES_CONTINUOUS = 0x80000000;
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr CreateWaitableTimerExW(
+            IntPtr lpTimerAttributes, IntPtr lpTimerName, uint dwFlags, uint dwDesiredAccess);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetWaitableTimerEx(
+            IntPtr hTimer, ref long lpDueTime, int lPeriod,
+            IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine,
+            IntPtr WakeContext, uint TolerableDelay);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool CloseHandle(IntPtr hObject);
+
+        private const uint CREATE_WAITABLE_TIMER_HIGH_RESOLUTION = 0x00000002;
+        private const uint TIMER_ALL_ACCESS = 0x1F0003;
+        private const uint INFINITE = 0xFFFFFFFF;
 
         // ─────────────────────────────────────────────
         //  IDisposable

@@ -163,9 +163,9 @@ namespace PadForge.Common.Input
                 _connection = null;
             }
 
+            _virtualDevice = null;
             _session?.Dispose();
             _session = null;
-            _virtualDevice = null;
         }
 
         public void SubmitGamepadState(Gamepad gp)

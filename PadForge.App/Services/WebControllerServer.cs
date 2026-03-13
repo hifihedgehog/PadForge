@@ -131,7 +131,7 @@ namespace PadForge.Services
             if (!_running) return;
             _running = false;
 
-            try { _listener?.Stop(); }
+            try { _listener?.Stop(); _listener?.Close(); }
             catch { /* best effort */ }
 
             // Close all client WebSockets.

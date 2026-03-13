@@ -337,11 +337,30 @@ namespace PadForge.Common.Input
             timeBeginPeriod(1);
 
             // High-resolution waitable timer for sub-ms sleeps without
-            // burning CPU.  Available on Windows 10 1803+.  Falls back
-            // to Thread.Sleep(1) + spin if unavailable.
+            // burning CPU.  Available on Windows 10 1803+.
             IntPtr hTimer = CreateWaitableTimerExW(
                 IntPtr.Zero, IntPtr.Zero,
                 CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+
+            // Fallback: x360ce-style multimedia timer + ManualResetEvent.
+            // timeSetEvent fires a periodic callback that signals the event,
+            // letting the polling thread block with zero CPU. Precision is
+            // ~1-2ms with timeBeginPeriod(1) — less accurate than the HR
+            // timer but much better than Thread.Sleep(1) alone.
+            ManualResetEvent mmTimerEvent = null;
+            TimerCallback mmTimerCb = null;
+            uint mmTimerId = 0;
+            if (hTimer == IntPtr.Zero)
+            {
+                mmTimerEvent = new ManualResetEvent(false);
+                var evt = mmTimerEvent; // capture for lambda
+                mmTimerCb = (id, msg, user, dw1, dw2) =>
+                {
+                    try { evt.Set(); } catch { /* disposed at shutdown */ }
+                };
+                mmTimerId = timeSetEvent((uint)Math.Max(1, PollingIntervalMs), 0,
+                    mmTimerCb, IntPtr.Zero, TIME_PERIODIC);
+            }
 
             try
             {
@@ -352,6 +371,13 @@ namespace PadForge.Common.Input
                 // re-assert during SDL_JoystickUpdate / event processing.
                 var sleepGuardTimer = new Stopwatch();
                 sleepGuardTimer.Start();
+
+                // Wall-clock drift compensation: track cumulative expected
+                // time vs actual elapsed time.  If we fall behind, shorten
+                // future cycles to catch up so the average rate converges.
+                var wallClock = new Stopwatch();
+                wallClock.Start();
+                long expectedTicks = 0;
 
                 // Run device enumeration immediately on the first cycle so that
                 // controllers are detected, virtual devices are created, and force
@@ -386,6 +412,10 @@ namespace PadForge.Common.Input
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
                         Thread.Sleep(50);
                         firstCycle = true; // Ensure immediate enumeration on wake
+                        // Reset wall-clock drift tracker so stale drift from
+                        // before idle doesn't cause a burst of short cycles.
+                        wallClock.Restart();
+                        expectedTicks = 0;
                         continue;
                     }
 
@@ -438,36 +468,58 @@ namespace PadForge.Common.Input
                         RaiseError("Polling loop error", ex);
                     }
 
-                    // Precision wait using high-resolution waitable timer + spin.
+                    // Wall-clock drift-compensated precision wait.
                     //
-                    // The HR timer sleeps with ~0.5ms granularity at near-zero CPU.
-                    // A short spin-wait finishes the last ~0.2ms for sub-ms accuracy.
-                    // Falls back to Thread.Sleep(1) + spin if the timer isn't available.
-                    long spinThresholdTicks = Stopwatch.Frequency / 5000; // 0.2ms in ticks
-                    long sleepThresholdTicks = Stopwatch.Frequency * 3 / 2000; // 1.5ms in ticks
-                    long remaining = targetTicks - cycleTimer.ElapsedTicks;
+                    // Instead of per-cycle overshoot tracking, we compare
+                    // cumulative expected time against the wall clock.  If
+                    // we're behind, we shorten this cycle; if ahead, we
+                    // lengthen it.  This converges the average rate exactly.
+                    expectedTicks += targetTicks;
+                    long drift = wallClock.ElapsedTicks - expectedTicks;
+
+                    // If drift exceeds 10 cycles (e.g. after system sleep/resume),
+                    // reset the wall clock instead of sprinting to catch up.
+                    if (drift > targetTicks * 10 || drift < -(targetTicks * 10))
+                    {
+                        wallClock.Restart();
+                        expectedTicks = targetTicks;
+                        drift = 0;
+                    }
+
+                    long adjustedTarget = targetTicks - drift;
+                    if (adjustedTarget < targetTicks / 4)
+                        adjustedTarget = targetTicks / 4; // safety floor
+
+                    long spinThresholdTicks = Stopwatch.Frequency / 10000; // 0.1ms
+                    long sleepThresholdTicks = Stopwatch.Frequency * 3 / 2000; // 1.5ms
+                    long remaining = adjustedTarget - cycleTimer.ElapsedTicks;
 
                     if (remaining > spinThresholdTicks && hTimer != IntPtr.Zero)
                     {
-                        // Convert (remaining - spinThreshold) to negative 100ns units
-                        // for a relative wait.
+                        // HR timer: precise sub-ms kernel sleep.
                         long waitTicks = remaining - spinThresholdTicks;
                         long dueTime = -(waitTicks * 10_000_000 / Stopwatch.Frequency);
-                        if (dueTime < -1) // at least 100ns
+                        if (dueTime < -1)
                         {
                             SetWaitableTimerEx(hTimer, ref dueTime, 0,
                                 IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0);
                             WaitForSingleObject(hTimer, INFINITE);
                         }
                     }
+                    else if (remaining > spinThresholdTicks && mmTimerEvent != null)
+                    {
+                        // x360ce-style: block until multimedia timer fires (~1ms).
+                        mmTimerEvent.WaitOne(50);
+                        mmTimerEvent.Reset();
+                    }
                     else if (remaining > sleepThresholdTicks)
                     {
-                        // Fallback for systems without HR timer support.
+                        // Last resort: Thread.Sleep(1).
                         Thread.Sleep(1);
                     }
 
                     // Spin for the final sub-ms portion.
-                    while (cycleTimer.ElapsedTicks < targetTicks)
+                    while (cycleTimer.ElapsedTicks < adjustedTarget)
                         Thread.SpinWait(1);
                 }
             }
@@ -475,6 +527,10 @@ namespace PadForge.Common.Input
             {
                 if (hTimer != IntPtr.Zero)
                     CloseHandle(hTimer);
+                if (mmTimerId != 0)
+                    timeKillEvent(mmTimerId);
+                GC.KeepAlive(mmTimerCb); // prevent GC of native callback delegate
+                mmTimerEvent?.Dispose();
                 timeEndPeriod(1);
             }
         }
@@ -759,6 +815,19 @@ namespace PadForge.Common.Input
 
         [DllImport("winmm.dll", ExactSpelling = true)]
         private static extern uint timeEndPeriod(uint uPeriod);
+
+        // Multimedia timer callback for x360ce-style fallback.
+        private delegate void TimerCallback(uint uTimerID, uint uMsg,
+            IntPtr dwUser, IntPtr dw1, IntPtr dw2);
+
+        [DllImport("winmm.dll", ExactSpelling = true)]
+        private static extern uint timeSetEvent(uint uDelay, uint uResolution,
+            TimerCallback lpTimeProc, IntPtr dwUser, uint fuEvent);
+
+        [DllImport("winmm.dll", ExactSpelling = true)]
+        private static extern uint timeKillEvent(uint uTimerID);
+
+        private const uint TIME_PERIODIC = 1;
 
         [DllImport("kernel32.dll")]
         private static extern uint SetThreadExecutionState(uint esFlags);

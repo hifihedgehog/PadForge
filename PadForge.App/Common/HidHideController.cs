@@ -197,25 +197,6 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Ensures the given application path is in the whitelist.
-        /// Converts the path to DOS device format (\Device\HarddiskVolumeN\...) first.
-        /// </summary>
-        public static void EnsureWhitelisted(string appPath)
-        {
-            if (string.IsNullOrEmpty(appPath)) return;
-
-            string dosPath = ToDosDevicePath(appPath);
-            if (dosPath == null) return;
-
-            var list = GetWhitelist();
-            if (!list.Contains(dosPath, StringComparer.OrdinalIgnoreCase))
-            {
-                list.Add(dosPath);
-                SetWhitelist(list);
-            }
-        }
-
-        /// <summary>
         /// Gets whether cloaking (device hiding) is currently active.
         /// </summary>
         public static bool GetActive()
@@ -471,12 +452,7 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Converts a regular file path (C:\PadForge\PadForge.exe) to DOS device
-        /// path format (\Device\HarddiskVolumeN\PadForge\PadForge.exe) for the
-        /// HidHide whitelist.
-        /// </summary>
-        /// <summary>
-        /// Converts a Windows file path to a DOS device path. Public entry point for whitelist sync.
+        /// Converts a Windows file path to a DOS device path (\Device\HarddiskVolumeN\...).
         /// </summary>
         public static string ToDosDevicePathPublic(string filePath) => ToDosDevicePath(filePath);
 

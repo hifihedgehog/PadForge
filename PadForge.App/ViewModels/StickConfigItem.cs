@@ -139,7 +139,15 @@ namespace PadForge.ViewModels
         public double MaxRangeYNeg
         {
             get => _maxRangeYNeg;
-            set { if (SetProperty(ref _maxRangeYNeg, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeYNegDigit)); RebuildCurvePoints(); } }
+            set
+            {
+                var clamped = Math.Clamp(value, 1, 100);
+                if (SetProperty(ref _maxRangeYNeg, clamped))
+                {
+                    OnPropertyChanged(nameof(MaxRangeYNegDigit));
+                    RebuildCurvePoints();
+                }
+            }
         }
         public int MaxRangeYNegDigit
         {

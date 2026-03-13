@@ -1104,18 +1104,6 @@
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Min Range Y (Down):" Style="{StaticResource DzLabel}"/>
-                                                <Slider Value="{Binding MaxRangeYNeg, Mode=TwoWay}"
-                                                        Minimum="1" Maximum="100"
-                                                        Style="{StaticResource DzSlider}"/>
-                                                <TextBox Text="{Binding MaxRangeYNeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                <TextBox Text="{Binding MaxRangeYNegDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeYNegCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Min Range Y"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Max Range Y (Up):" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeY, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1124,7 +1112,19 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range Y"/>
+                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Min Range Y"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Max Range Y (Up):" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding MaxRangeYNeg, Mode=TwoWay}"
+                                                        Minimum="1" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding MaxRangeYNeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding MaxRangeYNegDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetMaxRangeYNegCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range Y"/>
                                             </StackPanel>
                                         </StackPanel>
 
@@ -1266,6 +1266,7 @@
                                                         CurveString="{Binding SensitivityCurveX, Mode=TwoWay}"
                                                         DeadZone="{Binding DeadZoneX}"
                                                         MaxRange="{Binding MaxRangeX}"
+                                                        MaxRangeNeg="{Binding MaxRangeXNeg}"
                                                         LiveInput="{Binding LiveInputX}"
                                                         IsSigned="True" ChartSize="96"/>
                                                 </StackPanel>
@@ -1277,7 +1278,8 @@
                                                     <controls:CurveEditor
                                                         CurveString="{Binding SensitivityCurveY, Mode=TwoWay}"
                                                         DeadZone="{Binding DeadZoneY}"
-                                                        MaxRange="{Binding MaxRangeY}"
+                                                        MaxRange="{Binding MaxRangeYNeg}"
+                                                        MaxRangeNeg="{Binding MaxRangeY}"
                                                         LiveInput="{Binding LiveInputY}"
                                                         IsSigned="True" ChartSize="96"/>
                                                 </StackPanel>

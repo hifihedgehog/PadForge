@@ -117,6 +117,31 @@
                                     Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
+
+                    <!-- Whitelist section (only when installed) -->
+                    <StackPanel Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Margin="0,16,0,0">
+                        <TextBlock Text="Whitelisted Applications" FontWeight="SemiBold" FontSize="13"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock Text="These applications can still see hidden devices. PadForge is always whitelisted automatically."
+                                   Style="{StaticResource CardDescription}" Margin="0,0,0,8"/>
+                        <ListBox ItemsSource="{Binding HidHideWhitelistPaths}"
+                                 SelectedItem="{Binding SelectedWhitelistPath}"
+                                 MaxHeight="140" MinHeight="32"
+                                 Margin="0,0,0,8">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontSize="12" FontFamily="Consolas"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Add..." Command="{Binding AddWhitelistPathCommand}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="Remove" Command="{Binding RemoveWhitelistPathCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

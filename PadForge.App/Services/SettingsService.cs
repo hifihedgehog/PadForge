@@ -233,6 +233,13 @@ namespace PadForge.Services
             vm.PollingRateMs = appSettings.PollingRateMs;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
+            vm.HidHideWhitelistPaths.Clear();
+            if (appSettings.HidHideWhitelistPaths != null)
+            {
+                foreach (var p in appSettings.HidHideWhitelistPaths)
+                    if (!string.IsNullOrWhiteSpace(p))
+                        vm.HidHideWhitelistPaths.Add(p);
+            }
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -899,6 +906,9 @@ namespace PadForge.Services
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
+                HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
+                    ? vm.HidHideWhitelistPaths.ToArray()
+                    : null,
                 VJoyConfigs = vjoyConfigs.ToArray(),
                 MidiConfigs = BuildMidiConfigs()
             };
@@ -1402,6 +1412,15 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public bool EnableInputHiding { get; set; } = true;
+
+        /// <summary>
+        /// User-specified application paths to whitelist in HidHide.
+        /// These are regular Windows paths (e.g. C:\Games\emulator.exe),
+        /// converted to DOS device paths at runtime.
+        /// </summary>
+        [XmlArray("HidHideWhitelistPaths")]
+        [XmlArrayItem("Path")]
+        public string[] HidHideWhitelistPaths { get; set; }
 
         /// <summary>
         /// Per-slot vJoy configuration (preset, axis/button counts).

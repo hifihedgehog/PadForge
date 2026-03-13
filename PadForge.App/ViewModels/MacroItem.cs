@@ -818,6 +818,21 @@ namespace PadForge.ViewModels
                     AudioProcessNames.Add(name);
             });
 
+        // ── Volume limit ──
+
+        private int _volumeLimit = 100;
+
+        /// <summary>For SystemVolume/AppVolume: maximum volume percentage (1-100). Axis output is scaled to this limit.</summary>
+        public int VolumeLimit
+        {
+            get => _volumeLimit;
+            set
+            {
+                if (SetProperty(ref _volumeLimit, Math.Clamp(value, 1, 100)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         // ── Mouse properties ──
 
         private float _mouseSensitivity = 10f;
@@ -867,10 +882,12 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyRelease => $"Release keys {keyDisplay}",
                     MacroActionType.Delay => $"Wait {_durationMs}ms",
                     MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
-                    MacroActionType.SystemVolume => $"System Volume \u2190 {_axisTarget}",
+                    MacroActionType.SystemVolume => _volumeLimit < 100
+                        ? $"System Volume \u2190 {_axisTarget} (max {_volumeLimit}%)"
+                        : $"System Volume \u2190 {_axisTarget}",
                     MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
-                        ? $"App Volume \u2190 {_axisTarget}"
-                        : $"App Volume ({_processName}) \u2190 {_axisTarget}",
+                        ? (_volumeLimit < 100 ? $"App Volume \u2190 {_axisTarget} (max {_volumeLimit}%)" : $"App Volume \u2190 {_axisTarget}")
+                        : (_volumeLimit < 100 ? $"App Volume ({_processName}) \u2190 {_axisTarget} (max {_volumeLimit}%)" : $"App Volume ({_processName}) \u2190 {_axisTarget}"),
                     MacroActionType.MouseMove => $"Mouse Move \u2190 {_axisTarget} (speed {_mouseSensitivity:F0})",
                     MacroActionType.MouseButtonPress => $"Mouse Press {_mouseButton}",
                     MacroActionType.MouseButtonRelease => $"Mouse Release {_mouseButton}",

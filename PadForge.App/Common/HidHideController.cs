@@ -475,6 +475,11 @@ namespace PadForge.Common
         /// path format (\Device\HarddiskVolumeN\PadForge\PadForge.exe) for the
         /// HidHide whitelist.
         /// </summary>
+        /// <summary>
+        /// Converts a Windows file path to a DOS device path. Public entry point for whitelist sync.
+        /// </summary>
+        public static string ToDosDevicePathPublic(string filePath) => ToDosDevicePath(filePath);
+
         private static string ToDosDevicePath(string filePath)
         {
             try

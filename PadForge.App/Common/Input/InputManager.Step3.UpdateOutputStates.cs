@@ -215,6 +215,8 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.LeftThumbLinear, 0),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeXNeg, TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100)),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeYNeg, TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
@@ -227,6 +229,8 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.RightThumbLinear, 0),
                 TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
+                TryParseDoubleStatic(ps.RightThumbMaxRangeXNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100)),
+                TryParseDoubleStatic(ps.RightThumbMaxRangeYNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
@@ -720,14 +724,15 @@ namespace PadForge.Common.Input
             double deadZoneX, double deadZoneY,
             double antiDeadZoneX, double antiDeadZoneY, double linear,
             double maxRangeX, double maxRangeY,
+            double maxRangeXNeg, double maxRangeYNeg,
             double[] lutX, double[] lutY,
             DeadZoneShape shape)
         {
             // Axial: existing independent per-axis behavior.
             if (shape == DeadZoneShape.Axial)
             {
-                axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, lutX);
-                axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, lutY);
+                axisX = ApplySingleDeadZone(axisX, deadZoneX, antiDeadZoneX, linear, maxRangeX, maxRangeXNeg, lutX);
+                axisY = ApplySingleDeadZone(axisY, deadZoneY, antiDeadZoneY, linear, maxRangeY, maxRangeYNeg, lutY);
                 return;
             }
 
@@ -737,7 +742,9 @@ namespace PadForge.Common.Input
             double signX = Math.Sign(nx), signY = Math.Sign(ny);
             double magX = Math.Abs(nx), magY = Math.Abs(ny);
             double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
-            double mrXn = maxRangeX / 100.0, mrYn = maxRangeY / 100.0;
+            // Pick max range based on direction of input.
+            double mrXn = (nx >= 0 ? maxRangeX : maxRangeXNeg) / 100.0;
+            double mrYn = (ny >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
             if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
             if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
 
@@ -940,9 +947,9 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Applies dead zone processing to a single axis.
         /// </summary>
-        private static short ApplySingleDeadZone(short value, double deadZone, double antiDeadZone, double linear, double maxRange = 100, double[] lut = null)
+        private static short ApplySingleDeadZone(short value, double deadZone, double antiDeadZone, double linear, double maxRangePos = 100, double maxRangeNeg = 100, double[] lut = null)
         {
-            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100 && lut == null)
+            if (deadZone <= 0 && antiDeadZone <= 0 && maxRangePos >= 100 && maxRangeNeg >= 100 && lut == null)
                 return value;
 
             // Normalize to float (-1.0 to 1.0).
@@ -956,7 +963,8 @@ namespace PadForge.Common.Input
                 return 0;
 
             // Max range: cap the input ceiling so full output is reached at this %.
-            double maxNorm = maxRange / 100.0;
+            // Pick positive or negative direction max range based on input sign.
+            double maxNorm = (norm >= 0 ? maxRangePos : maxRangeNeg) / 100.0;
             if (maxNorm <= dzNorm)
                 maxNorm = Math.Min(dzNorm + 0.01, 1.0);
 
@@ -1089,7 +1097,7 @@ namespace PadForge.Common.Input
                 int yi = xi + 1;
                 if (xi >= raw.Axes.Length || yi >= raw.Axes.Length) break;
 
-                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100;
+                double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100, mrXN = 100, mrYN = 100;
                 double[] lutX = null, lutY = null;
                 DeadZoneShape dzShape;
                 switch (g)
@@ -1107,6 +1115,8 @@ namespace PadForge.Common.Input
                         cofY = TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0);
                         mrX = TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100);
                         mrY = TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100);
+                        mrXN = TryParseDoubleStatic(ps.LeftThumbMaxRangeXNeg, mrX);
+                        mrYN = TryParseDoubleStatic(ps.LeftThumbMaxRangeYNeg, mrY);
                         break;
                     case 1:
                         dzShape = ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
@@ -1121,6 +1131,8 @@ namespace PadForge.Common.Input
                         cofY = TryParseDoubleStatic(ps.RightThumbCenterOffsetY, 0);
                         mrX = TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100);
                         mrY = TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100);
+                        mrXN = TryParseDoubleStatic(ps.RightThumbMaxRangeXNeg, mrX);
+                        mrYN = TryParseDoubleStatic(ps.RightThumbMaxRangeYNeg, mrY);
                         break;
                     default:
                         // Custom vJoy sticks 2+: read all settings from vJoy dictionary.
@@ -1136,12 +1148,14 @@ namespace PadForge.Common.Input
                         cofY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
                         mrX = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
                         mrY = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrY"), 100);
+                        mrXN = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrXN"), mrX);
+                        mrYN = TryParseDoubleStatic(ps.GetVJoyMapping($"VJoyStick{g}MrYN"), mrY);
                         break;
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
                 raw.Axes[yi] = ApplyCenterOffset(raw.Axes[yi], cofY);
                 ApplyDeadZone(ref raw.Axes[xi], ref raw.Axes[yi],
-                    dzX, dzY, adzX, adzY, lin, mrX, mrY, lutX, lutY, dzShape);
+                    dzX, dzY, adzX, adzY, lin, mrX, mrY, mrXN, mrYN, lutX, lutY, dzShape);
             }
 
             for (int g = 0; g < cfg.Triggers; g++)
@@ -1347,6 +1361,8 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.LeftThumbLinear, 0),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100),
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeXNeg, TryParseDoubleStatic(ps.LeftThumbMaxRangeX, 100)),
+                TryParseDoubleStatic(ps.LeftThumbMaxRangeYNeg, TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
@@ -1380,6 +1396,8 @@ namespace PadForge.Common.Input
                     TryParseDoubleStatic(ps.RightThumbLinear, 0),
                     TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
                     TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeXNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100)),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeYNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100)),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));

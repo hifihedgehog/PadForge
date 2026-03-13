@@ -194,6 +194,7 @@ namespace PadForge.Services
                     HidHideController.ClearAll();
             }
             catch { /* best effort */ }
+            _managedWhitelistDosPaths.Clear();
 
             // Apply device hiding (HidHide + input hooks) if master switch is on.
             ApplyDeviceHiding();
@@ -1824,6 +1825,7 @@ namespace PadForge.Services
                     HidHideController.RemoveManagedDevices();
             }
             catch { /* Best effort — driver may not be available */ }
+            _managedWhitelistDosPaths.Clear();
 
             // ── Input hooks ──
             if (_hookManager != null)

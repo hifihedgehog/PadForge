@@ -360,6 +360,13 @@ namespace PadForge.Common.Input
                 };
                 mmTimerId = timeSetEvent((uint)Math.Max(1, PollingIntervalMs), 0,
                     mmTimerCb, IntPtr.Zero, TIME_PERIODIC);
+                if (mmTimerId == 0)
+                {
+                    // Timer failed — dispose the event to avoid a resource leak.
+                    mmTimerEvent.Dispose();
+                    mmTimerEvent = null;
+                    mmTimerCb = null;
+                }
             }
 
             try
@@ -501,9 +508,9 @@ namespace PadForge.Common.Input
                         long dueTime = -(waitTicks * 10_000_000 / Stopwatch.Frequency);
                         if (dueTime < -1)
                         {
-                            SetWaitableTimerEx(hTimer, ref dueTime, 0,
-                                IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0);
-                            WaitForSingleObject(hTimer, INFINITE);
+                            if (SetWaitableTimerEx(hTimer, ref dueTime, 0,
+                                IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0))
+                                WaitForSingleObject(hTimer, INFINITE);
                         }
                     }
                     else if (remaining > spinThresholdTicks && mmTimerEvent != null)

@@ -1079,7 +1079,7 @@
                                                 <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Max Range X:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="Range Right:" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeX, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1088,10 +1088,22 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range X"/>
+                                                <Button Command="{Binding ResetMaxRangeXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Range Right"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Max Range Y:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="Range Left:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding MaxRangeXNeg, Mode=TwoWay}"
+                                                        Minimum="1" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding MaxRangeXNeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding MaxRangeXNegDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetMaxRangeXNegCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Range Left"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Range Up:" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeY, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1100,7 +1112,19 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range Y"/>
+                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Range Up"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="Range Down:" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding MaxRangeYNeg, Mode=TwoWay}"
+                                                        Minimum="1" Maximum="100"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding MaxRangeYNeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding MaxRangeYNegDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                <Button Command="{Binding ResetMaxRangeYNegCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Range Down"/>
                                             </StackPanel>
                                         </StackPanel>
 

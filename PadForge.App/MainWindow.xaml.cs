@@ -852,12 +852,17 @@ namespace PadForge
             _driverStatusTimer?.Stop();
             _driverStatusTimer = null;
 
-            // Dispose tray icon.
+            // Dispose tray icon and helper window.
             if (_notifyIcon != null)
             {
                 _notifyIcon.Visible = false;
                 _notifyIcon.Dispose();
                 _notifyIcon = null;
+            }
+            if (_trayMenuHost != null)
+            {
+                _trayMenuHost.Close();
+                _trayMenuHost = null;
             }
 
             // Unwire device service.
@@ -2761,12 +2766,30 @@ namespace PadForge
             _notifyIcon.DoubleClick += (s, e) => RestoreFromTray();
         }
 
+        /// <summary>Invisible helper window that keeps ModernWPF styles available for the tray context menu
+        /// even when the main window is hidden.</summary>
+        private Window _trayMenuHost;
+
         private void ShowTrayContextMenu()
         {
+            // Ensure the invisible host window exists so the context menu inherits ModernWPF styles.
+            if (_trayMenuHost == null)
+            {
+                _trayMenuHost = new Window
+                {
+                    Width = 0, Height = 0,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    AllowsTransparency = true,
+                    Opacity = 0,
+                };
+                _trayMenuHost.Show();
+            }
+
             var menu = new System.Windows.Controls.ContextMenu
             {
-                // Attach to this window so ModernWPF implicit styles and theme are inherited.
-                PlacementTarget = this,
+                PlacementTarget = _trayMenuHost,
+                Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint,
             };
 
             var showItem = new System.Windows.Controls.MenuItem

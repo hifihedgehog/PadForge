@@ -576,7 +576,8 @@ namespace PadForge.Services
                             DurationMs = ad.DurationMs,
                             AxisValue = ad.AxisValue,
                             AxisTarget = ad.AxisTarget,
-                            ProcessName = ad.ProcessName ?? ""
+                            ProcessName = ad.ProcessName ?? "",
+                            VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100
                         });
                     }
                 }
@@ -986,7 +987,8 @@ namespace PadForge.Services
                             DurationMs = a.DurationMs,
                             AxisValue = a.AxisValue,
                             AxisTarget = a.AxisTarget,
-                            ProcessName = a.ProcessName
+                            ProcessName = a.ProcessName,
+                            VolumeLimit = a.VolumeLimit
                         }).ToArray()
                     });
                 }
@@ -1556,6 +1558,10 @@ namespace PadForge.Services
         /// <summary>Process name for AppVolume action (e.g., "firefox", "spotify").</summary>
         [XmlElement]
         public string ProcessName { get; set; }
+
+        /// <summary>Maximum volume percentage (1-100) for SystemVolume/AppVolume. Default 100 (no limit).</summary>
+        [XmlElement]
+        public int VolumeLimit { get; set; } = 100;
     }
 
     /// <summary>

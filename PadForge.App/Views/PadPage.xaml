@@ -692,7 +692,17 @@
                                                 <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
-                                        <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume. Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat for continuous control."
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Volume limit:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
+                                                    Minimum="1" Maximum="100" Width="150"
+                                                    VerticalAlignment="Center"/>
+                                            <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
+                                                <Run Text="{Binding VolumeLimit, Mode=OneWay}"/><Run Text="%"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat for continuous control."
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -724,7 +734,17 @@
                                                 <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
-                                        <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer. Enter the process name (visible in Task Manager). Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat."
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Volume limit:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
+                                                    Minimum="1" Maximum="100" Width="150"
+                                                    VerticalAlignment="Center"/>
+                                            <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
+                                                <Run Text="{Binding VolumeLimit, Mode=OneWay}"/><Run Text="%"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat."
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>

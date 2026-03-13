@@ -198,6 +198,19 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick Y max range (1–100%).</summary>
         [XmlElement] public string RightThumbMaxRangeY { get; set; } = "100";
 
+        // Per-direction (negative) max range. Null = inherit from symmetric property above.
+        /// <summary>Left stick X negative direction (left) max range (1–100%).</summary>
+        [XmlElement] public string LeftThumbMaxRangeXNeg { get; set; }
+
+        /// <summary>Left stick Y negative direction (down) max range (1–100%).</summary>
+        [XmlElement] public string LeftThumbMaxRangeYNeg { get; set; }
+
+        /// <summary>Right stick X negative direction (left) max range (1–100%).</summary>
+        [XmlElement] public string RightThumbMaxRangeXNeg { get; set; }
+
+        /// <summary>Right stick Y negative direction (down) max range (1–100%).</summary>
+        [XmlElement] public string RightThumbMaxRangeYNeg { get; set; }
+
         // ─────────────────────────────────────────────
         //  Stick center offset calibration
         // ─────────────────────────────────────────────
@@ -506,6 +519,22 @@ namespace PadForge.Engine.Data
             }
         }
 
+        /// <summary>
+        /// Migrates symmetric max range values to per-direction properties.
+        /// If negative-direction property is null/empty, copies the symmetric value.
+        /// </summary>
+        public void MigrateMaxRangeDirections()
+        {
+            if (string.IsNullOrEmpty(LeftThumbMaxRangeXNeg))
+                LeftThumbMaxRangeXNeg = LeftThumbMaxRangeX;
+            if (string.IsNullOrEmpty(LeftThumbMaxRangeYNeg))
+                LeftThumbMaxRangeYNeg = LeftThumbMaxRangeY;
+            if (string.IsNullOrEmpty(RightThumbMaxRangeXNeg))
+                RightThumbMaxRangeXNeg = RightThumbMaxRangeX;
+            if (string.IsNullOrEmpty(RightThumbMaxRangeYNeg))
+                RightThumbMaxRangeYNeg = RightThumbMaxRangeY;
+        }
+
         private static bool IsEmptyOrZero(string v) =>
             string.IsNullOrEmpty(v) || v == "0";
 
@@ -587,6 +616,10 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbMaxRangeY); sb.Append('|');
             sb.Append(RightThumbMaxRangeX); sb.Append('|');
             sb.Append(RightThumbMaxRangeY); sb.Append('|');
+            sb.Append(LeftThumbMaxRangeXNeg); sb.Append('|');
+            sb.Append(LeftThumbMaxRangeYNeg); sb.Append('|');
+            sb.Append(RightThumbMaxRangeXNeg); sb.Append('|');
+            sb.Append(RightThumbMaxRangeYNeg); sb.Append('|');
             sb.Append(LeftThumbCenterOffsetX); sb.Append('|');
             sb.Append(LeftThumbCenterOffsetY); sb.Append('|');
             sb.Append(RightThumbCenterOffsetX); sb.Append('|');
@@ -825,6 +858,8 @@ namespace PadForge.Engine.Data
             nameof(LeftTriggerSensitivityCurve), nameof(RightTriggerSensitivityCurve),
             nameof(LeftThumbMaxRangeX), nameof(LeftThumbMaxRangeY),
             nameof(RightThumbMaxRangeX), nameof(RightThumbMaxRangeY),
+            nameof(LeftThumbMaxRangeXNeg), nameof(LeftThumbMaxRangeYNeg),
+            nameof(RightThumbMaxRangeXNeg), nameof(RightThumbMaxRangeYNeg),
             nameof(LeftThumbCenterOffsetX), nameof(LeftThumbCenterOffsetY),
             nameof(RightThumbCenterOffsetX), nameof(RightThumbCenterOffsetY),
             // Force feedback

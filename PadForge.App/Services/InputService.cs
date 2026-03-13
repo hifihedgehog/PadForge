@@ -902,6 +902,10 @@ namespace PadForge.Services
             ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
             ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
             ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
+            ps.LeftThumbMaxRangeXNeg = padVm.LeftMaxRangeXNeg.ToString();
+            ps.LeftThumbMaxRangeYNeg = padVm.LeftMaxRangeYNeg.ToString();
+            ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString();
+            ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString();
 
             // Trigger dead zones.
             ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
@@ -999,6 +1003,11 @@ namespace PadForge.Services
             padVm.LeftMaxRangeY = TryParseDouble(ps.LeftThumbMaxRangeY, 100);
             padVm.RightMaxRangeX = TryParseDouble(ps.RightThumbMaxRangeX, 100);
             padVm.RightMaxRangeY = TryParseDouble(ps.RightThumbMaxRangeY, 100);
+            ps.MigrateMaxRangeDirections();
+            padVm.LeftMaxRangeXNeg = TryParseDouble(ps.LeftThumbMaxRangeXNeg, 100);
+            padVm.LeftMaxRangeYNeg = TryParseDouble(ps.LeftThumbMaxRangeYNeg, 100);
+            padVm.RightMaxRangeXNeg = TryParseDouble(ps.RightThumbMaxRangeXNeg, 100);
+            padVm.RightMaxRangeYNeg = TryParseDouble(ps.RightThumbMaxRangeYNeg, 100);
 
             // Center offsets.
             padVm.LeftCenterOffsetX = TryParseDouble(ps.LeftThumbCenterOffsetX, 0);

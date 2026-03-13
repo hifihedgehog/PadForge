@@ -426,11 +426,11 @@ namespace PadForge.Common.Input
             switch (action.Type)
             {
                 case MacroActionType.SystemVolume:
-                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget));
+                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget) * (action.VolumeLimit / 100f));
                     break;
                 case MacroActionType.AppVolume:
                     if (!string.IsNullOrEmpty(action.ProcessName))
-                        SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget), action.ProcessName);
+                        SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget) * (action.VolumeLimit / 100f), action.ProcessName);
                     break;
                 case MacroActionType.MouseMove:
                 {
@@ -726,11 +726,11 @@ namespace PadForge.Common.Input
             switch (action.Type)
             {
                 case MacroActionType.SystemVolume:
-                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget));
+                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget) * (action.VolumeLimit / 100f));
                     break;
                 case MacroActionType.AppVolume:
                     if (!string.IsNullOrEmpty(action.ProcessName))
-                        SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget), action.ProcessName);
+                        SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget) * (action.VolumeLimit / 100f), action.ProcessName);
                     break;
                 case MacroActionType.MouseMove:
                 {

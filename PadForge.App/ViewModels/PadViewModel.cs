@@ -1042,6 +1042,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): LeftCenterOffsetY = item.CenterOffsetY; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
                 case 1:
                     switch (e.PropertyName)
@@ -1061,6 +1062,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
                 default:
                     // vJoy custom sticks 2+: values stored directly on ConfigItem,
@@ -1085,6 +1087,7 @@ namespace PadForge.ViewModels
                         case nameof(TriggerConfigItem.AntiDeadZone): LeftTriggerAntiDeadZone = item.AntiDeadZone; break;
                         case nameof(TriggerConfigItem.SensitivityCurve): LeftTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
                 case 1:
                     switch (e.PropertyName)
@@ -1094,6 +1097,7 @@ namespace PadForge.ViewModels
                         case nameof(TriggerConfigItem.AntiDeadZone): RightTriggerAntiDeadZone = item.AntiDeadZone; break;
                         case nameof(TriggerConfigItem.SensitivityCurve): RightTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
                 default:
                     // vJoy custom triggers 2+: values stored directly on ConfigItem,

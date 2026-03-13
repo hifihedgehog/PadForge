@@ -451,9 +451,8 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Enumerates connected mice via Raw Input and creates a UserDevice
-        /// for the aggregate "All Mice (Merged)" entry only — individual mice
-        /// are skipped since KB+M uses the merged RawInputListener data.
+        /// Enumerates connected mice via Raw Input and creates UserDevice
+        /// records for any new mice. Returns true if a new mouse was found.
         /// </summary>
         private bool EnumerateMice()
         {
@@ -464,10 +463,6 @@ namespace PadForge.Common.Input
 
             foreach (var mouse in mice)
             {
-                // Only create the aggregate device, skip individual mice.
-                if (mouse.Handle != RawInputListener.AggregateMouseHandle)
-                    continue;
-
                 if (_openedMouseHandles.Contains(mouse.Handle))
                     continue;
 

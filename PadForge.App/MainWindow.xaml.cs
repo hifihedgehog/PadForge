@@ -2763,13 +2763,16 @@ namespace PadForge
 
         private void ShowTrayContextMenu()
         {
-            var menu = new System.Windows.Controls.ContextMenu();
+            var menu = new System.Windows.Controls.ContextMenu
+            {
+                // Attach to this window so ModernWPF implicit styles and theme are inherited.
+                PlacementTarget = this,
+            };
 
             var showItem = new System.Windows.Controls.MenuItem
             {
                 Header = "Show PadForge",
                 FontWeight = FontWeights.SemiBold,
-                Icon = new System.Windows.Controls.TextBlock { Text = "\uE8A7", FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), FontSize = 14 }
             };
             showItem.Click += (s, e) => RestoreFromTray();
             menu.Items.Add(showItem);
@@ -2779,7 +2782,6 @@ namespace PadForge
             var exitItem = new System.Windows.Controls.MenuItem
             {
                 Header = "Exit",
-                Icon = new System.Windows.Controls.TextBlock { Text = "\uE711", FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), FontSize = 14 }
             };
             exitItem.Click += (s, e) => { _notifyIcon.Visible = false; Close(); };
             menu.Items.Add(exitItem);

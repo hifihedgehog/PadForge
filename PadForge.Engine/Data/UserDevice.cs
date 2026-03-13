@@ -378,6 +378,16 @@ namespace PadForge.Engine.Data
         }
 
         /// <summary>
+        /// Populates the device identity and capabilities from a <see cref="SdlMouseWrapper"/>.
+        /// </summary>
+        public void LoadFromMouseDevice(SdlMouseWrapper wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
         /// Populates the device identity and capabilities from a <see cref="WebControllerDevice"/>.
         /// </summary>
         public void LoadFromWebDevice(WebControllerDevice wrapper)

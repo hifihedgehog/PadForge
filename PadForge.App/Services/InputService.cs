@@ -51,6 +51,7 @@ namespace PadForge.Services
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
+        private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -1654,10 +1655,17 @@ namespace PadForge.Services
             // ── HidHide ──
             if (HidHideController.IsAvailable())
             {
-                // Whitelist PadForge itself.
+                // Build the set of desired whitelist paths (PadForge + user list).
+                var desiredPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
                 if (!string.IsNullOrEmpty(exePath))
-                    HidHideController.EnsureWhitelisted(exePath);
+                    desiredPaths.Add(exePath);
+                foreach (var path in _mainVm.Settings.HidHideWhitelistPaths)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                        desiredPaths.Add(path);
+                }
+                SyncWhitelist(desiredPaths);
 
                 // Collect all desired blacklist IDs first, then sync atomically
                 // to avoid a window where devices briefly become visible.
@@ -1753,6 +1761,54 @@ namespace PadForge.Services
                     _hookManager = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Syncs the HidHide whitelist to match the desired set of application paths.
+        /// Only adds/removes entries that PadForge manages — entries added by HidHide Client
+        /// or other tools are left untouched.
+        /// </summary>
+        private void SyncWhitelist(HashSet<string> desiredWinPaths)
+        {
+            // Convert desired Windows paths to DOS device paths.
+            var desiredDosPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var winPath in desiredWinPaths)
+            {
+                string dosPath = HidHideController.ToDosDevicePathPublic(winPath);
+                if (dosPath != null)
+                    desiredDosPaths.Add(dosPath);
+            }
+
+            var currentWhitelist = HidHideController.GetWhitelist();
+            bool changed = false;
+
+            // Remove PadForge-managed entries that are no longer desired.
+            var toRemove = new List<string>();
+            foreach (var managed in _managedWhitelistDosPaths)
+            {
+                if (!desiredDosPaths.Contains(managed))
+                    toRemove.Add(managed);
+            }
+            foreach (var path in toRemove)
+            {
+                _managedWhitelistDosPaths.Remove(path);
+                if (currentWhitelist.RemoveAll(p => string.Equals(p, path, StringComparison.OrdinalIgnoreCase)) > 0)
+                    changed = true;
+            }
+
+            // Add new desired entries that aren't already in the whitelist.
+            foreach (var dosPath in desiredDosPaths)
+            {
+                _managedWhitelistDosPaths.Add(dosPath);
+                if (!currentWhitelist.Contains(dosPath, StringComparer.OrdinalIgnoreCase))
+                {
+                    currentWhitelist.Add(dosPath);
+                    changed = true;
+                }
+            }
+
+            if (changed)
+                HidHideController.SetWhitelist(currentWhitelist);
         }
 
         /// <summary>

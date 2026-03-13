@@ -701,5 +701,19 @@ namespace PadForge.ViewModels
             get => _vjoyCount;
             set => SetProperty(ref _vjoyCount, value);
         }
+
+        private int _midiCount;
+        public int MidiCount
+        {
+            get => _midiCount;
+            set => SetProperty(ref _midiCount, value);
+        }
+
+        private int _kbmCount;
+        public int KbmCount
+        {
+            get => _kbmCount;
+            set => SetProperty(ref _kbmCount, value);
+        }
     }
 }

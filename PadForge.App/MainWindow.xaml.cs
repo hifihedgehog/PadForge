@@ -2750,15 +2750,41 @@ namespace PadForge
             if (!string.IsNullOrEmpty(exePath))
                 _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
 
-            // Context menu.
-            var menu = new System.Windows.Forms.ContextMenuStrip();
-            menu.Items.Add("Show PadForge", null, (s, e) => RestoreFromTray());
-            menu.Items.Add("-");
-            menu.Items.Add("Exit", null, (s, e) => { _notifyIcon.Visible = false; Close(); });
-            _notifyIcon.ContextMenuStrip = menu;
+            // Use WPF ContextMenu for ModernWPF-themed tray menu (no WinForms ContextMenuStrip).
+            _notifyIcon.MouseClick += (s, e) =>
+            {
+                if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                    Dispatcher.BeginInvoke(() => ShowTrayContextMenu());
+            };
 
             // Double-click to restore.
             _notifyIcon.DoubleClick += (s, e) => RestoreFromTray();
+        }
+
+        private void ShowTrayContextMenu()
+        {
+            var menu = new System.Windows.Controls.ContextMenu();
+
+            var showItem = new System.Windows.Controls.MenuItem
+            {
+                Header = "Show PadForge",
+                FontWeight = FontWeights.SemiBold,
+                Icon = new System.Windows.Controls.TextBlock { Text = "\uE8A7", FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), FontSize = 14 }
+            };
+            showItem.Click += (s, e) => RestoreFromTray();
+            menu.Items.Add(showItem);
+
+            menu.Items.Add(new System.Windows.Controls.Separator());
+
+            var exitItem = new System.Windows.Controls.MenuItem
+            {
+                Header = "Exit",
+                Icon = new System.Windows.Controls.TextBlock { Text = "\uE711", FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), FontSize = 14 }
+            };
+            exitItem.Click += (s, e) => { _notifyIcon.Visible = false; Close(); };
+            menu.Items.Add(exitItem);
+
+            menu.IsOpen = true;
         }
 
         private void OnStateChanged(object sender, EventArgs e)

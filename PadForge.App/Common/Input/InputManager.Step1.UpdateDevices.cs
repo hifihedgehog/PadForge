@@ -12,7 +12,7 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 1: UpdateDevices
-        //  Enumerates SDL joystick, keyboard, and mouse devices,
+        //  Enumerates SDL joystick and keyboard devices,
         //  opens newly connected devices, marks disconnected devices as offline.
         //
         //  All controllers (including Xbox/XInput) are handled via SDL3.
@@ -26,7 +26,7 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly HashSet<uint> _openedSdlInstanceIds = new HashSet<uint>();
 
-        // Keyboard/mouse tracking moved to _openedKeyboardHandles / _openedMouseHandles
+        // Keyboard tracking moved to _openedKeyboardHandles
         // (Raw Input IntPtr handles instead of SDL uint IDs).
 
         /// <summary>
@@ -124,9 +124,6 @@ namespace PadForge.Common.Input
             // --- Phase 1b: Enumerate keyboards ---
             changed |= EnumerateKeyboards();
 
-            // --- Phase 1c: Enumerate mice ---
-            changed |= EnumerateMice();
-
             // --- Phase 2: Detect disconnected devices ---
             var disconnectedIds = new List<uint>();
 
@@ -157,9 +154,6 @@ namespace PadForge.Common.Input
 
             // Detect disconnected keyboards.
             changed |= DetectDisconnectedHandles(_openedKeyboardHandles, RawInputListener.EnumerateKeyboards());
-
-            // Detect disconnected mice.
-            changed |= DetectDisconnectedHandles(_openedMouseHandles, RawInputListener.EnumerateMice());
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
             _filteredVigemInstanceIds.IntersectWith(currentInstanceIds);
@@ -397,18 +391,13 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  Keyboard / Mouse enumeration
+        //  Keyboard enumeration
         // ─────────────────────────────────────────────
 
         /// <summary>
         /// Tracked Raw Input keyboard device handles.
         /// </summary>
         private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
-
-        /// <summary>
-        /// Tracked Raw Input mouse device handles.
-        /// </summary>
-        private readonly HashSet<IntPtr> _openedMouseHandles = new HashSet<IntPtr>();
 
         /// <summary>
         /// Enumerates connected keyboards via Raw Input and creates UserDevice
@@ -446,48 +435,6 @@ namespace PadForge.Common.Input
                 catch (Exception ex)
                 {
                     RaiseError($"Error opening keyboard ({kb.Name})", ex);
-                }
-            }
-
-            return changed;
-        }
-
-        /// <summary>
-        /// Enumerates connected mice via Raw Input and creates UserDevice
-        /// records for any new mice. Returns true if a new mouse was found.
-        /// </summary>
-        private bool EnumerateMice()
-        {
-            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
-            PruneOrphanedHandles(_openedMouseHandles);
-
-            var mice = RawInputListener.EnumerateMice();
-            bool changed = false;
-
-            foreach (var mouse in mice)
-            {
-                if (_openedMouseHandles.Contains(mouse.Handle))
-                    continue;
-
-                try
-                {
-                    var wrapper = new SdlMouseWrapper();
-                    if (!wrapper.Open(mouse))
-                    {
-                        wrapper.Dispose();
-                        continue;
-                    }
-
-                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
-                    ud.LoadFromMouseDevice(wrapper);
-                    ud.IsOnline = true;
-
-                    _openedMouseHandles.Add(mouse.Handle);
-                    changed = true;
-                }
-                catch (Exception ex)
-                {
-                    RaiseError($"Error opening mouse ({mouse.Name})", ex);
                 }
             }
 
@@ -602,7 +549,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Finds an online device that was opened from the given Raw Input handle.
-        /// Checks the RawInputHandle property on keyboard/mouse wrappers.
+        /// Checks the RawInputHandle property on keyboard wrappers.
         /// </summary>
         private UserDevice FindOnlineDeviceByHandle(IntPtr handle)
         {
@@ -621,8 +568,6 @@ namespace PadForge.Common.Input
                         continue;
 
                     if (d.Device is SdlKeyboardWrapper kb && kb.RawInputHandle == handle)
-                        return d;
-                    if (d.Device is SdlMouseWrapper mouse && mouse.RawInputHandle == handle)
                         return d;
                 }
                 return null;

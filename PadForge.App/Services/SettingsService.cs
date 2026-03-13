@@ -710,28 +710,32 @@ namespace PadForge.Services
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy, out int midi, out int kbm);
             var parts = new System.Collections.Generic.List<string>();
             if (xbox > 0) parts.Add($"{xbox}x Xbox");
             if (ds4 > 0) parts.Add($"{ds4}x DS4");
             if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
+            if (midi > 0) parts.Add($"{midi}x MIDI");
+            if (kbm > 0) parts.Add($"{kbm}x KB+M");
             return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
         }
 
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy, out int midi, out int kbm);
             item.XboxCount = xbox;
             item.DS4Count = ds4;
             item.VJoyCount = vjoy;
+            item.MidiCount = midi;
+            item.KbmCount = kbm;
             item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
         }
 
         private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
-            out int xbox, out int ds4, out int vjoy)
+            out int xbox, out int ds4, out int vjoy, out int midi, out int kbm)
         {
-            xbox = 0; ds4 = 0; vjoy = 0;
+            xbox = 0; ds4 = 0; vjoy = 0; midi = 0; kbm = 0;
             if (slotCreated == null) return;
             for (int i = 0; i < slotCreated.Length; i++)
             {
@@ -742,6 +746,8 @@ namespace PadForge.Services
                 {
                     case 1: ds4++; break;
                     case 2: vjoy++; break;
+                    case 3: midi++; break;
+                    case 4: kbm++; break;
                     default: xbox++; break;
                 }
             }

@@ -123,6 +123,30 @@ namespace PadForge.ViewModels
             set => MaxRangeY = DigitToPct(value);
         }
 
+        private double _maxRangeXNeg = 100;
+        public double MaxRangeXNeg
+        {
+            get => _maxRangeXNeg;
+            set { if (SetProperty(ref _maxRangeXNeg, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeXNegDigit)); RebuildCurvePoints(); } }
+        }
+        public int MaxRangeXNegDigit
+        {
+            get => PctToDigit(_maxRangeXNeg);
+            set => MaxRangeXNeg = DigitToPct(value);
+        }
+
+        private double _maxRangeYNeg = 100;
+        public double MaxRangeYNeg
+        {
+            get => _maxRangeYNeg;
+            set { if (SetProperty(ref _maxRangeYNeg, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeYNegDigit)); RebuildCurvePoints(); } }
+        }
+        public int MaxRangeYNegDigit
+        {
+            get => PctToDigit(_maxRangeYNeg);
+            set => MaxRangeYNeg = DigitToPct(value);
+        }
+
         private double _centerOffsetX;
         public double CenterOffsetX
         {
@@ -323,6 +347,7 @@ namespace PadForge.ViewModels
             Linear = 0;
             SensitivityCurveX = "0,0;1,1"; SensitivityCurveY = "0,0;1,1";
             MaxRangeX = 100; MaxRangeY = 100;
+            MaxRangeXNeg = 100; MaxRangeYNeg = 100;
         });
 
         private ICommand _resetDeadZoneShapeCommand;
@@ -345,6 +370,9 @@ namespace PadForge.ViewModels
         private ICommand _resetMaxRangeXCommand, _resetMaxRangeYCommand;
         public ICommand ResetMaxRangeXCommand => _resetMaxRangeXCommand ??= new RelayCommand(() => MaxRangeX = 100);
         public ICommand ResetMaxRangeYCommand => _resetMaxRangeYCommand ??= new RelayCommand(() => MaxRangeY = 100);
+        private ICommand _resetMaxRangeXNegCommand, _resetMaxRangeYNegCommand;
+        public ICommand ResetMaxRangeXNegCommand => _resetMaxRangeXNegCommand ??= new RelayCommand(() => MaxRangeXNeg = 100);
+        public ICommand ResetMaxRangeYNegCommand => _resetMaxRangeYNegCommand ??= new RelayCommand(() => MaxRangeYNeg = 100);
 
         /// <summary>
         /// Starts center calibration by sampling RawX/RawY over ~0.5s (15 frames)

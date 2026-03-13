@@ -770,6 +770,19 @@ namespace PadForge.ViewModels
         private double _rightMaxRangeY = 100;
         public double RightMaxRangeY { get => _rightMaxRangeY; set => SetProperty(ref _rightMaxRangeY, Math.Clamp(value, 1, 100)); }
 
+        // ── Max Range (negative direction) ──
+        private double _leftMaxRangeXNeg = 100;
+        public double LeftMaxRangeXNeg { get => _leftMaxRangeXNeg; set => SetProperty(ref _leftMaxRangeXNeg, Math.Clamp(value, 1, 100)); }
+
+        private double _leftMaxRangeYNeg = 100;
+        public double LeftMaxRangeYNeg { get => _leftMaxRangeYNeg; set => SetProperty(ref _leftMaxRangeYNeg, Math.Clamp(value, 1, 100)); }
+
+        private double _rightMaxRangeXNeg = 100;
+        public double RightMaxRangeXNeg { get => _rightMaxRangeXNeg; set => SetProperty(ref _rightMaxRangeXNeg, Math.Clamp(value, 1, 100)); }
+
+        private double _rightMaxRangeYNeg = 100;
+        public double RightMaxRangeYNeg { get => _rightMaxRangeYNeg; set => SetProperty(ref _rightMaxRangeYNeg, Math.Clamp(value, 1, 100)); }
+
         // ── Center Offsets ──
         private double _leftCenterOffsetX;
         public double LeftCenterOffsetX { get => _leftCenterOffsetX; set => SetProperty(ref _leftCenterOffsetX, Math.Clamp(value, -100, 100)); }
@@ -938,6 +951,8 @@ namespace PadForge.ViewModels
                         item.SensitivityCurveY = LeftSensitivityCurveY;
                         item.MaxRangeX = LeftMaxRangeX;
                         item.MaxRangeY = LeftMaxRangeY;
+                        item.MaxRangeXNeg = LeftMaxRangeXNeg;
+                        item.MaxRangeYNeg = LeftMaxRangeYNeg;
                         item.CenterOffsetX = LeftCenterOffsetX;
                         item.CenterOffsetY = LeftCenterOffsetY;
                         break;
@@ -952,6 +967,8 @@ namespace PadForge.ViewModels
                         item.SensitivityCurveY = RightSensitivityCurveY;
                         item.MaxRangeX = RightMaxRangeX;
                         item.MaxRangeY = RightMaxRangeY;
+                        item.MaxRangeXNeg = RightMaxRangeXNeg;
+                        item.MaxRangeYNeg = RightMaxRangeYNeg;
                         item.CenterOffsetX = RightCenterOffsetX;
                         item.CenterOffsetY = RightCenterOffsetY;
                         break;
@@ -1020,6 +1037,8 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.SensitivityCurveY): LeftSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;
                         case nameof(StickConfigItem.MaxRangeY): LeftMaxRangeY = item.MaxRangeY; break;
+                        case nameof(StickConfigItem.MaxRangeXNeg): LeftMaxRangeXNeg = item.MaxRangeXNeg; break;
+                        case nameof(StickConfigItem.MaxRangeYNeg): LeftMaxRangeYNeg = item.MaxRangeYNeg; break;
                         case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): LeftCenterOffsetY = item.CenterOffsetY; break;
                     }
@@ -1037,6 +1056,8 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.SensitivityCurveY): RightSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): RightMaxRangeX = item.MaxRangeX; break;
                         case nameof(StickConfigItem.MaxRangeY): RightMaxRangeY = item.MaxRangeY; break;
+                        case nameof(StickConfigItem.MaxRangeXNeg): RightMaxRangeXNeg = item.MaxRangeXNeg; break;
+                        case nameof(StickConfigItem.MaxRangeYNeg): RightMaxRangeYNeg = item.MaxRangeYNeg; break;
                         case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
                     }

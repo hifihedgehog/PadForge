@@ -27,6 +27,10 @@ namespace PadForge.Controls
             DependencyProperty.Register(nameof(MaxRange), typeof(double), typeof(CurveEditor),
                 new PropertyMetadata(100.0, OnDisplayParamChanged));
 
+        public static readonly DependencyProperty MaxRangeNegProperty =
+            DependencyProperty.Register(nameof(MaxRangeNeg), typeof(double), typeof(CurveEditor),
+                new PropertyMetadata(100.0, OnDisplayParamChanged));
+
         public static readonly DependencyProperty LiveInputProperty =
             DependencyProperty.Register(nameof(LiveInput), typeof(double), typeof(CurveEditor),
                 new PropertyMetadata(0.0, OnLiveInputChanged));
@@ -42,6 +46,7 @@ namespace PadForge.Controls
         public string CurveString { get => (string)GetValue(CurveStringProperty); set => SetValue(CurveStringProperty, value); }
         public double DeadZone { get => (double)GetValue(DeadZoneProperty); set => SetValue(DeadZoneProperty, value); }
         public double MaxRange { get => (double)GetValue(MaxRangeProperty); set => SetValue(MaxRangeProperty, value); }
+        public double MaxRangeNeg { get => (double)GetValue(MaxRangeNegProperty); set => SetValue(MaxRangeNegProperty, value); }
         public double LiveInput { get => (double)GetValue(LiveInputProperty); set => SetValue(LiveInputProperty, value); }
         public bool IsSigned { get => (bool)GetValue(IsSignedProperty); set => SetValue(IsSignedProperty, value); }
         public double ChartSize { get => (double)GetValue(ChartSizeProperty); set => SetValue(ChartSizeProperty, value); }
@@ -175,11 +180,13 @@ namespace PadForge.Controls
         {
             double sz = ChartSize;
             double dzN = DeadZone / 100.0;
-            double mrN = MaxRange / 100.0;
-            if (mrN <= dzN) mrN = dzN + 0.01;
 
             if (IsSigned)
             {
+                // Pick max range based on direction of input.
+                double mrN = (input >= 0 ? MaxRange : MaxRangeNeg) / 100.0;
+                if (mrN <= dzN) mrN = dzN + 0.01;
+
                 double sign = Math.Sign(input);
                 double mag = Math.Abs(input);
                 double output;
@@ -196,6 +203,9 @@ namespace PadForge.Controls
             }
             else
             {
+                double mrN = MaxRange / 100.0;
+                if (mrN <= dzN) mrN = dzN + 0.01;
+
                 double output;
                 if (input < dzN)
                     output = 0;

@@ -1509,6 +1509,7 @@ namespace PadForge.ViewModels
                     LeftDeadZoneX, LeftDeadZoneY,
                     LeftAntiDeadZoneX, LeftAntiDeadZoneY,
                     LeftLinear, LeftMaxRangeX, LeftMaxRangeY,
+                    LeftMaxRangeXNeg, LeftMaxRangeYNeg,
                     LeftSensitivityCurveX, LeftSensitivityCurveY,
                     (DeadZoneShape)LeftDeadZoneShape);
                 StickConfigs[0].LiveX = lvx;
@@ -1527,6 +1528,7 @@ namespace PadForge.ViewModels
                     RightDeadZoneX, RightDeadZoneY,
                     RightAntiDeadZoneX, RightAntiDeadZoneY,
                     RightLinear, RightMaxRangeX, RightMaxRangeY,
+                    RightMaxRangeXNeg, RightMaxRangeYNeg,
                     RightSensitivityCurveX, RightSensitivityCurveY,
                     (DeadZoneShape)RightDeadZoneShape);
                 StickConfigs[1].LiveX = rvx;
@@ -1563,6 +1565,7 @@ namespace PadForge.ViewModels
                 double deadZoneX, double deadZoneY,
                 double antiDeadZoneX, double antiDeadZoneY,
                 double linear, double maxRangeX, double maxRangeY,
+                double maxRangeXNeg, double maxRangeYNeg,
                 string curveX, string curveY,
                 DeadZoneShape shape)
         {
@@ -1572,7 +1575,9 @@ namespace PadForge.ViewModels
             double signX = Math.Sign(sx), signY = Math.Sign(sy);
             double magX = Math.Abs(sx), magY = Math.Abs(sy);
             double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
-            double mrXn = maxRangeX / 100.0, mrYn = maxRangeY / 100.0;
+            // Pick max range based on direction of input (mirrors Step3 pipeline).
+            double mrXn = (sx >= 0 ? maxRangeX : maxRangeXNeg) / 100.0;
+            double mrYn = (sy >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
             if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
             if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
 
@@ -1850,6 +1855,7 @@ namespace PadForge.ViewModels
                     stick.DeadZoneX, stick.DeadZoneY,
                     stick.AntiDeadZoneX, stick.AntiDeadZoneY,
                     stick.Linear, stick.MaxRangeX, stick.MaxRangeY,
+                    stick.MaxRangeXNeg, stick.MaxRangeYNeg,
                     stick.SensitivityCurveX, stick.SensitivityCurveY,
                     stick.DeadZoneShape);
 

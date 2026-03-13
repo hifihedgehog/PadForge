@@ -176,6 +176,32 @@ namespace PadForge
             _viewModel.Settings.UninstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
                 "Uninstalling HidHide…", DriverInstaller.UninstallHidHide, RefreshHidHideStatus);
 
+            // Wire HidHide whitelist add (file browser).
+            _viewModel.Settings.AddWhitelistPathRequested += (s, e) =>
+            {
+                var dlg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = "Select application to whitelist",
+                    Filter = "Executables (*.exe)|*.exe|All files (*.*)|*.*",
+                    CheckFileExists = true
+                };
+                if (dlg.ShowDialog(this) == true)
+                {
+                    string path = dlg.FileName;
+                    if (!_viewModel.Settings.HidHideWhitelistPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
+                    {
+                        _viewModel.Settings.HidHideWhitelistPaths.Add(path);
+                        _viewModel.Settings.RaiseWhitelistChanged();
+                    }
+                }
+            };
+
+            // Wire HidHide whitelist changes → re-apply device hiding.
+            _viewModel.Settings.WhitelistChanged += (s, e) =>
+            {
+                _inputService?.ApplyDeviceHiding();
+            };
+
             // Wire vJoy install/uninstall commands.
             _viewModel.Settings.InstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
                 "Installing vJoy…", DriverInstaller.InstallVJoy, OnVJoyDriverChanged);

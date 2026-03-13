@@ -111,6 +111,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HidHideStatusText));
                     _installHidHideCommand?.NotifyCanExecuteChanged();
                     _uninstallHidHideCommand?.NotifyCanExecuteChanged();
+                    _addWhitelistPathCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -148,6 +149,54 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user requests HidHide uninstallation.</summary>
         public event EventHandler UninstallHidHideRequested;
+
+        /// <summary>Application paths whitelisted in HidHide (user-visible paths, not DOS device paths).</summary>
+        public ObservableCollection<string> HidHideWhitelistPaths { get; } = new();
+
+        private string _selectedWhitelistPath;
+
+        /// <summary>Currently selected whitelist path in the list.</summary>
+        public string SelectedWhitelistPath
+        {
+            get => _selectedWhitelistPath;
+            set
+            {
+                if (SetProperty(ref _selectedWhitelistPath, value))
+                    _removeWhitelistPathCommand?.NotifyCanExecuteChanged();
+            }
+        }
+
+        private RelayCommand _addWhitelistPathCommand;
+
+        /// <summary>Command to add an application to the HidHide whitelist.</summary>
+        public RelayCommand AddWhitelistPathCommand =>
+            _addWhitelistPathCommand ??= new RelayCommand(
+                () => AddWhitelistPathRequested?.Invoke(this, EventArgs.Empty),
+                () => _isHidHideInstalled);
+
+        private RelayCommand _removeWhitelistPathCommand;
+
+        /// <summary>Command to remove the selected application from the HidHide whitelist.</summary>
+        public RelayCommand RemoveWhitelistPathCommand =>
+            _removeWhitelistPathCommand ??= new RelayCommand(
+                () =>
+                {
+                    if (_selectedWhitelistPath != null)
+                    {
+                        HidHideWhitelistPaths.Remove(_selectedWhitelistPath);
+                        RaiseWhitelistChanged();
+                    }
+                },
+                () => _selectedWhitelistPath != null);
+
+        /// <summary>Raised when the user requests adding a whitelist path (opens file dialog).</summary>
+        public event EventHandler AddWhitelistPathRequested;
+
+        /// <summary>Raised when the whitelist changes (add or remove).</summary>
+        public event EventHandler WhitelistChanged;
+
+        /// <summary>Raises the WhitelistChanged event.</summary>
+        internal void RaiseWhitelistChanged() => WhitelistChanged?.Invoke(this, EventArgs.Empty);
 
         // ─────────────────────────────────────────────
         //  vJoy driver

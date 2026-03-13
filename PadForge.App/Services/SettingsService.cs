@@ -454,6 +454,11 @@ namespace PadForge.Services
                 padVm.LeftMaxRangeY = TryParseDouble(ps.LeftThumbMaxRangeY, 100);
                 padVm.RightMaxRangeX = TryParseDouble(ps.RightThumbMaxRangeX, 100);
                 padVm.RightMaxRangeY = TryParseDouble(ps.RightThumbMaxRangeY, 100);
+                ps.MigrateMaxRangeDirections();
+                padVm.LeftMaxRangeXNeg = TryParseDouble(ps.LeftThumbMaxRangeXNeg, 100);
+                padVm.LeftMaxRangeYNeg = TryParseDouble(ps.LeftThumbMaxRangeYNeg, 100);
+                padVm.RightMaxRangeXNeg = TryParseDouble(ps.RightThumbMaxRangeXNeg, 100);
+                padVm.RightMaxRangeYNeg = TryParseDouble(ps.RightThumbMaxRangeYNeg, 100);
                 padVm.LeftCenterOffsetX = TryParseDouble(ps.LeftThumbCenterOffsetX, 0);
                 padVm.LeftCenterOffsetY = TryParseDouble(ps.LeftThumbCenterOffsetY, 0);
                 padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
@@ -487,6 +492,8 @@ namespace PadForge.Services
                     stick.CenterOffsetY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
                     stick.MaxRangeX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
                     stick.MaxRangeY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrY"), 100);
+                    stick.MaxRangeXNeg = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrXN"), stick.MaxRangeX);
+                    stick.MaxRangeYNeg = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrYN"), stick.MaxRangeY);
                 }
                 foreach (var trig in padVm.TriggerConfigs)
                 {
@@ -1033,6 +1040,10 @@ namespace PadForge.Services
                     ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString(ic);
                     ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString(ic);
                     ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString(ic);
+                    ps.LeftThumbMaxRangeXNeg = padVm.LeftMaxRangeXNeg.ToString(ic);
+                    ps.LeftThumbMaxRangeYNeg = padVm.LeftMaxRangeYNeg.ToString(ic);
+                    ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString(ic);
+                    ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString(ic);
                     ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString(ic);
                     ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString(ic);
                     ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString(ic);
@@ -1063,6 +1074,8 @@ namespace PadForge.Services
                         ps.SetVJoyMapping($"VJoyStick{g}CofY", stick.CenterOffsetY.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}MrX", stick.MaxRangeX.ToString(ic));
                         ps.SetVJoyMapping($"VJoyStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
+                        ps.SetVJoyMapping($"VJoyStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                     }
                     foreach (var trig in padVm.TriggerConfigs)
                     {
@@ -1128,6 +1141,10 @@ namespace PadForge.Services
                 padVm.LeftMaxRangeY = 100;
                 padVm.RightMaxRangeX = 100;
                 padVm.RightMaxRangeY = 100;
+                padVm.LeftMaxRangeXNeg = 100;
+                padVm.LeftMaxRangeYNeg = 100;
+                padVm.RightMaxRangeXNeg = 100;
+                padVm.RightMaxRangeYNeg = 100;
                 padVm.LeftCenterOffsetX = 0;
                 padVm.LeftCenterOffsetY = 0;
                 padVm.RightCenterOffsetX = 0;

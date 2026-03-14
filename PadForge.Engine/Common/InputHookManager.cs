@@ -222,10 +222,11 @@ namespace PadForge.Engine.Common
         /// prevented from reaching Raw Input (WM_INPUT is not generated for
         /// keys suppressed by a low-level hook).
         ///
-        /// For suppressed keys, the hook state is authoritative (replaces dest).
-        /// This prevents stuck keys when a key-down arrives via WM_INPUT before
-        /// suppression starts, and the key-up is then suppressed by the hook
-        /// (never reaching WM_INPUT to clear the per-device state).
+        /// For suppressed keys, the hook state is authoritative (replaces dest)
+        /// rather than OR-merged. This ensures the output accurately reflects
+        /// the hook's key-up/key-down tracking for keys that WM_INPUT no longer
+        /// receives, rather than letting a stale WM_INPUT true linger until the
+        /// next state reset.
         /// </summary>
         public static void MergeHookedKeyState(bool[] dest, int count)
         {

@@ -248,32 +248,23 @@ namespace PadForge.Services
             // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
             // which reads SlotCreated[]. If SlotCreated isn't loaded yet, the sidebar
             // gets built with the wrong slot set and triggers a double-rebuild crash.
-            //
-            // Only apply persisted SlotCreated/SlotEnabled when restoring the default
-            // profile. If a named profile was active, its slots come from the profile
-            // snapshot (applied later by LoadProfiles), not from AppSettings.
-            if (string.IsNullOrEmpty(appSettings.ActiveProfileId))
+            if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length >= 1)
             {
-                if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length >= 1)
-                {
-                    int count = Math.Min(appSettings.SlotCreated.Length, SettingsManager.SlotCreated.Length);
-                    Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, count);
-                }
-                else
-                {
-                    // Backward compat: auto-create slots for existing device assignments.
-                    AutoCreateSlotsFromExistingAssignments();
-                }
-
-                if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length >= 1)
-                {
-                    int count = Math.Min(appSettings.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
-                    Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, count);
-                }
-                // else: defaults are all true, which is correct for migration.
+                int count = Math.Min(appSettings.SlotCreated.Length, SettingsManager.SlotCreated.Length);
+                Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, count);
             }
-            // else: named profile active — slots start all-false, profile snapshot
-            // will restore the correct slot state.
+            else
+            {
+                // Backward compat: auto-create slots for existing device assignments.
+                AutoCreateSlotsFromExistingAssignments();
+            }
+
+            if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length >= 1)
+            {
+                int count = Math.Min(appSettings.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
+                Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, count);
+            }
+            // else: defaults are all true, which is correct for migration.
 
             // Load per-slot virtual controller types (after SlotCreated/SlotEnabled).
             if (appSettings.SlotControllerTypes != null)
@@ -663,12 +654,50 @@ namespace PadForge.Services
             var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
             _mainVm.Settings.ActiveProfileInfo = active?.Name ?? "Default";
 
-            // If a named profile was active at shutdown, restore its slot topology
-            // from the profile snapshot. LoadAppSettings skips SlotCreated/SlotEnabled
-            // when ActiveProfileId is set (to prevent profile→default bleed), so the
-            // profile's own snapshot is the authoritative source.
+            // If a named profile was active at shutdown, snapshot the default
+            // profile's state (loaded by LoadAppSettings) before overwriting with
+            // the active profile's topology. InputService.Start uses this snapshot
+            // so switching back to Default restores the correct state.
             if (active != null)
             {
+                // Capture full default state: slot topology + device assignments.
+                var defaultEntries = new System.Collections.Generic.List<ProfileEntry>();
+                var defaultPadSettings = new System.Collections.Generic.List<PadSetting>();
+                var seen = new System.Collections.Generic.HashSet<string>();
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    foreach (var us in SettingsManager.UserSettings.Items)
+                    {
+                        var ps = us.GetPadSetting();
+                        if (ps == null) continue;
+                        defaultEntries.Add(new ProfileEntry
+                        {
+                            InstanceGuid = us.InstanceGuid,
+                            ProductGuid = us.ProductGuid,
+                            MapTo = us.MapTo,
+                            PadSettingChecksum = ps.PadSettingChecksum
+                        });
+                        if (seen.Add(ps.PadSettingChecksum))
+                            defaultPadSettings.Add(ps.CloneDeep());
+                    }
+                }
+
+                SettingsManager.PendingDefaultSnapshot = new ProfileData
+                {
+                    Entries = defaultEntries.ToArray(),
+                    PadSettings = defaultPadSettings.ToArray(),
+                    SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
+                    SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
+                    SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
+                        .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
+                    VJoyConfigs = BuildVJoyConfigSnapshot(),
+                    MidiConfigs = BuildMidiConfigSnapshot(),
+                    EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
+                    DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
+                    EnableWebController = _mainVm.Dashboard.EnableWebController,
+                    WebControllerPort = _mainVm.Dashboard.WebControllerPort
+                };
+
                 if (active.SlotCreated != null)
                 {
                     int count = Math.Min(active.SlotCreated.Length, SettingsManager.SlotCreated.Length);
@@ -947,11 +976,12 @@ namespace PadForge.Services
                 });
             }
 
-            // Only persist per-slot state into AppSettings when the default
-            // profile is active. When a named profile is active, its slot state
-            // is stored in the profile snapshot — writing it here would
-            // contaminate the default profile on next restart.
-            bool isDefault = string.IsNullOrEmpty(SettingsManager.ActiveProfileId);
+            // AppSettings always stores the DEFAULT profile's per-slot state.
+            // When a named profile is active, use the saved default snapshot
+            // so the named profile's state doesn't contaminate the default.
+            var defaultSnap = SettingsManager.PendingDefaultSnapshot;
+            bool isDefault = string.IsNullOrEmpty(SettingsManager.ActiveProfileId)
+                          || defaultSnap == null;
 
             return new AppSettingsData
             {
@@ -964,9 +994,13 @@ namespace PadForge.Services
                 ThemeIndex = vm.SelectedThemeIndex,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
-                SlotControllerTypes = isDefault ? slotTypes : null,
-                SlotCreated = isDefault ? (bool[])SettingsManager.SlotCreated.Clone() : null,
-                SlotEnabled = isDefault ? (bool[])SettingsManager.SlotEnabled.Clone() : null,
+                SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
+                SlotCreated = isDefault
+                    ? (bool[])SettingsManager.SlotCreated.Clone()
+                    : defaultSnap.SlotCreated,
+                SlotEnabled = isDefault
+                    ? (bool[])SettingsManager.SlotEnabled.Clone()
+                    : defaultSnap.SlotEnabled,
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
@@ -976,8 +1010,8 @@ namespace PadForge.Services
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
-                VJoyConfigs = vjoyConfigs.ToArray(),
-                MidiConfigs = BuildMidiConfigs()
+                VJoyConfigs = isDefault ? vjoyConfigs.ToArray() : defaultSnap.VJoyConfigs,
+                MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs
             };
         }
 

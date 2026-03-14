@@ -437,7 +437,8 @@
                 <StackPanel>
                     <TextBlock Text="Serve a gamepad UI to browsers on your local network."
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="Enable web controller server"
+                    <CheckBox AutomationProperties.AutomationId="EnableWebControllerCheckBox"
+                              Content="Enable web controller server"
                               IsChecked="{Binding EnableWebController}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="Port:" VerticalAlignment="Center"

@@ -102,7 +102,7 @@ public class Win32 {
         uint fgTid, myTid = GetCurrentThreadId();
         GetWindowThreadProcessId(fg, out fgTid);
         if (fgTid != myTid) AttachThreadInput(myTid, fgTid, true);
-        ShowWindow(hwnd, 9);
+        ShowWindow(hwnd, 5);  // SW_SHOW (not SW_RESTORE=9 which un-maximizes)
         SetForegroundWindow(hwnd);
         if (fgTid != myTid) AttachThreadInput(myTid, fgTid, false);
     }
@@ -348,6 +348,78 @@ if ($profilesNode.ChildNodes.Count -eq 0) {
     $profilesNode.AppendChild($prof) | Out-Null
     Write-Host "  Injected test profile"
 }
+
+# --- Inject test macros (so Macros tab screenshot shows content) ---
+$macrosNode = $ns.SelectSingleNode("Macros")
+if (-not $macrosNode) {
+    $macrosNode = $xml.CreateElement("Macros")
+    $ns.AppendChild($macrosNode) | Out-Null
+}
+if ($macrosNode.ChildNodes.Count -eq 0) {
+    # Macro 1: "Quick Combo" with ButtonPress + Delay + KeyPress
+    $m1Xml = @'
+<Macro PadIndex="0">
+  <Name>Quick Combo</Name>
+  <IsEnabled>true</IsEnabled>
+  <TriggerButtons>4096</TriggerButtons>
+  <TriggerSource>OutputController</TriggerSource>
+  <TriggerMode>OnPress</TriggerMode>
+  <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
+  <RepeatMode>Once</RepeatMode>
+  <Actions>
+    <Action><Type>ButtonPress</Type><ButtonFlags>4096</ButtonFlags><DurationMs>100</DurationMs></Action>
+    <Action><Type>Delay</Type><DurationMs>200</DurationMs></Action>
+    <Action><Type>KeyPress</Type><KeyCode>32</KeyCode><DurationMs>50</DurationMs></Action>
+    <Action><Type>MouseButtonPress</Type><DurationMs>50</DurationMs></Action>
+  </Actions>
+</Macro>
+'@
+    # Macro 2: "Volume Control" with SystemVolume action
+    $m2Xml = @'
+<Macro PadIndex="0">
+  <Name>Volume Control</Name>
+  <IsEnabled>true</IsEnabled>
+  <TriggerButtons>16384</TriggerButtons>
+  <TriggerSource>OutputController</TriggerSource>
+  <TriggerMode>OnPress</TriggerMode>
+  <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
+  <RepeatMode>Once</RepeatMode>
+  <Actions>
+    <Action><Type>SystemVolume</Type><AxisTarget>LeftTrigger</AxisTarget><VolumeLimit>75</VolumeLimit></Action>
+    <Action><Type>MouseMove</Type><AxisTarget>RightStickX</AxisTarget></Action>
+  </Actions>
+</Macro>
+'@
+    $frag1 = $xml.CreateDocumentFragment(); $frag1.InnerXml = $m1Xml.Trim()
+    $macrosNode.AppendChild($frag1) | Out-Null
+    $frag2 = $xml.CreateDocumentFragment(); $frag2.InnerXml = $m2Xml.Trim()
+    $macrosNode.AppendChild($frag2) | Out-Null
+    Write-Host "  Injected 2 test macros"
+}
+
+# --- Ensure PadForge starts with window visible (not minimized to tray) ---
+$appSettings = $ns.SelectSingleNode("AppSettings")
+if ($appSettings) {
+    $smNode = $appSettings.SelectSingleNode("StartMinimized")
+    if ($smNode) { $smNode.InnerText = "false" }
+    else {
+        $smNode = $xml.CreateElement("StartMinimized")
+        $smNode.InnerText = "false"
+        $appSettings.AppendChild($smNode) | Out-Null
+    }
+    Write-Host "  Set StartMinimized=false for capture"
+
+    # Enable web controller server for web screenshots
+    $wcNode = $appSettings.SelectSingleNode("EnableWebController")
+    if ($wcNode) { $wcNode.InnerText = "true" }
+    else {
+        $wcNode = $xml.CreateElement("EnableWebController")
+        $wcNode.InnerText = "true"
+        $appSettings.AppendChild($wcNode) | Out-Null
+    }
+    Write-Host "  Set EnableWebController=true for capture"
+}
+
 $xml.Save($PadForgeXml)
 Write-Host "  Saved modified PadForge.xml" -ForegroundColor Green
 
@@ -358,7 +430,7 @@ Write-Host ""
 Write-Host "=== STEP 1: Start PadForge ===" -ForegroundColor Cyan
 Start-Process $PadForgeExe
 Write-Host "  Waiting for PadForge to start..."
-$timeout = 30
+$timeout = 15
 $started = $false
 for ($i = 0; $i -lt $timeout; $i++) {
     Start-Sleep -Seconds 1
@@ -386,9 +458,9 @@ Write-Host "=== STEP 2: Setup window ===" -ForegroundColor Cyan
 
 [Win32]::ForceFG($hwnd)
 [Win32]::ShowWindow($hwnd, 3) | Out-Null  # SW_MAXIMIZE
-Start-Sleep -Milliseconds 1000
-[Win32]::SetWindowPos($hwnd, [Win32]::TOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null
 Start-Sleep -Milliseconds 500
+[Win32]::SetWindowPos($hwnd, [Win32]::TOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null
+Start-Sleep -Milliseconds 200
 
 $rect = New-Object Win32+RECT
 [Win32]::GetWindowRect($hwnd, [ref]$rect) | Out-Null
@@ -430,7 +502,7 @@ $wr = New-Object Win32+RECT
 Start-Sleep -Milliseconds 500
 
 # ==============================================================================
-# STEP 2b: Create 4 controller slots via Add Controller popup
+# STEP 2b: Create 5 controller slots via Add Controller popup
 # ==============================================================================
 Write-Host ""
 Write-Host "=== STEP 2b: Create controller slots via UI ===" -ForegroundColor Cyan
@@ -456,13 +528,14 @@ function Add-SlotViaPopup {
         Start-Sleep -Milliseconds 300
         return $false
     }
-    Click-El $typeBtn -Label $TypeLabel -Delay 2000
+    Click-El $typeBtn -Label $TypeLabel -Delay 1500
     return $true
 }
 
-# Create: Xbox360, KBM, vJoy, MIDI (order matters for slot indices)
+# Create: Xbox360, DS4, KBM, vJoy, MIDI (order matters for slot indices)
 $slotTypes = @(
     @{ Aid = "AddXbox360Btn"; Label = "Xbox 360" },
+    @{ Aid = "AddDS4Btn"; Label = "DualShock 4" },
     @{ Aid = "AddKeyboardMouseBtn"; Label = "Keyboard+Mouse" },
     @{ Aid = "AddVJoyBtn"; Label = "vJoy" },
     @{ Aid = "AddMidiBtn"; Label = "MIDI" }
@@ -478,6 +551,8 @@ foreach ($st in $slotTypes) {
 $slots = @(Find-AllSlots)
 Write-Host "  Slots after creation: $($slots.Count)"
 
+# Web controller server is enabled via XML injection in Step 0 — no UI click needed.
+
 # ==============================================================================
 # STEP 3: Capture all pages
 # ==============================================================================
@@ -490,7 +565,7 @@ function Next { $script:n++; return $script:n }
 
 # ---- 1. Dashboard ----
 Write-Host "[$(Next)/$total] Dashboard"
-Nav "Dashboard"; Start-Sleep -Milliseconds 1000; Cap "dashboard"
+Nav "Dashboard"; Start-Sleep -Milliseconds 500; Cap "dashboard"
 
 # ---- 2. Profiles ----
 Write-Host "[$(Next)/$total] Profiles"
@@ -500,13 +575,13 @@ Nav "Profiles"; Cap "profiles"
 Write-Host "[$(Next)/$total] Devices"
 Nav "Devices"; Cap "devices"
 
-# ---- 4-12. Xbox360 slot (slot 0) ----
+# ---- 4-12. Xbox360 slot (slot 0 -- macros/mappings/sticks/triggers/ff here) ----
 Write-Host ""
 Write-Host "--- Xbox360 Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
 Write-Host "  Found $($slots.Count) slot(s)"
 if ($slots.Count -ge 1) {
-    Select-El $slots[0] -Label "Xbox360 Slot" -Delay 1500
+    Select-El $slots[0] -Label "Xbox360 Slot" -Delay 1000
 
     # 4. Controller 3D view
     Write-Host "[$(Next)/$total] Controller - 3D view"
@@ -516,7 +591,7 @@ if ($slots.Count -ge 1) {
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "3D View Tab" -Delay 2000 }
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "3D View Tab" -Delay 1000 }
     }
     Cap "pad-controller-3d"
 
@@ -528,7 +603,7 @@ if ($slots.Count -ge 1) {
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 100
     [Win32]::ClickAt($toggleX, $toggleY)
-    Start-Sleep -Milliseconds 1000
+    Start-Sleep -Milliseconds 600
     Cap "pad-controller-2d"
     # Switch back to 3D
     [Win32]::ClickAt($toggleX, $toggleY)
@@ -538,26 +613,47 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Macros"
     if (Tab "Macros") {
         Start-Sleep -Milliseconds 500
+        # Try UIA first, then fallback to coordinate click
+        $macroClicked = $false
+        $liCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::ListItem)
         $lists = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::List)
         foreach ($list in $lists) {
-            $liCond = New-Object System.Windows.Automation.PropertyCondition(
-                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                [System.Windows.Automation.ControlType]::ListItem)
             $items = $list.FindAll($TC, $liCond)
             if ($items.Count -gt 0) {
-                Click-El $items[0] -Label "Macro: $($items[0].Current.Name)"
-                Start-Sleep -Milliseconds 600
-                $lists2 = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::List)
-                foreach ($l2 in $lists2) {
-                    if ([System.Windows.Automation.Automation]::Compare($l2, $list)) { continue }
-                    $acts = $l2.FindAll($TC, $liCond)
-                    if ($acts.Count -gt 0) {
-                        Click-El $acts[0] -Label "Action: $($acts[0].Current.Name)" -Delay 400
+                $clicked = Click-El $items[0] -Label "Macro: $($items[0].Current.Name)"
+                if ($clicked) {
+                    $macroClicked = $true
+                    Start-Sleep -Milliseconds 400
+                    # Try to click first action in the second list
+                    $lists2 = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::List)
+                    foreach ($l2 in $lists2) {
+                        if ([System.Windows.Automation.Automation]::Compare($l2, $list)) { continue }
+                        $acts = $l2.FindAll($TC, $liCond)
+                        if ($acts.Count -gt 0) {
+                            Click-El $acts[0] -Label "Action: $($acts[0].Current.Name)" -Delay 300
+                        }
+                        break
                     }
-                    break
                 }
                 break
             }
+        }
+        if (-not $macroClicked) {
+            # Fallback: click roughly where the first macro item would be
+            # (left panel of Macros tab, below the header)
+            $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
+            $macroX = [int]($ppRect.X + 180)
+            $macroY = [int]($ppRect.Y + 200)
+            Write-Host "  Fallback: clicking macro area at ($macroX, $macroY)"
+            [Win32]::ClickAt($macroX, $macroY)
+            Start-Sleep -Milliseconds 400
+            # Click first action item area
+            $actionX = [int]($ppRect.X + $ppRect.Width / 2 + 100)
+            $actionY = [int]($ppRect.Y + 200)
+            [Win32]::ClickAt($actionX, $actionY)
+            Start-Sleep -Milliseconds 300
         }
     }
     Cap "pad-macros"
@@ -571,80 +667,42 @@ if ($slots.Count -ge 1) {
     Tab "Sticks"; Start-Sleep -Milliseconds 500; Cap "pad-sticks"
 
     # 9. Sticks — dead zone shape dropdown open
+    # DZ Shape is ~9.3 rows above Sensitivity Y (which opens at y=1014).
+    # Each row ≈ 62px. DZ Shape center ≈ 1014 - 9.3*62 = 437. Using x=946 (same label offset as Sensitivity).
     Write-Host "[$(Next)/$total] Sticks - dead zone shape dropdown"
-    $combos = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::ComboBox)
-    $dzDropdown = $null
-    foreach ($cb in $combos) {
-        try {
-            $ep = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
-            # Check if it's a dead zone shape combo by expanding and looking for "Scaled Radial"
-            $ep.Expand()
-            Start-Sleep -Milliseconds 400
-            $srItem = Find-UIA -Parent $cb -Name "Scaled Radial"
-            if ($srItem) {
-                $dzDropdown = $cb
-                Cap "pad-sticks-deadzone-dropdown"
-                $ep.Collapse()
-                Start-Sleep -Milliseconds 300
-                break
-            }
-            $ep.Collapse()
-            Start-Sleep -Milliseconds 200
-        } catch {}
-    }
-    if (-not $dzDropdown) { Write-Host "  !! Dead zone shape dropdown not found" -ForegroundColor Yellow }
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 300
+    [Win32]::ClickAt(946, 437)
+    Start-Sleep -Milliseconds 800
+    Cap "pad-sticks-deadzone-dropdown"
+    [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+    Start-Sleep -Milliseconds 300
 
     # 10. Sticks — sensitivity preset dropdown open
+    # Sensitivity X "Linear": ~33% × 2906 = 959px → screen x=946, ~55.5% × 1850 = 1027px → screen y=1014
     Write-Host "[$(Next)/$total] Sticks - sensitivity preset dropdown"
-    $presetFound = $false
-    foreach ($cb in $combos) {
-        if ($cb -eq $dzDropdown) { continue }
-        try {
-            $ep = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
-            $ep.Expand()
-            Start-Sleep -Milliseconds 400
-            $linItem = Find-UIA -Parent $cb -Name "Linear"
-            $sCurveItem = Find-UIA -Parent $cb -Name "S-Curve"
-            if ($linItem -and $sCurveItem) {
-                Cap "pad-sticks-sensitivity-dropdown"
-                $ep.Collapse()
-                Start-Sleep -Milliseconds 300
-                $presetFound = $true
-                break
-            }
-            $ep.Collapse()
-            Start-Sleep -Milliseconds 200
-        } catch {}
-    }
-    if (-not $presetFound) { Write-Host "  !! Sensitivity preset dropdown not found" -ForegroundColor Yellow }
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 300
+    [Win32]::ClickAt(946, 1014)
+    Start-Sleep -Milliseconds 800
+    Cap "pad-sticks-sensitivity-dropdown"
+    [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+    Start-Sleep -Milliseconds 300
 
     # 11. Triggers
     Write-Host "[$(Next)/$total] Triggers"
     Tab "Triggers"; Start-Sleep -Milliseconds 500; Cap "pad-triggers"
 
     # 12. Triggers — sensitivity preset dropdown open
+    # Trigger Preset "Linear": ~33% × 2906 = 959px → screen x=946, ~24.5% × 1850 = 453px → screen y=440
     Write-Host "[$(Next)/$total] Triggers - sensitivity preset dropdown"
-    $combos = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::ComboBox)
-    $trigPresetFound = $false
-    foreach ($cb in $combos) {
-        try {
-            $ep = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
-            $ep.Expand()
-            Start-Sleep -Milliseconds 400
-            $linItem = Find-UIA -Parent $cb -Name "Linear"
-            $aggItem = Find-UIA -Parent $cb -Name "Aggressive"
-            if ($linItem -and $aggItem) {
-                Cap "pad-triggers-sensitivity-dropdown"
-                $ep.Collapse()
-                Start-Sleep -Milliseconds 300
-                $trigPresetFound = $true
-                break
-            }
-            $ep.Collapse()
-            Start-Sleep -Milliseconds 200
-        } catch {}
-    }
-    if (-not $trigPresetFound) { Write-Host "  !! Trigger sensitivity preset dropdown not found" -ForegroundColor Yellow }
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 300
+    [Win32]::ClickAt(946, 440)
+    Start-Sleep -Milliseconds 800
+    Cap "pad-triggers-sensitivity-dropdown"
+    [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+    Start-Sleep -Milliseconds 300
 
     # 13. Force Feedback
     Write-Host "[$(Next)/$total] Force Feedback"
@@ -654,42 +712,36 @@ if ($slots.Count -ge 1) {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
 
-# ---- 14. KBM slot (slot 1) ----
+# ---- 14. KBM slot (slot 2) ----
 Write-Host ""
 Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 2) {
+if ($slots.Count -ge 3) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
-    Select-El $slots[1] -Label "KBM Slot" -Delay 2000
-    # Click first tab (Controller) to show KBM preview
-    $padPage = Find-UIA -Aid "PadPageView"
-    if ($padPage) {
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "KBM Controller Tab" -Delay 1500 }
-    }
+    Select-El $slots[2] -Label "KBM Slot" -Delay 1000
+    # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
+    # Clicking tabs[0] on KBM page can hit the keyboard preview keys
+    Start-Sleep -Milliseconds 500
     Cap "pad-kbm-preview"
 } else {
     Write-Host "  !! KBM slot not found (only $($slots.Count) slots)" -ForegroundColor Yellow
     $n++
 }
 
-# ---- 15. vJoy slot (slot 2) ----
+# ---- 15. vJoy slot (slot 3) ----
 Write-Host ""
 Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 3) {
+if ($slots.Count -ge 4) {
     Write-Host "[$(Next)/$total] vJoy config bar"
-    Select-El $slots[2] -Label "vJoy Slot" -Delay 2000
+    Select-El $slots[3] -Label "vJoy Slot" -Delay 1000
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "vJoy Controller Tab" -Delay 1500 }
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "vJoy Controller Tab" -Delay 1000 }
     }
     Cap "pad-vjoy-configbar"
 
@@ -700,7 +752,7 @@ if ($slots.Count -ge 3) {
     $toggleY = [int]($ppRect.Y + 124)
     [Win32]::ForceFG($script:hwnd)
     [Win32]::ClickAt($toggleX, $toggleY)
-    Start-Sleep -Milliseconds 1000
+    Start-Sleep -Milliseconds 600
     Cap "pad-vjoy-schematic"
     # Switch back
     [Win32]::ClickAt($toggleX, $toggleY)
@@ -710,20 +762,20 @@ if ($slots.Count -ge 3) {
     $n += 2
 }
 
-# ---- 17. MIDI slot (slot 3) ----
+# ---- 17. MIDI slot (slot 4) ----
 Write-Host ""
 Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 4) {
+if ($slots.Count -ge 5) {
     Write-Host "[$(Next)/$total] MIDI config bar"
-    Select-El $slots[3] -Label "MIDI Slot" -Delay 2000
+    Select-El $slots[4] -Label "MIDI Slot" -Delay 1000
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "MIDI Controller Tab" -Delay 1500 }
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "MIDI Controller Tab" -Delay 1000 }
     }
     Cap "pad-midi-configbar"
 } else {
@@ -767,17 +819,68 @@ $webPort = 8080
 try {
     $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     if (-not (Test-Path $edgePath)) { $edgePath = "C:\Program Files\Microsoft\Edge\Application\msedge.exe" }
-    # Landing page
-    $landingOut = Join-Path $OutputDir "web-landing.png"
-    & $edgePath --headless --disable-gpu --screenshot="$landingOut" --window-size=1280,720 "http://localhost:${webPort}/" 2>$null
-    Start-Sleep -Seconds 3
-    if (Test-Path $landingOut) { Write-Host "  >> web-landing.png" -ForegroundColor Green }
-    # Controller page
+
+    # Capture web pages using Edge in app mode + GDI screen capture
+    # Edge --app splits into multiple processes; find the window via UIA by class name.
+    function Cap-Web {
+        param([string]$Url, [string]$Name, [int]$WaitMs = 5000)
+        # Kill any existing Edge first
+        Stop-Process -Name msedge -Force -EA SilentlyContinue
+        Start-Sleep -Milliseconds 1000
+        # Launch Edge in app mode
+        Start-Process $edgePath "--app=$Url --window-size=1280,720 --window-position=100,100 --no-first-run --disable-session-crashed-bubble"
+        Start-Sleep -Milliseconds $WaitMs
+        # Find Edge window via process handles (check all msedge processes)
+        $ehwnd = [IntPtr]::Zero
+        $edgeProcs = Get-Process msedge -EA SilentlyContinue
+        foreach ($ep in $edgeProcs) {
+            $h = $ep.MainWindowHandle
+            if ($h -ne [IntPtr]::Zero) {
+                $ehwnd = $h
+                Write-Host "  Edge window found: PID=$($ep.Id) HWND=$h"
+                break
+            }
+        }
+        if ($ehwnd -eq [IntPtr]::Zero) {
+            Write-Host "  !! No Edge window found via process handles" -ForegroundColor Yellow
+            Stop-Process -Name msedge -Force -EA SilentlyContinue
+            Start-Sleep -Milliseconds 500
+            return
+        }
+        [Win32]::ForceFG($ehwnd)
+        Start-Sleep -Milliseconds 500
+        $er = New-Object Win32+RECT
+        [Win32]::GetWindowRect($ehwnd, [ref]$er) | Out-Null
+        $ew = $er.Right - $er.Left; $eh = $er.Bottom - $er.Top
+        Write-Host "  Edge rect: ${ew}x${eh} at ($($er.Left),$($er.Top))"
+        if ($ew -gt 100 -and $eh -gt 100) {
+            $bmp = New-Object System.Drawing.Bitmap($ew, $eh)
+            $g = [System.Drawing.Graphics]::FromImage($bmp)
+            $g.CopyFromScreen($er.Left, $er.Top, 0, 0, [System.Drawing.Size]::new($ew, $eh))
+            $g.Dispose()
+            $p = Join-Path $script:OutputDir "$Name.png"
+            $bmp.Save($p, [System.Drawing.Imaging.ImageFormat]::Png)
+            $bmp.Dispose()
+            $kb = [math]::Round((Get-Item $p).Length / 1024)
+            Write-Host "  >> $Name.png (${kb}KB)" -ForegroundColor Green
+        } else {
+            Write-Host "  !! Edge window too small: ${ew}x${eh}" -ForegroundColor Yellow
+        }
+        Stop-Process -Name msedge -Force -EA SilentlyContinue
+        Start-Sleep -Milliseconds 500
+    }
+
+    # Landing page (static, loads fast)
+    Cap-Web "http://localhost:${webPort}/" "web-landing" 4000
+
+    # Controller page (needs WebSocket for layout images)
     Write-Host "[$(Next)/$total] Web controller - gamepad"
-    $ctrlOut = Join-Path $OutputDir "web-controller.png"
-    & $edgePath --headless --disable-gpu --screenshot="$ctrlOut" --window-size=1280,720 "http://localhost:${webPort}/controller.html?layout=xbox360" 2>$null
-    Start-Sleep -Seconds 3
-    if (Test-Path $ctrlOut) { Write-Host "  >> web-controller.png" -ForegroundColor Green }
+    Cap-Web "http://localhost:${webPort}/controller.html?layout=xbox360" "web-controller" 6000
+
+    # Bring PadForge back to foreground after web captures
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 300
+
 } catch {
     Write-Host "  !! Web screenshots failed: $($_.Exception.Message)" -ForegroundColor Yellow
     $n++

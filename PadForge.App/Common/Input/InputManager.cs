@@ -407,6 +407,10 @@ namespace PadForge.Common.Input
                                 _enumerationTimer.Restart();
                                 UpdateDevices();
                             }
+
+                            // Read input states even in idle mode so the Devices
+                            // page preview works for unassigned devices.
+                            UpdateInputStates();
                         }
                         catch (Exception ex)
                         {

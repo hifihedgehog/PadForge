@@ -815,6 +815,10 @@ Write-Host "[$(Next)/$total] Add Controller popup -- already captured in Step 2b
 
 # ---- 23-24. Web controller ----
 Write-Host "[$(Next)/$total] Web controller screenshots"
+# Remove TOPMOST from PadForge and minimize it so it doesn't cover Edge
+[Win32]::SetWindowPos($hwnd, [Win32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null
+[Win32]::ShowWindow($hwnd, 6) | Out-Null  # SW_MINIMIZE
+Start-Sleep -Milliseconds 500
 $webPort = 8080
 try {
     $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -826,9 +830,9 @@ try {
         param([string]$Url, [string]$Name, [int]$WaitMs = 5000)
         # Kill any existing Edge first
         Stop-Process -Name msedge -Force -EA SilentlyContinue
-        Start-Sleep -Milliseconds 1000
-        # Launch Edge in app mode
-        Start-Process $edgePath "--app=$Url --window-size=1280,720 --window-position=100,100 --no-first-run --disable-session-crashed-bubble"
+        Start-Sleep -Milliseconds 1500
+        # Launch Edge in InPrivate + app mode to prevent session restoration
+        Start-Process $edgePath "--inprivate --app=$Url --no-first-run --disable-session-crashed-bubble"
         Start-Sleep -Milliseconds $WaitMs
         # Find Edge window via process handles (check all msedge processes)
         $ehwnd = [IntPtr]::Zero
@@ -847,6 +851,9 @@ try {
             Start-Sleep -Milliseconds 500
             return
         }
+        # Resize Edge to a consistent 1280x720 at position (200,200)
+        [Win32]::SetWindowPos($ehwnd, [IntPtr]::Zero, 200, 200, 1280, 720, 0x0040) | Out-Null  # SWP_SHOWWINDOW
+        Start-Sleep -Milliseconds 300
         [Win32]::ForceFG($ehwnd)
         Start-Sleep -Milliseconds 500
         $er = New-Object Win32+RECT
@@ -870,8 +877,8 @@ try {
         Start-Sleep -Milliseconds 500
     }
 
-    # Landing page (static, loads fast)
-    Cap-Web "http://localhost:${webPort}/" "web-landing" 4000
+    # Landing page (needs a few seconds for Edge to fully render)
+    Cap-Web "http://localhost:${webPort}/" "web-landing" 6000
 
     # Controller page (needs WebSocket for layout images)
     Write-Host "[$(Next)/$total] Web controller - gamepad"

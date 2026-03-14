@@ -9,18 +9,18 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>       <!-- Keyboard (majority) -->
-            <RowDefinition Height="Auto"/>    <!-- Mouse below -->
+            <RowDefinition Height="3*"/>      <!-- Keyboard -->
+            <RowDefinition Height="2*"/>      <!-- Mouse below -->
         </Grid.RowDefinitions>
 
         <!-- QWERTY keyboard — full width -->
-        <Viewbox Grid.Row="0" Stretch="Uniform" Margin="8">
+        <Viewbox Grid.Row="0" Stretch="Uniform" Margin="8,8,8,4">
             <Canvas x:Name="KeyboardCanvas" Width="556" Height="136" ClipToBounds="True"/>
         </Viewbox>
 
         <!-- Mouse — centered below keyboard -->
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center"
-                 Margin="8,0,8,8" MaxHeight="180">
+                 Margin="8,4,8,8">
             <Canvas x:Name="MouseCanvas" Width="160" Height="195" ClipToBounds="True"/>
         </Viewbox>
     </Grid>

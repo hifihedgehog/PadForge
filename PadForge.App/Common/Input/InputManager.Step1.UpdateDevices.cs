@@ -124,7 +124,7 @@ namespace PadForge.Common.Input
             // --- Phase 1b: Enumerate keyboards ---
             changed |= EnumerateKeyboards();
 
-            // --- Phase 1c: Enumerate mice (aggregate "All Mice" only) ---
+            // --- Phase 1c: Enumerate mice ---
             changed |= EnumerateMice();
 
             // --- Phase 2: Detect disconnected devices ---
@@ -155,8 +155,10 @@ namespace PadForge.Common.Input
                 _openedSdlInstanceIds.Remove(sdlId);
             }
 
-            // Detect disconnected keyboards and mice.
+            // Detect disconnected keyboards.
             changed |= DetectDisconnectedHandles(_openedKeyboardHandles, RawInputListener.EnumerateKeyboards());
+
+            // Detect disconnected mice.
             changed |= DetectDisconnectedHandles(_openedMouseHandles, RawInputListener.EnumerateMice());
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
@@ -404,7 +406,7 @@ namespace PadForge.Common.Input
         private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
 
         /// <summary>
-        /// Tracked Raw Input mouse device handles (aggregate "All Mice" only).
+        /// Tracked Raw Input mouse device handles.
         /// </summary>
         private readonly HashSet<IntPtr> _openedMouseHandles = new HashSet<IntPtr>();
 
@@ -456,6 +458,7 @@ namespace PadForge.Common.Input
         /// </summary>
         private bool EnumerateMice()
         {
+            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
             PruneOrphanedHandles(_openedMouseHandles);
 
             var mice = RawInputListener.EnumerateMice();

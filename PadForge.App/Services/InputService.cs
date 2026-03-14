@@ -2556,11 +2556,58 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
+                VJoyConfigs = SnapshotVJoyConfigs(),
+                MidiConfigs = SnapshotMidiConfigs(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort
             };
+        }
+
+        private VJoySlotConfigData[] SnapshotVJoyConfigs()
+        {
+            var list = new List<VJoySlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != VirtualControllerType.VJoy)
+                    continue;
+                var cfg = _mainVm.Pads[i].VJoyConfig;
+                list.Add(new VJoySlotConfigData
+                {
+                    SlotIndex = i,
+                    Preset = cfg.Preset,
+                    ThumbstickCount = cfg.ThumbstickCount,
+                    TriggerCount = cfg.TriggerCount,
+                    PovCount = cfg.PovCount,
+                    ButtonCount = cfg.ButtonCount
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        private MidiSlotConfigData[] SnapshotMidiConfigs()
+        {
+            var list = new List<MidiSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != VirtualControllerType.Midi)
+                    continue;
+                var cfg = _mainVm.Pads[i].MidiConfig;
+                list.Add(new MidiSlotConfigData
+                {
+                    SlotIndex = i,
+                    Channel = cfg.Channel,
+                    Velocity = cfg.Velocity,
+                    CcCount = cfg.CcCount,
+                    StartCc = cfg.StartCc,
+                    NoteCount = cfg.NoteCount,
+                    StartNote = cfg.StartNote
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
         }
 
         /// <summary>
@@ -2660,6 +2707,50 @@ namespace PadForge.Services
                 }
             }
 
+            // ── Apply vJoy/MIDI configurations ──
+            if (profile.VJoyConfigs != null)
+            {
+                foreach (var cfgData in profile.VJoyConfigs)
+                {
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == VirtualControllerType.VJoy)
+                    {
+                        var cfg = _mainVm.Pads[idx].VJoyConfig;
+                        cfg.Preset = cfgData.Preset;
+                        if (cfgData.Preset == VJoyPreset.Custom)
+                        {
+                            cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                            cfg.TriggerCount = cfgData.TriggerCount;
+                            cfg.PovCount = cfgData.PovCount;
+                            cfg.ButtonCount = cfgData.ButtonCount;
+                        }
+                    }
+                }
+            }
+
+            if (profile.MidiConfigs != null)
+            {
+                foreach (var cfgData in profile.MidiConfigs)
+                {
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == VirtualControllerType.Midi)
+                    {
+                        var cfg = _mainVm.Pads[idx].MidiConfig;
+                        cfg.Channel = cfgData.Channel;
+                        cfg.Velocity = cfgData.Velocity;
+                        cfg.StartCc = cfgData.StartCc;
+                        cfg.CcCount = cfgData.CcCount;
+                        cfg.StartNote = cfgData.StartNote;
+                        cfg.NoteCount = cfgData.NoteCount;
+                        _mainVm.Pads[idx].RebuildMappings();
+                    }
+                }
+            }
+
             // ── Apply DSU motion server settings ──
             _mainVm.Dashboard.EnableDsuMotionServer = profile.EnableDsuMotionServer;
             if (profile.DsuMotionServerPort >= 1024 && profile.DsuMotionServerPort <= 65535)
@@ -2750,6 +2841,8 @@ namespace PadForge.Services
                     profile.SlotCreated = snapshot.SlotCreated;
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
+                    profile.VJoyConfigs = snapshot.VJoyConfigs;
+                    profile.MidiConfigs = snapshot.MidiConfigs;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                     profile.EnableWebController = snapshot.EnableWebController;

@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019"
-             xmlns:common="clr-namespace:PadForge.Common">
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:local="clr-namespace:PadForge.Views">
 
     <Grid Margin="24,16">
         <Grid.RowDefinitions>
@@ -311,10 +312,29 @@
                         <TextBlock Text="Raw Input State" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,8"/>
 
-                        <!-- Axes: progress bars -->
+                        <!-- Axes: progress bars (hidden for mice — mouse visual used instead) -->
                         <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
-                                   Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                   Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <ItemsControl ItemsSource="{Binding RawAxes}" Margin="0,0,0,8">
+                            <ItemsControl.Style>
+                                <Style TargetType="ItemsControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Style>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,1">
@@ -337,13 +357,16 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!-- Buttons: circle grid (non-keyboard devices) -->
+                        <!-- Buttons: circle grid (non-keyboard, non-mouse devices) -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,3"
                                     Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel.Style>
                                 <Style TargetType="StackPanel">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -362,6 +385,9 @@
                                 <Style TargetType="ItemsControl">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -453,6 +479,34 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                        </Viewbox>
+
+                        <!-- Mouse: visual mouse graphic -->
+                        <TextBlock Text="Mouse" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Left" Margin="0,0,0,8"
+                                 StretchDirection="DownOnly" MaxHeight="280">
+                            <Viewbox.Style>
+                                <Style TargetType="Viewbox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Viewbox.Style>
+                            <local:MousePreviewControl/>
                         </Viewbox>
 
                         <!-- POV Hats: compass indicators -->

@@ -1011,7 +1011,8 @@
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Dead Zone Shape:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox SelectedIndex="{Binding DeadZoneShapeIndex, Mode=TwoWay}"
+                                                <ComboBox AutomationProperties.AutomationId="DeadZoneShapeCombo"
+                                                          SelectedIndex="{Binding DeadZoneShapeIndex, Mode=TwoWay}"
                                                           Width="200" VerticalAlignment="Center">
                                                     <ComboBoxItem Content="Scaled Radial"/>
                                                     <ComboBoxItem Content="Radial"/>
@@ -1082,7 +1083,8 @@
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Sensitivity X:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox Width="120"
+                                                <ComboBox AutomationProperties.AutomationId="SensitivityXCombo"
+                                                          Width="120"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetNameX, Mode=OneWay}"
                                                           SelectionChanged="StickPresetX_SelectionChanged"
@@ -1382,7 +1384,8 @@
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="Preset:" Style="{StaticResource DzLabel}"/>
-                                                <ComboBox Width="120"
+                                                <ComboBox AutomationProperties.AutomationId="TriggerPresetCombo"
+                                                          Width="120"
                                                           ItemsSource="{x:Static vm:TriggerConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetName, Mode=OneWay}"
                                                           SelectionChanged="TriggerPreset_SelectionChanged"

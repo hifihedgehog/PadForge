@@ -909,10 +909,6 @@ Copy-Item $xmlBak $PadForgeXml -Force
 Remove-Item $xmlBak -Force
 Write-Host "  Restored PadForge.xml from backup" -ForegroundColor Green
 
-# Restart PadForge with original config
-Write-Host "  Restarting PadForge with original config..."
-Start-Process $PadForgeExe
-
 Stop-Transcript | Out-Null
 
 Write-Host ""

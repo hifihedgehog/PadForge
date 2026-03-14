@@ -321,6 +321,27 @@ if ($existing) {
     Start-Sleep -Seconds 2
 }
 
+# If PadForge.xml doesn't exist, launch PadForge briefly to create default settings
+if (-not (Test-Path $PadForgeXml)) {
+    Write-Host "  PadForge.xml not found -- launching PadForge to create defaults..."
+    Start-Process $PadForgeExe
+    Start-Sleep -Seconds 5
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 2
+    if (-not (Test-Path $PadForgeXml)) {
+        # Check fallback name
+        $fallback = Join-Path (Split-Path $PadForgeXml) "Settings.xml"
+        if (Test-Path $fallback) {
+            Write-Host "  Found Settings.xml instead -- using it"
+            $PadForgeXml = $fallback
+        } else {
+            Write-Host "  !! PadForge.xml still not found after launch" -ForegroundColor Red
+            exit 1
+        }
+    }
+    Write-Host "  PadForge created default settings"
+}
+
 # Backup XML
 $xmlBak = "$PadForgeXml.bak"
 Copy-Item $PadForgeXml $xmlBak -Force
@@ -329,6 +350,17 @@ Write-Host "  Backed up PadForge.xml"
 # Load and modify XML
 [xml]$xml = Get-Content $PadForgeXml
 $ns = $xml.PadForgeSettings
+
+# --- Clear all existing slots so we start fresh with exactly 5 ---
+$slotCreatedNode = $ns.SelectSingleNode("SlotCreated")
+if ($slotCreatedNode) {
+    $slotCreatedNode.InnerText = ("false," * 15 + "false")
+    Write-Host "  Cleared all existing slots"
+}
+$slotEnabledNode = $ns.SelectSingleNode("SlotEnabled")
+if ($slotEnabledNode) {
+    $slotEnabledNode.InnerText = ("false," * 15 + "false")
+}
 
 # --- Inject a test profile (profiles only -- slots created via UI later) ---
 $profilesNode = $ns.SelectSingleNode("Profiles")
@@ -712,29 +744,13 @@ if ($slots.Count -ge 1) {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
 
-# ---- 14. KBM slot (slot 2) ----
-Write-Host ""
-Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
-$slots = @(Find-AllSlots)
-if ($slots.Count -ge 3) {
-    Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
-    Select-El $slots[2] -Label "KBM Slot" -Delay 1000
-    # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
-    # Clicking tabs[0] on KBM page can hit the keyboard preview keys
-    Start-Sleep -Milliseconds 500
-    Cap "pad-kbm-preview"
-} else {
-    Write-Host "  !! KBM slot not found (only $($slots.Count) slots)" -ForegroundColor Yellow
-    $n++
-}
-
-# ---- 15. vJoy slot (slot 3) ----
+# ---- 14. vJoy slot (slot 2 after type-group reorder: Xbox360=0, DS4=1, vJoy=2, KBM=3, MIDI=4) ----
 Write-Host ""
 Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 4) {
+if ($slots.Count -ge 3) {
     Write-Host "[$(Next)/$total] vJoy config bar"
-    Select-El $slots[3] -Label "vJoy Slot" -Delay 1000
+    Select-El $slots[2] -Label "vJoy Slot" -Delay 1000
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
@@ -745,7 +761,7 @@ if ($slots.Count -ge 4) {
     }
     Cap "pad-vjoy-configbar"
 
-    # 16. vJoy schematic view
+    # 15. vJoy schematic view
     Write-Host "[$(Next)/$total] vJoy schematic view"
     $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
     $toggleX = [int]($ppRect.X + 52)
@@ -762,7 +778,23 @@ if ($slots.Count -ge 4) {
     $n += 2
 }
 
-# ---- 17. MIDI slot (slot 4) ----
+# ---- 16. KBM slot (slot 3 after type-group reorder) ----
+Write-Host ""
+Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
+$slots = @(Find-AllSlots)
+if ($slots.Count -ge 4) {
+    Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
+    Select-El $slots[3] -Label "KBM Slot" -Delay 1000
+    # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
+    # Clicking tabs[0] on KBM page can hit the keyboard preview keys
+    Start-Sleep -Milliseconds 500
+    Cap "pad-kbm-preview"
+} else {
+    Write-Host "  !! KBM slot not found (only $($slots.Count) slots)" -ForegroundColor Yellow
+    $n++
+}
+
+# ---- 17. MIDI slot (slot 4 after type-group reorder) ----
 Write-Host ""
 Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)

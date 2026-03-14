@@ -174,7 +174,18 @@ namespace PadForge.Services
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
 
             // Capture default profile snapshot before any profile switches.
-            _defaultProfileSnapshot = SnapshotCurrentProfile();
+            // If the app restarted with a named profile active, LoadProfiles
+            // already captured the default's state before overwriting with the
+            // profile's topology. Use that instead of the current (profile) state.
+            if (SettingsManager.PendingDefaultSnapshot != null)
+            {
+                _defaultProfileSnapshot = SettingsManager.PendingDefaultSnapshot;
+            }
+            else
+            {
+                _defaultProfileSnapshot = SnapshotCurrentProfile();
+                SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
+            }
 
             // Start engine background thread.
             _inputManager.Start();
@@ -2829,6 +2840,7 @@ namespace PadForge.Services
             {
                 // Currently on the default profile — update the default snapshot.
                 _defaultProfileSnapshot = snapshot;
+                SettingsManager.PendingDefaultSnapshot = snapshot;
             }
             else
             {
@@ -2859,6 +2871,7 @@ namespace PadForge.Services
         public void RefreshDefaultSnapshot()
         {
             _defaultProfileSnapshot = SnapshotCurrentProfile();
+            SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
         }
 
         /// <summary>

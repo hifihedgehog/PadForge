@@ -653,7 +653,8 @@ namespace PadForge.Services
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb);
+                bool isMouse = ud.CapType == InputDeviceType.Mouse;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
             }
@@ -693,9 +694,19 @@ namespace PadForge.Services
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb);
+                bool isMouse = ud.CapType == InputDeviceType.Mouse;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+            }
+
+            // Mouse visual — update motion and scroll display properties.
+            if (devVm.IsMouseDevice)
+            {
+                devVm.MouseMotionX = (state.Axis[0] - 32767.0) / 32767.0;
+                devVm.MouseMotionY = (state.Axis[1] - 32767.0) / 32767.0;
+                if (ud.CapAxeCount > 2)
+                    devVm.MouseScrollIntensity = (state.Axis[2] - 32767.0) / 32767.0;
             }
 
             // Update axis values in-place (no allocation).

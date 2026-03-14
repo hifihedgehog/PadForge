@@ -289,8 +289,8 @@ namespace PadForge.Services
                 }
             }
 
-            ApplyVJoyConfigs(appSettings);
-            ApplyMidiConfigs(appSettings);
+            ApplyVJoyConfigs(appSettings.VJoyConfigs);
+            ApplyMidiConfigs(appSettings.MidiConfigs);
 
             // Load DSU motion server settings (now on Dashboard VM).
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
@@ -306,13 +306,13 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Applies per-slot vJoy configurations from AppSettings.
+        /// Applies per-slot vJoy configurations.
         /// Only restores configs for slots that are currently created as vJoy.
         /// </summary>
-        private void ApplyVJoyConfigs(AppSettingsData appSettings)
+        private void ApplyVJoyConfigs(ViewModels.VJoySlotConfigData[] configs)
         {
-            if (appSettings?.VJoyConfigs == null) return;
-            foreach (var cfgData in appSettings.VJoyConfigs)
+            if (configs == null) return;
+            foreach (var cfgData in configs)
             {
                 int idx = cfgData.SlotIndex;
                 if (idx >= 0 && idx < _mainVm.Pads.Count &&
@@ -333,13 +333,13 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Applies per-slot MIDI configurations from AppSettings.
+        /// Applies per-slot MIDI configurations.
         /// Only restores configs for slots that are currently created as MIDI.
         /// </summary>
-        private void ApplyMidiConfigs(AppSettingsData appSettings)
+        private void ApplyMidiConfigs(ViewModels.MidiSlotConfigData[] configs)
         {
-            if (appSettings?.MidiConfigs == null) return;
-            foreach (var cfgData in appSettings.MidiConfigs)
+            if (configs == null) return;
+            foreach (var cfgData in configs)
             {
                 int idx = cfgData.SlotIndex;
                 if (idx >= 0 && idx < _mainVm.Pads.Count &&
@@ -692,10 +692,9 @@ namespace PadForge.Services
                 }
 
                 // Now that SlotCreated and OutputType are restored, apply vJoy/MIDI
-                // configs from AppSettings (they're always saved and gated on
-                // SlotCreated, which was all-false when LoadAppSettings ran).
-                ApplyVJoyConfigs(appSettings);
-                ApplyMidiConfigs(appSettings);
+                // configs from the profile's own snapshot.
+                ApplyVJoyConfigs(active.VJoyConfigs);
+                ApplyMidiConfigs(active.MidiConfigs);
             }
         }
 
@@ -745,6 +744,8 @@ namespace PadForge.Services
             profile.SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
             profile.SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                 .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
+            profile.VJoyConfigs = BuildVJoyConfigSnapshot();
+            profile.MidiConfigs = BuildMidiConfigSnapshot();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
@@ -978,6 +979,57 @@ namespace PadForge.Services
                 VJoyConfigs = vjoyConfigs.ToArray(),
                 MidiConfigs = BuildMidiConfigs()
             };
+        }
+
+        /// <summary>
+        /// Snapshots vJoy configs for only created vJoy slots (for profile storage).
+        /// </summary>
+        private ViewModels.VJoySlotConfigData[] BuildVJoyConfigSnapshot()
+        {
+            var list = new System.Collections.Generic.List<ViewModels.VJoySlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.VJoy)
+                    continue;
+                var cfg = _mainVm.Pads[i].VJoyConfig;
+                list.Add(new ViewModels.VJoySlotConfigData
+                {
+                    SlotIndex = i,
+                    Preset = cfg.Preset,
+                    ThumbstickCount = cfg.ThumbstickCount,
+                    TriggerCount = cfg.TriggerCount,
+                    PovCount = cfg.PovCount,
+                    ButtonCount = cfg.ButtonCount
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        /// <summary>
+        /// Snapshots MIDI configs for only created MIDI slots (for profile storage).
+        /// </summary>
+        private ViewModels.MidiSlotConfigData[] BuildMidiConfigSnapshot()
+        {
+            var list = new System.Collections.Generic.List<ViewModels.MidiSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.Midi)
+                    continue;
+                var cfg = _mainVm.Pads[i].MidiConfig;
+                list.Add(new ViewModels.MidiSlotConfigData
+                {
+                    SlotIndex = i,
+                    Channel = cfg.Channel,
+                    Velocity = cfg.Velocity,
+                    CcCount = cfg.CcCount,
+                    StartCc = cfg.StartCc,
+                    NoteCount = cfg.NoteCount,
+                    StartNote = cfg.StartNote
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
         }
 
         private ViewModels.MidiSlotConfigData[] BuildMidiConfigs()
@@ -1671,6 +1723,16 @@ namespace PadForge.Services
         [XmlArray("ProfileSlotControllerTypes")]
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
+
+        /// <summary>Per-slot vJoy configurations saved with this profile.</summary>
+        [XmlArray("ProfileVJoyConfigs")]
+        [XmlArrayItem("VJoyConfig")]
+        public ViewModels.VJoySlotConfigData[] VJoyConfigs { get; set; }
+
+        /// <summary>Per-slot MIDI configurations saved with this profile.</summary>
+        [XmlArray("ProfileMidiConfigs")]
+        [XmlArrayItem("MidiConfig")]
+        public ViewModels.MidiSlotConfigData[] MidiConfigs { get; set; }
 
         /// <summary>Whether the DSU motion server was enabled in this profile.</summary>
         [XmlElement]

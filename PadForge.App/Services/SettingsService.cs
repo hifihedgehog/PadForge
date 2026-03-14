@@ -248,23 +248,32 @@ namespace PadForge.Services
             // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
             // which reads SlotCreated[]. If SlotCreated isn't loaded yet, the sidebar
             // gets built with the wrong slot set and triggers a double-rebuild crash.
-            if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length >= 1)
+            //
+            // Only apply persisted SlotCreated/SlotEnabled when restoring the default
+            // profile. If a named profile was active, its slots come from the profile
+            // snapshot (applied later by LoadProfiles), not from AppSettings.
+            if (string.IsNullOrEmpty(appSettings.ActiveProfileId))
             {
-                int count = Math.Min(appSettings.SlotCreated.Length, SettingsManager.SlotCreated.Length);
-                Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, count);
-            }
-            else
-            {
-                // Backward compat: auto-create slots for existing device assignments.
-                AutoCreateSlotsFromExistingAssignments();
-            }
+                if (appSettings.SlotCreated != null && appSettings.SlotCreated.Length >= 1)
+                {
+                    int count = Math.Min(appSettings.SlotCreated.Length, SettingsManager.SlotCreated.Length);
+                    Array.Copy(appSettings.SlotCreated, SettingsManager.SlotCreated, count);
+                }
+                else
+                {
+                    // Backward compat: auto-create slots for existing device assignments.
+                    AutoCreateSlotsFromExistingAssignments();
+                }
 
-            if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length >= 1)
-            {
-                int count = Math.Min(appSettings.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
-                Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, count);
+                if (appSettings.SlotEnabled != null && appSettings.SlotEnabled.Length >= 1)
+                {
+                    int count = Math.Min(appSettings.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
+                    Array.Copy(appSettings.SlotEnabled, SettingsManager.SlotEnabled, count);
+                }
+                // else: defaults are all true, which is correct for migration.
             }
-            // else: defaults are all true, which is correct for migration.
+            // else: named profile active — slots start all-false, profile snapshot
+            // will restore the correct slot state.
 
             // Load per-slot virtual controller types (after SlotCreated/SlotEnabled).
             if (appSettings.SlotControllerTypes != null)
@@ -280,85 +289,8 @@ namespace PadForge.Services
                 }
             }
 
-            // Load per-slot vJoy configurations (after OutputType so we know which slots are vJoy).
-            // Only restore configs for slots that are currently created as vJoy — otherwise
-            // stale custom configs from deleted slots leak into fresh slots when the user
-            // later adds a new vJoy at the same index.
-            if (appSettings.VJoyConfigs != null)
-            {
-                foreach (var cfgData in appSettings.VJoyConfigs)
-                {
-                    int idx = cfgData.SlotIndex;
-                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
-                        SettingsManager.SlotCreated[idx] &&
-                        _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.VJoy)
-                    {
-                        var cfg = _mainVm.Pads[idx].VJoyConfig;
-                        // Load preset first (applies defaults for Xbox360/DS4),
-                        // then override with saved counts (matters for Custom preset).
-                        cfg.Preset = cfgData.Preset;
-                        if (cfgData.Preset == ViewModels.VJoyPreset.Custom)
-                        {
-                            cfg.ThumbstickCount = cfgData.ThumbstickCount;
-                            cfg.TriggerCount = cfgData.TriggerCount;
-                            cfg.PovCount = cfgData.PovCount;
-                            cfg.ButtonCount = cfgData.ButtonCount;
-                        }
-                    }
-                }
-            }
-
-            // Load per-slot MIDI configurations.
-            if (appSettings.MidiConfigs != null)
-            {
-                foreach (var cfgData in appSettings.MidiConfigs)
-                {
-                    int idx = cfgData.SlotIndex;
-                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
-                        SettingsManager.SlotCreated[idx] &&
-                        _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Midi)
-                    {
-                        var cfg = _mainVm.Pads[idx].MidiConfig;
-                        cfg.Channel = cfgData.Channel;
-                        cfg.Velocity = cfgData.Velocity;
-                        // Set start values BEFORE counts — counts clamp against start
-                        cfg.StartCc = cfgData.StartCc;
-                        cfg.CcCount = cfgData.CcCount;
-                        cfg.StartNote = cfgData.StartNote;
-                        cfg.NoteCount = cfgData.NoteCount;
-                        _mainVm.Pads[idx].RebuildMappings();
-
-                        // Reload mapping descriptors from all devices assigned to this slot.
-                        // Must happen immediately after RebuildMappings to restore saved mappings,
-                        // because SelectedMappedDevice is null at this point in the load sequence.
-                        lock (SettingsManager.UserSettings.SyncRoot)
-                        {
-                            foreach (var us in SettingsManager.UserSettings.Items)
-                            {
-                                if (us.MapTo != idx) continue;
-                                var ps = us.GetPadSetting();
-                                if (ps == null) continue;
-                                foreach (var mapping in _mainVm.Pads[idx].Mappings)
-                                {
-                                    string target = mapping.TargetSettingName;
-                                    string value = target.StartsWith("Midi", StringComparison.Ordinal)
-                                        ? ps.GetMidiMapping(target) : string.Empty;
-                                    if (!string.IsNullOrEmpty(value))
-                                        mapping.LoadDescriptor(value);
-                                    if (mapping.NegSettingName != null)
-                                    {
-                                        string negValue = mapping.NegSettingName.StartsWith("Midi", StringComparison.Ordinal)
-                                            ? ps.GetMidiMapping(mapping.NegSettingName) : string.Empty;
-                                        if (!string.IsNullOrEmpty(negValue))
-                                            mapping.LoadNegDescriptor(negValue);
-                                    }
-                                }
-                                break; // first device is enough for descriptors
-                            }
-                        }
-                    }
-                }
-            }
+            ApplyVJoyConfigs(appSettings);
+            ApplyMidiConfigs(appSettings);
 
             // Load DSU motion server settings (now on Dashboard VM).
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
@@ -371,6 +303,85 @@ namespace PadForge.Services
                 ? appSettings.WebControllerPort : 8080;
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
+        }
+
+        /// <summary>
+        /// Applies per-slot vJoy configurations from AppSettings.
+        /// Only restores configs for slots that are currently created as vJoy.
+        /// </summary>
+        private void ApplyVJoyConfigs(AppSettingsData appSettings)
+        {
+            if (appSettings?.VJoyConfigs == null) return;
+            foreach (var cfgData in appSettings.VJoyConfigs)
+            {
+                int idx = cfgData.SlotIndex;
+                if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                    SettingsManager.SlotCreated[idx] &&
+                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.VJoy)
+                {
+                    var cfg = _mainVm.Pads[idx].VJoyConfig;
+                    cfg.Preset = cfgData.Preset;
+                    if (cfgData.Preset == ViewModels.VJoyPreset.Custom)
+                    {
+                        cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                        cfg.TriggerCount = cfgData.TriggerCount;
+                        cfg.PovCount = cfgData.PovCount;
+                        cfg.ButtonCount = cfgData.ButtonCount;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies per-slot MIDI configurations from AppSettings.
+        /// Only restores configs for slots that are currently created as MIDI.
+        /// </summary>
+        private void ApplyMidiConfigs(AppSettingsData appSettings)
+        {
+            if (appSettings?.MidiConfigs == null) return;
+            foreach (var cfgData in appSettings.MidiConfigs)
+            {
+                int idx = cfgData.SlotIndex;
+                if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                    SettingsManager.SlotCreated[idx] &&
+                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Midi)
+                {
+                    var cfg = _mainVm.Pads[idx].MidiConfig;
+                    cfg.Channel = cfgData.Channel;
+                    cfg.Velocity = cfgData.Velocity;
+                    cfg.StartCc = cfgData.StartCc;
+                    cfg.CcCount = cfgData.CcCount;
+                    cfg.StartNote = cfgData.StartNote;
+                    cfg.NoteCount = cfgData.NoteCount;
+                    _mainVm.Pads[idx].RebuildMappings();
+
+                    lock (SettingsManager.UserSettings.SyncRoot)
+                    {
+                        foreach (var us in SettingsManager.UserSettings.Items)
+                        {
+                            if (us.MapTo != idx) continue;
+                            var ps = us.GetPadSetting();
+                            if (ps == null) continue;
+                            foreach (var mapping in _mainVm.Pads[idx].Mappings)
+                            {
+                                string target = mapping.TargetSettingName;
+                                string value = target.StartsWith("Midi", StringComparison.Ordinal)
+                                    ? ps.GetMidiMapping(target) : string.Empty;
+                                if (!string.IsNullOrEmpty(value))
+                                    mapping.LoadDescriptor(value);
+                                if (mapping.NegSettingName != null)
+                                {
+                                    string negValue = mapping.NegSettingName.StartsWith("Midi", StringComparison.Ordinal)
+                                        ? ps.GetMidiMapping(mapping.NegSettingName) : string.Empty;
+                                    if (!string.IsNullOrEmpty(negValue))
+                                        mapping.LoadNegDescriptor(negValue);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -651,6 +662,41 @@ namespace PadForge.Services
             string activeId = appSettings?.ActiveProfileId;
             var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
             _mainVm.Settings.ActiveProfileInfo = active?.Name ?? "Default";
+
+            // If a named profile was active at shutdown, restore its slot topology
+            // from the profile snapshot. LoadAppSettings skips SlotCreated/SlotEnabled
+            // when ActiveProfileId is set (to prevent profile→default bleed), so the
+            // profile's own snapshot is the authoritative source.
+            if (active != null)
+            {
+                if (active.SlotCreated != null)
+                {
+                    int count = Math.Min(active.SlotCreated.Length, SettingsManager.SlotCreated.Length);
+                    Array.Copy(active.SlotCreated, SettingsManager.SlotCreated, count);
+                }
+
+                if (active.SlotEnabled != null)
+                {
+                    int count = Math.Min(active.SlotEnabled.Length, SettingsManager.SlotEnabled.Length);
+                    Array.Copy(active.SlotEnabled, SettingsManager.SlotEnabled, count);
+                }
+
+                if (active.SlotControllerTypes != null)
+                {
+                    for (int i = 0; i < _mainVm.Pads.Count && i < active.SlotControllerTypes.Length; i++)
+                    {
+                        if (SettingsManager.SlotCreated[i] &&
+                            Enum.IsDefined(typeof(Engine.VirtualControllerType), active.SlotControllerTypes[i]))
+                            _mainVm.Pads[i].OutputType = (Engine.VirtualControllerType)active.SlotControllerTypes[i];
+                    }
+                }
+
+                // Now that SlotCreated and OutputType are restored, apply vJoy/MIDI
+                // configs from AppSettings (they're always saved and gated on
+                // SlotCreated, which was all-false when LoadAppSettings ran).
+                ApplyVJoyConfigs(appSettings);
+                ApplyMidiConfigs(appSettings);
+            }
         }
 
         /// <summary>
@@ -900,6 +946,12 @@ namespace PadForge.Services
                 });
             }
 
+            // Only persist per-slot state into AppSettings when the default
+            // profile is active. When a named profile is active, its slot state
+            // is stored in the profile snapshot — writing it here would
+            // contaminate the default profile on next restart.
+            bool isDefault = string.IsNullOrEmpty(SettingsManager.ActiveProfileId);
+
             return new AppSettingsData
             {
                 AutoStartEngine = vm.AutoStartEngine,
@@ -911,9 +963,9 @@ namespace PadForge.Services
                 ThemeIndex = vm.SelectedThemeIndex,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
-                SlotControllerTypes = slotTypes,
-                SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
-                SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
+                SlotControllerTypes = isDefault ? slotTypes : null,
+                SlotCreated = isDefault ? (bool[])SettingsManager.SlotCreated.Clone() : null,
+                SlotEnabled = isDefault ? (bool[])SettingsManager.SlotEnabled.Clone() : null,
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,

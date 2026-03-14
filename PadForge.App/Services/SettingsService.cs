@@ -660,43 +660,13 @@ namespace PadForge.Services
             // so switching back to Default restores the correct state.
             if (active != null)
             {
-                // Capture full default state: slot topology + device assignments.
-                var defaultEntries = new System.Collections.Generic.List<ProfileEntry>();
-                var defaultPadSettings = new System.Collections.Generic.List<PadSetting>();
-                var seen = new System.Collections.Generic.HashSet<string>();
-                lock (SettingsManager.UserSettings.SyncRoot)
-                {
-                    foreach (var us in SettingsManager.UserSettings.Items)
-                    {
-                        var ps = us.GetPadSetting();
-                        if (ps == null) continue;
-                        defaultEntries.Add(new ProfileEntry
-                        {
-                            InstanceGuid = us.InstanceGuid,
-                            ProductGuid = us.ProductGuid,
-                            MapTo = us.MapTo,
-                            PadSettingChecksum = ps.PadSettingChecksum
-                        });
-                        if (seen.Add(ps.PadSettingChecksum))
-                            defaultPadSettings.Add(ps.CloneDeep());
-                    }
-                }
-
-                SettingsManager.PendingDefaultSnapshot = new ProfileData
-                {
-                    Entries = defaultEntries.ToArray(),
-                    PadSettings = defaultPadSettings.ToArray(),
-                    SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
-                    SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
-                    SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
-                        .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
-                    VJoyConfigs = BuildVJoyConfigSnapshot(),
-                    MidiConfigs = BuildMidiConfigSnapshot(),
-                    EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
-                    DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
-                    EnableWebController = _mainVm.Dashboard.EnableWebController,
-                    WebControllerPort = _mainVm.Dashboard.WebControllerPort
-                };
+                // Restore the default profile snapshot from the XML. This was
+                // persisted by BuildAppSettings when a named profile was active,
+                // and contains the default's full state (slots, device assignments,
+                // configs). The runtime state at this point has the named profile's
+                // device assignments (loaded by LoadPadSettings), so we can't build
+                // the default snapshot from runtime — it must come from the XML.
+                SettingsManager.PendingDefaultSnapshot = appSettings?.DefaultProfileSnapshot;
 
                 if (active.SlotCreated != null)
                 {
@@ -1011,7 +981,8 @@ namespace PadForge.Services
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
                 VJoyConfigs = isDefault ? vjoyConfigs.ToArray() : defaultSnap.VJoyConfigs,
-                MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs
+                MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
+                DefaultProfileSnapshot = isDefault ? null : defaultSnap
             };
         }
 
@@ -1600,6 +1571,15 @@ namespace PadForge.Services
         [XmlArray("MidiConfigs")]
         [XmlArrayItem("Config")]
         public ViewModels.MidiSlotConfigData[] MidiConfigs { get; set; }
+
+        /// <summary>
+        /// Full snapshot of the default profile's state, saved when a named
+        /// profile is active so the default can be restored on restart.
+        /// Null when the default profile is active (its state is in the
+        /// global UserSettings/SlotCreated/etc. fields).
+        /// </summary>
+        [XmlElement("DefaultProfileSnapshot")]
+        public ProfileData DefaultProfileSnapshot { get; set; }
     }
 
     /// <summary>

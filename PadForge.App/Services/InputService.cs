@@ -1176,26 +1176,13 @@ namespace PadForge.Services
                     // replace generic name like "Hat Switch" with "Hat Up".
                     if (typeName == "pov" && parts.Length >= 3)
                     {
-                        string dir = parts[2] switch
-                        {
-                            "UpRight" => "Up-Right",
-                            "DownRight" => "Down-Right",
-                            "DownLeft" => "Down-Left",
-                            "UpLeft" => "Up-Left",
-                            _ => parts[2]
-                        };
-                        display = $"POV {index} {dir}";
+                        string dir = ResolvePovDirection(parts[2]);
+                        display = string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
                     {
-                        string prefixLabel = prefix.ToUpperInvariant() switch
-                        {
-                            "I" => "Inv.",
-                            "H" => "Half",
-                            "IH" => "Inv. Half",
-                            _ => ""
-                        };
+                        string prefixLabel = ResolvePrefixLabel(prefix);
                         if (!string.IsNullOrEmpty(prefixLabel))
                             display = $"{prefixLabel} {display}";
                     }
@@ -1269,26 +1256,13 @@ namespace PadForge.Services
 
                     if (typeName == "pov" && parts.Length >= 3)
                     {
-                        string dir = parts[2] switch
-                        {
-                            "UpRight" => "Up-Right",
-                            "DownRight" => "Down-Right",
-                            "DownLeft" => "Down-Left",
-                            "UpLeft" => "Up-Left",
-                            _ => parts[2]
-                        };
-                        display = $"POV {index} {dir}";
+                        string dir = ResolvePovDirection(parts[2]);
+                        display = string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
                     {
-                        string prefixLabel = prefix.ToUpperInvariant() switch
-                        {
-                            "I" => "Inv.",
-                            "H" => "Half",
-                            "IH" => "Inv. Half",
-                            _ => ""
-                        };
+                        string prefixLabel = ResolvePrefixLabel(prefix);
                         if (!string.IsNullOrEmpty(prefixLabel))
                             display = $"{prefixLabel} {display}";
                     }
@@ -1297,6 +1271,27 @@ namespace PadForge.Services
             }
             return null;
         }
+
+        private static string ResolvePrefixLabel(string prefix) => prefix.ToUpperInvariant() switch
+        {
+            "I" => Strings.Instance.Mapping_Inv,
+            "H" => Strings.Instance.Mapping_Half,
+            "IH" => Strings.Instance.Mapping_InvHalf,
+            _ => ""
+        };
+
+        private static string ResolvePovDirection(string dir) => dir switch
+        {
+            "Up" => Strings.Instance.POV_Up,
+            "UpRight" => Strings.Instance.POV_UpRight,
+            "Right" => Strings.Instance.POV_Right,
+            "DownRight" => Strings.Instance.POV_DownRight,
+            "Down" => Strings.Instance.POV_Down,
+            "DownLeft" => Strings.Instance.POV_DownLeft,
+            "Left" => Strings.Instance.POV_Left,
+            "UpLeft" => Strings.Instance.POV_UpLeft,
+            _ => dir
+        };
 
         // ─────────────────────────────────────────────
         //  Copy / Paste settings
@@ -2095,18 +2090,30 @@ namespace PadForge.Services
             row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
-            // Resolve device type name.
-            row.DeviceType = ud.CapType switch
+            // Resolve device type name (internal key for comparisons + localized display).
+            row.DeviceTypeKey = ud.CapType switch
             {
                 InputDeviceType.Gamepad => "Gamepad",
                 InputDeviceType.Joystick => "Joystick",
                 InputDeviceType.Driving => "Wheel",
-                InputDeviceType.Flight => "Flight Stick",
-                InputDeviceType.FirstPerson => "First Person",
+                InputDeviceType.Flight => "FlightStick",
+                InputDeviceType.FirstPerson => "FirstPerson",
                 InputDeviceType.Supplemental => "Supplemental",
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
                 _ => "Device"
+            };
+            row.DeviceType = ud.CapType switch
+            {
+                InputDeviceType.Gamepad => Strings.Instance.DeviceType_Gamepad,
+                InputDeviceType.Joystick => Strings.Instance.DeviceType_Joystick,
+                InputDeviceType.Driving => Strings.Instance.DeviceType_Wheel,
+                InputDeviceType.Flight => Strings.Instance.DeviceType_FlightStick,
+                InputDeviceType.FirstPerson => Strings.Instance.DeviceType_FirstPerson,
+                InputDeviceType.Supplemental => Strings.Instance.DeviceType_Supplemental,
+                InputDeviceType.Mouse => Strings.Instance.DeviceType_Mouse,
+                InputDeviceType.Keyboard => Strings.Instance.DeviceType_Keyboard,
+                _ => Strings.Instance.DeviceType_Device
             };
 
             // Resolve slot assignments (device can be assigned to multiple slots).

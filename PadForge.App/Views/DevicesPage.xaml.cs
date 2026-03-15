@@ -49,37 +49,28 @@ namespace PadForge.Views
                 string action = isHidHide
                     ? Strings.Instance.Devices_HideAction
                     : Strings.Instance.Devices_ConsumeAction;
-                string deviceKind = dev.DeviceType == "Mouse" ? "mouse" : "keyboard";
+                string deviceKind = dev.DeviceTypeKey == "Mouse"
+                    ? Strings.Instance.Devices_DeviceKind_Mouse
+                    : Strings.Instance.Devices_DeviceKind_Keyboard;
                 bool isMerged = dev.DeviceName?.Contains("(Merged)") == true ||
                                 dev.DeviceName?.Contains("All ") == true;
 
                 string scope = isMerged
-                    ? $" for all connected {deviceKind}s"
+                    ? string.Format(Strings.Instance.Devices_WarnScope_Format, deviceKind)
                     : "";
 
-                string consequence;
-                if (isHidHide)
-                {
-                    consequence = $"If this is your only {deviceKind}, you will lose the ability to " +
-                        $"interact with your system. Only proceed if you have another " +
-                        $"input device available.";
-                }
-                else
-                {
-                    consequence = $"If you map inputs that are critical for system interaction " +
-                        (dev.DeviceType == "Mouse"
-                            ? "(e.g. left/right click, X/Y movement)"
-                            : "(e.g. common keys)") +
-                        $", you may lose the ability to control your system. " +
-                        $"Only proceed if you have another input device available.";
-                }
+                string consequence = isHidHide
+                    ? string.Format(Strings.Instance.Devices_WarnHide_Format, deviceKind)
+                    : dev.DeviceTypeKey == "Mouse"
+                        ? Strings.Instance.Devices_WarnConsumeMouse
+                        : Strings.Instance.Devices_WarnConsumeKeyboard;
 
                 // Immediately revert — only re-check if the user confirms.
                 if (cb != null)
                     cb.IsChecked = false;
 
                 ShowHidingWarningFlyout(cb, vm, dev,
-                    $"This will {action}{scope}.\n\n{consequence}",
+                    string.Format(Strings.Instance.Devices_WarnAction_Format, action, scope, consequence),
                     isHidHide);
                 return;
             }

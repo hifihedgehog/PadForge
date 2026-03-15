@@ -264,6 +264,16 @@
   <data name="About_License" xml:space="preserve"><value>Licence</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Ce logiciel est distribué sous licence CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Les modèles 3D de contrôleurs sont adaptés de Handheld Companion (CC BY-NC-SA 4.0). Les assets 2D de contrôleurs proviennent de Gamepad-Asset-Pack par AL2009man (MIT). La base de code originale est un fork de x360ce (MIT). SDL3 est distribué sous licence zlib. Windows MIDI Services est distribué sous licence MIT. ViGEmBus, vJoy, HelixToolkit et ModernWpf sont distribués sous licence MIT.</value></data>
 
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>Manette</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>Volant</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>Manche à balai</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>Première personne</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>Supplémentaire</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>Souris</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>Clavier</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>Périphérique</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Appareils</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en ligne / </value></data>
@@ -303,6 +313,15 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Vous êtes sur le point de {0}. Cela affectera {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>masquer cet appareil de toutes les applications</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquer les entrées assignées de cet appareil</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pour toutes les {0} connectées</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>S'il s'agit de votre seul(e) {0}, vous perdrez la possibilité d'interagir avec votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Si vous assignez des entrées critiques pour l'interaction système (p. ex. clic gauche/droit, mouvement X/Y), vous risquez de perdre le contrôle de votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Si vous assignez des entrées critiques pour l'interaction système (p. ex. touches courantes), vous risquez de perdre le contrôle de votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>Cela va {0}{1}.
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>souris</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>clavier</value></data>
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>Macros</value></data>
@@ -464,6 +483,7 @@
   <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Demi</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Demi</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Aucun appareil assigné</value></data>
 
   <!-- ═══ Profiles ═══ -->

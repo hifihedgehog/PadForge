@@ -264,6 +264,16 @@
   <data name="About_License" xml:space="preserve"><value>Licencia</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Este software está licenciado bajo CC BY-NC-SA 4.0 (Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional). Modelos 3D de controles adaptados de Handheld Companion (CC BY-NC-SA 4.0). Recursos 2D de controles de Gamepad-Asset-Pack por AL2009man (MIT). Base de código original bifurcada de x360ce (MIT). SDL3 está licenciado bajo la Licencia zlib. Windows MIDI Services está licenciado bajo la Licencia MIT. ViGEmBus, vJoy, HelixToolkit y ModernWpf están licenciados bajo la Licencia MIT.</value></data>
 
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>Volante</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>Palanca de vuelo</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>Primera persona</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>Suplementario</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>Ratón</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>Teclado</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>Dispositivo</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivos</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en línea / </value></data>
@@ -303,6 +313,15 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Está a punto de {0}. Esto afectará a {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>ocultar este dispositivo de todas las aplicaciones</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquear las entradas asignadas de este dispositivo</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para todos los {0}s conectados</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Si este es su único {0}, perderá la capacidad de interactuar con su sistema. Solo proceda si tiene otro dispositivo de entrada disponible.</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Si asigna entradas críticas para la interacción del sistema (p. ej. clic izquierdo/derecho, movimiento X/Y), puede perder la capacidad de controlar su sistema. Solo proceda si tiene otro dispositivo de entrada disponible.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Si asigna entradas críticas para la interacción del sistema (p. ej. teclas comunes), puede perder la capacidad de controlar su sistema. Solo proceda si tiene otro dispositivo de entrada disponible.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>Esto {0}{1}.
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>ratón</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>teclado</value></data>
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>Macros</value></data>
@@ -464,6 +483,7 @@
   <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Mitad</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Mitad</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ningún dispositivo asignado</value></data>
 
   <!-- ═══ Profiles ═══ -->

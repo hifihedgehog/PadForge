@@ -22,9 +22,8 @@
                                FontSize="14" Opacity="0.7"
                                HorizontalAlignment="Center" Margin="0,4,0,12"/>
 
-                    <TextBlock HorizontalAlignment="Center" Opacity="0.5" FontSize="12">
-                        <Run Text="{Binding About_Tagline, Source={x:Static strings:Strings.Instance}}"/>
-                    </TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Opacity="0.5" FontSize="12"
+                               Text="{Binding About_Tagline, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
             </Border>
 

@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ═══ Common ═══ -->
+  <data name="Common_Save" xml:space="preserve"><value>Opslaan</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Annuleren</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Verwijderen</value></data>
+  <data name="Common_Add" xml:space="preserve"><value>Toevoegen</value></data>
+  <data name="Common_Remove" xml:space="preserve"><value>Verwijderen</value></data>
+  <data name="Common_OK" xml:space="preserve"><value>OK</value></data>
+  <data name="Common_Install" xml:space="preserve"><value>Installeren</value></data>
+  <data name="Common_Uninstall" xml:space="preserve"><value>Verwijderen</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>Vernieuwen</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Kopiëren</value></data>
+  <data name="Common_Paste" xml:space="preserve"><value>Plakken</value></data>
+  <data name="Common_Enabled" xml:space="preserve"><value>Ingeschakeld</value></data>
+  <data name="Common_Disabled" xml:space="preserve"><value>Uitgeschakeld</value></data>
+  <data name="Common_Installed" xml:space="preserve"><value>Geïnstalleerd</value></data>
+  <data name="Common_NotInstalled" xml:space="preserve"><value>Niet geïnstalleerd</value></data>
+  <data name="Common_Ready" xml:space="preserve"><value>Gereed</value></data>
+  <data name="Common_Stopped" xml:space="preserve"><value>Gestopt</value></data>
+  <data name="Common_Running" xml:space="preserve"><value>Actief</value></data>
+  <data name="Common_Idle" xml:space="preserve"><value>Inactief</value></data>
+  <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
+  <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
+  <data name="Common_Unknown" xml:space="preserve"><value>Onbekend</value></data>
+  <data name="Common_Default" xml:space="preserve"><value>Standaard</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Bladeren...</value></data>
+  <data name="Common_Proceed" xml:space="preserve"><value>Doorgaan</value></data>
+  <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Common_Record" xml:space="preserve"><value>Opnemen</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Opnemen...</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>Wissen</value></data>
+  <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
+  <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Unassigned" xml:space="preserve"><value>Niet toegewezen</value></data>
+  <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
+
+  <!-- ═══ Controller Types ═══ -->
+  <data name="ControllerType_Xbox360" xml:space="preserve"><value>Xbox 360</value></data>
+  <data name="ControllerType_DualShock4" xml:space="preserve"><value>DualShock 4</value></data>
+  <data name="ControllerType_DirectInput" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Toetsenbord + Muis</value></data>
+  <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+
+  <!-- ═══ MainWindow ═══ -->
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wordt afgesloten...</value></data>
+  <data name="Main_ReleasingControllers" xml:space="preserve"><value>Virtuele controllers worden vrijgegeven</value></data>
+  <data name="Main_PleaseWait" xml:space="preserve"><value>Even geduld...</value></data>
+  <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparaat/apparaten</value></data>
+  <data name="Main_AddController" xml:space="preserve"><value>Controller toevoegen</value></data>
+  <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuele controller verwijderen</value></data>
+  <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge tonen</value></data>
+  <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuele Controller {0}</value></data>
+  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus niet geïnstalleerd</value></data>
+  <data name="Main_EngineStopped" xml:space="preserve"><value>Engine gestopt</value></data>
+  <data name="Main_AwaitingControllers" xml:space="preserve"><value>Wachten op controllers</value></data>
+  <data name="Main_Active" xml:space="preserve"><value>Actief</value></data>
+  <data name="Main_Initializing" xml:space="preserve"><value>Initialiseren</value></data>
+  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput-stuurprogramma niet geïnstalleerd</value></data>
+  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus niet geïnstalleerd)</value></data>
+  <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (max {0})</value></data>
+  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4 (ViGEmBus niet geïnstalleerd)</value></data>
+  <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4 (max {0})</value></data>
+  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput (stuurprogramma niet geïnstalleerd)</value></data>
+  <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput (max {0})</value></data>
+  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Toetsenbord + Muis (max {0})</value></data>
+  <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (vereist Windows MIDI Services)</value></data>
+  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
+
+  <!-- ═══ MainWindow Status Messages ═══ -->
+  <data name="Status_InstallingViGEm" xml:space="preserve"><value>ViGEmBus wordt geïnstalleerd…</value></data>
+  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>ViGEmBus wordt verwijderd…</value></data>
+  <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wordt geïnstalleerd…</value></data>
+  <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide wordt verwijderd…</value></data>
+  <data name="Status_InstallingVJoy" xml:space="preserve"><value>vJoy wordt geïnstalleerd…</value></data>
+  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>vJoy wordt verwijderd…</value></data>
+  <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services wordt gedownload…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services wordt gedownload en geïnstalleerd…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wordt verwijderd…</value></data>
+  <data name="Status_OperationCancelled" xml:space="preserve"><value>Bewerking geannuleerd door gebruiker.</value></data>
+  <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>Installatie van MIDI Services mislukt: {0}</value></data>
+  <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Apparatenlijst vernieuwd.</value></data>
+  <data name="Status_Recorded_Format" xml:space="preserve"><value>Opgenomen "{0}" ← {1}</value></data>
+  <data name="Status_NowMap_Format" xml:space="preserve"><value>Nu toewijzen: {0} {1}</value></data>
+  <data name="Status_MapPrompt_Format" xml:space="preserve"><value>Toewijzing: {0} {1}  ({2}/{3})</value></data>
+  <data name="Status_DirectionRight" xml:space="preserve"><value>(→ rechts)</value></data>
+  <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ omlaag)</value></data>
+  <data name="Status_DirectionLeft" xml:space="preserve"><value>(← links)</value></data>
+  <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ omhoog)</value></data>
+  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>ViGEmBus gedetecteerd — engine herstart.</value></data>
+  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>vJoy-stuurprogramma gedetecteerd — engine herstart.</value></data>
+  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>vJoy-stuurprogramma geïnstalleerd — engine herstart.</value></data>
+  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>vJoy-stuurprogramma verwijderd — engine herstart.</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NIET GEVONDEN</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll niet gevonden! Plaats SDL3.dll naast PadForge.exe. Download van https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>ViGEmBus-stuurprogramma niet gedetecteerd. Virtuele controller-uitvoer uitgeschakeld.</value></data>
+  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>ViGEm-controle mislukt: {0}</value></data>
+  <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Stuurprogrammabewerking mislukt: {0}</value></data>
+  <data name="Status_SettingsCopied" xml:space="preserve"><value>Instellingen naar klembord gekopieerd.</value></data>
+  <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Kopiëren mislukt: {0}</value></data>
+  <data name="Status_InvalidClipboard" xml:space="preserve"><value>Klembord bevat geen geldige PadForge-instellingen.</value></data>
+  <data name="Status_SettingsPasted" xml:space="preserve"><value>Instellingen vanuit klembord geplakt.</value></data>
+  <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Plakken mislukt: {0}</value></data>
+  <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Geen apparaat geselecteerd om van te kopiëren.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Geen andere geconfigureerde apparaten gevonden om van te kopiëren.</value></data>
+  <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Instellingen gekopieerd van geselecteerd apparaat.</value></data>
+  <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profiel "{0}" aangemaakt (leeg).</value></data>
+  <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profiel "{0}" aangemaakt.</value></data>
+  <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profiel "{0}" verwijderd.</value></data>
+  <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profiel "{0}" bijgewerkt.</value></data>
+  <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profiel geladen: {0}</value></data>
+  <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profiel teruggezet naar Standaard</value></data>
+  <data name="Status_Player_Format" xml:space="preserve"><value>Speler {0} — {1}</value></data>
+  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Niet toegewezen — {0}</value></data>
+
+  <!-- ═══ Dashboard ═══ -->
+  <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Dashboard_InputEngine" xml:space="preserve"><value>Invoer-engine</value></data>
+  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> apparaten online</value></data>
+  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuele Controllers</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value>toegewezen,</value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value>verbonden</value></data>
+  <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsserver</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/cemuhook-server voor gyroscoop- en versnellingsmetergegevens.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (cemuhook)</value></data>
+  <data name="Dashboard_Port" xml:space="preserve"><value>Poort:</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyro-/versnellingsgegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>
+  <data name="Dashboard_WebController" xml:space="preserve"><value>Webcontroller</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Bied een gamepad-interface aan voor browsers op uw lokale netwerk.</value></data>
+  <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Webcontroller-server inschakelen</value></data>
+  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbind vanaf een telefoon of tablet-browser om het als gamepad te gebruiken.</value></data>
+  <data name="Dashboard_Drivers" xml:space="preserve"><value>Stuurprogramma's</value></data>
+  <data name="Dashboard_NoDevice" xml:space="preserve"><value>Geen apparaat</value></data>
+
+  <!-- ═══ Settings ═══ -->
+  <data name="Settings_Title" xml:space="preserve"><value>Instellingen</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>Uiterlijk</value></data>
+  <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Kies uw gewenste visuele thema.</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>Thema</value></data>
+  <data name="Settings_ThemeSystem" xml:space="preserve"><value>Systeemstandaard</value></data>
+  <data name="Settings_ThemeLight" xml:space="preserve"><value>Licht</value></data>
+  <data name="Settings_ThemeDark" xml:space="preserve"><value>Donker</value></data>
+  <data name="Settings_InputEngine" xml:space="preserve"><value>Invoer-engine</value></data>
+  <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configureer het pollinggedrag en achtergrondverwerking.</value></data>
+  <data name="Settings_AutoStart" xml:space="preserve"><value>Engine automatisch starten bij opstarten</value></data>
+  <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Polling voortzetten wanneer het venster de focus verliest</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling-interval:</value></data>
+  <data name="Settings_HideDevices" xml:space="preserve"><value>Apparaten verbergen voor games</value></data>
+  <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hoofdschakelaar voor HidHide-apparaatverberging en low-level invoerhooks. Bij uitschakeling worden geen apparaten verborgen, ongeacht individuele apparaatinstellingen.</value></data>
+  <data name="Settings_Window" xml:space="preserve"><value>Venster</value></data>
+  <data name="Settings_WindowDesc" xml:space="preserve"><value>Opstart- en minimaliseergedrag.</value></data>
+  <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimaliseren naar systeemvak</value></data>
+  <data name="Settings_StartMinimized" xml:space="preserve"><value>Geminimaliseerd starten</value></data>
+  <data name="Settings_StartAtLogin" xml:space="preserve"><value>Starten bij aanmelding</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide-stuurprogramma</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Fysieke apparaten verbergen voor games om dubbele invoer te voorkomen.</value></data>
+  <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Toegestane toepassingen</value></data>
+  <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Deze toepassingen kunnen verborgen apparaten nog steeds zien. PadForge wordt altijd automatisch toegestaan.</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Toevoegen...</value></data>
+  <data name="Settings_ViGEmBus" xml:space="preserve"><value>ViGEmBus-stuurprogramma</value></data>
+  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>Virtueel controller-stuurprogramma voor Xbox 360- en DualShock 4-uitvoer.</value></data>
+  <data name="Settings_VJoy" xml:space="preserve"><value>vJoy-stuurprogramma</value></data>
+  <data name="Settings_VJoyDesc" xml:space="preserve"><value>Virtueel joystick-stuurprogramma voor aangepaste DirectInput-apparaatuitvoer.</value></data>
+  <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-runtime voor virtuele MIDI-apparaatuitvoer. Gedownload van GitHub (~210 MB).</value></data>
+  <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Vereist Windows 11 24H2 (build 26100) of hoger</value></data>
+  <data name="Settings_SettingsFile" xml:space="preserve"><value>Instellingenbestand</value></data>
+  <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Configuratie opslaan, opnieuw laden of herstellen.</value></data>
+  <data name="Settings_Reload" xml:space="preserve"><value>Opnieuw laden</value></data>
+  <data name="Settings_ResetToDefaults" xml:space="preserve"><value>Standaardwaarden herstellen</value></data>
+  <data name="Settings_OpenFolder" xml:space="preserve"><value>Map openen</value></data>
+  <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Niet-opgeslagen wijzigingen</value></data>
+  <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnostiek</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Applicatie- en runtime-versie-informatie.</value></data>
+  <data name="Settings_AppVersion" xml:space="preserve"><value>App-versie</value></data>
+  <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-runtime</value></data>
+  <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-versie</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Taal</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Kies uw gewenste weergavetaal. Vereist herstart.</value></data>
+  <data name="Settings_RestartRequired" xml:space="preserve"><value>Taalwijziging vereist een herstart om van kracht te worden.</value></data>
+
+  <!-- ═══ About ═══ -->
+  <data name="About_Title" xml:space="preserve"><value>Over</value></data>
+  <data name="About_Subtitle" xml:space="preserve"><value>Controller-toewijzingshulpprogramma</value></data>
+  <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce — opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge wijst elke controller, elk toetsenbord of elke muis toe aan virtuele Xbox 360-, DualShock 4-, aangepaste DirectInput- of MIDI-controllers via ViGEmBus, vJoy en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord- en muisinvoer, en biedt een moderne Fluent Design-interface voor toewijzing, dode-zoneconfiguratie en force-feedbackbeheer.</value></data>
+  <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
+  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework</value></data>
+  <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-invoer en -detectie</value></data>
+  <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
+  <data name="About_RawInputDesc" xml:space="preserve"><value>Apparaatspecifieke toetsenbord- en muisinvoer</value></data>
+  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
+  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>Virtueel controller-stuurprogramma (Xbox 360, DualShock 4)</value></data>
+  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
+  <data name="About_VJoyDesc" xml:space="preserve"><value>Virtueel joystick-stuurprogramma voor aangepaste DirectInput-uitvoer</value></data>
+  <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuele MIDI-apparaatuitvoer (Windows MIDI Services)</value></data>
+  <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-controllervisualisatie</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent Design-thema voor WPF</value></data>
+  <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm voor gegevensbinding</value></data>
+  <data name="About_License" xml:space="preserve"><value>Licentie</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. Windows MIDI Services is gelicentieerd onder de MIT License. ViGEmBus, vJoy, HelixToolkit en ModernWpf zijn gelicentieerd onder de MIT License.</value></data>
+
+  <!-- ═══ Devices ═══ -->
+  <data name="Devices_Title" xml:space="preserve"><value>Apparaten</value></data>
+  <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
+  <data name="Devices_Total" xml:space="preserve"><value> totaal</value></data>
+  <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>
+  <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
+  <data name="Devices_Type" xml:space="preserve"><value>Type: </value></data>
+  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_InstancePath" xml:space="preserve"><value>Instantiepad: </value></data>
+  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
+  <data name="Devices_SubmitMapping" xml:space="preserve"><value>Apparaattoewijzing indienen</value></data>
+  <data name="Devices_VCAssignment" xml:space="preserve"><value>Virtuele controller-toewijzing</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Toewijzing wisselen</value></data>
+  <data name="Devices_InputMode" xml:space="preserve"><value>Invoermodus</value></data>
+  <data name="Devices_ForceRaw" xml:space="preserve"><value>Raw joystick-modus forceren (gamepad-hertoewijzing omzeilen)</value></data>
+  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ruwe HID-indices lezen in plaats van SDL's gamepad-toewijzing — gebruik wanneer SDL de knop-/asindeling verkeerd herkent</value></data>
+  <data name="Devices_InputHiding" xml:space="preserve"><value>Invoerverberging</value></data>
+  <data name="Devices_HideFromGames" xml:space="preserve"><value>Verbergen voor games (HidHide)</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbergt dit apparaat volledig voor andere toepassingen via het HidHide-stuurprogramma</value></data>
+  <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installeer het HidHide-stuurprogramma om deze optie in te schakelen</value></data>
+  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Toegewezen invoer verbruiken (hooks)</value></data>
+  <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Onderdrukt alleen de specifieke toetsen/knoppen die zijn toegewezen, en laat niet-toegewezen invoer door</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Ruwe invoerstatus</value></data>
+  <data name="Devices_Axes" xml:space="preserve"><value>Assen</value></data>
+  <data name="Devices_Buttons" xml:space="preserve"><value>Knoppen</value></data>
+  <data name="Devices_Keyboard" xml:space="preserve"><value>Toetsenbord</value></data>
+  <data name="Devices_Mouse" xml:space="preserve"><value>Muis</value></data>
+  <data name="Devices_DPadPOV" xml:space="preserve"><value>D-Pad / POV</value></data>
+  <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
+  <data name="Devices_Gyroscope" xml:space="preserve"><value>Gyroscoop</value></data>
+  <data name="Devices_Accelerometer" xml:space="preserve"><value>Versnellingsmeter</value></data>
+  <data name="Devices_Axis_Format" xml:space="preserve"><value>As {0}</value></data>
+  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} assen, {1} knoppen, {2} POV('s)</value></data>
+  <data name="Devices_Rumble" xml:space="preserve"><value>Trillen</value></data>
+  <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Devices_Accel" xml:space="preserve"><value>Versn.</value></data>
+  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>U staat op het punt om {0}. Dit heeft invloed op {1}{2}.</value></data>
+  <data name="Devices_HideAction" xml:space="preserve"><value>dit apparaat te verbergen voor alle toepassingen</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewezen invoer van dit apparaat te blokkeren</value></data>
+
+  <!-- ═══ Pad Page ═══ -->
+  <data name="Pad_Macros" xml:space="preserve"><value>Macro's</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Toewijzingen</value></data>
+  <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
+  <data name="Pad_ForceFeeedback" xml:space="preserve"><value>Force Feedback</value></data>
+  <data name="Pad_Preset" xml:space="preserve"><value>Voorinstelling</value></data>
+  <data name="Pad_Custom" xml:space="preserve"><value>Aangepast</value></data>
+  <data name="Pad_VJoySticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>Triggers</value></data>
+  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POVs</value></data>
+  <data name="Pad_VJoyButtons" xml:space="preserve"><value>Knoppen</value></data>
+  <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanaal</value></data>
+  <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-kanaal (1-16)</value></data>
+  <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-aantal</value></data>
+  <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Aantal CC-uitgangen (maximum afhankelijk van Start-CC)</value></data>
+  <data name="Pad_MidiStartCC" xml:space="preserve"><value>Start-CC</value></data>
+  <data name="Pad_MidiStartCCTooltip" xml:space="preserve"><value>Eerste CC-nummer (0-127). Hogere waarden verlagen het maximale CC-aantal.</value></data>
+  <data name="Pad_MidiNoteCount" xml:space="preserve"><value>Nootaantal</value></data>
+  <data name="Pad_MidiNoteCountTooltip" xml:space="preserve"><value>Aantal nootuitgangen (maximum afhankelijk van startnoot)</value></data>
+  <data name="Pad_MidiStartNote" xml:space="preserve"><value>Startnoot</value></data>
+  <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>Eerste MIDI-nootnummer (0-127, 60 = Midden C). Hogere waarden verlagen het maximale nootaantal.</value></data>
+  <data name="Pad_MidiVelocity" xml:space="preserve"><value>Aanslagsterkte</value></data>
+  <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Note-on aanslagsterkte (0-127). Hoe hard de virtuele toetsen worden ingedrukt.</value></data>
+  <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Wisselen naar 2D-weergave</value></data>
+  <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Wisselen naar 3D-weergave</value></data>
+  <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klik om de linkermotor te testen</value></data>
+  <data name="Pad_LeftMotor" xml:space="preserve"><value>L Motor</value></data>
+  <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik om de rechtermotor te testen</value></data>
+  <data name="Pad_RightMotor" xml:space="preserve"><value>R Motor</value></data>
+  <data name="Pad_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
+  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Alle toewijzingen achtereenvolgens opnemen — druk op een knop/as bij elke prompt</value></data>
+  <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle toewijzingen een voor een opnemen</value></data>
+  <data name="Pad_MappingHint" xml:space="preserve"><value>Klik op een toewijzingsrij en druk op een knop/as op uw controller om deze toe te wijzen.</value></data>
+  <data name="Pad_CopyTooltip" xml:space="preserve"><value>Alle toewijzingen en instellingen naar klembord kopiëren</value></data>
+  <data name="Pad_PasteTooltip" xml:space="preserve"><value>Toewijzingen en instellingen vanuit klembord plakken</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiëren van...</value></data>
+  <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Instellingen kopiëren van een ander geconfigureerd apparaat</value></data>
+  <data name="Pad_ResetAll" xml:space="preserve"><value>Alles herstellen</value></data>
+  <data name="Pad_ClearAll" xml:space="preserve"><value>Alles wissen</value></data>
+  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Uitvoer</value></data>
+  <data name="Pad_HeaderSource" xml:space="preserve"><value>Bron</value></data>
+  <data name="Pad_HeaderValue" xml:space="preserve"><value>Waarde</value></data>
+  <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opties</value></data>
+  <data name="Pad_Inv" xml:space="preserve"><value>Inv</value></data>
+  <data name="Pad_Half" xml:space="preserve"><value>Half</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middenverschuiving X:</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Dode-zonevorm:</value></data>
+  <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Geschaald radiaal</value></data>
+  <data name="Pad_DZRadial" xml:space="preserve"><value>Radiaal</value></data>
+  <data name="Pad_DZAxial" xml:space="preserve"><value>Axiaal</value></data>
+  <data name="Pad_DZHybrid" xml:space="preserve"><value>Hybride</value></data>
+  <data name="Pad_DZSlopedScaledAxial" xml:space="preserve"><value>Hellend geschaald axiaal</value></data>
+  <data name="Pad_DZSlopedAxial" xml:space="preserve"><value>Hellend axiaal</value></data>
+  <data name="Pad_MouseMovement" xml:space="preserve"><value>Muisbeweging</value></data>
+  <data name="Pad_ScrollUp" xml:space="preserve"><value>Omhoog</value></data>
+  <data name="Pad_ScrollDown" xml:space="preserve"><value>Omlaag</value></data>
+
+  <!-- ═══ Macros ═══ -->
+  <data name="Macro_Name" xml:space="preserve"><value>Naam</value></data>
+  <data name="Macro_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>Uitvoeren:</value></data>
+  <data name="Macro_OnPress" xml:space="preserve"><value>Bij indrukken</value></data>
+  <data name="Macro_OnRelease" xml:space="preserve"><value>Bij loslaten</value></data>
+  <data name="Macro_WhileHeld" xml:space="preserve"><value>Tijdens ingedrukt houden</value></data>
+  <data name="Macro_Always" xml:space="preserve"><value>Altijd</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>Bron:</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Invoerapparaat</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Uitvoercontroller</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>Drempelwaarde:</value></data>
+  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Triggerknoppen verbruiken (verbergen voor game)</value></data>
+  <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Draait continu zolang deze virtuele controller actief is. Geen triggerknop vereist.</value></data>
+  <data name="Macro_ActionSequence" xml:space="preserve"><value>Actiereeks</value></data>
+  <data name="Macro_AddAction" xml:space="preserve"><value>Actie toevoegen</value></data>
+  <data name="Macro_EditAction" xml:space="preserve"><value>Actie bewerken</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>Type:</value></data>
+  <data name="Macro_ButtonPress" xml:space="preserve"><value>Knop indrukken</value></data>
+  <data name="Macro_ButtonRelease" xml:space="preserve"><value>Knop loslaten</value></data>
+  <data name="Macro_KeyPress" xml:space="preserve"><value>Toets indrukken</value></data>
+  <data name="Macro_KeyRelease" xml:space="preserve"><value>Toets loslaten</value></data>
+  <data name="Macro_Delay" xml:space="preserve"><value>Vertraging</value></data>
+  <data name="Macro_SetAxis" xml:space="preserve"><value>As instellen</value></data>
+  <data name="Macro_SystemVolume" xml:space="preserve"><value>Systeemvolume</value></data>
+  <data name="Macro_AppVolume" xml:space="preserve"><value>App-volume</value></data>
+  <data name="Macro_MouseMove" xml:space="preserve"><value>Muisbeweging</value></data>
+  <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Muisknop indrukken</value></data>
+  <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Muisknop loslaten</value></data>
+  <data name="Macro_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>Knoppen:</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>Toetscombinatie:</value></data>
+  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Toetscombinatie in {Toets1}{Toets2}-formaat — bewerkbaar</value></data>
+  <data name="Macro_KeyComboHint" xml:space="preserve"><value>Selecteer een toets om deze toe te voegen. Voorbeeld: {Control}{Alt}{Delete}</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>Duur:</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>As:</value></data>
+  <data name="Macro_LeftStickX" xml:space="preserve"><value>Linker stick X</value></data>
+  <data name="Macro_LeftStickY" xml:space="preserve"><value>Linker stick Y</value></data>
+  <data name="Macro_RightStickX" xml:space="preserve"><value>Rechter stick X</value></data>
+  <data name="Macro_RightStickY" xml:space="preserve"><value>Rechter stick Y</value></data>
+  <data name="Macro_LeftTrigger" xml:space="preserve"><value>Linker trigger</value></data>
+  <data name="Macro_RightTrigger" xml:space="preserve"><value>Rechter trigger</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>Waarde:</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>As van:</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>Bronas:</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>Apparaat:</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>Volumelimiet:</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>Proces:</value></data>
+  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Procesnaam zonder .exe — dropdown toont processen met actieve audiosessies</value></data>
+  <data name="Macro_MouseLeft" xml:space="preserve"><value>Links</value></data>
+  <data name="Macro_MouseRight" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Macro_MouseMiddle" xml:space="preserve"><value>Midden</value></data>
+  <data name="Macro_MouseX1" xml:space="preserve"><value>X1 (Terug)</value></data>
+  <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (Vooruit)</value></data>
+  <data name="Macro_Repeat" xml:space="preserve"><value>Herhalen</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>Modus:</value></data>
+  <data name="Macro_Once" xml:space="preserve"><value>Eenmaal</value></data>
+  <data name="Macro_FixedCount" xml:space="preserve"><value>Vast aantal</value></data>
+  <data name="Macro_UntilRelease" xml:space="preserve"><value>Tot loslaten</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>Aantal:</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Vertraging (ms):</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>Gevoeligheid:</value></data>
+  <data name="Macro_NewMacro" xml:space="preserve"><value>Nieuwe macro</value></data>
+  <data name="Macro_RecordTrigger" xml:space="preserve"><value>Trigger opnemen</value></data>
+  <data name="Macro_NotSet" xml:space="preserve"><value>Niet ingesteld — klik op Opnemen</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>Knop {0}</value></data>
+
+  <!-- ═══ Macro Action Display ═══ -->
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} indrukken voor {1}ms</value></data>
+  <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} loslaten</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Toetsen {0} voor {1}ms</value></data>
+  <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Toetsen {0} loslaten</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms wachten</value></data>
+  <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} instellen</value></data>
+  <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Systeemvolume ← {0}</value></data>
+  <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Systeemvolume ← {0} (max {1}%)</value></data>
+  <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>App-volume ← {0}</value></data>
+  <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>App-volume ← {0} (max {1}%)</value></data>
+  <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Muisbeweging ← {0} (snelheid {1:F0})</value></data>
+  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Muis verplaatsen met {0} (max {1}px)</value></data>
+  <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Muis scrollen ← {0} (snelheid {1:F0})</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen met {0} (max {1} eenheden)</value></data>
+  <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop indrukken {0}</value></data>
+  <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop loslaten {0}</value></data>
+
+  <!-- ═══ POV Directions ═══ -->
+  <data name="POV_Centered" xml:space="preserve"><value>Gecentreerd</value></data>
+  <data name="POV_Up" xml:space="preserve"><value>Omhoog</value></data>
+  <data name="POV_UpRight" xml:space="preserve"><value>Rechtsboven</value></data>
+  <data name="POV_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="POV_DownRight" xml:space="preserve"><value>Rechtsonder</value></data>
+  <data name="POV_Down" xml:space="preserve"><value>Omlaag</value></data>
+  <data name="POV_DownLeft" xml:space="preserve"><value>Linksonder</value></data>
+  <data name="POV_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="POV_UpLeft" xml:space="preserve"><value>Linksboven</value></data>
+
+  <!-- ═══ Mapping ═══ -->
+  <data name="Mapping_NotMapped" xml:space="preserve"><value>Niet toegewezen</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Half" xml:space="preserve"><value>Half</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Half</value></data>
+  <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Geen apparaat toegewezen</value></data>
+
+  <!-- ═══ Profiles ═══ -->
+  <data name="Profiles_Title" xml:space="preserve"><value>Profielen</value></data>
+  <data name="Profiles_Management" xml:space="preserve"><value>Profielbeheer</value></data>
+  <data name="Profiles_Description" xml:space="preserve"><value>Maak toepassingsspecifieke controllerprofielen die automatisch wisselen op basis van het actieve spel.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Profielen automatisch wisselen op basis van de voorgrondtoepassing</value></data>
+  <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Actief profiel:</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Geen slots</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Nieuw</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Opslaan als</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Bewerken</value></data>
+  <data name="Profiles_Load" xml:space="preserve"><value>Laden</value></data>
+
+  <!-- ═══ Profile Dialog ═══ -->
+  <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Opslaan als profiel</value></data>
+  <data name="ProfileDialog_Edit" xml:space="preserve"><value>Profiel bewerken</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Profielnaam:</value></data>
+  <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nieuw profiel</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Uitvoerbare bestanden (vergeleken met voorgrondvenster):</value></data>
+
+  <!-- ═══ CopyFrom Dialog ═══ -->
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Instellingen kopiëren van...</value></data>
+  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Selecteer een apparaat om de instellingen van te kopiëren:</value></data>
+
+  <!-- ═══ File Dialogs ═══ -->
+  <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Toepassing selecteren voor de toelatingslijst</value></data>
+  <data name="FileDialog_SelectGameExe" xml:space="preserve"><value>Uitvoerbaar spelbestand selecteren</value></data>
+  <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Uitvoerbare bestanden (*.exe)|*.exe|Alle bestanden (*.*)|*.*</value></data>
+
+  <!-- ═══ App-Level Messages ═══ -->
+  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge is al actief.</value></data>
+  <data name="App_FatalError" xml:space="preserve"><value>PadForge — Fatale fout</value></data>
+  <data name="App_Error" xml:space="preserve"><value>PadForge — Fout</value></data>
+  <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Er is een onverwachte fout opgetreden:\n\n{0}\n\n{1}</value></data>
+  <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} extra fout(en) onderdrukt)</value></data>
+
+  <!-- ═══ Polling Frequency ═══ -->
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+
+  <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dode zone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dode zone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-dode zone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-dode zone Y:</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>Lineair:</value></data>
+  <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Gevoeligheidscurven</value></data>
+  <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Dubbelklik op de grafiek om een punt toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>Gevoeligheid X:</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>Gevoeligheid Y:</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>Min bereik X (Links):</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>Max bereik X (Rechts):</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min bereik Y (Omlaag):</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max bereik Y (Omhoog):</value></data>
+  <data name="Pad_XAxis" xml:space="preserve"><value>X-as</value></data>
+  <data name="Pad_YAxis" xml:space="preserve"><value>Y-as</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>Bereik:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dode zone:</value></data>
+  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Gevoeligheidscurve</value></data>
+  <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklik om toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>Voorinstelling:</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>Live:</value></data>
+  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger-as</value></data>
+
+  <!-- ═══ Pad — Force Feedback ═══ -->
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Trillen</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>Totale versterking:</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linkermotor:</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Rechtermotor:</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Linker-/rechtermotor verwisselen</value></data>
+  <data name="Pad_TestRumble" xml:space="preserve"><value>Trillen testen</value></data>
+  <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoractiviteit</value></data>
+
+  <!-- ═══ Pad — Reset Tooltips ═══ -->
+  <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Middenverschuiving X herstellen</value></data>
+  <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y herstellen</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Herstellen naar Geschaald Radiaal</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Dode zone X herstellen</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Dode zone Y herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-dode zone X herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-dode zone Y herstellen</value></data>
+  <data name="Pad_ResetLinear" xml:space="preserve"><value>Lineair herstellen</value></data>
+  <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Gevoeligheid X herstellen</value></data>
+  <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Gevoeligheid Y herstellen</value></data>
+  <data name="Pad_ResetMinRangeX" xml:space="preserve"><value>Min bereik X herstellen</value></data>
+  <data name="Pad_ResetMaxRangeX" xml:space="preserve"><value>Max bereik X herstellen</value></data>
+  <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Min bereik Y herstellen</value></data>
+  <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Max bereik Y herstellen</value></data>
+  <data name="Pad_ResetRange" xml:space="preserve"><value>Bereik herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-dode zone herstellen</value></data>
+  <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Gevoeligheid herstellen</value></data>
+  <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Totale versterking herstellen</value></data>
+  <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
+  <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
+
+  <!-- ═══ Pad — Macro Hints ═══ -->
+  <data name="Macro_RecordHint" xml:space="preserve"><value>Druk op knoppen of beweeg een as/trigger om op te nemen. Assen worden gedetecteerd wanneer ze meer dan 50% worden uitgeslagen.</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Wijst de geselecteerde as (0–100%) continu toe aan het Windows-systeemvolume, geschaald naar de volumelimiet. Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Regelt het volume van een specifieke toepassing in de Windows-volumemixer, geschaald naar de volumelimiet. Voer de procesnaam in (zichtbaar in Taakbeheer). Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Wijst de geselecteerde as continu toe aan muisbeweging (of scrollen). Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten". Maak voor stick-naar-muis twee acties aan: een voor de X-as, een voor de Y-as.</value></data>
+
+  <!-- ═══ 3D View ═══ -->
+  <data name="Pad_ResetView" xml:space="preserve"><value>Weergave herstellen</value></data>
+
+  <!-- ═══ Gamepad Button Labels ═══ -->
+  <data name="Btn_LeftBumper" xml:space="preserve"><value>Linker bumper</value></data>
+  <data name="Btn_RightBumper" xml:space="preserve"><value>Rechter bumper</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Btn_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
+  <data name="Btn_LeftStickClick" xml:space="preserve"><value>Linker stick-klik</value></data>
+  <data name="Btn_RightStickClick" xml:space="preserve"><value>Rechter stick-klik</value></data>
+  <data name="Btn_DPadUp" xml:space="preserve"><value>D-Pad omhoog</value></data>
+  <data name="Btn_DPadDown" xml:space="preserve"><value>D-Pad omlaag</value></data>
+  <data name="Btn_DPadLeft" xml:space="preserve"><value>D-Pad links</value></data>
+  <data name="Btn_DPadRight" xml:space="preserve"><value>D-Pad rechts</value></data>
+  <data name="Btn_LeftTrigger" xml:space="preserve"><value>Linker trigger</value></data>
+  <data name="Btn_RightTrigger" xml:space="preserve"><value>Rechter trigger</value></data>
+  <data name="Btn_LeftStickX" xml:space="preserve"><value>Linker stick X</value></data>
+  <data name="Btn_LeftStickY" xml:space="preserve"><value>Linker stick Y</value></data>
+  <data name="Btn_RightStickX" xml:space="preserve"><value>Rechter stick X</value></data>
+  <data name="Btn_RightStickY" xml:space="preserve"><value>Rechter stick Y</value></data>
+
+  <!-- ═══ Keyboard Key Labels ═══ -->
+  <data name="Key_LeftShift" xml:space="preserve"><value>Linker Shift</value></data>
+  <data name="Key_RightShift" xml:space="preserve"><value>Rechter Shift</value></data>
+  <data name="Key_LeftCtrl" xml:space="preserve"><value>Linker Ctrl</value></data>
+  <data name="Key_RightCtrl" xml:space="preserve"><value>Rechter Ctrl</value></data>
+  <data name="Key_LeftAlt" xml:space="preserve"><value>Linker Alt</value></data>
+  <data name="Key_RightAlt" xml:space="preserve"><value>Rechter Alt</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Spatiebalk</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Escape</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Key_CapsLock" xml:space="preserve"><value>Caps Lock</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>Omhoog</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>Omlaag</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Key_End" xml:space="preserve"><value>End</value></data>
+  <data name="Key_PageUp" xml:space="preserve"><value>Page Up</value></data>
+  <data name="Key_PageDown" xml:space="preserve"><value>Page Down</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Delete</value></data>
+
+  <!-- ═══ Mouse Labels ═══ -->
+  <data name="Mouse_LeftClick" xml:space="preserve"><value>Linksklik</value></data>
+  <data name="Mouse_RightClick" xml:space="preserve"><value>Rechtsklik</value></data>
+  <data name="Mouse_MiddleClick" xml:space="preserve"><value>Middelklik</value></data>
+  <data name="Mouse_Button4" xml:space="preserve"><value>Muis 4</value></data>
+  <data name="Mouse_Button5" xml:space="preserve"><value>Muis 5</value></data>
+  <data name="Mouse_X" xml:space="preserve"><value>Muis X</value></data>
+  <data name="Mouse_Y" xml:space="preserve"><value>Muis Y</value></data>
+  <data name="Mouse_Scroll" xml:space="preserve"><value>Scrollen</value></data>
+
+  <!-- ═══ vJoy Custom Labels ═══ -->
+  <data name="VJoy_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
+  <data name="VJoy_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
+  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
+  <data name="VJoy_Button_Format" xml:space="preserve"><value>Knop {0}</value></data>
+  <data name="VJoy_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+  <!-- ═══ Macro Axis Target Labels ═══ -->
+  <data name="MacroAxis_XAxis" xml:space="preserve"><value>Linker stick X</value></data>
+  <data name="MacroAxis_YAxis" xml:space="preserve"><value>Linker stick Y</value></data>
+  <data name="MacroAxis_XRotation" xml:space="preserve"><value>Rechter stick X</value></data>
+  <data name="MacroAxis_YRotation" xml:space="preserve"><value>Rechter stick Y</value></data>
+  <data name="MacroAxis_ZAxis" xml:space="preserve"><value>Linker trigger</value></data>
+  <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Rechter trigger</value></data>
+
+  <!-- ═══ Preview Views ═══ -->
+  <data name="Preview_CCOutputs" xml:space="preserve"><value>CC-uitgangen</value></data>
+  <data name="Preview_NoteOutputs" xml:space="preserve"><value>Nootuitgangen</value></data>
+  <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+</root>

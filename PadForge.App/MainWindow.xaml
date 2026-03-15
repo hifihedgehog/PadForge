@@ -32,7 +32,7 @@
 
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItemSeparator/>
-                <ui:NavigationViewItem Content="{x:Static strings:Strings.About_Title}" Tag="About">
+                <ui:NavigationViewItem Content="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Tag="About">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE946;"/>
                     </ui:NavigationViewItem.Icon>
@@ -78,7 +78,7 @@
                            Margin="16,0"
                            Opacity="0.7">
                     <Run Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
-                    <Run Text="{x:Static strings:Strings.Main_DevicesSuffix}"/>
+                    <Run Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}"/>
                 </TextBlock>
 
                 <!-- Polling frequency -->
@@ -120,7 +120,7 @@
                                      HorizontalAlignment="Center"
                                      Margin="0,0,0,16"/>
                     <TextBlock x:Name="DriverOverlayText"
-                               Text="{x:Static strings:Strings.Main_PleaseWait}"
+                               Text="{Binding Main_PleaseWait, Source={x:Static strings:Strings.Instance}}"
                                FontSize="16"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"/>
@@ -146,14 +146,14 @@
                                      Width="40" Height="40"
                                      HorizontalAlignment="Center"
                                      Margin="0,0,0,16"/>
-                    <TextBlock Text="{x:Static strings:Strings.Main_ShuttingDown}"
+                    <TextBlock Text="{Binding Main_ShuttingDown, Source={x:Static strings:Strings.Instance}}"
                                FontSize="16"
                                FontWeight="SemiBold"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,0,0,4"/>
                     <TextBlock x:Name="ShutdownOverlayText"
-                               Text="{x:Static strings:Strings.Main_ReleasingControllers}"
+                               Text="{Binding Main_ReleasingControllers, Source={x:Static strings:Strings.Instance}}"
                                FontSize="13"
                                Opacity="0.7"
                                HorizontalAlignment="Center"

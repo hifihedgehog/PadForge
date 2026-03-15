@@ -4,7 +4,7 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="{x:Static strings:Strings.CopyFrom_Title}"
+        Title="{Binding CopyFrom_Title, Source={x:Static strings:Strings.Instance}}"
         Height="360" Width="420"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{x:Static strings:Strings.CopyFrom_SelectDevice}"
+        <TextBlock Text="{Binding CopyFrom_SelectDevice, Source={x:Static strings:Strings.Instance}}"
                    Margin="0,0,0,12"/>
 
         <ListBox Grid.Row="1" x:Name="DeviceList"
@@ -35,10 +35,10 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal"
                     HorizontalAlignment="Right" Margin="0,12,0,0">
-            <Button Content="{x:Static strings:Strings.Common_OK}" MinWidth="80" Margin="0,0,8,0"
+            <Button Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}" MinWidth="80" Margin="0,0,8,0"
                     IsDefault="True" Click="OkButton_Click"
                     Style="{StaticResource AccentButtonStyle}"/>
-            <Button Content="{x:Static strings:Strings.Common_Cancel}" MinWidth="80"
+            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="80"
                     IsCancel="True" Click="CancelButton_Click"/>
         </StackPanel>
     </Grid>

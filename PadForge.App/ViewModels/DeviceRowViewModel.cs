@@ -12,6 +12,15 @@ namespace PadForge.ViewModels
     /// </summary>
     public class DeviceRowViewModel : ObservableObject
     {
+        public DeviceRowViewModel()
+        {
+            Strings.CultureChanged += () =>
+            {
+                OnPropertyChanged(nameof(StatusText));
+                OnPropertyChanged(nameof(CapabilitiesSummary));
+            };
+        }
+
         // ─────────────────────────────────────────────
         //  Identity
         // ─────────────────────────────────────────────
@@ -132,9 +141,9 @@ namespace PadForge.ViewModels
         {
             get
             {
-                if (!_isEnabled) return Strings.Common_Disabled;
-                if (_isOnline) return Strings.Common_Online;
-                return Strings.Common_Offline;
+                if (!_isEnabled) return Strings.Instance.Common_Disabled;
+                if (_isOnline) return Strings.Instance.Common_Online;
+                return Strings.Instance.Common_Offline;
             }
         }
 
@@ -325,10 +334,10 @@ namespace PadForge.ViewModels
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
-            string.Format(Strings.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
-            (_hasRumble ? ", " + Strings.Devices_Rumble : "") +
-            (_hasGyro ? ", " + Strings.Devices_Gyro : "") +
-            (_hasAccel ? ", " + Strings.Devices_Accel : "");
+            string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
+            (_hasRumble ? ", " + Strings.Instance.Devices_Rumble : "") +
+            (_hasGyro ? ", " + Strings.Instance.Devices_Gyro : "") +
+            (_hasAccel ? ", " + Strings.Instance.Devices_Accel : "");
 
         /// <summary>
         /// Refreshes computed display properties.

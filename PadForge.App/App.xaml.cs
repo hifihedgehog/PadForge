@@ -25,7 +25,7 @@ namespace PadForge
             _singleInstanceMutex = new Mutex(true, "PadForge_SingleInstance", out bool isNewInstance);
             if (!isNewInstance)
             {
-                MessageBox.Show(Strings.App_AlreadyRunning, Strings.Common_PadForge,
+                MessageBox.Show(Strings.Instance.App_AlreadyRunning, Strings.Instance.Common_PadForge,
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 Shutdown();
                 return;
@@ -112,8 +112,8 @@ namespace PadForge
             if (e.ExceptionObject is Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(Strings.App_UnexpectedError_Format, ex.Message, ex.StackTrace),
-                    Strings.App_FatalError,
+                    string.Format(Strings.Instance.App_UnexpectedError_Format, ex.Message, ex.StackTrace),
+                    Strings.Instance.App_FatalError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -136,13 +136,13 @@ namespace PadForge
 
             _lastErrorTime.Restart();
             string suppressed = _suppressedErrorCount > 0
-                ? "\n\n" + string.Format(Strings.App_SuppressedErrors_Format, _suppressedErrorCount)
+                ? "\n\n" + string.Format(Strings.Instance.App_SuppressedErrors_Format, _suppressedErrorCount)
                 : string.Empty;
             _suppressedErrorCount = 0;
 
             MessageBox.Show(
-                string.Format(Strings.App_UnexpectedError_Format, e.Exception.Message, e.Exception.StackTrace) + suppressed,
-                Strings.App_Error,
+                string.Format(Strings.Instance.App_UnexpectedError_Format, e.Exception.Message, e.Exception.StackTrace) + suppressed,
+                Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

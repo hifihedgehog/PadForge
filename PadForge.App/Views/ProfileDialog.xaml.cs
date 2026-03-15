@@ -29,15 +29,15 @@ namespace PadForge.Views
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
-            Title = Strings.ProfileDialog_Edit;
+            Title = Strings.Instance.ProfileDialog_Edit;
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             var ofd = new OpenFileDialog
             {
-                Title = Strings.FileDialog_SelectGameExe,
-                Filter = Strings.FileDialog_ExeFilter,
+                Title = Strings.Instance.FileDialog_SelectGameExe,
+                Filter = Strings.Instance.FileDialog_ExeFilter,
                 Multiselect = true
             };
 

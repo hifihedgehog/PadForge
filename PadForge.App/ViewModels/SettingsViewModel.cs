@@ -17,7 +17,7 @@ namespace PadForge.ViewModels
     {
         public SettingsViewModel()
         {
-            Title = Strings.Settings_Title;
+            Title = Strings.Instance.Settings_Title;
         }
 
         // ─────────────────────────────────────────────
@@ -62,6 +62,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Currently selected UI language. Persisted as the culture name (e.g. "en", "ja").
+        /// Changing this applies the new language immediately (live switching).
         /// </summary>
         public CultureInfo SelectedLanguage
         {
@@ -76,23 +77,24 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _selectedLanguage, value) && value != null)
-                    LanguageChanged = true;
+                    Strings.ChangeCulture(value);
             }
         }
 
-        private bool _languageChanged;
-
-        /// <summary>Whether the language has been changed and a restart is needed.</summary>
-        public bool LanguageChanged
+        protected override void OnCultureChanged()
         {
-            get => _languageChanged;
-            set => SetProperty(ref _languageChanged, value);
+            Title = Strings.Instance.Settings_Title;
+            OnPropertyChanged(nameof(ViGEmStatusText));
+            OnPropertyChanged(nameof(HidHideStatusText));
+            OnPropertyChanged(nameof(VJoyStatusText));
+            OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(ActiveProfileInfo));
         }
 
         /// <summary>Gets the persisted language code (for serialization).</summary>
         internal string LanguageCode => _selectedLanguage?.Name ?? "";
 
-        /// <summary>Sets the language from a persisted code without triggering LanguageChanged.</summary>
+        /// <summary>Sets the language from a persisted code without triggering live switch.</summary>
         internal void SetLanguageFromCode(string code)
         {
             if (!string.IsNullOrEmpty(code))
@@ -128,7 +130,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>ViGEmBus status display text.</summary>
-        public string ViGEmStatusText => _isViGEmInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
+        public string ViGEmStatusText => _isViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _vigemVersion = string.Empty;
 
@@ -184,7 +186,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>HidHide status display text.</summary>
-        public string HidHideStatusText => _isHidHideInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
+        public string HidHideStatusText => _isHidHideInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _hidHideVersion = string.Empty;
 
@@ -287,7 +289,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>vJoy status display text.</summary>
-        public string VJoyStatusText => _isVJoyInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
+        public string VJoyStatusText => _isVJoyInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _vjoyVersion = string.Empty;
 
@@ -342,7 +344,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>MIDI Services status display text.</summary>
-        public string MidiServicesStatusText => _isMidiServicesInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _midiServicesVersion = string.Empty;
 
@@ -626,7 +628,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        private string _activeProfileInfo = Strings.Common_Default;
+        private string _activeProfileInfo = Strings.Instance.Common_Default;
 
         /// <summary>Display text for the currently active profile.</summary>
         public string ActiveProfileInfo
@@ -634,7 +636,7 @@ namespace PadForge.ViewModels
             get => _activeProfileInfo;
             set
             {
-                SetProperty(ref _activeProfileInfo, value ?? Strings.Common_Default);
+                SetProperty(ref _activeProfileInfo, value ?? Strings.Instance.Common_Default);
             }
         }
 

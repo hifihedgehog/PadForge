@@ -25,12 +25,18 @@ namespace PadForge.ViewModels
         {
             PadIndex = padIndex;
             _slotNumber = padIndex + 1;
-            Title = string.Format(Strings.Main_VirtualController_Format, padIndex + 1);
-            SlotLabel = string.Format(Strings.Main_VirtualController_Format, padIndex + 1);
+            Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
+            SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             _vJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
+        }
+
+        protected override void OnCultureChanged()
+        {
+            Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
+            SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>
@@ -245,7 +251,7 @@ namespace PadForge.ViewModels
         /// </summary>
         public event EventHandler<MappedDeviceInfo> SelectedDeviceChanged;
 
-        private string _mappedDeviceName = Strings.Mapping_NoDeviceMapped;
+        private string _mappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
 
         public string MappedDeviceName
         {

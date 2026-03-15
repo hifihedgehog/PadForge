@@ -199,7 +199,7 @@
 
                 <!-- [Macros] -->
                 <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="{x:Static strings:Strings.Pad_Macros}" FontSize="15"/>
+                    <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
 
                 <!-- | separator -->
@@ -237,16 +237,16 @@
                 <!-- Config tabs -->
                 <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              AutomationProperties.AutomationId="MappingsTab">
-                    <TextBlock Text="{x:Static strings:Strings.Pad_Mappings}" FontSize="13"/>
+                    <TextBlock Text="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
                 <RadioButton x:Name="TabSticks" Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="{x:Static strings:Strings.Pad_Sticks}" FontSize="13"/>
+                    <TextBlock Text="{Binding Pad_Sticks, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
                 <RadioButton x:Name="TabTriggers" Tag="4" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="{x:Static strings:Strings.Pad_Triggers}" FontSize="13"/>
+                    <TextBlock Text="{Binding Pad_Triggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
                 <RadioButton x:Name="TabForceFeedback" Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="{x:Static strings:Strings.Pad_ForceFeeedback}" FontSize="13"/>
+                    <TextBlock Text="{Binding Pad_ForceFeeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
             </WrapPanel>
         </Border>
@@ -262,41 +262,41 @@
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <!-- Preset selector -->
-                <TextBlock Text="{x:Static strings:Strings.Pad_Preset}" VerticalAlignment="Center" Margin="0,0,6,0"
+                <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,6,0"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" FontSize="13"/>
                 <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
                           AutomationProperties.AutomationId="VJoyPresetCombo"
                           SelectionChanged="VJoyPresetCombo_SelectionChanged">
-                    <ComboBoxItem Content="{x:Static strings:Strings.ControllerType_Xbox360}"/>
-                    <ComboBoxItem Content="{x:Static strings:Strings.ControllerType_DualShock4}"/>
-                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_Custom}"/>
+                    <ComboBoxItem Content="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBoxItem Content="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBoxItem Content="{Binding Pad_Custom, Source={x:Static strings:Strings.Instance}}"/>
                 </ComboBox>
 
                 <!-- Custom config spinners (visible when Custom preset) -->
                 <StackPanel x:Name="VJoyCustomPanel" Orientation="Horizontal" Margin="16,0,0,0"
                             Visibility="Collapsed">
-                    <TextBlock Text="{x:Static strings:Strings.Pad_VJoySticks}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoySticks, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                     <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyStickCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{x:Static strings:Strings.Pad_VJoyTriggers}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoyTriggers, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                     <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyTriggerCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{x:Static strings:Strings.Pad_VJoyPOVs}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoyPOVs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                     <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyPovCountBox"
                              TextAlignment="Center" Text="1"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{x:Static strings:Strings.Pad_VJoyButtons}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoyButtons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                     <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyButtonCountBox"
@@ -316,44 +316,44 @@
                 BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Static strings:Strings.Pad_MidiChannel}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                <TextBlock Text="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="{x:Static strings:Strings.Pad_MidiChannelTooltip}"/>
+                           ToolTip="{Binding Pad_MidiChannelTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiChannelBox" Width="40" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="{x:Static strings:Strings.Pad_MidiCCCount}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="{x:Static strings:Strings.Pad_MidiCCCountTooltip}"/>
+                           ToolTip="{Binding Pad_MidiCCCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiCcCountBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="6"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="{x:Static strings:Strings.Pad_MidiStartCC}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="{x:Static strings:Strings.Pad_MidiStartCCTooltip}"/>
+                           ToolTip="{Binding Pad_MidiStartCCTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiStartCcBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="{x:Static strings:Strings.Pad_MidiNoteCount}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="{x:Static strings:Strings.Pad_MidiNoteCountTooltip}"/>
+                           ToolTip="{Binding Pad_MidiNoteCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiNoteCountBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="11"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="{x:Static strings:Strings.Pad_MidiStartNote}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="{x:Static strings:Strings.Pad_MidiStartNoteTooltip}"/>
+                           ToolTip="{Binding Pad_MidiStartNoteTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiStartNoteBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="60"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
-                <TextBlock Text="{x:Static strings:Strings.Pad_MidiVelocity}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                <TextBlock Text="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           ToolTip="{x:Static strings:Strings.Pad_MidiVelocityTooltip}"/>
+                           ToolTip="{Binding Pad_MidiVelocityTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiVelocityBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="127"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
@@ -400,7 +400,7 @@
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
                         <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="8,8,0,0" Padding="6,4" Opacity="0.7"
-                                Click="ViewModeToggle_Click" ToolTip="{x:Static strings:Strings.Pad_SwitchTo2D}">
+                                Click="ViewModeToggle_Click" ToolTip="{Binding Pad_SwitchTo2D, Source={x:Static strings:Strings.Instance}}">
                             <TextBlock x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                        Text="&#xE8B9;"/>
                         </Button>
@@ -419,9 +419,9 @@
                         <StackPanel Grid.Column="0" Cursor="Hand"
                                     MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
                                     MouseLeftButtonDown="LeftMotor_Click"
-                                    ToolTip="{x:Static strings:Strings.Pad_TestLeftMotor}"
+                                    ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
-                            <TextBlock Text="{x:Static strings:Strings.Pad_LeftMotor}" FontSize="14"
+                            <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
                             <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
@@ -437,9 +437,9 @@
                         <StackPanel Grid.Column="2" Cursor="Hand"
                                     MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
                                     MouseLeftButtonDown="RightMotor_Click"
-                                    ToolTip="{x:Static strings:Strings.Pad_TestRightMotor}"
+                                    ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
-                            <TextBlock Text="{x:Static strings:Strings.Pad_RightMotor}" FontSize="14"
+                            <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
                             <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
@@ -457,10 +457,10 @@
                          MAP ALL — Controller tab controls
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
-                        <Button Content="{x:Static strings:Strings.Pad_MapAll}" Command="{Binding MapAllCommand}"
+                        <Button Content="{Binding Pad_MapAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding MapAllCommand}"
                                 Padding="16,8" Margin="0,0,8,0" FontSize="14"
-                                ToolTip="{x:Static strings:Strings.Pad_MapAllTooltip}"/>
-                        <Button Content="{x:Static strings:Strings.Common_Stop}" Padding="12,6" FontSize="14"
+                                ToolTip="{Binding Pad_MapAllTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}" Padding="12,6" FontSize="14"
                                 Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Click="MapAllStop_Click"/>
                         <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
@@ -483,9 +483,9 @@
                     <!-- Macro list -->
                     <DockPanel Grid.Column="0">
                         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
-                            <Button Content="{x:Static strings:Strings.Common_Add}" Command="{Binding AddMacroCommand}"
+                            <Button Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddMacroCommand}"
                                     Padding="8,4" Margin="0,0,4,0"/>
-                            <Button Content="{x:Static strings:Strings.Common_Remove}" Command="{Binding RemoveMacroCommand}"
+                            <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
                                     Padding="8,4"/>
                         </StackPanel>
 
@@ -507,43 +507,43 @@
                                       Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel>
                             <!-- Macro name -->
-                            <TextBlock Text="{x:Static strings:Strings.Macro_Name}" FontWeight="SemiBold" Margin="0,0,0,4"
+                            <TextBlock Text="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0,0,0,12"/>
 
                             <!-- Enabled -->
-                            <CheckBox Content="{x:Static strings:Strings.Common_Enabled}" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                            <CheckBox Content="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
                                       Margin="0,0,0,12"/>
 
                             <!-- Trigger mode -->
-                            <TextBlock Text="{x:Static strings:Strings.Macro_Trigger}" FontWeight="SemiBold"
+                            <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{x:Static strings:Strings.Macro_Fire}" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_OnPress}" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_OnRelease}" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_WhileHeld}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_Always}" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
+                                    <ComboBoxItem Content="{Binding Macro_OnPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
+                                    <ComboBoxItem Content="{Binding Macro_OnRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
+                                    <ComboBoxItem Content="{Binding Macro_WhileHeld, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
+                                    <ComboBoxItem Content="{Binding Macro_Always, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
                                 </ComboBox>
                             </StackPanel>
 
                             <!-- Trigger combination (hidden when Always mode) -->
                             <StackPanel Visibility="{Binding IsNotAlwaysMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <TextBlock Text="{x:Static strings:Strings.Macro_Trigger}" FontWeight="SemiBold"
+                                <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                            Margin="0,0,0,4"
                                            Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{x:Static strings:Strings.Macro_Source}" VerticalAlignment="Center"
+                                    <TextBlock Text="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
                                               SelectedValuePath="Tag" MinWidth="160">
-                                        <ComboBoxItem Content="{x:Static strings:Strings.Macro_InputDevice}" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
-                                        <ComboBoxItem Content="{x:Static strings:Strings.Macro_OutputController}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
+                                        <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
+                                        <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
                                     </ComboBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -569,7 +569,7 @@
                                 <!-- Axis threshold (visible when an axis trigger was recorded) -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                             Visibility="{Binding UsesAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="{x:Static strings:Strings.Macro_Threshold}" VerticalAlignment="Center"
+                                    <TextBlock Text="{Binding Macro_Threshold, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <Slider Value="{Binding TriggerAxisThreshold, Mode=TwoWay}"
                                             Minimum="1" Maximum="100" Width="150"
@@ -579,13 +579,13 @@
                                     </TextBlock>
                                 </StackPanel>
 
-                                <CheckBox Content="{x:Static strings:Strings.Macro_ConsumeTrigger}"
+                                <CheckBox Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
                                           Margin="0,0,0,4"/>
                             </StackPanel>
 
                             <!-- Always mode note -->
-                            <TextBlock Text="{x:Static strings:Strings.Macro_AlwaysDesc}"
+                            <TextBlock Text="{Binding Macro_AlwaysDesc, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="11" TextWrapping="Wrap"
                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                        Margin="0,0,0,4"
@@ -594,13 +594,13 @@
                             <Separator Margin="0,4,0,12"/>
 
                             <!-- Action sequence -->
-                            <TextBlock Text="{x:Static strings:Strings.Macro_ActionSequence}" FontWeight="SemiBold"
+                            <TextBlock Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <Button Content="{x:Static strings:Strings.Macro_AddAction}" Command="{Binding AddActionCommand}"
+                                <Button Content="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddActionCommand}"
                                         Padding="8,4" Margin="0,0,4,0"/>
-                                <Button Content="{x:Static strings:Strings.Common_Remove}" Command="{Binding RemoveActionCommand}"
+                                <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveActionCommand}"
                                         Padding="8,4"/>
                             </StackPanel>
                             <ListBox ItemsSource="{Binding Actions}"
@@ -616,34 +616,34 @@
                                         RelativeSource={RelativeSource AncestorType=ScrollViewer},
                                         Converter={StaticResource NullToCollapsedConverter}}">
                                 <StackPanel>
-                                    <TextBlock Text="{x:Static strings:Strings.Macro_EditAction}" FontWeight="SemiBold" Margin="0,0,0,8"
+                                    <TextBlock Text="{Binding Macro_EditAction, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"
                                                Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 
                                     <!-- Action type -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_ActionType}" VerticalAlignment="Center"
+                                        <TextBlock Text="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
                                                   SelectedValuePath="Tag" MinWidth="150">
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_ButtonPress}" Tag="{x:Static vm:MacroActionType.ButtonPress}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_ButtonRelease}" Tag="{x:Static vm:MacroActionType.ButtonRelease}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_KeyPress}" Tag="{x:Static vm:MacroActionType.KeyPress}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_KeyRelease}" Tag="{x:Static vm:MacroActionType.KeyRelease}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_Delay}" Tag="{x:Static vm:MacroActionType.Delay}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_SetAxis}" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_SystemVolume}" Tag="{x:Static vm:MacroActionType.SystemVolume}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_AppVolume}" Tag="{x:Static vm:MacroActionType.AppVolume}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseMove}" Tag="{x:Static vm:MacroActionType.MouseMove}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseButtonPress}" Tag="{x:Static vm:MacroActionType.MouseButtonPress}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseButtonRelease}" Tag="{x:Static vm:MacroActionType.MouseButtonRelease}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseScroll}" Tag="{x:Static vm:MacroActionType.MouseScroll}"/>
+                                            <ComboBoxItem Content="{Binding Macro_ButtonPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ButtonPress}"/>
+                                            <ComboBoxItem Content="{Binding Macro_ButtonRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ButtonRelease}"/>
+                                            <ComboBoxItem Content="{Binding Macro_KeyPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.KeyPress}"/>
+                                            <ComboBoxItem Content="{Binding Macro_KeyRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.KeyRelease}"/>
+                                            <ComboBoxItem Content="{Binding Macro_Delay, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.Delay}"/>
+                                            <ComboBoxItem Content="{Binding Macro_SetAxis, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
+                                            <ComboBoxItem Content="{Binding Macro_SystemVolume, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.SystemVolume}"/>
+                                            <ComboBoxItem Content="{Binding Macro_AppVolume, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.AppVolume}"/>
+                                            <ComboBoxItem Content="{Binding Macro_MouseMove, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseMove}"/>
+                                            <ComboBoxItem Content="{Binding Macro_MouseButtonPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonPress}"/>
+                                            <ComboBoxItem Content="{Binding Macro_MouseButtonRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonRelease}"/>
+                                            <ComboBoxItem Content="{Binding Macro_MouseScroll, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseScroll}"/>
                                         </ComboBox>
                                     </StackPanel>
 
                                     <!-- Button flags — checkbox grid for ButtonPress / ButtonRelease -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_Buttons}" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <ItemsControl ItemsSource="{Binding ButtonOptions}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -663,19 +663,19 @@
                                     <!-- Key combo — for KeyPress / KeyRelease -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_KeyCombo}" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding Macro_KeyCombo, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <TextBox Text="{Binding KeyString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  FontFamily="Consolas" Margin="0,0,0,4"
-                                                 ToolTip="{x:Static strings:Strings.Macro_KeyComboTooltip}"/>
+                                                 ToolTip="{Binding Macro_KeyComboTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox ItemsSource="{x:Static vm:MacroAction.VirtualKeyValues}"
                                                       SelectedItem="{Binding SelectedKeyToAdd, Mode=TwoWay}"
                                                       MinWidth="180" MaxDropDownHeight="300"
                                                       IsTextSearchEnabled="True"/>
-                                            <Button Content="{x:Static strings:Strings.Common_Clear}" Command="{Binding ClearKeyStringCommand}"
+                                            <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}" Command="{Binding ClearKeyStringCommand}"
                                                     Padding="8,4" Margin="4,0,0,0"/>
                                         </StackPanel>
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_KeyComboHint}"
+                                        <TextBlock Text="{Binding Macro_KeyComboHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -683,28 +683,28 @@
                                     <!-- Duration — for ButtonPress / KeyPress / Delay -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_Duration}" VerticalAlignment="Center"
+                                        <TextBlock Text="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
-                                        <TextBlock Text="{x:Static strings:Strings.Common_Ms}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
 
                                     <!-- Axis target + value — for AxisSet -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsAxisType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_Axis}" VerticalAlignment="Center"
+                                        <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                   SelectedValuePath="Tag" MinWidth="120">
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Common_None}" Tag="{x:Static vm:MacroAxisTarget.None}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickX}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickY}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickX}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickY}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftTrigger}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
-                                            <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightTrigger}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                            <ComboBoxItem Content="{Binding Common_None, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.None}"/>
+                                            <ComboBoxItem Content="{Binding Macro_LeftStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                            <ComboBoxItem Content="{Binding Macro_LeftStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                            <ComboBoxItem Content="{Binding Macro_RightStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                            <ComboBoxItem Content="{Binding Macro_RightStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                            <ComboBoxItem Content="{Binding Macro_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                            <ComboBoxItem Content="{Binding Macro_RightTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                         </ComboBox>
-                                        <TextBlock Text="{x:Static strings:Strings.Macro_AxisValue}" VerticalAlignment="Center"
+                                        <TextBlock Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Margin="12,0,8,0"/>
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
                                     </StackPanel>
@@ -714,33 +714,33 @@
                                                 Visibility="{Binding IsSystemVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_AxisFrom}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_OutputController}" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_InputDevice}" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
+                                                <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
+                                                <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <!-- Output controller axis (existing) -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_SourceAxis}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickX}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickY}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickX}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickY}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftTrigger}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightTrigger}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <!-- Input device axis -->
                                         <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{x:Static strings:Strings.Macro_Device}" VerticalAlignment="Center"
+                                                <TextBlock Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox x:Name="SysVolDevicePicker"
                                                           MinWidth="200"
@@ -750,7 +750,7 @@
                                                           DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{x:Static strings:Strings.Macro_Axis}" VerticalAlignment="Center"
+                                                <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
                                                           DisplayMemberPath="Name"
@@ -760,7 +760,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_VolumeLimit}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="150"
@@ -778,45 +778,45 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsAppVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_Process}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_Process, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox IsEditable="True"
                                                       Text="{Binding ProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ItemsSource="{Binding AudioProcessNames}"
                                                       MinWidth="180" MaxDropDownHeight="200"
                                                       IsTextSearchEnabled="True"
-                                                      ToolTip="{x:Static strings:Strings.Macro_ProcessTooltip}"
+                                                      ToolTip="{Binding Macro_ProcessTooltip, Source={x:Static strings:Strings.Instance}}"
                                                       DropDownOpened="AppVolumeProcessDropDown_Opened"/>
                                         </StackPanel>
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_AxisFrom}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_OutputController}" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_InputDevice}" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
+                                                <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
+                                                <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <!-- Output controller axis -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_SourceAxis}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickX}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickY}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickX}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickY}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftTrigger}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightTrigger}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <!-- Input device axis -->
                                         <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{x:Static strings:Strings.Macro_Device}" VerticalAlignment="Center"
+                                                <TextBlock Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox x:Name="AppVolDevicePicker"
                                                           MinWidth="200"
@@ -826,7 +826,7 @@
                                                           DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{x:Static strings:Strings.Macro_Axis}" VerticalAlignment="Center"
+                                                <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
                                                           DisplayMemberPath="Name"
@@ -836,7 +836,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_VolumeLimit}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="150"
@@ -855,33 +855,33 @@
                                                 Visibility="{Binding IsMouseMoveType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_AxisFrom}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_OutputController}" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_InputDevice}" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
+                                                <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
+                                                <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <!-- Output controller axis -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_SourceAxis}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickX}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftStickY}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickX}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightStickY}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_LeftTrigger}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_RightTrigger}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                                <ComboBoxItem Content="{Binding Macro_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                                <ComboBoxItem Content="{Binding Macro_RightTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <!-- Input device axis -->
                                         <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{x:Static strings:Strings.Macro_Device}" VerticalAlignment="Center"
+                                                <TextBlock Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox x:Name="MouseDevicePicker"
                                                           MinWidth="200"
@@ -891,7 +891,7 @@
                                                           DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{x:Static strings:Strings.Macro_Axis}" VerticalAlignment="Center"
+                                                <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
                                                           DisplayMemberPath="Name"
@@ -901,7 +901,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_Sensitivity}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <Slider Value="{Binding MouseSensitivity, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="180"
@@ -919,15 +919,15 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{x:Static strings:Strings.Macro_Buttons}" VerticalAlignment="Center"
+                                            <TextBlock Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding MouseButton, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="120">
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseLeft}" Tag="{x:Static vm:MacroMouseButton.Left}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseRight}" Tag="{x:Static vm:MacroMouseButton.Right}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseMiddle}" Tag="{x:Static vm:MacroMouseButton.Middle}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseX1}" Tag="{x:Static vm:MacroMouseButton.X1}"/>
-                                                <ComboBoxItem Content="{x:Static strings:Strings.Macro_MouseX2}" Tag="{x:Static vm:MacroMouseButton.X2}"/>
+                                                <ComboBoxItem Content="{Binding Macro_MouseLeft, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroMouseButton.Left}"/>
+                                                <ComboBoxItem Content="{Binding Macro_MouseRight, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroMouseButton.Right}"/>
+                                                <ComboBoxItem Content="{Binding Macro_MouseMiddle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroMouseButton.Middle}"/>
+                                                <ComboBoxItem Content="{Binding Macro_MouseX1, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroMouseButton.X1}"/>
+                                                <ComboBoxItem Content="{Binding Macro_MouseX2, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroMouseButton.X2}"/>
                                             </ComboBox>
                                         </StackPanel>
                                     </StackPanel>
@@ -935,24 +935,24 @@
                             </Border>
 
                             <!-- Repeat settings -->
-                            <TextBlock Text="{x:Static strings:Strings.Macro_Repeat}" FontWeight="SemiBold" Margin="0,0,0,4"
+                            <TextBlock Text="{Binding Macro_Repeat, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{x:Static strings:Strings.Macro_RepeatMode}" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_Once}" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_FixedCount}" Tag="{x:Static vm:MacroRepeatMode.FixedCount}"/>
-                                    <ComboBoxItem Content="{x:Static strings:Strings.Macro_UntilRelease}" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}"/>
+                                    <ComboBoxItem Content="{Binding Macro_Once, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
+                                    <ComboBoxItem Content="{Binding Macro_FixedCount, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.FixedCount}"/>
+                                    <ComboBoxItem Content="{Binding Macro_UntilRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}"/>
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{x:Static strings:Strings.Macro_Count}" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Macro_Count, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0" Width="50"/>
                                 <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
                                          Width="60"/>
-                                <TextBlock Text="{x:Static strings:Strings.Macro_DelayMs}" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Macro_DelayMs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="12,0,8,0"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
                                          Width="60"/>
@@ -972,21 +972,21 @@
 
                     <!-- Toolbar -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Content="{x:Static strings:Strings.Pad_ClearAll}" Command="{Binding ClearMappingsCommand}"
+                        <Button Content="{Binding Pad_ClearAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding ClearMappingsCommand}"
                                 Padding="8,4" Margin="0,0,8,0"/>
-                        <Button Content="{x:Static strings:Strings.Common_Copy}" Command="{Binding CopySettingsCommand}"
+                        <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
                                 Padding="8,4" Margin="0,0,4,0"
-                                ToolTip="{x:Static strings:Strings.Pad_CopyTooltip}"/>
-                        <Button Content="{x:Static strings:Strings.Common_Paste}" Command="{Binding PasteSettingsCommand}"
+                                ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Content="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
                                 Padding="8,4" Margin="0,0,4,0"
-                                ToolTip="{x:Static strings:Strings.Pad_PasteTooltip}"/>
-                        <Button Content="{x:Static strings:Strings.Pad_CopyFrom}" Command="{Binding CopyFromCommand}"
+                                ToolTip="{Binding Pad_PasteTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Content="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyFromCommand}"
                                 Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{x:Static strings:Strings.Pad_CopyFromTooltip}"/>
-                        <Button Content="{x:Static strings:Strings.Pad_MapAll}" Command="{Binding MapAllCommand}"
+                                ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Content="{Binding Pad_MapAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding MapAllCommand}"
                                 Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{x:Static strings:Strings.Pad_MapAllOneByOne}"/>
-                        <TextBlock Text="{x:Static strings:Strings.Pad_MappingHint}"
+                                ToolTip="{Binding Pad_MapAllOneByOne, Source={x:Static strings:Strings.Instance}}"/>
+                        <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" FontStyle="Italic"
                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                     </StackPanel>
@@ -1033,13 +1033,13 @@
                             </Style>
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{x:Static strings:Strings.Pad_HeaderOutput}"
+                            <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"
                                                 Width="130"/>
-                            <DataGridTextColumn Header="{x:Static strings:Strings.Pad_HeaderSource}"
+                            <DataGridTextColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding SourceDisplayText}"
                                                 Width="140"/>
-                            <DataGridTextColumn Header="{x:Static strings:Strings.Pad_HeaderValue}"
+                            <DataGridTextColumn Header="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
                                                 Width="60"/>
                             <!-- Record button -->
@@ -1057,7 +1057,7 @@
                             <DataGridTemplateColumn Header="" Width="55">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="{x:Static strings:Strings.Common_Clear}"
+                                        <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding ClearCommand}"
                                                 Padding="4,2" Margin="2"
                                                 HorizontalAlignment="Center"/>
@@ -1065,13 +1065,13 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis options -->
-                            <DataGridTemplateColumn Header="{x:Static strings:Strings.Pad_HeaderOptions}" Width="120">
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <CheckBox Content="{x:Static strings:Strings.Pad_Inv}" IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <CheckBox Content="{Binding Pad_Inv, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                            <CheckBox Content="{x:Static strings:Strings.Pad_Half}" IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
@@ -1095,7 +1095,7 @@
                                                    Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                                    VerticalAlignment="Center"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
-                                                Content="{x:Static strings:Strings.Pad_ResetAll}" Margin="12,0,0,0"/>
+                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                                     </StackPanel>
 
                                     <Grid>
@@ -1123,7 +1123,7 @@
                                                 </Button.Style>
                                             </Button>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="{x:Static strings:Strings.Pad_CenterOffsetX}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_CenterOffsetX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding CenterOffsetX, Mode=TwoWay}"
                                                         Style="{StaticResource OffsetSlider}"/>
                                                 <TextBox Text="{Binding CenterOffsetX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1134,7 +1134,7 @@
                                                 <Button Command="{Binding ResetCenterOffsetXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset X"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="{x:Static strings:Strings.Pad_CenterOffsetY}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_CenterOffsetY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding CenterOffsetY, Mode=TwoWay}"
                                                         Style="{StaticResource OffsetSlider}"/>
                                                 <TextBox Text="{Binding CenterOffsetY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1145,16 +1145,16 @@
                                                 <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset Y"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="{x:Static strings:Strings.Pad_DeadZoneShape}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_DeadZoneShape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="DeadZoneShapeCombo"
                                                           SelectedIndex="{Binding DeadZoneShapeIndex, Mode=TwoWay}"
                                                           Width="200" VerticalAlignment="Center">
-                                                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_DZScaledRadial}"/>
-                                                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_DZRadial}"/>
-                                                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_DZAxial}"/>
-                                                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_DZHybrid}"/>
-                                                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_DZSlopedScaledAxial}"/>
-                                                    <ComboBoxItem Content="{x:Static strings:Strings.Pad_DZSlopedAxial}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_DZScaledRadial, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_DZRadial, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_DZAxial, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_DZHybrid, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_DZSlopedScaledAxial, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_DZSlopedAxial, Source={x:Static strings:Strings.Instance}}"/>
                                                 </ComboBox>
                                                 <Button Command="{Binding ResetDeadZoneShapeCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset to Scaled Radial"/>
                                             </StackPanel>
@@ -1465,7 +1465,7 @@
                                                    Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                                    VerticalAlignment="Center"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
-                                                Content="{x:Static strings:Strings.Pad_ResetAll}" Margin="12,0,0,0"/>
+                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                                     </StackPanel>
 
                                     <Grid>
@@ -1573,7 +1573,7 @@
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                        VerticalAlignment="Center"/>
                             <Button Command="{Binding ResetForceAllCommand}" Style="{StaticResource ResetAllButton}"
-                                    Content="{x:Static strings:Strings.Pad_ResetAll}" Margin="12,0,0,0"/>
+                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                         </StackPanel>
 
                         <!-- Overall gain -->

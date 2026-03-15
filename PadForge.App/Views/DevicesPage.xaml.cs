@@ -47,8 +47,8 @@ namespace PadForge.Views
                 var cb = sender as CheckBox;
                 bool isHidHide = cb?.Content?.ToString()?.Contains("HidHide") == true;
                 string action = isHidHide
-                    ? Strings.Devices_HideAction
-                    : Strings.Devices_ConsumeAction;
+                    ? Strings.Instance.Devices_HideAction
+                    : Strings.Instance.Devices_ConsumeAction;
                 string deviceKind = dev.DeviceType == "Mouse" ? "mouse" : "keyboard";
                 bool isMerged = dev.DeviceName?.Contains("(Merged)") == true ||
                                 dev.DeviceName?.Contains("All ") == true;
@@ -113,7 +113,7 @@ namespace PadForge.Views
 
             var proceedBtn = new Button
             {
-                Content = Strings.Common_Proceed,
+                Content = Strings.Instance.Common_Proceed,
                 Margin = new Thickness(0, 0, 8, 0),
                 MinWidth = 80
             };
@@ -121,7 +121,7 @@ namespace PadForge.Views
 
             var cancelBtn = new Button
             {
-                Content = Strings.Common_Cancel,
+                Content = Strings.Instance.Common_Cancel,
                 MinWidth = 80
             };
 

@@ -1,6 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -141,7 +142,7 @@ namespace PadForge.ViewModels
                 bool hasPos = !string.IsNullOrEmpty(_sourceDescriptor);
                 bool hasNeg = !string.IsNullOrEmpty(_negSourceDescriptor);
 
-                if (!hasPos && !hasNeg) return "Not mapped";
+                if (!hasPos && !hasNeg) return Strings.Mapping_NotMapped;
 
                 string posText = hasPos ? (_resolvedSourceText ?? _sourceDescriptor) : "";
 
@@ -168,12 +169,15 @@ namespace PadForge.ViewModels
             // Cache the base name (without prefix) for RebuildDescriptor.
             if (text != null)
             {
-                if (text.StartsWith("Inv. Half ", StringComparison.Ordinal))
-                    _resolvedBaseName = text.Substring(10);
-                else if (text.StartsWith("Inv. ", StringComparison.Ordinal))
-                    _resolvedBaseName = text.Substring(5);
-                else if (text.StartsWith("Half ", StringComparison.Ordinal))
-                    _resolvedBaseName = text.Substring(5);
+                string invHalfPrefix = Strings.Mapping_InvHalf + " ";
+                string invPrefix = Strings.Mapping_Inv + " ";
+                string halfPrefix = Strings.Mapping_Half + " ";
+                if (text.StartsWith(invHalfPrefix, StringComparison.Ordinal))
+                    _resolvedBaseName = text.Substring(invHalfPrefix.Length);
+                else if (text.StartsWith(invPrefix, StringComparison.Ordinal))
+                    _resolvedBaseName = text.Substring(invPrefix.Length);
+                else if (text.StartsWith(halfPrefix, StringComparison.Ordinal))
+                    _resolvedBaseName = text.Substring(halfPrefix.Length);
                 else
                     _resolvedBaseName = text;
             }
@@ -210,7 +214,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Text for the record button: "Record" or "Recording..." (with a visual cue).
         /// </summary>
-        public string RecordButtonText => IsRecording ? "Recording..." : "Record";
+        public string RecordButtonText => IsRecording ? Strings.Common_Recording : Strings.Common_Record;
 
         // ─────────────────────────────────────────────
         //  Live value display
@@ -331,9 +335,9 @@ namespace PadForge.ViewModels
             {
                 string prefixLabel = prefix.ToUpperInvariant() switch
                 {
-                    "I" => "Inv.",
-                    "H" => "Half",
-                    "IH" => "Inv. Half",
+                    "I" => Strings.Mapping_Inv,
+                    "H" => Strings.Mapping_Half,
+                    "IH" => Strings.Mapping_InvHalf,
                     _ => null
                 };
                 _resolvedSourceText = prefixLabel != null

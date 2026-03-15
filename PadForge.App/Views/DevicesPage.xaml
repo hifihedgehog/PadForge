@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:common="clr-namespace:PadForge.Common"
-             xmlns:local="clr-namespace:PadForge.Views">
+             xmlns:local="clr-namespace:PadForge.Views"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
 
     <Grid Margin="24,16">
         <Grid.RowDefinitions>
@@ -15,14 +16,14 @@
         <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
             <TextBlock Text="&#xE772;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                        VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBlock Text="Devices" Style="{StaticResource TitleTextBlockStyle}"/>
-            <Button Content="Refresh" Margin="16,0,0,0"
+            <TextBlock Text="{x:Static strings:Strings.Devices_Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+            <Button Content="{x:Static strings:Strings.Common_Refresh}" Margin="16,0,0,0"
                     Command="{Binding RefreshCommand}"/>
             <TextBlock VerticalAlignment="Center" Margin="16,0" Opacity="0.6">
                 <Run Text="{Binding OnlineCount, Mode=OneWay}"/>
-                <Run Text="online /"/>
+                <Run Text="{x:Static strings:Strings.Devices_OnlineTotal}"/>
                 <Run Text="{Binding TotalCount, Mode=OneWay}"/>
-                <Run Text="total"/>
+                <Run Text="{x:Static strings:Strings.Devices_Total}"/>
             </TextBlock>
         </StackPanel>
 
@@ -99,13 +100,13 @@
                                     <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,3"
                                             Background="{DynamicResource SystemControlBackgroundListLowBrush}"
                                             Visibility="{Binding IsUnassigned, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="Unassigned" FontSize="10" Opacity="0.55"/>
+                                        <TextBlock Text="{x:Static strings:Strings.Common_Unassigned}" FontSize="10" Opacity="0.55"/>
                                     </Border>
                                 </StackPanel>
 
                                 <!-- Delete button (upper-right) -->
                                 <Button Grid.Column="2" Grid.RowSpan="2"
-                                        ToolTip="Remove this device and its settings"
+                                        ToolTip="{x:Static strings:Strings.Devices_RemoveTooltip}"
                                         Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
                                         VerticalAlignment="Top" Margin="4,0,0,0" Opacity="0.5"
                                         Click="RemoveDevice_Click">
@@ -172,11 +173,11 @@
                                    TextWrapping="Wrap" Margin="0,0,0,6"/>
 
                         <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
-                            <Run Text="Product:"/>
+                            <Run Text="{x:Static strings:Strings.Devices_Product}"/>
                             <Run Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
                         </TextBlock>
                         <TextBlock FontSize="11" Opacity="0.7" Margin="0,0,0,1">
-                            <Run Text="Type:"/>
+                            <Run Text="{x:Static strings:Strings.Devices_Type}"/>
                             <Run Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
                         </TextBlock>
                         <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,8">
@@ -187,7 +188,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="11" Opacity="0.6"
                                            common:MarqueeBehavior.IsEnabled="True">
-                                    <Run Text="GUID:"/>
+                                    <Run Text="{x:Static strings:Strings.Devices_GUID}"/>
                                     <Run Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
                                 </TextBlock>
                             </StackPanel>
@@ -197,18 +198,18 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="11" Opacity="0.6"
                                            common:MarqueeBehavior.IsEnabled="True">
-                                    <Run Text="Instance Path:"/>
+                                    <Run Text="{x:Static strings:Strings.Devices_InstancePath}"/>
                                     <Run Text="{Binding SelectedDevice.HidHideInstancePath, Mode=OneWay}"/>
                                 </TextBlock>
                             </StackPanel>
                         </Border>
                         <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,4">
-                            <Run Text="VID:PID:"/>
+                            <Run Text="{x:Static strings:Strings.Devices_VIDPID}"/>
                             <Run Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/><Run Text=":"/><Run Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                         </TextBlock>
 
                         <!-- Submit mapping (joysticks only — not gamepads, mice, or keyboards) -->
-                        <Button Content="Submit Device Mapping" Margin="0,6,0,8"
+                        <Button Content="{x:Static strings:Strings.Devices_SubmitMapping}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="SubmitMapping_Click"
                                 Visibility="{Binding SelectedDevice.ShowSubmitMapping, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -220,7 +221,7 @@
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->
-                        <TextBlock Text="Virtual Controller Assignment" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static strings:Strings.Devices_VCAssignment}" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,6"/>
                         <WrapPanel Margin="0,0,0,6">
                             <ItemsControl ItemsSource="{Binding ActiveSlotItems}">
@@ -235,7 +236,7 @@
                                                       Command="{Binding DataContext.ToggleSlotCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                       CommandParameter="{Binding PadIndex}"
                                                       Margin="0,0,3,3" Padding="5,3"
-                                                      ToolTip="Toggle assignment">
+                                                      ToolTip="{x:Static strings:Strings.Devices_ToggleAssignment}">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
                                                            FontSize="10" VerticalAlignment="Center"/>
@@ -252,23 +253,23 @@
 
                         <!-- ─── Input Mode (gamepads only) ─── -->
                         <StackPanel Visibility="{Binding SelectedDevice.IsGamepad, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="Input Mode" FontWeight="SemiBold"
+                            <TextBlock Text="{x:Static strings:Strings.Devices_InputMode}" FontWeight="SemiBold"
                                        FontSize="13" Margin="0,0,0,6"/>
 
-                            <CheckBox Content="Force raw joystick mode (bypass gamepad remapping)"
+                            <CheckBox Content="{x:Static strings:Strings.Devices_ForceRaw}"
                                       IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
                                       Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
-                                      ToolTip="Read raw HID indices instead of SDL's gamepad mapping — use when SDL misidentifies button/axis layout"
+                                      ToolTip="{x:Static strings:Strings.Devices_ForceRawTooltip}"
                                       Margin="0,0,0,4"/>
 
                             <Separator Margin="0,2,0,8"/>
                         </StackPanel>
 
                         <!-- ─── Input Hiding ─── -->
-                        <TextBlock Text="Input Hiding" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static strings:Strings.Devices_InputHiding}" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,6"/>
 
-                        <CheckBox Content="Hide from games (HidHide)"
+                        <CheckBox Content="{x:Static strings:Strings.Devices_HideFromGames}"
                                   IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
                                   IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
                                   Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
@@ -277,10 +278,10 @@
                                 <TextBlock>
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="Completely hides this device from other applications via the HidHide driver"/>
+                                            <Setter Property="Text" Value="{x:Static strings:Strings.Devices_HideTooltip}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding SelectedDevice.IsHidHideAvailable}" Value="False">
-                                                    <Setter Property="Text" Value="Install the HidHide driver to enable this option"/>
+                                                    <Setter Property="Text" Value="{x:Static strings:Strings.Devices_HideTooltipInstall}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -289,10 +290,10 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
 
-                        <CheckBox Content="Consume mapped inputs (hooks)"
+                        <CheckBox Content="{x:Static strings:Strings.Devices_ConsumeMapped}"
                                   IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
                                   Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
-                                  ToolTip="Suppresses only the specific keys/buttons that are mapped, letting unmapped inputs pass through"
+                                  ToolTip="{x:Static strings:Strings.Devices_ConsumeTooltip}"
                                   Margin="0,0,0,4">
                             <CheckBox.Style>
                                 <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
@@ -309,11 +310,11 @@
                         <Separator Margin="0,4,0,8"/>
 
                         <!-- ─── Raw Input State (Visual) ─── -->
-                        <TextBlock Text="Raw Input State" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static strings:Strings.Devices_RawInputState}" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,8"/>
 
                         <!-- Axes label (joysticks/gamepads only) -->
-                        <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{x:Static strings:Strings.Devices_Axes}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -365,7 +366,7 @@
                         </ItemsControl>
 
                         <!-- Buttons label (joysticks/gamepads only) -->
-                        <TextBlock Text="Buttons" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{x:Static strings:Strings.Devices_Buttons}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -422,7 +423,7 @@
                         </ItemsControl>
 
                         <!-- Keyboard: visual QWERTY layout -->
-                        <TextBlock Text="Keyboard" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{x:Static strings:Strings.Devices_Keyboard}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -483,7 +484,7 @@
                         </Viewbox>
 
                         <!-- Mouse: visual mouse graphic -->
-                        <TextBlock Text="Mouse" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{x:Static strings:Strings.Devices_Mouse}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -511,7 +512,7 @@
                         </Viewbox>
 
                         <!-- POV Hats: compass indicators -->
-                        <TextBlock Text="D-Pad / POV" FontSize="11" Opacity="0.6"
+                        <TextBlock Text="{x:Static strings:Strings.Devices_DPadPOV}" FontSize="11" Opacity="0.6"
                                    Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -563,7 +564,7 @@
                                         </Canvas>
                                         <TextBlock VerticalAlignment="Center" Margin="6,0,0,0"
                                                    FontSize="10" Opacity="0.5">
-                                            <Run Text="POV"/>
+                                            <Run Text="{x:Static strings:Strings.Devices_POV}"/>
                                             <Run Text="{Binding Index, Mode=OneWay}"/>
                                         </TextBlock>
                                     </StackPanel>
@@ -572,7 +573,7 @@
                         </ItemsControl>
 
                         <!-- Gyroscope -->
-                        <TextBlock Text="Gyroscope" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                        <TextBlock Text="{x:Static strings:Strings.Devices_Gyroscope}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
                                    Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Background="#10888888" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
@@ -601,7 +602,7 @@
                         </Border>
 
                         <!-- Accelerometer -->
-                        <TextBlock Text="Accelerometer" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                        <TextBlock Text="{x:Static strings:Strings.Devices_Accelerometer}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
                                    Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Background="#10888888" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">

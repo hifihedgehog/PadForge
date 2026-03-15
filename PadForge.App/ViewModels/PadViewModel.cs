@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -24,8 +25,8 @@ namespace PadForge.ViewModels
         {
             PadIndex = padIndex;
             _slotNumber = padIndex + 1;
-            Title = $"Virtual Controller {padIndex + 1}";
-            SlotLabel = $"Virtual Controller {padIndex + 1}";
+            Title = string.Format(Strings.Main_VirtualController_Format, padIndex + 1);
+            SlotLabel = string.Format(Strings.Main_VirtualController_Format, padIndex + 1);
             _vJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
             RebuildMappings();
             RebuildStickConfigs();
@@ -244,7 +245,7 @@ namespace PadForge.ViewModels
         /// </summary>
         public event EventHandler<MappedDeviceInfo> SelectedDeviceChanged;
 
-        private string _mappedDeviceName = "No device mapped";
+        private string _mappedDeviceName = Strings.Mapping_NoDeviceMapped;
 
         public string MappedDeviceName
         {

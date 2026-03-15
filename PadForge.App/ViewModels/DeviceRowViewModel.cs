@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -131,9 +132,9 @@ namespace PadForge.ViewModels
         {
             get
             {
-                if (!_isEnabled) return "Disabled";
-                if (_isOnline) return "Online";
-                return "Offline";
+                if (!_isEnabled) return Strings.Common_Disabled;
+                if (_isOnline) return Strings.Common_Online;
+                return Strings.Common_Offline;
             }
         }
 
@@ -324,10 +325,10 @@ namespace PadForge.ViewModels
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
-            $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} {(_povCount == 1 ? "POV" : "POVs")}" +
-            (_hasRumble ? ", Rumble" : "") +
-            (_hasGyro ? ", Gyro" : "") +
-            (_hasAccel ? ", Accel" : "");
+            string.Format(Strings.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
+            (_hasRumble ? ", " + Strings.Devices_Rumble : "") +
+            (_hasGyro ? ", " + Strings.Devices_Gyro : "") +
+            (_hasAccel ? ", " + Strings.Devices_Accel : "");
 
         /// <summary>
         /// Refreshes computed display properties.

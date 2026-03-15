@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019"
-             xmlns:common="clr-namespace:PadForge.Common">
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
 
     <ScrollViewer Padding="24,16">
         <StackPanel>
@@ -11,14 +12,14 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xF404;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="Dashboard" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Static strings:Strings.Dashboard_Title}" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
 
             <!-- ═══ Input Engine ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="&#xE9F5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="Input Engine" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Static strings:Strings.Dashboard_InputEngine}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,16">
@@ -65,7 +66,7 @@
                             <Run Text="{Binding OnlineDevices, Mode=OneWay}"/>
                             <Run Text="/"/>
                             <Run Text="{Binding TotalDevices, Mode=OneWay}"/>
-                            <Run Text="devices online"/>
+                            <Run Text="{x:Static strings:Strings.Dashboard_DevicesOnline}"/>
                         </TextBlock>
                     </StackPanel>
                 </Grid>
@@ -75,7 +76,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,8,0,12">
                 <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="Virtual Controllers" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Static strings:Strings.Dashboard_VirtualControllers}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <ItemsControl x:Name="SlotsItemsControl" ItemsSource="{Binding SlotSummaries}">
@@ -110,35 +111,35 @@
                                             <Style TargetType="Button">
                                                 <Setter Property="Background" Value="Transparent"/>
                                                 <Setter Property="BorderThickness" Value="0"/>
-                                                <Setter Property="ToolTip" Value="Disabled"/>
+                                                <Setter Property="ToolTip" Value="{x:Static strings:Strings.Common_Disabled}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                                        <Setter Property="ToolTip" Value="Active"/>
+                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_Active}"/>
                                                     </DataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="Awaiting controllers"/>
+                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_AwaitingControllers}"/>
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
+                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_ViGEmNotInstalled}"/>
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding DataContext.EngineStatus, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="Engine stopped"/>
+                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_EngineStopped}"/>
                                                     </MultiDataTrigger>
                                                     <!-- Initializing: override tooltip -->
                                                     <DataTrigger Binding="{Binding IsInitializing}" Value="True">
-                                                        <Setter Property="ToolTip" Value="Initializing"/>
+                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_Initializing}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -218,7 +219,7 @@
                                     <StackPanel Orientation="Horizontal">
 
                                         <!-- Xbox type button -->
-                                        <Button ToolTip="Xbox 360" Background="Transparent"
+                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_Xbox360}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center"
                                                 Click="XboxType_Click" Tag="{Binding PadIndex}">
@@ -233,7 +234,7 @@
                                                         <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                             <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
+                                                            <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_ViGEmNotInstalled}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -244,7 +245,7 @@
                                         </Button>
 
                                         <!-- PS type button -->
-                                        <Button ToolTip="DualShock 4" Background="Transparent"
+                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_DualShock4}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
@@ -259,7 +260,7 @@
                                                         <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                             <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="ViGEmBus not installed"/>
+                                                            <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_ViGEmNotInstalled}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -270,7 +271,7 @@
                                         </Button>
 
                                         <!-- vJoy type button -->
-                                        <Button ToolTip="DirectInput" Background="Transparent"
+                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_DirectInput}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="VJoyType_Click" Tag="{Binding PadIndex}">
@@ -285,7 +286,7 @@
                                                         <DataTrigger Binding="{Binding DataContext.IsVJoyInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                             <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="DirectInput driver not installed"/>
+                                                            <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_DirectInputDriverNotInstalled}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -296,7 +297,7 @@
                                         </Button>
 
                                         <!-- Keyboard+Mouse type button -->
-                                        <Button ToolTip="Keyboard + Mouse" Background="Transparent"
+                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_KeyboardMouse}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="KeyboardMouseType_Click" Tag="{Binding PadIndex}">
@@ -316,7 +317,7 @@
                                         </Button>
 
                                         <!-- MIDI type button -->
-                                        <Button ToolTip="MIDI" Background="Transparent"
+                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_MIDI}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="MidiType_Click" Tag="{Binding PadIndex}">
@@ -345,7 +346,7 @@
                                 </StackPanel>
 
                                 <!-- Delete button (upper-right corner) -->
-                                <Button ToolTip="Delete virtual controller"
+                                <Button ToolTip="{x:Static strings:Strings.Main_DeleteVC}"
                                         Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
                                         HorizontalAlignment="Right" VerticalAlignment="Top"
                                         Margin="0" Opacity="0.5"
@@ -369,9 +370,9 @@
                                                FontSize="11" Opacity="0.5"/>
                                     <TextBlock FontSize="11" Opacity="0.5" Margin="8,0,0,0">
                                         <Run Text="{Binding MappedDeviceCount, Mode=OneWay}"/>
-                                        <Run Text="mapped,"/>
+                                        <Run Text="{x:Static strings:Strings.Dashboard_Mapped}"/>
                                         <Run Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
-                                        <Run Text="connected"/>
+                                        <Run Text="{x:Static strings:Strings.Dashboard_Connected}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </Grid>
@@ -390,7 +391,7 @@
                             VerticalAlignment="Center">
                     <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
-                    <TextBlock Text="Add Controller" FontSize="14"
+                    <TextBlock Text="{x:Static strings:Strings.Main_AddController}" FontSize="14"
                                VerticalAlignment="Center" Opacity="0.5"/>
                 </StackPanel>
             </Border>
@@ -399,17 +400,17 @@
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xEC05;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="Motion Server" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Static strings:Strings.Dashboard_MotionServer}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="DSU/cemuhook server for gyro and accelerometer data."
+                    <TextBlock Text="{x:Static strings:Strings.Dashboard_DsuDescription}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="Enable DSU motion server (cemuhook)"
+                    <CheckBox Content="{x:Static strings:Strings.Dashboard_EnableDsu}"
                               IsChecked="{Binding EnableDsuMotionServer}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Port:" VerticalAlignment="Center"
+                        <TextBlock Text="{x:Static strings:Strings.Dashboard_Port}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
@@ -421,7 +422,7 @@
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"/>
                     </StackPanel>
-                    <TextBlock Text="Provides gyro/accel data to Cemu, Dolphin, Yuzu, etc."
+                    <TextBlock Text="{x:Static strings:Strings.Dashboard_DsuFooter}"
                                FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
@@ -430,18 +431,18 @@
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="Web Controller" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Static strings:Strings.Dashboard_WebController}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="Serve a gamepad UI to browsers on your local network."
+                    <TextBlock Text="{x:Static strings:Strings.Dashboard_WebDescription}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox AutomationProperties.AutomationId="EnableWebControllerCheckBox"
-                              Content="Enable web controller server"
+                              Content="{x:Static strings:Strings.Dashboard_EnableWeb}"
                               IsChecked="{Binding EnableWebController}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Port:" VerticalAlignment="Center"
+                        <TextBlock Text="{x:Static strings:Strings.Dashboard_Port}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding WebControllerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
@@ -453,7 +454,7 @@
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding WebControllerStatus}" FontSize="12"/>
                     </StackPanel>
-                    <TextBlock Text="Connect from a phone or tablet browser to use as a gamepad."
+                    <TextBlock Text="{x:Static strings:Strings.Dashboard_WebFooter}"
                                FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
@@ -462,7 +463,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xED5D;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="Drivers" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Static strings:Strings.Dashboard_Drivers}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,8">

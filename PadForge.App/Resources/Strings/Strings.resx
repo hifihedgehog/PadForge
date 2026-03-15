@@ -77,6 +77,12 @@
   <data name="Common_Ready" xml:space="preserve"><value>Ready</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>Stopped</value></data>
   <data name="Common_Running" xml:space="preserve"><value>Running</value></data>
+  <data name="Server_RunningOn_Format" xml:space="preserve"><value>Running on {0}</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Running ({0} clients)</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Listening on :{0}</value></data>
+  <data name="Server_PortInUse_Format" xml:space="preserve"><value>Port {0} in use</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Access denied for port {0} (run as admin)</value></data>
+  <data name="Server_FailedToStart" xml:space="preserve"><value>Failed to start</value></data>
   <data name="Common_Idle" xml:space="preserve"><value>Idle</value></data>
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>

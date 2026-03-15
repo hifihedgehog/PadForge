@@ -1002,10 +1002,6 @@ namespace PadForge
             if (_navProfiles != null) _navProfiles.Content = Strings.Instance.Profiles_Title;
             if (_navDevices != null) _navDevices.Content = Strings.Instance.Devices_Title;
 
-            // Update the built-in Settings nav item label.
-            if (NavView.SettingsItem is ModernWpf.Controls.NavigationViewItem settingsItem)
-                settingsItem.Content = Strings.Instance.Settings_Title;
-
             // Refresh "Add Controller" and controller card labels by rebuilding the dynamic section.
             RebuildControllerSection();
         }
@@ -2390,12 +2386,6 @@ namespace PadForge
         /// </summary>
         private void SelectNavItemByTag(string tag)
         {
-            if (tag == "Settings")
-            {
-                NavView.SelectedItem = NavView.SettingsItem;
-                return;
-            }
-
             foreach (var mi in NavView.MenuItems)
             {
                 if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)

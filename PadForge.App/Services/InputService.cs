@@ -699,14 +699,6 @@ namespace PadForge.Services
                 return;
             }
 
-            // Device exists but disconnected — keep structural layout visible
-            // (collections were built from cached capabilities in EnsureDevicesRawState).
-            if (ud.InputState == null)
-                return;
-
-            devVm.HasRawData = true;
-            var state = ud.InputState;
-
             // Rebuild collections when the selected device changes.
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
             {
@@ -722,6 +714,14 @@ namespace PadForge.Services
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
             }
+
+            devVm.HasRawData = true;
+
+            // Device exists but disconnected — structural layout is visible, skip value updates.
+            if (ud.InputState == null)
+                return;
+
+            var state = ud.InputState;
 
             // Mouse visual — update motion and scroll display properties.
             if (devVm.IsMouseDevice)

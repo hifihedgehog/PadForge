@@ -15,7 +15,7 @@ Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern bool 
 
 $diagLog = "C:\PadForge\vjoy_diag.log"
 $regBase = 'HKLM:\SYSTEM\CurrentControlSet\services\vjoy\Parameters'
-$logFile = "C:\Users\sonic\GitHub\PadForge\tools\vjoy_scaling_test_log.txt"
+$logFile = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_scaling_test_log.txt"
 
 function Log($msg) {
     $line = "[$(Get-Date -Format 'HH:mm:ss.fff')] $msg"

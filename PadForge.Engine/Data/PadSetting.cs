@@ -135,6 +135,12 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick dead zone Y (0–100%).</summary>
         [XmlElement] public string RightThumbDeadZoneY { get; set; } = "0";
 
+        /// <summary>Left stick dead zone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
+        [XmlElement] public string LeftThumbDeadZoneShape { get; set; } = "2";
+
+        /// <summary>Right stick dead zone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
+        [XmlElement] public string RightThumbDeadZoneShape { get; set; } = "2";
+
         /// <summary>
         /// Left stick anti-dead zone (0–100%). Offsets the output range minimum
         /// so small physical movements register past the game's built-in dead zone.
@@ -164,6 +170,22 @@ namespace PadForge.Engine.Data
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
 
+        /// <summary>Left stick X-axis sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
+        [XmlElement] public string LeftThumbSensitivityCurveX { get; set; } = "0";
+        /// <summary>Left stick Y-axis sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string LeftThumbSensitivityCurveY { get; set; } = "0";
+
+        /// <summary>Right stick X-axis sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightThumbSensitivityCurveX { get; set; } = "0";
+        /// <summary>Right stick Y-axis sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightThumbSensitivityCurveY { get; set; } = "0";
+
+        /// <summary>Left trigger sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string LeftTriggerSensitivityCurve { get; set; } = "0";
+
+        /// <summary>Right trigger sensitivity curve (-100 to 100).</summary>
+        [XmlElement] public string RightTriggerSensitivityCurve { get; set; } = "0";
+
         /// <summary>Left stick X max range (1–100%). Full physical deflection maps to this ceiling.</summary>
         [XmlElement] public string LeftThumbMaxRangeX { get; set; } = "100";
 
@@ -175,6 +197,19 @@ namespace PadForge.Engine.Data
 
         /// <summary>Right stick Y max range (1–100%).</summary>
         [XmlElement] public string RightThumbMaxRangeY { get; set; } = "100";
+
+        // Per-direction (negative) max range. Null = inherit from symmetric property above.
+        /// <summary>Left stick X negative direction (left) max range (1–100%).</summary>
+        [XmlElement] public string LeftThumbMaxRangeXNeg { get; set; }
+
+        /// <summary>Left stick Y negative direction (down) max range (1–100%).</summary>
+        [XmlElement] public string LeftThumbMaxRangeYNeg { get; set; }
+
+        /// <summary>Right stick X negative direction (left) max range (1–100%).</summary>
+        [XmlElement] public string RightThumbMaxRangeXNeg { get; set; }
+
+        /// <summary>Right stick Y negative direction (down) max range (1–100%).</summary>
+        [XmlElement] public string RightThumbMaxRangeYNeg { get; set; }
 
         // ─────────────────────────────────────────────
         //  Stick center offset calibration
@@ -223,23 +258,6 @@ namespace PadForge.Engine.Data
         /// Right (high-frequency) motor strength (0–100%).
         /// </summary>
         [XmlElement] public string RightMotorStrength { get; set; } = "100";
-
-        /// <summary>
-        /// Motor period in milliseconds. Used by some force feedback implementations
-        /// to control the update frequency. Default 0 = automatic.
-        /// </summary>
-        [XmlElement] public string LeftMotorPeriod { get; set; } = "0";
-
-        /// <summary>Right motor period in milliseconds.</summary>
-        [XmlElement] public string RightMotorPeriod { get; set; } = "0";
-
-        /// <summary>
-        /// Left motor direction. 0 = normal, 1 = inverted.
-        /// </summary>
-        [XmlElement] public string LeftMotorDirection { get; set; } = "0";
-
-        /// <summary>Right motor direction.</summary>
-        [XmlElement] public string RightMotorDirection { get; set; } = "0";
 
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold
@@ -303,7 +321,8 @@ namespace PadForge.Engine.Data
         /// <summary>Flushes the in-memory dictionary back to the serializable array.</summary>
         public void FlushVJoyMappings()
         {
-            if (_vjoyMappingDict == null || _vjoyMappingDict.Count == 0)
+            if (_vjoyMappingDict == null) return; // Not initialized — array is canonical.
+            if (_vjoyMappingDict.Count == 0)
             {
                 VJoyMappingEntries = null;
                 return;
@@ -367,7 +386,8 @@ namespace PadForge.Engine.Data
 
         public void FlushMidiMappings()
         {
-            if (_midiMappingDict == null || _midiMappingDict.Count == 0)
+            if (_midiMappingDict == null) return; // Not initialized — array is canonical.
+            if (_midiMappingDict.Count == 0)
             {
                 MidiMappingEntries = null;
                 return;
@@ -397,6 +417,71 @@ namespace PadForge.Engine.Data
                     }
                 }
                 _midiMappingDict = dict;
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  KBM mappings (dictionary-based)
+        //  Used for KeyboardMouse output with keyboard key + mouse targets.
+        //  Keys: "KbmKey41" (VK_A), "KbmMouseX", "KbmMouseXNeg", "KbmMBtn0", etc.
+        //  Values: mapping descriptors (same format as above).
+        // ─────────────────────────────────────────────
+
+        [XmlArray("KbmMappings")]
+        [XmlArrayItem("Map")]
+        public VJoyMappingEntry[] KbmMappingEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _kbmMappingDict;
+
+        public string GetKbmMapping(string key)
+        {
+            EnsureKbmDict();
+            return _kbmMappingDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetKbmMapping(string key, string value)
+        {
+            EnsureKbmDict();
+            if (string.IsNullOrEmpty(value))
+                _kbmMappingDict.Remove(key);
+            else
+                _kbmMappingDict[key] = value;
+        }
+
+        public void FlushKbmMappings()
+        {
+            if (_kbmMappingDict == null) return;
+            if (_kbmMappingDict.Count == 0)
+            {
+                KbmMappingEntries = null;
+                return;
+            }
+            var entries = new VJoyMappingEntry[_kbmMappingDict.Count];
+            int i = 0;
+            foreach (var kvp in _kbmMappingDict)
+                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            KbmMappingEntries = entries;
+        }
+
+        private readonly object _kbmDictLock = new();
+
+        private void EnsureKbmDict()
+        {
+            if (_kbmMappingDict != null) return;
+            lock (_kbmDictLock)
+            {
+                if (_kbmMappingDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (KbmMappingEntries != null)
+                {
+                    foreach (var e in KbmMappingEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _kbmMappingDict = dict;
             }
         }
 
@@ -432,6 +517,22 @@ namespace PadForge.Engine.Data
                 RightThumbAntiDeadZoneX = RightThumbAntiDeadZone;
                 RightThumbAntiDeadZoneY = RightThumbAntiDeadZone;
             }
+        }
+
+        /// <summary>
+        /// Migrates symmetric max range values to per-direction properties.
+        /// If negative-direction property is null/empty, copies the symmetric value.
+        /// </summary>
+        public void MigrateMaxRangeDirections()
+        {
+            if (string.IsNullOrEmpty(LeftThumbMaxRangeXNeg))
+                LeftThumbMaxRangeXNeg = LeftThumbMaxRangeX;
+            if (string.IsNullOrEmpty(LeftThumbMaxRangeYNeg))
+                LeftThumbMaxRangeYNeg = LeftThumbMaxRangeY;
+            if (string.IsNullOrEmpty(RightThumbMaxRangeXNeg))
+                RightThumbMaxRangeXNeg = RightThumbMaxRangeX;
+            if (string.IsNullOrEmpty(RightThumbMaxRangeYNeg))
+                RightThumbMaxRangeYNeg = RightThumbMaxRangeY;
         }
 
         private static bool IsEmptyOrZero(string v) =>
@@ -495,6 +596,8 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbDeadZoneY); sb.Append('|');
             sb.Append(RightThumbDeadZoneX); sb.Append('|');
             sb.Append(RightThumbDeadZoneY); sb.Append('|');
+            sb.Append(LeftThumbDeadZoneShape); sb.Append('|');
+            sb.Append(RightThumbDeadZoneShape); sb.Append('|');
             sb.Append(LeftThumbAntiDeadZone); sb.Append('|');
             sb.Append(RightThumbAntiDeadZone); sb.Append('|');
             sb.Append(LeftThumbAntiDeadZoneX); sb.Append('|');
@@ -503,10 +606,20 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAntiDeadZoneY); sb.Append('|');
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
+            sb.Append(LeftThumbSensitivityCurveX); sb.Append('|');
+            sb.Append(LeftThumbSensitivityCurveY); sb.Append('|');
+            sb.Append(RightThumbSensitivityCurveX); sb.Append('|');
+            sb.Append(RightThumbSensitivityCurveY); sb.Append('|');
+            sb.Append(LeftTriggerSensitivityCurve); sb.Append('|');
+            sb.Append(RightTriggerSensitivityCurve); sb.Append('|');
             sb.Append(LeftThumbMaxRangeX); sb.Append('|');
             sb.Append(LeftThumbMaxRangeY); sb.Append('|');
             sb.Append(RightThumbMaxRangeX); sb.Append('|');
             sb.Append(RightThumbMaxRangeY); sb.Append('|');
+            sb.Append(LeftThumbMaxRangeXNeg); sb.Append('|');
+            sb.Append(LeftThumbMaxRangeYNeg); sb.Append('|');
+            sb.Append(RightThumbMaxRangeXNeg); sb.Append('|');
+            sb.Append(RightThumbMaxRangeYNeg); sb.Append('|');
             sb.Append(LeftThumbCenterOffsetX); sb.Append('|');
             sb.Append(LeftThumbCenterOffsetY); sb.Append('|');
             sb.Append(RightThumbCenterOffsetX); sb.Append('|');
@@ -518,10 +631,6 @@ namespace PadForge.Engine.Data
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
-            sb.Append(LeftMotorPeriod); sb.Append('|');
-            sb.Append(RightMotorPeriod); sb.Append('|');
-            sb.Append(LeftMotorDirection); sb.Append('|');
-            sb.Append(RightMotorDirection); sb.Append('|');
 
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
@@ -552,6 +661,18 @@ namespace PadForge.Engine.Data
                 foreach (var key in midiKeys)
                 {
                     sb.Append(key); sb.Append('='); sb.Append(_midiMappingDict[key]); sb.Append('|');
+                }
+            }
+
+            // KBM custom mappings (sorted for deterministic checksum)
+            EnsureKbmDict();
+            if (_kbmMappingDict.Count > 0)
+            {
+                var kbmKeys = new List<string>(_kbmMappingDict.Keys);
+                kbmKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in kbmKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_kbmMappingDict[key]); sb.Append('|');
                 }
             }
 
@@ -603,11 +724,41 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbAxisYNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisXNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
-            (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0);
+            (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0) ||
+            (_vjoyMappingDict != null && _vjoyMappingDict.Count > 0) ||
+            (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
+            (_midiMappingDict != null && _midiMappingDict.Count > 0);
+
+        /// <summary>
+        /// Clears all mapping descriptors (standard, vJoy, and MIDI) while preserving
+        /// dead zone, force feedback, and other non-mapping configuration.
+        /// Call before writing a new set of mappings to prevent stale leftovers
+        /// from a previous mapping layout (e.g., switching Xbox 360 preset → custom vJoy).
+        /// </summary>
+        public void ClearMappingDescriptors()
+        {
+            // Standard mapping properties.
+            ButtonA = ButtonB = ButtonX = ButtonY = "";
+            LeftShoulder = RightShoulder = "";
+            ButtonBack = ButtonStart = ButtonGuide = "";
+            LeftThumbButton = RightThumbButton = "";
+            DPad = DPadUp = DPadDown = DPadLeft = DPadRight = "";
+            LeftTrigger = RightTrigger = "";
+            LeftThumbAxisX = LeftThumbAxisY = "";
+            RightThumbAxisX = RightThumbAxisY = "";
+            LeftThumbAxisXNeg = LeftThumbAxisYNeg = "";
+            RightThumbAxisXNeg = RightThumbAxisYNeg = "";
+
+            // vJoy/MIDI mapping dictionaries and arrays.
+            VJoyMappingEntries = null;
+            _vjoyMappingDict = null;
+            MidiMappingEntries = null;
+            _midiMappingDict = null;
+        }
 
         /// <summary>
         /// Returns all non-empty mapping descriptor strings from this PadSetting.
-        /// Includes standard button/axis/dpad/trigger mappings and vJoy custom entries.
+        /// Includes standard button/axis/dpad/trigger mappings, vJoy, and MIDI custom entries.
         /// </summary>
         public List<string> GetAllMappingDescriptors()
         {
@@ -636,6 +787,13 @@ namespace PadForge.Engine.Data
             if (VJoyMappingEntries != null)
             {
                 foreach (var e in VJoyMappingEntries)
+                    Add(e.Value);
+            }
+
+            // MIDI custom mappings
+            if (MidiMappingEntries != null)
+            {
+                foreach (var e in MidiMappingEntries)
                     Add(e.Value);
             }
 
@@ -690,19 +848,23 @@ namespace PadForge.Engine.Data
             // Dead zones
             nameof(LeftThumbDeadZoneX), nameof(LeftThumbDeadZoneY),
             nameof(RightThumbDeadZoneX), nameof(RightThumbDeadZoneY),
+            nameof(LeftThumbDeadZoneShape), nameof(RightThumbDeadZoneShape),
             nameof(LeftThumbAntiDeadZone), nameof(RightThumbAntiDeadZone),
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),
             nameof(LeftThumbLinear), nameof(RightThumbLinear),
+            nameof(LeftThumbSensitivityCurveX), nameof(LeftThumbSensitivityCurveY),
+            nameof(RightThumbSensitivityCurveX), nameof(RightThumbSensitivityCurveY),
+            nameof(LeftTriggerSensitivityCurve), nameof(RightTriggerSensitivityCurve),
             nameof(LeftThumbMaxRangeX), nameof(LeftThumbMaxRangeY),
             nameof(RightThumbMaxRangeX), nameof(RightThumbMaxRangeY),
+            nameof(LeftThumbMaxRangeXNeg), nameof(LeftThumbMaxRangeYNeg),
+            nameof(RightThumbMaxRangeXNeg), nameof(RightThumbMaxRangeYNeg),
             nameof(LeftThumbCenterOffsetX), nameof(LeftThumbCenterOffsetY),
             nameof(RightThumbCenterOffsetX), nameof(RightThumbCenterOffsetY),
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
-            nameof(LeftMotorPeriod), nameof(RightMotorPeriod),
-            nameof(LeftMotorDirection), nameof(RightMotorDirection),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),
@@ -716,6 +878,11 @@ namespace PadForge.Engine.Data
         /// </summary>
         public string ToJson()
         {
+            // Flush live dicts to arrays before serializing.
+            FlushVJoyMappings();
+            FlushMidiMappings();
+            FlushKbmMappings();
+
             var dict = new Dictionary<string, string>();
             var type = GetType();
 
@@ -724,6 +891,22 @@ namespace PadForge.Engine.Data
                 var prop = type.GetProperty(name);
                 if (prop != null)
                     dict[name] = prop.GetValue(this) as string ?? "";
+            }
+
+            // Include vJoy/MIDI mapping arrays if present.
+            if (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0)
+            {
+                var vjoyList = new List<Dictionary<string, string>>();
+                foreach (var e in VJoyMappingEntries)
+                    vjoyList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__VJoyMappings"] = JsonSerializer.Serialize(vjoyList);
+            }
+            if (MidiMappingEntries != null && MidiMappingEntries.Length > 0)
+            {
+                var midiList = new List<Dictionary<string, string>>();
+                foreach (var e in MidiMappingEntries)
+                    midiList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__MidiMappings"] = JsonSerializer.Serialize(midiList);
             }
 
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
@@ -749,6 +932,16 @@ namespace PadForge.Engine.Data
 
                 foreach (var kvp in dict)
                 {
+                    if (kvp.Key == "__VJoyMappings")
+                    {
+                        ps.VJoyMappingEntries = DeserializeMappingArray(kvp.Value);
+                        continue;
+                    }
+                    if (kvp.Key == "__MidiMappings")
+                    {
+                        ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
+                        continue;
+                    }
                     var prop = type.GetProperty(kvp.Key);
                     if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
                         prop.SetValue(ps, kvp.Value ?? "");
@@ -760,6 +953,26 @@ namespace PadForge.Engine.Data
             {
                 return null;
             }
+        }
+
+        private static VJoyMappingEntry[] DeserializeMappingArray(string json)
+        {
+            try
+            {
+                var list = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(json);
+                if (list == null) return null;
+                var arr = new VJoyMappingEntry[list.Count];
+                for (int i = 0; i < list.Count; i++)
+                {
+                    arr[i] = new VJoyMappingEntry
+                    {
+                        Key = list[i].TryGetValue("Key", out var k) ? k : "",
+                        Value = list[i].TryGetValue("Value", out var v) ? v : ""
+                    };
+                }
+                return arr;
+            }
+            catch { return null; }
         }
 
         /// <summary>
@@ -776,6 +989,29 @@ namespace PadForge.Engine.Data
                 if (prop != null && prop.CanWrite)
                     prop.SetValue(this, prop.GetValue(source) ?? "");
             }
+
+            // Flush source dicts to arrays so we copy the latest live data
+            // (SetVJoyMapping/SetMidiMapping update the dict, not the array).
+            source.FlushVJoyMappings();
+            source.FlushMidiMappings();
+            source.FlushKbmMappings();
+
+            // Deep-copy arrays and invalidate our cached dictionaries.
+            VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
+            _vjoyMappingDict = null;
+            MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
+            _midiMappingDict = null;
+            KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
+            _kbmMappingDict = null;
+        }
+
+        private static VJoyMappingEntry[] DeepCopyMappings(VJoyMappingEntry[] src)
+        {
+            if (src == null || src.Length == 0) return null;
+            var arr = new VJoyMappingEntry[src.Length];
+            for (int i = 0; i < src.Length; i++)
+                arr[i] = new VJoyMappingEntry { Key = src[i].Key, Value = src[i].Value };
+            return arr;
         }
 
         /// <summary>
@@ -787,28 +1023,6 @@ namespace PadForge.Engine.Data
             clone.CopyFrom(this);
             clone.PadSettingChecksum = PadSettingChecksum;
             clone.GameFileName = GameFileName;
-            // Deep-copy vJoy mappings
-            if (VJoyMappingEntries != null)
-            {
-                clone.VJoyMappingEntries = new VJoyMappingEntry[VJoyMappingEntries.Length];
-                for (int i = 0; i < VJoyMappingEntries.Length; i++)
-                    clone.VJoyMappingEntries[i] = new VJoyMappingEntry
-                    {
-                        Key = VJoyMappingEntries[i].Key,
-                        Value = VJoyMappingEntries[i].Value
-                    };
-            }
-            // Deep-copy MIDI mappings
-            if (MidiMappingEntries != null)
-            {
-                clone.MidiMappingEntries = new VJoyMappingEntry[MidiMappingEntries.Length];
-                for (int i = 0; i < MidiMappingEntries.Length; i++)
-                    clone.MidiMappingEntries[i] = new VJoyMappingEntry
-                    {
-                        Key = MidiMappingEntries[i].Key,
-                        Value = MidiMappingEntries[i].Value
-                    };
-            }
             return clone;
         }
     }

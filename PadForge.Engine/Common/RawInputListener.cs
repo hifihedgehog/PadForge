@@ -48,6 +48,7 @@ namespace PadForge.Engine
         private const ushort RI_MOUSE_BUTTON_4_UP = 0x0080;
         private const ushort RI_MOUSE_BUTTON_5_DOWN = 0x0100;
         private const ushort RI_MOUSE_BUTTON_5_UP = 0x0200;
+        private const ushort RI_MOUSE_WHEEL = 0x0400;
 
         private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
 
@@ -309,6 +310,7 @@ namespace PadForge.Engine
         {
             public long DeltaX;
             public long DeltaY;
+            public long ScrollDelta;
             public readonly bool[] Buttons = new bool[5];
         }
 
@@ -356,6 +358,7 @@ namespace PadForge.Engine
             // Reset aggregate mouse state.
             Interlocked.Exchange(ref _aggregateMouseState.DeltaX, 0);
             Interlocked.Exchange(ref _aggregateMouseState.DeltaY, 0);
+            Interlocked.Exchange(ref _aggregateMouseState.ScrollDelta, 0);
             Array.Clear(_aggregateMouseState.Buttons, 0, _aggregateMouseState.Buttons.Length);
         }
 
@@ -878,6 +881,18 @@ namespace PadForge.Engine
         }
 
         /// <summary>
+        /// Atomically consumes accumulated scroll wheel delta for a specific device.
+        /// </summary>
+        public static int ConsumeMouseScroll(IntPtr hDevice)
+        {
+            if (hDevice == AggregateMouseHandle)
+                return (int)Interlocked.Exchange(ref _aggregateMouseState.ScrollDelta, 0);
+            if (_mouseStates.TryGetValue(hDevice, out MouseDeviceState state))
+                return (int)Interlocked.Exchange(ref state.ScrollDelta, 0);
+            return 0;
+        }
+
+        /// <summary>
         /// Copies mouse button states for a specific device.
         /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to get OR-merged buttons from all mice.
         /// </summary>
@@ -1075,6 +1090,13 @@ namespace PadForge.Engine
                     if ((flags & RI_MOUSE_BUTTON_4_UP) != 0) { state.Buttons[3] = false; _aggregateMouseState.Buttons[3] = false; }
                     if ((flags & RI_MOUSE_BUTTON_5_DOWN) != 0) { state.Buttons[4] = true; _aggregateMouseState.Buttons[4] = true; }
                     if ((flags & RI_MOUSE_BUTTON_5_UP) != 0) { state.Buttons[4] = false; _aggregateMouseState.Buttons[4] = false; }
+
+                    if ((flags & RI_MOUSE_WHEEL) != 0)
+                    {
+                        short delta = (short)mouse.usButtonData;
+                        Interlocked.Add(ref state.ScrollDelta, delta);
+                        Interlocked.Add(ref _aggregateMouseState.ScrollDelta, delta);
+                    }
                 }
             }
             finally

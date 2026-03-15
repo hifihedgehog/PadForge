@@ -122,27 +122,48 @@ namespace PadForge.ViewModels
         {
             get
             {
-                // Raw device button path.
+                var parts = new List<string>();
+
+                // Button part.
                 if (UsesRawTrigger)
                 {
-                    var btnParts = _triggerRawButtons.Select(b => $"Btn {b}");
-                    string combo = string.Join(" + ", btnParts);
-                    string deviceName = ResolveDeviceName(_triggerDeviceGuid);
-                    return string.IsNullOrEmpty(deviceName)
-                        ? combo
-                        : $"{combo} ({deviceName})";
+                    var objects = ResolveDeviceObjects(_triggerDeviceGuid);
+                    foreach (int b in _triggerRawButtons)
+                    {
+                        var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
+                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {b}");
+                    }
                 }
-
-                // Custom vJoy trigger path.
-                if (_buttonStyle == MacroButtonStyle.Numbered)
+                else if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
                 {
-                    if (!UsesCustomTrigger) return "Not set \u2014 click Record";
-                    return MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords);
+                    parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                }
+                else if (_triggerButtons != 0)
+                {
+                    parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
                 }
 
-                // Gamepad preset output controller bitmask path.
-                if (_triggerButtons == 0) return "Not set \u2014 click Record";
-                return MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle);
+                // POV part(s).
+                foreach (var pov in _triggerPovs)
+                    parts.Add(FormatPovTrigger(pov));
+
+                // Axis part(s).
+                foreach (var axis in _triggerAxisTargets)
+                    parts.Add($"{axis.DisplayName()} > {_triggerAxisThreshold}%");
+
+                if (parts.Count == 0) return "Not set \u2014 click Record";
+
+                string result = string.Join(" + ", parts);
+
+                // Append source device name at end.
+                if (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger)
+                {
+                    string deviceName = ResolveDeviceName(_triggerDeviceGuid);
+                    if (!string.IsNullOrEmpty(deviceName))
+                        result = $"{result} ({deviceName})";
+                }
+
+                return result;
             }
         }
 
@@ -155,6 +176,53 @@ namespace PadForge.ViewModels
             if (deviceGuid == Guid.Empty) return null;
             var ud = SettingsManager.FindDeviceByInstanceGuid(deviceGuid);
             return ud?.ResolvedName;
+        }
+
+        private static DeviceObjectItem[] ResolveDeviceObjects(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return null;
+            var ud = SettingsManager.FindDeviceByInstanceGuid(deviceGuid);
+            return ud?.DeviceObjects;
+        }
+
+        /// <summary>
+        /// Formats a stored POV trigger ("povIndex:centidegrees") to display text ("POV 0 Up").
+        /// </summary>
+        internal static string FormatPovTrigger(string stored)
+        {
+            if (string.IsNullOrEmpty(stored)) return stored;
+            var split = stored.Split(':');
+            if (split.Length != 2 || !int.TryParse(split[0], out int idx) || !int.TryParse(split[1], out int cd))
+                return stored;
+            return $"POV {idx} {CentidegreesToDirection(cd)}";
+        }
+
+        /// <summary>
+        /// Parses a stored POV trigger ("povIndex:centidegrees") into its components.
+        /// </summary>
+        internal static bool ParsePovTrigger(string stored, out int povIndex, out int centidegrees)
+        {
+            povIndex = -1; centidegrees = -1;
+            if (string.IsNullOrEmpty(stored)) return false;
+            var split = stored.Split(':');
+            return split.Length == 2
+                && int.TryParse(split[0], out povIndex)
+                && int.TryParse(split[1], out centidegrees);
+        }
+
+        private static string CentidegreesToDirection(int centidegrees)
+        {
+            if (centidegrees < 0) return "Centered";
+            centidegrees %= 36000;
+            if (centidegrees >= 33750 || centidegrees < 2250) return "Up";
+            if (centidegrees < 6750) return "Up-Right";
+            if (centidegrees < 11250) return "Right";
+            if (centidegrees < 15750) return "Down-Right";
+            if (centidegrees < 20250) return "Down";
+            if (centidegrees < 24750) return "Down-Left";
+            if (centidegrees < 29250) return "Left";
+            if (centidegrees < 33750) return "Up-Left";
+            return "Up";
         }
 
         // ─────────────────────────────────────────────
@@ -198,6 +266,28 @@ namespace PadForge.ViewModels
         /// <summary>True if this macro uses the raw device button trigger path.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool UsesRawTrigger => _triggerDeviceGuid != Guid.Empty && _triggerRawButtons.Length > 0;
+
+        private string[] _triggerPovs = Array.Empty<string>();
+
+        /// <summary>
+        /// POV hat triggers stored as "povIndex:centidegrees" (e.g. "0:0" for POV 0 Up).
+        /// All must be active simultaneously.
+        /// </summary>
+        public string[] TriggerPovs
+        {
+            get => _triggerPovs;
+            set
+            {
+                _triggerPovs = value ?? Array.Empty<string>();
+                OnPropertyChanged(nameof(TriggerPovs));
+                OnPropertyChanged(nameof(UsesPovTrigger));
+                OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        /// <summary>True if this macro uses POV hat triggers.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool UsesPovTrigger => _triggerPovs.Length > 0;
 
         private bool _isRecordingTrigger;
 
@@ -265,12 +355,20 @@ namespace PadForge.ViewModels
 
         private MacroTriggerMode _triggerMode = MacroTriggerMode.OnPress;
 
-        /// <summary>When to fire: on press, on release, or while held.</summary>
+        /// <summary>When to fire: on press, on release, while held, or always.</summary>
         public MacroTriggerMode TriggerMode
         {
             get => _triggerMode;
-            set => SetProperty(ref _triggerMode, value);
+            set
+            {
+                if (SetProperty(ref _triggerMode, value))
+                    OnPropertyChanged(nameof(IsNotAlwaysMode));
+            }
         }
+
+        /// <summary>True when TriggerMode is not Always (used to show/hide trigger recording UI).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsNotAlwaysMode => _triggerMode != MacroTriggerMode.Always;
 
         private bool _consumeTriggerButtons = true;
 
@@ -283,6 +381,65 @@ namespace PadForge.ViewModels
             get => _consumeTriggerButtons;
             set => SetProperty(ref _consumeTriggerButtons, value);
         }
+
+        // ─────────────────────────────────────────────
+        //  Axis trigger (fire when an axis exceeds a threshold)
+        // ─────────────────────────────────────────────
+
+        private MacroAxisTarget[] _triggerAxisTargets = Array.Empty<MacroAxisTarget>();
+
+        /// <summary>Axes that must all exceed the threshold for the trigger to fire.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MacroAxisTarget[] TriggerAxisTargets
+        {
+            get => _triggerAxisTargets;
+            set
+            {
+                _triggerAxisTargets = value ?? Array.Empty<MacroAxisTarget>();
+                OnPropertyChanged(nameof(TriggerAxisTargets));
+                OnPropertyChanged(nameof(UsesAxisTrigger));
+                OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        /// <summary>Serializable comma-separated form of TriggerAxisTargets.</summary>
+        public string TriggerAxisTargetList
+        {
+            get
+            {
+                if (_triggerAxisTargets.Length == 0) return null;
+                return string.Join(",", _triggerAxisTargets.Select(a => a.ToString()));
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    TriggerAxisTargets = Array.Empty<MacroAxisTarget>();
+                    return;
+                }
+                TriggerAxisTargets = value.Split(',')
+                    .Select(s => Enum.TryParse<MacroAxisTarget>(s.Trim(), out var v) ? v : MacroAxisTarget.None)
+                    .Where(v => v != MacroAxisTarget.None)
+                    .ToArray();
+            }
+        }
+
+        private int _triggerAxisThreshold = 50;
+
+        /// <summary>Threshold percentage (0-100). All trigger axes must exceed this.</summary>
+        public int TriggerAxisThreshold
+        {
+            get => _triggerAxisThreshold;
+            set
+            {
+                if (SetProperty(ref _triggerAxisThreshold, Math.Clamp(value, 1, 100)))
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        /// <summary>True if this macro uses one or more axes as part of its trigger.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool UsesAxisTrigger => _triggerAxisTargets.Length > 0;
 
         // ─────────────────────────────────────────────
         //  Actions
@@ -417,6 +574,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
+                    OnPropertyChanged(nameof(IsAppVolumeType));
+                    OnPropertyChanged(nameof(IsMouseMoveType));
+                    OnPropertyChanged(nameof(IsMouseButtonType));
+                    OnPropertyChanged(nameof(IsContinuousAxisType));
                 }
             }
         }
@@ -431,7 +592,7 @@ namespace PadForge.ViewModels
 
         /// <summary>True when Type is ButtonPress, KeyPress, or Delay.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
 
         /// <summary>True when Type is AxisSet.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -440,6 +601,31 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is SystemVolume.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsSystemVolumeType => _type == MacroActionType.SystemVolume;
+
+        /// <summary>True when Type is AppVolume.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAppVolumeType => _type == MacroActionType.AppVolume;
+
+        /// <summary>True when Type is MouseMove or MouseScroll (continuous axis-to-mouse).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseMoveType => _type == MacroActionType.MouseMove || _type == MacroActionType.MouseScroll;
+
+        /// <summary>True when Type is MouseButtonPress or MouseButtonRelease.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseButtonType => _type == MacroActionType.MouseButtonPress || _type == MacroActionType.MouseButtonRelease;
+
+        /// <summary>True when Type uses a continuous axis source (SystemVolume, AppVolume, MouseMove, MouseScroll).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsContinuousAxisType => _type is MacroActionType.SystemVolume or MacroActionType.AppVolume
+            or MacroActionType.MouseMove or MacroActionType.MouseScroll;
+
+        /// <summary>True when AxisSource is InputDevice.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsDeviceAxisSource => _axisSource == MacroAxisSource.InputDevice;
+
+        /// <summary>True when AxisSource is OutputController (default).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsOutputAxisSource => _axisSource == MacroAxisSource.OutputController;
 
         private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
 
@@ -748,16 +934,143 @@ namespace PadForge.ViewModels
         public short AxisValue
         {
             get => _axisValue;
-            set => SetProperty(ref _axisValue, value);
+            set
+            {
+                if (SetProperty(ref _axisValue, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
         }
 
         private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
 
-        /// <summary>For AxisSet: which axis to modify.</summary>
+        /// <summary>For AxisSet/SystemVolume/AppVolume: which axis to use.</summary>
         public MacroAxisTarget AxisTarget
         {
             get => _axisTarget;
-            set => SetProperty(ref _axisTarget, value);
+            set
+            {
+                if (SetProperty(ref _axisTarget, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private string _processName = "";
+
+        /// <summary>
+        /// For AppVolume: the process name (e.g., "firefox", "spotify") whose
+        /// volume in the Windows mixer should be controlled.
+        /// </summary>
+        public string ProcessName
+        {
+            get => _processName;
+            set
+            {
+                if (SetProperty(ref _processName, value ?? ""))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>
+        /// Process names with active audio sessions, populated on demand.
+        /// Used as suggestion items in the editable ComboBox.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public ObservableCollection<string> AudioProcessNames { get; } = new();
+
+        private RelayCommand _refreshAudioProcessesCommand;
+
+        /// <summary>Refreshes the list of processes with active audio sessions.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand RefreshAudioProcessesCommand =>
+            _refreshAudioProcessesCommand ??= new RelayCommand(() =>
+            {
+                AudioProcessNames.Clear();
+                foreach (var name in AudioSessionHelper.GetActiveAudioProcessNames())
+                    AudioProcessNames.Add(name);
+            });
+
+        // ── Volume limit ──
+
+        private int _volumeLimit = 100;
+
+        /// <summary>For SystemVolume/AppVolume: maximum volume percentage (1-100). Axis output is scaled to this limit.</summary>
+        public int VolumeLimit
+        {
+            get => _volumeLimit;
+            set
+            {
+                if (SetProperty(ref _volumeLimit, Math.Clamp(value, 1, 100)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        // ── Mouse properties ──
+
+        private float _mouseSensitivity = 10f;
+
+        /// <summary>For MouseMove/MouseScroll: pixels (or scroll units) per frame at full deflection. Range 1-100.</summary>
+        public float MouseSensitivity
+        {
+            get => _mouseSensitivity;
+            set
+            {
+                if (SetProperty(ref _mouseSensitivity, Math.Clamp(value, 1f, 100f)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>Fractional pixel/scroll accumulator for sub-pixel precision.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal float MouseAccumulator;
+
+        private MacroMouseButton _mouseButton = MacroMouseButton.Left;
+
+        /// <summary>For MouseButtonPress/MouseButtonRelease: which mouse button.</summary>
+        public MacroMouseButton MouseButton
+        {
+            get => _mouseButton;
+            set
+            {
+                if (SetProperty(ref _mouseButton, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        // ── Input device axis source ──
+
+        private MacroAxisSource _axisSource = MacroAxisSource.OutputController;
+
+        /// <summary>Where to read axis values: from the virtual controller output or a physical input device.</summary>
+        public MacroAxisSource AxisSource
+        {
+            get => _axisSource;
+            set
+            {
+                if (SetProperty(ref _axisSource, value))
+                {
+                    OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(IsDeviceAxisSource));
+                    OnPropertyChanged(nameof(IsOutputAxisSource));
+                }
+            }
+        }
+
+        private Guid _sourceDeviceGuid = Guid.Empty;
+
+        /// <summary>For InputDevice axis source: the InstanceGuid of the physical device to read from.</summary>
+        public Guid SourceDeviceGuid
+        {
+            get => _sourceDeviceGuid;
+            set => SetProperty(ref _sourceDeviceGuid, value);
+        }
+
+        private int _sourceDeviceAxisIndex = -1;
+
+        /// <summary>For InputDevice axis source: which axis index to read from the device's InputState.Axis[].</summary>
+        public int SourceDeviceAxisIndex
+        {
+            get => _sourceDeviceAxisIndex;
+            set => SetProperty(ref _sourceDeviceAxisIndex, value);
         }
 
         /// <summary>Human-readable display text for the action list.</summary>
@@ -769,6 +1082,9 @@ namespace PadForge.ViewModels
                 string btnText = _buttonStyle == MacroButtonStyle.Numbered
                     ? MacroButtonNames.FormatCustomButtons(_customButtonWords)
                     : MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle);
+                string axisLabel = _axisSource == MacroAxisSource.InputDevice
+                    ? $"Device Axis {_sourceDeviceAxisIndex}"
+                    : _axisTarget.DisplayName();
                 return _type switch
                 {
                     MacroActionType.ButtonPress => $"Press {btnText} for {_durationMs}ms",
@@ -777,7 +1093,16 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyRelease => $"Release keys {keyDisplay}",
                     MacroActionType.Delay => $"Wait {_durationMs}ms",
                     MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
-                    MacroActionType.SystemVolume => $"System Volume \u2190 {_axisTarget}",
+                    MacroActionType.SystemVolume => _volumeLimit < 100
+                        ? $"System Volume \u2190 {axisLabel} (max {_volumeLimit}%)"
+                        : $"System Volume \u2190 {axisLabel}",
+                    MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
+                        ? (_volumeLimit < 100 ? $"App Volume \u2190 {axisLabel} (max {_volumeLimit}%)" : $"App Volume \u2190 {axisLabel}")
+                        : (_volumeLimit < 100 ? $"App Volume ({_processName}) \u2190 {axisLabel} (max {_volumeLimit}%)" : $"App Volume ({_processName}) \u2190 {axisLabel}"),
+                    MacroActionType.MouseMove => $"Mouse Move \u2190 {axisLabel} (speed {_mouseSensitivity:F0})",
+                    MacroActionType.MouseButtonPress => $"Mouse Press {_mouseButton}",
+                    MacroActionType.MouseButtonRelease => $"Mouse Release {_mouseButton}",
+                    MacroActionType.MouseScroll => $"Mouse Scroll \u2190 {axisLabel} (speed {_mouseSensitivity:F0})",
                     _ => "Unknown action"
                 };
             }
@@ -808,7 +1133,10 @@ namespace PadForge.ViewModels
         OnRelease,
 
         /// <summary>Fire repeatedly while the trigger combo is held.</summary>
-        WhileHeld
+        WhileHeld,
+
+        /// <summary>Runs continuously without any trigger button requirement.</summary>
+        Always
     }
 
     public enum MacroTriggerSource
@@ -853,7 +1181,31 @@ namespace PadForge.ViewModels
         AxisSet,
 
         /// <summary>Continuously map a source axis value to the Windows system volume.</summary>
-        SystemVolume
+        SystemVolume,
+
+        /// <summary>Continuously map a source axis value to a specific application's volume in the Windows mixer.</summary>
+        AppVolume,
+
+        /// <summary>Continuously map a source axis to mouse cursor movement.</summary>
+        MouseMove,
+
+        /// <summary>Press a mouse button via SendInput.</summary>
+        MouseButtonPress,
+
+        /// <summary>Release a mouse button via SendInput.</summary>
+        MouseButtonRelease,
+
+        /// <summary>Continuously map a source axis to mouse scroll wheel.</summary>
+        MouseScroll
+    }
+
+    public enum MacroMouseButton
+    {
+        Left,
+        Right,
+        Middle,
+        X1,
+        X2
     }
 
     public enum MacroAxisTarget
@@ -865,6 +1217,33 @@ namespace PadForge.ViewModels
         RightStickY,
         LeftTrigger,
         RightTrigger
+    }
+
+    public static class MacroAxisTargetNames
+    {
+        /// <summary>
+        /// Returns a user-friendly display name matching the mapping target labels.
+        /// </summary>
+        public static string DisplayName(this MacroAxisTarget target) => target switch
+        {
+            MacroAxisTarget.LeftStickX => "X Axis",
+            MacroAxisTarget.LeftStickY => "Y Axis",
+            MacroAxisTarget.RightStickX => "X Rotation",
+            MacroAxisTarget.RightStickY => "Y Rotation",
+            MacroAxisTarget.LeftTrigger => "Z Axis",
+            MacroAxisTarget.RightTrigger => "Z Rotation",
+            _ => target.ToString()
+        };
+    }
+
+    /// <summary>Where to read axis values from for continuous actions.</summary>
+    public enum MacroAxisSource
+    {
+        /// <summary>Read from the combined virtual controller output (existing behavior).</summary>
+        OutputController,
+
+        /// <summary>Read from a physical input device's raw InputState.Axis[].</summary>
+        InputDevice
     }
 
     /// <summary>

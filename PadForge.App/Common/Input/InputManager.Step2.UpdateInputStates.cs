@@ -160,23 +160,5 @@ namespace PadForge.Common.Input
         }
 
         private Vibration _combinedVibration;
-
-        // ─────────────────────────────────────────────
-        //  Parse helpers
-        // ─────────────────────────────────────────────
-
-        private static int TryParseInt(string value, int defaultValue)
-        {
-            if (string.IsNullOrEmpty(value))
-                return defaultValue;
-            return int.TryParse(value, out int result) ? result : defaultValue;
-        }
-
-        private static bool TryParseBool(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return false;
-            return value == "1" || value.Equals("true", StringComparison.OrdinalIgnoreCase);
-        }
     }
 }

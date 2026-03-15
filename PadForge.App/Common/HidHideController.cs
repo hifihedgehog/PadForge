@@ -197,25 +197,6 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Ensures the given application path is in the whitelist.
-        /// Converts the path to DOS device format (\Device\HarddiskVolumeN\...) first.
-        /// </summary>
-        public static void EnsureWhitelisted(string appPath)
-        {
-            if (string.IsNullOrEmpty(appPath)) return;
-
-            string dosPath = ToDosDevicePath(appPath);
-            if (dosPath == null) return;
-
-            var list = GetWhitelist();
-            if (!list.Contains(dosPath, StringComparer.OrdinalIgnoreCase))
-            {
-                list.Add(dosPath);
-                SetWhitelist(list);
-            }
-        }
-
-        /// <summary>
         /// Gets whether cloaking (device hiding) is currently active.
         /// </summary>
         public static bool GetActive()
@@ -258,6 +239,47 @@ namespace PadForge.Common
                 list.RemoveAll(id => _managedDeviceIds.Contains(id));
                 SetBlacklist(list);
                 _managedDeviceIds.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Atomically syncs the blacklist to match the desired set of managed device IDs.
+        /// Only adds/removes the diff — never clears the entire blacklist, avoiding a
+        /// window where HidHide briefly un-hides devices.
+        /// </summary>
+        public static void SyncManagedDevices(HashSet<string> desiredIds)
+        {
+            lock (_lock)
+            {
+                var toAdd = new List<string>();
+                var toRemove = new List<string>();
+
+                foreach (var id in desiredIds)
+                {
+                    if (!_managedDeviceIds.Contains(id))
+                        toAdd.Add(id);
+                }
+                foreach (var id in _managedDeviceIds)
+                {
+                    if (!desiredIds.Contains(id))
+                        toRemove.Add(id);
+                }
+
+                if (toAdd.Count == 0 && toRemove.Count == 0) return;
+
+                var list = GetBlacklist();
+                foreach (var id in toRemove)
+                    list.RemoveAll(x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
+                foreach (var id in toAdd)
+                {
+                    if (!list.Contains(id, StringComparer.OrdinalIgnoreCase))
+                        list.Add(id);
+                }
+                SetBlacklist(list);
+
+                _managedDeviceIds.Clear();
+                foreach (var id in desiredIds)
+                    _managedDeviceIds.Add(id);
             }
         }
 
@@ -430,10 +452,10 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Converts a regular file path (C:\PadForge\PadForge.exe) to DOS device
-        /// path format (\Device\HarddiskVolumeN\PadForge\PadForge.exe) for the
-        /// HidHide whitelist.
+        /// Converts a Windows file path to a DOS device path (\Device\HarddiskVolumeN\...).
         /// </summary>
+        public static string ToDosDevicePathPublic(string filePath) => ToDosDevicePath(filePath);
+
         private static string ToDosDevicePath(string filePath)
         {
             try

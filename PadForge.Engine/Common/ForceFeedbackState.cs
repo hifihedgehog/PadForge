@@ -17,14 +17,9 @@ namespace PadForge.Engine
     public class ForceFeedbackState
     {
         // ─────────────────────────────────────────────
-        //  Cached settings for change detection
+        //  Cached motor speeds for change detection
         // ─────────────────────────────────────────────
 
-        private int _cachedForceType;
-        private bool _cachedForceSwapMotor;
-        private int _cachedLeftStrength = -1;
-        private int _cachedRightStrength = -1;
-        private int _cachedOverallStrength = -1;
         private ushort _cachedLeftMotorSpeed;
         private ushort _cachedRightMotorSpeed;
 
@@ -297,43 +292,6 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
         //  Change detection
         // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Returns true if any force feedback setting in the <see cref="PadSetting"/>
-        /// has changed since the last call to <see cref="SetDeviceForces"/>. This is used
-        /// to avoid redundant rumble updates when settings haven't changed.
-        /// </summary>
-        /// <param name="ps">The current PadSetting to compare against cached values.</param>
-        /// <returns>True if any setting differs from the cached value.</returns>
-        public bool Changed(PadSetting ps)
-        {
-            if (ps == null)
-                return false;
-
-            int forceType = TryParseInt(ps.ForceType, 0);
-            bool swapMotor = TryParseBool(ps.ForceSwapMotor);
-            int leftStrength = TryParseInt(ps.LeftMotorStrength, 100);
-            int rightStrength = TryParseInt(ps.RightMotorStrength, 100);
-            int overallStrength = TryParseInt(ps.ForceOverall, 100);
-
-            bool changed =
-                _cachedForceType != forceType ||
-                _cachedForceSwapMotor != swapMotor ||
-                _cachedLeftStrength != leftStrength ||
-                _cachedRightStrength != rightStrength ||
-                _cachedOverallStrength != overallStrength;
-
-            if (changed)
-            {
-                _cachedForceType = forceType;
-                _cachedForceSwapMotor = swapMotor;
-                _cachedLeftStrength = leftStrength;
-                _cachedRightStrength = rightStrength;
-                _cachedOverallStrength = overallStrength;
-            }
-
-            return changed;
-        }
 
         // ─────────────────────────────────────────────
         //  Parse helpers

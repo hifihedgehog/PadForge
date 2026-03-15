@@ -370,7 +370,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Creates the next available virtual controller slot with the specified type.
-        /// Returns the slot index (0–3) or -1 if all slots are taken.
+        /// Returns the slot index (0–15) or -1 if all slots are taken.
         /// </summary>
         public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox360)
         {
@@ -408,6 +408,10 @@ namespace PadForge.Services
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
+
+            // Reset PadViewModel so stale settings (deadzone, sensitivity, etc.)
+            // don't leak into the next controller created in this slot.
+            _mainVm.Pads[slotIndex].ResetAllSettings();
 
             // Unassign all devices mapped to this slot.
             // Remove entries that are ONLY mapped to this slot (orphans).

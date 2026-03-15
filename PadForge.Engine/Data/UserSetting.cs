@@ -93,13 +93,6 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool IsEnabled { get; set; } = true;
 
-        /// <summary>
-        /// Sort order for devices mapped to the same slot.
-        /// Lower values have higher priority when combining states in Step 4.
-        /// </summary>
-        [XmlElement]
-        public int SortOrder { get; set; }
-
         // ─────────────────────────────────────────────
         //  Metadata
         // ─────────────────────────────────────────────
@@ -111,20 +104,6 @@ namespace PadForge.Engine.Data
         /// <summary>Date when this setting was last modified.</summary>
         [XmlElement]
         public DateTime DateUpdated { get; set; } = DateTime.Now;
-
-        /// <summary>Optional comment/note for this setting.</summary>
-        [XmlElement]
-        public string Comment { get; set; } = string.Empty;
-
-        // ─────────────────────────────────────────────
-        //  Auto-mapping flags
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Whether the mapping was auto-generated rather than manually configured.
-        /// </summary>
-        [XmlElement]
-        public bool IsAutoMapped { get; set; }
 
         // ─────────────────────────────────────────────
         //  Runtime-only fields (not serialized)
@@ -160,6 +139,13 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public MidiRawState MidiRawOutputState { get; set; }
+
+        /// <summary>
+        /// The mapped KBM raw output state computed in Step 3 for KeyboardMouse slots.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public KbmRawState KbmRawOutputState { get; set; }
 
         /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.

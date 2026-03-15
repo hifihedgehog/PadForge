@@ -402,20 +402,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Backward-compatible single-axis property. Sets/gets first element.</summary>
-        public MacroAxisTarget TriggerAxisTarget
-        {
-            get => _triggerAxisTargets.Length > 0 ? _triggerAxisTargets[0] : MacroAxisTarget.None;
-            set
-            {
-                // Legacy setter — convert single value to array.
-                if (value == MacroAxisTarget.None)
-                    TriggerAxisTargets = Array.Empty<MacroAxisTarget>();
-                else
-                    TriggerAxisTargets = new[] { value };
-            }
-        }
-
         /// <summary>Serializable comma-separated form of TriggerAxisTargets.</summary>
         public string TriggerAxisTargetList
         {

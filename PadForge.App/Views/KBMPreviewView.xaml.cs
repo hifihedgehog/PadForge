@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -112,12 +113,14 @@ namespace PadForge.Views
             var keys = KeyboardKeyItem.BuildLayout();
             foreach (var key in keys)
             {
+                string targetName = $"KbmKey{key.VKeyIndex:X2}";
+                string tooltipLabel = _vm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == targetName)?.TargetLabel ?? key.Label;
                 var border = new Border
                 {
                     Width = key.KeyWidth, Height = key.KeyHeight,
                     CornerRadius = new CornerRadius(3),
                     Background = KeyNormalBrush, Cursor = Cursors.Hand,
-                    ToolTip = key.Label
+                    ToolTip = tooltipLabel
                 };
                 border.Child = new TextBlock
                 {
@@ -130,7 +133,6 @@ namespace PadForge.Views
                 Canvas.SetTop(border, key.Y);
                 KeyboardCanvas.Children.Add(border);
 
-                string targetName = $"KbmKey{key.VKeyIndex:X2}";
                 border.MouseEnter += (s, e) => { if (_flashTarget == null) { border.BorderBrush = HoverBrush; border.BorderThickness = new Thickness(1.5); } };
                 border.MouseLeave += (s, e) => { if (_flashTarget == null) { border.BorderBrush = null; border.BorderThickness = new Thickness(0); } };
                 border.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, targetName); e.Handled = true; };
@@ -187,6 +189,7 @@ namespace PadForge.Views
                 Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_lmbPath);
+            _lmbPath.ToolTip = MappingLabel("KbmMBtn0");
             AddButtonHandlers(_lmbPath, "KbmMBtn0");
 
             // ── RMB — mirror of LMB ──
@@ -202,6 +205,7 @@ namespace PadForge.Views
                 Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_rmbPath);
+            _rmbPath.ToolTip = MappingLabel("KbmMBtn1");
             AddButtonHandlers(_rmbPath, "KbmMBtn1");
 
             // ── MMB channel background (between buttons) ──
@@ -224,6 +228,7 @@ namespace PadForge.Views
             Canvas.SetLeft(_scrollWheelPill, swL);
             Canvas.SetTop(_scrollWheelPill, swTop);
             MouseCanvas.Children.Add(_scrollWheelPill);
+            _scrollWheelPill.ToolTip = MappingLabel("KbmMBtn2");
             _scrollWheelPill.MouseEnter += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = HoverBrush; _scrollWheelPill.StrokeThickness = 2; } };
             _scrollWheelPill.MouseLeave += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = DimBrush; _scrollWheelPill.StrokeThickness = 1; } };
             _scrollWheelPill.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn2"); e.Handled = true; };
@@ -235,6 +240,7 @@ namespace PadForge.Views
                 Fill = DimBrush, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_scrollUpArrow);
+            _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " Up";
             _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
             _scrollUpArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
             _scrollUpArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScroll"); e.Handled = true; };
@@ -245,6 +251,7 @@ namespace PadForge.Views
                 Fill = DimBrush, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_scrollDownArrow);
+            _scrollDownArrow.ToolTip = MappingLabel("KbmScroll") + " Down";
             _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
             _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
             _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
@@ -263,7 +270,8 @@ namespace PadForge.Views
             {
                 Width = MoveSize, Height = MoveSize,
                 Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
-                Stroke = DimBrush, StrokeThickness = 1.5, Cursor = Cursors.Hand
+                Stroke = DimBrush, StrokeThickness = 1.5, Cursor = Cursors.Hand,
+                ToolTip = "Mouse Movement"
             };
             Canvas.SetLeft(_moveCircle, moveX);
             Canvas.SetTop(_moveCircle, MoveTop);
@@ -329,6 +337,7 @@ namespace PadForge.Views
             };
             Canvas.SetLeft(x1Rect, mL - 4); Canvas.SetTop(x1Rect, 70);
             MouseCanvas.Children.Add(x1Rect);
+            x1Rect.ToolTip = MappingLabel("KbmMBtn3");
             x1Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { x1Rect.Stroke = HoverBrush; x1Rect.StrokeThickness = 2; } };
             x1Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { x1Rect.Stroke = DimBrush; x1Rect.StrokeThickness = 1; } };
             x1Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn3"); e.Handled = true; };
@@ -340,6 +349,7 @@ namespace PadForge.Views
             };
             Canvas.SetLeft(x2Rect, mL - 4); Canvas.SetTop(x2Rect, 88);
             MouseCanvas.Children.Add(x2Rect);
+            x2Rect.ToolTip = MappingLabel("KbmMBtn4");
             x2Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { x2Rect.Stroke = HoverBrush; x2Rect.StrokeThickness = 2; } };
             x2Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { x2Rect.Stroke = DimBrush; x2Rect.StrokeThickness = 1; } };
             x2Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn4"); e.Handled = true; };
@@ -357,6 +367,9 @@ namespace PadForge.Views
             path.MouseLeave += (s, e) => { if (_flashTarget == null) { path.Stroke = DimBrush; path.StrokeThickness = 1; } };
             path.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, target); e.Handled = true; };
         }
+
+        private string MappingLabel(string targetSettingName)
+            => _vm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == targetSettingName)?.TargetLabel ?? targetSettingName;
 
         private void Lbl(string text, double x, double y, double fs = 9)
         {

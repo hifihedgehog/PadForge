@@ -77,6 +77,12 @@
   <data name="Common_Ready" xml:space="preserve"><value>準備完了</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>停止中</value></data>
   <data name="Common_Running" xml:space="preserve"><value>実行中</value></data>
+  <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} で実行中</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>実行中 ({0} クライアント)</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} でリッスン中</value></data>
+  <data name="Server_PortInUse_Format" xml:space="preserve"><value>ポート {0} は使用中</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ポート {0} のアクセスが拒否されました（管理者として実行）</value></data>
+  <data name="Server_FailedToStart" xml:space="preserve"><value>起動に失敗しました</value></data>
   <data name="Common_Idle" xml:space="preserve"><value>待機中</value></data>
   <data name="Common_Online" xml:space="preserve"><value>オンライン</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>オフライン</value></data>

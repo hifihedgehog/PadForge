@@ -77,6 +77,12 @@
   <data name="Common_Ready" xml:space="preserve"><value>준비 완료</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>중지됨</value></data>
   <data name="Common_Running" xml:space="preserve"><value>실행 중</value></data>
+  <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0}에서 실행 중</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>실행 중 ({0} 클라이언트)</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중</value></data>
+  <data name="Server_PortInUse_Format" xml:space="preserve"><value>포트 {0} 사용 중</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>포트 {0} 접근 거부됨 (관리자로 실행)</value></data>
+  <data name="Server_FailedToStart" xml:space="preserve"><value>시작 실패</value></data>
   <data name="Common_Idle" xml:space="preserve"><value>대기 중</value></data>
   <data name="Common_Online" xml:space="preserve"><value>온라인</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>오프라인</value></data>

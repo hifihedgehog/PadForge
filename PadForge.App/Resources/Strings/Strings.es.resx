@@ -104,7 +104,7 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Cerrando PadForge...</value></data>
   <data name="Main_ReleasingControllers" xml:space="preserve"><value>Liberando controles virtuales</value></data>
   <data name="Main_PleaseWait" xml:space="preserve"><value>Por favor espere...</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value>dispositivo(s)</value></data>
+  <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivo(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Agregar control</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Eliminar control virtual</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostrar PadForge</value></data>
@@ -174,7 +174,7 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>Panel</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de entrada</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value>dispositivos en línea</value></data>
+  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivos en línea</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controles virtuales</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value>asignados,</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value>conectados</value></data>
@@ -266,14 +266,14 @@
 
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivos</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value>en línea /</value></data>
-  <data name="Devices_Total" xml:space="preserve"><value>total</value></data>
+  <data name="Devices_OnlineTotal" xml:space="preserve"><value> en línea / </value></data>
+  <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Quitar este dispositivo y su configuración</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Producto:</value></data>
-  <data name="Devices_Type" xml:space="preserve"><value>Tipo:</value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID:</value></data>
-  <data name="Devices_InstancePath" xml:space="preserve"><value>Ruta de instancia:</value></data>
-  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID:</value></data>
+  <data name="Devices_Product" xml:space="preserve"><value>Producto: </value></data>
+  <data name="Devices_Type" xml:space="preserve"><value>Tipo: </value></data>
+  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_InstancePath" xml:space="preserve"><value>Ruta de instancia: </value></data>
+  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Enviar asignación de dispositivo</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Asignación de control virtual</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Alternar asignación</value></data>
@@ -292,7 +292,7 @@
   <data name="Devices_Keyboard" xml:space="preserve"><value>Teclado</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>Ratón</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>Cruceta / POV</value></data>
-  <data name="Devices_POV" xml:space="preserve"><value>POV</value></data>
+  <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Acelerómetro</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Eje {0}</value></data>
@@ -512,5 +512,119 @@
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>G{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>Cruceta</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dead Zone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dead Zone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y:</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>Lineal:</value></data>
+  <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Curvas de sensibilidad</value></data>
+  <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Doble clic para agregar punto. Clic derecho para eliminar. Arrastrar para ajustar.</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensibilidad X:</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensibilidad Y:</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>Rango mín. X (Izquierda):</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>Rango máx. X (Derecha):</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rango mín. Y (Abajo):</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rango máx. Y (Arriba):</value></data>
+  <data name="Pad_XAxis" xml:space="preserve"><value>Eje X</value></data>
+  <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>Rango:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone:</value></data>
+  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curva de sensibilidad</value></data>
+  <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Doble clic para agregar punto. Clic derecho para eliminar. Arrastrar para ajustar.</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preajuste:</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>En vivo:</value></data>
+  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eje del gatillo</value></data>
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Vibración</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>Ganancia total:</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor izquierdo:</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor derecho:</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Intercambiar motores izquierdo/derecho</value></data>
+  <data name="Pad_TestRumble" xml:space="preserve"><value>Probar vibración</value></data>
+  <data name="Pad_MotorActivity" xml:space="preserve"><value>Actividad del motor</value></data>
+  <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Restablecer desplazamiento central X</value></data>
+  <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Restablecer desplazamiento central Y</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Restablecer a Radial escalado</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Restablecer Dead Zone X</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Restablecer Dead Zone Y</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Restablecer Anti-Dead Zone X</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Restablecer Anti-Dead Zone Y</value></data>
+  <data name="Pad_ResetLinear" xml:space="preserve"><value>Restablecer lineal</value></data>
+  <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Restablecer sensibilidad X</value></data>
+  <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Restablecer sensibilidad Y</value></data>
+  <data name="Pad_ResetMinRangeX" xml:space="preserve"><value>Restablecer rango mín. X</value></data>
+  <data name="Pad_ResetMaxRangeX" xml:space="preserve"><value>Restablecer rango máx. X</value></data>
+  <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Restablecer rango mín. Y</value></data>
+  <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Restablecer rango máx. Y</value></data>
+  <data name="Pad_ResetRange" xml:space="preserve"><value>Restablecer rango</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Restablecer Anti-Dead Zone</value></data>
+  <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Restablecer sensibilidad</value></data>
+  <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Restablecer ganancia total</value></data>
+  <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Restablecer motor izquierdo</value></data>
+  <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Restablecer motor derecho</value></data>
+  <data name="Pad_ResetView" xml:space="preserve"><value>Restablecer vista</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>Presione botones o mueva un eje/gatillo para grabar. Los ejes se detectan cuando se deflectan más del 50 %.</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado (0–100 %) al volumen del sistema Windows, escalado al límite de volumen. Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla el volumen de una aplicación específica en el mezclador de volumen de Windows, escalado al límite. Ingrese el nombre del proceso (visible en el Administrador de tareas). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado al movimiento del ratón (o desplazamiento). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar". Para stick-a-ratón, cree dos acciones: una para el eje X y otra para el eje Y.</value></data>
+  <data name="Btn_LeftBumper" xml:space="preserve"><value>Bumper izquierdo</value></data>
+  <data name="Btn_RightBumper" xml:space="preserve"><value>Bumper derecho</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Btn_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
+  <data name="Btn_LeftStickClick" xml:space="preserve"><value>Clic palanca izquierda</value></data>
+  <data name="Btn_RightStickClick" xml:space="preserve"><value>Clic palanca derecha</value></data>
+  <data name="Btn_DPadUp" xml:space="preserve"><value>Cruceta Arriba</value></data>
+  <data name="Btn_DPadDown" xml:space="preserve"><value>Cruceta Abajo</value></data>
+  <data name="Btn_DPadLeft" xml:space="preserve"><value>Cruceta Izquierda</value></data>
+  <data name="Btn_DPadRight" xml:space="preserve"><value>Cruceta Derecha</value></data>
+  <data name="Btn_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
+  <data name="Btn_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="Btn_LeftStickX" xml:space="preserve"><value>Palanca izquierda X</value></data>
+  <data name="Btn_LeftStickY" xml:space="preserve"><value>Palanca izquierda Y</value></data>
+  <data name="Btn_RightStickX" xml:space="preserve"><value>Palanca derecha X</value></data>
+  <data name="Btn_RightStickY" xml:space="preserve"><value>Palanca derecha Y</value></data>
+  <data name="Key_LeftShift" xml:space="preserve"><value>Mayús izquierda</value></data>
+  <data name="Key_RightShift" xml:space="preserve"><value>Mayús derecha</value></data>
+  <data name="Key_LeftCtrl" xml:space="preserve"><value>Ctrl izquierdo</value></data>
+  <data name="Key_RightCtrl" xml:space="preserve"><value>Ctrl derecho</value></data>
+  <data name="Key_LeftAlt" xml:space="preserve"><value>Alt izquierdo</value></data>
+  <data name="Key_RightAlt" xml:space="preserve"><value>Alt derecho</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Espacio</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Intro</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Escape</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Backspace" xml:space="preserve"><value>Retroceso</value></data>
+  <data name="Key_CapsLock" xml:space="preserve"><value>Bloq Mayús</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>Arriba</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>Abajo</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>Izquierda</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>Derecha</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Inicio</value></data>
+  <data name="Key_End" xml:space="preserve"><value>Fin</value></data>
+  <data name="Key_PageUp" xml:space="preserve"><value>Re Pág</value></data>
+  <data name="Key_PageDown" xml:space="preserve"><value>Av Pág</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Insertar</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Suprimir</value></data>
+  <data name="Mouse_LeftClick" xml:space="preserve"><value>Clic izquierdo</value></data>
+  <data name="Mouse_RightClick" xml:space="preserve"><value>Clic derecho</value></data>
+  <data name="Mouse_MiddleClick" xml:space="preserve"><value>Clic central</value></data>
+  <data name="Mouse_Button4" xml:space="preserve"><value>Ratón 4</value></data>
+  <data name="Mouse_Button5" xml:space="preserve"><value>Ratón 5</value></data>
+  <data name="Mouse_X" xml:space="preserve"><value>Ratón X</value></data>
+  <data name="Mouse_Y" xml:space="preserve"><value>Ratón Y</value></data>
+  <data name="Mouse_Scroll" xml:space="preserve"><value>Desplazamiento</value></data>
+  <data name="VJoy_Stick_Format" xml:space="preserve"><value>Palanca {0} X</value></data>
+  <data name="VJoy_StickY_Format" xml:space="preserve"><value>Palanca {0} Y</value></data>
+  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>Gatillo {0}</value></data>
+  <data name="VJoy_Button_Format" xml:space="preserve"><value>Botón {0}</value></data>
+  <data name="VJoy_DPad" xml:space="preserve"><value>Cruceta</value></data>
+  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="MacroAxis_XAxis" xml:space="preserve"><value>Palanca izquierda X</value></data>
+  <data name="MacroAxis_YAxis" xml:space="preserve"><value>Palanca izquierda Y</value></data>
+  <data name="MacroAxis_XRotation" xml:space="preserve"><value>Palanca derecha X</value></data>
+  <data name="MacroAxis_YRotation" xml:space="preserve"><value>Palanca derecha Y</value></data>
+  <data name="MacroAxis_ZAxis" xml:space="preserve"><value>Gatillo izquierdo</value></data>
+  <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Gatillo derecho</value></data>
 
 </root>

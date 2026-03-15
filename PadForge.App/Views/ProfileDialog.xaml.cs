@@ -16,6 +16,7 @@ namespace PadForge.Views
         {
             InitializeComponent();
             ExeListBox.ItemsSource = ExecutablePaths;
+            NameBox.Text = Strings.Instance.ProfileDialog_DefaultName;
             NameBox.Focus();
             NameBox.SelectAll();
         }

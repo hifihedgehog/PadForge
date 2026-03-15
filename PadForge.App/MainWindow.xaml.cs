@@ -701,6 +701,9 @@ namespace PadForge
             Closing += OnClosing;
             StateChanged += OnStateChanged;
 
+            // Live language switching: refresh sidebar nav items when culture changes.
+            Strings.CultureChanged += OnCultureChanged;
+
             // ── Early initialization (before window is shown) ──
             // Settings must be loaded before Show() so App.OnStartup can
             // decide whether to show the window at all (start-minimized-to-tray).
@@ -903,6 +906,9 @@ namespace PadForge
         private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
 
 
+        /// <summary>Static nav items whose Content must be refreshed on culture change.</summary>
+        private NavigationViewItem _navDashboard, _navProfiles, _navDevices;
+
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
         private const int ControllerInsertIndex = 3;
 
@@ -930,29 +936,31 @@ namespace PadForge
             NavView.MenuItems.Clear();
 
             // Dashboard.
-            NavView.MenuItems.Add(new NavigationViewItem
+            _navDashboard = new NavigationViewItem
             {
                 Content = Strings.Instance.Dashboard_Title,
                 Tag = "Dashboard",
                 Icon = new FontIcon { Glyph = "\uF404" }
-            });
+            };
+            NavView.MenuItems.Add(_navDashboard);
 
             // Profiles.
-            var profiles = new NavigationViewItem
+            _navProfiles = new NavigationViewItem
             {
                 Tag = "Profiles",
                 Icon = new FontIcon { Glyph = "\uE8F1" },
                 Content = Strings.Instance.Profiles_Title
             };
-            NavView.MenuItems.Add(profiles);
+            NavView.MenuItems.Add(_navProfiles);
 
             // Devices.
-            NavView.MenuItems.Add(new NavigationViewItem
+            _navDevices = new NavigationViewItem
             {
                 Content = Strings.Instance.Devices_Title,
                 Tag = "Devices",
                 Icon = new FontIcon { Glyph = "\uE772" }
-            });
+            };
+            NavView.MenuItems.Add(_navDevices);
 
             // Controller entries (initially none — populated dynamically).
             RebuildControllerSection();
@@ -986,6 +994,16 @@ namespace PadForge
                     }
                 };
             }
+        }
+
+        private void OnCultureChanged()
+        {
+            if (_navDashboard != null) _navDashboard.Content = Strings.Instance.Dashboard_Title;
+            if (_navProfiles != null) _navProfiles.Content = Strings.Instance.Profiles_Title;
+            if (_navDevices != null) _navDevices.Content = Strings.Instance.Devices_Title;
+
+            // Refresh "Add Controller" and controller card labels by rebuilding the dynamic section.
+            RebuildControllerSection();
         }
 
         /// <summary>

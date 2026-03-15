@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -27,7 +28,7 @@ namespace PadForge.ViewModels
         //  Identity
         // ─────────────────────────────────────────────
 
-        private string _name = "New Macro";
+        private string _name = Strings.Macro_NewMacro;
 
         /// <summary>User-facing name for this macro.</summary>
         public string Name
@@ -151,7 +152,7 @@ namespace PadForge.ViewModels
                 foreach (var axis in _triggerAxisTargets)
                     parts.Add($"{axis.DisplayName()} > {_triggerAxisThreshold}%");
 
-                if (parts.Count == 0) return "Not set \u2014 click Record";
+                if (parts.Count == 0) return Strings.Macro_NotSet;
 
                 string result = string.Join(" + ", parts);
 
@@ -212,17 +213,17 @@ namespace PadForge.ViewModels
 
         private static string CentidegreesToDirection(int centidegrees)
         {
-            if (centidegrees < 0) return "Centered";
+            if (centidegrees < 0) return Strings.POV_Centered;
             centidegrees %= 36000;
-            if (centidegrees >= 33750 || centidegrees < 2250) return "Up";
-            if (centidegrees < 6750) return "Up-Right";
-            if (centidegrees < 11250) return "Right";
-            if (centidegrees < 15750) return "Down-Right";
-            if (centidegrees < 20250) return "Down";
-            if (centidegrees < 24750) return "Down-Left";
-            if (centidegrees < 29250) return "Left";
-            if (centidegrees < 33750) return "Up-Left";
-            return "Up";
+            if (centidegrees >= 33750 || centidegrees < 2250) return Strings.POV_Up;
+            if (centidegrees < 6750) return Strings.POV_UpRight;
+            if (centidegrees < 11250) return Strings.POV_Right;
+            if (centidegrees < 15750) return Strings.POV_DownRight;
+            if (centidegrees < 20250) return Strings.POV_Down;
+            if (centidegrees < 24750) return Strings.POV_DownLeft;
+            if (centidegrees < 29250) return Strings.POV_Left;
+            if (centidegrees < 33750) return Strings.POV_UpLeft;
+            return Strings.POV_Up;
         }
 
         // ─────────────────────────────────────────────
@@ -303,7 +304,7 @@ namespace PadForge.ViewModels
         }
 
         public string RecordTriggerButtonText =>
-            IsRecordingTrigger ? "Stop" : "Record Trigger";
+            IsRecordingTrigger ? Strings.Common_Stop : Strings.Macro_RecordTrigger;
 
         private string _recordingLiveText = "";
 
@@ -768,7 +769,7 @@ namespace PadForge.ViewModels
                         // Dynamic list for custom vJoy — N buttons from config.
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
-                            list.Add(new GamepadButtonOption(this, $"Btn {i + 1}", customIndex: i));
+                            list.Add(new GamepadButtonOption(this, string.Format(Strings.Macro_Btn_Format, i + 1), customIndex: i));
                         _buttonOptions = list.AsReadOnly();
                     }
                     else
@@ -1087,22 +1088,22 @@ namespace PadForge.ViewModels
                     : _axisTarget.DisplayName();
                 return _type switch
                 {
-                    MacroActionType.ButtonPress => $"Press {btnText} for {_durationMs}ms",
-                    MacroActionType.ButtonRelease => $"Release {btnText}",
-                    MacroActionType.KeyPress => $"Keys {keyDisplay} for {_durationMs}ms",
-                    MacroActionType.KeyRelease => $"Release keys {keyDisplay}",
-                    MacroActionType.Delay => $"Wait {_durationMs}ms",
-                    MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
+                    MacroActionType.ButtonPress => string.Format(Strings.MacroAction_Press_Format, btnText, _durationMs),
+                    MacroActionType.ButtonRelease => string.Format(Strings.MacroAction_Release_Format, btnText),
+                    MacroActionType.KeyPress => string.Format(Strings.MacroAction_KeyPress_Format, keyDisplay, _durationMs),
+                    MacroActionType.KeyRelease => string.Format(Strings.MacroAction_KeyRelease_Format, keyDisplay),
+                    MacroActionType.Delay => string.Format(Strings.MacroAction_Wait_Format, _durationMs),
+                    MacroActionType.AxisSet => string.Format(Strings.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
                     MacroActionType.SystemVolume => _volumeLimit < 100
-                        ? $"System Volume \u2190 {axisLabel} (max {_volumeLimit}%)"
-                        : $"System Volume \u2190 {axisLabel}",
+                        ? string.Format(Strings.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
+                        : string.Format(Strings.MacroAction_SysVol_Format, axisLabel),
                     MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
-                        ? (_volumeLimit < 100 ? $"App Volume \u2190 {axisLabel} (max {_volumeLimit}%)" : $"App Volume \u2190 {axisLabel}")
-                        : (_volumeLimit < 100 ? $"App Volume ({_processName}) \u2190 {axisLabel} (max {_volumeLimit}%)" : $"App Volume ({_processName}) \u2190 {axisLabel}"),
-                    MacroActionType.MouseMove => $"Mouse Move \u2190 {axisLabel} (speed {_mouseSensitivity:F0})",
-                    MacroActionType.MouseButtonPress => $"Mouse Press {_mouseButton}",
-                    MacroActionType.MouseButtonRelease => $"Mouse Release {_mouseButton}",
-                    MacroActionType.MouseScroll => $"Mouse Scroll \u2190 {axisLabel} (speed {_mouseSensitivity:F0})",
+                        ? (_volumeLimit < 100 ? string.Format(Strings.MacroAction_AppVolLimit_Format, axisLabel, _volumeLimit) : string.Format(Strings.MacroAction_AppVol_Format, axisLabel))
+                        : (_volumeLimit < 100 ? string.Format(Strings.MacroAction_AppVolLimit_Format, $"{axisLabel} ({_processName})", _volumeLimit) : string.Format(Strings.MacroAction_AppVol_Format, $"{axisLabel} ({_processName})")),
+                    MacroActionType.MouseMove => string.Format(Strings.MacroAction_MouseMove_Format, axisLabel, _mouseSensitivity),
+                    MacroActionType.MouseButtonPress => string.Format(Strings.MacroAction_MousePress_Format, _mouseButton),
+                    MacroActionType.MouseButtonRelease => string.Format(Strings.MacroAction_MouseRelease_Format, _mouseButton),
+                    MacroActionType.MouseScroll => string.Format(Strings.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     _ => "Unknown action"
                 };
             }

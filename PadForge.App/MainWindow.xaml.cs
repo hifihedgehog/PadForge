@@ -9,6 +9,7 @@ using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.Services;
 using PadForge.ViewModels;
 using PadForge.Views;
@@ -166,23 +167,23 @@ namespace PadForge
 
             // Wire ViGEm install/uninstall commands.
             _viewModel.Settings.InstallViGEmRequested += async (s, e) => await RunDriverOperationAsync(
-                "Installing ViGEmBus…", DriverInstaller.InstallViGEmBus, RefreshViGEmStatus);
+                Strings.Status_InstallingViGEm, DriverInstaller.InstallViGEmBus, RefreshViGEmStatus);
             _viewModel.Settings.UninstallViGEmRequested += async (s, e) => await RunDriverOperationAsync(
-                "Uninstalling ViGEmBus…", DriverInstaller.UninstallViGEmBus, RefreshViGEmStatus);
+                Strings.Status_UninstallingViGEm, DriverInstaller.UninstallViGEmBus, RefreshViGEmStatus);
 
             // Wire HidHide install/uninstall commands.
             _viewModel.Settings.InstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
-                "Installing HidHide…", DriverInstaller.InstallHidHide, RefreshHidHideStatus);
+                Strings.Status_InstallingHidHide, DriverInstaller.InstallHidHide, RefreshHidHideStatus);
             _viewModel.Settings.UninstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
-                "Uninstalling HidHide…", DriverInstaller.UninstallHidHide, RefreshHidHideStatus);
+                Strings.Status_UninstallingHidHide, DriverInstaller.UninstallHidHide, RefreshHidHideStatus);
 
             // Wire HidHide whitelist add (file browser).
             _viewModel.Settings.AddWhitelistPathRequested += (s, e) =>
             {
                 var dlg = new Microsoft.Win32.OpenFileDialog
                 {
-                    Title = "Select application to whitelist",
-                    Filter = "Executables (*.exe)|*.exe|All files (*.*)|*.*",
+                    Title = Strings.FileDialog_SelectWhitelist,
+                    Filter = Strings.FileDialog_ExeFilter,
                     CheckFileExists = true
                 };
                 if (dlg.ShowDialog(this) == true)
@@ -204,28 +205,28 @@ namespace PadForge
 
             // Wire vJoy install/uninstall commands.
             _viewModel.Settings.InstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
-                "Installing vJoy…", DriverInstaller.InstallVJoy, OnVJoyDriverChanged);
+                Strings.Status_InstallingVJoy, DriverInstaller.InstallVJoy, OnVJoyDriverChanged);
             _viewModel.Settings.UninstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
-                "Uninstalling vJoy…", DriverInstaller.UninstallVJoy, OnVJoyDriverChanged);
+                Strings.Status_UninstallingVJoy, DriverInstaller.UninstallVJoy, OnVJoyDriverChanged);
 
             // Wire MIDI Services install/uninstall commands.
             _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
             {
-                _viewModel.StatusText = "Downloading Windows MIDI Services…";
-                DriverOverlayText.Text = "Downloading and installing Windows MIDI Services…";
+                _viewModel.StatusText = Strings.Status_DownloadingMidi;
+                DriverOverlayText.Text = Strings.Status_DownloadingInstallingMidi;
                 DriverOverlay.Visibility = Visibility.Visible;
                 try
                 {
                     await DriverInstaller.InstallMidiServicesAsync();
-                    _viewModel.StatusText = "Ready";
+                    _viewModel.StatusText = Strings.Common_Ready;
                 }
                 catch (System.ComponentModel.Win32Exception)
                 {
-                    _viewModel.StatusText = "Operation cancelled by user.";
+                    _viewModel.StatusText = Strings.Status_OperationCancelled;
                 }
                 catch (Exception ex)
                 {
-                    _viewModel.StatusText = $"MIDI Services install failed: {ex.Message}";
+                    _viewModel.StatusText = string.Format(Strings.Status_MidiInstallFailed_Format, ex.Message);
                 }
                 finally
                 {
@@ -240,7 +241,7 @@ namespace PadForge
                 // Abandon the initializer just in case (e.g. IsAvailable was called elsewhere).
                 Common.Input.MidiVirtualController.Shutdown(skipDispose: true);
                 await RunDriverOperationAsync(
-                    "Uninstalling Windows MIDI Services…", DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
+                    Strings.Status_UninstallingMidi, DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
             };
 
             // Wire device service events (assign to slot, hide, etc.).
@@ -267,7 +268,7 @@ namespace PadForge
             _viewModel.Devices.RefreshRequested += (s, e) =>
             {
                 _inputService.RefreshDeviceList();
-                _viewModel.StatusText = "Device list refreshed.";
+                _viewModel.StatusText = Strings.Status_DeviceListRefreshed;
             };
 
             // Wire test rumble for each pad (both motors, or individual).
@@ -369,7 +370,7 @@ namespace PadForge
                         if (deviceGuid != Guid.Empty)
                             InputService.ResolveDisplayText(negMapping, deviceGuid);
 
-                        _viewModel.StatusText = $"Recorded \"{negMapping.TargetLabel}\" \u2190 {negMapping.SourceDisplayText}";
+                        _viewModel.StatusText = string.Format(Strings.Status_Recorded_Format, negMapping.TargetLabel, negMapping.SourceDisplayText);
 
                         if (activePad.IsMapAllActive)
                             activePad.OnMapAllItemCompleted();
@@ -409,8 +410,8 @@ namespace PadForge
                         // (Map All handles the second phase itself via MapAllRecordingNeg.)
                         bool isXAxis = negMapping.TargetSettingName.Contains("AxisX")
                             || negMapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
-                        string dirHint = isXAxis ? "(\u2192 right)" : "(\u2193 down)";
-                        _viewModel.StatusText = $"Now map: {negMapping.TargetLabel} {dirHint}";
+                        string dirHint = isXAxis ? Strings.Status_DirectionRight : Strings.Status_DirectionDown;
+                        _viewModel.StatusText = string.Format(Strings.Status_NowMap_Format, negMapping.TargetLabel, dirHint);
 
                         // Switch to Controller tab so the 3D directional arrow is visible.
                         activePad.SelectedConfigTab = 0;
@@ -425,7 +426,7 @@ namespace PadForge
                         return;
                     }
 
-                    _viewModel.StatusText = $"Recorded \"{negMapping.TargetLabel}\" \u2190 {negMapping.SourceDisplayText}";
+                    _viewModel.StatusText = string.Format(Strings.Status_Recorded_Format, negMapping.TargetLabel, negMapping.SourceDisplayText);
 
                     if (activePad.IsMapAllActive)
                     {
@@ -466,15 +467,15 @@ namespace PadForge
                     // Neg X = left, Neg Y = up (Y inverted by NegateAxis in Step 3).
                     bool isXAxis2 = result.Mapping.TargetSettingName.Contains("AxisX")
                         || result.Mapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
-                    string dirHint = isXAxis2 ? "(\u2190 left)" : "(\u2191 up)";
-                    _viewModel.StatusText = $"Now map: {result.Mapping.TargetLabel} {dirHint}";
+                    string dirHint = isXAxis2 ? Strings.Status_DirectionLeft : Strings.Status_DirectionUp;
+                    _viewModel.StatusText = string.Format(Strings.Status_NowMap_Format, result.Mapping.TargetLabel, dirHint);
 
                     if (activePad.IsMapAllActive)
                     {
                         activePad.MapAllRecordingNeg = true;
                         // Update the Map All overlay prompt to show the correct direction.
                         int idx = activePad.MapAllCurrentIndex;
-                        activePad.MapAllPromptText = $"Map: {result.Mapping.TargetLabel} {dirHint}  ({idx + 1}/{activePad.Mappings.Count})";
+                        activePad.MapAllPromptText = string.Format(Strings.Status_MapPrompt_Format, result.Mapping.TargetLabel, dirHint, idx + 1, activePad.Mappings.Count);
                     }
 
                     // Switch to Controller tab so the 3D directional arrow is visible.
@@ -496,7 +497,7 @@ namespace PadForge
                     result.Mapping.NegSourceDescriptor = string.Empty;
                 }
 
-                _viewModel.StatusText = $"Recorded \"{result.Mapping.TargetLabel}\" \u2190 {result.Mapping.SourceDisplayText}";
+                _viewModel.StatusText = string.Format(Strings.Status_Recorded_Format, result.Mapping.TargetLabel, result.Mapping.SourceDisplayText);
 
                 if (activePad.IsMapAllActive)
                     activePad.OnMapAllItemCompleted();
@@ -778,7 +779,7 @@ namespace PadForge
                 {
                     _inputService.Stop();
                     _inputService.Start();
-                    _viewModel.StatusText = "ViGEmBus detected — engine restarted.";
+                    _viewModel.StatusText = Strings.Status_ViGEmDetectedRestarted;
                 }
 
                 // ViGEm status changed: force full sidebar rebuild for power icon colors.
@@ -799,7 +800,7 @@ namespace PadForge
                     {
                         _inputService.Stop(preserveVJoyNodes: true);
                         _inputService.Start();
-                        _viewModel.StatusText = "vJoy driver detected — engine restarted.";
+                        _viewModel.StatusText = Strings.Status_VJoyDetectedRestarted;
                     }
                 }
             };
@@ -824,13 +825,12 @@ namespace PadForge
             }
             catch (DllNotFoundException)
             {
-                _viewModel.Settings.SdlVersion = "SDL3.dll NOT FOUND";
-                _viewModel.StatusText = "SDL3.dll not found! Place SDL3.dll next to PadForge.exe. " +
-                    "Download from https://github.com/libsdl-org/SDL/releases";
+                _viewModel.Settings.SdlVersion = Strings.Status_SDL3NotFound;
+                _viewModel.StatusText = Strings.Status_SDL3NotFoundDetail;
             }
             catch
             {
-                _viewModel.Settings.SdlVersion = "Unknown";
+                _viewModel.Settings.SdlVersion = Strings.Common_Unknown;
             }
 
             // Select the first nav item.
@@ -932,7 +932,7 @@ namespace PadForge
             // Dashboard.
             NavView.MenuItems.Add(new NavigationViewItem
             {
-                Content = "Dashboard",
+                Content = Strings.Dashboard_Title,
                 Tag = "Dashboard",
                 Icon = new FontIcon { Glyph = "\uF404" }
             });
@@ -942,14 +942,14 @@ namespace PadForge
             {
                 Tag = "Profiles",
                 Icon = new FontIcon { Glyph = "\uE8F1" },
-                Content = "Profiles"
+                Content = Strings.Profiles_Title
             };
             NavView.MenuItems.Add(profiles);
 
             // Devices.
             NavView.MenuItems.Add(new NavigationViewItem
             {
-                Content = "Devices",
+                Content = Strings.Devices_Title,
                 Tag = "Devices",
                 Icon = new FontIcon { Glyph = "\uE772" }
             });
@@ -1053,7 +1053,7 @@ namespace PadForge
                     {
                         Tag = "AddController",
                         Icon = new FontIcon { Glyph = "\uE710" }, // + icon
-                        Content = "Add Controller",
+                        Content = Strings.Main_AddController,
                         SelectsOnInvoked = false
                     };
                     NavView.MenuItems.Add(addItem);
@@ -1128,7 +1128,7 @@ namespace PadForge
                 MinWidth = 0,
                 MinHeight = 0,
                 Background = System.Windows.Media.Brushes.Transparent,
-                ToolTip = "Delete virtual controller",
+                ToolTip = Strings.Main_DeleteVC,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(6, 0, 0, 0),
@@ -1147,33 +1147,33 @@ namespace PadForge
             if (!navItem.IsEnabled)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
-                powerTooltip = "Disabled";
+                powerTooltip = Strings.Common_Disabled;
                 isInitializing = false;
             }
             else if (isInitializing)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
-                powerTooltip = "Initializing";
+                powerTooltip = Strings.Main_Initializing;
             }
             else if (!_viewModel.IsEngineRunning)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
-                powerTooltip = "Engine stopped";
+                powerTooltip = Strings.Main_EngineStopped;
             }
             else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi && outputType != VirtualControllerType.KeyboardMouse)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
-                powerTooltip = "ViGEmBus not installed";
+                powerTooltip = Strings.Main_ViGEmNotInstalled;
             }
             else if (navItem.ConnectedDeviceCount == 0)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
-                powerTooltip = "Awaiting controllers";
+                powerTooltip = Strings.Main_AwaitingControllers;
             }
             else
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
-                powerTooltip = "Active";
+                powerTooltip = Strings.Main_Active;
             }
 
             var powerTextBlock = new System.Windows.Controls.TextBlock
@@ -1256,7 +1256,7 @@ namespace PadForge
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPath,
-                ToolTip = "Xbox 360",
+                ToolTip = Strings.ControllerType_Xbox360,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
@@ -1281,7 +1281,7 @@ namespace PadForge
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4Path,
-                ToolTip = "DualShock 4",
+                ToolTip = Strings.ControllerType_DualShock4,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
@@ -1307,7 +1307,7 @@ namespace PadForge
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPath,
-                ToolTip = "DirectInput",
+                ToolTip = Strings.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
@@ -1330,7 +1330,7 @@ namespace PadForge
                     FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
                     FontSize = 13
                 },
-                ToolTip = "Keyboard + Mouse",
+                ToolTip = Strings.ControllerType_KeyboardMouse,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
@@ -1353,7 +1353,7 @@ namespace PadForge
                     FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
                     FontSize = 13
                 },
-                ToolTip = "MIDI",
+                ToolTip = Strings.ControllerType_MIDI,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
@@ -2156,9 +2156,9 @@ namespace PadForge
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPopupPath,
-                ToolTip = !vigemInstalled ? "Xbox 360 (ViGEmBus not installed)"
-                        : xboxAtCapacity ? $"Xbox 360 (max {SettingsManager.MaxXbox360Slots})"
-                        : "Xbox 360",
+                ToolTip = !vigemInstalled ? Strings.Main_Xbox360_ViGEmNotInstalled
+                        : xboxAtCapacity ? string.Format(Strings.Main_Xbox360_Max_Format, SettingsManager.MaxXbox360Slots)
+                        : Strings.ControllerType_Xbox360,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
@@ -2194,9 +2194,9 @@ namespace PadForge
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4PopupPath,
-                ToolTip = !vigemInstalled ? "DualShock 4 (ViGEmBus not installed)"
-                        : ds4AtCapacity ? $"DualShock 4 (max {SettingsManager.MaxDS4Slots})"
-                        : "DualShock 4",
+                ToolTip = !vigemInstalled ? Strings.Main_DS4_ViGEmNotInstalled
+                        : ds4AtCapacity ? string.Format(Strings.Main_DS4_Max_Format, SettingsManager.MaxDS4Slots)
+                        : Strings.ControllerType_DualShock4,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
@@ -2233,9 +2233,9 @@ namespace PadForge
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPopupPath,
-                ToolTip = !vjoyInstalled ? "DirectInput (driver not installed)"
-                        : vjoyAtCapacity ? $"DirectInput (max {SettingsManager.MaxVJoySlots})"
-                        : "DirectInput",
+                ToolTip = !vjoyInstalled ? Strings.Main_DI_DriverNotInstalled
+                        : vjoyAtCapacity ? string.Format(Strings.Main_DI_Max_Format, SettingsManager.MaxVJoySlots)
+                        : Strings.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
@@ -2273,8 +2273,8 @@ namespace PadForge
             var kbmPopupBtn = new System.Windows.Controls.Button
             {
                 Content = kbmPopupIcon,
-                ToolTip = kbmAtCapacity ? $"Keyboard + Mouse (max {SettingsManager.MaxKeyboardMouseSlots})"
-                        : "Keyboard + Mouse",
+                ToolTip = kbmAtCapacity ? string.Format(Strings.Main_KBM_Max_Format, SettingsManager.MaxKeyboardMouseSlots)
+                        : Strings.ControllerType_KeyboardMouse,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
@@ -2308,9 +2308,9 @@ namespace PadForge
             bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || midiAtCapacity;
-            string midiTooltip = !midiAvailable ? "MIDI (requires Windows MIDI Services)"
-                               : midiAtCapacity ? $"MIDI (max {SettingsManager.MaxMidiSlots})"
-                               : "MIDI";
+            string midiTooltip = !midiAvailable ? Strings.Main_MIDI_RequiresMidiServices
+                               : midiAtCapacity ? string.Format(Strings.Main_MIDI_Max_Format, SettingsManager.MaxMidiSlots)
+                               : Strings.ControllerType_MIDI;
             var midiBtn = new System.Windows.Controls.Button
             {
                 Content = midiPopupIcon,
@@ -2509,7 +2509,7 @@ namespace PadForge
             _viewModel.Settings.ProfileItems.Add(listItem);
 
             _settingsService.MarkDirty();
-            _viewModel.StatusText = $"Profile \"{name}\" created (empty).";
+            _viewModel.StatusText = string.Format(Strings.Status_ProfileCreatedEmpty_Format, name);
         }
 
         private void OnSaveAsProfile(object sender, EventArgs e)
@@ -2540,7 +2540,7 @@ namespace PadForge
             _viewModel.Settings.ProfileItems.Add(listItem);
 
             _settingsService.MarkDirty();
-            _viewModel.StatusText = $"Profile \"{name}\" created.";
+            _viewModel.StatusText = string.Format(Strings.Status_ProfileCreated_Format, name);
         }
 
         /// <summary>
@@ -2571,7 +2571,7 @@ namespace PadForge
             if (SettingsManager.ActiveProfileId == selected.Id)
             {
                 SettingsManager.ActiveProfileId = null;
-                _viewModel.Settings.ActiveProfileInfo = "Default";
+                _viewModel.Settings.ActiveProfileInfo = Strings.Common_Default;
                 // Restore the default profile state so the deleted profile's
                 // topology doesn't persist and overwrite the default snapshot.
                 _inputService.ApplyDefaultProfile();
@@ -2579,7 +2579,7 @@ namespace PadForge
 
             _settingsService.MarkDirty();
             _inputService.RefreshProfileTopology();
-            _viewModel.StatusText = $"Profile \"{selected.Name}\" deleted.";
+            _viewModel.StatusText = string.Format(Strings.Status_ProfileDeleted_Format, selected.Name);
         }
 
         private void OnEditProfile(object sender, EventArgs e)
@@ -2614,7 +2614,7 @@ namespace PadForge
                 _viewModel.Settings.ActiveProfileInfo = newName;
 
             _settingsService.MarkDirty();
-            _viewModel.StatusText = $"Profile \"{newName}\" updated.";
+            _viewModel.StatusText = string.Format(Strings.Status_ProfileUpdated_Format, newName);
         }
 
         private void OnLoadProfile(object sender, EventArgs e)
@@ -2644,7 +2644,7 @@ namespace PadForge
             SettingsManager.ActiveProfileId = profile.Id;
             _viewModel.Settings.ActiveProfileInfo = profile.Name;
             _inputService.ApplyProfile(profile);
-            _viewModel.StatusText = $"Profile loaded: {profile.Name}";
+            _viewModel.StatusText = string.Format(Strings.Status_ProfileLoaded_Format, profile.Name);
         }
 
         private void OnRevertToDefault(object sender, EventArgs e)
@@ -2658,9 +2658,9 @@ namespace PadForge
             // Set ActiveProfileId BEFORE ApplyProfile so that
             // RefreshActiveProfileTopologyLabel updates the correct profile.
             SettingsManager.ActiveProfileId = null;
-            _viewModel.Settings.ActiveProfileInfo = "Default";
+            _viewModel.Settings.ActiveProfileInfo = Strings.Common_Default;
             _inputService.ApplyDefaultProfile();
-            _viewModel.StatusText = "Profile reverted to Default";
+            _viewModel.StatusText = Strings.Status_ProfileRevertedDefault;
         }
 
         /// <summary>
@@ -2760,7 +2760,7 @@ namespace PadForge
         private void SetupNotifyIcon()
         {
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            _notifyIcon.Text = "PadForge";
+            _notifyIcon.Text = Strings.Common_PadForge;
 
             // Load icon from the running executable.
             var exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
@@ -2806,7 +2806,7 @@ namespace PadForge
 
             var showItem = new System.Windows.Controls.MenuItem
             {
-                Header = "Show PadForge",
+                Header = Strings.Main_ShowPadForge,
                 FontWeight = FontWeights.SemiBold,
             };
             showItem.Click += (s, e) => RestoreFromTray();
@@ -2858,18 +2858,18 @@ namespace PadForge
             var ps = _inputService.GetCurrentPadSetting(padVm.PadIndex);
             if (ps == null)
             {
-                _viewModel.StatusText = "No device selected to copy from.";
+                _viewModel.StatusText = Strings.Status_NoDeviceToCopyFrom;
                 return;
             }
 
             try
             {
                 Clipboard.SetText(ps.ToJson());
-                _viewModel.StatusText = "Settings copied to clipboard.";
+                _viewModel.StatusText = Strings.Status_SettingsCopied;
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = $"Failed to copy: {ex.Message}";
+                _viewModel.StatusText = string.Format(Strings.Status_CopyFailed_Format, ex.Message);
             }
         }
 
@@ -2881,17 +2881,17 @@ namespace PadForge
                 var ps = PadSetting.FromJson(json);
                 if (ps == null)
                 {
-                    _viewModel.StatusText = "Clipboard does not contain valid PadForge settings.";
+                    _viewModel.StatusText = Strings.Status_InvalidClipboard;
                     return;
                 }
 
                 _inputService.ApplyPadSettingToCurrentDevice(padVm.PadIndex, ps);
                 _settingsService.MarkDirty();
-                _viewModel.StatusText = "Settings pasted from clipboard.";
+                _viewModel.StatusText = Strings.Status_SettingsPasted;
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = $"Failed to paste: {ex.Message}";
+                _viewModel.StatusText = string.Format(Strings.Status_PasteFailed_Format, ex.Message);
             }
         }
 
@@ -2929,8 +2929,8 @@ namespace PadForge
                             name = us.InstanceGuid.ToString();
 
                         string slot = us.MapTo >= 0 && us.MapTo < InputManager.MaxPads
-                            ? $"Player {us.MapTo + 1} — {us.InstanceGuid:D}"
-                            : $"Unmapped — {us.InstanceGuid:D}";
+                            ? string.Format(Strings.Status_Player_Format, us.MapTo + 1, $"{us.InstanceGuid:D}")
+                            : string.Format(Strings.Status_Unmapped_Format, $"{us.InstanceGuid:D}");
 
                         entries.Add(new CopyFromDialog.DeviceEntry
                         {
@@ -2945,7 +2945,7 @@ namespace PadForge
 
             if (entries.Count == 0)
             {
-                _viewModel.StatusText = "No other configured devices found to copy from.";
+                _viewModel.StatusText = Strings.Status_NoOtherDevices;
                 return;
             }
 
@@ -2954,7 +2954,7 @@ namespace PadForge
             {
                 _inputService.ApplyPadSettingToCurrentDevice(padVm.PadIndex, dialog.SelectedPadSetting);
                 _settingsService.MarkDirty();
-                _viewModel.StatusText = "Settings copied from selected device.";
+                _viewModel.StatusText = Strings.Status_SettingsCopiedFromDevice;
             }
         }
 
@@ -2974,16 +2974,16 @@ namespace PadForge
             try
             {
                 await Task.Run(operation);
-                _viewModel.StatusText = "Ready";
+                _viewModel.StatusText = Strings.Common_Ready;
             }
             catch (System.ComponentModel.Win32Exception)
             {
                 // User declined UAC prompt.
-                _viewModel.StatusText = "Operation cancelled by user.";
+                _viewModel.StatusText = Strings.Status_OperationCancelled;
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = $"Driver operation failed: {ex.Message}";
+                _viewModel.StatusText = string.Format(Strings.Status_DriverOperationFailed_Format, ex.Message);
             }
             finally
             {
@@ -3036,13 +3036,13 @@ namespace PadForge
                 _viewModel.Dashboard.ViGEmVersion = version ?? string.Empty;
 
                 if (!installed)
-                    _viewModel.StatusText = "ViGEmBus driver not detected. Virtual controller output disabled.";
+                    _viewModel.StatusText = Strings.Status_ViGEmNotDetected;
             }
             catch (Exception ex)
             {
                 _viewModel.Settings.IsViGEmInstalled = false;
                 _viewModel.Dashboard.IsViGEmInstalled = false;
-                _viewModel.StatusText = $"ViGEm check failed: {ex.Message}";
+                _viewModel.StatusText = string.Format(Strings.Status_ViGEmCheckFailed_Format, ex.Message);
             }
         }
 
@@ -3115,8 +3115,8 @@ namespace PadForge
                 _inputService.Stop(preserveVJoyNodes: true);
                 _inputService.Start();
                 _viewModel.StatusText = _viewModel.Dashboard.IsVJoyInstalled
-                    ? "vJoy driver installed — engine restarted."
-                    : "vJoy driver removed — engine restarted.";
+                    ? Strings.Status_VJoyInstalledRestarted
+                    : Strings.Status_VJoyRemovedRestarted;
             }
         }
     }

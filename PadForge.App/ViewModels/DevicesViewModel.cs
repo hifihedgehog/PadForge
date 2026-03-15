@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -15,7 +16,7 @@ namespace PadForge.ViewModels
     {
         public DevicesViewModel()
         {
-            Title = "Devices";
+            Title = Strings.Devices_Title;
         }
 
         // ─────────────────────────────────────────────
@@ -163,7 +164,7 @@ namespace PadForge.ViewModels
             if (!isMouse)
             {
                 for (int i = 0; i < axisCount; i++)
-                    RawAxes.Add(new AxisDisplayItem { Index = i, Name = $"Axis {i}" });
+                    RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Devices_Axis_Format, i) });
             }
 
             RawButtons.Clear();

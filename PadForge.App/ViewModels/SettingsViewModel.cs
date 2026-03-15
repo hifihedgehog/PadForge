@@ -747,8 +747,10 @@ namespace PadForge.ViewModels
         public string TopologyLabel
         {
             get => _topologyLabel;
-            set => SetProperty(ref _topologyLabel, value);
+            set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
+
+        public bool HasNoSlots => XboxCount == 0 && DS4Count == 0 && VJoyCount == 0 && MidiCount == 0 && KbmCount == 0;
 
         private int _xboxCount;
         public int XboxCount

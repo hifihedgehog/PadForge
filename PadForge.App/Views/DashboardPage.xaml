@@ -57,17 +57,13 @@
                                VerticalAlignment="Center"/>
 
                     <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="24,0"
-                               Opacity="0.7">
-                        <Run Text="{Binding PollingFrequencyText, Mode=OneWay}"/>
-                    </TextBlock>
+                               Opacity="0.7" Text="{Binding PollingFrequencyText, Mode=OneWay}"/>
 
-                    <StackPanel Grid.Column="3" VerticalAlignment="Center">
-                        <TextBlock Opacity="0.6" FontSize="12">
-                            <Run Text="{Binding OnlineDevices, Mode=OneWay}"/>
-                            <Run Text="/"/>
-                            <Run Text="{Binding TotalDevices, Mode=OneWay}"/>
-                            <Run Text="{Binding Dashboard_DevicesOnline, Source={x:Static strings:Strings.Instance}}"/>
-                        </TextBlock>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Opacity="0.6" FontSize="12" Text="{Binding OnlineDevices, Mode=OneWay}"/>
+                        <TextBlock Opacity="0.6" FontSize="12" Text="/"/>
+                        <TextBlock Opacity="0.6" FontSize="12" Text="{Binding TotalDevices, Mode=OneWay}"/>
+                        <TextBlock Opacity="0.6" FontSize="12" Text="{Binding Dashboard_DevicesOnline, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -368,12 +364,12 @@
                                             Margin="0,2,0,0">
                                     <TextBlock Text="{Binding StatusText}"
                                                FontSize="11" Opacity="0.5"/>
-                                    <TextBlock FontSize="11" Opacity="0.5" Margin="8,0,0,0">
-                                        <Run Text="{Binding MappedDeviceCount, Mode=OneWay}"/>
-                                        <Run Text="{Binding Dashboard_Mapped, Source={x:Static strings:Strings.Instance}}"/>
-                                        <Run Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
-                                        <Run Text="{Binding Dashboard_Connected, Source={x:Static strings:Strings.Instance}}"/>
-                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
+                                        <TextBlock FontSize="11" Opacity="0.5" Text="{Binding MappedDeviceCount, Mode=OneWay}"/>
+                                        <TextBlock FontSize="11" Opacity="0.5" Text="{Binding Dashboard_Mapped, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock FontSize="11" Opacity="0.5" Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
+                                        <TextBlock FontSize="11" Opacity="0.5" Text="{Binding Dashboard_Connected, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>

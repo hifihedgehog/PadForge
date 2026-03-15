@@ -12,14 +12,14 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xF404;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Dashboard_Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
 
             <!-- ═══ Input Engine ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="&#xE9F5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Dashboard_InputEngine}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,16">
@@ -66,7 +66,7 @@
                             <Run Text="{Binding OnlineDevices, Mode=OneWay}"/>
                             <Run Text="/"/>
                             <Run Text="{Binding TotalDevices, Mode=OneWay}"/>
-                            <Run Text="{x:Static strings:Strings.Dashboard_DevicesOnline}"/>
+                            <Run Text="{Binding Dashboard_DevicesOnline, Source={x:Static strings:Strings.Instance}}"/>
                         </TextBlock>
                     </StackPanel>
                 </Grid>
@@ -76,7 +76,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,8,0,12">
                 <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Dashboard_VirtualControllers}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_VirtualControllers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <ItemsControl x:Name="SlotsItemsControl" ItemsSource="{Binding SlotSummaries}">
@@ -111,35 +111,35 @@
                                             <Style TargetType="Button">
                                                 <Setter Property="Background" Value="Transparent"/>
                                                 <Setter Property="BorderThickness" Value="0"/>
-                                                <Setter Property="ToolTip" Value="{x:Static strings:Strings.Common_Disabled}"/>
+                                                <Setter Property="ToolTip" Value="{Binding Common_Disabled, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_Active}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_Active, Source={x:Static strings:Strings.Instance}}"/>
                                                     </DataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_AwaitingControllers}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_AwaitingControllers, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_ViGEmNotInstalled}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding DataContext.EngineStatus, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_EngineStopped}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_EngineStopped, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
                                                     <!-- Initializing: override tooltip -->
                                                     <DataTrigger Binding="{Binding IsInitializing}" Value="True">
-                                                        <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_Initializing}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_Initializing, Source={x:Static strings:Strings.Instance}}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -219,7 +219,7 @@
                                     <StackPanel Orientation="Horizontal">
 
                                         <!-- Xbox type button -->
-                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_Xbox360}" Background="Transparent"
+                                        <Button ToolTip="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center"
                                                 Click="XboxType_Click" Tag="{Binding PadIndex}">
@@ -234,7 +234,7 @@
                                                         <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                             <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_ViGEmNotInstalled}"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -245,7 +245,7 @@
                                         </Button>
 
                                         <!-- PS type button -->
-                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_DualShock4}" Background="Transparent"
+                                        <Button ToolTip="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
@@ -260,7 +260,7 @@
                                                         <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                             <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_ViGEmNotInstalled}"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -271,7 +271,7 @@
                                         </Button>
 
                                         <!-- vJoy type button -->
-                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_DirectInput}" Background="Transparent"
+                                        <Button ToolTip="{Binding ControllerType_DirectInput, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="VJoyType_Click" Tag="{Binding PadIndex}">
@@ -286,7 +286,7 @@
                                                         <DataTrigger Binding="{Binding DataContext.IsVJoyInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="IsEnabled" Value="False"/>
                                                             <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="{x:Static strings:Strings.Main_DirectInputDriverNotInstalled}"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_DirectInputDriverNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -297,7 +297,7 @@
                                         </Button>
 
                                         <!-- Keyboard+Mouse type button -->
-                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_KeyboardMouse}" Background="Transparent"
+                                        <Button ToolTip="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="KeyboardMouseType_Click" Tag="{Binding PadIndex}">
@@ -317,7 +317,7 @@
                                         </Button>
 
                                         <!-- MIDI type button -->
-                                        <Button ToolTip="{x:Static strings:Strings.ControllerType_MIDI}" Background="Transparent"
+                                        <Button ToolTip="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
                                                 Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
                                                 VerticalAlignment="Center" Margin="1,0,0,0"
                                                 Click="MidiType_Click" Tag="{Binding PadIndex}">
@@ -346,7 +346,7 @@
                                 </StackPanel>
 
                                 <!-- Delete button (upper-right corner) -->
-                                <Button ToolTip="{x:Static strings:Strings.Main_DeleteVC}"
+                                <Button ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
                                         Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
                                         HorizontalAlignment="Right" VerticalAlignment="Top"
                                         Margin="0" Opacity="0.5"
@@ -370,9 +370,9 @@
                                                FontSize="11" Opacity="0.5"/>
                                     <TextBlock FontSize="11" Opacity="0.5" Margin="8,0,0,0">
                                         <Run Text="{Binding MappedDeviceCount, Mode=OneWay}"/>
-                                        <Run Text="{x:Static strings:Strings.Dashboard_Mapped}"/>
+                                        <Run Text="{Binding Dashboard_Mapped, Source={x:Static strings:Strings.Instance}}"/>
                                         <Run Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
-                                        <Run Text="{x:Static strings:Strings.Dashboard_Connected}"/>
+                                        <Run Text="{Binding Dashboard_Connected, Source={x:Static strings:Strings.Instance}}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </Grid>
@@ -391,7 +391,7 @@
                             VerticalAlignment="Center">
                     <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
-                    <TextBlock Text="{x:Static strings:Strings.Main_AddController}" FontSize="14"
+                    <TextBlock Text="{Binding Main_AddController, Source={x:Static strings:Strings.Instance}}" FontSize="14"
                                VerticalAlignment="Center" Opacity="0.5"/>
                 </StackPanel>
             </Border>
@@ -400,17 +400,17 @@
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xEC05;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Dashboard_MotionServer}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Dashboard_DsuDescription}"
+                    <TextBlock Text="{Binding Dashboard_DsuDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{x:Static strings:Strings.Dashboard_EnableDsu}"
+                    <CheckBox Content="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding EnableDsuMotionServer}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{x:Static strings:Strings.Dashboard_Port}" VerticalAlignment="Center"
+                        <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
@@ -422,7 +422,7 @@
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Dashboard_DsuFooter}"
+                    <TextBlock Text="{Binding Dashboard_DsuFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
@@ -431,18 +431,18 @@
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Dashboard_WebController}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Dashboard_WebDescription}"
+                    <TextBlock Text="{Binding Dashboard_WebDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox AutomationProperties.AutomationId="EnableWebControllerCheckBox"
-                              Content="{x:Static strings:Strings.Dashboard_EnableWeb}"
+                              Content="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding EnableWebController}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{x:Static strings:Strings.Dashboard_Port}" VerticalAlignment="Center"
+                        <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding WebControllerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
@@ -454,7 +454,7 @@
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding WebControllerStatus}" FontSize="12"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Dashboard_WebFooter}"
+                    <TextBlock Text="{Binding Dashboard_WebFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
@@ -463,7 +463,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xED5D;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Dashboard_Drivers}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_Drivers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,8">

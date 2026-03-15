@@ -91,7 +91,7 @@ namespace PadForge.ViewModels
 
         public MainViewModel()
         {
-            Title = Strings.Common_PadForge;
+            Title = Strings.Instance.Common_PadForge;
 
             // Create pad ViewModels (one per virtual controller slot).
             for (int i = 0; i < Common.Input.InputManager.MaxPads; i++)
@@ -105,6 +105,12 @@ namespace PadForge.ViewModels
 
             // Default to Dashboard page.
             _selectedNavTag = "Dashboard";
+        }
+
+        protected override void OnCultureChanged()
+        {
+            Title = Strings.Instance.Common_PadForge;
+            OnPropertyChanged(nameof(EngineStatusText));
         }
 
         // ─────────────────────────────────────────────
@@ -216,8 +222,8 @@ namespace PadForge.ViewModels
                 nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
 
                 // Update PadViewModel's display label and type instance number.
-                pad.Title = string.Format(Strings.Main_VirtualController_Format, globalCount);
-                pad.SlotLabel = string.Format(Strings.Main_VirtualController_Format, globalCount);
+                pad.Title = string.Format(Strings.Instance.Main_VirtualController_Format, globalCount);
+                pad.SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, globalCount);
                 pad.TypeInstanceLabel = instanceNum.ToString();
             }
 
@@ -311,7 +317,7 @@ namespace PadForge.ViewModels
         //  App-wide status
         // ─────────────────────────────────────────────
 
-        private string _statusText = Strings.Common_Ready;
+        private string _statusText = Strings.Instance.Common_Ready;
 
         /// <summary>
         /// Status bar text displayed at the bottom of the main window.
@@ -342,7 +348,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Display string for engine status: "Running" or "Stopped".
         /// </summary>
-        public string EngineStatusText => IsEngineRunning ? Strings.Common_Running : Strings.Common_Stopped;
+        public string EngineStatusText => IsEngineRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
 
         private double _pollingFrequency;
 

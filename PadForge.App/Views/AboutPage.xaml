@@ -10,20 +10,20 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="{x:Static strings:Strings.About_Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
 
             <!-- App identity -->
             <Border Style="{StaticResource CardBorder}" Padding="24" Margin="0,0,0,20">
                 <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="{x:Static strings:Strings.Common_PadForge}" FontSize="28" FontWeight="Bold"
+                    <TextBlock Text="{Binding Common_PadForge, Source={x:Static strings:Strings.Instance}}" FontSize="28" FontWeight="Bold"
                                HorizontalAlignment="Center"/>
-                    <TextBlock Text="{x:Static strings:Strings.About_Subtitle}"
+                    <TextBlock Text="{Binding About_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                FontSize="14" Opacity="0.7"
                                HorizontalAlignment="Center" Margin="0,4,0,12"/>
 
                     <TextBlock HorizontalAlignment="Center" Opacity="0.5" FontSize="12">
-                        <Run Text="{x:Static strings:Strings.About_Tagline}"/>
+                        <Run Text="{Binding About_Tagline, Source={x:Static strings:Strings.Instance}}"/>
                     </TextBlock>
                 </StackPanel>
             </Border>
@@ -31,14 +31,14 @@
             <!-- Description -->
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Opacity="0.85"
-                           Text="{x:Static strings:Strings.About_Description}"/>
+                           Text="{Binding About_Description, Source={x:Static strings:Strings.Instance}}"/>
             </Border>
 
             <!-- Technologies -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.About_BuiltWith}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding About_BuiltWith, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <Grid>
@@ -58,46 +58,46 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="{x:Static strings:Strings.About_DotNet10}" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="1" Text="{x:Static strings:Strings.About_DotNet10Desc}" Opacity="0.7"/>
+                    <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding About_DotNet10Desc, Source={x:Static strings:Strings.Instance}}" Opacity="0.7"/>
 
-                    <TextBlock Grid.Row="1" Text="{x:Static strings:Strings.About_SDL3}" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Static strings:Strings.About_SDL3Desc}"
+                    <TextBlock Grid.Row="1" Text="{Binding About_SDL3, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding About_SDL3Desc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="2" Text="{x:Static strings:Strings.About_RawInput}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="2" Text="{Binding About_RawInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="2" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_RawInputDesc}"
+                               Text="{Binding About_RawInputDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="3" Text="{x:Static strings:Strings.About_ViGEmBus}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="3" Text="{Binding About_ViGEmBus, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="3" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_ViGEmBusDesc}"
+                               Text="{Binding About_ViGEmBusDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="4" Text="{x:Static strings:Strings.About_VJoy}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="4" Text="{Binding About_VJoy, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="4" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_VJoyDesc}"
+                               Text="{Binding About_VJoyDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="5" Text="{x:Static strings:Strings.About_MidiServices}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="5" Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="5" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_MidiServicesDesc}"
+                               Text="{Binding About_MidiServicesDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="6" Text="{x:Static strings:Strings.About_HelixToolkit}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="6" Text="{Binding About_HelixToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="6" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_HelixToolkitDesc}"
+                               Text="{Binding About_HelixToolkitDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="7" Text="{x:Static strings:Strings.About_ModernWpf}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="7" Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="7" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_ModernWpfDesc}"
+                               Text="{Binding About_ModernWpfDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="8" Text="{x:Static strings:Strings.About_MvvmToolkit}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="8" Text="{Binding About_MvvmToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="8" Grid.Column="1"
-                               Text="{x:Static strings:Strings.About_MvvmToolkitDesc}"
+                               Text="{Binding About_MvvmToolkitDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
                 </Grid>
             </Border>
@@ -106,11 +106,11 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="&#xE8D7;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{x:Static strings:Strings.About_License}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding About_License, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12" LineHeight="18"
-                           Text="{x:Static strings:Strings.About_LicenseText}"/>
+                           Text="{Binding About_LicenseText, Source={x:Static strings:Strings.Instance}}"/>
             </Border>
 
         </StackPanel>

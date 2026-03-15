@@ -10,7 +10,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="{x:Static strings:Strings.Settings_Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
 
             <!-- ═══ Language ═══ -->
@@ -19,16 +19,13 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xF2B7;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_Language}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_Language, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_LanguageDesc}"
+                    <TextBlock Text="{Binding Settings_LanguageDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <ComboBox ItemsSource="{Binding AvailableLanguages}"
                               SelectedItem="{Binding SelectedLanguage}"
                               DisplayMemberPath="NativeName" Width="250"/>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_RestartRequired}"
-                               FontSize="12" Opacity="0.5" Margin="0,8,0,0"
-                               Visibility="{Binding LanguageChanged, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
             </Border>
 
@@ -38,15 +35,15 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_Appearance}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_Appearance, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_AppearanceDesc}"
+                    <TextBlock Text="{Binding Settings_AppearanceDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_Theme}" FontSize="13" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}" FontSize="13" Margin="0,0,0,6"/>
                     <ComboBox SelectedIndex="{Binding SelectedThemeIndex}" Width="200">
-                        <ComboBoxItem Content="{x:Static strings:Strings.Settings_ThemeSystem}"/>
-                        <ComboBoxItem Content="{x:Static strings:Strings.Settings_ThemeLight}"/>
-                        <ComboBoxItem Content="{x:Static strings:Strings.Settings_ThemeDark}"/>
+                        <ComboBoxItem Content="{Binding Settings_ThemeSystem, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding Settings_ThemeLight, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding Settings_ThemeDark, Source={x:Static strings:Strings.Instance}}"/>
                     </ComboBox>
                 </StackPanel>
             </Border>
@@ -57,26 +54,26 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE9F5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_InputEngine}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_InputEngine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_InputEngineDesc}"
+                    <TextBlock Text="{Binding Settings_InputEngineDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{x:Static strings:Strings.Settings_AutoStart}"
+                    <CheckBox Content="{Binding Settings_AutoStart, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding AutoStartEngine}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{x:Static strings:Strings.Settings_BackgroundPolling}"
+                    <CheckBox Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{x:Static strings:Strings.Settings_PollingInterval}" VerticalAlignment="Center"
+                        <TextBlock Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
                                       Minimum="1" Maximum="16"
                                       SpinButtonPlacementMode="Inline" Width="120"/>
-                        <TextBlock Text="{x:Static strings:Strings.Common_Ms}" VerticalAlignment="Center" Margin="6,0,0,0"
+                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
                                    Opacity="0.6"/>
                     </StackPanel>
-                    <CheckBox Content="{x:Static strings:Strings.Settings_HideDevices}"
+                    <CheckBox Content="{Binding Settings_HideDevices, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding EnableInputHiding}"
-                              ToolTip="{x:Static strings:Strings.Settings_HideDevicesTooltip}"/>
+                              ToolTip="{Binding Settings_HideDevicesTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
             </Border>
 
@@ -86,15 +83,15 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE737;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_Window}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_Window, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_WindowDesc}"
+                    <TextBlock Text="{Binding Settings_WindowDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{x:Static strings:Strings.Settings_MinimizeToTray}"
+                    <CheckBox Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{x:Static strings:Strings.Settings_StartMinimized}"
+                    <CheckBox Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding StartMinimized}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{x:Static strings:Strings.Settings_StartAtLogin}"
+                    <CheckBox Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding StartAtLogin}"/>
                 </StackPanel>
             </Border>
@@ -105,9 +102,9 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xED1A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_HidHide}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_HidHide, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_HidHideDesc}"
+                    <TextBlock Text="{Binding Settings_HidHideDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -128,11 +125,11 @@
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <Button Content="{x:Static strings:Strings.Common_Install}"
+                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallHidHideCommand}"
                                     Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                     Margin="0,0,8,0"/>
-                            <Button Content="{x:Static strings:Strings.Common_Uninstall}"
+                            <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallHidHideCommand}"
                                     Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
@@ -141,9 +138,9 @@
                     <!-- Whitelist section (only when installed) -->
                     <StackPanel Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Margin="0,16,0,0">
-                        <TextBlock Text="{x:Static strings:Strings.Settings_WhitelistedApps}" FontWeight="SemiBold" FontSize="13"
+                        <TextBlock Text="{Binding Settings_WhitelistedApps, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" FontSize="13"
                                    Margin="0,0,0,4"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_WhitelistDesc}"
+                        <TextBlock Text="{Binding Settings_WhitelistDesc, Source={x:Static strings:Strings.Instance}}"
                                    Style="{StaticResource CardDescription}" Margin="0,0,0,8"/>
                         <ListBox ItemsSource="{Binding HidHideWhitelistPaths}"
                                  SelectedItem="{Binding SelectedWhitelistPath}"
@@ -157,9 +154,9 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                         <StackPanel Orientation="Horizontal">
-                            <Button Content="{x:Static strings:Strings.Settings_AddDots}" Command="{Binding AddWhitelistPathCommand}"
+                            <Button Content="{Binding Settings_AddDots, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddWhitelistPathCommand}"
                                     Margin="0,0,8,0"/>
-                            <Button Content="{x:Static strings:Strings.Common_Remove}" Command="{Binding RemoveWhitelistPathCommand}"/>
+                            <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveWhitelistPathCommand}"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -171,9 +168,9 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_ViGEmBus}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_ViGEmBus, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_ViGEmDesc}"
+                    <TextBlock Text="{Binding Settings_ViGEmDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -194,11 +191,11 @@
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <Button Content="{x:Static strings:Strings.Common_Install}"
+                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallViGEmCommand}"
                                     Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                     Margin="0,0,8,0"/>
-                            <Button Content="{x:Static strings:Strings.Common_Uninstall}"
+                            <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallViGEmCommand}"
                                     Visibility="{Binding IsViGEmInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
@@ -214,9 +211,9 @@
                               Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
                               Width="16" Height="16" Stretch="Uniform"
                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_VJoy}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_VJoy, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_VJoyDesc}"
+                    <TextBlock Text="{Binding Settings_VJoyDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -237,11 +234,11 @@
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <Button Content="{x:Static strings:Strings.Common_Install}"
+                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallVJoyCommand}"
                                     Visibility="{Binding IsVJoyInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                     Margin="0,0,8,0"/>
-                            <Button Content="{x:Static strings:Strings.Common_Uninstall}"
+                            <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallVJoyCommand}"
                                     Visibility="{Binding IsVJoyInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
@@ -255,9 +252,9 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_MidiServices}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_MidiServices, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_MidiDesc}"
+                    <TextBlock Text="{Binding Settings_MidiDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -278,7 +275,7 @@
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <Button Content="{x:Static strings:Strings.Common_Install}"
+                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallMidiServicesCommand}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                     Margin="0,0,8,0">
@@ -286,13 +283,13 @@
                                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsMidiOsSupported}" Value="False">
-                                                <Setter Property="ToolTip" Value="{x:Static strings:Strings.Settings_MidiOsRequired}"/>
+                                                <Setter Property="ToolTip" Value="{Binding Settings_MidiOsRequired, Source={x:Static strings:Strings.Instance}}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
                             </Button>
-                            <Button Content="{x:Static strings:Strings.Common_Uninstall}"
+                            <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallMidiServicesCommand}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
@@ -306,26 +303,26 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_SettingsFile}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_SettingsFile, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_SettingsFileDesc}"
+                    <TextBlock Text="{Binding Settings_SettingsFileDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <TextBlock Text="{Binding SettingsFilePath}" FontSize="12"
                                FontFamily="Consolas" Opacity="0.7" TextWrapping="Wrap"
                                Margin="0,0,0,12"/>
 
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="{x:Static strings:Strings.Common_Save}" Command="{Binding SaveCommand}"
+                        <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}" Command="{Binding SaveCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="{x:Static strings:Strings.Settings_Reload}" Command="{Binding ReloadCommand}"
+                        <Button Content="{Binding Settings_Reload, Source={x:Static strings:Strings.Instance}}" Command="{Binding ReloadCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="{x:Static strings:Strings.Settings_ResetToDefaults}" Command="{Binding ResetCommand}"
+                        <Button Content="{Binding Settings_ResetToDefaults, Source={x:Static strings:Strings.Instance}}" Command="{Binding ResetCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="{x:Static strings:Strings.Settings_OpenFolder}" Command="{Binding OpenSettingsFolderCommand}"/>
+                        <Button Content="{Binding Settings_OpenFolder, Source={x:Static strings:Strings.Instance}}" Command="{Binding OpenSettingsFolderCommand}"/>
                     </StackPanel>
 
                     <TextBlock Visibility="{Binding HasUnsavedChanges, Converter={StaticResource BoolToVisibilityConverter}}"
-                               Text="{x:Static strings:Strings.Settings_UnsavedChanges}" Foreground="Orange"
+                               Text="{Binding Settings_UnsavedChanges, Source={x:Static strings:Strings.Instance}}" Foreground="Orange"
                                FontSize="12" Margin="0,8,0,0"/>
                 </StackPanel>
             </Border>
@@ -336,9 +333,9 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{x:Static strings:Strings.Settings_Diagnostics}" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Settings_Diagnostics, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="{x:Static strings:Strings.Settings_DiagnosticsDesc}"
+                    <TextBlock Text="{Binding Settings_DiagnosticsDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -351,15 +348,15 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{x:Static strings:Strings.Settings_AppVersion}" FontSize="12" Opacity="0.6"/>
+                        <TextBlock Text="{Binding Settings_AppVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12" Opacity="0.6"/>
                         <TextBlock Grid.Column="1" Text="{Binding ApplicationVersion}" FontSize="12"/>
 
-                        <TextBlock Grid.Row="1" Text="{x:Static strings:Strings.Settings_DotNetRuntime}" FontSize="12"
+                        <TextBlock Grid.Row="1" Text="{Binding Settings_DotNetRuntime, Source={x:Static strings:Strings.Instance}}" FontSize="12"
                                    Opacity="0.6" Margin="0,4,0,0"/>
                         <TextBlock Grid.Row="1" Grid.Column="1"
                                    Text="{Binding RuntimeVersion}" FontSize="12" Margin="0,4,0,0"/>
 
-                        <TextBlock Grid.Row="2" Text="{x:Static strings:Strings.Settings_SdlVersion}" FontSize="12"
+                        <TextBlock Grid.Row="2" Text="{Binding Settings_SdlVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12"
                                    Opacity="0.6" Margin="0,4,0,0"/>
                         <TextBlock Grid.Row="2" Grid.Column="1"
                                    Text="{Binding SdlVersion}" FontSize="12" Margin="0,4,0,0"/>

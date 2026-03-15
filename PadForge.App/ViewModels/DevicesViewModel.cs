@@ -16,7 +16,12 @@ namespace PadForge.ViewModels
     {
         public DevicesViewModel()
         {
-            Title = Strings.Devices_Title;
+            Title = Strings.Instance.Devices_Title;
+        }
+
+        protected override void OnCultureChanged()
+        {
+            Title = Strings.Instance.Devices_Title;
         }
 
         // ─────────────────────────────────────────────
@@ -164,7 +169,7 @@ namespace PadForge.ViewModels
             if (!isMouse)
             {
                 for (int i = 0; i < axisCount; i++)
-                    RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Devices_Axis_Format, i) });
+                    RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Instance.Devices_Axis_Format, i) });
             }
 
             RawButtons.Clear();

@@ -574,9 +574,10 @@
                                     <Slider Value="{Binding TriggerAxisThreshold, Mode=TwoWay}"
                                             Minimum="1" Maximum="100" Width="150"
                                             VerticalAlignment="Center"/>
-                                    <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
-                                        <Run Text="{Binding TriggerAxisThreshold, Mode=OneWay}"/><Run Text="%"/>
-                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                                        <TextBlock Text="{Binding TriggerAxisThreshold, Mode=OneWay}"/>
+                                        <TextBlock Text="%"/>
+                                    </StackPanel>
                                 </StackPanel>
 
                                 <CheckBox Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
@@ -765,9 +766,10 @@
                                             <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="150"
                                                     VerticalAlignment="Center"/>
-                                            <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
-                                                <Run Text="{Binding VolumeLimit, Mode=OneWay}"/><Run Text="%"/>
-                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                                                <TextBlock Text="{Binding VolumeLimit, Mode=OneWay}"/>
+                                                <TextBlock Text="%"/>
+                                            </StackPanel>
                                         </StackPanel>
                                         <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;."
                                                    FontSize="11" TextWrapping="Wrap"
@@ -841,9 +843,10 @@
                                             <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="150"
                                                     VerticalAlignment="Center"/>
-                                            <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
-                                                <Run Text="{Binding VolumeLimit, Mode=OneWay}"/><Run Text="%"/>
-                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                                                <TextBlock Text="{Binding VolumeLimit, Mode=OneWay}"/>
+                                                <TextBlock Text="%"/>
+                                            </StackPanel>
                                         </StackPanel>
                                         <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;."
                                                    FontSize="11" TextWrapping="Wrap"

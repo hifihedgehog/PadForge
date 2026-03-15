@@ -28,7 +28,16 @@ namespace PadForge.ViewModels
         //  Identity
         // ─────────────────────────────────────────────
 
-        private string _name = Strings.Macro_NewMacro;
+        public MacroItem()
+        {
+            Strings.CultureChanged += () =>
+            {
+                OnPropertyChanged(nameof(RecordTriggerButtonText));
+                OnPropertyChanged(nameof(TriggerDisplayText));
+            };
+        }
+
+        private string _name = Strings.Instance.Macro_NewMacro;
 
         /// <summary>User-facing name for this macro.</summary>
         public string Name
@@ -152,7 +161,7 @@ namespace PadForge.ViewModels
                 foreach (var axis in _triggerAxisTargets)
                     parts.Add($"{axis.DisplayName()} > {_triggerAxisThreshold}%");
 
-                if (parts.Count == 0) return Strings.Macro_NotSet;
+                if (parts.Count == 0) return Strings.Instance.Macro_NotSet;
 
                 string result = string.Join(" + ", parts);
 
@@ -213,17 +222,17 @@ namespace PadForge.ViewModels
 
         private static string CentidegreesToDirection(int centidegrees)
         {
-            if (centidegrees < 0) return Strings.POV_Centered;
+            if (centidegrees < 0) return Strings.Instance.POV_Centered;
             centidegrees %= 36000;
-            if (centidegrees >= 33750 || centidegrees < 2250) return Strings.POV_Up;
-            if (centidegrees < 6750) return Strings.POV_UpRight;
-            if (centidegrees < 11250) return Strings.POV_Right;
-            if (centidegrees < 15750) return Strings.POV_DownRight;
-            if (centidegrees < 20250) return Strings.POV_Down;
-            if (centidegrees < 24750) return Strings.POV_DownLeft;
-            if (centidegrees < 29250) return Strings.POV_Left;
-            if (centidegrees < 33750) return Strings.POV_UpLeft;
-            return Strings.POV_Up;
+            if (centidegrees >= 33750 || centidegrees < 2250) return Strings.Instance.POV_Up;
+            if (centidegrees < 6750) return Strings.Instance.POV_UpRight;
+            if (centidegrees < 11250) return Strings.Instance.POV_Right;
+            if (centidegrees < 15750) return Strings.Instance.POV_DownRight;
+            if (centidegrees < 20250) return Strings.Instance.POV_Down;
+            if (centidegrees < 24750) return Strings.Instance.POV_DownLeft;
+            if (centidegrees < 29250) return Strings.Instance.POV_Left;
+            if (centidegrees < 33750) return Strings.Instance.POV_UpLeft;
+            return Strings.Instance.POV_Up;
         }
 
         // ─────────────────────────────────────────────
@@ -304,7 +313,7 @@ namespace PadForge.ViewModels
         }
 
         public string RecordTriggerButtonText =>
-            IsRecordingTrigger ? Strings.Common_Stop : Strings.Macro_RecordTrigger;
+            IsRecordingTrigger ? Strings.Instance.Common_Stop : Strings.Instance.Macro_RecordTrigger;
 
         private string _recordingLiveText = "";
 
@@ -559,6 +568,11 @@ namespace PadForge.ViewModels
     /// </summary>
     public class MacroAction : ObservableObject
     {
+        public MacroAction()
+        {
+            Strings.CultureChanged += () => OnPropertyChanged(nameof(DisplayText));
+        }
+
         private MacroActionType _type = MacroActionType.ButtonPress;
 
         /// <summary>Type of action to perform.</summary>
@@ -769,7 +783,7 @@ namespace PadForge.ViewModels
                         // Dynamic list for custom vJoy — N buttons from config.
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
-                            list.Add(new GamepadButtonOption(this, string.Format(Strings.Macro_Btn_Format, i + 1), customIndex: i));
+                            list.Add(new GamepadButtonOption(this, string.Format(Strings.Instance.Macro_Btn_Format, i + 1), customIndex: i));
                         _buttonOptions = list.AsReadOnly();
                     }
                     else
@@ -1088,22 +1102,22 @@ namespace PadForge.ViewModels
                     : _axisTarget.DisplayName();
                 return _type switch
                 {
-                    MacroActionType.ButtonPress => string.Format(Strings.MacroAction_Press_Format, btnText, _durationMs),
-                    MacroActionType.ButtonRelease => string.Format(Strings.MacroAction_Release_Format, btnText),
-                    MacroActionType.KeyPress => string.Format(Strings.MacroAction_KeyPress_Format, keyDisplay, _durationMs),
-                    MacroActionType.KeyRelease => string.Format(Strings.MacroAction_KeyRelease_Format, keyDisplay),
-                    MacroActionType.Delay => string.Format(Strings.MacroAction_Wait_Format, _durationMs),
-                    MacroActionType.AxisSet => string.Format(Strings.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
+                    MacroActionType.ButtonPress => string.Format(Strings.Instance.MacroAction_Press_Format, btnText, _durationMs),
+                    MacroActionType.ButtonRelease => string.Format(Strings.Instance.MacroAction_Release_Format, btnText),
+                    MacroActionType.KeyPress => string.Format(Strings.Instance.MacroAction_KeyPress_Format, keyDisplay, _durationMs),
+                    MacroActionType.KeyRelease => string.Format(Strings.Instance.MacroAction_KeyRelease_Format, keyDisplay),
+                    MacroActionType.Delay => string.Format(Strings.Instance.MacroAction_Wait_Format, _durationMs),
+                    MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
                     MacroActionType.SystemVolume => _volumeLimit < 100
-                        ? string.Format(Strings.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
-                        : string.Format(Strings.MacroAction_SysVol_Format, axisLabel),
+                        ? string.Format(Strings.Instance.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
+                        : string.Format(Strings.Instance.MacroAction_SysVol_Format, axisLabel),
                     MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
-                        ? (_volumeLimit < 100 ? string.Format(Strings.MacroAction_AppVolLimit_Format, axisLabel, _volumeLimit) : string.Format(Strings.MacroAction_AppVol_Format, axisLabel))
-                        : (_volumeLimit < 100 ? string.Format(Strings.MacroAction_AppVolLimit_Format, $"{axisLabel} ({_processName})", _volumeLimit) : string.Format(Strings.MacroAction_AppVol_Format, $"{axisLabel} ({_processName})")),
-                    MacroActionType.MouseMove => string.Format(Strings.MacroAction_MouseMove_Format, axisLabel, _mouseSensitivity),
-                    MacroActionType.MouseButtonPress => string.Format(Strings.MacroAction_MousePress_Format, _mouseButton),
-                    MacroActionType.MouseButtonRelease => string.Format(Strings.MacroAction_MouseRelease_Format, _mouseButton),
-                    MacroActionType.MouseScroll => string.Format(Strings.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
+                        ? (_volumeLimit < 100 ? string.Format(Strings.Instance.MacroAction_AppVolLimit_Format, axisLabel, _volumeLimit) : string.Format(Strings.Instance.MacroAction_AppVol_Format, axisLabel))
+                        : (_volumeLimit < 100 ? string.Format(Strings.Instance.MacroAction_AppVolLimit_Format, $"{axisLabel} ({_processName})", _volumeLimit) : string.Format(Strings.Instance.MacroAction_AppVol_Format, $"{axisLabel} ({_processName})")),
+                    MacroActionType.MouseMove => string.Format(Strings.Instance.MacroAction_MouseMove_Format, axisLabel, _mouseSensitivity),
+                    MacroActionType.MouseButtonPress => string.Format(Strings.Instance.MacroAction_MousePress_Format, _mouseButton),
+                    MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, _mouseButton),
+                    MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     _ => "Unknown action"
                 };
             }

@@ -229,6 +229,15 @@ public class Strings : INotifyPropertyChanged
     public string About_MvvmToolkitDesc => Get("About_MvvmToolkitDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
+    public string DeviceType_Gamepad => Get("DeviceType_Gamepad");
+    public string DeviceType_Joystick => Get("DeviceType_Joystick");
+    public string DeviceType_Wheel => Get("DeviceType_Wheel");
+    public string DeviceType_FlightStick => Get("DeviceType_FlightStick");
+    public string DeviceType_FirstPerson => Get("DeviceType_FirstPerson");
+    public string DeviceType_Supplemental => Get("DeviceType_Supplemental");
+    public string DeviceType_Mouse => Get("DeviceType_Mouse");
+    public string DeviceType_Keyboard => Get("DeviceType_Keyboard");
+    public string DeviceType_Device => Get("DeviceType_Device");
     public string Devices_Title => Get("Devices_Title");
     public string Devices_OnlineTotal => Get("Devices_OnlineTotal");
     public string Devices_Total => Get("Devices_Total");
@@ -267,6 +276,13 @@ public class Strings : INotifyPropertyChanged
     public string Devices_HideWarning_Format => Get("Devices_HideWarning_Format");
     public string Devices_HideAction => Get("Devices_HideAction");
     public string Devices_ConsumeAction => Get("Devices_ConsumeAction");
+    public string Devices_WarnScope_Format => Get("Devices_WarnScope_Format");
+    public string Devices_WarnHide_Format => Get("Devices_WarnHide_Format");
+    public string Devices_WarnConsumeMouse => Get("Devices_WarnConsumeMouse");
+    public string Devices_WarnConsumeKeyboard => Get("Devices_WarnConsumeKeyboard");
+    public string Devices_WarnAction_Format => Get("Devices_WarnAction_Format");
+    public string Devices_DeviceKind_Mouse => Get("Devices_DeviceKind_Mouse");
+    public string Devices_DeviceKind_Keyboard => Get("Devices_DeviceKind_Keyboard");
     public string Pad_Macros => Get("Pad_Macros");
     public string Pad_Mappings => Get("Pad_Mappings");
     public string Pad_Sticks => Get("Pad_Sticks");
@@ -472,6 +488,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_Inv => Get("Mapping_Inv");
     public string Mapping_Half => Get("Mapping_Half");
     public string Mapping_InvHalf => Get("Mapping_InvHalf");
+    public string Mapping_POV_Format => Get("Mapping_POV_Format");
     public string Mapping_NoDeviceMapped => Get("Mapping_NoDeviceMapped");
     public string Profiles_Title => Get("Profiles_Title");
     public string Profiles_Management => Get("Profiles_Management");

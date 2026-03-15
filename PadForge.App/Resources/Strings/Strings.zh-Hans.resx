@@ -264,6 +264,16 @@
   <data name="About_License" xml:space="preserve"><value>许可证</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>本软件基于 CC BY-NC-SA 4.0（知识共享 署名-非商业性使用-相同方式共享 4.0 国际）许可协议发布。3D 控制器模型改编自 Handheld Companion（CC BY-NC-SA 4.0）。2D 控制器素材来自 AL2009man 的 Gamepad-Asset-Pack（MIT）。原始代码库分叉自 x360ce（MIT）。SDL3 基于 zlib 许可协议。Windows MIDI Services 基于 MIT 许可协议。ViGEmBus、vJoy、HelixToolkit 和 ModernWpf 基于 MIT 许可协议。</value></data>
 
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>游戏手柄</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>操纵杆</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>方向盘</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>飞行摇杆</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>第一人称</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>辅助</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>鼠标</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>键盘</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>设备</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>设备</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在线 / </value></data>
@@ -303,6 +313,15 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>您即将{0}。这将影响 {1}{2}。</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>对所有应用程序隐藏此设备</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>屏蔽此设备已映射的输入</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> 对所有已连接的{0}</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>如果这是您唯一的{0}，您将无法与系统交互。仅在有其他输入设备时继续。</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>如果您映射了系统交互所需的关键输入（例如左/右键点击、X/Y移动），您可能无法控制系统。仅在有其他输入设备时继续。</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>如果您映射了系统交互所需的关键输入（例如常用按键），您可能无法控制系统。仅在有其他输入设备时继续。</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>这将{0}{1}。
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>鼠标</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>键盘</value></data>
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>宏</value></data>
@@ -464,6 +483,7 @@
   <data name="Mapping_Inv" xml:space="preserve"><value>反转</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>半程</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>反转半程</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>未映射设备</value></data>
 
   <!-- ═══ Profiles ═══ -->

@@ -170,7 +170,7 @@
                                                 <Style TargetType="Border">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding TopologyLabel}" Value="{Binding Profiles_NoSlots, Source={x:Static strings:Strings.Instance}}">
+                                                        <DataTrigger Binding="{Binding HasNoSlots}" Value="True">
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>

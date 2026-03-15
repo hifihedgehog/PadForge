@@ -561,7 +561,7 @@
                                             Command="{Binding RecordTriggerCommand}"
                                             Padding="8,4"/>
                                 </StackPanel>
-                                <TextBlock Text="Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%."
+                                <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
                                            FontSize="11" TextWrapping="Wrap"
                                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                            Margin="0,0,0,4"/>
@@ -771,7 +771,7 @@
                                                 <TextBlock Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;."
+                                        <TextBlock Text="{Binding Macro_SysVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -848,7 +848,7 @@
                                                 <TextBlock Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;."
+                                        <TextBlock Text="{Binding Macro_AppVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -913,7 +913,7 @@
                                             <TextBox Text="{Binding MouseSensitivity, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="50" Margin="8,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                        <TextBlock Text="Continuously maps the selected axis to mouse movement (or scroll). Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;. For stick-to-mouse, create two actions: one for X axis, one for Y axis."
+                                        <TextBlock Text="{Binding Macro_MouseMoveHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -1134,7 +1134,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding CenterOffsetXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetCenterOffsetXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset X"/>
+                                                <Button Command="{Binding ResetCenterOffsetXCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetCenterOffsetX, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_CenterOffsetY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -1145,7 +1145,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding CenterOffsetYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Center Offset Y"/>
+                                                <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetCenterOffsetY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_DeadZoneShape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -1159,10 +1159,10 @@
                                                     <ComboBoxItem Content="{Binding Pad_DZSlopedScaledAxial, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding Pad_DZSlopedAxial, Source={x:Static strings:Strings.Instance}}"/>
                                                 </ComboBox>
-                                                <Button Command="{Binding ResetDeadZoneShapeCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset to Scaled Radial"/>
+                                                <Button Command="{Binding ResetDeadZoneShapeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetDeadZoneShape, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_DeadZoneX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding DeadZoneX, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding DeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1170,10 +1170,10 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding DeadZoneXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetDeadZoneXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Dead Zone X"/>
+                                                <Button Command="{Binding ResetDeadZoneXCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetDeadZoneX, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_DeadZoneY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding DeadZoneY, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding DeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1181,10 +1181,10 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding DeadZoneYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetDeadZoneYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Dead Zone Y"/>
+                                                <Button Command="{Binding ResetDeadZoneYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetDeadZoneY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Anti-Dead Zone X:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_AntiDeadZoneX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding AntiDeadZoneX, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1192,10 +1192,10 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetAntiDeadZoneXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zone X"/>
+                                                <Button Command="{Binding ResetAntiDeadZoneXCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAntiDeadZoneX, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Anti-Dead Zone Y:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_AntiDeadZoneY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding AntiDeadZoneY, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1203,43 +1203,43 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetAntiDeadZoneYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zone Y"/>
+                                                <Button Command="{Binding ResetAntiDeadZoneYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAntiDeadZoneY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Linear:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Linear, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding Linear, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding Linear, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                <Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Linear"/>
+                                                <Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
-                                            <TextBlock Text="Sensitivity Curves" FontWeight="SemiBold" Margin="0,4,0,4"
+                                            <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" FontSize="11"/>
-                                            <TextBlock Text="Double-click chart to add point. Right-click to remove. Drag to adjust."
+                                            <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Sensitivity X:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_SensitivityX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="SensitivityXCombo"
                                                           Width="120"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetNameX, Mode=OneWay}"
                                                           SelectionChanged="StickPresetX_SelectionChanged"
                                                           Tag="{Binding}"/>
-                                                <Button Command="{Binding ResetSensitivityXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity X"/>
+                                                <Button Command="{Binding ResetSensitivityXCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivityX, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Sensitivity Y:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_SensitivityY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox Width="120"
                                                           ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetNameY, Mode=OneWay}"
                                                           SelectionChanged="StickPresetY_SelectionChanged"
                                                           Tag="{Binding}"/>
-                                                <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity Y"/>
+                                                <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Min Range X (Left):" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_MinRangeXLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeXNeg, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1248,10 +1248,10 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeXNegDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeXNegCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Min Range X"/>
+                                                <Button Command="{Binding ResetMaxRangeXNegCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetMinRangeX, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Max Range X (Right):" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_MaxRangeXRight, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeX, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1260,10 +1260,10 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeXDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeXCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range X"/>
+                                                <Button Command="{Binding ResetMaxRangeXCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetMaxRangeX, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Min Range Y (Down):" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_MinRangeYDown, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeY, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1272,10 +1272,10 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeYDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Min Range Y"/>
+                                                <Button Command="{Binding ResetMaxRangeYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetMinRangeY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Max Range Y (Up):" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_MaxRangeYUp, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeYNeg, Mode=TwoWay}"
                                                         Minimum="1" Maximum="100"
                                                         Style="{StaticResource DzSlider}"/>
@@ -1284,7 +1284,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding MaxRangeYNegDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetMaxRangeYNegCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Max Range Y"/>
+                                                <Button Command="{Binding ResetMaxRangeYNegCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetMaxRangeY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                         </StackPanel>
 
@@ -1419,7 +1419,7 @@
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                                                 <!-- X axis curve editor -->
                                                 <StackPanel Margin="0,0,4,0">
-                                                    <TextBlock Text="X Axis" HorizontalAlignment="Center"
+                                                    <TextBlock Text="{Binding Pad_XAxis, Source={x:Static strings:Strings.Instance}}" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
                                                     <controls:CurveEditor
@@ -1432,7 +1432,7 @@
                                                 </StackPanel>
                                                 <!-- Y axis curve editor -->
                                                 <StackPanel Margin="4,0,0,0">
-                                                    <TextBlock Text="Y Axis" HorizontalAlignment="Center"
+                                                    <TextBlock Text="{Binding Pad_YAxis, Source={x:Static strings:Strings.Instance}}" HorizontalAlignment="Center"
                                                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
                                                     <controls:CurveEditor
@@ -1481,7 +1481,7 @@
                                         <StackPanel Grid.Column="0">
                                             <!-- Range (dual-thumb: dead zone floor — max range ceiling) -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Range:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <controls:RangeSlider
                                                     LowerValue="{Binding DeadZone, Mode=TwoWay}"
                                                     UpperValue="{Binding MaxRange, Mode=TwoWay}"
@@ -1500,11 +1500,11 @@
                                                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                                 <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Range"/>
+                                                <Button Command="{Binding ResetRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRange, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Anti-Dead Zone:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_AntiDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding AntiDeadZone, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding AntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -1512,28 +1512,28 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
-                                                <Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Anti-Dead Zone"/>
+                                                <Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAntiDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
-                                            <TextBlock Text="Sensitivity Curve" FontWeight="SemiBold" Margin="0,4,0,4"
+                                            <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" FontSize="11"/>
-                                            <TextBlock Text="Double-click to add point. Right-click to remove. Drag to adjust."
+                                            <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="Preset:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Preset_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="TriggerPresetCombo"
                                                           Width="120"
                                                           ItemsSource="{x:Static vm:TriggerConfigItem.CurvePresetNames}"
                                                           SelectedItem="{Binding PresetName, Mode=OneWay}"
                                                           SelectionChanged="TriggerPreset_SelectionChanged"
                                                           Tag="{Binding}"/>
-                                                <Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Sensitivity"/>
+                                                <Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
                                             <!-- Live value bar -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="Live:" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Live, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
                                                              Minimum="0" Maximum="1"
                                                              Width="200" Height="16" VerticalAlignment="Center"/>
@@ -1545,7 +1545,7 @@
 
                                         <!-- Right: sensitivity curve editor -->
                                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,-26,0,0">
-                                            <TextBlock Text="Trigger Axis" Margin="0,0,0,4"
+                                            <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"
                                                        HorizontalAlignment="Center"
                                                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                                                        FontSize="11"/>
@@ -1571,7 +1571,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Force Feedback / Rumble"
+                            <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="14" FontWeight="SemiBold"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                        VerticalAlignment="Center"/>
@@ -1581,59 +1581,59 @@
 
                         <!-- Overall gain -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Overall Gain:" Style="{StaticResource DzLabel}"/>
+                            <TextBlock Text="{Binding Pad_OverallGain, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding ForceOverallGain, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
                             <TextBox Text="{Binding ForceOverallGain, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                      Style="{StaticResource DzValueEdit}"/>
                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                            <Button Command="{Binding ResetOverallGainCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Overall Gain"/>
+                            <Button Command="{Binding ResetOverallGainCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetOverallGain, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
                         <!-- Left motor -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Left Motor:" Style="{StaticResource DzLabel}"/>
+                            <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding LeftMotorStrength, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
                             <TextBox Text="{Binding LeftMotorStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                      Style="{StaticResource DzValueEdit}"/>
                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                            <Button Command="{Binding ResetLeftMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Left Motor"/>
+                            <Button Command="{Binding ResetLeftMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLeftMotor, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
                         <!-- Right motor -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="Right Motor:" Style="{StaticResource DzLabel}"/>
+                            <TextBlock Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding RightMotorStrength, Mode=TwoWay}"
                                     Style="{StaticResource DzSlider}"/>
                             <TextBox Text="{Binding RightMotorStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                      Style="{StaticResource DzValueEdit}"/>
                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                            <Button Command="{Binding ResetRightMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="Reset Right Motor"/>
+                            <Button Command="{Binding ResetRightMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRightMotor, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
                         <!-- Swap motors -->
-                        <CheckBox Content="Swap left/right motors"
+                        <CheckBox Content="{Binding Pad_SwapMotors, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding SwapMotors, Mode=TwoWay}"
                                   Margin="0,0,0,12"/>
 
                         <!-- Test rumble -->
-                        <Button Content="Test Rumble"
+                        <Button Content="{Binding Pad_TestRumble, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding TestRumbleCommand}"
                                 Padding="12,6" HorizontalAlignment="Left"
                                 Margin="0,0,0,12"/>
 
                         <!-- Live motor display -->
-                        <TextBlock Text="Motor Activity" FontWeight="SemiBold" Margin="0,8,0,8"
+                        <TextBlock Text="{Binding Pad_MotorActivity, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,8,0,8"
                                    Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Left Motor:" Style="{StaticResource DzLabel}"/>
+                            <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding LeftMotorDisplay, Mode=OneWay}"
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Right Motor:" Style="{StaticResource DzLabel}"/>
+                            <TextBlock Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding RightMotorDisplay, Mode=OneWay}"
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>

@@ -1241,12 +1241,12 @@ namespace PadForge.ViewModels
         /// </summary>
         public static string DisplayName(this MacroAxisTarget target) => target switch
         {
-            MacroAxisTarget.LeftStickX => "X Axis",
-            MacroAxisTarget.LeftStickY => "Y Axis",
-            MacroAxisTarget.RightStickX => "X Rotation",
-            MacroAxisTarget.RightStickY => "Y Rotation",
-            MacroAxisTarget.LeftTrigger => "Z Axis",
-            MacroAxisTarget.RightTrigger => "Z Rotation",
+            MacroAxisTarget.LeftStickX => Strings.Instance.MacroAxis_XAxis,
+            MacroAxisTarget.LeftStickY => Strings.Instance.MacroAxis_YAxis,
+            MacroAxisTarget.RightStickX => Strings.Instance.MacroAxis_XRotation,
+            MacroAxisTarget.RightStickY => Strings.Instance.MacroAxis_YRotation,
+            MacroAxisTarget.LeftTrigger => Strings.Instance.MacroAxis_ZAxis,
+            MacroAxisTarget.RightTrigger => Strings.Instance.MacroAxis_ZRotation,
             _ => target.ToString()
         };
     }

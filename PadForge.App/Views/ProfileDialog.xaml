@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="{Binding ProfileDialog_ProfileName, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
-        <TextBox Grid.Row="1" x:Name="NameBox" Text="{Binding ProfileDialog_DefaultName, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,12"/>
+        <TextBox Grid.Row="1" x:Name="NameBox" Margin="0,0,0,12"/>
 
         <TextBlock Grid.Row="2" Text="{Binding ProfileDialog_Executables, Source={x:Static strings:Strings.Instance}}"
                    Margin="0,0,0,4"/>

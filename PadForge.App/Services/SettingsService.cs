@@ -7,6 +7,7 @@ using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Services
@@ -774,7 +775,7 @@ namespace PadForge.Services
             if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
             if (midi > 0) parts.Add($"{midi}x MIDI");
             if (kbm > 0) parts.Add($"{kbm}x KB+M");
-            return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
+            return parts.Count > 0 ? string.Join(", ", parts) : Strings.Instance.Profiles_NoSlots;
         }
 
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,

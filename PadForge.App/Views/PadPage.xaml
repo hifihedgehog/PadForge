@@ -515,36 +515,10 @@
                             <CheckBox Content="Enabled" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
                                       Margin="0,0,0,12"/>
 
-                            <!-- Trigger -->
-                            <TextBlock Text="Trigger Combination" FontWeight="SemiBold"
+                            <!-- Trigger mode -->
+                            <TextBlock Text="Trigger" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
                                        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="Source:" VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
-                                <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
-                                          SelectedValuePath="Tag" MinWidth="160">
-                                    <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
-                                    <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
-                                </ComboBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <Grid MinWidth="150" Margin="0,0,8,0">
-                                    <TextBlock Text="{Binding TriggerDisplayText}"
-                                               VerticalAlignment="Center"
-                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
-                                    <TextBlock Text="{Binding RecordingLiveText}"
-                                               VerticalAlignment="Center"
-                                               Foreground="{DynamicResource SystemControlHighlightAccentBrush}"
-                                               FontWeight="SemiBold"
-                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                </Grid>
-                                <Button Content="{Binding RecordTriggerButtonText}"
-                                        Command="{Binding RecordTriggerCommand}"
-                                        Padding="8,4"/>
-                            </StackPanel>
-
-                            <!-- Trigger mode -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="Fire:" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
@@ -553,12 +527,70 @@
                                     <ComboBoxItem Content="On Press" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
                                     <ComboBoxItem Content="On Release" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
                                     <ComboBoxItem Content="While Held" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
+                                    <ComboBoxItem Content="Always" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
                                 </ComboBox>
                             </StackPanel>
 
-                            <CheckBox Content="Consume trigger buttons (hide from game)"
-                                      IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
-                                      Margin="0,0,0,12"/>
+                            <!-- Trigger combination (hidden when Always mode) -->
+                            <StackPanel Visibility="{Binding IsNotAlwaysMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="Trigger" FontWeight="SemiBold"
+                                           Margin="0,0,0,4"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Source:" VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                    <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
+                                              SelectedValuePath="Tag" MinWidth="160">
+                                        <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
+                                        <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <Grid MinWidth="150" Margin="0,0,8,0">
+                                        <TextBlock Text="{Binding TriggerDisplayText}"
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                        <TextBlock Text="{Binding RecordingLiveText}"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                   FontWeight="SemiBold"
+                                                   Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </Grid>
+                                    <Button Content="{Binding RecordTriggerButtonText}"
+                                            Command="{Binding RecordTriggerCommand}"
+                                            Padding="8,4"/>
+                                </StackPanel>
+                                <TextBlock Text="Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%."
+                                           FontSize="11" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                           Margin="0,0,0,4"/>
+
+                                <!-- Axis threshold (visible when an axis trigger was recorded) -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                            Visibility="{Binding UsesAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="Threshold:" VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                    <Slider Value="{Binding TriggerAxisThreshold, Mode=TwoWay}"
+                                            Minimum="1" Maximum="100" Width="150"
+                                            VerticalAlignment="Center"/>
+                                    <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
+                                        <Run Text="{Binding TriggerAxisThreshold, Mode=OneWay}"/><Run Text="%"/>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <CheckBox Content="Consume trigger buttons (hide from game)"
+                                          IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
+                                          Margin="0,0,0,4"/>
+                            </StackPanel>
+
+                            <!-- Always mode note -->
+                            <TextBlock Text="Runs continuously while this virtual controller is active. No trigger button required."
+                                       FontSize="11" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       Margin="0,0,0,4"
+                                       Visibility="{Binding IsNotAlwaysMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+
+                            <Separator Margin="0,4,0,12"/>
 
                             <!-- Action sequence -->
                             <TextBlock Text="Action Sequence" FontWeight="SemiBold"
@@ -679,7 +711,19 @@
                                     <!-- Source axis — for SystemVolume -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsSystemVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Axis from:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag" MinWidth="150">
+                                                <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
+                                                <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <!-- Output controller axis (existing) -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Text="Source axis:" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
@@ -692,6 +736,28 @@
                                                 <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
+                                        <!-- Input device axis -->
+                                        <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Device:" VerticalAlignment="Center"
+                                                           Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox x:Name="SysVolDevicePicker"
+                                                          MinWidth="200"
+                                                          DisplayMemberPath="ResolvedName"
+                                                          SelectedValuePath="InstanceGuid"
+                                                          SelectedValue="{Binding SourceDeviceGuid, Mode=TwoWay}"
+                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Axis:" VerticalAlignment="Center"
+                                                           Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox MinWidth="180"
+                                                          DisplayMemberPath="Name"
+                                                          SelectedValuePath="InputIndex"
+                                                          SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
+                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Text="Volume limit:" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
@@ -702,7 +768,7 @@
                                                 <Run Text="{Binding VolumeLimit, Mode=OneWay}"/><Run Text="%"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat for continuous control."
+                                        <TextBlock Text="Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;."
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -721,7 +787,19 @@
                                                       ToolTip="Process name without .exe — dropdown shows processes with active audio sessions"
                                                       DropDownOpened="AppVolumeProcessDropDown_Opened"/>
                                         </StackPanel>
+                                        <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Axis from:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag" MinWidth="150">
+                                                <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
+                                                <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <!-- Output controller axis -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Text="Source axis:" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
@@ -733,6 +811,28 @@
                                                 <ComboBoxItem Content="Left Trigger" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
                                                 <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
+                                        </StackPanel>
+                                        <!-- Input device axis -->
+                                        <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Device:" VerticalAlignment="Center"
+                                                           Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox x:Name="AppVolDevicePicker"
+                                                          MinWidth="200"
+                                                          DisplayMemberPath="ResolvedName"
+                                                          SelectedValuePath="InstanceGuid"
+                                                          SelectedValue="{Binding SourceDeviceGuid, Mode=TwoWay}"
+                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Axis:" VerticalAlignment="Center"
+                                                           Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox MinWidth="180"
+                                                          DisplayMemberPath="Name"
+                                                          SelectedValuePath="InputIndex"
+                                                          SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
+                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
+                                            </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Text="Volume limit:" VerticalAlignment="Center"
@@ -744,7 +844,7 @@
                                                 <Run Text="{Binding VolumeLimit, Mode=OneWay}"/><Run Text="%"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat."
+                                        <TextBlock Text="Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;."
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>
@@ -752,7 +852,19 @@
                                     <!-- Source axis + sensitivity — for MouseMove / MouseScroll -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseMoveType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="Axis from:" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"/>
+                                            <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag" MinWidth="150">
+                                                <ComboBoxItem Content="Output Controller" Tag="{x:Static vm:MacroAxisSource.OutputController}"/>
+                                                <ComboBoxItem Content="Input Device" Tag="{x:Static vm:MacroAxisSource.InputDevice}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <!-- Output controller axis -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Text="Source axis:" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
@@ -765,6 +877,28 @@
                                                 <ComboBoxItem Content="Right Trigger" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                             </ComboBox>
                                         </StackPanel>
+                                        <!-- Input device axis -->
+                                        <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Device:" VerticalAlignment="Center"
+                                                           Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox x:Name="MouseDevicePicker"
+                                                          MinWidth="200"
+                                                          DisplayMemberPath="ResolvedName"
+                                                          SelectedValuePath="InstanceGuid"
+                                                          SelectedValue="{Binding SourceDeviceGuid, Mode=TwoWay}"
+                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Axis:" VerticalAlignment="Center"
+                                                           Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox MinWidth="180"
+                                                          DisplayMemberPath="Name"
+                                                          SelectedValuePath="InputIndex"
+                                                          SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
+                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Text="Speed:" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
@@ -775,7 +909,7 @@
                                             <TextBox Text="{Binding MouseSensitivity, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="50" Margin="8,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                        <TextBlock Text="Continuously maps the selected axis to mouse movement (or scroll). Use with &quot;While Held&quot; trigger + &quot;Until Release&quot; repeat. For stick-to-mouse, create two actions: one for X axis, one for Y axis."
+                                        <TextBlock Text="Continuously maps the selected axis to mouse movement (or scroll). Use with &quot;Always&quot; trigger, or a button/axis trigger with &quot;While Held&quot; + &quot;Until Release&quot;. For stick-to-mouse, create two actions: one for X axis, one for Y axis."
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
                                     </StackPanel>

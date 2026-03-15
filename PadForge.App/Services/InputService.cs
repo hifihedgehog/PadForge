@@ -79,6 +79,13 @@ namespace PadForge.Services
         private uint[] _recordedCustomButtons;
         private Guid _recordingDeviceGuid;
         private HashSet<int> _recordedRawButtons;
+        private HashSet<MacroAxisTarget> _recordedAxisTargets;
+        private HashSet<string> _recordedPovs; // stored as "povIndex:centidegrees"
+        private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
+        private float[] _macroAxisBaseline;              // axis values at recording start
+        private MacroAxisTarget _macroAxisCandidate;     // axis being held
+        private int _macroAxisHoldCounter;               // hold confirmation cycles
+        private const int MacroAxisHoldCycles = 3;       // cycles needed to confirm
 
         /// <summary>
         /// Tracks the previously selected device GUID for each pad slot,
@@ -715,7 +722,7 @@ namespace PadForge.Services
             if (devVm.IsMouseDevice)
             {
                 devVm.MouseMotionX = (state.Axis[0] - 32767.0) / 32767.0;
-                devVm.MouseMotionY = (state.Axis[1] - 32767.0) / 32767.0;
+                devVm.MouseMotionY = -(state.Axis[1] - 32767.0) / 32767.0;
                 if (ud.CapAxeCount > 2)
                     devVm.MouseScrollIntensity = (state.Axis[2] - 32767.0) / 32767.0;
             }
@@ -1172,7 +1179,7 @@ namespace PadForge.Services
                             "UpLeft" => "Up-Left",
                             _ => parts[2]
                         };
-                        display = $"Hat {dir}";
+                        display = $"POV {index} {dir}";
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
@@ -1265,7 +1272,7 @@ namespace PadForge.Services
                             "UpLeft" => "Up-Left",
                             _ => parts[2]
                         };
-                        display = $"Hat {dir}";
+                        display = $"POV {index} {dir}";
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
@@ -2370,7 +2377,15 @@ namespace PadForge.Services
             _recordedCustomButtons = new uint[4];
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = new HashSet<int>();
-            macro.RecordingLiveText = "Press buttons...";
+            _recordedAxisTargets = new HashSet<MacroAxisTarget>();
+            _recordedPovs = new HashSet<string>();
+            _macroAxisCandidate = MacroAxisTarget.None;
+            _macroAxisHoldCounter = 0;
+
+            // Capture axis baseline so we detect movement delta, not absolute position.
+            _macroAxisBaseline = CaptureAxisBaseline(padIndex, macro.TriggerSource, macro.ButtonStyle);
+
+            macro.RecordingLiveText = "Press buttons or move axis...";
             macro.IsRecordingTrigger = true;
         }
 
@@ -2383,6 +2398,17 @@ namespace PadForge.Services
             if (_recordingMacro == null)
                 return;
 
+            // Save recorded axis triggers (can combine with buttons).
+            _recordingMacro.TriggerAxisTargets = _recordedAxisTargets?.Count > 0
+                ? _recordedAxisTargets.ToArray()
+                : Array.Empty<MacroAxisTarget>();
+
+            // Save recorded POV triggers.
+            _recordingMacro.TriggerPovs = _recordedPovs?.Count > 0
+                ? _recordedPovs.ToArray()
+                : Array.Empty<string>();
+
+            // Save recorded buttons (independent of axis).
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
                 && _recordingDeviceGuid != Guid.Empty
                 && _recordedRawButtons != null && _recordedRawButtons.Count > 0)
@@ -2418,6 +2444,11 @@ namespace PadForge.Services
             _recordedCustomButtons = null;
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = null;
+            _recordedAxisTargets = null;
+            _recordedPovs = null;
+            _macroAxisBaseline = null;
+            _macroAxisCandidate = MacroAxisTarget.None;
+            _macroAxisHoldCounter = 0;
         }
 
         /// <summary>
@@ -2433,6 +2464,60 @@ namespace PadForge.Services
 
             if (_recordingPadIndex < 0 || _recordingPadIndex >= InputManager.MaxPads)
                 return;
+
+            // Read current axis values for delta detection.
+            float[] currentAxes = ReadCurrentAxes(
+                _recordingPadIndex, _recordingMacro.TriggerSource, _recordingMacro.ButtonStyle);
+
+            // Detect axes via baseline+delta+hold (shared across all paths).
+            // Accumulates into _recordedAxisTargets — multiple axes can be recorded.
+            if (_macroAxisBaseline != null && currentAxes != null)
+            {
+                MacroAxisTarget bestCandidate = MacroAxisTarget.None;
+                float bestDelta = 0f;
+
+                MacroAxisTarget[] axes = {
+                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                };
+                for (int i = 0; i < axes.Length && i < currentAxes.Length && i < _macroAxisBaseline.Length; i++)
+                {
+                    // Skip axes already recorded.
+                    if (_recordedAxisTargets.Contains(axes[i])) continue;
+
+                    float delta = Math.Abs(currentAxes[i] - _macroAxisBaseline[i]);
+                    if (delta > AxisRecordThreshold && delta > bestDelta)
+                    {
+                        bestDelta = delta;
+                        bestCandidate = axes[i];
+                    }
+                }
+
+                if (bestCandidate != MacroAxisTarget.None)
+                {
+                    if (bestCandidate == _macroAxisCandidate)
+                    {
+                        _macroAxisHoldCounter++;
+                        if (_macroAxisHoldCounter >= MacroAxisHoldCycles)
+                        {
+                            _recordedAxisTargets.Add(bestCandidate);
+                            _macroAxisCandidate = MacroAxisTarget.None;
+                            _macroAxisHoldCounter = 0;
+                        }
+                    }
+                    else
+                    {
+                        _macroAxisCandidate = bestCandidate;
+                        _macroAxisHoldCounter = 1;
+                    }
+                }
+                else
+                {
+                    _macroAxisCandidate = MacroAxisTarget.None;
+                    _macroAxisHoldCounter = 0;
+                }
+            }
 
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
@@ -2457,26 +2542,55 @@ namespace PadForge.Services
                         {
                             if (buttons[i])
                             {
-                                // Lock to this device on first press.
                                 if (_recordingDeviceGuid == Guid.Empty)
                                     _recordingDeviceGuid = ud.InstanceGuid;
-
                                 _recordedRawButtons.Add(i);
+                            }
+                        }
+
+                        // Check for any active POV hats on this device.
+                        var povs = ud.InputState.Povs;
+                        if (povs != null)
+                        {
+                            for (int p = 0; p < povs.Length; p++)
+                            {
+                                if (povs[p] >= 0)
+                                {
+                                    if (_recordingDeviceGuid == Guid.Empty)
+                                        _recordingDeviceGuid = ud.InstanceGuid;
+                                    _recordedPovs.Add($"{p}:{povs[p]}");
+                                }
                             }
                         }
                     }
                 }
 
-                // Update live display text with device name.
+                // Update live display text (buttons + POVs + axes combined, device name at end).
+                var parts = new List<string>();
                 if (_recordedRawButtons.Count > 0)
                 {
-                    string combo = string.Join(" + ", _recordedRawButtons.OrderBy(x => x).Select(b => $"Btn {b}"));
+                    var objects = ResolveDeviceObjects(_recordingDeviceGuid);
+                    foreach (int b in _recordedRawButtons.OrderBy(x => x))
+                    {
+                        var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
+                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {b}");
+                    }
+                }
+                foreach (var pov in _recordedPovs)
+                    parts.Add(MacroItem.FormatPovTrigger(pov));
+                foreach (var ax in _recordedAxisTargets)
+                    parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
+
+                if (parts.Count > 0)
+                {
+                    string result = string.Join(" + ", parts);
                     string deviceName = ResolveDeviceName(_recordingDeviceGuid);
-                    _recordingMacro.RecordingLiveText = string.IsNullOrEmpty(deviceName)
-                        ? combo : $"{combo} ({deviceName})";
+                    if (!string.IsNullOrEmpty(deviceName))
+                        result = $"{result} ({deviceName})";
+                    _recordingMacro.RecordingLiveText = result;
                 }
                 else
-                    _recordingMacro.RecordingLiveText = "Press buttons...";
+                    _recordingMacro.RecordingLiveText = "Press buttons or move axis...";
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
@@ -2488,22 +2602,99 @@ namespace PadForge.Services
                         _recordedCustomButtons[w] |= rawState.Buttons[w];
                 }
 
-                if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
-                    _recordingMacro.RecordingLiveText = MacroButtonNames.FormatCustomButtons(_recordedCustomButtons);
-                else
-                    _recordingMacro.RecordingLiveText = "Press buttons...";
+                // Update live display (buttons + axes combined).
+                {
+                    var parts = new List<string>();
+                    if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_recordedCustomButtons));
+                    foreach (var ax in _recordedAxisTargets)
+                        parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
+                    _recordingMacro.RecordingLiveText = parts.Count > 0
+                        ? string.Join(" + ", parts) : "Press buttons or move axis...";
+                }
             }
             else
             {
                 // Gamepad preset OutputController: accumulate from the combined Xbox-mapped state.
-                ushort xboxButtons = _inputManager.CombinedOutputStates[_recordingPadIndex].Buttons;
+                var gp = _inputManager.CombinedOutputStates[_recordingPadIndex];
+                ushort xboxButtons = gp.Buttons;
                 _recordedButtons |= xboxButtons;
 
-                if (_recordedButtons != 0)
-                    _recordingMacro.RecordingLiveText = MacroButtonNames.FormatButtons(
-                        _recordedButtons, _recordingMacro.ButtonStyle);
-                else
-                    _recordingMacro.RecordingLiveText = "Press buttons...";
+                // Update live display (buttons + axes combined).
+                {
+                    var parts = new List<string>();
+                    if (_recordedButtons != 0)
+                        parts.Add(MacroButtonNames.FormatButtons(_recordedButtons, _recordingMacro.ButtonStyle));
+                    foreach (var ax in _recordedAxisTargets)
+                        parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
+                    _recordingMacro.RecordingLiveText = parts.Count > 0
+                        ? string.Join(" + ", parts) : "Press buttons or move axis...";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Captures the current axis values as a 6-element float array (0..1 normalized)
+        /// for use as a baseline during macro trigger recording.
+        /// </summary>
+        private float[] CaptureAxisBaseline(int padIndex, MacroTriggerSource source, MacroButtonStyle style)
+        {
+            return ReadCurrentAxes(padIndex, source, style);
+        }
+
+        /// <summary>
+        /// Reads the current 6-axis values (LX, LY, RX, RY, LT, RT) as 0..1 floats
+        /// from the appropriate source for the recording path.
+        /// </summary>
+        private float[] ReadCurrentAxes(int padIndex, MacroTriggerSource source, MacroButtonStyle style)
+        {
+            if (_inputManager == null || padIndex < 0 || padIndex >= InputManager.MaxPads)
+                return null;
+
+            float[] result = new float[6];
+
+            if (source == MacroTriggerSource.InputDevice)
+            {
+                // Read raw axes from the first assigned device that has axis data.
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
+                if (slotSettings == null) return null;
+                foreach (var setting in slotSettings)
+                {
+                    var ud = FindUserDevice(setting.InstanceGuid);
+                    if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
+                    var rawAxes = ud.InputState.Axis;
+                    if (rawAxes == null || rawAxes.Length < 6) continue;
+                    for (int i = 0; i < 6 && i < rawAxes.Length; i++)
+                        result[i] = (rawAxes[i] + 32768f) / 65535f;
+                    return result;
+                }
+                return null;
+            }
+            else if (style == MacroButtonStyle.Numbered)
+            {
+                // vJoy raw state path.
+                var rawState = _inputManager.CombinedVJoyRawStates[padIndex];
+                MacroAxisTarget[] axes = {
+                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                };
+                for (int i = 0; i < axes.Length; i++)
+                    result[i] = InputManager.ReadAxisAsVolumeRaw(in rawState, axes[i]);
+                return result;
+            }
+            else
+            {
+                // Gamepad OutputController path.
+                var gp = _inputManager.CombinedOutputStates[padIndex];
+                MacroAxisTarget[] axes = {
+                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                };
+                for (int i = 0; i < axes.Length; i++)
+                    result[i] = InputManager.ReadAxisAsVolume(in gp, axes[i]);
+                return result;
             }
         }
 
@@ -2512,6 +2703,12 @@ namespace PadForge.Services
         {
             if (deviceGuid == Guid.Empty) return null;
             return SettingsManager.FindDeviceByInstanceGuid(deviceGuid)?.ResolvedName;
+        }
+
+        private static DeviceObjectItem[] ResolveDeviceObjects(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return null;
+            return SettingsManager.FindDeviceByInstanceGuid(deviceGuid)?.DeviceObjects;
         }
 
         // ─────────────────────────────────────────────

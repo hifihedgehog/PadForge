@@ -527,5 +527,61 @@ namespace PadForge.Views
             if (sender is ComboBox cb && cb.DataContext is MacroAction action)
                 action.RefreshAudioProcessesCommand.Execute(null);
         }
+
+        /// <summary>
+        /// Populates the device axis picker ComboBox with devices assigned to the current slot.
+        /// </summary>
+        private void DeviceAxisPicker_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is not ComboBox cb || _currentPadVm == null)
+                return;
+
+            int slotIndex = _currentPadVm.PadIndex;
+            var devices = new List<PadForge.Engine.Data.UserDevice>();
+
+            foreach (var setting in SettingsManager.UserSettings.Items)
+            {
+                if (setting.MapTo != slotIndex)
+                    continue;
+                var ud = SettingsManager.UserDevices.Items
+                    .Find(d => d.InstanceGuid == setting.InstanceGuid);
+                if (ud != null && !devices.Contains(ud))
+                    devices.Add(ud);
+            }
+
+            cb.ItemsSource = devices;
+        }
+
+        /// <summary>
+        /// Populates the axis index picker ComboBox with axis-type DeviceObjects
+        /// from the device selected in SourceDeviceGuid.
+        /// </summary>
+        private void DeviceAxisIndexPicker_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is not ComboBox cb || cb.DataContext is not MacroAction action)
+                return;
+
+            if (action.SourceDeviceGuid == Guid.Empty)
+            {
+                cb.ItemsSource = null;
+                return;
+            }
+
+            var ud = SettingsManager.UserDevices.Items
+                .Find(d => d.InstanceGuid == action.SourceDeviceGuid);
+            if (ud?.DeviceObjects == null)
+            {
+                cb.ItemsSource = null;
+                return;
+            }
+
+            var axes = new List<PadForge.Engine.DeviceObjectItem>();
+            foreach (var obj in ud.DeviceObjects)
+            {
+                if (obj.IsAxis)
+                    axes.Add(obj);
+            }
+            cb.ItemsSource = axes;
+        }
     }
 }

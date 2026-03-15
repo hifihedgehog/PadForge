@@ -270,16 +270,43 @@ namespace PadForge.Common.Input
                 if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Skip macros with no trigger configured.
-                if (!macro.UsesRawTrigger && macro.TriggerButtons == 0)
+                // Skip macros with no trigger configured (unless Always mode).
+                bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
+                if (macro.TriggerMode != MacroTriggerMode.Always &&
+                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
                     continue;
 
-                // Check trigger condition based on trigger type.
+                // Determine trigger state — buttons, POVs, AND axes must all be active together.
                 bool triggerActive;
-                if (macro.UsesRawTrigger)
-                    triggerActive = CheckRawButtonTrigger(macro);
+                if (macro.TriggerMode == MacroTriggerMode.Always)
+                    triggerActive = true;
                 else
-                    triggerActive = (gp.Buttons & macro.TriggerButtons) == macro.TriggerButtons;
+                {
+                    bool buttonOk = true;
+                    bool povOk = true;
+                    bool axisOk = true;
+
+                    if (hasButtons)
+                    {
+                        if (macro.UsesRawTrigger)
+                            buttonOk = CheckRawButtonTrigger(macro);
+                        else
+                            buttonOk = (gp.Buttons & macro.TriggerButtons) == macro.TriggerButtons;
+                    }
+                    if (macro.UsesPovTrigger)
+                        povOk = CheckRawPovTrigger(macro);
+                    if (macro.UsesAxisTrigger)
+                    {
+                        float threshold = macro.TriggerAxisThreshold / 100f;
+                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        {
+                            if (ReadAxisAsVolume(in gp, axTarget) < threshold)
+                            { axisOk = false; break; }
+                        }
+                    }
+
+                    triggerActive = buttonOk && povOk && axisOk;
+                }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
@@ -297,6 +324,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.WhileHeld:
                         shouldStart = triggerActive;
                         break;
+                    case MacroTriggerMode.Always:
+                        shouldStart = !macro.IsExecuting;
+                        break;
                 }
 
                 // Start new execution if triggered and not already executing.
@@ -311,7 +341,9 @@ namespace PadForge.Common.Input
                 }
 
                 // For WhileHeld + UntilRelease: stop when trigger is released.
+                // Always mode never stops via trigger release.
                 if (macro.IsExecuting &&
+                    macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
                     !triggerActive)
                 {
@@ -352,6 +384,34 @@ namespace PadForge.Common.Input
                 int idx = rawIndices[i];
                 if (idx < 0 || idx >= buttons.Length || !buttons[idx])
                     return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks whether all POV triggers are active on the target device.
+        /// Each entry is "povIndex:centidegrees". The POV must be in the same
+        /// 45-degree sector as the stored direction.
+        /// </summary>
+        private bool CheckRawPovTrigger(MacroItem macro)
+        {
+            var ud = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            if (ud == null || !ud.IsOnline || ud.InputState == null)
+                return false;
+
+            var povs = ud.InputState.Povs;
+            if (povs == null) return false;
+
+            foreach (var entry in macro.TriggerPovs)
+            {
+                if (!MacroItem.ParsePovTrigger(entry, out int idx, out int targetCd))
+                    return false;
+                if (idx < 0 || idx >= povs.Length || povs[idx] < 0)
+                    return false;
+                // Check same 45-degree sector (±2250 centidegrees).
+                int diff = Math.Abs(povs[idx] - targetCd);
+                if (diff > 18000) diff = 36000 - diff;
+                if (diff > 2250) return false;
             }
             return true;
         }
@@ -423,28 +483,41 @@ namespace PadForge.Common.Input
         /// <summary>Executes a single continuous action (no advance logic).</summary>
         private void ExecuteSingleAction(ref Gamepad gp, MacroAction action)
         {
+            bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
             {
                 case MacroActionType.SystemVolume:
-                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget) * (action.VolumeLimit / 100f));
+                {
+                    float vol = useDevice ? ReadAxisFromDevice(action)
+                        : ReadAxisAsVolume(in gp, action.AxisTarget);
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
                     break;
+                }
                 case MacroActionType.AppVolume:
                     if (!string.IsNullOrEmpty(action.ProcessName))
-                        SetAppVolume(ReadAxisAsVolume(in gp, action.AxisTarget) * (action.VolumeLimit / 100f), action.ProcessName);
+                    {
+                        float vol = useDevice ? ReadAxisFromDevice(action)
+                            : ReadAxisAsVolume(in gp, action.AxisTarget);
+                        SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
+                    }
                     break;
                 case MacroActionType.MouseMove:
                 {
-                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouse(in gp, action.AxisTarget);
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
-                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    bool isY = useDevice
+                        ? false // Device axis doesn't map to X/Y — user controls direction via axis index
+                        : action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
                     SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
                     break;
                 }
                 case MacroActionType.MouseScroll:
                 {
-                    float deflection = ReadAxisAsMouse(in gp, action.AxisTarget);
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouse(in gp, action.AxisTarget);
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -585,18 +658,45 @@ namespace PadForge.Common.Input
                 if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Skip macros with no trigger configured.
-                if (!macro.UsesRawTrigger && !macro.UsesCustomTrigger && macro.TriggerButtons == 0)
+                // Skip macros with no trigger configured (unless Always mode).
+                bool hasButtons = macro.UsesRawTrigger || macro.UsesCustomTrigger || macro.TriggerButtons != 0;
+                if (macro.TriggerMode != MacroTriggerMode.Always &&
+                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
                     continue;
 
-                // Check trigger condition.
+                // Check trigger condition — buttons, POVs, AND axes must all be active together.
                 bool triggerActive;
-                if (macro.UsesRawTrigger)
-                    triggerActive = CheckRawButtonTrigger(macro);
-                else if (macro.UsesCustomTrigger)
-                    triggerActive = CheckCustomButtonTrigger(raw, macro);
+                if (macro.TriggerMode == MacroTriggerMode.Always)
+                    triggerActive = true;
                 else
-                    triggerActive = false; // Xbox bitmask triggers don't apply to custom vJoy
+                {
+                    bool buttonOk = true;
+                    bool povOk = true;
+                    bool axisOk = true;
+
+                    if (hasButtons)
+                    {
+                        if (macro.UsesRawTrigger)
+                            buttonOk = CheckRawButtonTrigger(macro);
+                        else if (macro.UsesCustomTrigger)
+                            buttonOk = CheckCustomButtonTrigger(raw, macro);
+                        else
+                            buttonOk = false; // Xbox bitmask triggers don't apply to custom vJoy
+                    }
+                    if (macro.UsesPovTrigger)
+                        povOk = CheckRawPovTrigger(macro);
+                    if (macro.UsesAxisTrigger)
+                    {
+                        float threshold = macro.TriggerAxisThreshold / 100f;
+                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        {
+                            if (ReadAxisAsVolumeRaw(in raw, axTarget) < threshold)
+                            { axisOk = false; break; }
+                        }
+                    }
+
+                    triggerActive = buttonOk && povOk && axisOk;
+                }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
@@ -613,6 +713,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.WhileHeld:
                         shouldStart = triggerActive;
                         break;
+                    case MacroTriggerMode.Always:
+                        shouldStart = !macro.IsExecuting;
+                        break;
                 }
 
                 if (shouldStart && !macro.IsExecuting)
@@ -625,7 +728,9 @@ namespace PadForge.Common.Input
                     ResetMouseAccumulators(macro);
                 }
 
+                // Always mode never stops via trigger release.
                 if (macro.IsExecuting &&
+                    macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
                     !triggerActive)
                 {
@@ -723,28 +828,41 @@ namespace PadForge.Common.Input
         /// <summary>Executes a single continuous action for vJoy raw state.</summary>
         private void ExecuteSingleActionRaw(ref VJoyRawState raw, MacroAction action)
         {
+            bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
             {
                 case MacroActionType.SystemVolume:
-                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget) * (action.VolumeLimit / 100f));
+                {
+                    float vol = useDevice ? ReadAxisFromDevice(action)
+                        : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
                     break;
+                }
                 case MacroActionType.AppVolume:
                     if (!string.IsNullOrEmpty(action.ProcessName))
-                        SetAppVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget) * (action.VolumeLimit / 100f), action.ProcessName);
+                    {
+                        float vol = useDevice ? ReadAxisFromDevice(action)
+                            : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
+                        SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
+                    }
                     break;
                 case MacroActionType.MouseMove:
                 {
-                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
-                    bool isY = action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    bool isY = useDevice
+                        ? false
+                        : action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
                     SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
                     break;
                 }
                 case MacroActionType.MouseScroll:
                 {
-                    float deflection = ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -1004,7 +1122,7 @@ namespace PadForge.Common.Input
         /// Reads the current value of a source axis from the Gamepad state
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        private static float ReadAxisAsVolume(in Gamepad gp, MacroAxisTarget target)
+        internal static float ReadAxisAsVolume(in Gamepad gp, MacroAxisTarget target)
         {
             return target switch
             {
@@ -1024,7 +1142,7 @@ namespace PadForge.Common.Input
         /// Reads the current value of a source axis from a VJoyRawState
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        private static float ReadAxisAsVolumeRaw(in VJoyRawState raw, MacroAxisTarget target)
+        internal static float ReadAxisAsVolumeRaw(in VJoyRawState raw, MacroAxisTarget target)
         {
             int axisIndex = target switch
             {
@@ -1040,6 +1158,31 @@ namespace PadForge.Common.Input
                 return 0f;
             // Raw axes are short (-32768..32767) → 0..1
             return (raw.Axes[axisIndex] + 32768f) / 65535f;
+        }
+
+        /// <summary>
+        /// Reads an axis value from a physical input device's raw InputState.
+        /// Returns 0.0–1.0 (normalized from short -32768..32767).
+        /// </summary>
+        private float ReadAxisFromDevice(MacroAction action)
+        {
+            if (action.SourceDeviceGuid == Guid.Empty || action.SourceDeviceAxisIndex < 0)
+                return 0f;
+            var device = FindOnlineDeviceByInstanceGuid(action.SourceDeviceGuid);
+            if (device == null || device.InputState.Axis == null
+                || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
+                return 0f;
+            return (device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f;
+        }
+
+        /// <summary>
+        /// Reads an axis value from a physical input device as a -1..+1 deflection for mouse movement.
+        /// </summary>
+        private float ReadAxisFromDeviceAsMouse(MacroAction action)
+        {
+            float vol = ReadAxisFromDevice(action);
+            // Convert 0..1 to -1..+1 for symmetric deflection
+            return (vol - 0.5f) * 2f;
         }
 
         // ─────────────────────────────────────────────

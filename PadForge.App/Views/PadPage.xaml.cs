@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -141,7 +142,7 @@ namespace PadForge.Views
                 // E8B9 = Photo/flat icon (shown in 3D mode, click to switch TO 2D)
                 // F158 = 3D/cube icon (shown in 2D mode, click to switch TO 3D)
                 ViewModeIcon.Text = is2D ? "\uF158" : "\uE8B9";
-                ViewModeToggle.ToolTip = is2D ? "Switch to 3D view" : "Switch to 2D view";
+                ViewModeToggle.ToolTip = is2D ? Strings.Pad_SwitchTo3D : Strings.Pad_SwitchTo2D;
             }
 
             SyncTabVisibility();

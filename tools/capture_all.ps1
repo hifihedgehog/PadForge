@@ -388,12 +388,14 @@ if (-not $macrosNode) {
     $ns.AppendChild($macrosNode) | Out-Null
 }
 if ($macrosNode.ChildNodes.Count -eq 0) {
-    # Macro 1: "Quick Combo" with ButtonPress + Delay + KeyPress
+    # Macro 1: "Quick Combo" — combo trigger (button + axis), multiple action types
     $m1Xml = @'
 <Macro PadIndex="0">
   <Name>Quick Combo</Name>
   <IsEnabled>true</IsEnabled>
   <TriggerButtons>4096</TriggerButtons>
+  <TriggerAxisTargets>LeftTrigger</TriggerAxisTargets>
+  <TriggerAxisThreshold>50</TriggerAxisThreshold>
   <TriggerSource>OutputController</TriggerSource>
   <TriggerMode>OnPress</TriggerMode>
   <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
@@ -402,23 +404,21 @@ if ($macrosNode.ChildNodes.Count -eq 0) {
     <Action><Type>ButtonPress</Type><ButtonFlags>4096</ButtonFlags><DurationMs>100</DurationMs></Action>
     <Action><Type>Delay</Type><DurationMs>200</DurationMs></Action>
     <Action><Type>KeyPress</Type><KeyCode>32</KeyCode><DurationMs>50</DurationMs></Action>
-    <Action><Type>MouseButtonPress</Type><DurationMs>50</DurationMs></Action>
+    <Action><Type>MouseButtonPress</Type><MouseButton>Left</MouseButton><DurationMs>50</DurationMs></Action>
   </Actions>
 </Macro>
 '@
-    # Macro 2: "Volume Control" with SystemVolume action
+    # Macro 2: "Volume Control" — Always trigger mode, volume + mouse move
     $m2Xml = @'
 <Macro PadIndex="0">
   <Name>Volume Control</Name>
   <IsEnabled>true</IsEnabled>
-  <TriggerButtons>16384</TriggerButtons>
   <TriggerSource>OutputController</TriggerSource>
-  <TriggerMode>OnPress</TriggerMode>
-  <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
+  <TriggerMode>Always</TriggerMode>
   <RepeatMode>Once</RepeatMode>
   <Actions>
     <Action><Type>SystemVolume</Type><AxisTarget>LeftTrigger</AxisTarget><VolumeLimit>75</VolumeLimit></Action>
-    <Action><Type>MouseMove</Type><AxisTarget>RightStickX</AxisTarget></Action>
+    <Action><Type>MouseMove</Type><AxisTarget>RightStickX</AxisTarget><MouseSensitivity>15</MouseSensitivity></Action>
   </Actions>
 </Macro>
 '@

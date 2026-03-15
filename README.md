@@ -16,7 +16,7 @@ Built with SDL3, Windows Raw Input, ViGEmBus, vJoy, Windows MIDI Services, Helix
 - **Dead zone shapes** — Six dead zone algorithms: Scaled Radial (default), Radial, Axial, Hybrid, Sloped Scaled Axial, and Sloped Axial. Per-axis dead zone, anti-dead zone, and linear response for sticks and triggers, with live preview, plus stick center offset calibration and max range
 - **Force feedback** — Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
 - **MIDI virtual controller output** — Map any input to virtual MIDI devices. Axes send Control Change messages, buttons send Note On/Off. Configurable MIDI channel (1–16), CC mapping, note mapping, and velocity. Requires Windows MIDI Services (PadForge can install it for you)
-- **Macro system** — Trigger combos that execute button presses, key presses, mouse actions (move, click, scroll), delays, system volume, per-app volume, and axis manipulation. Supports up to 128 buttons for custom DirectInput controllers, with repeat modes and input device or output controller trigger sources
+- **Macro system** — Trigger macros with combo triggers combining buttons, axes (with configurable threshold), and POV hat directions. Execute action sequences of button presses, key presses, mouse actions (move, click, scroll with configurable sensitivity), delays, system volume, per-app volume, and axis manipulation. Supports "Always" mode (runs continuously without a trigger), up to 128 buttons for custom DirectInput controllers, repeat modes, and input device or output controller trigger sources
 - **Per-app profile switching** — Automatically switch controller configurations when specific applications gain focus
 - **DSU/Cemuhook motion server** — Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
 - **Input hiding** — Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with auto-enable for gamepads and safety warnings for mice/keyboards. Built-in HidHide app whitelisting
@@ -57,7 +57,7 @@ Rumble configuration with overall gain, per-motor strength sliders, and a swap o
 
 ### Macro Editor
 ![Macros](screenshots/macros.jpg)
-Create macros triggered by button combinations from either the output controller or a physical input device. Each macro supports an action sequence of button presses, key presses, delays, system volume adjustments, and axis manipulation. Configurable fire mode (on press, on release, repeat) with type-aware button names for Xbox 360, DualShock 4, and custom DirectInput controllers (up to 128 buttons).
+Create macros with combo triggers combining buttons, axes (with threshold), and POV hat directions from either the output controller or a physical input device. Each macro supports an action sequence of button presses, key presses, mouse actions (move, click, scroll), delays, system volume, per-app volume, and axis manipulation. Four fire modes: on press, on release, while held, and "Always" (runs continuously without a trigger). Type-aware button names for Xbox 360, DualShock 4, and custom DirectInput controllers (up to 128 buttons).
 
 ### Keyboard+Mouse Virtual Controller
 ![KBM Preview](screenshots/kbm-preview.jpg)

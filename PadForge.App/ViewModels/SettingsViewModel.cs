@@ -56,6 +56,8 @@ namespace PadForge.ViewModels
             new CultureInfo("zh-Hans"),
             new CultureInfo("pt-BR"),
             new CultureInfo("es"),
+            new CultureInfo("it"),
+            new CultureInfo("nl"),
         };
 
         private CultureInfo _selectedLanguage;

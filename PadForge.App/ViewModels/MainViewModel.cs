@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -90,7 +91,7 @@ namespace PadForge.ViewModels
 
         public MainViewModel()
         {
-            Title = "PadForge";
+            Title = Strings.Common_PadForge;
 
             // Create pad ViewModels (one per virtual controller slot).
             for (int i = 0; i < Common.Input.InputManager.MaxPads; i++)
@@ -215,8 +216,8 @@ namespace PadForge.ViewModels
                 nav.IsEnabled = SettingsManager.SlotEnabled[nav.PadIndex];
 
                 // Update PadViewModel's display label and type instance number.
-                pad.Title = $"Virtual Controller {globalCount}";
-                pad.SlotLabel = $"Virtual Controller {globalCount}";
+                pad.Title = string.Format(Strings.Main_VirtualController_Format, globalCount);
+                pad.SlotLabel = string.Format(Strings.Main_VirtualController_Format, globalCount);
                 pad.TypeInstanceLabel = instanceNum.ToString();
             }
 
@@ -310,7 +311,7 @@ namespace PadForge.ViewModels
         //  App-wide status
         // ─────────────────────────────────────────────
 
-        private string _statusText = "Ready";
+        private string _statusText = Strings.Common_Ready;
 
         /// <summary>
         /// Status bar text displayed at the bottom of the main window.
@@ -341,7 +342,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Display string for engine status: "Running" or "Stopped".
         /// </summary>
-        public string EngineStatusText => IsEngineRunning ? "Running" : "Stopped";
+        public string EngineStatusText => IsEngineRunning ? Strings.Common_Running : Strings.Common_Stopped;
 
         private double _pollingFrequency;
 

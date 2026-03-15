@@ -38,6 +38,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Xbox Series Controller - Front.png" />
     <Resource Include="Resources\Xbox Series Controller - Top.png" />
     <Content Include="Resources\PadForge.ico" />

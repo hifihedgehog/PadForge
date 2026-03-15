@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ModernWpf.Controls;
 using ModernWpf.Controls.Primitives;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
@@ -46,8 +47,8 @@ namespace PadForge.Views
                 var cb = sender as CheckBox;
                 bool isHidHide = cb?.Content?.ToString()?.Contains("HidHide") == true;
                 string action = isHidHide
-                    ? "hide this device from all applications"
-                    : "block mapped inputs from this device";
+                    ? Strings.Devices_HideAction
+                    : Strings.Devices_ConsumeAction;
                 string deviceKind = dev.DeviceType == "Mouse" ? "mouse" : "keyboard";
                 bool isMerged = dev.DeviceName?.Contains("(Merged)") == true ||
                                 dev.DeviceName?.Contains("All ") == true;
@@ -112,7 +113,7 @@ namespace PadForge.Views
 
             var proceedBtn = new Button
             {
-                Content = "Proceed",
+                Content = Strings.Common_Proceed,
                 Margin = new Thickness(0, 0, 8, 0),
                 MinWidth = 80
             };
@@ -120,7 +121,7 @@ namespace PadForge.Views
 
             var cancelBtn = new Button
             {
-                Content = "Cancel",
+                Content = Strings.Common_Cancel,
                 MinWidth = 80
             };
 

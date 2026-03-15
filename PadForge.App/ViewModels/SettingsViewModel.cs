@@ -1,7 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -14,7 +17,7 @@ namespace PadForge.ViewModels
     {
         public SettingsViewModel()
         {
-            Title = "Settings";
+            Title = Strings.Settings_Title;
         }
 
         // ─────────────────────────────────────────────
@@ -40,6 +43,70 @@ namespace PadForge.ViewModels
         public event EventHandler<int> ThemeChanged;
 
         // ─────────────────────────────────────────────
+        //  Language
+        // ─────────────────────────────────────────────
+
+        public ObservableCollection<CultureInfo> AvailableLanguages { get; } = new()
+        {
+            new CultureInfo("en"),
+            new CultureInfo("de"),
+            new CultureInfo("fr"),
+            new CultureInfo("ja"),
+            new CultureInfo("ko"),
+            new CultureInfo("zh-Hans"),
+            new CultureInfo("pt-BR"),
+            new CultureInfo("es"),
+        };
+
+        private CultureInfo _selectedLanguage;
+
+        /// <summary>
+        /// Currently selected UI language. Persisted as the culture name (e.g. "en", "ja").
+        /// </summary>
+        public CultureInfo SelectedLanguage
+        {
+            get
+            {
+                if (_selectedLanguage != null) return _selectedLanguage;
+                var current = CultureInfo.CurrentUICulture.Name;
+                var match = AvailableLanguages.FirstOrDefault(c => c.Name == current)
+                         ?? AvailableLanguages[0];
+                return match;
+            }
+            set
+            {
+                if (SetProperty(ref _selectedLanguage, value) && value != null)
+                    LanguageChanged = true;
+            }
+        }
+
+        private bool _languageChanged;
+
+        /// <summary>Whether the language has been changed and a restart is needed.</summary>
+        public bool LanguageChanged
+        {
+            get => _languageChanged;
+            set => SetProperty(ref _languageChanged, value);
+        }
+
+        /// <summary>Gets the persisted language code (for serialization).</summary>
+        internal string LanguageCode => _selectedLanguage?.Name ?? "";
+
+        /// <summary>Sets the language from a persisted code without triggering LanguageChanged.</summary>
+        internal void SetLanguageFromCode(string code)
+        {
+            if (!string.IsNullOrEmpty(code))
+            {
+                var match = AvailableLanguages.FirstOrDefault(c => c.Name == code);
+                if (match != null)
+                {
+                    _selectedLanguage = match;
+                    OnPropertyChanged(nameof(SelectedLanguage));
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  ViGEmBus driver
         // ─────────────────────────────────────────────
 
@@ -61,7 +128,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>ViGEmBus status display text.</summary>
-        public string ViGEmStatusText => _isViGEmInstalled ? "Installed" : "Not Installed";
+        public string ViGEmStatusText => _isViGEmInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
 
         private string _vigemVersion = string.Empty;
 
@@ -117,7 +184,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>HidHide status display text.</summary>
-        public string HidHideStatusText => _isHidHideInstalled ? "Installed" : "Not Installed";
+        public string HidHideStatusText => _isHidHideInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
 
         private string _hidHideVersion = string.Empty;
 
@@ -220,7 +287,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>vJoy status display text.</summary>
-        public string VJoyStatusText => _isVJoyInstalled ? "Installed" : "Not Installed";
+        public string VJoyStatusText => _isVJoyInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
 
         private string _vjoyVersion = string.Empty;
 
@@ -275,7 +342,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>MIDI Services status display text.</summary>
-        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Installed" : "Not Installed";
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? Strings.Common_Installed : Strings.Common_NotInstalled;
 
         private string _midiServicesVersion = string.Empty;
 
@@ -559,7 +626,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        private string _activeProfileInfo = "Default";
+        private string _activeProfileInfo = Strings.Common_Default;
 
         /// <summary>Display text for the currently active profile.</summary>
         public string ActiveProfileInfo
@@ -567,7 +634,7 @@ namespace PadForge.ViewModels
             get => _activeProfileInfo;
             set
             {
-                SetProperty(ref _activeProfileInfo, value ?? "Default");
+                SetProperty(ref _activeProfileInfo, value ?? Strings.Common_Default);
             }
         }
 

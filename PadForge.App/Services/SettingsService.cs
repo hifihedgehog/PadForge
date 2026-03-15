@@ -240,6 +240,7 @@ namespace PadForge.Services
                     if (!string.IsNullOrWhiteSpace(p))
                         vm.HidHideWhitelistPaths.Add(p);
             }
+            vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -971,6 +972,7 @@ namespace PadForge.Services
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateMs = vm.PollingRateMs,
                 ThemeIndex = vm.SelectedThemeIndex,
+                Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
@@ -1511,6 +1513,9 @@ namespace PadForge.Services
 
         [XmlElement]
         public int ThemeIndex { get; set; }
+
+        [XmlElement]
+        public string Language { get; set; } = "";
 
         [XmlElement]
         public bool EnableAutoProfileSwitching { get; set; }

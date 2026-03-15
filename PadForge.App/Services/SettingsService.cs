@@ -559,7 +559,10 @@ namespace PadForge.Services
                     ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                     RepeatMode = md.RepeatMode,
                     RepeatCount = md.RepeatCount,
-                    RepeatDelayMs = md.RepeatDelayMs
+                    RepeatDelayMs = md.RepeatDelayMs,
+                    TriggerAxisTargetList = md.TriggerAxisTargets,
+                    TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
+                    TriggerPovs = md.TriggerPovs ?? Array.Empty<string>()
                 };
 
                 if (md.Actions != null)
@@ -578,6 +581,10 @@ namespace PadForge.Services
                             DurationMs = ad.DurationMs,
                             AxisValue = ad.AxisValue,
                             AxisTarget = ad.AxisTarget,
+                            AxisSource = ad.AxisSource,
+                            SourceDeviceGuid = Guid.TryParse(ad.SourceDeviceGuid, out var devGuid)
+                                ? devGuid : Guid.Empty,
+                            SourceDeviceAxisIndex = ad.SourceDeviceAxisIndex,
                             ProcessName = ad.ProcessName ?? "",
                             VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100
                         });
@@ -1086,6 +1093,9 @@ namespace PadForge.Services
                         RepeatCount = macro.RepeatCount,
                         RepeatDelayMs = macro.RepeatDelayMs,
                         TriggerCustomButtons = macro.TriggerCustomButtons,
+                        TriggerAxisTargets = macro.TriggerAxisTargetList,
+                        TriggerAxisThreshold = macro.TriggerAxisThreshold,
+                        TriggerPovs = macro.TriggerPovs?.Length > 0 ? macro.TriggerPovs : null,
                         Actions = macro.Actions.Select(a => new ActionData
                         {
                             Type = a.Type,
@@ -1096,6 +1106,10 @@ namespace PadForge.Services
                             DurationMs = a.DurationMs,
                             AxisValue = a.AxisValue,
                             AxisTarget = a.AxisTarget,
+                            AxisSource = a.AxisSource,
+                            SourceDeviceGuid = a.SourceDeviceGuid != Guid.Empty
+                                ? a.SourceDeviceGuid.ToString("N") : null,
+                            SourceDeviceAxisIndex = a.SourceDeviceAxisIndex,
                             ProcessName = a.ProcessName,
                             VolumeLimit = a.VolumeLimit
                         }).ToArray()
@@ -1635,6 +1649,19 @@ namespace PadForge.Services
         [XmlElement]
         public string TriggerCustomButtons { get; set; }
 
+        /// <summary>Comma-separated axis targets (e.g. "LeftStickX,LeftTrigger").</summary>
+        [XmlElement]
+        public string TriggerAxisTargets { get; set; }
+
+        /// <summary>Axis trigger threshold percentage (1-100).</summary>
+        [XmlElement]
+        public int TriggerAxisThreshold { get; set; } = 50;
+
+        /// <summary>POV triggers stored as "povIndex:centidegrees" entries.</summary>
+        [XmlArray("TriggerPovs")]
+        [XmlArrayItem("Pov")]
+        public string[] TriggerPovs { get; set; }
+
         [XmlArray("Actions")]
         [XmlArrayItem("Action")]
         public ActionData[] Actions { get; set; }
@@ -1672,6 +1699,16 @@ namespace PadForge.Services
 
         [XmlElement]
         public MacroAxisTarget AxisTarget { get; set; }
+
+        [XmlElement]
+        public MacroAxisSource AxisSource { get; set; }
+
+        /// <summary>GUID of the source device for InputDevice axis source (string form).</summary>
+        [XmlElement]
+        public string SourceDeviceGuid { get; set; }
+
+        [XmlElement]
+        public int SourceDeviceAxisIndex { get; set; }
 
         /// <summary>Process name for AppVolume action (e.g., "firefox", "spotify").</summary>
         [XmlElement]

@@ -312,12 +312,15 @@
                         <TextBlock Text="Raw Input State" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,8"/>
 
-                        <!-- Axes: progress bars (hidden for mice — mouse visual used instead) -->
-                        <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
-                                   Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <!-- Axes label (joysticks/gamepads only) -->
+                        <TextBlock Text="Axes" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
@@ -325,10 +328,14 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                        <!-- Axes: progress bars (joysticks/gamepads only) -->
                         <ItemsControl ItemsSource="{Binding RawAxes}" Margin="0,0,0,8">
                             <ItemsControl.Style>
                                 <Style TargetType="ItemsControl">
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
@@ -357,11 +364,11 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!-- Buttons: circle grid (non-keyboard, non-mouse devices) -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,3"
-                                    Visibility="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
+                        <!-- Buttons label (joysticks/gamepads only) -->
+                        <TextBlock Text="Buttons" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsKeyboardDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -371,15 +378,9 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </StackPanel.Style>
-                            <TextBlock Text="Buttons" FontSize="11" Opacity="0.6"/>
-                            <TextBlock FontSize="10" Opacity="0.4" Margin="6,0,0,0"
-                                       VerticalAlignment="Center">
-                                <Run Text="("/>
-                                <Run Text="{Binding SelectedButtonTotal, Mode=OneWay}"/>
-                                <Run Text="total)"/>
-                            </TextBlock>
-                        </StackPanel>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <!-- Buttons: circle grid (non-keyboard, non-mouse devices) -->
                         <ItemsControl ItemsSource="{Binding RawButtons}" Margin="0,0,0,8">
                             <ItemsControl.Style>
                                 <Style TargetType="ItemsControl">

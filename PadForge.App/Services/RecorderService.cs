@@ -165,6 +165,7 @@ namespace PadForge.Services
                 // No device available — can't record.
                 _activeMapping = null;
                 _mainVm.StatusText = "No device connected to record from.";
+                RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
 

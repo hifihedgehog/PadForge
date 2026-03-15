@@ -527,6 +527,16 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm == null) return;
 
+                // Toggle: if already recording this element, cancel.
+                if (padVm.CurrentRecordingTarget == targetName)
+                {
+                    _recorderService.CancelRecording();
+                    padVm.CurrentRecordingTarget = null;
+                    _pendingNegMapping = null;
+                    _savedPosDescriptor = null;
+                    return;
+                }
+
                 // Check if this is a neg target (e.g., "LeftThumbAxisXNeg").
                 bool isNegTarget = targetName.EndsWith("Neg", StringComparison.Ordinal);
                 string posTargetName = isNegTarget ? targetName.Substring(0, targetName.Length - 3) : targetName;

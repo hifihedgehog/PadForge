@@ -16,6 +16,7 @@ namespace PadForge.ViewModels
         {
             Strings.CultureChanged += () =>
             {
+                OnPropertyChanged(nameof(DeviceType));
                 OnPropertyChanged(nameof(StatusText));
                 OnPropertyChanged(nameof(CapabilitiesSummary));
             };
@@ -178,17 +179,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _povCount, value);
         }
 
-        private string _deviceType = string.Empty;
-
-        /// <summary>Localized device type description for display (e.g., "Gamepad", "Volant").</summary>
-        public string DeviceType
+        /// <summary>Internal English device type key for comparison logic (e.g., "Gamepad", "Mouse").</summary>
+        private string _deviceTypeKey = string.Empty;
+        public string DeviceTypeKey
         {
-            get => _deviceType;
-            set => SetProperty(ref _deviceType, value);
+            get => _deviceTypeKey;
+            set { if (SetProperty(ref _deviceTypeKey, value)) OnPropertyChanged(nameof(DeviceType)); }
         }
 
-        /// <summary>Internal English device type key for comparison logic (e.g., "Gamepad", "Mouse").</summary>
-        public string DeviceTypeKey { get; set; } = string.Empty;
+        /// <summary>Localized device type description for display, derived from DeviceTypeKey.</summary>
+        public string DeviceType => DeviceTypeKey switch
+        {
+            "Gamepad" => Strings.Instance.DeviceType_Gamepad,
+            "Joystick" => Strings.Instance.DeviceType_Joystick,
+            "Wheel" => Strings.Instance.DeviceType_Wheel,
+            "FlightStick" => Strings.Instance.DeviceType_FlightStick,
+            "FirstPerson" => Strings.Instance.DeviceType_FirstPerson,
+            "Supplemental" => Strings.Instance.DeviceType_Supplemental,
+            "Mouse" => Strings.Instance.DeviceType_Mouse,
+            "Keyboard" => Strings.Instance.DeviceType_Keyboard,
+            _ => Strings.Instance.DeviceType_Device
+        };
 
         private bool _hasRumble;
 

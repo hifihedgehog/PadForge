@@ -1663,7 +1663,7 @@ namespace PadForge.Services
             _webServer.StatusChanged -= OnWebServerStatusChanged;
             _webServer.Dispose();
             _webServer = null;
-            _mainVm.Dashboard.WebControllerStatus = "Stopped";
+            _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
         }
 

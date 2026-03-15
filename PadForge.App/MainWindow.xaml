@@ -73,21 +73,18 @@
                            TextTrimming="CharacterEllipsis"/>
 
                 <!-- Devices count -->
-                <TextBlock Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Margin="16,0"
-                           Opacity="0.7">
-                    <Run Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
-                    <Run Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}"/>
-                </TextBlock>
+                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="16,0">
+                    <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}" Opacity="0.7"/>
+                    <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}" Opacity="0.7"/>
+                </StackPanel>
 
                 <!-- Polling frequency -->
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Margin="16,0"
-                           Opacity="0.7">
-                    <Run Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
-                </TextBlock>
+                           Opacity="0.7"
+                           Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
 
                 <!-- Engine indicator -->
                 <StackPanel Grid.Column="3" Orientation="Horizontal"

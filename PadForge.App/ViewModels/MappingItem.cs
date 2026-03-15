@@ -28,6 +28,11 @@ namespace PadForge.ViewModels
             TargetLabel = targetLabel ?? string.Empty;
             TargetSettingName = targetSettingName ?? string.Empty;
             Category = category;
+            Strings.CultureChanged += () =>
+            {
+                OnPropertyChanged(nameof(SourceDisplayText));
+                OnPropertyChanged(nameof(RecordButtonText));
+            };
             NegSettingName = negSettingName;
         }
 
@@ -142,7 +147,7 @@ namespace PadForge.ViewModels
                 bool hasPos = !string.IsNullOrEmpty(_sourceDescriptor);
                 bool hasNeg = !string.IsNullOrEmpty(_negSourceDescriptor);
 
-                if (!hasPos && !hasNeg) return Strings.Mapping_NotMapped;
+                if (!hasPos && !hasNeg) return Strings.Instance.Mapping_NotMapped;
 
                 string posText = hasPos ? (_resolvedSourceText ?? _sourceDescriptor) : "";
 
@@ -169,9 +174,9 @@ namespace PadForge.ViewModels
             // Cache the base name (without prefix) for RebuildDescriptor.
             if (text != null)
             {
-                string invHalfPrefix = Strings.Mapping_InvHalf + " ";
-                string invPrefix = Strings.Mapping_Inv + " ";
-                string halfPrefix = Strings.Mapping_Half + " ";
+                string invHalfPrefix = Strings.Instance.Mapping_InvHalf + " ";
+                string invPrefix = Strings.Instance.Mapping_Inv + " ";
+                string halfPrefix = Strings.Instance.Mapping_Half + " ";
                 if (text.StartsWith(invHalfPrefix, StringComparison.Ordinal))
                     _resolvedBaseName = text.Substring(invHalfPrefix.Length);
                 else if (text.StartsWith(invPrefix, StringComparison.Ordinal))
@@ -214,7 +219,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Text for the record button: "Record" or "Recording..." (with a visual cue).
         /// </summary>
-        public string RecordButtonText => IsRecording ? Strings.Common_Recording : Strings.Common_Record;
+        public string RecordButtonText => IsRecording ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
 
         // ─────────────────────────────────────────────
         //  Live value display
@@ -335,9 +340,9 @@ namespace PadForge.ViewModels
             {
                 string prefixLabel = prefix.ToUpperInvariant() switch
                 {
-                    "I" => Strings.Mapping_Inv,
-                    "H" => Strings.Mapping_Half,
-                    "IH" => Strings.Mapping_InvHalf,
+                    "I" => Strings.Instance.Mapping_Inv,
+                    "H" => Strings.Instance.Mapping_Half,
+                    "IH" => Strings.Instance.Mapping_InvHalf,
                     _ => null
                 };
                 _resolvedSourceText = prefixLabel != null

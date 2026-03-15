@@ -264,6 +264,16 @@
   <data name="About_License" xml:space="preserve"><value>라이선스</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>이 소프트웨어는 CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) 라이선스를 따릅니다. 3D 컨트롤러 모델은 Handheld Companion (CC BY-NC-SA 4.0)에서 적용되었습니다. 2D 컨트롤러 에셋은 AL2009man의 Gamepad-Asset-Pack (MIT)에서 가져왔습니다. 원본 코드베이스는 x360ce (MIT)에서 포크되었습니다. SDL3은 zlib 라이선스를 따릅니다. Windows MIDI Services는 MIT 라이선스를 따릅니다. ViGEmBus, vJoy, HelixToolkit, ModernWpf는 MIT 라이선스를 따릅니다.</value></data>
 
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>게임패드</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>조이스틱</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>휠</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>비행 조종간</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>1인칭</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>보조</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>마우스</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>키보드</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>장치</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>장치</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 온라인 / </value></data>
@@ -303,6 +313,15 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>{0}하려고 합니다. 이 작업은 {1}{2}에 영향을 줍니다.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>모든 응용 프로그램에서 이 장치를 숨기기</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>이 장치의 매핑된 입력을 차단</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> 연결된 모든 {0}에 대해</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>이것이 유일한 {0}인 경우 시스템과 상호작용할 수 없게 됩니다. 다른 입력 장치가 있는 경우에만 진행하세요.</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>시스템 상호작용에 필수적인 입력(예: 좌/우 클릭, X/Y 이동)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있는 경우에만 진행하세요.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>시스템 상호작용에 필수적인 입력(예: 자주 사용하는 키)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있는 경우에만 진행하세요.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0}{1}합니다.
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>마우스</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>키보드</value></data>
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>매크로</value></data>
@@ -464,6 +483,7 @@
   <data name="Mapping_Inv" xml:space="preserve"><value>반전</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>절반</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>반전 절반</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>매핑된 장치 없음</value></data>
 
   <!-- ═══ Profiles ═══ -->

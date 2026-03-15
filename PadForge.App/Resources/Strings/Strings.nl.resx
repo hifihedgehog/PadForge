@@ -264,6 +264,16 @@
   <data name="About_License" xml:space="preserve"><value>Licentie</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. Windows MIDI Services is gelicentieerd onder de MIT License. ViGEmBus, vJoy, HelixToolkit en ModernWpf zijn gelicentieerd onder de MIT License.</value></data>
 
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>Stuur</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>Vliegstick</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>Eerste persoon</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>Aanvullend</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>Muis</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>Toetsenbord</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>Apparaat</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Apparaten</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
@@ -303,6 +313,15 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>U staat op het punt om {0}. Dit heeft invloed op {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>dit apparaat te verbergen voor alle toepassingen</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewezen invoer van dit apparaat te blokkeren</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> voor alle aangesloten {0}en</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Als dit uw enige {0} is, verliest u de mogelijkheid om met uw systeem te werken. Ga alleen verder als u een ander invoerapparaat beschikbaar heeft.</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Als u invoer toewijst die essentieel is voor systeeminteractie (bijv. links/rechts klikken, X/Y-beweging), kunt u de controle over uw systeem verliezen. Ga alleen verder als u een ander invoerapparaat beschikbaar heeft.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Als u invoer toewijst die essentieel is voor systeeminteractie (bijv. veelgebruikte toetsen), kunt u de controle over uw systeem verliezen. Ga alleen verder als u een ander invoerapparaat beschikbaar heeft.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>Dit zal {0}{1}.
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>muis</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>toetsenbord</value></data>
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>Macro's</value></data>
@@ -464,6 +483,7 @@
   <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Half</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Half</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Geen apparaat toegewezen</value></data>
 
   <!-- ═══ Profiles ═══ -->

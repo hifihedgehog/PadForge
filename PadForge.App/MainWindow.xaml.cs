@@ -1002,6 +1002,10 @@ namespace PadForge
             if (_navProfiles != null) _navProfiles.Content = Strings.Instance.Profiles_Title;
             if (_navDevices != null) _navDevices.Content = Strings.Instance.Devices_Title;
 
+            // Update the built-in Settings nav item label.
+            if (NavView.SettingsItem is ModernWpf.Controls.NavigationViewItem settingsItem)
+                settingsItem.Content = Strings.Instance.Settings_Title;
+
             // Refresh "Add Controller" and controller card labels by rebuilding the dynamic section.
             RebuildControllerSection();
         }

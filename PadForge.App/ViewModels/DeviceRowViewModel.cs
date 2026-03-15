@@ -180,12 +180,15 @@ namespace PadForge.ViewModels
 
         private string _deviceType = string.Empty;
 
-        /// <summary>Device type description (e.g., "Gamepad", "Flight Stick", "Wheel").</summary>
+        /// <summary>Localized device type description for display (e.g., "Gamepad", "Volant").</summary>
         public string DeviceType
         {
             get => _deviceType;
             set => SetProperty(ref _deviceType, value);
         }
+
+        /// <summary>Internal English device type key for comparison logic (e.g., "Gamepad", "Mouse").</summary>
+        public string DeviceTypeKey { get; set; } = string.Empty;
 
         private bool _hasRumble;
 
@@ -298,7 +301,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
-        public bool ShowConsumeToggle => _deviceType == "Keyboard" || _deviceType == "Mouse";
+        public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";
 
         // ─────────────────────────────────────────────
         //  Device path
@@ -327,10 +330,10 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>True if this device is recognized as a gamepad (SDL or custom mapping).</summary>
-        public bool IsGamepad => _deviceType == "Gamepad";
+        public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => _deviceType != "Gamepad" && _deviceType != "Mouse" && _deviceType != "Keyboard";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard";
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>

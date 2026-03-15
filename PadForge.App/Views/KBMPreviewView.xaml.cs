@@ -31,6 +31,8 @@ namespace PadForge.Views
         private Ellipse _movementDot;
         private Ellipse _moveCircle;
         private Polygon _moveArrow;
+        private Rectangle _x1Rect;
+        private Rectangle _x2Rect;
         private Canvas _moveArrowCanvas;
 
         // Colors
@@ -330,29 +332,29 @@ namespace PadForge.Views
             };
 
             // Side buttons (X1, X2) — small areas on the left side of the body
-            var x1Rect = new Rectangle
+            _x1Rect = new Rectangle
             {
                 Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
                 Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
-            Canvas.SetLeft(x1Rect, mL - 4); Canvas.SetTop(x1Rect, 70);
-            MouseCanvas.Children.Add(x1Rect);
-            x1Rect.ToolTip = MappingLabel("KbmMBtn3");
-            x1Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { x1Rect.Stroke = HoverBrush; x1Rect.StrokeThickness = 2; } };
-            x1Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { x1Rect.Stroke = DimBrush; x1Rect.StrokeThickness = 1; } };
-            x1Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn3"); e.Handled = true; };
+            Canvas.SetLeft(_x1Rect, mL - 4); Canvas.SetTop(_x1Rect, 70);
+            MouseCanvas.Children.Add(_x1Rect);
+            _x1Rect.ToolTip = MappingLabel("KbmMBtn3");
+            _x1Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { _x1Rect.Stroke = HoverBrush; _x1Rect.StrokeThickness = 2; } };
+            _x1Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { _x1Rect.Stroke = DimBrush; _x1Rect.StrokeThickness = 1; } };
+            _x1Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn3"); e.Handled = true; };
 
-            var x2Rect = new Rectangle
+            _x2Rect = new Rectangle
             {
                 Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
                 Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
             };
-            Canvas.SetLeft(x2Rect, mL - 4); Canvas.SetTop(x2Rect, 88);
-            MouseCanvas.Children.Add(x2Rect);
-            x2Rect.ToolTip = MappingLabel("KbmMBtn4");
-            x2Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { x2Rect.Stroke = HoverBrush; x2Rect.StrokeThickness = 2; } };
-            x2Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { x2Rect.Stroke = DimBrush; x2Rect.StrokeThickness = 1; } };
-            x2Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn4"); e.Handled = true; };
+            Canvas.SetLeft(_x2Rect, mL - 4); Canvas.SetTop(_x2Rect, 88);
+            MouseCanvas.Children.Add(_x2Rect);
+            _x2Rect.ToolTip = MappingLabel("KbmMBtn4");
+            _x2Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { _x2Rect.Stroke = HoverBrush; _x2Rect.StrokeThickness = 2; } };
+            _x2Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { _x2Rect.Stroke = DimBrush; _x2Rect.StrokeThickness = 1; } };
+            _x2Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn4"); e.Handled = true; };
 
             MouseCanvas.Height = mH + 6;
         }
@@ -370,13 +372,6 @@ namespace PadForge.Views
 
         private string MappingLabel(string targetSettingName)
             => _vm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == targetSettingName)?.TargetLabel ?? targetSettingName;
-
-        private void Lbl(string text, double x, double y, double fs = 9)
-        {
-            var tb = new TextBlock { Text = text, FontSize = fs, Foreground = Brushes.Gray, IsHitTestVisible = false };
-            Canvas.SetLeft(tb, x); Canvas.SetTop(tb, y);
-            MouseCanvas.Children.Add(tb);
-        }
 
         // ─────────────────────────────────────────────
         //  Flash animation
@@ -405,6 +400,8 @@ namespace PadForge.Views
             if (_flashTarget == "KbmMBtn0") { _lmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn1") { _rmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn2") { _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush; return; }
+            if (_flashTarget == "KbmMBtn3") { _x1Rect.Stroke = highlight ? FlashBrush : DimBrush; _x1Rect.StrokeThickness = highlight ? 2 : 1; return; }
+            if (_flashTarget == "KbmMBtn4") { _x2Rect.Stroke = highlight ? FlashBrush : DimBrush; _x2Rect.StrokeThickness = highlight ? 2 : 1; return; }
 
             if (_flashTarget.StartsWith("KbmMouse"))
             {
@@ -462,6 +459,10 @@ namespace PadForge.Views
                 _rmbPath.Fill = kbm.GetMouseButton(1) ? AccentBrush : MouseButtonBrush;
             if (_flashTarget != "KbmMBtn2" || !_flashOn)
                 _scrollWheelPill.Fill = kbm.GetMouseButton(2) ? AccentBrush : ScrollWheelBrush;
+            if (_flashTarget != "KbmMBtn3" || !_flashOn)
+                _x1Rect.Fill = kbm.GetMouseButton(3) ? AccentBrush : MouseButtonBrush;
+            if (_flashTarget != "KbmMBtn4" || !_flashOn)
+                _x2Rect.Fill = kbm.GetMouseButton(4) ? AccentBrush : MouseButtonBrush;
 
             // Movement dot — map output values directly (deadzone already applied in Step 3)
             if (_flashTarget == null || !_flashTarget.StartsWith("KbmMouse"))

@@ -56,6 +56,12 @@ public class Strings : INotifyPropertyChanged
     public string Common_Ready => Get("Common_Ready");
     public string Common_Stopped => Get("Common_Stopped");
     public string Common_Running => Get("Common_Running");
+    public string Server_RunningOn_Format => Get("Server_RunningOn_Format");
+    public string Server_RunningClients_Format => Get("Server_RunningClients_Format");
+    public string Server_ListeningOn_Format => Get("Server_ListeningOn_Format");
+    public string Server_PortInUse_Format => Get("Server_PortInUse_Format");
+    public string Server_AccessDenied_Format => Get("Server_AccessDenied_Format");
+    public string Server_FailedToStart => Get("Server_FailedToStart");
     public string Common_Idle => Get("Common_Idle");
     public string Common_Online => Get("Common_Online");
     public string Common_Offline => Get("Common_Offline");

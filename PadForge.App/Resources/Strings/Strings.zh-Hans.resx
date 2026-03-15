@@ -77,6 +77,12 @@
   <data name="Common_Ready" xml:space="preserve"><value>就绪</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>已停止</value></data>
   <data name="Common_Running" xml:space="preserve"><value>运行中</value></data>
+  <data name="Server_RunningOn_Format" xml:space="preserve"><value>运行于 {0}</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>运行中（{0} 个客户端）</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>监听 :{0}</value></data>
+  <data name="Server_PortInUse_Format" xml:space="preserve"><value>端口 {0} 已被占用</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>端口 {0} 访问被拒绝（以管理员身份运行）</value></data>
+  <data name="Server_FailedToStart" xml:space="preserve"><value>启动失败</value></data>
   <data name="Common_Idle" xml:space="preserve"><value>空闲</value></data>
   <data name="Common_Online" xml:space="preserve"><value>在线</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>离线</value></data>

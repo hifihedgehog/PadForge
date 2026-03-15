@@ -33,14 +33,6 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <!-- MIDI note icon (24x24 viewBox) -->
-    <DrawingImage x:Key="MidiControllerIcon">
-        <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource SystemControlForegroundBaseHighBrush}"
-                             Geometry="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6zM10 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
     <!-- Generic gamepad icon (512x512 viewBox, scaled to ~32x32) -->
     <DrawingImage x:Key="GenericControllerIcon">
         <DrawingImage.Drawing>
@@ -55,6 +47,16 @@
                 <GeometryDrawing Brush="{DynamicResource SystemControlBackgroundAltHighBrush}"
                                  Geometry="M368.659,167.002c-11.331,0-20.52,9.189-20.52,20.538c0,11.341,9.189,20.538,20.52,20.538c11.35,0,20.538-9.197,20.538-20.538C389.197,176.191,380.008,167.002,368.659,167.002z M368.659,266.247c-11.331,0-20.52,9.189-20.52,20.53c0,11.349,9.189,20.538,20.52,20.538c11.35,0,20.538-9.189,20.538-20.538C389.197,275.436,380.008,266.247,368.659,266.247z M418.282,216.633c-11.341,0-20.538,9.189-20.538,20.53c0,11.349,9.197,20.529,20.538,20.529c11.35,0,20.538-9.18,20.538-20.529C438.82,225.822,429.631,216.633,418.282,216.633z M319.054,216.633c-11.349,0-20.538,9.189-20.538,20.53c0,11.349,9.189,20.529,20.538,20.529c11.341,0,20.539-9.18,20.539-20.529C339.592,225.822,330.394,216.633,319.054,216.633z"/>
             </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Keyboard+Mouse icon (Segoe MDL2 Assets E961 "Input" glyph, rendered as GlyphRun) -->
+    <!-- Uses a TextBlock in code-behind instead — MDL2 glyphs don't have SVG paths. -->
+    <!-- Placeholder DrawingImage so resource lookup doesn't fail; actual rendering uses MDL2 glyph. -->
+    <DrawingImage x:Key="KeyboardMouseControllerIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                             Geometry="M2 6a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm4 2v2h2V8H6zm0 4v2h2v-2H6zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zM8 16v2h16v-2H8z"/>
         </DrawingImage.Drawing>
     </DrawingImage>
 

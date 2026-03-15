@@ -1,4 +1,9 @@
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PadForge.Common;
 
 namespace PadForge.ViewModels
 {
@@ -9,6 +14,11 @@ namespace PadForge.ViewModels
     /// </summary>
     public class TriggerConfigItem : ObservableObject
     {
+        public static string[] CurvePresetNames { get; } =
+            [.. Array.ConvertAll(Common.CurveLut.Presets, p => p.Name), "Custom"];
+
+        public string PresetName => Common.CurveLut.MatchPreset(SensitivityCurve);
+
         public string Title { get; }
         public int Index { get; }
 
@@ -20,7 +30,7 @@ namespace PadForge.ViewModels
         public double DeadZone
         {
             get => _deadZone;
-            set { if (SetProperty(ref _deadZone, Math.Clamp(value, 0, 100))) OnPropertyChanged(nameof(DeadZoneDigit)); }
+            set { if (SetProperty(ref _deadZone, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneDigit)); RebuildCurvePoints(); } }
         }
         public int DeadZoneDigit
         {
@@ -32,7 +42,7 @@ namespace PadForge.ViewModels
         public double MaxRange
         {
             get => _maxRange;
-            set { if (SetProperty(ref _maxRange, Math.Clamp(value, 1, 100))) OnPropertyChanged(nameof(MaxRangeDigit)); }
+            set { if (SetProperty(ref _maxRange, Math.Clamp(value, 1, 100))) { OnPropertyChanged(nameof(MaxRangeDigit)); RebuildCurvePoints(); } }
         }
         public int MaxRangeDigit
         {
@@ -51,6 +61,20 @@ namespace PadForge.ViewModels
             get => PctToDigit(_antiDeadZone);
             set => AntiDeadZone = DigitToPct(value);
         }
+
+        private string _sensitivityCurve = "0,0;1,1";
+        public string SensitivityCurve
+        {
+            get => _sensitivityCurve;
+            set { if (SetProperty(ref _sensitivityCurve, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetName)); } }
+        }
+
+        // ── Live input for CurveEditor binding ──
+
+        private double _liveInput;
+        public double LiveInputForCurve { get => _liveInput; set => SetProperty(ref _liveInput, value); }
+
+        public void RebuildCurvePoints() { /* CurveEditor redraws via CurveString binding */ }
 
         // Live preview value (0.0-1.0 normalized)
         private double _liveValue;
@@ -72,6 +96,22 @@ namespace PadForge.ViewModels
 
         /// <summary>Raw axis index in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
         public int AxisIndex { get; }
+
+        // ── Reset commands ──
+
+        private ICommand _resetAllCommand;
+        public ICommand ResetAllCommand => _resetAllCommand ??= new RelayCommand(() =>
+        {
+            DeadZone = 0; MaxRange = 100;
+            AntiDeadZone = 0; SensitivityCurve = "0,0;1,1";
+        });
+
+        private ICommand _resetRangeCommand;
+        public ICommand ResetRangeCommand => _resetRangeCommand ??= new RelayCommand(() => { DeadZone = 0; MaxRange = 100; });
+        private ICommand _resetAntiDeadZoneCommand;
+        public ICommand ResetAntiDeadZoneCommand => _resetAntiDeadZoneCommand ??= new RelayCommand(() => AntiDeadZone = 0);
+        private ICommand _resetSensitivityCommand;
+        public ICommand ResetSensitivityCommand => _resetSensitivityCommand ??= new RelayCommand(() => SensitivityCurve = "0,0;1,1");
 
         public TriggerConfigItem(int index, string title, int axisIndex = -1)
         {

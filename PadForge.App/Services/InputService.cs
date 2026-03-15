@@ -51,6 +51,7 @@ namespace PadForge.Services
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
+        private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -78,6 +79,13 @@ namespace PadForge.Services
         private uint[] _recordedCustomButtons;
         private Guid _recordingDeviceGuid;
         private HashSet<int> _recordedRawButtons;
+        private HashSet<MacroAxisTarget> _recordedAxisTargets;
+        private HashSet<string> _recordedPovs; // stored as "povIndex:centidegrees"
+        private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
+        private float[] _macroAxisBaseline;              // axis values at recording start
+        private MacroAxisTarget _macroAxisCandidate;     // axis being held
+        private int _macroAxisHoldCounter;               // hold confirmation cycles
+        private const int MacroAxisHoldCycles = 3;       // cycles needed to confirm
 
         /// <summary>
         /// Tracks the previously selected device GUID for each pad slot,
@@ -173,7 +181,18 @@ namespace PadForge.Services
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
 
             // Capture default profile snapshot before any profile switches.
-            _defaultProfileSnapshot = SnapshotCurrentProfile();
+            // If the app restarted with a named profile active, LoadProfiles
+            // already captured the default's state before overwriting with the
+            // profile's topology. Use that instead of the current (profile) state.
+            if (SettingsManager.PendingDefaultSnapshot != null)
+            {
+                _defaultProfileSnapshot = SettingsManager.PendingDefaultSnapshot;
+            }
+            else
+            {
+                _defaultProfileSnapshot = SnapshotCurrentProfile();
+                SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
+            }
 
             // Start engine background thread.
             _inputManager.Start();
@@ -193,6 +212,7 @@ namespace PadForge.Services
                     HidHideController.ClearAll();
             }
             catch { /* best effort */ }
+            _managedWhitelistDosPaths.Clear();
 
             // Apply device hiding (HidHide + input hooks) if master switch is on.
             ApplyDeviceHiding();
@@ -207,9 +227,11 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = true;
-            _mainVm.Dashboard.EngineStatus = "Running";
             _mainVm.StatusText = "Engine started.";
             _mainVm.RefreshCommands();
+
+            // Enter idle immediately if no slots are created.
+            UpdateIdleState();
         }
 
         /// <summary>
@@ -230,9 +252,17 @@ namespace PadForge.Services
                 _uiTimer = null;
             }
 
-            // Unsubscribe from settings/dashboard changes.
+            // Unsubscribe from ViewModel property changes.
             _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
+            _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
+
+            // Unsubscribe from per-pad events.
+            foreach (var padVm in _mainVm.Pads)
+            {
+                padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
+                padVm.MappingsRebuilt -= OnMappingsRebuilt;
+            }
 
             // Dispose foreground monitor.
             if (_foregroundMonitor != null)
@@ -326,19 +356,38 @@ namespace PadForge.Services
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
                     padVm.UpdateFromMidiRawState(_inputManager.CombinedMidiRawStates[i]);
 
+                // For KBM slots, push the combined KbmRawState.
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
+                    padVm.KbmOutputSnapshot = _inputManager.CombinedKbmRawStates[i];
+
                 // Per-device state for stick/trigger tab previews.
-                var selected = padVm.SelectedMappedDevice;
-                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
                 {
-                    var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
-                    if (_inputManager.SlotVJoyIsCustom[i] && us != null)
-                        padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
-                    else
-                        padVm.UpdateDeviceState(us?.RawMappedState ?? default);
+                    // Feed PRE-deadzone KBM values so ProcessStickForPreview applies the
+                    // full pipeline once (center offset → deadzone → curves) with correct
+                    // jump-to-boundary visual behavior.
+                    var kbm = _inputManager.CombinedKbmRawStates[i];
+                    var synth = new Gamepad();
+                    synth.ThumbLX = kbm.PreDzMouseDeltaX;
+                    synth.ThumbLY = kbm.PreDzMouseDeltaY;
+                    synth.ThumbRY = kbm.PreDzScrollDelta;
+                    padVm.UpdateDeviceState(synth);
                 }
-                else if (!_inputManager.SlotVJoyIsCustom[i])
+                else
                 {
-                    padVm.UpdateDeviceState(gp);
+                    var selected = padVm.SelectedMappedDevice;
+                    if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    {
+                        var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
+                        if (_inputManager.SlotVJoyIsCustom[i] && us != null)
+                            padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
+                        else
+                            padVm.UpdateDeviceState(us?.RawMappedState ?? default);
+                    }
+                    else if (!_inputManager.SlotVJoyIsCustom[i])
+                    {
+                        padVm.UpdateDeviceState(gp);
+                    }
                 }
             }
 
@@ -366,8 +415,41 @@ namespace PadForge.Services
             // ── Sync macro snapshots to engine ──
             SyncMacroSnapshots();
 
+            // ── Auto-idle engine when no slots are created ──
+            UpdateIdleState();
+
             // ── Auto-profile switching (check foreground window) ──
             _foregroundMonitor?.CheckForegroundWindow();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Auto-idle
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Sets the engine to idle when no virtual controller slots have active
+        /// mappings, and wakes it when at least one slot does. A slot counts as
+        /// active when it is created, enabled, and has at least one device assigned.
+        /// Idle mode skips the expensive input/mapping/output pipeline and sleeps
+        /// at ~20Hz, reducing CPU to ~0%.
+        /// </summary>
+        private void UpdateIdleState()
+        {
+            if (_inputManager == null) return;
+
+            bool anyActive = false;
+            for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
+            {
+                if (SettingsManager.SlotCreated[i]
+                    && SettingsManager.SlotEnabled[i]
+                    && _mainVm.Pads[i].MappedDevices.Count > 0)
+                {
+                    anyActive = true;
+                    break;
+                }
+            }
+
+            _inputManager.IsIdle = !anyActive;
         }
 
         // ─────────────────────────────────────────────
@@ -381,7 +463,8 @@ namespace PadForge.Services
         {
             var dash = _mainVm.Dashboard;
 
-            dash.EngineStatus = _inputManager.IsRunning ? "Running" : "Stopped";
+            dash.EngineStatus = !_inputManager.IsRunning ? "Stopped"
+                : _inputManager.IsIdle ? "Idle" : "Running";
             dash.PollingFrequency = _inputManager.CurrentFrequency;
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
@@ -588,7 +671,8 @@ namespace PadForge.Services
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb);
+                bool isMouse = ud.CapType == InputDeviceType.Mouse;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
             }
@@ -628,9 +712,19 @@ namespace PadForge.Services
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb);
+                bool isMouse = ud.CapType == InputDeviceType.Mouse;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+            }
+
+            // Mouse visual — update motion and scroll display properties.
+            if (devVm.IsMouseDevice)
+            {
+                devVm.MouseMotionX = (state.Axis[0] - 32767.0) / 32767.0;
+                devVm.MouseMotionY = -(state.Axis[1] - 32767.0) / 32767.0;
+                if (ud.CapAxeCount > 2)
+                    devVm.MouseScrollIntensity = (state.Axis[2] - 32767.0) / 32767.0;
             }
 
             // Update axis values in-place (no allocation).
@@ -812,6 +906,10 @@ namespace PadForge.Services
             ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
             ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
 
+            // Dead zone shapes.
+            ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
+            ps.RightThumbDeadZoneShape = padVm.RightDeadZoneShape.ToString();
+
             // Anti-dead zones (per-axis).
             ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString();
             ps.LeftThumbAntiDeadZoneY = padVm.LeftAntiDeadZoneY.ToString();
@@ -833,6 +931,10 @@ namespace PadForge.Services
             ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
             ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
             ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
+            ps.LeftThumbMaxRangeXNeg = padVm.LeftMaxRangeXNeg.ToString();
+            ps.LeftThumbMaxRangeYNeg = padVm.LeftMaxRangeYNeg.ToString();
+            ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString();
+            ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString();
 
             // Trigger dead zones.
             ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
@@ -848,23 +950,45 @@ namespace PadForge.Services
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
-            // Mapping descriptors.
+            // Clear all mapping descriptors first to prevent stale leftovers from a
+            // previous layout (e.g., switching from Xbox 360 preset to custom vJoy).
+            ps.ClearMappingDescriptors();
+
+            // Mapping descriptors (pos + neg).
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
                 if (target.StartsWith("VJoy", StringComparison.Ordinal))
                 {
                     ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                    if (mapping.NegSettingName != null)
+                        ps.SetVJoyMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                 }
                 else if (target.StartsWith("Midi", StringComparison.Ordinal))
                 {
                     ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                    if (mapping.NegSettingName != null)
+                        ps.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                }
+                else if (target.StartsWith("Kbm", StringComparison.Ordinal))
+                {
+                    ps.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                    if (mapping.NegSettingName != null)
+                        ps.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                 }
                 else
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
                     if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
                         prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+
+                    // Write neg descriptor (e.g., LeftThumbAxisYNeg).
+                    if (mapping.NegSettingName != null)
+                    {
+                        var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
+                        if (negProp != null && negProp.PropertyType == typeof(string) && negProp.CanWrite)
+                            negProp.SetValue(ps, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
                 }
             }
         }
@@ -881,39 +1005,54 @@ namespace PadForge.Services
             if (ps == null) return;
 
             // Dead zones.
-            padVm.LeftDeadZoneX = TryParseInt(ps.LeftThumbDeadZoneX, 0);
-            padVm.LeftDeadZoneY = TryParseInt(ps.LeftThumbDeadZoneY, 0);
-            padVm.RightDeadZoneX = TryParseInt(ps.RightThumbDeadZoneX, 0);
-            padVm.RightDeadZoneY = TryParseInt(ps.RightThumbDeadZoneY, 0);
+            padVm.LeftDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
+            padVm.RightDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
+            padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
+            padVm.LeftDeadZoneY = TryParseDouble(ps.LeftThumbDeadZoneY, 0);
+            padVm.RightDeadZoneX = TryParseDouble(ps.RightThumbDeadZoneX, 0);
+            padVm.RightDeadZoneY = TryParseDouble(ps.RightThumbDeadZoneY, 0);
             ps.MigrateAntiDeadZones();
-            padVm.LeftAntiDeadZoneX = TryParseInt(ps.LeftThumbAntiDeadZoneX, 0);
-            padVm.LeftAntiDeadZoneY = TryParseInt(ps.LeftThumbAntiDeadZoneY, 0);
-            padVm.RightAntiDeadZoneX = TryParseInt(ps.RightThumbAntiDeadZoneX, 0);
-            padVm.RightAntiDeadZoneY = TryParseInt(ps.RightThumbAntiDeadZoneY, 0);
-            padVm.LeftLinear = TryParseInt(ps.LeftThumbLinear, 0);
-            padVm.RightLinear = TryParseInt(ps.RightThumbLinear, 0);
+            padVm.LeftAntiDeadZoneX = TryParseDouble(ps.LeftThumbAntiDeadZoneX, 0);
+            padVm.LeftAntiDeadZoneY = TryParseDouble(ps.LeftThumbAntiDeadZoneY, 0);
+            padVm.RightAntiDeadZoneX = TryParseDouble(ps.RightThumbAntiDeadZoneX, 0);
+            padVm.RightAntiDeadZoneY = TryParseDouble(ps.RightThumbAntiDeadZoneY, 0);
+            padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
+            padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
+
+            // Sensitivity curves (string format: control points "x,y;x,y;..." or legacy single number).
+            padVm.LeftSensitivityCurveX = ps.LeftThumbSensitivityCurveX ?? "0,0;1,1";
+            padVm.LeftSensitivityCurveY = ps.LeftThumbSensitivityCurveY ?? "0,0;1,1";
+            padVm.RightSensitivityCurveX = ps.RightThumbSensitivityCurveX ?? "0,0;1,1";
+            padVm.RightSensitivityCurveY = ps.RightThumbSensitivityCurveY ?? "0,0;1,1";
+            padVm.LeftTriggerSensitivityCurve = ps.LeftTriggerSensitivityCurve ?? "0,0;1,1";
+            padVm.RightTriggerSensitivityCurve = ps.RightTriggerSensitivityCurve ?? "0,0;1,1";
 
             // Max range.
-            padVm.LeftMaxRangeX = TryParseInt(ps.LeftThumbMaxRangeX, 100);
-            padVm.LeftMaxRangeY = TryParseInt(ps.LeftThumbMaxRangeY, 100);
-            padVm.RightMaxRangeX = TryParseInt(ps.RightThumbMaxRangeX, 100);
-            padVm.RightMaxRangeY = TryParseInt(ps.RightThumbMaxRangeY, 100);
+            padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);
+            padVm.LeftMaxRangeY = TryParseDouble(ps.LeftThumbMaxRangeY, 100);
+            padVm.RightMaxRangeX = TryParseDouble(ps.RightThumbMaxRangeX, 100);
+            padVm.RightMaxRangeY = TryParseDouble(ps.RightThumbMaxRangeY, 100);
+            ps.MigrateMaxRangeDirections();
+            padVm.LeftMaxRangeXNeg = TryParseDouble(ps.LeftThumbMaxRangeXNeg, 100);
+            padVm.LeftMaxRangeYNeg = TryParseDouble(ps.LeftThumbMaxRangeYNeg, 100);
+            padVm.RightMaxRangeXNeg = TryParseDouble(ps.RightThumbMaxRangeXNeg, 100);
+            padVm.RightMaxRangeYNeg = TryParseDouble(ps.RightThumbMaxRangeYNeg, 100);
 
             // Center offsets.
-            padVm.LeftCenterOffsetX = TryParseInt(ps.LeftThumbCenterOffsetX, 0);
-            padVm.LeftCenterOffsetY = TryParseInt(ps.LeftThumbCenterOffsetY, 0);
-            padVm.RightCenterOffsetX = TryParseInt(ps.RightThumbCenterOffsetX, 0);
-            padVm.RightCenterOffsetY = TryParseInt(ps.RightThumbCenterOffsetY, 0);
+            padVm.LeftCenterOffsetX = TryParseDouble(ps.LeftThumbCenterOffsetX, 0);
+            padVm.LeftCenterOffsetY = TryParseDouble(ps.LeftThumbCenterOffsetY, 0);
+            padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
+            padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
 
             // Trigger dead zones.
-            padVm.LeftTriggerDeadZone = TryParseInt(ps.LeftTriggerDeadZone, 0);
-            padVm.RightTriggerDeadZone = TryParseInt(ps.RightTriggerDeadZone, 0);
-            padVm.LeftTriggerAntiDeadZone = TryParseInt(ps.LeftTriggerAntiDeadZone, 0);
-            padVm.RightTriggerAntiDeadZone = TryParseInt(ps.RightTriggerAntiDeadZone, 0);
+            padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
+            padVm.RightTriggerDeadZone = TryParseDouble(ps.RightTriggerDeadZone, 0);
+            padVm.LeftTriggerAntiDeadZone = TryParseDouble(ps.LeftTriggerAntiDeadZone, 0);
+            padVm.RightTriggerAntiDeadZone = TryParseDouble(ps.RightTriggerAntiDeadZone, 0);
 
             // Trigger max range.
-            padVm.LeftTriggerMaxRange = TryParseInt(ps.LeftTriggerMaxRange, 100);
-            padVm.RightTriggerMaxRange = TryParseInt(ps.RightTriggerMaxRange, 100);
+            padVm.LeftTriggerMaxRange = TryParseDouble(ps.LeftTriggerMaxRange, 100);
+            padVm.RightTriggerMaxRange = TryParseDouble(ps.RightTriggerMaxRange, 100);
 
             // Force feedback.
             padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
@@ -950,6 +1089,8 @@ namespace PadForge.Services
                 return ps.GetVJoyMapping(key);
             if (key.StartsWith("Midi", StringComparison.Ordinal))
                 return ps.GetMidiMapping(key);
+            if (key.StartsWith("Kbm", StringComparison.Ordinal))
+                return ps.GetKbmMapping(key);
             var prop = typeof(PadSetting).GetProperty(key);
             return (prop != null && prop.PropertyType == typeof(string))
                 ? prop.GetValue(ps) as string ?? string.Empty
@@ -962,14 +1103,17 @@ namespace PadForge.Services
             return int.TryParse(value, out int result) ? result : defaultValue;
         }
 
-        /// <summary>
-        /// Resolves a mapping descriptor to a human-friendly display name using
-        /// the device's object metadata. For keyboards, "Button 65" becomes "A".
-        /// For mice, "Button 0" becomes "Left Click".
-        /// </summary>
+        private static double TryParseDouble(string value, double defaultValue)
+        {
+            if (string.IsNullOrEmpty(value)) return defaultValue;
+            return double.TryParse(value, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
+        }
+
         /// <summary>
         /// Resolves a mapping descriptor to a human-friendly display name using
         /// the device identified by the given instance GUID.
+        /// For keyboards, "Button 65" becomes "A". For mice, "Button 0" becomes "Left Click".
         /// </summary>
         internal static void ResolveDisplayText(MappingItem mapping, Guid instanceGuid)
         {
@@ -1035,7 +1179,7 @@ namespace PadForge.Services
                             "UpLeft" => "Up-Left",
                             _ => parts[2]
                         };
-                        display = $"Hat {dir}";
+                        display = $"POV {index} {dir}";
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
@@ -1128,7 +1272,7 @@ namespace PadForge.Services
                             "UpLeft" => "Up-Left",
                             _ => parts[2]
                         };
-                        display = $"Hat {dir}";
+                        display = $"POV {index} {dir}";
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
@@ -1178,6 +1322,21 @@ namespace PadForge.Services
 
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+        }
+
+        /// <summary>
+        /// Flushes all active pad ViewModels back to their PadSettings so that
+        /// stored PadSettings reflect the latest UI state. Call before reading
+        /// PadSettings across multiple slots (e.g., Copy From dialog).
+        /// </summary>
+        public void FlushAllPadViewModels()
+        {
+            foreach (var padVm in _mainVm.Pads)
+            {
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+            }
         }
 
         /// <summary>
@@ -1466,14 +1625,7 @@ namespace PadForge.Services
                 return; // Already running.
 
             _webServer = new WebControllerServer();
-            _webServer.StatusChanged += (_, status) =>
-            {
-                _dispatcher.BeginInvoke(() =>
-                {
-                    _mainVm.Dashboard.WebControllerStatus = status;
-                    _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
-                });
-            };
+            _webServer.StatusChanged += OnWebServerStatusChanged;
             _webServer.DeviceConnected += device =>
             {
                 _inputManager.RegisterExternalDevice(device);
@@ -1494,13 +1646,25 @@ namespace PadForge.Services
             }
         }
 
+        private void OnWebServerStatusChanged(object sender, string status)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Dashboard.WebControllerStatus = status;
+                _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
+            });
+        }
+
         private void StopWebServer()
         {
             if (_webServer == null)
                 return;
 
+            _webServer.StatusChanged -= OnWebServerStatusChanged;
             _webServer.Dispose();
             _webServer = null;
+            _mainVm.Dashboard.WebControllerStatus = "Stopped";
+            _mainVm.Dashboard.WebControllerClientCount = 0;
         }
 
         // ─────────────────────────────────────────────
@@ -1528,20 +1692,25 @@ namespace PadForge.Services
             }
 
             // ── HidHide ──
-            bool anyHidHide = false;
             if (HidHideController.IsAvailable())
             {
-                // Clear previous PadForge-managed entries before re-adding,
-                // so devices that had HidHideEnabled turned off get removed.
-                HidHideController.RemoveManagedDevices();
-
-                // Whitelist PadForge itself.
+                // Build the set of desired whitelist paths (PadForge + user list).
+                var desiredPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
                 if (!string.IsNullOrEmpty(exePath))
-                    HidHideController.EnsureWhitelisted(exePath);
+                    desiredPaths.Add(exePath);
+                foreach (var path in _mainVm.Settings.HidHideWhitelistPaths)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                        desiredPaths.Add(path);
+                }
+                SyncWhitelist(desiredPaths);
 
-                // Add devices with HidHideEnabled to the blacklist.
+                // Collect all desired blacklist IDs first, then sync atomically
+                // to avoid a window where devices briefly become visible.
+                var desiredIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 bool cacheUpdated = false;
+
                 foreach (var ud in snapshot)
                 {
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
@@ -1551,8 +1720,7 @@ namespace PadForge.Services
                         // If the DevicePath produced a valid HID instance ID, use it directly.
                         if (instanceId != null && instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase))
                         {
-                            HidHideController.AddToBlacklist(instanceId);
-                            anyHidHide = true;
+                            desiredIds.Add(instanceId);
                         }
                         // Fallback: synthetic paths (e.g., "XInput#0") — look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
@@ -1570,10 +1738,7 @@ namespace PadForge.Services
                                     cacheUpdated = true;
                                 }
                                 foreach (var realId in realIds)
-                                {
-                                    HidHideController.AddToBlacklist(realId);
-                                    anyHidHide = true;
-                                }
+                                    desiredIds.Add(realId);
                             }
                             else if (ud.HidHideInstanceIds.Count > 0)
                             {
@@ -1581,20 +1746,20 @@ namespace PadForge.Services
                                 System.Diagnostics.Debug.WriteLine(
                                     $"[ApplyDeviceHiding] Using {ud.HidHideInstanceIds.Count} cached instance IDs for offline device {ud.ResolvedName}");
                                 foreach (var cachedId in ud.HidHideInstanceIds)
-                                {
-                                    HidHideController.AddToBlacklist(cachedId);
-                                    anyHidHide = true;
-                                }
+                                    desiredIds.Add(cachedId);
                             }
                         }
                     }
                 }
 
+                // Atomically sync — only adds/removes the diff, never clears the blacklist.
+                HidHideController.SyncManagedDevices(desiredIds);
+
                 // Persist updated cache to settings.
                 if (cacheUpdated)
                     _settingsService?.MarkDirty();
 
-                if (anyHidHide)
+                if (desiredIds.Count > 0)
                     HidHideController.SetActive(true);
             }
 
@@ -1638,6 +1803,54 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Syncs the HidHide whitelist to match the desired set of application paths.
+        /// Only adds/removes entries that PadForge manages — entries added by HidHide Client
+        /// or other tools are left untouched.
+        /// </summary>
+        private void SyncWhitelist(HashSet<string> desiredWinPaths)
+        {
+            // Convert desired Windows paths to DOS device paths.
+            var desiredDosPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var winPath in desiredWinPaths)
+            {
+                string dosPath = HidHideController.ToDosDevicePathPublic(winPath);
+                if (dosPath != null)
+                    desiredDosPaths.Add(dosPath);
+            }
+
+            var currentWhitelist = HidHideController.GetWhitelist();
+            bool changed = false;
+
+            // Remove PadForge-managed entries that are no longer desired.
+            var toRemove = new List<string>();
+            foreach (var managed in _managedWhitelistDosPaths)
+            {
+                if (!desiredDosPaths.Contains(managed))
+                    toRemove.Add(managed);
+            }
+            foreach (var path in toRemove)
+            {
+                _managedWhitelistDosPaths.Remove(path);
+                if (currentWhitelist.RemoveAll(p => string.Equals(p, path, StringComparison.OrdinalIgnoreCase)) > 0)
+                    changed = true;
+            }
+
+            // Add new desired entries that aren't already in the whitelist.
+            foreach (var dosPath in desiredDosPaths)
+            {
+                _managedWhitelistDosPaths.Add(dosPath);
+                if (!currentWhitelist.Contains(dosPath, StringComparer.OrdinalIgnoreCase))
+                {
+                    currentWhitelist.Add(dosPath);
+                    changed = true;
+                }
+            }
+
+            if (changed)
+                HidHideController.SetWhitelist(currentWhitelist);
+        }
+
+        /// <summary>
         /// Removes all device hiding: clears PadForge-managed HidHide blacklist entries
         /// and stops input hooks.
         /// </summary>
@@ -1650,6 +1863,7 @@ namespace PadForge.Services
                     HidHideController.RemoveManagedDevices();
             }
             catch { /* Best effort — driver may not be available */ }
+            _managedWhitelistDosPaths.Clear();
 
             // ── Input hooks ──
             if (_hookManager != null)
@@ -1855,7 +2069,7 @@ namespace PadForge.Services
                 instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
             if (!string.IsNullOrEmpty(instancePath) &&
-                instancePath.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+                !instancePath.StartsWith("XInput", StringComparison.OrdinalIgnoreCase))
                 row.HidHideInstancePath = instancePath;
             else if (ud.HidHideInstanceIds.Count > 0)
                 row.HidHideInstancePath = ud.HidHideInstanceIds[0];
@@ -2106,7 +2320,7 @@ namespace PadForge.Services
         /// <summary>
         /// Sends a brief test rumble to a specific device (or all devices in a slot).
         /// </summary>
-        /// <param name="padIndex">Pad slot index (0–3).</param>
+        /// <param name="padIndex">Pad slot index (0–15).</param>
         /// <param name="deviceGuid">Optional device GUID to target. When null, rumbles all devices in the slot.</param>
         public void SendTestRumble(int padIndex, Guid? deviceGuid)
         {
@@ -2163,7 +2377,15 @@ namespace PadForge.Services
             _recordedCustomButtons = new uint[4];
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = new HashSet<int>();
-            macro.RecordingLiveText = "Press buttons...";
+            _recordedAxisTargets = new HashSet<MacroAxisTarget>();
+            _recordedPovs = new HashSet<string>();
+            _macroAxisCandidate = MacroAxisTarget.None;
+            _macroAxisHoldCounter = 0;
+
+            // Capture axis baseline so we detect movement delta, not absolute position.
+            _macroAxisBaseline = CaptureAxisBaseline(padIndex, macro.TriggerSource, macro.ButtonStyle);
+
+            macro.RecordingLiveText = "Press buttons or move axis...";
             macro.IsRecordingTrigger = true;
         }
 
@@ -2176,6 +2398,17 @@ namespace PadForge.Services
             if (_recordingMacro == null)
                 return;
 
+            // Save recorded axis triggers (can combine with buttons).
+            _recordingMacro.TriggerAxisTargets = _recordedAxisTargets?.Count > 0
+                ? _recordedAxisTargets.ToArray()
+                : Array.Empty<MacroAxisTarget>();
+
+            // Save recorded POV triggers.
+            _recordingMacro.TriggerPovs = _recordedPovs?.Count > 0
+                ? _recordedPovs.ToArray()
+                : Array.Empty<string>();
+
+            // Save recorded buttons (independent of axis).
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
                 && _recordingDeviceGuid != Guid.Empty
                 && _recordedRawButtons != null && _recordedRawButtons.Count > 0)
@@ -2211,6 +2444,11 @@ namespace PadForge.Services
             _recordedCustomButtons = null;
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = null;
+            _recordedAxisTargets = null;
+            _recordedPovs = null;
+            _macroAxisBaseline = null;
+            _macroAxisCandidate = MacroAxisTarget.None;
+            _macroAxisHoldCounter = 0;
         }
 
         /// <summary>
@@ -2226,6 +2464,60 @@ namespace PadForge.Services
 
             if (_recordingPadIndex < 0 || _recordingPadIndex >= InputManager.MaxPads)
                 return;
+
+            // Read current axis values for delta detection.
+            float[] currentAxes = ReadCurrentAxes(
+                _recordingPadIndex, _recordingMacro.TriggerSource, _recordingMacro.ButtonStyle);
+
+            // Detect axes via baseline+delta+hold (shared across all paths).
+            // Accumulates into _recordedAxisTargets — multiple axes can be recorded.
+            if (_macroAxisBaseline != null && currentAxes != null)
+            {
+                MacroAxisTarget bestCandidate = MacroAxisTarget.None;
+                float bestDelta = 0f;
+
+                MacroAxisTarget[] axes = {
+                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                };
+                for (int i = 0; i < axes.Length && i < currentAxes.Length && i < _macroAxisBaseline.Length; i++)
+                {
+                    // Skip axes already recorded.
+                    if (_recordedAxisTargets.Contains(axes[i])) continue;
+
+                    float delta = Math.Abs(currentAxes[i] - _macroAxisBaseline[i]);
+                    if (delta > AxisRecordThreshold && delta > bestDelta)
+                    {
+                        bestDelta = delta;
+                        bestCandidate = axes[i];
+                    }
+                }
+
+                if (bestCandidate != MacroAxisTarget.None)
+                {
+                    if (bestCandidate == _macroAxisCandidate)
+                    {
+                        _macroAxisHoldCounter++;
+                        if (_macroAxisHoldCounter >= MacroAxisHoldCycles)
+                        {
+                            _recordedAxisTargets.Add(bestCandidate);
+                            _macroAxisCandidate = MacroAxisTarget.None;
+                            _macroAxisHoldCounter = 0;
+                        }
+                    }
+                    else
+                    {
+                        _macroAxisCandidate = bestCandidate;
+                        _macroAxisHoldCounter = 1;
+                    }
+                }
+                else
+                {
+                    _macroAxisCandidate = MacroAxisTarget.None;
+                    _macroAxisHoldCounter = 0;
+                }
+            }
 
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
@@ -2250,26 +2542,55 @@ namespace PadForge.Services
                         {
                             if (buttons[i])
                             {
-                                // Lock to this device on first press.
                                 if (_recordingDeviceGuid == Guid.Empty)
                                     _recordingDeviceGuid = ud.InstanceGuid;
-
                                 _recordedRawButtons.Add(i);
+                            }
+                        }
+
+                        // Check for any active POV hats on this device.
+                        var povs = ud.InputState.Povs;
+                        if (povs != null)
+                        {
+                            for (int p = 0; p < povs.Length; p++)
+                            {
+                                if (povs[p] >= 0)
+                                {
+                                    if (_recordingDeviceGuid == Guid.Empty)
+                                        _recordingDeviceGuid = ud.InstanceGuid;
+                                    _recordedPovs.Add($"{p}:{povs[p]}");
+                                }
                             }
                         }
                     }
                 }
 
-                // Update live display text with device name.
+                // Update live display text (buttons + POVs + axes combined, device name at end).
+                var parts = new List<string>();
                 if (_recordedRawButtons.Count > 0)
                 {
-                    string combo = string.Join(" + ", _recordedRawButtons.OrderBy(x => x).Select(b => $"Btn {b}"));
+                    var objects = ResolveDeviceObjects(_recordingDeviceGuid);
+                    foreach (int b in _recordedRawButtons.OrderBy(x => x))
+                    {
+                        var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
+                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {b}");
+                    }
+                }
+                foreach (var pov in _recordedPovs)
+                    parts.Add(MacroItem.FormatPovTrigger(pov));
+                foreach (var ax in _recordedAxisTargets)
+                    parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
+
+                if (parts.Count > 0)
+                {
+                    string result = string.Join(" + ", parts);
                     string deviceName = ResolveDeviceName(_recordingDeviceGuid);
-                    _recordingMacro.RecordingLiveText = string.IsNullOrEmpty(deviceName)
-                        ? combo : $"{combo} ({deviceName})";
+                    if (!string.IsNullOrEmpty(deviceName))
+                        result = $"{result} ({deviceName})";
+                    _recordingMacro.RecordingLiveText = result;
                 }
                 else
-                    _recordingMacro.RecordingLiveText = "Press buttons...";
+                    _recordingMacro.RecordingLiveText = "Press buttons or move axis...";
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
@@ -2281,22 +2602,99 @@ namespace PadForge.Services
                         _recordedCustomButtons[w] |= rawState.Buttons[w];
                 }
 
-                if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
-                    _recordingMacro.RecordingLiveText = MacroButtonNames.FormatCustomButtons(_recordedCustomButtons);
-                else
-                    _recordingMacro.RecordingLiveText = "Press buttons...";
+                // Update live display (buttons + axes combined).
+                {
+                    var parts = new List<string>();
+                    if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_recordedCustomButtons));
+                    foreach (var ax in _recordedAxisTargets)
+                        parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
+                    _recordingMacro.RecordingLiveText = parts.Count > 0
+                        ? string.Join(" + ", parts) : "Press buttons or move axis...";
+                }
             }
             else
             {
                 // Gamepad preset OutputController: accumulate from the combined Xbox-mapped state.
-                ushort xboxButtons = _inputManager.CombinedOutputStates[_recordingPadIndex].Buttons;
+                var gp = _inputManager.CombinedOutputStates[_recordingPadIndex];
+                ushort xboxButtons = gp.Buttons;
                 _recordedButtons |= xboxButtons;
 
-                if (_recordedButtons != 0)
-                    _recordingMacro.RecordingLiveText = MacroButtonNames.FormatButtons(
-                        _recordedButtons, _recordingMacro.ButtonStyle);
-                else
-                    _recordingMacro.RecordingLiveText = "Press buttons...";
+                // Update live display (buttons + axes combined).
+                {
+                    var parts = new List<string>();
+                    if (_recordedButtons != 0)
+                        parts.Add(MacroButtonNames.FormatButtons(_recordedButtons, _recordingMacro.ButtonStyle));
+                    foreach (var ax in _recordedAxisTargets)
+                        parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
+                    _recordingMacro.RecordingLiveText = parts.Count > 0
+                        ? string.Join(" + ", parts) : "Press buttons or move axis...";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Captures the current axis values as a 6-element float array (0..1 normalized)
+        /// for use as a baseline during macro trigger recording.
+        /// </summary>
+        private float[] CaptureAxisBaseline(int padIndex, MacroTriggerSource source, MacroButtonStyle style)
+        {
+            return ReadCurrentAxes(padIndex, source, style);
+        }
+
+        /// <summary>
+        /// Reads the current 6-axis values (LX, LY, RX, RY, LT, RT) as 0..1 floats
+        /// from the appropriate source for the recording path.
+        /// </summary>
+        private float[] ReadCurrentAxes(int padIndex, MacroTriggerSource source, MacroButtonStyle style)
+        {
+            if (_inputManager == null || padIndex < 0 || padIndex >= InputManager.MaxPads)
+                return null;
+
+            float[] result = new float[6];
+
+            if (source == MacroTriggerSource.InputDevice)
+            {
+                // Read raw axes from the first assigned device that has axis data.
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
+                if (slotSettings == null) return null;
+                foreach (var setting in slotSettings)
+                {
+                    var ud = FindUserDevice(setting.InstanceGuid);
+                    if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
+                    var rawAxes = ud.InputState.Axis;
+                    if (rawAxes == null || rawAxes.Length < 6) continue;
+                    for (int i = 0; i < 6 && i < rawAxes.Length; i++)
+                        result[i] = (rawAxes[i] + 32768f) / 65535f;
+                    return result;
+                }
+                return null;
+            }
+            else if (style == MacroButtonStyle.Numbered)
+            {
+                // vJoy raw state path.
+                var rawState = _inputManager.CombinedVJoyRawStates[padIndex];
+                MacroAxisTarget[] axes = {
+                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                };
+                for (int i = 0; i < axes.Length; i++)
+                    result[i] = InputManager.ReadAxisAsVolumeRaw(in rawState, axes[i]);
+                return result;
+            }
+            else
+            {
+                // Gamepad OutputController path.
+                var gp = _inputManager.CombinedOutputStates[padIndex];
+                MacroAxisTarget[] axes = {
+                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                };
+                for (int i = 0; i < axes.Length; i++)
+                    result[i] = InputManager.ReadAxisAsVolume(in gp, axes[i]);
+                return result;
             }
         }
 
@@ -2305,6 +2703,12 @@ namespace PadForge.Services
         {
             if (deviceGuid == Guid.Empty) return null;
             return SettingsManager.FindDeviceByInstanceGuid(deviceGuid)?.ResolvedName;
+        }
+
+        private static DeviceObjectItem[] ResolveDeviceObjects(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return null;
+            return SettingsManager.FindDeviceByInstanceGuid(deviceGuid)?.DeviceObjects;
         }
 
         // ─────────────────────────────────────────────
@@ -2360,11 +2764,58 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
+                VJoyConfigs = SnapshotVJoyConfigs(),
+                MidiConfigs = SnapshotMidiConfigs(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort
             };
+        }
+
+        private VJoySlotConfigData[] SnapshotVJoyConfigs()
+        {
+            var list = new List<VJoySlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != VirtualControllerType.VJoy)
+                    continue;
+                var cfg = _mainVm.Pads[i].VJoyConfig;
+                list.Add(new VJoySlotConfigData
+                {
+                    SlotIndex = i,
+                    Preset = cfg.Preset,
+                    ThumbstickCount = cfg.ThumbstickCount,
+                    TriggerCount = cfg.TriggerCount,
+                    PovCount = cfg.PovCount,
+                    ButtonCount = cfg.ButtonCount
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        private MidiSlotConfigData[] SnapshotMidiConfigs()
+        {
+            var list = new List<MidiSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != VirtualControllerType.Midi)
+                    continue;
+                var cfg = _mainVm.Pads[i].MidiConfig;
+                list.Add(new MidiSlotConfigData
+                {
+                    SlotIndex = i,
+                    Channel = cfg.Channel,
+                    Velocity = cfg.Velocity,
+                    CcCount = cfg.CcCount,
+                    StartCc = cfg.StartCc,
+                    NoteCount = cfg.NoteCount,
+                    StartNote = cfg.StartNote
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
         }
 
         /// <summary>
@@ -2464,6 +2915,50 @@ namespace PadForge.Services
                 }
             }
 
+            // ── Apply vJoy/MIDI configurations ──
+            if (profile.VJoyConfigs != null)
+            {
+                foreach (var cfgData in profile.VJoyConfigs)
+                {
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == VirtualControllerType.VJoy)
+                    {
+                        var cfg = _mainVm.Pads[idx].VJoyConfig;
+                        cfg.Preset = cfgData.Preset;
+                        if (cfgData.Preset == VJoyPreset.Custom)
+                        {
+                            cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                            cfg.TriggerCount = cfgData.TriggerCount;
+                            cfg.PovCount = cfgData.PovCount;
+                            cfg.ButtonCount = cfgData.ButtonCount;
+                        }
+                    }
+                }
+            }
+
+            if (profile.MidiConfigs != null)
+            {
+                foreach (var cfgData in profile.MidiConfigs)
+                {
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == VirtualControllerType.Midi)
+                    {
+                        var cfg = _mainVm.Pads[idx].MidiConfig;
+                        cfg.Channel = cfgData.Channel;
+                        cfg.Velocity = cfgData.Velocity;
+                        cfg.StartCc = cfgData.StartCc;
+                        cfg.CcCount = cfgData.CcCount;
+                        cfg.StartNote = cfgData.StartNote;
+                        cfg.NoteCount = cfgData.NoteCount;
+                        _mainVm.Pads[idx].RebuildMappings();
+                    }
+                }
+            }
+
             // ── Apply DSU motion server settings ──
             _mainVm.Dashboard.EnableDsuMotionServer = profile.EnableDsuMotionServer;
             if (profile.DsuMotionServerPort >= 1024 && profile.DsuMotionServerPort <= 65535)
@@ -2542,6 +3037,7 @@ namespace PadForge.Services
             {
                 // Currently on the default profile — update the default snapshot.
                 _defaultProfileSnapshot = snapshot;
+                SettingsManager.PendingDefaultSnapshot = snapshot;
             }
             else
             {
@@ -2554,6 +3050,8 @@ namespace PadForge.Services
                     profile.SlotCreated = snapshot.SlotCreated;
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
+                    profile.VJoyConfigs = snapshot.VJoyConfigs;
+                    profile.MidiConfigs = snapshot.MidiConfigs;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                     profile.EnableWebController = snapshot.EnableWebController;
@@ -2570,6 +3068,7 @@ namespace PadForge.Services
         public void RefreshDefaultSnapshot()
         {
             _defaultProfileSnapshot = SnapshotCurrentProfile();
+            SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
         }
 
         /// <summary>
@@ -2721,15 +3220,23 @@ namespace PadForge.Services
             VirtualControllerType.Xbox360 => 0,
             VirtualControllerType.DualShock4 => 1,
             VirtualControllerType.VJoy => 2,
-            VirtualControllerType.Midi => 3,
-            _ => 4
+            VirtualControllerType.KeyboardMouse => 3,
+            VirtualControllerType.Midi => 4,
+            _ => 5
         };
 
         private void RefreshAfterSlotReorder()
         {
             UpdatePadDeviceInfo();
 
-            // Reload PadSettings into ViewModels so deadzones, mappings, etc. follow the device.
+            // Rebuild mapping item collections and reload PadSettings into ViewModels.
+            // RebuildMappings must come first: SwapPadViewModelSlotData swaps OutputType
+            // and VJoyConfig, but when both slots are vJoy (same OutputType), the setter's
+            // SetProperty returns false and RebuildMappings is never called. This leaves
+            // the wrong mapping layout (e.g., custom VJoyBtn0 items in an Xbox 360 preset slot).
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+                _mainVm.Pads[i].RebuildMappings();
+
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];

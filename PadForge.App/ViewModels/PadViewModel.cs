@@ -1,16 +1,18 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Data;
 
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// ViewModel for a single virtual controller slot (one of 4 pads).
+    /// ViewModel for a single virtual controller slot (one of 16 pads).
     /// Features:
     ///   #1 — Multi-device selection: SelectedMappedDevice picks which device to configure
     ///   #2 — Expanded dead zones: per-axis X/Y, trigger dead zones, anti-dead zone, linear
@@ -30,8 +32,14 @@ namespace PadForge.ViewModels
             RebuildTriggerConfigs();
         }
 
-        /// <summary>Zero-based pad slot index (0–7).</summary>
+        /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex { get; }
+
+        /// <summary>
+        /// Callback invoked when a config item property changes that needs to be persisted.
+        /// Wired by MainWindow to call SettingsService.MarkDirty().
+        /// </summary>
+        public Action ConfigItemDirtyCallback { get; set; }
 
         private int _slotNumber;
         /// <summary>One-based sequential number among active slots, for display.</summary>
@@ -210,8 +218,11 @@ namespace PadForge.ViewModels
             get => _selectedMappedDevice;
             set
             {
+                var old = _selectedMappedDevice;
                 if (SetProperty(ref _selectedMappedDevice, value))
                 {
+                    if (old != null) old.PropertyChanged -= OnSelectedDevicePropertyChanged;
+                    if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     SelectedDeviceChanged?.Invoke(this, value);
                 }
@@ -220,6 +231,12 @@ namespace PadForge.ViewModels
 
         /// <summary>Whether a device is selected for configuration.</summary>
         public bool HasSelectedDevice => _selectedMappedDevice != null;
+
+        private void OnSelectedDevicePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MappedDeviceInfo.IsOnline))
+                _mapAllCommand?.NotifyCanExecuteChanged();
+        }
 
         /// <summary>
         /// Raised when the user selects a different device within this slot.
@@ -397,7 +414,9 @@ namespace PadForge.ViewModels
             Mappings.Clear();
 
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
-            if (OutputType == VirtualControllerType.Midi)
+            if (OutputType == VirtualControllerType.KeyboardMouse)
+                InitializeKeyboardMouseMappings();
+            else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
             else if (isCustomVJoy)
                 InitializeVJoyCustomMappings();
@@ -483,6 +502,96 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
+        /// Keyboard + Mouse mappings — full keyboard keys, mouse buttons, and mouse axes.
+        /// Targets use "Kbm" prefix for dictionary-based PadSetting storage.
+        /// Key targets: "KbmKey{vk}" where vk is the Windows virtual-key code (hex).
+        /// Mouse buttons: "KbmMBtn{0-4}" (LMB, RMB, MMB, X1, X2).
+        /// Mouse axes: "KbmMouseX"/"KbmMouseY" (bidirectional), "KbmScroll" (bidirectional).
+        /// </summary>
+        private void InitializeKeyboardMouseMappings()
+        {
+            // Helper to add a keyboard key mapping target
+            void AddKey(string label, byte vk)
+                => Mappings.Add(new MappingItem(label, $"KbmKey{vk:X2}", MappingCategory.Buttons));
+
+            // ── Letters ──
+            for (int i = 0; i < 26; i++)
+                AddKey(((char)('A' + i)).ToString(), (byte)(0x41 + i));
+
+            // ── Numbers ──
+            for (int i = 0; i <= 9; i++)
+                AddKey(i.ToString(), (byte)(0x30 + i));
+
+            // ── Function keys ──
+            for (int i = 1; i <= 12; i++)
+                AddKey($"F{i}", (byte)(0x6F + i)); // VK_F1=0x70 .. VK_F12=0x7B
+
+            // ── Modifiers ──
+            AddKey("Left Shift", 0xA0);
+            AddKey("Right Shift", 0xA1);
+            AddKey("Left Ctrl", 0xA2);
+            AddKey("Right Ctrl", 0xA3);
+            AddKey("Left Alt", 0xA4);
+            AddKey("Right Alt", 0xA5);
+
+            // ── Special keys ──
+            AddKey("Space", 0x20);
+            AddKey("Enter", 0x0D);
+            AddKey("Escape", 0x1B);
+            AddKey("Tab", 0x09);
+            AddKey("Backspace", 0x08);
+            AddKey("Caps Lock", 0x14);
+
+            // ── Navigation ──
+            AddKey("Up", 0x26);
+            AddKey("Down", 0x28);
+            AddKey("Left", 0x25);
+            AddKey("Right", 0x27);
+            AddKey("Home", 0x24);
+            AddKey("End", 0x23);
+            AddKey("Page Up", 0x21);
+            AddKey("Page Down", 0x22);
+            AddKey("Insert", 0x2D);
+            AddKey("Delete", 0x2E);
+
+            // ── Punctuation ──
+            AddKey(";", 0xBA);
+            AddKey("=", 0xBB);
+            AddKey(",", 0xBC);
+            AddKey("-", 0xBD);
+            AddKey(".", 0xBE);
+            AddKey("/", 0xBF);
+            AddKey("`", 0xC0);
+            AddKey("[", 0xDB);
+            AddKey("\\", 0xDC);
+            AddKey("]", 0xDD);
+            AddKey("'", 0xDE);
+
+            // ── Numpad ──
+            for (int i = 0; i <= 9; i++)
+                AddKey($"Num {i}", (byte)(0x60 + i));
+            AddKey("Num *", 0x6A);
+            AddKey("Num +", 0x6B);
+            AddKey("Num -", 0x6D);
+            AddKey("Num .", 0x6E);
+            AddKey("Num /", 0x6F);
+
+            // ── Mouse buttons ──
+            Mappings.Add(new MappingItem("Left Click", "KbmMBtn0", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Right Click", "KbmMBtn1", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Middle Click", "KbmMBtn2", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Mouse 4", "KbmMBtn3", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem("Mouse 5", "KbmMBtn4", MappingCategory.Buttons));
+
+            // ── Mouse movement axes (bidirectional) ──
+            Mappings.Add(new MappingItem("Mouse X", "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
+            Mappings.Add(new MappingItem("Mouse Y", "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
+
+            // ── Mouse scroll (bidirectional, visualized as Right Stick Y) ──
+            Mappings.Add(new MappingItem("Scroll", "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
+        }
+
+        /// <summary>
         /// Dynamic vJoy Custom mappings — numbered buttons, sticks, triggers, POVs.
         /// Axis layout interleaves sticks and triggers: [Stick0 X,Y | Trig0 | Stick1 X,Y | Trig1 | ...].
         /// </summary>
@@ -537,6 +646,22 @@ namespace PadForge.ViewModels
         private bool _swapMotors;
         public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
 
+        private ICommand _resetForceAllCommand;
+        public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
+        {
+            ForceOverallGain = 100;
+            LeftMotorStrength = 100;
+            RightMotorStrength = 100;
+            SwapMotors = false;
+        });
+
+        private ICommand _resetOverallGainCommand;
+        public ICommand ResetOverallGainCommand => _resetOverallGainCommand ??= new RelayCommand(() => ForceOverallGain = 100);
+        private ICommand _resetLeftMotorCommand;
+        public ICommand ResetLeftMotorCommand => _resetLeftMotorCommand ??= new RelayCommand(() => LeftMotorStrength = 100);
+        private ICommand _resetRightMotorCommand;
+        public ICommand ResetRightMotorCommand => _resetRightMotorCommand ??= new RelayCommand(() => RightMotorStrength = 100);
+
         private double _leftMotorDisplay;
         public double LeftMotorDisplay { get => _leftMotorDisplay; set => SetProperty(ref _leftMotorDisplay, value); }
 
@@ -548,14 +673,34 @@ namespace PadForge.ViewModels
         //  Per-axis X/Y, anti-dead zone, linear, trigger dead zones
         // ═══════════════════════════════════════════════
 
+        /// <summary>
+        /// Resets all per-slot settings to defaults. Called when a slot is deleted
+        /// so the next controller created in the same slot starts clean.
+        /// </summary>
+        public void ResetAllSettings()
+        {
+            ResetDeadZoneSettings();
+            LeftSensitivityCurveX = "0,0;1,1";
+            LeftSensitivityCurveY = "0,0;1,1";
+            RightSensitivityCurveX = "0,0;1,1";
+            RightSensitivityCurveY = "0,0;1,1";
+            LeftTriggerSensitivityCurve = "0,0;1,1";
+            RightTriggerSensitivityCurve = "0,0;1,1";
+            ForceOverallGain = 100;
+            LeftMotorStrength = 100;
+            RightMotorStrength = 100;
+        }
+
         /// <summary>Resets all dead zone, anti-dead zone, linear, and trigger settings to defaults.</summary>
         private void ResetDeadZoneSettings()
         {
+            LeftDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             LeftDeadZoneX = 0; LeftDeadZoneY = 0;
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
             LeftMaxRangeX = 100; LeftMaxRangeY = 100;
+            RightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
             RightLinear = 0;
@@ -566,6 +711,10 @@ namespace PadForge.ViewModels
         }
 
         // ── Left Stick ──
+        private int _leftDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
+        private static readonly int MaxDeadZoneShape = Enum.GetValues(typeof(DeadZoneShape)).Length - 1;
+        public int LeftDeadZoneShape { get => _leftDeadZoneShape; set => SetProperty(ref _leftDeadZoneShape, Math.Clamp(value, 0, MaxDeadZoneShape)); }
+
         private double _leftDeadZoneX;
         public double LeftDeadZoneX { get => _leftDeadZoneX; set => SetProperty(ref _leftDeadZoneX, Math.Clamp(value, 0, 100)); }
 
@@ -582,6 +731,9 @@ namespace PadForge.ViewModels
         public double LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
 
         // ── Right Stick ──
+        private int _rightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
+        public int RightDeadZoneShape { get => _rightDeadZoneShape; set => SetProperty(ref _rightDeadZoneShape, Math.Clamp(value, 0, MaxDeadZoneShape)); }
+
         private double _rightDeadZoneX;
         public double RightDeadZoneX { get => _rightDeadZoneX; set => SetProperty(ref _rightDeadZoneX, Math.Clamp(value, 0, 100)); }
 
@@ -597,6 +749,23 @@ namespace PadForge.ViewModels
         private double _rightLinear;
         public double RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
 
+        // ── Sensitivity Curves (per-axis for sticks, serialized control point strings) ──
+        private string _leftSensitivityCurveX = "0,0;1,1";
+        public string LeftSensitivityCurveX { get => _leftSensitivityCurveX; set => SetProperty(ref _leftSensitivityCurveX, value ?? "0,0;1,1"); }
+        private string _leftSensitivityCurveY = "0,0;1,1";
+        public string LeftSensitivityCurveY { get => _leftSensitivityCurveY; set => SetProperty(ref _leftSensitivityCurveY, value ?? "0,0;1,1"); }
+
+        private string _rightSensitivityCurveX = "0,0;1,1";
+        public string RightSensitivityCurveX { get => _rightSensitivityCurveX; set => SetProperty(ref _rightSensitivityCurveX, value ?? "0,0;1,1"); }
+        private string _rightSensitivityCurveY = "0,0;1,1";
+        public string RightSensitivityCurveY { get => _rightSensitivityCurveY; set => SetProperty(ref _rightSensitivityCurveY, value ?? "0,0;1,1"); }
+
+        private string _leftTriggerSensitivityCurve = "0,0;1,1";
+        public string LeftTriggerSensitivityCurve { get => _leftTriggerSensitivityCurve; set => SetProperty(ref _leftTriggerSensitivityCurve, value ?? "0,0;1,1"); }
+
+        private string _rightTriggerSensitivityCurve = "0,0;1,1";
+        public string RightTriggerSensitivityCurve { get => _rightTriggerSensitivityCurve; set => SetProperty(ref _rightTriggerSensitivityCurve, value ?? "0,0;1,1"); }
+
         // ── Max Range ──
         private double _leftMaxRangeX = 100;
         public double LeftMaxRangeX { get => _leftMaxRangeX; set => SetProperty(ref _leftMaxRangeX, Math.Clamp(value, 1, 100)); }
@@ -609,6 +778,19 @@ namespace PadForge.ViewModels
 
         private double _rightMaxRangeY = 100;
         public double RightMaxRangeY { get => _rightMaxRangeY; set => SetProperty(ref _rightMaxRangeY, Math.Clamp(value, 1, 100)); }
+
+        // ── Max Range (negative direction) ──
+        private double _leftMaxRangeXNeg = 100;
+        public double LeftMaxRangeXNeg { get => _leftMaxRangeXNeg; set => SetProperty(ref _leftMaxRangeXNeg, Math.Clamp(value, 1, 100)); }
+
+        private double _leftMaxRangeYNeg = 100;
+        public double LeftMaxRangeYNeg { get => _leftMaxRangeYNeg; set => SetProperty(ref _leftMaxRangeYNeg, Math.Clamp(value, 1, 100)); }
+
+        private double _rightMaxRangeXNeg = 100;
+        public double RightMaxRangeXNeg { get => _rightMaxRangeXNeg; set => SetProperty(ref _rightMaxRangeXNeg, Math.Clamp(value, 1, 100)); }
+
+        private double _rightMaxRangeYNeg = 100;
+        public double RightMaxRangeYNeg { get => _rightMaxRangeYNeg; set => SetProperty(ref _rightMaxRangeYNeg, Math.Clamp(value, 1, 100)); }
 
         // ── Center Offsets ──
         private double _leftCenterOffsetX;
@@ -680,6 +862,22 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnStickConfigPropertyChanged;
             StickConfigs.Clear();
 
+            bool isKbm = OutputType == VirtualControllerType.KeyboardMouse;
+            if (isKbm)
+            {
+                // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
+                var mouse = new StickConfigItem(0, "Mouse Movement", -1, -1);
+                SyncStickItemFromVm(mouse);
+                mouse.PropertyChanged += OnStickConfigPropertyChanged;
+                StickConfigs.Add(mouse);
+
+                var scroll = new StickConfigItem(1, "Scroll Wheel", -1, -1);
+                SyncStickItemFromVm(scroll);
+                scroll.PropertyChanged += OnStickConfigPropertyChanged;
+                StickConfigs.Add(scroll);
+                return;
+            }
+
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
             if (isCustomVJoy)
@@ -713,6 +911,10 @@ namespace PadForge.ViewModels
             foreach (var item in TriggerConfigs)
                 item.PropertyChanged -= OnTriggerConfigPropertyChanged;
             TriggerConfigs.Clear();
+
+            // KBM has no triggers — scroll is on Right Stick Y.
+            if (OutputType == VirtualControllerType.KeyboardMouse)
+                return;
 
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
             bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
@@ -748,24 +950,34 @@ namespace PadForge.ViewModels
                 switch (item.Index)
                 {
                     case 0:
+                        item.DeadZoneShape = (DeadZoneShape)LeftDeadZoneShape;
                         item.DeadZoneX = LeftDeadZoneX;
                         item.DeadZoneY = LeftDeadZoneY;
                         item.AntiDeadZoneX = LeftAntiDeadZoneX;
                         item.AntiDeadZoneY = LeftAntiDeadZoneY;
                         item.Linear = LeftLinear;
+                        item.SensitivityCurveX = LeftSensitivityCurveX;
+                        item.SensitivityCurveY = LeftSensitivityCurveY;
                         item.MaxRangeX = LeftMaxRangeX;
                         item.MaxRangeY = LeftMaxRangeY;
+                        item.MaxRangeXNeg = LeftMaxRangeXNeg;
+                        item.MaxRangeYNeg = LeftMaxRangeYNeg;
                         item.CenterOffsetX = LeftCenterOffsetX;
                         item.CenterOffsetY = LeftCenterOffsetY;
                         break;
                     case 1:
+                        item.DeadZoneShape = (DeadZoneShape)RightDeadZoneShape;
                         item.DeadZoneX = RightDeadZoneX;
                         item.DeadZoneY = RightDeadZoneY;
                         item.AntiDeadZoneX = RightAntiDeadZoneX;
                         item.AntiDeadZoneY = RightAntiDeadZoneY;
                         item.Linear = RightLinear;
+                        item.SensitivityCurveX = RightSensitivityCurveX;
+                        item.SensitivityCurveY = RightSensitivityCurveY;
                         item.MaxRangeX = RightMaxRangeX;
                         item.MaxRangeY = RightMaxRangeY;
+                        item.MaxRangeXNeg = RightMaxRangeXNeg;
+                        item.MaxRangeYNeg = RightMaxRangeYNeg;
                         item.CenterOffsetX = RightCenterOffsetX;
                         item.CenterOffsetY = RightCenterOffsetY;
                         break;
@@ -788,11 +1000,13 @@ namespace PadForge.ViewModels
                         item.DeadZone = LeftTriggerDeadZone;
                         item.MaxRange = LeftTriggerMaxRange;
                         item.AntiDeadZone = LeftTriggerAntiDeadZone;
+                        item.SensitivityCurve = LeftTriggerSensitivityCurve;
                         break;
                     case 1:
                         item.DeadZone = RightTriggerDeadZone;
                         item.MaxRange = RightTriggerMaxRange;
                         item.AntiDeadZone = RightTriggerAntiDeadZone;
+                        item.SensitivityCurve = RightTriggerSensitivityCurve;
                         break;
                 }
             }
@@ -822,30 +1036,47 @@ namespace PadForge.ViewModels
                 case 0:
                     switch (e.PropertyName)
                     {
+                        case nameof(StickConfigItem.DeadZoneShape): LeftDeadZoneShape = (int)item.DeadZoneShape; break;
                         case nameof(StickConfigItem.DeadZoneX): LeftDeadZoneX = item.DeadZoneX; break;
                         case nameof(StickConfigItem.DeadZoneY): LeftDeadZoneY = item.DeadZoneY; break;
                         case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
+                        case nameof(StickConfigItem.SensitivityCurveX): LeftSensitivityCurveX = item.SensitivityCurveX; break;
+                        case nameof(StickConfigItem.SensitivityCurveY): LeftSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;
                         case nameof(StickConfigItem.MaxRangeY): LeftMaxRangeY = item.MaxRangeY; break;
+                        case nameof(StickConfigItem.MaxRangeXNeg): LeftMaxRangeXNeg = item.MaxRangeXNeg; break;
+                        case nameof(StickConfigItem.MaxRangeYNeg): LeftMaxRangeYNeg = item.MaxRangeYNeg; break;
                         case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): LeftCenterOffsetY = item.CenterOffsetY; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
                 case 1:
                     switch (e.PropertyName)
                     {
+                        case nameof(StickConfigItem.DeadZoneShape): RightDeadZoneShape = (int)item.DeadZoneShape; break;
                         case nameof(StickConfigItem.DeadZoneX): RightDeadZoneX = item.DeadZoneX; break;
                         case nameof(StickConfigItem.DeadZoneY): RightDeadZoneY = item.DeadZoneY; break;
                         case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): RightAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): RightLinear = item.Linear; break;
+                        case nameof(StickConfigItem.SensitivityCurveX): RightSensitivityCurveX = item.SensitivityCurveX; break;
+                        case nameof(StickConfigItem.SensitivityCurveY): RightSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): RightMaxRangeX = item.MaxRangeX; break;
                         case nameof(StickConfigItem.MaxRangeY): RightMaxRangeY = item.MaxRangeY; break;
+                        case nameof(StickConfigItem.MaxRangeXNeg): RightMaxRangeXNeg = item.MaxRangeXNeg; break;
+                        case nameof(StickConfigItem.MaxRangeYNeg): RightMaxRangeYNeg = item.MaxRangeYNeg; break;
                         case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
+                    break;
+                default:
+                    // vJoy custom sticks 2+: values stored directly on ConfigItem,
+                    // persisted via SettingsService.UpdatePadSettingsFromViewModels.
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
             }
         }
@@ -863,7 +1094,9 @@ namespace PadForge.ViewModels
                         case nameof(TriggerConfigItem.DeadZone): LeftTriggerDeadZone = item.DeadZone; break;
                         case nameof(TriggerConfigItem.MaxRange): LeftTriggerMaxRange = item.MaxRange; break;
                         case nameof(TriggerConfigItem.AntiDeadZone): LeftTriggerAntiDeadZone = item.AntiDeadZone; break;
+                        case nameof(TriggerConfigItem.SensitivityCurve): LeftTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
                 case 1:
                     switch (e.PropertyName)
@@ -871,7 +1104,14 @@ namespace PadForge.ViewModels
                         case nameof(TriggerConfigItem.DeadZone): RightTriggerDeadZone = item.DeadZone; break;
                         case nameof(TriggerConfigItem.MaxRange): RightTriggerMaxRange = item.MaxRange; break;
                         case nameof(TriggerConfigItem.AntiDeadZone): RightTriggerAntiDeadZone = item.AntiDeadZone; break;
+                        case nameof(TriggerConfigItem.SensitivityCurve): RightTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
+                    ConfigItemDirtyCallback?.Invoke();
+                    break;
+                default:
+                    // vJoy custom triggers 2+: values stored directly on ConfigItem,
+                    // persisted via SettingsService.UpdatePadSettingsFromViewModels.
+                    ConfigItemDirtyCallback?.Invoke();
                     break;
             }
         }
@@ -1086,7 +1326,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _mapAllCommand;
         public RelayCommand MapAllCommand =>
-            _mapAllCommand ??= new RelayCommand(StartMapAll, () => HasSelectedDevice && !IsMapAllActive);
+            _mapAllCommand ??= new RelayCommand(StartMapAll, () => HasSelectedDevice && !IsMapAllActive && SelectedMappedDevice?.IsOnline == true);
 
         private void StartMapAll()
         {
@@ -1115,17 +1355,21 @@ namespace PadForge.ViewModels
             if (mapping.HasNegDirection)
                 SelectedConfigTab = 0;
 
+            // Detect Y axis: standard controllers use "AxisY" in the setting name,
+            // custom vJoy uses "Stick N Y" in the label (setting name is "VJoyAxisN").
+            bool isYAxis = mapping.TargetSettingName.Contains("AxisY")
+                        || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal);
+
             if (MapAllRecordingNeg)
             {
                 // Second phase: opposite direction from the first.
                 // X: second=left (neg). Y: second=down (pos, because NegateAxis inverts).
                 // Keep MapAllRecordingNeg=true until MapAllRecordRequested fires, so the
                 // handler can distinguish Y second phase from Y first phase.
-                bool isY = mapping.TargetSettingName.Contains("AxisY");
-                string dirHint = isY ? "(\u2193)" : "(\u2190)";
+                string dirHint = isYAxis ? "(\u2193)" : "(\u2190)";
                 // Y: second phase targets pos descriptor (down in game).
                 // X: second phase targets neg descriptor (left).
-                string target = isY ? mapping.TargetSettingName : mapping.NegSettingName;
+                string target = isYAxis ? mapping.TargetSettingName : mapping.NegSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
                 MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
@@ -1137,13 +1381,11 @@ namespace PadForge.ViewModels
                 {
                     // First phase: natural primary direction.
                     // X: first=right (pos). Y: first=up (neg, because NegateAxis inverts).
-                    bool isY = mapping.TargetSettingName.Contains("AxisY");
-                    suffix = isY ? " (\u2191)" : " (\u2192)";
+                    suffix = isYAxis ? " (\u2191)" : " (\u2192)";
                 }
                 // Y: first phase targets neg descriptor (up in game).
                 // X: first phase targets pos descriptor (right).
-                bool yStartNeg = mapping.HasNegDirection && mapping.TargetSettingName.Contains("AxisY");
-                string target = yStartNeg ? mapping.NegSettingName : mapping.TargetSettingName;
+                string target = (mapping.HasNegDirection && isYAxis) ? mapping.NegSettingName : mapping.TargetSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
                 MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
@@ -1274,93 +1516,314 @@ namespace PadForge.ViewModels
             // Sync live values to dynamic config items (full processing pipeline for preview)
             if (StickConfigs.Count > 0)
             {
-                var (lvx, lox) = ProcessAxisForPreview(
+                var (lvx, lox, lvy, loy) = ProcessStickForPreview(
                     DeviceThumbLX + LeftCenterOffsetX / 200.0,
-                    LeftDeadZoneX, LeftAntiDeadZoneX, LeftLinear, LeftMaxRangeX);
-                var (lvy, loy) = ProcessAxisForPreview(
                     DeviceThumbLY - LeftCenterOffsetY / 200.0,
-                    LeftDeadZoneY, LeftAntiDeadZoneY, LeftLinear, LeftMaxRangeY);
+                    LeftDeadZoneX, LeftDeadZoneY,
+                    LeftAntiDeadZoneX, LeftAntiDeadZoneY,
+                    LeftLinear, LeftMaxRangeX, LeftMaxRangeY,
+                    LeftMaxRangeXNeg, LeftMaxRangeYNeg,
+                    LeftSensitivityCurveX, LeftSensitivityCurveY,
+                    (DeadZoneShape)LeftDeadZoneShape);
                 StickConfigs[0].LiveX = lvx;
                 StickConfigs[0].LiveY = lvy;
                 StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].RawY = (short)Math.Clamp((0.5 - loy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].HardwareRawX = gp.ThumbLX;
                 StickConfigs[0].HardwareRawY = gp.ThumbLY;
+                UpdateStickCurveDots(StickConfigs[0], DeviceThumbLX, DeviceThumbLY);
             }
             if (StickConfigs.Count > 1)
             {
-                var (rvx, rox) = ProcessAxisForPreview(
+                var (rvx, rox, rvy, roy) = ProcessStickForPreview(
                     DeviceThumbRX + RightCenterOffsetX / 200.0,
-                    RightDeadZoneX, RightAntiDeadZoneX, RightLinear, RightMaxRangeX);
-                var (rvy, roy) = ProcessAxisForPreview(
                     DeviceThumbRY - RightCenterOffsetY / 200.0,
-                    RightDeadZoneY, RightAntiDeadZoneY, RightLinear, RightMaxRangeY);
+                    RightDeadZoneX, RightDeadZoneY,
+                    RightAntiDeadZoneX, RightAntiDeadZoneY,
+                    RightLinear, RightMaxRangeX, RightMaxRangeY,
+                    RightMaxRangeXNeg, RightMaxRangeYNeg,
+                    RightSensitivityCurveX, RightSensitivityCurveY,
+                    (DeadZoneShape)RightDeadZoneShape);
                 StickConfigs[1].LiveX = rvx;
                 StickConfigs[1].LiveY = rvy;
                 StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].RawY = (short)Math.Clamp((0.5 - roy) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].HardwareRawX = gp.ThumbRX;
                 StickConfigs[1].HardwareRawY = gp.ThumbRY;
+                UpdateStickCurveDots(StickConfigs[1], DeviceThumbRX, DeviceThumbRY);
             }
             if (TriggerConfigs.Count > 0)
             {
-                TriggerConfigs[0].LiveValue = DeviceLeftTrigger;
-                TriggerConfigs[0].RawValue = gp.LeftTrigger;
+                var processed = ProcessTriggerForPreview(DeviceLeftTrigger, TriggerConfigs[0]);
+                TriggerConfigs[0].LiveValue = processed;
+                TriggerConfigs[0].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
+                UpdateTriggerCurveDot(TriggerConfigs[0], DeviceLeftTrigger);
             }
             if (TriggerConfigs.Count > 1)
             {
-                TriggerConfigs[1].LiveValue = DeviceRightTrigger;
-                TriggerConfigs[1].RawValue = gp.RightTrigger;
+                var processed = ProcessTriggerForPreview(DeviceRightTrigger, TriggerConfigs[1]);
+                TriggerConfigs[1].LiveValue = processed;
+                TriggerConfigs[1].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
+                UpdateTriggerCurveDot(TriggerConfigs[1], DeviceRightTrigger);
             }
         }
 
         /// <summary>
-        /// Applies the full stick processing pipeline (dead zone, max range, anti-dead zone, linear)
-        /// to a normalized 0–1 axis value for preview display. Mirrors Step3's ApplySingleDeadZone.
+        /// Processes both stick axes together through the shape-aware dead zone pipeline.
+        /// Uses the same algorithms as Step3's ApplyDeadZone for preview consistency.
         /// </summary>
-        /// <summary>
-        /// Processes an axis value through the dead zone pipeline for preview.
-        /// Returns (visualPosition, outputPosition) where visualPosition maps the dot
-        /// to outside the dead zone ring, and outputPosition is the actual processed value.
-        /// Both are in 0-1 range where 0.5 = center.
-        /// </summary>
-        private static (double visual, double output) ProcessAxisForPreview(double adjustedNorm, double deadZone, double antiDeadZone, double linear, double maxRange)
+        private static (double visualX, double outputX, double visualY, double outputY)
+            ProcessStickForPreview(
+                double adjNormX, double adjNormY,
+                double deadZoneX, double deadZoneY,
+                double antiDeadZoneX, double antiDeadZoneY,
+                double linear, double maxRangeX, double maxRangeY,
+                double maxRangeXNeg, double maxRangeYNeg,
+                string curveX, string curveY,
+                DeadZoneShape shape)
         {
-            double signed = (adjustedNorm - 0.5) * 2.0;
-            double sign = Math.Sign(signed);
-            double mag = Math.Abs(signed);
+            // Convert to signed [-1, 1]
+            double sx = (adjNormX - 0.5) * 2.0;
+            double sy = (adjNormY - 0.5) * 2.0;
+            double signX = Math.Sign(sx), signY = Math.Sign(sy);
+            double magX = Math.Abs(sx), magY = Math.Abs(sy);
+            double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
+            // Pick max range based on direction of input (mirrors Step3 pipeline).
+            double mrXn = (sx >= 0 ? maxRangeX : maxRangeXNeg) / 100.0;
+            double mrYn = (sy >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
+            if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
+            if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
 
-            double dzNorm = deadZone / 100.0;
-            if (mag < dzNorm)
-                return (0.5, 0.5);
-
-            if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100)
+            // ── Axial: cross-shaped DZ visualization ──
+            if (shape == DeadZoneShape.Axial)
             {
-                double v = Math.Clamp(adjustedNorm, 0.0, 1.0);
-                return (v, v);
+                bool xInDz = magX < dzXn, yInDz = magY < dzYn;
+
+                // Center rectangle (both in DZ) → dot at center.
+                if (xInDz && yInDz)
+                    return (0.5, 0.5, 0.5, 0.5);
+
+                // Per-axis DZ gate + rescale (mirrors ApplySingleDeadZone).
+                double remAx = xInDz ? 0 : Math.Min((magX - dzXn) / (mrXn - dzXn), 1.0);
+                double remAy = yInDz ? 0 : Math.Min((magY - dzYn) / (mrYn - dzYn), 1.0);
+                double oAx = PostDzForPreview(remAx, curveX, antiDeadZoneX, linear);
+                double oAy = PostDzForPreview(remAy, curveY, antiDeadZoneY, linear);
+
+                double outPosX = Math.Clamp(0.5 + signX * oAx * 0.5, 0.0, 1.0);
+                double outPosY = Math.Clamp(0.5 + signY * oAy * 0.5, 0.0, 1.0);
+
+                // Visual: each axis jumps to its DZ boundary, scales outward.
+                // In the cross arms, the zeroed axis stays at center (snapped to axis).
+                // In the corners, both jump to boundary.
+                double visAx = xInDz ? 0.0 : dzXn + oAx * (1.0 - dzXn);
+                double visAy = yInDz ? 0.0 : dzYn + oAy * (1.0 - dzYn);
+                double visPosX = xInDz ? 0.5 : Math.Clamp(0.5 + signX * visAx * 0.5, 0.0, 1.0);
+                double visPosY = yInDz ? 0.5 : Math.Clamp(0.5 + signY * visAy * 0.5, 0.0, 1.0);
+
+                return (visPosX, outPosX, visPosY, outPosY);
             }
 
-            double mrNorm = maxRange / 100.0;
-            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
-            double remapped = Math.Min((mag - dzNorm) / (mrNorm - dzNorm), 1.0);
+            // ── 2D shapes (Radial, Sloped, Hybrid) ──
+            double remX, remY;
+            switch (shape)
+            {
+                case DeadZoneShape.Radial:
+                    Common.Input.InputManager.ComputeRadial(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn, false, out remX, out remY);
+                    break;
+                case DeadZoneShape.ScaledRadial:
+                    Common.Input.InputManager.ComputeRadial(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn, true, out remX, out remY);
+                    break;
+                case DeadZoneShape.SlopedAxial:
+                    Common.Input.InputManager.ComputeSloped(magX, magY, dzXn, dzYn, mrXn, mrYn, false, out remX, out remY);
+                    break;
+                case DeadZoneShape.SlopedScaledAxial:
+                    Common.Input.InputManager.ComputeSloped(magX, magY, dzXn, dzYn, mrXn, mrYn, true, out remX, out remY);
+                    break;
+                case DeadZoneShape.Hybrid:
+                    Common.Input.InputManager.ComputeHybrid(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn, out remX, out remY, out signX, out signY);
+                    break;
+                default:
+                    remX = magX; remY = magY;
+                    break;
+            }
 
+            // Post-DZ per axis: curve → ADZ → linear (mirrors ApplyPostDeadZone)
+            double outX = PostDzForPreview(remX, curveX, antiDeadZoneX, linear);
+            double outY = PostDzForPreview(remY, curveY, antiDeadZoneY, linear);
+
+            double outputPosX = Math.Clamp(0.5 + signX * outX * 0.5, 0.0, 1.0);
+            double outputPosY = Math.Clamp(0.5 + signY * outY * 0.5, 0.0, 1.0);
+
+            // ── Shape-specific visual mapping ──
+            // Principle: dot at center inside red zones, axis-constrained in yellow zones,
+            // and jumps to zone boundary when exiting (never appears inside a colored zone).
+
+            const double visEps = 1e-10;
+
+            // ── Sloped Axial (non-scaled): output position directly ──
+            // Natural boundary at wedge edge (raw magnitude ≈ effDz at boundary).
+            if (shape == DeadZoneShape.SlopedAxial)
+            {
+                bool xZeroed = magX < dzXn * magY;
+                bool yZeroed = magY < dzYn * magX;
+                double visX = xZeroed ? 0.5 : outputPosX;
+                double visY = yZeroed ? 0.5 : outputPosY;
+                return (visX, outputPosX, visY, outputPosY);
+            }
+
+            // ── Sloped Scaled Axial: wedge boundary jump ──
+            // Rescaled output starts from 0 — jump to wedge edge like Scaled Radial
+            // jumps to circle edge.
+            if (shape == DeadZoneShape.SlopedScaledAxial)
+            {
+                bool xZeroed = magX < dzXn * magY;
+                bool yZeroed = magY < dzYn * magX;
+                double visX, visY;
+                if (xZeroed)
+                    visX = 0.5;
+                else
+                {
+                    double effDz = dzXn * magY;
+                    double vis = effDz + outX * (1.0 - effDz);
+                    visX = Math.Clamp(0.5 + signX * vis * 0.5, 0.0, 1.0);
+                }
+                if (yZeroed)
+                    visY = 0.5;
+                else
+                {
+                    double effDz = dzYn * magX;
+                    double vis = effDz + outY * (1.0 - effDz);
+                    visY = Math.Clamp(0.5 + signY * vis * 0.5, 0.0, 1.0);
+                }
+                return (visX, outputPosX, visY, outputPosY);
+            }
+
+            // ── Scaled Radial: radial boundary jump ──
+            if (shape == DeadZoneShape.ScaledRadial)
+            {
+                double eDzX = Math.Max(dzXn, visEps), eDzY = Math.Max(dzYn, visEps);
+                double edx = sx / eDzX, edy = sy / eDzY;
+                if (edx * edx + edy * edy < 1.0)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+
+                // DZ boundary radius in the direction of the stick.
+                double rawMag = Math.Sqrt(magX * magX + magY * magY);
+                if (rawMag < visEps)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+                double ux = magX / rawMag, uy = magY / rawMag;
+                double dxu = ux / eDzX, dyu = uy / eDzY;
+                double dzR = 1.0 / Math.Sqrt(dxu * dxu + dyu * dyu);
+
+                // Map output magnitude [0,max] → visual [dzR, 1] so dot starts at circle edge.
+                double outMag = Math.Sqrt(outX * outX + outY * outY);
+                double visMag = dzR + outMag * (1.0 - dzR);
+
+                double visX = Math.Clamp(0.5 + signX * ux * visMag * 0.5, 0.0, 1.0);
+                double visY = Math.Clamp(0.5 + signY * uy * visMag * 0.5, 0.0, 1.0);
+                return (visX, outputPosX, visY, outputPosY);
+            }
+
+            // ── Hybrid: circle (red center) + wedge (yellow axis-snap) ──
+            if (shape == DeadZoneShape.Hybrid)
+            {
+                double eDzX = Math.Max(dzXn, visEps), eDzY = Math.Max(dzYn, visEps);
+                double edx = sx / eDzX, edy = sy / eDzY;
+                if (edx * edx + edy * edy < 1.0)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+
+                // DZ boundary radius in the direction of the stick.
+                double rawMag = Math.Sqrt(magX * magX + magY * magY);
+                if (rawMag < visEps)
+                    return (0.5, outputPosX, 0.5, outputPosY);
+                double ux = magX / rawMag, uy = magY / rawMag;
+                double dxu = ux / eDzX, dyu = uy / eDzY;
+                double dzR = 1.0 / Math.Sqrt(dxu * dxu + dyu * dyu);
+
+                // Check wedge conditions from the sloped stage.
+                Common.Input.InputManager.ComputeRadial(sx, sy, magX, magY, dzXn, dzYn, mrXn, mrYn,
+                    true, out double srX, out double srY);
+                bool xZeroed = srX < dzXn * srY;
+                bool yZeroed = srY < dzYn * srX;
+
+                if (xZeroed || yZeroed)
+                {
+                    // Wedge zone: zeroed axis at center, alive axis jumps to circle edge.
+                    double visX = xZeroed ? 0.5
+                        : Math.Clamp(0.5 + signX * (dzXn + outX * (1.0 - dzXn)) * 0.5, 0.0, 1.0);
+                    double visY = yZeroed ? 0.5
+                        : Math.Clamp(0.5 + signY * (dzYn + outY * (1.0 - dzYn)) * 0.5, 0.0, 1.0);
+                    return (visX, outputPosX, visY, outputPosY);
+                }
+
+                // Free zone: radial boundary jump in stick direction.
+                double outMag = Math.Sqrt(outX * outX + outY * outY);
+                double visMag = dzR + outMag * (1.0 - dzR);
+                double vfX = Math.Clamp(0.5 + signX * ux * visMag * 0.5, 0.0, 1.0);
+                double vfY = Math.Clamp(0.5 + signY * uy * visMag * 0.5, 0.0, 1.0);
+                return (vfX, outputPosX, vfY, outputPosY);
+            }
+
+            // ── Radial (non-scaled): output position directly ──
+            // Natural boundary jump: raw magnitude at DZ edge ≈ DZ radius.
+            return (outputPosX, outputPosX, outputPosY, outputPosY);
+        }
+
+        private static double PostDzForPreview(double remapped, string curveString, double antiDeadZone, double linear)
+        {
+            if (remapped <= 0 && antiDeadZone <= 0) return 0;
+            remapped = StickConfigItem.ApplyCurve(remapped, curveString);
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
-
             if (linear > 0)
             {
                 double lf = linear / 100.0;
                 output = remapped * lf + output * (1.0 - lf);
             }
+            return output;
+        }
 
-            double outputPos = Math.Clamp(0.5 + sign * output * 0.5, 0.0, 1.0);
+        /// <summary>
+        /// <summary>
+        /// Updates the CurveEditor live input values for a stick config item.
+        /// normX/normY are 0-1 normalized where 0.5 = center.
+        /// CurveEditor handles the dot rendering internally.
+        /// </summary>
+        private static void UpdateStickCurveDots(StickConfigItem stick, double normX, double normY)
+        {
+            // Signed input for the CurveEditor LiveInput property
+            double signedX = (normX - 0.5) * 2.0;
+            double signedY = -((normY - 0.5) * 2.0);
+            stick.LiveInputX = signedX;
+            stick.LiveInputY = signedY;
+        }
 
-            // Map output [0,1] to visual position [dzNorm,1] so the dot jumps to
-            // just outside the dead zone ring and scales outward from there.
-            double visual = dzNorm + output * (1.0 - dzNorm);
-            double visualPos = Math.Clamp(0.5 + sign * visual * 0.5, 0.0, 1.0);
+        private static void UpdateTriggerCurveDot(TriggerConfigItem trig, double inputNorm)
+        {
+            trig.LiveInputForCurve = Math.Clamp(inputNorm, 0, 1);
+        }
 
-            return (visualPos, outputPos);
+        /// <summary>
+        /// Applies the trigger processing pipeline (dead zone, max range, curve, anti-dead zone)
+        /// to a raw 0–1 trigger value for preview display. Mirrors Step3's ApplyTriggerDeadZone.
+        /// </summary>
+        private static double ProcessTriggerForPreview(double rawNorm, TriggerConfigItem trig)
+        {
+            double t = Math.Clamp(rawNorm, 0, 1);
+            double dz = trig.DeadZone / 100.0;
+            double mr = trig.MaxRange / 100.0;
+            if (mr <= dz) mr = dz + 0.01;
+
+            if (t < dz) return 0;
+
+            double remapped = Math.Min((t - dz) / (mr - dz), 1.0);
+            double output = StickConfigItem.ApplyCurve(remapped, trig.SensitivityCurve);
+
+            // Anti-dead zone: offset the output minimum
+            double adz = trig.AntiDeadZone / 100.0;
+            if (adz > 0)
+                output = adz + output * (1.0 - adz);
+
+            return Math.Clamp(output, 0, 1);
         }
 
         // ═══════════════════════════════════════════════
@@ -1374,6 +1837,12 @@ namespace PadForge.ViewModels
         public VJoyRawState VJoyOutputSnapshot { get; private set; }
 
         /// <summary>
+        /// Latest KbmRawState snapshot for KBM preview display.
+        /// Updated at 30Hz alongside UpdateFromEngineState.
+        /// </summary>
+        public KbmRawState KbmOutputSnapshot { get; set; }
+
+        /// <summary>
         /// Updates the combined output display from a VJoyRawState (custom vJoy slots).
         /// Syncs live values to StickConfigs/TriggerConfigs and stores the raw snapshot.
         /// </summary>
@@ -1384,26 +1853,29 @@ namespace PadForge.ViewModels
             // Sync stick config items from raw axes
             foreach (var stick in StickConfigs)
             {
-                if (stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length)
-                {
-                    stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
-                    double normX = (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0;
-                    var (vx, ox) = ProcessAxisForPreview(
-                        normX + stick.CenterOffsetX / 200.0,
-                        stick.DeadZoneX, stick.AntiDeadZoneX, stick.Linear, stick.MaxRangeX);
-                    stick.LiveX = vx;
-                    stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                }
-                if (stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length)
-                {
-                    stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
-                    double normY = (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0;
-                    var (vy, oy) = ProcessAxisForPreview(
-                        normY - stick.CenterOffsetY / 200.0,
-                        stick.DeadZoneY, stick.AntiDeadZoneY, stick.Linear, stick.MaxRangeY);
-                    stick.LiveY = vy;
-                    stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                }
+                bool hasX = stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length;
+                bool hasY = stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length;
+
+                if (hasX) stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
+                if (hasY) stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
+
+                double normX = hasX ? (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+                double normY = hasY ? (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+
+                var (vx, ox, vy, oy) = ProcessStickForPreview(
+                    normX + stick.CenterOffsetX / 200.0,
+                    normY - stick.CenterOffsetY / 200.0,
+                    stick.DeadZoneX, stick.DeadZoneY,
+                    stick.AntiDeadZoneX, stick.AntiDeadZoneY,
+                    stick.Linear, stick.MaxRangeX, stick.MaxRangeY,
+                    stick.MaxRangeXNeg, stick.MaxRangeYNeg,
+                    stick.SensitivityCurveX, stick.SensitivityCurveY,
+                    stick.DeadZoneShape);
+
+                if (hasX) { stick.LiveX = vx; stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue); }
+                if (hasY) { stick.LiveY = vy; stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue); }
+
+                UpdateStickCurveDots(stick, stick.LiveX, stick.LiveY);
             }
 
             // Sync trigger config items from raw axes
@@ -1412,8 +1884,11 @@ namespace PadForge.ViewModels
                 if (trig.AxisIndex >= 0 && raw.Axes != null && trig.AxisIndex < raw.Axes.Length)
                 {
                     // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
-                    trig.LiveValue = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
-                    trig.RawValue = (ushort)Math.Clamp((int)(trig.LiveValue * 65535), 0, 65535);
+                    double rawNorm = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
+                    var processed = ProcessTriggerForPreview(rawNorm, trig);
+                    trig.LiveValue = processed;
+                    trig.RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
+                    UpdateTriggerCurveDot(trig, rawNorm);
                 }
             }
 

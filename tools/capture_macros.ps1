@@ -29,7 +29,7 @@ public class W32 {
 $ch = [W32]::GetConsoleWindow()
 if ($ch -ne [IntPtr]::Zero) { [W32]::ShowWindow($ch, 6) }
 
-$log = "C:\Users\sonic\GitHub\PadForge\tools\capture_macros_log.txt"
+$log = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\capture_macros_log.txt"
 "Starting..." | Out-File $log -Encoding ascii
 
 try {
@@ -104,7 +104,7 @@ try {
     $g.CopyFromScreen($wr.Left, $wr.Top, 0, 0, (New-Object System.Drawing.Size($w, $h)))
     $g.Dispose()
 
-    $pngPath = "C:\Users\sonic\GitHub\PadForge\screenshots\macros.png"
+    $pngPath = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\screenshots\macros.png"
     $bmp.Save($pngPath, [System.Drawing.Imaging.ImageFormat]::Png)
     $bmp.Dispose()
     "Screenshot saved" | Out-File $log -Append -Encoding ascii

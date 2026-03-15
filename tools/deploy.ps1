@@ -1,5 +1,5 @@
 # Deploy PadForge.exe to C:\PadForge\
-$src = 'C:\Users\sonic\GitHub\PadForge\publish\PadForge.exe'
+$src = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\publish\PadForge.exe'
 $dst = 'C:\PadForge\PadForge.exe'
 
 # Kill any running PadForge

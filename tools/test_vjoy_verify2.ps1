@@ -1,5 +1,5 @@
 # Simplified vJoy verify with error handling
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\vjoy_verify_log.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_verify_log.txt"
 try {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes

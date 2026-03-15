@@ -1,7 +1,7 @@
 # Wrapper to run vjoy_ui_test.ps1 elevated and wait for completion
-$scriptPath = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_ui_test.ps1'
-$logFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
-$doneFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_ui_test_done.txt'
+$scriptPath = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test.ps1'
+$logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
+$doneFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test_done.txt'
 
 # Clean up markers
 Remove-Item $logFile -Force -ErrorAction SilentlyContinue

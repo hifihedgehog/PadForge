@@ -4,7 +4,7 @@
              xmlns:ui="http://schemas.modernwpf.com/2019">
 
     <ScrollViewer Padding="24,16">
-        <StackPanel MaxWidth="700">
+        <StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="20"
@@ -118,6 +118,46 @@
                                                       Width="10" Height="10" Stretch="Uniform"
                                                       VerticalAlignment="Center" Opacity="0.6"/>
                                                 <TextBlock Text="{Binding VJoyCount}" FontSize="10"
+                                                           Opacity="0.7" Margin="3,0,0,0"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- MIDI count badge -->
+                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
+                                                Background="{DynamicResource SystemControlBackgroundListLowBrush}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MidiCount}" Value="0">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="10" VerticalAlignment="Center" Opacity="0.6"/>
+                                                <TextBlock Text="{Binding MidiCount}" FontSize="10"
+                                                           Opacity="0.7" Margin="3,0,0,0"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- KB+M count badge -->
+                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
+                                                Background="{DynamicResource SystemControlBackgroundListLowBrush}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding KbmCount}" Value="0">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE961;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="10" VerticalAlignment="Center" Opacity="0.6"/>
+                                                <TextBlock Text="{Binding KbmCount}" FontSize="10"
                                                            Opacity="0.7" Margin="3,0,0,0"
                                                            VerticalAlignment="Center"/>
                                             </StackPanel>

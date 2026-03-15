@@ -22,10 +22,10 @@ namespace PadForge.ViewModels
             _iconKey = "XboxControllerIcon";
         }
 
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex { get; }
 
-        /// <summary>Navigation tag for this item ("Pad1"–"Pad4").</summary>
+        /// <summary>Navigation tag for this item ("Pad1"–"Pad16").</summary>
         public string Tag => $"Pad{PadIndex + 1}";
 
         private int _slotNumber;
@@ -79,7 +79,7 @@ namespace PadForge.ViewModels
 
     /// <summary>
     /// Root ViewModel for the application. Manages navigation state,
-    /// the collection of 4 pad ViewModels, and app-wide status information.
+    /// the collection of 16 pad ViewModels, and app-wide status information.
     /// Serves as the DataContext for MainWindow.
     /// </summary>
     public partial class MainViewModel : ViewModelBase
@@ -111,7 +111,7 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// The 4 virtual controller pad ViewModels (Player 1–4).
+        /// The 16 virtual controller pad ViewModels (Player 1–16).
         /// </summary>
         public ObservableCollection<PadViewModel> Pads { get; } = new ObservableCollection<PadViewModel>();
 
@@ -169,6 +169,7 @@ namespace PadForge.ViewModels
             int ds4Count = 0;
             int vjoyCount = 0;
             int midiCount = 0;
+            int kbmCount = 0;
             int globalCount = 0;
 
             foreach (var nav in NavControllerItems)
@@ -196,6 +197,11 @@ namespace PadForge.ViewModels
                         midiCount++;
                         instanceNum = midiCount;
                         iconKey = "MidiControllerIcon";
+                        break;
+                    case VirtualControllerType.KeyboardMouse:
+                        kbmCount++;
+                        instanceNum = kbmCount;
+                        iconKey = "KeyboardMouseControllerIcon";
                         break;
                     default:
                         xboxCount++;
@@ -248,7 +254,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// The tag string of the currently selected navigation item.
         /// Used by MainWindow to determine which page to display.
-        /// Values: "Dashboard", "Pad1"–"Pad4", "Devices", "Settings", "About"
+        /// Values: "Dashboard", "Pad1"–"Pad16", "Devices", "Settings", "About"
         /// </summary>
         public string SelectedNavTag
         {

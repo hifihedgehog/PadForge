@@ -1,5 +1,5 @@
 # Navigate to vJoy page and find config controls
-$logFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
+$logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
 $R = @()
 $R += "=== UI Navigation Test $(Get-Date) ==="
 

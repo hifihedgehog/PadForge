@@ -21,7 +21,7 @@
 
 $padForgeXml = 'C:\PadForge\PadForge.xml'
 $padForgeExe = 'C:\PadForge\PadForge.exe'
-$logFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_stale_verify_log.txt'
+$logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_stale_verify_log.txt'
 
 function Log($msg) { $msg | Out-File $logFile -Append -Encoding utf8; Write-Host $msg }
 "" | Out-File $logFile -Encoding utf8 -Force

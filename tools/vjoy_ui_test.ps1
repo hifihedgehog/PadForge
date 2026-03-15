@@ -6,9 +6,9 @@ param(
     [string]$Action = 'test'  # 'test' runs all configs, 'dump' shows UI tree
 )
 
-$logFile = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
-$queryScript = 'C:\Users\sonic\GitHub\PadForge\tools\vjoy_query_device.ps1'
-$toolsDir = 'C:\Users\sonic\GitHub\PadForge\tools'
+$logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
+$queryScript = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_query_device.ps1'
+$toolsDir = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools'
 
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes

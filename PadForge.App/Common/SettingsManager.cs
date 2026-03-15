@@ -40,6 +40,14 @@ namespace PadForge.Common.Input
         /// <summary>The ID of the currently active profile, or null for the default (root) profile.</summary>
         public static string ActiveProfileId { get; set; }
 
+        /// <summary>
+        /// Snapshot of the default profile's state captured during settings load,
+        /// before the active named profile's topology is applied. Used by
+        /// InputService.Start to initialize _defaultProfileSnapshot correctly
+        /// when the app restarts with a named profile active.
+        /// </summary>
+        public static ProfileData PendingDefaultSnapshot { get; set; }
+
         /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
         public static bool EnableAutoProfileSwitching { get; set; }
 
@@ -59,6 +67,9 @@ namespace PadForge.Common.Input
 
         /// <summary>Maximum number of MIDI virtual controllers.</summary>
         public const int MaxMidiSlots = InputManager.MaxPads;
+
+        /// <summary>Maximum number of Keyboard+Mouse virtual controllers.</summary>
+        public const int MaxKeyboardMouseSlots = InputManager.MaxPads;
 
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
@@ -100,44 +111,6 @@ namespace PadForge.Common.Input
             lock (devices.SyncRoot)
             {
                 return devices.Items.FirstOrDefault(d => d.InstanceGuid == instanceGuid);
-            }
-        }
-
-        /// <summary>
-        /// Finds all online devices. Thread-safe.
-        /// Returns a snapshot (safe to iterate outside the lock).
-        /// </summary>
-        public static List<UserDevice> GetOnlineDevices()
-        {
-            var devices = UserDevices;
-            if (devices == null) return new List<UserDevice>();
-
-            lock (devices.SyncRoot)
-            {
-                return devices.Items.Where(d => d.IsOnline).ToList();
-            }
-        }
-
-        /// <summary>
-        /// Adds a UserDevice if it doesn't already exist (by InstanceGuid).
-        /// Returns the existing or newly added device. Thread-safe.
-        /// </summary>
-        public static UserDevice AddOrGetDevice(UserDevice device)
-        {
-            if (device == null) throw new ArgumentNullException(nameof(device));
-
-            var devices = UserDevices;
-            if (devices == null) return device;
-
-            lock (devices.SyncRoot)
-            {
-                var existing = devices.Items.FirstOrDefault(
-                    d => d.InstanceGuid == device.InstanceGuid);
-                if (existing != null)
-                    return existing;
-
-                devices.Items.Add(device);
-                return device;
             }
         }
 
@@ -465,6 +438,28 @@ namespace PadForge.Common.Input
 
             ps.UpdateChecksum();
             return ps;
+        }
+
+        /// <summary>
+        /// Re-automaps all devices assigned to a slot for the given output type.
+        /// Called when switching virtual controller type so mappings match the new type.
+        /// </summary>
+        public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType)
+        {
+            var settings = UserSettings;
+            if (settings == null) return;
+
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us.MapTo != padIndex) continue;
+                    var ud = FindDeviceByInstanceGuid(us.InstanceGuid);
+                    var ps = CreateDefaultPadSetting(ud, outputType);
+                    us.SetPadSetting(ps);
+                    us.PadSettingChecksum = ps.PadSettingChecksum;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────

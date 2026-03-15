@@ -18,9 +18,10 @@ namespace PadForge.Engine
         private bool _isRawInputDevice;
 
         private const int MouseButtons = 5;
-        private const int MouseAxes = 2;
+        private const int MouseAxes = 3;
         private const int AxisCenter = 32767;
         private const float MotionScale = 2048f;
+        private const float ScrollScale = 128f;
 
         public uint SdlInstanceId => _sdlId;
         public string Name { get; private set; } = "Mouse";
@@ -104,6 +105,9 @@ namespace PadForge.Engine
             state.Axis[0] = Math.Clamp(AxisCenter + (int)(dx * MotionScale), 0, 65535);
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);
 
+            int scroll = RawInputListener.ConsumeMouseScroll(_rawInputHandle);
+            state.Axis[2] = Math.Clamp(AxisCenter + (int)(scroll * ScrollScale), 0, 65535);
+
             RawInputListener.GetMouseButtons(_rawInputHandle, _mouseButtonBuffer);
             // Merge buttons captured by the low-level mouse hook (same reason
             // as keyboard — WH_MOUSE_LL suppression blocks WM_INPUT).
@@ -138,6 +142,15 @@ namespace PadForge.Engine
                 Name = "Y Motion",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
                 Offset = 4,
+                Aspect = ObjectAspect.Position
+            };
+            items[index++] = new DeviceObjectItem
+            {
+                InputIndex = 2,
+                ObjectTypeGuid = ObjectGuid.ZAxis,
+                Name = "Scroll",
+                ObjectType = DeviceObjectTypeFlags.RelativeAxis,
+                Offset = 8,
                 Aspect = ObjectAspect.Position
             };
 

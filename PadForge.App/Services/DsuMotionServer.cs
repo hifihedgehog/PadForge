@@ -503,6 +503,7 @@ namespace PadForge.Services
                         else
                         {
                             result.Add(kvp.Key.Item1);
+                            seen.Add(kvp.Key.Item1);
                         }
                     }
                 }

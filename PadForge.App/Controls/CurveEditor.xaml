@@ -1,0 +1,16 @@
+<UserControl x:Class="PadForge.Controls.CurveEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Focusable="True">
+    <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
+            Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TotalSize}"
+            Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TotalSize}">
+        <Canvas x:Name="ChartCanvas" Margin="2" ClipToBounds="True"
+                MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
+                MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
+                MouseMove="Canvas_MouseMove"
+                MouseRightButtonDown="Canvas_MouseRightButtonDown"
+                Background="Transparent">
+        </Canvas>
+    </Border>
+</UserControl>

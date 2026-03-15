@@ -1,5 +1,5 @@
 # vJoy Presentation Test: verify vJoy controllers only active when device associated+connected
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\vjoy_presentation_log.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_presentation_log.txt"
 try {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes

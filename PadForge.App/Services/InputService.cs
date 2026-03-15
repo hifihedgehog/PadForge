@@ -693,11 +693,16 @@ namespace PadForge.Services
 
             // Find the UserDevice for the selected row.
             UserDevice ud = FindUserDevice(selected.InstanceGuid);
-            if (ud == null || ud.InputState == null)
+            if (ud == null)
             {
                 devVm.HasRawData = false;
                 return;
             }
+
+            // Device exists but disconnected — keep structural layout visible
+            // (collections were built from cached capabilities in EnsureDevicesRawState).
+            if (ud.InputState == null)
+                return;
 
             devVm.HasRawData = true;
             var state = ud.InputState;

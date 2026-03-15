@@ -586,7 +586,9 @@ namespace PadForge.Services
                                 ? devGuid : Guid.Empty,
                             SourceDeviceAxisIndex = ad.SourceDeviceAxisIndex,
                             ProcessName = ad.ProcessName ?? "",
-                            VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100
+                            VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100,
+                            MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
+                            MouseButton = ad.MouseButton
                         });
                     }
                 }
@@ -1111,7 +1113,9 @@ namespace PadForge.Services
                                 ? a.SourceDeviceGuid.ToString("N") : null,
                             SourceDeviceAxisIndex = a.SourceDeviceAxisIndex,
                             ProcessName = a.ProcessName,
-                            VolumeLimit = a.VolumeLimit
+                            VolumeLimit = a.VolumeLimit,
+                            MouseSensitivity = a.MouseSensitivity,
+                            MouseButton = a.MouseButton
                         }).ToArray()
                     });
                 }
@@ -1717,6 +1721,14 @@ namespace PadForge.Services
         /// <summary>Maximum volume percentage (1-100) for SystemVolume/AppVolume. Default 100 (no limit).</summary>
         [XmlElement]
         public int VolumeLimit { get; set; } = 100;
+
+        /// <summary>Pixels/scroll units per frame at full deflection for MouseMove/MouseScroll.</summary>
+        [XmlElement]
+        public float MouseSensitivity { get; set; } = 10f;
+
+        /// <summary>Which mouse button for MouseButtonPress/MouseButtonRelease.</summary>
+        [XmlElement]
+        public MacroMouseButton MouseButton { get; set; }
     }
 
     /// <summary>

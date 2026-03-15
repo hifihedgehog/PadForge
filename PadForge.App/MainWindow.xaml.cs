@@ -280,13 +280,15 @@ namespace PadForge
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
+                    // Controller preview tab: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, true, false);
+                        _inputService.SendTestRumble(pvm.PadIndex, null, true, false);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
+                    // Controller preview tab: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, false, true);
+                        _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
                 };
             }
 

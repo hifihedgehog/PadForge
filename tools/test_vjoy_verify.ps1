@@ -1,6 +1,6 @@
 # Verify vJoy fixes: navigate to Pad pages, check VJoyConfig and Mappings
 # Assumes PadForge is already running with at least one vJoy slot
-$outFile = "c:\Users\sonic\GitHub\PadForge\tools\vjoy_verify_log.txt"
+$outFile = "c:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_verify_log.txt"
 
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes

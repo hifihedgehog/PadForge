@@ -176,36 +176,5 @@ namespace PadForge.Engine
             }
         }
 
-        /// <summary>
-        /// Scans device object items to build a slider bitmask.
-        /// A bit is set if a <see cref="DeviceObjectItem"/> with a Slider type GUID
-        /// exists at that slider index.
-        /// </summary>
-        /// <param name="items">Device object metadata array.</param>
-        /// <param name="numSliders">Number of sliders on the device.</param>
-        /// <returns>Bitmask of present sliders (bit N = slider N exists).</returns>
-        public static int GetSlidersMask(DeviceObjectItem[] items, int numSliders)
-        {
-            int mask = 0;
-
-            if (items == null)
-                return mask;
-
-            int sliderIndex = 0;
-            foreach (var item in items)
-            {
-                if (item.ObjectTypeGuid == ObjectGuid.Slider)
-                {
-                    if (sliderIndex < 32)
-                        mask |= (1 << sliderIndex);
-                    sliderIndex++;
-
-                    if (sliderIndex >= numSliders)
-                        break;
-                }
-            }
-
-            return mask;
-        }
     }
 }

@@ -471,6 +471,18 @@ namespace PadForge.Common.Input
             if (!_connected || _connectedGeneration == _generation)
                 return;
 
+            // If our device ID exceeds the current descriptor count, this device
+            // no longer exists in the registry. Don't attempt RelinquishVJD on a
+            // non-existent device — it can corrupt the DLL's internal state and
+            // cause FindFreeDeviceId to fail. Immediately disconnect so Step 5's
+            // ID ordering fix can recreate us with a valid lower ID.
+            if (_deviceId > (uint)CurrentDescriptorCount)
+            {
+                DiagLog($"ReAcquireIfNeeded: device {_deviceId} exceeds descriptor count {CurrentDescriptorCount}, disconnecting for ID reassignment");
+                Disconnect();
+                return;
+            }
+
             _reacquireFailCount++;
             if (_reacquireFailCount > MaxReacquireRetries)
             {

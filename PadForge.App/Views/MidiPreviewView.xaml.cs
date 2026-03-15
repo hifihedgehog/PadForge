@@ -418,7 +418,7 @@ namespace PadForge.Views
             _flashOn = true;
             _flashTimer = new System.Windows.Threading.DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(170)
+                Interval = TimeSpan.FromMilliseconds(400)
             };
             _flashTimer.Tick += (s, e) =>
             {
@@ -476,9 +476,12 @@ namespace PadForge.Views
                 Canvas.SetTop(w.Fill, w.Y + CcBarHeight - 2 - fillH);
             }
 
-            // Update piano keys
+            // Update piano keys (skip the flashing key during recording).
             foreach (var w in _keyWidgets)
             {
+                if (_flashTarget == $"MidiNote{w.NoteIndex}" && _flashOn)
+                    continue; // Don't overwrite flash highlight
+
                 bool pressed = raw.Notes != null && w.NoteIndex < raw.Notes.Length && raw.Notes[w.NoteIndex];
                 w.Rect.Fill = pressed ? w.PressedBrush : w.NormalBrush;
             }

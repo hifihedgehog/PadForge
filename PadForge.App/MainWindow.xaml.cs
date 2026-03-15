@@ -176,6 +176,32 @@ namespace PadForge
             _viewModel.Settings.UninstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
                 "Uninstalling HidHide…", DriverInstaller.UninstallHidHide, RefreshHidHideStatus);
 
+            // Wire HidHide whitelist add (file browser).
+            _viewModel.Settings.AddWhitelistPathRequested += (s, e) =>
+            {
+                var dlg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = "Select application to whitelist",
+                    Filter = "Executables (*.exe)|*.exe|All files (*.*)|*.*",
+                    CheckFileExists = true
+                };
+                if (dlg.ShowDialog(this) == true)
+                {
+                    string path = dlg.FileName;
+                    if (!_viewModel.Settings.HidHideWhitelistPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
+                    {
+                        _viewModel.Settings.HidHideWhitelistPaths.Add(path);
+                        _viewModel.Settings.RaiseWhitelistChanged();
+                    }
+                }
+            };
+
+            // Wire HidHide whitelist changes → re-apply device hiding.
+            _viewModel.Settings.WhitelistChanged += (s, e) =>
+            {
+                _inputService?.ApplyDeviceHiding();
+            };
+
             // Wire vJoy install/uninstall commands.
             _viewModel.Settings.InstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
                 "Installing vJoy…", DriverInstaller.InstallVJoy, OnVJoyDriverChanged);
@@ -254,13 +280,15 @@ namespace PadForge
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
+                    // Controller preview tab: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, true, false);
+                        _inputService.SendTestRumble(pvm.PadIndex, null, true, false);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
+                    // Controller preview tab: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, false, true);
+                        _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
                 };
             }
 
@@ -293,6 +321,13 @@ namespace PadForge
                         nameof(PadViewModel.LeftAntiDeadZoneX) or nameof(PadViewModel.LeftAntiDeadZoneY) or
                         nameof(PadViewModel.RightAntiDeadZoneX) or nameof(PadViewModel.RightAntiDeadZoneY) or
                         nameof(PadViewModel.LeftLinear) or nameof(PadViewModel.RightLinear) or
+                        nameof(PadViewModel.LeftSensitivityCurveX) or nameof(PadViewModel.LeftSensitivityCurveY) or
+                        nameof(PadViewModel.RightSensitivityCurveX) or nameof(PadViewModel.RightSensitivityCurveY) or
+                        nameof(PadViewModel.LeftTriggerSensitivityCurve) or nameof(PadViewModel.RightTriggerSensitivityCurve) or
+                        nameof(PadViewModel.LeftMaxRangeX) or nameof(PadViewModel.LeftMaxRangeY) or
+                        nameof(PadViewModel.RightMaxRangeX) or nameof(PadViewModel.RightMaxRangeY) or
+                        nameof(PadViewModel.LeftCenterOffsetX) or nameof(PadViewModel.LeftCenterOffsetY) or
+                        nameof(PadViewModel.RightCenterOffsetX) or nameof(PadViewModel.RightCenterOffsetY) or
                         nameof(PadViewModel.LeftTriggerDeadZone) or nameof(PadViewModel.RightTriggerDeadZone) or
                         nameof(PadViewModel.LeftTriggerAntiDeadZone) or nameof(PadViewModel.RightTriggerAntiDeadZone) or
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
@@ -301,6 +336,9 @@ namespace PadForge
                         nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };
+
+                // vJoy custom stick/trigger config changes (indices 2+) trigger autosave.
+                pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
 
                 // VJoyConfig property changes (preset, counts) trigger autosave.
                 pad.VJoyConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
@@ -382,6 +420,7 @@ namespace PadForge
 
                         // Start recording — result will go to SourceDescriptor via normal path.
                         // Neutralize baseline so the previous POV/button press doesn't block detection.
+                        _savedPosDescriptor = null;
                         _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
                         return;
                     }
@@ -490,6 +529,16 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm == null) return;
 
+                // Toggle: if already recording this element, cancel.
+                if (padVm.CurrentRecordingTarget == targetName)
+                {
+                    _recorderService.CancelRecording();
+                    padVm.CurrentRecordingTarget = null;
+                    _pendingNegMapping = null;
+                    _savedPosDescriptor = null;
+                    return;
+                }
+
                 // Check if this is a neg target (e.g., "LeftThumbAxisXNeg").
                 bool isNegTarget = targetName.EndsWith("Neg", StringComparison.Ordinal);
                 string posTargetName = isNegTarget ? targetName.Substring(0, targetName.Length - 3) : targetName;
@@ -519,12 +568,18 @@ namespace PadForge
                     // Y axes record neg (up in game) first due to NegateAxis inversion.
                     // Pre-set _pendingNegMapping so the recorder result goes to NegSourceDescriptor.
                     // For vJoy custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
-                    bool isYFirstPhase = mapping.HasNegDirection
+                    bool isYAxis = mapping.HasNegDirection
                         && (mapping.TargetSettingName.Contains("AxisY")
-                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal))
-                        && !capturedPad.MapAllRecordingNeg;
+                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                    bool isYFirstPhase = isYAxis && !capturedPad.MapAllRecordingNeg;
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
+
+                    // For non-Y bidirectional axes (X), clear stale neg descriptor so the
+                    // auto-prompt for the opposite direction fires after the first button
+                    // is recorded (auto-prompt is gated by NegSourceDescriptor being empty).
+                    if (mapping.HasNegDirection && !isYAxis)
+                        mapping.NegSourceDescriptor = string.Empty;
 
                     _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid,
                         negRecording: isYFirstPhase);
@@ -540,16 +595,23 @@ namespace PadForge
 
                 // Wire existing macros.
                 foreach (var macro in pad.Macros)
+                {
                     WireMacroRecording(macro, capturedPad.PadIndex);
+                    WireMacroDirty(macro);
+                }
 
-                // Wire macros added later.
+                // Wire macros added later + mark dirty on add/remove.
                 pad.Macros.CollectionChanged += (s, e) =>
                 {
                     if (e.NewItems != null)
                     {
                         foreach (MacroItem macro in e.NewItems)
+                        {
                             WireMacroRecording(macro, capturedPad.PadIndex);
+                            WireMacroDirty(macro);
+                        }
                     }
+                    _settingsService.MarkDirty();
                 };
             }
 
@@ -606,8 +668,9 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
-                // Device nodes are created on demand by the engine (CreateVJoyController)
-                // when the slot becomes active — same pattern as ViGEm.
+                // Re-automap devices before setting OutputType so that when
+                // RebuildMappings fires, the PadSetting already has correct mappings.
+                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -661,6 +724,16 @@ namespace PadForge
             if (_inputService.EnsureTypeGroupOrder(silent: true))
                 _settingsService.MarkDirty();
 
+            // Detect drivers early (before sidebar rebuild) so power icons show correct
+            // colors even when starting minimized to tray (where OnLoaded never fires).
+            RefreshViGEmStatus();
+            _previousViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
+            RefreshHidHideStatus();
+            RefreshVJoyStatus();
+            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
+            RefreshMidiServicesStatus();
+            StartDriverStatusTimer();
+
             // Populate sidebar and dashboard with saved slots regardless of engine state,
             // so virtual controllers are visible for configuration even when the engine is off.
             _viewModel.RefreshNavControllerItems();
@@ -682,31 +755,9 @@ namespace PadForge
         //  Lifecycle
         // ─────────────────────────────────────────────
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void StartDriverStatusTimer()
         {
-            // Settings and tray icon are already initialized in the constructor
-            // (before Show) so that App.OnStartup can decide whether to show the window.
-
-            // Populate diagnostic info.
-            _viewModel.Settings.ApplicationVersion =
-                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
-            _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
-
-            // Detect ViGEmBus driver.
-            RefreshViGEmStatus();
-            _previousViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
-
-            // Detect HidHide driver.
-            RefreshHidHideStatus();
-
-            // Detect vJoy driver.
-            RefreshVJoyStatus();
-            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
-
-            // Detect MIDI Services.
-            RefreshMidiServicesStatus();
-
-            // Periodically refresh driver install states (every 5 seconds).
+            if (_driverStatusTimer != null) return;
             _driverStatusTimer = new System.Windows.Threading.DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(5)
@@ -753,6 +804,17 @@ namespace PadForge
                 }
             };
             _driverStatusTimer.Start();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // Driver detection and timer are initialized in the constructor so they
+            // work even when starting minimized to tray (where OnLoaded never fires).
+
+            // Populate diagnostic info.
+            _viewModel.Settings.ApplicationVersion =
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
+            _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
 
             // Check SDL3.dll availability.
             try
@@ -776,35 +838,59 @@ namespace PadForge
                 NavView.SelectedItem = NavView.MenuItems[0];
         }
 
-        private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private bool _shutdownComplete;
+
+        private async void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Save settings if dirty.
-            if (_settingsService.IsDirty)
+            if (_shutdownComplete)
+                return; // Second close call after async shutdown — let it through.
+
+            // Cancel the close so the window stays visible during shutdown.
+            e.Cancel = true;
+
+            // Show shutdown overlay and ensure window is visible.
+            ShutdownOverlay.Visibility = System.Windows.Visibility.Visible;
+            if (WindowState == WindowState.Minimized || !IsVisible)
             {
-                _settingsService.Save();
+                try { Show(); } catch (InvalidOperationException) { }
+                WindowState = WindowState.Normal;
             }
+
+            // Save settings synchronously (fast, UI-bound data).
+            if (_settingsService.IsDirty)
+                _settingsService.Save();
 
             // Stop driver status polling.
             _driverStatusTimer?.Stop();
             _driverStatusTimer = null;
 
-            // Dispose tray icon.
+            // Dispose tray icon and helper window.
             if (_notifyIcon != null)
             {
                 _notifyIcon.Visible = false;
                 _notifyIcon.Dispose();
                 _notifyIcon = null;
             }
+            if (_trayMenuHost != null)
+            {
+                _trayMenuHost.Close();
+                _trayMenuHost = null;
+            }
 
             // Unwire device service.
             _deviceService?.UnwireEvents();
 
-            // Stop engine and dispose services.
-            _recorderService?.Dispose();
-            _inputService?.Dispose();
+            // Run the slow shutdown work (controller disposal, vJoy node removal) off the UI thread.
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                _recorderService?.Dispose();
+                _inputService?.Dispose();
+                Common.Input.MidiVirtualController.Shutdown();
+            });
 
-            // Shut down MIDI Services SDK.
-            Common.Input.MidiVirtualController.Shutdown();
+            // All done — close for real.
+            _shutdownComplete = true;
+            Close();
         }
 
         // ─────────────────────────────────────────────
@@ -815,7 +901,7 @@ namespace PadForge
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
         private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
-        private const string MidiSvgPath = Common.ControllerIcons.MidiSvgPath;
+
 
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
         private const int ControllerInsertIndex = 3;
@@ -838,6 +924,9 @@ namespace PadForge
             NavView.PreviewMouseLeftButtonUp += OnNavViewDragEnd;
             NavView.PreviewKeyDown += OnNavViewDragKeyDown;
 
+            // ItemInvoked fires even when SelectsOnInvoked=false (used for AddController).
+            NavView.ItemInvoked += NavView_ItemInvoked;
+
             NavView.MenuItems.Clear();
 
             // Dashboard.
@@ -845,7 +934,7 @@ namespace PadForge
             {
                 Content = "Dashboard",
                 Tag = "Dashboard",
-                Icon = new SymbolIcon(Symbol.Home)
+                Icon = new FontIcon { Glyph = "\uF404" }
             });
 
             // Profiles.
@@ -862,7 +951,7 @@ namespace PadForge
             {
                 Content = "Devices",
                 Tag = "Devices",
-                Icon = new SymbolIcon(Symbol.AllApps)
+                Icon = new FontIcon { Glyph = "\uE772" }
             });
 
             // Controller entries (initially none — populated dynamically).
@@ -964,7 +1053,8 @@ namespace PadForge
                     {
                         Tag = "AddController",
                         Icon = new FontIcon { Glyph = "\uE710" }, // + icon
-                        Content = "Add Controller"
+                        Content = "Add Controller",
+                        SelectsOnInvoked = false
                     };
                     NavView.MenuItems.Add(addItem);
                 }
@@ -1026,6 +1116,7 @@ namespace PadForge
             bool isDS4 = iconKey == "DS4ControllerIcon";
             bool isVJoy = iconKey == "VJoyControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
+            bool isKbm = iconKey == "KeyboardMouseControllerIcon";
 
             var row = new System.Windows.Controls.DockPanel();
 
@@ -1069,7 +1160,7 @@ namespace PadForge
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = "Engine stopped";
             }
-            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi)
+            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi && outputType != VirtualControllerType.KeyboardMouse)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = "ViGEmBus not installed";
@@ -1137,7 +1228,9 @@ namespace PadForge
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0)
+                Margin = new Thickness(3, 0, 0, 0),
+                Width = 16,
+                TextAlignment = TextAlignment.Center
             });
 
             // Separator.
@@ -1150,105 +1243,129 @@ namespace PadForge
                 Margin = new Thickness(6, 0, 6, 0)
             });
 
-            if (isMidi)
+            // Type-switch buttons: Xbox / DS4 / vJoy / MIDI — shown for all cards.
+            // Xbox type button — use SetResourceReference for theme-aware Fill.
+            var xboxPath = new System.Windows.Shapes.Path
             {
-                // MIDI cards show only a static MIDI icon — no type switching to game controllers.
-                var midiIcon = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(MidiSvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                midiIcon.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                row.Children.Add(new System.Windows.Controls.Border
-                {
-                    Child = midiIcon,
-                    Padding = new Thickness(2),
-                    ToolTip = "MIDI",
-                    VerticalAlignment = VerticalAlignment.Center
-                });
-            }
-            else
+                Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var xboxBtn = new System.Windows.Controls.Button
             {
-                // Game controller cards: Xbox / DS4 / vJoy type-switch buttons (no MIDI).
-                // Xbox type button — use SetResourceReference for theme-aware Fill.
-                var xboxPath = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                var xboxBtn = new System.Windows.Controls.Button
-                {
-                    Content = xboxPath,
-                    ToolTip = "Xbox 360",
-                    Background = System.Windows.Media.Brushes.Transparent,
-                    Padding = new Thickness(2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    Opacity = isXbox ? 1.0 : 0.3,
-                    Cursor = System.Windows.Input.Cursors.Hand,
-                    Tag = navItem.PadIndex,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                xboxBtn.Click += OnSidebarTypeXbox;
-                row.Children.Add(xboxBtn);
+                Content = xboxPath,
+                ToolTip = "Xbox 360",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isXbox ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            xboxBtn.Click += OnSidebarTypeXbox;
+            row.Children.Add(xboxBtn);
 
-                // PS type button — use SetResourceReference for theme-aware Fill.
-                var ds4Path = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                var ds4Btn = new System.Windows.Controls.Button
-                {
-                    Content = ds4Path,
-                    ToolTip = "DualShock 4",
-                    Background = System.Windows.Media.Brushes.Transparent,
-                    Padding = new Thickness(2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    Opacity = isDS4 ? 1.0 : 0.3,
-                    Cursor = System.Windows.Input.Cursors.Hand,
-                    Margin = new Thickness(1, 0, 0, 0),
-                    Tag = navItem.PadIndex,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                ds4Btn.Click += OnSidebarTypeDS4;
-                row.Children.Add(ds4Btn);
+            // PS type button — use SetResourceReference for theme-aware Fill.
+            var ds4Path = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var ds4Btn = new System.Windows.Controls.Button
+            {
+                Content = ds4Path,
+                ToolTip = "DualShock 4",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isDS4 ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            ds4Btn.Click += OnSidebarTypeDS4;
+            row.Children.Add(ds4Btn);
 
-                // vJoy type button — use SetResourceReference for theme-aware Fill.
-                var vjoyPath = new System.Windows.Shapes.Path
+            // vJoy type button — use SetResourceReference for theme-aware Fill.
+            var vjoyPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
+                Width = 13,
+                Height = 13,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            var vjoyBtn = new System.Windows.Controls.Button
+            {
+                Content = vjoyPath,
+                ToolTip = "DirectInput",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isVJoy ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            vjoyBtn.Click += OnSidebarTypeVJoy;
+            row.Children.Add(vjoyBtn);
+
+            // Keyboard+Mouse type button — MDL2 glyph E961.
+            var kbmBtn = new System.Windows.Controls.Button
+            {
+                Content = new System.Windows.Controls.TextBlock
                 {
-                    Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
-                    Width = 13,
-                    Height = 13,
-                    Stretch = System.Windows.Media.Stretch.Uniform
-                };
-                vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
-                var vjoyBtn = new System.Windows.Controls.Button
+                    Text = "\uE961",
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 13
+                },
+                ToolTip = "Keyboard + Mouse",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isKbm ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            kbmBtn.Click += OnSidebarTypeKeyboardMouse;
+            row.Children.Add(kbmBtn);
+
+            // MIDI type button — MDL2 glyph (music note).
+            var midiBtn = new System.Windows.Controls.Button
+            {
+                Content = new System.Windows.Controls.TextBlock
                 {
-                    Content = vjoyPath,
-                    ToolTip = "vJoy",
-                    Background = System.Windows.Media.Brushes.Transparent,
-                    Padding = new Thickness(2),
-                    MinWidth = 0,
-                    MinHeight = 0,
-                    Opacity = isVJoy ? 1.0 : 0.3,
-                    Cursor = System.Windows.Input.Cursors.Hand,
-                    Margin = new Thickness(1, 0, 0, 0),
-                    Tag = navItem.PadIndex,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                vjoyBtn.Click += OnSidebarTypeVJoy;
-                row.Children.Add(vjoyBtn);
-            }
+                    Text = "\uE8D6",
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 13
+                },
+                ToolTip = "MIDI",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(2),
+                MinWidth = 0,
+                MinHeight = 0,
+                Opacity = isMidi ? 1.0 : 0.3,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(1, 0, 0, 0),
+                Tag = navItem.PadIndex,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            midiBtn.Click += OnSidebarTypeMidi;
+            row.Children.Add(midiBtn);
 
             // Per-type instance label.
             row.Children.Add(new System.Windows.Controls.TextBlock
@@ -1257,7 +1374,9 @@ namespace PadForge
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0)
+                Margin = new Thickness(3, 0, 0, 0),
+                Width = 12,
+                TextAlignment = TextAlignment.Center
             });
 
             // Wrap in a rounded card border.
@@ -1306,6 +1425,7 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox360);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox360;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1318,6 +1438,7 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.DualShock4);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.DualShock4;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
@@ -1332,7 +1453,34 @@ namespace PadForge
             {
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.VJoy);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                _inputService.EnsureTypeGroupOrder();
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar Keyboard+Mouse type button click.</summary>
+        private void OnSidebarTypeKeyboardMouse(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
+                _inputService.EnsureTypeGroupOrder();
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar MIDI type button click.</summary>
+        private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -1440,7 +1588,7 @@ namespace PadForge
             if (_cardDragSource == null || _cardDragSource.Tag is not int padIndex) return;
 
             var cards = GetControllerCardBounds();
-            if (cards.Count < 2) return;
+            if (cards.Count == 0) return;
 
             _dragSourcePadIndex = padIndex;
             _dragSourceVisualPos = cards.FindIndex(c => c.PadIndex == padIndex);
@@ -1471,12 +1619,11 @@ namespace PadForge
             _dragAdorner?.UpdatePosition(navViewPos);
 
             var cards = GetControllerCardBounds();
-            if (cards.Count < 2) return;
+            if (cards.Count == 0) return;
 
             // If cursor has moved outside the card column horizontally (e.g. dragged
             // into the main content area for cross-panel assignment), don't trigger
             // any swap/insert reordering — just clear indicators.
-            if (cards.Count > 0)
             {
                 double colLeft = cards[0].Left;
                 double colRight = cards[0].Left + cards[0].Width;
@@ -1899,7 +2046,7 @@ namespace PadForge
         /// </summary>
         private bool HasAnyControllerTypeCapacity()
         {
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -1909,12 +2056,14 @@ namespace PadForge
                     case VirtualControllerType.DualShock4: ds4Count++; break;
                     case VirtualControllerType.VJoy: vjoyCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
+                    case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
             }
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
                 || vjoyCount < SettingsManager.MaxVJoySlots
-                || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots);
+                || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots)
+                || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
         }
 
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
@@ -1978,7 +2127,7 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Count existing slots by type for per-type capacity check.
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -1988,6 +2137,7 @@ namespace PadForge
                     case VirtualControllerType.DualShock4: ds4Count++; break;
                     case VirtualControllerType.VJoy: vjoyCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
+                    case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
             }
 
@@ -2083,9 +2233,9 @@ namespace PadForge
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPopupPath,
-                ToolTip = !vjoyInstalled ? "vJoy (driver not installed)"
-                        : vjoyAtCapacity ? $"vJoy (max {SettingsManager.MaxVJoySlots})"
-                        : "vJoy",
+                ToolTip = !vjoyInstalled ? "DirectInput (driver not installed)"
+                        : vjoyAtCapacity ? $"DirectInput (max {SettingsManager.MaxVJoySlots})"
+                        : "DirectInput",
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
@@ -2110,15 +2260,51 @@ namespace PadForge
             };
             stack.Children.Add(vjoyBtn);
 
-            // MIDI button — theme-aware icon fill.
-            var midiPopupPath = new System.Windows.Shapes.Path
+            // Keyboard+Mouse button — MDL2 glyph E961.
+            var kbmPopupIcon = new System.Windows.Controls.TextBlock
             {
-                Data = System.Windows.Media.Geometry.Parse(MidiSvgPath),
-                Width = 28,
-                Height = 28,
-                Stretch = System.Windows.Media.Stretch.Uniform
+                Text = "\uE961",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 28,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
-            midiPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            bool kbmAtCapacity = kbmCount >= SettingsManager.MaxKeyboardMouseSlots;
+            var kbmPopupBtn = new System.Windows.Controls.Button
+            {
+                Content = kbmPopupIcon,
+                ToolTip = kbmAtCapacity ? $"Keyboard + Mouse (max {SettingsManager.MaxKeyboardMouseSlots})"
+                        : "Keyboard + Mouse",
+                Background = System.Windows.Media.Brushes.Transparent,
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                IsEnabled = !kbmAtCapacity,
+                Opacity = kbmAtCapacity ? 0.35 : 1.0
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(kbmPopupBtn, "AddKeyboardMouseBtn");
+            kbmPopupBtn.Click += (s, e) =>
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.KeyboardMouse);
+                if (newSlot >= 0)
+                {
+                    _inputService.EnsureTypeGroupOrder();
+                    int nav = FindLastSlotOfType(VirtualControllerType.KeyboardMouse);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(kbmPopupBtn);
+
+            // MIDI button — theme-aware icon fill.
+            var midiPopupIcon = new System.Windows.Controls.TextBlock
+            {
+                Text = "\uE8D6",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 28,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
             bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || midiAtCapacity;
@@ -2127,7 +2313,7 @@ namespace PadForge
                                : "MIDI";
             var midiBtn = new System.Windows.Controls.Button
             {
-                Content = midiPopupPath,
+                Content = midiPopupIcon,
                 ToolTip = midiTooltip,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
@@ -2182,6 +2368,12 @@ namespace PadForge
         /// </summary>
         private void SelectNavItemByTag(string tag)
         {
+            if (tag == "Settings")
+            {
+                NavView.SelectedItem = NavView.SettingsItem;
+                return;
+            }
+
             foreach (var mi in NavView.MenuItems)
             {
                 if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
@@ -2189,6 +2381,30 @@ namespace PadForge
                     NavView.SelectedItem = nvi;
                     return;
                 }
+            }
+
+            foreach (var mi in NavView.FooterMenuItems)
+            {
+                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
+                {
+                    NavView.SelectedItem = nvi;
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles clicks on non-selectable NavigationView items (e.g. "Add Controller").
+        /// SelectsOnInvoked=false prevents the blue indicator from moving to these items,
+        /// but ItemInvoked still fires so we can show the popup.
+        /// </summary>
+        private void NavView_ItemInvoked(NavigationView sender,
+            NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.InvokedItemContainer is NavigationViewItem nvi
+                && nvi.Tag?.ToString() == "AddController")
+            {
+                ShowControllerTypePopup(nvi);
             }
         }
 
@@ -2213,37 +2429,6 @@ namespace PadForge
             }
             else
             {
-                return;
-            }
-
-            // "Add Controller" shows a type-selection popup, then creates a slot.
-            // Deferred to next dispatcher frame because CreateSlot() triggers
-            // RebuildControllerSection() which modifies NavView.MenuItems —
-            // doing that synchronously inside SelectionChanged crashes ModernWpf's
-            // internal ItemsRepeater layout.
-            if (tag == "AddController")
-            {
-                // Immediately reselect the previous page so the blue selection
-                // indicator never visually lands on the "Add Controller" item.
-                SelectNavItemByTag(_viewModel.SelectedNavTag ?? "Dashboard");
-
-                // Defer the popup + CreateSlot because they trigger
-                // RebuildControllerSection() which modifies NavView.MenuItems —
-                // doing that synchronously inside SelectionChanged crashes ModernWpf's
-                // internal ItemsRepeater layout.
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    NavigationViewItem addItem = null;
-                    foreach (var mi in NavView.MenuItems)
-                    {
-                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == "AddController")
-                        {
-                            addItem = nvi;
-                            break;
-                        }
-                    }
-                    ShowControllerTypePopup(addItem);
-                }));
                 return;
             }
 
@@ -2541,6 +2726,23 @@ namespace PadForge
             };
         }
 
+        /// <summary>
+        /// Wires a macro and its actions to trigger auto-save on any property change.
+        /// </summary>
+        private void WireMacroDirty(MacroItem macro)
+        {
+            macro.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+            foreach (var action in macro.Actions)
+                action.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+            macro.Actions.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (MacroAction action in e.NewItems)
+                        action.PropertyChanged += (s2, e2) => _settingsService.MarkDirty();
+                _settingsService.MarkDirty();
+            };
+        }
+
         private void OnThemeChanged(object sender, int themeIndex)
         {
             ModernWpf.ThemeManager.Current.ApplicationTheme = themeIndex switch
@@ -2565,15 +2767,61 @@ namespace PadForge
             if (!string.IsNullOrEmpty(exePath))
                 _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
 
-            // Context menu.
-            var menu = new System.Windows.Forms.ContextMenuStrip();
-            menu.Items.Add("Show PadForge", null, (s, e) => RestoreFromTray());
-            menu.Items.Add("-");
-            menu.Items.Add("Exit", null, (s, e) => { _notifyIcon.Visible = false; Close(); });
-            _notifyIcon.ContextMenuStrip = menu;
+            // Use WPF ContextMenu for ModernWPF-themed tray menu (no WinForms ContextMenuStrip).
+            _notifyIcon.MouseClick += (s, e) =>
+            {
+                if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                    Dispatcher.BeginInvoke(() => ShowTrayContextMenu());
+            };
 
             // Double-click to restore.
             _notifyIcon.DoubleClick += (s, e) => RestoreFromTray();
+        }
+
+        /// <summary>Invisible helper window that keeps ModernWPF styles available for the tray context menu
+        /// even when the main window is hidden.</summary>
+        private Window _trayMenuHost;
+
+        private void ShowTrayContextMenu()
+        {
+            // Ensure the invisible host window exists so the context menu inherits ModernWPF styles.
+            if (_trayMenuHost == null)
+            {
+                _trayMenuHost = new Window
+                {
+                    Width = 0, Height = 0,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    AllowsTransparency = true,
+                    Opacity = 0,
+                };
+                _trayMenuHost.Show();
+            }
+
+            var menu = new System.Windows.Controls.ContextMenu
+            {
+                PlacementTarget = _trayMenuHost,
+                Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint,
+            };
+
+            var showItem = new System.Windows.Controls.MenuItem
+            {
+                Header = "Show PadForge",
+                FontWeight = FontWeights.SemiBold,
+            };
+            showItem.Click += (s, e) => RestoreFromTray();
+            menu.Items.Add(showItem);
+
+            menu.Items.Add(new System.Windows.Controls.Separator());
+
+            var exitItem = new System.Windows.Controls.MenuItem
+            {
+                Header = "Exit",
+            };
+            exitItem.Click += (s, e) => { _notifyIcon.Visible = false; Close(); };
+            menu.Items.Add(exitItem);
+
+            menu.IsOpen = true;
         }
 
         private void OnStateChanged(object sender, EventArgs e)
@@ -2585,12 +2833,20 @@ namespace PadForge
             }
         }
 
+        private bool _isRestoring;
+
         private void RestoreFromTray()
         {
-            Show();
-            WindowState = WindowState.Normal;
-            Activate();
-            _notifyIcon.Visible = false;
+            if (_isRestoring || IsVisible) return;
+            _isRestoring = true;
+            try
+            {
+                Show();
+                WindowState = WindowState.Normal;
+                Activate();
+                _notifyIcon.Visible = false;
+            }
+            finally { _isRestoring = false; }
         }
 
         // ─────────────────────────────────────────────
@@ -2641,6 +2897,9 @@ namespace PadForge
 
         private void OnCopyFrom(PadViewModel padVm)
         {
+            // Flush all pad UIs to storage so source PadSettings reflect current state.
+            _inputService.FlushAllPadViewModels();
+
             // Build list of all devices that have configured settings.
             var entries = new List<CopyFromDialog.DeviceEntry>();
             var settings = SettingsManager.UserSettings?.Items;
@@ -2650,9 +2909,10 @@ namespace PadForge
                 {
                     foreach (var us in settings)
                     {
-                        // Skip the currently selected device.
+                        // Skip the same device+slot combination (allow same device on other slots).
                         if (padVm.SelectedMappedDevice != null &&
-                            us.InstanceGuid == padVm.SelectedMappedDevice.InstanceGuid)
+                            us.InstanceGuid == padVm.SelectedMappedDevice.InstanceGuid &&
+                            us.MapTo == padVm.PadIndex)
                             continue;
 
                         var ps = us.GetPadSetting();
@@ -2739,8 +2999,8 @@ namespace PadForge
         private void RefreshDashboardActiveSlots()
         {
             var activeSlots = new System.Collections.Generic.List<int>();
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
-            for (int i = 0; i < _viewModel.Pads.Count; i++)
+            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
+            for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (SettingsManager.SlotCreated[i])
                 {
@@ -2751,13 +3011,15 @@ namespace PadForge
                         case VirtualControllerType.DualShock4: ds4Count++; break;
                         case VirtualControllerType.VJoy: vjoyCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
+                        case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                     }
                 }
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots
                            || vjoyCount < SettingsManager.MaxVJoySlots
-                           || midiCount < SettingsManager.MaxMidiSlots;
+                           || midiCount < SettingsManager.MaxMidiSlots
+                           || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
             _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 
@@ -2822,11 +3084,13 @@ namespace PadForge
             {
                 bool installed = DriverInstaller.IsMidiServicesInstalled();
                 _viewModel.Settings.IsMidiServicesInstalled = installed;
+                _viewModel.Dashboard.IsMidiServicesInstalled = installed;
                 _viewModel.Settings.MidiServicesVersion = installed ? "Windows MIDI Services" : string.Empty;
             }
             catch
             {
                 _viewModel.Settings.IsMidiServicesInstalled = false;
+                _viewModel.Dashboard.IsMidiServicesInstalled = false;
             }
         }
 

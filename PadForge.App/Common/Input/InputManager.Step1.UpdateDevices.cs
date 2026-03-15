@@ -674,7 +674,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Returns all UserSettings assigned to a specific pad slot (0–3).
+        /// Returns all UserSettings assigned to a specific pad slot (0–15).
         /// Allocates a new List — use <see cref="FindByPadIndex(int, UserSetting[], out int)"/>
         /// in the hot path to avoid allocations.
         /// </summary>

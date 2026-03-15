@@ -7,7 +7,7 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// ViewModel for the Dashboard page. Shows an at-a-glance overview
-    /// of all 4 controller slots, engine status, connected devices, and
+    /// of all 16 controller slots, engine status, connected devices, and
     /// ViGEmBus driver status.
     /// </summary>
     public partial class DashboardViewModel : ViewModelBase
@@ -212,6 +212,26 @@ namespace PadForge.ViewModels
 
         /// <summary>Display text for vJoy status.</summary>
         public string VJoyStatusText => IsVJoyInstalled ? "Installed" : "Not Installed";
+
+        // ─────────────────────────────────────────────
+        //  Windows MIDI Services status
+        // ─────────────────────────────────────────────
+
+        private bool _isMidiServicesInstalled;
+
+        /// <summary>Whether Windows MIDI Services is installed.</summary>
+        public bool IsMidiServicesInstalled
+        {
+            get => _isMidiServicesInstalled;
+            set
+            {
+                if (SetProperty(ref _isMidiServicesInstalled, value))
+                    OnPropertyChanged(nameof(MidiServicesStatusText));
+            }
+        }
+
+        /// <summary>Display text for MIDI Services status.</summary>
+        public string MidiServicesStatusText => IsMidiServicesInstalled ? "Installed" : "Not Installed";
 
         // ─────────────────────────────────────────────
         //  DSU Motion Server

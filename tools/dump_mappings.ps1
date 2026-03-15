@@ -4,7 +4,7 @@ Add-Type -AssemblyName UIAutomationTypes
 $ae = [System.Windows.Automation.AutomationElement]
 $ct = [System.Windows.Automation.ControlType]
 $tree = [System.Windows.Automation.TreeScope]
-$out = "C:\Users\sonic\GitHub\PadForge\tools\mappings_dump.txt"
+$out = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\mappings_dump.txt"
 
 $cond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, "PadForge")
 $win = $ae::RootElement.FindFirst($tree::Children, $cond)

@@ -111,6 +111,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HidHideStatusText));
                     _installHidHideCommand?.NotifyCanExecuteChanged();
                     _uninstallHidHideCommand?.NotifyCanExecuteChanged();
+                    _addWhitelistPathCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -148,6 +149,54 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user requests HidHide uninstallation.</summary>
         public event EventHandler UninstallHidHideRequested;
+
+        /// <summary>Application paths whitelisted in HidHide (user-visible paths, not DOS device paths).</summary>
+        public ObservableCollection<string> HidHideWhitelistPaths { get; } = new();
+
+        private string _selectedWhitelistPath;
+
+        /// <summary>Currently selected whitelist path in the list.</summary>
+        public string SelectedWhitelistPath
+        {
+            get => _selectedWhitelistPath;
+            set
+            {
+                if (SetProperty(ref _selectedWhitelistPath, value))
+                    _removeWhitelistPathCommand?.NotifyCanExecuteChanged();
+            }
+        }
+
+        private RelayCommand _addWhitelistPathCommand;
+
+        /// <summary>Command to add an application to the HidHide whitelist.</summary>
+        public RelayCommand AddWhitelistPathCommand =>
+            _addWhitelistPathCommand ??= new RelayCommand(
+                () => AddWhitelistPathRequested?.Invoke(this, EventArgs.Empty),
+                () => _isHidHideInstalled);
+
+        private RelayCommand _removeWhitelistPathCommand;
+
+        /// <summary>Command to remove the selected application from the HidHide whitelist.</summary>
+        public RelayCommand RemoveWhitelistPathCommand =>
+            _removeWhitelistPathCommand ??= new RelayCommand(
+                () =>
+                {
+                    if (_selectedWhitelistPath != null)
+                    {
+                        HidHideWhitelistPaths.Remove(_selectedWhitelistPath);
+                        RaiseWhitelistChanged();
+                    }
+                },
+                () => _selectedWhitelistPath != null);
+
+        /// <summary>Raised when the user requests adding a whitelist path (opens file dialog).</summary>
+        public event EventHandler AddWhitelistPathRequested;
+
+        /// <summary>Raised when the whitelist changes (add or remove).</summary>
+        public event EventHandler WhitelistChanged;
+
+        /// <summary>Raises the WhitelistChanged event.</summary>
+        internal void RaiseWhitelistChanged() => WhitelistChanged?.Invoke(this, EventArgs.Empty);
 
         // ─────────────────────────────────────────────
         //  vJoy driver
@@ -226,7 +275,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>MIDI Services status display text.</summary>
-        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Available" : "Not Available";
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Installed" : "Not Installed";
 
         private string _midiServicesVersion = string.Empty;
 
@@ -239,11 +288,14 @@ namespace PadForge.ViewModels
 
         private RelayCommand _installMidiServicesCommand;
 
+        /// <summary>True if the OS meets the minimum version for Windows MIDI Services (Win11 24H2, build 26100).</summary>
+        public static bool IsMidiOsSupported => Environment.OSVersion.Version.Build >= 26100;
+
         /// <summary>Command to download and install Windows MIDI Services.</summary>
         public RelayCommand InstallMidiServicesCommand =>
             _installMidiServicesCommand ??= new RelayCommand(
                 () => InstallMidiServicesRequested?.Invoke(this, EventArgs.Empty),
-                () => !_isMidiServicesInstalled);
+                () => !_isMidiServicesInstalled && IsMidiOsSupported);
 
         private RelayCommand _uninstallMidiServicesCommand;
 
@@ -648,6 +700,20 @@ namespace PadForge.ViewModels
         {
             get => _vjoyCount;
             set => SetProperty(ref _vjoyCount, value);
+        }
+
+        private int _midiCount;
+        public int MidiCount
+        {
+            get => _midiCount;
+            set => SetProperty(ref _midiCount, value);
+        }
+
+        private int _kbmCount;
+        public int KbmCount
+        {
+            get => _kbmCount;
+            set => SetProperty(ref _kbmCount, value);
         }
     }
 }

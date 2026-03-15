@@ -1,0 +1,28 @@
+<UserControl x:Class="PadForge.Views.KBMPreviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="700"
+             Background="Transparent">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>      <!-- Keyboard -->
+            <RowDefinition Height="2*"/>      <!-- Mouse below -->
+        </Grid.RowDefinitions>
+
+        <!-- QWERTY keyboard — full width -->
+        <Viewbox Grid.Row="0" Stretch="Uniform" Margin="8,8,8,4">
+            <Canvas x:Name="KeyboardCanvas" Width="556" Height="136" ClipToBounds="True"/>
+        </Viewbox>
+
+        <!-- Mouse — centered below keyboard -->
+        <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center"
+                 Margin="8,4,8,8">
+            <Canvas x:Name="MouseCanvas" Width="160" Height="195" ClipToBounds="True"/>
+        </Viewbox>
+    </Grid>
+
+</UserControl>

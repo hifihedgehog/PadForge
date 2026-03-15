@@ -55,7 +55,7 @@ namespace PadForge.Services
         /// <summary>The mapping item currently being recorded.</summary>
         private MappingItem _activeMapping;
 
-        /// <summary>The pad index (0–3) of the active recording.</summary>
+        /// <summary>The pad index (0–15) of the active recording.</summary>
         private int _activePadIndex = -1;
 
         /// <summary>The device GUID to record from (the selected device).</summary>
@@ -121,7 +121,7 @@ namespace PadForge.Services
         /// If another recording is active, it is cancelled first.
         /// </summary>
         /// <param name="mapping">The mapping item to record a source for.</param>
-        /// <param name="padIndex">The pad index (0–3) to read input from.</param>
+        /// <param name="padIndex">The pad index (0–15) to read input from.</param>
         /// <param name="deviceGuid">The specific device GUID to record from.</param>
         /// <param name="neutralizeBaseline">When true, forces all buttons and POVs to
         /// their neutral state in the baseline so that any press (even if currently held)
@@ -165,6 +165,7 @@ namespace PadForge.Services
                 // No device available — can't record.
                 _activeMapping = null;
                 _mainVm.StatusText = "No device connected to record from.";
+                RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -429,6 +430,14 @@ namespace PadForge.Services
             // VJoy bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
             if (target.StartsWith("VJoyAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
                 return negRecording ? axisPositive : !axisPositive;
+
+            // KBM bidirectional axes: never auto-invert. The full analog axis
+            // maps directly to mouse/scroll movement — positive raw = right/down,
+            // which is the correct screen convention. MainWindow already clears
+            // the neg descriptor for full-axis recordings on bidirectional targets.
+            if (target.StartsWith("KbmMouse", StringComparison.Ordinal)
+                || target.StartsWith("KbmScroll", StringComparison.Ordinal))
+                return false;
 
             // Trigger targets: increasing value is natural.
             // Negative delta = reverse polarity = needs inversion.

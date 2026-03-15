@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
+using PadForge.Common;
+using PadForge.Common.Input;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -82,21 +84,38 @@ namespace PadForge.Views
             return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Midi;
         }
 
+        private bool IsKBM()
+        {
+            return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.KeyboardMouse;
+        }
+
         private void ApplyViewMode()
         {
-            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null) return;
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null) return;
 
             bool isMidi = IsMidi();
+            bool isKBM = IsKBM();
             bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
-            if (isMidi)
+            if (isKBM)
+            {
+                // KB+Mouse: show KBM preview, hide everything else
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Visible;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
+            else if (isMidi)
             {
                 // MIDI: show MIDI preview, hide everything else
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Visible;
+                KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (isSchematic)
@@ -106,6 +125,7 @@ namespace PadForge.Views
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Visible;
                 MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else
@@ -113,6 +133,7 @@ namespace PadForge.Views
                 // Gamepad preset: standard 2D/3D toggle
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Collapsed;
                 ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
                 ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Visible;
@@ -131,23 +152,27 @@ namespace PadForge.Views
         {
             if (TabSticks == null || TabTriggers == null || TabForceFeedback == null) return;
 
+            bool isKbm = IsKBM();
             bool isMidi = IsMidi();
-            var vis = isMidi ? Visibility.Collapsed : Visibility.Visible;
-            TabSticks.Visibility = vis;
-            TabTriggers.Visibility = vis;
-            TabForceFeedback.Visibility = vis;
+            bool hideAllGamepadTabs = isMidi;
+            var vis = hideAllGamepadTabs ? Visibility.Collapsed : Visibility.Visible;
+            // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers and FFB
+            TabSticks.Visibility = (isMidi) ? Visibility.Collapsed : Visibility.Visible;
+            TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
+            TabForceFeedback.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
 
             if (MotorBarsGrid != null)
-                MotorBarsGrid.Visibility = vis;
+                MotorBarsGrid.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
 
             // If on a hidden tab, switch back to Controller tab
-            if (isMidi && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
+            if ((isMidi || isKbm) && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
                 vm.SelectedConfigTab = 0;
         }
 
         private void BindActiveModelView()
         {
             bool isMidi = IsMidi();
+            bool isKBM = IsKBM();
             bool isSchematic = IsCustomVJoy();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
@@ -156,10 +181,17 @@ namespace PadForge.Views
             ControllerModel2D.Unbind();
             ControllerSchematic.Unbind();
             MidiPreview.Unbind();
+            KBMPreview.Unbind();
 
             if (DataContext is not PadViewModel vm) return;
 
-            if (isMidi)
+            if (isKBM)
+            {
+                KBMPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
+                KBMPreview.ControllerElementRecordRequested += OnModelRecordRequested;
+                KBMPreview.Bind(vm);
+            }
+            else if (isMidi)
             {
                 MidiPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
                 MidiPreview.ControllerElementRecordRequested += OnModelRecordRequested;
@@ -335,7 +367,11 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm) return;
             if (VJoyPresetCombo.SelectedIndex < 0) return;
 
+            // Re-automap devices BEFORE setting preset so that when
+            // RebuildMappings → OnMappingsRebuilt fires, PadSetting is already correct.
+            SettingsManager.ReAutoMapSlot(vm.PadIndex, vm.OutputType);
             vm.VJoyConfig.Preset = (VJoyPreset)VJoyPresetCombo.SelectedIndex;
+
             SyncVJoyCustomFields(vm);
             ApplyViewMode();
         }
@@ -442,6 +478,110 @@ namespace PadForge.Views
             if (vm.MidiConfig.CcCount != oldCcCount || vm.MidiConfig.NoteCount != oldNoteCount ||
                 vm.MidiConfig.StartCc != oldStartCc || vm.MidiConfig.StartNote != oldStartNote)
                 vm.RebuildMappings();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Sensitivity curve presets
+        // ─────────────────────────────────────────────
+
+        private static string FindPresetSerialized(string name)
+        {
+            foreach (var (n, s) in CurveLut.Presets)
+                if (n == name) return s;
+            return null;
+        }
+
+        private void StickPresetX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
+            {
+                var serialized = FindPresetSerialized(name);
+                if (serialized != null) item.SensitivityCurveX = serialized;
+            }
+        }
+
+        private void StickPresetY_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
+            {
+                var serialized = FindPresetSerialized(name);
+                if (serialized != null) item.SensitivityCurveY = serialized;
+            }
+        }
+
+        private void TriggerPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is TriggerConfigItem item)
+            {
+                var serialized = FindPresetSerialized(name);
+                if (serialized != null) item.SensitivityCurve = serialized;
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  AppVolume process dropdown
+        // ─────────────────────────────────────────────
+
+        private void AppVolumeProcessDropDown_Opened(object sender, EventArgs e)
+        {
+            if (sender is ComboBox cb && cb.DataContext is MacroAction action)
+                action.RefreshAudioProcessesCommand.Execute(null);
+        }
+
+        /// <summary>
+        /// Populates the device axis picker ComboBox with devices assigned to the current slot.
+        /// </summary>
+        private void DeviceAxisPicker_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is not ComboBox cb || _currentPadVm == null)
+                return;
+
+            int slotIndex = _currentPadVm.PadIndex;
+            var devices = new List<PadForge.Engine.Data.UserDevice>();
+
+            foreach (var setting in SettingsManager.UserSettings.Items)
+            {
+                if (setting.MapTo != slotIndex)
+                    continue;
+                var ud = SettingsManager.UserDevices.Items
+                    .Find(d => d.InstanceGuid == setting.InstanceGuid);
+                if (ud != null && !devices.Contains(ud))
+                    devices.Add(ud);
+            }
+
+            cb.ItemsSource = devices;
+        }
+
+        /// <summary>
+        /// Populates the axis index picker ComboBox with axis-type DeviceObjects
+        /// from the device selected in SourceDeviceGuid.
+        /// </summary>
+        private void DeviceAxisIndexPicker_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is not ComboBox cb || cb.DataContext is not MacroAction action)
+                return;
+
+            if (action.SourceDeviceGuid == Guid.Empty)
+            {
+                cb.ItemsSource = null;
+                return;
+            }
+
+            var ud = SettingsManager.UserDevices.Items
+                .Find(d => d.InstanceGuid == action.SourceDeviceGuid);
+            if (ud?.DeviceObjects == null)
+            {
+                cb.ItemsSource = null;
+                return;
+            }
+
+            var axes = new List<PadForge.Engine.DeviceObjectItem>();
+            foreach (var obj in ud.DeviceObjects)
+            {
+                if (obj.IsAxis)
+                    axes.Add(obj);
+            }
+            cb.ItemsSource = axes;
         }
     }
 }

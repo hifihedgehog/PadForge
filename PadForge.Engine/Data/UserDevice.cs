@@ -96,14 +96,6 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int CapType { get; set; }
 
-        /// <summary>Device subtype (device-specific classification).</summary>
-        [XmlElement]
-        public int CapSubType { get; set; }
-
-        /// <summary>Device capability flags.</summary>
-        [XmlElement]
-        public int CapFlags { get; set; }
-
         /// <summary>Whether the device has a gyroscope sensor.</summary>
         [XmlElement]
         public bool HasGyro { get; set; }
@@ -212,42 +204,10 @@ namespace PadForge.Engine.Data
         public DateTime OldInputStateTime { get; set; }
 
         /// <summary>
-        /// The "original" input state captured at the start of a recording session.
-        /// Used by the recorder to detect deltas.
-        /// </summary>
-        [XmlIgnore]
-        public CustomInputState OrgInputState { get; set; }
-
-        /// <summary>
-        /// Timestamp of the <see cref="OrgInputState"/> capture.
-        /// </summary>
-        [XmlIgnore]
-        public DateTime OrgInputStateTime { get; set; }
-
-        /// <summary>
-        /// Bitmask of present axes (bit N set = axis N exists on the device).
-        /// Computed from device objects during Step 1.
-        /// </summary>
-        [XmlIgnore]
-        public int AxeMask { get; set; }
-
-        /// <summary>
-        /// Bitmask of force-feedback actuator axes.
-        /// </summary>
-        [XmlIgnore]
-        public int ActuatorMask { get; set; }
-
-        /// <summary>
         /// Total number of force-feedback actuator axes.
         /// </summary>
         [XmlIgnore]
         public int ActuatorCount { get; set; }
-
-        /// <summary>
-        /// Bitmask of present sliders.
-        /// </summary>
-        [XmlIgnore]
-        public int SliderMask { get; set; }
 
         /// <summary>
         /// Array of device object metadata (axes, hats, buttons).
@@ -255,13 +215,6 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public DeviceObjectItem[] DeviceObjects { get; set; }
-
-        /// <summary>
-        /// Array of device effect metadata (rumble capabilities).
-        /// Populated during Step 1.
-        /// </summary>
-        [XmlIgnore]
-        public DeviceEffectItem[] DeviceEffects { get; set; }
 
         /// <summary>
         /// Force feedback state tracker for this device.
@@ -345,17 +298,12 @@ namespace PadForge.Engine.Data
         /// <param name="buttonCount">Number of buttons.</param>
         /// <param name="povCount">Number of POV hats.</param>
         /// <param name="type">Device type (see <see cref="InputDeviceType"/>).</param>
-        /// <param name="subtype">Device subtype.</param>
-        /// <param name="flags">Capability flags.</param>
-        public void LoadCapabilities(int axeCount, int buttonCount, int povCount,
-            int type, int subtype, int flags)
+        public void LoadCapabilities(int axeCount, int buttonCount, int povCount, int type)
         {
             CapAxeCount = axeCount;
             CapButtonCount = buttonCount;
             CapPovCount = povCount;
             CapType = type;
-            CapSubType = subtype;
-            CapFlags = flags;
             DateUpdated = DateTime.Now;
         }
 
@@ -389,10 +337,7 @@ namespace PadForge.Engine.Data
                 wrapper.NumAxes,
                 wrapper.NumButtons,
                 wrapper.NumHats,
-                wrapper.GetInputDeviceType(),
-                0, // subtype not available from SDL
-                0  // flags not available from SDL
-            );
+                wrapper.GetInputDeviceType());
 
             // Store the raw joystick button count (may exceed NumButtons for gamepad devices).
             RawButtonCount = Math.Max(wrapper.RawButtonCount, wrapper.NumButtons);
@@ -406,19 +351,13 @@ namespace PadForge.Engine.Data
             DevicePath = wrapper.DevicePath;
             SerialNumber = wrapper.SerialNumber ?? string.Empty;
 
-            // Populate device objects and effects.
+            // Populate device objects.
             DeviceObjects = wrapper.GetDeviceObjects();
-            DeviceEffects = (wrapper.HasRumble || wrapper.HasHaptic)
-                ? new[] { DeviceEffectItem.CreateRumbleEffect() }
-                : Array.Empty<DeviceEffectItem>();
 
-            // Compute masks.
+            // Compute actuator count for force feedback detection.
             CustomInputState.GetAxisMask(DeviceObjects, CapAxeCount,
-                out int axisMask, out int actuatorMask, out int actuatorCount);
-            AxeMask = axisMask;
-            ActuatorMask = actuatorMask;
+                out _, out _, out int actuatorCount);
             ActuatorCount = actuatorCount;
-            SliderMask = CustomInputState.GetSlidersMask(DeviceObjects, CustomInputState.MaxSliders);
 
             // Initialize force feedback state for devices with rumble or haptic FFB.
             if (wrapper.HasRumble || wrapper.HasHaptic)
@@ -470,9 +409,7 @@ namespace PadForge.Engine.Data
             InputUpdates = null;
             OldInputState = null;
             OldInputUpdates = null;
-            OrgInputState = null;
             DeviceObjects = null;
-            DeviceEffects = null;
             ForceFeedbackState = null;
 
             NotifyStateChanged();

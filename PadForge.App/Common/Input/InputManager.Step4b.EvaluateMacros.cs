@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PadForge.Common;
 using PadForge.Engine;
@@ -43,6 +45,169 @@ namespace PadForge.Common.Input
         int GetMasterVolumeLevel(out float levelDb);
         int GetMasterVolumeLevelScalar(out float level);
     }
+
+    // ─────────────────────────────────────────────
+    //  Per-app audio session COM interfaces for AppVolume macro action.
+    // ─────────────────────────────────────────────
+
+    [ComImport, Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionManager2
+    {
+        int GetAudioSessionControl(IntPtr audioSessionGuid, int streamFlags, out IntPtr sessionControl);
+        int GetSimpleAudioVolume(IntPtr audioSessionGuid, int streamFlags, out IntPtr simpleVolume);
+        int GetSessionEnumerator(out IAudioSessionEnumerator sessionEnum);
+    }
+
+    [ComImport, Guid("E2F5BB11-0570-40CA-ACDD-3AA01277DEE8"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionEnumerator
+    {
+        int GetCount(out int sessionCount);
+        int GetSession(int sessionIndex, out IntPtr session);
+    }
+
+    // Flat layout — no inheritance. COM interop with InterfaceIsIUnknown + C#
+    // interface inheritance + 'new' redeclarations doubles vtable entries,
+    // causing method calls to hit wrong slots.
+    [ComImport, Guid("BFB7B31D-7D78-4AF3-B235-E591A62B4B28"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionControl2
+    {
+        // IAudioSessionControl methods (vtable slots 0–8).
+        int GetState(out int state);
+        int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
+        int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
+        int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string iconPath);
+        int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string value, ref Guid eventContext);
+        int GetGroupingParam(out Guid groupingParam);
+        int SetGroupingParam(ref Guid groupingParam, ref Guid eventContext);
+        int RegisterAudioSessionNotification(IntPtr notify);
+        int UnregisterAudioSessionNotification(IntPtr notify);
+
+        // IAudioSessionControl2 methods (vtable slots 9–13).
+        int GetSessionIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string sessionId);
+        int GetSessionInstanceIdentifier([MarshalAs(UnmanagedType.LPWStr)] out string sessionInstanceId);
+        int GetProcessId(out uint processId);
+        int IsSystemSoundsSession();
+        int SetDuckingPreference(bool optOut);
+    }
+
+    [ComImport, Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface ISimpleAudioVolume
+    {
+        int SetMasterVolume(float level, ref Guid eventContext);
+        int GetMasterVolume(out float level);
+        int SetMute(bool mute, ref Guid eventContext);
+        int GetMute(out bool mute);
+    }
+
+    /// <summary>
+    /// Enumerates process names that currently have active audio sessions
+    /// on the default render device. Used by the macro editor UI to
+    /// populate the AppVolume process name suggestions.
+    /// </summary>
+    internal static class AudioSessionHelper
+    {
+        // Direct vtable call delegate for IAudioSessionControl2::GetProcessId.
+        // Slot 14 = IUnknown(3) + IAudioSessionControl(9) + GetSessionIdentifier(1) + GetSessionInstanceIdentifier(1) = 14.
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int GetProcessIdFn(IntPtr @this, out uint processId);
+
+        // Direct vtable call delegate for ISimpleAudioVolume::SetMasterVolume.
+        // Slot 3 = IUnknown(3) + SetMasterVolume(0) = slot 3.
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int SetMasterVolumeFn(IntPtr @this, float level, ref Guid eventContext);
+
+        private static readonly Guid IID_SimpleAudioVolume = new("87CE5498-68D6-44E5-9215-6DA47EF883D8");
+
+        /// <summary>
+        /// Calls GetProcessId directly through the COM vtable at slot 14,
+        /// bypassing QueryInterface which fails from elevated processes.
+        /// </summary>
+        internal static bool TryGetSessionProcessId(IntPtr pSession, out uint pid)
+        {
+            pid = 0;
+            try
+            {
+                IntPtr vtable = Marshal.ReadIntPtr(pSession);
+                IntPtr fnPtr = Marshal.ReadIntPtr(vtable, 14 * IntPtr.Size);
+                var fn = Marshal.GetDelegateForFunctionPointer<GetProcessIdFn>(fnPtr);
+                int hr = fn(pSession, out pid);
+                return hr == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sets volume on a session via direct vtable call to ISimpleAudioVolume::SetMasterVolume,
+        /// obtained through QI for ISimpleAudioVolume (which IS supported from elevated processes).
+        /// </summary>
+        internal static bool TrySetSessionVolume(IntPtr pSession, float volume)
+        {
+            var iidVol = IID_SimpleAudioVolume;
+            int hr = Marshal.QueryInterface(pSession, ref iidVol, out IntPtr pVol);
+            if (hr != 0) return false;
+            try
+            {
+                IntPtr vtable = Marshal.ReadIntPtr(pVol);
+                IntPtr fnPtr = Marshal.ReadIntPtr(vtable, 3 * IntPtr.Size); // slot 3 = SetMasterVolume
+                var fn = Marshal.GetDelegateForFunctionPointer<SetMasterVolumeFn>(fnPtr);
+                var empty = Guid.Empty;
+                fn(pVol, volume, ref empty);
+                return true;
+            }
+            catch { return false; }
+            finally { Marshal.Release(pVol); }
+        }
+
+        public static List<string> GetActiveAudioProcessNames()
+        {
+            var names = new List<string>();
+            try
+            {
+                var enumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorClass();
+                enumerator.GetDefaultAudioEndpoint(0, 1, out var device);
+                var iid = typeof(IAudioSessionManager2).GUID;
+                device.Activate(ref iid, 1, IntPtr.Zero, out var iface);
+                var mgr = (IAudioSessionManager2)iface;
+
+                mgr.GetSessionEnumerator(out var sessionEnum);
+                sessionEnum.GetCount(out int count);
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                for (int i = 0; i < count; i++)
+                {
+                    IntPtr pSession = IntPtr.Zero;
+                    try
+                    {
+                        sessionEnum.GetSession(i, out pSession);
+                        if (pSession == IntPtr.Zero) continue;
+
+                        if (!TryGetSessionProcessId(pSession, out uint pid) || pid == 0)
+                            continue;
+
+                        using var proc = System.Diagnostics.Process.GetProcessById((int)pid);
+                        if (seen.Add(proc.ProcessName))
+                            names.Add(proc.ProcessName);
+                    }
+                    catch { }
+                    finally
+                    {
+                        if (pSession != IntPtr.Zero)
+                            Marshal.Release(pSession);
+                    }
+                }
+            }
+            catch { }
+            names.Sort(StringComparer.OrdinalIgnoreCase);
+            return names;
+        }
+    }
 }
 
 namespace PadForge.Common.Input
@@ -62,7 +227,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Per-slot macro snapshot arrays. Set by InputService at 30Hz.
-        /// Each element is a snapshot of MacroItem[] for that slot (0–3).
+        /// Each element is a snapshot of MacroItem[] for that slot (0–15).
         /// Null means no macros for that slot.
         /// </summary>
         public MacroItem[][] MacroSnapshots { get; } = new MacroItem[MaxPads][];
@@ -105,16 +270,43 @@ namespace PadForge.Common.Input
                 if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Skip macros with no trigger configured.
-                if (!macro.UsesRawTrigger && macro.TriggerButtons == 0)
+                // Skip macros with no trigger configured (unless Always mode).
+                bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
+                if (macro.TriggerMode != MacroTriggerMode.Always &&
+                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
                     continue;
 
-                // Check trigger condition based on trigger type.
+                // Determine trigger state — buttons, POVs, AND axes must all be active together.
                 bool triggerActive;
-                if (macro.UsesRawTrigger)
-                    triggerActive = CheckRawButtonTrigger(macro);
+                if (macro.TriggerMode == MacroTriggerMode.Always)
+                    triggerActive = true;
                 else
-                    triggerActive = (gp.Buttons & macro.TriggerButtons) == macro.TriggerButtons;
+                {
+                    bool buttonOk = true;
+                    bool povOk = true;
+                    bool axisOk = true;
+
+                    if (hasButtons)
+                    {
+                        if (macro.UsesRawTrigger)
+                            buttonOk = CheckRawButtonTrigger(macro);
+                        else
+                            buttonOk = (gp.Buttons & macro.TriggerButtons) == macro.TriggerButtons;
+                    }
+                    if (macro.UsesPovTrigger)
+                        povOk = CheckRawPovTrigger(macro);
+                    if (macro.UsesAxisTrigger)
+                    {
+                        float threshold = macro.TriggerAxisThreshold / 100f;
+                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        {
+                            if (ReadAxisAsVolume(in gp, axTarget) < threshold)
+                            { axisOk = false; break; }
+                        }
+                    }
+
+                    triggerActive = buttonOk && povOk && axisOk;
+                }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
@@ -132,6 +324,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.WhileHeld:
                         shouldStart = triggerActive;
                         break;
+                    case MacroTriggerMode.Always:
+                        shouldStart = !macro.IsExecuting;
+                        break;
                 }
 
                 // Start new execution if triggered and not already executing.
@@ -142,10 +337,13 @@ namespace PadForge.Common.Input
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
+                    ResetMouseAccumulators(macro);
                 }
 
                 // For WhileHeld + UntilRelease: stop when trigger is released.
+                // Always mode never stops via trigger release.
                 if (macro.IsExecuting &&
+                    macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
                     !triggerActive)
                 {
@@ -191,55 +389,165 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Checks whether all POV triggers are active on the target device.
+        /// Each entry is "povIndex:centidegrees". The POV must be in the same
+        /// 45-degree sector as the stored direction.
+        /// </summary>
+        private bool CheckRawPovTrigger(MacroItem macro)
+        {
+            var ud = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            if (ud == null || !ud.IsOnline || ud.InputState == null)
+                return false;
+
+            var povs = ud.InputState.Povs;
+            if (povs == null) return false;
+
+            foreach (var entry in macro.TriggerPovs)
+            {
+                if (!MacroItem.ParsePovTrigger(entry, out int idx, out int targetCd))
+                    return false;
+                if (idx < 0 || idx >= povs.Length || povs[idx] < 0)
+                    return false;
+                // Check same 45-degree sector (±2250 centidegrees).
+                int diff = Math.Abs(povs[idx] - targetCd);
+                if (diff > 18000) diff = 36000 - diff;
+                if (diff > 2250) return false;
+            }
+            return true;
+        }
+
+        /// <summary>Returns true for action types that run every frame without advancing.</summary>
+        private static bool IsContinuousAction(MacroActionType type) =>
+            type is MacroActionType.SystemVolume or MacroActionType.AppVolume
+                 or MacroActionType.MouseMove or MacroActionType.MouseScroll;
+
+        /// <summary>
         /// Advances and executes the macro's action sequence.
+        /// Continuous actions (MouseMove, MouseScroll, SystemVolume, AppVolume) all run
+        /// every frame regardless of position — this allows e.g. MouseMove X + MouseMove Y
+        /// in the same macro to both execute simultaneously.
         /// </summary>
         private void ExecuteMacroActions(ref Gamepad gp, MacroItem macro)
         {
-            if (macro.CurrentActionIndex >= macro.Actions.Count)
+            // 1. Always run ALL continuous actions every frame.
+            for (int i = 0; i < macro.Actions.Count; i++)
             {
-                // Sequence complete — handle repeat.
-                macro.RemainingRepeats--;
-                if (macro.RemainingRepeats > 0 ||
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                var ca = macro.Actions[i];
+                if (!IsContinuousAction(ca.Type)) continue;
+                ExecuteSingleAction(ref gp, ca);
+            }
+
+            // 2. Process the current sequential action (skip over continuous ones).
+            while (macro.CurrentActionIndex < macro.Actions.Count)
+            {
+                var action = macro.Actions[macro.CurrentActionIndex];
+                if (IsContinuousAction(action.Type))
                 {
-                    // Restart sequence after repeat delay.
-                    double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
-                    if (elapsed >= macro.RepeatDelayMs)
-                    {
-                        macro.CurrentActionIndex = 0;
-                        macro.ActionStartTime = DateTime.UtcNow;
-                    }
+                    // Already handled above — skip to next.
+                    AdvanceAction(macro);
+                    continue;
                 }
-                else
-                {
-                    // Done.
-                    macro.IsExecuting = false;
-                    macro.CurrentActionIndex = 0;
-                }
+                // Execute the sequential action.
+                ExecuteSequentialAction(ref gp, macro, action);
                 return;
             }
 
-            var action = macro.Actions[macro.CurrentActionIndex];
+            // 3. Sequence complete — handle repeat or stop.
+            // If all actions are continuous, we stay "executing" and keep running them.
+            bool allContinuous = true;
+            for (int i = 0; i < macro.Actions.Count; i++)
+            {
+                if (!IsContinuousAction(macro.Actions[i].Type))
+                { allContinuous = false; break; }
+            }
+            if (allContinuous) return; // Keep running — continuous actions handled above.
+
+            macro.RemainingRepeats--;
+            if (macro.RemainingRepeats > 0 ||
+                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+            {
+                double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
+                if (elapsed >= macro.RepeatDelayMs)
+                {
+                    macro.CurrentActionIndex = 0;
+                    macro.ActionStartTime = DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                macro.IsExecuting = false;
+                macro.CurrentActionIndex = 0;
+            }
+        }
+
+        /// <summary>Executes a single continuous action (no advance logic).</summary>
+        private void ExecuteSingleAction(ref Gamepad gp, MacroAction action)
+        {
+            bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
+            switch (action.Type)
+            {
+                case MacroActionType.SystemVolume:
+                {
+                    float vol = useDevice ? ReadAxisFromDevice(action)
+                        : ReadAxisAsVolume(in gp, action.AxisTarget);
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
+                    break;
+                }
+                case MacroActionType.AppVolume:
+                    if (!string.IsNullOrEmpty(action.ProcessName))
+                    {
+                        float vol = useDevice ? ReadAxisFromDevice(action)
+                            : ReadAxisAsVolume(in gp, action.AxisTarget);
+                        SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
+                    }
+                    break;
+                case MacroActionType.MouseMove:
+                {
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouse(in gp, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    bool isY = useDevice
+                        ? false // Device axis doesn't map to X/Y — user controls direction via axis index
+                        : action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
+                    break;
+                }
+                case MacroActionType.MouseScroll:
+                {
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouse(in gp, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    if (delta != 0)
+                        SendMouseScrollInput(delta * 120);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
+        private void ExecuteSequentialAction(ref Gamepad gp, MacroItem macro, MacroAction action)
+        {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
             switch (action.Type)
             {
                 case MacroActionType.ButtonPress:
-                    // OR button flags into the gamepad for the specified duration.
                     gp.Buttons |= action.ButtonFlags;
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
 
                 case MacroActionType.ButtonRelease:
-                    // AND-NOT: clear the specified button flags.
                     gp.Buttons &= (ushort)~action.ButtonFlags;
                     AdvanceAction(macro);
                     break;
 
                 case MacroActionType.KeyPress:
                 {
-                    // Multi-key: press all keys in forward order, release in reverse.
                     var keyCodes = action.ParsedKeyCodes;
                     if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
                     if (actionElapsed < 1)
@@ -266,23 +574,37 @@ namespace PadForge.Common.Input
                 }
 
                 case MacroActionType.Delay:
-                    // Wait for the specified duration.
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
 
                 case MacroActionType.AxisSet:
-                    // Set the specified axis to the given value.
                     ApplyAxisAction(ref gp, action);
                     AdvanceAction(macro);
                     break;
 
-                case MacroActionType.SystemVolume:
-                    // Continuously read the source axis and set system volume.
-                    // Does NOT advance — stays on this action while the macro is executing.
-                    SetSystemVolume(ReadAxisAsVolume(in gp, action.AxisTarget));
+                case MacroActionType.MouseButtonPress:
+                    if (actionElapsed < 1)
+                        SendMouseButtonInput(action.MouseButton, down: true);
+                    if (actionElapsed >= action.DurationMs)
+                    {
+                        SendMouseButtonInput(action.MouseButton, down: false);
+                        AdvanceAction(macro);
+                    }
+                    break;
+
+                case MacroActionType.MouseButtonRelease:
+                    SendMouseButtonInput(action.MouseButton, down: false);
+                    AdvanceAction(macro);
                     break;
             }
+        }
+
+        /// <summary>Resets mouse accumulators on all actions when a macro starts/restarts.</summary>
+        private static void ResetMouseAccumulators(MacroItem macro)
+        {
+            foreach (var action in macro.Actions)
+                action.MouseAccumulator = 0f;
         }
 
         /// <summary>
@@ -336,18 +658,45 @@ namespace PadForge.Common.Input
                 if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Skip macros with no trigger configured.
-                if (!macro.UsesRawTrigger && !macro.UsesCustomTrigger && macro.TriggerButtons == 0)
+                // Skip macros with no trigger configured (unless Always mode).
+                bool hasButtons = macro.UsesRawTrigger || macro.UsesCustomTrigger || macro.TriggerButtons != 0;
+                if (macro.TriggerMode != MacroTriggerMode.Always &&
+                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
                     continue;
 
-                // Check trigger condition.
+                // Check trigger condition — buttons, POVs, AND axes must all be active together.
                 bool triggerActive;
-                if (macro.UsesRawTrigger)
-                    triggerActive = CheckRawButtonTrigger(macro);
-                else if (macro.UsesCustomTrigger)
-                    triggerActive = CheckCustomButtonTrigger(raw, macro);
+                if (macro.TriggerMode == MacroTriggerMode.Always)
+                    triggerActive = true;
                 else
-                    triggerActive = false; // Xbox bitmask triggers don't apply to custom vJoy
+                {
+                    bool buttonOk = true;
+                    bool povOk = true;
+                    bool axisOk = true;
+
+                    if (hasButtons)
+                    {
+                        if (macro.UsesRawTrigger)
+                            buttonOk = CheckRawButtonTrigger(macro);
+                        else if (macro.UsesCustomTrigger)
+                            buttonOk = CheckCustomButtonTrigger(raw, macro);
+                        else
+                            buttonOk = false; // Xbox bitmask triggers don't apply to custom vJoy
+                    }
+                    if (macro.UsesPovTrigger)
+                        povOk = CheckRawPovTrigger(macro);
+                    if (macro.UsesAxisTrigger)
+                    {
+                        float threshold = macro.TriggerAxisThreshold / 100f;
+                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        {
+                            if (ReadAxisAsVolumeRaw(in raw, axTarget) < threshold)
+                            { axisOk = false; break; }
+                        }
+                    }
+
+                    triggerActive = buttonOk && povOk && axisOk;
+                }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
@@ -364,6 +713,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.WhileHeld:
                         shouldStart = triggerActive;
                         break;
+                    case MacroTriggerMode.Always:
+                        shouldStart = !macro.IsExecuting;
+                        break;
                 }
 
                 if (shouldStart && !macro.IsExecuting)
@@ -373,9 +725,12 @@ namespace PadForge.Common.Input
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
+                    ResetMouseAccumulators(macro);
                 }
 
+                // Always mode never stops via trigger release.
                 if (macro.IsExecuting &&
+                    macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
                     !triggerActive)
                 {
@@ -418,37 +773,114 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Executes macro actions against a VJoyRawState (custom vJoy button words).
+        /// Same parallel-continuous pattern as ExecuteMacroActions.
         /// </summary>
         private void ExecuteMacroActionsCustomVJoy(ref VJoyRawState raw, MacroItem macro)
         {
-            if (macro.CurrentActionIndex >= macro.Actions.Count)
+            // 1. Always run ALL continuous actions every frame.
+            for (int i = 0; i < macro.Actions.Count; i++)
             {
-                macro.RemainingRepeats--;
-                if (macro.RemainingRepeats > 0 ||
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                var ca = macro.Actions[i];
+                if (!IsContinuousAction(ca.Type)) continue;
+                ExecuteSingleActionRaw(ref raw, ca);
+            }
+
+            // 2. Process the current sequential action (skip over continuous ones).
+            while (macro.CurrentActionIndex < macro.Actions.Count)
+            {
+                var action = macro.Actions[macro.CurrentActionIndex];
+                if (IsContinuousAction(action.Type))
                 {
-                    double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
-                    if (elapsed >= macro.RepeatDelayMs)
-                    {
-                        macro.CurrentActionIndex = 0;
-                        macro.ActionStartTime = DateTime.UtcNow;
-                    }
+                    AdvanceAction(macro);
+                    continue;
                 }
-                else
-                {
-                    macro.IsExecuting = false;
-                    macro.CurrentActionIndex = 0;
-                }
+                ExecuteSequentialActionRaw(ref raw, macro, action);
                 return;
             }
 
-            var action = macro.Actions[macro.CurrentActionIndex];
+            // 3. Sequence complete — handle repeat or stop.
+            bool allContinuous = true;
+            for (int i = 0; i < macro.Actions.Count; i++)
+            {
+                if (!IsContinuousAction(macro.Actions[i].Type))
+                { allContinuous = false; break; }
+            }
+            if (allContinuous) return;
+
+            macro.RemainingRepeats--;
+            if (macro.RemainingRepeats > 0 ||
+                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+            {
+                double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
+                if (elapsed >= macro.RepeatDelayMs)
+                {
+                    macro.CurrentActionIndex = 0;
+                    macro.ActionStartTime = DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                macro.IsExecuting = false;
+                macro.CurrentActionIndex = 0;
+            }
+        }
+
+        /// <summary>Executes a single continuous action for vJoy raw state.</summary>
+        private void ExecuteSingleActionRaw(ref VJoyRawState raw, MacroAction action)
+        {
+            bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
+            switch (action.Type)
+            {
+                case MacroActionType.SystemVolume:
+                {
+                    float vol = useDevice ? ReadAxisFromDevice(action)
+                        : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
+                    break;
+                }
+                case MacroActionType.AppVolume:
+                    if (!string.IsNullOrEmpty(action.ProcessName))
+                    {
+                        float vol = useDevice ? ReadAxisFromDevice(action)
+                            : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
+                        SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
+                    }
+                    break;
+                case MacroActionType.MouseMove:
+                {
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    bool isY = useDevice
+                        ? false
+                        : action.AxisTarget is MacroAxisTarget.LeftStickY or MacroAxisTarget.RightStickY;
+                    SendMouseMoveInput(isY ? 0 : delta, isY ? -delta : 0);
+                    break;
+                }
+                case MacroActionType.MouseScroll:
+                {
+                    float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
+                        : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    action.MouseAccumulator += deflection * action.MouseSensitivity;
+                    int delta = (int)action.MouseAccumulator;
+                    action.MouseAccumulator -= delta;
+                    if (delta != 0)
+                        SendMouseScrollInput(delta * 120);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>Executes a sequential action for vJoy raw state.</summary>
+        private void ExecuteSequentialActionRaw(ref VJoyRawState raw, MacroItem macro, MacroAction action)
+        {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
             switch (action.Type)
             {
                 case MacroActionType.ButtonPress:
-                    // OR custom button words into the raw state.
                     if (raw.Buttons != null)
                     {
                         var cw = action.CustomButtonWords;
@@ -460,7 +892,6 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ButtonRelease:
-                    // AND-NOT: clear custom button words from the raw state.
                     if (raw.Buttons != null)
                     {
                         var cw = action.CustomButtonWords;
@@ -503,14 +934,24 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.AxisSet:
-                    // Set axis on the raw state.
                     if (raw.Axes != null)
                         ApplyAxisActionRaw(ref raw, action);
                     AdvanceAction(macro);
                     break;
 
-                case MacroActionType.SystemVolume:
-                    SetSystemVolume(ReadAxisAsVolumeRaw(in raw, action.AxisTarget));
+                case MacroActionType.MouseButtonPress:
+                    if (actionElapsed < 1)
+                        SendMouseButtonInput(action.MouseButton, down: true);
+                    if (actionElapsed >= action.DurationMs)
+                    {
+                        SendMouseButtonInput(action.MouseButton, down: false);
+                        AdvanceAction(macro);
+                    }
+                    break;
+
+                case MacroActionType.MouseButtonRelease:
+                    SendMouseButtonInput(action.MouseButton, down: false);
+                    AdvanceAction(macro);
                     break;
             }
         }
@@ -596,11 +1037,92 @@ namespace PadForge.Common.Input
             }
         }
 
+        // ─────────────────────────────────────────────
+        //  Per-app volume control for AppVolume macro action
+        // ─────────────────────────────────────────────
+
+        private IAudioSessionManager2 _audioSessionManager;
+        private bool _audioSessionFailed;
+
+        /// <summary>
+        /// Per-process change-detection: tracks the last volume set for each process name
+        /// to avoid redundant COM enumeration every polling cycle.
+        /// </summary>
+        private readonly Dictionary<string, float> _lastAppVolumes = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Sets the volume for all audio sessions belonging to the specified process name
+        /// in the Windows audio mixer. Enumerates sessions via IAudioSessionManager2.
+        /// </summary>
+        private void SetAppVolume(float volume, string processName)
+        {
+            volume = Math.Clamp(volume, 0f, 1f);
+
+            // Change detection per process name.
+            if (_lastAppVolumes.TryGetValue(processName, out float last) && Math.Abs(volume - last) < 0.004f)
+                return;
+            _lastAppVolumes[processName] = volume;
+
+            if (_audioSessionFailed) return;
+
+            try
+            {
+                if (_audioSessionManager == null)
+                {
+                    var enumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorClass();
+                    enumerator.GetDefaultAudioEndpoint(0 /* eRender */, 1 /* eMultimedia */, out var device);
+                    var iid = typeof(IAudioSessionManager2).GUID;
+                    device.Activate(ref iid, 1 /* CLSCTX_INPROC_SERVER */, IntPtr.Zero, out var iface);
+                    _audioSessionManager = (IAudioSessionManager2)iface;
+                }
+
+                _audioSessionManager.GetSessionEnumerator(out var sessionEnum);
+                sessionEnum.GetCount(out int count);
+
+                for (int i = 0; i < count; i++)
+                {
+                    IntPtr pSession = IntPtr.Zero;
+                    try
+                    {
+                        sessionEnum.GetSession(i, out pSession);
+                        if (pSession == IntPtr.Zero) continue;
+
+                        // Direct vtable call — QI for IAudioSessionControl2 fails from elevated processes.
+                        if (!AudioSessionHelper.TryGetSessionProcessId(pSession, out uint pid) || pid == 0)
+                            continue;
+
+                        string exeName;
+                        try
+                        {
+                            using var proc = Process.GetProcessById((int)pid);
+                            exeName = proc.ProcessName;
+                        }
+                        catch { continue; }
+
+                        if (!exeName.Equals(processName, StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        AudioSessionHelper.TrySetSessionVolume(pSession, volume);
+                    }
+                    catch { }
+                    finally
+                    {
+                        if (pSession != IntPtr.Zero)
+                            Marshal.Release(pSession);
+                    }
+                }
+            }
+            catch
+            {
+                _audioSessionFailed = true;
+            }
+        }
+
         /// <summary>
         /// Reads the current value of a source axis from the Gamepad state
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        private static float ReadAxisAsVolume(in Gamepad gp, MacroAxisTarget target)
+        internal static float ReadAxisAsVolume(in Gamepad gp, MacroAxisTarget target)
         {
             return target switch
             {
@@ -620,7 +1142,7 @@ namespace PadForge.Common.Input
         /// Reads the current value of a source axis from a VJoyRawState
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        private static float ReadAxisAsVolumeRaw(in VJoyRawState raw, MacroAxisTarget target)
+        internal static float ReadAxisAsVolumeRaw(in VJoyRawState raw, MacroAxisTarget target)
         {
             int axisIndex = target switch
             {
@@ -636,6 +1158,120 @@ namespace PadForge.Common.Input
                 return 0f;
             // Raw axes are short (-32768..32767) → 0..1
             return (raw.Axes[axisIndex] + 32768f) / 65535f;
+        }
+
+        /// <summary>
+        /// Reads an axis value from a physical input device's raw InputState.
+        /// Returns 0.0–1.0 (normalized from short -32768..32767).
+        /// </summary>
+        private float ReadAxisFromDevice(MacroAction action)
+        {
+            if (action.SourceDeviceGuid == Guid.Empty || action.SourceDeviceAxisIndex < 0)
+                return 0f;
+            var device = FindOnlineDeviceByInstanceGuid(action.SourceDeviceGuid);
+            if (device == null || device.InputState.Axis == null
+                || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
+                return 0f;
+            return (device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f;
+        }
+
+        /// <summary>
+        /// Reads an axis value from a physical input device as a -1..+1 deflection for mouse movement.
+        /// </summary>
+        private float ReadAxisFromDeviceAsMouse(MacroAction action)
+        {
+            float vol = ReadAxisFromDevice(action);
+            // Convert 0..1 to -1..+1 for symmetric deflection
+            return (vol - 0.5f) * 2f;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Mouse output for MouseMove / MouseButton / MouseScroll
+        // ─────────────────────────────────────────────
+
+        private const uint INPUT_MOUSE = 0;
+        private const uint MOUSEEVENTF_MOVE = 0x0001;
+        private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
+        private const uint MOUSEEVENTF_LEFTUP = 0x0004;
+        private const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        private const uint MOUSEEVENTF_RIGHTUP = 0x0010;
+        private const uint MOUSEEVENTF_MIDDLEDOWN = 0x0020;
+        private const uint MOUSEEVENTF_MIDDLEUP = 0x0040;
+        private const uint MOUSEEVENTF_XDOWN = 0x0080;
+        private const uint MOUSEEVENTF_XUP = 0x0100;
+        private const uint MOUSEEVENTF_WHEEL = 0x0800;
+
+        private static void SendMouseMoveInput(int dx, int dy)
+        {
+            if (dx == 0 && dy == 0) return;
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        private static void SendMouseButtonInput(MacroMouseButton button, bool down)
+        {
+            uint flags;
+            uint mouseData = 0;
+            switch (button)
+            {
+                case MacroMouseButton.Left:   flags = down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP; break;
+                case MacroMouseButton.Right:  flags = down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP; break;
+                case MacroMouseButton.Middle: flags = down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP; break;
+                case MacroMouseButton.X1:     flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; mouseData = 1; break;
+                case MacroMouseButton.X2:     flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; mouseData = 2; break;
+                default: return;
+            }
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion { mi = new MOUSEINPUT { dwFlags = flags, mouseData = mouseData } }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        private static void SendMouseScrollInput(int amount)
+        {
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)amount, dwFlags = MOUSEEVENTF_WHEEL } }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        /// <summary>
+        /// Reads a source axis as a signed float (-1.0..+1.0) for mouse delta calculation.
+        /// Sticks: -32768..32767 → -1..+1. Triggers: 0..65535 → 0..+1 (unidirectional).
+        /// </summary>
+        private static float ReadAxisAsMouse(in Gamepad gp, MacroAxisTarget target) => target switch
+        {
+            MacroAxisTarget.LeftStickX   => gp.ThumbLX / 32767f,
+            MacroAxisTarget.LeftStickY   => gp.ThumbLY / 32767f,
+            MacroAxisTarget.RightStickX  => gp.ThumbRX / 32767f,
+            MacroAxisTarget.RightStickY  => gp.ThumbRY / 32767f,
+            MacroAxisTarget.LeftTrigger  => gp.LeftTrigger / 65535f,
+            MacroAxisTarget.RightTrigger => gp.RightTrigger / 65535f,
+            _ => 0f
+        };
+
+        private static float ReadAxisAsMouseRaw(in VJoyRawState raw, MacroAxisTarget target)
+        {
+            int axisIndex = target switch
+            {
+                MacroAxisTarget.LeftStickX   => 0,
+                MacroAxisTarget.LeftStickY   => 1,
+                MacroAxisTarget.RightStickX  => 3,
+                MacroAxisTarget.RightStickY  => 4,
+                MacroAxisTarget.LeftTrigger   => 2,
+                MacroAxisTarget.RightTrigger  => 5,
+                _ => -1
+            };
+            if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length) return 0f;
+            return raw.Axes[axisIndex] / 32767f;
         }
 
         // ─────────────────────────────────────────────

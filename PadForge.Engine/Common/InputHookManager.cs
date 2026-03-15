@@ -115,8 +115,9 @@ namespace PadForge.Engine.Common
         private LowLevelHookProc _mouseProc;
 
         // Suppression sets — volatile reference swap for thread safety.
-        private volatile HashSet<int> _suppressedVKeys = new();
-        private volatile HashSet<int> _suppressedMouseButtons = new();
+        // Static so MergeHookedKeyState/MergeHookedMouseState can read them.
+        private static volatile HashSet<int> _suppressedVKeys = new();
+        private static volatile HashSet<int> _suppressedMouseButtons = new();
 
         // Key/button state captured from suppressed inputs. WH_KEYBOARD_LL and
         // WH_MOUSE_LL run in the RIT before WM_INPUT is generated — suppressed
@@ -220,14 +221,23 @@ namespace PadForge.Engine.Common
         /// Called by keyboard wrappers to recover input that WH_KEYBOARD_LL
         /// prevented from reaching Raw Input (WM_INPUT is not generated for
         /// keys suppressed by a low-level hook).
+        ///
+        /// For suppressed keys, the hook state is authoritative (replaces dest)
+        /// rather than OR-merged. This ensures the output accurately reflects
+        /// the hook's key-up/key-down tracking for keys that WM_INPUT no longer
+        /// receives, rather than letting a stale WM_INPUT true linger until the
+        /// next state reset.
         /// </summary>
         public static void MergeHookedKeyState(bool[] dest, int count)
         {
             if (!_hasHookedKeys) return;
             int n = Math.Min(count, 256);
+            var suppressed = _suppressedVKeys;
             for (int i = 0; i < n; i++)
             {
-                if (_hookedKeyState[i])
+                if (suppressed.Contains(i))
+                    dest[i] = _hookedKeyState[i]; // Authoritative for suppressed keys
+                else if (_hookedKeyState[i])
                     dest[i] = true;
             }
         }
@@ -241,9 +251,12 @@ namespace PadForge.Engine.Common
         {
             if (!_hasHookedMouse) return;
             int n = Math.Min(count, 5);
+            var suppressed = _suppressedMouseButtons;
             for (int i = 0; i < n; i++)
             {
-                if (_hookedMouseState[i])
+                if (suppressed.Contains(i))
+                    dest[i] = _hookedMouseState[i]; // Authoritative for suppressed buttons
+                else if (_hookedMouseState[i])
                     dest[i] = true;
             }
         }

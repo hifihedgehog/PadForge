@@ -99,6 +99,22 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isKeyboardDevice, value);
         }
 
+        private bool _isMouseDevice;
+        /// <summary>Whether the currently selected device is a mouse.</summary>
+        public bool IsMouseDevice
+        {
+            get => _isMouseDevice;
+            set => SetProperty(ref _isMouseDevice, value);
+        }
+
+        private double _mouseMotionX, _mouseMotionY;
+        public double MouseMotionX { get => _mouseMotionX; set => SetProperty(ref _mouseMotionX, value); }
+        public double MouseMotionY { get => _mouseMotionY; set => SetProperty(ref _mouseMotionY, value); }
+
+        private double _mouseScrollIntensity;
+        /// <summary>Normalized scroll intensity: positive = up, negative = down. Range -1 to 1.</summary>
+        public double MouseScrollIntensity { get => _mouseScrollIntensity; set => SetProperty(ref _mouseScrollIntensity, value); }
+
         private int _selectedButtonTotal;
 
         /// <summary>Total number of buttons on the selected device.</summary>
@@ -141,21 +157,32 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Rebuilds the raw state collections for a new device with the given capabilities.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount, bool isKeyboard = false)
+        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount, bool isKeyboard = false, bool isMouse = false)
         {
             RawAxes.Clear();
-            for (int i = 0; i < axisCount; i++)
-                RawAxes.Add(new AxisDisplayItem { Index = i, Name = $"Axis {i}" });
+            if (!isMouse)
+            {
+                for (int i = 0; i < axisCount; i++)
+                    RawAxes.Add(new AxisDisplayItem { Index = i, Name = $"Axis {i}" });
+            }
 
             RawButtons.Clear();
             KeyboardKeys.Clear();
             IsKeyboardDevice = isKeyboard;
+            IsMouseDevice = isMouse;
 
             if (isKeyboard)
             {
                 // Build positioned keyboard layout instead of flat button list.
                 foreach (var key in KeyboardKeyItem.BuildLayout())
                     KeyboardKeys.Add(key);
+            }
+            else if (isMouse)
+            {
+                // Mouse visual handles button display — but keep RawButtons populated
+                // so InputService can still update IsPressed for the mouse preview.
+                for (int i = 0; i < buttonCount; i++)
+                    RawButtons.Add(new ButtonDisplayItem { Index = i });
             }
             else
             {
@@ -178,6 +205,7 @@ namespace PadForge.ViewModels
             RawPovs.Clear();
             KeyboardKeys.Clear();
             IsKeyboardDevice = false;
+            IsMouseDevice = false;
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
@@ -199,7 +227,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Command to assign the selected device to a pad slot.
-        /// Parameter is the slot index (0–3).
+        /// Parameter is the slot index (0–15).
         /// </summary>
         public RelayCommand<int> AssignToSlotCommand =>
             _assignToSlotCommand ??= new RelayCommand<int>(
@@ -387,7 +415,7 @@ namespace PadForge.ViewModels
     public class SlotButtonItem : ObservableObject
     {
         private int _padIndex;
-        /// <summary>Zero-based pad slot index (0–3).</summary>
+        /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex
         {
             get => _padIndex;

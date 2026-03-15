@@ -131,7 +131,7 @@ namespace PadForge.Services
             if (!_running) return;
             _running = false;
 
-            try { _listener?.Stop(); }
+            try { _listener?.Stop(); _listener?.Close(); }
             catch { /* best effort */ }
 
             // Close all client WebSockets.
@@ -597,7 +597,8 @@ namespace PadForge.Services
             using var proc = Process.Start(psi);
             if (proc == null) return string.Empty;
             string output = proc.StandardOutput.ReadToEnd();
-            proc.WaitForExit(5_000);
+            if (!proc.WaitForExit(5_000))
+                try { proc.Kill(); } catch { }
             return output;
         }
 

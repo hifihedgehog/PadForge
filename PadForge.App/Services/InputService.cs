@@ -2090,7 +2090,7 @@ namespace PadForge.Services
             row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
-            // Resolve device type name (internal key for comparisons + localized display).
+            // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch
             {
                 InputDeviceType.Gamepad => "Gamepad",
@@ -2102,18 +2102,6 @@ namespace PadForge.Services
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
                 _ => "Device"
-            };
-            row.DeviceType = ud.CapType switch
-            {
-                InputDeviceType.Gamepad => Strings.Instance.DeviceType_Gamepad,
-                InputDeviceType.Joystick => Strings.Instance.DeviceType_Joystick,
-                InputDeviceType.Driving => Strings.Instance.DeviceType_Wheel,
-                InputDeviceType.Flight => Strings.Instance.DeviceType_FlightStick,
-                InputDeviceType.FirstPerson => Strings.Instance.DeviceType_FirstPerson,
-                InputDeviceType.Supplemental => Strings.Instance.DeviceType_Supplemental,
-                InputDeviceType.Mouse => Strings.Instance.DeviceType_Mouse,
-                InputDeviceType.Keyboard => Strings.Instance.DeviceType_Keyboard,
-                _ => Strings.Instance.DeviceType_Device
             };
 
             // Resolve slot assignments (device can be assigned to multiple slots).

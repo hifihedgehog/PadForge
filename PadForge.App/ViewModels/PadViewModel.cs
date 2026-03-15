@@ -218,8 +218,11 @@ namespace PadForge.ViewModels
             get => _selectedMappedDevice;
             set
             {
+                var old = _selectedMappedDevice;
                 if (SetProperty(ref _selectedMappedDevice, value))
                 {
+                    if (old != null) old.PropertyChanged -= OnSelectedDevicePropertyChanged;
+                    if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     SelectedDeviceChanged?.Invoke(this, value);
                 }
@@ -228,6 +231,12 @@ namespace PadForge.ViewModels
 
         /// <summary>Whether a device is selected for configuration.</summary>
         public bool HasSelectedDevice => _selectedMappedDevice != null;
+
+        private void OnSelectedDevicePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MappedDeviceInfo.IsOnline))
+                _mapAllCommand?.NotifyCanExecuteChanged();
+        }
 
         /// <summary>
         /// Raised when the user selects a different device within this slot.

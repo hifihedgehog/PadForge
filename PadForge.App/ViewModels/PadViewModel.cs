@@ -1317,7 +1317,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _mapAllCommand;
         public RelayCommand MapAllCommand =>
-            _mapAllCommand ??= new RelayCommand(StartMapAll, () => HasSelectedDevice && !IsMapAllActive);
+            _mapAllCommand ??= new RelayCommand(StartMapAll, () => HasSelectedDevice && !IsMapAllActive && SelectedMappedDevice?.IsOnline == true);
 
         private void StartMapAll()
         {

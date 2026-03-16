@@ -25,7 +25,12 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="4,2">
-                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding LayoutLabel}" FontSize="12"
+                                       Margin="8,0,0,0" Opacity="0.7"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
                         <TextBlock Text="{Binding SlotLabel}" FontSize="12"
                                    Opacity="0.6"/>
                     </StackPanel>

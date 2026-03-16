@@ -876,7 +876,7 @@ namespace PadForge.Engine.Data
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
         /// </summary>
-        public string ToJson()
+        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Xbox360, bool isCustomVJoy = false)
         {
             // Flush live dicts to arrays before serializing.
             FlushVJoyMappings();
@@ -886,6 +886,10 @@ namespace PadForge.Engine.Data
             var dict = new Dictionary<string, string>();
             var type = GetType();
 
+            // Embed layout metadata for cross-layout paste support.
+            dict["__OutputType"] = ((int)outputType).ToString();
+            dict["__IsCustomVJoy"] = isCustomVJoy ? "1" : "0";
+
             foreach (string name in CopyablePropertyNames)
             {
                 var prop = type.GetProperty(name);
@@ -893,7 +897,7 @@ namespace PadForge.Engine.Data
                     dict[name] = prop.GetValue(this) as string ?? "";
             }
 
-            // Include vJoy/MIDI mapping arrays if present.
+            // Include vJoy/MIDI/KBM mapping arrays if present.
             if (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0)
             {
                 var vjoyList = new List<Dictionary<string, string>>();
@@ -908,6 +912,13 @@ namespace PadForge.Engine.Data
                     midiList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__MidiMappings"] = JsonSerializer.Serialize(midiList);
             }
+            if (KbmMappingEntries != null && KbmMappingEntries.Length > 0)
+            {
+                var kbmList = new List<Dictionary<string, string>>();
+                foreach (var e in KbmMappingEntries)
+                    kbmList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__KbmMappings"] = JsonSerializer.Serialize(kbmList);
+            }
 
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
         }
@@ -915,9 +926,21 @@ namespace PadForge.Engine.Data
         /// <summary>
         /// Deserializes a JSON string into a new PadSetting.
         /// Returns null if the JSON is invalid or not a PadSetting export.
+        /// Also extracts embedded layout metadata (OutputType, IsCustomVJoy) if present.
         /// </summary>
         public static PadSetting FromJson(string json)
+            => FromJson(json, out _, out _);
+
+        /// <summary>
+        /// Deserializes a JSON string into a new PadSetting, also returning the
+        /// source layout type embedded in the JSON (if any).
+        /// </summary>
+        public static PadSetting FromJson(string json,
+            out VirtualControllerType sourceOutputType, out bool sourceIsCustomVJoy)
         {
+            sourceOutputType = VirtualControllerType.Xbox360;
+            sourceIsCustomVJoy = false;
+
             if (string.IsNullOrWhiteSpace(json))
                 return null;
 
@@ -927,19 +950,26 @@ namespace PadForge.Engine.Data
                 if (dict == null || dict.Count == 0)
                     return null;
 
+                // Extract layout metadata.
+                if (dict.TryGetValue("__OutputType", out var otStr) && int.TryParse(otStr, out int otVal)
+                    && Enum.IsDefined(typeof(VirtualControllerType), otVal))
+                    sourceOutputType = (VirtualControllerType)otVal;
+                if (dict.TryGetValue("__IsCustomVJoy", out var cvStr))
+                    sourceIsCustomVJoy = cvStr == "1";
+
                 var ps = new PadSetting();
                 var type = typeof(PadSetting);
 
                 foreach (var kvp in dict)
                 {
-                    if (kvp.Key == "__VJoyMappings")
+                    if (kvp.Key.StartsWith("__"))
                     {
-                        ps.VJoyMappingEntries = DeserializeMappingArray(kvp.Value);
-                        continue;
-                    }
-                    if (kvp.Key == "__MidiMappings")
-                    {
-                        ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
+                        if (kvp.Key == "__VJoyMappings")
+                            ps.VJoyMappingEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__MidiMappings")
+                            ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__KbmMappings")
+                            ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
                         continue;
                     }
                     var prop = type.GetProperty(kvp.Key);
@@ -973,6 +1003,173 @@ namespace PadForge.Engine.Data
                 return arr;
             }
             catch { return null; }
+        }
+
+        /// <summary>
+        /// Names of mapping properties that identify input sources (buttons, axes, d-pad).
+        /// These need positional translation when copying between different layouts.
+        /// </summary>
+        private static readonly HashSet<string> MappingPropertyNames = new()
+        {
+            nameof(ButtonA), nameof(ButtonB), nameof(ButtonX), nameof(ButtonY),
+            nameof(LeftShoulder), nameof(RightShoulder),
+            nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
+            nameof(LeftThumbButton), nameof(RightThumbButton),
+            nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
+            nameof(LeftTrigger), nameof(RightTrigger),
+            nameof(LeftThumbAxisX), nameof(LeftThumbAxisY),
+            nameof(RightThumbAxisX), nameof(RightThumbAxisY),
+            nameof(LeftThumbAxisXNeg), nameof(LeftThumbAxisYNeg),
+            nameof(RightThumbAxisXNeg), nameof(RightThumbAxisYNeg),
+        };
+
+        /// <summary>
+        /// Copies mappings from another PadSetting with cross-layout translation.
+        /// When source and target use the same layout, delegates to <see cref="CopyFrom"/>.
+        /// When layouts differ, translates mapping positions (e.g., ButtonA → VJoyBtn0)
+        /// and copies non-mapping settings (dead zones, sensitivity, FFB) directly.
+        /// </summary>
+        public void CopyFromTranslated(PadSetting source,
+            VirtualControllerType sourceType, bool sourceIsCustomVJoy,
+            VirtualControllerType targetType, bool targetIsCustomVJoy)
+        {
+            if (source == null) return;
+
+            // Same layout? Use direct copy.
+            if (MappingTranslation.IsSameLayout(sourceType, sourceIsCustomVJoy, targetType, targetIsCustomVJoy))
+            {
+                CopyFrom(source);
+                return;
+            }
+
+            source.FlushVJoyMappings();
+            source.FlushMidiMappings();
+            source.FlushKbmMappings();
+
+            // Step 1: Copy non-mapping settings directly (dead zones, sensitivity, FFB, etc.)
+            // These use the same property names regardless of output layout.
+            var type = GetType();
+            foreach (string name in CopyablePropertyNames)
+            {
+                if (MappingPropertyNames.Contains(name))
+                    continue; // Skip mapping properties — they need translation.
+                var prop = type.GetProperty(name);
+                if (prop != null && prop.CanWrite)
+                    prop.SetValue(this, prop.GetValue(source) ?? "");
+            }
+
+            // Step 2: Collect all source mappings as (position → descriptor value).
+            var translated = new Dictionary<MappingSlot, string>();
+
+            // Read from gamepad properties (Xbox/DS4/vJoy gamepad preset source)
+            if (sourceType != VirtualControllerType.Midi &&
+                sourceType != VirtualControllerType.KeyboardMouse &&
+                !(sourceType == VirtualControllerType.VJoy && sourceIsCustomVJoy))
+            {
+                foreach (string propName in MappingPropertyNames)
+                {
+                    var prop = type.GetProperty(propName);
+                    if (prop == null) continue;
+                    string val = prop.GetValue(source) as string ?? "";
+                    if (string.IsNullOrEmpty(val)) continue;
+
+                    var slot = MappingTranslation.GetPosition(propName, sourceType, false);
+                    if (slot != null)
+                        translated[slot] = val;
+                }
+            }
+
+            // Read from vJoy dictionary (vJoy custom source)
+            if (sourceType == VirtualControllerType.VJoy && sourceIsCustomVJoy
+                && source.VJoyMappingEntries != null)
+            {
+                foreach (var e in source.VJoyMappingEntries)
+                {
+                    if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    var slot = MappingTranslation.GetPosition(e.Key, sourceType, true);
+                    if (slot != null)
+                        translated[slot] = e.Value;
+                }
+            }
+
+            // Read from MIDI dictionary (MIDI source)
+            if (sourceType == VirtualControllerType.Midi && source.MidiMappingEntries != null)
+            {
+                foreach (var e in source.MidiMappingEntries)
+                {
+                    if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    var slot = MappingTranslation.GetPosition(e.Key, sourceType, false);
+                    if (slot != null)
+                        translated[slot] = e.Value;
+                }
+            }
+
+            // Read from KBM dictionary (KeyboardMouse source)
+            if (sourceType == VirtualControllerType.KeyboardMouse && source.KbmMappingEntries != null)
+            {
+                foreach (var e in source.KbmMappingEntries)
+                {
+                    if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    var slot = MappingTranslation.GetPosition(e.Key, sourceType, false);
+                    if (slot != null)
+                        translated[slot] = e.Value;
+                }
+            }
+
+            // Step 3: Write translated positions to target layout.
+
+            // Clear existing target mappings first.
+            if (targetType == VirtualControllerType.VJoy && targetIsCustomVJoy)
+            {
+                VJoyMappingEntries = null;
+                _vjoyMappingDict = null;
+            }
+            else if (targetType == VirtualControllerType.Midi)
+            {
+                MidiMappingEntries = null;
+                _midiMappingDict = null;
+            }
+            else if (targetType == VirtualControllerType.KeyboardMouse)
+            {
+                KbmMappingEntries = null;
+                _kbmMappingDict = null;
+            }
+            else
+            {
+                // Gamepad target: clear standard mapping properties.
+                foreach (string propName in MappingPropertyNames)
+                {
+                    var prop = type.GetProperty(propName);
+                    if (prop != null && prop.CanWrite)
+                        prop.SetValue(this, "");
+                }
+            }
+
+            // Write translated values.
+            foreach (var kvp in translated)
+            {
+                string targetKey = MappingTranslation.GetPropertyName(kvp.Key, targetType, targetIsCustomVJoy);
+                if (targetKey == null) continue; // No equivalent in target layout — silently dropped.
+
+                if (targetType == VirtualControllerType.VJoy && targetIsCustomVJoy)
+                    SetVJoyMapping(targetKey, kvp.Value);
+                else if (targetType == VirtualControllerType.Midi)
+                    SetMidiMapping(targetKey, kvp.Value);
+                else if (targetType == VirtualControllerType.KeyboardMouse)
+                    SetKbmMapping(targetKey, kvp.Value);
+                else
+                {
+                    // Gamepad target: write to standard property.
+                    var prop = type.GetProperty(targetKey);
+                    if (prop != null && prop.CanWrite)
+                        prop.SetValue(this, kvp.Value);
+                }
+            }
+
+            // Flush dictionaries to arrays for persistence.
+            FlushVJoyMappings();
+            FlushMidiMappings();
+            FlushKbmMappings();
         }
 
         /// <summary>

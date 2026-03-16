@@ -386,6 +386,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>点击测试右马达</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>右马达</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>全部映射</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>映射: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>逐一录制所有映射 — 按照提示按下按钮/轴</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>逐一录制所有映射</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>点击映射行，然后按下控制器上的按钮/轴来分配。</value></data>

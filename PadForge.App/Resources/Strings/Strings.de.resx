@@ -386,6 +386,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klicken, um den rechten Motor zu testen</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>R Motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Alle zuordnen</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Zuordnen: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Alle Zuordnungen nacheinander aufnehmen — drücken Sie eine Taste/Achse für jede Eingabeaufforderung</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle Zuordnungen nacheinander aufnehmen</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Klicken Sie auf eine Zuordnungszeile und drücken Sie eine Taste/Achse auf Ihrem Controller, um sie zuzuweisen.</value></data>

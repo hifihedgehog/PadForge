@@ -453,7 +453,7 @@
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nouvelle macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Enregistrer le déclencheur</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Non défini — cliquez sur Enregistrer</value></data>
-  <data name="Macro_Btn_Format" xml:space="preserve"><value>Btn {0}</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>Bouton {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(aucun)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Axe appareil {0}</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Action inconnue</value></data>
@@ -474,7 +474,7 @@
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Déplacement souris ← {0} (vitesse {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Déplacer la souris de {0} (max {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Défilement souris ← {0} (vitesse {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Défiler de {0} (max {1}unités)</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Défiler de {0} (max {1} unités)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Appui souris {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Relâchement souris {0}</value></data>
 
@@ -611,8 +611,8 @@
   <data name="Btn_DPadRight" xml:space="preserve"><value>Croix dir. Droite</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
-  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Joystick gauche</value></data>
-  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Joystick droit</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Stick gauche</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Stick droit</value></data>
   <data name="Stick_ScrollWheel" xml:space="preserve"><value>Molette de défilement</value></data>
   <data name="Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
   <data name="Trigger_Format" xml:space="preserve"><value>Gâchette {0}</value></data>
@@ -735,7 +735,7 @@
   <data name="DevObj_RightStickX" xml:space="preserve"><value>Stick droit X</value></data>
   <data name="DevObj_RightStickY" xml:space="preserve"><value>Stick droit Y</value></data>
   <data name="DevObj_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
-  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>Croix dir.</value></data>
   <data name="DevObj_Back" xml:space="preserve"><value>Retour</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>Démarrer</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>

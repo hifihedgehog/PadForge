@@ -474,7 +474,7 @@
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>マウス移動 ← {0} (速度 {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>マウスを {0} 移動 (最大 {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>マウススクロール ← {0} (速度 {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} スクロール (最大 {1}単位)</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} スクロール (最大 {1} 単位)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
 
@@ -735,7 +735,7 @@
   <data name="DevObj_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
   <data name="DevObj_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
   <data name="DevObj_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
-  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>十字キー</value></data>
   <data name="DevObj_Back" xml:space="preserve"><value>戻る</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>スタート</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>ガイド</value></data>

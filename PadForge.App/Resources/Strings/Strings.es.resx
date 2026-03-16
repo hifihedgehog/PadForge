@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil cambiado: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil cambiado: Predeterminado</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>Predeterminado</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>No hay dispositivo seleccionado.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Índice de ranura no válido: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Error al asignar dispositivo.</value></data>

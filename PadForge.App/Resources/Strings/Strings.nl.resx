@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Fout: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiel gewisseld: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiel gewisseld: Standaard</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>Standaard</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Geen apparaat geselecteerd.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ongeldige slotindex: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Apparaattoewijzing mislukt.</value></data>

@@ -41,6 +41,8 @@ namespace PadForge.ViewModels
             // Rebuild mappings so target labels (Back, Start, etc.) and source display
             // text are re-evaluated in the new language.
             RebuildMappings();
+            RebuildStickConfigs();
+            RebuildTriggerConfigs();
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>

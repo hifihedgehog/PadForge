@@ -3121,7 +3121,7 @@ namespace PadForge.Services
             {
                 // Revert to default (root) profile using the startup snapshot.
                 SettingsManager.ActiveProfileId = null;
-                _mainVm.Settings.ActiveProfileInfo = "Default";
+                _mainVm.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;

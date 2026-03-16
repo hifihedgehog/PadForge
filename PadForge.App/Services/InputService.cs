@@ -2151,7 +2151,9 @@ namespace PadForge.Services
         private void PopulateDeviceRow(DeviceRowViewModel row, UserDevice ud)
         {
             row.InstanceGuid = ud.InstanceGuid;
-            row.DeviceName = ud.ResolvedName;
+            row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
+                           : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
+                           : ud.ResolvedName;
             row.ProductName = ud.ProductName;
             row.ProductGuid = ud.ProductGuid;
             row.VendorId = ud.VendorId;

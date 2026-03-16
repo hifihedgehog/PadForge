@@ -307,6 +307,8 @@
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Teclado</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Dispositivo</value></data>
   <!-- ═══ Devices ═══ -->
+  <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Todos los teclados (combinados)</value></data>
+  <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Todos los ratones (combinados)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivos</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en línea / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>

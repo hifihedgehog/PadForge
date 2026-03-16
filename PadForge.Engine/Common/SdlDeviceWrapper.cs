@@ -51,6 +51,9 @@ namespace PadForge.Engine
         /// <summary>Bitmask of supported haptic features (SDL_HAPTIC_* flags).</summary>
         public uint HapticFeatures { get; private set; }
 
+        /// <summary>Number of haptic axes (1 for wheels, 2+ for joysticks).</summary>
+        public int NumHapticAxes { get; private set; }
+
         /// <summary>True if the device has a haptic FFB handle open.</summary>
         public bool HasHaptic => Haptic != IntPtr.Zero;
 
@@ -293,6 +296,7 @@ namespace PadForge.Engine
 
             Haptic = h;
             HapticFeatures = features;
+            NumHapticAxes = SDL_GetNumHapticAxes(h);
 
             // Pick the best strategy for translating dual-motor rumble into haptic effects.
             if ((features & SDL_HAPTIC_LEFTRIGHT) != 0)

@@ -627,8 +627,54 @@ namespace SDL3
         } // 44 bytes
 
         /// <summary>
+        /// SDL_HapticCondition — used for Spring, Damper, Friction, Inertia effects.
+        /// Each axis has independent coefficients, saturation, center, and deadband.
+        /// SDL supports up to 3 axes; we expose them as individual fields.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_HapticCondition
+        {
+            public ushort type;              // SDL_HAPTIC_SPRING / DAMPER / INERTIA / FRICTION
+            private ushort _pad;
+            public SDL_HapticDirection direction;
+            public uint length;              // Duration in ms
+            public ushort delay;
+            public ushort button;
+            public ushort interval;
+            private ushort _pad2;
+            // Per-axis arrays (3 axes max) — flattened as individual fields
+            public ushort right_sat0, right_sat1, right_sat2;   // Positive saturation 0–65535
+            public ushort left_sat0, left_sat1, left_sat2;      // Negative saturation 0–65535
+            public short right_coeff0, right_coeff1, right_coeff2; // Positive coefficient
+            public short left_coeff0, left_coeff1, left_coeff2;   // Negative coefficient
+            public ushort deadband0, deadband1, deadband2;      // Dead band 0–65535
+            public short center0, center1, center2;             // Center point
+        } // 68 bytes
+
+        /// <summary>
+        /// SDL_HapticRamp — ramp force effect (linearly changing force).
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_HapticRamp
+        {
+            public ushort type;              // SDL_HAPTIC_RAMP
+            private ushort _pad;
+            public SDL_HapticDirection direction;
+            public uint length;              // Duration in ms
+            public ushort delay;
+            public ushort button;
+            public ushort interval;
+            public short start;              // Start level -32767 to 32767
+            public short end;                // End level -32767 to 32767
+            public ushort attack_length;
+            public ushort attack_level;
+            public ushort fade_length;
+            public ushort fade_level;
+        } // 44 bytes
+
+        /// <summary>
         /// SDL_HapticEffect union. Uses explicit layout to overlay all effect types.
-        /// Size = largest member (SDL_HapticCondition at 68 bytes on x64).
+        /// Size = largest member (SDL_HapticCondition at 68 bytes).
         /// We use 72 bytes for safety margin across compilers/platforms.
         /// </summary>
         [StructLayout(LayoutKind.Explicit, Size = 72)]
@@ -638,6 +684,8 @@ namespace SDL3
             [FieldOffset(0)] public SDL_HapticLeftRight leftright;
             [FieldOffset(0)] public SDL_HapticConstant constant;
             [FieldOffset(0)] public SDL_HapticPeriodic periodic;
+            [FieldOffset(0)] public SDL_HapticCondition condition;
+            [FieldOffset(0)] public SDL_HapticRamp ramp;
         }
 
         // ─────────────────────────────────────────────
@@ -686,6 +734,9 @@ namespace SDL3
 
         public static bool SDL_SetHapticGain(IntPtr haptic, int gain) =>
             _SDL_SetHapticGain(haptic, gain);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetNumHapticAxes(IntPtr haptic);
 
         // ─────────────────────────────────────────────
         //  Keyboard enumeration and state

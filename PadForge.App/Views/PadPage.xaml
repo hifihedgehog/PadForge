@@ -412,11 +412,10 @@
                     <Grid x:Name="MotorBarsGrid" Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="24"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" Cursor="Hand"
+                        <StackPanel Grid.Column="0" Cursor="Hand" Margin="0,0,12,0"
                                     MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
                                     MouseLeftButtonDown="LeftMotor_Click"
                                     ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
@@ -434,7 +433,7 @@
                             </Border>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="2" Cursor="Hand"
+                        <StackPanel Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
                                     MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
                                     MouseLeftButtonDown="RightMotor_Click"
                                     ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
@@ -458,7 +457,7 @@
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
                         <Button Content="{Binding Pad_MapAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding MapAllCommand}"
-                                Padding="16,8" Margin="0,0,8,0" FontSize="14"
+                                Padding="16,8" FontSize="14"
                                 ToolTip="{Binding Pad_MapAllTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         <Button Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}" Padding="12,6" FontSize="14"
                                 Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"

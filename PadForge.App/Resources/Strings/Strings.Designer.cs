@@ -571,6 +571,11 @@ public class Strings : INotifyPropertyChanged
     public string Btn_DPadRight => Get("Btn_DPadRight");
     public string Btn_LeftTrigger => Get("Btn_LeftTrigger");
     public string Btn_RightTrigger => Get("Btn_RightTrigger");
+    public string Stick_LeftThumbstick => Get("Stick_LeftThumbstick");
+    public string Stick_RightThumbstick => Get("Stick_RightThumbstick");
+    public string Stick_ScrollWheel => Get("Stick_ScrollWheel");
+    public string Stick_Format => Get("Stick_Format");
+    public string Trigger_Format => Get("Trigger_Format");
     public string Btn_LeftStickX => Get("Btn_LeftStickX");
     public string Btn_LeftStickY => Get("Btn_LeftStickY");
     public string Btn_RightStickX => Get("Btn_RightStickX");

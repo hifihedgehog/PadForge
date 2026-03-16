@@ -32,12 +32,12 @@
 
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItemSeparator/>
-                <ui:NavigationViewItem Content="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Tag="Settings">
+                <ui:NavigationViewItem x:Name="NavSettings" Content="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Tag="Settings">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE713;"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Tag="About">
+                <ui:NavigationViewItem x:Name="NavAbout" Content="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Tag="About">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE946;"/>
                     </ui:NavigationViewItem.Icon>

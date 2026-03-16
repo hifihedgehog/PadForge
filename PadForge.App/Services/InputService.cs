@@ -7,6 +7,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Services
@@ -105,6 +106,9 @@ namespace PadForge.Services
         {
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
             _dispatcher = Dispatcher.CurrentDispatcher;
+
+            // Refresh server status strings when language changes.
+            Strings.CultureChanged += () => _dispatcher.BeginInvoke(RefreshServerStatusStrings);
 
             // Subscribe to device selection changes on each pad.
             foreach (var padVm in _mainVm.Pads)
@@ -295,7 +299,8 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = false;
-            _mainVm.Dashboard.EngineStatus = "Stopped";
+            _mainVm.Dashboard.EngineStateKey = "Stopped";
+            _mainVm.Dashboard.EngineStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.PollingFrequency = 0;
             _mainVm.Dashboard.OnlineDevices = 0;
             _mainVm.PollingFrequency = 0;
@@ -463,8 +468,15 @@ namespace PadForge.Services
         {
             var dash = _mainVm.Dashboard;
 
-            dash.EngineStatus = !_inputManager.IsRunning ? "Stopped"
+            var engineKey = !_inputManager.IsRunning ? "Stopped"
                 : _inputManager.IsIdle ? "Idle" : "Running";
+            dash.EngineStateKey = engineKey;
+            dash.EngineStatus = engineKey switch
+            {
+                "Running" => Strings.Instance.Common_Running,
+                "Idle" => Strings.Instance.Common_Idle,
+                _ => Strings.Instance.Common_Stopped,
+            };
             dash.PollingFrequency = _inputManager.CurrentFrequency;
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
@@ -1170,14 +1182,16 @@ namespace PadForge.Services
                 if (match && !string.IsNullOrEmpty(obj.Name))
                 {
                     // Build display text: e.g. "A" or "Inv. Left Stick X"
-                    string display = obj.Name;
+                    string display = LocalizeObjectName(obj.Name);
 
                     // For POV descriptors with a direction suffix (e.g., "POV 0 Up"),
-                    // replace generic name like "Hat Switch" with "Hat Up".
+                    // use "D-Pad Up" for gamepads or "POV 0 Up" for raw devices.
                     if (typeName == "pov" && parts.Length >= 3)
                     {
                         string dir = ResolvePovDirection(parts[2]);
-                        display = string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
+                        display = obj.Name == "D-Pad"
+                            ? $"{display} {dir}"
+                            : string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
@@ -1252,12 +1266,14 @@ namespace PadForge.Services
 
                 if (match && !string.IsNullOrEmpty(obj.Name))
                 {
-                    string display = obj.Name;
+                    string display = LocalizeObjectName(obj.Name);
 
                     if (typeName == "pov" && parts.Length >= 3)
                     {
                         string dir = ResolvePovDirection(parts[2]);
-                        display = string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
+                        display = obj.Name == "D-Pad"
+                            ? $"{display} {dir}"
+                            : string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
@@ -1270,6 +1286,62 @@ namespace PadForge.Services
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Maps an Engine-level object name (invariant English) to its localized display string.
+        /// Falls back to the original name if no localization is defined.
+        /// </summary>
+        internal static string LocalizeObjectName(string name)
+        {
+            // Try exact match first (gamepad names, single hat, standard axes).
+            var s = Strings.Instance;
+            var localized = name switch
+            {
+                // Gamepad axes
+                "Left Stick X" => s.DevObj_LeftStickX,
+                "Left Stick Y" => s.DevObj_LeftStickY,
+                "Left Trigger" => s.DevObj_LeftTrigger,
+                "Right Stick X" => s.DevObj_RightStickX,
+                "Right Stick Y" => s.DevObj_RightStickY,
+                "Right Trigger" => s.DevObj_RightTrigger,
+                // Gamepad hat
+                "D-Pad" => s.DevObj_DPad,
+                // Gamepad buttons (only the ones that need translation)
+                "Left Shoulder" => s.DevObj_LeftShoulder,
+                "Right Shoulder" => s.DevObj_RightShoulder,
+                "Left Stick Button" => s.DevObj_LeftStickButton,
+                "Right Stick Button" => s.DevObj_RightStickButton,
+                "Back" => s.DevObj_Back,
+                "Start" => s.DevObj_Start,
+                "Guide" => s.DevObj_Guide,
+                // Raw axes
+                "X Axis" => s.DevObj_XAxis,
+                "Y Axis" => s.DevObj_YAxis,
+                "Z Axis" => s.DevObj_ZAxis,
+                "X Rotation" => s.DevObj_XRotation,
+                "Y Rotation" => s.DevObj_YRotation,
+                "Z Rotation" => s.DevObj_ZRotation,
+                // Raw hat (single)
+                "Hat Switch" => s.DevObj_HatSwitch,
+                _ => null
+            };
+            if (localized != null) return localized;
+
+            // Parametric patterns: "Slider 0", "Hat Switch 2", "Button 5"
+            if (name.StartsWith("Slider ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(7), out int sliderIdx))
+                return string.Format(s.DevObj_Slider, sliderIdx);
+
+            if (name.StartsWith("Hat Switch ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(11), out int hatIdx))
+                return string.Format(s.DevObj_HatSwitchN, hatIdx);
+
+            if (name.StartsWith("Button ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(7), out int btnIdx))
+                return string.Format(s.DevObj_Button, btnIdx);
+
+            return name;
         }
 
         private static string ResolvePrefixLabel(string prefix) => prefix.ToUpperInvariant() switch
@@ -1665,6 +1737,39 @@ namespace PadForge.Services
             _webServer = null;
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+        }
+
+        /// <summary>
+        /// Re-sets server status display strings after a language change.
+        /// </summary>
+        private void RefreshServerStatusStrings()
+        {
+            var dash = _mainVm.Dashboard;
+
+            // Engine status — re-derive localized text from the invariant key.
+            dash.EngineStatus = dash.EngineStateKey switch
+            {
+                "Running" => Strings.Instance.Common_Running,
+                "Idle" => Strings.Instance.Common_Idle,
+                _ => Strings.Instance.Common_Stopped,
+            };
+
+            // DSU server
+            if (_dsuServer == null)
+                dash.DsuServerStatus = Strings.Instance.Common_Stopped;
+            else
+                dash.DsuServerStatus = string.Format(Strings.Instance.Server_ListeningOn_Format, _mainVm.Dashboard.DsuMotionServerPort);
+
+            // Web controller server
+            if (_webServer == null)
+                dash.WebControllerStatus = Strings.Instance.Common_Stopped;
+            else
+            {
+                int clients = dash.WebControllerClientCount;
+                dash.WebControllerStatus = clients > 0
+                    ? string.Format(Strings.Instance.Server_RunningClients_Format, clients)
+                    : string.Format(Strings.Instance.Server_RunningOn_Format, _webServer.Url ?? "");
+            }
         }
 
         // ─────────────────────────────────────────────

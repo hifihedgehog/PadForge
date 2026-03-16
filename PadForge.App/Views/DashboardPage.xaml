@@ -41,10 +41,10 @@
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Foreground" Value="#FFF44336"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EngineStatus}" Value="Running">
+                                        <DataTrigger Binding="{Binding EngineStateKey}" Value="Running">
                                             <Setter Property="Foreground" Value="#FF4CAF50"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding EngineStatus}" Value="Idle">
+                                        <DataTrigger Binding="{Binding EngineStateKey}" Value="Idle">
                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -129,7 +129,7 @@
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                            <Condition Binding="{Binding DataContext.EngineStatus, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
+                                                            <Condition Binding="{Binding DataContext.EngineStateKey, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="{Binding Main_EngineStopped, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
@@ -170,7 +170,7 @@
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                                <Condition Binding="{Binding DataContext.EngineStatus, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
+                                                                <Condition Binding="{Binding DataContext.EngineStateKey, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                                         </MultiDataTrigger>

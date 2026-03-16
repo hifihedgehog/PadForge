@@ -37,6 +37,10 @@ namespace PadForge.ViewModels
         {
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
+
+            // Rebuild mappings so target labels (Back, Start, etc.) and source display
+            // text are re-evaluated in the new language.
+            RebuildMappings();
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>
@@ -463,13 +467,13 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem("B", "ButtonB", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("X", "ButtonX", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("Y", "ButtonY", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftBumper, "LeftShoulder", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightBumper, "RightShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftShoulder, "LeftShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightShoulder, "RightShoulder", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_Back, "ButtonBack", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_Start, "ButtonStart", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_Guide, "ButtonGuide", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickClick, "LeftThumbButton", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickClick, "RightThumbButton", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickButton, "LeftThumbButton", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickButton, "RightThumbButton", MappingCategory.Buttons));
             }
 
             // D-Pad

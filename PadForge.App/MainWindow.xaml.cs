@@ -1002,8 +1002,15 @@ namespace PadForge
             if (_navProfiles != null) _navProfiles.Content = Strings.Instance.Profiles_Title;
             if (_navDevices != null) _navDevices.Content = Strings.Instance.Devices_Title;
 
+            // Footer items — use x:Name references directly.
+            NavSettings.Content = Strings.Instance.Settings_Title;
+            NavAbout.Content = Strings.Instance.About_Title;
+
             // Refresh "Add Controller" and controller card labels by rebuilding the dynamic section.
             RebuildControllerSection();
+
+            // Persist the language change.
+            _settingsService.MarkDirty();
         }
 
         /// <summary>

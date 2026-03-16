@@ -246,7 +246,7 @@
                     <TextBlock Text="{Binding Pad_Triggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
                 <RadioButton x:Name="TabForceFeedback" Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="{Binding Pad_ForceFeeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                    <TextBlock Text="{Binding Pad_ForceFeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
             </WrapPanel>
         </Border>
@@ -670,7 +670,9 @@
                                                  ToolTip="{Binding Macro_KeyComboTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox ItemsSource="{x:Static vm:MacroAction.VirtualKeyValues}"
-                                                      SelectedItem="{Binding SelectedKeyToAdd, Mode=TwoWay}"
+                                                      DisplayMemberPath="DisplayName"
+                                                      SelectedValuePath="Key"
+                                                      SelectedValue="{Binding SelectedKeyToAdd, Mode=TwoWay}"
                                                       MinWidth="180" MaxDropDownHeight="300"
                                                       IsTextSearchEnabled="True"/>
                                             <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}" Command="{Binding ClearKeyStringCommand}"
@@ -754,7 +756,7 @@
                                                 <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
-                                                          DisplayMemberPath="Name"
+                                                          DisplayMemberPath="DisplayName"
                                                           SelectedValuePath="InputIndex"
                                                           SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
                                                           DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
@@ -831,7 +833,7 @@
                                                 <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
-                                                          DisplayMemberPath="Name"
+                                                          DisplayMemberPath="DisplayName"
                                                           SelectedValuePath="InputIndex"
                                                           SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
                                                           DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
@@ -897,7 +899,7 @@
                                                 <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
-                                                          DisplayMemberPath="Name"
+                                                          DisplayMemberPath="DisplayName"
                                                           SelectedValuePath="InputIndex"
                                                           SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
                                                           DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>

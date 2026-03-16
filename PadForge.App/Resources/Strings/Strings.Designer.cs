@@ -147,7 +147,8 @@ public class Strings : INotifyPropertyChanged
     public string Status_ProfileUpdated_Format => Get("Status_ProfileUpdated_Format");
     public string Status_ProfileLoaded_Format => Get("Status_ProfileLoaded_Format");
     public string Status_ProfileRevertedDefault => Get("Status_ProfileRevertedDefault");
-    public string Status_Player_Format => Get("Status_Player_Format");
+    public string Status_VirtualController_Format => Get("Status_VirtualController_Format");
+    public string Status_DeviceAssigned_Format => Get("Status_DeviceAssigned_Format");
     public string Status_Unmapped_Format => Get("Status_Unmapped_Format");
     public string Dashboard_Title => Get("Dashboard_Title");
     public string Dashboard_InputEngine => Get("Dashboard_InputEngine");

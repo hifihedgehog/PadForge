@@ -2948,7 +2948,7 @@ namespace PadForge
                             name = us.InstanceGuid.ToString();
 
                         string slot = us.MapTo >= 0 && us.MapTo < InputManager.MaxPads
-                            ? string.Format(Strings.Instance.Status_Player_Format, us.MapTo + 1, $"{us.InstanceGuid:D}")
+                            ? string.Format(Strings.Instance.Status_VirtualController_Format, us.MapTo + 1, $"{us.InstanceGuid:D}")
                             : string.Format(Strings.Instance.Status_Unmapped_Format, $"{us.InstanceGuid:D}");
 
                         entries.Add(new CopyFromDialog.DeviceEntry

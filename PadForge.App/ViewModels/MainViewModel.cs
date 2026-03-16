@@ -118,7 +118,7 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// The 16 virtual controller pad ViewModels (Player 1–16).
+        /// The 16 virtual controller pad ViewModels (Virtual Controller 1–16).
         /// </summary>
         public ObservableCollection<PadViewModel> Pads { get; } = new ObservableCollection<PadViewModel>();
 

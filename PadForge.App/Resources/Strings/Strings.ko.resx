@@ -784,8 +784,8 @@
   <data name="DevObj_YRotation" xml:space="preserve"><value>Y 회전</value></data>
   <data name="DevObj_ZRotation" xml:space="preserve"><value>Z 회전</value></data>
   <data name="DevObj_Slider" xml:space="preserve"><value>슬라이더 {0}</value></data>
-  <data name="DevObj_HatSwitch" xml:space="preserve"><value>햇 스위치</value></data>
-  <data name="DevObj_HatSwitchN" xml:space="preserve"><value>햇 스위치 {0}</value></data>
+  <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
+  <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>버튼 {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>왼쪽 어깨 버튼</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>오른쪽 어깨 버튼</value></data>

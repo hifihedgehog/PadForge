@@ -36,6 +36,7 @@ namespace PadForge.Engine
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;
+        public int NumHapticAxes => 0;
         public ushort VendorId { get; private set; }
         public ushort ProductId { get; private set; }
         public string DevicePath { get; private set; } = string.Empty;

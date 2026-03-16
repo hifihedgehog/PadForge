@@ -174,7 +174,8 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>配置文件 "{0}" 已更新。</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>已加载配置文件：{0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>配置文件已恢复为默认</value></data>
-  <data name="Status_Player_Format" xml:space="preserve"><value>玩家 {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>已将"{0}"分配到虚拟控制器 {1}。</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>未映射 — {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->

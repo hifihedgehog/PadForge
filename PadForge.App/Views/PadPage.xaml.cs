@@ -576,13 +576,26 @@ namespace PadForge.Views
                 return;
             }
 
-            var axes = new List<PadForge.Engine.DeviceObjectItem>();
+            var axes = new List<AxisPickerItem>();
             foreach (var obj in ud.DeviceObjects)
             {
                 if (obj.IsAxis)
-                    axes.Add(obj);
+                    axes.Add(new AxisPickerItem(obj.InputIndex, Services.InputService.LocalizeObjectName(obj.Name)));
             }
             cb.ItemsSource = axes;
         }
+    }
+
+    /// <summary>Lightweight wrapper for device axis combo items with localized display name.</summary>
+    internal class AxisPickerItem
+    {
+        public AxisPickerItem(int inputIndex, string displayName)
+        {
+            InputIndex = inputIndex;
+            DisplayName = displayName;
+        }
+        public int InputIndex { get; }
+        public string DisplayName { get; }
+        public override string ToString() => DisplayName;
     }
 }

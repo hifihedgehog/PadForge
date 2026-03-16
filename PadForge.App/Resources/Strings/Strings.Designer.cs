@@ -560,8 +560,8 @@ public class Strings : INotifyPropertyChanged
     public string DevObj_YRotation => Get("DevObj_YRotation");
     public string DevObj_ZRotation => Get("DevObj_ZRotation");
     public string DevObj_Slider => Get("DevObj_Slider");
-    public string DevObj_HatSwitch => Get("DevObj_HatSwitch");
-    public string DevObj_HatSwitchN => Get("DevObj_HatSwitchN");
+    public string DevObj_POV => Get("DevObj_POV");
+    public string DevObj_POVN => Get("DevObj_POVN");
     public string DevObj_Button => Get("DevObj_Button");
     public string Profiles_Title => Get("Profiles_Title");
     public string Profiles_Management => Get("Profiles_Management");

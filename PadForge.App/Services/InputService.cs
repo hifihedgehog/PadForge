@@ -1322,20 +1322,20 @@ namespace PadForge.Services
                 "X Rotation" => s.DevObj_XRotation,
                 "Y Rotation" => s.DevObj_YRotation,
                 "Z Rotation" => s.DevObj_ZRotation,
-                // Raw hat (single)
-                "Hat Switch" => s.DevObj_HatSwitch,
+                // Raw POV (single)
+                "POV" => s.DevObj_POV,
                 _ => null
             };
             if (localized != null) return localized;
 
-            // Parametric patterns: "Slider 0", "Hat Switch 2", "Button 5"
+            // Parametric patterns: "Slider 0", "POV 2", "Button 5"
             if (name.StartsWith("Slider ", StringComparison.Ordinal) &&
                 int.TryParse(name.AsSpan(7), out int sliderIdx))
                 return string.Format(s.DevObj_Slider, sliderIdx);
 
-            if (name.StartsWith("Hat Switch ", StringComparison.Ordinal) &&
-                int.TryParse(name.AsSpan(11), out int hatIdx))
-                return string.Format(s.DevObj_HatSwitchN, hatIdx);
+            if (name.StartsWith("POV ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(4), out int hatIdx))
+                return string.Format(s.DevObj_POVN, hatIdx);
 
             if (name.StartsWith("Button ", StringComparison.Ordinal) &&
                 int.TryParse(name.AsSpan(7), out int btnIdx))

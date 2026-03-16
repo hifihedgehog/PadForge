@@ -641,7 +641,7 @@ namespace PadForge.Engine
                 item.InputIndex = i;
                 item.ObjectTypeGuid = ObjectGuid.PovController;
                 item.Name = isGamepad ? "D-Pad"
-                    : NumHats == 1 ? "Hat Switch" : $"Hat Switch {i}";
+                    : NumHats == 1 ? "POV" : $"POV {i}";
                 item.ObjectType = DeviceObjectTypeFlags.PointOfViewController;
                 item.Offset = (NumAxes + i) * 4;
                 item.Aspect = ObjectAspect.Position;

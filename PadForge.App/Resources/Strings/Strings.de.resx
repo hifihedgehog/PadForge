@@ -784,8 +784,8 @@
   <data name="DevObj_YRotation" xml:space="preserve"><value>Y-Rotation</value></data>
   <data name="DevObj_ZRotation" xml:space="preserve"><value>Z-Rotation</value></data>
   <data name="DevObj_Slider" xml:space="preserve"><value>Schieberegler {0}</value></data>
-  <data name="DevObj_HatSwitch" xml:space="preserve"><value>Hutschalter</value></data>
-  <data name="DevObj_HatSwitchN" xml:space="preserve"><value>Hutschalter {0}</value></data>
+  <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
+  <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Taste {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Linke Schultertaste</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>Rechte Schultertaste</value></data>

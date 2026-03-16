@@ -248,7 +248,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>Utilitário de Mapeamento de Controles</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork moderno do x360ce — reconstruído com SDL3, WPF e .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge mapeia qualquer controle, teclado ou mouse para controles virtuais Xbox 360, DualShock 4, DirectInput personalizado ou MIDI via ViGEmBus, vJoy e Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para entrada de teclado e mouse, e fornece uma interface moderna Fluent Design para mapeamento, configuração de zona morta e gerenciamento de force feedback.</value></data>
-  <data name="About_BuiltWith" xml:space="preserve"><value>Desenvolvido Com</value></data>
+  <data name="About_BuiltWith" xml:space="preserve"><value>Desenvolvido com</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime e framework WPF</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
@@ -365,7 +365,7 @@
   <data name="Pad_MappingHint" xml:space="preserve"><value>Clique em uma linha de mapeamento e pressione um botão/eixo no seu controle para atribuí-lo.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copiar todos os mapeamentos e configurações para a área de transferência</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Colar mapeamentos e configurações da área de transferência</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar De...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar de...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copiar configurações de outro dispositivo configurado</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Redefinir Tudo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpar Tudo</value></data>
@@ -453,7 +453,7 @@
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nova Macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Gravar Gatilho</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Não definido — clique em Gravar</value></data>
-  <data name="Macro_Btn_Format" xml:space="preserve"><value>Btn {0}</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>Botão {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(nenhum)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Eixo do dispositivo {0}</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Ação desconhecida</value></data>
@@ -474,7 +474,7 @@
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Mover Mouse ← {0} (velocidade {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Mover mouse em {0} (máx. {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Scroll do Mouse ← {0} (velocidade {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scroll em {0} (máx. {1}unidades)</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scroll em {0} (máx. {1} unidades)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Pressionar Mouse {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar Mouse {0}</value></data>
 
@@ -611,9 +611,9 @@
   <data name="Btn_DPadRight" xml:space="preserve"><value>D-Pad Direita</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>Gatilho Direito</value></data>
-  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Analógico esquerdo</value></data>
-  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Analógico direito</value></data>
-  <data name="Stick_ScrollWheel" xml:space="preserve"><value>Roda de rolagem</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Analógico Esquerdo</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Analógico Direito</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>Roda de Rolagem</value></data>
   <data name="Stick_Format" xml:space="preserve"><value>Analógico {0}</value></data>
   <data name="Trigger_Format" xml:space="preserve"><value>Gatilho {0}</value></data>
   <data name="Btn_LeftStickX" xml:space="preserve"><value>Analógico Esquerdo X</value></data>
@@ -637,12 +637,12 @@
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <!-- Mouse VK buttons -->
-  <data name="Key_LButton" xml:space="preserve"><value>Botão esquerdo do mouse</value></data>
-  <data name="Key_RButton" xml:space="preserve"><value>Botão direito do mouse</value></data>
+  <data name="Key_LButton" xml:space="preserve"><value>Botão Esquerdo do Mouse</value></data>
+  <data name="Key_RButton" xml:space="preserve"><value>Botão Direito do Mouse</value></data>
   <data name="Key_Cancel" xml:space="preserve"><value>Cancelar</value></data>
-  <data name="Key_MButton" xml:space="preserve"><value>Botão central do mouse</value></data>
-  <data name="Key_XButton1" xml:space="preserve"><value>Botão X1 do mouse</value></data>
-  <data name="Key_XButton2" xml:space="preserve"><value>Botão X2 do mouse</value></data>
+  <data name="Key_MButton" xml:space="preserve"><value>Botão Central do Mouse</value></data>
+  <data name="Key_XButton1" xml:space="preserve"><value>Botão X1 do Mouse</value></data>
+  <data name="Key_XButton2" xml:space="preserve"><value>Botão X2 do Mouse</value></data>
   <!-- Common keys -->
   <data name="Key_Backspace" xml:space="preserve"><value>Backspace</value></data>
   <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
@@ -699,16 +699,16 @@
   <data name="Key_BrowserHome" xml:space="preserve"><value>Navegador Início</value></data>
   <!-- Media keys -->
   <data name="Key_VolumeMute" xml:space="preserve"><value>Mudo</value></data>
-  <data name="Key_VolumeDown" xml:space="preserve"><value>Diminuir volume</value></data>
-  <data name="Key_VolumeUp" xml:space="preserve"><value>Aumentar volume</value></data>
-  <data name="Key_MediaNext" xml:space="preserve"><value>Próxima faixa</value></data>
-  <data name="Key_MediaPrev" xml:space="preserve"><value>Faixa anterior</value></data>
-  <data name="Key_MediaStop" xml:space="preserve"><value>Parar mídia</value></data>
+  <data name="Key_VolumeDown" xml:space="preserve"><value>Diminuir Volume</value></data>
+  <data name="Key_VolumeUp" xml:space="preserve"><value>Aumentar Volume</value></data>
+  <data name="Key_MediaNext" xml:space="preserve"><value>Próxima Faixa</value></data>
+  <data name="Key_MediaPrev" xml:space="preserve"><value>Faixa Anterior</value></data>
+  <data name="Key_MediaStop" xml:space="preserve"><value>Parar Mídia</value></data>
   <data name="Key_MediaPlayPause" xml:space="preserve"><value>Reproduzir/Pausar</value></data>
-  <data name="Key_LaunchMail" xml:space="preserve"><value>Iniciar e-mail</value></data>
-  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>Selecionar mídia</value></data>
-  <data name="Key_LaunchApp1" xml:space="preserve"><value>Iniciar aplicativo 1</value></data>
-  <data name="Key_LaunchApp2" xml:space="preserve"><value>Iniciar aplicativo 2</value></data>
+  <data name="Key_LaunchMail" xml:space="preserve"><value>Iniciar E-mail</value></data>
+  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>Selecionar Mídia</value></data>
+  <data name="Key_LaunchApp1" xml:space="preserve"><value>Iniciar Aplicativo 1</value></data>
+  <data name="Key_LaunchApp2" xml:space="preserve"><value>Iniciar Aplicativo 2</value></data>
   <data name="Mouse_LeftClick" xml:space="preserve"><value>Clique Esquerdo</value></data>
   <data name="Mouse_RightClick" xml:space="preserve"><value>Clique Direito</value></data>
   <data name="Mouse_MiddleClick" xml:space="preserve"><value>Clique do Meio</value></data>

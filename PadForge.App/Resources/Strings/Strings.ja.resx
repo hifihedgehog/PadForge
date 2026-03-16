@@ -384,9 +384,9 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D ビューに切り替え</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D ビューに切り替え</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>クリックして左モーターをテスト</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>L モーター</value></data>
+  <data name="Pad_LeftMotor" xml:space="preserve"><value>左モーター</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>クリックして右モーターをテスト</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>R モーター</value></data>
+  <data name="Pad_RightMotor" xml:space="preserve"><value>右モーター</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>すべてのマッピングを順番に記録します — 各プロンプトでボタン/軸を押してください</value></data>

@@ -2883,7 +2883,10 @@ namespace PadForge
 
             try
             {
-                Clipboard.SetText(ps.ToJson());
+                var copyOutputType = padVm.OutputType;
+                bool copyIsCustomVJoy = copyOutputType == VirtualControllerType.VJoy
+                    && !padVm.VJoyConfig.IsGamepadPreset;
+                Clipboard.SetText(ps.ToJson(copyOutputType, copyIsCustomVJoy));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
             }
             catch (Exception ex)
@@ -2897,14 +2900,22 @@ namespace PadForge
             try
             {
                 string json = Clipboard.GetText();
-                var ps = PadSetting.FromJson(json);
+                var ps = PadSetting.FromJson(json,
+                    out VirtualControllerType srcType, out bool srcIsCustomVJoy);
                 if (ps == null)
                 {
                     _viewModel.StatusText = Strings.Instance.Status_InvalidClipboard;
                     return;
                 }
 
-                _inputService.ApplyPadSettingToCurrentDevice(padVm.PadIndex, ps);
+                var targetType = padVm.OutputType;
+                bool targetIsCustomVJoy = targetType == VirtualControllerType.VJoy
+                    && !padVm.VJoyConfig.IsGamepadPreset;
+
+                _inputService.ApplyPadSettingToCurrentDeviceTranslated(
+                    padVm.PadIndex, ps,
+                    srcType, srcIsCustomVJoy,
+                    targetType, targetIsCustomVJoy);
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
             }
@@ -2951,12 +2962,28 @@ namespace PadForge
                             ? string.Format(Strings.Instance.Status_VirtualController_Format, us.MapTo + 1, $"{us.InstanceGuid:D}")
                             : string.Format(Strings.Instance.Status_Unmapped_Format, $"{us.InstanceGuid:D}");
 
+                        // Determine layout type from the slot's output type.
+                        var outputType = VirtualControllerType.Xbox360;
+                        bool isCustomVJoy = false;
+                        if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
+                        {
+                            var srcPad = _viewModel.Pads[us.MapTo];
+                            outputType = srcPad.OutputType;
+                            isCustomVJoy = outputType == VirtualControllerType.VJoy
+                                && !srcPad.VJoyConfig.IsGamepadPreset;
+                        }
+
+                        string layoutLabel = $"({MappingTranslation.GetLayoutLabel(outputType, isCustomVJoy)})";
+
                         entries.Add(new CopyFromDialog.DeviceEntry
                         {
                             Name = name,
                             SlotLabel = slot,
+                            LayoutLabel = layoutLabel,
                             InstanceGuid = us.InstanceGuid,
-                            PadSetting = ps
+                            PadSetting = ps,
+                            OutputType = outputType,
+                            IsCustomVJoy = isCustomVJoy
                         });
                     }
                 }
@@ -2969,9 +2996,17 @@ namespace PadForge
             }
 
             var dialog = new CopyFromDialog(entries) { Owner = this };
-            if (dialog.ShowDialog() == true && dialog.SelectedPadSetting != null)
+            if (dialog.ShowDialog() == true && dialog.SelectedEntry != null)
             {
-                _inputService.ApplyPadSettingToCurrentDevice(padVm.PadIndex, dialog.SelectedPadSetting);
+                var srcEntry = dialog.SelectedEntry;
+                var targetOutputType = padVm.OutputType;
+                bool targetIsCustomVJoy = targetOutputType == VirtualControllerType.VJoy
+                    && !padVm.VJoyConfig.IsGamepadPreset;
+
+                _inputService.ApplyPadSettingToCurrentDeviceTranslated(
+                    padVm.PadIndex, srcEntry.PadSetting,
+                    srcEntry.OutputType, srcEntry.IsCustomVJoy,
+                    targetOutputType, targetIsCustomVJoy);
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;
             }

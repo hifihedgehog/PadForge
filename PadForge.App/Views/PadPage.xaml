@@ -1047,24 +1047,24 @@
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
                                                 Width="60"/>
                             <!-- Record button -->
-                            <DataGridTemplateColumn Header="" Width="90">
+                            <DataGridTemplateColumn Header="" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="{Binding RecordButtonText}"
                                                 Command="{Binding ToggleRecordCommand}"
                                                 Padding="6,2" Margin="2"
-                                                MinWidth="75" HorizontalAlignment="Center"/>
+                                                MinWidth="85" HorizontalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Clear button -->
-                            <DataGridTemplateColumn Header="" Width="90">
+                            <DataGridTemplateColumn Header="" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding ClearCommand}"
                                                 Padding="6,2" Margin="2"
-                                                MinWidth="75" HorizontalAlignment="Center"/>
+                                                MinWidth="85" HorizontalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

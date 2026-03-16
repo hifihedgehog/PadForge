@@ -18,7 +18,7 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Human-readable name of the object (e.g., "X Axis", "Button 3", "Hat Switch").
+        /// Human-readable name of the object (e.g., "X Axis", "Button 3", "POV").
         /// </summary>
         public string Name { get; set; } = string.Empty;
 

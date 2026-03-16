@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Services
@@ -164,7 +165,7 @@ namespace PadForge.Services
             {
                 // No device available — can't record.
                 _activeMapping = null;
-                _mainVm.StatusText = "No device connected to record from.";
+                _mainVm.StatusText = Strings.Instance.Status_NoDeviceToRecord;
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -185,7 +186,7 @@ namespace PadForge.Services
             _timer.Tick += PollTick;
             _timer.Start();
 
-            _mainVm.StatusText = $"Recording: press a button or move an axis for \"{mapping.TargetLabel}\"...";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_RecordingPrompt_Format, mapping.TargetLabel);
         }
 
         /// <summary>
@@ -204,7 +205,7 @@ namespace PadForge.Services
             _activeDeviceGuid = Guid.Empty;
             _baseline = null;
 
-            _mainVm.StatusText = "Recording cancelled.";
+            _mainVm.StatusText = Strings.Instance.Status_RecordingCancelled;
         }
 
         // ─────────────────────────────────────────────
@@ -229,7 +230,7 @@ namespace PadForge.Services
                 var mapping = _activeMapping;
                 CancelRecording();
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
-                _mainVm.StatusText = $"Recording timed out for \"{mapping.TargetLabel}\".";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_RecordingTimedOut_Format, mapping.TargetLabel);
                 return;
             }
 
@@ -396,7 +397,7 @@ namespace PadForge.Services
 
             string finalDescriptor = mapping.SourceDescriptor;
 
-            _mainVm.StatusText = $"Recorded \"{mapping.TargetLabel}\" ← {finalDescriptor}";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
 
             // Raise event.
             RecordingCompleted?.Invoke(this, new RecordingResult

@@ -450,7 +450,6 @@ namespace PadForge.Views
                 if (IsStickRingHit(hitGeo, hit.Position, out string stickAxis))
                 {
                     ControllerElementRecordRequested?.Invoke(this, stickAxis);
-                    ShowAxisArrow(hit.Position, stickAxis);
                     e.Handled = true;
                     return;
                 }

@@ -7,13 +7,13 @@ using System.Windows.Media.Animation;
 namespace PadForge.Common
 {
     /// <summary>
-    /// Attached behavior that creates a ticker/marquee effect on a TextBlock
-    /// when its text exceeds the available width. Text scrolls left to reveal
+    /// Attached behavior that creates a ticker/marquee effect on any FrameworkElement
+    /// when its content exceeds the available width. The element scrolls left to reveal
     /// the overflow, pauses, then scrolls back.
     ///
-    /// Usage: Place the TextBlock inside a horizontal StackPanel inside a
-    /// Border with ClipToBounds="True". The StackPanel gives the TextBlock
-    /// infinite width (so ActualWidth = true text width). The Border clips.
+    /// Usage: Place the element inside a horizontal StackPanel inside a
+    /// Border with ClipToBounds="True". The StackPanel gives the element
+    /// infinite width (so ActualWidth = true content width). The Border clips.
     /// </summary>
     public static class MarqueeBehavior
     {
@@ -26,50 +26,52 @@ namespace PadForge.Common
 
         private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TextBlock tb)
+            if (d is FrameworkElement fe)
             {
+                if (fe is TextBlock tb)
+                    tb.TextWrapping = TextWrapping.NoWrap;
+
                 if ((bool)e.NewValue)
                 {
-                    tb.TextWrapping = TextWrapping.NoWrap;
-                    tb.Loaded += OnTextBlockLoaded;
-                    tb.SizeChanged += OnTextBlockSizeChanged;
+                    fe.Loaded += OnElementLoaded;
+                    fe.SizeChanged += OnElementSizeChanged;
 
-                    if (tb.IsLoaded)
-                        EvaluateMarquee(tb);
+                    if (fe.IsLoaded)
+                        EvaluateMarquee(fe);
                 }
                 else
                 {
-                    tb.Loaded -= OnTextBlockLoaded;
-                    tb.SizeChanged -= OnTextBlockSizeChanged;
-                    StopMarquee(tb);
+                    fe.Loaded -= OnElementLoaded;
+                    fe.SizeChanged -= OnElementSizeChanged;
+                    StopMarquee(fe);
                 }
             }
         }
 
-        private static void OnTextBlockLoaded(object sender, RoutedEventArgs e)
+        private static void OnElementLoaded(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBlock tb)
-                EvaluateMarquee(tb);
+            if (sender is FrameworkElement fe)
+                EvaluateMarquee(fe);
         }
 
-        private static void OnTextBlockSizeChanged(object sender, SizeChangedEventArgs e)
+        private static void OnElementSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (sender is TextBlock tb)
-                EvaluateMarquee(tb);
+            if (sender is FrameworkElement fe)
+                EvaluateMarquee(fe);
         }
 
-        private static void EvaluateMarquee(TextBlock tb)
+        private static void EvaluateMarquee(FrameworkElement fe)
         {
             // Walk up the visual tree to find the first ancestor with ClipToBounds.
             // That ancestor's width is the visible container width.
             double containerWidth = 0;
-            DependencyObject current = VisualTreeHelper.GetParent(tb);
+            DependencyObject current = VisualTreeHelper.GetParent(fe);
             while (current != null)
             {
                 if (current is UIElement uie && uie.ClipToBounds &&
-                    current is FrameworkElement fe && fe.ActualWidth > 0)
+                    current is FrameworkElement ancestor && ancestor.ActualWidth > 0)
                 {
-                    containerWidth = fe.ActualWidth;
+                    containerWidth = ancestor.ActualWidth;
                     break;
                 }
                 current = VisualTreeHelper.GetParent(current);
@@ -77,22 +79,22 @@ namespace PadForge.Common
             if (containerWidth <= 0)
                 return;
 
-            // The TextBlock must be inside a horizontal StackPanel (or similar
-            // unconstrained panel) so that ActualWidth reflects the full text width.
-            double textWidth = tb.ActualWidth;
-            if (textWidth <= 0 || textWidth <= containerWidth)
+            // The element must be inside a horizontal StackPanel (or similar
+            // unconstrained panel) so that ActualWidth reflects the full content width.
+            double contentWidth = fe.ActualWidth;
+            if (contentWidth <= 0 || contentWidth <= containerWidth)
             {
-                StopMarquee(tb);
+                StopMarquee(fe);
                 return;
             }
 
-            double overflow = textWidth - containerWidth;
+            double overflow = contentWidth - containerWidth;
 
-            var transform = tb.RenderTransform as TranslateTransform;
+            var transform = fe.RenderTransform as TranslateTransform;
             if (transform == null)
             {
                 transform = new TranslateTransform();
-                tb.RenderTransform = transform;
+                fe.RenderTransform = transform;
             }
 
             // Speed: ~40px/sec, with 2s pause at each end.
@@ -122,9 +124,9 @@ namespace PadForge.Common
             transform.BeginAnimation(TranslateTransform.XProperty, animation);
         }
 
-        private static void StopMarquee(TextBlock tb)
+        private static void StopMarquee(FrameworkElement fe)
         {
-            if (tb.RenderTransform is TranslateTransform transform)
+            if (fe.RenderTransform is TranslateTransform transform)
             {
                 transform.BeginAnimation(TranslateTransform.XProperty, null);
                 transform.X = 0;

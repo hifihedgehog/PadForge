@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -24,9 +25,21 @@ namespace PadForge.ViewModels
         {
             PadIndex = padIndex;
             _slotNumber = padIndex + 1;
-            Title = $"Virtual Controller {padIndex + 1}";
-            SlotLabel = $"Virtual Controller {padIndex + 1}";
+            Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
+            SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             _vJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
+            RebuildMappings();
+            RebuildStickConfigs();
+            RebuildTriggerConfigs();
+        }
+
+        protected override void OnCultureChanged()
+        {
+            Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
+            SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
+
+            // Rebuild mappings so target labels (Back, Start, etc.) and source display
+            // text are re-evaluated in the new language.
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
@@ -244,7 +257,7 @@ namespace PadForge.ViewModels
         /// </summary>
         public event EventHandler<MappedDeviceInfo> SelectedDeviceChanged;
 
-        private string _mappedDeviceName = "No device mapped";
+        private string _mappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
 
         public string MappedDeviceName
         {
@@ -456,30 +469,30 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem("B", "ButtonB", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("X", "ButtonX", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("Y", "ButtonY", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Left Bumper", "LeftShoulder", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Right Bumper", "RightShoulder", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Back", "ButtonBack", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Start", "ButtonStart", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Guide", "ButtonGuide", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Left Stick Click", "LeftThumbButton", MappingCategory.Buttons));
-                Mappings.Add(new MappingItem("Right Stick Click", "RightThumbButton", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftShoulder, "LeftShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightShoulder, "RightShoulder", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_Back, "ButtonBack", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_Start, "ButtonStart", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_Guide, "ButtonGuide", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickButton, "LeftThumbButton", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickButton, "RightThumbButton", MappingCategory.Buttons));
             }
 
             // D-Pad
-            Mappings.Add(new MappingItem("D-Pad Up", "DPadUp", MappingCategory.DPad));
-            Mappings.Add(new MappingItem("D-Pad Down", "DPadDown", MappingCategory.DPad));
-            Mappings.Add(new MappingItem("D-Pad Left", "DPadLeft", MappingCategory.DPad));
-            Mappings.Add(new MappingItem("D-Pad Right", "DPadRight", MappingCategory.DPad));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadUp, "DPadUp", MappingCategory.DPad));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadDown, "DPadDown", MappingCategory.DPad));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadLeft, "DPadLeft", MappingCategory.DPad));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadRight, "DPadRight", MappingCategory.DPad));
 
             // Triggers
-            Mappings.Add(new MappingItem(isDS4 ? "L2" : "Left Trigger", "LeftTrigger", MappingCategory.Triggers));
-            Mappings.Add(new MappingItem(isDS4 ? "R2" : "Right Trigger", "RightTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(isDS4 ? "L2" : Strings.Instance.Btn_LeftTrigger, "LeftTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(isDS4 ? "R2" : Strings.Instance.Btn_RightTrigger, "RightTrigger", MappingCategory.Triggers));
 
             // Stick axes
-            Mappings.Add(new MappingItem("Left Stick X", "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
-            Mappings.Add(new MappingItem("Left Stick Y", "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
-            Mappings.Add(new MappingItem("Right Stick X", "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
-            Mappings.Add(new MappingItem("Right Stick Y", "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
         }
 
         /// <summary>
@@ -527,32 +540,32 @@ namespace PadForge.ViewModels
                 AddKey($"F{i}", (byte)(0x6F + i)); // VK_F1=0x70 .. VK_F12=0x7B
 
             // ── Modifiers ──
-            AddKey("Left Shift", 0xA0);
-            AddKey("Right Shift", 0xA1);
-            AddKey("Left Ctrl", 0xA2);
-            AddKey("Right Ctrl", 0xA3);
-            AddKey("Left Alt", 0xA4);
-            AddKey("Right Alt", 0xA5);
+            AddKey(Strings.Instance.Key_LeftShift, 0xA0);
+            AddKey(Strings.Instance.Key_RightShift, 0xA1);
+            AddKey(Strings.Instance.Key_LeftCtrl, 0xA2);
+            AddKey(Strings.Instance.Key_RightCtrl, 0xA3);
+            AddKey(Strings.Instance.Key_LeftAlt, 0xA4);
+            AddKey(Strings.Instance.Key_RightAlt, 0xA5);
 
             // ── Special keys ──
-            AddKey("Space", 0x20);
-            AddKey("Enter", 0x0D);
-            AddKey("Escape", 0x1B);
-            AddKey("Tab", 0x09);
-            AddKey("Backspace", 0x08);
-            AddKey("Caps Lock", 0x14);
+            AddKey(Strings.Instance.Key_Space, 0x20);
+            AddKey(Strings.Instance.Key_Enter, 0x0D);
+            AddKey(Strings.Instance.Key_Escape, 0x1B);
+            AddKey(Strings.Instance.Key_Tab, 0x09);
+            AddKey(Strings.Instance.Key_Backspace, 0x08);
+            AddKey(Strings.Instance.Key_CapsLock, 0x14);
 
             // ── Navigation ──
-            AddKey("Up", 0x26);
-            AddKey("Down", 0x28);
-            AddKey("Left", 0x25);
-            AddKey("Right", 0x27);
-            AddKey("Home", 0x24);
-            AddKey("End", 0x23);
-            AddKey("Page Up", 0x21);
-            AddKey("Page Down", 0x22);
-            AddKey("Insert", 0x2D);
-            AddKey("Delete", 0x2E);
+            AddKey(Strings.Instance.Key_Up, 0x26);
+            AddKey(Strings.Instance.Key_Down, 0x28);
+            AddKey(Strings.Instance.Key_Left, 0x25);
+            AddKey(Strings.Instance.Key_Right, 0x27);
+            AddKey(Strings.Instance.Key_Home, 0x24);
+            AddKey(Strings.Instance.Key_End, 0x23);
+            AddKey(Strings.Instance.Key_PageUp, 0x21);
+            AddKey(Strings.Instance.Key_PageDown, 0x22);
+            AddKey(Strings.Instance.Key_Insert, 0x2D);
+            AddKey(Strings.Instance.Key_Delete, 0x2E);
 
             // ── Punctuation ──
             AddKey(";", 0xBA);
@@ -577,18 +590,18 @@ namespace PadForge.ViewModels
             AddKey("Num /", 0x6F);
 
             // ── Mouse buttons ──
-            Mappings.Add(new MappingItem("Left Click", "KbmMBtn0", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Right Click", "KbmMBtn1", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Middle Click", "KbmMBtn2", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Mouse 4", "KbmMBtn3", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem("Mouse 5", "KbmMBtn4", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_LeftClick, "KbmMBtn0", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_RightClick, "KbmMBtn1", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_MiddleClick, "KbmMBtn2", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Button4, "KbmMBtn3", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Button5, "KbmMBtn4", MappingCategory.Buttons));
 
             // ── Mouse movement axes (bidirectional) ──
-            Mappings.Add(new MappingItem("Mouse X", "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
-            Mappings.Add(new MappingItem("Mouse Y", "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_X, "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Y, "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
 
             // ── Mouse scroll (bidirectional, visualized as Right Stick Y) ──
-            Mappings.Add(new MappingItem("Scroll", "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Scroll, "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
         }
 
         /// <summary>
@@ -607,22 +620,22 @@ namespace PadForge.ViewModels
             for (int i = 0; i < stickCount; i++)
             {
                 var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
-                Mappings.Add(new MappingItem($"Stick {i + 1} X", $"VJoyAxis{stickAxisX[i]}", cat, $"VJoyAxis{stickAxisX[i]}Neg"));
-                Mappings.Add(new MappingItem($"Stick {i + 1} Y", $"VJoyAxis{stickAxisY[i]}", cat, $"VJoyAxis{stickAxisY[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_Stick_Format, i + 1), $"VJoyAxis{stickAxisX[i]}", cat, $"VJoyAxis{stickAxisX[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_StickY_Format, i + 1), $"VJoyAxis{stickAxisY[i]}", cat, $"VJoyAxis{stickAxisY[i]}Neg"));
             }
 
             // Trigger axes (unpaired)
             for (int i = 0; i < triggerCount; i++)
-                Mappings.Add(new MappingItem($"Trigger {i + 1}", $"VJoyAxis{triggerAxis[i]}", MappingCategory.Triggers));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_Trigger_Format, i + 1), $"VJoyAxis{triggerAxis[i]}", MappingCategory.Triggers));
 
             // Buttons
             for (int i = 0; i < cfg.ButtonCount; i++)
-                Mappings.Add(new MappingItem($"Button {i + 1}", $"VJoyBtn{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_Button_Format, i + 1), $"VJoyBtn{i}", MappingCategory.Buttons));
 
             // POVs
             for (int i = 0; i < cfg.PovCount; i++)
             {
-                string label = cfg.PovCount == 1 ? "D-Pad" : $"POV {i + 1}";
+                string label = cfg.PovCount == 1 ? Strings.Instance.VJoy_DPad : string.Format(Strings.Instance.VJoy_POV_Format, i + 1);
                 Mappings.Add(new MappingItem($"{label} Up", $"VJoyPov{i}Up", MappingCategory.DPad));
                 Mappings.Add(new MappingItem($"{label} Down", $"VJoyPov{i}Down", MappingCategory.DPad));
                 Mappings.Add(new MappingItem($"{label} Left", $"VJoyPov{i}Left", MappingCategory.DPad));
@@ -866,12 +879,12 @@ namespace PadForge.ViewModels
             if (isKbm)
             {
                 // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
-                var mouse = new StickConfigItem(0, "Mouse Movement", -1, -1);
+                var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1);
                 SyncStickItemFromVm(mouse);
                 mouse.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(mouse);
 
-                var scroll = new StickConfigItem(1, "Scroll Wheel", -1, -1);
+                var scroll = new StickConfigItem(1, Strings.Instance.Stick_ScrollWheel, -1, -1);
                 SyncStickItemFromVm(scroll);
                 scroll.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(scroll);
@@ -890,8 +903,8 @@ namespace PadForge.ViewModels
             for (int i = 0; i < count; i++)
             {
                 string title = isCustomVJoy
-                    ? $"Stick {i + 1}"
-                    : i == 0 ? "Left Thumbstick" : "Right Thumbstick";
+                    ? string.Format(Strings.Instance.Stick_Format, i + 1)
+                    : i == 0 ? Strings.Instance.Stick_LeftThumbstick : Strings.Instance.Stick_RightThumbstick;
                 int xiIdx = axX != null ? axX[i] : -1;
                 int yiIdx = axY != null ? axY[i] : -1;
                 var item = new StickConfigItem(i, title, xiIdx, yiIdx);
@@ -928,8 +941,8 @@ namespace PadForge.ViewModels
             for (int i = 0; i < count; i++)
             {
                 string title = isCustomVJoy
-                    ? $"Trigger {i + 1}"
-                    : i == 0 ? "Left Trigger" : "Right Trigger";
+                    ? string.Format(Strings.Instance.Trigger_Format, i + 1)
+                    : i == 0 ? Strings.Instance.Btn_LeftTrigger : Strings.Instance.Btn_RightTrigger;
                 int ai = trAx != null ? trAx[i] : -1;
                 var item = new TriggerConfigItem(i, title, ai);
                 SyncTriggerItemFromVm(item);
@@ -1372,7 +1385,7 @@ namespace PadForge.ViewModels
                 string target = isYAxis ? mapping.TargetSettingName : mapping.NegSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
-                MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+                MapAllPromptText = string.Format(Strings.Instance.Pad_MapPrompt_Format, $"{mapping.TargetLabel} {dirHint}") + $"  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             else
             {
@@ -1388,7 +1401,7 @@ namespace PadForge.ViewModels
                 string target = (mapping.HasNegDirection && isYAxis) ? mapping.NegSettingName : mapping.TargetSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
-                MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+                MapAllPromptText = string.Format(Strings.Instance.Pad_MapPrompt_Format, $"{mapping.TargetLabel}{suffix}") + $"  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             MapAllRecordRequested?.Invoke(this, mapping);
 

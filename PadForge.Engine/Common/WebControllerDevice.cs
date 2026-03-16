@@ -36,7 +36,7 @@ namespace PadForge.Engine
             { "Left X", "Left Y", "Left Trigger", "Right X", "Right Y", "Right Trigger" };
 
         private static readonly string[] ButtonNames =
-            { "A", "B", "X", "Y", "LB", "RB", "Back", "Start", "LS", "RS", "Guide" };
+            { "A", "B", "X", "Y", "Left Shoulder", "Right Shoulder", "Back", "Start", "Left Stick Button", "Right Stick Button", "Guide" };
 
         // Thread-safe state: written by WebSocket thread, read by polling thread.
         private volatile CustomInputState _currentState = new CustomInputState();

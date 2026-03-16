@@ -30,11 +30,13 @@ namespace PadForge.ViewModels
 
         public MacroItem()
         {
-            Strings.CultureChanged += () =>
-            {
-                OnPropertyChanged(nameof(RecordTriggerButtonText));
-                OnPropertyChanged(nameof(TriggerDisplayText));
-            };
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(RecordTriggerButtonText));
+            OnPropertyChanged(nameof(TriggerDisplayText));
         }
 
         private string _name = Strings.Instance.Macro_NewMacro;
@@ -575,7 +577,12 @@ namespace PadForge.ViewModels
 
         public MacroAction()
         {
-            Strings.CultureChanged += () => OnPropertyChanged(nameof(DisplayText));
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(DisplayText));
         }
 
         private MacroActionType _type = MacroActionType.ButtonPress;

@@ -28,11 +28,7 @@ namespace PadForge.ViewModels
             TargetLabel = targetLabel ?? string.Empty;
             TargetSettingName = targetSettingName ?? string.Empty;
             Category = category;
-            Strings.CultureChanged += () =>
-            {
-                OnPropertyChanged(nameof(SourceDisplayText));
-                OnPropertyChanged(nameof(RecordButtonText));
-            };
+            Strings.CultureChanged += OnCultureChanged;
             NegSettingName = negSettingName;
         }
 
@@ -193,6 +189,12 @@ namespace PadForge.ViewModels
         /// Whether this mapping row has a source assigned.
         /// </summary>
         public bool IsMapped => !string.IsNullOrEmpty(_sourceDescriptor) || !string.IsNullOrEmpty(_negSourceDescriptor);
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(SourceDisplayText));
+            OnPropertyChanged(nameof(RecordButtonText));
+        }
 
         // ─────────────────────────────────────────────
         //  Recording state

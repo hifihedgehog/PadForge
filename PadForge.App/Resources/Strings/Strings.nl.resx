@@ -177,6 +177,30 @@
   <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtuele controller {0} — {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" toegewezen aan virtuele controller {1}.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Niet toegewezen — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Fout bij laden van instellingen: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Instellingen opgeslagen in {0}.</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Fout bij opslaan van instellingen: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>Instellingen hersteld naar standaardwaarden.</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>Instellingen opnieuw geladen van schijf.</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>Geen instellingenbestand gevonden op schijf.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Geen apparaat verbonden om op te nemen.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Opname: druk op een knop of beweeg een as voor "{0}"...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Opname geannuleerd.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Opname verlopen voor "{0}".</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestart.</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestopt.</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>Geen toewijzing</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>Fout: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiel gewisseld: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiel gewisseld: Standaard</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Geen apparaat geselecteerd.</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ongeldige slotindex: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Apparaattoewijzing mislukt.</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" toegewezen aan virtuele controller {1}.</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" verwijderd van virtuele controller {1}.</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>Apparaat verborgen. (Kan worden hersteld in het instellingenbestand.)</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>Apparaat verwijderd.</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuele controller {0} verwijderd.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>

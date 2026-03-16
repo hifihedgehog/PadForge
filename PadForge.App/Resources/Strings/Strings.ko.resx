@@ -376,6 +376,15 @@
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>옵션</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>반전</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>절반</value></data>
+  <data name="Curve_Linear" xml:space="preserve"><value>선형</value></data>
+  <data name="Curve_Smooth" xml:space="preserve"><value>부드럽게</value></data>
+  <data name="Curve_Aggressive" xml:space="preserve"><value>공격적</value></data>
+  <data name="Curve_Instant" xml:space="preserve"><value>즉시</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>S 커브</value></data>
+  <data name="Curve_Delay" xml:space="preserve"><value>지연</value></data>
+  <data name="Curve_Custom" xml:space="preserve"><value>사용자 정의</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>중심 캘리브레이션</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중심 오프셋 X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중심 오프셋 Y:</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>데드존 형태:</value></data>

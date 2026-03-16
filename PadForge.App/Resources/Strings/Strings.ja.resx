@@ -174,7 +174,8 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>プロファイル「{0}」を更新しました。</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>プロファイルを読み込みました: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>プロファイルをデフォルトに戻しました</value></data>
-  <data name="Status_Player_Format" xml:space="preserve"><value>プレイヤー {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>未マッピング — {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->

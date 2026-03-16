@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>错误: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>配置文件已切换: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>配置文件已切换: 默认</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>默认</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>未选择设备。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>无效的插槽索引: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>设备分配失败。</value></data>

@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Erreur : {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil changé : {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil changé : Par défaut</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>Par défaut</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Aucun périphérique sélectionné.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Index de slot invalide : {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Échec de l'assignation du périphérique.</value></data>

@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profile switched: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profile switched: Default</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>Default</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>No device selected.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Invalid slot index: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Failed to assign device.</value></data>

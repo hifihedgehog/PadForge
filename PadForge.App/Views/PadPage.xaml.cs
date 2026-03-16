@@ -485,11 +485,9 @@ namespace PadForge.Views
         //  Sensitivity curve presets
         // ─────────────────────────────────────────────
 
-        private static string FindPresetSerialized(string name)
+        private static string FindPresetSerialized(string displayName)
         {
-            foreach (var (n, s) in CurveLut.Presets)
-                if (n == name) return s;
-            return null;
+            return CurveLut.FindSerializedByDisplayName(displayName);
         }
 
         private void StickPresetX_SelectionChanged(object sender, SelectionChangedEventArgs e)

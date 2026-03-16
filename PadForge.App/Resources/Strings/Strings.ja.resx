@@ -376,6 +376,15 @@
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>オプション</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>反転</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>半分</value></data>
+  <data name="Curve_Linear" xml:space="preserve"><value>リニア</value></data>
+  <data name="Curve_Smooth" xml:space="preserve"><value>スムーズ</value></data>
+  <data name="Curve_Aggressive" xml:space="preserve"><value>アグレッシブ</value></data>
+  <data name="Curve_Instant" xml:space="preserve"><value>インスタント</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>Sカーブ</value></data>
+  <data name="Curve_Delay" xml:space="preserve"><value>ディレイ</value></data>
+  <data name="Curve_Custom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>中心をキャリブレーション</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>サンプリング中...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y:</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>デッドゾーン形状:</value></data>

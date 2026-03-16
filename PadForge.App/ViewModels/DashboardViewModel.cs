@@ -95,12 +95,23 @@ namespace PadForge.ViewModels
         private string _engineStatus = Strings.Instance.Common_Stopped;
 
         /// <summary>
-        /// Current engine status text: "Running", "Stopped", etc.
+        /// Current engine status text (localized) for display.
         /// </summary>
         public string EngineStatus
         {
             get => _engineStatus;
             set => SetProperty(ref _engineStatus, value);
+        }
+
+        private string _engineStateKey = "Stopped";
+
+        /// <summary>
+        /// Non-localized engine state key ("Running", "Stopped", "Idle") for XAML DataTriggers.
+        /// </summary>
+        public string EngineStateKey
+        {
+            get => _engineStateKey;
+            set => SetProperty(ref _engineStateKey, value);
         }
 
         private double _pollingFrequency;

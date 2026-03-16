@@ -182,8 +182,8 @@
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台のデバイスがオンライン</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>仮想コントローラー</value></data>
-  <data name="Dashboard_Mapped" xml:space="preserve"><value>マッピング済み、</value></data>
-  <data name="Dashboard_Connected" xml:space="preserve"><value>接続済み</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value> マッピング済み、</value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value> 接続済み</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>モーションサーバー</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用の DSU/cemuhook サーバーです。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU モーションサーバー (cemuhook) を有効にする</value></data>
@@ -334,7 +334,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>マッピング</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>スティック</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>トリガー</value></data>
-  <data name="Pad_ForceFeeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
+  <data name="Pad_ForceFeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>プリセット</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>カスタム</value></data>
   <data name="Pad_VJoySticks" xml:space="preserve"><value>スティック</value></data>
@@ -454,6 +454,11 @@
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>トリガーを記録</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>未設定 — 記録をクリック</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="Macro_None" xml:space="preserve"><value>(なし)</value></data>
+  <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>デバイス軸 {0}</value></data>
+  <data name="Macro_UnknownAction" xml:space="preserve"><value>不明なアクション</value></data>
+  <data name="Macro_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Macro_Button_Format" xml:space="preserve"><value>ボタン {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} を {1}ms 押す</value></data>
@@ -593,13 +598,13 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windowsシステム音量に継続的にマップし、音量制限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windowsの音量ミキサーで特定アプリケーションの音量を制限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>選択した軸をマウス移動 (またはスクロール) に継続的にマップします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。スティック→マウスの場合、X軸用とY軸用の2つのアクションを作成してください。</value></data>
-  <data name="Btn_LeftBumper" xml:space="preserve"><value>左バンパー</value></data>
-  <data name="Btn_RightBumper" xml:space="preserve"><value>右バンパー</value></data>
-  <data name="Btn_Back" xml:space="preserve"><value>Back</value></data>
-  <data name="Btn_Start" xml:space="preserve"><value>Start</value></data>
-  <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
-  <data name="Btn_LeftStickClick" xml:space="preserve"><value>左スティック押し込み</value></data>
-  <data name="Btn_RightStickClick" xml:space="preserve"><value>右スティック押し込み</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>戻る</value></data>
+  <data name="Btn_Start" xml:space="preserve"><value>スタート</value></data>
+  <data name="Btn_Guide" xml:space="preserve"><value>ガイド</value></data>
+  <data name="Btn_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
+  <data name="Btn_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
   <data name="Btn_DPadUp" xml:space="preserve"><value>十字キー 上</value></data>
   <data name="Btn_DPadDown" xml:space="preserve"><value>十字キー 下</value></data>
   <data name="Btn_DPadLeft" xml:space="preserve"><value>十字キー 左</value></data>
@@ -610,28 +615,95 @@
   <data name="Btn_LeftStickY" xml:space="preserve"><value>左スティック Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
   <data name="Btn_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
+  <data name="Btn_Up" xml:space="preserve"><value>上</value></data>
+  <data name="Btn_Down" xml:space="preserve"><value>下</value></data>
+  <data name="Btn_Left" xml:space="preserve"><value>左</value></data>
+  <data name="Btn_Right" xml:space="preserve"><value>右</value></data>
+  <data name="Btn_Cross" xml:space="preserve"><value>×ボタン</value></data>
+  <data name="Btn_Circle" xml:space="preserve"><value>○ボタン</value></data>
+  <data name="Btn_Square" xml:space="preserve"><value>□ボタン</value></data>
+  <data name="Btn_Triangle" xml:space="preserve"><value>△ボタン</value></data>
+  <data name="Btn_L1" xml:space="preserve"><value>L1</value></data>
+  <data name="Btn_R1" xml:space="preserve"><value>R1</value></data>
+  <data name="Btn_L3" xml:space="preserve"><value>L3</value></data>
+  <data name="Btn_R3" xml:space="preserve"><value>R3</value></data>
+  <data name="Btn_Share" xml:space="preserve"><value>シェア</value></data>
+  <data name="Btn_Options" xml:space="preserve"><value>オプション</value></data>
+  <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <!-- Mouse VK buttons -->
+  <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
+  <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>
+  <data name="Key_Cancel" xml:space="preserve"><value>中断</value></data>
+  <data name="Key_MButton" xml:space="preserve"><value>マウス中ボタン</value></data>
+  <data name="Key_XButton1" xml:space="preserve"><value>マウス X1 ボタン</value></data>
+  <data name="Key_XButton2" xml:space="preserve"><value>マウス X2 ボタン</value></data>
+  <!-- Common keys -->
+  <data name="Key_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Clear" xml:space="preserve"><value>クリア</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Key_Shift" xml:space="preserve"><value>Shift</value></data>
+  <data name="Key_Control" xml:space="preserve"><value>Ctrl</value></data>
+  <data name="Key_Alt" xml:space="preserve"><value>Alt</value></data>
+  <data name="Key_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Key_CapsLock" xml:space="preserve"><value>Caps Lock</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Esc</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>スペース</value></data>
+  <!-- Navigation -->
+  <data name="Key_PageUp" xml:space="preserve"><value>Page Up</value></data>
+  <data name="Key_PageDown" xml:space="preserve"><value>Page Down</value></data>
+  <data name="Key_End" xml:space="preserve"><value>End</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>← 矢印</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>↑ 矢印</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>→ 矢印</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>↓ 矢印</value></data>
+  <data name="Key_Select" xml:space="preserve"><value>選択</value></data>
+  <data name="Key_Print" xml:space="preserve"><value>印刷</value></data>
+  <data name="Key_Execute" xml:space="preserve"><value>実行</value></data>
+  <data name="Key_PrintScreen" xml:space="preserve"><value>Print Screen</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Key_Help" xml:space="preserve"><value>ヘルプ</value></data>
+  <!-- Windows keys -->
+  <data name="Key_LWin" xml:space="preserve"><value>左 Windows</value></data>
+  <data name="Key_RWin" xml:space="preserve"><value>右 Windows</value></data>
+  <data name="Key_Apps" xml:space="preserve"><value>アプリケーション</value></data>
+  <data name="Key_Sleep" xml:space="preserve"><value>スリープ</value></data>
+  <!-- Numpad -->
+  <data name="Key_Numpad" xml:space="preserve"><value>テンキー</value></data>
+  <data name="Key_Separator" xml:space="preserve"><value>区切り</value></data>
+  <!-- Lock keys -->
+  <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
+  <data name="Key_ScrollLock" xml:space="preserve"><value>Scroll Lock</value></data>
+  <!-- Left/Right modifiers -->
   <data name="Key_LeftShift" xml:space="preserve"><value>左 Shift</value></data>
   <data name="Key_RightShift" xml:space="preserve"><value>右 Shift</value></data>
   <data name="Key_LeftCtrl" xml:space="preserve"><value>左 Ctrl</value></data>
   <data name="Key_RightCtrl" xml:space="preserve"><value>右 Ctrl</value></data>
   <data name="Key_LeftAlt" xml:space="preserve"><value>左 Alt</value></data>
   <data name="Key_RightAlt" xml:space="preserve"><value>右 Alt</value></data>
-  <data name="Key_Space" xml:space="preserve"><value>スペース</value></data>
-  <data name="Key_Enter" xml:space="preserve"><value>Enter</value></data>
-  <data name="Key_Escape" xml:space="preserve"><value>Esc</value></data>
-  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
-  <data name="Key_Backspace" xml:space="preserve"><value>BackSpace</value></data>
-  <data name="Key_CapsLock" xml:space="preserve"><value>Caps Lock</value></data>
-  <data name="Key_Up" xml:space="preserve"><value>上</value></data>
-  <data name="Key_Down" xml:space="preserve"><value>下</value></data>
-  <data name="Key_Left" xml:space="preserve"><value>左</value></data>
-  <data name="Key_Right" xml:space="preserve"><value>右</value></data>
-  <data name="Key_Home" xml:space="preserve"><value>Home</value></data>
-  <data name="Key_End" xml:space="preserve"><value>End</value></data>
-  <data name="Key_PageUp" xml:space="preserve"><value>Page Up</value></data>
-  <data name="Key_PageDown" xml:space="preserve"><value>Page Down</value></data>
-  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
-  <data name="Key_Delete" xml:space="preserve"><value>Delete</value></data>
+  <!-- Browser keys -->
+  <data name="Key_BrowserBack" xml:space="preserve"><value>ブラウザー 戻る</value></data>
+  <data name="Key_BrowserForward" xml:space="preserve"><value>ブラウザー 進む</value></data>
+  <data name="Key_BrowserRefresh" xml:space="preserve"><value>ブラウザー 更新</value></data>
+  <data name="Key_BrowserStop" xml:space="preserve"><value>ブラウザー 中止</value></data>
+  <data name="Key_BrowserSearch" xml:space="preserve"><value>ブラウザー 検索</value></data>
+  <data name="Key_BrowserFavorites" xml:space="preserve"><value>ブラウザー お気に入り</value></data>
+  <data name="Key_BrowserHome" xml:space="preserve"><value>ブラウザー ホーム</value></data>
+  <!-- Media keys -->
+  <data name="Key_VolumeMute" xml:space="preserve"><value>ミュート</value></data>
+  <data name="Key_VolumeDown" xml:space="preserve"><value>音量ダウン</value></data>
+  <data name="Key_VolumeUp" xml:space="preserve"><value>音量アップ</value></data>
+  <data name="Key_MediaNext" xml:space="preserve"><value>次のトラック</value></data>
+  <data name="Key_MediaPrev" xml:space="preserve"><value>前のトラック</value></data>
+  <data name="Key_MediaStop" xml:space="preserve"><value>メディア停止</value></data>
+  <data name="Key_MediaPlayPause" xml:space="preserve"><value>再生/一時停止</value></data>
+  <data name="Key_LaunchMail" xml:space="preserve"><value>メール起動</value></data>
+  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>メディア選択</value></data>
+  <data name="Key_LaunchApp1" xml:space="preserve"><value>アプリケーション 1 起動</value></data>
+  <data name="Key_LaunchApp2" xml:space="preserve"><value>アプリケーション 2 起動</value></data>
   <data name="Mouse_LeftClick" xml:space="preserve"><value>左クリック</value></data>
   <data name="Mouse_RightClick" xml:space="preserve"><value>右クリック</value></data>
   <data name="Mouse_MiddleClick" xml:space="preserve"><value>中クリック</value></data>
@@ -652,5 +724,29 @@
   <data name="MacroAxis_YRotation" xml:space="preserve"><value>右スティック Y</value></data>
   <data name="MacroAxis_ZAxis" xml:space="preserve"><value>左トリガー</value></data>
   <data name="MacroAxis_ZRotation" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="DevObj_LeftStickX" xml:space="preserve"><value>左スティック X</value></data>
+  <data name="DevObj_LeftStickY" xml:space="preserve"><value>左スティック Y</value></data>
+  <data name="DevObj_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="DevObj_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
+  <data name="DevObj_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
+  <data name="DevObj_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_Back" xml:space="preserve"><value>戻る</value></data>
+  <data name="DevObj_Start" xml:space="preserve"><value>スタート</value></data>
+  <data name="DevObj_Guide" xml:space="preserve"><value>ガイド</value></data>
+  <data name="DevObj_XAxis" xml:space="preserve"><value>X 軸</value></data>
+  <data name="DevObj_YAxis" xml:space="preserve"><value>Y 軸</value></data>
+  <data name="DevObj_ZAxis" xml:space="preserve"><value>Z 軸</value></data>
+  <data name="DevObj_XRotation" xml:space="preserve"><value>X 回転</value></data>
+  <data name="DevObj_YRotation" xml:space="preserve"><value>Y 回転</value></data>
+  <data name="DevObj_ZRotation" xml:space="preserve"><value>Z 回転</value></data>
+  <data name="DevObj_Slider" xml:space="preserve"><value>スライダー {0}</value></data>
+  <data name="DevObj_HatSwitch" xml:space="preserve"><value>ハットスイッチ</value></data>
+  <data name="DevObj_HatSwitchN" xml:space="preserve"><value>ハットスイッチ {0}</value></data>
+  <data name="DevObj_Button" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
+  <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
+  <data name="DevObj_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
 
 </root>

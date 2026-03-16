@@ -182,8 +182,8 @@
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Invoer-engine</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> apparaten online</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuele Controllers</value></data>
-  <data name="Dashboard_Mapped" xml:space="preserve"><value>toegewezen,</value></data>
-  <data name="Dashboard_Connected" xml:space="preserve"><value>verbonden</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewezen, </value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value> verbonden</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/cemuhook-server voor gyroscoop- en versnellingsmetergegevens.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (cemuhook)</value></data>
@@ -334,7 +334,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Toewijzingen</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
-  <data name="Pad_ForceFeeedback" xml:space="preserve"><value>Force Feedback</value></data>
+  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Voorinstelling</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Aangepast</value></data>
   <data name="Pad_VJoySticks" xml:space="preserve"><value>Sticks</value></data>
@@ -454,6 +454,11 @@
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Trigger opnemen</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Niet ingesteld — klik op Opnemen</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Knop {0}</value></data>
+  <data name="Macro_None" xml:space="preserve"><value>(geen)</value></data>
+  <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Apparaat-as {0}</value></data>
+  <data name="Macro_UnknownAction" xml:space="preserve"><value>Onbekende actie</value></data>
+  <data name="Macro_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Macro_Button_Format" xml:space="preserve"><value>Knop {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} indrukken voor {1}ms</value></data>
@@ -596,13 +601,13 @@
   <data name="Pad_ResetView" xml:space="preserve"><value>Weergave herstellen</value></data>
 
   <!-- ═══ Gamepad Button Labels ═══ -->
-  <data name="Btn_LeftBumper" xml:space="preserve"><value>Linker bumper</value></data>
-  <data name="Btn_RightBumper" xml:space="preserve"><value>Rechter bumper</value></data>
-  <data name="Btn_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>Linker schouderknop</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>Rechter schouderknop</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>Terug</value></data>
   <data name="Btn_Start" xml:space="preserve"><value>Start</value></data>
   <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
-  <data name="Btn_LeftStickClick" xml:space="preserve"><value>Linker stick-klik</value></data>
-  <data name="Btn_RightStickClick" xml:space="preserve"><value>Rechter stick-klik</value></data>
+  <data name="Btn_LeftStickButton" xml:space="preserve"><value>Linker stickknop</value></data>
+  <data name="Btn_RightStickButton" xml:space="preserve"><value>Rechter stickknop</value></data>
   <data name="Btn_DPadUp" xml:space="preserve"><value>D-Pad omhoog</value></data>
   <data name="Btn_DPadDown" xml:space="preserve"><value>D-Pad omlaag</value></data>
   <data name="Btn_DPadLeft" xml:space="preserve"><value>D-Pad links</value></data>
@@ -613,30 +618,96 @@
   <data name="Btn_LeftStickY" xml:space="preserve"><value>Linker stick Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>Rechter stick X</value></data>
   <data name="Btn_RightStickY" xml:space="preserve"><value>Rechter stick Y</value></data>
+  <data name="Btn_Up" xml:space="preserve"><value>Omhoog</value></data>
+  <data name="Btn_Down" xml:space="preserve"><value>Omlaag</value></data>
+  <data name="Btn_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Btn_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Btn_Cross" xml:space="preserve"><value>Kruis</value></data>
+  <data name="Btn_Circle" xml:space="preserve"><value>Cirkel</value></data>
+  <data name="Btn_Square" xml:space="preserve"><value>Vierkant</value></data>
+  <data name="Btn_Triangle" xml:space="preserve"><value>Driehoek</value></data>
+  <data name="Btn_L1" xml:space="preserve"><value>L1</value></data>
+  <data name="Btn_R1" xml:space="preserve"><value>R1</value></data>
+  <data name="Btn_L3" xml:space="preserve"><value>L3</value></data>
+  <data name="Btn_R3" xml:space="preserve"><value>R3</value></data>
+  <data name="Btn_Share" xml:space="preserve"><value>Delen</value></data>
+  <data name="Btn_Options" xml:space="preserve"><value>Opties</value></data>
+  <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
 
-  <!-- ═══ Keyboard Key Labels ═══ -->
+  <!-- Mouse VK buttons -->
+  <data name="Key_LButton" xml:space="preserve"><value>Linkermuisknop</value></data>
+  <data name="Key_RButton" xml:space="preserve"><value>Rechtermuisknop</value></data>
+  <data name="Key_Cancel" xml:space="preserve"><value>Afbreken</value></data>
+  <data name="Key_MButton" xml:space="preserve"><value>Middelste muisknop</value></data>
+  <data name="Key_XButton1" xml:space="preserve"><value>X1-muisknop</value></data>
+  <data name="Key_XButton2" xml:space="preserve"><value>X2-muisknop</value></data>
+  <!-- Common keys -->
+  <data name="Key_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Clear" xml:space="preserve"><value>Wissen</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Key_Shift" xml:space="preserve"><value>Shift</value></data>
+  <data name="Key_Control" xml:space="preserve"><value>Ctrl</value></data>
+  <data name="Key_Alt" xml:space="preserve"><value>Alt</value></data>
+  <data name="Key_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Key_CapsLock" xml:space="preserve"><value>Caps Lock</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Esc</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Spatiebalk</value></data>
+  <!-- Navigation -->
+  <data name="Key_PageUp" xml:space="preserve"><value>Page Up</value></data>
+  <data name="Key_PageDown" xml:space="preserve"><value>Page Down</value></data>
+  <data name="Key_End" xml:space="preserve"><value>End</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>Pijl links</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>Pijl omhoog</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>Pijl rechts</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>Pijl omlaag</value></data>
+  <data name="Key_Select" xml:space="preserve"><value>Selecteren</value></data>
+  <data name="Key_Print" xml:space="preserve"><value>Afdrukken</value></data>
+  <data name="Key_Execute" xml:space="preserve"><value>Uitvoeren</value></data>
+  <data name="Key_PrintScreen" xml:space="preserve"><value>Print Screen</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Key_Help" xml:space="preserve"><value>Help</value></data>
+  <!-- Windows keys -->
+  <data name="Key_LWin" xml:space="preserve"><value>Linker Windows</value></data>
+  <data name="Key_RWin" xml:space="preserve"><value>Rechter Windows</value></data>
+  <data name="Key_Apps" xml:space="preserve"><value>Toepassingen</value></data>
+  <data name="Key_Sleep" xml:space="preserve"><value>Slaapstand</value></data>
+  <!-- Numpad -->
+  <data name="Key_Numpad" xml:space="preserve"><value>Numeriek toetsenbord</value></data>
+  <data name="Key_Separator" xml:space="preserve"><value>Scheidingsteken</value></data>
+  <!-- Lock keys -->
+  <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
+  <data name="Key_ScrollLock" xml:space="preserve"><value>Scroll Lock</value></data>
+  <!-- Left/Right modifiers -->
   <data name="Key_LeftShift" xml:space="preserve"><value>Linker Shift</value></data>
   <data name="Key_RightShift" xml:space="preserve"><value>Rechter Shift</value></data>
   <data name="Key_LeftCtrl" xml:space="preserve"><value>Linker Ctrl</value></data>
   <data name="Key_RightCtrl" xml:space="preserve"><value>Rechter Ctrl</value></data>
   <data name="Key_LeftAlt" xml:space="preserve"><value>Linker Alt</value></data>
   <data name="Key_RightAlt" xml:space="preserve"><value>Rechter Alt</value></data>
-  <data name="Key_Space" xml:space="preserve"><value>Spatiebalk</value></data>
-  <data name="Key_Enter" xml:space="preserve"><value>Enter</value></data>
-  <data name="Key_Escape" xml:space="preserve"><value>Escape</value></data>
-  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
-  <data name="Key_Backspace" xml:space="preserve"><value>Backspace</value></data>
-  <data name="Key_CapsLock" xml:space="preserve"><value>Caps Lock</value></data>
-  <data name="Key_Up" xml:space="preserve"><value>Omhoog</value></data>
-  <data name="Key_Down" xml:space="preserve"><value>Omlaag</value></data>
-  <data name="Key_Left" xml:space="preserve"><value>Links</value></data>
-  <data name="Key_Right" xml:space="preserve"><value>Rechts</value></data>
-  <data name="Key_Home" xml:space="preserve"><value>Home</value></data>
-  <data name="Key_End" xml:space="preserve"><value>End</value></data>
-  <data name="Key_PageUp" xml:space="preserve"><value>Page Up</value></data>
-  <data name="Key_PageDown" xml:space="preserve"><value>Page Down</value></data>
-  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
-  <data name="Key_Delete" xml:space="preserve"><value>Delete</value></data>
+  <!-- Browser keys -->
+  <data name="Key_BrowserBack" xml:space="preserve"><value>Browser Terug</value></data>
+  <data name="Key_BrowserForward" xml:space="preserve"><value>Browser Vooruit</value></data>
+  <data name="Key_BrowserRefresh" xml:space="preserve"><value>Browser Vernieuwen</value></data>
+  <data name="Key_BrowserStop" xml:space="preserve"><value>Browser Stoppen</value></data>
+  <data name="Key_BrowserSearch" xml:space="preserve"><value>Browser Zoeken</value></data>
+  <data name="Key_BrowserFavorites" xml:space="preserve"><value>Browser Favorieten</value></data>
+  <data name="Key_BrowserHome" xml:space="preserve"><value>Browser Startpagina</value></data>
+  <!-- Media keys -->
+  <data name="Key_VolumeMute" xml:space="preserve"><value>Dempen</value></data>
+  <data name="Key_VolumeDown" xml:space="preserve"><value>Volume omlaag</value></data>
+  <data name="Key_VolumeUp" xml:space="preserve"><value>Volume omhoog</value></data>
+  <data name="Key_MediaNext" xml:space="preserve"><value>Volgend nummer</value></data>
+  <data name="Key_MediaPrev" xml:space="preserve"><value>Vorig nummer</value></data>
+  <data name="Key_MediaStop" xml:space="preserve"><value>Media stoppen</value></data>
+  <data name="Key_MediaPlayPause" xml:space="preserve"><value>Afspelen/Pauze</value></data>
+  <data name="Key_LaunchMail" xml:space="preserve"><value>E-mail starten</value></data>
+  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>Media selecteren</value></data>
+  <data name="Key_LaunchApp1" xml:space="preserve"><value>Toepassing 1 starten</value></data>
+  <data name="Key_LaunchApp2" xml:space="preserve"><value>Toepassing 2 starten</value></data>
 
   <!-- ═══ Mouse Labels ═══ -->
   <data name="Mouse_LeftClick" xml:space="preserve"><value>Linksklik</value></data>
@@ -671,5 +742,29 @@
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="DevObj_LeftStickX" xml:space="preserve"><value>Linker stick X</value></data>
+  <data name="DevObj_LeftStickY" xml:space="preserve"><value>Linker stick Y</value></data>
+  <data name="DevObj_LeftTrigger" xml:space="preserve"><value>Linker trigger</value></data>
+  <data name="DevObj_RightStickX" xml:space="preserve"><value>Rechter stick X</value></data>
+  <data name="DevObj_RightStickY" xml:space="preserve"><value>Rechter stick Y</value></data>
+  <data name="DevObj_RightTrigger" xml:space="preserve"><value>Rechter trigger</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_Back" xml:space="preserve"><value>Terug</value></data>
+  <data name="DevObj_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>
+  <data name="DevObj_XAxis" xml:space="preserve"><value>X-as</value></data>
+  <data name="DevObj_YAxis" xml:space="preserve"><value>Y-as</value></data>
+  <data name="DevObj_ZAxis" xml:space="preserve"><value>Z-as</value></data>
+  <data name="DevObj_XRotation" xml:space="preserve"><value>X-rotatie</value></data>
+  <data name="DevObj_YRotation" xml:space="preserve"><value>Y-rotatie</value></data>
+  <data name="DevObj_ZRotation" xml:space="preserve"><value>Z-rotatie</value></data>
+  <data name="DevObj_Slider" xml:space="preserve"><value>Schuifregelaar {0}</value></data>
+  <data name="DevObj_HatSwitch" xml:space="preserve"><value>Hat Switch</value></data>
+  <data name="DevObj_HatSwitchN" xml:space="preserve"><value>Hat Switch {0}</value></data>
+  <data name="DevObj_Button" xml:space="preserve"><value>Knop {0}</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Linker schouderknop</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>Rechter schouderknop</value></data>
+  <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Linker stickknop</value></data>
+  <data name="DevObj_RightStickButton" xml:space="preserve"><value>Rechter stickknop</value></data>
 
 </root>

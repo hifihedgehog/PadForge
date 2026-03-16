@@ -182,8 +182,8 @@
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivos en línea</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controles virtuales</value></data>
-  <data name="Dashboard_Mapped" xml:space="preserve"><value>asignados,</value></data>
-  <data name="Dashboard_Connected" xml:space="preserve"><value>conectados</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value> asignados, </value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value> conectados</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de movimiento</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/cemuhook para datos de giroscopio y acelerómetro.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activar servidor de movimiento DSU (cemuhook)</value></data>
@@ -334,7 +334,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Asignaciones</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Palancas</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gatillos</value></data>
-  <data name="Pad_ForceFeeedback" xml:space="preserve"><value>Retroalimentación de fuerza</value></data>
+  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Retroalimentación de fuerza</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predefinido</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Personalizado</value></data>
   <data name="Pad_VJoySticks" xml:space="preserve"><value>Palancas</value></data>
@@ -454,6 +454,11 @@
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Grabar activador</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>No establecido — haga clic en Grabar</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Btn {0}</value></data>
+  <data name="Macro_None" xml:space="preserve"><value>(ninguno)</value></data>
+  <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Eje de dispositivo {0}</value></data>
+  <data name="Macro_UnknownAction" xml:space="preserve"><value>Acción desconocida</value></data>
+  <data name="Macro_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Macro_Button_Format" xml:space="preserve"><value>Botón {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Press_Format" xml:space="preserve"><value>Presionar {0} por {1}ms</value></data>
@@ -593,13 +598,13 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado (0–100 %) al volumen del sistema Windows, escalado al límite de volumen. Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla el volumen de una aplicación específica en el mezclador de volumen de Windows, escalado al límite. Ingrese el nombre del proceso (visible en el Administrador de tareas). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado al movimiento del ratón (o desplazamiento). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar". Para stick-a-ratón, cree dos acciones: una para el eje X y otra para el eje Y.</value></data>
-  <data name="Btn_LeftBumper" xml:space="preserve"><value>Bumper izquierdo</value></data>
-  <data name="Btn_RightBumper" xml:space="preserve"><value>Bumper derecho</value></data>
-  <data name="Btn_Back" xml:space="preserve"><value>Back</value></data>
-  <data name="Btn_Start" xml:space="preserve"><value>Start</value></data>
-  <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
-  <data name="Btn_LeftStickClick" xml:space="preserve"><value>Clic palanca izquierda</value></data>
-  <data name="Btn_RightStickClick" xml:space="preserve"><value>Clic palanca derecha</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>Botón superior izquierdo</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>Botón superior derecho</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>Atrás</value></data>
+  <data name="Btn_Start" xml:space="preserve"><value>Inicio</value></data>
+  <data name="Btn_Guide" xml:space="preserve"><value>Guía</value></data>
+  <data name="Btn_LeftStickButton" xml:space="preserve"><value>Botón palanca izquierda</value></data>
+  <data name="Btn_RightStickButton" xml:space="preserve"><value>Botón palanca derecha</value></data>
   <data name="Btn_DPadUp" xml:space="preserve"><value>Cruceta Arriba</value></data>
   <data name="Btn_DPadDown" xml:space="preserve"><value>Cruceta Abajo</value></data>
   <data name="Btn_DPadLeft" xml:space="preserve"><value>Cruceta Izquierda</value></data>
@@ -610,28 +615,95 @@
   <data name="Btn_LeftStickY" xml:space="preserve"><value>Palanca izquierda Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>Palanca derecha X</value></data>
   <data name="Btn_RightStickY" xml:space="preserve"><value>Palanca derecha Y</value></data>
-  <data name="Key_LeftShift" xml:space="preserve"><value>Mayús izquierda</value></data>
-  <data name="Key_RightShift" xml:space="preserve"><value>Mayús derecha</value></data>
-  <data name="Key_LeftCtrl" xml:space="preserve"><value>Ctrl izquierdo</value></data>
-  <data name="Key_RightCtrl" xml:space="preserve"><value>Ctrl derecho</value></data>
-  <data name="Key_LeftAlt" xml:space="preserve"><value>Alt izquierdo</value></data>
-  <data name="Key_RightAlt" xml:space="preserve"><value>Alt derecho</value></data>
-  <data name="Key_Space" xml:space="preserve"><value>Espacio</value></data>
-  <data name="Key_Enter" xml:space="preserve"><value>Intro</value></data>
-  <data name="Key_Escape" xml:space="preserve"><value>Escape</value></data>
-  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Btn_Up" xml:space="preserve"><value>Arriba</value></data>
+  <data name="Btn_Down" xml:space="preserve"><value>Abajo</value></data>
+  <data name="Btn_Left" xml:space="preserve"><value>Izquierda</value></data>
+  <data name="Btn_Right" xml:space="preserve"><value>Derecha</value></data>
+  <data name="Btn_Cross" xml:space="preserve"><value>Cruz</value></data>
+  <data name="Btn_Circle" xml:space="preserve"><value>Círculo</value></data>
+  <data name="Btn_Square" xml:space="preserve"><value>Cuadrado</value></data>
+  <data name="Btn_Triangle" xml:space="preserve"><value>Triángulo</value></data>
+  <data name="Btn_L1" xml:space="preserve"><value>L1</value></data>
+  <data name="Btn_R1" xml:space="preserve"><value>R1</value></data>
+  <data name="Btn_L3" xml:space="preserve"><value>L3</value></data>
+  <data name="Btn_R3" xml:space="preserve"><value>R3</value></data>
+  <data name="Btn_Share" xml:space="preserve"><value>Compartir</value></data>
+  <data name="Btn_Options" xml:space="preserve"><value>Opciones</value></data>
+  <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>Panel táctil</value></data>
+  <!-- Mouse VK buttons -->
+  <data name="Key_LButton" xml:space="preserve"><value>Botón izquierdo del ratón</value></data>
+  <data name="Key_RButton" xml:space="preserve"><value>Botón derecho del ratón</value></data>
+  <data name="Key_Cancel" xml:space="preserve"><value>Interrumpir</value></data>
+  <data name="Key_MButton" xml:space="preserve"><value>Botón central del ratón</value></data>
+  <data name="Key_XButton1" xml:space="preserve"><value>Botón X1 del ratón</value></data>
+  <data name="Key_XButton2" xml:space="preserve"><value>Botón X2 del ratón</value></data>
+  <!-- Common keys -->
   <data name="Key_Backspace" xml:space="preserve"><value>Retroceso</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Clear" xml:space="preserve"><value>Borrar</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Intro</value></data>
+  <data name="Key_Shift" xml:space="preserve"><value>Mayús</value></data>
+  <data name="Key_Control" xml:space="preserve"><value>Ctrl</value></data>
+  <data name="Key_Alt" xml:space="preserve"><value>Alt</value></data>
+  <data name="Key_Pause" xml:space="preserve"><value>Pausa</value></data>
   <data name="Key_CapsLock" xml:space="preserve"><value>Bloq Mayús</value></data>
-  <data name="Key_Up" xml:space="preserve"><value>Arriba</value></data>
-  <data name="Key_Down" xml:space="preserve"><value>Abajo</value></data>
-  <data name="Key_Left" xml:space="preserve"><value>Izquierda</value></data>
-  <data name="Key_Right" xml:space="preserve"><value>Derecha</value></data>
-  <data name="Key_Home" xml:space="preserve"><value>Inicio</value></data>
-  <data name="Key_End" xml:space="preserve"><value>Fin</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Esc</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Barra espaciadora</value></data>
+  <!-- Navigation -->
   <data name="Key_PageUp" xml:space="preserve"><value>Re Pág</value></data>
   <data name="Key_PageDown" xml:space="preserve"><value>Av Pág</value></data>
-  <data name="Key_Insert" xml:space="preserve"><value>Insertar</value></data>
-  <data name="Key_Delete" xml:space="preserve"><value>Suprimir</value></data>
+  <data name="Key_End" xml:space="preserve"><value>Fin</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Inicio</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>Flecha izquierda</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>Flecha arriba</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>Flecha derecha</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>Flecha abajo</value></data>
+  <data name="Key_Select" xml:space="preserve"><value>Seleccionar</value></data>
+  <data name="Key_Print" xml:space="preserve"><value>Imprimir</value></data>
+  <data name="Key_Execute" xml:space="preserve"><value>Ejecutar</value></data>
+  <data name="Key_PrintScreen" xml:space="preserve"><value>Impr Pant</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Supr</value></data>
+  <data name="Key_Help" xml:space="preserve"><value>Ayuda</value></data>
+  <!-- Windows keys -->
+  <data name="Key_LWin" xml:space="preserve"><value>Windows izquierda</value></data>
+  <data name="Key_RWin" xml:space="preserve"><value>Windows derecha</value></data>
+  <data name="Key_Apps" xml:space="preserve"><value>Aplicaciones</value></data>
+  <data name="Key_Sleep" xml:space="preserve"><value>Suspender</value></data>
+  <!-- Numpad -->
+  <data name="Key_Numpad" xml:space="preserve"><value>Teclado numérico</value></data>
+  <data name="Key_Separator" xml:space="preserve"><value>Separador</value></data>
+  <!-- Lock keys -->
+  <data name="Key_NumLock" xml:space="preserve"><value>Bloq Num</value></data>
+  <data name="Key_ScrollLock" xml:space="preserve"><value>Bloq Despl</value></data>
+  <!-- Left/Right modifiers -->
+  <data name="Key_LeftShift" xml:space="preserve"><value>Mayús izquierda</value></data>
+  <data name="Key_RightShift" xml:space="preserve"><value>Mayús derecha</value></data>
+  <data name="Key_LeftCtrl" xml:space="preserve"><value>Ctrl izquierda</value></data>
+  <data name="Key_RightCtrl" xml:space="preserve"><value>Ctrl derecha</value></data>
+  <data name="Key_LeftAlt" xml:space="preserve"><value>Alt izquierda</value></data>
+  <data name="Key_RightAlt" xml:space="preserve"><value>Alt derecha</value></data>
+  <!-- Browser keys -->
+  <data name="Key_BrowserBack" xml:space="preserve"><value>Navegador Atrás</value></data>
+  <data name="Key_BrowserForward" xml:space="preserve"><value>Navegador Adelante</value></data>
+  <data name="Key_BrowserRefresh" xml:space="preserve"><value>Navegador Actualizar</value></data>
+  <data name="Key_BrowserStop" xml:space="preserve"><value>Navegador Detener</value></data>
+  <data name="Key_BrowserSearch" xml:space="preserve"><value>Navegador Buscar</value></data>
+  <data name="Key_BrowserFavorites" xml:space="preserve"><value>Navegador Favoritos</value></data>
+  <data name="Key_BrowserHome" xml:space="preserve"><value>Navegador Inicio</value></data>
+  <!-- Media keys -->
+  <data name="Key_VolumeMute" xml:space="preserve"><value>Silenciar</value></data>
+  <data name="Key_VolumeDown" xml:space="preserve"><value>Bajar volumen</value></data>
+  <data name="Key_VolumeUp" xml:space="preserve"><value>Subir volumen</value></data>
+  <data name="Key_MediaNext" xml:space="preserve"><value>Pista siguiente</value></data>
+  <data name="Key_MediaPrev" xml:space="preserve"><value>Pista anterior</value></data>
+  <data name="Key_MediaStop" xml:space="preserve"><value>Detener medios</value></data>
+  <data name="Key_MediaPlayPause" xml:space="preserve"><value>Reproducir/Pausa</value></data>
+  <data name="Key_LaunchMail" xml:space="preserve"><value>Iniciar correo</value></data>
+  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>Seleccionar medios</value></data>
+  <data name="Key_LaunchApp1" xml:space="preserve"><value>Iniciar aplicación 1</value></data>
+  <data name="Key_LaunchApp2" xml:space="preserve"><value>Iniciar aplicación 2</value></data>
   <data name="Mouse_LeftClick" xml:space="preserve"><value>Clic izquierdo</value></data>
   <data name="Mouse_RightClick" xml:space="preserve"><value>Clic derecho</value></data>
   <data name="Mouse_MiddleClick" xml:space="preserve"><value>Clic central</value></data>
@@ -652,5 +724,29 @@
   <data name="MacroAxis_YRotation" xml:space="preserve"><value>Palanca derecha Y</value></data>
   <data name="MacroAxis_ZAxis" xml:space="preserve"><value>Gatillo izquierdo</value></data>
   <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="DevObj_LeftStickX" xml:space="preserve"><value>Palanca izquierda X</value></data>
+  <data name="DevObj_LeftStickY" xml:space="preserve"><value>Palanca izquierda Y</value></data>
+  <data name="DevObj_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
+  <data name="DevObj_RightStickX" xml:space="preserve"><value>Palanca derecha X</value></data>
+  <data name="DevObj_RightStickY" xml:space="preserve"><value>Palanca derecha Y</value></data>
+  <data name="DevObj_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_Back" xml:space="preserve"><value>Atrás</value></data>
+  <data name="DevObj_Start" xml:space="preserve"><value>Inicio</value></data>
+  <data name="DevObj_Guide" xml:space="preserve"><value>Guía</value></data>
+  <data name="DevObj_XAxis" xml:space="preserve"><value>Eje X</value></data>
+  <data name="DevObj_YAxis" xml:space="preserve"><value>Eje Y</value></data>
+  <data name="DevObj_ZAxis" xml:space="preserve"><value>Eje Z</value></data>
+  <data name="DevObj_XRotation" xml:space="preserve"><value>Rotación X</value></data>
+  <data name="DevObj_YRotation" xml:space="preserve"><value>Rotación Y</value></data>
+  <data name="DevObj_ZRotation" xml:space="preserve"><value>Rotación Z</value></data>
+  <data name="DevObj_Slider" xml:space="preserve"><value>Deslizador {0}</value></data>
+  <data name="DevObj_HatSwitch" xml:space="preserve"><value>Hat Switch</value></data>
+  <data name="DevObj_HatSwitchN" xml:space="preserve"><value>Hat Switch {0}</value></data>
+  <data name="DevObj_Button" xml:space="preserve"><value>Botón {0}</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Botón superior izquierdo</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>Botón superior derecho</value></data>
+  <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Botón palanca izquierda</value></data>
+  <data name="DevObj_RightStickButton" xml:space="preserve"><value>Botón palanca derecha</value></data>
 
 </root>

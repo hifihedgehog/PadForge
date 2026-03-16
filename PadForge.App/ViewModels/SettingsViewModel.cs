@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
@@ -96,7 +97,7 @@ namespace PadForge.ViewModels
         /// <summary>Gets the persisted language code (for serialization).</summary>
         internal string LanguageCode => _selectedLanguage?.Name ?? "";
 
-        /// <summary>Sets the language from a persisted code without triggering live switch.</summary>
+        /// <summary>Sets the language from a persisted code, applying the culture on startup.</summary>
         internal void SetLanguageFromCode(string code)
         {
             if (!string.IsNullOrEmpty(code))
@@ -105,6 +106,11 @@ namespace PadForge.ViewModels
                 if (match != null)
                 {
                     _selectedLanguage = match;
+                    // Apply the culture so the UI thread and resource lookups use
+                    // the saved language immediately (without raising CultureChanged
+                    // since the UI hasn't been built yet at load time).
+                    Thread.CurrentThread.CurrentUICulture = match;
+                    CultureInfo.DefaultThreadCurrentUICulture = match;
                     OnPropertyChanged(nameof(SelectedLanguage));
                 }
             }

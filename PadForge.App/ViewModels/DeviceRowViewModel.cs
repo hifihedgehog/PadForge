@@ -14,12 +14,14 @@ namespace PadForge.ViewModels
     {
         public DeviceRowViewModel()
         {
-            Strings.CultureChanged += () =>
-            {
-                OnPropertyChanged(nameof(DeviceType));
-                OnPropertyChanged(nameof(StatusText));
-                OnPropertyChanged(nameof(CapabilitiesSummary));
-            };
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(DeviceType));
+            OnPropertyChanged(nameof(StatusText));
+            OnPropertyChanged(nameof(CapabilitiesSummary));
         }
 
         // ─────────────────────────────────────────────

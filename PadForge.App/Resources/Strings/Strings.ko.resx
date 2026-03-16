@@ -174,7 +174,8 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>프로필 "{0}"이(가) 업데이트되었습니다.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>프로필 로드됨: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>프로필이 기본값으로 되돌려졌습니다</value></data>
-  <data name="Status_Player_Format" xml:space="preserve"><value>플레이어 {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}"을(를) 가상 컨트롤러 {1}에 할당했습니다.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>매핑되지 않음 — {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->

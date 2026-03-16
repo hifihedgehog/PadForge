@@ -174,7 +174,8 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Perfil "{0}" atualizado.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Perfil carregado: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Perfil revertido para Padrão</value></data>
-  <data name="Status_Player_Format" xml:space="preserve"><value>Jogador {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Controle Virtual {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" atribuído ao Controle Virtual {1}.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Não mapeado — {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->

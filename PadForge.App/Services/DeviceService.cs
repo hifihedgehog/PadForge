@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using PadForge.Common;
+using PadForge.Resources.Strings;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -130,7 +131,7 @@ namespace PadForge.Services
             // Mark settings as dirty.
             _settingsService.MarkDirty();
 
-            _mainVm.StatusText = $"Assigned \"{selectedRow.DeviceName}\" to Player {slotIndex + 1}.";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, selectedRow.DeviceName, slotIndex + 1);
 
             // Notify listeners so PadPage dropdowns refresh immediately.
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
@@ -185,7 +186,7 @@ namespace PadForge.Services
             AutoEnableHidingDefaults(udForGuid, row);
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = $"Assigned \"{row.DeviceName}\" to Player {slotIndex + 1}.";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, row.DeviceName, slotIndex + 1);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }

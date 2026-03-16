@@ -174,7 +174,8 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profiel "{0}" bijgewerkt.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profiel geladen: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profiel teruggezet naar Standaard</value></data>
-  <data name="Status_Player_Format" xml:space="preserve"><value>Speler {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtuele controller {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" toegewezen aan virtuele controller {1}.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Niet toegewezen — {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->

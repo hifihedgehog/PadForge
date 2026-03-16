@@ -384,9 +384,9 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Cambiar a vista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Cambiar a vista 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Haga clic para probar el motor izquierdo</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor I</value></data>
+  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor Izquierdo</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Haga clic para probar el motor derecho</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor D</value></data>
+  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor Derecho</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Asignar todo</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asignar: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Grabar secuencialmente todas las asignaciones — presione un botón/eje para cada indicación</value></data>

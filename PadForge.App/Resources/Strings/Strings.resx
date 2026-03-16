@@ -385,9 +385,9 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Switch to 2D view</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Switch to 3D view</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Click to test left motor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>L Motor</value></data>
+  <data name="Pad_LeftMotor" xml:space="preserve"><value>Left Motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Click to test right motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>R Motor</value></data>
+  <data name="Pad_RightMotor" xml:space="preserve"><value>Right Motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Map All</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Map: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Sequentially record all mappings — press a button/axis for each prompt</value></data>

@@ -1385,7 +1385,7 @@ namespace PadForge.ViewModels
                 string target = isYAxis ? mapping.TargetSettingName : mapping.NegSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
-                MapAllPromptText = $"Map: {mapping.TargetLabel} {dirHint}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+                MapAllPromptText = string.Format(Strings.Instance.Pad_MapPrompt_Format, $"{mapping.TargetLabel} {dirHint}") + $"  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             else
             {
@@ -1401,7 +1401,7 @@ namespace PadForge.ViewModels
                 string target = (mapping.HasNegDirection && isYAxis) ? mapping.NegSettingName : mapping.TargetSettingName;
                 MapAllCurrentTarget = target;
                 CurrentRecordingTarget = target;
-                MapAllPromptText = $"Map: {mapping.TargetLabel}{suffix}  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
+                MapAllPromptText = string.Format(Strings.Instance.Pad_MapPrompt_Format, $"{mapping.TargetLabel}{suffix}") + $"  ({MapAllCurrentIndex + 1}/{Mappings.Count})";
             }
             MapAllRecordRequested?.Invoke(this, mapping);
 

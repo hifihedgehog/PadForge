@@ -386,6 +386,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Haga clic para probar el motor derecho</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>Motor D</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Asignar todo</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asignar: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Grabar secuencialmente todas las asignaciones — presione un botón/eje para cada indicación</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Grabar secuencialmente todas las asignaciones una por una</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Haga clic en una fila de asignación y presione un botón/eje en su control para asignarlo.</value></data>

@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <!-- Style for dead zone slider groups -->
         <Style x:Key="DzLabel" TargetType="TextBlock">
-            <Setter Property="Width" Value="170"/>
+            <Setter Property="Width" Value="200"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
         </Style>
@@ -1040,10 +1040,10 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"
-                                                Width="160"/>
+                                                Width="180"/>
                             <DataGridTextColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding SourceDisplayText}"
-                                                Width="180"/>
+                                                Width="200"/>
                             <DataGridTextColumn Header="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
                                                 Width="60"/>

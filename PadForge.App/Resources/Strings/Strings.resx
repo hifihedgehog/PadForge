@@ -308,6 +308,8 @@
   <data name="DeviceType_Device" xml:space="preserve"><value>Device</value></data>
 
   <!-- ═══ Devices ═══ -->
+  <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>All Keyboards (Merged)</value></data>
+  <data name="Devices_AllMiceMerged" xml:space="preserve"><value>All Mice (Merged)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Devices</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>

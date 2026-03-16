@@ -409,7 +409,7 @@
                     <!-- ══════════════════════════════════════
                          MOTOR ACTIVITY INDICATORS
                          ══════════════════════════════════════ -->
-                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" Width="500" Margin="0,4,0,4" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>

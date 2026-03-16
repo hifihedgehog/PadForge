@@ -744,11 +744,28 @@ namespace PadForge.Common.Input
         private class FfbEffectState
         {
             public FFBEType Type;
-            public int Magnitude;           // absolute, 0–10000
+            public int Magnitude;           // signed for constant (-10000..+10000), absolute for others (0..10000)
             public byte Gain = 255;         // per-effect gain from effect report (0–255)
             public ushort Duration;         // ms, 0xFFFF=infinite
             public bool Running;
             public ushort Direction;        // polar direction 0–32767 (HID logical units, maps to 0–360°)
+            public uint Period;             // ms, for periodic effects
+
+            /// <summary>Per-axis condition parameters. Index 0=X, 1=Y.
+            /// vJoy sends one CONDREP per axis.</summary>
+            public FfbConditionAxis[] ConditionAxes = new FfbConditionAxis[2];
+            public int ConditionAxisCount;
+        }
+
+        private struct FfbConditionAxis
+        {
+            public short CenterPointOffset;      // -10000 to +10000
+            public short PosCoeff;               // -10000 to +10000
+            public short NegCoeff;               // -10000 to +10000
+            public uint PosSatur;                // 0–10000
+            public uint NegSatur;                // 0–10000
+            public int DeadBand;                 // 0–10000
+            public bool IsY;
         }
 
         /// <summary>
@@ -808,11 +825,10 @@ namespace PadForge.Common.Input
                         if (VJoyNative.Ffb_h_Eff_Constant(data, ref cst) == 0)
                         {
                             int rawMag = cst.Magnitude;
-                            int absMag = rawMag == int.MinValue ? int.MaxValue : Math.Abs(rawMag);
                             bool found = devState.Effects.TryGetValue(cst.EffectBlockIndex, out var es);
                             if (found)
-                                es.Magnitude = absMag; // -10000..+10000 → 0..10000
-                            DiagLog($"FFB PT_CONSTREP dev{deviceId} ebi={cst.EffectBlockIndex} rawMag={rawMag} absMag={absMag} effectFound={found}");
+                                es.Magnitude = rawMag; // Keep signed: -10000..+10000 (sign flips direction)
+                            DiagLog($"FFB PT_CONSTREP dev{deviceId} ebi={cst.EffectBlockIndex} mag={rawMag} effectFound={found}");
                             ApplyMotorOutput(deviceId, devState);
                         }
                         break;
@@ -825,8 +841,11 @@ namespace PadForge.Common.Input
                         {
                             bool found = devState.Effects.TryGetValue(prd.EffectBlockIndex, out var es);
                             if (found)
+                            {
                                 es.Magnitude = (int)prd.Magnitude; // 0..10000
-                            DiagLog($"FFB PT_PRIDREP dev{deviceId} ebi={prd.EffectBlockIndex} mag={prd.Magnitude} effectFound={found}");
+                                es.Period = prd.Period;             // ms
+                            }
+                            DiagLog($"FFB PT_PRIDREP dev{deviceId} ebi={prd.EffectBlockIndex} mag={prd.Magnitude} period={prd.Period}ms effectFound={found}");
                             ApplyMotorOutput(deviceId, devState);
                         }
                         break;
@@ -851,9 +870,25 @@ namespace PadForge.Common.Input
                         {
                             if (devState.Effects.TryGetValue(cond.EffectBlockIndex, out var es))
                             {
-                                // Use the larger of pos/neg coefficients as magnitude.
+                                // Store full per-axis condition data
+                                int axisIdx = cond.IsY ? 1 : 0;
+                                es.ConditionAxes[axisIdx] = new FfbConditionAxis
+                                {
+                                    CenterPointOffset = cond.CenterPointOffset,
+                                    PosCoeff = cond.PosCoeff,
+                                    NegCoeff = cond.NegCoeff,
+                                    PosSatur = cond.PosSatur,
+                                    NegSatur = cond.NegSatur,
+                                    DeadBand = cond.DeadBand,
+                                    IsY = cond.IsY
+                                };
+                                if (axisIdx + 1 > es.ConditionAxisCount)
+                                    es.ConditionAxisCount = axisIdx + 1;
+
+                                // Fallback magnitude for rumble path
                                 es.Magnitude = Math.Max(Math.Abs(cond.PosCoeff), Math.Abs(cond.NegCoeff));
                             }
+                            DiagLog($"FFB PT_CONDREP dev{deviceId} ebi={cond.EffectBlockIndex} isY={cond.IsY} posC={cond.PosCoeff} negC={cond.NegCoeff} center={cond.CenterPointOffset} dead={cond.DeadBand}");
                             ApplyMotorOutput(deviceId, devState);
                         }
                         break;
@@ -947,8 +982,8 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Computes aggregate motor output from all running effects and writes to VibrationStates[].
-        /// Uses directional mapping: effects pointing left drive the left motor, right → right motor.
-        /// Constant/ramp forces use magnitude directly; periodic uses peak amplitude.
+        /// Uses polar direction mapping: effects pointing left bias the left motor, right → right motor.
+        /// Also populates directional FFB data for haptic devices (joysticks/wheels).
         /// </summary>
         private static void ApplyMotorOutput(uint deviceId, FfbDeviceState devState)
         {
@@ -965,40 +1000,135 @@ namespace PadForge.Common.Input
             if (padIndex < 0 || padIndex >= states.Length)
                 return;
 
-            // Sum magnitudes from all running effects into both motors equally.
-            // DirectInput FFB has a direction field, but Xbox/DualShock controllers
-            // don't have directional rumble — just a heavy motor (left) and light
-            // motor (right). Sending equal magnitude to both is the standard
-            // FFB-to-rumble mapping used by most adapters.
-            double motorSum = 0;
+            // Accumulate per-motor values using polar direction split.
+            double leftSum = 0, rightSum = 0;
+
+            // Track the dominant effect for directional haptic passthrough.
+            FFBEType dominantType = FFBEType.ET_NONE;
+            double dominantMag = 0;
+            short dominantSignedMag = 0;
+            ushort dominantDir = 0;
+            uint dominantPeriod = 0;
+
+            // Track if any running condition effect exists.
+            bool hasCondition = false;
+            FfbEffectState conditionEffect = null;
 
             foreach (var kv in devState.Effects)
             {
                 var es = kv.Value;
-                if (!es.Running || es.Magnitude == 0) continue;
+                if (!es.Running) continue;
 
-                // Apply per-effect gain (0–255).
-                double mag = es.Magnitude * (es.Gain / 255.0);
-                motorSum += mag;
+                double absMag = Math.Abs(es.Magnitude);
+                if (absMag == 0) continue;
+
+                double mag = absMag * (es.Gain / 255.0);
+
+                // Track dominant effect (strongest) for directional passthrough.
+                if (mag > dominantMag)
+                {
+                    dominantMag = mag;
+                    dominantType = es.Type;
+                    dominantSignedMag = (short)Math.Clamp(es.Magnitude, -10000, 10000);
+                    dominantDir = es.Direction;
+                    dominantPeriod = es.Period;
+                }
+
+                // Track condition effects separately.
+                bool isCondition = es.Type == FFBEType.ET_SPRNG || es.Type == FFBEType.ET_DMPR
+                    || es.Type == FFBEType.ET_INRT || es.Type == FFBEType.ET_FRCTN;
+                if (isCondition && es.ConditionAxisCount > 0)
+                {
+                    hasCondition = true;
+                    conditionEffect = es;
+                }
+
+                // ── Polar direction → left/right motor split ──
+                // HID polar: 0 = North, ~8192 = East, ~16384 = South, ~24576 = West
+                // For constant force: negative magnitude flips direction 180°.
+                double angleDeg;
+                if (es.Type == FFBEType.ET_CONST && es.Magnitude < 0)
+                    angleDeg = ((es.Direction / 32767.0) * 360.0 + 180.0) % 360.0;
+                else
+                    angleDeg = (es.Direction / 32767.0) * 360.0;
+
+                double angleRad = angleDeg * Math.PI / 180.0;
+
+                // sin(0°)=0 (both equal), sin(90°)=1 (right bias), sin(270°)=-1 (left bias)
+                double sinVal = Math.Sin(angleRad);
+                double leftScale = Math.Clamp(0.5 - sinVal * 0.5, 0.0, 1.0);
+                double rightScale = Math.Clamp(0.5 + sinVal * 0.5, 0.0, 1.0);
+
+                leftSum += mag * leftScale;
+                rightSum += mag * rightScale;
             }
 
             // Apply device-level gain.
-            double deviceGainFactor = devState.DeviceGain / 255.0;
-            motorSum *= deviceGainFactor;
+            double gainFactor = devState.DeviceGain / 255.0;
+            leftSum *= gainFactor;
+            rightSum *= gainFactor;
 
-            // Scale from 0..10000 → 0..65535 (ushort). Both motors get equal value.
-            ushort motorVal = (ushort)Math.Min(65535, (int)(motorSum * 65535.0 / 10000.0));
+            // Scale from 0..10000 → 0..65535 (ushort).
+            ushort leftVal = (ushort)Math.Min(65535, (int)(leftSum * 65535.0 / 10000.0));
+            ushort rightVal = (ushort)Math.Min(65535, (int)(rightSum * 65535.0 / 10000.0));
 
-            ushort oldL = states[padIndex].LeftMotorSpeed;
-            ushort oldR = states[padIndex].RightMotorSpeed;
+            var vib = states[padIndex];
+            ushort oldL = vib.LeftMotorSpeed;
+            ushort oldR = vib.RightMotorSpeed;
 
-            states[padIndex].LeftMotorSpeed = motorVal;
-            states[padIndex].RightMotorSpeed = motorVal;
+            // Scalar motor values (always set — used by rumble devices).
+            vib.LeftMotorSpeed = leftVal;
+            vib.RightMotorSpeed = rightVal;
 
-            if (motorVal != oldL || motorVal != oldR)
+            // Directional data (for haptic FFB devices — joysticks/wheels).
+            vib.HasDirectionalData = dominantMag > 0;
+            if (vib.HasDirectionalData)
             {
-                DiagLog($"FFB Motor dev{deviceId} pad{padIndex} L:{oldL}->{motorVal} R:{oldR}->{motorVal} (sum={motorSum:F0} devGain={devState.DeviceGain})");
-                RumbleLogger.Log($"[vJoy FFB] Dev{deviceId} Pad{padIndex} L:{oldL}->{motorVal} R:{oldR}->{motorVal}");
+                vib.EffectType = (uint)dominantType;
+                vib.SignedMagnitude = dominantSignedMag;
+                vib.Direction = dominantDir;
+                vib.Period = dominantPeriod;
+                vib.DeviceGain = devState.DeviceGain;
+            }
+            else
+            {
+                vib.EffectType = 0;
+                vib.SignedMagnitude = 0;
+                vib.Direction = 0;
+                vib.Period = 0;
+            }
+
+            // Condition data (for spring/damper/friction/inertia on FFB devices).
+            if (hasCondition && conditionEffect != null)
+            {
+                vib.HasConditionData = true;
+                if (vib.ConditionAxes == null || vib.ConditionAxes.Length < conditionEffect.ConditionAxisCount)
+                    vib.ConditionAxes = new ConditionAxisData[conditionEffect.ConditionAxisCount];
+                vib.ConditionAxisCount = conditionEffect.ConditionAxisCount;
+                for (int i = 0; i < conditionEffect.ConditionAxisCount; i++)
+                {
+                    var src = conditionEffect.ConditionAxes[i];
+                    vib.ConditionAxes[i] = new ConditionAxisData
+                    {
+                        PositiveCoefficient = src.PosCoeff,
+                        NegativeCoefficient = src.NegCoeff,
+                        Offset = src.CenterPointOffset,
+                        DeadBand = (uint)src.DeadBand,
+                        PositiveSaturation = src.PosSatur,
+                        NegativeSaturation = src.NegSatur
+                    };
+                }
+            }
+            else
+            {
+                vib.HasConditionData = false;
+                vib.ConditionAxisCount = 0;
+            }
+
+            if (leftVal != oldL || rightVal != oldR)
+            {
+                DiagLog($"FFB Motor dev{deviceId} pad{padIndex} L:{oldL}->{leftVal} R:{oldR}->{rightVal} (lSum={leftSum:F0} rSum={rightSum:F0} devGain={devState.DeviceGain})");
+                RumbleLogger.Log($"[vJoy FFB] Dev{deviceId} Pad{padIndex} L:{oldL}->{leftVal} R:{oldR}->{rightVal}");
             }
         }
 

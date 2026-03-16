@@ -22,6 +22,7 @@ namespace PadForge.Engine
         HapticEffectStrategy HapticStrategy { get; }
         IntPtr HapticHandle { get; }
         uint HapticFeatures { get; }
+        int NumHapticAxes { get; }
         bool IsAttached { get; }
         ushort VendorId { get; }
         ushort ProductId { get; }

@@ -65,6 +65,9 @@ StyleCopReport.xml
 PublishScripts/
 publish/
 
+# Release archives (uploaded to GitHub Releases, not tracked in repo)
+PadForge-*.zip
+
 # Rider / JetBrains
 .idea/
 *.sln.iml

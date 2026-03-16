@@ -345,6 +345,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_TestRightMotor => Get("Pad_TestRightMotor");
     public string Pad_RightMotor => Get("Pad_RightMotor");
     public string Pad_MapAll => Get("Pad_MapAll");
+    public string Pad_MapPrompt_Format => Get("Pad_MapPrompt_Format");
     public string Pad_MapAllTooltip => Get("Pad_MapAllTooltip");
     public string Pad_MapAllOneByOne => Get("Pad_MapAllOneByOne");
     public string Pad_MappingHint => Get("Pad_MappingHint");

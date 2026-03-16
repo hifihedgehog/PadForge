@@ -386,6 +386,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>クリックして右モーターをテスト</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>R モーター</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>すべてのマッピングを順番に記録します — 各プロンプトでボタン/軸を押してください</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>すべてのマッピングを一つずつ順番に記録します</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>マッピング行をクリックし、コントローラーのボタン/軸を押して割り当てます。</value></data>

@@ -386,6 +386,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Clicca per testare il motore destro</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>Motore DX</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mappa tutto</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mappa: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Registra tutte le mappature in sequenza — premi un pulsante/asse per ogni richiesta</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Registra tutte le mappature una per una in sequenza</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Clicca su una riga di mappatura e premi un pulsante/asse sul controller per assegnarlo.</value></data>

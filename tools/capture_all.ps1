@@ -263,6 +263,45 @@ function Find-AllSlots {
     return @()
 }
 
+function Find-SlotByType {
+    <#
+    .SYNOPSIS
+        Finds and selects a sidebar slot by controller type, returning the slot element.
+        Identifies type by selecting each slot and checking which PadPage elements are
+        present in the UIA tree (WPF Collapsed elements are removed from UIA):
+        - vJoy:  VJoyConfigBar AutomationId present
+        - MIDI:  MidiConfigBar AutomationId present
+        - KBM:   KBMPreview AutomationId present (keyboard+mouse preview view)
+        - Xbox360/DS4: none of the above config bars/previews
+    #>
+    param([string]$Type)  # "Xbox360", "DS4", "vJoy", "KBM", "MIDI"
+    $slots = @(Find-AllSlots)
+    foreach ($slot in $slots) {
+        Select-El $slot -Label "Probe $($slot.Current.Name)" -Delay 800
+        $padPage = Find-UIA -Aid "PadPageView"
+        if (-not $padPage) { continue }
+        # WPF Collapsed elements are not in UIA tree, so presence = Visible
+        $hasVJoy = $null -ne (Find-UIA -Parent $padPage -Aid "VJoyConfigBar")
+        $hasMidi = $null -ne (Find-UIA -Parent $padPage -Aid "MidiConfigBar")
+        $hasKbm  = $null -ne (Find-UIA -Parent $padPage -Aid "KBMPreview")
+        Write-Host "    $($slot.Current.Name): vJoy=$hasVJoy MIDI=$hasMidi KBM=$hasKbm"
+        $matched = $false
+        switch ($Type) {
+            "vJoy"    { $matched = $hasVJoy }
+            "MIDI"    { $matched = $hasMidi }
+            "KBM"     { $matched = $hasKbm }
+            "Xbox360" { $matched = -not $hasVJoy -and -not $hasMidi -and -not $hasKbm }
+            "DS4"     { $matched = -not $hasVJoy -and -not $hasMidi -and -not $hasKbm }
+        }
+        if ($matched) {
+            Write-Host "  Found $Type slot: $($slot.Current.Name)" -ForegroundColor Green
+            return $slot
+        }
+    }
+    Write-Host "  !! Could not find $Type slot by content probing" -ForegroundColor Red
+    return $null
+}
+
 function Tab {
     param([string]$Name)
     $padPage = Find-UIA -Aid "PadPageView"
@@ -589,6 +628,10 @@ foreach ($st in $slotTypes) {
     Start-Sleep -Milliseconds 500
 }
 
+# Wait for type-group reorder to fully settle before querying slots
+Write-Host "  Waiting 3s for type-group reorder to settle..."
+Start-Sleep -Milliseconds 3000
+
 # Verify slots appeared
 $slots = @(Find-AllSlots)
 Write-Host "  Slots after creation: $($slots.Count)"
@@ -615,7 +658,24 @@ Nav "Profiles"; Cap "profiles"
 
 # ---- 3. Devices ----
 Write-Host "[$(Next)/$total] Devices"
-Nav "Devices"; Cap "devices"
+Nav "Devices"
+Start-Sleep -Milliseconds 500
+# Click a device in the list to show the raw input preview panel (axes, buttons, POV)
+$devicesPage = Find-UIA -Aid "DevicesPageView"
+$searchDevices = if ($devicesPage) { $devicesPage } else { $script:uiaWin }
+$liCond = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::ListItem)
+$deviceItems = $searchDevices.FindAll($TD, $liCond)
+if ($deviceItems -and $deviceItems.Count -gt 0) {
+    # Click the last device (usually the gamepad like Xbox controller)
+    $lastDev = $deviceItems[$deviceItems.Count - 1]
+    Write-Host "  Clicking device: '$($lastDev.Current.Name)' (last of $($deviceItems.Count))"
+    Click-El $lastDev -Label "Device card" -Delay 800
+} else {
+    Write-Host "  No device items found in list -- capturing without selection" -ForegroundColor Yellow
+}
+Cap "devices"
 
 # ---- 4-12. Xbox360 slot (slot 0 -- macros/mappings/sticks/triggers/ff here) ----
 Write-Host ""
@@ -754,13 +814,16 @@ if ($slots.Count -ge 1) {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
 
-# ---- 14. vJoy slot (slot 2 after type-group reorder: Xbox360=0, DS4=1, vJoy=2, KBM=3, MIDI=4) ----
+# ---- 14. vJoy slot ----
+# After type-group reorder, order from end is always: ...vJoy, KBM, MIDI
+# Use offsets from end to handle variable number of Xbox360/DS4 slots
 Write-Host ""
 Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 3) {
+$vjoyIdx = $slots.Count - 3  # third from end
+if ($vjoyIdx -ge 0 -and $slots.Count -ge 3) {
     Write-Host "[$(Next)/$total] vJoy config bar"
-    Select-El $slots[2] -Label "vJoy Slot" -Delay 1000
+    Select-El $slots[$vjoyIdx] -Label "vJoy Slot" -Delay 1000
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
@@ -788,29 +851,30 @@ if ($slots.Count -ge 3) {
     $n += 2
 }
 
-# ---- 16. KBM slot (slot 3 after type-group reorder) ----
+# ---- 16. KBM slot ----
 Write-Host ""
 Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 4) {
+$kbmIdx = $slots.Count - 2  # second from end
+if ($kbmIdx -ge 0 -and $slots.Count -ge 2) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
-    Select-El $slots[3] -Label "KBM Slot" -Delay 1000
+    Select-El $slots[$kbmIdx] -Label "KBM Slot" -Delay 1000
     # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
-    # Clicking tabs[0] on KBM page can hit the keyboard preview keys
     Start-Sleep -Milliseconds 500
     Cap "pad-kbm-preview"
 } else {
-    Write-Host "  !! KBM slot not found (only $($slots.Count) slots)" -ForegroundColor Yellow
+    Write-Host "  !! KBM slot not found" -ForegroundColor Yellow
     $n++
 }
 
-# ---- 17. MIDI slot (slot 4 after type-group reorder) ----
+# ---- 17. MIDI slot ----
 Write-Host ""
 Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-if ($slots.Count -ge 5) {
+$midiIdx = $slots.Count - 1  # last slot
+if ($midiIdx -ge 0 -and $slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] MIDI config bar"
-    Select-El $slots[4] -Label "MIDI Slot" -Delay 1000
+    Select-El $slots[$midiIdx] -Label "MIDI Slot" -Delay 1000
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(

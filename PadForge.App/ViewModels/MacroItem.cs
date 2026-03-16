@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -27,7 +28,18 @@ namespace PadForge.ViewModels
         //  Identity
         // ─────────────────────────────────────────────
 
-        private string _name = "New Macro";
+        public MacroItem()
+        {
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(RecordTriggerButtonText));
+            OnPropertyChanged(nameof(TriggerDisplayText));
+        }
+
+        private string _name = Strings.Instance.Macro_NewMacro;
 
         /// <summary>User-facing name for this macro.</summary>
         public string Name
@@ -131,7 +143,7 @@ namespace PadForge.ViewModels
                     foreach (int b in _triggerRawButtons)
                     {
                         var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
-                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {b}");
+                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : string.Format(Strings.Instance.Macro_Button_Format, b));
                     }
                 }
                 else if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
@@ -151,7 +163,7 @@ namespace PadForge.ViewModels
                 foreach (var axis in _triggerAxisTargets)
                     parts.Add($"{axis.DisplayName()} > {_triggerAxisThreshold}%");
 
-                if (parts.Count == 0) return "Not set \u2014 click Record";
+                if (parts.Count == 0) return Strings.Instance.Macro_NotSet;
 
                 string result = string.Join(" + ", parts);
 
@@ -194,7 +206,7 @@ namespace PadForge.ViewModels
             var split = stored.Split(':');
             if (split.Length != 2 || !int.TryParse(split[0], out int idx) || !int.TryParse(split[1], out int cd))
                 return stored;
-            return $"POV {idx} {CentidegreesToDirection(cd)}";
+            return string.Format(Strings.Instance.Macro_POV_Format, idx, CentidegreesToDirection(cd));
         }
 
         /// <summary>
@@ -212,17 +224,17 @@ namespace PadForge.ViewModels
 
         private static string CentidegreesToDirection(int centidegrees)
         {
-            if (centidegrees < 0) return "Centered";
+            if (centidegrees < 0) return Strings.Instance.POV_Centered;
             centidegrees %= 36000;
-            if (centidegrees >= 33750 || centidegrees < 2250) return "Up";
-            if (centidegrees < 6750) return "Up-Right";
-            if (centidegrees < 11250) return "Right";
-            if (centidegrees < 15750) return "Down-Right";
-            if (centidegrees < 20250) return "Down";
-            if (centidegrees < 24750) return "Down-Left";
-            if (centidegrees < 29250) return "Left";
-            if (centidegrees < 33750) return "Up-Left";
-            return "Up";
+            if (centidegrees >= 33750 || centidegrees < 2250) return Strings.Instance.POV_Up;
+            if (centidegrees < 6750) return Strings.Instance.POV_UpRight;
+            if (centidegrees < 11250) return Strings.Instance.POV_Right;
+            if (centidegrees < 15750) return Strings.Instance.POV_DownRight;
+            if (centidegrees < 20250) return Strings.Instance.POV_Down;
+            if (centidegrees < 24750) return Strings.Instance.POV_DownLeft;
+            if (centidegrees < 29250) return Strings.Instance.POV_Left;
+            if (centidegrees < 33750) return Strings.Instance.POV_UpLeft;
+            return Strings.Instance.POV_Up;
         }
 
         // ─────────────────────────────────────────────
@@ -303,7 +315,7 @@ namespace PadForge.ViewModels
         }
 
         public string RecordTriggerButtonText =>
-            IsRecordingTrigger ? "Stop" : "Record Trigger";
+            IsRecordingTrigger ? Strings.Instance.Common_Stop : Strings.Instance.Macro_RecordTrigger;
 
         private string _recordingLiveText = "";
 
@@ -558,6 +570,21 @@ namespace PadForge.ViewModels
     /// </summary>
     public class MacroAction : ObservableObject
     {
+        static MacroAction()
+        {
+            Strings.CultureChanged += RefreshVirtualKeyValues;
+        }
+
+        public MacroAction()
+        {
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(DisplayText));
+        }
+
         private MacroActionType _type = MacroActionType.ButtonPress;
 
         /// <summary>Type of action to perform.</summary>
@@ -768,7 +795,7 @@ namespace PadForge.ViewModels
                         // Dynamic list for custom vJoy — N buttons from config.
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
-                            list.Add(new GamepadButtonOption(this, $"Btn {i + 1}", customIndex: i));
+                            list.Add(new GamepadButtonOption(this, string.Format(Strings.Instance.Macro_Btn_Format, i + 1), customIndex: i));
                         _buttonOptions = list.AsReadOnly();
                     }
                     else
@@ -813,9 +840,132 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Provides the list of VirtualKey values for ComboBox binding in the UI.
+        /// Provides the list of VirtualKey values with localized display names for ComboBox binding.
+        /// Rebuilt on culture change so display names track the current language.
         /// </summary>
-        public static Array VirtualKeyValues { get; } = Enum.GetValues(typeof(VirtualKey));
+        public static List<KeyDisplayItem> VirtualKeyValues { get; private set; } = BuildKeyDisplayItems();
+
+        internal static void RefreshVirtualKeyValues() => VirtualKeyValues = BuildKeyDisplayItems();
+
+        private static List<KeyDisplayItem> BuildKeyDisplayItems()
+        {
+            var items = new List<KeyDisplayItem>();
+            foreach (VirtualKey vk in Enum.GetValues(typeof(VirtualKey)))
+                items.Add(new KeyDisplayItem(vk, VirtualKeyDisplayName(vk)));
+            return items;
+        }
+
+        /// <summary>Returns a user-friendly localized display name for a virtual key.</summary>
+        private static string VirtualKeyDisplayName(VirtualKey vk) => vk switch
+        {
+            VirtualKey.None => Strings.Instance.Macro_None,
+            // Mouse buttons
+            VirtualKey.LButton => Strings.Instance.Key_LButton,
+            VirtualKey.RButton => Strings.Instance.Key_RButton,
+            VirtualKey.Cancel => Strings.Instance.Key_Cancel,
+            VirtualKey.MButton => Strings.Instance.Key_MButton,
+            VirtualKey.XButton1 => Strings.Instance.Key_XButton1,
+            VirtualKey.XButton2 => Strings.Instance.Key_XButton2,
+            // Common keys
+            VirtualKey.Backspace => Strings.Instance.Key_Backspace,
+            VirtualKey.Tab => Strings.Instance.Key_Tab,
+            VirtualKey.Clear => Strings.Instance.Key_Clear,
+            VirtualKey.Enter => Strings.Instance.Key_Enter,
+            VirtualKey.Shift => Strings.Instance.Key_Shift,
+            VirtualKey.Control => Strings.Instance.Key_Control,
+            VirtualKey.Alt => Strings.Instance.Key_Alt,
+            VirtualKey.Pause => Strings.Instance.Key_Pause,
+            VirtualKey.CapsLock => Strings.Instance.Key_CapsLock,
+            VirtualKey.Escape => Strings.Instance.Key_Escape,
+            VirtualKey.Space => Strings.Instance.Key_Space,
+            // Navigation
+            VirtualKey.PageUp => Strings.Instance.Key_PageUp,
+            VirtualKey.PageDown => Strings.Instance.Key_PageDown,
+            VirtualKey.End => Strings.Instance.Key_End,
+            VirtualKey.Home => Strings.Instance.Key_Home,
+            VirtualKey.Left => Strings.Instance.Key_Left,
+            VirtualKey.Up => Strings.Instance.Key_Up,
+            VirtualKey.Right => Strings.Instance.Key_Right,
+            VirtualKey.Down => Strings.Instance.Key_Down,
+            VirtualKey.Select => Strings.Instance.Key_Select,
+            VirtualKey.Print => Strings.Instance.Key_Print,
+            VirtualKey.Execute => Strings.Instance.Key_Execute,
+            VirtualKey.PrintScreen => Strings.Instance.Key_PrintScreen,
+            VirtualKey.Insert => Strings.Instance.Key_Insert,
+            VirtualKey.Delete => Strings.Instance.Key_Delete,
+            VirtualKey.Help => Strings.Instance.Key_Help,
+            // Numbers
+            VirtualKey.D0 => "0", VirtualKey.D1 => "1", VirtualKey.D2 => "2",
+            VirtualKey.D3 => "3", VirtualKey.D4 => "4", VirtualKey.D5 => "5",
+            VirtualKey.D6 => "6", VirtualKey.D7 => "7", VirtualKey.D8 => "8",
+            VirtualKey.D9 => "9",
+            // Windows keys
+            VirtualKey.LWin => Strings.Instance.Key_LWin,
+            VirtualKey.RWin => Strings.Instance.Key_RWin,
+            VirtualKey.Apps => Strings.Instance.Key_Apps,
+            VirtualKey.Sleep => Strings.Instance.Key_Sleep,
+            // Numpad
+            VirtualKey.NumPad0 => Strings.Instance.Key_Numpad + " 0",
+            VirtualKey.NumPad1 => Strings.Instance.Key_Numpad + " 1",
+            VirtualKey.NumPad2 => Strings.Instance.Key_Numpad + " 2",
+            VirtualKey.NumPad3 => Strings.Instance.Key_Numpad + " 3",
+            VirtualKey.NumPad4 => Strings.Instance.Key_Numpad + " 4",
+            VirtualKey.NumPad5 => Strings.Instance.Key_Numpad + " 5",
+            VirtualKey.NumPad6 => Strings.Instance.Key_Numpad + " 6",
+            VirtualKey.NumPad7 => Strings.Instance.Key_Numpad + " 7",
+            VirtualKey.NumPad8 => Strings.Instance.Key_Numpad + " 8",
+            VirtualKey.NumPad9 => Strings.Instance.Key_Numpad + " 9",
+            VirtualKey.Multiply => Strings.Instance.Key_Numpad + " *",
+            VirtualKey.Add => Strings.Instance.Key_Numpad + " +",
+            VirtualKey.Separator => Strings.Instance.Key_Separator,
+            VirtualKey.Subtract => Strings.Instance.Key_Numpad + " -",
+            VirtualKey.Decimal => Strings.Instance.Key_Numpad + " .",
+            VirtualKey.Divide => Strings.Instance.Key_Numpad + " /",
+            // Lock keys
+            VirtualKey.NumLock => Strings.Instance.Key_NumLock,
+            VirtualKey.ScrollLock => Strings.Instance.Key_ScrollLock,
+            // Left/Right modifiers
+            VirtualKey.LShift => Strings.Instance.Key_LeftShift,
+            VirtualKey.RShift => Strings.Instance.Key_RightShift,
+            VirtualKey.LControl => Strings.Instance.Key_LeftCtrl,
+            VirtualKey.RControl => Strings.Instance.Key_RightCtrl,
+            VirtualKey.LAlt => Strings.Instance.Key_LeftAlt,
+            VirtualKey.RAlt => Strings.Instance.Key_RightAlt,
+            // Browser keys
+            VirtualKey.BrowserBack => Strings.Instance.Key_BrowserBack,
+            VirtualKey.BrowserForward => Strings.Instance.Key_BrowserForward,
+            VirtualKey.BrowserRefresh => Strings.Instance.Key_BrowserRefresh,
+            VirtualKey.BrowserStop => Strings.Instance.Key_BrowserStop,
+            VirtualKey.BrowserSearch => Strings.Instance.Key_BrowserSearch,
+            VirtualKey.BrowserFavorites => Strings.Instance.Key_BrowserFavorites,
+            VirtualKey.BrowserHome => Strings.Instance.Key_BrowserHome,
+            // Media keys
+            VirtualKey.VolumeMute => Strings.Instance.Key_VolumeMute,
+            VirtualKey.VolumeDown => Strings.Instance.Key_VolumeDown,
+            VirtualKey.VolumeUp => Strings.Instance.Key_VolumeUp,
+            VirtualKey.MediaNextTrack => Strings.Instance.Key_MediaNext,
+            VirtualKey.MediaPrevTrack => Strings.Instance.Key_MediaPrev,
+            VirtualKey.MediaStop => Strings.Instance.Key_MediaStop,
+            VirtualKey.MediaPlayPause => Strings.Instance.Key_MediaPlayPause,
+            VirtualKey.LaunchMail => Strings.Instance.Key_LaunchMail,
+            VirtualKey.LaunchMediaSelect => Strings.Instance.Key_LaunchMediaSelect,
+            VirtualKey.LaunchApp1 => Strings.Instance.Key_LaunchApp1,
+            VirtualKey.LaunchApp2 => Strings.Instance.Key_LaunchApp2,
+            // OEM keys (symbol pairs, universal)
+            VirtualKey.OemSemicolon => "; :",
+            VirtualKey.OemPlus => "= +",
+            VirtualKey.OemComma => ", <",
+            VirtualKey.OemMinus => "- _",
+            VirtualKey.OemPeriod => ". >",
+            VirtualKey.OemSlash => "/ ?",
+            VirtualKey.OemTilde => "` ~",
+            VirtualKey.OemOpenBracket => "[ {",
+            VirtualKey.OemBackslash => "\\ |",
+            VirtualKey.OemCloseBracket => "] }",
+            VirtualKey.OemQuote => "' \"",
+            // F-keys and letters fall through to ToString()
+            _ => vk.ToString()
+        };
 
         // ── Multi-key string support ──
 
@@ -1083,27 +1233,27 @@ namespace PadForge.ViewModels
                     ? MacroButtonNames.FormatCustomButtons(_customButtonWords)
                     : MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle);
                 string axisLabel = _axisSource == MacroAxisSource.InputDevice
-                    ? $"Device Axis {_sourceDeviceAxisIndex}"
+                    ? string.Format(Strings.Instance.Macro_DeviceAxis_Format, _sourceDeviceAxisIndex)
                     : _axisTarget.DisplayName();
                 return _type switch
                 {
-                    MacroActionType.ButtonPress => $"Press {btnText} for {_durationMs}ms",
-                    MacroActionType.ButtonRelease => $"Release {btnText}",
-                    MacroActionType.KeyPress => $"Keys {keyDisplay} for {_durationMs}ms",
-                    MacroActionType.KeyRelease => $"Release keys {keyDisplay}",
-                    MacroActionType.Delay => $"Wait {_durationMs}ms",
-                    MacroActionType.AxisSet => $"Set {_axisTarget} = {_axisValue}",
+                    MacroActionType.ButtonPress => string.Format(Strings.Instance.MacroAction_Press_Format, btnText, _durationMs),
+                    MacroActionType.ButtonRelease => string.Format(Strings.Instance.MacroAction_Release_Format, btnText),
+                    MacroActionType.KeyPress => string.Format(Strings.Instance.MacroAction_KeyPress_Format, keyDisplay, _durationMs),
+                    MacroActionType.KeyRelease => string.Format(Strings.Instance.MacroAction_KeyRelease_Format, keyDisplay),
+                    MacroActionType.Delay => string.Format(Strings.Instance.MacroAction_Wait_Format, _durationMs),
+                    MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
                     MacroActionType.SystemVolume => _volumeLimit < 100
-                        ? $"System Volume \u2190 {axisLabel} (max {_volumeLimit}%)"
-                        : $"System Volume \u2190 {axisLabel}",
+                        ? string.Format(Strings.Instance.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
+                        : string.Format(Strings.Instance.MacroAction_SysVol_Format, axisLabel),
                     MacroActionType.AppVolume => string.IsNullOrEmpty(_processName)
-                        ? (_volumeLimit < 100 ? $"App Volume \u2190 {axisLabel} (max {_volumeLimit}%)" : $"App Volume \u2190 {axisLabel}")
-                        : (_volumeLimit < 100 ? $"App Volume ({_processName}) \u2190 {axisLabel} (max {_volumeLimit}%)" : $"App Volume ({_processName}) \u2190 {axisLabel}"),
-                    MacroActionType.MouseMove => $"Mouse Move \u2190 {axisLabel} (speed {_mouseSensitivity:F0})",
-                    MacroActionType.MouseButtonPress => $"Mouse Press {_mouseButton}",
-                    MacroActionType.MouseButtonRelease => $"Mouse Release {_mouseButton}",
-                    MacroActionType.MouseScroll => $"Mouse Scroll \u2190 {axisLabel} (speed {_mouseSensitivity:F0})",
-                    _ => "Unknown action"
+                        ? (_volumeLimit < 100 ? string.Format(Strings.Instance.MacroAction_AppVolLimit_Format, axisLabel, _volumeLimit) : string.Format(Strings.Instance.MacroAction_AppVol_Format, axisLabel))
+                        : (_volumeLimit < 100 ? string.Format(Strings.Instance.MacroAction_AppVolLimit_Format, $"{axisLabel} ({_processName})", _volumeLimit) : string.Format(Strings.Instance.MacroAction_AppVol_Format, $"{axisLabel} ({_processName})")),
+                    MacroActionType.MouseMove => string.Format(Strings.Instance.MacroAction_MouseMove_Format, axisLabel, _mouseSensitivity),
+                    MacroActionType.MouseButtonPress => string.Format(Strings.Instance.MacroAction_MousePress_Format, MacroMouseButtonDisplayName(_mouseButton)),
+                    MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
+                    MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
+                    _ => Strings.Instance.Macro_UnknownAction
                 };
             }
         }
@@ -1118,6 +1268,17 @@ namespace PadForge.ViewModels
                 return ((VirtualKey)keyCode).ToString();
             return $"0x{keyCode:X2}";
         }
+
+        /// <summary>Returns the localized display name for a mouse button.</summary>
+        private static string MacroMouseButtonDisplayName(MacroMouseButton btn) => btn switch
+        {
+            MacroMouseButton.Left => Strings.Instance.Macro_MouseLeft,
+            MacroMouseButton.Right => Strings.Instance.Macro_MouseRight,
+            MacroMouseButton.Middle => Strings.Instance.Macro_MouseMiddle,
+            MacroMouseButton.X1 => Strings.Instance.Macro_MouseX1,
+            MacroMouseButton.X2 => Strings.Instance.Macro_MouseX2,
+            _ => btn.ToString()
+        };
     }
 
     // ─────────────────────────────────────────────
@@ -1226,12 +1387,12 @@ namespace PadForge.ViewModels
         /// </summary>
         public static string DisplayName(this MacroAxisTarget target) => target switch
         {
-            MacroAxisTarget.LeftStickX => "X Axis",
-            MacroAxisTarget.LeftStickY => "Y Axis",
-            MacroAxisTarget.RightStickX => "X Rotation",
-            MacroAxisTarget.RightStickY => "Y Rotation",
-            MacroAxisTarget.LeftTrigger => "Z Axis",
-            MacroAxisTarget.RightTrigger => "Z Rotation",
+            MacroAxisTarget.LeftStickX => Strings.Instance.MacroAxis_XAxis,
+            MacroAxisTarget.LeftStickY => Strings.Instance.MacroAxis_YAxis,
+            MacroAxisTarget.RightStickX => Strings.Instance.MacroAxis_XRotation,
+            MacroAxisTarget.RightStickY => Strings.Instance.MacroAxis_YRotation,
+            MacroAxisTarget.LeftTrigger => Strings.Instance.MacroAxis_ZAxis,
+            MacroAxisTarget.RightTrigger => Strings.Instance.MacroAxis_ZRotation,
             _ => target.ToString()
         };
     }
@@ -1326,15 +1487,15 @@ namespace PadForge.ViewModels
         /// </summary>
         public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style) => style switch
         {
-            MacroButtonStyle.DualShock4 => _ds4Defs,
-            MacroButtonStyle.Numbered => _numberedDefs,
-            _ => _xboxDefs
+            MacroButtonStyle.DualShock4 => BuildDS4Defs(),
+            MacroButtonStyle.Numbered => BuildNumberedDefs(),
+            _ => BuildXboxDefs()
         };
 
         /// <summary>Formats a button bitmask into a human-readable string.</summary>
         public static string FormatButtons(ushort flags, MacroButtonStyle style)
         {
-            if (flags == 0) return "(none)";
+            if (flags == 0) return Strings.Instance.Macro_None;
             var defs = GetButtonDefs(style);
             return string.Join(" + ", defs.Where(d => (flags & d.Flag) != 0).Select(d => d.Label));
         }
@@ -1342,16 +1503,16 @@ namespace PadForge.ViewModels
         /// <summary>Formats custom vJoy button words into a human-readable string.</summary>
         public static string FormatCustomButtons(uint[] words)
         {
-            if (words == null || words.All(w => w == 0)) return "(none)";
+            if (words == null || words.All(w => w == 0)) return Strings.Instance.Macro_None;
             var parts = new List<string>();
             for (int i = 0; i < 128; i++)
             {
                 int word = i / 32;
                 int bit = i % 32;
                 if (word < words.Length && (words[word] & (uint)(1 << bit)) != 0)
-                    parts.Add($"Btn {i + 1}");
+                    parts.Add(string.Format(Strings.Instance.Macro_Btn_Format, i + 1));
             }
-            return parts.Count > 0 ? string.Join(" + ", parts) : "(none)";
+            return parts.Count > 0 ? string.Join(" + ", parts) : Strings.Instance.Macro_None;
         }
 
         /// <summary>
@@ -1370,30 +1531,62 @@ namespace PadForge.ViewModels
             _ => MacroButtonStyle.Xbox360
         };
 
-        private static readonly (string Label, ushort Flag)[] _xboxDefs =
+        private static (string Label, ushort Flag)[] BuildXboxDefs() => new (string, ushort)[]
         {
             ("A", 0x1000), ("B", 0x2000), ("X", 0x4000), ("Y", 0x8000),
-            ("LB", 0x0100), ("RB", 0x0200), ("Back", 0x0020), ("Start", 0x0010),
-            ("LS", 0x0040), ("RS", 0x0080), ("Guide", 0x0400),
-            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
+            (Strings.Instance.Btn_LeftShoulder, 0x0100), (Strings.Instance.Btn_RightShoulder, 0x0200),
+            (Strings.Instance.Btn_Back, 0x0020), (Strings.Instance.Btn_Start, 0x0010),
+            (Strings.Instance.Btn_LeftStickButton, 0x0040), (Strings.Instance.Btn_RightStickButton, 0x0080),
+            (Strings.Instance.Btn_Guide, 0x0400),
+            (Strings.Instance.Btn_Up, 0x0001), (Strings.Instance.Btn_Down, 0x0002),
+            (Strings.Instance.Btn_Left, 0x0004), (Strings.Instance.Btn_Right, 0x0008),
         };
 
-        private static readonly (string Label, ushort Flag)[] _ds4Defs =
+        private static (string Label, ushort Flag)[] BuildDS4Defs() => new (string, ushort)[]
         {
-            ("Cross", 0x1000), ("Circle", 0x2000), ("Square", 0x4000), ("Triangle", 0x8000),
-            ("L1", 0x0100), ("R1", 0x0200), ("Share", 0x0020), ("Options", 0x0010),
-            ("L3", 0x0040), ("R3", 0x0080), ("PS", 0x0400), ("Touchpad", 0x0800),
-            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
+            (Strings.Instance.Btn_Cross, 0x1000), (Strings.Instance.Btn_Circle, 0x2000),
+            (Strings.Instance.Btn_Square, 0x4000), (Strings.Instance.Btn_Triangle, 0x8000),
+            (Strings.Instance.Btn_L1, 0x0100), (Strings.Instance.Btn_R1, 0x0200),
+            (Strings.Instance.Btn_Share, 0x0020), (Strings.Instance.Btn_Options, 0x0010),
+            (Strings.Instance.Btn_L3, 0x0040), (Strings.Instance.Btn_R3, 0x0080),
+            (Strings.Instance.Btn_PS, 0x0400), (Strings.Instance.Btn_Touchpad, 0x0800),
+            (Strings.Instance.Btn_Up, 0x0001), (Strings.Instance.Btn_Down, 0x0002),
+            (Strings.Instance.Btn_Left, 0x0004), (Strings.Instance.Btn_Right, 0x0008),
         };
 
         // vJoy Custom: Xbox bitmask bits → vJoy button numbers (see SubmitGamepadState mapping).
         // D-pad still shows direction names (they map to POV, not buttons).
-        private static readonly (string Label, ushort Flag)[] _numberedDefs =
+        private static (string Label, ushort Flag)[] BuildNumberedDefs()
         {
-            ("Btn 1", 0x1000), ("Btn 2", 0x2000), ("Btn 3", 0x4000), ("Btn 4", 0x8000),
-            ("Btn 5", 0x0100), ("Btn 6", 0x0200), ("Btn 7", 0x0020), ("Btn 8", 0x0010),
-            ("Btn 9", 0x0040), ("Btn 10", 0x0080), ("Btn 11", 0x0400),
-            ("Up", 0x0001), ("Down", 0x0002), ("Left", 0x0004), ("Right", 0x0008),
-        };
+            var s = Strings.Instance;
+            return new (string, ushort)[]
+            {
+                (string.Format(s.Macro_Btn_Format, 1), 0x1000), (string.Format(s.Macro_Btn_Format, 2), 0x2000),
+                (string.Format(s.Macro_Btn_Format, 3), 0x4000), (string.Format(s.Macro_Btn_Format, 4), 0x8000),
+                (string.Format(s.Macro_Btn_Format, 5), 0x0100), (string.Format(s.Macro_Btn_Format, 6), 0x0200),
+                (string.Format(s.Macro_Btn_Format, 7), 0x0020), (string.Format(s.Macro_Btn_Format, 8), 0x0010),
+                (string.Format(s.Macro_Btn_Format, 9), 0x0040), (string.Format(s.Macro_Btn_Format, 10), 0x0080),
+                (string.Format(s.Macro_Btn_Format, 11), 0x0400),
+                (s.Btn_Up, 0x0001), (s.Btn_Down, 0x0002),
+                (s.Btn_Left, 0x0004), (s.Btn_Right, 0x0008),
+            };
+        }
+    }
+
+    /// <summary>
+    /// Wraps a VirtualKey with a localized display name for ComboBox binding.
+    /// </summary>
+    public class KeyDisplayItem
+    {
+        public KeyDisplayItem(VirtualKey key, string displayName)
+        {
+            Key = key;
+            DisplayName = displayName;
+        }
+
+        public VirtualKey Key { get; }
+        public string DisplayName { get; }
+
+        public override string ToString() => DisplayName;
     }
 }

@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ═══ Common ═══ -->
+  <data name="Common_Save" xml:space="preserve"><value>Speichern</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Common_Add" xml:space="preserve"><value>Hinzufügen</value></data>
+  <data name="Common_Remove" xml:space="preserve"><value>Entfernen</value></data>
+  <data name="Common_OK" xml:space="preserve"><value>OK</value></data>
+  <data name="Common_Install" xml:space="preserve"><value>Installieren</value></data>
+  <data name="Common_Uninstall" xml:space="preserve"><value>Deinstallieren</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Kopieren</value></data>
+  <data name="Common_Paste" xml:space="preserve"><value>Einfügen</value></data>
+  <data name="Common_Enabled" xml:space="preserve"><value>Aktiviert</value></data>
+  <data name="Common_Disabled" xml:space="preserve"><value>Deaktiviert</value></data>
+  <data name="Common_Installed" xml:space="preserve"><value>Installiert</value></data>
+  <data name="Common_NotInstalled" xml:space="preserve"><value>Nicht installiert</value></data>
+  <data name="Common_Ready" xml:space="preserve"><value>Bereit</value></data>
+  <data name="Common_Stopped" xml:space="preserve"><value>Angehalten</value></data>
+  <data name="Common_Running" xml:space="preserve"><value>Aktiv</value></data>
+  <data name="Server_RunningOn_Format" xml:space="preserve"><value>Läuft auf {0}</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Läuft ({0} Clients)</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Lauscht auf :{0}</value></data>
+  <data name="Server_PortInUse_Format" xml:space="preserve"><value>Port {0} belegt</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Zugriff verweigert für Port {0} (als Admin ausführen)</value></data>
+  <data name="Server_FailedToStart" xml:space="preserve"><value>Start fehlgeschlagen</value></data>
+  <data name="Common_Idle" xml:space="preserve"><value>Leerlauf</value></data>
+  <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
+  <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
+  <data name="Common_Unknown" xml:space="preserve"><value>Unbekannt</value></data>
+  <data name="Common_Default" xml:space="preserve"><value>Standard</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Durchsuchen...</value></data>
+  <data name="Common_Proceed" xml:space="preserve"><value>Fortfahren</value></data>
+  <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Common_Record" xml:space="preserve"><value>Aufnehmen</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Aufnahme...</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>Leeren</value></data>
+  <data name="Common_None" xml:space="preserve"><value>Keine</value></data>
+  <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Unassigned" xml:space="preserve"><value>Nicht zugewiesen</value></data>
+  <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
+
+  <!-- ═══ Controller Types ═══ -->
+  <data name="ControllerType_Xbox360" xml:space="preserve"><value>Xbox 360</value></data>
+  <data name="ControllerType_DualShock4" xml:space="preserve"><value>DualShock 4</value></data>
+  <data name="ControllerType_DirectInput" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Tastatur + Maus</value></data>
+  <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+
+  <!-- ═══ MainWindow ═══ -->
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wird geschlossen...</value></data>
+  <data name="Main_ReleasingControllers" xml:space="preserve"><value>Virtuelle Controller werden freigegeben</value></data>
+  <data name="Main_PleaseWait" xml:space="preserve"><value>Bitte warten...</value></data>
+  <data name="Main_DevicesSuffix" xml:space="preserve"><value> Gerät(e)</value></data>
+  <data name="Main_AddController" xml:space="preserve"><value>Controller hinzufügen</value></data>
+  <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuellen Controller löschen</value></data>
+  <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge anzeigen</value></data>
+  <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtueller Controller {0}</value></data>
+  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus nicht installiert</value></data>
+  <data name="Main_EngineStopped" xml:space="preserve"><value>Engine angehalten</value></data>
+  <data name="Main_AwaitingControllers" xml:space="preserve"><value>Warte auf Controller</value></data>
+  <data name="Main_Active" xml:space="preserve"><value>Aktiv</value></data>
+  <data name="Main_Initializing" xml:space="preserve"><value>Initialisierung</value></data>
+  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput-Treiber nicht installiert</value></data>
+  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus nicht installiert)</value></data>
+  <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (max. {0})</value></data>
+  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4 (ViGEmBus nicht installiert)</value></data>
+  <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4 (max. {0})</value></data>
+  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput (Treiber nicht installiert)</value></data>
+  <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput (max. {0})</value></data>
+  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Tastatur + Maus (max. {0})</value></data>
+  <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (erfordert Windows MIDI Services)</value></data>
+  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max. {0})</value></data>
+
+  <!-- ═══ MainWindow Status Messages ═══ -->
+  <data name="Status_InstallingViGEm" xml:space="preserve"><value>ViGEmBus wird installiert…</value></data>
+  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>ViGEmBus wird deinstalliert…</value></data>
+  <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wird installiert…</value></data>
+  <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide wird deinstalliert…</value></data>
+  <data name="Status_InstallingVJoy" xml:space="preserve"><value>vJoy wird installiert…</value></data>
+  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>vJoy wird deinstalliert…</value></data>
+  <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services wird heruntergeladen…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services wird heruntergeladen und installiert…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wird deinstalliert…</value></data>
+  <data name="Status_OperationCancelled" xml:space="preserve"><value>Vorgang vom Benutzer abgebrochen.</value></data>
+  <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services-Installation fehlgeschlagen: {0}</value></data>
+  <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Geräteliste aktualisiert.</value></data>
+  <data name="Status_Recorded_Format" xml:space="preserve"><value>Aufgenommen „{0}" ← {1}</value></data>
+  <data name="Status_NowMap_Format" xml:space="preserve"><value>Jetzt zuordnen: {0} {1}</value></data>
+  <data name="Status_MapPrompt_Format" xml:space="preserve"><value>Zuordnung: {0} {1}  ({2}/{3})</value></data>
+  <data name="Status_DirectionRight" xml:space="preserve"><value>(→ rechts)</value></data>
+  <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ unten)</value></data>
+  <data name="Status_DirectionLeft" xml:space="preserve"><value>(← links)</value></data>
+  <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ oben)</value></data>
+  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>ViGEmBus erkannt — Engine neu gestartet.</value></data>
+  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>vJoy-Treiber erkannt — Engine neu gestartet.</value></data>
+  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>vJoy-Treiber installiert — Engine neu gestartet.</value></data>
+  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>vJoy-Treiber entfernt — Engine neu gestartet.</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NICHT GEFUNDEN</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nicht gefunden! Legen Sie SDL3.dll neben PadForge.exe ab. Download unter https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>ViGEmBus-Treiber nicht erkannt. Virtuelle Controller-Ausgabe deaktiviert.</value></data>
+  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>ViGEm-Prüfung fehlgeschlagen: {0}</value></data>
+  <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Treibervorgang fehlgeschlagen: {0}</value></data>
+  <data name="Status_SettingsCopied" xml:space="preserve"><value>Einstellungen in die Zwischenablage kopiert.</value></data>
+  <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Kopieren fehlgeschlagen: {0}</value></data>
+  <data name="Status_InvalidClipboard" xml:space="preserve"><value>Die Zwischenablage enthält keine gültigen PadForge-Einstellungen.</value></data>
+  <data name="Status_SettingsPasted" xml:space="preserve"><value>Einstellungen aus der Zwischenablage eingefügt.</value></data>
+  <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Einfügen fehlgeschlagen: {0}</value></data>
+  <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Kein Gerät zum Kopieren ausgewählt.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Keine weiteren konfigurierten Geräte zum Kopieren gefunden.</value></data>
+  <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Einstellungen vom ausgewählten Gerät kopiert.</value></data>
+  <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profil „{0}" erstellt (leer).</value></data>
+  <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profil „{0}" erstellt.</value></data>
+  <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profil „{0}" gelöscht.</value></data>
+  <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profil „{0}" aktualisiert.</value></data>
+  <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profil geladen: {0}</value></data>
+  <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profil auf Standard zurückgesetzt</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtueller Controller {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>„{0}" wurde Virtueller Controller {1} zugewiesen.</value></data>
+  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Nicht zugeordnet — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Fehler beim Laden der Einstellungen: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Einstellungen gespeichert in {0}.</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Fehler beim Speichern der Einstellungen: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>Einstellungen auf Standardwerte zurückgesetzt.</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>Einstellungen von Datenträger neu geladen.</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>Keine Einstellungsdatei auf dem Datenträger gefunden.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Kein Gerät zum Aufnehmen verbunden.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Aufnahme: Drücken Sie eine Taste oder bewegen Sie eine Achse für „{0}"...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Aufnahme abgebrochen.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Aufnahme für „{0}" abgelaufen.</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestartet.</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestoppt.</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>Keine Zuordnung</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>Fehler: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil gewechselt: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil gewechselt: Standard</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>Standard</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Kein Gerät ausgewählt.</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ungültiger Slot-Index: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Gerätezuweisung fehlgeschlagen.</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}" wurde Virtueller Controller {1} zugewiesen.</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}" wurde von Virtueller Controller {1} entfernt.</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>Gerät ausgeblendet. (Kann in der Einstellungsdatei wiederhergestellt werden.)</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>Gerät entfernt.</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtueller Controller {0} gelöscht.</value></data>
+
+  <!-- ═══ Dashboard ═══ -->
+  <data name="Dashboard_Title" xml:space="preserve"><value>Übersicht</value></data>
+  <data name="Dashboard_InputEngine" xml:space="preserve"><value>Eingabe-Engine</value></data>
+  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> Geräte online</value></data>
+  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuelle Controller</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value> zugeordnet, </value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value> verbunden</value></data>
+  <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegungsserver</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/cemuhook-Server für Gyro- und Beschleunigungssensordaten.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (cemuhook)</value></data>
+  <data name="Dashboard_Port" xml:space="preserve"><value>Port:</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyro-/Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>
+  <data name="Dashboard_WebController" xml:space="preserve"><value>Web-Controller</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Stellt eine Gamepad-Oberfläche für Browser in Ihrem lokalen Netzwerk bereit.</value></data>
+  <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web-Controller-Server aktivieren</value></data>
+  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbinden Sie sich von einem Telefon oder Tablet-Browser, um es als Gamepad zu verwenden.</value></data>
+  <data name="Dashboard_Drivers" xml:space="preserve"><value>Treiber</value></data>
+  <data name="Dashboard_NoDevice" xml:space="preserve"><value>Kein Gerät</value></data>
+
+  <!-- ═══ Settings ═══ -->
+  <data name="Settings_Title" xml:space="preserve"><value>Einstellungen</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>Erscheinungsbild</value></data>
+  <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Wählen Sie Ihr bevorzugtes visuelles Design.</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>Design</value></data>
+  <data name="Settings_ThemeSystem" xml:space="preserve"><value>Systemstandard</value></data>
+  <data name="Settings_ThemeLight" xml:space="preserve"><value>Hell</value></data>
+  <data name="Settings_ThemeDark" xml:space="preserve"><value>Dunkel</value></data>
+  <data name="Settings_InputEngine" xml:space="preserve"><value>Eingabe-Engine</value></data>
+  <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurieren Sie das Abfrageverhalten und die Hintergrundverarbeitung.</value></data>
+  <data name="Settings_AutoStart" xml:space="preserve"><value>Engine beim Start automatisch starten</value></data>
+  <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Abfrage fortsetzen, wenn das Fenster den Fokus verliert</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Abfrageintervall:</value></data>
+  <data name="Settings_HideDevices" xml:space="preserve"><value>Geräte vor Spielen verbergen</value></data>
+  <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hauptschalter für HidHide-Geräteverbergung und Low-Level-Eingabe-Hooks. Bei Deaktivierung werden keine Geräte verborgen, unabhängig von den Einzelgeräteeinstellungen.</value></data>
+  <data name="Settings_Window" xml:space="preserve"><value>Fenster</value></data>
+  <data name="Settings_WindowDesc" xml:space="preserve"><value>Start- und Minimierungsverhalten.</value></data>
+  <data name="Settings_MinimizeToTray" xml:space="preserve"><value>In den Infobereich minimieren</value></data>
+  <data name="Settings_StartMinimized" xml:space="preserve"><value>Minimiert starten</value></data>
+  <data name="Settings_StartAtLogin" xml:space="preserve"><value>Bei Anmeldung starten</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide-Treiber</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Physische Geräte vor Spielen verbergen, um doppelte Eingabe zu verhindern.</value></data>
+  <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Zugelassene Anwendungen</value></data>
+  <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Diese Anwendungen können verborgene Geräte weiterhin sehen. PadForge wird immer automatisch zugelassen.</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Hinzufügen...</value></data>
+  <data name="Settings_ViGEmBus" xml:space="preserve"><value>ViGEmBus-Treiber</value></data>
+  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>Virtueller Controller-Treiber für Xbox 360- und DualShock 4-Ausgabe.</value></data>
+  <data name="Settings_VJoy" xml:space="preserve"><value>vJoy-Treiber</value></data>
+  <data name="Settings_VJoyDesc" xml:space="preserve"><value>Virtueller Joystick-Treiber für benutzerdefinierte DirectInput-Geräteausgabe.</value></data>
+  <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-Laufzeit für virtuelle MIDI-Geräteausgabe. Wird von GitHub heruntergeladen (~210 MB).</value></data>
+  <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Erfordert Windows 11 24H2 (Build 26100) oder höher</value></data>
+  <data name="Settings_SettingsFile" xml:space="preserve"><value>Einstellungsdatei</value></data>
+  <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Konfiguration speichern, neu laden oder zurücksetzen.</value></data>
+  <data name="Settings_Reload" xml:space="preserve"><value>Neu laden</value></data>
+  <data name="Settings_ResetToDefaults" xml:space="preserve"><value>Auf Standardwerte zurücksetzen</value></data>
+  <data name="Settings_OpenFolder" xml:space="preserve"><value>Ordner öffnen</value></data>
+  <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Nicht gespeicherte Änderungen</value></data>
+  <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Anwendungs- und Laufzeitversionsinformationen.</value></data>
+  <data name="Settings_AppVersion" xml:space="preserve"><value>App-Version</value></data>
+  <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-Laufzeit</value></data>
+  <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-Version</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Sprache</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Wählen Sie Ihre bevorzugte Anzeigesprache. Erfordert einen Neustart.</value></data>
+  <data name="Settings_RestartRequired" xml:space="preserve"><value>Die Sprachänderung erfordert einen Neustart, um wirksam zu werden.</value></data>
+
+  <!-- ═══ About ═══ -->
+  <data name="About_Title" xml:space="preserve"><value>Über</value></data>
+  <data name="About_Subtitle" xml:space="preserve"><value>Controller-Zuordnungsprogramm</value></data>
+  <data name="About_Tagline" xml:space="preserve"><value>Moderner Fork von x360ce — neu entwickelt mit SDL3, WPF und .NET 10</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ordnet jeden Controller, jede Tastatur oder Maus virtuellen Xbox 360-, DualShock 4-, benutzerdefinierten DirectInput- oder MIDI-Controllern über ViGEmBus, vJoy und Windows MIDI Services zu. Es verwendet SDL3 für Controller-Eingabe, Windows Raw Input für Tastatur- und Mauseingabe und bietet eine moderne Fluent-Design-Oberfläche für Zuordnung, Totzonen-Konfiguration und Force-Feedback-Verwaltung.</value></data>
+  <data name="About_BuiltWith" xml:space="preserve"><value>Erstellt mit</value></data>
+  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Laufzeit und WPF-Framework</value></data>
+  <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-Eingabe und -Erkennung</value></data>
+  <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
+  <data name="About_RawInputDesc" xml:space="preserve"><value>Gerätespezifische Tastatur- und Mauseingabe</value></data>
+  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
+  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>Virtueller Controller-Treiber (Xbox 360, DualShock 4)</value></data>
+  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
+  <data name="About_VJoyDesc" xml:space="preserve"><value>Virtueller Joystick-Treiber für benutzerdefinierte DirectInput-Ausgabe</value></data>
+  <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuelle MIDI-Geräteausgabe (Windows MIDI Services)</value></data>
+  <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-Controller-Visualisierung</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent-Design-Thema für WPF</value></data>
+  <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm für Datenbindung</value></data>
+  <data name="About_License" xml:space="preserve"><value>Lizenz</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>Diese Software ist unter CC BY-NC-SA 4.0 (Creative Commons Namensnennung-Nicht kommerziell-Weitergabe unter gleichen Bedingungen 4.0 International) lizenziert. 3D-Controller-Modelle adaptiert von Handheld Companion (CC BY-NC-SA 4.0). 2D-Controller-Assets aus Gamepad-Asset-Pack von AL2009man (MIT). Ursprüngliche Codebasis geforkt von x360ce (MIT). SDL3 ist unter der zlib-Lizenz lizenziert. Windows MIDI Services ist unter der MIT-Lizenz lizenziert. ViGEmBus, vJoy, HelixToolkit und ModernWpf sind unter der MIT-Lizenz lizenziert.</value></data>
+
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>Lenkrad</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>Flugsteuerung</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>Ego-Perspektive</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>Zusatzgerät</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>Maus</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>Gerät</value></data>
+  <!-- ═══ Devices ═══ -->
+  <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Alle Tastaturen (zusammengeführt)</value></data>
+  <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Alle Mäuse (zusammengeführt)</value></data>
+  <data name="Devices_Title" xml:space="preserve"><value>Geräte</value></data>
+  <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
+  <data name="Devices_Total" xml:space="preserve"><value> gesamt</value></data>
+  <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dieses Gerät und seine Einstellungen entfernen</value></data>
+  <data name="Devices_Product" xml:space="preserve"><value>Produkt: </value></data>
+  <data name="Devices_Type" xml:space="preserve"><value>Typ: </value></data>
+  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_InstancePath" xml:space="preserve"><value>Instanzpfad: </value></data>
+  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
+  <data name="Devices_SubmitMapping" xml:space="preserve"><value>Gerätezuordnung einreichen</value></data>
+  <data name="Devices_VCAssignment" xml:space="preserve"><value>Virtuelle Controller-Zuweisung</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Zuweisung umschalten</value></data>
+  <data name="Devices_InputMode" xml:space="preserve"><value>Eingabemodus</value></data>
+  <data name="Devices_ForceRaw" xml:space="preserve"><value>Raw-Joystick-Modus erzwingen (Gamepad-Neuzuordnung umgehen)</value></data>
+  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Rohe HID-Indizes lesen anstatt SDLs Gamepad-Zuordnung — verwenden, wenn SDL das Button-/Achsen-Layout falsch erkennt</value></data>
+  <data name="Devices_InputHiding" xml:space="preserve"><value>Eingabeverbergung</value></data>
+  <data name="Devices_HideFromGames" xml:space="preserve"><value>Vor Spielen verbergen (HidHide)</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbirgt dieses Gerät vollständig vor anderen Anwendungen über den HidHide-Treiber</value></data>
+  <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installieren Sie den HidHide-Treiber, um diese Option zu aktivieren</value></data>
+  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Zugeordnete Eingaben verbrauchen (Hooks)</value></data>
+  <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Unterdrückt nur die spezifischen Tasten/Buttons, die zugeordnet sind, und lässt nicht zugeordnete Eingaben durch</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Roher Eingabezustand</value></data>
+  <data name="Devices_Axes" xml:space="preserve"><value>Achsen</value></data>
+  <data name="Devices_Buttons" xml:space="preserve"><value>Tasten</value></data>
+  <data name="Devices_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="Devices_Mouse" xml:space="preserve"><value>Maus</value></data>
+  <data name="Devices_DPadPOV" xml:space="preserve"><value>Steuerkreuz / POV</value></data>
+  <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
+  <data name="Devices_Gyroscope" xml:space="preserve"><value>Gyroskop</value></data>
+  <data name="Devices_Accelerometer" xml:space="preserve"><value>Beschleunigungssensor</value></data>
+  <data name="Devices_Axis_Format" xml:space="preserve"><value>Achse {0}</value></data>
+  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} Achsen, {1} Tasten, {2} POV(s)</value></data>
+  <data name="Devices_Rumble" xml:space="preserve"><value>Vibration</value></data>
+  <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Devices_Accel" xml:space="preserve"><value>Beschl.</value></data>
+  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Sie sind dabei, {0}. Dies betrifft {1}{2}.</value></data>
+  <data name="Devices_HideAction" xml:space="preserve"><value>dieses Gerät vor allen Anwendungen zu verbergen</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>zugeordnete Eingaben dieses Geräts zu blockieren</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> für alle angeschlossenen {0}-Geräte</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Wenn dies Ihr einziges {0}-Gerät ist, verlieren Sie die Möglichkeit, mit Ihrem System zu interagieren. Fahren Sie nur fort, wenn Sie ein anderes Eingabegerät haben.</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Wenn Sie systemkritische Eingaben zuweisen (z.B. Links-/Rechtsklick, X/Y-Bewegung), verlieren Sie möglicherweise die Kontrolle über Ihr System. Fahren Sie nur fort, wenn Sie ein anderes Eingabegerät haben.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Wenn Sie systemkritische Eingaben zuweisen (z.B. häufig verwendete Tasten), verlieren Sie möglicherweise die Kontrolle über Ihr System. Fahren Sie nur fort, wenn Sie ein anderes Eingabegerät haben.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>Dies wird {0}{1}.
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>Maus</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
+
+  <!-- ═══ Pad Page ═══ -->
+  <data name="Pad_Macros" xml:space="preserve"><value>Makros</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Zuordnungen</value></data>
+  <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Pad_Triggers" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
+  <data name="Pad_Preset" xml:space="preserve"><value>Voreinstellung</value></data>
+  <data name="Pad_Custom" xml:space="preserve"><value>Benutzerdefiniert</value></data>
+  <data name="Pad_VJoySticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POVs</value></data>
+  <data name="Pad_VJoyButtons" xml:space="preserve"><value>Tasten</value></data>
+  <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-Kanal (1-16)</value></data>
+  <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-Anzahl</value></data>
+  <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Anzahl der CC-Ausgänge (Maximum abhängig von Start-CC)</value></data>
+  <data name="Pad_MidiStartCC" xml:space="preserve"><value>Start-CC</value></data>
+  <data name="Pad_MidiStartCCTooltip" xml:space="preserve"><value>Erste CC-Nummer (0-127). Höhere Werte verringern die maximale CC-Anzahl.</value></data>
+  <data name="Pad_MidiNoteCount" xml:space="preserve"><value>Notenanzahl</value></data>
+  <data name="Pad_MidiNoteCountTooltip" xml:space="preserve"><value>Anzahl der Notenausgänge (Maximum abhängig von Startnote)</value></data>
+  <data name="Pad_MidiStartNote" xml:space="preserve"><value>Startnote</value></data>
+  <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>Erste MIDI-Notennummer (0-127, 60 = Mittleres C). Höhere Werte verringern die maximale Notenanzahl.</value></data>
+  <data name="Pad_MidiVelocity" xml:space="preserve"><value>Anschlagstärke</value></data>
+  <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Note-On-Anschlagstärke (0-127). Wie stark die virtuellen Tasten gedrückt werden.</value></data>
+  <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Zur 2D-Ansicht wechseln</value></data>
+  <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Zur 3D-Ansicht wechseln</value></data>
+  <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klicken, um den linken Motor zu testen</value></data>
+  <data name="Pad_LeftMotor" xml:space="preserve"><value>Linker Motor</value></data>
+  <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klicken, um den rechten Motor zu testen</value></data>
+  <data name="Pad_RightMotor" xml:space="preserve"><value>Rechter Motor</value></data>
+  <data name="Pad_MapAll" xml:space="preserve"><value>Alle zuordnen</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Zuordnen: {0}</value></data>
+  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Alle Zuordnungen nacheinander aufnehmen — drücken Sie eine Taste/Achse für jede Eingabeaufforderung</value></data>
+  <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle Zuordnungen nacheinander aufnehmen</value></data>
+  <data name="Pad_MappingHint" xml:space="preserve"><value>Klicken Sie auf eine Zuordnungszeile und drücken Sie eine Taste/Achse auf Ihrem Controller, um sie zuzuweisen.</value></data>
+  <data name="Pad_CopyTooltip" xml:space="preserve"><value>Alle Zuordnungen und Einstellungen in die Zwischenablage kopieren</value></data>
+  <data name="Pad_PasteTooltip" xml:space="preserve"><value>Zuordnungen und Einstellungen aus der Zwischenablage einfügen</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopieren von...</value></data>
+  <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Einstellungen von einem anderen konfigurierten Gerät kopieren</value></data>
+  <data name="Pad_ResetAll" xml:space="preserve"><value>Alles zurücksetzen</value></data>
+  <data name="Pad_ClearAll" xml:space="preserve"><value>Alles leeren</value></data>
+  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Ausgabe</value></data>
+  <data name="Pad_HeaderSource" xml:space="preserve"><value>Quelle</value></data>
+  <data name="Pad_HeaderValue" xml:space="preserve"><value>Wert</value></data>
+  <data name="Pad_HeaderOptions" xml:space="preserve"><value>Optionen</value></data>
+  <data name="Pad_Invert" xml:space="preserve"><value>Invertieren</value></data>
+  <data name="Pad_Half" xml:space="preserve"><value>Halb</value></data>
+  <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>
+  <data name="Curve_Smooth" xml:space="preserve"><value>Weich</value></data>
+  <data name="Curve_Aggressive" xml:space="preserve"><value>Aggressiv</value></data>
+  <data name="Curve_Instant" xml:space="preserve"><value>Sofort</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>S-Kurve</value></data>
+  <data name="Curve_Delay" xml:space="preserve"><value>Verzögert</value></data>
+  <data name="Curve_Custom" xml:space="preserve"><value>Benutzerdefiniert</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Mitte kalibrieren</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Abtastung...</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Mittenversatz X:</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Mittenversatz Y:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Totzonenform:</value></data>
+  <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Skaliert radial</value></data>
+  <data name="Pad_DZRadial" xml:space="preserve"><value>Radial</value></data>
+  <data name="Pad_DZAxial" xml:space="preserve"><value>Axial</value></data>
+  <data name="Pad_DZHybrid" xml:space="preserve"><value>Hybrid</value></data>
+  <data name="Pad_DZSlopedScaledAxial" xml:space="preserve"><value>Geneigt skaliert axial</value></data>
+  <data name="Pad_DZSlopedAxial" xml:space="preserve"><value>Geneigt axial</value></data>
+  <data name="Pad_MouseMovement" xml:space="preserve"><value>Mausbewegung</value></data>
+  <data name="Pad_ScrollUp" xml:space="preserve"><value>Hoch</value></data>
+  <data name="Pad_ScrollDown" xml:space="preserve"><value>Runter</value></data>
+
+  <!-- ═══ Macros ═══ -->
+  <data name="Macro_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Macro_Trigger" xml:space="preserve"><value>Auslöser</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>Auslösen:</value></data>
+  <data name="Macro_OnPress" xml:space="preserve"><value>Beim Drücken</value></data>
+  <data name="Macro_OnRelease" xml:space="preserve"><value>Beim Loslassen</value></data>
+  <data name="Macro_WhileHeld" xml:space="preserve"><value>Während gehalten</value></data>
+  <data name="Macro_Always" xml:space="preserve"><value>Immer</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>Quelle:</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Eingabegerät</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Ausgabe-Controller</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>Schwellenwert:</value></data>
+  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Auslöser-Tasten verbrauchen (vor Spiel verbergen)</value></data>
+  <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Läuft kontinuierlich, solange dieser virtuelle Controller aktiv ist. Keine Auslöser-Taste erforderlich.</value></data>
+  <data name="Macro_ActionSequence" xml:space="preserve"><value>Aktionssequenz</value></data>
+  <data name="Macro_AddAction" xml:space="preserve"><value>Aktion hinzufügen</value></data>
+  <data name="Macro_EditAction" xml:space="preserve"><value>Aktion bearbeiten</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>Typ:</value></data>
+  <data name="Macro_ButtonPress" xml:space="preserve"><value>Taste drücken</value></data>
+  <data name="Macro_ButtonRelease" xml:space="preserve"><value>Taste loslassen</value></data>
+  <data name="Macro_KeyPress" xml:space="preserve"><value>Taste drücken</value></data>
+  <data name="Macro_KeyRelease" xml:space="preserve"><value>Taste loslassen</value></data>
+  <data name="Macro_Delay" xml:space="preserve"><value>Verzögerung</value></data>
+  <data name="Macro_SetAxis" xml:space="preserve"><value>Achse setzen</value></data>
+  <data name="Macro_SystemVolume" xml:space="preserve"><value>Systemlautstärke</value></data>
+  <data name="Macro_AppVolume" xml:space="preserve"><value>App-Lautstärke</value></data>
+  <data name="Macro_MouseMove" xml:space="preserve"><value>Mausbewegung</value></data>
+  <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Maustaste drücken</value></data>
+  <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Maustaste loslassen</value></data>
+  <data name="Macro_MouseScroll" xml:space="preserve"><value>Maus-Scrollen</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>Tasten:</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>Tastenkombination:</value></data>
+  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Tastenkombination im Format {Taste1}{Taste2} — bearbeitbar</value></data>
+  <data name="Macro_KeyComboHint" xml:space="preserve"><value>Wählen Sie eine Taste aus, um sie hinzuzufügen. Beispiel: {Control}{Alt}{Delete}</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>Dauer:</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>Achse:</value></data>
+  <data name="Macro_LeftStickX" xml:space="preserve"><value>Linker Stick X</value></data>
+  <data name="Macro_LeftStickY" xml:space="preserve"><value>Linker Stick Y</value></data>
+  <data name="Macro_RightStickX" xml:space="preserve"><value>Rechter Stick X</value></data>
+  <data name="Macro_RightStickY" xml:space="preserve"><value>Rechter Stick Y</value></data>
+  <data name="Macro_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Macro_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>Wert:</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>Achse von:</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>Quellachse:</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>Gerät:</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>Lautstärkegrenze:</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>Prozess:</value></data>
+  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Prozessname ohne .exe — Dropdown zeigt Prozesse mit aktiven Audiositzungen</value></data>
+  <data name="Macro_MouseLeft" xml:space="preserve"><value>Links</value></data>
+  <data name="Macro_MouseRight" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Macro_MouseMiddle" xml:space="preserve"><value>Mitte</value></data>
+  <data name="Macro_MouseX1" xml:space="preserve"><value>X1 (Zurück)</value></data>
+  <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (Vorwärts)</value></data>
+  <data name="Macro_Repeat" xml:space="preserve"><value>Wiederholen</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>Modus:</value></data>
+  <data name="Macro_Once" xml:space="preserve"><value>Einmal</value></data>
+  <data name="Macro_FixedCount" xml:space="preserve"><value>Feste Anzahl</value></data>
+  <data name="Macro_UntilRelease" xml:space="preserve"><value>Bis zum Loslassen</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>Anzahl:</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Verzögerung (ms):</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>Empfindlichkeit:</value></data>
+  <data name="Macro_NewMacro" xml:space="preserve"><value>Neues Makro</value></data>
+  <data name="Macro_RecordTrigger" xml:space="preserve"><value>Auslöser aufnehmen</value></data>
+  <data name="Macro_NotSet" xml:space="preserve"><value>Nicht festgelegt — klicken Sie auf Aufnehmen</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="Macro_None" xml:space="preserve"><value>(keine)</value></data>
+  <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Geräteachse {0}</value></data>
+  <data name="Macro_UnknownAction" xml:space="preserve"><value>Unbekannte Aktion</value></data>
+  <data name="Macro_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Macro_Button_Format" xml:space="preserve"><value>Taste {0}</value></data>
+
+  <!-- ═══ Macro Action Display ═══ -->
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} drücken für {1}ms</value></data>
+  <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} loslassen</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tasten {0} für {1}ms</value></data>
+  <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Tasten {0} loslassen</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms warten</value></data>
+  <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} setzen</value></data>
+  <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Systemlautstärke ← {0}</value></data>
+  <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Systemlautstärke ← {0} (max. {1}%)</value></data>
+  <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>App-Lautstärke ← {0}</value></data>
+  <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>App-Lautstärke ← {0} (max. {1}%)</value></data>
+  <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Mausbewegung ← {0} (Geschwindigkeit {1:F0})</value></data>
+  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Maus bewegen um {0} (max. {1}px)</value></data>
+  <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Maus-Scrollen ← {0} (Geschwindigkeit {1:F0})</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen um {0} (max. {1} Einheiten)</value></data>
+  <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Maustaste drücken {0}</value></data>
+  <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Maustaste loslassen {0}</value></data>
+
+  <!-- ═══ POV Directions ═══ -->
+  <data name="POV_Centered" xml:space="preserve"><value>Zentriert</value></data>
+  <data name="POV_Up" xml:space="preserve"><value>Oben</value></data>
+  <data name="POV_UpRight" xml:space="preserve"><value>Oben-Rechts</value></data>
+  <data name="POV_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="POV_DownRight" xml:space="preserve"><value>Unten-Rechts</value></data>
+  <data name="POV_Down" xml:space="preserve"><value>Unten</value></data>
+  <data name="POV_DownLeft" xml:space="preserve"><value>Unten-Links</value></data>
+  <data name="POV_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="POV_UpLeft" xml:space="preserve"><value>Oben-Links</value></data>
+
+  <!-- ═══ Mapping ═══ -->
+  <data name="Mapping_NotMapped" xml:space="preserve"><value>Nicht zugeordnet</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Half" xml:space="preserve"><value>Halb</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Halb</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Kein Gerät zugeordnet</value></data>
+
+  <!-- ═══ Profiles ═══ -->
+  <data name="Profiles_Title" xml:space="preserve"><value>Profile</value></data>
+  <data name="Profiles_Management" xml:space="preserve"><value>Profilverwaltung</value></data>
+  <data name="Profiles_Description" xml:space="preserve"><value>Erstellen Sie anwendungsspezifische Controller-Profile, die automatisch basierend auf dem aktiven Spiel wechseln.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Profile automatisch basierend auf der Vordergrundanwendung wechseln</value></data>
+  <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktives Profil:</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Keine Slots</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Neu</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Speichern als</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Bearbeiten</value></data>
+  <data name="Profiles_Load" xml:space="preserve"><value>Laden</value></data>
+
+  <!-- ═══ Profile Dialog ═══ -->
+  <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Als Profil speichern</value></data>
+  <data name="ProfileDialog_Edit" xml:space="preserve"><value>Profil bearbeiten</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Profilname:</value></data>
+  <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Neues Profil</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Ausführbare Dateien (Abgleich mit Vordergrundfenster):</value></data>
+
+  <!-- ═══ CopyFrom Dialog ═══ -->
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Einstellungen kopieren von...</value></data>
+  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Wählen Sie ein Gerät aus, von dem die Einstellungen kopiert werden sollen:</value></data>
+
+  <!-- ═══ File Dialogs ═══ -->
+  <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Anwendung für die Zulassungsliste auswählen</value></data>
+  <data name="FileDialog_SelectGameExe" xml:space="preserve"><value>Ausführbare Spieldatei auswählen</value></data>
+  <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Ausführbare Dateien (*.exe)|*.exe|Alle Dateien (*.*)|*.*</value></data>
+
+  <!-- ═══ App-Level Messages ═══ -->
+  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge wird bereits ausgeführt.</value></data>
+  <data name="App_FatalError" xml:space="preserve"><value>PadForge — Schwerwiegender Fehler</value></data>
+  <data name="App_Error" xml:space="preserve"><value>PadForge — Fehler</value></data>
+  <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ein unerwarteter Fehler ist aufgetreten:\n\n{0}\n\n{1}</value></data>
+  <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} weitere(r) Fehler unterdrückt)</value></data>
+
+  <!-- ═══ Polling Frequency ═══ -->
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+
+  <!-- ═══ Preview Views ═══ -->
+  <data name="Preview_CCOutputs" xml:space="preserve"><value>CC-Ausgänge</value></data>
+  <data name="Preview_NoteOutputs" xml:space="preserve"><value>Notenausgänge</value></data>
+  <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
+  <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dead Zone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dead Zone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y:</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>Linear:</value></data>
+  <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Empfindlichkeitskurven</value></data>
+  <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Doppelklick zum Hinzufügen. Rechtsklick zum Entfernen. Ziehen zum Anpassen.</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>Empfindlichkeit X:</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>Empfindlichkeit Y:</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>Min. Bereich X (Links):</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>Max. Bereich X (Rechts):</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. Bereich Y (Unten):</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max. Bereich Y (Oben):</value></data>
+  <data name="Pad_XAxis" xml:space="preserve"><value>X-Achse</value></data>
+  <data name="Pad_YAxis" xml:space="preserve"><value>Y-Achse</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>Bereich:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone:</value></data>
+  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Empfindlichkeitskurve</value></data>
+  <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Doppelklick zum Hinzufügen. Rechtsklick zum Entfernen. Ziehen zum Anpassen.</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>Vorlage:</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>Live:</value></data>
+  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger-Achse</value></data>
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Vibration</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>Gesamtverstärkung:</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linker Motor:</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Rechter Motor:</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Linken/rechten Motor tauschen</value></data>
+  <data name="Pad_TestRumble" xml:space="preserve"><value>Vibration testen</value></data>
+  <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivität</value></data>
+  <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Mittenversatz X zurücksetzen</value></data>
+  <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Mittenversatz Y zurücksetzen</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Auf Skaliert Radial zurücksetzen</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Dead Zone X zurücksetzen</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Dead Zone Y zurücksetzen</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X zurücksetzen</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y zurücksetzen</value></data>
+  <data name="Pad_ResetLinear" xml:space="preserve"><value>Linear zurücksetzen</value></data>
+  <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Empfindlichkeit X zurücksetzen</value></data>
+  <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Empfindlichkeit Y zurücksetzen</value></data>
+  <data name="Pad_ResetMinRangeX" xml:space="preserve"><value>Min. Bereich X zurücksetzen</value></data>
+  <data name="Pad_ResetMaxRangeX" xml:space="preserve"><value>Max. Bereich X zurücksetzen</value></data>
+  <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Min. Bereich Y zurücksetzen</value></data>
+  <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Max. Bereich Y zurücksetzen</value></data>
+  <data name="Pad_ResetRange" xml:space="preserve"><value>Bereich zurücksetzen</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone zurücksetzen</value></data>
+  <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
+  <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Gesamtverstärkung zurücksetzen</value></data>
+  <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linken Motor zurücksetzen</value></data>
+  <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Rechten Motor zurücksetzen</value></data>
+  <data name="Pad_ResetView" xml:space="preserve"><value>Ansicht zurücksetzen</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>Tasten drücken oder Achse/Trigger bewegen zum Aufnehmen. Achsen werden erkannt, wenn sie über 50 % ausgelenkt sind.</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Ordnet die gewählte Achse (0–100 %) kontinuierlich der Windows-Systemlautstärke zu, skaliert auf das Lautstärkelimit. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Steuert die Lautstärke einer bestimmten Anwendung im Windows-Lautstärkemixer, skaliert auf das Lautstärkelimit. Prozessnamen eingeben (sichtbar im Task-Manager). Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Ordnet die gewählte Achse kontinuierlich der Mausbewegung (oder dem Scrollen) zu. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden. Für Stick-zu-Maus zwei Aktionen erstellen: eine für X-Achse, eine für Y-Achse.</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>Linke Schultertaste</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>Rechte Schultertaste</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>Zurück</value></data>
+  <data name="Btn_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
+  <data name="Btn_LeftStickButton" xml:space="preserve"><value>Linker Stick-Taste</value></data>
+  <data name="Btn_RightStickButton" xml:space="preserve"><value>Rechter Stick-Taste</value></data>
+  <data name="Btn_DPadUp" xml:space="preserve"><value>Steuerkreuz Oben</value></data>
+  <data name="Btn_DPadDown" xml:space="preserve"><value>Steuerkreuz Unten</value></data>
+  <data name="Btn_DPadLeft" xml:space="preserve"><value>Steuerkreuz Links</value></data>
+  <data name="Btn_DPadRight" xml:space="preserve"><value>Steuerkreuz Rechts</value></data>
+  <data name="Btn_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Btn_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Linker Thumbstick</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Rechter Thumbstick</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>Scrollrad</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
+  <data name="Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
+  <data name="Btn_LeftStickX" xml:space="preserve"><value>Linker Stick X</value></data>
+  <data name="Btn_LeftStickY" xml:space="preserve"><value>Linker Stick Y</value></data>
+  <data name="Btn_RightStickX" xml:space="preserve"><value>Rechter Stick X</value></data>
+  <data name="Btn_RightStickY" xml:space="preserve"><value>Rechter Stick Y</value></data>
+  <data name="Btn_Up" xml:space="preserve"><value>Oben</value></data>
+  <data name="Btn_Down" xml:space="preserve"><value>Unten</value></data>
+  <data name="Btn_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Btn_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Btn_Cross" xml:space="preserve"><value>Kreuz</value></data>
+  <data name="Btn_Circle" xml:space="preserve"><value>Kreis</value></data>
+  <data name="Btn_Square" xml:space="preserve"><value>Quadrat</value></data>
+  <data name="Btn_Triangle" xml:space="preserve"><value>Dreieck</value></data>
+  <data name="Btn_L1" xml:space="preserve"><value>L1</value></data>
+  <data name="Btn_R1" xml:space="preserve"><value>R1</value></data>
+  <data name="Btn_L3" xml:space="preserve"><value>L3</value></data>
+  <data name="Btn_R3" xml:space="preserve"><value>R3</value></data>
+  <data name="Btn_Share" xml:space="preserve"><value>Teilen</value></data>
+  <data name="Btn_Options" xml:space="preserve"><value>Optionen</value></data>
+  <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <!-- Mouse VK buttons -->
+  <data name="Key_LButton" xml:space="preserve"><value>Linke Maustaste</value></data>
+  <data name="Key_RButton" xml:space="preserve"><value>Rechte Maustaste</value></data>
+  <data name="Key_Cancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="Key_MButton" xml:space="preserve"><value>Mittlere Maustaste</value></data>
+  <data name="Key_XButton1" xml:space="preserve"><value>X1-Maustaste</value></data>
+  <data name="Key_XButton2" xml:space="preserve"><value>X2-Maustaste</value></data>
+  <!-- Common keys -->
+  <data name="Key_Backspace" xml:space="preserve"><value>Rücktaste</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Clear" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Eingabe</value></data>
+  <data name="Key_Shift" xml:space="preserve"><value>Umschalt</value></data>
+  <data name="Key_Control" xml:space="preserve"><value>Strg</value></data>
+  <data name="Key_Alt" xml:space="preserve"><value>Alt</value></data>
+  <data name="Key_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Key_CapsLock" xml:space="preserve"><value>Feststelltaste</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Esc</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Leertaste</value></data>
+  <!-- Navigation -->
+  <data name="Key_PageUp" xml:space="preserve"><value>Bild auf</value></data>
+  <data name="Key_PageDown" xml:space="preserve"><value>Bild ab</value></data>
+  <data name="Key_End" xml:space="preserve"><value>Ende</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Pos1</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>Pfeil links</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>Pfeil oben</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>Pfeil rechts</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>Pfeil unten</value></data>
+  <data name="Key_Select" xml:space="preserve"><value>Auswählen</value></data>
+  <data name="Key_Print" xml:space="preserve"><value>Drucken</value></data>
+  <data name="Key_Execute" xml:space="preserve"><value>Ausführen</value></data>
+  <data name="Key_PrintScreen" xml:space="preserve"><value>Druck</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Einfg</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Entf</value></data>
+  <data name="Key_Help" xml:space="preserve"><value>Hilfe</value></data>
+  <!-- Windows keys -->
+  <data name="Key_LWin" xml:space="preserve"><value>Linke Windows-Taste</value></data>
+  <data name="Key_RWin" xml:space="preserve"><value>Rechte Windows-Taste</value></data>
+  <data name="Key_Apps" xml:space="preserve"><value>Anwendungen</value></data>
+  <data name="Key_Sleep" xml:space="preserve"><value>Ruhezustand</value></data>
+  <!-- Numpad -->
+  <data name="Key_Numpad" xml:space="preserve"><value>Zehnertastatur</value></data>
+  <data name="Key_Separator" xml:space="preserve"><value>Trennzeichen</value></data>
+  <!-- Lock keys -->
+  <data name="Key_NumLock" xml:space="preserve"><value>Num</value></data>
+  <data name="Key_ScrollLock" xml:space="preserve"><value>Rollen</value></data>
+  <!-- Left/Right modifiers -->
+  <data name="Key_LeftShift" xml:space="preserve"><value>Linke Umschalt</value></data>
+  <data name="Key_RightShift" xml:space="preserve"><value>Rechte Umschalt</value></data>
+  <data name="Key_LeftCtrl" xml:space="preserve"><value>Linke Strg</value></data>
+  <data name="Key_RightCtrl" xml:space="preserve"><value>Rechte Strg</value></data>
+  <data name="Key_LeftAlt" xml:space="preserve"><value>Linke Alt</value></data>
+  <data name="Key_RightAlt" xml:space="preserve"><value>Rechte Alt</value></data>
+  <!-- Browser keys -->
+  <data name="Key_BrowserBack" xml:space="preserve"><value>Browser Zurück</value></data>
+  <data name="Key_BrowserForward" xml:space="preserve"><value>Browser Vorwärts</value></data>
+  <data name="Key_BrowserRefresh" xml:space="preserve"><value>Browser Aktualisieren</value></data>
+  <data name="Key_BrowserStop" xml:space="preserve"><value>Browser Stopp</value></data>
+  <data name="Key_BrowserSearch" xml:space="preserve"><value>Browser Suche</value></data>
+  <data name="Key_BrowserFavorites" xml:space="preserve"><value>Browser Favoriten</value></data>
+  <data name="Key_BrowserHome" xml:space="preserve"><value>Browser Startseite</value></data>
+  <!-- Media keys -->
+  <data name="Key_VolumeMute" xml:space="preserve"><value>Ton aus</value></data>
+  <data name="Key_VolumeDown" xml:space="preserve"><value>Leiser</value></data>
+  <data name="Key_VolumeUp" xml:space="preserve"><value>Lauter</value></data>
+  <data name="Key_MediaNext" xml:space="preserve"><value>Nächster Titel</value></data>
+  <data name="Key_MediaPrev" xml:space="preserve"><value>Vorheriger Titel</value></data>
+  <data name="Key_MediaStop" xml:space="preserve"><value>Medien Stopp</value></data>
+  <data name="Key_MediaPlayPause" xml:space="preserve"><value>Wiedergabe/Pause</value></data>
+  <data name="Key_LaunchMail" xml:space="preserve"><value>E-Mail starten</value></data>
+  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>Medien auswählen</value></data>
+  <data name="Key_LaunchApp1" xml:space="preserve"><value>Anwendung 1 starten</value></data>
+  <data name="Key_LaunchApp2" xml:space="preserve"><value>Anwendung 2 starten</value></data>
+  <data name="Mouse_LeftClick" xml:space="preserve"><value>Linksklick</value></data>
+  <data name="Mouse_RightClick" xml:space="preserve"><value>Rechtsklick</value></data>
+  <data name="Mouse_MiddleClick" xml:space="preserve"><value>Mittelklick</value></data>
+  <data name="Mouse_Button4" xml:space="preserve"><value>Maus 4</value></data>
+  <data name="Mouse_Button5" xml:space="preserve"><value>Maus 5</value></data>
+  <data name="Mouse_X" xml:space="preserve"><value>Maus X</value></data>
+  <data name="Mouse_Y" xml:space="preserve"><value>Maus Y</value></data>
+  <data name="Mouse_Scroll" xml:space="preserve"><value>Scrollen</value></data>
+  <data name="VJoy_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
+  <data name="VJoy_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
+  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
+  <data name="VJoy_Button_Format" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="VJoy_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
+  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="MacroAxis_XAxis" xml:space="preserve"><value>Linker Stick X</value></data>
+  <data name="MacroAxis_YAxis" xml:space="preserve"><value>Linker Stick Y</value></data>
+  <data name="MacroAxis_XRotation" xml:space="preserve"><value>Rechter Stick X</value></data>
+  <data name="MacroAxis_YRotation" xml:space="preserve"><value>Rechter Stick Y</value></data>
+  <data name="MacroAxis_ZAxis" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="DevObj_LeftStickX" xml:space="preserve"><value>Linker Stick X</value></data>
+  <data name="DevObj_LeftStickY" xml:space="preserve"><value>Linker Stick Y</value></data>
+  <data name="DevObj_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="DevObj_RightStickX" xml:space="preserve"><value>Rechter Stick X</value></data>
+  <data name="DevObj_RightStickY" xml:space="preserve"><value>Rechter Stick Y</value></data>
+  <data name="DevObj_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
+  <data name="DevObj_Back" xml:space="preserve"><value>Zurück</value></data>
+  <data name="DevObj_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>
+  <data name="DevObj_XAxis" xml:space="preserve"><value>X-Achse</value></data>
+  <data name="DevObj_YAxis" xml:space="preserve"><value>Y-Achse</value></data>
+  <data name="DevObj_ZAxis" xml:space="preserve"><value>Z-Achse</value></data>
+  <data name="DevObj_XRotation" xml:space="preserve"><value>X-Rotation</value></data>
+  <data name="DevObj_YRotation" xml:space="preserve"><value>Y-Rotation</value></data>
+  <data name="DevObj_ZRotation" xml:space="preserve"><value>Z-Rotation</value></data>
+  <data name="DevObj_Slider" xml:space="preserve"><value>Schieberegler {0}</value></data>
+  <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
+  <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="DevObj_Button" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Linke Schultertaste</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>Rechte Schultertaste</value></data>
+  <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Linker Stick-Taste</value></data>
+  <data name="DevObj_RightStickButton" xml:space="preserve"><value>Rechter Stick-Taste</value></data>
+
+</root>

@@ -17,8 +17,14 @@ namespace PadForge.ViewModels
     /// </summary>
     public class StickConfigItem : ObservableObject
     {
-        public static string[] CurvePresetNames { get; } =
-            [.. Array.ConvertAll(Common.CurveLut.Presets, p => p.Name), "Custom"];
+        public static string[] CurvePresetNames { get; private set; } =
+            Common.CurveLut.BuildPresetDisplayNames();
+
+        static StickConfigItem()
+        {
+            Resources.Strings.Strings.CultureChanged += () =>
+                CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
+        }
 
         public string PresetNameX => Common.CurveLut.MatchPreset(SensitivityCurveX);
         public string PresetNameY => Common.CurveLut.MatchPreset(SensitivityCurveY);

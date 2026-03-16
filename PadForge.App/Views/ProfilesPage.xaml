@@ -1,7 +1,8 @@
 <UserControl x:Class="PadForge.Views.ProfilesPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ui="http://schemas.modernwpf.com/2019">
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
 
     <ScrollViewer Padding="24,16">
         <StackPanel>
@@ -9,7 +10,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="Profiles" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Profiles_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
@@ -17,15 +18,15 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="Profile Management" Style="{StaticResource CardTitle}"/>
+                        <TextBlock Text="{Binding Profiles_Management, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>
-                    <TextBlock Text="Create per-application controller profiles that auto-switch based on the active game."
+                    <TextBlock Text="{Binding Profiles_Description, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="Auto-switch profiles based on foreground application"
+                    <CheckBox Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Active profile:" VerticalAlignment="Center"
+                        <TextBlock Text="{Binding Profiles_ActiveProfile, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
@@ -169,13 +170,13 @@
                                                 <Style TargetType="Border">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding TopologyLabel}" Value="No slots">
+                                                        <DataTrigger Binding="{Binding HasNoSlots}" Value="True">
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
-                                            <TextBlock Text="No slots" FontSize="10" Opacity="0.55"/>
+                                            <TextBlock Text="{Binding Profiles_NoSlots, Source={x:Static strings:Strings.Instance}}" FontSize="10" Opacity="0.55"/>
                                         </Border>
                                     </StackPanel>
                                 </StackPanel>
@@ -184,19 +185,19 @@
                     </ListBox>
 
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="New"
+                        <Button Content="{Binding Profiles_New, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding NewProfileCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="Save As"
+                        <Button Content="{Binding Profiles_SaveAs, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding SaveAsProfileCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="Edit"
+                        <Button Content="{Binding Profiles_Edit, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding EditProfileCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="Load"
+                        <Button Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding LoadProfileCommand}"
                                 Margin="0,0,8,0"/>
-                        <Button Content="Delete"
+                        <Button Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding DeleteProfileCommand}"/>
                     </StackPanel>
                 </StackPanel>

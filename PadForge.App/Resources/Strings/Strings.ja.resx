@@ -177,6 +177,30 @@
   <data name="Status_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0} — {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>未マッピング — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>設定の読み込みエラー: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>設定を {0} に保存しました。</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>設定の保存エラー: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>設定を初期値にリセットしました。</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>設定をディスクから再読み込みしました。</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>ディスクに設定ファイルが見つかりません。</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>記録するデバイスが接続されていません。</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>記録中: 「{0}」のボタンを押すか軸を動かしてください...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>記録がキャンセルされました。</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>「{0}」の記録がタイムアウトしました。</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>エンジンが開始されました。</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>エンジンが停止されました。</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>マッピングなし</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>エラー: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} から解除しました。</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>デバイスを非表示にしました。（設定ファイルで復元できます。）</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>デバイスを削除しました。</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>仮想コントローラー {0} を削除しました。</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>ダッシュボード</value></data>

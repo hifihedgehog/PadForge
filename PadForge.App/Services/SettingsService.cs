@@ -216,7 +216,7 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
-                _mainVm.StatusText = $"Error loading settings: {ex.Message}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
             }
         }
 
@@ -919,11 +919,11 @@ namespace PadForge.Services
 
                 IsDirty = false;
                 _mainVm.Settings.HasUnsavedChanges = false;
-                _mainVm.StatusText = $"Settings saved to {Path.GetFileName(filePath)}.";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_SettingsSaved_Format, Path.GetFileName(filePath));
             }
             catch (Exception ex)
             {
-                _mainVm.StatusText = $"Error saving settings: {ex.Message}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorSavingSettings_Format, ex.Message);
             }
         }
 
@@ -1324,7 +1324,7 @@ namespace PadForge.Services
 
             IsDirty = true;
             settingsVm.HasUnsavedChanges = true;
-            _mainVm.StatusText = "Settings reset to defaults.";
+            _mainVm.StatusText = Strings.Instance.Status_SettingsResetDefaults;
         }
 
         // ─────────────────────────────────────────────
@@ -1339,11 +1339,11 @@ namespace PadForge.Services
             if (File.Exists(_settingsFilePath))
             {
                 LoadFromFile(_settingsFilePath);
-                _mainVm.StatusText = "Settings reloaded from disk.";
+                _mainVm.StatusText = Strings.Instance.Status_SettingsReloaded;
             }
             else
             {
-                _mainVm.StatusText = "No settings file found on disk.";
+                _mainVm.StatusText = Strings.Instance.Status_NoSettingsFile;
             }
 
             IsDirty = false;

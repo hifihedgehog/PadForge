@@ -611,6 +611,11 @@
   <data name="Btn_DPadRight" xml:space="preserve"><value>Cruceta Derecha</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Joystick izquierdo</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Joystick derecho</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>Rueda de desplazamiento</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>Palanca {0}</value></data>
+  <data name="Trigger_Format" xml:space="preserve"><value>Gatillo {0}</value></data>
   <data name="Btn_LeftStickX" xml:space="preserve"><value>Palanca izquierda X</value></data>
   <data name="Btn_LeftStickY" xml:space="preserve"><value>Palanca izquierda Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>Palanca derecha X</value></data>

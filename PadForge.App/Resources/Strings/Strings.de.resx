@@ -611,6 +611,11 @@
   <data name="Btn_DPadRight" xml:space="preserve"><value>Steuerkreuz Rechts</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Linker Thumbstick</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Rechter Thumbstick</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>Scrollrad</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
+  <data name="Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Btn_LeftStickX" xml:space="preserve"><value>Linker Stick X</value></data>
   <data name="Btn_LeftStickY" xml:space="preserve"><value>Linker Stick Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>Rechter Stick X</value></data>

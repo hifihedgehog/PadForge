@@ -474,7 +474,7 @@
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>마우스 이동 ← {0} (속도 {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>마우스 {0} 이동 (최대 {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>마우스 스크롤 ← {0} (속도 {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} 스크롤 (최대 {1}단위)</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} 스크롤 (최대 {1} 단위)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>마우스 {0} 누르기</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>마우스 {0} 놓기</value></data>
 

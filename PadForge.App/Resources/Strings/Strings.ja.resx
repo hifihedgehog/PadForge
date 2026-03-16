@@ -374,7 +374,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ソース</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>値</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>オプション</value></data>
-  <data name="Pad_Inv" xml:space="preserve"><value>反転</value></data>
+  <data name="Pad_Invert" xml:space="preserve"><value>反転</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>半分</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y:</value></data>

@@ -1070,7 +1070,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis options -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="200">
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="220">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -1117,11 +1117,11 @@
                                                     Padding="8,4" HorizontalAlignment="Left">
                                                 <Button.Style>
                                                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                                        <Setter Property="Content" Value="Calibrate Center"/>
+                                                        <Setter Property="Content" Value="{Binding Pad_CalibrateCenter, Source={x:Static strings:Strings.Instance}}"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsCalibrating}" Value="True">
                                                                 <Setter Property="IsEnabled" Value="False"/>
-                                                                <Setter Property="Content" Value="Sampling..."/>
+                                                                <Setter Property="Content" Value="{Binding Pad_Sampling, Source={x:Static strings:Strings.Instance}}"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>

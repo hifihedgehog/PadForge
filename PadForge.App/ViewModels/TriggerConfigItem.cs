@@ -14,8 +14,14 @@ namespace PadForge.ViewModels
     /// </summary>
     public class TriggerConfigItem : ObservableObject
     {
-        public static string[] CurvePresetNames { get; } =
-            [.. Array.ConvertAll(Common.CurveLut.Presets, p => p.Name), "Custom"];
+        public static string[] CurvePresetNames { get; private set; } =
+            Common.CurveLut.BuildPresetDisplayNames();
+
+        static TriggerConfigItem()
+        {
+            Resources.Strings.Strings.CultureChanged += () =>
+                CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
+        }
 
         public string PresetName => Common.CurveLut.MatchPreset(SensitivityCurve);
 

@@ -374,7 +374,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Source</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valeur</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Options</value></data>
-  <data name="Pad_Inv" xml:space="preserve"><value>Inv</value></data>
+  <data name="Pad_Invert" xml:space="preserve"><value>Inverser</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Demi</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Décalage central X :</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Décalage central Y :</value></data>

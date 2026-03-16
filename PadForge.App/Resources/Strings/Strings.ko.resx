@@ -374,7 +374,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>소스</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>값</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>옵션</value></data>
-  <data name="Pad_Inv" xml:space="preserve"><value>반전</value></data>
+  <data name="Pad_Invert" xml:space="preserve"><value>반전</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>절반</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중심 오프셋 X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중심 오프셋 Y:</value></data>

@@ -307,6 +307,8 @@
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>键盘</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>设备</value></data>
   <!-- ═══ Devices ═══ -->
+  <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>所有键盘 (合并)</value></data>
+  <data name="Devices_AllMiceMerged" xml:space="preserve"><value>所有鼠标 (合并)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>设备</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在线 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 总计</value></data>

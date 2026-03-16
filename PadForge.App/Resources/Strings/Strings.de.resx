@@ -174,7 +174,8 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profil „{0}" aktualisiert.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profil geladen: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profil auf Standard zurückgesetzt</value></data>
-  <data name="Status_Player_Format" xml:space="preserve"><value>Spieler {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtueller Controller {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>„{0}" wurde Virtueller Controller {1} zugewiesen.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Nicht zugeordnet — {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->

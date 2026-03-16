@@ -4,6 +4,7 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:PadForge"
         xmlns:views="clr-namespace:PadForge.Views"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="{Binding Title}"
         Height="720" Width="1100"
@@ -22,7 +23,7 @@
         <ui:NavigationView x:Name="NavView"
                            PaneDisplayMode="Left"
                            IsBackButtonVisible="Collapsed"
-                           IsSettingsVisible="True"
+                           IsSettingsVisible="False"
                            SelectionChanged="NavView_SelectionChanged"
                            PaneTitle="PadForge"
                            OpenPaneLength="253">
@@ -31,7 +32,12 @@
 
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItemSeparator/>
-                <ui:NavigationViewItem Content="About" Tag="About">
+                <ui:NavigationViewItem x:Name="NavSettings" Content="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Tag="Settings">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:FontIcon Glyph="&#xE713;"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+                <ui:NavigationViewItem x:Name="NavAbout" Content="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Tag="About">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE946;"/>
                     </ui:NavigationViewItem.Icon>
@@ -72,21 +78,18 @@
                            TextTrimming="CharacterEllipsis"/>
 
                 <!-- Devices count -->
-                <TextBlock Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Margin="16,0"
-                           Opacity="0.7">
-                    <Run Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>
-                    <Run Text="device(s)"/>
-                </TextBlock>
+                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="16,0">
+                    <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}" Opacity="0.7"/>
+                    <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}" Opacity="0.7"/>
+                </StackPanel>
 
                 <!-- Polling frequency -->
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Margin="16,0"
-                           Opacity="0.7">
-                    <Run Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
-                </TextBlock>
+                           Opacity="0.7"
+                           Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
 
                 <!-- Engine indicator -->
                 <StackPanel Grid.Column="3" Orientation="Horizontal"
@@ -119,7 +122,7 @@
                                      HorizontalAlignment="Center"
                                      Margin="0,0,0,16"/>
                     <TextBlock x:Name="DriverOverlayText"
-                               Text="Please wait..."
+                               Text="{Binding Main_PleaseWait, Source={x:Static strings:Strings.Instance}}"
                                FontSize="16"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"/>
@@ -145,14 +148,14 @@
                                      Width="40" Height="40"
                                      HorizontalAlignment="Center"
                                      Margin="0,0,0,16"/>
-                    <TextBlock Text="Closing PadForge..."
+                    <TextBlock Text="{Binding Main_ShuttingDown, Source={x:Static strings:Strings.Instance}}"
                                FontSize="16"
                                FontWeight="SemiBold"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,0,0,4"/>
                     <TextBlock x:Name="ShutdownOverlayText"
-                               Text="Releasing virtual controllers"
+                               Text="{Binding Main_ReleasingControllers, Source={x:Static strings:Strings.Instance}}"
                                FontSize="13"
                                Opacity="0.7"
                                HorizontalAlignment="Center"

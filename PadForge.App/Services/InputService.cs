@@ -108,7 +108,7 @@ namespace PadForge.Services
             _dispatcher = Dispatcher.CurrentDispatcher;
 
             // Refresh server status strings when language changes.
-            Strings.CultureChanged += () => _dispatcher.BeginInvoke(RefreshServerStatusStrings);
+            Strings.CultureChanged += OnCultureChanged;
 
             // Subscribe to device selection changes on each pad.
             foreach (var padVm in _mainVm.Pads)
@@ -1397,6 +1397,34 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Applies a PadSetting from a source layout to the current device with cross-layout translation.
+        /// </summary>
+        public void ApplyPadSettingToCurrentDeviceTranslated(int padIndex, PadSetting source,
+            VirtualControllerType sourceType, bool sourceIsCustomVJoy,
+            VirtualControllerType targetType, bool targetIsCustomVJoy)
+        {
+            if (source == null || padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                return;
+
+            var padVm = _mainVm.Pads[padIndex];
+            var selected = padVm.SelectedMappedDevice;
+            if (selected == null || selected.InstanceGuid == Guid.Empty)
+                return;
+
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, padIndex);
+            if (us == null) return;
+
+            var ps = us.GetPadSetting();
+            if (ps == null) return;
+
+            // Copy with cross-layout translation.
+            ps.CopyFromTranslated(source, sourceType, sourceIsCustomVJoy, targetType, targetIsCustomVJoy);
+
+            // Reload the ViewModel to reflect the new values.
+            LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+        }
+
+        /// <summary>
         /// Flushes all active pad ViewModels back to their PadSettings so that
         /// stored PadSettings reflect the latest UI state. Call before reading
         /// PadSettings across multiple slots (e.g., Copy From dialog).
@@ -1738,6 +1766,8 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
         }
+
+        private void OnCultureChanged() => _dispatcher.BeginInvoke(RefreshServerStatusStrings);
 
         /// <summary>
         /// Re-sets server status display strings after a language change.

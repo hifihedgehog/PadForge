@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -151,7 +152,7 @@ namespace PadForge.Views
             // ── CC Sliders section ──
             if (mc.CcCount > 0)
             {
-                var ccLabel = CreateLabel("CC Outputs", x, topY);
+                var ccLabel = CreateLabel(Strings.Instance.Preview_CCOutputs, x, topY);
                 MidiCanvas.Children.Add(ccLabel);
                 topY += LabelHeight + 4;
 
@@ -170,7 +171,7 @@ namespace PadForge.Views
             if (mc.NoteCount > 0)
             {
                 double pianoX = Padding;
-                var pianoLabel = CreateLabel("Note Outputs", pianoX, topY);
+                var pianoLabel = CreateLabel(Strings.Instance.Preview_NoteOutputs, pianoX, topY);
                 MidiCanvas.Children.Add(pianoLabel);
                 topY += LabelHeight + 4;
 

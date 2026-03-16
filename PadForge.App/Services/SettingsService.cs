@@ -7,6 +7,7 @@ using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Services
@@ -215,7 +216,7 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
-                _mainVm.StatusText = $"Error loading settings: {ex.Message}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
             }
         }
 
@@ -240,6 +241,7 @@ namespace PadForge.Services
                     if (!string.IsNullOrWhiteSpace(p))
                         vm.HidHideWhitelistPaths.Add(p);
             }
+            vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -635,7 +637,7 @@ namespace PadForge.Services
             var defaultItem = new ViewModels.ProfileListItem
             {
                 Id = ViewModels.ProfileListItem.DefaultProfileId,
-                Name = "Default",
+                Name = Strings.Instance.Profile_Default,
             };
             var slotTypes = Enumerable.Range(0, SettingsManager.SlotCreated.Length)
                 .Select(i => i < _mainVm.Pads.Count ? (int)_mainVm.Pads[i].OutputType : 0).ToArray();
@@ -661,7 +663,7 @@ namespace PadForge.Services
             // Update active profile display.
             string activeId = appSettings?.ActiveProfileId;
             var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
-            _mainVm.Settings.ActiveProfileInfo = active?.Name ?? "Default";
+            _mainVm.Settings.ActiveProfileInfo = active?.Name ?? Strings.Instance.Profile_Default;
 
             // If a named profile was active at shutdown, snapshot the default
             // profile's state (loaded by LoadAppSettings) before overwriting with
@@ -773,7 +775,7 @@ namespace PadForge.Services
             if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
             if (midi > 0) parts.Add($"{midi}x MIDI");
             if (kbm > 0) parts.Add($"{kbm}x KB+M");
-            return parts.Count > 0 ? string.Join(", ", parts) : "No slots";
+            return parts.Count > 0 ? string.Join(", ", parts) : Strings.Instance.Profiles_NoSlots;
         }
 
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
@@ -917,11 +919,11 @@ namespace PadForge.Services
 
                 IsDirty = false;
                 _mainVm.Settings.HasUnsavedChanges = false;
-                _mainVm.StatusText = $"Settings saved to {Path.GetFileName(filePath)}.";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_SettingsSaved_Format, Path.GetFileName(filePath));
             }
             catch (Exception ex)
             {
-                _mainVm.StatusText = $"Error saving settings: {ex.Message}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorSavingSettings_Format, ex.Message);
             }
         }
 
@@ -971,6 +973,7 @@ namespace PadForge.Services
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateMs = vm.PollingRateMs,
                 ThemeIndex = vm.SelectedThemeIndex,
+                Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
@@ -1315,13 +1318,13 @@ namespace PadForge.Services
             settingsVm.ProfileItems.Add(new ViewModels.ProfileListItem
             {
                 Id = ViewModels.ProfileListItem.DefaultProfileId,
-                Name = "Default",
+                Name = Strings.Instance.Profile_Default,
             });
-            settingsVm.ActiveProfileInfo = "Default";
+            settingsVm.ActiveProfileInfo = Strings.Instance.Profile_Default;
 
             IsDirty = true;
             settingsVm.HasUnsavedChanges = true;
-            _mainVm.StatusText = "Settings reset to defaults.";
+            _mainVm.StatusText = Strings.Instance.Status_SettingsResetDefaults;
         }
 
         // ─────────────────────────────────────────────
@@ -1336,11 +1339,11 @@ namespace PadForge.Services
             if (File.Exists(_settingsFilePath))
             {
                 LoadFromFile(_settingsFilePath);
-                _mainVm.StatusText = "Settings reloaded from disk.";
+                _mainVm.StatusText = Strings.Instance.Status_SettingsReloaded;
             }
             else
             {
-                _mainVm.StatusText = "No settings file found on disk.";
+                _mainVm.StatusText = Strings.Instance.Status_NoSettingsFile;
             }
 
             IsDirty = false;
@@ -1511,6 +1514,9 @@ namespace PadForge.Services
 
         [XmlElement]
         public int ThemeIndex { get; set; }
+
+        [XmlElement]
+        public string Language { get; set; } = "";
 
         [XmlElement]
         public bool EnableAutoProfileSwitching { get; set; }

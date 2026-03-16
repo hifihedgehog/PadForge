@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using PadForge.Common;
+using PadForge.Resources.Strings;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -79,13 +80,13 @@ namespace PadForge.Services
             var selectedRow = _mainVm.Devices.SelectedDevice;
             if (selectedRow == null)
             {
-                _mainVm.StatusText = "No device selected.";
+                _mainVm.StatusText = Strings.Instance.Status_NoDeviceSelected;
                 return;
             }
 
             if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
             {
-                _mainVm.StatusText = $"Invalid slot index: {slotIndex}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_InvalidSlotIndex_Format, slotIndex);
                 return;
             }
 
@@ -102,7 +103,7 @@ namespace PadForge.Services
             var us = SettingsManager.AssignDeviceToSlot(instanceGuid, slotIndex);
             if (us == null)
             {
-                _mainVm.StatusText = "Failed to assign device.";
+                _mainVm.StatusText = Strings.Instance.Status_FailedAssignDevice;
                 return;
             }
 
@@ -130,7 +131,7 @@ namespace PadForge.Services
             // Mark settings as dirty.
             _settingsService.MarkDirty();
 
-            _mainVm.StatusText = $"Assigned \"{selectedRow.DeviceName}\" to Player {slotIndex + 1}.";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, selectedRow.DeviceName, slotIndex + 1);
 
             // Notify listeners so PadPage dropdowns refresh immediately.
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
@@ -185,7 +186,7 @@ namespace PadForge.Services
             AutoEnableHidingDefaults(udForGuid, row);
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = $"Assigned \"{row.DeviceName}\" to Player {slotIndex + 1}.";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, row.DeviceName, slotIndex + 1);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -235,7 +236,7 @@ namespace PadForge.Services
                 // Auto-enable input hiding defaults for newly assigned devices.
                 AutoEnableHidingDefaults(udForGuid, selectedRow);
 
-                _mainVm.StatusText = $"Assigned \"{selectedRow.DeviceName}\" to slot #{slotIndex + 1}.";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssignedSlot_Format, selectedRow.DeviceName, slotIndex + 1);
             }
             else
             {
@@ -254,7 +255,7 @@ namespace PadForge.Services
                     }
                 }
 
-                _mainVm.StatusText = $"Unassigned \"{selectedRow.DeviceName}\" from slot #{slotIndex + 1}.";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceUnassignedSlot_Format, selectedRow.DeviceName, slotIndex + 1);
             }
 
             // Update device row display.
@@ -289,7 +290,7 @@ namespace PadForge.Services
             }
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = $"Device hidden. (Can be restored in settings file.)";
+            _mainVm.StatusText = Strings.Instance.Status_DeviceHidden;
         }
 
         // ─────────────────────────────────────────────
@@ -306,7 +307,7 @@ namespace PadForge.Services
         {
             SettingsManager.RemoveDevice(instanceGuid);
             _settingsService.MarkDirty();
-            _mainVm.StatusText = "Device removed.";
+            _mainVm.StatusText = Strings.Instance.Status_DeviceRemoved;
 
             // Refresh sidebar/dashboard device info (slot persists, just empty now).
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
@@ -436,7 +437,7 @@ namespace PadForge.Services
             }
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = $"Virtual Controller {slotIndex + 1} deleted.";
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, slotIndex + 1);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
 

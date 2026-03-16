@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -14,8 +15,18 @@ namespace PadForge.ViewModels
     {
         public DashboardViewModel()
         {
-            Title = "Dashboard";
+            Title = Strings.Instance.Dashboard_Title;
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
+        }
+
+        protected override void OnCultureChanged()
+        {
+            Title = Strings.Instance.Dashboard_Title;
+            OnPropertyChanged(nameof(PollingFrequencyText));
+            OnPropertyChanged(nameof(ViGEmStatusText));
+            OnPropertyChanged(nameof(HidHideStatusText));
+            OnPropertyChanged(nameof(VJoyStatusText));
+            OnPropertyChanged(nameof(MidiServicesStatusText));
         }
 
         // ─────────────────────────────────────────────
@@ -69,7 +80,7 @@ namespace PadForge.ViewModels
             // Update display labels to use sequential global numbering.
             for (int i = 0; i < SlotSummaries.Count; i++)
             {
-                var label = $"Virtual Controller {i + 1}";
+                var label = string.Format(Strings.Instance.Main_VirtualController_Format, i + 1);
                 if (SlotSummaries[i].SlotLabel != label)
                     SlotSummaries[i].SlotLabel = label;
             }
@@ -81,15 +92,26 @@ namespace PadForge.ViewModels
         //  Engine status
         // ─────────────────────────────────────────────
 
-        private string _engineStatus = "Stopped";
+        private string _engineStatus = Strings.Instance.Common_Stopped;
 
         /// <summary>
-        /// Current engine status text: "Running", "Stopped", etc.
+        /// Current engine status text (localized) for display.
         /// </summary>
         public string EngineStatus
         {
             get => _engineStatus;
             set => SetProperty(ref _engineStatus, value);
+        }
+
+        private string _engineStateKey = "Stopped";
+
+        /// <summary>
+        /// Non-localized engine state key ("Running", "Stopped", "Idle") for XAML DataTriggers.
+        /// </summary>
+        public string EngineStateKey
+        {
+            get => _engineStateKey;
+            set => SetProperty(ref _engineStateKey, value);
         }
 
         private double _pollingFrequency;
@@ -111,7 +133,7 @@ namespace PadForge.ViewModels
         /// Formatted polling frequency string for display (e.g., "987.3 Hz").
         /// </summary>
         public string PollingFrequencyText =>
-            PollingFrequency > 0 ? $"{PollingFrequency:F1} Hz" : "—";
+            PollingFrequency > 0 ? string.Format(Strings.Instance.Dashboard_PollingHz_Format, PollingFrequency) : Strings.Instance.Dashboard_PollingDash;
 
         // ─────────────────────────────────────────────
         //  Device counts
@@ -162,7 +184,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Display text for ViGEmBus status.</summary>
-        public string ViGEmStatusText => IsViGEmInstalled ? "Installed" : "Not Installed";
+        public string ViGEmStatusText => IsViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _vigemVersion = string.Empty;
 
@@ -191,7 +213,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Display text for HidHide status.</summary>
-        public string HidHideStatusText => IsHidHideInstalled ? "Installed" : "Not Installed";
+        public string HidHideStatusText => IsHidHideInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         // ─────────────────────────────────────────────
         //  vJoy status
@@ -211,7 +233,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Display text for vJoy status.</summary>
-        public string VJoyStatusText => IsVJoyInstalled ? "Installed" : "Not Installed";
+        public string VJoyStatusText => IsVJoyInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         // ─────────────────────────────────────────────
         //  Windows MIDI Services status
@@ -231,7 +253,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Display text for MIDI Services status.</summary>
-        public string MidiServicesStatusText => IsMidiServicesInstalled ? "Installed" : "Not Installed";
+        public string MidiServicesStatusText => IsMidiServicesInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         // ─────────────────────────────────────────────
         //  DSU Motion Server
@@ -255,13 +277,13 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _dsuMotionServerPort, Math.Clamp(value, 1024, 65535));
         }
 
-        private string _dsuServerStatus = "Stopped";
+        private string _dsuServerStatus = Strings.Instance.Common_Stopped;
 
         /// <summary>Current status of the DSU server for UI display.</summary>
         public string DsuServerStatus
         {
             get => _dsuServerStatus;
-            set => SetProperty(ref _dsuServerStatus, value ?? "Stopped");
+            set => SetProperty(ref _dsuServerStatus, value ?? Strings.Instance.Common_Stopped);
         }
 
         // ─────────────────────────────────────────────
@@ -286,13 +308,13 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _webControllerPort, Math.Clamp(value, 1024, 65535));
         }
 
-        private string _webControllerStatus = "Stopped";
+        private string _webControllerStatus = Strings.Instance.Common_Stopped;
 
         /// <summary>Current status of the web controller server for UI display.</summary>
         public string WebControllerStatus
         {
             get => _webControllerStatus;
-            set => SetProperty(ref _webControllerStatus, value ?? "Stopped");
+            set => SetProperty(ref _webControllerStatus, value ?? Strings.Instance.Common_Stopped);
         }
 
         private int _webControllerClientCount;
@@ -315,7 +337,7 @@ namespace PadForge.ViewModels
         public SlotSummary(int padIndex)
         {
             PadIndex = padIndex;
-            SlotLabel = $"Virtual Controller {padIndex + 1}";
+            SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
         }
 
         /// <summary>Zero-based pad slot index.</summary>
@@ -329,7 +351,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _slotLabel, value);
         }
 
-        private string _deviceName = "No device";
+        private string _deviceName = Strings.Instance.Dashboard_NoDevice;
 
         /// <summary>Name of the primary device mapped to this slot.</summary>
         public string DeviceName
@@ -383,7 +405,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _connectedDeviceCount, value);
         }
 
-        private string _statusText = "Idle";
+        private string _statusText = Strings.Instance.Common_Idle;
 
         /// <summary>Status text for the slot (e.g., "Active", "Idle", "No mapping", "Disabled").</summary>
         public string StatusText

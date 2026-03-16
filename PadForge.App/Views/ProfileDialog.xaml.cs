@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Microsoft.Win32;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
@@ -15,6 +16,7 @@ namespace PadForge.Views
         {
             InitializeComponent();
             ExeListBox.ItemsSource = ExecutablePaths;
+            NameBox.Text = Strings.Instance.ProfileDialog_DefaultName;
             NameBox.Focus();
             NameBox.SelectAll();
         }
@@ -28,15 +30,15 @@ namespace PadForge.Views
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
-            Title = "Edit Profile";
+            Title = Strings.Instance.ProfileDialog_Edit;
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             var ofd = new OpenFileDialog
             {
-                Title = "Select Game Executable",
-                Filter = "Executables (*.exe)|*.exe|All Files (*.*)|*.*",
+                Title = Strings.Instance.FileDialog_SelectGameExe,
+                Filter = Strings.Instance.FileDialog_ExeFilter,
                 Multiselect = true
             };
 

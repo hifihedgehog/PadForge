@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ═══ Common ═══ -->
+  <data name="Common_Save" xml:space="preserve"><value>保存</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>キャンセル</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>削除</value></data>
+  <data name="Common_Add" xml:space="preserve"><value>追加</value></data>
+  <data name="Common_Remove" xml:space="preserve"><value>削除</value></data>
+  <data name="Common_OK" xml:space="preserve"><value>OK</value></data>
+  <data name="Common_Install" xml:space="preserve"><value>インストール</value></data>
+  <data name="Common_Uninstall" xml:space="preserve"><value>アンインストール</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>更新</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>コピー</value></data>
+  <data name="Common_Paste" xml:space="preserve"><value>貼り付け</value></data>
+  <data name="Common_Enabled" xml:space="preserve"><value>有効</value></data>
+  <data name="Common_Disabled" xml:space="preserve"><value>無効</value></data>
+  <data name="Common_Installed" xml:space="preserve"><value>インストール済み</value></data>
+  <data name="Common_NotInstalled" xml:space="preserve"><value>未インストール</value></data>
+  <data name="Common_Ready" xml:space="preserve"><value>準備完了</value></data>
+  <data name="Common_Stopped" xml:space="preserve"><value>停止中</value></data>
+  <data name="Common_Running" xml:space="preserve"><value>実行中</value></data>
+  <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} で実行中</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>実行中 ({0} クライアント)</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} でリッスン中</value></data>
+  <data name="Server_PortInUse_Format" xml:space="preserve"><value>ポート {0} は使用中</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ポート {0} のアクセスが拒否されました（管理者として実行）</value></data>
+  <data name="Server_FailedToStart" xml:space="preserve"><value>起動に失敗しました</value></data>
+  <data name="Common_Idle" xml:space="preserve"><value>待機中</value></data>
+  <data name="Common_Online" xml:space="preserve"><value>オンライン</value></data>
+  <data name="Common_Offline" xml:space="preserve"><value>オフライン</value></data>
+  <data name="Common_Unknown" xml:space="preserve"><value>不明</value></data>
+  <data name="Common_Default" xml:space="preserve"><value>デフォルト</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>参照...</value></data>
+  <data name="Common_Proceed" xml:space="preserve"><value>続行</value></data>
+  <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="Common_Record" xml:space="preserve"><value>記録</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>記録中...</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>クリア</value></data>
+  <data name="Common_None" xml:space="preserve"><value>なし</value></data>
+  <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Unassigned" xml:space="preserve"><value>未割り当て</value></data>
+  <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
+
+  <!-- ═══ Controller Types ═══ -->
+  <data name="ControllerType_Xbox360" xml:space="preserve"><value>Xbox 360</value></data>
+  <data name="ControllerType_DualShock4" xml:space="preserve"><value>DualShock 4</value></data>
+  <data name="ControllerType_DirectInput" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
+  <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+
+  <!-- ═══ MainWindow ═══ -->
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge を終了しています...</value></data>
+  <data name="Main_ReleasingControllers" xml:space="preserve"><value>仮想コントローラーを解放しています</value></data>
+  <data name="Main_PleaseWait" xml:space="preserve"><value>お待ちください...</value></data>
+  <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
+  <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
+  <data name="Main_DeleteVC" xml:space="preserve"><value>仮想コントローラーを削除</value></data>
+  <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge を表示</value></data>
+  <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
+  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus が未インストールです</value></data>
+  <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
+  <data name="Main_AwaitingControllers" xml:space="preserve"><value>コントローラー待機中</value></data>
+  <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
+  <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
+  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput ドライバーが未インストールです</value></data>
+  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus 未インストール)</value></data>
+  <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (最大 {0})</value></data>
+  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4 (ViGEmBus 未インストール)</value></data>
+  <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4 (最大 {0})</value></data>
+  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput (ドライバー未インストール)</value></data>
+  <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput (最大 {0})</value></data>
+  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0})</value></data>
+  <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services が必要です)</value></data>
+  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (最大 {0})</value></data>
+
+  <!-- ═══ MainWindow Status Messages ═══ -->
+  <data name="Status_InstallingViGEm" xml:space="preserve"><value>ViGEmBus をインストールしています…</value></data>
+  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>ViGEmBus をアンインストールしています…</value></data>
+  <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide をインストールしています…</value></data>
+  <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide をアンインストールしています…</value></data>
+  <data name="Status_InstallingVJoy" xml:space="preserve"><value>vJoy をインストールしています…</value></data>
+  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>vJoy をアンインストールしています…</value></data>
+  <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services をダウンロードしています…</value></data>
+  <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services をダウンロードしてインストールしています…</value></data>
+  <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services をアンインストールしています…</value></data>
+  <data name="Status_OperationCancelled" xml:space="preserve"><value>操作がユーザーによりキャンセルされました。</value></data>
+  <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services のインストールに失敗しました: {0}</value></data>
+  <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>デバイスリストを更新しました。</value></data>
+  <data name="Status_Recorded_Format" xml:space="preserve"><value>記録完了 "{0}" ← {1}</value></data>
+  <data name="Status_NowMap_Format" xml:space="preserve"><value>次のマッピング: {0} {1}</value></data>
+  <data name="Status_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0} {1}  ({2}/{3})</value></data>
+  <data name="Status_DirectionRight" xml:space="preserve"><value>(→ 右)</value></data>
+  <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ 下)</value></data>
+  <data name="Status_DirectionLeft" xml:space="preserve"><value>(← 左)</value></data>
+  <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ 上)</value></data>
+  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>ViGEmBus を検出しました — エンジンを再起動しました。</value></data>
+  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>vJoy ドライバーを検出しました — エンジンを再起動しました。</value></data>
+  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>vJoy ドライバーをインストールしました — エンジンを再起動しました。</value></data>
+  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>vJoy ドライバーを削除しました — エンジンを再起動しました。</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll が見つかりません</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll が見つかりません！ PadForge.exe と同じフォルダーに SDL3.dll を配置してください。ダウンロード先: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>ViGEmBus ドライバーが検出されませんでした。仮想コントローラー出力は無効です。</value></data>
+  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>ViGEm の確認に失敗しました: {0}</value></data>
+  <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ドライバー操作に失敗しました: {0}</value></data>
+  <data name="Status_SettingsCopied" xml:space="preserve"><value>設定をクリップボードにコピーしました。</value></data>
+  <data name="Status_CopyFailed_Format" xml:space="preserve"><value>コピーに失敗しました: {0}</value></data>
+  <data name="Status_InvalidClipboard" xml:space="preserve"><value>クリップボードに有効な PadForge 設定が含まれていません。</value></data>
+  <data name="Status_SettingsPasted" xml:space="preserve"><value>クリップボードから設定を貼り付けました。</value></data>
+  <data name="Status_PasteFailed_Format" xml:space="preserve"><value>貼り付けに失敗しました: {0}</value></data>
+  <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>コピー元のデバイスが選択されていません。</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>コピー元として使用できる他の設定済みデバイスが見つかりません。</value></data>
+  <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>選択したデバイスから設定をコピーしました。</value></data>
+  <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>プロファイル「{0}」を作成しました (空)。</value></data>
+  <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>プロファイル「{0}」を作成しました。</value></data>
+  <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>プロファイル「{0}」を削除しました。</value></data>
+  <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>プロファイル「{0}」を更新しました。</value></data>
+  <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>プロファイルを読み込みました: {0}</value></data>
+  <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>プロファイルをデフォルトに戻しました</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0} — {1}</value></data>
+  <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
+  <data name="Status_Unmapped_Format" xml:space="preserve"><value>未マッピング — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>設定の読み込みエラー: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>設定を {0} に保存しました。</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>設定の保存エラー: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>設定を初期値にリセットしました。</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>設定をディスクから再読み込みしました。</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>ディスクに設定ファイルが見つかりません。</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>記録するデバイスが接続されていません。</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>記録中: 「{0}」のボタンを押すか軸を動かしてください...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>記録がキャンセルされました。</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>「{0}」の記録がタイムアウトしました。</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>エンジンが開始されました。</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>エンジンが停止されました。</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>マッピングなし</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>エラー: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>デフォルト</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} から解除しました。</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>デバイスを非表示にしました。（設定ファイルで復元できます。）</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>デバイスを削除しました。</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>仮想コントローラー {0} を削除しました。</value></data>
+
+  <!-- ═══ Dashboard ═══ -->
+  <data name="Dashboard_Title" xml:space="preserve"><value>ダッシュボード</value></data>
+  <data name="Dashboard_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
+  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台のデバイスがオンライン</value></data>
+  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>仮想コントローラー</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value> マッピング済み、</value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value> 接続済み</value></data>
+  <data name="Dashboard_MotionServer" xml:space="preserve"><value>モーションサーバー</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用の DSU/cemuhook サーバーです。</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU モーションサーバー (cemuhook) を有効にする</value></data>
+  <data name="Dashboard_Port" xml:space="preserve"><value>ポート:</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロ/加速度データを提供します。</value></data>
+  <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
+  <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
+  <data name="Dashboard_WebFooter" xml:space="preserve"><value>スマートフォンやタブレットのブラウザから接続してゲームパッドとして使用できます。</value></data>
+  <data name="Dashboard_Drivers" xml:space="preserve"><value>ドライバー</value></data>
+  <data name="Dashboard_NoDevice" xml:space="preserve"><value>デバイスなし</value></data>
+
+  <!-- ═══ Settings ═══ -->
+  <data name="Settings_Title" xml:space="preserve"><value>設定</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>外観</value></data>
+  <data name="Settings_AppearanceDesc" xml:space="preserve"><value>お好みのビジュアルテーマを選択してください。</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>テーマ</value></data>
+  <data name="Settings_ThemeSystem" xml:space="preserve"><value>システムの既定</value></data>
+  <data name="Settings_ThemeLight" xml:space="preserve"><value>ライト</value></data>
+  <data name="Settings_ThemeDark" xml:space="preserve"><value>ダーク</value></data>
+  <data name="Settings_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
+  <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ポーリング動作とバックグラウンド処理を設定します。</value></data>
+  <data name="Settings_AutoStart" xml:space="preserve"><value>起動時にエンジンを自動開始する</value></data>
+  <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ウィンドウがフォーカスを失ってもポーリングを継続する</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>ポーリング間隔:</value></data>
+  <data name="Settings_HideDevices" xml:space="preserve"><value>ゲームからデバイスを隠す</value></data>
+  <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide によるデバイス非表示と低レベル入力フックのマスタースイッチです。オフの場合、個別デバイスの設定に関わらずすべてのデバイスが表示されます。</value></data>
+  <data name="Settings_Window" xml:space="preserve"><value>ウィンドウ</value></data>
+  <data name="Settings_WindowDesc" xml:space="preserve"><value>起動時および最小化時の動作を設定します。</value></data>
+  <data name="Settings_MinimizeToTray" xml:space="preserve"><value>システムトレイに最小化する</value></data>
+  <data name="Settings_StartMinimized" xml:space="preserve"><value>最小化状態で起動する</value></data>
+  <data name="Settings_StartAtLogin" xml:space="preserve"><value>ログイン時に起動する</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide ドライバー</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>二重入力を防ぐため、物理デバイスをゲームから隠します。</value></data>
+  <data name="Settings_WhitelistedApps" xml:space="preserve"><value>ホワイトリスト登録済みアプリケーション</value></data>
+  <data name="Settings_WhitelistDesc" xml:space="preserve"><value>これらのアプリケーションは非表示のデバイスを引き続き認識できます。PadForge は常に自動的にホワイトリストに登録されます。</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>追加...</value></data>
+  <data name="Settings_ViGEmBus" xml:space="preserve"><value>ViGEmBus ドライバー</value></data>
+  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>Xbox 360 および DualShock 4 出力用の仮想コントローラードライバーです。</value></data>
+  <data name="Settings_VJoy" xml:space="preserve"><value>vJoy ドライバー</value></data>
+  <data name="Settings_VJoyDesc" xml:space="preserve"><value>カスタム DirectInput デバイス出力用の仮想ジョイスティックドライバーです。</value></data>
+  <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
+  <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力用の SDK ランタイムです。GitHub からダウンロードされます (~210 MB)。</value></data>
+  <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (ビルド 26100) 以降が必要です</value></data>
+  <data name="Settings_SettingsFile" xml:space="preserve"><value>設定ファイル</value></data>
+  <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>設定の保存、再読み込み、またはリセットを行います。</value></data>
+  <data name="Settings_Reload" xml:space="preserve"><value>再読み込み</value></data>
+  <data name="Settings_ResetToDefaults" xml:space="preserve"><value>デフォルトに戻す</value></data>
+  <data name="Settings_OpenFolder" xml:space="preserve"><value>フォルダーを開く</value></data>
+  <data name="Settings_UnsavedChanges" xml:space="preserve"><value>未保存の変更があります</value></data>
+  <data name="Settings_Diagnostics" xml:space="preserve"><value>診断情報</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>アプリケーションおよびランタイムのバージョン情報です。</value></data>
+  <data name="Settings_AppVersion" xml:space="preserve"><value>アプリバージョン</value></data>
+  <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ランタイム</value></data>
+  <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL バージョン</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>言語</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>表示言語を選択してください。変更を反映するには再起動が必要です。</value></data>
+  <data name="Settings_RestartRequired" xml:space="preserve"><value>言語の変更を反映するには再起動が必要です。</value></data>
+
+  <!-- ═══ About ═══ -->
+  <data name="About_Title" xml:space="preserve"><value>PadForge について</value></data>
+  <data name="About_Subtitle" xml:space="preserve"><value>コントローラーマッピングユーティリティ</value></data>
+  <data name="About_Tagline" xml:space="preserve"><value>x360ce のモダンフォーク — SDL3、WPF、.NET 10 で再構築</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆるコントローラー、キーボード、マウスを ViGEmBus、vJoy、Windows MIDI Services を通じて仮想 Xbox 360、DualShock 4、カスタム DirectInput、または MIDI コントローラーにマッピングします。コントローラー入力には SDL3 を、キーボードおよびマウス入力には Windows Raw Input を使用し、マッピング、デッドゾーン設定、フォースフィードバック管理のためのモダンな Fluent Design インターフェースを提供します。</value></data>
+  <data name="About_BuiltWith" xml:space="preserve"><value>使用技術</value></data>
+  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>ランタイムおよび WPF フレームワーク</value></data>
+  <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>コントローラー入力および列挙</value></data>
+  <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
+  <data name="About_RawInputDesc" xml:space="preserve"><value>デバイスごとのキーボードおよびマウス入力</value></data>
+  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
+  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>仮想コントローラードライバー (Xbox 360、DualShock 4)</value></data>
+  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
+  <data name="About_VJoyDesc" xml:space="preserve"><value>カスタム DirectInput 出力用の仮想ジョイスティックドライバー</value></data>
+  <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力 (Windows MIDI Services)</value></data>
+  <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D コントローラービジュアライゼーション</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 用 Fluent Design テーマ</value></data>
+  <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm</value></data>
+  <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から適用されたものです。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。Windows MIDI Services は MIT ライセンスの下でライセンスされています。ViGEmBus、vJoy、HelixToolkit、および ModernWpf は MIT ライセンスの下でライセンスされています。</value></data>
+
+  <!-- ═══ Device Types ═══ -->
+  <data name="DeviceType_Gamepad" xml:space="preserve"><value>ゲームパッド</value></data>
+  <data name="DeviceType_Joystick" xml:space="preserve"><value>ジョイスティック</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>ハンドル</value></data>
+  <data name="DeviceType_FlightStick" xml:space="preserve"><value>フライトスティック</value></data>
+  <data name="DeviceType_FirstPerson" xml:space="preserve"><value>一人称</value></data>
+  <data name="DeviceType_Supplemental" xml:space="preserve"><value>補助</value></data>
+  <data name="DeviceType_Mouse" xml:space="preserve"><value>マウス</value></data>
+  <data name="DeviceType_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="DeviceType_Device" xml:space="preserve"><value>デバイス</value></data>
+  <!-- ═══ Devices ═══ -->
+  <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>すべてのキーボード (統合)</value></data>
+  <data name="Devices_AllMiceMerged" xml:space="preserve"><value>すべてのマウス (統合)</value></data>
+  <data name="Devices_Title" xml:space="preserve"><value>デバイス</value></data>
+  <data name="Devices_OnlineTotal" xml:space="preserve"><value> オンライン / </value></data>
+  <data name="Devices_Total" xml:space="preserve"><value> 合計</value></data>
+  <data name="Devices_RemoveTooltip" xml:space="preserve"><value>このデバイスとその設定を削除します</value></data>
+  <data name="Devices_Product" xml:space="preserve"><value>製品: </value></data>
+  <data name="Devices_Type" xml:space="preserve"><value>種類: </value></data>
+  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_InstancePath" xml:space="preserve"><value>インスタンスパス: </value></data>
+  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
+  <data name="Devices_SubmitMapping" xml:space="preserve"><value>デバイスマッピングを送信</value></data>
+  <data name="Devices_VCAssignment" xml:space="preserve"><value>仮想コントローラー割り当て</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>割り当てを切り替え</value></data>
+  <data name="Devices_InputMode" xml:space="preserve"><value>入力モード</value></data>
+  <data name="Devices_ForceRaw" xml:space="preserve"><value>強制 Raw ジョイスティックモード (ゲームパッドリマッピングをバイパス)</value></data>
+  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL のゲームパッドマッピングの代わりに生の HID インデックスを読み取ります — SDL がボタン/軸レイアウトを誤認識する場合に使用してください</value></data>
+  <data name="Devices_InputHiding" xml:space="preserve"><value>入力の非表示</value></data>
+  <data name="Devices_HideFromGames" xml:space="preserve"><value>ゲームから隠す (HidHide)</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide ドライバーを使用して、このデバイスを他のアプリケーションから完全に隠します</value></data>
+  <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>このオプションを有効にするには HidHide ドライバーをインストールしてください</value></data>
+  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>マッピング済み入力を消費する (フック)</value></data>
+  <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>マッピングされた特定のキー/ボタンのみを抑制し、マッピングされていない入力はそのまま通過させます</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>生の入力状態</value></data>
+  <data name="Devices_Axes" xml:space="preserve"><value>軸</value></data>
+  <data name="Devices_Buttons" xml:space="preserve"><value>ボタン</value></data>
+  <data name="Devices_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="Devices_Mouse" xml:space="preserve"><value>マウス</value></data>
+  <data name="Devices_DPadPOV" xml:space="preserve"><value>十字キー / POV</value></data>
+  <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
+  <data name="Devices_Gyroscope" xml:space="preserve"><value>ジャイロスコープ</value></data>
+  <data name="Devices_Accelerometer" xml:space="preserve"><value>加速度センサー</value></data>
+  <data name="Devices_Axis_Format" xml:space="preserve"><value>軸 {0}</value></data>
+  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} 軸、{1} ボタン、{2} POV</value></data>
+  <data name="Devices_Rumble" xml:space="preserve"><value>振動</value></data>
+  <data name="Devices_Gyro" xml:space="preserve"><value>ジャイロ</value></data>
+  <data name="Devices_Accel" xml:space="preserve"><value>加速度</value></data>
+  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>{0}しようとしています。これは {1}{2} に影響します。</value></data>
+  <data name="Devices_HideAction" xml:space="preserve"><value>このデバイスをすべてのアプリケーションから非表示に</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>このデバイスからのマッピング済み入力をブロック</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> すべての接続された{0}に対して</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>これが唯一の{0}である場合、システムを操作できなくなります。別の入力デバイスがある場合のみ続行してください。</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>システム操作に不可欠な入力（左/右クリック、X/Y移動など）を割り当てると、システムを制御できなくなる可能性があります。別の入力デバイスがある場合のみ続行してください。</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>システム操作に不可欠な入力（よく使うキーなど）を割り当てると、システムを制御できなくなる可能性があります。別の入力デバイスがある場合のみ続行してください。</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0}{1}します。
+
+{2}</value></data>
+  <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>マウス</value></data>
+  <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+
+  <!-- ═══ Pad Page ═══ -->
+  <data name="Pad_Macros" xml:space="preserve"><value>マクロ</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>マッピング</value></data>
+  <data name="Pad_Sticks" xml:space="preserve"><value>スティック</value></data>
+  <data name="Pad_Triggers" xml:space="preserve"><value>トリガー</value></data>
+  <data name="Pad_ForceFeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
+  <data name="Pad_Preset" xml:space="preserve"><value>プリセット</value></data>
+  <data name="Pad_Custom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_VJoySticks" xml:space="preserve"><value>スティック</value></data>
+  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>トリガー</value></data>
+  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POV</value></data>
+  <data name="Pad_VJoyButtons" xml:space="preserve"><value>ボタン</value></data>
+  <data name="Pad_MidiChannel" xml:space="preserve"><value>チャンネル</value></data>
+  <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI チャンネル (1-16)</value></data>
+  <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 数</value></data>
+  <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC 出力数 (最大値は開始 CC に依存します)</value></data>
+  <data name="Pad_MidiStartCC" xml:space="preserve"><value>開始 CC</value></data>
+  <data name="Pad_MidiStartCCTooltip" xml:space="preserve"><value>最初の CC 番号 (0-127)。値が大きいほど最大 CC 数が減少します。</value></data>
+  <data name="Pad_MidiNoteCount" xml:space="preserve"><value>ノート数</value></data>
+  <data name="Pad_MidiNoteCountTooltip" xml:space="preserve"><value>ノート出力数 (最大値は開始ノートに依存します)</value></data>
+  <data name="Pad_MidiStartNote" xml:space="preserve"><value>開始ノート</value></data>
+  <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>最初の MIDI ノート番号 (0-127、60 = 中央 C)。値が大きいほど最大ノート数が減少します。</value></data>
+  <data name="Pad_MidiVelocity" xml:space="preserve"><value>ベロシティ</value></data>
+  <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>ノートオンベロシティ (0-127)。仮想キーが押される強さです。</value></data>
+  <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D ビューに切り替え</value></data>
+  <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D ビューに切り替え</value></data>
+  <data name="Pad_TestLeftMotor" xml:space="preserve"><value>クリックして左モーターをテスト</value></data>
+  <data name="Pad_LeftMotor" xml:space="preserve"><value>左モーター</value></data>
+  <data name="Pad_TestRightMotor" xml:space="preserve"><value>クリックして右モーターをテスト</value></data>
+  <data name="Pad_RightMotor" xml:space="preserve"><value>右モーター</value></data>
+  <data name="Pad_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0}</value></data>
+  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>すべてのマッピングを順番に記録します — 各プロンプトでボタン/軸を押してください</value></data>
+  <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>すべてのマッピングを一つずつ順番に記録します</value></data>
+  <data name="Pad_MappingHint" xml:space="preserve"><value>マッピング行をクリックし、コントローラーのボタン/軸を押して割り当てます。</value></data>
+  <data name="Pad_CopyTooltip" xml:space="preserve"><value>すべてのマッピングと設定をクリップボードにコピーします</value></data>
+  <data name="Pad_PasteTooltip" xml:space="preserve"><value>クリップボードからマッピングと設定を貼り付けます</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>コピー元...</value></data>
+  <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>他の設定済みデバイスから設定をコピーします</value></data>
+  <data name="Pad_ResetAll" xml:space="preserve"><value>すべてリセット</value></data>
+  <data name="Pad_ClearAll" xml:space="preserve"><value>すべてクリア</value></data>
+  <data name="Pad_HeaderOutput" xml:space="preserve"><value>出力</value></data>
+  <data name="Pad_HeaderSource" xml:space="preserve"><value>ソース</value></data>
+  <data name="Pad_HeaderValue" xml:space="preserve"><value>値</value></data>
+  <data name="Pad_HeaderOptions" xml:space="preserve"><value>オプション</value></data>
+  <data name="Pad_Invert" xml:space="preserve"><value>反転</value></data>
+  <data name="Pad_Half" xml:space="preserve"><value>半分</value></data>
+  <data name="Curve_Linear" xml:space="preserve"><value>リニア</value></data>
+  <data name="Curve_Smooth" xml:space="preserve"><value>スムーズ</value></data>
+  <data name="Curve_Aggressive" xml:space="preserve"><value>アグレッシブ</value></data>
+  <data name="Curve_Instant" xml:space="preserve"><value>インスタント</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>Sカーブ</value></data>
+  <data name="Curve_Delay" xml:space="preserve"><value>ディレイ</value></data>
+  <data name="Curve_Custom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>中心をキャリブレーション</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>サンプリング中...</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X:</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>デッドゾーン形状:</value></data>
+  <data name="Pad_DZScaledRadial" xml:space="preserve"><value>スケール付き放射状</value></data>
+  <data name="Pad_DZRadial" xml:space="preserve"><value>放射状</value></data>
+  <data name="Pad_DZAxial" xml:space="preserve"><value>軸方向</value></data>
+  <data name="Pad_DZHybrid" xml:space="preserve"><value>ハイブリッド</value></data>
+  <data name="Pad_DZSlopedScaledAxial" xml:space="preserve"><value>傾斜スケール付き軸方向</value></data>
+  <data name="Pad_DZSlopedAxial" xml:space="preserve"><value>傾斜軸方向</value></data>
+  <data name="Pad_MouseMovement" xml:space="preserve"><value>マウス移動</value></data>
+  <data name="Pad_ScrollUp" xml:space="preserve"><value>上</value></data>
+  <data name="Pad_ScrollDown" xml:space="preserve"><value>下</value></data>
+
+  <!-- ═══ Macros ═══ -->
+  <data name="Macro_Name" xml:space="preserve"><value>名前</value></data>
+  <data name="Macro_Trigger" xml:space="preserve"><value>トリガー</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>発火:</value></data>
+  <data name="Macro_OnPress" xml:space="preserve"><value>押した時</value></data>
+  <data name="Macro_OnRelease" xml:space="preserve"><value>離した時</value></data>
+  <data name="Macro_WhileHeld" xml:space="preserve"><value>押している間</value></data>
+  <data name="Macro_Always" xml:space="preserve"><value>常時</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>ソース:</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>入力デバイス</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>出力コントローラー</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>しきい値:</value></data>
+  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>トリガーボタンを消費する (ゲームから隠す)</value></data>
+  <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>
+  <data name="Macro_ActionSequence" xml:space="preserve"><value>アクションシーケンス</value></data>
+  <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>
+  <data name="Macro_EditAction" xml:space="preserve"><value>アクションを編集</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>種類:</value></data>
+  <data name="Macro_ButtonPress" xml:space="preserve"><value>ボタン押下</value></data>
+  <data name="Macro_ButtonRelease" xml:space="preserve"><value>ボタン解放</value></data>
+  <data name="Macro_KeyPress" xml:space="preserve"><value>キー押下</value></data>
+  <data name="Macro_KeyRelease" xml:space="preserve"><value>キー解放</value></data>
+  <data name="Macro_Delay" xml:space="preserve"><value>遅延</value></data>
+  <data name="Macro_SetAxis" xml:space="preserve"><value>軸を設定</value></data>
+  <data name="Macro_SystemVolume" xml:space="preserve"><value>システム音量</value></data>
+  <data name="Macro_AppVolume" xml:space="preserve"><value>アプリ音量</value></data>
+  <data name="Macro_MouseMove" xml:space="preserve"><value>マウス移動</value></data>
+  <data name="Macro_MouseButtonPress" xml:space="preserve"><value>マウスボタン押下</value></data>
+  <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>マウスボタン解放</value></data>
+  <data name="Macro_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>ボタン:</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>キーコンボ:</value></data>
+  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 形式のキーコンボ — 編集可能</value></data>
+  <data name="Macro_KeyComboHint" xml:space="preserve"><value>キーを選択して追加します。例: {Control}{Alt}{Delete}</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>持続時間:</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>軸:</value></data>
+  <data name="Macro_LeftStickX" xml:space="preserve"><value>左スティック X</value></data>
+  <data name="Macro_LeftStickY" xml:space="preserve"><value>左スティック Y</value></data>
+  <data name="Macro_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
+  <data name="Macro_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
+  <data name="Macro_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Macro_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>値:</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>軸の入力元:</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>ソース軸:</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>デバイス:</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>音量上限:</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>プロセス:</value></data>
+  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>.exe を除いたプロセス名 — ドロップダウンにはアクティブなオーディオセッションを持つプロセスが表示されます</value></data>
+  <data name="Macro_MouseLeft" xml:space="preserve"><value>左</value></data>
+  <data name="Macro_MouseRight" xml:space="preserve"><value>右</value></data>
+  <data name="Macro_MouseMiddle" xml:space="preserve"><value>中央</value></data>
+  <data name="Macro_MouseX1" xml:space="preserve"><value>X1 (戻る)</value></data>
+  <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (進む)</value></data>
+  <data name="Macro_Repeat" xml:space="preserve"><value>繰り返し</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>モード:</value></data>
+  <data name="Macro_Once" xml:space="preserve"><value>1回のみ</value></data>
+  <data name="Macro_FixedCount" xml:space="preserve"><value>指定回数</value></data>
+  <data name="Macro_UntilRelease" xml:space="preserve"><value>離すまで</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>回数:</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延 (ms):</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>感度:</value></data>
+  <data name="Macro_NewMacro" xml:space="preserve"><value>新規マクロ</value></data>
+  <data name="Macro_RecordTrigger" xml:space="preserve"><value>トリガーを記録</value></data>
+  <data name="Macro_NotSet" xml:space="preserve"><value>未設定 — 記録をクリック</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="Macro_None" xml:space="preserve"><value>(なし)</value></data>
+  <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>デバイス軸 {0}</value></data>
+  <data name="Macro_UnknownAction" xml:space="preserve"><value>不明なアクション</value></data>
+  <data name="Macro_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Macro_Button_Format" xml:space="preserve"><value>ボタン {0}</value></data>
+
+  <!-- ═══ Macro Action Display ═══ -->
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} を {1}ms 押す</value></data>
+  <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} を離す</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>キー {0} を {1}ms 押す</value></data>
+  <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>キー {0} を離す</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms 待機</value></data>
+  <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} に設定</value></data>
+  <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>システム音量 ← {0}</value></data>
+  <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>システム音量 ← {0} (最大 {1}%)</value></data>
+  <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>アプリ音量 ← {0}</value></data>
+  <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>アプリ音量 ← {0} (最大 {1}%)</value></data>
+  <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>マウス移動 ← {0} (速度 {1:F0})</value></data>
+  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>マウスを {0} 移動 (最大 {1}px)</value></data>
+  <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>マウススクロール ← {0} (速度 {1:F0})</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} スクロール (最大 {1} 単位)</value></data>
+  <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
+  <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
+
+  <!-- ═══ POV Directions ═══ -->
+  <data name="POV_Centered" xml:space="preserve"><value>中央</value></data>
+  <data name="POV_Up" xml:space="preserve"><value>上</value></data>
+  <data name="POV_UpRight" xml:space="preserve"><value>右上</value></data>
+  <data name="POV_Right" xml:space="preserve"><value>右</value></data>
+  <data name="POV_DownRight" xml:space="preserve"><value>右下</value></data>
+  <data name="POV_Down" xml:space="preserve"><value>下</value></data>
+  <data name="POV_DownLeft" xml:space="preserve"><value>左下</value></data>
+  <data name="POV_Left" xml:space="preserve"><value>左</value></data>
+  <data name="POV_UpLeft" xml:space="preserve"><value>左上</value></data>
+
+  <!-- ═══ Mapping ═══ -->
+  <data name="Mapping_NotMapped" xml:space="preserve"><value>未マッピング</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>反転</value></data>
+  <data name="Mapping_Half" xml:space="preserve"><value>半分</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>反転 半分</value></data>
+  <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
+  <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>マッピング済みデバイスなし</value></data>
+
+  <!-- ═══ Profiles ═══ -->
+  <data name="Profiles_Title" xml:space="preserve"><value>プロファイル</value></data>
+  <data name="Profiles_Management" xml:space="preserve"><value>プロファイル管理</value></data>
+  <data name="Profiles_Description" xml:space="preserve"><value>アクティブなゲームに基づいて自動切り替えされるアプリケーション別コントローラープロファイルを作成します。</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>フォアグラウンドアプリケーションに基づいてプロファイルを自動切り替えする</value></data>
+  <data name="Profiles_ActiveProfile" xml:space="preserve"><value>アクティブなプロファイル:</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>スロットなし</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>新規</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>名前を付けて保存</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>編集</value></data>
+  <data name="Profiles_Load" xml:space="preserve"><value>読み込み</value></data>
+
+  <!-- ═══ Profile Dialog ═══ -->
+  <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>プロファイルとして保存</value></data>
+  <data name="ProfileDialog_Edit" xml:space="preserve"><value>プロファイルを編集</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>プロファイル名:</value></data>
+  <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>新規プロファイル</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>実行ファイル (フォアグラウンドウィンドウと照合):</value></data>
+
+  <!-- ═══ CopyFrom Dialog ═══ -->
+  <data name="CopyFrom_Title" xml:space="preserve"><value>設定のコピー元...</value></data>
+  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>設定をコピーするデバイスを選択してください:</value></data>
+
+  <!-- ═══ File Dialogs ═══ -->
+  <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>ホワイトリストに追加するアプリケーションを選択</value></data>
+  <data name="FileDialog_SelectGameExe" xml:space="preserve"><value>ゲームの実行ファイルを選択</value></data>
+  <data name="FileDialog_ExeFilter" xml:space="preserve"><value>実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*</value></data>
+
+  <!-- ═══ App-Level Messages ═══ -->
+  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge は既に実行されています。</value></data>
+  <data name="App_FatalError" xml:space="preserve"><value>PadForge — 致命的なエラー</value></data>
+  <data name="App_Error" xml:space="preserve"><value>PadForge — エラー</value></data>
+  <data name="App_UnexpectedError_Format" xml:space="preserve"><value>予期しないエラーが発生しました:\n\n{0}\n\n{1}</value></data>
+  <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(追加のエラーが {0} 件抑制されました)</value></data>
+
+  <!-- ═══ Polling Frequency ═══ -->
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+
+  <!-- ═══ Preview Views ═══ -->
+  <data name="Preview_CCOutputs" xml:space="preserve"><value>CC 出力</value></data>
+  <data name="Preview_NoteOutputs" xml:space="preserve"><value>ノート出力</value></data>
+  <data name="Preview_Stick_Format" xml:space="preserve"><value>スティック {0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>デッドゾーン X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>デッドゾーン Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>アンチデッドゾーン X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>アンチデッドゾーン Y:</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>リニア:</value></data>
+  <data name="Pad_SensitivityCurves" xml:space="preserve"><value>感度カーブ</value></data>
+  <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>感度 X:</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>感度 Y:</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>最小範囲 X (左):</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>最大範囲 X (右):</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小範囲 Y (下):</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大範囲 Y (上):</value></data>
+  <data name="Pad_XAxis" xml:space="preserve"><value>X 軸</value></data>
+  <data name="Pad_YAxis" xml:space="preserve"><value>Y 軸</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>範囲:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>アンチデッドゾーン:</value></data>
+  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>感度カーブ</value></data>
+  <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>プリセット:</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>ライブ:</value></data>
+  <data name="Pad_TriggerAxis" xml:space="preserve"><value>トリガー軸</value></data>
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>フォースフィードバック / 振動</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン:</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左モーター:</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右モーター:</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>左右モーターを入れ替える</value></data>
+  <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
+  <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
+  <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>センターオフセット X をリセット</value></data>
+  <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>センターオフセット Y をリセット</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>スケールドラジアルにリセット</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>デッドゾーン X をリセット</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>デッドゾーン Y をリセット</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>アンチデッドゾーン X をリセット</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>アンチデッドゾーン Y をリセット</value></data>
+  <data name="Pad_ResetLinear" xml:space="preserve"><value>リニアをリセット</value></data>
+  <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>感度 X をリセット</value></data>
+  <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>感度 Y をリセット</value></data>
+  <data name="Pad_ResetMinRangeX" xml:space="preserve"><value>最小範囲 X をリセット</value></data>
+  <data name="Pad_ResetMaxRangeX" xml:space="preserve"><value>最大範囲 X をリセット</value></data>
+  <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>最小範囲 Y をリセット</value></data>
+  <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>最大範囲 Y をリセット</value></data>
+  <data name="Pad_ResetRange" xml:space="preserve"><value>範囲をリセット</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>アンチデッドゾーンをリセット</value></data>
+  <data name="Pad_ResetSensitivity" xml:space="preserve"><value>感度をリセット</value></data>
+  <data name="Pad_ResetOverallGain" xml:space="preserve"><value>全体ゲインをリセット</value></data>
+  <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
+  <data name="Pad_ResetRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
+  <data name="Pad_ResetView" xml:space="preserve"><value>ビューをリセット</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>ボタンを押すか軸/トリガーを動かして記録します。軸は50%以上の偏向で検出されます。</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windowsシステム音量に継続的にマップし、音量制限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windowsの音量ミキサーで特定アプリケーションの音量を制限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>選択した軸をマウス移動 (またはスクロール) に継続的にマップします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。スティック→マウスの場合、X軸用とY軸用の2つのアクションを作成してください。</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
+  <data name="Btn_Back" xml:space="preserve"><value>戻る</value></data>
+  <data name="Btn_Start" xml:space="preserve"><value>スタート</value></data>
+  <data name="Btn_Guide" xml:space="preserve"><value>ガイド</value></data>
+  <data name="Btn_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
+  <data name="Btn_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
+  <data name="Btn_DPadUp" xml:space="preserve"><value>十字キー 上</value></data>
+  <data name="Btn_DPadDown" xml:space="preserve"><value>十字キー 下</value></data>
+  <data name="Btn_DPadLeft" xml:space="preserve"><value>十字キー 左</value></data>
+  <data name="Btn_DPadRight" xml:space="preserve"><value>十字キー 右</value></data>
+  <data name="Btn_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Btn_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>左サムスティック</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>右サムスティック</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>スクロールホイール</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>スティック {0}</value></data>
+  <data name="Trigger_Format" xml:space="preserve"><value>トリガー {0}</value></data>
+  <data name="Btn_LeftStickX" xml:space="preserve"><value>左スティック X</value></data>
+  <data name="Btn_LeftStickY" xml:space="preserve"><value>左スティック Y</value></data>
+  <data name="Btn_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
+  <data name="Btn_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
+  <data name="Btn_Up" xml:space="preserve"><value>上</value></data>
+  <data name="Btn_Down" xml:space="preserve"><value>下</value></data>
+  <data name="Btn_Left" xml:space="preserve"><value>左</value></data>
+  <data name="Btn_Right" xml:space="preserve"><value>右</value></data>
+  <data name="Btn_Cross" xml:space="preserve"><value>×ボタン</value></data>
+  <data name="Btn_Circle" xml:space="preserve"><value>○ボタン</value></data>
+  <data name="Btn_Square" xml:space="preserve"><value>□ボタン</value></data>
+  <data name="Btn_Triangle" xml:space="preserve"><value>△ボタン</value></data>
+  <data name="Btn_L1" xml:space="preserve"><value>L1</value></data>
+  <data name="Btn_R1" xml:space="preserve"><value>R1</value></data>
+  <data name="Btn_L3" xml:space="preserve"><value>L3</value></data>
+  <data name="Btn_R3" xml:space="preserve"><value>R3</value></data>
+  <data name="Btn_Share" xml:space="preserve"><value>シェア</value></data>
+  <data name="Btn_Options" xml:space="preserve"><value>オプション</value></data>
+  <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <!-- Mouse VK buttons -->
+  <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
+  <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>
+  <data name="Key_Cancel" xml:space="preserve"><value>中断</value></data>
+  <data name="Key_MButton" xml:space="preserve"><value>マウス中ボタン</value></data>
+  <data name="Key_XButton1" xml:space="preserve"><value>マウス X1 ボタン</value></data>
+  <data name="Key_XButton2" xml:space="preserve"><value>マウス X2 ボタン</value></data>
+  <!-- Common keys -->
+  <data name="Key_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Key_Tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="Key_Clear" xml:space="preserve"><value>クリア</value></data>
+  <data name="Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Key_Shift" xml:space="preserve"><value>Shift</value></data>
+  <data name="Key_Control" xml:space="preserve"><value>Ctrl</value></data>
+  <data name="Key_Alt" xml:space="preserve"><value>Alt</value></data>
+  <data name="Key_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Key_CapsLock" xml:space="preserve"><value>Caps Lock</value></data>
+  <data name="Key_Escape" xml:space="preserve"><value>Esc</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>スペース</value></data>
+  <!-- Navigation -->
+  <data name="Key_PageUp" xml:space="preserve"><value>Page Up</value></data>
+  <data name="Key_PageDown" xml:space="preserve"><value>Page Down</value></data>
+  <data name="Key_End" xml:space="preserve"><value>End</value></data>
+  <data name="Key_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Key_Left" xml:space="preserve"><value>← 矢印</value></data>
+  <data name="Key_Up" xml:space="preserve"><value>↑ 矢印</value></data>
+  <data name="Key_Right" xml:space="preserve"><value>→ 矢印</value></data>
+  <data name="Key_Down" xml:space="preserve"><value>↓ 矢印</value></data>
+  <data name="Key_Select" xml:space="preserve"><value>選択</value></data>
+  <data name="Key_Print" xml:space="preserve"><value>印刷</value></data>
+  <data name="Key_Execute" xml:space="preserve"><value>実行</value></data>
+  <data name="Key_PrintScreen" xml:space="preserve"><value>Print Screen</value></data>
+  <data name="Key_Insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="Key_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Key_Help" xml:space="preserve"><value>ヘルプ</value></data>
+  <!-- Windows keys -->
+  <data name="Key_LWin" xml:space="preserve"><value>左 Windows</value></data>
+  <data name="Key_RWin" xml:space="preserve"><value>右 Windows</value></data>
+  <data name="Key_Apps" xml:space="preserve"><value>アプリケーション</value></data>
+  <data name="Key_Sleep" xml:space="preserve"><value>スリープ</value></data>
+  <!-- Numpad -->
+  <data name="Key_Numpad" xml:space="preserve"><value>テンキー</value></data>
+  <data name="Key_Separator" xml:space="preserve"><value>区切り</value></data>
+  <!-- Lock keys -->
+  <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
+  <data name="Key_ScrollLock" xml:space="preserve"><value>Scroll Lock</value></data>
+  <!-- Left/Right modifiers -->
+  <data name="Key_LeftShift" xml:space="preserve"><value>左 Shift</value></data>
+  <data name="Key_RightShift" xml:space="preserve"><value>右 Shift</value></data>
+  <data name="Key_LeftCtrl" xml:space="preserve"><value>左 Ctrl</value></data>
+  <data name="Key_RightCtrl" xml:space="preserve"><value>右 Ctrl</value></data>
+  <data name="Key_LeftAlt" xml:space="preserve"><value>左 Alt</value></data>
+  <data name="Key_RightAlt" xml:space="preserve"><value>右 Alt</value></data>
+  <!-- Browser keys -->
+  <data name="Key_BrowserBack" xml:space="preserve"><value>ブラウザー 戻る</value></data>
+  <data name="Key_BrowserForward" xml:space="preserve"><value>ブラウザー 進む</value></data>
+  <data name="Key_BrowserRefresh" xml:space="preserve"><value>ブラウザー 更新</value></data>
+  <data name="Key_BrowserStop" xml:space="preserve"><value>ブラウザー 中止</value></data>
+  <data name="Key_BrowserSearch" xml:space="preserve"><value>ブラウザー 検索</value></data>
+  <data name="Key_BrowserFavorites" xml:space="preserve"><value>ブラウザー お気に入り</value></data>
+  <data name="Key_BrowserHome" xml:space="preserve"><value>ブラウザー ホーム</value></data>
+  <!-- Media keys -->
+  <data name="Key_VolumeMute" xml:space="preserve"><value>ミュート</value></data>
+  <data name="Key_VolumeDown" xml:space="preserve"><value>音量ダウン</value></data>
+  <data name="Key_VolumeUp" xml:space="preserve"><value>音量アップ</value></data>
+  <data name="Key_MediaNext" xml:space="preserve"><value>次のトラック</value></data>
+  <data name="Key_MediaPrev" xml:space="preserve"><value>前のトラック</value></data>
+  <data name="Key_MediaStop" xml:space="preserve"><value>メディア停止</value></data>
+  <data name="Key_MediaPlayPause" xml:space="preserve"><value>再生/一時停止</value></data>
+  <data name="Key_LaunchMail" xml:space="preserve"><value>メール起動</value></data>
+  <data name="Key_LaunchMediaSelect" xml:space="preserve"><value>メディア選択</value></data>
+  <data name="Key_LaunchApp1" xml:space="preserve"><value>アプリケーション 1 起動</value></data>
+  <data name="Key_LaunchApp2" xml:space="preserve"><value>アプリケーション 2 起動</value></data>
+  <data name="Mouse_LeftClick" xml:space="preserve"><value>左クリック</value></data>
+  <data name="Mouse_RightClick" xml:space="preserve"><value>右クリック</value></data>
+  <data name="Mouse_MiddleClick" xml:space="preserve"><value>中クリック</value></data>
+  <data name="Mouse_Button4" xml:space="preserve"><value>マウス 4</value></data>
+  <data name="Mouse_Button5" xml:space="preserve"><value>マウス 5</value></data>
+  <data name="Mouse_X" xml:space="preserve"><value>マウス X</value></data>
+  <data name="Mouse_Y" xml:space="preserve"><value>マウス Y</value></data>
+  <data name="Mouse_Scroll" xml:space="preserve"><value>スクロール</value></data>
+  <data name="VJoy_Stick_Format" xml:space="preserve"><value>スティック {0} X</value></data>
+  <data name="VJoy_StickY_Format" xml:space="preserve"><value>スティック {0} Y</value></data>
+  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>トリガー {0}</value></data>
+  <data name="VJoy_Button_Format" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="VJoy_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="MacroAxis_XAxis" xml:space="preserve"><value>左スティック X</value></data>
+  <data name="MacroAxis_YAxis" xml:space="preserve"><value>左スティック Y</value></data>
+  <data name="MacroAxis_XRotation" xml:space="preserve"><value>右スティック X</value></data>
+  <data name="MacroAxis_YRotation" xml:space="preserve"><value>右スティック Y</value></data>
+  <data name="MacroAxis_ZAxis" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="MacroAxis_ZRotation" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="DevObj_LeftStickX" xml:space="preserve"><value>左スティック X</value></data>
+  <data name="DevObj_LeftStickY" xml:space="preserve"><value>左スティック Y</value></data>
+  <data name="DevObj_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="DevObj_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
+  <data name="DevObj_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
+  <data name="DevObj_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="DevObj_Back" xml:space="preserve"><value>戻る</value></data>
+  <data name="DevObj_Start" xml:space="preserve"><value>スタート</value></data>
+  <data name="DevObj_Guide" xml:space="preserve"><value>ガイド</value></data>
+  <data name="DevObj_XAxis" xml:space="preserve"><value>X 軸</value></data>
+  <data name="DevObj_YAxis" xml:space="preserve"><value>Y 軸</value></data>
+  <data name="DevObj_ZAxis" xml:space="preserve"><value>Z 軸</value></data>
+  <data name="DevObj_XRotation" xml:space="preserve"><value>X 回転</value></data>
+  <data name="DevObj_YRotation" xml:space="preserve"><value>Y 回転</value></data>
+  <data name="DevObj_ZRotation" xml:space="preserve"><value>Z 回転</value></data>
+  <data name="DevObj_Slider" xml:space="preserve"><value>スライダー {0}</value></data>
+  <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
+  <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="DevObj_Button" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
+  <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
+  <data name="DevObj_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
+
+</root>

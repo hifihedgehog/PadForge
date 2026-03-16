@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using ModernWpf;
 using PadForge.Common.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge
 {
@@ -24,13 +25,31 @@ namespace PadForge
             _singleInstanceMutex = new Mutex(true, "PadForge_SingleInstance", out bool isNewInstance);
             if (!isNewInstance)
             {
-                MessageBox.Show("PadForge is already running.", "PadForge",
+                MessageBox.Show(Strings.Instance.App_AlreadyRunning, Strings.Instance.Common_PadForge,
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 Shutdown();
                 return;
             }
 
             base.OnStartup(e);
+
+            // Apply saved language preference before any UI is created.
+            var settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.xml");
+            if (File.Exists(settingsPath))
+            {
+                try
+                {
+                    var xml = File.ReadAllText(settingsPath);
+                    var langMatch = System.Text.RegularExpressions.Regex.Match(xml, @"<Language>([^<]+)</Language>");
+                    if (langMatch.Success && !string.IsNullOrEmpty(langMatch.Groups[1].Value))
+                    {
+                        var culture = new System.Globalization.CultureInfo(langMatch.Groups[1].Value);
+                        Thread.CurrentThread.CurrentUICulture = culture;
+                        System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = culture;
+                    }
+                }
+                catch { /* ignore parse errors, use system default */ }
+            }
 
             // vJoy device node creation/removal requires admin privileges.
             // If the vJoy driver is installed, relaunch elevated.
@@ -93,8 +112,8 @@ namespace PadForge
             if (e.ExceptionObject is Exception ex)
             {
                 MessageBox.Show(
-                    $"An unexpected error occurred:\n\n{ex.Message}\n\n{ex.StackTrace}",
-                    "PadForge — Fatal Error",
+                    string.Format(Strings.Instance.App_UnexpectedError_Format, ex.Message, ex.StackTrace),
+                    Strings.Instance.App_FatalError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -117,13 +136,13 @@ namespace PadForge
 
             _lastErrorTime.Restart();
             string suppressed = _suppressedErrorCount > 0
-                ? $"\n\n({_suppressedErrorCount} additional error(s) suppressed)"
+                ? "\n\n" + string.Format(Strings.Instance.App_SuppressedErrors_Format, _suppressedErrorCount)
                 : string.Empty;
             _suppressedErrorCount = 0;
 
             MessageBox.Show(
-                $"An unexpected error occurred:\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace}{suppressed}",
-                "PadForge — Error",
+                string.Format(Strings.Instance.App_UnexpectedError_Format, e.Exception.Message, e.Exception.StackTrace) + suppressed,
+                Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -11,6 +12,18 @@ namespace PadForge.ViewModels
     /// </summary>
     public class DeviceRowViewModel : ObservableObject
     {
+        public DeviceRowViewModel()
+        {
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(DeviceType));
+            OnPropertyChanged(nameof(StatusText));
+            OnPropertyChanged(nameof(CapabilitiesSummary));
+        }
+
         // ─────────────────────────────────────────────
         //  Identity
         // ─────────────────────────────────────────────
@@ -131,9 +144,9 @@ namespace PadForge.ViewModels
         {
             get
             {
-                if (!_isEnabled) return "Disabled";
-                if (_isOnline) return "Online";
-                return "Offline";
+                if (!_isEnabled) return Strings.Instance.Common_Disabled;
+                if (_isOnline) return Strings.Instance.Common_Online;
+                return Strings.Instance.Common_Offline;
             }
         }
 
@@ -168,14 +181,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _povCount, value);
         }
 
-        private string _deviceType = string.Empty;
-
-        /// <summary>Device type description (e.g., "Gamepad", "Flight Stick", "Wheel").</summary>
-        public string DeviceType
+        /// <summary>Internal English device type key for comparison logic (e.g., "Gamepad", "Mouse").</summary>
+        private string _deviceTypeKey = string.Empty;
+        public string DeviceTypeKey
         {
-            get => _deviceType;
-            set => SetProperty(ref _deviceType, value);
+            get => _deviceTypeKey;
+            set { if (SetProperty(ref _deviceTypeKey, value)) OnPropertyChanged(nameof(DeviceType)); }
         }
+
+        /// <summary>Localized device type description for display, derived from DeviceTypeKey.</summary>
+        public string DeviceType => DeviceTypeKey switch
+        {
+            "Gamepad" => Strings.Instance.DeviceType_Gamepad,
+            "Joystick" => Strings.Instance.DeviceType_Joystick,
+            "Wheel" => Strings.Instance.DeviceType_Wheel,
+            "FlightStick" => Strings.Instance.DeviceType_FlightStick,
+            "FirstPerson" => Strings.Instance.DeviceType_FirstPerson,
+            "Supplemental" => Strings.Instance.DeviceType_Supplemental,
+            "Mouse" => Strings.Instance.DeviceType_Mouse,
+            "Keyboard" => Strings.Instance.DeviceType_Keyboard,
+            _ => Strings.Instance.DeviceType_Device
+        };
 
         private bool _hasRumble;
 
@@ -288,7 +314,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
-        public bool ShowConsumeToggle => _deviceType == "Keyboard" || _deviceType == "Mouse";
+        public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";
 
         // ─────────────────────────────────────────────
         //  Device path
@@ -317,17 +343,17 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>True if this device is recognized as a gamepad (SDL or custom mapping).</summary>
-        public bool IsGamepad => _deviceType == "Gamepad";
+        public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => _deviceType != "Gamepad" && _deviceType != "Mouse" && _deviceType != "Keyboard";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard";
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>
-            $"{_axisCount} axes, {_buttonCount} buttons, {_povCount} {(_povCount == 1 ? "POV" : "POVs")}" +
-            (_hasRumble ? ", Rumble" : "") +
-            (_hasGyro ? ", Gyro" : "") +
-            (_hasAccel ? ", Accel" : "");
+            string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
+            (_hasRumble ? ", " + Strings.Instance.Devices_Rumble : "") +
+            (_hasGyro ? ", " + Strings.Instance.Devices_Gyro : "") +
+            (_hasAccel ? ", " + Strings.Instance.Devices_Accel : "");
 
         /// <summary>
         /// Refreshes computed display properties.

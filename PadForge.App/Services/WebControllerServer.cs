@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using PadForge.Engine;
 using PadForge.Models2D;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Services
 {
@@ -106,22 +107,22 @@ namespace PadForge.Services
                 Log($"Server started on port {port}");
 
                 var url = $"http://{_localIp}:{port}";
-                StatusChanged?.Invoke(this, $"Running on {url}");
+                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningOn_Format, url));
                 return true;
             }
             catch (HttpListenerException ex)
             {
                 _listener = null;
                 var msg = ex.ErrorCode == 5
-                    ? $"Access denied for port {port} (run as admin)"
-                    : $"Port {port} in use";
+                    ? string.Format(Strings.Instance.Server_AccessDenied_Format, port)
+                    : string.Format(Strings.Instance.Server_PortInUse_Format, port);
                 StatusChanged?.Invoke(this, msg);
                 return false;
             }
             catch (Exception)
             {
                 _listener = null;
-                StatusChanged?.Invoke(this, "Failed to start");
+                StatusChanged?.Invoke(this, Strings.Instance.Server_FailedToStart);
                 return false;
             }
         }
@@ -148,7 +149,7 @@ namespace PadForge.Services
             _clientPadIds.Clear();
             _nextPadId = 0;
 
-            StatusChanged?.Invoke(this, "Stopped");
+            StatusChanged?.Invoke(this, Strings.Instance.Common_Stopped);
         }
 
         public void Dispose()
@@ -312,7 +313,7 @@ namespace PadForge.Services
 
                 // Notify that a device connected.
                 DeviceConnected?.Invoke(device);
-                StatusChanged?.Invoke(this, $"Running ({_clients.Count} clients)");
+                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count));
 
                 // Send connection confirmation.
                 await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token);
@@ -349,8 +350,8 @@ namespace PadForge.Services
 
                 DeviceDisconnected?.Invoke(device);
                 StatusChanged?.Invoke(this, _clients.Count > 0
-                    ? $"Running ({_clients.Count} clients)"
-                    : $"Running on http://{_localIp}:{_port}");
+                    ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
+                    : string.Format(Strings.Instance.Server_RunningOn_Format, $"http://{_localIp}:{_port}"));
 
                 try
                 {

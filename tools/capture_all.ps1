@@ -450,6 +450,16 @@ if ($appSettings) {
         $appSettings.AppendChild($wcNode) | Out-Null
     }
     Write-Host "  Set EnableWebController=true for capture"
+
+    # Force English language for screenshots (nav items use localized text)
+    $langNode = $appSettings.SelectSingleNode("Language")
+    if ($langNode) { $langNode.InnerText = "en" }
+    else {
+        $langNode = $xml.CreateElement("Language")
+        $langNode.InnerText = "en"
+        $appSettings.AppendChild($langNode) | Out-Null
+    }
+    Write-Host "  Set Language=en for English screenshots"
 }
 
 $xml.Save($PadForgeXml)

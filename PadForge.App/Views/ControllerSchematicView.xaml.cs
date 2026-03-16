@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -272,7 +273,7 @@ namespace PadForge.Views
             SchematicCanvas.Children.Add(stickArrowCanvas);
 
             // Label
-            var label = CreateLabel($"Stick {index + 1}", x, y - LabelHeight);
+            var label = CreateLabel(string.Format(Strings.Instance.Preview_Stick_Format, index + 1), x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
             // Hover: show direction arrow for hovered quadrant
@@ -363,7 +364,7 @@ namespace PadForge.Views
             SchematicCanvas.Children.Add(fill);
 
             // Label
-            var label = CreateLabel($"T{index + 1}", x, y - LabelHeight);
+            var label = CreateLabel(string.Format(Strings.Instance.Preview_Trigger_Format, index + 1), x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
             // Hover highlight
@@ -445,7 +446,7 @@ namespace PadForge.Views
             SchematicCanvas.Children.Add(arrowCanvas);
 
             // Label
-            string povLabel = _vm.VJoyConfig.PovCount == 1 ? "D-Pad" : $"POV {index + 1}";
+            string povLabel = _vm.VJoyConfig.PovCount == 1 ? Strings.Instance.Preview_DPad : string.Format(Strings.Instance.Preview_POV_Format, index + 1);
             var label = CreateLabel(povLabel, x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 

@@ -453,7 +453,7 @@
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nuova macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Registra attivatore</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Non impostato — clicca Registra</value></data>
-  <data name="Macro_Btn_Format" xml:space="preserve"><value>Btn {0}</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>Pulsante {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(nessuno)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Asse dispositivo {0}</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Azione sconosciuta</value></data>
@@ -474,7 +474,7 @@
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Movimento mouse ← {0} (velocità {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Sposta mouse di {0} (max {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Scorrimento mouse ← {0} (velocità {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scorri di {0} (max {1}unità)</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scorri di {0} (max {1} unità)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Pressione mouse {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Rilascio mouse {0}</value></data>
 
@@ -747,11 +747,11 @@
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
-  <data name="DevObj_LeftStickX" xml:space="preserve"><value>Stick sinistro X</value></data>
-  <data name="DevObj_LeftStickY" xml:space="preserve"><value>Stick sinistro Y</value></data>
+  <data name="DevObj_LeftStickX" xml:space="preserve"><value>Levetta sinistra X</value></data>
+  <data name="DevObj_LeftStickY" xml:space="preserve"><value>Levetta sinistra Y</value></data>
   <data name="DevObj_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
-  <data name="DevObj_RightStickX" xml:space="preserve"><value>Stick destro X</value></data>
-  <data name="DevObj_RightStickY" xml:space="preserve"><value>Stick destro Y</value></data>
+  <data name="DevObj_RightStickX" xml:space="preserve"><value>Levetta destra X</value></data>
+  <data name="DevObj_RightStickY" xml:space="preserve"><value>Levetta destra Y</value></data>
   <data name="DevObj_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
   <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="DevObj_Back" xml:space="preserve"><value>Indietro</value></data>

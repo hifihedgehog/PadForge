@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>오류: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>기본값</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>장치가 선택되지 않았습니다.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>잘못된 슬롯 인덱스: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>장치 할당에 실패했습니다.</value></data>

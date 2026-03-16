@@ -166,6 +166,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_Error_Format => Get("Status_Error_Format");
     public string Status_ProfileSwitched_Format => Get("Status_ProfileSwitched_Format");
     public string Status_ProfileSwitchedDefault => Get("Status_ProfileSwitchedDefault");
+    public string Profile_Default => Get("Profile_Default");
     public string Status_NoDeviceSelected => Get("Status_NoDeviceSelected");
     public string Status_InvalidSlotIndex_Format => Get("Status_InvalidSlotIndex_Format");
     public string Status_FailedAssignDevice => Get("Status_FailedAssignDevice");

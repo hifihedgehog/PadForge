@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>エラー: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>デフォルト</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>

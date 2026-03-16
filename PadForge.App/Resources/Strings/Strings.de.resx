@@ -193,6 +193,7 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Fehler: {0}</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil gewechselt: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil gewechselt: Standard</value></data>
+  <data name="Profile_Default" xml:space="preserve"><value>Standard</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Kein Gerät ausgewählt.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ungültiger Slot-Index: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Gerätezuweisung fehlgeschlagen.</value></data>

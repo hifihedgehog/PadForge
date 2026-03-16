@@ -376,6 +376,15 @@
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opties</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverteren</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Half</value></data>
+  <data name="Curve_Linear" xml:space="preserve"><value>Lineair</value></data>
+  <data name="Curve_Smooth" xml:space="preserve"><value>Zacht</value></data>
+  <data name="Curve_Aggressive" xml:space="preserve"><value>Agressief</value></data>
+  <data name="Curve_Instant" xml:space="preserve"><value>Direct</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>S-curve</value></data>
+  <data name="Curve_Delay" xml:space="preserve"><value>Vertraagd</value></data>
+  <data name="Curve_Custom" xml:space="preserve"><value>Aangepast</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Midden kalibreren</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Meten...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middenverschuiving X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y:</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Dode-zonevorm:</value></data>

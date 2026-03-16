@@ -611,6 +611,11 @@
   <data name="Btn_DPadRight" xml:space="preserve"><value>十字键 右</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>左摇杆</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>右摇杆</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>滚轮</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>摇杆 {0}</value></data>
+  <data name="Trigger_Format" xml:space="preserve"><value>扳机 {0}</value></data>
   <data name="Btn_LeftStickX" xml:space="preserve"><value>左摇杆 X</value></data>
   <data name="Btn_LeftStickY" xml:space="preserve"><value>左摇杆 Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>右摇杆 X</value></data>

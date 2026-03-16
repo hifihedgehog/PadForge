@@ -877,12 +877,12 @@ namespace PadForge.ViewModels
             if (isKbm)
             {
                 // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
-                var mouse = new StickConfigItem(0, "Mouse Movement", -1, -1);
+                var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1);
                 SyncStickItemFromVm(mouse);
                 mouse.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(mouse);
 
-                var scroll = new StickConfigItem(1, "Scroll Wheel", -1, -1);
+                var scroll = new StickConfigItem(1, Strings.Instance.Stick_ScrollWheel, -1, -1);
                 SyncStickItemFromVm(scroll);
                 scroll.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(scroll);
@@ -901,8 +901,8 @@ namespace PadForge.ViewModels
             for (int i = 0; i < count; i++)
             {
                 string title = isCustomVJoy
-                    ? $"Stick {i + 1}"
-                    : i == 0 ? "Left Thumbstick" : "Right Thumbstick";
+                    ? string.Format(Strings.Instance.Stick_Format, i + 1)
+                    : i == 0 ? Strings.Instance.Stick_LeftThumbstick : Strings.Instance.Stick_RightThumbstick;
                 int xiIdx = axX != null ? axX[i] : -1;
                 int yiIdx = axY != null ? axY[i] : -1;
                 var item = new StickConfigItem(i, title, xiIdx, yiIdx);
@@ -939,7 +939,7 @@ namespace PadForge.ViewModels
             for (int i = 0; i < count; i++)
             {
                 string title = isCustomVJoy
-                    ? $"Trigger {i + 1}"
+                    ? string.Format(Strings.Instance.Trigger_Format, i + 1)
                     : i == 0 ? Strings.Instance.Btn_LeftTrigger : Strings.Instance.Btn_RightTrigger;
                 int ai = trAx != null ? trAx[i] : -1;
                 var item = new TriggerConfigItem(i, title, ai);

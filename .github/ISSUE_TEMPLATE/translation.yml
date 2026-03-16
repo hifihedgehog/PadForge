@@ -1,0 +1,71 @@
+name: Translation Submission
+description: Submit a translation for PadForge's UI in your language
+title: "[Translation] "
+labels: ["translation", "enhancement"]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      description: The language you are submitting a translation for
+      placeholder: "e.g. German, French, Japanese, Brazilian Portuguese"
+    validations:
+      required: true
+
+  - type: input
+    id: locale_code
+    attributes:
+      label: Locale Code
+      description: The .NET culture code for this language
+      placeholder: "e.g. de, fr, ja, pt-BR, zh-Hans, ko, es"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: coverage
+    attributes:
+      label: Translation Coverage
+      description: How much of the UI have you translated?
+      options:
+        - Full (all strings)
+        - Partial (most strings)
+        - Partial (some strings)
+    validations:
+      required: true
+
+  - type: textarea
+    id: translation_file
+    attributes:
+      label: Translation File
+      description: |
+        Attach your translated `.resx` file, or paste the translated string key/value pairs here.
+
+        Format: one entry per line as `Key = Translated Value`
+
+        Example:
+        ```
+        Dashboard.Title = Tableau de bord
+        Common.Save = Enregistrer
+        Common.Cancel = Annuler
+        Settings.Drivers.Header = Pilotes
+        ```
+      placeholder: "Paste translated strings or attach a .resx file..."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: I am a native or fluent speaker of this language
+          required: true
+        - label: I have tested the translations for length/overflow in the UI (if possible)
+          required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Any context about translation choices, regional dialect, or strings you were unsure about
+      placeholder: "e.g. I used formal register (Sie) for German, left technical terms like 'XInput' untranslated..."

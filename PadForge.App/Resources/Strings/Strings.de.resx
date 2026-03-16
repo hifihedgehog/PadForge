@@ -735,7 +735,7 @@
   <data name="DevObj_RightStickX" xml:space="preserve"><value>Rechter Stick X</value></data>
   <data name="DevObj_RightStickY" xml:space="preserve"><value>Rechter Stick Y</value></data>
   <data name="DevObj_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
-  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
   <data name="DevObj_Back" xml:space="preserve"><value>Zurück</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>Start</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guide</value></data>

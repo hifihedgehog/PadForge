@@ -453,7 +453,7 @@
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nueva macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Grabar activador</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>No establecido — haga clic en Grabar</value></data>
-  <data name="Macro_Btn_Format" xml:space="preserve"><value>Btn {0}</value></data>
+  <data name="Macro_Btn_Format" xml:space="preserve"><value>Botón {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(ninguno)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Eje de dispositivo {0}</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Acción desconocida</value></data>
@@ -474,7 +474,7 @@
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Mover ratón ← {0} (velocidad {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Mover ratón en {0} (máx. {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Desplazamiento del ratón ← {0} (velocidad {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Desplazar en {0} (máx. {1}unidades)</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Desplazar en {0} (máx. {1} unidades)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Presionar ratón {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar ratón {0}</value></data>
 
@@ -605,14 +605,14 @@
   <data name="Btn_Guide" xml:space="preserve"><value>Guía</value></data>
   <data name="Btn_LeftStickButton" xml:space="preserve"><value>Botón palanca izquierda</value></data>
   <data name="Btn_RightStickButton" xml:space="preserve"><value>Botón palanca derecha</value></data>
-  <data name="Btn_DPadUp" xml:space="preserve"><value>Cruceta Arriba</value></data>
-  <data name="Btn_DPadDown" xml:space="preserve"><value>Cruceta Abajo</value></data>
-  <data name="Btn_DPadLeft" xml:space="preserve"><value>Cruceta Izquierda</value></data>
-  <data name="Btn_DPadRight" xml:space="preserve"><value>Cruceta Derecha</value></data>
+  <data name="Btn_DPadUp" xml:space="preserve"><value>Cruceta arriba</value></data>
+  <data name="Btn_DPadDown" xml:space="preserve"><value>Cruceta abajo</value></data>
+  <data name="Btn_DPadLeft" xml:space="preserve"><value>Cruceta izquierda</value></data>
+  <data name="Btn_DPadRight" xml:space="preserve"><value>Cruceta derecha</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
-  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Joystick izquierdo</value></data>
-  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Joystick derecho</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Palanca izquierda</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Palanca derecha</value></data>
   <data name="Stick_ScrollWheel" xml:space="preserve"><value>Rueda de desplazamiento</value></data>
   <data name="Stick_Format" xml:space="preserve"><value>Palanca {0}</value></data>
   <data name="Trigger_Format" xml:space="preserve"><value>Gatillo {0}</value></data>
@@ -735,7 +735,7 @@
   <data name="DevObj_RightStickX" xml:space="preserve"><value>Palanca derecha X</value></data>
   <data name="DevObj_RightStickY" xml:space="preserve"><value>Palanca derecha Y</value></data>
   <data name="DevObj_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
-  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>Cruceta</value></data>
   <data name="DevObj_Back" xml:space="preserve"><value>Atrás</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>Inicio</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guía</value></data>

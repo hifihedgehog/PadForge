@@ -735,7 +735,7 @@
   <data name="DevObj_RightStickX" xml:space="preserve"><value>右摇杆 X</value></data>
   <data name="DevObj_RightStickY" xml:space="preserve"><value>右摇杆 Y</value></data>
   <data name="DevObj_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
-  <data name="DevObj_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="DevObj_DPad" xml:space="preserve"><value>十字键</value></data>
   <data name="DevObj_Back" xml:space="preserve"><value>返回</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>开始</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>指南</value></data>

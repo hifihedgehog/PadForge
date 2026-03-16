@@ -548,7 +548,6 @@ namespace PadForge
                     string.Equals(m.TargetSettingName, posTargetName, StringComparison.OrdinalIgnoreCase));
                 if (mapping == null) return;
 
-                padVm.CurrentRecordingTarget = targetName;
                 Guid deviceGuid = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
 
                 if (isNegTarget)
@@ -556,6 +555,10 @@ namespace PadForge
 
                 _recorderService.StartRecording(mapping, padVm.PadIndex, deviceGuid,
                     negRecording: isNegTarget);
+
+                // Only show arrow/flash if recording actually started (device available).
+                if (_recorderService.IsRecording)
+                    padVm.CurrentRecordingTarget = targetName;
             };
 
             // Wire Map All events for each pad.
@@ -2702,17 +2705,14 @@ namespace PadForge
                         && (mi.TargetSettingName.Contains("AxisY")
                             || mi.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
                     if (isYAxis)
-                    {
-                        capturedPad.CurrentRecordingTarget = mi.NegSettingName;
                         _pendingNegMapping = mi;
-                    }
-                    else
-                    {
-                        capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
-                    }
 
                     _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid,
                         negRecording: isYAxis);
+
+                    // Only show arrow/flash if recording actually started (device available).
+                    if (_recorderService.IsRecording)
+                        capturedPad.CurrentRecordingTarget = isYAxis ? mi.NegSettingName : mi.TargetSettingName;
                 }
             };
             mapping.StopRecordingRequested += (s, e) =>

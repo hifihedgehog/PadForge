@@ -231,7 +231,7 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = true;
-            _mainVm.StatusText = "Engine started.";
+            _mainVm.StatusText = Strings.Instance.Status_EngineStarted;
             _mainVm.RefreshCommands();
 
             // Enter idle immediately if no slots are created.
@@ -304,7 +304,7 @@ namespace PadForge.Services
             _mainVm.Dashboard.PollingFrequency = 0;
             _mainVm.Dashboard.OnlineDevices = 0;
             _mainVm.PollingFrequency = 0;
-            _mainVm.StatusText = "Engine stopped.";
+            _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
             _mainVm.RefreshCommands();
 
             // Mark all device rows offline so indicators turn gray.
@@ -564,11 +564,11 @@ namespace PadForge.Services
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
                 slot.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
-                slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? "Disabled"
-                    : slot.IsInitializing ? "Initializing"
-                    : mappedCount == 0 ? "No mapping"
-                    : padVm.IsDeviceOnline ? "Active"
-                    : "Idle";
+                slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? Strings.Instance.Common_Disabled
+                    : slot.IsInitializing ? Strings.Instance.Main_Initializing
+                    : mappedCount == 0 ? Strings.Instance.Status_NoMapping
+                    : padVm.IsDeviceOnline ? Strings.Instance.Main_Active
+                    : Strings.Instance.Common_Idle;
             }
 
             int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, globalCount = 0;
@@ -1583,7 +1583,7 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(() =>
             {
-                _mainVm.StatusText = $"Error: {e.Message}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_Error_Format, e.Message);
             }));
         }
 
@@ -3114,7 +3114,7 @@ namespace PadForge.Services
                     SettingsManager.ActiveProfileId = profileId;
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
                     ApplyProfile(target);
-                    _mainVm.StatusText = $"Profile switched: {target.Name}";
+                    _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }
             else
@@ -3124,7 +3124,7 @@ namespace PadForge.Services
                 _mainVm.Settings.ActiveProfileInfo = "Default";
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
-                _mainVm.StatusText = "Profile switched: Default";
+                _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
         }
 

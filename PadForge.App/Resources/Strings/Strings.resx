@@ -177,6 +177,30 @@
   <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtual Controller {0} — {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>Assigned "{0}" to Virtual Controller {1}.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Unmapped — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Error loading settings: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Settings saved to {0}.</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Error saving settings: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>Settings reset to defaults.</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>Settings reloaded from disk.</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>No settings file found on disk.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>No device connected to record from.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Recording: press a button or move an axis for "{0}"...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Recording cancelled.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Recording timed out for "{0}".</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>Engine started.</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>Engine stopped.</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>No mapping</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profile switched: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profile switched: Default</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>No device selected.</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Invalid slot index: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Failed to assign device.</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Assigned "{0}" to Virtual Controller {1}.</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Unassigned "{0}" from Virtual Controller {1}.</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>Device hidden. (Can be restored in settings file.)</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>Device removed.</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtual Controller {0} deleted.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>

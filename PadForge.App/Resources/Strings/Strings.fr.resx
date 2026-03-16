@@ -177,6 +177,30 @@
   <data name="Status_VirtualController_Format" xml:space="preserve"><value>Contrôleur virtuel {0} — {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>« {0} » assigné au contrôleur virtuel {1}.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Non assigné — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Erreur de chargement des paramètres : {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Paramètres enregistrés dans {0}.</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Erreur d'enregistrement des paramètres : {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>Paramètres réinitialisés aux valeurs par défaut.</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>Paramètres rechargés depuis le disque.</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>Aucun fichier de paramètres trouvé sur le disque.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Aucun périphérique connecté pour l'enregistrement.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Enregistrement : appuyez sur un bouton ou déplacez un axe pour « {0} »...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Enregistrement annulé.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Enregistrement expiré pour « {0} ».</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>Moteur démarré.</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>Moteur arrêté.</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>Aucune assignation</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>Erreur : {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil changé : {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil changé : Par défaut</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Aucun périphérique sélectionné.</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Index de slot invalide : {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Échec de l'assignation du périphérique.</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>« {0} » assigné au contrôleur virtuel {1}.</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>« {0} » retiré du contrôleur virtuel {1}.</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>Périphérique masqué. (Peut être restauré dans le fichier de paramètres.)</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>Périphérique supprimé.</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Contrôleur virtuel {0} supprimé.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>Tableau de bord</value></data>

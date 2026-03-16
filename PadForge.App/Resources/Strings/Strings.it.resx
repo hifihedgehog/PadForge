@@ -614,6 +614,11 @@
   <data name="Btn_DPadRight" xml:space="preserve"><value>D-Pad Destra</value></data>
   <data name="Btn_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
   <data name="Btn_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
+  <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Levetta sinistra</value></data>
+  <data name="Stick_RightThumbstick" xml:space="preserve"><value>Levetta destra</value></data>
+  <data name="Stick_ScrollWheel" xml:space="preserve"><value>Rotella di scorrimento</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
+  <data name="Trigger_Format" xml:space="preserve"><value>Grilletto {0}</value></data>
   <data name="Btn_LeftStickX" xml:space="preserve"><value>Levetta sinistra X</value></data>
   <data name="Btn_LeftStickY" xml:space="preserve"><value>Levetta sinistra Y</value></data>
   <data name="Btn_RightStickX" xml:space="preserve"><value>Levetta destra X</value></data>

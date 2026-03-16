@@ -376,6 +376,15 @@
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>选项</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>反转</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>半程</value></data>
+  <data name="Curve_Linear" xml:space="preserve"><value>线性</value></data>
+  <data name="Curve_Smooth" xml:space="preserve"><value>平滑</value></data>
+  <data name="Curve_Aggressive" xml:space="preserve"><value>激进</value></data>
+  <data name="Curve_Instant" xml:space="preserve"><value>瞬时</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>S 曲线</value></data>
+  <data name="Curve_Delay" xml:space="preserve"><value>延迟</value></data>
+  <data name="Curve_Custom" xml:space="preserve"><value>自定义</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>校准中心</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>采样中...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心偏移 X：</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心偏移 Y：</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>死区形状：</value></data>

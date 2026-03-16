@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Common
 {
@@ -101,17 +102,35 @@ namespace PadForge.Common
             return Serialize(points);
         }
 
-        /// <summary>Returns the preset name matching a curve string, or "Custom" if none match.</summary>
+        /// <summary>Returns the localized preset name matching a curve string, or "Custom" if none match.</summary>
         public static string MatchPreset(string curveString)
         {
-            if (string.IsNullOrEmpty(curveString)) return Presets[0].Name; // Linear
+            if (string.IsNullOrEmpty(curveString)) return LocalizePresetName(Presets[0].Name);
             var normalized = Normalize(curveString);
             foreach (var (name, serialized) in Presets)
-                if (normalized == Normalize(serialized)) return name;
-            return "Custom";
+                if (normalized == Normalize(serialized)) return LocalizePresetName(name);
+            return Strings.Instance.Curve_Custom;
         }
 
-        /// <summary>Named presets for the UI.</summary>
+        /// <summary>Finds the serialized curve string for a localized preset display name.</summary>
+        public static string FindSerializedByDisplayName(string displayName)
+        {
+            foreach (var (name, serialized) in Presets)
+                if (LocalizePresetName(name) == displayName) return serialized;
+            return null;
+        }
+
+        /// <summary>Builds a localized display name array for the curve preset combo boxes.</summary>
+        public static string[] BuildPresetDisplayNames()
+        {
+            var names = new string[Presets.Length + 1];
+            for (int i = 0; i < Presets.Length; i++)
+                names[i] = LocalizePresetName(Presets[i].Name);
+            names[Presets.Length] = Strings.Instance.Curve_Custom;
+            return names;
+        }
+
+        /// <summary>Named presets (internal keys + serialized curve data).</summary>
         public static readonly (string Name, string Serialized)[] Presets =
         {
             ("Linear",     "0,0;1,1"),
@@ -120,6 +139,17 @@ namespace PadForge.Common
             ("Instant",    "0,0;0.1,0.9;1,1"),
             ("S-Curve",    "0,0;0.3,0.1;0.7,0.9;1,1"),
             ("Delay",      "0,0;0.8,0.2;1,1"),
+        };
+
+        private static string LocalizePresetName(string internalName) => internalName switch
+        {
+            "Linear"     => Strings.Instance.Curve_Linear,
+            "Smooth"     => Strings.Instance.Curve_Smooth,
+            "Aggressive" => Strings.Instance.Curve_Aggressive,
+            "Instant"    => Strings.Instance.Curve_Instant,
+            "S-Curve"    => Strings.Instance.Curve_SCurve,
+            "Delay"      => Strings.Instance.Curve_Delay,
+            _            => internalName,
         };
 
         // ── Private ──

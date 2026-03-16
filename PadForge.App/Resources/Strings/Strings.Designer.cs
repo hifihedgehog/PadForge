@@ -335,6 +335,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_HeaderOptions => Get("Pad_HeaderOptions");
     public string Pad_Invert => Get("Pad_Invert");
     public string Pad_Half => Get("Pad_Half");
+    public string Curve_Linear => Get("Curve_Linear");
+    public string Curve_Smooth => Get("Curve_Smooth");
+    public string Curve_Aggressive => Get("Curve_Aggressive");
+    public string Curve_Instant => Get("Curve_Instant");
+    public string Curve_SCurve => Get("Curve_SCurve");
+    public string Curve_Delay => Get("Curve_Delay");
+    public string Curve_Custom => Get("Curve_Custom");
+    public string Pad_CalibrateCenter => Get("Pad_CalibrateCenter");
+    public string Pad_Sampling => Get("Pad_Sampling");
     public string Pad_CenterOffsetX => Get("Pad_CenterOffsetX");
     public string Pad_CenterOffsetY => Get("Pad_CenterOffsetY");
     public string Pad_DeadZoneShape => Get("Pad_DeadZoneShape");

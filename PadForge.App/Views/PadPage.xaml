@@ -409,7 +409,7 @@
                     <!-- ══════════════════════════════════════
                          MOTOR ACTIVITY INDICATORS
                          ══════════════════════════════════════ -->
-                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" MaxWidth="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" MaxWidth="600" Margin="0,4,0,4" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="24"/>
@@ -430,7 +430,7 @@
                                            HorizontalAlignment="Left"
                                            Width="{Binding LeftMotorDisplay,
                                                Converter={StaticResource NormToTriggerHeightConverter},
-                                               ConverterParameter=240}"/>
+                                               ConverterParameter=288}"/>
                             </Border>
                         </StackPanel>
 
@@ -448,7 +448,7 @@
                                            HorizontalAlignment="Left"
                                            Width="{Binding RightMotorDisplay,
                                                Converter={StaticResource NormToTriggerHeightConverter},
-                                               ConverterParameter=240}"/>
+                                               ConverterParameter=288}"/>
                             </Border>
                         </StackPanel>
                     </Grid>

@@ -177,6 +177,30 @@
   <data name="Status_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0} — {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}"을(를) 가상 컨트롤러 {1}에 할당했습니다.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>매핑되지 않음 — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>설정 로드 오류: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>설정이 {0}에 저장되었습니다.</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>설정 저장 오류: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>설정이 기본값으로 초기화되었습니다.</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>디스크에서 설정을 다시 로드했습니다.</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>디스크에서 설정 파일을 찾을 수 없습니다.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>녹화할 장치가 연결되어 있지 않습니다.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>녹화 중: "{0}"에 대해 버튼을 누르거나 축을 움직이세요...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>녹화가 취소되었습니다.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"에 대한 녹화 시간이 초과되었습니다.</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>엔진이 시작되었습니다.</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>엔진이 중지되었습니다.</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>매핑 없음</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>오류: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>장치가 선택되지 않았습니다.</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>잘못된 슬롯 인덱스: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>장치 할당에 실패했습니다.</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}"을(를) 가상 컨트롤러 {1}에 할당했습니다.</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}"을(를) 가상 컨트롤러 {1}에서 해제했습니다.</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>장치가 숨겨졌습니다. (설정 파일에서 복원할 수 있습니다.)</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>장치가 제거되었습니다.</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>가상 컨트롤러 {0}이(가) 삭제되었습니다.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>대시보드</value></data>

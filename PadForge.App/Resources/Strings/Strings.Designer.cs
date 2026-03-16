@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
 using System.Resources;
 
 namespace PadForge.Resources.Strings;
@@ -18,11 +19,77 @@ public class Strings : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
+    // ── Weak CultureChanged event ──────────────────────────
+    // Subscribers whose Target is null (static methods / static lambdas) are
+    // stored with a strong reference.  Instance-method subscribers are stored
+    // as (WeakReference<Target>, MethodInfo) so they don't prevent GC of the
+    // subscribing object.  Dead entries are pruned on every raise.
+
+    private static readonly object _cultureLock = new();
+    private static readonly List<Action> _staticCultureHandlers = new();
+    private static readonly List<WeakCultureEntry> _weakCultureHandlers = new();
+
+    private readonly struct WeakCultureEntry
+    {
+        public readonly WeakReference<object> TargetRef;
+        public readonly MethodInfo Method;
+        public WeakCultureEntry(object target, MethodInfo method)
+        {
+            TargetRef = new WeakReference<object>(target);
+            Method = method;
+        }
+    }
+
     /// <summary>
     /// Raised after <see cref="ChangeCulture"/> so ViewModels can refresh their own
     /// culture-dependent computed properties (status text, titles, etc.).
+    /// Instance-method handlers are held weakly — subscribers do NOT need to
+    /// unsubscribe to avoid leaking.
     /// </summary>
-    public static event Action CultureChanged;
+    public static event Action CultureChanged
+    {
+        add
+        {
+            if (value == null) return;
+            lock (_cultureLock)
+            {
+                if (value.Target == null)
+                    _staticCultureHandlers.Add(value);
+                else
+                    _weakCultureHandlers.Add(new WeakCultureEntry(value.Target, value.Method));
+            }
+        }
+        remove
+        {
+            if (value == null) return;
+            lock (_cultureLock)
+            {
+                if (value.Target == null)
+                    _staticCultureHandlers.Remove(value);
+                // Weak entries are auto-pruned on raise; explicit remove is best-effort.
+            }
+        }
+    }
+
+    private static void RaiseCultureChanged()
+    {
+        List<Action> snapshot;
+        lock (_cultureLock)
+        {
+            snapshot = new List<Action>(_staticCultureHandlers.Count + _weakCultureHandlers.Count);
+            snapshot.AddRange(_staticCultureHandlers);
+            for (int i = _weakCultureHandlers.Count - 1; i >= 0; i--)
+            {
+                var entry = _weakCultureHandlers[i];
+                if (entry.TargetRef.TryGetTarget(out var target))
+                    snapshot.Add((Action)Delegate.CreateDelegate(typeof(Action), target, entry.Method));
+                else
+                    _weakCultureHandlers.RemoveAt(i);
+            }
+        }
+        foreach (var handler in snapshot)
+            handler();
+    }
 
     public static string Get(string key) => _rm.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 
@@ -35,7 +102,7 @@ public class Strings : INotifyPropertyChanged
         Thread.CurrentThread.CurrentUICulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
         Instance.PropertyChanged?.Invoke(Instance, new PropertyChangedEventArgs(null));
-        CultureChanged?.Invoke();
+        RaiseCultureChanged();
     }
 
     public string Common_Save => Get("Common_Save");

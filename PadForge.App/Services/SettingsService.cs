@@ -637,7 +637,7 @@ namespace PadForge.Services
             var defaultItem = new ViewModels.ProfileListItem
             {
                 Id = ViewModels.ProfileListItem.DefaultProfileId,
-                Name = "Default",
+                Name = Strings.Instance.Profile_Default,
             };
             var slotTypes = Enumerable.Range(0, SettingsManager.SlotCreated.Length)
                 .Select(i => i < _mainVm.Pads.Count ? (int)_mainVm.Pads[i].OutputType : 0).ToArray();
@@ -663,7 +663,7 @@ namespace PadForge.Services
             // Update active profile display.
             string activeId = appSettings?.ActiveProfileId;
             var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
-            _mainVm.Settings.ActiveProfileInfo = active?.Name ?? "Default";
+            _mainVm.Settings.ActiveProfileInfo = active?.Name ?? Strings.Instance.Profile_Default;
 
             // If a named profile was active at shutdown, snapshot the default
             // profile's state (loaded by LoadAppSettings) before overwriting with
@@ -1318,9 +1318,9 @@ namespace PadForge.Services
             settingsVm.ProfileItems.Add(new ViewModels.ProfileListItem
             {
                 Id = ViewModels.ProfileListItem.DefaultProfileId,
-                Name = "Default",
+                Name = Strings.Instance.Profile_Default,
             });
-            settingsVm.ActiveProfileInfo = "Default";
+            settingsVm.ActiveProfileInfo = Strings.Instance.Profile_Default;
 
             IsDirty = true;
             settingsVm.HasUnsavedChanges = true;

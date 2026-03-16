@@ -52,8 +52,7 @@ namespace PadForge.Views
                 string deviceKind = dev.DeviceTypeKey == "Mouse"
                     ? Strings.Instance.Devices_DeviceKind_Mouse
                     : Strings.Instance.Devices_DeviceKind_Keyboard;
-                bool isMerged = dev.DeviceName?.Contains("(Merged)") == true ||
-                                dev.DeviceName?.Contains("All ") == true;
+                bool isMerged = dev.DevicePath?.StartsWith("aggregate://") == true;
 
                 string scope = isMerged
                     ? string.Format(Strings.Instance.Devices_WarnScope_Format, deviceKind)

@@ -177,6 +177,30 @@
   <data name="Status_VirtualController_Format" xml:space="preserve"><value>Controller virtuale {0} — {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" assegnato al controller virtuale {1}.</value></data>
   <data name="Status_Unmapped_Format" xml:space="preserve"><value>Non assegnato — {0}</value></data>
+  <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Errore nel caricamento delle impostazioni: {0}</value></data>
+  <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Impostazioni salvate in {0}.</value></data>
+  <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Errore nel salvataggio delle impostazioni: {0}</value></data>
+  <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>Impostazioni ripristinate ai valori predefiniti.</value></data>
+  <data name="Status_SettingsReloaded" xml:space="preserve"><value>Impostazioni ricaricate dal disco.</value></data>
+  <data name="Status_NoSettingsFile" xml:space="preserve"><value>Nessun file di impostazioni trovato sul disco.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Nessun dispositivo connesso per la registrazione.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Registrazione: premi un pulsante o muovi un asse per "{0}"...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Registrazione annullata.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Registrazione scaduta per "{0}".</value></data>
+  <data name="Status_EngineStarted" xml:space="preserve"><value>Motore avviato.</value></data>
+  <data name="Status_EngineStopped" xml:space="preserve"><value>Motore arrestato.</value></data>
+  <data name="Status_NoMapping" xml:space="preserve"><value>Nessuna mappatura</value></data>
+  <data name="Status_Error_Format" xml:space="preserve"><value>Errore: {0}</value></data>
+  <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profilo cambiato: {0}</value></data>
+  <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profilo cambiato: Predefinito</value></data>
+  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Nessun dispositivo selezionato.</value></data>
+  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Indice slot non valido: {0}</value></data>
+  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Assegnazione dispositivo non riuscita.</value></data>
+  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" assegnato al controller virtuale {1}.</value></data>
+  <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" rimosso dal controller virtuale {1}.</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>Dispositivo nascosto. (Può essere ripristinato nel file di impostazioni.)</value></data>
+  <data name="Status_DeviceRemoved" xml:space="preserve"><value>Dispositivo rimosso.</value></data>
+  <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Controller virtuale {0} eliminato.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>Pannello</value></data>

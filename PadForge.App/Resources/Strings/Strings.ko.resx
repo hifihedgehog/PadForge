@@ -386,6 +386,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>클릭하여 오른쪽 모터 테스트</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>R 모터</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>전체 매핑</value></data>
+  <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>매핑: {0}</value></data>
   <data name="Pad_MapAllTooltip" xml:space="preserve"><value>모든 매핑을 순서대로 녹화합니다 — 각 프롬프트에 맞는 버튼/축을 누르십시오</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>모든 매핑을 하나씩 순서대로 녹화합니다</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>매핑 행을 클릭한 후 컨트롤러의 버튼/축을 눌러 할당하십시오.</value></data>

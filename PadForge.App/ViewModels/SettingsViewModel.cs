@@ -1,7 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -14,7 +18,7 @@ namespace PadForge.ViewModels
     {
         public SettingsViewModel()
         {
-            Title = "Settings";
+            Title = Strings.Instance.Settings_Title;
         }
 
         // ─────────────────────────────────────────────
@@ -40,6 +44,79 @@ namespace PadForge.ViewModels
         public event EventHandler<int> ThemeChanged;
 
         // ─────────────────────────────────────────────
+        //  Language
+        // ─────────────────────────────────────────────
+
+        public ObservableCollection<CultureInfo> AvailableLanguages { get; } = new()
+        {
+            new CultureInfo("en"),
+            new CultureInfo("de"),
+            new CultureInfo("fr"),
+            new CultureInfo("ja"),
+            new CultureInfo("ko"),
+            new CultureInfo("zh-Hans"),
+            new CultureInfo("pt-BR"),
+            new CultureInfo("es"),
+            new CultureInfo("it"),
+            new CultureInfo("nl"),
+        };
+
+        private CultureInfo _selectedLanguage;
+
+        /// <summary>
+        /// Currently selected UI language. Persisted as the culture name (e.g. "en", "ja").
+        /// Changing this applies the new language immediately (live switching).
+        /// </summary>
+        public CultureInfo SelectedLanguage
+        {
+            get
+            {
+                if (_selectedLanguage != null) return _selectedLanguage;
+                var current = CultureInfo.CurrentUICulture.Name;
+                var match = AvailableLanguages.FirstOrDefault(c => c.Name == current)
+                         ?? AvailableLanguages[0];
+                return match;
+            }
+            set
+            {
+                if (SetProperty(ref _selectedLanguage, value) && value != null)
+                    Strings.ChangeCulture(value);
+            }
+        }
+
+        protected override void OnCultureChanged()
+        {
+            Title = Strings.Instance.Settings_Title;
+            OnPropertyChanged(nameof(ViGEmStatusText));
+            OnPropertyChanged(nameof(HidHideStatusText));
+            OnPropertyChanged(nameof(VJoyStatusText));
+            OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(ActiveProfileInfo));
+        }
+
+        /// <summary>Gets the persisted language code (for serialization).</summary>
+        internal string LanguageCode => _selectedLanguage?.Name ?? "";
+
+        /// <summary>Sets the language from a persisted code, applying the culture on startup.</summary>
+        internal void SetLanguageFromCode(string code)
+        {
+            if (!string.IsNullOrEmpty(code))
+            {
+                var match = AvailableLanguages.FirstOrDefault(c => c.Name == code);
+                if (match != null)
+                {
+                    _selectedLanguage = match;
+                    // Apply the culture so the UI thread and resource lookups use
+                    // the saved language immediately (without raising CultureChanged
+                    // since the UI hasn't been built yet at load time).
+                    Thread.CurrentThread.CurrentUICulture = match;
+                    CultureInfo.DefaultThreadCurrentUICulture = match;
+                    OnPropertyChanged(nameof(SelectedLanguage));
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  ViGEmBus driver
         // ─────────────────────────────────────────────
 
@@ -61,7 +138,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>ViGEmBus status display text.</summary>
-        public string ViGEmStatusText => _isViGEmInstalled ? "Installed" : "Not Installed";
+        public string ViGEmStatusText => _isViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _vigemVersion = string.Empty;
 
@@ -117,7 +194,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>HidHide status display text.</summary>
-        public string HidHideStatusText => _isHidHideInstalled ? "Installed" : "Not Installed";
+        public string HidHideStatusText => _isHidHideInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _hidHideVersion = string.Empty;
 
@@ -220,7 +297,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>vJoy status display text.</summary>
-        public string VJoyStatusText => _isVJoyInstalled ? "Installed" : "Not Installed";
+        public string VJoyStatusText => _isVJoyInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _vjoyVersion = string.Empty;
 
@@ -275,7 +352,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>MIDI Services status display text.</summary>
-        public string MidiServicesStatusText => _isMidiServicesInstalled ? "Installed" : "Not Installed";
+        public string MidiServicesStatusText => _isMidiServicesInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private string _midiServicesVersion = string.Empty;
 
@@ -559,7 +636,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        private string _activeProfileInfo = "Default";
+        private string _activeProfileInfo = Strings.Instance.Common_Default;
 
         /// <summary>Display text for the currently active profile.</summary>
         public string ActiveProfileInfo
@@ -567,7 +644,7 @@ namespace PadForge.ViewModels
             get => _activeProfileInfo;
             set
             {
-                SetProperty(ref _activeProfileInfo, value ?? "Default");
+                SetProperty(ref _activeProfileInfo, value ?? Strings.Instance.Common_Default);
             }
         }
 
@@ -678,8 +755,10 @@ namespace PadForge.ViewModels
         public string TopologyLabel
         {
             get => _topologyLabel;
-            set => SetProperty(ref _topologyLabel, value);
+            set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
+
+        public bool HasNoSlots => XboxCount == 0 && DS4Count == 0 && VJoyCount == 0 && MidiCount == 0 && KbmCount == 0;
 
         private int _xboxCount;
         public int XboxCount

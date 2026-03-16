@@ -7,6 +7,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Services
@@ -105,6 +106,9 @@ namespace PadForge.Services
         {
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
             _dispatcher = Dispatcher.CurrentDispatcher;
+
+            // Refresh server status strings when language changes.
+            Strings.CultureChanged += OnCultureChanged;
 
             // Subscribe to device selection changes on each pad.
             foreach (var padVm in _mainVm.Pads)
@@ -227,7 +231,7 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = true;
-            _mainVm.StatusText = "Engine started.";
+            _mainVm.StatusText = Strings.Instance.Status_EngineStarted;
             _mainVm.RefreshCommands();
 
             // Enter idle immediately if no slots are created.
@@ -295,11 +299,12 @@ namespace PadForge.Services
 
             // Update main VM state.
             _mainVm.IsEngineRunning = false;
-            _mainVm.Dashboard.EngineStatus = "Stopped";
+            _mainVm.Dashboard.EngineStateKey = "Stopped";
+            _mainVm.Dashboard.EngineStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.PollingFrequency = 0;
             _mainVm.Dashboard.OnlineDevices = 0;
             _mainVm.PollingFrequency = 0;
-            _mainVm.StatusText = "Engine stopped.";
+            _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
             _mainVm.RefreshCommands();
 
             // Mark all device rows offline so indicators turn gray.
@@ -463,8 +468,15 @@ namespace PadForge.Services
         {
             var dash = _mainVm.Dashboard;
 
-            dash.EngineStatus = !_inputManager.IsRunning ? "Stopped"
+            var engineKey = !_inputManager.IsRunning ? "Stopped"
                 : _inputManager.IsIdle ? "Idle" : "Running";
+            dash.EngineStateKey = engineKey;
+            dash.EngineStatus = engineKey switch
+            {
+                "Running" => Strings.Instance.Common_Running,
+                "Idle" => Strings.Instance.Common_Idle,
+                _ => Strings.Instance.Common_Stopped,
+            };
             dash.PollingFrequency = _inputManager.CurrentFrequency;
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
@@ -552,11 +564,11 @@ namespace PadForge.Services
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
                 slot.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
-                slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? "Disabled"
-                    : slot.IsInitializing ? "Initializing"
-                    : mappedCount == 0 ? "No mapping"
-                    : padVm.IsDeviceOnline ? "Active"
-                    : "Idle";
+                slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? Strings.Instance.Common_Disabled
+                    : slot.IsInitializing ? Strings.Instance.Main_Initializing
+                    : mappedCount == 0 ? Strings.Instance.Status_NoMapping
+                    : padVm.IsDeviceOnline ? Strings.Instance.Main_Active
+                    : Strings.Instance.Common_Idle;
             }
 
             int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, globalCount = 0;
@@ -693,14 +705,11 @@ namespace PadForge.Services
 
             // Find the UserDevice for the selected row.
             UserDevice ud = FindUserDevice(selected.InstanceGuid);
-            if (ud == null || ud.InputState == null)
+            if (ud == null)
             {
                 devVm.HasRawData = false;
                 return;
             }
-
-            devVm.HasRawData = true;
-            var state = ud.InputState;
 
             // Rebuild collections when the selected device changes.
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
@@ -717,6 +726,14 @@ namespace PadForge.Services
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
             }
+
+            devVm.HasRawData = true;
+
+            // Device exists but disconnected — structural layout is visible, skip value updates.
+            if (ud.InputState == null)
+                return;
+
+            var state = ud.InputState;
 
             // Mouse visual — update motion and scroll display properties.
             if (devVm.IsMouseDevice)
@@ -1165,32 +1182,21 @@ namespace PadForge.Services
                 if (match && !string.IsNullOrEmpty(obj.Name))
                 {
                     // Build display text: e.g. "A" or "Inv. Left Stick X"
-                    string display = obj.Name;
+                    string display = LocalizeObjectName(obj.Name);
 
                     // For POV descriptors with a direction suffix (e.g., "POV 0 Up"),
-                    // replace generic name like "Hat Switch" with "Hat Up".
+                    // use "D-Pad Up" for gamepads or "POV 0 Up" for raw devices.
                     if (typeName == "pov" && parts.Length >= 3)
                     {
-                        string dir = parts[2] switch
-                        {
-                            "UpRight" => "Up-Right",
-                            "DownRight" => "Down-Right",
-                            "DownLeft" => "Down-Left",
-                            "UpLeft" => "Up-Left",
-                            _ => parts[2]
-                        };
-                        display = $"POV {index} {dir}";
+                        string dir = ResolvePovDirection(parts[2]);
+                        display = obj.Name == "D-Pad"
+                            ? $"{display} {dir}"
+                            : string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
                     {
-                        string prefixLabel = prefix.ToUpperInvariant() switch
-                        {
-                            "I" => "Inv.",
-                            "H" => "Half",
-                            "IH" => "Inv. Half",
-                            _ => ""
-                        };
+                        string prefixLabel = ResolvePrefixLabel(prefix);
                         if (!string.IsNullOrEmpty(prefixLabel))
                             display = $"{prefixLabel} {display}";
                     }
@@ -1260,30 +1266,19 @@ namespace PadForge.Services
 
                 if (match && !string.IsNullOrEmpty(obj.Name))
                 {
-                    string display = obj.Name;
+                    string display = LocalizeObjectName(obj.Name);
 
                     if (typeName == "pov" && parts.Length >= 3)
                     {
-                        string dir = parts[2] switch
-                        {
-                            "UpRight" => "Up-Right",
-                            "DownRight" => "Down-Right",
-                            "DownLeft" => "Down-Left",
-                            "UpLeft" => "Up-Left",
-                            _ => parts[2]
-                        };
-                        display = $"POV {index} {dir}";
+                        string dir = ResolvePovDirection(parts[2]);
+                        display = obj.Name == "D-Pad"
+                            ? $"{display} {dir}"
+                            : string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
                     }
 
                     if (!string.IsNullOrEmpty(prefix))
                     {
-                        string prefixLabel = prefix.ToUpperInvariant() switch
-                        {
-                            "I" => "Inv.",
-                            "H" => "Half",
-                            "IH" => "Inv. Half",
-                            _ => ""
-                        };
+                        string prefixLabel = ResolvePrefixLabel(prefix);
                         if (!string.IsNullOrEmpty(prefixLabel))
                             display = $"{prefixLabel} {display}";
                     }
@@ -1292,6 +1287,83 @@ namespace PadForge.Services
             }
             return null;
         }
+
+        /// <summary>
+        /// Maps an Engine-level object name (invariant English) to its localized display string.
+        /// Falls back to the original name if no localization is defined.
+        /// </summary>
+        internal static string LocalizeObjectName(string name)
+        {
+            // Try exact match first (gamepad names, single hat, standard axes).
+            var s = Strings.Instance;
+            var localized = name switch
+            {
+                // Gamepad axes
+                "Left Stick X" => s.DevObj_LeftStickX,
+                "Left Stick Y" => s.DevObj_LeftStickY,
+                "Left Trigger" => s.DevObj_LeftTrigger,
+                "Right Stick X" => s.DevObj_RightStickX,
+                "Right Stick Y" => s.DevObj_RightStickY,
+                "Right Trigger" => s.DevObj_RightTrigger,
+                // Gamepad hat
+                "D-Pad" => s.DevObj_DPad,
+                // Gamepad buttons (only the ones that need translation)
+                "Left Shoulder" => s.DevObj_LeftShoulder,
+                "Right Shoulder" => s.DevObj_RightShoulder,
+                "Left Stick Button" => s.DevObj_LeftStickButton,
+                "Right Stick Button" => s.DevObj_RightStickButton,
+                "Back" => s.DevObj_Back,
+                "Start" => s.DevObj_Start,
+                "Guide" => s.DevObj_Guide,
+                // Raw axes
+                "X Axis" => s.DevObj_XAxis,
+                "Y Axis" => s.DevObj_YAxis,
+                "Z Axis" => s.DevObj_ZAxis,
+                "X Rotation" => s.DevObj_XRotation,
+                "Y Rotation" => s.DevObj_YRotation,
+                "Z Rotation" => s.DevObj_ZRotation,
+                // Raw POV (single)
+                "POV" => s.DevObj_POV,
+                _ => null
+            };
+            if (localized != null) return localized;
+
+            // Parametric patterns: "Slider 0", "POV 2", "Button 5"
+            if (name.StartsWith("Slider ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(7), out int sliderIdx))
+                return string.Format(s.DevObj_Slider, sliderIdx);
+
+            if (name.StartsWith("POV ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(4), out int hatIdx))
+                return string.Format(s.DevObj_POVN, hatIdx);
+
+            if (name.StartsWith("Button ", StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(7), out int btnIdx))
+                return string.Format(s.DevObj_Button, btnIdx);
+
+            return name;
+        }
+
+        private static string ResolvePrefixLabel(string prefix) => prefix.ToUpperInvariant() switch
+        {
+            "I" => Strings.Instance.Mapping_Inv,
+            "H" => Strings.Instance.Mapping_Half,
+            "IH" => Strings.Instance.Mapping_InvHalf,
+            _ => ""
+        };
+
+        private static string ResolvePovDirection(string dir) => dir switch
+        {
+            "Up" => Strings.Instance.POV_Up,
+            "UpRight" => Strings.Instance.POV_UpRight,
+            "Right" => Strings.Instance.POV_Right,
+            "DownRight" => Strings.Instance.POV_DownRight,
+            "Down" => Strings.Instance.POV_Down,
+            "DownLeft" => Strings.Instance.POV_DownLeft,
+            "Left" => Strings.Instance.POV_Left,
+            "UpLeft" => Strings.Instance.POV_UpLeft,
+            _ => dir
+        };
 
         // ─────────────────────────────────────────────
         //  Copy / Paste settings
@@ -1319,6 +1391,34 @@ namespace PadForge.Services
 
             // Copy all settings from the source.
             ps.CopyFrom(source);
+
+            // Reload the ViewModel to reflect the new values.
+            LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+        }
+
+        /// <summary>
+        /// Applies a PadSetting from a source layout to the current device with cross-layout translation.
+        /// </summary>
+        public void ApplyPadSettingToCurrentDeviceTranslated(int padIndex, PadSetting source,
+            VirtualControllerType sourceType, bool sourceIsCustomVJoy,
+            VirtualControllerType targetType, bool targetIsCustomVJoy)
+        {
+            if (source == null || padIndex < 0 || padIndex >= _mainVm.Pads.Count)
+                return;
+
+            var padVm = _mainVm.Pads[padIndex];
+            var selected = padVm.SelectedMappedDevice;
+            if (selected == null || selected.InstanceGuid == Guid.Empty)
+                return;
+
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, padIndex);
+            if (us == null) return;
+
+            var ps = us.GetPadSetting();
+            if (ps == null) return;
+
+            // Copy with cross-layout translation.
+            ps.CopyFromTranslated(source, sourceType, sourceIsCustomVJoy, targetType, targetIsCustomVJoy);
 
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
@@ -1511,7 +1611,7 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(() =>
             {
-                _mainVm.StatusText = $"Error: {e.Message}";
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_Error_Format, e.Message);
             }));
         }
 
@@ -1663,8 +1763,43 @@ namespace PadForge.Services
             _webServer.StatusChanged -= OnWebServerStatusChanged;
             _webServer.Dispose();
             _webServer = null;
-            _mainVm.Dashboard.WebControllerStatus = "Stopped";
+            _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+        }
+
+        private void OnCultureChanged() => _dispatcher.BeginInvoke(RefreshServerStatusStrings);
+
+        /// <summary>
+        /// Re-sets server status display strings after a language change.
+        /// </summary>
+        private void RefreshServerStatusStrings()
+        {
+            var dash = _mainVm.Dashboard;
+
+            // Engine status — re-derive localized text from the invariant key.
+            dash.EngineStatus = dash.EngineStateKey switch
+            {
+                "Running" => Strings.Instance.Common_Running,
+                "Idle" => Strings.Instance.Common_Idle,
+                _ => Strings.Instance.Common_Stopped,
+            };
+
+            // DSU server
+            if (_dsuServer == null)
+                dash.DsuServerStatus = Strings.Instance.Common_Stopped;
+            else
+                dash.DsuServerStatus = string.Format(Strings.Instance.Server_ListeningOn_Format, _mainVm.Dashboard.DsuMotionServerPort);
+
+            // Web controller server
+            if (_webServer == null)
+                dash.WebControllerStatus = Strings.Instance.Common_Stopped;
+            else
+            {
+                int clients = dash.WebControllerClientCount;
+                dash.WebControllerStatus = clients > 0
+                    ? string.Format(Strings.Instance.Server_RunningClients_Format, clients)
+                    : string.Format(Strings.Instance.Server_RunningOn_Format, _webServer.Url ?? "");
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -2046,7 +2181,9 @@ namespace PadForge.Services
         private void PopulateDeviceRow(DeviceRowViewModel row, UserDevice ud)
         {
             row.InstanceGuid = ud.InstanceGuid;
-            row.DeviceName = ud.ResolvedName;
+            row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
+                           : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
+                           : ud.ResolvedName;
             row.ProductName = ud.ProductName;
             row.ProductGuid = ud.ProductGuid;
             row.VendorId = ud.VendorId;
@@ -2090,14 +2227,14 @@ namespace PadForge.Services
             row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
-            // Resolve device type name.
-            row.DeviceType = ud.CapType switch
+            // Set internal device type key (DeviceType display is computed from this).
+            row.DeviceTypeKey = ud.CapType switch
             {
                 InputDeviceType.Gamepad => "Gamepad",
                 InputDeviceType.Joystick => "Joystick",
                 InputDeviceType.Driving => "Wheel",
-                InputDeviceType.Flight => "Flight Stick",
-                InputDeviceType.FirstPerson => "First Person",
+                InputDeviceType.Flight => "FlightStick",
+                InputDeviceType.FirstPerson => "FirstPerson",
                 InputDeviceType.Supplemental => "Supplemental",
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
@@ -3009,17 +3146,17 @@ namespace PadForge.Services
                     SettingsManager.ActiveProfileId = profileId;
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
                     ApplyProfile(target);
-                    _mainVm.StatusText = $"Profile switched: {target.Name}";
+                    _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }
             else
             {
                 // Revert to default (root) profile using the startup snapshot.
                 SettingsManager.ActiveProfileId = null;
-                _mainVm.Settings.ActiveProfileInfo = "Default";
+                _mainVm.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
-                _mainVm.StatusText = "Profile switched: Default";
+                _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
         }
 

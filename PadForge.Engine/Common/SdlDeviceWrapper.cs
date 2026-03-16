@@ -608,6 +608,8 @@ namespace PadForge.Engine
                 ObjectGuid.RzAxis
             };
 
+            bool isGamepad = GameController != IntPtr.Zero;
+
             // --- Axes ---
             for (int i = 0; i < NumAxes; i++)
             {
@@ -617,7 +619,7 @@ namespace PadForge.Engine
                 if (i < standardAxisGuids.Length)
                 {
                     item.ObjectTypeGuid = standardAxisGuids[i];
-                    item.Name = GetStandardAxisName(i);
+                    item.Name = isGamepad ? GetGamepadAxisName(i) : GetStandardAxisName(i);
                 }
                 else
                 {
@@ -638,7 +640,8 @@ namespace PadForge.Engine
                 var item = new DeviceObjectItem();
                 item.InputIndex = i;
                 item.ObjectTypeGuid = ObjectGuid.PovController;
-                item.Name = NumHats == 1 ? "Hat Switch" : $"Hat Switch {i}";
+                item.Name = isGamepad ? "D-Pad"
+                    : NumHats == 1 ? "POV" : $"POV {i}";
                 item.ObjectType = DeviceObjectTypeFlags.PointOfViewController;
                 item.Offset = (NumAxes + i) * 4;
                 item.Aspect = ObjectAspect.Position;
@@ -652,7 +655,7 @@ namespace PadForge.Engine
                 var item = new DeviceObjectItem();
                 item.InputIndex = i;
                 item.ObjectTypeGuid = ObjectGuid.Button;
-                item.Name = $"Button {i}";
+                item.Name = isGamepad ? GetGamepadButtonName(i) : $"Button {i}";
                 item.ObjectType = DeviceObjectTypeFlags.PushButton;
                 item.Offset = (NumAxes + NumHats + i) * 4;
                 item.Aspect = ObjectAspect.Position;
@@ -818,7 +821,8 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Returns a human-readable name for standard axis indices 0–5.
+        /// Returns a human-readable name for standard axis indices 0–5 (raw joystick devices).
+        /// Uses DirectInput-style naming matching joy.cpl.
         /// </summary>
         private static string GetStandardAxisName(int axisIndex)
         {
@@ -831,6 +835,46 @@ namespace PadForge.Engine
                 4 => "Y Rotation",
                 5 => "Z Rotation",
                 _ => $"Axis {axisIndex}"
+            };
+        }
+
+        /// <summary>
+        /// Returns a gamepad-friendly axis name for indices 0–5.
+        /// Order matches PadForge internal mapping: LX, LY, LT, RX, RY, RT.
+        /// </summary>
+        private static string GetGamepadAxisName(int axisIndex)
+        {
+            return axisIndex switch
+            {
+                0 => "Left Stick X",
+                1 => "Left Stick Y",
+                2 => "Left Trigger",
+                3 => "Right Stick X",
+                4 => "Right Stick Y",
+                5 => "Right Trigger",
+                _ => $"Axis {axisIndex}"
+            };
+        }
+
+        /// <summary>
+        /// Returns a gamepad-friendly button name for the standard 11 gamepad buttons.
+        /// </summary>
+        private static string GetGamepadButtonName(int buttonIndex)
+        {
+            return buttonIndex switch
+            {
+                0 => "A",
+                1 => "B",
+                2 => "X",
+                3 => "Y",
+                4 => "Left Shoulder",
+                5 => "Right Shoulder",
+                6 => "Back",
+                7 => "Start",
+                8 => "Left Stick Button",
+                9 => "Right Stick Button",
+                10 => "Guide",
+                _ => $"Button {buttonIndex}"
             };
         }
 

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -242,7 +243,7 @@ namespace PadForge.Views
                 Fill = DimBrush, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_scrollUpArrow);
-            _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " Up";
+            _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollUp;
             _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
             _scrollUpArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
             _scrollUpArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScroll"); e.Handled = true; };
@@ -253,7 +254,7 @@ namespace PadForge.Views
                 Fill = DimBrush, Cursor = Cursors.Hand
             };
             MouseCanvas.Children.Add(_scrollDownArrow);
-            _scrollDownArrow.ToolTip = MappingLabel("KbmScroll") + " Down";
+            _scrollDownArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollDown;
             _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
             _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
             _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
@@ -273,7 +274,7 @@ namespace PadForge.Views
                 Width = MoveSize, Height = MoveSize,
                 Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
                 Stroke = DimBrush, StrokeThickness = 1.5, Cursor = Cursors.Hand,
-                ToolTip = "Mouse Movement"
+                ToolTip = Strings.Instance.Pad_MouseMovement
             };
             Canvas.SetLeft(_moveCircle, moveX);
             Canvas.SetTop(_moveCircle, MoveTop);

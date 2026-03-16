@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Services
 {
@@ -118,21 +119,21 @@ namespace PadForge.Services
                 };
                 _receiveThread.Start();
 
-                StatusChanged?.Invoke(this, $"Listening on :{port}");
+                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_ListeningOn_Format, port));
                 return true;
             }
             catch (SocketException ex) when (ex.SocketErrorCode == SocketError.AddressAlreadyInUse)
             {
                 _socket?.Dispose();
                 _socket = null;
-                StatusChanged?.Invoke(this, $"Port {port} in use");
+                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_PortInUse_Format, port));
                 return false;
             }
             catch (Exception)
             {
                 _socket?.Dispose();
                 _socket = null;
-                StatusChanged?.Invoke(this, "Failed to start");
+                StatusChanged?.Invoke(this, Strings.Instance.Server_FailedToStart);
                 return false;
             }
         }
@@ -163,7 +164,7 @@ namespace PadForge.Services
             for (int i = 0; i < MaxSlots; i++)
                 _packetCounters[i] = 0;
 
-            StatusChanged?.Invoke(this, "Stopped");
+            StatusChanged?.Invoke(this, Strings.Instance.Common_Stopped);
         }
 
         // ─────────────────────────────────────────────

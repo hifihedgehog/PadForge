@@ -373,7 +373,9 @@ namespace PadForge.Common.Input
             //   Buttons: A(0), B(1), X(2), Y(3), LB(4), RB(5),
             //            Back(6), Start(7), LS(8), RS(9), Guide(10)
             //   Hats: 1 (D-pad)
-            if (ud.CapType == InputDeviceType.Gamepad)
+            // Skip auto-mapping when Force Raw Joystick Mode is enabled —
+            // the user wants to record raw mappings manually.
+            if (ud.CapType == InputDeviceType.Gamepad && !ud.ForceRawJoystickMode)
             {
                 if (outputType == Engine.VirtualControllerType.Midi)
                 {

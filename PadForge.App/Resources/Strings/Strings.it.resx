@@ -634,8 +634,14 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappa continuamente l'asse selezionato (0–100%) al volume di sistema di Windows, scalato al limite di volume. Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controlla il volume di un'applicazione specifica nel mixer del volume di Windows, scalato al limite di volume. Inserisci il nome del processo (visibile nel Task Manager). Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mappa continuamente l'asse selezionato al movimento del mouse (o scorrimento). Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio". Per levetta-a-mouse, crea due azioni: una per l'asse X, una per l'asse Y.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverti asse</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostra OSD volume</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Direzione</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Qualsiasi</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positivo</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negativo</value></data>
 
-  <!-- ═══ 3D View ═══ -->
+  <!--═══ 3D View ═══ -->
   <data name="Pad_ResetView" xml:space="preserve"><value>Ripristina vista</value></data>
 
   <!-- ═══ Gamepad Button Labels ═══ -->
@@ -805,6 +811,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Pulsante {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>Asse {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Dorsale sinistro</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>Dorsale destro</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Pulsante levetta sinistra</value></data>

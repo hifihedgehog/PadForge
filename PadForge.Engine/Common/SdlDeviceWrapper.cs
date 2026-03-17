@@ -474,7 +474,11 @@ namespace PadForge.Engine
             }
 
             // --- Buttons ---
-            int btnCount = Math.Min(NumButtons, state.Buttons.Length);
+            // Use RawButtonCount when available — NumButtons may be capped at 11
+            // for devices opened as gamepads (e.g., DS3 via DsHidMini in force-raw mode).
+            int btnCount = Math.Min(
+                RawButtonCount > 0 ? RawButtonCount : NumButtons,
+                state.Buttons.Length);
             for (int i = 0; i < btnCount; i++)
             {
                 state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);

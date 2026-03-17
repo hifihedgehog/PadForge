@@ -1054,6 +1054,9 @@ namespace PadForge.Common.Input
                         SendKeyInput(VK_VOLUME_DOWN, keyUp: true);
                         // Re-set exact volume to undo the ±2% from the key events.
                         _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+                        // Invalidate so next cycle forces another correction — the
+                        // SendInput keys are async and may land after our re-set.
+                        _lastSetVolume = -1f;
                         _lastOsdTriggerTime = now;
                     }
                 }
@@ -1199,7 +1202,7 @@ namespace PadForge.Common.Input
             if (device == null || device.InputState.Axis == null
                 || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
                 return 0f;
-            return Math.Clamp((device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f, 0f, 1f);
+            return (device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f;
         }
 
         /// <summary>

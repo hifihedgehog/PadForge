@@ -636,6 +636,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Ordnet die gewählte Achse (0–100 %) kontinuierlich der Windows-Systemlautstärke zu, skaliert auf das Lautstärkelimit. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Steuert die Lautstärke einer bestimmten Anwendung im Windows-Lautstärkemixer, skaliert auf das Lautstärkelimit. Prozessnamen eingeben (sichtbar im Task-Manager). Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Ordnet die gewählte Achse kontinuierlich der Mausbewegung (oder dem Scrollen) zu. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden. Für Stick-zu-Maus zwei Aktionen erstellen: eine für X-Achse, eine für Y-Achse.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Achse invertieren</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Lautstärke-OSD anzeigen</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Richtung</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Beliebig</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positiv</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negativ</value></data>
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>Linke Schultertaste</value></data>
   <data name="Btn_RightShoulder" xml:space="preserve"><value>Rechte Schultertaste</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>Zurück</value></data>
@@ -787,6 +793,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>Achse {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Linke Schultertaste</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>Rechte Schultertaste</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Linker Stick-Taste</value></data>

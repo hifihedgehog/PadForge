@@ -81,10 +81,12 @@ namespace PadForge.Services
         private Guid _recordingDeviceGuid;
         private HashSet<int> _recordedRawButtons;
         private HashSet<MacroAxisTarget> _recordedAxisTargets;
+        private Dictionary<MacroAxisTarget, MacroAxisDirection> _recordedAxisDirections;
         private HashSet<string> _recordedPovs; // stored as "povIndex:centidegrees"
         private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
         private float[] _macroAxisBaseline;              // axis values at recording start
         private MacroAxisTarget _macroAxisCandidate;     // axis being held
+        private float _macroAxisCandidateDelta;          // delta sign of the candidate axis
         private int _macroAxisHoldCounter;               // hold confirmation cycles
         private const int MacroAxisHoldCycles = 3;       // cycles needed to confirm
 
@@ -1143,6 +1145,17 @@ namespace PadForge.Services
             if (mapping == null || string.IsNullOrEmpty(mapping.SourceDescriptor))
                 return;
 
+            // For joystick/gamepad devices in raw mode, use numbered naming ("Button 0",
+            // "Axis 1", etc.) instead of friendly device object names.
+            // Raw mode = ForceRawJoystickMode enabled, or a non-gamepad joystick-class device.
+            if (ud != null && UseRawNumberedNaming(ud))
+            {
+                string resolved = ResolveRawNumberedText(mapping.SourceDescriptor);
+                if (resolved != null)
+                    mapping.SetResolvedSourceText(resolved);
+                return;
+            }
+
             var objects = ud?.DeviceObjects;
             if (objects == null || objects.Length == 0)
                 return;
@@ -1220,13 +1233,22 @@ namespace PadForge.Services
             if (mapping == null || string.IsNullOrEmpty(mapping.NegSourceDescriptor))
                 return;
 
+            // For joystick/gamepad devices in raw mode, use numbered naming.
+            if (ud != null && UseRawNumberedNaming(ud))
+            {
+                string resolved = ResolveRawNumberedText(mapping.NegSourceDescriptor);
+                if (resolved != null)
+                    mapping.SetResolvedNegText(resolved);
+                return;
+            }
+
             var objects = ud?.DeviceObjects;
             if (objects == null || objects.Length == 0)
                 return;
 
-            string resolved = ResolveDescriptorText(mapping.NegSourceDescriptor, objects);
-            if (resolved != null)
-                mapping.SetResolvedNegText(resolved);
+            string resolved2 = ResolveDescriptorText(mapping.NegSourceDescriptor, objects);
+            if (resolved2 != null)
+                mapping.SetResolvedNegText(resolved2);
         }
 
         /// <summary>
@@ -1365,6 +1387,59 @@ namespace PadForge.Services
             "UpLeft" => Strings.Instance.POV_UpLeft,
             _ => dir
         };
+
+        /// <summary>
+        /// Builds a numbered display string from a raw descriptor (e.g., "Button 0", "Axis 1",
+        /// "POV 0 Up") with I/H/IH prefix support. Used when Force Raw Joystick Mode is active.
+        /// </summary>
+        private static string ResolveRawNumberedText(string descriptor)
+        {
+            string s = descriptor;
+            string prefix = "";
+            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            { prefix = s.Substring(0, 2); s = s.Substring(2); }
+            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            { prefix = s.Substring(0, 1); s = s.Substring(1); }
+            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            { prefix = s.Substring(0, 1); s = s.Substring(1); }
+
+            string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
+                return null;
+
+            string typeName = parts[0].ToLowerInvariant();
+            var si = Strings.Instance;
+            string display = typeName switch
+            {
+                "button" => string.Format(si.DevObj_Button, index),
+                "axis" => string.Format(si.DevObj_AxisN, index),
+                "slider" => string.Format(si.DevObj_Slider, index),
+                "pov" when parts.Length >= 3 => string.Format(si.Mapping_POV_Format,
+                    index, ResolvePovDirection(parts[2])),
+                "pov" => string.Format(si.DevObj_POVN, index),
+                _ => s
+            };
+
+            if (!string.IsNullOrEmpty(prefix))
+            {
+                string prefixLabel = ResolvePrefixLabel(prefix);
+                if (!string.IsNullOrEmpty(prefixLabel))
+                    display = $"{prefixLabel} {display}";
+            }
+
+            return display;
+        }
+
+        /// <summary>
+        /// Returns true when the device should use raw numbered naming (Button 0, Axis 1, etc.)
+        /// on the Mappings tab. This applies to joystick/gamepad devices in raw mode:
+        /// ForceRawJoystickMode enabled, or non-gamepad joystick-class devices.
+        /// </summary>
+        private static bool UseRawNumberedNaming(UserDevice ud) =>
+            ud.ForceRawJoystickMode ||
+            (ud.CapType != InputDeviceType.Gamepad &&
+             ud.CapType != InputDeviceType.Mouse &&
+             ud.CapType != InputDeviceType.Keyboard);
 
         // ─────────────────────────────────────────────
         //  Copy / Paste settings
@@ -2516,8 +2591,10 @@ namespace PadForge.Services
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = new HashSet<int>();
             _recordedAxisTargets = new HashSet<MacroAxisTarget>();
+            _recordedAxisDirections = new Dictionary<MacroAxisTarget, MacroAxisDirection>();
             _recordedPovs = new HashSet<string>();
             _macroAxisCandidate = MacroAxisTarget.None;
+            _macroAxisCandidateDelta = 0f;
             _macroAxisHoldCounter = 0;
 
             // Capture axis baseline so we detect movement delta, not absolute position.
@@ -2537,9 +2614,22 @@ namespace PadForge.Services
                 return;
 
             // Save recorded axis triggers (can combine with buttons).
-            _recordingMacro.TriggerAxisTargets = _recordedAxisTargets?.Count > 0
+            var axisTargets = _recordedAxisTargets?.Count > 0
                 ? _recordedAxisTargets.ToArray()
                 : Array.Empty<MacroAxisTarget>();
+            _recordingMacro.TriggerAxisTargets = axisTargets;
+
+            // Save recorded axis directions (parallel to targets).
+            if (axisTargets.Length > 0 && _recordedAxisDirections != null)
+            {
+                _recordingMacro.TriggerAxisDirections = axisTargets
+                    .Select(t => _recordedAxisDirections.TryGetValue(t, out var d) ? d : MacroAxisDirection.Any)
+                    .ToArray();
+            }
+            else
+            {
+                _recordingMacro.TriggerAxisDirections = Array.Empty<MacroAxisDirection>();
+            }
 
             // Save recorded POV triggers.
             _recordingMacro.TriggerPovs = _recordedPovs?.Count > 0
@@ -2583,9 +2673,11 @@ namespace PadForge.Services
             _recordingDeviceGuid = Guid.Empty;
             _recordedRawButtons = null;
             _recordedAxisTargets = null;
+            _recordedAxisDirections = null;
             _recordedPovs = null;
             _macroAxisBaseline = null;
             _macroAxisCandidate = MacroAxisTarget.None;
+            _macroAxisCandidateDelta = 0f;
             _macroAxisHoldCounter = 0;
         }
 
@@ -2613,6 +2705,7 @@ namespace PadForge.Services
             {
                 MacroAxisTarget bestCandidate = MacroAxisTarget.None;
                 float bestDelta = 0f;
+                float bestRawDelta = 0f; // signed delta for direction detection
 
                 MacroAxisTarget[] axes = {
                     MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
@@ -2624,10 +2717,12 @@ namespace PadForge.Services
                     // Skip axes already recorded.
                     if (_recordedAxisTargets.Contains(axes[i])) continue;
 
-                    float delta = Math.Abs(currentAxes[i] - _macroAxisBaseline[i]);
+                    float rawDelta = currentAxes[i] - _macroAxisBaseline[i];
+                    float delta = Math.Abs(rawDelta);
                     if (delta > AxisRecordThreshold && delta > bestDelta)
                     {
                         bestDelta = delta;
+                        bestRawDelta = rawDelta;
                         bestCandidate = axes[i];
                     }
                 }
@@ -2640,19 +2735,27 @@ namespace PadForge.Services
                         if (_macroAxisHoldCounter >= MacroAxisHoldCycles)
                         {
                             _recordedAxisTargets.Add(bestCandidate);
+                            // Record the direction the axis was deflected.
+                            _recordedAxisDirections[bestCandidate] =
+                                _macroAxisCandidateDelta > 0 ? MacroAxisDirection.Positive
+                                : _macroAxisCandidateDelta < 0 ? MacroAxisDirection.Negative
+                                : MacroAxisDirection.Any;
                             _macroAxisCandidate = MacroAxisTarget.None;
+                            _macroAxisCandidateDelta = 0f;
                             _macroAxisHoldCounter = 0;
                         }
                     }
                     else
                     {
                         _macroAxisCandidate = bestCandidate;
+                        _macroAxisCandidateDelta = bestRawDelta;
                         _macroAxisHoldCounter = 1;
                     }
                 }
                 else
                 {
                     _macroAxisCandidate = MacroAxisTarget.None;
+                    _macroAxisCandidateDelta = 0f;
                     _macroAxisHoldCounter = 0;
                 }
             }

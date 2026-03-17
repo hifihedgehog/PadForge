@@ -636,6 +636,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>선택한 축(0–100%)을 Windows 시스템 볼륨에 지속적으로 매핑하며 볼륨 한도에 맞게 조정됩니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows 볼륨 믹서에서 특정 앱의 볼륨을 한도에 맞게 조정합니다. 프로세스 이름을 입력하세요 (작업 관리자에서 확인). "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>선택한 축을 마우스 이동(또는 스크롤)에 지속적으로 매핑합니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요. 스틱→마우스의 경우 X축과 Y축에 각각 하나씩 두 개의 액션을 만드세요.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>축 반전</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>볼륨 OSD 표시</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>방향</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>모두</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>양의 방향</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>음의 방향</value></data>
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>왼쪽 어깨 버튼</value></data>
   <data name="Btn_RightShoulder" xml:space="preserve"><value>오른쪽 어깨 버튼</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>뒤로</value></data>
@@ -787,6 +793,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>버튼 {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>축 {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>왼쪽 어깨 버튼</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>오른쪽 어깨 버튼</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>왼쪽 스틱 버튼</value></data>

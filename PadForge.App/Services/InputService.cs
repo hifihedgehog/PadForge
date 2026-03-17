@@ -477,6 +477,7 @@ namespace PadForge.Services
                 "Idle" => Strings.Instance.Common_Idle,
                 _ => Strings.Instance.Common_Stopped,
             };
+            _mainVm.HasActiveSlots = !_inputManager.IsIdle;
             dash.PollingFrequency = _inputManager.CurrentFrequency;
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
@@ -679,7 +680,7 @@ namespace PadForge.Services
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
                 int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
                 int btnCount = Math.Min(
-                    ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                    ud.ForceRawJoystickMode && ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
@@ -717,7 +718,7 @@ namespace PadForge.Services
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
                 int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
                 int btnCount = Math.Min(
-                    ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                    ud.ForceRawJoystickMode && ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
                     CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;

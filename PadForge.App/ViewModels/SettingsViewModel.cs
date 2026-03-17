@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
@@ -91,6 +92,15 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(VJoyStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+
+            // Refresh the default profile's display name in the list.
+            var defaultItem = ProfileItems.FirstOrDefault(p => p.IsDefault);
+            if (defaultItem != null)
+                defaultItem.Name = Strings.Instance.Profile_Default;
+
+            // Refresh the active profile header when the default profile is active.
+            if (string.IsNullOrEmpty(SettingsManager.ActiveProfileId))
+                _activeProfileInfo = Strings.Instance.Common_Default;
             OnPropertyChanged(nameof(ActiveProfileInfo));
         }
 

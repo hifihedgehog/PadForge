@@ -143,59 +143,99 @@ class Program
         int[] axisOffsets = axisObjects.Select(a => a.Offset).Take(2).ToArray();
         int[] directions = new int[axisOffsets.Length];
 
-        // Create constant force effect.
+        // Exhaustive effect creation probing — DsHidMini's PID driver may be
+        // picky about specific parameter combinations.
         Effect? constantEffect = null;
-        try
-        {
-            constantEffect = new Effect(joystick, EffectGuid.ConstantForce, new EffectParameters
-            {
-                Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
-                Duration = -1,
-                Gain = 10000,
-                SamplePeriod = 0,
-                StartDelay = 0,
-                TriggerButton = -1,
-                TriggerRepeatInterval = 0,
-                Axes = axisOffsets,
-                Directions = directions,
-                Parameters = new ConstantForce { Magnitude = 0 }
-            });
-            Console.WriteLine("Constant force effect created.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to create constant force: {ex.Message}");
-        }
-
-        // Create sine wave effect.
         Effect? sineEffect = null;
-        try
+
+        var flagCombos = new (string name, EffectFlags flags, int[] axes, int[] dirs)[]
         {
-            sineEffect = new Effect(joystick, EffectGuid.Sine, new EffectParameters
+            ("2ax Cart",  EffectFlags.Cartesian | EffectFlags.ObjectOffsets, axisOffsets, directions),
+            ("1ax Cart",  EffectFlags.Cartesian | EffectFlags.ObjectOffsets, new[] { axisOffsets[0] }, new[] { 0 }),
+            ("2ax Polar", EffectFlags.Polar | EffectFlags.ObjectOffsets, axisOffsets, new[] { 0, 0 }),
+            ("1ax NoDir", EffectFlags.ObjectOffsets, new[] { axisOffsets[0] }, new[] { 0 }),
+            ("2ax Spher", EffectFlags.Spherical | EffectFlags.ObjectOffsets, axisOffsets, new[] { 0, 0 }),
+        };
+
+        var durations = new (string name, int val)[] { ("inf", -1), ("1s", 1_000_000), ("5s", 5_000_000) };
+        var gains = new (string name, int val)[] { ("g10000", 10000), ("g5000", 5000), ("g0", 0) };
+
+        Console.WriteLine("\n--- Probing constant force effect creation ---");
+        foreach (var (fn, flags, axes, dirs) in flagCombos)
+        {
+            foreach (var (dn, dur) in durations)
             {
-                Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
-                Duration = -1,
-                Gain = 10000,
-                SamplePeriod = 0,
-                StartDelay = 0,
-                TriggerButton = -1,
-                TriggerRepeatInterval = 0,
-                Axes = axisOffsets,
-                Directions = directions,
-                Parameters = new PeriodicForce
+                foreach (var (gn, gain) in gains)
                 {
-                    Magnitude = 5000,
-                    Offset = 0,
-                    Phase = 0,
-                    Period = 200_000
+                    string tag = $"{fn} {dn} {gn}";
+                    try
+                    {
+                        var ep = new EffectParameters
+                        {
+                            Flags = flags,
+                            Duration = dur,
+                            Gain = gain,
+                            SamplePeriod = 0,
+                            StartDelay = 0,
+                            TriggerButton = -1,
+                            TriggerRepeatInterval = 0,
+                            Axes = axes,
+                            Directions = dirs,
+                            Parameters = new ConstantForce { Magnitude = 5000 }
+                        };
+                        constantEffect = new Effect(joystick, EffectGuid.ConstantForce, ep);
+                        Console.WriteLine($"  SUCCESS: {tag}");
+                        goto ConstDone;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"  FAIL: {tag} — {ex.Message}");
+                    }
                 }
-            });
-            Console.WriteLine("Sine wave effect created.");
+            }
         }
-        catch (Exception ex)
+        Console.WriteLine("All constant force probes failed.");
+        ConstDone:
+
+        Console.WriteLine("\n--- Probing sine effect creation ---");
+        foreach (var (fn, flags, axes, dirs) in flagCombos)
         {
-            Console.WriteLine($"Failed to create sine effect: {ex.Message}");
+            foreach (var (dn, dur) in durations)
+            {
+                string tag = $"{fn} {dn}";
+                try
+                {
+                    var ep = new EffectParameters
+                    {
+                        Flags = flags,
+                        Duration = dur,
+                        Gain = 10000,
+                        SamplePeriod = 0,
+                        StartDelay = 0,
+                        TriggerButton = -1,
+                        TriggerRepeatInterval = 0,
+                        Axes = axes,
+                        Directions = dirs,
+                        Parameters = new PeriodicForce
+                        {
+                            Magnitude = 5000,
+                            Offset = 0,
+                            Phase = 0,
+                            Period = 200_000
+                        }
+                    };
+                    sineEffect = new Effect(joystick, EffectGuid.Sine, ep);
+                    Console.WriteLine($"  SUCCESS: {tag}");
+                    goto SineDone;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"  FAIL: {tag} — {ex.Message}");
+                }
+            }
         }
+        Console.WriteLine("All sine probes failed.");
+        SineDone:
 
         Console.WriteLine("\nCommands:");
         Console.WriteLine("  [1] Constant - light   (2500)");

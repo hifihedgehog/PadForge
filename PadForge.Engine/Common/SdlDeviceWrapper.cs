@@ -67,6 +67,12 @@ namespace PadForge.Engine
         /// </summary>
         public int RawButtonCount { get; private set; }
 
+        /// <summary>
+        /// Raw joystick button indices that are already consumed by the gamepad mapping.
+        /// These are excluded from the extra raw button passthrough to avoid double-reporting.
+        /// </summary>
+        private HashSet<int> _mappedRawButtonIndices;
+
         /// <summary>Whether the device has a gyroscope sensor.</summary>
         public bool HasGyro { get; private set; }
 
@@ -183,12 +189,18 @@ namespace PadForge.Engine
                 NumAxes = 6;     // LX, LY, LT, RX, RY, RT
                 NumButtons = 11; // A, B, X, Y, LB, RB, Back, Start, LS, RS, Guide
                 NumHats = 1;     // D-pad synthesized from gamepad buttons
+
+                // Parse the gamepad mapping to find which raw button indices are
+                // already consumed. These will be excluded from the extra raw button
+                // passthrough to avoid double-reporting (e.g., DS3 b11→RB, b12→Guide).
+                _mappedRawButtonIndices = ParseMappedButtonIndices(GameController);
             }
             else
             {
                 NumAxes = SDL_GetNumJoystickAxes(Joystick);
                 NumButtons = RawButtonCount;
                 NumHats = SDL_GetNumJoystickHats(Joystick);
+                _mappedRawButtonIndices = null;
             }
 
             // SDL3 may return a raw VID/PID string (e.g., "0x16c0/0x05e1") for devices
@@ -415,9 +427,15 @@ namespace PadForge.Engine
             // Append raw joystick buttons beyond the 11 standard gamepad buttons.
             // This exposes native device buttons (e.g. DualSense touchpad) that
             // aren't part of the Xbox gamepad mapping, for use as macro triggers.
+            // Skip indices already consumed by the gamepad mapping to avoid
+            // double-reporting (e.g., DS3 DsHidMini SDF: b11→RB, b12→Guide).
             int rawCount = RawButtonCount;
             for (int i = 11; i < rawCount && i < CustomInputState.MaxButtons; i++)
+            {
+                if (_mappedRawButtonIndices != null && _mappedRawButtonIndices.Contains(i))
+                    continue;
                 state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
+            }
 
             // --- D-pad → POV[0] ---
             // Synthesize a POV hat from the four D-pad buttons.
@@ -434,6 +452,29 @@ namespace PadForge.Engine
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
 
             return state;
+        }
+
+        /// <summary>
+        /// Parses the SDL gamepad mapping string to find which raw button indices (bN)
+        /// are consumed by the mapping. Returns a set of those indices.
+        /// </summary>
+        private static HashSet<int> ParseMappedButtonIndices(IntPtr gameController)
+        {
+            var indices = new HashSet<int>();
+            string mapping = GetGamepadMapping(gameController);
+            if (mapping == null) return indices;
+
+            // Mapping format: "GUID,name,a:b2,b:b1,...,platform:Windows,"
+            // We need to find all "bN" values (button bindings).
+            foreach (var segment in mapping.Split(','))
+            {
+                int colonIdx = segment.IndexOf(':');
+                if (colonIdx < 0) continue;
+                string value = segment.Substring(colonIdx + 1);
+                if (value.Length > 1 && value[0] == 'b' && int.TryParse(value.Substring(1), out int btnIdx))
+                    indices.Add(btnIdx);
+            }
+            return indices;
         }
 
         /// <summary>

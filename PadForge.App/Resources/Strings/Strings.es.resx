@@ -636,6 +636,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado (0–100 %) al volumen del sistema Windows, escalado al límite de volumen. Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla el volumen de una aplicación específica en el mezclador de volumen de Windows, escalado al límite. Ingrese el nombre del proceso (visible en el Administrador de tareas). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado al movimiento del ratón (o desplazamiento). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar". Para stick-a-ratón, cree dos acciones: una para el eje X y otra para el eje Y.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Invertir eje</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar OSD de volumen</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Dirección</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Cualquiera</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positivo</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negativo</value></data>
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>Botón superior izquierdo</value></data>
   <data name="Btn_RightShoulder" xml:space="preserve"><value>Botón superior derecho</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>Atrás</value></data>
@@ -787,6 +793,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Botón {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>Eje {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Botón superior izquierdo</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>Botón superior derecho</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Botón palanca izquierda</value></data>

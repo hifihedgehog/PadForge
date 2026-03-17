@@ -563,6 +563,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Button {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>Axis {0}</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profiles</value></data>
@@ -663,6 +664,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Continuously maps the selected axis to mouse movement (or scroll). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release". For stick-to-mouse, create two actions: one for X axis, one for Y axis.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Invert axis</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Show volume OSD</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Direction</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Any</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positive</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negative</value></data>
 
   <!-- ═══ 3D View ═══ -->
   <data name="Pad_ResetView" xml:space="preserve"><value>Reset View</value></data>

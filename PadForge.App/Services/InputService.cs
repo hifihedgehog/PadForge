@@ -1105,6 +1105,7 @@ namespace PadForge.Services
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }
+
             }
         }
 
@@ -1436,6 +1437,115 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Handles dropdown input selection: resolves the display text for the newly
+        /// selected input and syncs the selected item.
+        /// </summary>
+        private void OnInputSelectedFromDropdown(object sender, EventArgs e)
+        {
+            if (sender is not MappingItem mapping) return;
+            // Find the device for this mapping's pad slot.
+            foreach (var padVm in _mainVm.Pads)
+            {
+                if (!padVm.Mappings.Contains(mapping)) continue;
+                var selected = padVm.SelectedMappedDevice;
+                if (selected == null || selected.InstanceGuid == Guid.Empty) break;
+                var ud = FindUserDevice(selected.InstanceGuid);
+                ResolveDisplayText(mapping, ud);
+                mapping.SyncSelectedInputFromDescriptor();
+                break;
+            }
+        }
+
+        /// <summary>
+        /// Populates the AvailableInputs dropdown for all mappings in a pad's mapping list.
+        /// Builds the list from the device's DeviceObjects (friendly names for gamepads,
+        /// numbered names for raw/non-gamepad devices). Also wires the dropdown selection
+        /// event for display text resolution.
+        /// </summary>
+        private void PopulateAvailableInputs(PadViewModel padVm, UserDevice ud)
+        {
+            if (padVm == null) return;
+
+            var choices = BuildInputChoices(ud);
+            foreach (var mapping in padVm.Mappings)
+            {
+                mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
+                mapping.InputSelectedFromDropdown += OnInputSelectedFromDropdown;
+
+                mapping.AvailableInputs.Clear();
+                foreach (var c in choices)
+                    mapping.AvailableInputs.Add(c);
+                mapping.SyncSelectedInputFromDescriptor();
+            }
+        }
+
+        /// <summary>
+        /// Builds the list of available input choices from a device.
+        /// Returns axes, buttons, POVs (with directions), and sliders.
+        /// </summary>
+        private static InputChoice[] BuildInputChoices(UserDevice ud)
+        {
+            var list = new System.Collections.Generic.List<InputChoice>();
+
+            if (ud == null || ud.DeviceObjects == null || ud.DeviceObjects.Length == 0)
+                return list.ToArray();
+
+            bool useRaw = UseRawNumberedNaming(ud);
+            var si = Strings.Instance;
+
+            // Axes (non-slider)
+            foreach (var obj in ud.DeviceObjects)
+            {
+                if (!obj.IsAxis || obj.IsSlider) continue;
+                string descriptor = $"Axis {obj.InputIndex}";
+                string display = useRaw
+                    ? string.Format(si.DevObj_AxisN, obj.InputIndex)
+                    : LocalizeObjectName(obj.Name);
+                list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+            }
+
+            // Sliders
+            foreach (var obj in ud.DeviceObjects)
+            {
+                if (!obj.IsSlider) continue;
+                string descriptor = $"Slider {obj.InputIndex}";
+                string display = useRaw
+                    ? string.Format(si.DevObj_Slider, obj.InputIndex)
+                    : LocalizeObjectName(obj.Name);
+                list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+            }
+
+            // Buttons
+            foreach (var obj in ud.DeviceObjects)
+            {
+                if (!obj.IsButton) continue;
+                string descriptor = $"Button {obj.InputIndex}";
+                string display = useRaw
+                    ? string.Format(si.DevObj_Button, obj.InputIndex)
+                    : LocalizeObjectName(obj.Name);
+                list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+            }
+
+            // POVs (with 4 cardinal directions each)
+            string[] povDirs = { "Up", "Right", "Down", "Left" };
+            foreach (var obj in ud.DeviceObjects)
+            {
+                if (!obj.IsPov) continue;
+                foreach (string dir in povDirs)
+                {
+                    string descriptor = $"POV {obj.InputIndex} {dir}";
+                    string dirDisplay = ResolvePovDirection(dir);
+                    string display = useRaw || obj.Name != "D-Pad"
+                        ? string.Format(si.Mapping_POV_Format, obj.InputIndex, dirDisplay)
+                        : $"{LocalizeObjectName(obj.Name)} {dirDisplay}";
+                    list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        /// <summary>
         /// Returns true when the device should use raw numbered naming (Button 0, Axis 1, etc.)
         /// on the Mappings tab. This applies to joystick/gamepad devices in raw mode:
         /// ForceRawJoystickMode enabled, or non-gamepad joystick-class devices.
@@ -1475,6 +1585,7 @@ namespace PadForge.Services
 
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+            PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
         }
 
         /// <summary>
@@ -1503,6 +1614,7 @@ namespace PadForge.Services
 
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+            PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
         }
 
         /// <summary>
@@ -1572,6 +1684,7 @@ namespace PadForge.Services
             if (newGuid != Guid.Empty)
             {
                 LoadPadSettingToViewModel(padVm, newGuid);
+                PopulateAvailableInputs(padVm, FindUserDevice(newGuid));
                 _previousSelectedDevice[padVm.PadIndex] = newGuid;
             }
         }
@@ -1587,7 +1700,9 @@ namespace PadForge.Services
             if (sender is PadViewModel padVm && padVm.SelectedMappedDevice != null
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
             {
-                LoadMappingDescriptorsOnly(padVm, padVm.SelectedMappedDevice.InstanceGuid);
+                var guid = padVm.SelectedMappedDevice.InstanceGuid;
+                LoadMappingDescriptorsOnly(padVm, guid);
+                PopulateAvailableInputs(padVm, FindUserDevice(guid));
             }
         }
 
@@ -2402,8 +2517,10 @@ namespace PadForge.Services
                         && prevSelectedGuid != Guid.Empty
                         && padVm.SelectedMappedDevice.InstanceGuid != prevSelectedGuid)
                     {
-                        LoadPadSettingToViewModel(padVm, padVm.SelectedMappedDevice.InstanceGuid);
-                        _previousSelectedDevice[i] = padVm.SelectedMappedDevice.InstanceGuid;
+                        var devGuid = padVm.SelectedMappedDevice.InstanceGuid;
+                        LoadPadSettingToViewModel(padVm, devGuid);
+                        PopulateAvailableInputs(padVm, FindUserDevice(devGuid));
+                        _previousSelectedDevice[i] = devGuid;
                     }
 
                     // Initialize the previous-device tracker if not set.
@@ -3224,7 +3341,10 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[i];
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
+                {
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+                    PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+                }
             }
 
             // Refresh Devices page slot labels.
@@ -3488,7 +3608,10 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[i];
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
+                {
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+                    PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+                }
             }
 
             // Force a full sidebar rebuild — RefreshNavControllerItems() only updates

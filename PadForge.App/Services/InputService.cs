@@ -886,7 +886,7 @@ namespace PadForge.Services
                 if (selected == null || selected.InstanceGuid == Guid.Empty)
                     continue;
 
-                SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+                SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
             }
         }
 
@@ -912,7 +912,7 @@ namespace PadForge.Services
         /// <summary>
         /// Saves the current PadViewModel state to a specific device's PadSetting.
         /// </summary>
-        private static void SaveViewModelToPadSetting(PadViewModel padVm, Guid instanceGuid)
+        private static void SaveViewModelToPadSetting(PadViewModel padVm, Guid instanceGuid, bool syncMappings = true)
         {
             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
             if (us == null) return;
@@ -970,44 +970,49 @@ namespace PadForge.Services
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
-            // Clear all mapping descriptors first to prevent stale leftovers from a
-            // previous layout (e.g., switching from Xbox 360 preset to custom vJoy).
-            ps.ClearMappingDescriptors();
-
-            // Mapping descriptors (pos + neg).
-            foreach (var mapping in padVm.Mappings)
+            // Mapping descriptors: clear + rewrite only when explicitly requested.
+            // The 30Hz SyncViewModelToPadSettings path passes syncMappings=false
+            // because ClearMappingDescriptors() creates a race window — the polling
+            // thread can read the PadSetting between the clear and the rewrite,
+            // seeing empty mapping strings → zero Gamepad output.
+            // Mappings are only synced on explicit save, preset change, or device switch.
+            if (syncMappings)
             {
-                string target = mapping.TargetSettingName;
-                if (target.StartsWith("VJoy", StringComparison.Ordinal))
-                {
-                    ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                    if (mapping.NegSettingName != null)
-                        ps.SetVJoyMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                }
-                else if (target.StartsWith("Midi", StringComparison.Ordinal))
-                {
-                    ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                    if (mapping.NegSettingName != null)
-                        ps.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                }
-                else if (target.StartsWith("Kbm", StringComparison.Ordinal))
-                {
-                    ps.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                    if (mapping.NegSettingName != null)
-                        ps.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                }
-                else
-                {
-                    var prop = typeof(PadSetting).GetProperty(target);
-                    if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
-                        prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+                ps.ClearMappingDescriptors();
 
-                    // Write neg descriptor (e.g., LeftThumbAxisYNeg).
-                    if (mapping.NegSettingName != null)
+                foreach (var mapping in padVm.Mappings)
+                {
+                    string target = mapping.TargetSettingName;
+                    if (target.StartsWith("VJoy", StringComparison.Ordinal))
                     {
-                        var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
-                        if (negProp != null && negProp.PropertyType == typeof(string) && negProp.CanWrite)
-                            negProp.SetValue(ps, mapping.NegSourceDescriptor ?? string.Empty);
+                        ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        if (mapping.NegSettingName != null)
+                            ps.SetVJoyMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
+                    else if (target.StartsWith("Midi", StringComparison.Ordinal))
+                    {
+                        ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        if (mapping.NegSettingName != null)
+                            ps.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
+                    else if (target.StartsWith("Kbm", StringComparison.Ordinal))
+                    {
+                        ps.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        if (mapping.NegSettingName != null)
+                            ps.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
+                    else
+                    {
+                        var prop = typeof(PadSetting).GetProperty(target);
+                        if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
+                            prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+
+                        if (mapping.NegSettingName != null)
+                        {
+                            var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
+                            if (negProp != null && negProp.PropertyType == typeof(string) && negProp.CanWrite)
+                                negProp.SetValue(ps, mapping.NegSourceDescriptor ?? string.Empty);
+                        }
                     }
                 }
             }

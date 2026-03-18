@@ -590,7 +590,9 @@ namespace PadForge.Services
                             ProcessName = ad.ProcessName ?? "",
                             VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100,
                             MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
-                            MouseButton = ad.MouseButton
+                            MouseButton = ad.MouseButton,
+                            InvertAxis = ad.InvertAxis,
+                            ShowVolumeOsd = ad.ShowVolumeOsd
                         });
                     }
                 }
@@ -1118,7 +1120,9 @@ namespace PadForge.Services
                             ProcessName = a.ProcessName,
                             VolumeLimit = a.VolumeLimit,
                             MouseSensitivity = a.MouseSensitivity,
-                            MouseButton = a.MouseButton
+                            MouseButton = a.MouseButton,
+                            InvertAxis = a.InvertAxis,
+                            ShowVolumeOsd = a.ShowVolumeOsd
                         }).ToArray()
                     });
                 }
@@ -1735,6 +1739,14 @@ namespace PadForge.Services
         /// <summary>Which mouse button for MouseButtonPress/MouseButtonRelease.</summary>
         [XmlElement]
         public MacroMouseButton MouseButton { get; set; }
+
+        /// <summary>When true, invert the axis value (0→1 becomes 1→0).</summary>
+        [XmlElement]
+        public bool InvertAxis { get; set; }
+
+        /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
+        [XmlElement]
+        public bool ShowVolumeOsd { get; set; } = true;
     }
 
     /// <summary>

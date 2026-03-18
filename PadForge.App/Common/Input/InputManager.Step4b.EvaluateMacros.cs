@@ -1019,7 +1019,10 @@ namespace PadForge.Common.Input
             volume = Math.Clamp(volume, 0f, 1f);
 
             // Skip if the volume hasn't changed (within ~0.4% tolerance = 1/256).
-            if (Math.Abs(volume - _lastSetVolume) < 0.004f)
+            // After an OSD trigger, keep correcting for 150ms to counteract
+            // the async VK_VOLUME key events that land after the COM correction.
+            bool inCorrectionWindow = (DateTime.UtcNow - _lastOsdTriggerTime).TotalMilliseconds < 150;
+            if (!inCorrectionWindow && Math.Abs(volume - _lastSetVolume) < 0.004f)
                 return;
             _lastSetVolume = volume;
 
@@ -1054,9 +1057,6 @@ namespace PadForge.Common.Input
                         SendKeyInput(VK_VOLUME_DOWN, keyUp: true);
                         // Re-set exact volume to undo the ±2% from the key events.
                         _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
-                        // Invalidate so next cycle forces another correction — the
-                        // SendInput keys are async and may land after our re-set.
-                        _lastSetVolume = -1f;
                         _lastOsdTriggerTime = now;
                     }
                 }

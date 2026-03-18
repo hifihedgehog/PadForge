@@ -53,19 +53,21 @@ namespace PadForge.Common.Input
                 {
                     // Find the device for this setting.
                     UserDevice ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
-                    if (ud == null || !ud.IsOnline || ud.InputState == null)
+                    if (ud == null)
                     {
                         us.OutputState = default;
                         continue;
                     }
+                    // Device exists but input temporarily unavailable — keep
+                    // last valid OutputState to prevent transient zero glitches
+                    // (e.g. output controller reading during state refresh).
+                    if (!ud.IsOnline || ud.InputState == null)
+                        continue;
 
                     // Get the PadSetting with mapping rules.
                     PadSetting ps = us.GetPadSetting();
                     if (ps == null)
-                    {
-                        us.OutputState = default;
                         continue;
-                    }
 
                     // Map the input state to a gamepad.
                     us.OutputState = MapInputToGamepad(ud.InputState, ps, out var rawMapped);
@@ -99,8 +101,9 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
+                    // Don't zero OutputState — keep last valid state to prevent
+                    // transient glitches from propagating through the pipeline.
                     RaiseError($"Error mapping device {us.InstanceGuid}", ex);
-                    us.OutputState = default;
                 }
             }
         }

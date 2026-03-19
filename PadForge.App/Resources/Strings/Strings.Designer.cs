@@ -428,6 +428,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_HeaderSource => Get("Pad_HeaderSource");
     public string Pad_HeaderValue => Get("Pad_HeaderValue");
     public string Pad_HeaderOptions => Get("Pad_HeaderOptions");
+    public string Pad_HeaderDeadZone => Get("Pad_HeaderDeadZone");
     public string Pad_Invert => Get("Pad_Invert");
     public string Pad_Half => Get("Pad_Half");
     public string Curve_Linear => Get("Curve_Linear");

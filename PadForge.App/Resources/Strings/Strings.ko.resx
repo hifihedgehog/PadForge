@@ -402,6 +402,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>소스</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>값</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>옵션</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>축→버튼 데드존</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>반전</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>절반</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>선형</value></data>

@@ -1115,6 +1115,33 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!-- Dead Zone (per-mapping axis activation threshold) -->
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Width="230">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
+                                                            <Setter Property="IsEnabled" Value="False"/>
+                                                            <Setter Property="Opacity" Value="0.35"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <Slider Style="{StaticResource DzSlider}" Width="120"
+                                                    Value="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    TickFrequency="1"/>
+                                            <TextBox Text="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                            <Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

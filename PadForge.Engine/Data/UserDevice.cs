@@ -213,7 +213,6 @@ namespace PadForge.Engine.Data
         /// Array of device object metadata (axes, hats, buttons).
         /// Populated during Step 1.
         /// </summary>
-        [XmlIgnore]
         public DeviceObjectItem[] DeviceObjects { get; set; }
 
         /// <summary>
@@ -409,7 +408,7 @@ namespace PadForge.Engine.Data
             InputUpdates = null;
             OldInputState = null;
             OldInputUpdates = null;
-            DeviceObjects = null;
+            // DeviceObjects preserved — static device capabilities needed by UI dropdowns.
             ForceFeedbackState = null;
 
             NotifyStateChanged();

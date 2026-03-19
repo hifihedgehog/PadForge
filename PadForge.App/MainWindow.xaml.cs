@@ -258,6 +258,7 @@ namespace PadForge
             _deviceService.DeviceHidingStateChanged += (s, e) =>
             {
                 _inputService.ApplyDeviceHiding();
+                _inputService.RefreshMappingDropdowns();
                 _viewModel.Settings.RefreshDriverGuards();
             };
 
@@ -2731,8 +2732,10 @@ namespace PadForge
             mapping.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(MappingItem.SourceDescriptor)
+                    or nameof(MappingItem.NegSourceDescriptor)
                     or nameof(MappingItem.IsInverted)
-                    or nameof(MappingItem.IsHalfAxis))
+                    or nameof(MappingItem.IsHalfAxis)
+                    or nameof(MappingItem.MappingDeadZone))
                     _settingsService.MarkDirty();
             };
         }

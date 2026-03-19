@@ -21,7 +21,7 @@ Built with SDL3, Windows Raw Input, ViGEmBus, vJoy, Windows MIDI Services, Helix
 - **DSU/Cemuhook motion server** — Broadcasts gyro and accelerometer data over UDP (port 26760) for emulators like Cemu and Dolphin
 - **Input hiding** — Automatically hide physical controllers from games via HidHide (driver-level, prevents double input) or consume only mapped keyboard/mouse inputs via low-level hooks (no driver needed). Per-device toggles with auto-enable for gamepads and safety warnings for mice/keyboards. Built-in HidHide app whitelisting
 - **Driver management** — One-click install/uninstall for ViGEmBus, HidHide, vJoy, and Windows MIDI Services. Built-in HidHide device blacklisting and app whitelisting — no external configuration tool needed
-- **Flight-sim-grade input precision** — 1000 Hz polling with sub-millisecond jitter via high-resolution waitable timers, bit-perfect axis passthrough at default settings, double-precision dead zone math, and 16-bit (65536-position) vJoy axis output that exceeds the resolution of physical controller ADCs
+- **Flight-sim-grade input precision** — 1000 Hz polling with sub-millisecond jitter via high-resolution waitable timers, bit-perfect axis passthrough at default settings, double-precision dead zone math, and 15-bit (32768-position) vJoy axis output that exceeds the resolution of physical controller ADCs
 - **Multilingual support** — Switch languages live from Settings without restarting. Community-contributed translations via .resx resource files
 - **System tray** — Minimize to tray, start minimized, start at login
 - **Portable** — Single-file self-contained executable

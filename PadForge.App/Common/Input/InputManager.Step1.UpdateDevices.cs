@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using SDL3;
@@ -37,6 +39,16 @@ namespace PadForge.Common.Input
         /// which triggers ViGEm's FeedbackReceived(0,0) and kills active vibration.
         /// </summary>
         private readonly HashSet<uint> _filteredVigemInstanceIds = new HashSet<uint>();
+
+        // ── Async Raw Input enumeration ──
+        // Raw Input keyboard/mouse enumeration is expensive (CreateFile +
+        // HidD_GetAttributes + registry per device). Running it off the
+        // polling thread eliminates the ~2-5ms spike every 2 seconds.
+        private volatile bool _rawInputEnumPending;
+        private volatile bool _rawInputEnumRunning;
+        private RawInputListener.DeviceInfo[] _cachedKeyboards;
+        private RawInputListener.DeviceInfo[] _cachedMice;
+        private readonly object _rawInputCacheLock = new object();
 
         /// <summary>
         /// Step 1: Enumerate all connected SDL joystick devices.
@@ -113,6 +125,15 @@ namespace PadForge.Common.Input
                     // Track the SDL instance ID.
                     _openedSdlInstanceIds.Add(wrapper.SdlInstanceId);
 
+                    // Immediately refresh HidHide blacklist if this VID/PID
+                    // matches any HidHide-enabled device. This eliminates the
+                    // 1-2 second peek-through window that occurs when waiting
+                    // for Dispatcher.BeginInvoke to run ApplyDeviceHiding on
+                    // the UI thread. The new device's HID instance ID is now
+                    // in the PnP tree, so FindInstanceIdsByVidPid will find it.
+                    if (wrapper.VendorId != 0 && wrapper.ProductId != 0)
+                        RefreshHidHideForVidPid((ushort)wrapper.VendorId, (ushort)wrapper.ProductId);
+
                     changed = true;
                 }
                 catch (Exception ex)
@@ -121,13 +142,59 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // --- Phase 1b: Enumerate keyboards ---
-            changed |= EnumerateKeyboards();
+            // --- Phase 1b/1c: Consume cached keyboard/mouse results ---
+            // Raw Input enumeration runs on a background thread to avoid
+            // blocking the polling loop with expensive CreateFile/HID I/O.
+            // On the first cycle, run synchronously so devices are available
+            // immediately at startup.
+            if (_cachedKeyboards == null)
+            {
+                // First call — synchronous so devices are ready before Step 2.
+                _cachedKeyboards = RawInputListener.EnumerateKeyboards();
+                _cachedMice = RawInputListener.EnumerateMice();
+                _rawInputEnumPending = true;
+            }
 
-            // --- Phase 1c: Enumerate mice ---
-            changed |= EnumerateMice();
+            if (_rawInputEnumPending)
+            {
+                RawInputListener.DeviceInfo[] keyboards, mice;
+                lock (_rawInputCacheLock)
+                {
+                    keyboards = _cachedKeyboards;
+                    mice = _cachedMice;
+                    _rawInputEnumPending = false;
+                }
 
-            // --- Phase 2: Detect disconnected devices ---
+                changed |= EnumerateKeyboards(keyboards);
+                changed |= EnumerateMice(mice);
+                changed |= DetectDisconnectedHandles(_openedKeyboardHandles, keyboards);
+                changed |= DetectDisconnectedHandles(_openedMouseHandles, mice);
+            }
+
+            // Kick off the next async enumeration so results are ready
+            // by the time the next 2-second UpdateDevices cycle runs.
+            if (!_rawInputEnumRunning)
+            {
+                _rawInputEnumRunning = true;
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        var kb = RawInputListener.EnumerateKeyboards();
+                        var ms = RawInputListener.EnumerateMice();
+                        lock (_rawInputCacheLock)
+                        {
+                            _cachedKeyboards = kb;
+                            _cachedMice = ms;
+                            _rawInputEnumPending = true;
+                        }
+                    }
+                    catch { /* best effort — next cycle will retry */ }
+                    finally { _rawInputEnumRunning = false; }
+                });
+            }
+
+            // --- Phase 2: Detect disconnected SDL devices ---
             var disconnectedIds = new List<uint>();
 
             foreach (uint sdlId in _openedSdlInstanceIds)
@@ -154,12 +221,6 @@ namespace PadForge.Common.Input
             {
                 _openedSdlInstanceIds.Remove(sdlId);
             }
-
-            // Detect disconnected keyboards.
-            changed |= DetectDisconnectedHandles(_openedKeyboardHandles, RawInputListener.EnumerateKeyboards());
-
-            // Detect disconnected mice.
-            changed |= DetectDisconnectedHandles(_openedMouseHandles, RawInputListener.EnumerateMice());
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
             _filteredVigemInstanceIds.IntersectWith(currentInstanceIds);
@@ -373,6 +434,52 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Immediately refreshes HidHide blacklist entries for a given VID/PID.
+        /// Called on the polling thread when a new device is detected, so the
+        /// blacklist is updated before the game's next input poll — eliminating
+        /// the peek-through window from waiting for the UI thread dispatcher.
+        /// Only acts if any saved UserDevice with matching VID/PID has HidHide enabled.
+        /// </summary>
+        private static void RefreshHidHideForVidPid(ushort vendorId, ushort productId)
+        {
+            try
+            {
+                // Check if any UserDevice with this VID/PID has HidHide enabled.
+                var devices = SettingsManager.UserDevices?.Items;
+                if (devices == null) return;
+
+                bool anyHidHideEnabled = false;
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    for (int i = 0; i < devices.Count; i++)
+                    {
+                        var d = devices[i];
+                        if (d.VendorId == vendorId && d.ProdId == productId && d.HidHideEnabled)
+                        {
+                            anyHidHideEnabled = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!anyHidHideEnabled) return;
+
+                // Find all present HID instance IDs for this VID/PID and
+                // add them to the HidHide blacklist immediately.
+                var ids = HidHideController.FindInstanceIdsByVidPid(vendorId, productId);
+                if (ids.Count > 0)
+                {
+                    Debug.WriteLine($"[Step1] Immediate HidHide refresh for VID={vendorId:X4} PID={productId:X4}: {ids.Count} instance(s)");
+                    HidHideController.AddToBlacklist(ids);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[Step1] RefreshHidHideForVidPid error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Marks a device as offline, disposes its SDL handle, and clears runtime state.
         /// </summary>
         private void MarkDeviceOffline(UserDevice ud)
@@ -411,15 +518,14 @@ namespace PadForge.Common.Input
         private readonly HashSet<IntPtr> _openedMouseHandles = new HashSet<IntPtr>();
 
         /// <summary>
-        /// Enumerates connected keyboards via Raw Input and creates UserDevice
+        /// Processes pre-fetched keyboard device info and creates UserDevice
         /// records for any new keyboards. Returns true if a new keyboard was found.
         /// </summary>
-        private bool EnumerateKeyboards()
+        private bool EnumerateKeyboards(RawInputListener.DeviceInfo[] keyboards)
         {
             // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
             PruneOrphanedHandles(_openedKeyboardHandles);
 
-            var keyboards = RawInputListener.EnumerateKeyboards();
             bool changed = false;
 
             foreach (var kb in keyboards)
@@ -453,15 +559,14 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Enumerates connected mice via Raw Input and creates UserDevice
+        /// Processes pre-fetched mouse device info and creates UserDevice
         /// records for any new mice. Returns true if a new mouse was found.
         /// </summary>
-        private bool EnumerateMice()
+        private bool EnumerateMice(RawInputListener.DeviceInfo[] mice)
         {
             // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
             PruneOrphanedHandles(_openedMouseHandles);
 
-            var mice = RawInputListener.EnumerateMice();
             bool changed = false;
 
             foreach (var mouse in mice)

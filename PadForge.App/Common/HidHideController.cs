@@ -165,6 +165,36 @@ namespace PadForge.Common
         }
 
         /// <summary>
+        /// Adds multiple device instance IDs to the blacklist in a single
+        /// IOCTL call. Used for immediate blacklisting on the polling thread
+        /// when a new device with a HidHide-enabled VID/PID is detected.
+        /// </summary>
+        public static void AddToBlacklist(List<string> instanceIds)
+        {
+            if (instanceIds == null || instanceIds.Count == 0) return;
+
+            lock (_lock)
+            {
+                var list = GetBlacklist();
+                var existing = new HashSet<string>(list, StringComparer.OrdinalIgnoreCase);
+                bool added = false;
+
+                foreach (var id in instanceIds)
+                {
+                    if (!string.IsNullOrEmpty(id) && existing.Add(id))
+                    {
+                        list.Add(id);
+                        added = true;
+                    }
+                    _managedDeviceIds.Add(id);
+                }
+
+                if (added)
+                    SetBlacklist(list);
+            }
+        }
+
+        /// <summary>
         /// Removes a device instance ID from the blacklist.
         /// </summary>
         public static void RemoveFromBlacklist(string instanceId)

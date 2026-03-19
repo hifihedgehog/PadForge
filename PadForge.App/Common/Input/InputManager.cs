@@ -39,6 +39,7 @@ namespace PadForge.Common.Input
         /// <summary>Device re-enumeration interval in milliseconds (every 2 seconds).</summary>
         private const int EnumerationIntervalMs = 2000;
 
+
         /// <summary>Maximum number of virtual controller slots.</summary>
         public const int MaxPads = 16;
 

@@ -146,41 +146,6 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Adds a device instance ID to the blacklist if not already present.
-        /// </summary>
-        public static void AddToBlacklist(string instanceId)
-        {
-            if (string.IsNullOrEmpty(instanceId)) return;
-
-            lock (_lock)
-            {
-                var list = GetBlacklist();
-                if (!list.Contains(instanceId, StringComparer.OrdinalIgnoreCase))
-                {
-                    list.Add(instanceId);
-                    SetBlacklist(list);
-                }
-                _managedDeviceIds.Add(instanceId);
-            }
-        }
-
-        /// <summary>
-        /// Removes a device instance ID from the blacklist.
-        /// </summary>
-        public static void RemoveFromBlacklist(string instanceId)
-        {
-            if (string.IsNullOrEmpty(instanceId)) return;
-
-            lock (_lock)
-            {
-                var list = GetBlacklist();
-                list.RemoveAll(id => string.Equals(id, instanceId, StringComparison.OrdinalIgnoreCase));
-                SetBlacklist(list);
-                _managedDeviceIds.Remove(instanceId);
-            }
-        }
-
-        /// <summary>
         /// Gets the current application whitelist (DOS device paths).
         /// </summary>
         public static List<string> GetWhitelist()

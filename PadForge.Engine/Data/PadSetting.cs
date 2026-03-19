@@ -1269,6 +1269,7 @@ namespace PadForge.Engine.Data
             FlushVJoyMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushMappingDeadZones();
         }
 
         /// <summary>

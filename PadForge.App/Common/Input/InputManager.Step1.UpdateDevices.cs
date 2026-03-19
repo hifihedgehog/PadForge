@@ -125,15 +125,6 @@ namespace PadForge.Common.Input
                     // Track the SDL instance ID.
                     _openedSdlInstanceIds.Add(wrapper.SdlInstanceId);
 
-                    // Immediately refresh HidHide blacklist if this VID/PID
-                    // matches any HidHide-enabled device. This eliminates the
-                    // 1-2 second peek-through window that occurs when waiting
-                    // for Dispatcher.BeginInvoke to run ApplyDeviceHiding on
-                    // the UI thread. The new device's HID instance ID is now
-                    // in the PnP tree, so FindInstanceIdsByVidPid will find it.
-                    if (wrapper.VendorId != 0 && wrapper.ProductId != 0)
-                        RefreshHidHideForVidPid((ushort)wrapper.VendorId, (ushort)wrapper.ProductId);
-
                     changed = true;
                 }
                 catch (Exception ex)
@@ -430,52 +421,6 @@ namespace PadForge.Common.Input
                         break; // One UserSetting per device.
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Immediately refreshes HidHide blacklist entries for a given VID/PID.
-        /// Called on the polling thread when a new device is detected, so the
-        /// blacklist is updated before the game's next input poll — eliminating
-        /// the peek-through window from waiting for the UI thread dispatcher.
-        /// Only acts if any saved UserDevice with matching VID/PID has HidHide enabled.
-        /// </summary>
-        private static void RefreshHidHideForVidPid(ushort vendorId, ushort productId)
-        {
-            try
-            {
-                // Check if any UserDevice with this VID/PID has HidHide enabled.
-                var devices = SettingsManager.UserDevices?.Items;
-                if (devices == null) return;
-
-                bool anyHidHideEnabled = false;
-                lock (SettingsManager.UserDevices.SyncRoot)
-                {
-                    for (int i = 0; i < devices.Count; i++)
-                    {
-                        var d = devices[i];
-                        if (d.VendorId == vendorId && d.ProdId == productId && d.HidHideEnabled)
-                        {
-                            anyHidHideEnabled = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!anyHidHideEnabled) return;
-
-                // Find all present HID instance IDs for this VID/PID and
-                // add them to the HidHide blacklist immediately.
-                var ids = HidHideController.FindInstanceIdsByVidPid(vendorId, productId);
-                if (ids.Count > 0)
-                {
-                    Debug.WriteLine($"[Step1] Immediate HidHide refresh for VID={vendorId:X4} PID={productId:X4}: {ids.Count} instance(s)");
-                    HidHideController.AddToBlacklist(ids);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[Step1] RefreshHidHideForVidPid error: {ex.Message}");
             }
         }
 

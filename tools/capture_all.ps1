@@ -808,7 +808,12 @@ if ($slots.Count -ge 1) {
 
     # 13. Force Feedback
     Write-Host "[$(Next)/$total] Force Feedback"
-    Tab "Force Feedback"; Cap "pad-forcefeedback"
+    Tab "Force Feedback"
+    Start-Sleep -Milliseconds 300
+    # Scroll down to reveal Audio Bass Rumble section below the fold.
+    ScrollContent -Clicks -10
+    Start-Sleep -Milliseconds 300
+    Cap "pad-forcefeedback"
 
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red

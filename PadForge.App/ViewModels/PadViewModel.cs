@@ -666,6 +666,11 @@ namespace PadForge.ViewModels
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
             SwapMotors = false;
+            AudioRumbleEnabled = false;
+            AudioRumbleSensitivity = 4.0;
+            AudioRumbleCutoffHz = 80.0;
+            AudioRumbleLeftMotor = 100;
+            AudioRumbleRightMotor = 100;
         });
 
         private ICommand _resetOverallGainCommand;
@@ -680,6 +685,45 @@ namespace PadForge.ViewModels
 
         private double _rightMotorDisplay;
         public double RightMotorDisplay { get => _rightMotorDisplay; set => SetProperty(ref _rightMotorDisplay, value); }
+
+        // ── Audio Bass Rumble (per-device) ──
+
+        private bool _audioRumbleEnabled;
+        public bool AudioRumbleEnabled { get => _audioRumbleEnabled; set => SetProperty(ref _audioRumbleEnabled, value); }
+
+        private double _audioRumbleSensitivity = 4.0;
+        public double AudioRumbleSensitivity { get => _audioRumbleSensitivity; set => SetProperty(ref _audioRumbleSensitivity, Math.Clamp(value, 1, 20)); }
+
+        private double _audioRumbleCutoffHz = 80.0;
+        public double AudioRumbleCutoffHz { get => _audioRumbleCutoffHz; set => SetProperty(ref _audioRumbleCutoffHz, Math.Clamp(value, 20, 200)); }
+
+        private int _audioRumbleLeftMotor = 100;
+        public int AudioRumbleLeftMotor { get => _audioRumbleLeftMotor; set => SetProperty(ref _audioRumbleLeftMotor, Math.Clamp(value, 0, 100)); }
+
+        private int _audioRumbleRightMotor = 100;
+        public int AudioRumbleRightMotor { get => _audioRumbleRightMotor; set => SetProperty(ref _audioRumbleRightMotor, Math.Clamp(value, 0, 100)); }
+
+        private double _audioRumbleLevelMeter;
+        public double AudioRumbleLevelMeter { get => _audioRumbleLevelMeter; set => SetProperty(ref _audioRumbleLevelMeter, value); }
+
+        private ICommand _resetAudioRumbleAllCommand;
+        public ICommand ResetAudioRumbleAllCommand => _resetAudioRumbleAllCommand ??= new RelayCommand(() =>
+        {
+            AudioRumbleEnabled = false;
+            AudioRumbleSensitivity = 4.0;
+            AudioRumbleCutoffHz = 80.0;
+            AudioRumbleLeftMotor = 100;
+            AudioRumbleRightMotor = 100;
+        });
+
+        private ICommand _resetAudioSensitivityCommand;
+        public ICommand ResetAudioSensitivityCommand => _resetAudioSensitivityCommand ??= new RelayCommand(() => AudioRumbleSensitivity = 4.0);
+        private ICommand _resetAudioCutoffCommand;
+        public ICommand ResetAudioCutoffCommand => _resetAudioCutoffCommand ??= new RelayCommand(() => AudioRumbleCutoffHz = 80.0);
+        private ICommand _resetAudioLeftMotorCommand;
+        public ICommand ResetAudioLeftMotorCommand => _resetAudioLeftMotorCommand ??= new RelayCommand(() => AudioRumbleLeftMotor = 100);
+        private ICommand _resetAudioRightMotorCommand;
+        public ICommand ResetAudioRightMotorCommand => _resetAudioRightMotorCommand ??= new RelayCommand(() => AudioRumbleRightMotor = 100);
 
         // ═══════════════════════════════════════════════
         //  #2: Expanded dead zone settings

@@ -799,4 +799,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>オーディオ振動</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>システムオーディオの低音周波数でコントローラーの振動を駆動します。</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>オーディオ振動を有効にする</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>低音カットオフ (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>左モーター</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>右モーター</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>レベル</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>感度をリセット</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>低音カットオフをリセット</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
+
 </root>

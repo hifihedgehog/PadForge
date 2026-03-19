@@ -817,4 +817,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Linker stickknop</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Rechter stickknop</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audiovibratie</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Controllertrillingen aansturen op basis van basfrequenties van het systeemaudio.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Audiovibratie inschakelen</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Basafsnijding (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Linkermotor</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Rechtermotor</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Gevoeligheid herstellen</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Basafsnijding herstellen</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
+
 </root>

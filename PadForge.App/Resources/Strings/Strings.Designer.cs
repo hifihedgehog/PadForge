@@ -801,4 +801,20 @@ public class Strings : INotifyPropertyChanged
     public string MacroAxis_YRotation => Get("MacroAxis_YRotation");
     public string MacroAxis_ZAxis => Get("MacroAxis_ZAxis");
     public string MacroAxis_ZRotation => Get("MacroAxis_ZRotation");
+
+    // Audio Bass Rumble
+    public string Settings_AudioRumble => Get("Settings_AudioRumble");
+    public string Settings_AudioRumbleDesc => Get("Settings_AudioRumbleDesc");
+    public string Settings_AudioRumble_Enable => Get("Settings_AudioRumble_Enable");
+    public string Settings_AudioRumble_Sensitivity => Get("Settings_AudioRumble_Sensitivity");
+    public string Settings_AudioRumble_Cutoff => Get("Settings_AudioRumble_Cutoff");
+    public string Settings_AudioRumble_LeftMotor => Get("Settings_AudioRumble_LeftMotor");
+    public string Settings_AudioRumble_RightMotor => Get("Settings_AudioRumble_RightMotor");
+    public string Settings_AudioRumble_Level => Get("Settings_AudioRumble_Level");
+
+    // Audio Rumble Reset Tooltips
+    public string Pad_ResetAudioSensitivity => Get("Pad_ResetAudioSensitivity");
+    public string Pad_ResetAudioCutoff => Get("Pad_ResetAudioCutoff");
+    public string Pad_ResetAudioLeftMotor => Get("Pad_ResetAudioLeftMotor");
+    public string Pad_ResetAudioRightMotor => Get("Pad_ResetAudioRightMotor");
 }

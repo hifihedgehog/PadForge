@@ -536,6 +536,10 @@ namespace PadForge.Services
                     string negValue = GetPadSettingProperty(ps, mapping.NegSettingName);
                     mapping.NegSourceDescriptor = negValue ?? string.Empty;
                 }
+
+                // Load per-mapping dead zone.
+                string dzStr = ps.GetMappingDeadZone(mapping.TargetSettingName);
+                mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
         }
 
@@ -873,6 +877,7 @@ namespace PadForge.Services
                             ps.FlushVJoyMappings();
                             ps.FlushMidiMappings();
                             ps.FlushKbmMappings();
+                            ps.FlushMappingDeadZones();
                             ps.UpdateChecksum();
                             us.PadSettingChecksum = ps.PadSettingChecksum;
                         }
@@ -1243,12 +1248,17 @@ namespace PadForge.Services
                         ps.SetVJoyMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
-                    // Write mapping descriptors.
+                    // Write mapping descriptors and per-mapping dead zones.
                     foreach (var mapping in padVm.Mappings)
                     {
                         SetPadSettingProperty(ps, mapping.TargetSettingName, mapping.SourceDescriptor);
                         if (mapping.NegSettingName != null)
                             SetPadSettingProperty(ps, mapping.NegSettingName, mapping.NegSourceDescriptor);
+
+                        if (mapping.MappingDeadZone > 0)
+                            ps.SetMappingDeadZone(mapping.TargetSettingName, mapping.MappingDeadZone.ToString());
+                        else
+                            ps.SetMappingDeadZone(mapping.TargetSettingName, "");
                     }
                 }
             }
@@ -1417,9 +1427,12 @@ namespace PadForge.Services
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return string.Empty;
 
-            // vJoy custom mappings use dictionary-based storage
             if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
                 return ps.GetVJoyMapping(propertyName);
+            if (propertyName.StartsWith("Midi", StringComparison.Ordinal))
+                return ps.GetMidiMapping(propertyName);
+            if (propertyName.StartsWith("Kbm", StringComparison.Ordinal))
+                return ps.GetKbmMapping(propertyName);
 
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string))
@@ -1448,6 +1461,13 @@ namespace PadForge.Services
             if (propertyName.StartsWith("Midi", StringComparison.Ordinal))
             {
                 ps.SetMidiMapping(propertyName, value ?? string.Empty);
+                return;
+            }
+
+            // KBM mappings use dictionary-based storage
+            if (propertyName.StartsWith("Kbm", StringComparison.Ordinal))
+            {
+                ps.SetKbmMapping(propertyName, value ?? string.Empty);
                 return;
             }
 

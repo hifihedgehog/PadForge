@@ -1297,6 +1297,8 @@ namespace PadForge.ViewModels
                 m.NegSourceDescriptor = string.Empty;
                 m.IsInverted = false;
                 m.IsHalfAxis = false;
+                m.MappingDeadZone = 50;
+                m.SyncSelectedInputFromDescriptor();
             }
         }
 

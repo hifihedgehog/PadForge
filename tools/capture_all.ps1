@@ -930,15 +930,22 @@ try {
     $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     if (-not (Test-Path $edgePath)) { $edgePath = "C:\Program Files\Microsoft\Edge\Application\msedge.exe" }
 
-    # Capture web pages using Edge in app mode + GDI screen capture
+    # Capture web pages using Edge in app mode + GDI screen capture.
+    # Uses a TEMPORARY user-data-dir so the user's real Edge profile is NEVER touched.
     # Edge --app splits into multiple processes; find the window via UIA by class name.
+    $edgeTempProfile = Join-Path $env:TEMP "PadForge_EdgeCapture"
+    if (Test-Path $edgeTempProfile) { Remove-Item $edgeTempProfile -Recurse -Force -EA SilentlyContinue }
+
     function Cap-Web {
         param([string]$Url, [string]$Name, [int]$WaitMs = 5000)
-        # Kill any existing Edge first
-        Stop-Process -Name msedge -Force -EA SilentlyContinue
+        # Kill only our temp-profile Edge processes (not the user's main browser).
+        # We identify them by command line containing our temp profile path.
+        Get-Process msedge -EA SilentlyContinue | Where-Object {
+            try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
+        } | Stop-Process -Force -EA SilentlyContinue
         Start-Sleep -Milliseconds 1500
-        # Launch Edge in InPrivate + app mode to prevent session restoration
-        Start-Process $edgePath "--inprivate --app=$Url --no-first-run --disable-session-crashed-bubble"
+        # Launch Edge with an isolated temp profile — never touches the default profile.
+        Start-Process $edgePath "--user-data-dir=`"$edgeTempProfile`" --no-first-run --disable-session-crashed-bubble --app=$Url"
         Start-Sleep -Milliseconds $WaitMs
         # Find Edge window via process handles (check all msedge processes)
         $ehwnd = [IntPtr]::Zero
@@ -953,7 +960,9 @@ try {
         }
         if ($ehwnd -eq [IntPtr]::Zero) {
             Write-Host "  !! No Edge window found via process handles" -ForegroundColor Yellow
-            Stop-Process -Name msedge -Force -EA SilentlyContinue
+            Get-Process msedge -EA SilentlyContinue | Where-Object {
+                try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
+            } | Stop-Process -Force -EA SilentlyContinue
             Start-Sleep -Milliseconds 500
             return
         }
@@ -979,7 +988,10 @@ try {
         } else {
             Write-Host "  !! Edge window too small: ${ew}x${eh}" -ForegroundColor Yellow
         }
-        Stop-Process -Name msedge -Force -EA SilentlyContinue
+        # Kill only our temp-profile Edge processes.
+        Get-Process msedge -EA SilentlyContinue | Where-Object {
+            try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
+        } | Stop-Process -Force -EA SilentlyContinue
         Start-Sleep -Milliseconds 500
     }
 
@@ -1014,6 +1026,13 @@ Start-Sleep -Seconds 2
 Copy-Item $xmlBak $PadForgeXml -Force
 Remove-Item $xmlBak -Force
 Write-Host "  Restored PadForge.xml from backup" -ForegroundColor Green
+
+# Clean up temporary Edge profile used for web screenshots.
+$edgeTempProfile = Join-Path $env:TEMP "PadForge_EdgeCapture"
+if (Test-Path $edgeTempProfile) {
+    Remove-Item $edgeTempProfile -Recurse -Force -EA SilentlyContinue
+    Write-Host "  Cleaned up temporary Edge profile"
+}
 
 Stop-Transcript | Out-Null
 

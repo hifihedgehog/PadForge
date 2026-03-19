@@ -799,4 +799,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左摇杆按钮</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>右摇杆按钮</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>音频振动</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>通过系统音频的低音频率驱动控制器振动。</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>启用音频振动</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>低音截止 (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>左马达</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>右马达</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>电平</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>重置灵敏度</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>重置低音截止</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
+
 </root>

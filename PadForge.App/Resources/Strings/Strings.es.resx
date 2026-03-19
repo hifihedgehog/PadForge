@@ -799,4 +799,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Botón palanca izquierda</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Botón palanca derecha</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibración de audio</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Controlar la vibración del mando mediante las frecuencias de graves del audio del sistema.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Activar vibración de audio</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Corte de graves (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motor izquierdo</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motor derecho</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Nivel</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Restablecer sensibilidad</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Restablecer corte de graves</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Restablecer motor izquierdo</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Restablecer motor derecho</value></data>
+
 </root>

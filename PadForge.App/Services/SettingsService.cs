@@ -434,6 +434,13 @@ namespace PadForge.Services
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
+                // Load audio bass rumble settings.
+                padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
+                padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
+                padVm.AudioRumbleCutoffHz = TryParseDouble(ps.AudioRumbleCutoffHz, 80.0);
+                padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
+                padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
+
                 // Load dead zone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
@@ -1158,6 +1165,13 @@ namespace PadForge.Services
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
+                    // Write audio bass rumble settings.
+                    ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
+                    ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1");
+                    ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0");
+                    ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
+                    ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
+
                     // Write dead zone settings (independent X/Y).
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
@@ -1269,6 +1283,11 @@ namespace PadForge.Services
                 padVm.LeftMotorStrength = 100;
                 padVm.RightMotorStrength = 100;
                 padVm.SwapMotors = false;
+                padVm.AudioRumbleEnabled = false;
+                padVm.AudioRumbleSensitivity = 4.0;
+                padVm.AudioRumbleCutoffHz = 80.0;
+                padVm.AudioRumbleLeftMotor = 100;
+                padVm.AudioRumbleRightMotor = 100;
                 padVm.LeftDeadZoneX = 0;
                 padVm.LeftDeadZoneY = 0;
                 padVm.RightDeadZoneX = 0;
@@ -1608,6 +1627,7 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement("DefaultProfileSnapshot")]
         public ProfileData DefaultProfileSnapshot { get; set; }
+
     }
 
     /// <summary>

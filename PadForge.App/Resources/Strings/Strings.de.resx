@@ -799,4 +799,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Linker Stick-Taste</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Rechter Stick-Taste</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audio-Rumble</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Controller-Vibration durch Bassfrequenzen des Systemaudio steuern.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Audio-Rumble aktivieren</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Bassfrequenz-Grenze (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Linker Motor</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Rechter Motor</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Pegel</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Bassfrequenz-Grenze zurücksetzen</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linken Motor zurücksetzen</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechten Motor zurücksetzen</value></data>
+
 </root>

@@ -334,6 +334,9 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
                         nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
+                        nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
+                        nameof(PadViewModel.AudioRumbleRightMotor) or
                         nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };

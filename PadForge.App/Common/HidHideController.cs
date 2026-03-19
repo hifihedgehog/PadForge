@@ -146,41 +146,6 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Adds a device instance ID to the blacklist if not already present.
-        /// </summary>
-        public static void AddToBlacklist(string instanceId)
-        {
-            if (string.IsNullOrEmpty(instanceId)) return;
-
-            lock (_lock)
-            {
-                var list = GetBlacklist();
-                if (!list.Contains(instanceId, StringComparer.OrdinalIgnoreCase))
-                {
-                    list.Add(instanceId);
-                    SetBlacklist(list);
-                }
-                _managedDeviceIds.Add(instanceId);
-            }
-        }
-
-        /// <summary>
-        /// Removes a device instance ID from the blacklist.
-        /// </summary>
-        public static void RemoveFromBlacklist(string instanceId)
-        {
-            if (string.IsNullOrEmpty(instanceId)) return;
-
-            lock (_lock)
-            {
-                var list = GetBlacklist();
-                list.RemoveAll(id => string.Equals(id, instanceId, StringComparison.OrdinalIgnoreCase));
-                SetBlacklist(list);
-                _managedDeviceIds.Remove(instanceId);
-            }
-        }
-
-        /// <summary>
         /// Gets the current application whitelist (DOS device paths).
         /// </summary>
         public static List<string> GetWhitelist()
@@ -306,7 +271,14 @@ namespace PadForge.Common
         public static List<string> FindInstanceIdsByVidPid(ushort vendorId, ushort productId)
         {
             var result = new List<string>();
-            string vidPid = $"VID_{vendorId:X4}&PID_{productId:X4}";
+
+            // USB HID format: VID_045E&PID_0B13
+            string vidPidUsb = $"VID_{vendorId:X4}&PID_{productId:X4}";
+            // BLE HID-over-GATT format: VID&02045E (02 = USB-assigned VID source) + PID&0B13
+            // Also match source 01 (Bluetooth SIG-assigned).
+            string vidBle02 = $"VID&02{vendorId:X4}";
+            string vidBle01 = $"VID&01{vendorId:X4}";
+            string pidBle = $"PID&{productId:X4}";
 
             var guid = GUID_DEVCLASS_HIDCLASS;
             IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT);
@@ -324,7 +296,14 @@ namespace PadForge.Common
                     {
                         int nullIdx = Array.IndexOf(buffer, '\0');
                         string instanceId = nullIdx >= 0 ? new string(buffer, 0, nullIdx) : new string(buffer);
-                        if (instanceId.Contains(vidPid, StringComparison.OrdinalIgnoreCase))
+
+                        // Match standard USB format or BLE GATT format.
+                        bool match = instanceId.Contains(vidPidUsb, StringComparison.OrdinalIgnoreCase)
+                            || (instanceId.Contains(pidBle, StringComparison.OrdinalIgnoreCase)
+                                && (instanceId.Contains(vidBle02, StringComparison.OrdinalIgnoreCase)
+                                    || instanceId.Contains(vidBle01, StringComparison.OrdinalIgnoreCase)));
+
+                        if (match)
                             result.Add(instanceId);
                     }
                 }

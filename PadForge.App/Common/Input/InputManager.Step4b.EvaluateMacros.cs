@@ -1199,7 +1199,7 @@ namespace PadForge.Common.Input
             if (action.SourceDeviceGuid == Guid.Empty || action.SourceDeviceAxisIndex < 0)
                 return 0f;
             var device = FindOnlineDeviceByInstanceGuid(action.SourceDeviceGuid);
-            if (device == null || device.InputState.Axis == null
+            if (device == null || device.InputState == null || device.InputState.Axis == null
                 || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
                 return 0f;
             return (device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f;

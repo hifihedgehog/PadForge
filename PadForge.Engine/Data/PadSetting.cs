@@ -505,10 +505,6 @@ namespace PadForge.Engine.Data
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Optional game executable name this PadSetting is associated with.
-        /// When empty, the setting is global (applies to all games).
-        /// </summary>
-        [XmlElement] public string GameFileName { get; set; } = "";
 
         // ─────────────────────────────────────────────
         //  Migration
@@ -1237,14 +1233,13 @@ namespace PadForge.Engine.Data
         }
 
         /// <summary>
-        /// Creates a deep copy of this PadSetting (copies all properties + checksum + GameFileName).
+        /// Creates a deep copy of this PadSetting (copies all properties + checksum).
         /// </summary>
         public PadSetting CloneDeep()
         {
             var clone = new PadSetting();
             clone.CopyFrom(this);
             clone.PadSettingChecksum = PadSettingChecksum;
-            clone.GameFileName = GameFileName;
             return clone;
         }
     }

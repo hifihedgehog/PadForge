@@ -2168,15 +2168,18 @@ namespace PadForge.Services
 
                             if (realIds.Count > 0)
                             {
-                                // Device is present — cache the resolved IDs for future use.
-                                if (!new HashSet<string>(ud.HidHideInstanceIds, StringComparer.OrdinalIgnoreCase)
-                                        .SetEquals(realIds))
+                                // Merge — never discard cached IDs. Preserves
+                                // Controller 2's ID when only Controller 1 is online.
+                                foreach (var id in realIds)
                                 {
-                                    ud.HidHideInstanceIds = realIds;
-                                    cacheUpdated = true;
+                                    if (!ud.HidHideInstanceIds.Contains(id))
+                                    {
+                                        ud.HidHideInstanceIds.Add(id);
+                                        cacheUpdated = true;
+                                    }
                                 }
-                                foreach (var realId in realIds)
-                                    desiredIds.Add(realId);
+                                foreach (var id in ud.HidHideInstanceIds)
+                                    desiredIds.Add(id);
                             }
                             else if (ud.HidHideInstanceIds.Count > 0)
                             {
@@ -2189,6 +2192,11 @@ namespace PadForge.Services
                         }
                     }
                 }
+
+                // Diagnostic: log exactly what we're blacklisting.
+                foreach (var id in desiredIds)
+                    System.Diagnostics.Debug.WriteLine($"[ApplyDeviceHiding] Blacklisting: {id}");
+                System.Diagnostics.Debug.WriteLine($"[ApplyDeviceHiding] Total: {desiredIds.Count} instance IDs");
 
                 // Atomically sync — only adds/removes the diff, never clears the blacklist.
                 HidHideController.SyncManagedDevices(desiredIds);

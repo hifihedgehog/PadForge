@@ -402,6 +402,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>来源</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>数值</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>选项</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>轴到按钮死区</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>反转</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>半程</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>线性</value></data>

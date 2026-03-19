@@ -636,6 +636,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>将所选轴（0–100%）持续映射到 Windows 系统音量，并按音量限制缩放。与"始终"触发器一起使用，或与按钮/轴触发器配合"按住时"+"直到释放"使用。</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>控制 Windows 音量合成器中特定应用程序的音量，按限制缩放。输入进程名称（在任务管理器中可见）。与"始终"触发器一起使用，或与按钮/轴触发器配合"按住时"+"直到释放"使用。</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>将所选轴持续映射到鼠标移动（或滚动）。与"始终"触发器一起使用，或与按钮/轴触发器配合"按住时"+"直到释放"使用。对于摇杆转鼠标，创建两个动作：一个用于 X 轴，一个用于 Y 轴。</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>反转轴</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>显示音量OSD</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>方向</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>任意</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>正方向</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>负方向</value></data>
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>左肩键</value></data>
   <data name="Btn_RightShoulder" xml:space="preserve"><value>右肩键</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>返回</value></data>
@@ -787,9 +793,24 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>按钮 {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>轴 {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左肩键</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>右肩键</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左摇杆按钮</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>右摇杆按钮</value></data>
+
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>音频振动</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>通过系统音频的低音频率驱动控制器振动。</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>启用音频振动</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>低音截止 (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>左马达</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>右马达</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>电平</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>重置灵敏度</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>重置低音截止</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
 
 </root>

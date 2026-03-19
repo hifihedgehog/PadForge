@@ -579,6 +579,18 @@
                                     </StackPanel>
                                 </StackPanel>
 
+                                <!-- Axis direction (visible when an axis trigger was recorded) -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                            Visibility="{Binding UsesAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Macro_AxisDirection, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                    <ComboBox SelectedIndex="{Binding TriggerAxisDirectionIndex, Mode=TwoWay}" MinWidth="120">
+                                        <ComboBoxItem Content="{Binding Macro_AxisDirection_Any, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Macro_AxisDirection_Positive, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Macro_AxisDirection_Negative, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+
                                 <CheckBox Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
                                           Margin="0,0,0,4"/>
@@ -772,6 +784,10 @@
                                                 <TextBlock Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
+                                        <CheckBox Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
+                                                 IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
+                                        <CheckBox Content="{Binding Macro_ShowVolumeOsd, Source={x:Static strings:Strings.Instance}}"
+                                                 IsChecked="{Binding ShowVolumeOsd, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_SysVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
@@ -849,6 +865,8 @@
                                                 <TextBlock Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
+                                        <CheckBox Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
+                                                 IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_AppVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
@@ -914,6 +932,8 @@
                                             <TextBox Text="{Binding MouseSensitivity, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="50" Margin="8,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
+                                        <CheckBox Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
+                                                 IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_MouseMoveHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
@@ -1007,6 +1027,11 @@
                               GridLinesVisibility="Horizontal"
                               IsReadOnly="True"
                               VerticalScrollBarVisibility="Auto">
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </DataGrid.CellStyle>
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
                                 <Setter Property="Background">
@@ -1039,10 +1064,19 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"
-                                                Width="180"/>
-                            <DataGridTextColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
-                                                Binding="{Binding SourceDisplayText}"
-                                                Width="200"/>
+                                                Width="195"/>
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
+                                                Width="215">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding AvailableInputs}"
+                                                  SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  DisplayMemberPath="DisplayName"
+                                                  Margin="0" Padding="4,2"
+                                                  HorizontalAlignment="Stretch"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
                                                 Width="60"/>
@@ -1636,6 +1670,73 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding RightMotorDisplay, Mode=OneWay}"
+                                         Minimum="0" Maximum="1"
+                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- ── Audio Bass Rumble ── -->
+                        <Separator Margin="0,16,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       VerticalAlignment="Center"/>
+                            <Button Command="{Binding ResetAudioRumbleAllCommand}" Style="{StaticResource ResetAllButton}"
+                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Settings_AudioRumbleDesc, Source={x:Static strings:Strings.Instance}}"
+                                   Opacity="0.6" Margin="0,0,0,8" TextWrapping="Wrap"/>
+
+                        <CheckBox Content="{Binding Settings_AudioRumble_Enable, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding AudioRumbleEnabled, Mode=TwoWay}"
+                                  Margin="0,0,0,12"/>
+
+                        <!-- Sensitivity -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleSensitivity, Mode=TwoWay}"
+                                    Minimum="1" Maximum="20" Width="200" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding AudioRumbleSensitivity, StringFormat='{}{0:F1}'}"
+                                       Margin="8,0,0,0" Opacity="0.6" VerticalAlignment="Center"/>
+                            <Button Command="{Binding ResetAudioSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Bass Cutoff -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_Cutoff, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleCutoffHz, Mode=TwoWay}"
+                                    Minimum="20" Maximum="200" Width="200" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding AudioRumbleCutoffHz, StringFormat='{}{0:F0}'}"
+                                       Margin="8,0,0,0" Opacity="0.6" VerticalAlignment="Center"/>
+                            <Button Command="{Binding ResetAudioCutoffCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCutoff, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Left Motor -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_LeftMotor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleLeftMotor, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBox Text="{Binding AudioRumbleLeftMotor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                            <Button Command="{Binding ResetAudioLeftMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioLeftMotor, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Right Motor -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_RightMotor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleRightMotor, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBox Text="{Binding AudioRumbleRightMotor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                            <Button Command="{Binding ResetAudioRightMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioRightMotor, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Level meter -->
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <ProgressBar Value="{Binding AudioRumbleLevelMeter, Mode=OneWay}"
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>

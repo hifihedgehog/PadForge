@@ -434,6 +434,13 @@ namespace PadForge.Services
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
+                // Load audio bass rumble settings.
+                padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
+                padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
+                padVm.AudioRumbleCutoffHz = TryParseDouble(ps.AudioRumbleCutoffHz, 80.0);
+                padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
+                padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
+
                 // Load dead zone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
@@ -590,7 +597,9 @@ namespace PadForge.Services
                             ProcessName = ad.ProcessName ?? "",
                             VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100,
                             MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
-                            MouseButton = ad.MouseButton
+                            MouseButton = ad.MouseButton,
+                            InvertAxis = ad.InvertAxis,
+                            ShowVolumeOsd = ad.ShowVolumeOsd
                         });
                     }
                 }
@@ -1118,7 +1127,9 @@ namespace PadForge.Services
                             ProcessName = a.ProcessName,
                             VolumeLimit = a.VolumeLimit,
                             MouseSensitivity = a.MouseSensitivity,
-                            MouseButton = a.MouseButton
+                            MouseButton = a.MouseButton,
+                            InvertAxis = a.InvertAxis,
+                            ShowVolumeOsd = a.ShowVolumeOsd
                         }).ToArray()
                     });
                 }
@@ -1153,6 +1164,13 @@ namespace PadForge.Services
                     ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+
+                    // Write audio bass rumble settings.
+                    ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
+                    ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1");
+                    ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0");
+                    ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
+                    ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
                     // Write dead zone settings (independent X/Y).
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
@@ -1265,6 +1283,11 @@ namespace PadForge.Services
                 padVm.LeftMotorStrength = 100;
                 padVm.RightMotorStrength = 100;
                 padVm.SwapMotors = false;
+                padVm.AudioRumbleEnabled = false;
+                padVm.AudioRumbleSensitivity = 4.0;
+                padVm.AudioRumbleCutoffHz = 80.0;
+                padVm.AudioRumbleLeftMotor = 100;
+                padVm.AudioRumbleRightMotor = 100;
                 padVm.LeftDeadZoneX = 0;
                 padVm.LeftDeadZoneY = 0;
                 padVm.RightDeadZoneX = 0;
@@ -1604,6 +1627,7 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement("DefaultProfileSnapshot")]
         public ProfileData DefaultProfileSnapshot { get; set; }
+
     }
 
     /// <summary>
@@ -1735,6 +1759,14 @@ namespace PadForge.Services
         /// <summary>Which mouse button for MouseButtonPress/MouseButtonRelease.</summary>
         [XmlElement]
         public MacroMouseButton MouseButton { get; set; }
+
+        /// <summary>When true, invert the axis value (0→1 becomes 1→0).</summary>
+        [XmlElement]
+        public bool InvertAxis { get; set; }
+
+        /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
+        [XmlElement]
+        public bool ShowVolumeOsd { get; set; } = true;
     }
 
     /// <summary>

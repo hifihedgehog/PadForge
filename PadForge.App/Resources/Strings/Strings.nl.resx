@@ -634,8 +634,14 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Wijst de geselecteerde as (0–100%) continu toe aan het Windows-systeemvolume, geschaald naar de volumelimiet. Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Regelt het volume van een specifieke toepassing in de Windows-volumemixer, geschaald naar de volumelimiet. Voer de procesnaam in (zichtbaar in Taakbeheer). Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Wijst de geselecteerde as continu toe aan muisbeweging (of scrollen). Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten". Maak voor stick-naar-muis twee acties aan: een voor de X-as, een voor de Y-as.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>As omkeren</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Volume-OSD tonen</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Richting</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Willekeurig</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positief</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negatief</value></data>
 
-  <!-- ═══ 3D View ═══ -->
+  <!--═══ 3D View ═══ -->
   <data name="Pad_ResetView" xml:space="preserve"><value>Weergave herstellen</value></data>
 
   <!-- ═══ Gamepad Button Labels ═══ -->
@@ -805,9 +811,24 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Knop {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>As {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Linker schouderknop</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>Rechter schouderknop</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Linker stickknop</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Rechter stickknop</value></data>
+
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audiovibratie</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Controllertrillingen aansturen op basis van basfrequenties van het systeemaudio.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Audiovibratie inschakelen</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Basafsnijding (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Linkermotor</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Rechtermotor</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Gevoeligheid herstellen</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Basafsnijding herstellen</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
 
 </root>

@@ -53,7 +53,7 @@ namespace PadForge.Common.Input
             set => _sensitivity = Math.Clamp(value, 1f, 20f);
         }
 
-        /// <summary>Low-pass filter cutoff in Hz (40–200). Default 80.</summary>
+        /// <summary>Low-pass filter cutoff in Hz (20–200). Default 80.</summary>
         public float CutoffHz
         {
             get => _cutoffHz;

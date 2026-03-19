@@ -817,4 +817,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Pulsante levetta sinistra</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Pulsante levetta destra</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibrazione audio</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Pilotare la vibrazione del controller dalle frequenze basse dell'audio di sistema.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Abilita vibrazione audio</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilità</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Taglio bassi (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motore sinistro</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motore destro</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Livello</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Ripristina sensibilità</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Ripristina taglio bassi</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Ripristina motore sinistro</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Ripristina motore destro</value></data>
+
 </root>

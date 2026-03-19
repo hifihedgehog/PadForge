@@ -658,6 +658,10 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Reset Overall Gain</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Reset Left Motor</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Reset Right Motor</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Reset Bass Cutoff</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Reset Left Motor</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Reset Right Motor</value></data>
 
   <!-- ═══ Pad — Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>
@@ -822,5 +826,15 @@
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audio Rumble</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Drive controller rumble from system audio bass frequencies.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Enable Audio Rumble</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Bass Cutoff (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Left Motor</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Right Motor</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
 
 </root>

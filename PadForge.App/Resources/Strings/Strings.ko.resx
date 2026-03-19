@@ -799,4 +799,18 @@
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>왼쪽 스틱 버튼</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>오른쪽 스틱 버튼</value></data>
 
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>오디오 진동</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>시스템 오디오의 저음 주파수로 컨트롤러 진동을 구동합니다.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>오디오 진동 활성화</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>감도</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>저음 차단 (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>왼쪽 모터</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>오른쪽 모터</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>레벨</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>감도 초기화</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>저음 차단 초기화</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>왼쪽 모터 초기화</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
+
 </root>

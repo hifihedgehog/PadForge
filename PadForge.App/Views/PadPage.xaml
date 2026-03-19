@@ -1673,6 +1673,73 @@
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>
+
+                        <!-- ── Audio Bass Rumble ── -->
+                        <Separator Margin="0,16,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       VerticalAlignment="Center"/>
+                            <Button Command="{Binding ResetAudioRumbleAllCommand}" Style="{StaticResource ResetAllButton}"
+                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Settings_AudioRumbleDesc, Source={x:Static strings:Strings.Instance}}"
+                                   Opacity="0.6" Margin="0,0,0,8" TextWrapping="Wrap"/>
+
+                        <CheckBox Content="{Binding Settings_AudioRumble_Enable, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding AudioRumbleEnabled, Mode=TwoWay}"
+                                  Margin="0,0,0,12"/>
+
+                        <!-- Sensitivity -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleSensitivity, Mode=TwoWay}"
+                                    Minimum="1" Maximum="20" Width="200" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding AudioRumbleSensitivity, StringFormat='{}{0:F1}'}"
+                                       Margin="8,0,0,0" Opacity="0.6" VerticalAlignment="Center"/>
+                            <Button Command="{Binding ResetAudioSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Bass Cutoff -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_Cutoff, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleCutoffHz, Mode=TwoWay}"
+                                    Minimum="20" Maximum="200" Width="200" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding AudioRumbleCutoffHz, StringFormat='{}{0:F0}'}"
+                                       Margin="8,0,0,0" Opacity="0.6" VerticalAlignment="Center"/>
+                            <Button Command="{Binding ResetAudioCutoffCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCutoff, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Left Motor -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_LeftMotor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleLeftMotor, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBox Text="{Binding AudioRumbleLeftMotor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                            <Button Command="{Binding ResetAudioLeftMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioLeftMotor, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Right Motor -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_RightMotor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Slider Value="{Binding AudioRumbleRightMotor, Mode=TwoWay}"
+                                    Style="{StaticResource DzSlider}"/>
+                            <TextBox Text="{Binding AudioRumbleRightMotor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
+                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                            <Button Command="{Binding ResetAudioRightMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioRightMotor, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+
+                        <!-- Level meter -->
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0" IsEnabled="{Binding AudioRumbleEnabled}">
+                            <TextBlock Text="{Binding Settings_AudioRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <ProgressBar Value="{Binding AudioRumbleLevelMeter, Mode=OneWay}"
+                                         Minimum="0" Maximum="1"
+                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

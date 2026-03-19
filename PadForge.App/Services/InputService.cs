@@ -209,6 +209,9 @@ namespace PadForge.Services
             // Start web controller server if enabled.
             StartWebServerIfEnabled();
 
+            // Start audio bass rumble detector if any slot has it enabled.
+            SyncAudioBassDetector();
+
             // Clear stale HidHide blacklist entries from previous crash/kill.
             // _managedDeviceIds is in-memory so entries are lost on restart,
             // making RemoveManagedDevices() unable to clean up stale entries.
@@ -282,6 +285,9 @@ namespace PadForge.Services
 
             // Stop web controller server.
             StopWebServer();
+
+            // Stop audio bass rumble detector.
+            StopAudioBassDetector();
 
             // Remove device hiding (HidHide blacklist entries + input hooks).
             RemoveDeviceHiding();
@@ -421,6 +427,17 @@ namespace PadForge.Services
 
             // ── Sync macro snapshots to engine ──
             SyncMacroSnapshots();
+
+            // ── Update audio rumble level meters + sync detector on/off ──
+            if (_audioBassDetector != null)
+            {
+                double level = _audioBassDetector.BassEnergy;
+                for (int i = 0; i < _mainVm.Pads.Count; i++)
+                {
+                    if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].AudioRumbleEnabled)
+                        _mainVm.Pads[i].AudioRumbleLevelMeter = level;
+                }
+            }
 
             // ── Auto-idle engine when no slots are created ──
             UpdateIdleState();
@@ -868,8 +885,11 @@ namespace PadForge.Services
         /// directly to PadSetting objects so the engine picks them up immediately.
         /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
         /// </summary>
+        private bool _lastAudioRumbleAnyEnabled;
+
         private void SyncViewModelToPadSettings()
         {
+            bool anyAudioRumble = false;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
@@ -882,11 +902,21 @@ namespace PadForge.Services
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
                 }
 
+                if (SettingsManager.SlotCreated[i] && padVm.AudioRumbleEnabled)
+                    anyAudioRumble = true;
+
                 var selected = padVm.SelectedMappedDevice;
                 if (selected == null || selected.InstanceGuid == Guid.Empty)
                     continue;
 
                 SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
+            }
+
+            // Start/stop audio bass detector when per-slot enable changes.
+            if (anyAudioRumble != _lastAudioRumbleAnyEnabled)
+            {
+                _lastAudioRumbleAnyEnabled = anyAudioRumble;
+                SyncAudioBassDetector();
             }
         }
 
@@ -969,6 +999,13 @@ namespace PadForge.Services
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+
+            // Audio bass rumble.
+            ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
+            ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1");
+            ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0");
+            ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
+            ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
             // Mapping descriptors: clear + rewrite only when explicitly requested.
             // The 30Hz SyncViewModelToPadSettings path passes syncMappings=false
@@ -1085,6 +1122,13 @@ namespace PadForge.Services
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+
+            // Audio bass rumble.
+            padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
+            padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
+            padVm.AudioRumbleCutoffHz = TryParseDouble(ps.AudioRumbleCutoffHz, 80.0);
+            padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
+            padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
 
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
@@ -1906,6 +1950,69 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Audio Bass Rumble lifecycle
+        // ─────────────────────────────────────────────
+
+        private AudioBassDetector _audioBassDetector;
+
+        /// <summary>
+        /// Checks whether any slot has audio rumble enabled and starts/stops
+        /// the global detector accordingly. Called on engine start, slot changes,
+        /// and during the UI timer sync.
+        /// </summary>
+        internal void SyncAudioBassDetector()
+        {
+            bool anyEnabled = false;
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].AudioRumbleEnabled)
+                {
+                    anyEnabled = true;
+                    break;
+                }
+            }
+
+            if (anyEnabled && _audioBassDetector == null)
+                StartAudioBassDetector();
+            else if (!anyEnabled && _audioBassDetector != null)
+                StopAudioBassDetector();
+        }
+
+        private void StartAudioBassDetector()
+        {
+            if (_audioBassDetector != null || _inputManager == null)
+                return;
+
+            _audioBassDetector = new AudioBassDetector();
+
+            if (_audioBassDetector.Start())
+            {
+                _inputManager.AudioBassDetector = _audioBassDetector;
+            }
+            else
+            {
+                _audioBassDetector.Dispose();
+                _audioBassDetector = null;
+            }
+        }
+
+        private void StopAudioBassDetector()
+        {
+            if (_audioBassDetector == null)
+                return;
+
+            if (_inputManager != null)
+                _inputManager.AudioBassDetector = null;
+
+            _audioBassDetector.Dispose();
+            _audioBassDetector = null;
+
+            // Clear level meters on all pads.
+            foreach (var pad in _mainVm.Pads)
+                pad.AudioRumbleLevelMeter = 0;
         }
 
         // ─────────────────────────────────────────────

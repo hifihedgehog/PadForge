@@ -259,6 +259,21 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string RightMotorStrength { get; set; } = "100";
 
+        /// <summary>Enable audio bass rumble for this device. "0" = off (default), "1" = on.</summary>
+        [XmlElement] public string AudioRumbleEnabled { get; set; } = "0";
+
+        /// <summary>Audio rumble sensitivity (1–20, default 4).</summary>
+        [XmlElement] public string AudioRumbleSensitivity { get; set; } = "4";
+
+        /// <summary>Audio rumble bass cutoff frequency in Hz (40–200, default 80).</summary>
+        [XmlElement] public string AudioRumbleCutoffHz { get; set; } = "80";
+
+        /// <summary>Audio rumble left motor scale (0–100%, default 100).</summary>
+        [XmlElement] public string AudioRumbleLeftMotor { get; set; } = "100";
+
+        /// <summary>Audio rumble right motor scale (0–100%, default 100).</summary>
+        [XmlElement] public string AudioRumbleRightMotor { get; set; } = "100";
+
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold
         // ─────────────────────────────────────────────
@@ -632,6 +647,13 @@ namespace PadForge.Engine.Data
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
 
+            // Audio bass rumble
+            sb.Append(AudioRumbleEnabled); sb.Append('|');
+            sb.Append(AudioRumbleSensitivity); sb.Append('|');
+            sb.Append(AudioRumbleCutoffHz); sb.Append('|');
+            sb.Append(AudioRumbleLeftMotor); sb.Append('|');
+            sb.Append(AudioRumbleRightMotor); sb.Append('|');
+
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
             sb.Append(LeftThumbAxisYInvert); sb.Append('|');
@@ -865,6 +887,9 @@ namespace PadForge.Engine.Data
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
+            // Audio bass rumble
+            nameof(AudioRumbleEnabled), nameof(AudioRumbleSensitivity),
+            nameof(AudioRumbleCutoffHz), nameof(AudioRumbleLeftMotor), nameof(AudioRumbleRightMotor),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),

@@ -518,7 +518,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetDeadZoneCommand;
 
-        /// <summary>Command to reset the per-mapping dead zone to 0 (use global default).</summary>
+        /// <summary>Command to reset the per-mapping dead zone to default (50%).</summary>
         public RelayCommand ResetDeadZoneCommand =>
             _resetDeadZoneCommand ??= new RelayCommand(() => MappingDeadZone = 50);
 

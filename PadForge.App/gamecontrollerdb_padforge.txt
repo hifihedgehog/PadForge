@@ -1,3 +1,6 @@
 # PadForge Community Gamepad Mappings
 # Format: SDL gamecontrollerdb.txt (https://github.com/mdqinc/SDL_GameControllerDB)
 # Submit new mappings: https://github.com/hifihedgehog/PadForge/issues/new?template=device_mapping.yml
+
+# Sony DualShock 3 (DsHidMini SDF and SXS)
+0300d8234c0500006802000000000000,Sony DualShock 3 (DsHidMini SDF and SXS),a:b2,b:b1,x:b3,y:b0,back:b4,start:b7,guide:b12,leftshoulder:b10,rightshoulder:b11,leftstick:b5,rightstick:b6,leftx:a0,lefty:a1,rightx:a2,righty:a5,lefttrigger:a3,righttrigger:a4,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Windows,

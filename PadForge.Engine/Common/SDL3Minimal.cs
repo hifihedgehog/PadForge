@@ -271,6 +271,20 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern int SDL_AddGamepadMapping([MarshalAs(UnmanagedType.LPUTF8Str)] string mapping);
 
+        /// <summary>Get the current mapping string for a gamepad. Returns null if no mapping. Caller must SDL_free the result.</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr SDL_GetGamepadMapping(IntPtr gamepad);
+
+        /// <summary>Get the mapping string for an open gamepad as a managed string.</summary>
+        public static string GetGamepadMapping(IntPtr gamepad)
+        {
+            IntPtr ptr = SDL_GetGamepadMapping(gamepad);
+            if (ptr == IntPtr.Zero) return null;
+            string result = Marshal.PtrToStringUTF8(ptr);
+            SDL_free(ptr);
+            return result;
+        }
+
         // ─────────────────────────────────────────────
         //  Joystick instance (opened device)
         // ─────────────────────────────────────────────

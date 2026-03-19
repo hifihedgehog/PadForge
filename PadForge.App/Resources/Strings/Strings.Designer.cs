@@ -575,6 +575,12 @@ public class Strings : INotifyPropertyChanged
     public string Macro_UnknownAction => Get("Macro_UnknownAction");
     public string Macro_POV_Format => Get("Macro_POV_Format");
     public string Macro_Button_Format => Get("Macro_Button_Format");
+    public string Macro_InvertAxis => Get("Macro_InvertAxis");
+    public string Macro_ShowVolumeOsd => Get("Macro_ShowVolumeOsd");
+    public string Macro_AxisDirection => Get("Macro_AxisDirection");
+    public string Macro_AxisDirection_Any => Get("Macro_AxisDirection_Any");
+    public string Macro_AxisDirection_Positive => Get("Macro_AxisDirection_Positive");
+    public string Macro_AxisDirection_Negative => Get("Macro_AxisDirection_Negative");
     public string MacroAction_Press_Format => Get("MacroAction_Press_Format");
     public string MacroAction_Release_Format => Get("MacroAction_Release_Format");
     public string MacroAction_KeyPress_Format => Get("MacroAction_KeyPress_Format");
@@ -630,6 +636,7 @@ public class Strings : INotifyPropertyChanged
     public string DevObj_POV => Get("DevObj_POV");
     public string DevObj_POVN => Get("DevObj_POVN");
     public string DevObj_Button => Get("DevObj_Button");
+    public string DevObj_AxisN => Get("DevObj_AxisN");
     public string Profiles_Title => Get("Profiles_Title");
     public string Profiles_Management => Get("Profiles_Management");
     public string Profiles_Description => Get("Profiles_Description");
@@ -794,4 +801,20 @@ public class Strings : INotifyPropertyChanged
     public string MacroAxis_YRotation => Get("MacroAxis_YRotation");
     public string MacroAxis_ZAxis => Get("MacroAxis_ZAxis");
     public string MacroAxis_ZRotation => Get("MacroAxis_ZRotation");
+
+    // Audio Bass Rumble
+    public string Settings_AudioRumble => Get("Settings_AudioRumble");
+    public string Settings_AudioRumbleDesc => Get("Settings_AudioRumbleDesc");
+    public string Settings_AudioRumble_Enable => Get("Settings_AudioRumble_Enable");
+    public string Settings_AudioRumble_Sensitivity => Get("Settings_AudioRumble_Sensitivity");
+    public string Settings_AudioRumble_Cutoff => Get("Settings_AudioRumble_Cutoff");
+    public string Settings_AudioRumble_LeftMotor => Get("Settings_AudioRumble_LeftMotor");
+    public string Settings_AudioRumble_RightMotor => Get("Settings_AudioRumble_RightMotor");
+    public string Settings_AudioRumble_Level => Get("Settings_AudioRumble_Level");
+
+    // Audio Rumble Reset Tooltips
+    public string Pad_ResetAudioSensitivity => Get("Pad_ResetAudioSensitivity");
+    public string Pad_ResetAudioCutoff => Get("Pad_ResetAudioCutoff");
+    public string Pad_ResetAudioLeftMotor => Get("Pad_ResetAudioLeftMotor");
+    public string Pad_ResetAudioRightMotor => Get("Pad_ResetAudioRightMotor");
 }

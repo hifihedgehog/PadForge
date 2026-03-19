@@ -636,6 +636,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné (0–100 %) au volume système Windows, mis à l'échelle selon la limite de volume. Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Pendant maintien » + « Jusqu'au relâchement ».</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Contrôle le volume d'une application spécifique dans le mixeur Windows, mis à l'échelle selon la limite. Entrez le nom du processus (visible dans le Gestionnaire des tâches). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Pendant maintien » + « Jusqu'au relâchement ».</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné au mouvement de la souris (ou au défilement). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Pendant maintien » + « Jusqu'au relâchement ». Pour stick-vers-souris, créez deux actions : une pour l'axe X, une pour l'axe Y.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverser l'axe</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Afficher l'OSD du volume</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Direction</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Indifférent</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positif</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Négatif</value></data>
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>Gâchette haute gauche</value></data>
   <data name="Btn_RightShoulder" xml:space="preserve"><value>Gâchette haute droite</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>Retour</value></data>
@@ -787,9 +793,24 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Bouton {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>Axe {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Gâchette haute gauche</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>Gâchette haute droite</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Bouton stick gauche</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Bouton stick droit</value></data>
+
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibration audio</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Piloter la vibration du contrôleur à partir des fréquences basses de l'audio système.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Activer la vibration audio</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Fréquence de coupure basses (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Moteur gauche</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Moteur droit</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Réinitialiser la sensibilité</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Réinitialiser la coupure basses</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
 
 </root>

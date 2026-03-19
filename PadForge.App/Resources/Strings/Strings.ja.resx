@@ -636,6 +636,12 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windowsシステム音量に継続的にマップし、音量制限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windowsの音量ミキサーで特定アプリケーションの音量を制限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>選択した軸をマウス移動 (またはスクロール) に継続的にマップします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。スティック→マウスの場合、X軸用とY軸用の2つのアクションを作成してください。</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>軸を反転</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>音量OSDを表示</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>方向</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>すべて</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>正方向</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>負方向</value></data>
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
   <data name="Btn_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>戻る</value></data>
@@ -787,9 +793,24 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>軸 {0}</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
+
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>オーディオ振動</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>システムオーディオの低音周波数でコントローラーの振動を駆動します。</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>オーディオ振動を有効にする</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>低音カットオフ (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>左モーター</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>右モーター</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>レベル</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>感度をリセット</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>低音カットオフをリセット</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
 
 </root>

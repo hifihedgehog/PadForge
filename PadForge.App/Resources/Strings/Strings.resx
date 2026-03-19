@@ -563,6 +563,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Button {0}</value></data>
+  <data name="DevObj_AxisN" xml:space="preserve"><value>Axis {0}</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profiles</value></data>
@@ -657,12 +658,22 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Reset Overall Gain</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Reset Left Motor</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Reset Right Motor</value></data>
+  <data name="Pad_ResetAudioSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>
+  <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Reset Bass Cutoff</value></data>
+  <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Reset Left Motor</value></data>
+  <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Reset Right Motor</value></data>
 
   <!-- ═══ Pad — Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Continuously maps the selected axis to mouse movement (or scroll). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release". For stick-to-mouse, create two actions: one for X axis, one for Y axis.</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Invert axis</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Show volume OSD</value></data>
+  <data name="Macro_AxisDirection" xml:space="preserve"><value>Direction</value></data>
+  <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Any</value></data>
+  <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positive</value></data>
+  <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negative</value></data>
 
   <!-- ═══ 3D View ═══ -->
   <data name="Pad_ResetView" xml:space="preserve"><value>Reset View</value></data>
@@ -815,5 +826,15 @@
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+
+  <!-- ═══ Audio Bass Rumble ═══ -->
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audio Rumble</value></data>
+  <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Drive controller rumble from system audio bass frequencies.</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Enable Audio Rumble</value></data>
+  <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Bass Cutoff (Hz)</value></data>
+  <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Left Motor</value></data>
+  <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Right Motor</value></data>
+  <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
 
 </root>

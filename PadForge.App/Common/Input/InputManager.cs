@@ -117,6 +117,12 @@ namespace PadForge.Common.Input
         public DsuMotionServer DsuServer { get; set; }
 
         /// <summary>
+        /// Audio bass detector. When set, the polling thread reads bass energy
+        /// and combines it with game rumble via max() in ApplyForceFeedback.
+        /// </summary>
+        public AudioBassDetector AudioBassDetector { get; set; }
+
+        /// <summary>
         /// When set (non-empty), the test rumble for this slot targets only the
         /// device with this GUID. ApplyForceFeedback skips other devices in the slot.
         /// </summary>

@@ -110,7 +110,7 @@ namespace PadForge.ViewModels
         protected override void OnCultureChanged()
         {
             Title = Strings.Instance.Common_PadForge;
-            OnPropertyChanged(nameof(EngineStatusText));
+            RefreshEngineStatus();
         }
 
         // ─────────────────────────────────────────────
@@ -340,15 +340,66 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _isEngineRunning, value))
                 {
-                    OnPropertyChanged(nameof(EngineStatusText));
+                    RefreshEngineStatus();
+                }
+            }
+        }
+
+        private bool _hasActiveSlots;
+
+        /// <summary>
+        /// Whether any virtual controller slots are currently created.
+        /// </summary>
+        public bool HasActiveSlots
+        {
+            get => _hasActiveSlots;
+            set
+            {
+                if (SetProperty(ref _hasActiveSlots, value))
+                {
+                    RefreshEngineStatus();
                 }
             }
         }
 
         /// <summary>
-        /// Display string for engine status: "Running" or "Stopped".
+        /// Display string for engine status: "Running", "Idle", or "Stopped".
         /// </summary>
-        public string EngineStatusText => IsEngineRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
+        public string EngineStatusText =>
+            !IsEngineRunning ? Strings.Instance.Common_Stopped :
+            HasActiveSlots ? Strings.Instance.Common_Running :
+            Strings.Instance.Common_Idle;
+
+        private static readonly System.Windows.Media.SolidColorBrush GreenBrush =
+            new(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // Running
+        private static readonly System.Windows.Media.SolidColorBrush AmberBrush =
+            new(System.Windows.Media.Color.FromRgb(0xFF, 0xB3, 0x00)); // Idle
+        private static readonly System.Windows.Media.SolidColorBrush GrayBrush =
+            new(System.Windows.Media.Color.FromRgb(0x9E, 0x9E, 0x9E)); // Stopped
+
+        static MainViewModel()
+        {
+            GreenBrush.Freeze();
+            AmberBrush.Freeze();
+            GrayBrush.Freeze();
+        }
+
+        /// <summary>
+        /// Brush for the engine status indicator dot.
+        /// </summary>
+        public System.Windows.Media.Brush EngineStatusBrush =>
+            !IsEngineRunning ? GrayBrush :
+            HasActiveSlots ? GreenBrush :
+            AmberBrush;
+
+        /// <summary>
+        /// Refreshes engine status text and indicator brush.
+        /// </summary>
+        public void RefreshEngineStatus()
+        {
+            OnPropertyChanged(nameof(EngineStatusText));
+            OnPropertyChanged(nameof(EngineStatusBrush));
+        }
 
         private double _pollingFrequency;
 

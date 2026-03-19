@@ -334,6 +334,9 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
                         nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
+                        nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
+                        nameof(PadViewModel.AudioRumbleRightMotor) or
                         nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };
@@ -369,6 +372,7 @@ namespace PadForge
                         _savedPosDescriptor = null;
                         if (deviceGuid != Guid.Empty)
                             InputService.ResolveDisplayText(negMapping, deviceGuid);
+                        negMapping.SyncSelectedInputFromDescriptor();
 
                         _viewModel.StatusText = string.Format(Strings.Instance.Status_Recorded_Format, negMapping.TargetLabel, negMapping.SourceDisplayText);
 
@@ -403,6 +407,7 @@ namespace PadForge
                         InputService.ResolveDisplayText(negMapping, deviceGuid);
                         InputService.ResolveNegDisplayText(negMapping, deviceGuid);
                     }
+                    negMapping.SyncSelectedInputFromDescriptor();
 
                     if (!hadSavedPos && negMapping.HasNegDirection && !activePad.IsMapAllActive)
                     {
@@ -453,6 +458,7 @@ namespace PadForge
                 // ── Normal recording ──
                 if (deviceGuid != Guid.Empty)
                     InputService.ResolveDisplayText(result.Mapping, deviceGuid);
+                result.Mapping.SyncSelectedInputFromDescriptor();
 
                 // If a directional input (button, POV, slider) was recorded for a bidirectional axis,
                 // auto-prompt for neg direction (but only if neg isn't already mapped — avoids

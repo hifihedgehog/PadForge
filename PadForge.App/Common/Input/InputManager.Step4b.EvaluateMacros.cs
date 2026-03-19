@@ -298,10 +298,30 @@ namespace PadForge.Common.Input
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
-                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        for (int ai = 0; ai < macro.TriggerAxisTargets.Length; ai++)
                         {
-                            if (ReadAxisAsVolume(in gp, axTarget) < threshold)
-                            { axisOk = false; break; }
+                            var axTarget = macro.TriggerAxisTargets[ai];
+                            var dir = macro.GetAxisDirection(ai);
+                            float val = ReadAxisAsVolume(in gp, axTarget); // 0→1
+
+                            if (dir == MacroAxisDirection.Positive)
+                            {
+                                // Only fire when axis is in positive half (0.5→1 range).
+                                if (val < 0.5f + threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else if (dir == MacroAxisDirection.Negative)
+                            {
+                                // Only fire when axis is in negative half (0→0.5 range).
+                                if (val > 0.5f - threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else
+                            {
+                                // Any direction — existing behavior.
+                                if (val < threshold)
+                                { axisOk = false; break; }
+                            }
                         }
                     }
 
@@ -490,7 +510,8 @@ namespace PadForge.Common.Input
                 {
                     float vol = useDevice ? ReadAxisFromDevice(action)
                         : ReadAxisAsVolume(in gp, action.AxisTarget);
-                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
+                    if (action.InvertAxis) vol = 1f - vol;
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f), action.ShowVolumeOsd);
                     break;
                 }
                 case MacroActionType.AppVolume:
@@ -498,6 +519,7 @@ namespace PadForge.Common.Input
                     {
                         float vol = useDevice ? ReadAxisFromDevice(action)
                             : ReadAxisAsVolume(in gp, action.AxisTarget);
+                        if (action.InvertAxis) vol = 1f - vol;
                         SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
                     }
                     break;
@@ -505,6 +527,7 @@ namespace PadForge.Common.Input
                 {
                     float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
                         : ReadAxisAsMouse(in gp, action.AxisTarget);
+                    if (action.InvertAxis) deflection = -deflection;
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -518,6 +541,7 @@ namespace PadForge.Common.Input
                 {
                     float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
                         : ReadAxisAsMouse(in gp, action.AxisTarget);
+                    if (action.InvertAxis) deflection = -deflection;
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -990,12 +1014,15 @@ namespace PadForge.Common.Input
         /// redundant COM calls every polling cycle. Triggers the modern volume
         /// flyout OSD via a net-zero volume key pair, rate-limited to ~5 Hz.
         /// </summary>
-        private void SetSystemVolume(float volume)
+        private void SetSystemVolume(float volume, bool showOsd = true)
         {
             volume = Math.Clamp(volume, 0f, 1f);
 
             // Skip if the volume hasn't changed (within ~0.4% tolerance = 1/256).
-            if (Math.Abs(volume - _lastSetVolume) < 0.004f)
+            // After an OSD trigger, keep correcting for 150ms to counteract
+            // the async VK_VOLUME key events that land after the COM correction.
+            bool inCorrectionWindow = (DateTime.UtcNow - _lastOsdTriggerTime).TotalMilliseconds < 150;
+            if (!inCorrectionWindow && Math.Abs(volume - _lastSetVolume) < 0.004f)
                 return;
             _lastSetVolume = volume;
 
@@ -1019,16 +1046,19 @@ namespace PadForge.Common.Input
                 // net-zero VK_VOLUME_UP + VK_VOLUME_DOWN pair, then immediately
                 // re-setting the exact target volume to correct any rounding.
                 // Rate-limited to every 200ms (~5 Hz) to avoid input queue spam.
-                var now = DateTime.UtcNow;
-                if ((now - _lastOsdTriggerTime).TotalMilliseconds >= 200)
+                if (showOsd)
                 {
-                    SendKeyInput(VK_VOLUME_UP, keyUp: false);
-                    SendKeyInput(VK_VOLUME_UP, keyUp: true);
-                    SendKeyInput(VK_VOLUME_DOWN, keyUp: false);
-                    SendKeyInput(VK_VOLUME_DOWN, keyUp: true);
-                    // Re-set exact volume to undo the ±2% from the key events.
-                    _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
-                    _lastOsdTriggerTime = now;
+                    var now = DateTime.UtcNow;
+                    if ((now - _lastOsdTriggerTime).TotalMilliseconds >= 200)
+                    {
+                        SendKeyInput(VK_VOLUME_UP, keyUp: false);
+                        SendKeyInput(VK_VOLUME_UP, keyUp: true);
+                        SendKeyInput(VK_VOLUME_DOWN, keyUp: false);
+                        SendKeyInput(VK_VOLUME_DOWN, keyUp: true);
+                        // Re-set exact volume to undo the ±2% from the key events.
+                        _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+                        _lastOsdTriggerTime = now;
+                    }
                 }
             }
             catch

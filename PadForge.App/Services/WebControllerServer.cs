@@ -26,7 +26,7 @@ namespace PadForge.Services
     /// </summary>
     public sealed class WebControllerServer : IDisposable
     {
-        private const int MaxClients = 10;
+        private const int MaxClients = 16;
         private const int DefaultPort = 8080;
         private const string WebAssetPrefix = "PadForge.WebAssets.";
 

@@ -1245,7 +1245,7 @@ namespace PadForge.ViewModels
         private int _selectedConfigTab;
 
         /// <summary>
-        /// 0=Mappings, 1=Left Stick, 2=Right Stick, 3=Triggers, 4=Force Feedback, 5=Macros
+        /// 0=Controller, 1=Macros, 2=Mappings, 3=Sticks, 4=Triggers, 5=Force Feedback
         /// </summary>
         public int SelectedConfigTab
         {

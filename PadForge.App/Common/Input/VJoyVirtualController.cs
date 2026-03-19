@@ -2174,7 +2174,7 @@ public static class PF_SetupApi {{
         /// Writes HID report descriptors for the required number of vJoy devices.
         /// The descriptor matches the vJoyConf format exactly:
         ///   16 axes × 32-bit (active = Data, inactive = Constant padding)
-        ///   + 128-bit POV area (discrete 4-bit nibbles, padded to 32 nibbles)
+        ///   + 128-bit POV area (4 × 32-bit continuous DWORDs, range 0–35900)
         ///   + 128-bit button area (1-bit per button, padded to 128 bits)
         /// Total report: 1 byte report ID + 96 bytes data = 97 bytes always.
         /// </summary>

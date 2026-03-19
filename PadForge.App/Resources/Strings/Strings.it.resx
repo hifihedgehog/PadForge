@@ -402,6 +402,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sorgente</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valore</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opzioni</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morta asse a pulsante</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverti</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metà</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineare</value></data>

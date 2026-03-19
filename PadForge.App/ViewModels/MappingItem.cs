@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
@@ -195,6 +196,91 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SourceDisplayText));
             OnPropertyChanged(nameof(RecordButtonText));
         }
+
+        // ─────────────────────────────────────────────
+        //  Available input choices (dropdown)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Available input choices for the source dropdown.
+        /// Populated by InputService when the selected device changes.
+        /// </summary>
+        public ObservableCollection<InputChoice> AvailableInputs { get; } = new();
+
+        private InputChoice _selectedInput;
+        private bool _suppressSelectionSync;
+
+        /// <summary>
+        /// The currently selected input from the dropdown.
+        /// Setting this updates the SourceDescriptor accordingly.
+        /// </summary>
+        public InputChoice SelectedInput
+        {
+            get => _selectedInput;
+            set
+            {
+                if (_suppressSelectionSync) return;
+                if (SetProperty(ref _selectedInput, value) && value != null)
+                {
+                    if (string.IsNullOrEmpty(value.Descriptor))
+                    {
+                        ClearCommand.Execute(null);
+                    }
+                    else
+                    {
+                        LoadDescriptor(value.Descriptor);
+                        InputSelectedFromDropdown?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes SelectedInput to match the current SourceDescriptor
+        /// without triggering a descriptor update.
+        /// </summary>
+        public void SyncSelectedInputFromDescriptor()
+        {
+            _suppressSelectionSync = true;
+            try
+            {
+                if (string.IsNullOrEmpty(_sourceDescriptor))
+                {
+                    _selectedInput = null;
+                    OnPropertyChanged(nameof(SelectedInput));
+                    return;
+                }
+
+                // Strip I/H prefixes for matching.
+                string clean = _sourceDescriptor;
+                if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                    clean = clean.Substring(2);
+                else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                    clean = clean.Substring(1);
+                else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                    clean = clean.Substring(1);
+
+                InputChoice match = null;
+                foreach (var choice in AvailableInputs)
+                {
+                    if (string.Equals(choice.Descriptor, clean, StringComparison.OrdinalIgnoreCase))
+                    {
+                        match = choice;
+                        break;
+                    }
+                }
+                _selectedInput = match;
+                OnPropertyChanged(nameof(SelectedInput));
+            }
+            finally
+            {
+                _suppressSelectionSync = false;
+            }
+        }
+
+
+        /// <summary>Raised when the user selects an input from the dropdown (for display text resolution).</summary>
+        public event EventHandler InputSelectedFromDropdown;
 
         // ─────────────────────────────────────────────
         //  Recording state
@@ -408,5 +494,19 @@ namespace PadForge.ViewModels
         Triggers,
         LeftStick,
         RightStick
+    }
+
+    /// <summary>
+    /// Represents an available input choice in the source dropdown.
+    /// </summary>
+    public class InputChoice
+    {
+        /// <summary>Mapping descriptor (e.g., "Button 0", "Axis 1", "POV 0 Up").</summary>
+        public string Descriptor { get; set; }
+
+        /// <summary>Human-readable display name (e.g., "A", "Left Stick X", "Button 0").</summary>
+        public string DisplayName { get; set; }
+
+        public override string ToString() => DisplayName;
     }
 }

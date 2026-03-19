@@ -151,6 +151,27 @@ namespace PadForge.Common.Input
 
             if (firstPadSetting == null) return;
 
+            // Combine audio bass rumble (additive via max, per-device settings).
+            var detector = AudioBassDetector;
+            if (detector != null && firstPadSetting.AudioRumbleEnabled == "1")
+            {
+                detector.DecayIfSilent();
+
+                // Read per-device sensitivity/cutoff and update detector.
+                float sens = TryParseFloat(firstPadSetting.AudioRumbleSensitivity, 4f);
+                float cutoff = TryParseFloat(firstPadSetting.AudioRumbleCutoffHz, 80f);
+                detector.Sensitivity = sens;
+                detector.CutoffHz = cutoff;
+
+                ushort motorVal = detector.MotorValue;
+                float leftScale = TryParseFloat(firstPadSetting.AudioRumbleLeftMotor, 100f) / 100f;
+                float rightScale = TryParseFloat(firstPadSetting.AudioRumbleRightMotor, 100f) / 100f;
+                ushort audioL = (ushort)(motorVal * leftScale);
+                ushort audioR = (ushort)(motorVal * rightScale);
+                if (audioL > combinedL) combinedL = audioL;
+                if (audioR > combinedR) combinedR = audioR;
+            }
+
             // Write combined vibration to a scratch Vibration and apply.
             if (_combinedVibration == null) _combinedVibration = new Vibration();
             _combinedVibration.LeftMotorSpeed = combinedL;
@@ -160,5 +181,11 @@ namespace PadForge.Common.Input
         }
 
         private Vibration _combinedVibration;
+
+        private static float TryParseFloat(string value, float defaultValue)
+        {
+            return float.TryParse(value, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
+        }
     }
 }

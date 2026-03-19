@@ -453,6 +453,65 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool UsesAxisTrigger => _triggerAxisTargets.Length > 0;
 
+        // ── Axis direction filter (per-axis, parallel to TriggerAxisTargets) ──
+
+        private MacroAxisDirection[] _triggerAxisDirections = Array.Empty<MacroAxisDirection>();
+
+        /// <summary>Direction filter for each trigger axis. Parallel array to TriggerAxisTargets.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MacroAxisDirection[] TriggerAxisDirections
+        {
+            get => _triggerAxisDirections;
+            set
+            {
+                _triggerAxisDirections = value ?? Array.Empty<MacroAxisDirection>();
+                OnPropertyChanged(nameof(TriggerAxisDirections));
+                OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        /// <summary>Serializable comma-separated form of TriggerAxisDirections.</summary>
+        public string TriggerAxisDirectionList
+        {
+            get
+            {
+                if (_triggerAxisDirections.Length == 0) return null;
+                return string.Join(",", _triggerAxisDirections.Select(d => d.ToString()));
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    TriggerAxisDirections = Array.Empty<MacroAxisDirection>();
+                    return;
+                }
+                TriggerAxisDirections = value.Split(',')
+                    .Select(s => Enum.TryParse<MacroAxisDirection>(s.Trim(), out var v) ? v : MacroAxisDirection.Any)
+                    .ToArray();
+            }
+        }
+
+        /// <summary>Gets the direction for a trigger axis at the given index, defaulting to Any.</summary>
+        public MacroAxisDirection GetAxisDirection(int index)
+            => index >= 0 && index < _triggerAxisDirections.Length ? _triggerAxisDirections[index] : MacroAxisDirection.Any;
+
+        /// <summary>
+        /// UI-facing index for the first trigger axis direction (0=Any, 1=Positive, 2=Negative).
+        /// Sets all trigger axis directions uniformly for simplicity.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int TriggerAxisDirectionIndex
+        {
+            get => _triggerAxisDirections.Length > 0 ? (int)_triggerAxisDirections[0] : 0;
+            set
+            {
+                var dir = (MacroAxisDirection)Math.Clamp(value, 0, 2);
+                var dirs = new MacroAxisDirection[_triggerAxisTargets.Length];
+                Array.Fill(dirs, dir);
+                TriggerAxisDirections = dirs;
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Actions
         //  Sequence of outputs produced when the trigger fires.
@@ -1104,6 +1163,28 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _invertAxis;
+
+        /// <summary>When true, invert the axis value (0→1 becomes 1→0, or negate for mouse delta).</summary>
+        public bool InvertAxis
+        {
+            get => _invertAxis;
+            set
+            {
+                if (SetProperty(ref _invertAxis, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private bool _showVolumeOsd = true;
+
+        /// <summary>When true, trigger the Windows volume flyout OSD. Only relevant for SystemVolume/AppVolume.</summary>
+        public bool ShowVolumeOsd
+        {
+            get => _showVolumeOsd;
+            set => SetProperty(ref _showVolumeOsd, value);
+        }
+
         private string _processName = "";
 
         /// <summary>
@@ -1395,6 +1476,19 @@ namespace PadForge.ViewModels
             MacroAxisTarget.RightTrigger => Strings.Instance.MacroAxis_ZRotation,
             _ => target.ToString()
         };
+    }
+
+    /// <summary>Direction filter for axis-based macro triggers.</summary>
+    public enum MacroAxisDirection
+    {
+        /// <summary>Fire regardless of axis direction (existing behavior).</summary>
+        Any,
+
+        /// <summary>Fire only when the axis value is positive (e.g., stick right, trigger pressed).</summary>
+        Positive,
+
+        /// <summary>Fire only when the axis value is negative (e.g., stick left).</summary>
+        Negative
     }
 
     /// <summary>Where to read axis values from for continuous actions.</summary>

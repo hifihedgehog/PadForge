@@ -11,10 +11,10 @@ Built with SDL3, Windows Raw Input, ViGEmBus, vJoy, Windows MIDI Services, Helix
 - **Keyboard+Mouse virtual controller** — Map controller buttons to keyboard key presses and sticks/triggers to mouse movement or scroll. No driver required — always available
 - **3D and 2D controller visualization** — Interactive 3D controller model with mouse and touch gestures (rotate, pinch-to-zoom, two-finger pan) and flat 2D schematic, both showing live button, stick, and trigger state in real time. Keyboard+Mouse slots show an interactive keyboard and mouse preview
 - **Web browser virtual controller** — Use any touchscreen device as a controller via a built-in web server. Serves Xbox 360 and DS4 layouts with real-time touch input over WebSocket, including dual analog sticks, 8-way D-pad, triggers, and rumble feedback
-- **Interactive mapping** — Record mappings by pressing buttons on your controller, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
+- **Interactive mapping** — Record mappings by pressing buttons on your controller, select from a dropdown of all available device inputs, or use "Map All" for quick setup. Auto-mapping for recognized gamepads. Force raw joystick mode for devices with incorrect SDL3 gamepad remapping
 - **Sensitivity curves** — Per-axis sensitivity curve editors for sticks (independent X and Y) and triggers. Choose from presets (Linear, Smooth, Aggressive, Instant, S-Curve, Delay) or create custom multi-point curves with interactive drag-and-drop editors. Live indicator shows real-time position on the curve
 - **Dead zone shapes** — Six dead zone algorithms: Scaled Radial (default), Radial, Axial, Hybrid, Sloped Scaled Axial, and Sloped Axial. Per-axis dead zone, anti-dead zone, and linear response for sticks and triggers, with live preview, plus stick center offset calibration and max range
-- **Force feedback** — Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
+- **Force feedback** — Rumble passthrough with per-motor strength, overall gain, and motor swap. Audio-driven bass rumble captures system audio and converts bass frequencies to controller vibration (per-device, 48dB/octave filter, configurable sensitivity and cutoff). Haptic fallback for devices without native rumble. DirectInput force feedback for custom controllers
 - **MIDI virtual controller output** — Map any input to virtual MIDI devices. Axes send Control Change messages, buttons send Note On/Off. Configurable MIDI channel (1–16), CC mapping, note mapping, and velocity. Requires Windows MIDI Services (PadForge can install it for you)
 - **Macro system** — Trigger macros with combo triggers combining buttons, axes (with configurable threshold), and POV hat directions. Execute action sequences of button presses, key presses, mouse actions (move, click, scroll with configurable sensitivity), delays, system volume, per-app volume, and axis manipulation. Supports "Always" mode (runs continuously without a trigger), up to 128 buttons for custom DirectInput controllers, repeat modes, and input device or output controller trigger sources
 - **Per-app profile switching** — Automatically switch controller configurations when specific applications gain focus
@@ -42,7 +42,7 @@ Flat 2D schematic view showing the same live button, stick, and trigger state as
 
 ### Button and Axis Mappings
 ![Mappings](screenshots/mappings.jpg)
-Full mapping grid where each output (buttons, sticks, triggers, D-pad) can be assigned to any source input. Record a mapping by pressing a button on your device, or edit the descriptor directly. Supports inversion and half-axis options. Output labels adapt to controller type (DS4 shown: Cross, Circle, Square, Triangle, L1, R1, etc.).
+Full mapping grid where each output (buttons, sticks, triggers, D-pad) can be assigned to any source input. Record a mapping by pressing a button on your device, or select from a dropdown of all available inputs. Supports inversion and half-axis options. Output labels adapt to controller type (DS4 shown: Cross, Circle, Square, Triangle, L1, R1, etc.).
 
 ### Stick Dead Zones
 ![Sticks](screenshots/sticks.jpg)
@@ -54,7 +54,7 @@ Range sliders, anti-dead zone, and live value bars for left and right triggers s
 
 ### Force Feedback / Rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
-Rumble configuration with overall gain, per-motor strength sliders, and a swap option. Test Rumble button for quick verification, plus live motor activity bars showing current rumble intensity.
+Rumble configuration with overall gain, per-motor strength sliders, and a swap option. Audio Bass Rumble section captures system audio bass frequencies and converts them to controller vibration with configurable sensitivity, bass cutoff, and per-motor scales. Test Rumble button for quick verification, plus live motor activity bars and bass level meter.
 
 ### Macro Editor
 ![Macros](screenshots/macros.jpg)

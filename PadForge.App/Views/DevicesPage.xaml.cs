@@ -74,6 +74,10 @@ namespace PadForge.Views
                 return;
             }
 
+            // Force raw mode toggle changes how many buttons/axes are displayed —
+            // clear the cached GUID so the raw state collections get rebuilt.
+            vm.LastRawStateDeviceGuid = Guid.Empty;
+
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 

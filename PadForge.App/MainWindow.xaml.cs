@@ -55,8 +55,17 @@ namespace PadForge
         {
             InitializeComponent();
 
-            // Custom title bar — make it draggable.
-            CustomTitleBar.MouseLeftButtonDown += (_, _) => DragMove();
+            // Close gap between branding bar and first sidebar item.
+            NavView.RenderTransform = new TranslateTransform(0, -12);
+            NavView.Margin = new Thickness(0, 0, 0, -12);
+
+            // Sync branding bar + hamburger backgrounds to sidebar color.
+            NavView.Loaded += (_, _) => SyncBarBackgrounds();
+
+            // Close Add Controller popup on window events.
+            LocationChanged += (_, _) => CloseControllerPopup();
+            SizeChanged += (_, _) => CloseControllerPopup();
+            Deactivated += (_, _) => CloseControllerPopup();
 
             // Create root ViewModel.
             _viewModel = new MainViewModel();
@@ -2475,9 +2484,62 @@ namespace PadForge
             return null;
         }
 
+        private void SyncBarBackgrounds()
+        {
+            // Capture the actual rendered pixel color of the sidebar to ensure
+            // the branding bar matches exactly (handles semi-transparent theme brushes).
+            try
+            {
+                var paneRoot = FindVisualChild<FrameworkElement>(NavView, "PaneRoot");
+                if (paneRoot == null || paneRoot.ActualWidth < 1 || paneRoot.ActualHeight < 1) return;
+
+                // Render a 1x1 pixel from the pane's top-left corner.
+                var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                    1, 1, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+                var dv = new System.Windows.Media.DrawingVisual();
+                using (var dc = dv.RenderOpen())
+                {
+                    var vb = new System.Windows.Media.VisualBrush(paneRoot)
+                    {
+                        Viewbox = new Rect(0, 0, 1, 1),
+                        ViewboxUnits = System.Windows.Media.BrushMappingMode.Absolute
+                    };
+                    dc.DrawRectangle(vb, null, new Rect(0, 0, 1, 1));
+                }
+                rtb.Render(dv);
+                var pixels = new byte[4];
+                rtb.CopyPixels(pixels, 4, 0);
+                var color = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]);
+                var brush = new System.Windows.Media.SolidColorBrush(color);
+                brush.Freeze();
+
+                AppBrandingBar.Background = brush;
+                PaneToggleBtn.Background = brush;
+                AppBrandingBorder.Background = brush;
+            }
+            catch { /* best effort */ }
+        }
+
+        private void CloseControllerPopup()
+        {
+            if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
+            {
+                _controllerTypePopup.IsOpen = false;
+                _controllerTypePopup = null;
+            }
+        }
+
+        private void PaneToggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavView.IsPaneOpen = !NavView.IsPaneOpen;
+        }
+
         private void NavView_SelectionChanged(NavigationView sender,
             NavigationViewSelectionChangedEventArgs args)
         {
+            // Close Add Controller popup on any navigation.
+            CloseControllerPopup();
+
             // Skip intermediate selection events fired while RebuildControllerSection
             // is tearing down and re-adding items. The rebuild restores the correct
             // selection after the guard flag is cleared.
@@ -2817,6 +2879,8 @@ namespace PadForge
                 2 => ModernWpf.ApplicationTheme.Dark,
                 _ => null // System default
             };
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded,
+                new Action(SyncBarBackgrounds));
         }
 
         // ─────────────────────────────────────────────

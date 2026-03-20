@@ -374,21 +374,21 @@ namespace PadForge.ViewModels
             new(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // Running
         private static readonly System.Windows.Media.SolidColorBrush AmberBrush =
             new(System.Windows.Media.Color.FromRgb(0xFF, 0xB3, 0x00)); // Idle
-        private static readonly System.Windows.Media.SolidColorBrush GrayBrush =
-            new(System.Windows.Media.Color.FromRgb(0x9E, 0x9E, 0x9E)); // Stopped
+        private static readonly System.Windows.Media.SolidColorBrush RedBrush =
+            new(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // Stopped
 
         static MainViewModel()
         {
             GreenBrush.Freeze();
             AmberBrush.Freeze();
-            GrayBrush.Freeze();
+            RedBrush.Freeze();
         }
 
         /// <summary>
         /// Brush for the engine status indicator dot.
         /// </summary>
         public System.Windows.Media.Brush EngineStatusBrush =>
-            !IsEngineRunning ? GrayBrush :
+            !IsEngineRunning ? RedBrush :
             HasActiveSlots ? GreenBrush :
             AmberBrush;
 

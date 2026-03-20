@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using ModernWpf.Controls;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -22,6 +24,9 @@ namespace PadForge
     /// </summary>
     public partial class MainWindow
     {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
         private readonly MainViewModel _viewModel;
         private InputService _inputService;
         private SettingsService _settingsService;
@@ -49,6 +54,9 @@ namespace PadForge
         public MainWindow()
         {
             InitializeComponent();
+
+            // Custom title bar — make it draggable.
+            CustomTitleBar.MouseLeftButtonDown += (_, _) => DragMove();
 
             // Create root ViewModel.
             _viewModel = new MainViewModel();
@@ -2435,6 +2443,36 @@ namespace PadForge
             {
                 ShowControllerTypePopup(nvi);
             }
+        }
+
+        private static T FindVisualChildByType<T>(DependencyObject parent, Func<T, bool> predicate) where T : DependencyObject
+        {
+            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
+                if (child is T match && predicate(match))
+                    return match;
+                var result = FindVisualChildByType(child, predicate);
+                if (result != null)
+                    return result;
+            }
+            return null;
+        }
+
+        private static T FindVisualChild<T>(DependencyObject parent, string name) where T : FrameworkElement
+        {
+            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
+                if (child is T fe && fe.Name == name)
+                    return fe;
+                var result = FindVisualChild<T>(child, name);
+                if (result != null)
+                    return result;
+            }
+            return null;
         }
 
         private void NavView_SelectionChanged(NavigationView sender,

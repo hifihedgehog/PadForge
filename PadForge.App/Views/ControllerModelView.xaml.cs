@@ -1406,10 +1406,10 @@ namespace PadForge.Views
         {
             if (ModelViewPort.Camera is PerspectiveCamera cam)
             {
-                cam.Position = new Point3D(0, -159, 122);
+                cam.Position = new Point3D(0, -172, 132);
                 cam.LookDirection = new Vector3D(0, 0.793, -0.609);
                 cam.UpDirection = new Vector3D(0, 0, 1);
-                cam.FieldOfView = 50;
+                cam.FieldOfView = 55;
             }
 
             // Reset model rotation

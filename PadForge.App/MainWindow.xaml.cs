@@ -1054,7 +1054,7 @@ namespace PadForge
         /// </summary>
         private void RebuildControllerSection()
         {
-            if (_rebuildingControllerSection)
+            if (_rebuildingControllerSection || _isDraggingCard)
                 return;
 
             // Save current selection tag before tearing down items.
@@ -1163,6 +1163,7 @@ namespace PadForge
         /// </summary>
         private void UpdateControllerNavItemContent(NavigationViewItem menuItem, NavControllerItemViewModel navItem)
         {
+            if (_isDraggingCard) return;
             string iconKey = navItem.IconKey;
             bool isXbox = iconKey == "XboxControllerIcon";
             bool isDS4 = iconKey == "DS4ControllerIcon";

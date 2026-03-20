@@ -10,7 +10,7 @@
         <Style x:Key="TypeSwitchButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Padding" Value="3"/>
             <Setter Property="MinWidth" Value="0"/>
             <Setter Property="MinHeight" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -19,8 +19,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                CornerRadius="4" Padding="{TemplateBinding Padding}"
-                                BorderThickness="1" BorderBrush="Transparent">
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -120,7 +119,7 @@
                         <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                                 CornerRadius="8" Padding="10" Margin="4"
                                 BorderThickness="2" BorderBrush="Transparent"
-                                Width="228"
+                                Width="229"
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
@@ -232,7 +231,7 @@
 
                                     <!-- Gamepad icon + global slot # -->
                                     <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="13"
-                                               VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                               VerticalAlignment="Center" Margin="4.5,0,0,0"/>
                                     <TextBlock Text="{Binding SlotNumber}" VerticalAlignment="Center"
                                                FontWeight="SemiBold" FontSize="12"
                                                Margin="3,0,0,0" Width="16"

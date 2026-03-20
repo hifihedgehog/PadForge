@@ -134,13 +134,10 @@
                                 <!-- Row 0: [Power] [Gamepad] #N | [Xbox][PS] #N [X] -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                     <!-- Power button -->
-                                    <Button Padding="2" MinWidth="0" MinHeight="0"
-                                            VerticalAlignment="Center" Cursor="Hand"
-                                            Click="PowerToggle_Click" Tag="{Binding PadIndex}">
+                                    <Button Click="PowerToggle_Click" Tag="{Binding PadIndex}">
                                         <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Setter Property="BorderThickness" Value="0"/>
+                                            <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
+                                                <Setter Property="Cursor" Value="Hand"/>
                                                 <Setter Property="ToolTip" Value="{Binding Common_Disabled, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsEnabled}" Value="True">

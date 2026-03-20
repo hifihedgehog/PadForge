@@ -6,6 +6,7 @@
         xmlns:views="clr-namespace:PadForge.Views"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         ui:WindowHelper.UseModernWindowStyle="True"
+        ui:TitleBar.ExtendViewIntoTitleBar="True"
         Title="{Binding Title}"
         Height="720" Width="1100"
         MinHeight="600" MinWidth="900"
@@ -13,19 +14,31 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- Custom title bar with icon -->
+        <Grid x:Name="CustomTitleBar" Grid.Row="0" Height="32"
+              ui:TitleBar.IsBackButtonVisible="False"
+              Background="Transparent">
+            <StackPanel Orientation="Horizontal" Margin="12,0,0,0" VerticalAlignment="Center">
+                <Image Source="/Resources/PadForge-icon.png" Width="16" Height="16"
+                       RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Title}" FontSize="12" VerticalAlignment="Center" Margin="8,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
         <!-- ═══════════════════════════════════════════
              Navigation View (left pane)
              ═══════════════════════════════════════════ -->
-        <ui:NavigationView x:Name="NavView"
+        <ui:NavigationView x:Name="NavView" Grid.Row="1"
                            PaneDisplayMode="Left"
                            IsBackButtonVisible="Collapsed"
                            IsSettingsVisible="False"
                            SelectionChanged="NavView_SelectionChanged"
-                           PaneTitle="PadForge"
+                           PaneTitle=""
                            OpenPaneLength="253">
 
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
@@ -59,7 +72,7 @@
         <!-- ═══════════════════════════════════════════
              Status Bar
              ═══════════════════════════════════════════ -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
                 Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
                 Padding="12,4">
             <Grid>

@@ -1,8 +1,12 @@
 <p align="center">
-  <img src="screenshots/dashboard.jpg" alt="PadForge Dashboard" width="800">
+  <img src="screenshots/logo.png" alt="PadForge" width="280">
 </p>
 
 <h1 align="center">PadForge</h1>
+
+<p align="center">
+  <img src="screenshots/dashboard.jpg" alt="PadForge Dashboard" width="800">
+</p>
 
 <p align="center">
   <strong>Turn any input device into any virtual controller.</strong><br>
@@ -138,7 +142,7 @@ HidHide driver-level configuration with app whitelisting, per-device toggles, an
 One-click driver management for ViGEmBus, HidHide, vJoy, and Windows MIDI Services with version info, settings file controls, and diagnostics.
 
 ### About
-![About](screenshots/about.jpg)
+![About](screenshots/logo.png)
 Application info, technology stack, and license details.
 
 ### Web Controller

@@ -27,7 +27,9 @@
             </Grid.ColumnDefinitions>
             <Button x:Name="PaneToggleBtn" Grid.Column="0" Click="PaneToggleBtn_Click"
                     Width="48" Height="48"
+                    Background="Transparent"
                     BorderThickness="0" Padding="0"
+                    WindowChrome.IsHitTestVisibleInChrome="True"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
             </Button>

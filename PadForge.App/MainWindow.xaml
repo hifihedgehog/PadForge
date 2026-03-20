@@ -57,6 +57,13 @@
                            PaneTitle=""
                            OpenPaneLength="253">
 
+            <ui:NavigationView.Resources>
+                <Style TargetType="ui:NavigationViewItem">
+                    <Setter Property="Height" Value="48"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </ui:NavigationView.Resources>
+
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
             <ui:NavigationView.FooterMenuItems>
@@ -74,7 +81,7 @@
             </ui:NavigationView.FooterMenuItems>
 
             <!-- Content frame swapped by navigation -->
-            <Grid Margin="0,12,0,0">
+            <Grid Margin="0,12,0,12">
                 <views:DashboardPage x:Name="DashboardPageView" Visibility="Visible"/>
                 <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                 <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>

@@ -500,8 +500,9 @@ namespace PadForge.Views
         {
             if (card.ActualWidth <= 0 || card.ActualHeight <= 0) return null;
             var dpi = VisualTreeHelper.GetDpi(card);
-            int w = (int)Math.Ceiling(card.ActualWidth * dpi.DpiScaleX);
-            int h = (int)Math.Ceiling(card.ActualHeight * dpi.DpiScaleY);
+            // Add 2 physical pixels of padding to prevent edge clipping at high DPI.
+            int w = (int)Math.Ceiling(card.ActualWidth * dpi.DpiScaleX) + 4;
+            int h = (int)Math.Ceiling(card.ActualHeight * dpi.DpiScaleY) + 4;
             var rtb = new RenderTargetBitmap(w, h, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
                 PixelFormats.Pbgra32);
             rtb.Render(card);

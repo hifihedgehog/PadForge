@@ -1292,10 +1292,15 @@ namespace PadForge
                 FontSize = 12,
                 Opacity = 0.3,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(6, 0, 6, 0)
+                Margin = new Thickness(6, -3, 6, 0)
             });
 
-            // Type-switch buttons: Xbox / DS4 / vJoy / MIDI — shown for all cards.
+            // Type-switch buttons: Xbox / DS4 / vJoy / KBM / MIDI — shown for all cards.
+            // Driver availability checks.
+            bool hasViGEm = _viewModel.Dashboard.IsViGEmInstalled;
+            bool hasVJoy = _viewModel.Dashboard.IsVJoyInstalled;
+            bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
+
             // Xbox type button — use SetResourceReference for theme-aware Fill.
             var xboxPath = new System.Windows.Shapes.Path
             {
@@ -1308,13 +1313,13 @@ namespace PadForge
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPath,
-                ToolTip = Strings.Instance.ControllerType_Xbox360,
+                ToolTip = hasViGEm ? Strings.Instance.ControllerType_Xbox360 : Strings.Instance.Main_Xbox360_ViGEmNotInstalled,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isXbox ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
+                Cursor = hasViGEm ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
             };
@@ -1333,13 +1338,13 @@ namespace PadForge
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4Path,
-                ToolTip = Strings.Instance.ControllerType_DualShock4,
+                ToolTip = hasViGEm ? Strings.Instance.ControllerType_DualShock4 : Strings.Instance.Main_DS4_ViGEmNotInstalled,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isDS4 ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
+                Cursor = hasViGEm ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
@@ -1359,13 +1364,13 @@ namespace PadForge
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPath,
-                ToolTip = Strings.Instance.ControllerType_DirectInput,
+                ToolTip = hasVJoy ? Strings.Instance.ControllerType_DirectInput : Strings.Instance.Main_DI_DriverNotInstalled,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isVJoy ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
+                Cursor = hasVJoy ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
@@ -1373,7 +1378,7 @@ namespace PadForge
             vjoyBtn.Click += OnSidebarTypeVJoy;
             row.Children.Add(vjoyBtn);
 
-            // Keyboard+Mouse type button — MDL2 glyph E961.
+            // Keyboard+Mouse type button — MDL2 glyph E961 (always available).
             var kbmBtn = new System.Windows.Controls.Button
             {
                 Content = new System.Windows.Controls.TextBlock
@@ -1405,13 +1410,13 @@ namespace PadForge
                     FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
                     FontSize = 13
                 },
-                ToolTip = Strings.Instance.ControllerType_MIDI,
+                ToolTip = hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices,
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(2),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isMidi ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
+                Cursor = hasMidi ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
@@ -1475,6 +1480,7 @@ namespace PadForge
         private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
+            if (!_viewModel.Dashboard.IsViGEmInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox360);
@@ -1488,6 +1494,7 @@ namespace PadForge
         private void OnSidebarTypeDS4(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
+            if (!_viewModel.Dashboard.IsViGEmInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.DualShock4);
@@ -1501,6 +1508,7 @@ namespace PadForge
         private void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
+            if (!_viewModel.Dashboard.IsVJoyInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 // Device nodes are created on demand by the engine (CreateVJoyController)
@@ -1529,6 +1537,7 @@ namespace PadForge
         private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
+            if (!DriverInstaller.IsMidiServicesInstalled()) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
@@ -2484,6 +2493,28 @@ namespace PadForge
             return null;
         }
 
+        /// <summary>
+        /// Re-renders controller nav item content in-place (no collection modification)
+        /// to refresh driver availability cursors/tooltips.
+        /// </summary>
+        private void RefreshControllerNavItemsInPlace()
+        {
+            var navItems = _viewModel.NavControllerItems;
+            if (navItems == null) return;
+            foreach (var navItem in navItems)
+            {
+                // Find the existing NavigationViewItem by tag.
+                foreach (var mi in NavView.MenuItems)
+                {
+                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == navItem.Tag)
+                    {
+                        UpdateControllerNavItemContent(nvi, navItem);
+                        break;
+                    }
+                }
+            }
+        }
+
         private void SyncBarBackgrounds()
         {
             // Capture the actual rendered pixel color of the sidebar to ensure
@@ -3209,6 +3240,7 @@ namespace PadForge
                 _viewModel.Dashboard.IsViGEmInstalled = false;
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_ViGEmCheckFailed_Format, ex.Message);
             }
+            if (_navDashboard != null) RefreshControllerNavItemsInPlace();
         }
 
         private void RefreshHidHideStatus()
@@ -3241,6 +3273,7 @@ namespace PadForge
                 _viewModel.Settings.IsVJoyInstalled = false;
                 _viewModel.Dashboard.IsVJoyInstalled = false;
             }
+            if (_navDashboard != null) RefreshControllerNavItemsInPlace();
         }
 
         private void RefreshMidiServicesStatus()
@@ -3257,6 +3290,7 @@ namespace PadForge
                 _viewModel.Settings.IsMidiServicesInstalled = false;
                 _viewModel.Dashboard.IsMidiServicesInstalled = false;
             }
+            if (_navDashboard != null) RefreshControllerNavItemsInPlace();
         }
 
         /// <summary>

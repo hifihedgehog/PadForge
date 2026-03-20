@@ -2205,6 +2205,7 @@ namespace PadForge
             bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
             bool vigemInstalled = _viewModel.Dashboard.IsViGEmInstalled;
             bool xboxDisabled = xboxAtCapacity || !vigemInstalled;
+            if (xboxDisabled) xboxPopupPath.Opacity = 0.35;
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPopupPath,
@@ -2214,13 +2215,12 @@ namespace PadForge
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !xboxDisabled,
-                Opacity = xboxDisabled ? 0.35 : 1.0
+                Cursor = xboxDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(xboxBtn, "AddXbox360Btn");
             xboxBtn.Click += (s, e) =>
             {
+                if (xboxDisabled) return;
                 popup.IsOpen = false;
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Xbox360);
                 if (newSlot >= 0)
@@ -2243,6 +2243,7 @@ namespace PadForge
             ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
             bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
             bool ds4Disabled = ds4AtCapacity || !vigemInstalled;
+            if (ds4Disabled) ds4PopupPath.Opacity = 0.35;
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4PopupPath,
@@ -2252,13 +2253,12 @@ namespace PadForge
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !ds4Disabled,
-                Opacity = ds4Disabled ? 0.35 : 1.0
+                Cursor = ds4Disabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(ds4Btn, "AddDS4Btn");
             ds4Btn.Click += (s, e) =>
             {
+                if (ds4Disabled) return;
                 popup.IsOpen = false;
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.DualShock4);
                 if (newSlot >= 0)
@@ -2282,6 +2282,7 @@ namespace PadForge
             bool vjoyAtCapacity = vjoyCount >= SettingsManager.MaxVJoySlots;
             bool vjoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
             bool vjoyDisabled = vjoyAtCapacity || !vjoyInstalled;
+            if (vjoyDisabled) vjoyPopupPath.Opacity = 0.35;
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPopupPath,
@@ -2291,13 +2292,12 @@ namespace PadForge
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !vjoyDisabled,
-                Opacity = vjoyDisabled ? 0.35 : 1.0
+                Cursor = vjoyDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(vjoyBtn, "AddVJoyBtn");
             vjoyBtn.Click += (s, e) =>
             {
+                if (vjoyDisabled) return;
                 popup.IsOpen = false;
 
                 // Device nodes are created on demand by the engine (CreateVJoyController)
@@ -2322,6 +2322,7 @@ namespace PadForge
                 VerticalAlignment = VerticalAlignment.Center
             };
             bool kbmAtCapacity = kbmCount >= SettingsManager.MaxKeyboardMouseSlots;
+            if (kbmAtCapacity) kbmPopupIcon.Opacity = 0.35;
             var kbmPopupBtn = new System.Windows.Controls.Button
             {
                 Content = kbmPopupIcon,
@@ -2330,13 +2331,12 @@ namespace PadForge
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !kbmAtCapacity,
-                Opacity = kbmAtCapacity ? 0.35 : 1.0
+                Cursor = kbmAtCapacity ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(kbmPopupBtn, "AddKeyboardMouseBtn");
             kbmPopupBtn.Click += (s, e) =>
             {
+                if (kbmAtCapacity) return;
                 popup.IsOpen = false;
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.KeyboardMouse);
                 if (newSlot >= 0)
@@ -2360,6 +2360,7 @@ namespace PadForge
             bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || midiAtCapacity;
+            if (midiDisabled) midiPopupIcon.Opacity = 0.35;
             string midiTooltip = !midiAvailable ? Strings.Instance.Main_MIDI_RequiresMidiServices
                                : midiAtCapacity ? string.Format(Strings.Instance.Main_MIDI_Max_Format, SettingsManager.MaxMidiSlots)
                                : Strings.Instance.ControllerType_MIDI;
@@ -2370,13 +2371,12 @@ namespace PadForge
                 Background = System.Windows.Media.Brushes.Transparent,
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                IsEnabled = !midiDisabled,
-                Opacity = midiDisabled ? 0.35 : 1.0
+                Cursor = midiDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(midiBtn, "AddMidiBtn");
             midiBtn.Click += (s, e) =>
             {
+                if (midiDisabled) return;
                 popup.IsOpen = false;
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Midi);
                 if (newSlot >= 0)

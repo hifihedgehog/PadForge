@@ -2,6 +2,8 @@
   <img src="screenshots/icon.png" alt="PadForge" width="128">
 </p>
 
+<h1 align="center">PadForge</h1>
+
 <p align="center">
   <strong>Turn any input device into any virtual controller.</strong><br>
   Gamepads, joysticks, keyboards, mice, and touchscreens — mapped to Xbox 360, DualShock 4, DirectInput, MIDI, or Keyboard+Mouse output that games treat as real hardware.

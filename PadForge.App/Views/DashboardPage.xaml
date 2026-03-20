@@ -5,6 +5,40 @@
              xmlns:common="clr-namespace:PadForge.Common"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings">
 
+    <UserControl.Resources>
+        <!-- Type-switch button style: transparent bg, dark gray hover, rounded corners -->
+        <Style x:Key="TypeSwitchButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="4" Padding="{TemplateBinding Padding}"
+                                BorderThickness="1" BorderBrush="Transparent">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background"
+                                        Value="{DynamicResource SystemControlBackgroundListLowBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background"
+                                        Value="{DynamicResource SystemControlBackgroundListMediumBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <ScrollViewer Padding="24,16">
         <StackPanel>
 
@@ -86,7 +120,7 @@
                         <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                                 CornerRadius="8" Padding="10" Margin="4"
                                 BorderThickness="2" BorderBrush="Transparent"
-                                Width="220"
+                                Width="228"
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
@@ -201,7 +235,7 @@
 
                                     <!-- Gamepad icon + global slot # -->
                                     <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="13"
-                                               VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                               VerticalAlignment="Center" Margin="5,0,0,0"/>
                                     <TextBlock Text="{Binding SlotNumber}" VerticalAlignment="Center"
                                                FontWeight="SemiBold" FontSize="12"
                                                Margin="3,0,0,0" Width="16"
@@ -209,28 +243,24 @@
 
                                     <!-- Separator -->
                                     <TextBlock Text="|" FontSize="12" Opacity="0.3"
-                                               VerticalAlignment="Center" Margin="5,0,6,0"/>
+                                               VerticalAlignment="Center" Margin="6,-3,6,0"/>
 
                                     <!-- Game controller type buttons (all types shown for all cards) -->
                                     <StackPanel Orientation="Horizontal">
 
                                         <!-- Xbox type button -->
-                                        <Button ToolTip="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
-                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
-                                                VerticalAlignment="Center"
-                                                Click="XboxType_Click" Tag="{Binding PadIndex}">
+                                        <Button Click="XboxType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
-                                                <Style TargetType="Button">
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Xbox360">
                                                             <Setter Property="Opacity" Value="1.0"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                            <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="{Binding Main_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Setter Property="Cursor" Value="No"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_Xbox360_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -241,22 +271,19 @@
                                         </Button>
 
                                         <!-- PS type button -->
-                                        <Button ToolTip="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
-                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
-                                                VerticalAlignment="Center" Margin="1,0,0,0"
+                                        <Button Margin="1,0,0,0"
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
-                                                <Style TargetType="Button">
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="DualShock4">
                                                             <Setter Property="Opacity" Value="1.0"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                            <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="{Binding Main_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Setter Property="Cursor" Value="No"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_DS4_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -267,22 +294,19 @@
                                         </Button>
 
                                         <!-- vJoy type button -->
-                                        <Button ToolTip="{Binding ControllerType_DirectInput, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
-                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
-                                                VerticalAlignment="Center" Margin="1,0,0,0"
+                                        <Button Margin="1,0,0,0"
                                                 Click="VJoyType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
-                                                <Style TargetType="Button">
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_DirectInput, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="VJoy">
                                                             <Setter Property="Opacity" Value="1.0"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding DataContext.IsVJoyInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                            <Setter Property="Opacity" Value="0.15"/>
-                                                            <Setter Property="ToolTip" Value="{Binding Main_DirectInputDriverNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Setter Property="Cursor" Value="No"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_DI_DriverNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -293,14 +317,12 @@
                                         </Button>
 
                                         <!-- Keyboard+Mouse type button -->
-                                        <Button ToolTip="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
-                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
-                                                VerticalAlignment="Center" Margin="1,0,0,0"
+                                        <Button Margin="1,0,0,0"
                                                 Click="KeyboardMouseType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
-                                                <Style TargetType="Button">
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
                                                             <Setter Property="Opacity" Value="1.0"/>
@@ -313,17 +335,19 @@
                                         </Button>
 
                                         <!-- MIDI type button -->
-                                        <Button ToolTip="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}" Background="Transparent"
-                                                Padding="2" MinWidth="0" MinHeight="0" Cursor="Hand"
-                                                VerticalAlignment="Center" Margin="1,0,0,0"
+                                        <Button Margin="1,0,0,0"
                                                 Click="MidiType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
-                                                <Style TargetType="Button">
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
                                                             <Setter Property="Opacity" Value="1.0"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding DataContext.IsMidiServicesInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
+                                                            <Setter Property="Cursor" Value="No"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_MIDI_RequiresMidiServices, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -336,7 +360,7 @@
                                     <!-- Per-type instance # -->
                                     <TextBlock Text="{Binding TypeInstanceLabel}"
                                                FontWeight="SemiBold" FontSize="12"
-                                               VerticalAlignment="Center" Margin="5,0,0,0"
+                                               VerticalAlignment="Center" Margin="3,0,0,0"
                                                Width="12" TextAlignment="Center"/>
 
                                 </StackPanel>
@@ -344,10 +368,10 @@
                                 <!-- Delete button (upper-right corner) -->
                                 <Button ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
                                         Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
-                                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                                        Margin="0" Opacity="0.5"
+                                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                                        Margin="1,0,0,0" Opacity="0.5"
                                         Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
-                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="9"/>
                                 </Button>
 
                                 <!-- Row 1: Device name (compact) -->

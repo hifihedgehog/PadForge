@@ -642,7 +642,8 @@ namespace PadForge.Engine
         /// </summary>
         public DeviceObjectItem[] GetDeviceObjects()
         {
-            int totalObjects = NumAxes + NumHats + NumButtons;
+            int btnCount = Math.Max(NumButtons, RawButtonCount);
+            int totalObjects = NumAxes + NumHats + btnCount;
             var items = new DeviceObjectItem[totalObjects];
             int index = 0;
 
@@ -699,12 +700,12 @@ namespace PadForge.Engine
             }
 
             // --- Buttons ---
-            for (int i = 0; i < NumButtons; i++)
+            for (int i = 0; i < btnCount; i++)
             {
                 var item = new DeviceObjectItem();
                 item.InputIndex = i;
                 item.ObjectTypeGuid = ObjectGuid.Button;
-                item.Name = isGamepad ? GetGamepadButtonName(i) : $"Button {i}";
+                item.Name = (isGamepad && i < NumButtons) ? GetGamepadButtonName(i) : $"Button {i}";
                 item.ObjectType = DeviceObjectTypeFlags.PushButton;
                 item.Offset = (NumAxes + NumHats + i) * 4;
                 item.Aspect = ObjectAspect.Position;

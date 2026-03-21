@@ -273,7 +273,7 @@
   <data name="About_Title" xml:space="preserve"><value>About</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Controller Mapping Utility</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Modern fork of x360ce — rebuilt with SDL3, WPF, and .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge maps any controller, keyboard, or mouse to virtual Xbox 360, DualShock 4, custom DirectInput, or MIDI controllers via ViGEmBus, vJoy, and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse input, and provides a modern Fluent Design interface for mapping, dead zone configuration, and force feedback management.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge turns any input device into any virtual controller. Gamepads, joysticks, keyboards, mice, and touchscreens are mapped to Xbox 360, DualShock 4, DirectInput, Keyboard+Mouse, or MIDI output that games treat as real hardware — powered by ViGEmBus, vJoy, and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse, and provides a modern Fluent Design interface for mapping, dead zones, sensitivity curves, and force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Built With</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime and WPF framework</value></data>
@@ -403,6 +403,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Source</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Value</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Options</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Axis-to-Button Dead Zone</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Invert</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Half</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>

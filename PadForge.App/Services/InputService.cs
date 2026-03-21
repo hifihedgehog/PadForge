@@ -1051,6 +1051,12 @@ namespace PadForge.Services
                                 negProp.SetValue(ps, mapping.NegSourceDescriptor ?? string.Empty);
                         }
                     }
+
+                    // Save per-mapping dead zone.
+                    if (mapping.MappingDeadZone > 0)
+                        ps.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
+                    else
+                        ps.SetMappingDeadZone(target, "");
                 }
             }
         }
@@ -1150,6 +1156,9 @@ namespace PadForge.Services
                     ResolveNegDisplayText(mapping, ud);
                 }
 
+                // Load per-mapping dead zone.
+                string dzStr = ps.GetMappingDeadZone(target);
+                mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
         }
 
@@ -1531,58 +1540,116 @@ namespace PadForge.Services
         {
             var list = new System.Collections.Generic.List<InputChoice>();
 
-            if (ud == null || ud.DeviceObjects == null || ud.DeviceObjects.Length == 0)
+            if (ud == null)
                 return list.ToArray();
 
-            bool useRaw = UseRawNumberedNaming(ud);
             var si = Strings.Instance;
 
-            // Axes (non-slider)
-            foreach (var obj in ud.DeviceObjects)
+            if (ud.DeviceObjects != null && ud.DeviceObjects.Length > 0)
             {
-                if (!obj.IsAxis || obj.IsSlider) continue;
-                string descriptor = $"Axis {obj.InputIndex}";
-                string display = useRaw
-                    ? string.Format(si.DevObj_AxisN, obj.InputIndex)
-                    : LocalizeObjectName(obj.Name);
-                list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-            }
+                bool useRaw = UseRawNumberedNaming(ud);
 
-            // Sliders
-            foreach (var obj in ud.DeviceObjects)
-            {
-                if (!obj.IsSlider) continue;
-                string descriptor = $"Slider {obj.InputIndex}";
-                string display = useRaw
-                    ? string.Format(si.DevObj_Slider, obj.InputIndex)
-                    : LocalizeObjectName(obj.Name);
-                list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-            }
-
-            // Buttons
-            foreach (var obj in ud.DeviceObjects)
-            {
-                if (!obj.IsButton) continue;
-                string descriptor = $"Button {obj.InputIndex}";
-                string display = useRaw
-                    ? string.Format(si.DevObj_Button, obj.InputIndex)
-                    : LocalizeObjectName(obj.Name);
-                list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-            }
-
-            // POVs (with 4 cardinal directions each)
-            string[] povDirs = { "Up", "Right", "Down", "Left" };
-            foreach (var obj in ud.DeviceObjects)
-            {
-                if (!obj.IsPov) continue;
-                foreach (string dir in povDirs)
+                // Axes (non-slider)
+                foreach (var obj in ud.DeviceObjects)
                 {
-                    string descriptor = $"POV {obj.InputIndex} {dir}";
-                    string dirDisplay = ResolvePovDirection(dir);
-                    string display = useRaw || obj.Name != "D-Pad"
-                        ? string.Format(si.Mapping_POV_Format, obj.InputIndex, dirDisplay)
-                        : $"{LocalizeObjectName(obj.Name)} {dirDisplay}";
+                    if (!obj.IsAxis || obj.IsSlider) continue;
+                    string descriptor = $"Axis {obj.InputIndex}";
+                    string display = useRaw
+                        ? string.Format(si.DevObj_AxisN, obj.InputIndex)
+                        : LocalizeObjectName(obj.Name);
                     list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+                }
+
+                // Sliders
+                foreach (var obj in ud.DeviceObjects)
+                {
+                    if (!obj.IsSlider) continue;
+                    string descriptor = $"Slider {obj.InputIndex}";
+                    string display = useRaw
+                        ? string.Format(si.DevObj_Slider, obj.InputIndex)
+                        : LocalizeObjectName(obj.Name);
+                    list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+                }
+
+                // Buttons
+                foreach (var obj in ud.DeviceObjects)
+                {
+                    if (!obj.IsButton) continue;
+                    string descriptor = $"Button {obj.InputIndex}";
+                    string display = useRaw
+                        ? string.Format(si.DevObj_Button, obj.InputIndex)
+                        : LocalizeObjectName(obj.Name);
+                    list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+                }
+
+                // POVs (with 4 cardinal directions each)
+                string[] povDirs = { "Up", "Right", "Down", "Left" };
+                foreach (var obj in ud.DeviceObjects)
+                {
+                    if (!obj.IsPov) continue;
+                    foreach (string dir in povDirs)
+                    {
+                        string descriptor = $"POV {obj.InputIndex} {dir}";
+                        string dirDisplay = ResolvePovDirection(dir);
+                        string display = useRaw || obj.Name != "D-Pad"
+                            ? string.Format(si.Mapping_POV_Format, obj.InputIndex, dirDisplay)
+                            : $"{LocalizeObjectName(obj.Name)} {dirDisplay}";
+                        list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
+                    }
+                }
+            }
+            else
+            {
+                // Fallback: build from capability counts when DeviceObjects is unavailable
+                // (device has never been online in this session or in prior sessions).
+                bool isGamepad = !UseRawNumberedNaming(ud);
+
+                // Gamepad axis names: LX(0) LY(1) LT(2) RX(3) RY(4) RT(5)
+                string[] gpAxisNames = isGamepad
+                    ? new[] { si.DevObj_LeftStickX, si.DevObj_LeftStickY, si.DevObj_LeftTrigger,
+                              si.DevObj_RightStickX, si.DevObj_RightStickY, si.DevObj_RightTrigger }
+                    : null;
+
+                for (int i = 0; i < ud.CapAxeCount; i++)
+                {
+                    string display = (gpAxisNames != null && i < gpAxisNames.Length)
+                        ? gpAxisNames[i]
+                        : string.Format(si.DevObj_AxisN, i);
+                    list.Add(new InputChoice { Descriptor = $"Axis {i}", DisplayName = display });
+                }
+
+                // Gamepad button names: A(0) B(1) X(2) Y(3) LB(4) RB(5) Back(6) Start(7) LS(8) RS(9) Guide(10)
+                string[] gpBtnNames = isGamepad
+                    ? new[] { "A", "B", "X", "Y",
+                              si.DevObj_LeftShoulder, si.DevObj_RightShoulder,
+                              si.DevObj_Back, si.DevObj_Start,
+                              si.DevObj_LeftStickButton, si.DevObj_RightStickButton,
+                              si.DevObj_Guide }
+                    : null;
+
+                int btnCount = Math.Max(ud.CapButtonCount, ud.RawButtonCount);
+                for (int i = 0; i < btnCount; i++)
+                {
+                    string display = (gpBtnNames != null && i < gpBtnNames.Length)
+                        ? gpBtnNames[i]
+                        : string.Format(si.DevObj_Button, i);
+                    list.Add(new InputChoice { Descriptor = $"Button {i}", DisplayName = display });
+                }
+
+                for (int i = 0; i < ud.CapPovCount; i++)
+                {
+                    foreach (string dir in new[] { "Up", "Right", "Down", "Left" })
+                    {
+                        string dirDisplay = ResolvePovDirection(dir);
+                        string display = isGamepad && i == 0
+                            ? $"{si.DevObj_DPad} {dirDisplay}"
+                            : string.Format(si.Mapping_POV_Format, i, dirDisplay);
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = $"POV {i} {dir}",
+                            DisplayName = display
+                        });
+                    }
                 }
             }
 
@@ -1778,6 +1845,10 @@ namespace PadForge.Services
                     mapping.LoadNegDescriptor(negValue);
                     ResolveNegDisplayText(mapping, ud);
                 }
+
+                // Load per-mapping dead zone.
+                string dzStr = ps.GetMappingDeadZone(target);
+                mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
         }
 
@@ -2571,6 +2642,21 @@ namespace PadForge.Services
             UpdatePadDeviceInfo();
         }
 
+        /// <summary>
+        /// Repopulates the source dropdown choices for all pads.
+        /// Called when ForceRawJoystickMode changes to refresh display names.
+        /// </summary>
+        public void RefreshMappingDropdowns()
+        {
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var padVm = _mainVm.Pads[i];
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+            }
+        }
+
         public void UpdatePadDeviceInfo()
         {
             var settings = SettingsManager.UserSettings;
@@ -2638,10 +2724,13 @@ namespace PadForge.Services
                         _previousSelectedDevice[i] = devGuid;
                     }
 
-                    // Initialize the previous-device tracker if not set.
+                    // Initialize the previous-device tracker if not set, and populate
+                    // dropdowns for the initial selection (including offline devices).
                     if (!_previousSelectedDevice.ContainsKey(i) && padVm.SelectedMappedDevice != null)
                     {
-                        _previousSelectedDevice[i] = padVm.SelectedMappedDevice.InstanceGuid;
+                        var initGuid = padVm.SelectedMappedDevice.InstanceGuid;
+                        PopulateAvailableInputs(padVm, FindUserDevice(initGuid));
+                        _previousSelectedDevice[i] = initGuid;
                     }
 
                     // Summary properties for backward compatibility / simple bindings.

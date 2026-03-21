@@ -23,18 +23,30 @@ namespace PadForge.Views
         private PadViewModel _vm;
         private bool _dirty;
         private bool _layoutBuilt;
+        private ModernWpf.ApplicationTheme? _lastTheme;
 
-        // Colors
+        // Colors — theme-aware
+        private static bool IsDarkTheme =>
+            ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
+
+        private static SolidColorBrush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
+
         private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
         private static readonly Brush AccentDimBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x50, 0x90));
-        private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
-        private static readonly Brush BgBrush = new SolidColorBrush(Color.FromRgb(0x2D, 0x2D, 0x2D));
-        private static readonly Brush LabelBrush = new SolidColorBrush(Color.FromRgb(0xBB, 0xBB, 0xBB));
-        private static readonly Brush WhiteKeyBrush = new SolidColorBrush(Color.FromRgb(0xF0, 0xF0, 0xF0));
+        private static Brush DimBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x60, 0x60, 0x60) : Color.FromRgb(0xA0, 0xA0, 0xA0));
+        private static Brush BgBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x2D, 0x2D, 0x2D) : Color.FromRgb(0xE0, 0xE0, 0xE0));
+        private static Brush LabelBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0xBB, 0xBB, 0xBB) : Color.FromRgb(0x50, 0x50, 0x50));
+        private static Brush WhiteKeyBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0xF0, 0xF0, 0xF0) : Color.FromRgb(0xFF, 0xFF, 0xFF));
         private static readonly Brush WhiteKeyPressedBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
-        private static readonly Brush BlackKeyBrush = new SolidColorBrush(Color.FromRgb(0x20, 0x20, 0x20));
+        private static Brush BlackKeyBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x20, 0x20, 0x20) : Color.FromRgb(0x40, 0x40, 0x40));
         private static readonly Brush BlackKeyPressedBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x60, 0xB0));
-        private static readonly Brush KeyBorderBrush = new SolidColorBrush(Color.FromRgb(0x40, 0x40, 0x40));
+        private static Brush KeyBorderBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x40, 0x40, 0x40) : Color.FromRgb(0xB0, 0xB0, 0xB0));
         private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
 
@@ -190,6 +202,7 @@ namespace PadForge.Views
             MidiCanvas.Width = x + Padding;
             MidiCanvas.Height = topY + Padding;
             _layoutBuilt = true;
+            _lastTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
             _dirty = true;
         }
 
@@ -461,6 +474,10 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Rebuild on theme change.
+            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            if (_layoutBuilt && _lastTheme != currentTheme) RebuildLayout();
+
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 

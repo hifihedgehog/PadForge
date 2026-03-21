@@ -402,6 +402,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Bron</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Waarde</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opties</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>As-naar-knop dode zone</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverteren</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Half</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineair</value></data>

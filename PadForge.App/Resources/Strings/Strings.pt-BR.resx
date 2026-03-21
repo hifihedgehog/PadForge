@@ -402,6 +402,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origem</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opções</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morta eixo para botão</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverter</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metade</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>

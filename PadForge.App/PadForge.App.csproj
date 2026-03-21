@@ -47,7 +47,9 @@
   <ItemGroup>
     <Resource Include="Resources\Xbox Series Controller - Front.png" />
     <Resource Include="Resources\Xbox Series Controller - Top.png" />
-    <Content Include="Resources\PadForge.ico" />
+    <Resource Include="Resources\PadForge.ico" />
+    <Resource Include="Resources\PadForge-logo.png" />
+    <Resource Include="Resources\PadForge-icon.png" />
     <!--
       SDL3.dll: Link="SDL3.dll" ensures the file is copied to the OUTPUT ROOT
       (next to PadForge.exe) rather than preserving the Resources\SDL3\x64\ subdirectory.

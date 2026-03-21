@@ -86,6 +86,7 @@ namespace PadForge.ViewModels
                     _resolvedSourceText = null; // Clear until re-resolved
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
+                    OnPropertyChanged(nameof(IsDeadZoneApplicable));
                 }
             }
         }
@@ -397,6 +398,51 @@ namespace PadForge.ViewModels
             }
         }
 
+        private int _mappingDeadZone = 50;
+
+        /// <summary>
+        /// Per-mapping dead zone percentage (0–100). When non-zero, overrides the
+        /// global AxisToButtonThreshold for this specific axis-to-button mapping.
+        /// Only meaningful when the source is an axis or slider.
+        /// </summary>
+        public int MappingDeadZone
+        {
+            get => _mappingDeadZone;
+            set => SetProperty(ref _mappingDeadZone, Math.Clamp(value, 0, 100));
+        }
+
+        /// <summary>
+        /// True when the dead zone column is applicable for this row:
+        /// the source is an axis/slider AND the target is a discrete output
+        /// (button, d-pad, POV, key, note) — NOT an axis-to-axis mapping.
+        /// </summary>
+        public bool IsDeadZoneApplicable
+        {
+            get
+            {
+                // Check source is axis/slider.
+                var desc = _sourceDescriptor;
+                if (string.IsNullOrEmpty(desc)) return false;
+                int start = 0;
+                if (start < desc.Length && desc[start] == 'I') start++;
+                if (start < desc.Length && desc[start] == 'H') start++;
+                var body = desc.AsSpan(start);
+                if (!body.StartsWith("Axis") && !body.StartsWith("Slider"))
+                    return false;
+
+                // Check target is a discrete (button-type) output, not an axis.
+                var t = TargetSettingName;
+                if (t.Contains("ThumbAxis") || t.StartsWith("VJoyAxis")
+                    || t.StartsWith("KbmMouse") || t.StartsWith("KbmScroll")
+                    || t.StartsWith("MidiCC"))
+                    return false;
+                if (t == "LeftTrigger" || t == "RightTrigger")
+                    return false;
+
+                return true;
+            }
+        }
+
         /// <summary>
         /// Rebuilds the source descriptor when inversion or half-axis options change.
         /// Adds/removes the "I" and "H" prefixes.
@@ -466,7 +512,15 @@ namespace PadForge.ViewModels
                 NegSourceDescriptor = string.Empty;
                 IsInverted = false;
                 IsHalfAxis = false;
+                MappingDeadZone = 50;
+                SyncSelectedInputFromDescriptor();
             });
+
+        private RelayCommand _resetDeadZoneCommand;
+
+        /// <summary>Command to reset the per-mapping dead zone to default (50%).</summary>
+        public RelayCommand ResetDeadZoneCommand =>
+            _resetDeadZoneCommand ??= new RelayCommand(() => MappingDeadZone = 50);
 
         /// <summary>Raised when the user clicks Record on this row.</summary>
         public event EventHandler StartRecordingRequested;

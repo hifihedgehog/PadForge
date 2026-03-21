@@ -63,7 +63,7 @@
                                 <!-- Row 0: Status dot + Device name -->
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="8" Height="8"
-                                             Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                                             Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                              VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding DeviceName}" FontWeight="SemiBold"
                                                FontSize="13" TextTrimming="CharacterEllipsis"

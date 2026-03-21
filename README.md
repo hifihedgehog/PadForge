@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="screenshots/dashboard.jpg" alt="PadForge Dashboard" width="800">
+  <img src="screenshots/icon.png" alt="PadForge" width="128">
 </p>
 
 <h1 align="center">PadForge</h1>
@@ -33,9 +33,9 @@
 
 ### Mapping & Tuning
 
-- **Record mappings interactively** — Press a button on your device to bind it, pick from a dropdown of every available input, or run "Map All" for one-pass setup; auto-mapping handles recognized gamepads, and force-raw mode bypasses incorrect SDL3 remapping
+- **Record mappings interactively** — Press a button on your device to bind it, pick from a dropdown of every available input (including raw buttons beyond the standard 11), or run "Map All" for one-pass setup; auto-mapping handles recognized gamepads, and force-raw mode bypasses incorrect SDL3 remapping; dropdowns persist when devices are offline
 - **Shape sensitivity curves** — Per-axis editors for sticks (independent X and Y) and triggers with 6 presets (Linear, Smooth, Aggressive, Instant, S-Curve, Delay) or custom multi-point drag-and-drop curves; a live indicator tracks real-time position
-- **Dial in dead zones** — 6 algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis dead zone, anti-dead zone, and linear response for sticks and triggers, live preview, stick center offset calibration, and max range
+- **Dial in dead zones** — 6 algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis dead zone, anti-dead zone, and linear response for sticks and triggers, live preview, stick center offset calibration, max range, and per-mapping axis-to-button activation thresholds with half-axis support for centered joysticks
 
 ### Force Feedback & Rumble
 

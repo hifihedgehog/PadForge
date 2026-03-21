@@ -501,10 +501,65 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
-        //  Game-specific overrides
+        //  Per-mapping dead zones (axis activation threshold)
         // ─────────────────────────────────────────────
 
-        /// <summary>
+        [XmlArray("MappingDeadZones")]
+        [XmlArrayItem("Map")]
+        public VJoyMappingEntry[] MappingDeadZoneEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _mappingDeadZoneDict;
+        private readonly object _mappingDeadZoneDictLock = new();
+
+        public string GetMappingDeadZone(string key)
+        {
+            EnsureMappingDeadZoneDict();
+            return _mappingDeadZoneDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetMappingDeadZone(string key, string value)
+        {
+            EnsureMappingDeadZoneDict();
+            if (string.IsNullOrEmpty(value) || value == "0" || value == "50")
+                _mappingDeadZoneDict.Remove(key);
+            else
+                _mappingDeadZoneDict[key] = value;
+        }
+
+        public void FlushMappingDeadZones()
+        {
+            if (_mappingDeadZoneDict == null) return;
+            if (_mappingDeadZoneDict.Count == 0)
+            {
+                MappingDeadZoneEntries = null;
+                return;
+            }
+            var entries = new VJoyMappingEntry[_mappingDeadZoneDict.Count];
+            int i = 0;
+            foreach (var kvp in _mappingDeadZoneDict)
+                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            MappingDeadZoneEntries = entries;
+        }
+
+        private void EnsureMappingDeadZoneDict()
+        {
+            if (_mappingDeadZoneDict != null) return;
+            lock (_mappingDeadZoneDictLock)
+            {
+                if (_mappingDeadZoneDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (MappingDeadZoneEntries != null)
+                {
+                    foreach (var e in MappingDeadZoneEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _mappingDeadZoneDict = dict;
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Migration
@@ -691,6 +746,19 @@ namespace PadForge.Engine.Data
                 foreach (var key in kbmKeys)
                 {
                     sb.Append(key); sb.Append('='); sb.Append(_kbmMappingDict[key]); sb.Append('|');
+                }
+            }
+
+            // Per-mapping dead zones (sorted for deterministic checksum)
+            EnsureMappingDeadZoneDict();
+            if (_mappingDeadZoneDict.Count > 0)
+            {
+                sb.Append("MDZ:");
+                var mdzKeys = new List<string>(_mappingDeadZoneDict.Keys);
+                mdzKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in mdzKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_mappingDeadZoneDict[key]); sb.Append('|');
                 }
             }
 
@@ -903,6 +971,7 @@ namespace PadForge.Engine.Data
             FlushVJoyMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushMappingDeadZones();
 
             var dict = new Dictionary<string, string>();
             var type = GetType();
@@ -939,6 +1008,13 @@ namespace PadForge.Engine.Data
                 foreach (var e in KbmMappingEntries)
                     kbmList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__KbmMappings"] = JsonSerializer.Serialize(kbmList);
+            }
+            if (MappingDeadZoneEntries != null && MappingDeadZoneEntries.Length > 0)
+            {
+                var mdzList = new List<Dictionary<string, string>>();
+                foreach (var e in MappingDeadZoneEntries)
+                    mdzList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__MappingDeadZones"] = JsonSerializer.Serialize(mdzList);
             }
 
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
@@ -991,6 +1067,8 @@ namespace PadForge.Engine.Data
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")
                             ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__MappingDeadZones")
+                            ps.MappingDeadZoneEntries = DeserializeMappingArray(kvp.Value);
                         continue;
                     }
                     var prop = type.GetProperty(kvp.Key);
@@ -1191,6 +1269,7 @@ namespace PadForge.Engine.Data
             FlushVJoyMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushMappingDeadZones();
         }
 
         /// <summary>
@@ -1213,6 +1292,7 @@ namespace PadForge.Engine.Data
             source.FlushVJoyMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
+            source.FlushMappingDeadZones();
 
             // Deep-copy arrays and invalidate our cached dictionaries.
             VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
@@ -1221,6 +1301,8 @@ namespace PadForge.Engine.Data
             _midiMappingDict = null;
             KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
             _kbmMappingDict = null;
+            MappingDeadZoneEntries = DeepCopyMappings(source.MappingDeadZoneEntries);
+            _mappingDeadZoneDict = null;
         }
 
         private static VJoyMappingEntry[] DeepCopyMappings(VJoyMappingEntry[] src)

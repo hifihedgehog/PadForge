@@ -278,8 +278,17 @@ function Find-SlotByType {
     $slots = @(Find-AllSlots)
     foreach ($slot in $slots) {
         Select-El $slot -Label "Probe $($slot.Current.Name)" -Delay 800
+        # Click the Controller tab so type-specific elements become visible in UIA
         $padPage = Find-UIA -Aid "PadPageView"
         if (-not $padPage) { continue }
+        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::RadioButton)
+        $probeTabs = $padPage.FindAll($TC, $rbCond)
+        if ($probeTabs.Count -gt 0) {
+            try { $probeTabs[0].GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke() } catch {}
+            Start-Sleep -Milliseconds 500
+        }
         # WPF Collapsed elements are not in UIA tree, so presence = Visible
         $hasVJoy = $null -ne (Find-UIA -Parent $padPage -Aid "VJoyConfigBar")
         $hasMidi = $null -ne (Find-UIA -Parent $padPage -Aid "MidiConfigBar")
@@ -381,10 +390,22 @@ if (-not (Test-Path $PadForgeXml)) {
     Write-Host "  PadForge created default settings"
 }
 
-# Backup XML
+# Backup and delete XML for a clean start (no leftover slots from previous runs)
 $xmlBak = "$PadForgeXml.bak"
 Copy-Item $PadForgeXml $xmlBak -Force
-Write-Host "  Backed up PadForge.xml"
+Remove-Item $PadForgeXml -Force
+Write-Host "  Backed up and deleted PadForge.xml for clean start"
+
+# Launch PadForge briefly to regenerate default XML, then kill it
+Start-Process $PadForgeExe
+Start-Sleep -Seconds 5
+Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+Start-Sleep -Seconds 2
+if (-not (Test-Path $PadForgeXml)) {
+    Write-Host "  !! PadForge.xml not regenerated after clean launch" -ForegroundColor Red
+    Copy-Item $xmlBak $PadForgeXml -Force
+    Write-Host "  Restored backup"
+}
 
 # Load and modify XML
 [xml]$xml = Get-Content $PadForgeXml
@@ -399,6 +420,11 @@ if ($slotCreatedNode) {
 $slotEnabledNode = $ns.SelectSingleNode("SlotEnabled")
 if ($slotEnabledNode) {
     $slotEnabledNode.InnerText = ("false," * 15 + "false")
+}
+$slotTypesNode = $ns.SelectSingleNode("SlotControllerTypes")
+if ($slotTypesNode) {
+    $slotTypesNode.InnerText = ("Xbox360," * 15 + "Xbox360")
+    Write-Host "  Reset all slot types to Xbox360"
 }
 
 # --- Inject a test profile (profiles only -- slots created via UI later) ---
@@ -613,6 +639,45 @@ function Add-SlotViaPopup {
     return $true
 }
 
+# Delete all existing slots to ensure a clean start
+Write-Host "  Removing any existing slots..."
+for ($delPass = 0; $delPass -lt 16; $delPass++) {
+    $existingSlots = @(Find-AllSlots)
+    if ($existingSlots.Count -eq 0) { break }
+    # Select the first slot
+    Select-El $existingSlots[0] -Label "Select for delete" -Delay 500
+    # Find and click the delete/close button (X) — it's a Button with the delete tooltip
+    $padPage = Find-UIA -Aid "PadPageView"
+    $delBtn = $null
+    if ($padPage) {
+        $allBtns = $padPage.FindAll($TC, (New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::Button)))
+        foreach ($b in $allBtns) {
+            if ($b.Current.Name -match "Delete|Remove|Close") { $delBtn = $b; break }
+        }
+    }
+    if (-not $delBtn) {
+        # Fallback: use keyboard shortcut or find by sidebar card X button
+        Write-Host "  !! Could not find delete button, trying sidebar X..."
+        # The sidebar card has its own X button — search within the slot element
+        $slotBtns = $existingSlots[0].FindAll($TC, (New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::Button)))
+        foreach ($b in $slotBtns) {
+            $delBtn = $b  # Last button in card is typically the X
+        }
+    }
+    if ($delBtn) {
+        Click-El $delBtn -Label "Delete slot" -Delay 800
+    } else {
+        Write-Host "  !! No delete button found, breaking" -ForegroundColor Red
+        break
+    }
+}
+$remainingSlots = @(Find-AllSlots)
+Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
+
 # Create: Xbox360, DS4, KBM, vJoy, MIDI (order matters for slot indices)
 $slotTypes = @(
     @{ Aid = "AddXbox360Btn"; Label = "Xbox 360" },
@@ -769,23 +834,22 @@ if ($slots.Count -ge 1) {
     Tab "Sticks"; Start-Sleep -Milliseconds 500; Cap "pad-sticks"
 
     # 9. Sticks — dead zone shape dropdown open
-    # DZ Shape is ~9.3 rows above Sensitivity Y (which opens at y=1014).
-    # Each row ≈ 62px. DZ Shape center ≈ 1014 - 9.3*62 = 437. Using x=946 (same label offset as Sensitivity).
+    # Original coords (946, 437) + 32px vertical offset for branding bar at 200% DPI
     Write-Host "[$(Next)/$total] Sticks - dead zone shape dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 437)
+    [Win32]::ClickAt(946, 469)
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-deadzone-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
     Start-Sleep -Milliseconds 300
 
     # 10. Sticks — sensitivity preset dropdown open
-    # Sensitivity X "Linear": ~33% × 2906 = 959px → screen x=946, ~55.5% × 1850 = 1027px → screen y=1014
+    # Original coords (946, 1014) + 32px vertical offset
     Write-Host "[$(Next)/$total] Sticks - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 1014)
+    [Win32]::ClickAt(946, 1046)
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
@@ -796,11 +860,12 @@ if ($slots.Count -ge 1) {
     Tab "Triggers"; Start-Sleep -Milliseconds 500; Cap "pad-triggers"
 
     # 12. Triggers — sensitivity preset dropdown open
-    # Trigger Preset "Linear": ~33% × 2906 = 959px → screen x=946, ~24.5% × 1850 = 453px → screen y=440
     Write-Host "[$(Next)/$total] Triggers - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 440)
+    $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
+    # Original coords (946, 440) + 32px vertical offset for branding bar at 200% DPI
+    [Win32]::ClickAt(946, 472)
     Start-Sleep -Milliseconds 800
     Cap "pad-triggers-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
@@ -819,8 +884,9 @@ if ($slots.Count -ge 1) {
 # Use offsets from end to handle variable number of Xbox360/DS4 slots
 Write-Host ""
 Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
+Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-$vjoyIdx = $slots.Count - 3  # third from end
+$vjoyIdx = $slots.Count - 3  # After type-group reorder: ...vJoy, KBM, MIDI
 if ($vjoyIdx -ge 0 -and $slots.Count -ge 3) {
     Write-Host "[$(Next)/$total] vJoy config bar"
     Select-El $slots[$vjoyIdx] -Label "vJoy Slot" -Delay 1000
@@ -831,6 +897,29 @@ if ($vjoyIdx -ge 0 -and $slots.Count -ge 3) {
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
         if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "vJoy Controller Tab" -Delay 1000 }
+
+        # Switch preset to "Custom" to show the config bar with axis/button/POV dropdowns
+        $presetCombo = Find-UIA -Parent $padPage -Aid "VJoyPresetCombo"
+        if ($presetCombo) {
+            try {
+                $expandPat = $presetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+                $expandPat.Expand()
+                Start-Sleep -Milliseconds 500
+                # Select "Custom" (third item, index 2)
+                $itemsCond = New-Object System.Windows.Automation.PropertyCondition(
+                    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                    [System.Windows.Automation.ControlType]::ListItem)
+                $items = $presetCombo.FindAll($TC, $itemsCond)
+                if ($items.Count -ge 3) {
+                    $selectPat = $items[2].GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
+                    $selectPat.Select()
+                    Write-Host "  Switched to Custom preset" -ForegroundColor Green
+                }
+                Start-Sleep -Milliseconds 800
+            } catch {
+                Write-Host "  !! Could not switch preset: $_" -ForegroundColor Yellow
+            }
+        }
     }
     Cap "pad-vjoy-configbar"
 
@@ -854,6 +943,7 @@ if ($vjoyIdx -ge 0 -and $slots.Count -ge 3) {
 # ---- 16. KBM slot ----
 Write-Host ""
 Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
+Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
 $kbmIdx = $slots.Count - 2  # second from end
 if ($kbmIdx -ge 0 -and $slots.Count -ge 2) {
@@ -869,6 +959,7 @@ if ($kbmIdx -ge 0 -and $slots.Count -ge 2) {
 
 # ---- 17. MIDI slot ----
 Write-Host ""
+Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
 $midiIdx = $slots.Count - 1  # last slot
@@ -988,10 +1079,10 @@ try {
         } else {
             Write-Host "  !! Edge window too small: ${ew}x${eh}" -ForegroundColor Yellow
         }
-        # Kill only our temp-profile Edge processes.
-        Get-Process msedge -EA SilentlyContinue | Where-Object {
-            try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
-        } | Stop-Process -Force -EA SilentlyContinue
+        # Kill only our temp-profile Edge processes (use WMI for CommandLine access).
+        Get-CimInstance Win32_Process -Filter "Name='msedge.exe'" -EA SilentlyContinue |
+            Where-Object { $_.CommandLine -like "*PadForge_EdgeCapture*" } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -EA SilentlyContinue }
         Start-Sleep -Milliseconds 500
     }
 

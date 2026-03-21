@@ -6,7 +6,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using ModernWpf.Controls;
+using NavigationView = Wpf.Ui.Controls.NavigationView;
+using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
+using FontIcon = Wpf.Ui.Controls.FontIcon;
 using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
@@ -55,12 +57,39 @@ namespace PadForge
         {
             InitializeComponent();
 
-            // Close gap between branding bar and first sidebar item.
-            NavView.RenderTransform = new TranslateTransform(0, -12);
-            NavView.Margin = new Thickness(0, 0, 0, -12);
+            // Wire NavigationView events in code-behind (WPF UI uses TypedEventHandler).
+            NavView.SelectionChanged += NavView_SelectionChanged;
+            NavView.ItemInvoked += NavView_ItemInvoked;
 
-            // Sync branding bar + hamburger backgrounds to sidebar color.
-            NavView.Loaded += (_, _) => SyncBarBackgrounds();
+
+            // Fallback click handler — WPF UI's SelectionChanged may not fire
+            // without TargetPageType navigation. Catch clicks directly.
+            NavView.PreviewMouseLeftButtonUp += (s, e) =>
+            {
+                // Walk up from the clicked element to find the NavigationViewItem.
+                var elem = e.OriginalSource as DependencyObject;
+                while (elem != null)
+                {
+                    if (elem is NavigationViewItem nvi && nvi.Tag != null)
+                    {
+                        var tag = nvi.Tag.ToString();
+                        if (tag == "AddController")
+                            ShowControllerTypePopup(nvi);
+                        else if (!_rebuildingControllerSection)
+                        {
+                            // Clear active state on all items, set on clicked one.
+                            foreach (var mi in NavView.MenuItems)
+                                if (mi is NavigationViewItem other) other.IsActive = false;
+                            foreach (var mi in NavView.FooterMenuItems)
+                                if (mi is NavigationViewItem other) other.IsActive = false;
+                            nvi.IsActive = true;
+                            NavigateToTag(tag);
+                        }
+                        break;
+                    }
+                    elem = System.Windows.Media.VisualTreeHelper.GetParent(elem);
+                }
+            };
 
             // Close Add Controller popup on window events.
             LocationChanged += (_, _) => CloseControllerPopup();
@@ -865,7 +894,7 @@ namespace PadForge
 
             // Select the first nav item.
             if (NavView.MenuItems.Count > 0)
-                NavView.SelectedItem = NavView.MenuItems[0];
+                if (NavView.MenuItems[0] is NavigationViewItem first) first.IsActive = true;
         }
 
         private bool _shutdownComplete;
@@ -967,7 +996,7 @@ namespace PadForge
             {
                 Content = Strings.Instance.Dashboard_Title,
                 Tag = "Dashboard",
-                Icon = new FontIcon { Glyph = "\uF404" }
+                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uF404" }
             };
             NavView.MenuItems.Add(_navDashboard);
 
@@ -975,7 +1004,7 @@ namespace PadForge
             _navProfiles = new NavigationViewItem
             {
                 Tag = "Profiles",
-                Icon = new FontIcon { Glyph = "\uE8F1" },
+                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE8F1" },
                 Content = Strings.Instance.Profiles_Title
             };
             NavView.MenuItems.Add(_navProfiles);
@@ -985,7 +1014,7 @@ namespace PadForge
             {
                 Content = Strings.Instance.Devices_Title,
                 Tag = "Devices",
-                Icon = new FontIcon { Glyph = "\uE772" }
+                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE772" }
             };
             NavView.MenuItems.Add(_navDevices);
 
@@ -1104,9 +1133,8 @@ namespace PadForge
                     var addItem = new NavigationViewItem
                     {
                         Tag = "AddController",
-                        Icon = new FontIcon { Glyph = "\uE710" }, // + icon
-                        Content = Strings.Instance.Main_AddController,
-                        SelectsOnInvoked = false
+                        Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE710" }, // + icon
+                        Content = Strings.Instance.Main_AddController
                     };
                     NavView.MenuItems.Add(addItem);
                 }
@@ -1136,7 +1164,7 @@ namespace PadForge
                             fallback = nvi;
                     }
                 }
-                NavView.SelectedItem = match ?? fallback;
+                if ((match ?? fallback) is NavigationViewItem restoreItem) restoreItem.IsActive = true;
             }
 
             // Refresh uninstall button guards (disabled when slots of that type exist).
@@ -1174,13 +1202,21 @@ namespace PadForge
             var row = new System.Windows.Controls.DockPanel();
 
             // Delete button — docked right so it stays at the far end of the card.
+            var deleteIcon = new System.Windows.Controls.TextBlock
+            {
+                Text = "\uE711",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 9
+            };
+            deleteIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
             var deleteBtn = new System.Windows.Controls.Button
             {
-                Content = new FontIcon { Glyph = "\uE711", FontSize = 9 },
-                Padding = new Thickness(2),
+                Content = deleteIcon,
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 ToolTip = Strings.Instance.Main_DeleteVC,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -1255,7 +1291,8 @@ namespace PadForge
             {
                 Content = powerTextBlock,
                 Background = System.Windows.Media.Brushes.Transparent,
-                Padding = new Thickness(2),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 ToolTip = powerTooltip,
@@ -1310,13 +1347,14 @@ namespace PadForge
                 Height = 13,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPath,
                 ToolTip = hasViGEm ? Strings.Instance.ControllerType_Xbox360 : Strings.Instance.Main_Xbox360_ViGEmNotInstalled,
                 Background = System.Windows.Media.Brushes.Transparent,
-                Padding = new Thickness(2),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isXbox ? 1.0 : 0.3,
@@ -1335,13 +1373,14 @@ namespace PadForge
                 Height = 13,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4Path,
                 ToolTip = hasViGEm ? Strings.Instance.ControllerType_DualShock4 : Strings.Instance.Main_DS4_ViGEmNotInstalled,
                 Background = System.Windows.Media.Brushes.Transparent,
-                Padding = new Thickness(2),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isDS4 ? 1.0 : 0.3,
@@ -1361,13 +1400,14 @@ namespace PadForge
                 Height = 13,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPath,
                 ToolTip = hasVJoy ? Strings.Instance.ControllerType_DirectInput : Strings.Instance.Main_DI_DriverNotInstalled,
                 Background = System.Windows.Media.Brushes.Transparent,
-                Padding = new Thickness(2),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isVJoy ? 1.0 : 0.3,
@@ -1390,7 +1430,8 @@ namespace PadForge
                 },
                 ToolTip = Strings.Instance.ControllerType_KeyboardMouse,
                 Background = System.Windows.Media.Brushes.Transparent,
-                Padding = new Thickness(2),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isKbm ? 1.0 : 0.3,
@@ -1413,7 +1454,8 @@ namespace PadForge
                 },
                 ToolTip = hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices,
                 Background = System.Windows.Media.Brushes.Transparent,
-                Padding = new Thickness(2),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isMidi ? 1.0 : 0.3,
@@ -1447,7 +1489,7 @@ namespace PadForge
                 Child = row,
                 Tag = navItem.PadIndex
             };
-            card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SystemControlBackgroundChromeMediumLowBrush");
+            card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
 
             // Drag reordering — mouse-down recorded here, threshold + movement tracked at NavView level.
             card.PreviewMouseLeftButtonDown += OnCardDragStart;
@@ -1666,7 +1708,7 @@ namespace PadForge
             _dragAdorner = new CardDragAdorner(NavView, snapshot, _cardDragSource.RenderSize);
             _dragAdornerLayer.Add(_dragAdorner);
 
-            var accentBrush = (System.Windows.Media.Brush)FindResource("SystemControlHighlightAccentBrush");
+            var accentBrush = (System.Windows.Media.Brush)FindResource("SystemAccentColorSecondaryBrush");
             _insertionAdorner = new InsertionLineAdorner(NavView, accentBrush);
             _dragAdornerLayer.Add(_insertionAdorner);
 
@@ -1828,7 +1870,7 @@ namespace PadForge
                     nvi.Content is System.Windows.Controls.Border card &&
                     card.Tag is int idx && idx == padIndex)
                 {
-                    var accent = FindResource("SystemControlHighlightAccentBrush") as System.Windows.Media.Brush
+                    var accent = FindResource("SystemAccentColorSecondaryBrush") as System.Windows.Media.Brush
                               ?? System.Windows.Media.Brushes.DodgerBlue;
                     card.BorderBrush = accent;
                     _dragSwapHighlight = card;
@@ -2211,7 +2253,7 @@ namespace PadForge
                 Height = 28,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
             bool vigemInstalled = _viewModel.Dashboard.IsViGEmInstalled;
             bool xboxDisabled = xboxAtCapacity || !vigemInstalled;
@@ -2223,6 +2265,7 @@ namespace PadForge
                         : xboxAtCapacity ? string.Format(Strings.Instance.Main_Xbox360_Max_Format, SettingsManager.MaxXbox360Slots)
                         : Strings.Instance.ControllerType_Xbox360,
                 Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = xboxDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
@@ -2250,7 +2293,7 @@ namespace PadForge
                 Height = 28,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
             bool ds4Disabled = ds4AtCapacity || !vigemInstalled;
             if (ds4Disabled) ds4PopupPath.Opacity = 0.35;
@@ -2261,6 +2304,7 @@ namespace PadForge
                         : ds4AtCapacity ? string.Format(Strings.Instance.Main_DS4_Max_Format, SettingsManager.MaxDS4Slots)
                         : Strings.Instance.ControllerType_DualShock4,
                 Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = ds4Disabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
@@ -2288,7 +2332,7 @@ namespace PadForge
                 Height = 28,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            vjoyPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SystemControlForegroundBaseHighBrush");
+            vjoyPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool vjoyAtCapacity = vjoyCount >= SettingsManager.MaxVJoySlots;
             bool vjoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
             bool vjoyDisabled = vjoyAtCapacity || !vjoyInstalled;
@@ -2300,6 +2344,7 @@ namespace PadForge
                         : vjoyAtCapacity ? string.Format(Strings.Instance.Main_DI_Max_Format, SettingsManager.MaxVJoySlots)
                         : Strings.Instance.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = vjoyDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
@@ -2339,6 +2384,7 @@ namespace PadForge
                 ToolTip = kbmAtCapacity ? string.Format(Strings.Instance.Main_KBM_Max_Format, SettingsManager.MaxKeyboardMouseSlots)
                         : Strings.Instance.ControllerType_KeyboardMouse,
                 Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = kbmAtCapacity ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
@@ -2379,6 +2425,7 @@ namespace PadForge
                 Content = midiPopupIcon,
                 ToolTip = midiTooltip,
                 Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
                 Cursor = midiDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
@@ -2430,23 +2477,32 @@ namespace PadForge
         /// </summary>
         private void SelectNavItemByTag(string tag)
         {
+            // Clear all active states first.
+            foreach (var mi in NavView.MenuItems)
+                if (mi is NavigationViewItem other) other.IsActive = false;
+            foreach (var mi in NavView.FooterMenuItems)
+                if (mi is NavigationViewItem other) other.IsActive = false;
+
+            // Set active on the matching item.
             foreach (var mi in NavView.MenuItems)
             {
                 if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
                 {
-                    NavView.SelectedItem = nvi;
-                    return;
+                    nvi.IsActive = true;
+                    break;
                 }
             }
-
             foreach (var mi in NavView.FooterMenuItems)
             {
                 if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
                 {
-                    NavView.SelectedItem = nvi;
-                    return;
+                    nvi.IsActive = true;
+                    break;
                 }
             }
+
+            // Navigate content (WPF UI doesn't reliably fire SelectionChanged).
+            NavigateToTag(tag);
         }
 
         /// <summary>
@@ -2455,12 +2511,22 @@ namespace PadForge
         /// but ItemInvoked still fires so we can show the popup.
         /// </summary>
         private void NavView_ItemInvoked(NavigationView sender,
-            NavigationViewItemInvokedEventArgs args)
+            RoutedEventArgs args)
         {
-            if (args.InvokedItemContainer is NavigationViewItem nvi
+            // Check for AddController click.
+            if (args.OriginalSource is NavigationViewItem nvi
                 && nvi.Tag?.ToString() == "AddController")
             {
                 ShowControllerTypePopup(nvi);
+                return;
+            }
+
+            // Fallback navigation: if SelectionChanged didn't fire, handle it here.
+            if (sender.SelectedItem is NavigationViewItem selected)
+            {
+                var tag = selected.Tag?.ToString() ?? "Dashboard";
+                if (!_rebuildingControllerSection)
+                    NavigateToTag(tag);
             }
         }
 
@@ -2516,42 +2582,6 @@ namespace PadForge
             }
         }
 
-        private void SyncBarBackgrounds()
-        {
-            // Capture the actual rendered pixel color of the sidebar to ensure
-            // the branding bar matches exactly (handles semi-transparent theme brushes).
-            try
-            {
-                var paneRoot = FindVisualChild<FrameworkElement>(NavView, "PaneRoot");
-                if (paneRoot == null || paneRoot.ActualWidth < 1 || paneRoot.ActualHeight < 1) return;
-
-                // Render a 1x1 pixel from the pane's top-left corner.
-                var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
-                    1, 1, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
-                var dv = new System.Windows.Media.DrawingVisual();
-                using (var dc = dv.RenderOpen())
-                {
-                    var vb = new System.Windows.Media.VisualBrush(paneRoot)
-                    {
-                        Viewbox = new Rect(0, 0, 1, 1),
-                        ViewboxUnits = System.Windows.Media.BrushMappingMode.Absolute
-                    };
-                    dc.DrawRectangle(vb, null, new Rect(0, 0, 1, 1));
-                }
-                rtb.Render(dv);
-                var pixels = new byte[4];
-                rtb.CopyPixels(pixels, 4, 0);
-                var color = System.Windows.Media.Color.FromRgb(pixels[2], pixels[1], pixels[0]);
-                var brush = new System.Windows.Media.SolidColorBrush(color);
-                brush.Freeze();
-
-                AppBrandingBar.Background = brush;
-                PaneToggleBtn.Background = brush;
-                AppBrandingBorder.Background = brush;
-            }
-            catch { /* best effort */ }
-        }
-
         private void CloseControllerPopup()
         {
             if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
@@ -2566,33 +2596,60 @@ namespace PadForge
             NavView.IsPaneOpen = !NavView.IsPaneOpen;
         }
 
-        private void NavView_SelectionChanged(NavigationView sender,
-            NavigationViewSelectionChangedEventArgs args)
+        private void BrandingBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Close Add Controller popup on any navigation.
-            CloseControllerPopup();
-
-            // Skip intermediate selection events fired while RebuildControllerSection
-            // is tearing down and re-adding items. The rebuild restores the correct
-            // selection after the guard flag is cleared.
-            if (_rebuildingControllerSection)
-                return;
-
-            string tag;
-
-            if (args.IsSettingsSelected)
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
             {
-                tag = "Settings";
+                if (e.ClickCount == 2)
+                    MaximizeBtn_Click(sender, e);
+                else
+                    DragMove();
             }
-            else if (args.SelectedItem is NavigationViewItem item)
+        }
+
+        private void MinimizeBtn_Click(object sender, RoutedEventArgs e)
+            => WindowState = WindowState.Minimized;
+
+        private void MaximizeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState == WindowState.Maximized
+                ? WindowState.Normal : WindowState.Maximized;
+            MaximizeIcon.Text = WindowState == WindowState.Maximized ? "\uE923" : "\uE922";
+        }
+
+        private void FullScreenBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowStyle == WindowStyle.None && WindowState == WindowState.Maximized)
             {
-                tag = item.Tag?.ToString() ?? "Dashboard";
+                // Exit full screen.
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                WindowState = WindowState.Normal;
             }
             else
             {
-                return;
+                // Enter full screen.
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
             }
+        }
 
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+            => Close();
+
+        private void NavView_SelectionChanged(NavigationView sender,
+            RoutedEventArgs args)
+        {
+            CloseControllerPopup();
+
+            if (_rebuildingControllerSection)
+                return;
+
+            if (NavView.SelectedItem is NavigationViewItem item)
+                NavigateToTag(item.Tag?.ToString() ?? "Dashboard");
+        }
+
+        private void NavigateToTag(string tag)
+        {
             // Update ViewModel navigation state.
             _viewModel.SelectedNavTag = tag;
 
@@ -2905,14 +2962,12 @@ namespace PadForge
 
         private void OnThemeChanged(object sender, int themeIndex)
         {
-            ModernWpf.ThemeManager.Current.ApplicationTheme = themeIndex switch
-            {
-                1 => ModernWpf.ApplicationTheme.Light,
-                2 => ModernWpf.ApplicationTheme.Dark,
-                _ => null // System default
-            };
-            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded,
-                new Action(SyncBarBackgrounds));
+            if (themeIndex == 1)
+                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light);
+            else if (themeIndex == 2)
+                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark);
+            else
+                Wpf.Ui.Appearance.ApplicationThemeManager.ApplySystemTheme();
         }
 
         // ─────────────────────────────────────────────

@@ -7,7 +7,7 @@ using PadForge.Engine.Data;
 
 namespace PadForge.Views
 {
-    public partial class CopyFromDialog : Window
+    public partial class CopyFromDialog : Wpf.Ui.Controls.FluentWindow
     {
         /// <summary>
         /// Represents a device entry in the "Copy From" list.

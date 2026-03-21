@@ -20,7 +20,7 @@ namespace PadForge.Views
         private Ellipse _movementDot, _moveCircle;
 
         private static bool IsDarkTheme =>
-            ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
+            Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
         private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
@@ -46,7 +46,7 @@ namespace PadForge.Views
         private Rectangle _x1Rect, _x2Rect;
         private bool _built;
 
-        private ModernWpf.ApplicationTheme? _lastTheme;
+        private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
 
         public MousePreviewControl()
         {
@@ -57,7 +57,7 @@ namespace PadForge.Views
 
         private void BuildMouse()
         {
-            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_built && _lastTheme == currentTheme) return;
             _built = true;
             _lastTheme = currentTheme;
@@ -193,7 +193,7 @@ namespace PadForge.Views
         {
             if (!_built) return;
             // Rebuild on theme change.
-            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_lastTheme != currentTheme) BuildMouse();
             var vm = DataContext as DevicesViewModel;
             if (vm == null || !vm.IsMouseDevice) return;

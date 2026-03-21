@@ -4,8 +4,8 @@
              xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings">
 
-    <ScrollViewer Padding="24,16">
-        <StackPanel>
+    <ScrollViewer Padding="24,0">
+        <StackPanel Margin="0,16,0,16">
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="20"

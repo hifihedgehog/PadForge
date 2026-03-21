@@ -399,7 +399,7 @@
 
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
                         <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="8,8,0,0" Padding="6,4" Opacity="0.7"
+                                Margin="8,8,0,0" Padding="6,4"
                                 Click="ViewModeToggle_Click" ToolTip="{Binding Pad_SwitchTo2D, Source={x:Static strings:Strings.Instance}}">
                             <TextBlock x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                        Text="&#xE8B9;"/>
@@ -421,10 +421,10 @@
                                     ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
                             <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
-                                    BorderBrush="#FF3F3F46" BorderThickness="1">
+                            <Border Height="24" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" CornerRadius="3"
+                                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1">
                                 <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding LeftMotorDisplay,
@@ -439,10 +439,10 @@
                                     ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
                             <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="24" Background="#FF1E1E21" CornerRadius="3"
-                                    BorderBrush="#FF3F3F46" BorderThickness="1">
+                            <Border Height="24" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" CornerRadius="3"
+                                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1">
                                 <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding RightMotorDisplay,

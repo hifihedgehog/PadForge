@@ -36,18 +36,30 @@ namespace PadForge.Views
         private Rectangle _x2Rect;
         private Canvas _moveArrowCanvas;
 
-        // Colors
-        private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x40, 0x40, 0x40));
-        private static readonly Brush MouseBodyBrush = new SolidColorBrush(Color.FromRgb(0x50, 0x50, 0x50));
-        private static readonly Brush MouseButtonBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
-        private static readonly Brush MmbBrush = new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
-        private static readonly Brush ScrollWheelBrush = new SolidColorBrush(Color.FromRgb(0x38, 0x38, 0x38));
+        // Colors — theme-aware (dark values for dark mode, lighter for light mode)
+        private static bool IsDarkTheme =>
+            ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
+
+        private static Brush DimBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x40, 0x40, 0x40) : Color.FromRgb(0xB0, 0xB0, 0xB0));
+        private static Brush MouseBodyBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x50, 0x50, 0x50) : Color.FromRgb(0xC0, 0xC0, 0xC0));
+        private static Brush MouseButtonBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x60, 0x60, 0x60) : Color.FromRgb(0xD0, 0xD0, 0xD0));
+        private static Brush MmbBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x55, 0x55, 0x55) : Color.FromRgb(0xC8, 0xC8, 0xC8));
+        private static Brush ScrollWheelBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x38, 0x38, 0x38) : Color.FromRgb(0xA8, 0xA8, 0xA8));
         private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
-        private static readonly Brush DotBrush = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
-        private static readonly Brush KeyNormalBrush = new SolidColorBrush(Color.FromArgb(0x28, 0x88, 0x88, 0x88));
+        private static Brush DotBrush => Frozen(IsDarkTheme
+            ? Color.FromRgb(0x88, 0x88, 0x88) : Color.FromRgb(0x70, 0x70, 0x70));
+        private static Brush KeyNormalBrush => new SolidColorBrush(IsDarkTheme
+            ? Color.FromArgb(0x28, 0x88, 0x88, 0x88) : Color.FromArgb(0x30, 0x40, 0x40, 0x40));
         private static readonly Brush KeyPressedBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
         private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
+
+        private static SolidColorBrush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
 
         // Layout constants
         private const double MC = 80;       // mouse center X

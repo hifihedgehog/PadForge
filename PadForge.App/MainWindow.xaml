@@ -81,7 +81,7 @@
             </ui:NavigationView.FooterMenuItems>
 
             <!-- Content frame swapped by navigation -->
-            <Grid Margin="0,12,0,12">
+            <Grid Margin="0,12,0,0">
                 <views:DashboardPage x:Name="DashboardPageView" Visibility="Visible"/>
                 <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                 <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>

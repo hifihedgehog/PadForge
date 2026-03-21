@@ -1036,7 +1036,7 @@ try {
         } | Stop-Process -Force -EA SilentlyContinue
         Start-Sleep -Milliseconds 1500
         # Launch Edge with an isolated temp profile — never touches the default profile.
-        Start-Process $edgePath "--user-data-dir=`"$edgeTempProfile`" --no-first-run --disable-session-crashed-bubble --app=$Url"
+        Start-Process $edgePath "--user-data-dir=`"$edgeTempProfile`" --no-first-run --disable-sync --disable-session-crashed-bubble --disable-features=msEdgeSyncService,msEdgeAccountSSO --no-default-browser-check --app=$Url"
         Start-Sleep -Milliseconds $WaitMs
         # Find Edge window via process handles (check all msedge processes)
         $ehwnd = [IntPtr]::Zero

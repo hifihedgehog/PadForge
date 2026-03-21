@@ -39,7 +39,6 @@
                 VerticalAlignment="Top"
                 Margin="0,8,8,0"
                 Padding="8,4"
-                Opacity="0.6"
                 Click="ResetView_Click" />
     </Grid>
 </UserControl>

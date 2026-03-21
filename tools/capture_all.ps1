@@ -774,18 +774,18 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Sticks - dead zone shape dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 437)
+    [Win32]::ClickAt(946, 453)
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-deadzone-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
     Start-Sleep -Milliseconds 300
 
     # 10. Sticks — sensitivity preset dropdown open
-    # Sensitivity X "Linear": ~33% × 2906 = 959px → screen x=946, ~55.5% × 1850 = 1027px → screen y=1014
+    # Sensitivity X "Linear": ~33% × 2906 = 959px → screen x=946, ~55.5% × 1850 = 1027px → screen y=1030
     Write-Host "[$(Next)/$total] Sticks - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 1014)
+    [Win32]::ClickAt(946, 1030)
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
@@ -800,7 +800,7 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Triggers - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 440)
+    [Win32]::ClickAt(946, 456)
     Start-Sleep -Milliseconds 800
     Cap "pad-triggers-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")

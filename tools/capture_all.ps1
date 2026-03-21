@@ -834,23 +834,22 @@ if ($slots.Count -ge 1) {
     Tab "Sticks"; Start-Sleep -Milliseconds 500; Cap "pad-sticks"
 
     # 9. Sticks — dead zone shape dropdown open
-    # DZ Shape is ~9.3 rows above Sensitivity Y (which opens at y=1014).
-    # Each row ≈ 62px. DZ Shape center ≈ 1014 - 9.3*62 = 437. Using x=946 (same label offset as Sensitivity).
+    # Original coords (946, 437) + 32px vertical offset for branding bar at 200% DPI
     Write-Host "[$(Next)/$total] Sticks - dead zone shape dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 453)
+    [Win32]::ClickAt(946, 469)
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-deadzone-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
     Start-Sleep -Milliseconds 300
 
     # 10. Sticks — sensitivity preset dropdown open
-    # Sensitivity X "Linear": ~33% × 2906 = 959px → screen x=946, ~55.5% × 1850 = 1027px → screen y=1030
+    # Original coords (946, 1014) + 32px vertical offset
     Write-Host "[$(Next)/$total] Sticks - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 1030)
+    [Win32]::ClickAt(946, 1046)
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
@@ -861,11 +860,12 @@ if ($slots.Count -ge 1) {
     Tab "Triggers"; Start-Sleep -Milliseconds 500; Cap "pad-triggers"
 
     # 12. Triggers — sensitivity preset dropdown open
-    # Trigger Preset "Linear": ~33% × 2906 = 959px → screen x=946, ~24.5% × 1850 = 453px → screen y=440
     Write-Host "[$(Next)/$total] Triggers - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 456)
+    $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
+    # Original coords (946, 440) + 32px vertical offset for branding bar at 200% DPI
+    [Win32]::ClickAt(946, 472)
     Start-Sleep -Milliseconds 800
     Cap "pad-triggers-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")

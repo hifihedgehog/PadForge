@@ -21,21 +21,22 @@ namespace PadForge.Views
 
         private static bool IsDarkTheme =>
             ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
-        private static SolidColorBrush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
+        private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
-        private static Brush DimBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x40, 0x40, 0x40) : Color.FromRgb(0xB0, 0xB0, 0xB0));
-        private static Brush MouseBodyBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x50, 0x50, 0x50) : Color.FromRgb(0xC0, 0xC0, 0xC0));
-        private static Brush MouseButtonBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x60, 0x60, 0x60) : Color.FromRgb(0xD0, 0xD0, 0xD0));
-        private static Brush MmbBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x55, 0x55, 0x55) : Color.FromRgb(0xC8, 0xC8, 0xC8));
-        private static Brush ScrollWheelBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x38, 0x38, 0x38) : Color.FromRgb(0xA8, 0xA8, 0xA8));
-        private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
-        private static Brush DotBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x88, 0x88, 0x88) : Color.FromRgb(0x70, 0x70, 0x70));
+        private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
+        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
+        private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
+        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
+        private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
+        private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
+
+        private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
+        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
+        private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
+        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
+        private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
+        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
         private const double MC = 80;
         private const double MoveSize = 55;

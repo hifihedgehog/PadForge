@@ -6,7 +6,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
-    public partial class ProfileDialog : Window
+    public partial class ProfileDialog : Wpf.Ui.Controls.FluentWindow
     {
         public string ProfileName => NameBox.Text?.Trim();
 

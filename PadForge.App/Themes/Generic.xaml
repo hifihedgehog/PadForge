@@ -24,7 +24,7 @@
                             <!-- Active range highlight -->
                             <Border x:Name="PART_RangeHighlight" Height="4"
                                     Canvas.Top="7"
-                                    Background="{DynamicResource SystemControlHighlightAccentBrush}"/>
+                                    Background="{DynamicResource SystemAccentColorSecondaryBrush}"/>
 
                             <!-- Lower thumb -->
                             <Thumb x:Name="PART_LowerThumb" Width="11" Height="18"

@@ -2,8 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ModernWpf.Controls;
-using ModernWpf.Controls.Primitives;
+using NavigationView = Wpf.Ui.Controls.NavigationView;
+using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Resources.Strings;
 
 namespace PadForge.Views
@@ -111,7 +111,8 @@ namespace PadForge.Views
                 Margin = new Thickness(0, 0, 8, 0),
                 MinWidth = 80
             };
-            proceedBtn.SetResourceReference(Control.StyleProperty, "AccentButtonStyle");
+            proceedBtn.SetResourceReference(System.Windows.Controls.Control.ForegroundProperty, "TextOnAccentFillColorPrimaryBrush");
+            proceedBtn.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "AccentFillColorDefaultBrush");
 
             var cancelBtn = new Button
             {
@@ -132,15 +133,23 @@ namespace PadForge.Views
             content.Children.Add(messageText);
             content.Children.Add(buttonPanel);
 
-            var flyout = new Flyout
+            var flyout = new Wpf.Ui.Controls.Flyout
             {
                 Content = content,
-                Placement = FlyoutPlacementMode.Bottom
+                Placement = System.Windows.Controls.Primitives.PlacementMode.Top
             };
+
+            // Add flyout to the visual tree near the target, then open it.
+            var target = cb ?? (FrameworkElement)this;
+            if (target.Parent is System.Windows.Controls.Panel panel)
+            {
+                panel.Children.Add(flyout);
+            }
+            flyout.IsOpen = true;
 
             proceedBtn.Click += (s, ev) =>
             {
-                flyout.Hide();
+                flyout.IsOpen = false;
                 if (cb != null)
                 {
                     // Temporarily unhook to avoid re-entering HidingToggle_Changed.
@@ -154,9 +163,7 @@ namespace PadForge.Views
                 vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
             };
 
-            cancelBtn.Click += (s, ev) => flyout.Hide();
-
-            flyout.ShowAt(cb ?? (FrameworkElement)this);
+            cancelBtn.Click += (s, ev) => flyout.IsOpen = false;
         }
 
         private void SubmitMapping_Click(object sender, RoutedEventArgs e)

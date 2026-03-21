@@ -23,11 +23,11 @@ namespace PadForge.Views
         private PadViewModel _vm;
         private bool _dirty;
         private bool _layoutBuilt;
-        private ModernWpf.ApplicationTheme? _lastTheme;
+        private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
 
         // Colors — pre-cached dark/light variants (zero per-frame allocation)
         private static bool IsDarkTheme =>
-            ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
+            Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
@@ -203,7 +203,7 @@ namespace PadForge.Views
             MidiCanvas.Width = x + Padding;
             MidiCanvas.Height = topY + Padding;
             _layoutBuilt = true;
-            _lastTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             _dirty = true;
         }
 
@@ -476,7 +476,7 @@ namespace PadForge.Views
         private void OnRendering(object sender, EventArgs e)
         {
             // Rebuild on theme change.
-            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) RebuildLayout();
 
             if (!_dirty || _vm == null || !_layoutBuilt) return;

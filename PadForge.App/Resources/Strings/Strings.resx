@@ -289,12 +289,12 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtual MIDI device output (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D controller visualization</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent Design theme for WPF</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 design system for WPF</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm for data binding</value></data>
   <data name="About_License" xml:space="preserve"><value>License</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>This software is licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). 3D controller models adapted from Handheld Companion (CC BY-NC-SA 4.0). 2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT). Original codebase forked from x360ce (MIT). SDL3 is licensed under the zlib License. Windows MIDI Services is licensed under the MIT License. ViGEmBus, vJoy, HelixToolkit, and ModernWpf are licensed under the MIT License.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>This software is licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). 3D controller models adapted from Handheld Companion (CC BY-NC-SA 4.0). 2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT). Original codebase forked from x360ce (MIT). SDL3 is licensed under the zlib License. Windows MIDI Services is licensed under the MIT License. ViGEmBus, vJoy, HelixToolkit, and WPF UI are licensed under the MIT License.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>

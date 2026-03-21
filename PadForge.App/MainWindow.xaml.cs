@@ -61,6 +61,58 @@ namespace PadForge
             NavView.SelectionChanged += NavView_SelectionChanged;
             NavView.ItemInvoked += NavView_ItemInvoked;
 
+            // Fade compact icons in when pane closes, fade out when it opens.
+            NavView.PaneClosed += (_, _) =>
+            {
+                _isCardFading = true;
+                // Clear any leftover animation state from previous cycle.
+                foreach (var mi in NavView.MenuItems)
+                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                    { nvi.BeginAnimation(UIElement.OpacityProperty, null); nvi.Opacity = 0; }
+                UpdateAllControllerCardMode(compact: true);
+
+                // Delay for pane animation, then fade in, then unlock.
+                var delayTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
+                delayTimer.Tick += (s2, e2) =>
+                {
+                    delayTimer.Stop();
+                    foreach (var mi in NavView.MenuItems)
+                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                            nvi.BeginAnimation(UIElement.OpacityProperty,
+                                new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
+
+                    // Unlock after fade completes.
+                    var unlockTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(220) };
+                    unlockTimer.Tick += (s3, e3) => { unlockTimer.Stop(); _isCardFading = false; };
+                    unlockTimer.Start();
+                };
+                delayTimer.Start();
+            };
+            NavView.PaneOpened += (_, _) =>
+            {
+                _isCardFading = true;
+                foreach (var mi in NavView.MenuItems)
+                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                    { nvi.BeginAnimation(UIElement.OpacityProperty, null); nvi.Opacity = 0; }
+                UpdateAllControllerCardMode(compact: false);
+
+                var delayTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
+                delayTimer.Tick += (s2, e2) =>
+                {
+                    delayTimer.Stop();
+                    foreach (var mi in NavView.MenuItems)
+                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                            nvi.BeginAnimation(UIElement.OpacityProperty,
+                                new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
+
+                    var unlockTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(220) };
+                    unlockTimer.Tick += (s3, e3) => { unlockTimer.Stop(); _isCardFading = false; };
+                    unlockTimer.Start();
+                };
+                delayTimer.Start();
+            };
+
+
 
             // Fallback click handler — WPF UI's SelectionChanged may not fire
             // without TargetPageType navigation. Catch clicks directly.
@@ -1083,7 +1135,7 @@ namespace PadForge
         /// </summary>
         private void RebuildControllerSection()
         {
-            if (_rebuildingControllerSection || _isDraggingCard)
+            if (_rebuildingControllerSection || _isDraggingCard || _isCardFading)
                 return;
 
             // Save current selection tag before tearing down items.
@@ -1502,8 +1554,165 @@ namespace PadForge
 
             menuItem.Content = card;
 
-            // No left gutter icon — the power button inside the card shows state.
-            menuItem.Icon = null;
+            // Never touch Icon here — PaneClosed/PaneOpened handlers manage it exclusively.
+            // Re-rendering the bitmap on every 30Hz update causes visual flashing.
+        }
+
+        /// <summary>
+        /// Swaps all controller NavigationViewItem cards between full and compact mode.
+        /// Compact mode shows a mini card: gamepad icon + slot number on top row,
+        /// type icon + subgroup number on bottom row.
+        /// </summary>
+        private void UpdateAllControllerCardMode(bool compact)
+        {
+            var navItems = _viewModel.NavControllerItems;
+            if (navItems == null) return;
+
+            foreach (var navItem in navItems)
+            {
+                foreach (var mi in NavView.MenuItems)
+                {
+                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == navItem.Tag)
+                    {
+                        if (compact)
+                        {
+                            // Render compact card to bitmap and set as Icon
+                            // (WPF UI only shows Icon in compact mode, not Content).
+                            nvi.Icon = RenderCompactCardIcon(navItem);
+                        }
+                        else
+                        {
+                            nvi.Icon = null;
+                            UpdateControllerNavItemContent(nvi, navItem);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Renders a compact card visual to a BitmapSource and wraps it in an ImageIcon
+        /// so it can be displayed in NavigationViewItem.Icon (which only accepts IconElement).
+        /// </summary>
+        private Wpf.Ui.Controls.ImageIcon RenderCompactCardIcon(NavControllerItemViewModel navItem)
+        {
+            var visual = BuildCompactCard(navItem);
+
+            // Measure and arrange the visual so it has a size.
+            visual.Measure(new Size(40, 40));
+            visual.Arrange(new Rect(0, 0, 40, 40));
+            visual.UpdateLayout();
+
+            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(this);
+            int pw = (int)Math.Ceiling(40 * dpi.DpiScaleX);
+            int ph = (int)Math.Ceiling(40 * dpi.DpiScaleY);
+
+            var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                pw, ph, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
+                System.Windows.Media.PixelFormats.Pbgra32);
+            rtb.Render(visual);
+
+            var img = new System.Windows.Controls.Image
+            {
+                Source = rtb,
+                Width = 36,
+                Height = 36
+            };
+
+            return new Wpf.Ui.Controls.ImageIcon { Source = rtb };
+        }
+
+        /// <summary>
+        /// Builds a compact mini card for collapsed sidebar: two rows stacked vertically.
+        /// Row 1: Gamepad icon + slot number. Row 2: Type icon + subgroup number.
+        /// </summary>
+        private System.Windows.Controls.Border BuildCompactCard(NavControllerItemViewModel navItem)
+        {
+            var mdl2 = new System.Windows.Media.FontFamily("Segoe MDL2 Assets");
+            bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            var fgBrush = new System.Windows.Media.SolidColorBrush(
+                isDark ? System.Windows.Media.Colors.White : System.Windows.Media.Colors.Black);
+            fgBrush.Freeze();
+
+            // Row 1: Gamepad icon + slot number
+            var row1 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
+            row1.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = "\uE7FC",
+                FontFamily = mdl2,
+                FontSize = 11,
+                Foreground = fgBrush,
+                VerticalAlignment = VerticalAlignment.Center
+            });
+            row1.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = navItem.SlotNumber.ToString(),
+                FontSize = 10,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = fgBrush,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(3, 0, 0, 0)
+            });
+
+            // Row 2: Type icon + subgroup number
+            var row2 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
+
+            string iconKey = navItem.IconKey;
+            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon" || iconKey == "VJoyControllerIcon")
+            {
+                string svgPath = iconKey == "XboxControllerIcon" ? XboxSvgPath
+                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath : VJoySvgPath;
+                var path = new System.Windows.Shapes.Path
+                {
+                    Data = System.Windows.Media.Geometry.Parse(svgPath),
+                    Width = 10, Height = 10,
+                    Stretch = System.Windows.Media.Stretch.Uniform,
+                    Fill = fgBrush
+                };
+                row2.Children.Add(path);
+            }
+            else
+            {
+                string glyph = iconKey == "MidiControllerIcon" ? "\uE8D6" : "\uE961";
+                row2.Children.Add(new System.Windows.Controls.TextBlock
+                {
+                    Text = glyph,
+                    FontFamily = mdl2,
+                    FontSize = 10,
+                    Foreground = fgBrush,
+                    VerticalAlignment = VerticalAlignment.Center
+                });
+            }
+
+            row2.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = navItem.InstanceLabel ?? "",
+                FontSize = 9,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = fgBrush,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4, 0, 0, 0)
+            });
+
+            var stack = new System.Windows.Controls.StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+            stack.Children.Add(row1);
+            stack.Children.Add(row2);
+
+            var card = new System.Windows.Controls.Border
+            {
+                Child = stack,
+                CornerRadius = new CornerRadius(4),
+                Padding = new Thickness(2),
+                Tag = navItem.PadIndex,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            return card;
         }
 
         /// <summary>Handles sidebar power toggle button click.</summary>
@@ -1617,6 +1826,7 @@ namespace PadForge
         // ─────────────────────────────────────────────
 
         private bool _isDraggingCard;
+        private bool _isCardFading;
         private int _dragSourcePadIndex;
         private int _dragSourceVisualPos;
         private int _dragDropIndex;

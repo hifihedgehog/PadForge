@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows;
-using ModernWpf;
+using Wpf.Ui.Appearance;
 using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 
@@ -80,8 +80,8 @@ namespace PadForge
                 return;
             }
 
-            // Set the application theme to follow system settings.
-            ThemeManager.Current.ApplicationTheme = null; // null = follow system
+            // Apply system theme (follows OS light/dark setting).
+            ApplicationThemeManager.ApplySystemTheme();
 
             // Wire up global unhandled exception handlers for diagnostics.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

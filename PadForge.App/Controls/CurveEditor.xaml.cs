@@ -96,8 +96,8 @@ namespace PadForge.Controls
             var gridBrush = TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
                 ?? Application.Current.TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
                 ?? new SolidColorBrush(Color.FromRgb(0x5C, 0x5C, 0x5C));
-            var accentBrush = TryFindResource("SystemControlHighlightAccentBrush") as Brush
-                ?? Application.Current.TryFindResource("SystemControlHighlightAccentBrush") as Brush
+            var accentBrush = TryFindResource("SystemAccentColorSecondaryBrush") as Brush
+                ?? Application.Current.TryFindResource("SystemAccentColorSecondaryBrush") as Brush
                 ?? new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD7));
             _gridBrush = gridBrush;
             _accentBrush = accentBrush;

@@ -6,6 +6,7 @@
         xmlns:views="clr-namespace:PadForge.Views"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         ui:WindowHelper.UseModernWindowStyle="True"
+        ui:TitleBar.ExtendViewIntoTitleBar="True"
         Title="{Binding Title}"
         Height="720" Width="1100"
         MinHeight="600" MinWidth="900"
@@ -13,20 +14,55 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- App branding bar — hamburger on left, PadForge icon + name on right -->
+        <Grid x:Name="AppBrandingBar" Grid.Row="0" Height="48" Panel.ZIndex="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="PaneToggleBtn" Grid.Column="0" Click="PaneToggleBtn_Click"
+                    Width="48" Height="48"
+                    Background="Transparent"
+                    BorderThickness="0" Padding="0"
+                    WindowChrome.IsHitTestVisibleInChrome="True"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+            </Button>
+            <Border x:Name="AppBrandingBorder" Grid.Column="1" Padding="12,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/PadForge-icon.png" Width="20" Height="20"
+                           RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
+                    <TextBlock Text="PadForge" FontSize="12"
+                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
         <!-- ═══════════════════════════════════════════
              Navigation View (left pane)
              ═══════════════════════════════════════════ -->
-        <ui:NavigationView x:Name="NavView"
+        <ui:NavigationView x:Name="NavView" Grid.Row="1"
                            PaneDisplayMode="Left"
                            IsBackButtonVisible="Collapsed"
+                           IsPaneToggleButtonVisible="False"
                            IsSettingsVisible="False"
+                           AlwaysShowHeader="False"
+                           CompactPaneLength="48"
                            SelectionChanged="NavView_SelectionChanged"
-                           PaneTitle="PadForge"
+                           PaneTitle=""
                            OpenPaneLength="253">
+
+            <ui:NavigationView.Resources>
+                <Style TargetType="ui:NavigationViewItem">
+                    <Setter Property="Height" Value="48"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </ui:NavigationView.Resources>
 
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
@@ -45,7 +81,7 @@
             </ui:NavigationView.FooterMenuItems>
 
             <!-- Content frame swapped by navigation -->
-            <Grid>
+            <Grid Margin="0,12,0,0">
                 <views:DashboardPage x:Name="DashboardPageView" Visibility="Visible"/>
                 <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                 <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>
@@ -59,7 +95,7 @@
         <!-- ═══════════════════════════════════════════
              Status Bar
              ═══════════════════════════════════════════ -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
                 Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
                 Padding="12,4">
             <Grid>
@@ -106,7 +142,7 @@
              Driver operation overlay (blocks UI during install/uninstall)
              ═══════════════════════════════════════════ -->
         <Grid x:Name="DriverOverlay"
-              Grid.RowSpan="2"
+              Grid.RowSpan="3"
               Visibility="Collapsed"
               Panel.ZIndex="1000">
             <Border Background="#80000000"/>
@@ -133,7 +169,7 @@
              Shutdown overlay (shown while disposing controllers on close)
              ═══════════════════════════════════════════ -->
         <Grid x:Name="ShutdownOverlay"
-              Grid.RowSpan="2"
+              Grid.RowSpan="3"
               Visibility="Collapsed"
               Panel.ZIndex="1001">
             <Border Background="#CC000000"/>

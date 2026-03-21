@@ -19,13 +19,24 @@ namespace PadForge.Views
         private Polygon _scrollUpArrow, _scrollDownArrow;
         private Ellipse _movementDot, _moveCircle;
 
-        private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x40, 0x40, 0x40));
-        private static readonly Brush MouseBodyBrush = new SolidColorBrush(Color.FromRgb(0x50, 0x50, 0x50));
-        private static readonly Brush MouseButtonBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
-        private static readonly Brush MmbBrush = new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
-        private static readonly Brush ScrollWheelBrush = new SolidColorBrush(Color.FromRgb(0x38, 0x38, 0x38));
-        private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
-        private static readonly Brush DotBrush = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
+        private static bool IsDarkTheme =>
+            ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
+        private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
+
+        private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
+        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
+        private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
+        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
+        private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
+        private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
+
+        private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
+        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
+        private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
+        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
+        private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
+        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
         private const double MC = 80;
         private const double MoveSize = 55;
@@ -34,6 +45,8 @@ namespace PadForge.Views
 
         private Rectangle _x1Rect, _x2Rect;
         private bool _built;
+
+        private ModernWpf.ApplicationTheme? _lastTheme;
 
         public MousePreviewControl()
         {
@@ -44,8 +57,10 @@ namespace PadForge.Views
 
         private void BuildMouse()
         {
-            if (_built) return;
+            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            if (_built && _lastTheme == currentTheme) return;
             _built = true;
+            _lastTheme = currentTheme;
             MouseCanvas.Children.Clear();
 
             const double mW = 100;
@@ -177,6 +192,9 @@ namespace PadForge.Views
         private void OnRendering(object sender, EventArgs e)
         {
             if (!_built) return;
+            // Rebuild on theme change.
+            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            if (_lastTheme != currentTheme) BuildMouse();
             var vm = DataContext as DevicesViewModel;
             if (vm == null || !vm.IsMouseDevice) return;
 

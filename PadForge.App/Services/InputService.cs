@@ -1627,7 +1627,8 @@ namespace PadForge.Services
                               si.DevObj_Guide }
                     : null;
 
-                for (int i = 0; i < ud.CapButtonCount; i++)
+                int btnCount = Math.Max(ud.CapButtonCount, ud.RawButtonCount);
+                for (int i = 0; i < btnCount; i++)
                 {
                     string display = (gpBtnNames != null && i < gpBtnNames.Length)
                         ? gpBtnNames[i]

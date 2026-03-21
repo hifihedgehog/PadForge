@@ -25,30 +25,31 @@ namespace PadForge.Views
         private bool _layoutBuilt;
         private ModernWpf.ApplicationTheme? _lastTheme;
 
-        // Colors — theme-aware
+        // Colors — pre-cached dark/light variants (zero per-frame allocation)
         private static bool IsDarkTheme =>
             ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
 
-        private static SolidColorBrush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
+        private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
-        private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
-        private static readonly Brush AccentDimBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x50, 0x90));
-        private static Brush DimBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x60, 0x60, 0x60) : Color.FromRgb(0xA0, 0xA0, 0xA0));
-        private static Brush BgBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x2D, 0x2D, 0x2D) : Color.FromRgb(0xE0, 0xE0, 0xE0));
-        private static Brush LabelBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0xBB, 0xBB, 0xBB) : Color.FromRgb(0x50, 0x50, 0x50));
-        private static Brush WhiteKeyBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0xF0, 0xF0, 0xF0) : Color.FromRgb(0xFF, 0xFF, 0xFF));
-        private static readonly Brush WhiteKeyPressedBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
-        private static Brush BlackKeyBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x20, 0x20, 0x20) : Color.FromRgb(0x40, 0x40, 0x40));
-        private static readonly Brush BlackKeyPressedBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x60, 0xB0));
-        private static Brush KeyBorderBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x40, 0x40, 0x40) : Color.FromRgb(0xB0, 0xB0, 0xB0));
-        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
-        private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
+        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        private static readonly Brush AccentDimBrush = F(0x00,0x50,0x90);
+        private static readonly Brush _dimD = F(0x60,0x60,0x60), _dimL = F(0xA0,0xA0,0xA0);
+        private static readonly Brush _bgD = F(0x2D,0x2D,0x2D), _bgL = F(0xE0,0xE0,0xE0);
+        private static readonly Brush _lblD = F(0xBB,0xBB,0xBB), _lblL = F(0x50,0x50,0x50);
+        private static readonly Brush _wkD = F(0xF0,0xF0,0xF0), _wkL = F(0xFF,0xFF,0xFF);
+        private static readonly Brush _bkD = F(0x20,0x20,0x20), _bkL = F(0x40,0x40,0x40);
+        private static readonly Brush _kbD = F(0x40,0x40,0x40), _kbL = F(0xB0,0xB0,0xB0);
+
+        private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
+        private static Brush BgBrush => IsDarkTheme ? _bgD : _bgL;
+        private static Brush LabelBrush => IsDarkTheme ? _lblD : _lblL;
+        private static Brush WhiteKeyBrush => IsDarkTheme ? _wkD : _wkL;
+        private static readonly Brush WhiteKeyPressedBrush = F(0x40,0xA0,0xE0);
+        private static Brush BlackKeyBrush => IsDarkTheme ? _bkD : _bkL;
+        private static readonly Brush BlackKeyPressedBrush = F(0x00,0x60,0xB0);
+        private static Brush KeyBorderBrush => IsDarkTheme ? _kbD : _kbL;
+        private static readonly Brush HoverBrush = F(0x40,0xA0,0xE0);
+        private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
 
         // Layout constants
         private const double WhiteKeyWidth = 28;

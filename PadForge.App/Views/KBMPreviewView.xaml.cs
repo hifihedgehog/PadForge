@@ -36,30 +36,32 @@ namespace PadForge.Views
         private Rectangle _x2Rect;
         private Canvas _moveArrowCanvas;
 
-        // Colors — theme-aware (dark values for dark mode, lighter for light mode)
+        // Colors — pre-cached dark/light variants (zero per-frame allocation)
         private static bool IsDarkTheme =>
             ModernWpf.ThemeManager.Current.ActualApplicationTheme == ModernWpf.ApplicationTheme.Dark;
 
-        private static Brush DimBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x40, 0x40, 0x40) : Color.FromRgb(0xB0, 0xB0, 0xB0));
-        private static Brush MouseBodyBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x50, 0x50, 0x50) : Color.FromRgb(0xC0, 0xC0, 0xC0));
-        private static Brush MouseButtonBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x60, 0x60, 0x60) : Color.FromRgb(0xD0, 0xD0, 0xD0));
-        private static Brush MmbBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x55, 0x55, 0x55) : Color.FromRgb(0xC8, 0xC8, 0xC8));
-        private static Brush ScrollWheelBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x38, 0x38, 0x38) : Color.FromRgb(0xA8, 0xA8, 0xA8));
-        private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
-        private static Brush DotBrush => Frozen(IsDarkTheme
-            ? Color.FromRgb(0x88, 0x88, 0x88) : Color.FromRgb(0x70, 0x70, 0x70));
-        private static Brush KeyNormalBrush => new SolidColorBrush(IsDarkTheme
-            ? Color.FromArgb(0x28, 0x88, 0x88, 0x88) : Color.FromArgb(0x30, 0x40, 0x40, 0x40));
-        private static readonly Brush KeyPressedBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
-        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
-        private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
+        private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
+        private static SolidColorBrush FA(byte a, byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromArgb(a, r, g, b)); br.Freeze(); return br; }
 
-        private static SolidColorBrush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
+        private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
+        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
+        private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
+        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
+        private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
+        private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
+        private static readonly Brush _knD = FA(0x28,0x88,0x88,0x88), _knL = FA(0x30,0x40,0x40,0x40);
+
+        private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
+        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
+        private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
+        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
+        private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
+        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
+        private static Brush KeyNormalBrush => IsDarkTheme ? _knD : _knL;
+        private static readonly Brush KeyPressedBrush = F(0x00,0x78,0xD4);
+        private static readonly Brush HoverBrush = F(0x40,0xA0,0xE0);
+        private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
 
         // Layout constants
         private const double MC = 80;       // mouse center X
@@ -72,6 +74,7 @@ namespace PadForge.Views
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;
         private bool _flashOn;
+        private ModernWpf.ApplicationTheme? _lastTheme;
 
         public KBMPreviewView()
         {
@@ -111,6 +114,7 @@ namespace PadForge.Views
         {
             _layoutBuilt = false;
             _keyWidgets.Clear();
+            _lastTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
             if (_vm == null || _vm.OutputType != VirtualControllerType.KeyboardMouse) return;
             BuildKeyboardCanvas();
             BuildMouseCanvas();
@@ -453,6 +457,10 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Rebuild on theme change.
+            var currentTheme = ModernWpf.ThemeManager.Current.ActualApplicationTheme;
+            if (_layoutBuilt && _lastTheme != currentTheme) { _lastTheme = currentTheme; RebuildLayout(); }
+
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
             var kbm = _vm.KbmOutputSnapshot;

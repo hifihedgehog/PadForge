@@ -17,7 +17,7 @@
         <Style x:Key="DzLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="200"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         </Style>
         <Style x:Key="DzSlider" TargetType="Slider">
             <Setter Property="Minimum" Value="0"/>
@@ -33,7 +33,7 @@
         <Style x:Key="DzValue" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Margin" Value="4,0,0,0"/>
         </Style>
         <Style x:Key="DzValueEdit" TargetType="TextBox">
@@ -55,7 +55,7 @@
         <Style x:Key="DzPercent" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="2,0,0,0"/>
-            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
         <Style x:Key="ResetButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Content" Value="&#xE72C;"/>
@@ -77,7 +77,7 @@
         <Style x:Key="TabStripButton" TargetType="RadioButton">
             <Setter Property="GroupName" Value="PadTab"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -89,7 +89,7 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Bd" Property="BorderBrush"
-                                        Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
+                                        Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
                                 <Setter TargetName="Bd" Property="Background" Value="#10FFFFFF"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -106,7 +106,7 @@
             <Setter Property="Text" Value="&#xE76C;"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="4,0"/>
         </Style>
@@ -127,7 +127,7 @@
              Combines navigation + device selector in one horizontal strip.
              ═══════════════════════════════════════════ -->
         <Border Grid.Row="0" Padding="4,0" Margin="0,0,0,2"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
                 BorderThickness="0,0,0,1">
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
@@ -257,13 +257,13 @@
              ══════════════════════════════════════ -->
         <Border x:Name="VJoyConfigBar" Grid.Row="1" Margin="4,4,4,0"
                 Padding="10,6" CornerRadius="4"
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <!-- Preset selector -->
                 <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,6,0"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" FontSize="13"/>
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
                 <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
                           AutomationProperties.AutomationId="VJoyPresetCombo"
                           SelectionChanged="VJoyPresetCombo_SelectionChanged">
@@ -276,28 +276,28 @@
                 <StackPanel x:Name="VJoyCustomPanel" Orientation="Horizontal" Margin="16,0,0,0"
                             Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_VJoySticks, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyStickCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
                     <TextBlock Text="{Binding Pad_VJoyTriggers, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyTriggerCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
                     <TextBlock Text="{Binding Pad_VJoyPOVs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyPovCountBox"
                              TextAlignment="Center" Text="1"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
                     <TextBlock Text="{Binding Pad_VJoyButtons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyButtonCountBox"
                              TextAlignment="Center" Text="11"
@@ -312,47 +312,47 @@
              ══════════════════════════════════════ -->
         <Border x:Name="MidiConfigBar" Grid.Row="1" Margin="4,4,4,0"
                 Padding="10,6" CornerRadius="4"
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
                 Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            ToolTip="{Binding Pad_MidiChannelTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiChannelBox" Width="40" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            ToolTip="{Binding Pad_MidiCCCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiCcCountBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="6"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            ToolTip="{Binding Pad_MidiStartCCTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiStartCcBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="1"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            ToolTip="{Binding Pad_MidiNoteCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiNoteCountBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="11"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            ToolTip="{Binding Pad_MidiStartNoteTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiStartNoteBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="60"
                          LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
 
                 <TextBlock Text="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            ToolTip="{Binding Pad_MidiVelocityTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBox x:Name="MidiVelocityBox" Width="54" VerticalAlignment="Center"
                          TextAlignment="Center" Text="127"
@@ -421,10 +421,10 @@
                                     ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
                             <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="24" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" CornerRadius="3"
-                                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1">
+                            <Border Height="24" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="3"
+                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
                                 <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding LeftMotorDisplay,
@@ -439,10 +439,10 @@
                                     ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
                             <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="24" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" CornerRadius="3"
-                                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1">
+                            <Border Height="24" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="3"
+                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
                                 <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding RightMotorDisplay,
@@ -507,7 +507,7 @@
                         <StackPanel>
                             <!-- Macro name -->
                             <TextBlock Text="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0,0,0,12"/>
 
@@ -518,7 +518,7 @@
                             <!-- Trigger mode -->
                             <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
@@ -535,7 +535,7 @@
                             <StackPanel Visibility="{Binding IsNotAlwaysMode, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                            Margin="0,0,0,4"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <TextBlock Text="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
@@ -552,7 +552,7 @@
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                                         <TextBlock Text="{Binding RecordingLiveText}"
                                                    VerticalAlignment="Center"
-                                                   Foreground="{DynamicResource SystemControlHighlightAccentBrush}"
+                                                   Foreground="{DynamicResource SystemAccentColorSecondaryBrush}"
                                                    FontWeight="SemiBold"
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </Grid>
@@ -562,7 +562,7 @@
                                 </StackPanel>
                                 <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
                                            FontSize="11" TextWrapping="Wrap"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="0,0,0,4"/>
 
                                 <!-- Axis threshold (visible when an axis trigger was recorded) -->
@@ -599,7 +599,7 @@
                             <!-- Always mode note -->
                             <TextBlock Text="{Binding Macro_AlwaysDesc, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="11" TextWrapping="Wrap"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        Margin="0,0,0,4"
                                        Visibility="{Binding IsNotAlwaysMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
@@ -608,7 +608,7 @@
                             <!-- Action sequence -->
                             <TextBlock Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                        Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <Button Content="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddActionCommand}"
                                         Padding="8,4" Margin="0,0,4,0"/>
@@ -621,7 +621,7 @@
                                      MinHeight="100" MaxHeight="200" Margin="0,0,0,4"/>
 
                             <!-- Action editor (shows when an action is selected) -->
-                            <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                            <Border BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
                                     BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12"
                                     DataContext="{Binding SelectedAction}"
                                     Visibility="{Binding DataContext.SelectedAction,
@@ -629,7 +629,7 @@
                                         Converter={StaticResource NullToCollapsedConverter}}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Macro_EditAction, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"
-                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
 
                                     <!-- Action type -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
@@ -691,7 +691,7 @@
                                         </StackPanel>
                                         <TextBlock Text="{Binding Macro_KeyComboHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
                                     <!-- Duration — for ButtonPress / KeyPress / Delay -->
@@ -790,7 +790,7 @@
                                                  IsChecked="{Binding ShowVolumeOsd, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_SysVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
                                     <!-- Source axis + process name — for AppVolume -->
@@ -869,7 +869,7 @@
                                                  IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_AppVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
                                     <!-- Source axis + sensitivity — for MouseMove / MouseScroll -->
@@ -936,7 +936,7 @@
                                                  IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_MouseMoveHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
                                     <!-- Mouse button — for MouseButtonPress / MouseButtonRelease -->
@@ -960,7 +960,7 @@
 
                             <!-- Repeat settings -->
                             <TextBlock Text="{Binding Macro_Repeat, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
@@ -1012,7 +1012,7 @@
                                 ToolTip="{Binding Pad_MapAllOneByOne, Source={x:Static strings:Strings.Instance}}"/>
                         <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" FontStyle="Italic"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
 
                     <!-- Mapping DataGrid -->
@@ -1040,7 +1040,7 @@
                                     </Setter.Value>
                                 </Setter>
                                 <Setter Property="Foreground"
-                                        Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                        Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsRecording}" Value="True">
                                         <DataTrigger.EnterActions>
@@ -1157,7 +1157,7 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Title}"
                                                    FontSize="14" FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                    VerticalAlignment="Center"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
@@ -1277,9 +1277,9 @@
                                                 <Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" FontSize="11"/>
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_SensitivityX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -1475,14 +1475,14 @@
                                                        Text="{Binding RawDisplay, Mode=OneWay}"
                                                        TextWrapping="Wrap" TextAlignment="Center"
                                                        FontSize="10"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
                                             <!-- Per-axis sensitivity curve editors -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                                                 <!-- X axis curve editor -->
                                                 <StackPanel Margin="0,0,4,0">
                                                     <TextBlock Text="{Binding Pad_XAxis, Source={x:Static strings:Strings.Instance}}" HorizontalAlignment="Center"
-                                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
                                                     <controls:CurveEditor
                                                         CurveString="{Binding SensitivityCurveX, Mode=TwoWay}"
@@ -1495,7 +1495,7 @@
                                                 <!-- Y axis curve editor -->
                                                 <StackPanel Margin="4,0,0,0">
                                                     <TextBlock Text="{Binding Pad_YAxis, Source={x:Static strings:Strings.Instance}}" HorizontalAlignment="Center"
-                                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                FontSize="10" Margin="0,0,0,2"/>
                                                     <controls:CurveEditor
                                                         CurveString="{Binding SensitivityCurveY, Mode=TwoWay}"
@@ -1527,7 +1527,7 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Title}"
                                                    FontSize="14" FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                    VerticalAlignment="Center"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
@@ -1552,14 +1552,14 @@
                                                 <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
-                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                 <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
                                                 <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
-                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                 <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
                                                 <Button Command="{Binding ResetRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRange, Source={x:Static strings:Strings.Instance}}"/>
@@ -1578,9 +1578,9 @@
                                             </StackPanel>
 
                                             <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" FontSize="11"/>
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_Preset_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -1601,7 +1601,7 @@
                                                              Width="200" Height="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
                                                            Margin="8,0,0,0" VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             </StackPanel>
                                         </StackPanel>
 
@@ -1609,7 +1609,7 @@
                                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,-26,0,0">
                                             <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"
                                                        HorizontalAlignment="Center"
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        FontSize="11"/>
                                             <controls:CurveEditor
                                                 CurveString="{Binding SensitivityCurve, Mode=TwoWay}"
@@ -1635,7 +1635,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="14" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        VerticalAlignment="Center"/>
                             <Button Command="{Binding ResetForceAllCommand}" Style="{StaticResource ResetAllButton}"
                                     Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
@@ -1687,7 +1687,7 @@
 
                         <!-- Live motor display -->
                         <TextBlock Text="{Binding Pad_MotorActivity, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,8,0,8"
-                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding LeftMotorDisplay, Mode=OneWay}"
@@ -1706,7 +1706,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="14" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        VerticalAlignment="Center"/>
                             <Button Command="{Binding ResetAudioRumbleAllCommand}" Style="{StaticResource ResetAllButton}"
                                     Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>

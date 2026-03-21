@@ -6,7 +6,8 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ModernWpf.Controls;
+using NavigationView = Wpf.Ui.Controls.NavigationView;
+using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Engine;
 
 namespace PadForge.Views
@@ -230,7 +231,7 @@ namespace PadForge.Views
                 _dragAdorner.UpdatePosition(startPos);
                 _dragAdornerLayer.Add(_dragAdorner);
 
-                var accent = TryFindResource("SystemControlHighlightAccentBrush") as Brush
+                var accent = TryFindResource("SystemAccentColorSecondaryBrush") as Brush
                           ?? Brushes.DodgerBlue;
                 _insertionAdorner = new InsertionLineAdorner(SlotsItemsControl, accent);
                 _dragAdornerLayer.Add(_insertionAdorner);
@@ -536,7 +537,7 @@ namespace PadForge.Views
                 var card = FindChildBorder(container);
                 if (card != null && card.Tag is int idx && idx == padIndex)
                 {
-                    var accent = TryFindResource("SystemControlHighlightAccentBrush") as Brush
+                    var accent = TryFindResource("SystemAccentColorSecondaryBrush") as Brush
                               ?? Brushes.DodgerBlue;
                     card.BorderBrush = accent;
                     _dragSwapHighlight = card;

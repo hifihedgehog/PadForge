@@ -289,8 +289,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>虚拟 MIDI 设备输出（Windows MIDI Services）</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 控制器可视化</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 的 Fluent Design 主题</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 的 Fluent 2 设计系统</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>用于数据绑定的 CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>许可证</value></data>

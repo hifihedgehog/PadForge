@@ -3221,7 +3221,7 @@ namespace PadForge
             if (!string.IsNullOrEmpty(exePath))
                 _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
 
-            // Use WPF ContextMenu for ModernWPF-themed tray menu (no WinForms ContextMenuStrip).
+            // Use WPF ContextMenu for themed tray menu (no WinForms ContextMenuStrip).
             _notifyIcon.MouseClick += (s, e) =>
             {
                 if (e.Button == System.Windows.Forms.MouseButtons.Right)
@@ -3232,13 +3232,13 @@ namespace PadForge
             _notifyIcon.DoubleClick += (s, e) => RestoreFromTray();
         }
 
-        /// <summary>Invisible helper window that keeps ModernWPF styles available for the tray context menu
+        /// <summary>Invisible helper window that keeps WPF UI styles available for the tray context menu
         /// even when the main window is hidden.</summary>
         private Window _trayMenuHost;
 
         private void ShowTrayContextMenu()
         {
-            // Ensure the invisible host window exists so the context menu inherits ModernWPF styles.
+            // Ensure the invisible host window exists so the context menu inherits WPF UI styles.
             if (_trayMenuHost == null)
             {
                 _trayMenuHost = new Window

@@ -168,7 +168,7 @@ namespace PadForge.Models3D
 
         /// <summary>
         /// Creates accent-colored highlight materials for all children.
-        /// Uses the app's accent brush from ModernWpfUI theme resources.
+        /// Uses the app's accent brush from WPF UI theme resources.
         /// </summary>
         protected virtual void DrawAccentHighlights()
         {

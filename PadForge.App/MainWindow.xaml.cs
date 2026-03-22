@@ -83,7 +83,12 @@ namespace PadForge
 
                     // Unlock after fade completes.
                     var unlockTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(220) };
-                    unlockTimer.Tick += (s3, e3) => { unlockTimer.Stop(); _isCardFading = false; };
+                    unlockTimer.Tick += (s3, e3) =>
+                    {
+                        unlockTimer.Stop();
+                        _isCardFading = false;
+                        if (_rebuildPendingAfterFade) { _rebuildPendingAfterFade = false; RebuildControllerSection(); }
+                    };
                     unlockTimer.Start();
                 };
                 delayTimer.Start();
@@ -106,7 +111,12 @@ namespace PadForge
                                 new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
 
                     var unlockTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(220) };
-                    unlockTimer.Tick += (s3, e3) => { unlockTimer.Stop(); _isCardFading = false; };
+                    unlockTimer.Tick += (s3, e3) =>
+                    {
+                        unlockTimer.Stop();
+                        _isCardFading = false;
+                        if (_rebuildPendingAfterFade) { _rebuildPendingAfterFade = false; RebuildControllerSection(); }
+                    };
                     unlockTimer.Start();
                 };
                 delayTimer.Start();
@@ -1135,8 +1145,13 @@ namespace PadForge
         /// </summary>
         private void RebuildControllerSection()
         {
-            if (_rebuildingControllerSection || _isDraggingCard || _isCardFading)
+            if (_rebuildingControllerSection || _isDraggingCard)
                 return;
+            if (_isCardFading)
+            {
+                _rebuildPendingAfterFade = true;
+                return;
+            }
 
             // Save current selection tag before tearing down items.
             string selectedTag = (NavView.SelectedItem as NavigationViewItem)?.Tag?.ToString();
@@ -1231,6 +1246,8 @@ namespace PadForge
             var menuItem = new NavigationViewItem { Tag = navItem.Tag };
             System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
+            if (!NavView.IsPaneOpen)
+                menuItem.Icon = RenderCompactCardIcon(navItem);
             return menuItem;
         }
 
@@ -1827,6 +1844,7 @@ namespace PadForge
 
         private bool _isDraggingCard;
         private bool _isCardFading;
+        private bool _rebuildPendingAfterFade;
         private int _dragSourcePadIndex;
         private int _dragSourceVisualPos;
         private int _dragDropIndex;

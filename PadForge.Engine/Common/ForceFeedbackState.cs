@@ -133,7 +133,7 @@ namespace PadForge.Engine
         /// <param name="ud">The user device data model (for device reference).</param>
         /// <param name="device">The SDL device wrapper to rumble.</param>
         /// <param name="ps">PadSetting containing force feedback configuration.</param>
-        /// <param name="v">Vibration values from the XInput state (LeftMotorSpeed, RightMotorSpeed).</param>
+        /// <param name="v">Vibration values from the virtual controller callback (LeftMotorSpeed, RightMotorSpeed).</param>
         public void SetDeviceForces(UserDevice ud, ISdlInputDevice device, PadSetting ps, Vibration v)
         {
             if (device == null || (!device.HasRumble && !device.HasHaptic))
@@ -561,7 +561,7 @@ namespace PadForge.Engine
     }
 
     // ─────────────────────────────────────────────────────────────────
-    //  Vibration — lightweight struct matching XInput XINPUT_VIBRATION
+    //  Vibration — force feedback / rumble state for a virtual controller slot
     // ─────────────────────────────────────────────────────────────────
 
     /// <summary>

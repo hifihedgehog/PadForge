@@ -16,13 +16,9 @@ namespace PadForge.Engine
         AbsoluteAxis = 2,
         Axis = 3,
         PushButton = 4,
-        ToggleButton = 8,
         Button = 12,
         PointOfViewController = 16,
-        Collection = 64,
-        NoData = 128,
-        ForceFeedbackActuator = 16777216,       // 0x01000000
-        ForceFeedbackEffectTrigger = 33554432    // 0x02000000
+        ForceFeedbackActuator = 16777216        // 0x01000000
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -35,18 +31,6 @@ namespace PadForge.Engine
     public enum ObjectAspect : int
     {
         Position = 0x100
-    }
-
-    // ─────────────────────────────────────────────────────────────────
-    //  EffectParameterFlags
-    //  Force feedback effect parameter flags. Values match the
-    //  original DirectInput constants.
-    // ─────────────────────────────────────────────────────────────────
-
-    [Flags]
-    public enum EffectParameterFlags : int
-    {
-        None = 0
     }
 
     // ─────────────────────────────────────────────────────────────────

@@ -2428,7 +2428,7 @@ namespace PadForge.Services
                         if (ud.IsKeyboard)
                             keys.Add(buttonIndex); // buttonIndex is the VKey code
                         else if (ud.IsMouse)
-                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=R, 2=M, etc.
+                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=M, 2=R, 3=X1, 4=X2
                     }
                 }
             }

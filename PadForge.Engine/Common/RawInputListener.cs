@@ -373,9 +373,8 @@ namespace PadForge.Engine
         public static DeviceInfo[] EnumerateKeyboards()
         {
             var devices = EnumerateDevicesByType(RIM_TYPEKEYBOARD);
-            if (devices.Length < 2) return devices;
 
-            // Prepend the aggregate device.
+            // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
             result[0] = new DeviceInfo
             {
@@ -395,9 +394,8 @@ namespace PadForge.Engine
         public static DeviceInfo[] EnumerateMice()
         {
             var devices = EnumerateDevicesByType(RIM_TYPEMOUSE);
-            if (devices.Length < 2) return devices;
 
-            // Prepend the aggregate device.
+            // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
             result[0] = new DeviceInfo
             {

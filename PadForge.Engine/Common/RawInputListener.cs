@@ -827,7 +827,7 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Copies the keyboard state for a specific device into the destination array.
-        /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to get the OR-merged state of all keyboards.
+        /// Pass <see cref="AggregateKeyboardHandle"/> to get the OR-merged state of all keyboards.
         /// </summary>
         public static void GetKeyboardState(IntPtr hDevice, bool[] dest, int count)
         {
@@ -892,7 +892,7 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Copies mouse button states for a specific device.
-        /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to get OR-merged buttons from all mice.
+        /// Pass <see cref="AggregateMouseHandle"/> to get OR-merged buttons from all mice.
         /// </summary>
         public static void GetMouseButtons(IntPtr hDevice, bool[] dest)
         {

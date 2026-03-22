@@ -73,72 +73,6 @@ namespace SDL3
             SDL_JOYSTICK_TYPE_COUNT = 10
         }
 
-        public enum SDL_PowerState : int
-        {
-            SDL_POWERSTATE_ERROR = -1,
-            SDL_POWERSTATE_UNKNOWN = 0,
-            SDL_POWERSTATE_ON_BATTERY = 1,
-            SDL_POWERSTATE_NO_BATTERY = 2,
-            SDL_POWERSTATE_CHARGING = 3,
-            SDL_POWERSTATE_CHARGED = 4
-        }
-
-        // ─────────────────────────────────────────────
-        //  Structs
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// 16-byte GUID structure used by SDL for device identification.
-        /// Renamed from SDL_JoystickGUID in SDL2 to SDL_GUID in SDL3.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SDL_GUID
-        {
-            public byte data0;
-            public byte data1;
-            public byte data2;
-            public byte data3;
-            public byte data4;
-            public byte data5;
-            public byte data6;
-            public byte data7;
-            public byte data8;
-            public byte data9;
-            public byte data10;
-            public byte data11;
-            public byte data12;
-            public byte data13;
-            public byte data14;
-            public byte data15;
-
-            /// <summary>
-            /// Converts the SDL GUID to a .NET <see cref="System.Guid"/>.
-            /// </summary>
-            public Guid ToGuid()
-            {
-                return new Guid(
-                    (int)(data0 | (data1 << 8) | (data2 << 16) | (data3 << 24)),
-                    (short)(data4 | (data5 << 8)),
-                    (short)(data6 | (data7 << 8)),
-                    data8, data9, data10, data11,
-                    data12, data13, data14, data15);
-            }
-
-            /// <summary>
-            /// Converts the raw 16 bytes to a byte array.
-            /// </summary>
-            public byte[] ToByteArray()
-            {
-                return new byte[]
-                {
-                    data0, data1, data2, data3,
-                    data4, data5, data6, data7,
-                    data8, data9, data10, data11,
-                    data12, data13, data14, data15
-                };
-            }
-        }
-
         // ─────────────────────────────────────────────
         //  Core lifecycle
         // ─────────────────────────────────────────────
@@ -216,9 +150,6 @@ namespace SDL3
                 SDL_free(ptr);
             }
         }
-
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_GUID SDL_GetJoystickGUIDForID(uint instance_id);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern ushort SDL_GetJoystickVendorForID(uint instance_id);
@@ -461,9 +392,6 @@ namespace SDL3
             return ptr != IntPtr.Zero ? Marshal.PtrToStringUTF8(ptr) : null;
         }
 
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_GUID SDL_GetJoystickGUID(IntPtr joystick);
-
         // ─────────────────────────────────────────────
         //  Properties system (for capability queries)
         // ─────────────────────────────────────────────
@@ -484,9 +412,6 @@ namespace SDL3
         // ─────────────────────────────────────────────
         //  Power info (replaces SDL_JoystickCurrentPowerLevel)
         // ─────────────────────────────────────────────
-
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_PowerState SDL_GetJoystickPowerInfo(IntPtr joystick, out int percent);
 
         // ─────────────────────────────────────────────
         //  Gamepad sensors (gyro / accelerometer)

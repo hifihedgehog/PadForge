@@ -82,38 +82,6 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Creates a new input state by copying from the provided arrays.
-        /// Arrays are copied (not referenced) to ensure snapshot isolation.
-        /// </summary>
-        /// <param name="axes">Source axis values. Copied up to <see cref="MaxAxis"/> elements.</param>
-        /// <param name="sliders">Source slider values. Copied up to <see cref="MaxSliders"/> elements.</param>
-        /// <param name="povs">Source POV values. Copied up to <see cref="MaxPovs"/> elements.</param>
-        /// <param name="buttons">Source button states. Copied up to <see cref="MaxButtons"/> elements.</param>
-        public CustomInputState(int[] axes, int[] sliders, int[] povs, bool[] buttons)
-        {
-            Axis = new int[MaxAxis];
-            Sliders = new int[MaxSliders];
-            Povs = new int[MaxPovs];
-            Buttons = new bool[MaxButtons];
-
-            // Initialize POVs to centered before copy.
-            for (int i = 0; i < Povs.Length; i++)
-                Povs[i] = -1;
-
-            if (axes != null)
-                Array.Copy(axes, 0, Axis, 0, Math.Min(axes.Length, MaxAxis));
-
-            if (sliders != null)
-                Array.Copy(sliders, 0, Sliders, 0, Math.Min(sliders.Length, MaxSliders));
-
-            if (povs != null)
-                Array.Copy(povs, 0, Povs, 0, Math.Min(povs.Length, MaxPovs));
-
-            if (buttons != null)
-                Array.Copy(buttons, 0, Buttons, 0, Math.Min(buttons.Length, MaxButtons));
-        }
-
-        /// <summary>
         /// Creates a deep copy of this input state.
         /// </summary>
         public CustomInputState Clone()

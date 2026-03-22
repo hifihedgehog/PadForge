@@ -1243,7 +1243,11 @@ namespace PadForge
         /// </summary>
         private NavigationViewItem CreateControllerNavItem(NavControllerItemViewModel navItem)
         {
-            var menuItem = new NavigationViewItem { Tag = navItem.Tag };
+            var menuItem = new NavigationViewItem
+            {
+                Tag = navItem.Tag,
+                Margin = new Thickness(-40, 0, 0, 0) // Shift entire item left into icon column
+            };
             System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
             if (!NavView.IsPaneOpen)
@@ -1596,10 +1600,13 @@ namespace PadForge
                             // Render compact card to bitmap and set as Icon
                             // (WPF UI only shows Icon in compact mode, not Content).
                             nvi.Icon = RenderCompactCardIcon(navItem);
+                            // Reset margin for compact mode so the item doesn't extend outside pane.
+                            nvi.Margin = new Thickness(0);
                         }
                         else
                         {
                             nvi.Icon = null;
+                            nvi.Margin = new Thickness(-40, 0, 0, 0);
                             UpdateControllerNavItemContent(nvi, navItem);
                         }
                         break;
@@ -1933,7 +1940,12 @@ namespace PadForge
             var snapshot = CaptureCardVisual(_cardDragSource);
             if (snapshot == null) return;
 
-            _dragAdorner = new CardDragAdorner(NavView, snapshot, _cardDragSource.RenderSize);
+            // Compute mouse offset from card top-left so the adorner doesn't jump.
+            var cardTopLeft = _cardDragSource.TranslatePoint(new Point(0, 0), NavView);
+            var mousePos = System.Windows.Input.Mouse.GetPosition(NavView);
+            var grabOffset = new Point(mousePos.X - cardTopLeft.X, mousePos.Y - cardTopLeft.Y);
+
+            _dragAdorner = new CardDragAdorner(NavView, snapshot, _cardDragSource.RenderSize, grabOffset);
             _dragAdornerLayer.Add(_dragAdorner);
 
             var accentBrush = (System.Windows.Media.Brush)FindResource("SystemAccentColorSecondaryBrush");
@@ -2308,13 +2320,15 @@ namespace PadForge
         {
             private readonly System.Windows.Media.ImageBrush _brush;
             private readonly Size _size;
+            private readonly Point _grabOffset;
             private Point _position;
 
-            public CardDragAdorner(UIElement adornedElement, System.Windows.Media.ImageSource snapshot, Size cardSize)
+            public CardDragAdorner(UIElement adornedElement, System.Windows.Media.ImageSource snapshot, Size cardSize, Point grabOffset)
                 : base(adornedElement)
             {
                 _brush = new System.Windows.Media.ImageBrush(snapshot);
                 _size = cardSize;
+                _grabOffset = grabOffset;
                 IsHitTestVisible = false;
             }
 
@@ -2328,8 +2342,8 @@ namespace PadForge
             {
                 dc.DrawRectangle(_brush, null,
                     new Rect(
-                        _position.X - _size.Width / 2,
-                        _position.Y - _size.Height / 2,
+                        _position.X - _grabOffset.X,
+                        _position.Y - _grabOffset.Y,
                         _size.Width, _size.Height));
             }
         }

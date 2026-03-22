@@ -289,8 +289,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>가상 MIDI 장치 출력 (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 컨트롤러 시각화</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF용 Fluent Design 테마</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF용 Fluent 2 디자인 시스템</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>데이터 바인딩을 위한 CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>라이선스</value></data>

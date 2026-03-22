@@ -82,7 +82,7 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Shows a ModernWpf Flyout with a warning and Proceed/Cancel buttons.
+        /// Shows a WPF UI Flyout with a warning and Proceed/Cancel buttons.
         /// Re-checks the toggle and notifies only if the user clicks Proceed.
         /// </summary>
         private void ShowHidingWarningFlyout(CheckBox cb, ViewModels.DevicesViewModel vm,

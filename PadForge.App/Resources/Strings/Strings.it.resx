@@ -289,8 +289,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Output dispositivo MIDI virtuale (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Visualizzazione 3D del controller</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Tema Fluent Design per WPF</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Sistema di design Fluent 2 per WPF</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm per il data binding</value></data>
   <data name="About_License" xml:space="preserve"><value>Licenza</value></data>

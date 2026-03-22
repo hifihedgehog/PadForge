@@ -2378,15 +2378,6 @@ namespace PadForge
         /// <summary>
         /// Programmatically navigates to the Devices page.
         /// </summary>
-        private void NavigateToDevices()
-        {
-            SelectNavItemByTag("Devices");
-        }
-
-        /// <summary>
-        /// Shows a popup anchored to the given element with Xbox 360 and DS4 controller type buttons.
-        /// Clicking a button creates a new slot of that type and navigates to it.
-        /// </summary>
         /// <summary>
         /// Returns true if at least one virtual controller type has remaining capacity.
         /// </summary>
@@ -2412,6 +2403,10 @@ namespace PadForge
                 || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
         }
 
+        /// <summary>
+        /// Shows a popup anchored to the given element with controller type buttons.
+        /// Clicking a button creates a new slot of that type and navigates to it.
+        /// </summary>
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right)
         {
             // If the popup is already open, close it instead of opening a duplicate.

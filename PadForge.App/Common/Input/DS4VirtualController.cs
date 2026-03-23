@@ -183,10 +183,10 @@ namespace PadForge.Common.Input
                     _controller.SubmitRawReport(buf);
                     return;
                 }
-                catch (ArgumentOutOfRangeException)
+                catch (Exception)
                 {
-                    // Buffer size doesn't match DS4_REPORT_EX — disable raw reports
-                    // and fall through to per-field API for this and all future calls.
+                    // SubmitRawReport failed (buffer size mismatch, driver error, etc.)
+                    // Disable raw reports and fall through to per-field API.
                     _rawReportWorks = false;
                     _controller.AutoSubmitReport = true;
                 }

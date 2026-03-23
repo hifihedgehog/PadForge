@@ -60,7 +60,7 @@ namespace PadForge.Common.Input
                 }
                 catch { }
             }
-            // None worked — disable raw reports.
+            // None worked — disable raw reports, fall back to per-field API.
             _rawReportWorks = false;
             _controller.AutoSubmitReport = true;
             return 0;

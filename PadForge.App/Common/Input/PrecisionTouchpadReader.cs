@@ -274,7 +274,12 @@ namespace PadForge.Common.Input
             public string Name = "Precision Touchpad";
             public string DevicePath = "";
             public ushort VendorId, ProductId;
+            /// <summary>Timestamp of last WM_INPUT report for staleness detection.</summary>
+            public long LastReportTicks;
         }
+
+        /// <summary>Staleness threshold: clear contacts if no report in 100ms.</summary>
+        private const long StaleThresholdTicks = 100 * TimeSpan.TicksPerMillisecond;
 
         // ─────────────────────────────────────────────
         //  Public API
@@ -332,16 +337,29 @@ namespace PadForge.Common.Input
                 if (!_deviceStates.TryGetValue(hDevice, out var ds))
                     return;
 
-                state.TouchpadFingers[0] = ds.X0;
-                state.TouchpadFingers[1] = ds.Y0;
-                state.TouchpadFingers[2] = ds.Down0 ? 1f : 0f;
-                state.TouchpadDown[0] = ds.Down0;
-
-                state.TouchpadFingers[3] = ds.X1;
-                state.TouchpadFingers[4] = ds.Y1;
-                state.TouchpadFingers[5] = ds.Down1 ? 1f : 0f;
-                state.TouchpadDown[1] = ds.Down1;
+                ReadDeviceState(ds, state);
             }
+        }
+
+        private void ReadDeviceState(PtpDeviceState ds, Engine.CustomInputState state)
+        {
+            // Clear contacts if no report received within staleness threshold.
+            long now = DateTime.UtcNow.Ticks;
+            if (ds.LastReportTicks > 0 && (now - ds.LastReportTicks) > StaleThresholdTicks)
+            {
+                ds.Down0 = false;
+                ds.Down1 = false;
+            }
+
+            state.TouchpadFingers[0] = ds.X0;
+            state.TouchpadFingers[1] = ds.Y0;
+            state.TouchpadFingers[2] = ds.Down0 ? 1f : 0f;
+            state.TouchpadDown[0] = ds.Down0;
+
+            state.TouchpadFingers[3] = ds.X1;
+            state.TouchpadFingers[4] = ds.Y1;
+            state.TouchpadFingers[5] = ds.Down1 ? 1f : 0f;
+            state.TouchpadDown[1] = ds.Down1;
         }
 
         /// <summary>
@@ -353,14 +371,7 @@ namespace PadForge.Common.Input
             {
                 foreach (var ds in _deviceStates.Values)
                 {
-                    state.TouchpadFingers[0] = ds.X0;
-                    state.TouchpadFingers[1] = ds.Y0;
-                    state.TouchpadFingers[2] = ds.Down0 ? 1f : 0f;
-                    state.TouchpadDown[0] = ds.Down0;
-                    state.TouchpadFingers[3] = ds.X1;
-                    state.TouchpadFingers[4] = ds.Y1;
-                    state.TouchpadFingers[5] = ds.Down1 ? 1f : 0f;
-                    state.TouchpadDown[1] = ds.Down1;
+                    ReadDeviceState(ds, state);
                     break;
                 }
             }
@@ -634,13 +645,13 @@ namespace PadForge.Common.Input
                 if (!_deviceStates.TryGetValue(hDevice, out var ds))
                 {
                     ds = new PtpDeviceState();
-                    // Populate device info on first contact.
                     PopulateDeviceInfo(hDevice, ds);
                     _deviceStates[hDevice] = ds;
                 }
 
+                ds.LastReportTicks = DateTime.UtcNow.Ticks;
+
                 // Always clear contact state first, then set from parsed data.
-                // This ensures fingers go to false when contactCount drops.
                 ds.Down0 = false;
                 ds.Down1 = false;
 

@@ -1456,30 +1456,63 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Maps touchpad input from CustomInputState to a TouchpadState.
-        /// Finger position/contact data passes through from SDL3 touchpad arrays.
-        /// TouchpadClick uses the standard button mapping pipeline so any input
-        /// source (button, axis, POV) can drive the virtual DS4 touchpad click.
+        ///
+        /// Two modes per finger:
+        /// 1. SDL touchpad passthrough — descriptor starts with "Touchpad" → direct from
+        ///    CustomInputState.TouchpadFingers[]/TouchpadDown[] (DS4/DualSense/Steam Deck)
+        /// 2. Stick-to-touchpad — descriptor is a standard axis (e.g. "Axis 0") → stick
+        ///    deflection drives a virtual cursor via velocity accumulation
+        ///
+        /// TouchpadClick and TouchpadContact always use the standard button pipeline.
         /// </summary>
         private static TouchpadState MapInputToTouchpad(CustomInputState state, PadSetting ps, TouchpadState prev)
         {
             var tp = new TouchpadState { PacketCounter = prev.PacketCounter };
 
-            // Finger position/contact: direct passthrough from SDL touchpad data.
-            if (!string.IsNullOrEmpty(ps.TouchpadX1) || !string.IsNullOrEmpty(ps.TouchpadContact1))
+            // ── Finger 0 ──
+            bool isTouchpadSource0 = IsTouchpadDescriptor(ps.TouchpadX1);
+            if (isTouchpadSource0)
             {
+                // Direct passthrough from SDL touchpad data
                 tp.X0 = state.TouchpadFingers[0];
                 tp.Y0 = state.TouchpadFingers[1];
                 tp.Down0 = state.TouchpadDown[0];
             }
-            if (!string.IsNullOrEmpty(ps.TouchpadX2) || !string.IsNullOrEmpty(ps.TouchpadContact2))
+            else if (!string.IsNullOrEmpty(ps.TouchpadX1))
+            {
+                // Stick-to-touchpad: read axis value and accumulate as cursor velocity
+                float stickX = MapToThumbAxisWithNeg(state, ps.TouchpadX1, null) / 32768f;
+                float stickY = MapToThumbAxisWithNeg(state, ps.TouchpadY1, null) / 32768f;
+                const float sensitivity = 0.015f;
+                tp.X0 = Math.Clamp(prev.X0 + stickX * sensitivity, 0f, 1f);
+                tp.Y0 = Math.Clamp(prev.Y0 + stickY * sensitivity, 0f, 1f);
+                // Contact driven by mapping descriptor or auto-true when stick is deflected
+                tp.Down0 = !string.IsNullOrEmpty(ps.TouchpadContact1)
+                    ? MapToButtonPressed(state, ps.TouchpadContact1)
+                    : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
+            }
+
+            // ── Finger 1 ──
+            bool isTouchpadSource1 = IsTouchpadDescriptor(ps.TouchpadX2);
+            if (isTouchpadSource1)
             {
                 tp.X1 = state.TouchpadFingers[3];
                 tp.Y1 = state.TouchpadFingers[4];
                 tp.Down1 = state.TouchpadDown[1];
             }
+            else if (!string.IsNullOrEmpty(ps.TouchpadX2))
+            {
+                float stickX = MapToThumbAxisWithNeg(state, ps.TouchpadX2, null) / 32768f;
+                float stickY = MapToThumbAxisWithNeg(state, ps.TouchpadY2, null) / 32768f;
+                const float sensitivity = 0.015f;
+                tp.X1 = Math.Clamp(prev.X1 + stickX * sensitivity, 0f, 1f);
+                tp.Y1 = Math.Clamp(prev.Y1 + stickY * sensitivity, 0f, 1f);
+                tp.Down1 = !string.IsNullOrEmpty(ps.TouchpadContact2)
+                    ? MapToButtonPressed(state, ps.TouchpadContact2)
+                    : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
+            }
 
-            // Touchpad click: resolved through standard mapping pipeline so ANY
-            // input source (button, axis, POV) can drive it — not just physical touchpad.
+            // ── Touchpad click ──
             tp.Click = MapToButtonPressed(state, ps.TouchpadClick);
 
             // Increment packet counter on finger state transitions.
@@ -1488,5 +1521,10 @@ namespace PadForge.Common.Input
 
             return tp;
         }
+
+        /// <summary>Returns true if the descriptor is a touchpad-specific source (not a generic axis).</summary>
+        private static bool IsTouchpadDescriptor(string descriptor) =>
+            !string.IsNullOrEmpty(descriptor) &&
+            descriptor.StartsWith("Touchpad", StringComparison.Ordinal);
     }
 }

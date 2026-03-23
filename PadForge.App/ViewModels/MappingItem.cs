@@ -444,6 +444,12 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
+        /// Whether this mapping row supports recording (button press detection).
+        /// Touchpad rows can't be isolated by touch (X and Y fire simultaneously).
+        /// </summary>
+        public bool IsRecordable => Category != MappingCategory.Touchpad;
+
+        /// <summary>
         /// Rebuilds the source descriptor when inversion or half-axis options change.
         /// Adds/removes the "I" and "H" prefixes.
         /// </summary>
@@ -547,7 +553,8 @@ namespace PadForge.ViewModels
         DPad,
         Triggers,
         LeftStick,
-        RightStick
+        RightStick,
+        Touchpad
     }
 
     /// <summary>

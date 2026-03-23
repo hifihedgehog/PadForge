@@ -493,6 +493,18 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+
+            // Touchpad (DS4 only)
+            if (isDS4)
+            {
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX1, "TouchpadX1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY1, "TouchpadY1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX2, "TouchpadX2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY2, "TouchpadY2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact1, "TouchpadContact1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact2, "TouchpadContact2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
+            }
         }
 
         /// <summary>
@@ -1407,6 +1419,14 @@ namespace PadForge.ViewModels
             }
 
             var mapping = Mappings[MapAllCurrentIndex];
+
+            // Skip non-recordable categories (touchpad inputs can't be isolated by touch).
+            if (!mapping.IsRecordable)
+            {
+                MapAllCurrentIndex++;
+                AdvanceMapAll();
+                return;
+            }
 
             // Switch to Controller tab (index 0) for stick axes so the 3D arrow is visible.
             // The 3D model is only on the Controller tab; if Map All was started from the

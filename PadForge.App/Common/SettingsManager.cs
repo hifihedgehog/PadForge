@@ -431,6 +431,18 @@ namespace PadForge.Common.Input
                 ps.RightMotorStrength = "100";
                 ps.ForceSwapMotor = "0";
 
+                // Touchpad auto-mapping for DS4 output + touchpad-capable device.
+                if (outputType == Engine.VirtualControllerType.DualShock4 && ud.HasTouchpad)
+                {
+                    ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
+                    ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
+                    ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
+                    ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
+                    ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
+                    ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+                    ps.TouchpadClick = "Button 20";
+                }
+
                 ps.UpdateChecksum();
                 return ps;
             }

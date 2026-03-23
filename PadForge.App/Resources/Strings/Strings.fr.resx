@@ -814,5 +814,13 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Réinitialiser la coupure basses</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touche du pavé tactile 1</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touche du pavé tactile 2</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic du pavé tactile</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
 
 </root>

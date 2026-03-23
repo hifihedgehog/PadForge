@@ -814,5 +814,13 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>重置低音截止</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>触控板 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>触控板 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>触控板 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>触控板 1 触摸</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>触控板 2 触摸</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>触控板</value></data>
 
 </root>

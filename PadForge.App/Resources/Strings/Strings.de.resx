@@ -306,6 +306,7 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>Zusatzgerät</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Gerät</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Alle Tastaturen (zusammengeführt)</value></data>

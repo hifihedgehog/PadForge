@@ -93,6 +93,7 @@ namespace PadForge.Engine
         public const int Flight = 23;
         public const int FirstPerson = 24;
         public const int Supplemental = 25;
+        public const int Touchpad = 26;
     }
 
     // ─────────────────────────────────────────────────────────────────

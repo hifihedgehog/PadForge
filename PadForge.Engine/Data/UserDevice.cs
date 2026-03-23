@@ -237,6 +237,10 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsKeyboard => CapType == InputDeviceType.Keyboard;
 
+        /// <summary>True if this device is a precision touchpad (CapType == InputDeviceType.Touchpad).</summary>
+        [XmlIgnore]
+        public bool IsTouchpad => CapType == InputDeviceType.Touchpad;
+
         /// <summary>True if the device has at least one force-feedback actuator, SDL rumble, or SDL haptic support.</summary>
         [XmlIgnore]
         public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && (Device.HasRumble || Device.HasHaptic));

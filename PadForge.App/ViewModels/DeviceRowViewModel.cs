@@ -231,6 +231,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hasAccel, value);
         }
 
+        private bool _hasTouchpad;
+
+        /// <summary>Whether the device has a touchpad.</summary>
+        public bool HasTouchpad
+        {
+            get => _hasTouchpad;
+            set => SetProperty(ref _hasTouchpad, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Slot assignment
         // ─────────────────────────────────────────────
@@ -354,7 +363,8 @@ namespace PadForge.ViewModels
             string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
             (_hasRumble ? ", " + Strings.Instance.Devices_Rumble : "") +
             (_hasGyro ? ", " + Strings.Instance.Devices_Gyro : "") +
-            (_hasAccel ? ", " + Strings.Instance.Devices_Accel : "");
+            (_hasAccel ? ", " + Strings.Instance.Devices_Accel : "") +
+            (_hasTouchpad ? ", " + Strings.Instance.Btn_Touchpad : "");
 
         /// <summary>
         /// Refreshes computed display properties.

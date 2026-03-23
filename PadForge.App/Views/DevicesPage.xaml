@@ -336,6 +336,9 @@
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -349,6 +352,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -388,6 +394,9 @@
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -401,6 +410,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -638,6 +650,22 @@
                                                Text="{Binding AccelZ, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
                             </Grid>
+                        </Border>
+
+                        <!-- Touchpad preview -->
+                        <TextBlock Text="{Binding Btn_Touchpad, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Border x:Name="TouchpadPreviewBorder"
+                                Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="#10888888" CornerRadius="6" Margin="0,0,0,8"
+                                Height="100" ClipToBounds="True">
+                            <Canvas>
+                                <Ellipse x:Name="TouchpadDot0" Width="14" Height="14" Fill="#CCFF6600"
+                                         Visibility="{Binding TouchpadDown0, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="TouchpadDot1" Width="14" Height="14" Fill="#CC0066FF"
+                                         Visibility="{Binding TouchpadDown1, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            </Canvas>
                         </Border>
 
                     </StackPanel>

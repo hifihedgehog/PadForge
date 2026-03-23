@@ -13,6 +13,41 @@ namespace PadForge.Views
         public DevicesPage()
         {
             InitializeComponent();
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is ViewModels.DevicesViewModel oldVm)
+                oldVm.PropertyChanged -= OnVmPropertyChanged;
+            if (e.NewValue is ViewModels.DevicesViewModel newVm)
+                newVm.PropertyChanged += OnVmPropertyChanged;
+        }
+
+        private void OnVmPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(ViewModels.DevicesViewModel.TouchpadX0)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY0)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadX1)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY1))
+            {
+                UpdateTouchpadDots();
+            }
+        }
+
+        private void UpdateTouchpadDots()
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            if (TouchpadPreviewBorder.Visibility != Visibility.Visible) return;
+
+            double w = TouchpadPreviewBorder.ActualWidth;
+            double h = TouchpadPreviewBorder.ActualHeight;
+            if (w <= 0 || h <= 0) return;
+
+            Canvas.SetLeft(TouchpadDot0, vm.TouchpadX0 * w - 7);
+            Canvas.SetTop(TouchpadDot0, vm.TouchpadY0 * h - 7);
+            Canvas.SetLeft(TouchpadDot1, vm.TouchpadX1 * w - 7);
+            Canvas.SetTop(TouchpadDot1, vm.TouchpadY1 * h - 7);
         }
 
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)

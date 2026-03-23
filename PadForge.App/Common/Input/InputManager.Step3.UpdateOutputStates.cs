@@ -98,6 +98,13 @@ namespace PadForge.Common.Input
                     {
                         us.KbmRawOutputState = MapInputToKbmRaw(ud.InputState, ps);
                     }
+
+                    // For DS4 slots, produce touchpad state from input device.
+                    if (slot >= 0 && slot < MaxPads &&
+                        SlotControllerTypes[slot] == VirtualControllerType.DualShock4)
+                    {
+                        us.TouchpadOutputState = MapInputToTouchpad(ud.InputState, ps, us.TouchpadOutputState);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1445,6 +1452,39 @@ namespace PadForge.Common.Input
             }
 
             return raw;
+        }
+
+        /// <summary>
+        /// Maps touchpad input from CustomInputState to a TouchpadState.
+        /// Uses PadSetting descriptors to determine which input source feeds each finger.
+        /// When descriptors are empty but the device has touchpad data, passes through directly.
+        /// Tracks finger down/up transitions to increment PacketCounter.
+        /// </summary>
+        private static TouchpadState MapInputToTouchpad(CustomInputState state, PadSetting ps, TouchpadState prev)
+        {
+            var tp = new TouchpadState { PacketCounter = prev.PacketCounter };
+
+            // Direct passthrough from SDL touchpad data when mapped (or always for auto-mapped devices).
+            bool hasTouchpadMapping = !string.IsNullOrEmpty(ps.TouchpadX1) ||
+                                      !string.IsNullOrEmpty(ps.TouchpadContact1);
+
+            if (hasTouchpadMapping)
+            {
+                // Read touchpad data from the input state's touchpad arrays.
+                tp.X0 = state.TouchpadFingers[0];
+                tp.Y0 = state.TouchpadFingers[1];
+                tp.Down0 = state.TouchpadDown[0];
+                tp.X1 = state.TouchpadFingers[3];
+                tp.Y1 = state.TouchpadFingers[4];
+                tp.Down1 = state.TouchpadDown[1];
+                tp.Click = state.TouchpadClick;
+            }
+
+            // Increment packet counter on finger state transitions.
+            if (tp.Down0 != prev.Down0 || tp.Down1 != prev.Down1)
+                tp.PacketCounter++;
+
+            return tp;
         }
     }
 }

@@ -104,6 +104,10 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasAccel { get; set; }
 
+        /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
+        [XmlElement]
+        public bool HasTouchpad { get; set; }
+
         // ─────────────────────────────────────────────────────────────
         //  Serializable metadata
         // ─────────────────────────────────────────────────────────────
@@ -344,6 +348,7 @@ namespace PadForge.Engine.Data
             // Sensor capabilities.
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
+            HasTouchpad = wrapper.HasTouchpad;
 
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;

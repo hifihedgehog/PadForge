@@ -356,7 +356,7 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad";
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary =>

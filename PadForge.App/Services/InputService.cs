@@ -1668,6 +1668,17 @@ namespace PadForge.Services
                 }
             }
 
+            // Touchpad sources (for devices with HasTouchpad or Touchpad type).
+            if (ud.HasTouchpad || ud.IsTouchpad)
+            {
+                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = si.Mapping_TouchpadX1 });
+                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 Y", DisplayName = si.Mapping_TouchpadY1 });
+                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 Down", DisplayName = si.Mapping_TouchpadContact1 });
+                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 X", DisplayName = si.Mapping_TouchpadX2 });
+                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
+                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
+            }
+
             return list.ToArray();
         }
 
@@ -2594,6 +2605,7 @@ namespace PadForge.Services
             row.HasRumble = ud.HasForceFeedback;
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
+            row.HasTouchpad = ud.HasTouchpad;
             row.DevicePath = ud.DevicePath;
 
             // Resolve the HID instance path for display.

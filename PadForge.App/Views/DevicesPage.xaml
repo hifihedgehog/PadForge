@@ -165,7 +165,7 @@
             <Border Grid.Column="1"
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     CornerRadius="8" Padding="14,12">
-                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                               Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel>
 
@@ -185,19 +185,31 @@
                         <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,8"
                                    Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
 
-                        <Border ClipToBounds="True" Margin="0,0,0,1">
-                            <StackPanel Orientation="Horizontal"
-                                        common:MarqueeBehavior.IsEnabled="True">
-                                <TextBlock FontSize="11" Opacity="0.6" Text="{Binding Devices_GUID, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBlock FontSize="11" Opacity="0.6" Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
+                        <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="11" Opacity="0.6"
+                                           common:MarqueeBehavior.IsEnabled="True">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}{1}">
+                                            <Binding Path="Devices_GUID" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="SelectedDevice.InstanceGuid" Mode="OneWay"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </StackPanel>
                         </Border>
-                        <Border ClipToBounds="True" Margin="0,0,0,1"
+                        <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
                                 Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
-                            <StackPanel Orientation="Horizontal"
-                                        common:MarqueeBehavior.IsEnabled="True">
-                                <TextBlock FontSize="11" Opacity="0.6" Text="{Binding Devices_InstancePath, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBlock FontSize="11" Opacity="0.6" Text="{Binding SelectedDevice.HidHideInstancePath, Mode=OneWay}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="11" Opacity="0.6"
+                                           common:MarqueeBehavior.IsEnabled="True">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}{1}">
+                                            <Binding Path="Devices_InstancePath" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="SelectedDevice.HidHideInstancePath" Mode="OneWay"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </StackPanel>
                         </Border>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">

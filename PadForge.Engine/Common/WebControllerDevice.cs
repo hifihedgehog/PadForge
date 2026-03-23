@@ -132,6 +132,36 @@ namespace PadForge.Engine
             }
         }
 
+        /// <summary>Updates a touchpad finger's position and contact state.</summary>
+        public void UpdateTouchpadFinger(int finger, float x, float y, bool down)
+        {
+            lock (_stateLock)
+            {
+                var s = _currentState.Clone();
+                int offset = finger * 3;
+                if (offset + 2 < s.TouchpadFingers.Length)
+                {
+                    s.TouchpadFingers[offset] = x;
+                    s.TouchpadFingers[offset + 1] = y;
+                    s.TouchpadFingers[offset + 2] = down ? 1f : 0f;
+                }
+                if (finger < s.TouchpadDown.Length)
+                    s.TouchpadDown[finger] = down;
+                _currentState = s;
+            }
+        }
+
+        /// <summary>Sets the touchpad click state (momentary).</summary>
+        public void UpdateTouchpadClick(bool clicked)
+        {
+            lock (_stateLock)
+            {
+                var s = _currentState.Clone();
+                s.TouchpadClick = clicked;
+                _currentState = s;
+            }
+        }
+
         /// <summary>Sets the connection state.</summary>
         public void SetConnected(bool connected) => _connected = connected;
 

@@ -396,6 +396,21 @@ namespace PadForge.Services
                     else if (kind == "pov")
                         device.UpdatePov(value);
                 }
+                else if (type == "touchpad")
+                {
+                    if (root.TryGetProperty("click", out _))
+                    {
+                        device.UpdateTouchpadClick(true);
+                    }
+                    else
+                    {
+                        int finger = root.TryGetProperty("finger", out var fp) ? fp.GetInt32() : 0;
+                        float x = root.TryGetProperty("x", out var xp) ? (float)xp.GetDouble() : 0f;
+                        float y = root.TryGetProperty("y", out var yp) ? (float)yp.GetDouble() : 0f;
+                        bool down = root.TryGetProperty("down", out var dp) && dp.GetBoolean();
+                        device.UpdateTouchpadFinger(finger, x, y, down);
+                    }
+                }
             }
             catch
             {

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PadForge - Touchpad</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: none; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: #16213e;
+            font-size: 14px;
+        }
+        .header a { color: #888; text-decoration: none; }
+        .header a:hover { color: #e94560; }
+        .status { color: #888; font-size: 12px; }
+        .status.connected { color: #4ade80; }
+        .touchpad-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+        .touch-zone {
+            flex: 1;
+            position: relative;
+            border: 1px solid #0f3460;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .touch-zone:first-child { border-right: 1px dashed #0f3460; }
+        .touch-zone .label {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            user-select: none;
+            pointer-events: none;
+        }
+        .finger-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.1s;
+        }
+        .finger-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
+        .finger-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">&larr; Back</a>
+        <span>PadForge Touchpad</span>
+        <span id="status" class="status">Connecting...</span>
+    </div>
+    <div class="touchpad-container" id="touchpad">
+        <div class="touch-zone" id="zone0"><span class="label">1</span></div>
+        <div class="touch-zone" id="zone1"><span class="label">2</span></div>
+        <div class="finger-dot f0" id="dot0" style="display:none;"></div>
+        <div class="finger-dot f1" id="dot1" style="display:none;"></div>
+    </div>
+
+    <script>
+    (function() {
+        var ws = null;
+        var statusEl = document.getElementById('status');
+        var touchpad = document.getElementById('touchpad');
+        var dot0 = document.getElementById('dot0');
+        var dot1 = document.getElementById('dot1');
+        var fingers = {}; // touchId -> {finger: 0|1, x, y}
+        var lastTap = 0;
+
+        function connect() {
+            var host = location.hostname + ':' + location.port;
+            ws = new WebSocket('ws://' + host + '/ws?type=touchpad');
+
+            ws.onopen = function() {
+                statusEl.textContent = 'Connected';
+                statusEl.className = 'status connected';
+            };
+            ws.onclose = function() {
+                statusEl.textContent = 'Disconnected';
+                statusEl.className = 'status';
+                setTimeout(connect, 2000);
+            };
+            ws.onerror = function() { ws.close(); };
+        }
+
+        function send(msg) {
+            if (ws && ws.readyState === 1)
+                ws.send(JSON.stringify(msg));
+        }
+
+        function getFingerSlot(touchId, x) {
+            // Assign to finger 0 (left half) or finger 1 (right half)
+            var rect = touchpad.getBoundingClientRect();
+            var midX = rect.left + rect.width / 2;
+            return x < midX ? 0 : 1;
+        }
+
+        function normalize(touch) {
+            var rect = touchpad.getBoundingClientRect();
+            var slot = fingers[touch.identifier] ? fingers[touch.identifier].finger : getFingerSlot(touch.identifier, touch.clientX);
+            var nx, ny;
+
+            if (slot === 0) {
+                // Left half: X normalized 0-0.5 across full touchpad
+                nx = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                ny = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+            } else {
+                // Right half: X normalized 0.5-1.0 across full touchpad
+                nx = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                ny = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+            }
+
+            return { finger: slot, x: nx, y: ny };
+        }
+
+        function updateDot(slot, x, y, show) {
+            var dot = slot === 0 ? dot0 : dot1;
+            if (show) {
+                var rect = touchpad.getBoundingClientRect();
+                dot.style.display = 'block';
+                dot.style.left = (x * rect.width) + 'px';
+                dot.style.top = (y * rect.height + rect.top - touchpad.offsetTop) + 'px';
+            } else {
+                dot.style.display = 'none';
+            }
+        }
+
+        touchpad.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var info = normalize(t);
+                fingers[t.identifier] = info;
+                send({ type: 'touchpad', finger: info.finger, x: info.x, y: info.y, down: true });
+                updateDot(info.finger, info.x, info.y, true);
+            }
+        });
+
+        touchpad.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var info = normalize(t);
+                if (fingers[t.identifier]) info.finger = fingers[t.identifier].finger;
+                fingers[t.identifier] = info;
+                send({ type: 'touchpad', finger: info.finger, x: info.x, y: info.y, down: true });
+                updateDot(info.finger, info.x, info.y, true);
+            }
+        });
+
+        touchpad.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var info = fingers[t.identifier] || { finger: 0 };
+                send({ type: 'touchpad', finger: info.finger, x: 0, y: 0, down: false });
+                updateDot(info.finger, 0, 0, false);
+                delete fingers[t.identifier];
+
+                // Double-tap detection for click
+                var now = Date.now();
+                if (now - lastTap < 300) {
+                    send({ type: 'touchpad', click: true });
+                    lastTap = 0;
+                } else {
+                    lastTap = now;
+                }
+            }
+        });
+
+        touchpad.addEventListener('touchcancel', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var info = fingers[t.identifier] || { finger: 0 };
+                send({ type: 'touchpad', finger: info.finger, x: 0, y: 0, down: false });
+                updateDot(info.finger, 0, 0, false);
+                delete fingers[t.identifier];
+            }
+        });
+
+        connect();
+    })();
+    </script>
+</body>
+</html>

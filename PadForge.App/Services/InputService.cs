@@ -704,9 +704,11 @@ namespace PadForge.Services
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
+                bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse, isTouchpad);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+                devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
             }
 
             devVm.HasRawData = true;
@@ -742,9 +744,11 @@ namespace PadForge.Services
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
+                bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse, isTouchpad2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+                devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
             }
 
             devVm.HasRawData = true;
@@ -804,6 +808,17 @@ namespace PadForge.Services
                 devVm.AccelX = state.Accel[0];
                 devVm.AccelY = state.Accel[1];
                 devVm.AccelZ = state.Accel[2];
+            }
+
+            // Update touchpad finger positions.
+            if (ud.HasTouchpad || ud.IsTouchpad)
+            {
+                devVm.TouchpadX0 = state.TouchpadFingers[0];
+                devVm.TouchpadY0 = state.TouchpadFingers[1];
+                devVm.TouchpadDown0 = state.TouchpadDown[0];
+                devVm.TouchpadX1 = state.TouchpadFingers[3];
+                devVm.TouchpadY1 = state.TouchpadFingers[4];
+                devVm.TouchpadDown1 = state.TouchpadDown[1];
             }
         }
 

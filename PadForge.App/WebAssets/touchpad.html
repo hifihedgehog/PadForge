@@ -28,26 +28,13 @@
         .header a:hover { color: #e94560; }
         .status { color: #888; font-size: 12px; }
         .status.connected { color: #4ade80; }
-        .touchpad-container {
-            flex: 1;
-            display: flex;
-            position: relative;
-        }
-        .touch-zone {
+        .touchpad {
             flex: 1;
             position: relative;
+            background: #16213e;
             border: 1px solid #0f3460;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .touch-zone:first-child { border-right: 1px dashed #0f3460; }
-        .touch-zone .label {
-            color: #333;
-            font-size: 24px;
-            font-weight: 600;
-            user-select: none;
-            pointer-events: none;
+            border-radius: 8px;
+            margin: 8px;
         }
         .finger-dot {
             position: absolute;
@@ -56,7 +43,6 @@
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            transition: opacity 0.1s;
         }
         .finger-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
         .finger-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
@@ -68,9 +54,7 @@
         <span>PadForge Touchpad</span>
         <span id="status" class="status">Connecting...</span>
     </div>
-    <div class="touchpad-container" id="touchpad">
-        <div class="touch-zone" id="zone0"><span class="label">1</span></div>
-        <div class="touch-zone" id="zone1"><span class="label">2</span></div>
+    <div class="touchpad" id="touchpad">
         <div class="finger-dot f0" id="dot0" style="display:none;"></div>
         <div class="finger-dot f1" id="dot1" style="display:none;"></div>
     </div>
@@ -82,13 +66,15 @@
         var touchpad = document.getElementById('touchpad');
         var dot0 = document.getElementById('dot0');
         var dot1 = document.getElementById('dot1');
-        var fingers = {}; // touchId -> {finger: 0|1, x, y}
+
+        // Track active touches: first touch = finger 0, second = finger 1
+        var finger0Id = null;
+        var finger1Id = null;
         var lastTap = 0;
 
         function connect() {
             var host = location.hostname + ':' + location.port;
             ws = new WebSocket('ws://' + host + '/ws?type=touchpad');
-
             ws.onopen = function() {
                 statusEl.textContent = 'Connected';
                 statusEl.className = 'status connected';
@@ -106,38 +92,20 @@
                 ws.send(JSON.stringify(msg));
         }
 
-        function getFingerSlot(touchId, x) {
-            // Assign to finger 0 (left half) or finger 1 (right half)
-            var rect = touchpad.getBoundingClientRect();
-            var midX = rect.left + rect.width / 2;
-            return x < midX ? 0 : 1;
-        }
-
         function normalize(touch) {
             var rect = touchpad.getBoundingClientRect();
-            var slot = fingers[touch.identifier] ? fingers[touch.identifier].finger : getFingerSlot(touch.identifier, touch.clientX);
-            var nx, ny;
-
-            if (slot === 0) {
-                // Left half: X normalized 0-0.5 across full touchpad
-                nx = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-                ny = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
-            } else {
-                // Right half: X normalized 0.5-1.0 across full touchpad
-                nx = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-                ny = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
-            }
-
-            return { finger: slot, x: nx, y: ny };
+            return {
+                x: Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)),
+                y: Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height))
+            };
         }
 
-        function updateDot(slot, x, y, show) {
-            var dot = slot === 0 ? dot0 : dot1;
+        function updateDot(dot, pos, show) {
             if (show) {
                 var rect = touchpad.getBoundingClientRect();
                 dot.style.display = 'block';
-                dot.style.left = (x * rect.width) + 'px';
-                dot.style.top = (y * rect.height + rect.top - touchpad.offsetTop) + 'px';
+                dot.style.left = (pos.x * rect.width) + 'px';
+                dot.style.top = (pos.y * rect.height) + 'px';
             } else {
                 dot.style.display = 'none';
             }
@@ -147,10 +115,21 @@
             e.preventDefault();
             for (var i = 0; i < e.changedTouches.length; i++) {
                 var t = e.changedTouches[i];
-                var info = normalize(t);
-                fingers[t.identifier] = info;
-                send({ type: 'touchpad', finger: info.finger, x: info.x, y: info.y, down: true });
-                updateDot(info.finger, info.x, info.y, true);
+                var pos = normalize(t);
+                var finger;
+
+                if (finger0Id === null) {
+                    finger0Id = t.identifier;
+                    finger = 0;
+                } else if (finger1Id === null) {
+                    finger1Id = t.identifier;
+                    finger = 1;
+                } else {
+                    continue; // ignore 3+ fingers
+                }
+
+                send({ type: 'touchpad', finger: finger, x: pos.x, y: pos.y, down: true });
+                updateDot(finger === 0 ? dot0 : dot1, pos, true);
             }
         });
 
@@ -158,11 +137,15 @@
             e.preventDefault();
             for (var i = 0; i < e.changedTouches.length; i++) {
                 var t = e.changedTouches[i];
-                var info = normalize(t);
-                if (fingers[t.identifier]) info.finger = fingers[t.identifier].finger;
-                fingers[t.identifier] = info;
-                send({ type: 'touchpad', finger: info.finger, x: info.x, y: info.y, down: true });
-                updateDot(info.finger, info.x, info.y, true);
+                var pos = normalize(t);
+                var finger;
+
+                if (t.identifier === finger0Id) finger = 0;
+                else if (t.identifier === finger1Id) finger = 1;
+                else continue;
+
+                send({ type: 'touchpad', finger: finger, x: pos.x, y: pos.y, down: true });
+                updateDot(finger === 0 ? dot0 : dot1, pos, true);
             }
         });
 
@@ -170,18 +153,30 @@
             e.preventDefault();
             for (var i = 0; i < e.changedTouches.length; i++) {
                 var t = e.changedTouches[i];
-                var info = fingers[t.identifier] || { finger: 0 };
-                send({ type: 'touchpad', finger: info.finger, x: 0, y: 0, down: false });
-                updateDot(info.finger, 0, 0, false);
-                delete fingers[t.identifier];
+                var finger;
+
+                if (t.identifier === finger0Id) {
+                    finger = 0;
+                    finger0Id = null;
+                } else if (t.identifier === finger1Id) {
+                    finger = 1;
+                    finger1Id = null;
+                } else {
+                    continue;
+                }
+
+                send({ type: 'touchpad', finger: finger, x: 0, y: 0, down: false });
+                updateDot(finger === 0 ? dot0 : dot1, null, false);
 
                 // Double-tap detection for click
-                var now = Date.now();
-                if (now - lastTap < 300) {
-                    send({ type: 'touchpad', click: true });
-                    lastTap = 0;
-                } else {
-                    lastTap = now;
+                if (finger === 0) {
+                    var now = Date.now();
+                    if (now - lastTap < 300) {
+                        send({ type: 'touchpad', click: true });
+                        lastTap = 0;
+                    } else {
+                        lastTap = now;
+                    }
                 }
             }
         });
@@ -190,10 +185,15 @@
             e.preventDefault();
             for (var i = 0; i < e.changedTouches.length; i++) {
                 var t = e.changedTouches[i];
-                var info = fingers[t.identifier] || { finger: 0 };
-                send({ type: 'touchpad', finger: info.finger, x: 0, y: 0, down: false });
-                updateDot(info.finger, 0, 0, false);
-                delete fingers[t.identifier];
+                if (t.identifier === finger0Id) {
+                    finger0Id = null;
+                    send({ type: 'touchpad', finger: 0, x: 0, y: 0, down: false });
+                    updateDot(dot0, null, false);
+                } else if (t.identifier === finger1Id) {
+                    finger1Id = null;
+                    send({ type: 'touchpad', finger: 1, x: 0, y: 0, down: false });
+                    updateDot(dot1, null, false);
+                }
             }
         });
 

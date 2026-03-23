@@ -54,7 +54,13 @@ namespace PadForge.Common.Input
 
                     CustomInputState newState;
 
-                    if (ud.Device != null)
+                    if (ud.IsTouchpad && _ptpReader != null && _ptpReader.IsAvailable)
+                    {
+                        // Precision Touchpad — read via dedicated PTP reader.
+                        newState = new CustomInputState();
+                        _ptpReader.ReadInto(newState);
+                    }
+                    else if (ud.Device != null)
                     {
                         // SDL device — read via wrapper.
                         newState = ud.Device.GetCurrentState(ud.ForceRawJoystickMode);

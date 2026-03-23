@@ -12,29 +12,13 @@
         WindowStartupLocation="CenterScreen">
 
     <Canvas x:Name="RootCanvas" ClipToBounds="True">
-        <!-- Left half: Finger 0 -->
-        <Border x:Name="LeftZone"
-                Canvas.Left="2" Canvas.Top="2"
-                Width="246" Height="246"
+        <!-- Touchpad surface -->
+        <Border x:Name="Surface"
+                Canvas.Left="0" Canvas.Top="0"
+                Width="500" Height="250"
                 Background="#30FFFFFF"
                 CornerRadius="8"
-                BorderBrush="#60FFFFFF" BorderThickness="1">
-            <TextBlock Text="Finger 1"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Foreground="#80FFFFFF" FontSize="14"/>
-        </Border>
-
-        <!-- Right half: Finger 1 -->
-        <Border x:Name="RightZone"
-                Canvas.Left="252" Canvas.Top="2"
-                Width="246" Height="246"
-                Background="#30FFFFFF"
-                CornerRadius="8"
-                BorderBrush="#60FFFFFF" BorderThickness="1">
-            <TextBlock Text="Finger 2"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Foreground="#80FFFFFF" FontSize="14"/>
-        </Border>
+                BorderBrush="#60FFFFFF" BorderThickness="1"/>
 
         <!-- Finger indicators -->
         <Ellipse x:Name="Finger0Dot" Width="20" Height="20"

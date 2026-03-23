@@ -11,12 +11,11 @@ namespace PadForge.Views
     /// <summary>
     /// Transparent overlay window that captures touch input for DS4 touchpad emulation.
     /// Uses WS_EX_NOACTIVATE to prevent stealing focus from games.
-    /// Left half → finger 0, right half → finger 1.
+    /// First touch = finger 0, second touch = finger 1 (no zones needed).
     /// Double-tap triggers touchpad click.
     /// </summary>
     public partial class TouchpadOverlay : Window
     {
-        // P/Invoke for WS_EX_NOACTIVATE
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_NOACTIVATE = 0x08000000;
         private const int WS_EX_TOOLWINDOW = 0x00000080;
@@ -29,15 +28,13 @@ namespace PadForge.Views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        // Touch tracking
+        // Touch tracking: first touch = finger 0, second = finger 1
         private readonly object _stateLock = new();
         private int? _finger0TouchId;
         private int? _finger1TouchId;
         private float _x0, _y0, _x1, _y1;
         private bool _down0, _down1;
         private bool _click;
-
-        // Double-tap detection
         private DateTime _lastTapTime = DateTime.MinValue;
         private const double DoubleTapMs = 300;
 
@@ -50,12 +47,9 @@ namespace PadForge.Views
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
-
-            // Set WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW to prevent focus steal
             int exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
             SetWindowLong(hwnd, GWL_EXSTYLE, exStyle | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW);
 
-            // Intercept WM_MOUSEACTIVATE
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
         }
@@ -70,37 +64,28 @@ namespace PadForge.Views
             return IntPtr.Zero;
         }
 
-        // ─────────────────────────────────────────────
-        //  Touch event handlers
-        // ─────────────────────────────────────────────
-
         protected override void OnTouchDown(TouchEventArgs e)
         {
             e.Handled = true;
             CaptureTouch(e.TouchDevice);
 
             var pos = e.GetTouchPoint(this).Position;
-            int touchId = e.TouchDevice.Id;
-            bool isLeftHalf = pos.X < ActualWidth / 2;
+            float nx = (float)(pos.X / ActualWidth);
+            float ny = (float)(pos.Y / ActualHeight);
 
             lock (_stateLock)
             {
-                if (isLeftHalf && _finger0TouchId == null)
+                if (_finger0TouchId == null)
                 {
-                    _finger0TouchId = touchId;
-                    _x0 = (float)(pos.X / ActualWidth);
-                    _y0 = (float)(pos.Y / ActualHeight);
-                    _down0 = true;
+                    _finger0TouchId = e.TouchDevice.Id;
+                    _x0 = nx; _y0 = ny; _down0 = true;
                 }
-                else if (!isLeftHalf && _finger1TouchId == null)
+                else if (_finger1TouchId == null)
                 {
-                    _finger1TouchId = touchId;
-                    _x1 = (float)((pos.X - ActualWidth / 2) / (ActualWidth / 2));
-                    _y1 = (float)(pos.Y / ActualHeight);
-                    _down1 = true;
+                    _finger1TouchId = e.TouchDevice.Id;
+                    _x1 = nx; _y1 = ny; _down1 = true;
                 }
             }
-
             UpdateFingerDots();
         }
 
@@ -108,22 +93,16 @@ namespace PadForge.Views
         {
             e.Handled = true;
             var pos = e.GetTouchPoint(this).Position;
-            int touchId = e.TouchDevice.Id;
+            float nx = (float)(pos.X / ActualWidth);
+            float ny = (float)(pos.Y / ActualHeight);
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == touchId)
-                {
-                    _x0 = (float)(pos.X / ActualWidth);
-                    _y0 = (float)(pos.Y / ActualHeight);
-                }
-                else if (_finger1TouchId == touchId)
-                {
-                    _x1 = (float)((pos.X - ActualWidth / 2) / (ActualWidth / 2));
-                    _y1 = (float)(pos.Y / ActualHeight);
-                }
+                if (_finger0TouchId == e.TouchDevice.Id)
+                { _x0 = nx; _y0 = ny; }
+                else if (_finger1TouchId == e.TouchDevice.Id)
+                { _x1 = nx; _y1 = ny; }
             }
-
             UpdateFingerDots();
         }
 
@@ -131,16 +110,14 @@ namespace PadForge.Views
         {
             e.Handled = true;
             ReleaseTouchCapture(e.TouchDevice);
-            int touchId = e.TouchDevice.Id;
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == touchId)
+                if (_finger0TouchId == e.TouchDevice.Id)
                 {
                     _finger0TouchId = null;
                     _down0 = false;
 
-                    // Double-tap detection
                     var now = DateTime.UtcNow;
                     if ((now - _lastTapTime).TotalMilliseconds < DoubleTapMs)
                     {
@@ -153,24 +130,16 @@ namespace PadForge.Views
                         _click = false;
                     }
                 }
-                else if (_finger1TouchId == touchId)
+                else if (_finger1TouchId == e.TouchDevice.Id)
                 {
                     _finger1TouchId = null;
                     _down1 = false;
                 }
             }
-
             UpdateFingerDots();
         }
 
-        // ─────────────────────────────────────────────
-        //  Public API
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Reads the current overlay touchpad state into a TouchpadState struct.
-        /// Called from the polling thread (Step 3 or Step 2).
-        /// </summary>
+        /// <summary>Reads current overlay touchpad state. Called from polling thread.</summary>
         public TouchpadState GetTouchpadState()
         {
             lock (_stateLock)
@@ -185,14 +154,10 @@ namespace PadForge.Views
                     Down1 = _down1,
                     Click = _click
                 };
-                _click = false; // consumed
+                _click = false;
                 return tp;
             }
         }
-
-        // ─────────────────────────────────────────────
-        //  Visual feedback
-        // ─────────────────────────────────────────────
 
         private void UpdateFingerDots()
         {
@@ -214,7 +179,7 @@ namespace PadForge.Views
                     if (_down1)
                     {
                         Finger1Dot.Visibility = Visibility.Visible;
-                        Canvas.SetLeft(Finger1Dot, (_x1 * ActualWidth / 2 + ActualWidth / 2) - 10);
+                        Canvas.SetLeft(Finger1Dot, _x1 * ActualWidth - 10);
                         Canvas.SetTop(Finger1Dot, _y1 * ActualHeight - 10);
                     }
                     else

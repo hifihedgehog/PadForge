@@ -447,7 +447,22 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
-            // Non-gamepad devices are not auto-mapped.
+            // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to DS4.
+            if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
+                outputType == Engine.VirtualControllerType.DualShock4)
+            {
+                ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
+                ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
+                ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
+                ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
+                ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
+                ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+
+                ps.UpdateChecksum();
+                return ps;
+            }
+
+            // Non-gamepad, non-touchpad devices are not auto-mapped.
             // The user must manually record mappings for these devices.
 
             ps.UpdateChecksum();

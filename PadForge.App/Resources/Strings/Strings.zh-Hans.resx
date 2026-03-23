@@ -113,6 +113,7 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 个设备</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>添加控制器</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>删除虚拟控制器</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>全屏</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>显示 PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus 未安装</value></data>

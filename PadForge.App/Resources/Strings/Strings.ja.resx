@@ -113,6 +113,7 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>仮想コントローラーを削除</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>全画面表示</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge を表示</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus が未インストールです</value></data>

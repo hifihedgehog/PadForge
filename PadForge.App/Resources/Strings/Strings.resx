@@ -113,6 +113,7 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> device(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Add Controller</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Delete virtual controller</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>Full Screen</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Show PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtual Controller {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus not installed</value></data>

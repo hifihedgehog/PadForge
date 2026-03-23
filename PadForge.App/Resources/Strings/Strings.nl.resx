@@ -113,6 +113,7 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparaat/apparaten</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller toevoegen</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuele controller verwijderen</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>Volledig scherm</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge tonen</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuele Controller {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus niet geïnstalleerd</value></data>

@@ -293,10 +293,12 @@ namespace PadForge.Services
                     $"[WebServer] WebSocket accepted, state={ws.State}");
 
                 // Create device — reuse pad number for reconnecting clients.
+                var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
+                bool isTouchpadClient = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
                 var padId = _clientPadIds.GetOrAdd(clientId,
                     _ => Interlocked.Increment(ref _nextPadId));
-                var name = $"Web Controller {padId}";
-                var device = new WebControllerDevice(clientId, name);
+                var name = isTouchpadClient ? $"Web Touchpad {padId}" : $"Web Controller {padId}";
+                var device = new WebControllerDevice(clientId, name, isTouchpadClient);
                 device.SetConnected(true);
 
                 var cts = new CancellationTokenSource();

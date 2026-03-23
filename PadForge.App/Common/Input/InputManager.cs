@@ -53,6 +53,9 @@ namespace PadForge.Common.Input
         private bool _sdlInitialized;
         private bool _disposed;
 
+        /// <summary>Precision touchpad reader for laptop PTP input.</summary>
+        private PrecisionTouchpadReader _ptpReader;
+
         /// <summary>Stopwatch for timing enumeration intervals.</summary>
         private readonly Stopwatch _enumerationTimer = new Stopwatch();
 
@@ -291,6 +294,9 @@ namespace PadForge.Common.Input
 
             RawInputListener.Start();
 
+            _ptpReader = new PrecisionTouchpadReader();
+            _ptpReader.Start();
+
             _running = true;
             _enumerationTimer.Restart();
             _frequencyTimer.Restart();
@@ -322,6 +328,10 @@ namespace PadForge.Common.Input
             }
 
             RawInputListener.Stop();
+
+            _ptpReader?.Stop();
+            _ptpReader?.Dispose();
+            _ptpReader = null;
 
             StopAllForceFeedback();
             DestroyAllVirtualControllers(preserveVJoyNodes);

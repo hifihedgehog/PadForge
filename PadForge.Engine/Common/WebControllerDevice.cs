@@ -53,7 +53,7 @@ namespace PadForge.Engine
         public bool HasHaptic => false;
         public bool HasGyro => false;
         public bool HasAccel => false;
-        public bool HasTouchpad => false;
+        public bool HasTouchpad { get; private set; }
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;
@@ -78,19 +78,27 @@ namespace PadForge.Engine
         /// </summary>
         /// <param name="clientId">Unique client identifier (from browser localStorage).</param>
         /// <param name="displayName">Human-readable name (e.g. "Web Controller 1").</param>
-        public WebControllerDevice(string clientId, string displayName)
+        /// <param name="isTouchpad">When true, device reports as touchpad type with HasTouchpad=true.</param>
+        public WebControllerDevice(string clientId, string displayName, bool isTouchpad = false)
         {
             Name = displayName;
             DevicePath = $"web://{clientId}";
             InstanceGuid = BuildGuid(clientId);
             SdlInstanceId = (uint)clientId.GetHashCode();
+            HasTouchpad = isTouchpad;
+            _isTouchpadDevice = isTouchpad;
 
             // Center stick axes at midpoint, triggers at 0 (full off).
             var state = new CustomInputState();
-            for (int i = 0; i < NumGamepadAxes; i++)
-                state.Axis[i] = (i == 2 || i == 5) ? 0 : 32767;
+            if (!isTouchpad)
+            {
+                for (int i = 0; i < NumGamepadAxes; i++)
+                    state.Axis[i] = (i == 2 || i == 5) ? 0 : 32767;
+            }
             Volatile.Write(ref _currentState, state);
         }
+
+        private readonly bool _isTouchpadDevice;
 
         /// <summary>Updates an axis value. Called from WebSocket receive thread.</summary>
         /// <param name="code">Axis index (0=LX, 1=LY, 2=LT, 3=RX, 4=RY, 5=RT).</param>
@@ -214,7 +222,7 @@ namespace PadForge.Engine
             return items;
         }
 
-        public int GetInputDeviceType() => InputDeviceType.Gamepad;
+        public int GetInputDeviceType() => _isTouchpadDevice ? InputDeviceType.Touchpad : InputDeviceType.Gamepad;
 
         public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue)
         {

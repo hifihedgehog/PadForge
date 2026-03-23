@@ -11,13 +11,13 @@
         Width="500" Height="250"
         WindowStartupLocation="CenterScreen">
 
-    <Grid>
+    <Canvas x:Name="RootCanvas" ClipToBounds="True">
         <!-- Left half: Finger 0 -->
         <Border x:Name="LeftZone"
-                HorizontalAlignment="Left" Width="250"
+                Canvas.Left="2" Canvas.Top="2"
+                Width="246" Height="246"
                 Background="#30FFFFFF"
                 CornerRadius="8"
-                Margin="2"
                 BorderBrush="#60FFFFFF" BorderThickness="1">
             <TextBlock Text="Finger 1"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -26,10 +26,10 @@
 
         <!-- Right half: Finger 1 -->
         <Border x:Name="RightZone"
-                HorizontalAlignment="Right" Width="250"
+                Canvas.Left="252" Canvas.Top="2"
+                Width="246" Height="246"
                 Background="#30FFFFFF"
                 CornerRadius="8"
-                Margin="2"
                 BorderBrush="#60FFFFFF" BorderThickness="1">
             <TextBlock Text="Finger 2"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -43,5 +43,5 @@
         <Ellipse x:Name="Finger1Dot" Width="20" Height="20"
                  Fill="#800066FF" Visibility="Collapsed"
                  IsHitTestVisible="False"/>
-    </Grid>
+    </Canvas>
 </Window>

@@ -185,6 +185,26 @@ namespace PadForge.Common.Input
                 });
             }
 
+            // --- Phase 1d: Precision Touchpad ---
+            if (_ptpReader != null && _ptpReader.IsAvailable && !_ptpDeviceCreated)
+            {
+                UserDevice ud = FindOrCreateUserDevice(PtpInstanceGuid);
+                ud.LoadInstance(PtpInstanceGuid, "Precision Touchpad", PtpInstanceGuid, "Precision Touchpad");
+                ud.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
+                ud.IsOnline = true;
+                ud.HasTouchpad = true;
+                _ptpDeviceCreated = true;
+                changed = true;
+            }
+            else if (_ptpReader != null && !_ptpReader.IsAvailable && _ptpDeviceCreated)
+            {
+                // PTP not available — mark offline
+                var ud = FindOnlineDeviceByInstanceGuid(PtpInstanceGuid);
+                if (ud != null) ud.IsOnline = false;
+                _ptpDeviceCreated = false;
+                changed = true;
+            }
+
             // --- Phase 2: Detect disconnected SDL devices ---
             var disconnectedIds = new List<uint>();
 
@@ -456,6 +476,10 @@ namespace PadForge.Common.Input
         /// Tracked Raw Input keyboard device handles.
         /// </summary>
         private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
+
+        /// <summary>Fixed InstanceGuid for the precision touchpad pseudo-device.</summary>
+        private static readonly Guid PtpInstanceGuid = new Guid("50545000-0000-0000-5054-505450505450"); // "PTP"
+        private bool _ptpDeviceCreated;
 
         /// <summary>
         /// Tracked Raw Input mouse device handles.

@@ -14,8 +14,8 @@ namespace PadForge.Common.Input
         private Gamepad _lastState;
         private TouchpadState _lastTouchpad;
 
-        /// <summary>Raw DS4_REPORT_EX buffer (63 bytes).</summary>
-        private readonly byte[] _rawReport = new byte[63];
+        /// <summary>Raw DS4_REPORT_EX buffer (size probed at construction).</summary>
+        private byte[] _rawReport;
 
         /// <summary>Tracking numbers for touchpad fingers (bits 6:0 = ID, bit 7 = lifted).</summary>
         private byte _trackNum0 = 0x80; // finger 0 starts lifted
@@ -32,12 +32,38 @@ namespace PadForge.Common.Input
         /// <summary>True after first successful SubmitRawReport — locks out per-field fallback.</summary>
         private bool _rawReportWorks = true;
 
+        /// <summary>Expected buffer size for DS4_REPORT_EX, probed at runtime.</summary>
+        private int _rawReportSize = 63;
+
         public DS4VirtualController(ViGEmClient client)
         {
             _controller = client.CreateDualShock4Controller();
-            // Disable auto-submit so we control report timing via SubmitRawReport.
-            // If SubmitRawReport fails (wrong buffer size), _rawReportWorks falls back.
+
+            // Probe the correct DS4_REPORT_EX size by trying increasing buffer sizes.
+            // ViGEm validates buffer.Length == Marshal.SizeOf<DS4_REPORT_EX>().
             _controller.AutoSubmitReport = false;
+        }
+
+        /// <summary>
+        /// Tries buffer sizes to find what SubmitRawReport accepts.
+        /// DS4_REPORT_EX is typically 63 bytes but varies by ViGEm version.
+        /// </summary>
+        private int ProbeRawReportSize()
+        {
+            int[] candidates = { 63, 47, 64, 78 };
+            foreach (int size in candidates)
+            {
+                try
+                {
+                    _controller.SubmitRawReport(new byte[size]);
+                    return size;
+                }
+                catch { }
+            }
+            // None worked — disable raw reports.
+            _rawReportWorks = false;
+            _controller.AutoSubmitReport = true;
+            return 0;
         }
 
         public void Connect()
@@ -72,6 +98,21 @@ namespace PadForge.Common.Input
                 return;
             _lastState = gp;
             _lastTouchpad = tp;
+
+            // Probe raw report size on first connected call.
+            if (_rawReport == null && _rawReportWorks)
+            {
+                _rawReportSize = ProbeRawReportSize();
+                if (_rawReportWorks)
+                    _rawReport = new byte[_rawReportSize];
+            }
+
+            // If raw reports don't work, use per-field API directly.
+            if (!_rawReportWorks)
+            {
+                SubmitViaPerFieldApi(gp, tp);
+                return;
+            }
 
             var buf = _rawReport;
             Array.Clear(buf, 0, buf.Length);
@@ -176,23 +217,7 @@ namespace PadForge.Common.Input
             buf[40] = (byte)(((x1 >> 8) & 0x0F) | ((y1 << 4) & 0xF0));
             buf[41] = (byte)(y1 >> 4);
 
-            if (_rawReportWorks)
-            {
-                try
-                {
-                    _controller.SubmitRawReport(buf);
-                    return;
-                }
-                catch (Exception)
-                {
-                    // SubmitRawReport failed (buffer size mismatch, driver error, etc.)
-                    // Disable raw reports and fall through to per-field API.
-                    _rawReportWorks = false;
-                    _controller.AutoSubmitReport = true;
-                }
-            }
-
-            SubmitViaPerFieldApi(gp, tp);
+            _controller.SubmitRawReport(buf);
         }
 
         /// <summary>

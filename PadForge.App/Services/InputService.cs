@@ -2605,6 +2605,7 @@ namespace PadForge.Services
             row.InstanceGuid = ud.InstanceGuid;
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
+                           : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged
                            : ud.ResolvedName;
             row.ProductName = ud.ProductName;
             row.ProductGuid = ud.ProductGuid;

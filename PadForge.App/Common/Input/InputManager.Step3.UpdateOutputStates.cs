@@ -1456,29 +1456,31 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Maps touchpad input from CustomInputState to a TouchpadState.
-        /// Uses PadSetting descriptors to determine which input source feeds each finger.
-        /// When descriptors are empty but the device has touchpad data, passes through directly.
-        /// Tracks finger down/up transitions to increment PacketCounter.
+        /// Finger position/contact data passes through from SDL3 touchpad arrays.
+        /// TouchpadClick uses the standard button mapping pipeline so any input
+        /// source (button, axis, POV) can drive the virtual DS4 touchpad click.
         /// </summary>
         private static TouchpadState MapInputToTouchpad(CustomInputState state, PadSetting ps, TouchpadState prev)
         {
             var tp = new TouchpadState { PacketCounter = prev.PacketCounter };
 
-            // Direct passthrough from SDL touchpad data when mapped (or always for auto-mapped devices).
-            bool hasTouchpadMapping = !string.IsNullOrEmpty(ps.TouchpadX1) ||
-                                      !string.IsNullOrEmpty(ps.TouchpadContact1);
-
-            if (hasTouchpadMapping)
+            // Finger position/contact: direct passthrough from SDL touchpad data.
+            if (!string.IsNullOrEmpty(ps.TouchpadX1) || !string.IsNullOrEmpty(ps.TouchpadContact1))
             {
-                // Read touchpad data from the input state's touchpad arrays.
                 tp.X0 = state.TouchpadFingers[0];
                 tp.Y0 = state.TouchpadFingers[1];
                 tp.Down0 = state.TouchpadDown[0];
+            }
+            if (!string.IsNullOrEmpty(ps.TouchpadX2) || !string.IsNullOrEmpty(ps.TouchpadContact2))
+            {
                 tp.X1 = state.TouchpadFingers[3];
                 tp.Y1 = state.TouchpadFingers[4];
                 tp.Down1 = state.TouchpadDown[1];
-                tp.Click = state.TouchpadClick;
             }
+
+            // Touchpad click: resolved through standard mapping pipeline so ANY
+            // input source (button, axis, POV) can drive it — not just physical touchpad.
+            tp.Click = MapToButtonPressed(state, ps.TouchpadClick);
 
             // Increment packet counter on finger state transitions.
             if (tp.Down0 != prev.Down0 || tp.Down1 != prev.Down1)

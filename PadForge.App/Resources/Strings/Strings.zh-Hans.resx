@@ -683,7 +683,7 @@
   <data name="Btn_Share" xml:space="preserve"><value>分享</value></data>
   <data name="Btn_Options" xml:space="preserve"><value>选项</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
-  <data name="Btn_Touchpad" xml:space="preserve"><value>触摸板</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>鼠标左键</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>鼠标右键</value></data>

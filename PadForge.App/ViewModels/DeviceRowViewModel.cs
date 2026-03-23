@@ -359,12 +359,28 @@ namespace PadForge.ViewModels
         public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad";
 
         /// <summary>Capabilities summary string for display.</summary>
-        public string CapabilitiesSummary =>
-            string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
-            (_hasRumble ? ", " + Strings.Instance.Devices_Rumble : "") +
-            (_hasGyro ? ", " + Strings.Instance.Devices_Gyro : "") +
-            (_hasAccel ? ", " + Strings.Instance.Devices_Accel : "") +
-            (_hasTouchpad ? ", " + Strings.Instance.Btn_Touchpad : "");
+        public string CapabilitiesSummary
+        {
+            get
+            {
+                bool isTouchpadType = DeviceTypeKey == "Touchpad";
+
+                // Touchpad-only devices: skip "0 axes, 0 buttons, 0 POV" noise.
+                var sb = new System.Text.StringBuilder();
+                if (!isTouchpadType)
+                    sb.Append(string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount));
+
+                void Append(string cap) { if (sb.Length > 0) sb.Append(", "); sb.Append(cap); }
+
+                if (_hasRumble) Append(Strings.Instance.Devices_Rumble);
+                if (_hasGyro) Append(Strings.Instance.Devices_Gyro);
+                if (_hasAccel) Append(Strings.Instance.Devices_Accel);
+                // Only show "Touchpad" capability on non-touchpad-type devices (e.g. DualSense gamepad).
+                if (_hasTouchpad && !isTouchpadType) Append(Strings.Instance.Btn_Touchpad);
+
+                return sb.Length > 0 ? sb.ToString() : Strings.Instance.Btn_Touchpad;
+            }
+        }
 
         /// <summary>
         /// Refreshes computed display properties.

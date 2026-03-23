@@ -930,6 +930,8 @@ namespace PadForge
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            SetupNativeTooltip();
+
             // Driver detection and timer are initialized in the constructor so they
             // work even when starting minimized to tray (where OnLoaded never fires).
 
@@ -1243,14 +1245,15 @@ namespace PadForge
         /// </summary>
         private NavigationViewItem CreateControllerNavItem(NavControllerItemViewModel navItem)
         {
+            bool collapsed = !NavView.IsPaneOpen;
             var menuItem = new NavigationViewItem
             {
                 Tag = navItem.Tag,
-                Margin = new Thickness(-40, 0, 0, 0) // Shift entire item left into icon column
+                Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0)
             };
             System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
-            if (!NavView.IsPaneOpen)
+            if (collapsed)
                 menuItem.Icon = RenderCompactCardIcon(navItem);
             return menuItem;
         }
@@ -2836,42 +2839,177 @@ namespace PadForge
         private void BrandingBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+                DragMove();
+        }
+
+        private bool _isFullScreen;
+        private IntPtr _nativeTooltip;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern IntPtr CreateWindowEx(int exStyle, string className, string windowName, int style,
+            int x, int y, int w, int h, IntPtr parent, IntPtr menu, IntPtr instance, IntPtr param);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool DestroyWindow(IntPtr hWnd);
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private struct TOOLINFO
+        {
+            public int cbSize;
+            public int uFlags;
+            public IntPtr hwnd;
+            public IntPtr uId;
+            public RECT rect;
+            public IntPtr hinst;
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPTStr)]
+            public string lpszText;
+            public IntPtr lParam;
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct RECT { public int left, top, right, bottom; }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct MSG
+        {
+            public IntPtr hwnd;
+            public int message;
+            public IntPtr wParam;
+            public IntPtr lParam;
+            public int time;
+            public int pt_x;
+            public int pt_y;
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int GetMessageTime();
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
+
+        private void SetupNativeTooltip()
+        {
+            var source = System.Windows.PresentationSource.FromVisual(this) as System.Windows.Interop.HwndSource;
+            if (source == null) return;
+
+            const int WS_POPUP = unchecked((int)0x80000000);
+            const int TTS_ALWAYSTIP = 0x01;
+            const int TTS_NOPREFIX = 0x02;
+            const int WS_EX_TOPMOST = 0x08;
+
+            _nativeTooltip = CreateWindowEx(WS_EX_TOPMOST, "tooltips_class32", "",
+                WS_POPUP | TTS_ALWAYSTIP | TTS_NOPREFIX,
+                0, 0, 0, 0, source.Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+
+            if (_nativeTooltip == IntPtr.Zero) return;
+
+            // Add a non-tracking tool with the button's client rect.
+            AddNativeTooltipTool(source.Handle);
+
+            // Relay mouse messages so the tooltip handles delay/positioning natively.
+            FullScreenBtn.MouseMove += (s, ev) => RelayMouseMessage(source.Handle, 0x0200); // WM_MOUSEMOVE
+            FullScreenBtn.MouseLeave += (s, ev) => RelayMouseMessage(source.Handle, 0x02A3); // WM_MOUSELEAVE
+        }
+
+        private void AddNativeTooltipTool(IntPtr hwnd)
+        {
+            var source = System.Windows.PresentationSource.FromVisual(this) as System.Windows.Interop.HwndSource;
+            double dpiX = source?.CompositionTarget?.TransformToDevice.M11 ?? 1.0;
+            double dpiY = source?.CompositionTarget?.TransformToDevice.M22 ?? 1.0;
+
+            var topLeft = FullScreenBtn.TransformToAncestor(this).Transform(new System.Windows.Point(0, 0));
+            var sz = FullScreenBtn.RenderSize;
+
+            var ti = new TOOLINFO();
+            ti.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(TOOLINFO));
+            ti.uFlags = 0; // no TTF_SUBCLASS, no TTF_TRACK — we relay manually
+            ti.hwnd = hwnd;
+            ti.uId = (IntPtr)9999;
+            ti.rect.left = (int)(topLeft.X * dpiX);
+            ti.rect.top = (int)(topLeft.Y * dpiY);
+            ti.rect.right = (int)((topLeft.X + sz.Width) * dpiX);
+            ti.rect.bottom = (int)((topLeft.Y + sz.Height) * dpiY);
+            ti.lpszText = Strings.Instance.Main_FullScreen;
+
+            var pti = System.Runtime.InteropServices.Marshal.AllocHGlobal(ti.cbSize);
+            try
             {
-                if (e.ClickCount == 2)
-                    MaximizeBtn_Click(sender, e);
-                else
-                    DragMove();
+                System.Runtime.InteropServices.Marshal.StructureToPtr(ti, pti, false);
+                SendMessage(_nativeTooltip, 0x0433, IntPtr.Zero, pti); // TTM_DELTOOLW (remove old)
+                SendMessage(_nativeTooltip, 0x0432, IntPtr.Zero, pti); // TTM_ADDTOOLW
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(pti);
             }
         }
 
-        private void MinimizeBtn_Click(object sender, RoutedEventArgs e)
-            => WindowState = WindowState.Minimized;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ScreenToClient(IntPtr hWnd, ref System.Drawing.Point lpPoint);
 
-        private void MaximizeBtn_Click(object sender, RoutedEventArgs e)
+        private void RelayMouseMessage(IntPtr hwnd, int msgType)
         {
-            WindowState = WindowState == WindowState.Maximized
-                ? WindowState.Normal : WindowState.Maximized;
-            MaximizeIcon.Text = WindowState == WindowState.Maximized ? "\uE923" : "\uE922";
+            GetCursorPos(out var screenPt);
+            var clientPt = screenPt;
+            ScreenToClient(hwnd, ref clientPt);
+
+            var msg = new MSG();
+            msg.hwnd = hwnd;
+            msg.message = msgType;
+            msg.wParam = IntPtr.Zero;
+            msg.lParam = (IntPtr)((clientPt.Y << 16) | (clientPt.X & 0xFFFF));
+            msg.time = GetMessageTime();
+            msg.pt_x = screenPt.X;
+            msg.pt_y = screenPt.Y;
+
+            var pMsg = System.Runtime.InteropServices.Marshal.AllocHGlobal(
+                System.Runtime.InteropServices.Marshal.SizeOf(typeof(MSG)));
+            try
+            {
+                System.Runtime.InteropServices.Marshal.StructureToPtr(msg, pMsg, false);
+                SendMessage(_nativeTooltip, 0x0407, IntPtr.Zero, pMsg); // TTM_RELAYEVENT
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(pMsg);
+            }
         }
 
         private void FullScreenBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowStyle == WindowStyle.None && WindowState == WindowState.Maximized)
+            if (_isFullScreen)
             {
                 // Exit full screen.
+                _isFullScreen = false;
                 WindowStyle = WindowStyle.SingleBorderWindow;
                 WindowState = WindowState.Normal;
+                FullScreenIcon.Text = "\uE740";
             }
             else
             {
                 // Enter full screen.
+                _isFullScreen = true;
                 WindowStyle = WindowStyle.None;
                 WindowState = WindowState.Maximized;
+                FullScreenIcon.Text = "\uE73F";
             }
         }
 
-        private void CloseBtn_Click(object sender, RoutedEventArgs e)
-            => Close();
+        private void TitleBar_MaximizeClicked(Wpf.Ui.Controls.TitleBar sender, RoutedEventArgs args)
+        {
+            if (_isFullScreen)
+            {
+                // Exit full screen before TitleBar toggles maximize/restore.
+                _isFullScreen = false;
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                FullScreenIcon.Text = "\uE740";
+            }
+        }
+
+        private void TitleBar_CloseClicked(Wpf.Ui.Controls.TitleBar sender, RoutedEventArgs args)
+        {
+            // Handled via OnClosing for tray minimize support.
+        }
 
         private void NavView_SelectionChanged(NavigationView sender,
             RoutedEventArgs args)

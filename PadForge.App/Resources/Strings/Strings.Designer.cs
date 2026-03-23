@@ -155,6 +155,7 @@ public class Strings : INotifyPropertyChanged
     public string Main_DevicesSuffix => Get("Main_DevicesSuffix");
     public string Main_AddController => Get("Main_AddController");
     public string Main_DeleteVC => Get("Main_DeleteVC");
+    public string Main_FullScreen => Get("Main_FullScreen");
     public string Main_ShowPadForge => Get("Main_ShowPadForge");
     public string Main_VirtualController_Format => Get("Main_VirtualController_Format");
     public string Main_ViGEmNotInstalled => Get("Main_ViGEmNotInstalled");

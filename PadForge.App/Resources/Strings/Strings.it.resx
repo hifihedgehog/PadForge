@@ -311,6 +311,7 @@
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Tutte le tastiere (unite)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Tutti i mouse (uniti)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Tutti i touchpad (uniti)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivi</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totale</value></data>

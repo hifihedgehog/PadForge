@@ -257,14 +257,24 @@ namespace PadForge.Common.Input
         private readonly Dictionary<IntPtr, HIDP_VALUE_CAPS[]> _valueCapsCache = new();
         private readonly Dictionary<IntPtr, (int logMinX, int logMaxX, int logMinY, int logMaxY)> _rangeCache = new();
 
-        // Output state (read by polling thread)
+        // Per-device output state (read by polling thread)
         private readonly object _stateLock = new();
-        private float _x0, _y0, _x1, _y1;
-        private bool _down0, _down1;
-        private int _contactCount;
+
+        /// <summary>Per-device touchpad state keyed by RAWINPUT hDevice handle.</summary>
+        private readonly Dictionary<IntPtr, PtpDeviceState> _deviceStates = new();
 
         /// <summary>Whether any precision touchpad device was detected.</summary>
         public bool IsAvailable { get; private set; }
+
+        /// <summary>Per-device touchpad state.</summary>
+        internal class PtpDeviceState
+        {
+            public float X0, Y0, X1, Y1;
+            public bool Down0, Down1;
+            public string Name = "Precision Touchpad";
+            public string DevicePath = "";
+            public ushort VendorId, ProductId;
+        }
 
         // ─────────────────────────────────────────────
         //  Public API
@@ -293,22 +303,66 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Reads the current touchpad state into the provided CustomInputState.
+        /// Returns the currently known PTP device handles and their info.
+        /// Called from Step 1 for device enumeration.
+        /// </summary>
+        public (IntPtr handle, string name, string path, ushort vid, ushort pid)[] GetDevices()
+        {
+            lock (_stateLock)
+            {
+                var result = new (IntPtr, string, string, ushort, ushort)[_deviceStates.Count];
+                int i = 0;
+                foreach (var kvp in _deviceStates)
+                {
+                    var ds = kvp.Value;
+                    result[i++] = (kvp.Key, ds.Name, ds.DevicePath, ds.VendorId, ds.ProductId);
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Reads the current touchpad state for a specific device handle.
         /// Called from the polling thread (Step 2).
+        /// </summary>
+        public void ReadInto(IntPtr hDevice, Engine.CustomInputState state)
+        {
+            lock (_stateLock)
+            {
+                if (!_deviceStates.TryGetValue(hDevice, out var ds))
+                    return;
+
+                state.TouchpadFingers[0] = ds.X0;
+                state.TouchpadFingers[1] = ds.Y0;
+                state.TouchpadFingers[2] = ds.Down0 ? 1f : 0f;
+                state.TouchpadDown[0] = ds.Down0;
+
+                state.TouchpadFingers[3] = ds.X1;
+                state.TouchpadFingers[4] = ds.Y1;
+                state.TouchpadFingers[5] = ds.Down1 ? 1f : 0f;
+                state.TouchpadDown[1] = ds.Down1;
+            }
+        }
+
+        /// <summary>
+        /// Legacy: reads the first device's state (for backward compat).
         /// </summary>
         public void ReadInto(Engine.CustomInputState state)
         {
             lock (_stateLock)
             {
-                state.TouchpadFingers[0] = _x0;
-                state.TouchpadFingers[1] = _y0;
-                state.TouchpadFingers[2] = _down0 ? 1f : 0f; // pressure
-                state.TouchpadDown[0] = _down0;
-
-                state.TouchpadFingers[3] = _x1;
-                state.TouchpadFingers[4] = _y1;
-                state.TouchpadFingers[5] = _down1 ? 1f : 0f;
-                state.TouchpadDown[1] = _down1;
+                foreach (var ds in _deviceStates.Values)
+                {
+                    state.TouchpadFingers[0] = ds.X0;
+                    state.TouchpadFingers[1] = ds.Y0;
+                    state.TouchpadFingers[2] = ds.Down0 ? 1f : 0f;
+                    state.TouchpadDown[0] = ds.Down0;
+                    state.TouchpadFingers[3] = ds.X1;
+                    state.TouchpadFingers[4] = ds.Y1;
+                    state.TouchpadFingers[5] = ds.Down1 ? 1f : 0f;
+                    state.TouchpadDown[1] = ds.Down1;
+                    break;
+                }
             }
         }
 
@@ -448,7 +502,7 @@ namespace PadForge.Common.Input
                 for (uint r = 0; r < rawHid.dwCount; r++)
                 {
                     IntPtr report = reportData + (int)(r * rawHid.dwSizeHid);
-                    ParseTouchpadReport(preparsed, report, rawHid.dwSizeHid, valueCaps, ranges);
+                    ParseTouchpadReport(header.hDevice, preparsed, report, rawHid.dwSizeHid, valueCaps, ranges);
                 }
             }
             catch { }
@@ -526,7 +580,7 @@ namespace PadForge.Common.Input
             return ranges;
         }
 
-        private void ParseTouchpadReport(IntPtr preparsed, IntPtr report, uint reportLength,
+        private void ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
             HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges)
         {
             // Read contact count
@@ -534,37 +588,31 @@ namespace PadForge.Common.Input
                 HID_USAGE_CONTACT_COUNT, out uint contactCount, preparsed, report, reportLength);
 
             // Parse up to 2 fingers by iterating link collections.
-            // Each finger is in its own link collection with Contact ID, X, Y.
             var fingers = new List<(float x, float y, int id)>();
 
             foreach (var vc in valueCaps)
             {
                 ushort usage = vc.IsRange ? vc.UsageMin : vc.UsageMin;
 
-                // Find Contact ID entries — each one indicates a finger's link collection
                 if (vc.UsagePage == HID_USAGE_PAGE_DIGITIZER && usage == HID_USAGE_CONTACT_ID)
                 {
                     ushort linkCollection = vc.LinkCollection;
 
-                    // Read Contact ID
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_DIGITIZER, linkCollection,
                             HID_USAGE_CONTACT_ID, out uint contactId, preparsed, report, reportLength)
                         != HIDP_STATUS_SUCCESS)
                         continue;
 
-                    // Read X
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_GENERIC, linkCollection,
                             HID_USAGE_GENERIC_X, out uint rawX, preparsed, report, reportLength)
                         != HIDP_STATUS_SUCCESS)
                         continue;
 
-                    // Read Y
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_GENERIC, linkCollection,
                             HID_USAGE_GENERIC_Y, out uint rawY, preparsed, report, reportLength)
                         != HIDP_STATUS_SUCCESS)
                         continue;
 
-                    // Normalize to 0-1
                     float x = (ranges.logMaxX > ranges.logMinX)
                         ? (float)(rawX - ranges.logMinX) / (ranges.logMaxX - ranges.logMinX)
                         : 0f;
@@ -580,33 +628,94 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Update state
+            // Update per-device state.
             lock (_stateLock)
             {
-                _contactCount = (int)contactCount;
+                if (!_deviceStates.TryGetValue(hDevice, out var ds))
+                {
+                    ds = new PtpDeviceState();
+                    // Populate device info on first contact.
+                    PopulateDeviceInfo(hDevice, ds);
+                    _deviceStates[hDevice] = ds;
+                }
+
+                // Always clear contact state first, then set from parsed data.
+                // This ensures fingers go to false when contactCount drops.
+                ds.Down0 = false;
+                ds.Down1 = false;
 
                 if (contactCount >= 1 && fingers.Count >= 1)
                 {
-                    _x0 = fingers[0].x;
-                    _y0 = fingers[0].y;
-                    _down0 = true;
-                }
-                else
-                {
-                    _down0 = false;
+                    ds.X0 = fingers[0].x;
+                    ds.Y0 = fingers[0].y;
+                    ds.Down0 = true;
                 }
 
                 if (contactCount >= 2 && fingers.Count >= 2)
                 {
-                    _x1 = fingers[1].x;
-                    _y1 = fingers[1].y;
-                    _down1 = true;
-                }
-                else
-                {
-                    _down1 = false;
+                    ds.X1 = fingers[1].x;
+                    ds.Y1 = fingers[1].y;
+                    ds.Down1 = true;
                 }
             }
+        }
+
+        /// <summary>Populates device name/VID/PID from Raw Input device info.</summary>
+        private void PopulateDeviceInfo(IntPtr hDevice, PtpDeviceState ds)
+        {
+            try
+            {
+                // Get device name (path).
+                uint nameSize = 0;
+                GetRawInputDeviceInfo(hDevice, 0x20000007, IntPtr.Zero, ref nameSize);
+                if (nameSize > 0)
+                {
+                    IntPtr nameBuf = Marshal.AllocHGlobal((int)nameSize * 2);
+                    try
+                    {
+                        if (GetRawInputDeviceInfo(hDevice, 0x20000007, nameBuf, ref nameSize) > 0)
+                            ds.DevicePath = Marshal.PtrToStringUni(nameBuf) ?? "";
+                    }
+                    finally { Marshal.FreeHGlobal(nameBuf); }
+                }
+
+                // Extract friendly name from device path.
+                if (!string.IsNullOrEmpty(ds.DevicePath))
+                {
+                    // Try to extract product name from registry.
+                    ds.Name = ExtractFriendlyName(ds.DevicePath);
+                }
+            }
+            catch { }
+        }
+
+        private static string ExtractFriendlyName(string devicePath)
+        {
+            // Device path format: \\?\HID#VID_xxxx&PID_xxxx#...
+            // Try registry: HKLM\SYSTEM\CurrentControlSet\Enum\{pnpId}\DeviceDesc
+            try
+            {
+                string pnpPath = devicePath.Replace("\\\\?\\", "").Replace("#", "\\");
+                int lastSlash = pnpPath.LastIndexOf('\\');
+                if (lastSlash > 0)
+                    pnpPath = pnpPath.Substring(0, lastSlash);
+
+                using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    $"SYSTEM\\CurrentControlSet\\Enum\\{pnpPath}");
+                if (key != null)
+                {
+                    string desc = key.GetValue("FriendlyName") as string
+                               ?? key.GetValue("DeviceDesc") as string;
+                    if (desc != null)
+                    {
+                        // Strip driver prefix: "@driver.inf,...;Friendly Name" → "Friendly Name"
+                        int semi = desc.LastIndexOf(';');
+                        return semi >= 0 ? desc.Substring(semi + 1) : desc;
+                    }
+                }
+            }
+            catch { }
+            return "Precision Touchpad";
         }
     }
 }

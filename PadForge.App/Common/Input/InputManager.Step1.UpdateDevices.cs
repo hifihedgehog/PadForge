@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using SDL3;
 using static SDL3.SDL;
 
@@ -185,23 +186,70 @@ namespace PadForge.Common.Input
                 });
             }
 
-            // --- Phase 1d: Precision Touchpad ---
-            if (_ptpReader != null && _ptpReader.IsAvailable && !_ptpDeviceCreated)
+            // --- Phase 1d: Precision Touchpads (per-hardware device) ---
+            if (_ptpReader != null && _ptpReader.IsAvailable)
             {
-                UserDevice ud = FindOrCreateUserDevice(PtpInstanceGuid);
-                ud.LoadInstance(PtpInstanceGuid, "Precision Touchpad", PtpInstanceGuid, "Precision Touchpad");
-                ud.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
-                ud.IsOnline = true;
-                ud.HasTouchpad = true;
-                _ptpDeviceCreated = true;
-                changed = true;
+                var ptpDevices = _ptpReader.GetDevices();
+                var currentPtpHandles = new HashSet<IntPtr>();
+
+                foreach (var (handle, name, path, vid, pid) in ptpDevices)
+                {
+                    currentPtpHandles.Add(handle);
+                    var guid = SdlDeviceWrapper.BuildInstanceGuid(path, vid, pid, 0);
+
+                    if (!_openedPtpHandles.Contains(handle))
+                    {
+                        UserDevice ud = FindOrCreateUserDevice(guid);
+                        ud.LoadInstance(guid, name, guid, name);
+                        ud.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
+                        ud.IsOnline = true;
+                        ud.HasTouchpad = true;
+                        _openedPtpHandles.Add(handle);
+                        _ptpHandleToGuid[handle] = guid;
+                        changed = true;
+                    }
+                }
+
+                // Detect disconnected PTP devices.
+                var disconnected = new List<IntPtr>();
+                foreach (var h in _openedPtpHandles)
+                {
+                    if (!currentPtpHandles.Contains(h))
+                    {
+                        if (_ptpHandleToGuid.TryGetValue(h, out var guid))
+                        {
+                            var ud = FindOnlineDeviceByInstanceGuid(guid);
+                            if (ud != null) ud.IsOnline = false;
+                            _ptpHandleToGuid.Remove(h);
+                        }
+                        disconnected.Add(h);
+                        changed = true;
+                    }
+                }
+                foreach (var h in disconnected)
+                    _openedPtpHandles.Remove(h);
+
+                // "All Touchpads (Merged)" aggregate device — always present when PTP is available.
+                if (!_ptpMergedCreated)
+                {
+                    UserDevice mergedUd = FindOrCreateUserDevice(PtpMergedGuid);
+                    mergedUd.LoadInstance(PtpMergedGuid,
+                        Strings.Instance.Devices_AllTouchpadsMerged,
+                        PtpMergedGuid,
+                        Strings.Instance.Devices_AllTouchpadsMerged);
+                    mergedUd.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
+                    mergedUd.DevicePath = "aggregate://touchpads";
+                    mergedUd.IsOnline = true;
+                    mergedUd.HasTouchpad = true;
+                    _ptpMergedCreated = true;
+                    changed = true;
+                }
             }
-            else if (_ptpReader != null && !_ptpReader.IsAvailable && _ptpDeviceCreated)
+            else if (_ptpMergedCreated)
             {
-                // PTP not available — mark offline
-                var ud = FindOnlineDeviceByInstanceGuid(PtpInstanceGuid);
-                if (ud != null) ud.IsOnline = false;
-                _ptpDeviceCreated = false;
+                var mergedUd = FindOnlineDeviceByInstanceGuid(PtpMergedGuid);
+                if (mergedUd != null) mergedUd.IsOnline = false;
+                _ptpMergedCreated = false;
                 changed = true;
             }
 
@@ -477,9 +525,13 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
 
-        /// <summary>Fixed InstanceGuid for the precision touchpad pseudo-device.</summary>
-        private static readonly Guid PtpInstanceGuid = new Guid("50545000-0000-0000-5054-505450505450"); // "PTP"
-        private bool _ptpDeviceCreated;
+        /// <summary>Tracked PTP device handles.</summary>
+        private readonly HashSet<IntPtr> _openedPtpHandles = new();
+        private readonly Dictionary<IntPtr, Guid> _ptpHandleToGuid = new();
+
+        /// <summary>Fixed GUID for the merged touchpad aggregate device.</summary>
+        private static readonly Guid PtpMergedGuid = new("50545000-ffff-ffff-5054-505450505450");
+        private bool _ptpMergedCreated;
 
         /// <summary>
         /// Tracked Raw Input mouse device handles.

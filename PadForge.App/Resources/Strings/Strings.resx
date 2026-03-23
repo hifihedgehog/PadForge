@@ -307,6 +307,7 @@
   <data name="DeviceType_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
   <data name="DeviceType_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>All Touchpads (Merged)</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Device</value></data>
 
   <!-- ═══ Devices ═══ -->

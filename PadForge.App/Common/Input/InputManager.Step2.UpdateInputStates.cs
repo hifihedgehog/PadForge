@@ -56,9 +56,16 @@ namespace PadForge.Common.Input
 
                     if (ud.IsTouchpad && ud.Device == null && _ptpReader != null && _ptpReader.IsAvailable)
                     {
-                        // Precision Touchpad (no SDL wrapper) — read via dedicated PTP reader.
+                        // Precision Touchpad (no SDL wrapper).
                         newState = new CustomInputState();
-                        _ptpReader.ReadInto(newState);
+                        if (ud.InstanceGuid == PtpMergedGuid)
+                            _ptpReader.ReadInto(newState); // merged: first device
+                        else
+                        {
+                            IntPtr ptpHandle = FindPtpHandle(ud.InstanceGuid);
+                            if (ptpHandle != IntPtr.Zero)
+                                _ptpReader.ReadInto(ptpHandle, newState);
+                        }
                     }
                     else if (ud.Device != null)
                     {
@@ -101,6 +108,17 @@ namespace PadForge.Common.Input
                     RaiseError($"Error reading state for device {ud.ResolvedName}", ex);
                 }
             }
+        }
+
+        /// <summary>Finds the PTP device handle for a given InstanceGuid.</summary>
+        private IntPtr FindPtpHandle(Guid instanceGuid)
+        {
+            foreach (var kvp in _ptpHandleToGuid)
+            {
+                if (kvp.Value == instanceGuid)
+                    return kvp.Key;
+            }
+            return IntPtr.Zero;
         }
 
         // ─────────────────────────────────────────────

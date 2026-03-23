@@ -311,6 +311,7 @@
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>모든 키보드 (병합)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>모든 마우스 (병합)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>모든 터치패드 (병합됨)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>장치</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 온라인 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 전체</value></data>

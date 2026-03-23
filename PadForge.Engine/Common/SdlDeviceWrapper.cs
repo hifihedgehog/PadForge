@@ -611,8 +611,10 @@ namespace PadForge.Engine
             }
             else if (!string.IsNullOrEmpty(devicePath))
             {
-                // Good for wired/USB devices whose path is stable.
-                identifier = devicePath;
+                // Include VID/PID so different hardware sharing the same
+                // path (e.g. two different Xbox controllers in XInput#0)
+                // gets distinct identity.
+                identifier = $"{devicePath}:{vid:X4}:{pid:X4}";
             }
             else
             {

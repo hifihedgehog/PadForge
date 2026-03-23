@@ -45,10 +45,10 @@ namespace PadForge.Engine
 
         public uint SdlInstanceId { get; }
         public string Name { get; }
-        public int NumAxes => NumGamepadAxes;
-        public int NumButtons => NumGamepadButtons;
+        public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
+        public int NumButtons => _isTouchpadDevice ? 0 : NumGamepadButtons;
         public int RawButtonCount => NumGamepadButtons;
-        public int NumHats => NumGamepadPovs;
+        public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public bool HasRumble => true;
         public bool HasHaptic => false;
         public bool HasGyro => false;

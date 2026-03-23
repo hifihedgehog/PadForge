@@ -875,6 +875,20 @@ namespace PadForge.Services
             else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
                 s = s.Substring(1);
 
+            // Touchpad descriptors: "Touchpad 0 Finger N X/Y/Down"
+            if (s.StartsWith("Touchpad", StringComparison.Ordinal))
+            {
+                // Parse finger index and axis from descriptor.
+                // Format: "Touchpad 0 Finger 0 X", "Touchpad 0 Finger 1 Down"
+                if (s.Contains("Finger 0 X")) return (int)(state.TouchpadFingers[0] * 1000);
+                if (s.Contains("Finger 0 Y")) return (int)(state.TouchpadFingers[1] * 1000);
+                if (s.Contains("Finger 0 Down")) return state.TouchpadDown[0] ? 1 : 0;
+                if (s.Contains("Finger 1 X")) return (int)(state.TouchpadFingers[3] * 1000);
+                if (s.Contains("Finger 1 Y")) return (int)(state.TouchpadFingers[4] * 1000);
+                if (s.Contains("Finger 1 Down")) return state.TouchpadDown[1] ? 1 : 0;
+                return 0;
+            }
+
             string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return 0;

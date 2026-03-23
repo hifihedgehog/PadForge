@@ -634,6 +634,8 @@ namespace PadForge.Common.Input
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else if (vc is KeyboardMouseVirtualController kbmVc)
                             kbmVc.SubmitKbmState(CombinedKbmRawStates[padIndex]);
+                        else if (vc is DS4VirtualController ds4Vc)
+                            ds4Vc.SubmitGamepadState(CombinedOutputStates[padIndex], CombinedTouchpadStates[padIndex]);
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }

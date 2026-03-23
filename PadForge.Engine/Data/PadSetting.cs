@@ -302,6 +302,18 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightThumbAxisYInvert { get; set; } = "0";
 
         // ─────────────────────────────────────────────
+        //  DS4 touchpad mappings
+        // ─────────────────────────────────────────────
+
+        [XmlElement] public string TouchpadX1 { get; set; } = "";
+        [XmlElement] public string TouchpadY1 { get; set; } = "";
+        [XmlElement] public string TouchpadX2 { get; set; } = "";
+        [XmlElement] public string TouchpadY2 { get; set; } = "";
+        [XmlElement] public string TouchpadContact1 { get; set; } = "";
+        [XmlElement] public string TouchpadContact2 { get; set; } = "";
+        [XmlElement] public string TouchpadClick { get; set; } = "";
+
+        // ─────────────────────────────────────────────
         //  vJoy custom mappings (dictionary-based)
         //  Used for custom vJoy configurations with arbitrary axis/button/POV counts.
         //  Keys use target names like "VJoyAxis0", "VJoyAxis0Neg", "VJoyBtn0",
@@ -657,6 +669,15 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAxisXNeg); sb.Append('|');
             sb.Append(RightThumbAxisYNeg); sb.Append('|');
 
+            // Touchpad
+            sb.Append(TouchpadX1); sb.Append('|');
+            sb.Append(TouchpadY1); sb.Append('|');
+            sb.Append(TouchpadX2); sb.Append('|');
+            sb.Append(TouchpadY2); sb.Append('|');
+            sb.Append(TouchpadContact1); sb.Append('|');
+            sb.Append(TouchpadContact2); sb.Append('|');
+            sb.Append(TouchpadClick); sb.Append('|');
+
             // Dead zones
             sb.Append(LeftThumbDeadZoneX); sb.Append('|');
             sb.Append(LeftThumbDeadZoneY); sb.Append('|');
@@ -810,6 +831,13 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbAxisYNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisXNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
+            !string.IsNullOrEmpty(TouchpadX1) ||
+            !string.IsNullOrEmpty(TouchpadY1) ||
+            !string.IsNullOrEmpty(TouchpadX2) ||
+            !string.IsNullOrEmpty(TouchpadY2) ||
+            !string.IsNullOrEmpty(TouchpadContact1) ||
+            !string.IsNullOrEmpty(TouchpadContact2) ||
+            !string.IsNullOrEmpty(TouchpadClick) ||
             (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0) ||
             (_vjoyMappingDict != null && _vjoyMappingDict.Count > 0) ||
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
@@ -834,6 +862,8 @@ namespace PadForge.Engine.Data
             RightThumbAxisX = RightThumbAxisY = "";
             LeftThumbAxisXNeg = LeftThumbAxisYNeg = "";
             RightThumbAxisXNeg = RightThumbAxisYNeg = "";
+            TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
+            TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
 
             // vJoy/MIDI mapping dictionaries and arrays.
             VJoyMappingEntries = null;
@@ -868,6 +898,12 @@ namespace PadForge.Engine.Data
             Add(RightThumbAxisX); Add(RightThumbAxisY);
             Add(LeftThumbAxisXNeg); Add(LeftThumbAxisYNeg);
             Add(RightThumbAxisXNeg); Add(RightThumbAxisYNeg);
+
+            // Touchpad
+            Add(TouchpadX1); Add(TouchpadY1);
+            Add(TouchpadX2); Add(TouchpadY2);
+            Add(TouchpadContact1); Add(TouchpadContact2);
+            Add(TouchpadClick);
 
             // vJoy custom mappings
             if (VJoyMappingEntries != null)
@@ -959,6 +995,11 @@ namespace PadForge.Engine.Data
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),
             // Threshold
             nameof(AxisToButtonThreshold),
+            // Touchpad
+            nameof(TouchpadX1), nameof(TouchpadY1),
+            nameof(TouchpadX2), nameof(TouchpadY2),
+            nameof(TouchpadContact1), nameof(TouchpadContact2),
+            nameof(TouchpadClick),
         };
 
         /// <summary>

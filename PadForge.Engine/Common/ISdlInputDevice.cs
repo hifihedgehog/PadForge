@@ -19,6 +19,7 @@ namespace PadForge.Engine
         bool HasHaptic { get; }
         bool HasGyro { get; }
         bool HasAccel { get; }
+        bool HasTouchpad { get; }
         HapticEffectStrategy HapticStrategy { get; }
         IntPtr HapticHandle { get; }
         uint HapticFeatures { get; }

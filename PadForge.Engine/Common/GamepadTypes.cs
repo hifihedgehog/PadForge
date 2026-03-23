@@ -60,6 +60,30 @@ namespace PadForge.Engine
     }
 
     /// <summary>
+    /// DS4 touchpad state for virtual DS4 output via DS4_REPORT_EX.
+    /// Coordinates are normalized 0-1, matching SDL3 touchpad API output.
+    /// </summary>
+    public struct TouchpadState
+    {
+        /// <summary>Finger 0 X position (0-1 normalized, left to right).</summary>
+        public float X0;
+        /// <summary>Finger 0 Y position (0-1 normalized, top to bottom).</summary>
+        public float Y0;
+        /// <summary>Finger 1 X position.</summary>
+        public float X1;
+        /// <summary>Finger 1 Y position.</summary>
+        public float Y1;
+        /// <summary>Finger 0 contact state.</summary>
+        public bool Down0;
+        /// <summary>Finger 1 contact state.</summary>
+        public bool Down1;
+        /// <summary>Touchpad click button.</summary>
+        public bool Click;
+        /// <summary>Increments on each finger down/up transition (for DS4_TOUCH encoding).</summary>
+        public byte PacketCounter;
+    }
+
+    /// <summary>
     /// Raw vJoy output state for custom (non-gamepad) configurations.
     /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
     /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.

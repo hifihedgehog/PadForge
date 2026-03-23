@@ -341,6 +341,7 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_Device => Get("DeviceType_Device");
     public string Devices_AllKeyboardsMerged => Get("Devices_AllKeyboardsMerged");
     public string Devices_AllMiceMerged => Get("Devices_AllMiceMerged");
+    public string Devices_AllTouchpadsMerged => Get("Devices_AllTouchpadsMerged");
     public string Devices_Title => Get("Devices_Title");
     public string Devices_OnlineTotal => Get("Devices_OnlineTotal");
     public string Devices_Total => Get("Devices_Total");

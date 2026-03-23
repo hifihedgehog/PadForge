@@ -312,6 +312,7 @@ namespace SDL3
         public const int SDL_GAMEPAD_BUTTON_DPAD_DOWN = 12;
         public const int SDL_GAMEPAD_BUTTON_DPAD_LEFT = 13;
         public const int SDL_GAMEPAD_BUTTON_DPAD_RIGHT = 14;
+        public const int SDL_GAMEPAD_BUTTON_TOUCHPAD = 20;
         public const int SDL_GAMEPAD_BUTTON_COUNT = 21;
 
         // ─────────────────────────────────────────────
@@ -453,6 +454,33 @@ namespace SDL3
         /// </summary>
         public static bool SDL_GetGamepadSensorData(IntPtr gamepad, int type, float[] data, int num_values) =>
             _SDL_GetGamepadSensorData(gamepad, type, data, num_values);
+
+        // ─────────────────────────────────────────────
+        //  Gamepad touchpad
+        // ─────────────────────────────────────────────
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetNumGamepadTouchpads(IntPtr gamepad);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetNumGamepadTouchpadFingers(IntPtr gamepad, int touchpad);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadTouchpadFinger")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadTouchpadFinger(
+            IntPtr gamepad, int touchpad, int finger,
+            [MarshalAs(UnmanagedType.U1)] out bool down,
+            out float x, out float y, out float pressure);
+
+        /// <summary>
+        /// Gets the state of a touchpad finger. x/y are normalized 0-1, pressure is 0-1.
+        /// Returns true on success.
+        /// </summary>
+        public static bool SDL_GetGamepadTouchpadFinger(
+            IntPtr gamepad, int touchpad, int finger,
+            out bool down, out float x, out float y, out float pressure) =>
+            _SDL_GetGamepadTouchpadFinger(gamepad, touchpad, finger,
+                out down, out x, out y, out pressure);
 
         // ─────────────────────────────────────────────
         //  Rumble / haptics

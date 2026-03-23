@@ -91,6 +91,12 @@ namespace PadForge.Common.Input
         public KbmRawState[] CombinedKbmRawStates { get; } = new KbmRawState[MaxPads];
 
         /// <summary>
+        /// Combined touchpad states for DS4 slots.
+        /// Written by Step 4 (background thread), read by Step 5.
+        /// </summary>
+        public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
+
+        /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
         public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
@@ -99,6 +105,11 @@ namespace PadForge.Common.Input
         /// Retrieved KBM raw states for UI display (keyboard key + mouse state preview).
         /// </summary>
         public KbmRawState[] RetrievedKbmRawStates { get; } = new KbmRawState[MaxPads];
+
+        /// <summary>
+        /// Retrieved touchpad states for UI display.
+        /// </summary>
+        public TouchpadState[] RetrievedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
         /// <summary>
         /// Per-slot vibration states received from games via ViGEmBus.

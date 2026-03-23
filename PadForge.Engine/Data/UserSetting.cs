@@ -148,6 +148,13 @@ namespace PadForge.Engine.Data
         public KbmRawState KbmRawOutputState { get; set; }
 
         /// <summary>
+        /// DS4 touchpad output state for this device.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public TouchpadState TouchpadOutputState { get; set; }
+
+        /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.
         /// </summary>
         [XmlIgnore]

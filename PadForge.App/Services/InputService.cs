@@ -1354,6 +1354,19 @@ namespace PadForge.Services
             else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
 
+            // Touchpad descriptors → localized display names.
+            if (s.StartsWith("Touchpad", StringComparison.Ordinal))
+            {
+                var si = Strings.Instance;
+                if (s.Contains("Finger 0 X")) return prefix + si.Mapping_TouchpadX1;
+                if (s.Contains("Finger 0 Y")) return prefix + si.Mapping_TouchpadY1;
+                if (s.Contains("Finger 0 Down")) return prefix + si.Mapping_TouchpadContact1;
+                if (s.Contains("Finger 1 X")) return prefix + si.Mapping_TouchpadX2;
+                if (s.Contains("Finger 1 Y")) return prefix + si.Mapping_TouchpadY2;
+                if (s.Contains("Finger 1 Down")) return prefix + si.Mapping_TouchpadContact2;
+                return null;
+            }
+
             string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return null;

@@ -690,6 +690,18 @@ namespace PadForge.Common.Input
                     finally { Marshal.FreeHGlobal(nameBuf); }
                 }
 
+                // Extract VID/PID from device path (format: \\?\HID#VID_xxxx&PID_xxxx#...)
+                if (!string.IsNullOrEmpty(ds.DevicePath))
+                {
+                    var path = ds.DevicePath.ToUpperInvariant();
+                    int vidIdx = path.IndexOf("VID_");
+                    int pidIdx = path.IndexOf("PID_");
+                    if (vidIdx >= 0 && vidIdx + 8 <= path.Length)
+                        ushort.TryParse(path.Substring(vidIdx + 4, 4), System.Globalization.NumberStyles.HexNumber, null, out ds.VendorId);
+                    if (pidIdx >= 0 && pidIdx + 8 <= path.Length)
+                        ushort.TryParse(path.Substring(pidIdx + 4, 4), System.Globalization.NumberStyles.HexNumber, null, out ds.ProductId);
+                }
+
                 // Extract friendly name from device path.
                 if (!string.IsNullOrEmpty(ds.DevicePath))
                 {

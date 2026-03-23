@@ -200,6 +200,7 @@ namespace PadForge.ViewModels
             "Supplemental" => Strings.Instance.DeviceType_Supplemental,
             "Mouse" => Strings.Instance.DeviceType_Mouse,
             "Keyboard" => Strings.Instance.DeviceType_Keyboard,
+            "Touchpad" => Strings.Instance.DeviceType_Touchpad,
             _ => Strings.Instance.DeviceType_Device
         };
 

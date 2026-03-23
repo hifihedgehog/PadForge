@@ -527,6 +527,7 @@ namespace PadForge.Services
                         OverlayElementType.Trigger => "trigger",
                         OverlayElementType.StickRing => "stickRing",
                         OverlayElementType.StickClick => "stickClick",
+                        OverlayElementType.Touchpad => "touchpad",
                         _ => "button"
                     };
 

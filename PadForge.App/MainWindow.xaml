@@ -20,13 +20,11 @@
         </Grid.RowDefinitions>
 
         <!-- App branding bar — hamburger on left, PadForge icon + name.
-             WindowChrome CaptionHeight=48 makes this entire row draggable
-             and provides DWM min/max/close buttons in the top-right. -->
+             TitleBar provides native min/max/close with Snap Layout support. -->
         <Grid x:Name="AppBrandingBar" Grid.Row="0" Height="48">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="PaneToggleBtn" Grid.Column="0" Click="PaneToggleBtn_Click"
                     Width="48" Height="48"
@@ -35,38 +33,50 @@
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
             </Button>
-            <Border x:Name="AppBrandingBorder" Grid.Column="1" Padding="12,0"
-                    Background="Transparent" MouseLeftButtonDown="BrandingBar_MouseDown">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="/Resources/PadForge-icon.png" Width="20" Height="20"
-                           RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
-                    <TextBlock Text="PadForge" FontSize="12"
-                               VerticalAlignment="Center" Margin="8,0,0,0"/>
-                </StackPanel>
-            </Border>
-            <!-- Window chrome buttons -->
-            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top">
-                <Button Click="MinimizeBtn_Click" Width="46" Height="32"
-                        Background="Transparent" BorderThickness="0" Padding="0"
-                        ToolTip="Minimize">
-                    <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </Button>
-                <Button Click="MaximizeBtn_Click" Width="46" Height="32"
-                        Background="Transparent" BorderThickness="0" Padding="0"
-                        ToolTip="Maximize">
-                    <TextBlock x:Name="MaximizeIcon" Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </Button>
-                <Button Click="FullScreenBtn_Click" Width="46" Height="32"
-                        Background="Transparent" BorderThickness="0" Padding="0"
-                        ToolTip="Full Screen">
-                    <TextBlock Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </Button>
-                <Button Click="CloseBtn_Click" Width="46" Height="32"
-                        Background="Transparent" BorderThickness="0" Padding="0"
-                        ToolTip="Close">
-                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </Button>
-            </StackPanel>
+            <ui:TitleBar x:Name="AppTitleBar" Grid.Column="1"
+                         CloseClicked="TitleBar_CloseClicked"
+                         MaximizeClicked="TitleBar_MaximizeClicked"
+                         ForceShutdown="False">
+                <ui:TitleBar.Header>
+                    <Border x:Name="AppBrandingBorder" Padding="12,0"
+                            Background="Transparent" MouseLeftButtonDown="BrandingBar_MouseDown">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="/Resources/PadForge-icon.png" Width="20" Height="20"
+                                   RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
+                            <TextBlock Text="PadForge" FontSize="12"
+                                       VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </ui:TitleBar.Header>
+                <ui:TitleBar.TrailingContent>
+                    <Button x:Name="FullScreenBtn" Click="FullScreenBtn_Click" Width="44" Height="30"
+                            Background="Transparent" BorderThickness="0" Padding="0"
+                            VerticalAlignment="Top" Margin="0"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid x:Name="LayoutRoot" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="LayoutRoot" Property="Background"
+                                                            Value="{Binding ButtonsBackground, ElementName=AppTitleBar}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                   Foreground="{Binding ButtonsForeground, ElementName=AppTitleBar}"/>
+                    </Button>
+                </ui:TitleBar.TrailingContent>
+            </ui:TitleBar>
         </Grid>
 
         <!-- ═══════════════════════════════════════════

@@ -202,6 +202,9 @@ namespace PadForge.Common.Input
                         UserDevice ud = FindOrCreateUserDevice(guid);
                         ud.LoadInstance(guid, name, guid, name);
                         ud.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
+                        ud.DevicePath = path;
+                        ud.VendorId = vid;
+                        ud.ProdId = pid;
                         ud.IsOnline = true;
                         ud.HasTouchpad = true;
                         _openedPtpHandles.Add(handle);

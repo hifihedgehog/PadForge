@@ -306,6 +306,7 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>補助</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>マウス</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>デバイス</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>すべてのキーボード (統合)</value></data>

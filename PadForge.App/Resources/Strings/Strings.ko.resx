@@ -306,6 +306,7 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>보조</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>마우스</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>키보드</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>터치패드</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>장치</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>모든 키보드 (병합)</value></data>

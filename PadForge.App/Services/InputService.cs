@@ -2620,6 +2620,7 @@ namespace PadForge.Services
                 InputDeviceType.Supplemental => "Supplemental",
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
+                InputDeviceType.Touchpad => "Touchpad",
                 _ => "Device"
             };
 

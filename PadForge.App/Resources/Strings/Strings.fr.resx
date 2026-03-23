@@ -306,6 +306,7 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>Supplémentaire</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>Souris</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Clavier</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Périphérique</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Tous les claviers (fusionnés)</value></data>

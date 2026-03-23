@@ -306,6 +306,7 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>Supplemental</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Device</value></data>
 
   <!-- ═══ Devices ═══ -->

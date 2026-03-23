@@ -538,6 +538,16 @@
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>No device mapped</value></data>
 
+  <!-- ═══ Touchpad Mapping Labels ═══ -->
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 Touch</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 Touch</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad Click</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Left Stick X</value></data>
   <data name="DevObj_LeftStickY" xml:space="preserve"><value>Left Stick Y</value></data>

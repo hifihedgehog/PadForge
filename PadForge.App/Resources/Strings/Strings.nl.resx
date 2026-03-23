@@ -832,5 +832,13 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Basafsnijding herstellen</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 aanraking</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 aanraking</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-klik</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
 
 </root>

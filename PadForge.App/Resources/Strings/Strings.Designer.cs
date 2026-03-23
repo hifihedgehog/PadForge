@@ -614,6 +614,14 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_InvHalf => Get("Mapping_InvHalf");
     public string Mapping_POV_Format => Get("Mapping_POV_Format");
     public string Mapping_NoDeviceMapped => Get("Mapping_NoDeviceMapped");
+    public string Mapping_TouchpadX1 => Get("Mapping_TouchpadX1");
+    public string Mapping_TouchpadY1 => Get("Mapping_TouchpadY1");
+    public string Mapping_TouchpadX2 => Get("Mapping_TouchpadX2");
+    public string Mapping_TouchpadY2 => Get("Mapping_TouchpadY2");
+    public string Mapping_TouchpadContact1 => Get("Mapping_TouchpadContact1");
+    public string Mapping_TouchpadContact2 => Get("Mapping_TouchpadContact2");
+    public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
+    public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");
     public string DevObj_LeftStickX => Get("DevObj_LeftStickX");
     public string DevObj_LeftStickY => Get("DevObj_LeftStickY");
     public string DevObj_LeftTrigger => Get("DevObj_LeftTrigger");

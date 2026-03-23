@@ -1086,6 +1086,7 @@
                                     <DataTemplate>
                                         <Button Content="{Binding RecordButtonText}"
                                                 Command="{Binding ToggleRecordCommand}"
+                                                IsEnabled="{Binding IsRecordable}"
                                                 Padding="6,2" Margin="2"
                                                 MinWidth="85" HorizontalAlignment="Center"/>
                                     </DataTemplate>

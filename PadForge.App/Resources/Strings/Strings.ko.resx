@@ -814,5 +814,13 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>저음 차단 초기화</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>왼쪽 모터 초기화</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>터치패드 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>터치패드 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>터치패드 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>터치패드 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>터치패드 1 터치</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>터치패드 2 터치</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>터치패드 클릭</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>터치패드</value></data>
 
 </root>

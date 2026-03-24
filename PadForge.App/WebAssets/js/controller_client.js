@@ -292,6 +292,71 @@
         img.style.clipPath = "inset(" + topClip + "% 0 0 0)";
     }
 
+    // ── Touchpad: multi-touch zone for DS4 touchpad ──
+    function setupTouchpadZone(ov, lay) {
+        var zone = document.createElement("div");
+        zone.className = "touch-zone";
+        zone.style.left = (ov.x / lay.baseWidth * 100) + "%";
+        zone.style.top = (ov.y / lay.baseHeight * 100) + "%";
+        zone.style.width = (ov.w / lay.baseWidth * 100) + "%";
+        zone.style.height = (ov.h / lay.baseHeight * 100) + "%";
+        zone.style.zIndex = "15";
+        container.appendChild(zone);
+
+        var finger0Id = null, finger1Id = null;
+
+        function normXY(touch) {
+            var rect = zone.getBoundingClientRect();
+            return {
+                x: Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)),
+                y: Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height))
+            };
+        }
+
+        zone.addEventListener("touchstart", function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var p = normXY(t);
+                if (finger0Id === null) {
+                    finger0Id = t.identifier;
+                    send({ type: "touchpad", finger: 0, x: p.x, y: p.y, down: true });
+                } else if (finger1Id === null) {
+                    finger1Id = t.identifier;
+                    send({ type: "touchpad", finger: 1, x: p.x, y: p.y, down: true });
+                }
+            }
+        }, { passive: false });
+
+        zone.addEventListener("touchmove", function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var p = normXY(t);
+                if (t.identifier === finger0Id)
+                    send({ type: "touchpad", finger: 0, x: p.x, y: p.y, down: true });
+                else if (t.identifier === finger1Id)
+                    send({ type: "touchpad", finger: 1, x: p.x, y: p.y, down: true });
+            }
+        }, { passive: false });
+
+        function onTouchEnd(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                if (t.identifier === finger0Id) {
+                    send({ type: "touchpad", finger: 0, x: 0, y: 0, down: false });
+                    finger0Id = null;
+                } else if (t.identifier === finger1Id) {
+                    send({ type: "touchpad", finger: 1, x: 0, y: 0, down: false });
+                    finger1Id = null;
+                }
+            }
+        }
+        zone.addEventListener("touchend", onTouchEnd, { passive: false });
+        zone.addEventListener("touchcancel", onTouchEnd, { passive: false });
+    }
+
     // ── D-Pad: single zone with angle-based 8-way detection ──
     function setupDpadZone(dpadOverlays) {
         var minX = Infinity, minY = Infinity, maxX = 0, maxY = 0;

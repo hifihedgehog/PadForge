@@ -245,6 +245,8 @@ namespace PadForge.Services
 
                 ctx.Response.ContentType = GetContentType(path);
                 ctx.Response.StatusCode = 200;
+                ctx.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                ctx.Response.Headers["Pragma"] = "no-cache";
                 stream.CopyTo(ctx.Response.OutputStream);
                 ctx.Response.Close();
             }

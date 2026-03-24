@@ -854,6 +854,29 @@ namespace PadForge.Engine
         }
 
         /// <summary>
+        /// Returns true if there is active mouse state for the given handle.
+        /// </summary>
+        public static bool HasMouseState(IntPtr hDevice) =>
+            hDevice != IntPtr.Zero && _mouseStates.ContainsKey(hDevice);
+
+        /// <summary>
+        /// Resolves the current Raw Input handle for a mouse device by path.
+        /// Handles can change after other HID registrations (e.g. PTP touchpad).
+        /// Returns IntPtr.Zero if no active handle matches the path.
+        /// </summary>
+        public static IntPtr ResolveMouseHandle(string devicePath)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return IntPtr.Zero;
+            foreach (var kvp in _mouseStates)
+            {
+                string name = GetDeviceName(kvp.Key);
+                if (!string.IsNullOrEmpty(name) && name.Equals(devicePath, StringComparison.OrdinalIgnoreCase))
+                    return kvp.Key;
+            }
+            return IntPtr.Zero;
+        }
+
+        /// <summary>
         /// Atomically consumes accumulated mouse deltas for a specific device.
         /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to consume summed deltas from all mice.
         /// </summary>
@@ -1064,6 +1087,7 @@ namespace PadForge.Engine
                 else if (header.dwType == RIM_TYPEMOUSE)
                 {
                     var mouse = Marshal.PtrToStructure<RAWMOUSE>(dataPtr);
+
                     MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
 
                     if (mouse.lLastX != 0)

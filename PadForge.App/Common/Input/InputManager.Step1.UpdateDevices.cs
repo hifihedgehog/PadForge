@@ -247,6 +247,30 @@ namespace PadForge.Common.Input
                     _ptpMergedCreated = true;
                     changed = true;
                 }
+                // PTP claims the digitizer collection, which causes Windows to
+                // send synthetic mouse WM_INPUT with hDevice=0 instead of the
+                // original per-device handle. Redirect all mouse wrappers that
+                // share hardware with a PTP device to IntPtr.Zero.
+                if (!_ptpMouseRedirected)
+                {
+                    _ptpMouseRedirected = true;
+                    var devices = SettingsManager.UserDevices;
+                    if (devices != null)
+                    {
+                        lock (devices.SyncRoot)
+                        {
+                            foreach (var ud in devices.Items)
+                            {
+                                if (ud.IsOnline && ud.Device is SdlMouseWrapper mw &&
+                                    mw.RawInputHandle != IntPtr.Zero &&
+                                    mw.RawInputHandle != RawInputListener.AggregateMouseHandle)
+                                {
+                                    mw.UpdateHandle(IntPtr.Zero);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else if (_ptpMergedCreated)
             {
@@ -535,6 +559,7 @@ namespace PadForge.Common.Input
         /// <summary>Fixed GUID for the merged touchpad aggregate device.</summary>
         private static readonly Guid PtpMergedGuid = new("50545000-ffff-ffff-5054-505450505450");
         private bool _ptpMergedCreated;
+        private bool _ptpMouseRedirected;
 
         /// <summary>
         /// Tracked Raw Input mouse device handles.
@@ -598,30 +623,13 @@ namespace PadForge.Common.Input
                 if (_openedMouseHandles.Contains(mouse.Handle))
                     continue;
 
-                // Handle may have changed for the same physical device (e.g. after
-                // PTP registration changes device topology). Check by path.
+                // Skip if an existing device with the same path is already tracked
+                // (possibly redirected to IntPtr.Zero by PTP). Don't re-create it.
                 if (!string.IsNullOrEmpty(mouse.DevicePath))
                 {
-                    IntPtr staleHandle = IntPtr.Zero;
-                    foreach (var tracked in _openedMouseHandles)
-                    {
-                        var existingUd = FindOnlineDeviceByHandle(tracked);
-                        if (existingUd != null && existingUd.DevicePath == mouse.DevicePath)
-                        {
-                            staleHandle = tracked;
-                            break;
-                        }
-                    }
-                    if (staleHandle != IntPtr.Zero)
-                    {
-                        // Same device, new handle — update tracking and wrapper.
-                        _openedMouseHandles.Remove(staleHandle);
-                        _openedMouseHandles.Add(mouse.Handle);
-                        var existingUd = FindOnlineDeviceByDevicePath(mouse.DevicePath);
-                        if (existingUd?.Device is SdlMouseWrapper existingWrapper)
-                            existingWrapper.UpdateHandle(mouse.Handle);
+                    var existingUd = FindOnlineDeviceByDevicePath(mouse.DevicePath);
+                    if (existingUd != null)
                         continue;
-                    }
                 }
 
                 try
@@ -665,25 +673,49 @@ namespace PadForge.Common.Input
                 currentSet.Add(currentDevices[i].Handle);
 
             var disconnected = new List<IntPtr>();
+            var redirected = new List<IntPtr>();
             bool changed = false;
 
             foreach (IntPtr handle in trackedHandles)
             {
                 if (!currentSet.Contains(handle))
                 {
-                    // Find by InstanceGuid (built from device path, same as wrapper).
                     UserDevice ud = FindOnlineDeviceByHandle(handle);
                     if (ud != null)
                     {
-                        MarkDeviceOffline(ud);
-                        changed = true;
+                        // When PTP is active, the trackpad's mouse collection
+                        // disappears from GetRawInputDeviceList but synthetic
+                        // mouse WM_INPUT still arrives at hDevice=0. Keep the
+                        // device online and redirect its wrapper to IntPtr.Zero.
+                        if (_ptpReader != null && _ptpReader.IsAvailable &&
+                            ud.Device is SdlMouseWrapper mouseWrapper)
+                        {
+                            mouseWrapper.UpdateHandle(IntPtr.Zero);
+                            redirected.Add(handle);
+                        }
+                        else
+                        {
+                            MarkDeviceOffline(ud);
+                            changed = true;
+                            disconnected.Add(handle);
+                        }
                     }
-                    disconnected.Add(handle);
+                    else
+                    {
+                        disconnected.Add(handle);
+                    }
                 }
             }
 
             foreach (IntPtr handle in disconnected)
                 trackedHandles.Remove(handle);
+
+            // Redirected devices: swap old handle for IntPtr.Zero in tracking.
+            foreach (IntPtr handle in redirected)
+            {
+                trackedHandles.Remove(handle);
+                trackedHandles.Add(IntPtr.Zero);
+            }
 
             return changed;
         }

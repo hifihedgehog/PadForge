@@ -477,7 +477,7 @@ namespace PadForge.Engine
         ///   2. RIDI_DEVICEINFO — uses the Raw Input API to get the HID sub-struct
         ///   3. Device path parsing — extracts VID_xxxx&amp;PID_xxxx from the path string
         /// </summary>
-        private static void GetDeviceVidPid(IntPtr hDevice, string devicePath, out ushort vendorId, out ushort productId)
+        public static void GetDeviceVidPid(IntPtr hDevice, string devicePath, out ushort vendorId, out ushort productId)
         {
             vendorId = 0;
             productId = 0;
@@ -571,7 +571,7 @@ namespace PadForge.Engine
         ///   4. VID:PID label
         ///   5. Generic "Keyboard" / "Mouse"
         /// </summary>
-        private static string ExtractFriendlyName(string devicePath, uint type)
+        public static string ExtractFriendlyName(string devicePath, uint type)
         {
             string fallback = type == RIM_TYPEKEYBOARD ? "Keyboard" : "Mouse";
             if (string.IsNullOrEmpty(devicePath)) return fallback;

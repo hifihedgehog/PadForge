@@ -93,6 +93,17 @@ namespace PadForge.Common.Input
 
         public void SubmitGamepadState(Gamepad gp, TouchpadState tp)
         {
+            try { SubmitGamepadStateCore(gp, tp); }
+            catch (Exception ex)
+            {
+                try { System.IO.File.AppendAllText(@"C:\PadForge\ds4_crash.log",
+                    $"[{DateTime.Now:HH:mm:ss}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}\n\n"); }
+                catch { }
+            }
+        }
+
+        private void SubmitGamepadStateCore(Gamepad gp, TouchpadState tp)
+        {
             // Skip if nothing changed.
             if (gp.Equals(_lastState) && tp.Equals(_lastTouchpad))
                 return;

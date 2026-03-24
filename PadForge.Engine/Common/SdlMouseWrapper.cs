@@ -116,6 +116,9 @@ namespace PadForge.Engine
         {
             var state = new CustomInputState();
 
+            // _rawInputHandle is kept up-to-date by Step 1. When PTP claims the
+            // trackpad's mouse collection, Step 1 redirects all mouse wrappers to
+            // IntPtr.Zero (Windows' synthetic mouse output at hDevice=0).
             RawInputListener.ConsumeMouseDelta(_rawInputHandle, out int dx, out int dy);
             state.Axis[0] = Math.Clamp(AxisCenter + (int)(dx * MotionScale), 0, 65535);
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);

@@ -221,6 +221,67 @@ namespace PadForge.Common
             };
             if (localized != null) return localized;
 
+            // Keyboard key names (invariant Engine names → localized display).
+            var keyLocalized = name switch
+            {
+                "Backspace" => s.Key_Backspace,
+                "Tab" => s.Key_Tab,
+                "Enter" => s.Key_Enter,
+                "Shift" => s.Key_Shift,
+                "Ctrl" => s.Key_Control,
+                "Alt" => s.Key_Alt,
+                "Pause" => s.Key_Pause,
+                "CapsLock" => s.Key_CapsLock,
+                "Escape" => s.Key_Escape,
+                "Space" => s.Key_Space,
+                "PageUp" => s.Key_PageUp,
+                "PageDown" => s.Key_PageDown,
+                "End" => s.Key_End,
+                "Home" => s.Key_Home,
+                "Left" => s.Key_Left,
+                "Up" => s.Key_Up,
+                "Right" => s.Key_Right,
+                "Down" => s.Key_Down,
+                "PrintScreen" => s.Key_PrintScreen,
+                "Insert" => s.Key_Insert,
+                "Delete" => s.Key_Delete,
+                "LWin" => s.Key_LWin,
+                "RWin" => s.Key_RWin,
+                "Apps" => s.Key_Apps,
+                "Numpad *" => s.Key_NumpadMultiply,
+                "Numpad +" => s.Key_NumpadAdd,
+                "Numpad -" => s.Key_NumpadSubtract,
+                "Numpad ." => s.Key_NumpadDecimal,
+                "Numpad /" => s.Key_NumpadDivide,
+                "NumLock" => s.Key_NumLock,
+                "ScrollLock" => s.Key_ScrollLock,
+                "LShift" => s.Key_LeftShift,
+                "RShift" => s.Key_RightShift,
+                "LCtrl" => s.Key_LeftCtrl,
+                "RCtrl" => s.Key_RightCtrl,
+                "LAlt" => s.Key_LeftAlt,
+                "RAlt" => s.Key_RightAlt,
+                "Semicolon" => s.Key_Semicolon,
+                "Equals" => s.Key_Equals,
+                "Comma" => s.Key_Comma,
+                "Minus" => s.Key_Minus,
+                "Period" => s.Key_Period,
+                "Slash" => s.Key_Slash,
+                "Grave" => s.Key_Grave,
+                "LeftBracket" => s.Key_LeftBracket,
+                "Backslash" => s.Key_Backslash,
+                "RightBracket" => s.Key_RightBracket,
+                "Apostrophe" => s.Key_Apostrophe,
+                _ => null
+            };
+            if (keyLocalized != null) return keyLocalized;
+
+            // Numpad digits: "Numpad 0" through "Numpad 9"
+            if (name.StartsWith("Numpad ", System.StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(7), out int numpadIdx))
+                return string.Format(s.Key_Numpad, numpadIdx);
+
+            // Parametric patterns: "Slider 0", "POV 2", "Button 5"
             if (name.StartsWith("Slider ", System.StringComparison.Ordinal) &&
                 int.TryParse(name.AsSpan(7), out int sliderIdx))
                 return string.Format(s.DevObj_Slider, sliderIdx);

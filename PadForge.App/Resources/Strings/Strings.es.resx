@@ -824,5 +824,21 @@
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Toque del touchpad 2</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic del touchpad</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>Teclado numérico *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>Teclado numérico +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>Teclado numérico -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>Teclado numérico .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>Teclado numérico /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>Punto y coma</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>Igual</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>Coma</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>Menos</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>Punto</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>Barra</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>Acento grave</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>Corchete izquierdo</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>Barra invertida</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>Corchete derecho</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>Apóstrofo</value></data>
 
 </root>

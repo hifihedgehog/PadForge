@@ -402,6 +402,10 @@ namespace PadForge.Services
                 }
                 else if (type == "touchpad")
                 {
+                    // DS4 controller page sends touchpad messages from a gamepad
+                    // connection — enable touchpad capability on first touch.
+                    device.HasTouchpad = true;
+
                     if (root.TryGetProperty("click", out _))
                     {
                         device.UpdateTouchpadClick(true);

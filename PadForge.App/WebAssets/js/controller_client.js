@@ -308,7 +308,7 @@
         zone.style.borderRadius = "8px";
         zone.style.border = "2px solid rgba(255,255,255,0.3)";
         zone.style.background = "rgba(255,255,255,0.05)";
-        container.appendChild(zone);
+        touchLayer.appendChild(zone);
 
         var finger0Id = null, finger1Id = null;
 

@@ -197,9 +197,9 @@
             }
         });
 
-        // Delay WebSocket connect slightly to ensure the HTTP response
-        // for this page completes before the server processes the upgrade.
-        setTimeout(connect, 100);
+        // Delay WebSocket connect to ensure the HTTP response for this
+        // page completes and the server's accept loop is ready.
+        setTimeout(connect, 500);
     })();
     </script>
 </body>

@@ -725,7 +725,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>응용 프로그램</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>절전</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>숫자 키패드</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>숫자 키패드 {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>구분 기호</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>

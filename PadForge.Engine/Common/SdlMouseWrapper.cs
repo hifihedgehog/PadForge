@@ -57,8 +57,15 @@ namespace PadForge.Engine
                     var devices = RawInputListener.EnumerateMice();
                     for (int i = 0; i < devices.Length; i++)
                     {
-                        if (devices[i].Handle == _rawInputHandle)
+                        // Match by path (handles can change after PTP registration).
+                        if (!string.IsNullOrEmpty(DevicePath) &&
+                            devices[i].DevicePath == DevicePath)
+                        {
+                            // Update stale handle if it changed.
+                            if (devices[i].Handle != _rawInputHandle)
+                                _rawInputHandle = devices[i].Handle;
                             return true;
+                        }
                     }
                     return false;
                 }
@@ -72,6 +79,12 @@ namespace PadForge.Engine
                 return false;
             }
         }
+
+        /// <summary>
+        /// Updates the Raw Input handle when the same physical device is
+        /// re-enumerated with a new handle (e.g. after PTP registration).
+        /// </summary>
+        public void UpdateHandle(IntPtr newHandle) => _rawInputHandle = newHandle;
 
         /// <summary>
         /// Opens the mouse from a Raw Input device enumeration result.

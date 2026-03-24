@@ -729,7 +729,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>Applicazioni</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>Sospensione</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>Tastierino numerico</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>Tastierino numerico {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Separatore</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Bloc Num</value></data>

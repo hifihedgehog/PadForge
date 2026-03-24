@@ -53,7 +53,7 @@ namespace PadForge.Engine
         public bool HasHaptic => false;
         public bool HasGyro => false;
         public bool HasAccel => false;
-        public bool HasTouchpad { get; private set; }
+        public bool HasTouchpad { get; set; }
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;

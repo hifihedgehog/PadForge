@@ -253,26 +253,34 @@ namespace PadForge.Common.Input
                 // share hardware with a PTP device to IntPtr.Zero.
                 // Only redirect mice that share hardware with a PTP device
                 // (same VID/PID = same physical chip, different HID collection).
-                if (!_ptpMouseRedirected)
+                // Retry each cycle until at least one redirect succeeds, since
+                // PTP device VID/PID isn't known until first touchpad contact.
+                if (!_ptpMouseRedirected && ptpDevices.Length > 0)
                 {
-                    _ptpMouseRedirected = true;
                     var ptpVidPids = new HashSet<(ushort, ushort)>();
                     foreach (var (_, _, _, vid, pid) in ptpDevices)
-                        ptpVidPids.Add((vid, pid));
-
-                    var devices = SettingsManager.UserDevices;
-                    if (devices != null)
                     {
-                        lock (devices.SyncRoot)
+                        if (vid != 0 || pid != 0)
+                            ptpVidPids.Add((vid, pid));
+                    }
+
+                    if (ptpVidPids.Count > 0)
+                    {
+                        var devices = SettingsManager.UserDevices;
+                        if (devices != null)
                         {
-                            foreach (var ud in devices.Items)
+                            lock (devices.SyncRoot)
                             {
-                                if (ud.IsOnline && ud.Device is SdlMouseWrapper mw &&
-                                    mw.RawInputHandle != IntPtr.Zero &&
-                                    mw.RawInputHandle != RawInputListener.AggregateMouseHandle &&
-                                    ptpVidPids.Contains((ud.VendorId, ud.ProdId)))
+                                foreach (var ud in devices.Items)
                                 {
-                                    mw.UpdateHandle(IntPtr.Zero);
+                                    if (ud.IsOnline && ud.Device is SdlMouseWrapper mw &&
+                                        mw.RawInputHandle != IntPtr.Zero &&
+                                        mw.RawInputHandle != RawInputListener.AggregateMouseHandle &&
+                                        ptpVidPids.Contains((ud.VendorId, ud.ProdId)))
+                                    {
+                                        mw.UpdateHandle(IntPtr.Zero);
+                                        _ptpMouseRedirected = true;
+                                    }
                                 }
                             }
                         }

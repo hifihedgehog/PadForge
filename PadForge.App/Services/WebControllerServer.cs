@@ -297,10 +297,14 @@ namespace PadForge.Services
                 // Create device — reuse pad number for reconnecting clients.
                 var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
                 bool isTouchpadClient = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
+                bool hasTouchpad = isTouchpadClient ||
+                    ctx.Request.QueryString["touchpad"] == "1";
                 var padId = _clientPadIds.GetOrAdd(clientId,
                     _ => Interlocked.Increment(ref _nextPadId));
                 var name = isTouchpadClient ? $"Web Touchpad {padId}" : $"Web Controller {padId}";
                 var device = new WebControllerDevice(clientId, name, isTouchpadClient);
+                if (hasTouchpad && !isTouchpadClient)
+                    device.HasTouchpad = true; // DS4 gamepad with touchpad zone
                 device.SetConnected(true);
 
                 var cts = new CancellationTokenSource();

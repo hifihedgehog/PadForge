@@ -197,10 +197,9 @@
             }
         });
 
-        if (document.readyState === 'loading')
-            document.addEventListener('DOMContentLoaded', connect);
-        else
-            connect();
+        // Delay WebSocket connect slightly to ensure the HTTP response
+        // for this page completes before the server processes the upgrade.
+        setTimeout(connect, 100);
     })();
     </script>
 </body>

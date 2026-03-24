@@ -3071,36 +3071,20 @@ namespace PadForge
         private void OnNewProfile(object sender, EventArgs e)
         {
             var dialog = new Views.ProfileDialog { Owner = this };
-            if (dialog.ShowDialog() != true)
-                return;
+            if (dialog.ShowDialog() != true) return;
 
             string name = dialog.ProfileName;
             string exePaths = string.Join("|", dialog.ExecutablePaths);
-
-            // Create an empty shell profile — no VCs, no device assignments.
-            var profile = new ProfileData
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                Name = name.Trim(),
-                ExecutableNames = exePaths,
-                Entries = Array.Empty<ProfileEntry>(),
-                PadSettings = Array.Empty<PadSetting>(),
-                SlotCreated = new bool[InputManager.MaxPads],
-                SlotEnabled = new bool[InputManager.MaxPads],
-                SlotControllerTypes = new int[InputManager.MaxPads],
-            };
-
-            SettingsManager.Profiles.Add(profile);
+            var profile = _inputService.CreateEmptyProfile(name, exePaths);
 
             var listItem = new ViewModels.ProfileListItem
             {
                 Id = profile.Id,
                 Name = profile.Name,
-                Executables = FormatExePaths(exePaths),
+                Executables = InputService.FormatExePaths(exePaths),
             };
             SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
             _viewModel.Settings.ProfileItems.Add(listItem);
-
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileCreatedEmpty_Format, name);
         }
@@ -3108,47 +3092,22 @@ namespace PadForge
         private void OnSaveAsProfile(object sender, EventArgs e)
         {
             var dialog = new Views.ProfileDialog { Owner = this };
-            if (dialog.ShowDialog() != true)
-                return;
+            if (dialog.ShowDialog() != true) return;
 
             string name = dialog.ProfileName;
-            // Store full paths pipe-separated.
             string exePaths = string.Join("|", dialog.ExecutablePaths);
-
-            // Snapshot current settings into a new profile.
-            var snapshot = _inputService.SnapshotCurrentProfile();
-            snapshot.Id = Guid.NewGuid().ToString("N");
-            snapshot.Name = name.Trim();
-            snapshot.ExecutableNames = exePaths;
-
-            SettingsManager.Profiles.Add(snapshot);
+            var snapshot = _inputService.CreateSnapshotProfile(name, exePaths);
 
             var listItem = new ViewModels.ProfileListItem
             {
                 Id = snapshot.Id,
                 Name = snapshot.Name,
-                Executables = FormatExePaths(exePaths),
+                Executables = InputService.FormatExePaths(exePaths),
             };
             SettingsService.UpdateTopologyCounts(listItem, snapshot.SlotCreated, snapshot.SlotControllerTypes);
             _viewModel.Settings.ProfileItems.Add(listItem);
-
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileCreated_Format, name);
-        }
-
-        /// <summary>
-        /// Formats pipe-separated full paths into a display string showing just file names.
-        /// </summary>
-        private static string FormatExePaths(string pipeSeparatedPaths)
-        {
-            if (string.IsNullOrEmpty(pipeSeparatedPaths))
-                return string.Empty;
-
-            var parts = pipeSeparatedPaths.Split('|', StringSplitOptions.RemoveEmptyEntries);
-            var names = new string[parts.Length];
-            for (int i = 0; i < parts.Length; i++)
-                names[i] = System.IO.Path.GetFileName(parts[i]);
-            return string.Join(", ", names);
         }
 
         private void OnDeleteProfile(object sender, EventArgs e)
@@ -3156,22 +3115,12 @@ namespace PadForge
             var selected = _viewModel.Settings.SelectedProfile;
             if (selected == null) return;
 
-            SettingsManager.Profiles.RemoveAll(p => p.Id == selected.Id);
-
+            bool wasActive = _inputService.DeleteProfile(selected.Id);
             _viewModel.Settings.ProfileItems.Remove(selected);
             _viewModel.Settings.SelectedProfile = null;
-
-            if (SettingsManager.ActiveProfileId == selected.Id)
-            {
-                SettingsManager.ActiveProfileId = null;
+            if (wasActive)
                 _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
-                // Restore the default profile state so the deleted profile's
-                // topology doesn't persist and overwrite the default snapshot.
-                _inputService.ApplyDefaultProfile();
-            }
-
             _settingsService.MarkDirty();
-            _inputService.RefreshProfileTopology();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileDeleted_Format, selected.Name);
         }
 
@@ -3189,23 +3138,16 @@ namespace PadForge
 
             var dialog = new Views.ProfileDialog { Owner = this };
             dialog.LoadForEdit(profile.Name, exePaths);
-
-            if (dialog.ShowDialog() != true)
-                return;
+            if (dialog.ShowDialog() != true) return;
 
             string newName = dialog.ProfileName;
             string newExePaths = string.Join("|", dialog.ExecutablePaths);
-
-            profile.Name = newName;
-            profile.ExecutableNames = newExePaths;
+            _inputService.EditProfile(selected.Id, newName, newExePaths);
 
             selected.Name = newName;
-            selected.Executables = FormatExePaths(newExePaths);
-
-            // Update active profile label if this profile is currently active.
-            if (SettingsManager.ActiveProfileId == profile.Id)
+            selected.Executables = InputService.FormatExePaths(newExePaths);
+            if (SettingsManager.ActiveProfileId == selected.Id)
                 _viewModel.Settings.ActiveProfileInfo = newName;
-
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileUpdated_Format, newName);
         }
@@ -3215,44 +3157,21 @@ namespace PadForge
             var selected = _viewModel.Settings.SelectedProfile;
             if (selected == null) return;
 
-            // Loading the Default profile is equivalent to reverting.
-            if (selected.IsDefault)
-            {
-                OnRevertToDefault(sender, e);
-                return;
-            }
+            if (selected.IsDefault) { OnRevertToDefault(sender, e); return; }
 
+            _inputService.LoadProfile(selected.Id);
             var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
-            if (profile == null) return;
-
-            // Already on this profile — nothing to do.
-            if (SettingsManager.ActiveProfileId == profile.Id)
-                return;
-
-            // Save outgoing profile state before switching.
-            _inputService.SaveActiveProfileState();
-
-            // Set ActiveProfileId BEFORE ApplyProfile so that
-            // RefreshActiveProfileTopologyLabel updates the correct profile.
-            SettingsManager.ActiveProfileId = profile.Id;
-            _viewModel.Settings.ActiveProfileInfo = profile.Name;
-            _inputService.ApplyProfile(profile);
-            _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileLoaded_Format, profile.Name);
+            if (profile != null)
+            {
+                _viewModel.Settings.ActiveProfileInfo = profile.Name;
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileLoaded_Format, profile.Name);
+            }
         }
 
         private void OnRevertToDefault(object sender, EventArgs e)
         {
-            if (SettingsManager.ActiveProfileId == null)
-                return;
-
-            // Save outgoing profile state before reverting.
-            _inputService.SaveActiveProfileState();
-
-            // Set ActiveProfileId BEFORE ApplyProfile so that
-            // RefreshActiveProfileTopologyLabel updates the correct profile.
-            SettingsManager.ActiveProfileId = null;
+            _inputService.RevertToDefaultProfile();
             _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
-            _inputService.ApplyDefaultProfile();
             _viewModel.StatusText = Strings.Instance.Status_ProfileRevertedDefault;
         }
 

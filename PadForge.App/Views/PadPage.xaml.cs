@@ -578,7 +578,7 @@ namespace PadForge.Views
             foreach (var obj in ud.DeviceObjects)
             {
                 if (obj.IsAxis)
-                    axes.Add(new AxisPickerItem(obj.InputIndex, Services.InputService.LocalizeObjectName(obj.Name)));
+                    axes.Add(new AxisPickerItem(obj.InputIndex, Common.MappingDisplayResolver.LocalizeObjectName(obj.Name)));
             }
             cb.ItemsSource = axes;
         }

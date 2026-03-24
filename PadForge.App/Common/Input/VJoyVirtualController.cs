@@ -33,14 +33,7 @@ namespace PadForge.Common.Input
     {
         private const string Dll = "setupapi.dll";
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SP_DEVINFO_DATA
-        {
-            public int cbSize;
-            public Guid ClassGuid;
-            public int DevInst;
-            public IntPtr Reserved;
-        }
+        // SP_DEVINFO_DATA shared via SetupApiInterop.SP_DEVINFO_DATA
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct SP_CLASSINSTALL_HEADER
@@ -62,19 +55,19 @@ namespace PadForge.Common.Input
         internal static extern IntPtr SetupDiGetClassDevsW(ref Guid ClassGuid, string Enumerator, IntPtr hwndParent, int Flags);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiEnumDeviceInfo(IntPtr DeviceInfoSet, int MemberIndex, ref SP_DEVINFO_DATA DeviceInfoData);
+        internal static extern bool SetupDiEnumDeviceInfo(IntPtr DeviceInfoSet, int MemberIndex, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport(Dll, SetLastError = true, CharSet = CharSet.Unicode)]
-        internal static extern bool SetupDiGetDeviceInstanceIdW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, char[] DeviceInstanceId, int DeviceInstanceIdSize, out int RequiredSize);
+        internal static extern bool SetupDiGetDeviceInstanceIdW(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData, char[] DeviceInstanceId, int DeviceInstanceIdSize, out int RequiredSize);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiSetClassInstallParamsW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, ref SP_PROPCHANGE_PARAMS ClassInstallParams, int ClassInstallParamsSize);
+        internal static extern bool SetupDiSetClassInstallParamsW(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData, ref SP_PROPCHANGE_PARAMS ClassInstallParams, int ClassInstallParamsSize);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+        internal static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiRemoveDevice(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+        internal static extern bool SetupDiRemoveDevice(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport(Dll, SetLastError = true)]
         internal static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
@@ -104,7 +97,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -159,7 +152,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -211,7 +204,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -248,7 +241,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -2092,11 +2085,11 @@ public static class PF_SetupApi {{
     [DllImport(""setupapi.dll"", SetLastError = true)]
     public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
     [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SP_DEVINFO_DATA DeviceInfoData);
+    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
     [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
+    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
     [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
     [DllImport(""setupapi.dll"", SetLastError = true)]
     public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
     [DllImport(""newdev.dll"", SetLastError = true, CharSet = CharSet.Unicode)]

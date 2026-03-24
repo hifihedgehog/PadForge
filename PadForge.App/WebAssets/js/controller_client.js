@@ -33,7 +33,10 @@
 
     function connect() {
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
-        ws = new WebSocket(proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId));
+        var hasTouchpad = layout && layout.overlays && layout.overlays.some(function(o) { return o.type === "touchpad"; });
+        var wsUrl = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId);
+        if (hasTouchpad) wsUrl += "&touchpad=1";
+        ws = new WebSocket(wsUrl);
 
         ws.onopen = function () {
             console.log("[PadForge] WebSocket connected");
@@ -124,6 +127,7 @@
 
         for (var i = 0; i < layout.overlays.length; i++) {
             var ov = layout.overlays[i];
+            if (ov.type === "touchpad") continue; // no image — handled by setupTouchpadZone
             var img = document.createElement("img");
             img.src = "/img/" + ov.image;
             img.dataset.target = ov.target;

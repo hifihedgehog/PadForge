@@ -251,9 +251,15 @@ namespace PadForge.Common.Input
                 // send synthetic mouse WM_INPUT with hDevice=0 instead of the
                 // original per-device handle. Redirect all mouse wrappers that
                 // share hardware with a PTP device to IntPtr.Zero.
+                // Only redirect mice that share hardware with a PTP device
+                // (same VID/PID = same physical chip, different HID collection).
                 if (!_ptpMouseRedirected)
                 {
                     _ptpMouseRedirected = true;
+                    var ptpVidPids = new HashSet<(ushort, ushort)>();
+                    foreach (var (_, _, _, vid, pid) in ptpDevices)
+                        ptpVidPids.Add((vid, pid));
+
                     var devices = SettingsManager.UserDevices;
                     if (devices != null)
                     {
@@ -263,7 +269,8 @@ namespace PadForge.Common.Input
                             {
                                 if (ud.IsOnline && ud.Device is SdlMouseWrapper mw &&
                                     mw.RawInputHandle != IntPtr.Zero &&
-                                    mw.RawInputHandle != RawInputListener.AggregateMouseHandle)
+                                    mw.RawInputHandle != RawInputListener.AggregateMouseHandle &&
+                                    ptpVidPids.Contains((ud.VendorId, ud.ProdId)))
                                 {
                                     mw.UpdateHandle(IntPtr.Zero);
                                 }

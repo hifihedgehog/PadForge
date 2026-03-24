@@ -80,9 +80,9 @@
                 statusEl.className = 'status connected';
             };
             ws.onclose = function() {
-                statusEl.textContent = 'Disconnected';
+                statusEl.textContent = 'Reconnecting...';
                 statusEl.className = 'status';
-                setTimeout(connect, 2000);
+                setTimeout(connect, 500);
             };
             ws.onerror = function() { ws.close(); };
         }

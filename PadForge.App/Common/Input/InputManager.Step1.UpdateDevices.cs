@@ -598,6 +598,32 @@ namespace PadForge.Common.Input
                 if (_openedMouseHandles.Contains(mouse.Handle))
                     continue;
 
+                // Handle may have changed for the same physical device (e.g. after
+                // PTP registration changes device topology). Check by path.
+                if (!string.IsNullOrEmpty(mouse.DevicePath))
+                {
+                    IntPtr staleHandle = IntPtr.Zero;
+                    foreach (var tracked in _openedMouseHandles)
+                    {
+                        var existingUd = FindOnlineDeviceByHandle(tracked);
+                        if (existingUd != null && existingUd.DevicePath == mouse.DevicePath)
+                        {
+                            staleHandle = tracked;
+                            break;
+                        }
+                    }
+                    if (staleHandle != IntPtr.Zero)
+                    {
+                        // Same device, new handle — update tracking and wrapper.
+                        _openedMouseHandles.Remove(staleHandle);
+                        _openedMouseHandles.Add(mouse.Handle);
+                        var existingUd = FindOnlineDeviceByDevicePath(mouse.DevicePath);
+                        if (existingUd?.Device is SdlMouseWrapper existingWrapper)
+                            existingWrapper.UpdateHandle(mouse.Handle);
+                        continue;
+                    }
+                }
+
                 try
                 {
                     var wrapper = new SdlMouseWrapper();
@@ -752,6 +778,23 @@ namespace PadForge.Common.Input
                     if (d.Device is SdlKeyboardWrapper kb && kb.RawInputHandle == handle)
                         return d;
                     if (d.Device is SdlMouseWrapper mouse && mouse.RawInputHandle == handle)
+                        return d;
+                }
+                return null;
+            }
+        }
+
+        private UserDevice FindOnlineDeviceByDevicePath(string path)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null || string.IsNullOrEmpty(path)) return null;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d.IsOnline && d.DevicePath == path)
                         return d;
                 }
                 return null;

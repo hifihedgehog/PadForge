@@ -185,13 +185,15 @@ namespace PadForge.Services
 
                 if (ctx.Request.IsWebSocketRequest)
                 {
-                    // Handle WebSocket on thread pool.
                     _ = Task.Run(() => HandleWebSocketAsync(ctx));
                 }
                 else
                 {
-                    // Serve static files.
-                    ServeStaticFile(ctx);
+                    // Serve static files on thread pool so the accept loop
+                    // can immediately process the next request (e.g. WebSocket
+                    // upgrade that arrives while a page is still being served).
+                    var captured = ctx;
+                    _ = Task.Run(() => ServeStaticFile(captured));
                 }
             }
         }

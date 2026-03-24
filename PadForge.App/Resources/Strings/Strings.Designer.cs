@@ -793,6 +793,24 @@ public class Strings : INotifyPropertyChanged
     public string Key_LaunchMediaSelect => Get("Key_LaunchMediaSelect");
     public string Key_LaunchApp1 => Get("Key_LaunchApp1");
     public string Key_LaunchApp2 => Get("Key_LaunchApp2");
+    // Numpad operators
+    public string Key_NumpadMultiply => Get("Key_NumpadMultiply");
+    public string Key_NumpadAdd => Get("Key_NumpadAdd");
+    public string Key_NumpadSubtract => Get("Key_NumpadSubtract");
+    public string Key_NumpadDecimal => Get("Key_NumpadDecimal");
+    public string Key_NumpadDivide => Get("Key_NumpadDivide");
+    // OEM keys
+    public string Key_Semicolon => Get("Key_Semicolon");
+    public string Key_Equals => Get("Key_Equals");
+    public string Key_Comma => Get("Key_Comma");
+    public string Key_Minus => Get("Key_Minus");
+    public string Key_Period => Get("Key_Period");
+    public string Key_Slash => Get("Key_Slash");
+    public string Key_Grave => Get("Key_Grave");
+    public string Key_LeftBracket => Get("Key_LeftBracket");
+    public string Key_Backslash => Get("Key_Backslash");
+    public string Key_RightBracket => Get("Key_RightBracket");
+    public string Key_Apostrophe => Get("Key_Apostrophe");
     public string Mouse_LeftClick => Get("Mouse_LeftClick");
     public string Mouse_RightClick => Get("Mouse_RightClick");
     public string Mouse_MiddleClick => Get("Mouse_MiddleClick");

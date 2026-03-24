@@ -579,6 +579,24 @@
   <data name="DevObj_Button" xml:space="preserve"><value>Button {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Axis {0}</value></data>
 
+  <!-- ═══ Keyboard Key Names (OEM/Numpad operators — not already in VirtualKey section) ═══ -->
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numpad *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>Numpad +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>Numpad -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>Numpad .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>Numpad /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>Semicolon</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>Equals</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>Comma</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>Minus</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>Period</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>Slash</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>Grave</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>Left Bracket</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>Backslash</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>Right Bracket</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrophe</value></data>
+
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profiles</value></data>
   <data name="Profiles_Management" xml:space="preserve"><value>Profile Management</value></data>

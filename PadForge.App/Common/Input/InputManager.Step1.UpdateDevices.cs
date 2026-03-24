@@ -71,6 +71,9 @@ namespace PadForge.Common.Input
             if (!_sdlInitialized)
                 return;
 
+            // Start/stop PTP reader based on whether any DS4 slot needs touchpad.
+            EnsurePtpReaderState();
+
             bool changed = false;
 
             // SDL3: Get array of instance IDs for all connected joysticks.
@@ -470,6 +473,69 @@ namespace PadForge.Common.Input
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
                 return ud;
+            }
+        }
+
+        /// <summary>
+        /// Starts the PTP reader only when a DS4 slot has a touchpad device assigned.
+        /// Stops it when no DS4 slot needs touchpad, restoring mouse reports.
+        /// </summary>
+        private void EnsurePtpReaderState()
+        {
+            if (_ptpReader == null) return;
+
+            bool needPtp = false;
+            var settings = SettingsManager.UserSettings;
+            if (settings != null)
+            {
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                    {
+                        int slot = us.MapTo;
+                        if (slot < 0 || slot >= MaxPads) continue;
+                        if (SlotControllerTypes[slot] != VirtualControllerType.DualShock4) continue;
+
+                        // Check if the mapped device is a touchpad.
+                        var devices = SettingsManager.UserDevices;
+                        if (devices == null) continue;
+                        lock (devices.SyncRoot)
+                        {
+                            foreach (var ud in devices.Items)
+                            {
+                                if (ud.InstanceGuid == us.InstanceGuid && ud.HasTouchpad)
+                                {
+                                    needPtp = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (needPtp) break;
+                    }
+                }
+            }
+
+            if (needPtp && !_ptpReader.IsAvailable)
+            {
+                _ptpReader.Start();
+            }
+            else if (!needPtp && _ptpReader.IsAvailable)
+            {
+                _ptpReader.Stop();
+                // Mark PTP devices offline and clean up tracking.
+                foreach (var kvp in _ptpHandleToGuid)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value);
+                    if (ud != null) ud.IsOnline = false;
+                }
+                _openedPtpHandles.Clear();
+                _ptpHandleToGuid.Clear();
+                if (_ptpMergedCreated)
+                {
+                    var mergedUd = FindOnlineDeviceByInstanceGuid(PtpMergedGuid);
+                    if (mergedUd != null) mergedUd.IsOnline = false;
+                    _ptpMergedCreated = false;
+                }
             }
         }
 

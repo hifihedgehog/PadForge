@@ -294,8 +294,9 @@ namespace PadForge.Common.Input
 
             RawInputListener.Start();
 
+            // PTP reader starts lazily — only when a DS4 slot needs touchpad input.
+            // See EnsurePtpReaderState() called from UpdateDevices().
             _ptpReader = new PrecisionTouchpadReader();
-            _ptpReader.Start();
 
             _running = true;
             _enumerationTimer.Restart();

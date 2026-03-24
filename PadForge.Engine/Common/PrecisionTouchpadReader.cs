@@ -254,6 +254,7 @@ namespace PadForge.Engine
         private uint _threadId;
         private volatile bool _running;
         private IntPtr _hwnd;
+        private WndProcDelegate _wndProcDelegate; // prevent GC collection
         private IntPtr _wndProcPtr;
 
         /// <summary>Cached preparsed data per device handle.</summary>
@@ -400,7 +401,8 @@ namespace PadForge.Engine
             _threadId = GetCurrentThreadId();
 
             // Register window class
-            _wndProcPtr = Marshal.GetFunctionPointerForDelegate<WndProcDelegate>(WndProc);
+            _wndProcDelegate = WndProc;
+            _wndProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate);
             var wc = new WNDCLASSEXW
             {
                 cbSize = (uint)Marshal.SizeOf<WNDCLASSEXW>(),

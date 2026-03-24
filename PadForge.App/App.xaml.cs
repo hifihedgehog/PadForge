@@ -170,6 +170,10 @@ namespace PadForge
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            try { System.IO.File.AppendAllText(@"C:\PadForge\crash.log",
+                $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ex2.GetType().Name}: {ex2.Message}\n{ex2.StackTrace}" : e.ExceptionObject?.ToString())}\n\n"); }
+            catch { }
+
             // Suppress cascading render thread exceptions after GPU device loss.
             if (_gpuLost)
                 return;
@@ -196,6 +200,10 @@ namespace PadForge
             System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
+
+            try { System.IO.File.AppendAllText(@"C:\PadForge\crash.log",
+                $"[{DateTime.Now:HH:mm:ss}] DISPATCHER: {e.Exception.GetType().Name}: {e.Exception.Message}\n{e.Exception.StackTrace}\n\n"); }
+            catch { }
 
             // Once the render thread is zombied, suppress ALL cascading exceptions
             // silently — they're all downstream failures from the same GPU device loss.

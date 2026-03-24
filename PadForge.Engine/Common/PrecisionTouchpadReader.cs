@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace PadForge.Common.Input
+namespace PadForge.Engine
 {
     /// <summary>
     /// Reads precision touchpad (PTP) input via Windows Raw Input API.
@@ -15,7 +15,7 @@ namespace PadForge.Common.Input
     /// 2 fingers, matching the <see cref="Engine.TouchpadState"/> format used
     /// by the DS4 touchpad pipeline.
     /// </summary>
-    internal sealed class PrecisionTouchpadReader : IDisposable
+    public sealed class PrecisionTouchpadReader : IDisposable
     {
         // ─────────────────────────────────────────────
         //  Constants
@@ -189,6 +189,10 @@ namespace PadForge.Common.Input
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint GetRawInputDeviceInfo(
+            IntPtr hDevice, uint uiCommand, IntPtr pData, ref uint pcbSize);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern uint GetRawInputDeviceInfoW(
             IntPtr hDevice, uint uiCommand, IntPtr pData, ref uint pcbSize);
 
         [DllImport("hid.dll")]
@@ -676,69 +680,33 @@ namespace PadForge.Common.Input
         {
             try
             {
-                // Get device name (path).
+                // Get device path via RIDI_DEVICENAME (Unicode W variant).
                 uint nameSize = 0;
-                GetRawInputDeviceInfo(hDevice, 0x20000007, IntPtr.Zero, ref nameSize);
+                GetRawInputDeviceInfoW(hDevice, 0x20000007, IntPtr.Zero, ref nameSize);
                 if (nameSize > 0)
                 {
                     IntPtr nameBuf = Marshal.AllocHGlobal((int)nameSize * 2);
                     try
                     {
-                        if (GetRawInputDeviceInfo(hDevice, 0x20000007, nameBuf, ref nameSize) > 0)
+                        if (GetRawInputDeviceInfoW(hDevice, 0x20000007, nameBuf, ref nameSize) > 0)
                             ds.DevicePath = Marshal.PtrToStringUni(nameBuf) ?? "";
                     }
                     finally { Marshal.FreeHGlobal(nameBuf); }
                 }
 
-                // Extract VID/PID from device path (format: \\?\HID#VID_xxxx&PID_xxxx#...)
-                if (!string.IsNullOrEmpty(ds.DevicePath))
-                {
-                    var path = ds.DevicePath.ToUpperInvariant();
-                    int vidIdx = path.IndexOf("VID_");
-                    int pidIdx = path.IndexOf("PID_");
-                    if (vidIdx >= 0 && vidIdx + 8 <= path.Length)
-                        ushort.TryParse(path.Substring(vidIdx + 4, 4), System.Globalization.NumberStyles.HexNumber, null, out ds.VendorId);
-                    if (pidIdx >= 0 && pidIdx + 8 <= path.Length)
-                        ushort.TryParse(path.Substring(pidIdx + 4, 4), System.Globalization.NumberStyles.HexNumber, null, out ds.ProductId);
-                }
+                // Use RawInputListener's proven 3-method VID/PID extraction
+                // (HidD_GetAttributes → RIDI_DEVICEINFO → path parsing).
+                RawInputListener.GetDeviceVidPid(hDevice, ds.DevicePath,
+                    out ds.VendorId, out ds.ProductId);
 
-                // Extract friendly name from device path.
+                // Use RawInputListener's proven 5-method friendly name extraction
+                // (HidD_GetProductString → USB parent registry → device registry →
+                // VID:PID label → generic fallback). Type 2 = RIM_TYPEHID.
                 if (!string.IsNullOrEmpty(ds.DevicePath))
-                {
-                    // Try to extract product name from registry.
-                    ds.Name = ExtractFriendlyName(ds.DevicePath);
-                }
+                    ds.Name = RawInputListener.ExtractFriendlyName(ds.DevicePath, 2);
             }
             catch { }
         }
 
-        private static string ExtractFriendlyName(string devicePath)
-        {
-            // Device path format: \\?\HID#VID_xxxx&PID_xxxx#...
-            // Try registry: HKLM\SYSTEM\CurrentControlSet\Enum\{pnpId}\DeviceDesc
-            try
-            {
-                string pnpPath = devicePath.Replace("\\\\?\\", "").Replace("#", "\\");
-                int lastSlash = pnpPath.LastIndexOf('\\');
-                if (lastSlash > 0)
-                    pnpPath = pnpPath.Substring(0, lastSlash);
-
-                using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
-                    $"SYSTEM\\CurrentControlSet\\Enum\\{pnpPath}");
-                if (key != null)
-                {
-                    string desc = key.GetValue("FriendlyName") as string
-                               ?? key.GetValue("DeviceDesc") as string;
-                    if (desc != null)
-                    {
-                        // Strip driver prefix: "@driver.inf,...;Friendly Name" → "Friendly Name"
-                        int semi = desc.LastIndexOf(';');
-                        return semi >= 0 ? desc.Substring(semi + 1) : desc;
-                    }
-                }
-            }
-            catch { }
-            return "Precision Touchpad";
-        }
     }
 }

@@ -197,6 +197,15 @@ namespace PadForge.Common.Input
                     currentPtpHandles.Add(handle);
                     var guid = SdlDeviceWrapper.BuildInstanceGuid(path, vid, pid, 0);
 
+                    // If the user removed this device from the Devices page,
+                    // the handle is still tracked but the UserDevice is gone.
+                    // Reset tracking so it gets recreated.
+                    if (_openedPtpHandles.Contains(handle) &&
+                        FindOnlineDeviceByInstanceGuid(guid) == null)
+                    {
+                        _openedPtpHandles.Remove(handle);
+                    }
+
                     if (!_openedPtpHandles.Contains(handle))
                     {
                         UserDevice ud = FindOrCreateUserDevice(guid);
@@ -233,6 +242,10 @@ namespace PadForge.Common.Input
                     _openedPtpHandles.Remove(h);
 
                 // "All Touchpads (Merged)" aggregate device — always present when PTP is available.
+                // Reset flag if the user removed the merged device from the Devices page.
+                if (_ptpMergedCreated && FindOnlineDeviceByInstanceGuid(PtpMergedGuid) == null)
+                    _ptpMergedCreated = false;
+
                 if (!_ptpMergedCreated)
                 {
                     UserDevice mergedUd = FindOrCreateUserDevice(PtpMergedGuid);

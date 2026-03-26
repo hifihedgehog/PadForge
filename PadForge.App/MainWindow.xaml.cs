@@ -360,6 +360,19 @@ namespace PadForge
             {
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
+
+                // Sync PadSetting → PadViewModel for all active slots so that
+                // auto-mapped values are visible in the UI and survive the next
+                // save cycle (UpdatePadSettingsFromViewModels writes ViewModel
+                // values back to PadSetting — empty ViewModel rows would wipe
+                // correctly auto-mapped PadSetting values).
+                for (int i = 0; i < _viewModel.Pads.Count; i++)
+                {
+                    var padVm = _viewModel.Pads[i];
+                    var selected = padVm.SelectedMappedDevice;
+                    if (selected != null && selected.InstanceGuid != Guid.Empty)
+                        InputService.LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+                }
             };
 
             // Re-apply device hiding when a toggle changes.

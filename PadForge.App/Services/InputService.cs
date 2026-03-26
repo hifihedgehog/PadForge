@@ -1093,7 +1093,7 @@ namespace PadForge.Services
         /// <summary>
         /// Loads a specific device's PadSetting into the PadViewModel.
         /// </summary>
-        private static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
+        internal static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
         {
             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
             if (us == null) return;

@@ -1411,10 +1411,7 @@ namespace PadForge.Common.Input
             return EnsureDevicesAvailableCore(requiredCount, perDeviceConfigs);
         }
 
-        public static bool EnsureDevicesAvailable(int requiredCount = 1)
-        {
-            return EnsureDevicesAvailableCore(requiredCount, null);
-        }
+
 
         private static bool EnsureDevicesAvailableCore(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
         {
@@ -2157,11 +2154,16 @@ try {{
             bool anyChanged = false;
             try
             {
-                using var baseKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
-                    @"SYSTEM\CurrentControlSet\services\vjoy\Parameters", writable: true);
+                // Use CreateSubKey so the Parameters key is created if it doesn't exist.
+                // After a fresh driver install, vjoy.sys uses compiled-in defaults (8/8/0)
+                // and does NOT create the Parameters key or DeviceNN subkeys. OpenSubKey
+                // would return null here, silently skipping descriptor writes and leaving
+                // the device with the wrong configuration.
+                using var baseKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(
+                    @"SYSTEM\CurrentControlSet\services\vjoy\Parameters");
                 if (baseKey == null)
                 {
-                    DiagLog("WriteDeviceDescriptors: FAILED — baseKey is null (cannot open registry for write)");
+                    DiagLog("WriteDeviceDescriptors: FAILED — cannot create/open Parameters registry key");
                     return false;
                 }
 
@@ -2192,14 +2194,9 @@ try {{
                 // disturbing live device nodes whose driver has already read the registry.
                 for (int i = 1; i <= requiredCount; i++)
                 {
-                    // Use per-device config if available, otherwise default Xbox 360 layout.
-                    int nAxes = 6, nButtons = 11, nPovs = 1;
-                    if (perDeviceConfigs != null && i - 1 < perDeviceConfigs.Length)
-                    {
-                        nAxes = perDeviceConfigs[i - 1].Axes;
-                        nButtons = perDeviceConfigs[i - 1].Buttons;
-                        nPovs = perDeviceConfigs[i - 1].Povs;
-                    }
+                    int nAxes = perDeviceConfigs[i - 1].Axes;
+                    int nButtons = perDeviceConfigs[i - 1].Buttons;
+                    int nPovs = perDeviceConfigs[i - 1].Povs;
 
                     byte[] descriptor = BuildHidDescriptor((byte)i, nAxes, nButtons, nPovs);
                     string keyName = $"Device{i:D2}";
@@ -2250,7 +2247,7 @@ try {{
         ///   1 byte report ID + 16 axes × 4 bytes + 4 POV DWORDs + 128 button bits (16 bytes).
         /// Disabled axes/POVs/buttons are constant padding so offsets always match.
         /// </summary>
-        private static byte[] BuildHidDescriptor(byte reportId, int nAxes, int nButtons, int nPovs)
+        internal static byte[] BuildHidDescriptor(byte reportId, int nAxes, int nButtons, int nPovs)
         {
             nAxes = Math.Clamp(nAxes, 0, 8);
             nButtons = Math.Clamp(nButtons, 0, 128);

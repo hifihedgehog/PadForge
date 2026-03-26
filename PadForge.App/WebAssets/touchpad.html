@@ -60,6 +60,17 @@
     </div>
 
     <script>
+    // iOS Safari: WebSocket upgrades fail after page navigation but work
+    // after reload.  Auto-reload once on first navigation to work around this.
+    (function() {
+        var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        if (nav && nav.type === 'navigate' && !sessionStorage.getItem('_tp_reloaded')) {
+            sessionStorage.setItem('_tp_reloaded', '1');
+            location.reload();
+            return;
+        }
+        sessionStorage.removeItem('_tp_reloaded');
+    })();
     (function() {
         var ws = null;
         var statusEl = document.getElementById('status');
@@ -72,14 +83,28 @@
         var finger1Id = null;
         var lastTap = 0;
 
+        // Per-tab client identity (survives refresh, unique per tab and type).
+        var clientId = sessionStorage.getItem('padforge_client_id_touchpad');
+        if (!clientId) {
+            clientId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+            sessionStorage.setItem('padforge_client_id_touchpad', clientId);
+        }
+
         function connect() {
-            var host = location.hostname + ':' + location.port;
-            ws = new WebSocket('ws://' + host + '/ws?type=touchpad');
+            if (ws) { try { ws.close(); } catch(e) {} }
+            var host = location.host;
+            ws = new WebSocket('ws://' + host + '/ws?type=touchpad&id=' + encodeURIComponent(clientId));
+            // Timeout: if connection doesn't open within 3s, force-retry.
+            var timer = setTimeout(function() {
+                if (ws.readyState !== 1) { try { ws.close(); } catch(e) {} connect(); }
+            }, 3000);
             ws.onopen = function() {
+                clearTimeout(timer);
                 statusEl.textContent = 'Connected';
                 statusEl.className = 'status connected';
             };
             ws.onclose = function() {
+                clearTimeout(timer);
                 statusEl.textContent = 'Reconnecting...';
                 statusEl.className = 'status';
                 setTimeout(connect, 500);
@@ -197,9 +222,7 @@
             }
         });
 
-        // Delay WebSocket connect to ensure the HTTP response for this
-        // page completes and the server's accept loop is ready.
-        setTimeout(connect, 500);
+        connect();
     })();
     </script>
 </body>

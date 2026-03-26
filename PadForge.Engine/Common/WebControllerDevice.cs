@@ -46,8 +46,8 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        public int NumButtons => _isTouchpadDevice ? 0 : NumGamepadButtons;
-        public int RawButtonCount => NumGamepadButtons;
+        public int NumButtons => _isTouchpadDevice ? 0 : (HasTouchpad ? 21 : NumGamepadButtons);
+        public int RawButtonCount => HasTouchpad ? 21 : NumGamepadButtons;
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public bool HasRumble => true;
         public bool HasHaptic => false;
@@ -115,11 +115,11 @@ namespace PadForge.Engine
         }
 
         /// <summary>Updates a button state. Called from WebSocket receive thread.</summary>
-        /// <param name="code">Button index (0=A, 1=B, ..., 10=Guide).</param>
+        /// <param name="code">Button index (0=A, 1=B, ..., 10=Guide, 20=Touchpad Click).</param>
         /// <param name="pressed">True if pressed.</param>
         public void UpdateButton(int code, bool pressed)
         {
-            if (code < 0 || code >= NumGamepadButtons) return;
+            if (code < 0 || code >= CustomInputState.MaxButtons) return;
             lock (_stateLock)
             {
                 var s = _currentState.Clone();
@@ -177,7 +177,8 @@ namespace PadForge.Engine
 
         public DeviceObjectItem[] GetDeviceObjects()
         {
-            var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + NumGamepadPovs];
+            int touchpadItems = HasTouchpad ? 7 : 0; // 6 finger descriptors + 1 click button
+            var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + touchpadItems];
             int idx = 0;
 
             // Axes.
@@ -218,6 +219,38 @@ namespace PadForge.Engine
                 Offset = (NumGamepadAxes + NumGamepadButtons) * 4,
                 Aspect = ObjectAspect.Position
             };
+
+            // Touchpad descriptors (when device has touchpad capability).
+            if (HasTouchpad)
+            {
+                string[] tpNames = {
+                    "Touchpad 0 Finger 0 X", "Touchpad 0 Finger 0 Y", "Touchpad 0 Finger 0 Down",
+                    "Touchpad 0 Finger 1 X", "Touchpad 0 Finger 1 Y", "Touchpad 0 Finger 1 Down"
+                };
+                for (int i = 0; i < tpNames.Length; i++)
+                {
+                    items[idx++] = new DeviceObjectItem
+                    {
+                        InputIndex = NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + i,
+                        ObjectTypeGuid = ObjectGuid.Unknown,
+                        Name = tpNames[i],
+                        ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
+                        Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + i) * 4,
+                        Aspect = ObjectAspect.Position
+                    };
+                }
+
+                // Touchpad click as button 20.
+                items[idx++] = new DeviceObjectItem
+                {
+                    InputIndex = 20,
+                    ObjectTypeGuid = ObjectGuid.Button,
+                    Name = "Touchpad Click",
+                    ObjectType = DeviceObjectTypeFlags.PushButton,
+                    Offset = (NumGamepadAxes + 20) * 4,
+                    Aspect = ObjectAspect.Position
+                };
+            }
 
             return items;
         }

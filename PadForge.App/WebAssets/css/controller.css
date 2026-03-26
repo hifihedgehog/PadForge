@@ -121,6 +121,20 @@ body {
     text-align: center;
 }
 
+/* Touchpad finger dots */
+.touchpad-dot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 16;
+}
+.touchpad-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
+.touchpad-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
+
 @media only screen and (orientation: portrait) {
     #controller-viewport, #disconnect-message {
         display: none;

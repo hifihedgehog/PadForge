@@ -150,9 +150,9 @@ class Program
 
         var flagCombos = new (string name, EffectFlags flags, int[] axes, int[] dirs)[]
         {
+            ("2ax Polar", EffectFlags.Polar | EffectFlags.ObjectOffsets, axisOffsets, new[] { 0, 0 }),
             ("2ax Cart",  EffectFlags.Cartesian | EffectFlags.ObjectOffsets, axisOffsets, directions),
             ("1ax Cart",  EffectFlags.Cartesian | EffectFlags.ObjectOffsets, new[] { axisOffsets[0] }, new[] { 0 }),
-            ("2ax Polar", EffectFlags.Polar | EffectFlags.ObjectOffsets, axisOffsets, new[] { 0, 0 }),
             ("1ax NoDir", EffectFlags.ObjectOffsets, new[] { axisOffsets[0] }, new[] { 0 }),
             ("2ax Spher", EffectFlags.Spherical | EffectFlags.ObjectOffsets, axisOffsets, new[] { 0, 0 }),
         };
@@ -237,12 +237,19 @@ class Program
         Console.WriteLine("All sine probes failed.");
         SineDone:
 
+        // Direction: Polar angle in hundredths of degrees.
+        // 0 = North (both equal), 9000 = East (right motor), 27000 = West (left motor).
+        int currentDirection = 0; // default: both motors
+
         Console.WriteLine("\nCommands:");
         Console.WriteLine("  [1] Constant - light   (2500)");
         Console.WriteLine("  [2] Constant - medium  (5000)");
         Console.WriteLine("  [3] Constant - strong  (10000)");
         Console.WriteLine("  [4] Sine wave - gentle  (3000, 300ms)");
         Console.WriteLine("  [5] Sine wave - intense (8000, 100ms)");
+        Console.WriteLine("  [L] Direction: Left motor only  (270° West)");
+        Console.WriteLine("  [R] Direction: Right motor only (90° East)");
+        Console.WriteLine("  [B] Direction: Both motors      (0° North)");
         Console.WriteLine("  [0] Stop all");
         Console.WriteLine("  [Q] Quit\n");
 
@@ -254,32 +261,44 @@ class Program
 
             try
             {
-                switch (key.KeyChar)
+                switch (char.ToLower(key.KeyChar))
                 {
                     case '1':
-                        SetConstantForce(constantEffect, 2500);
+                        SetConstantForce(constantEffect, 2500, currentDirection, axisOffsets);
                         StopEffect(sineEffect);
-                        Console.WriteLine("Constant: light (2500)");
+                        Console.WriteLine($"Constant: light (2500) dir={currentDirection}");
                         break;
                     case '2':
-                        SetConstantForce(constantEffect, 5000);
+                        SetConstantForce(constantEffect, 5000, currentDirection, axisOffsets);
                         StopEffect(sineEffect);
-                        Console.WriteLine("Constant: medium (5000)");
+                        Console.WriteLine($"Constant: medium (5000) dir={currentDirection}");
                         break;
                     case '3':
-                        SetConstantForce(constantEffect, 10000);
+                        SetConstantForce(constantEffect, 10000, currentDirection, axisOffsets);
                         StopEffect(sineEffect);
-                        Console.WriteLine("Constant: strong (10000)");
+                        Console.WriteLine($"Constant: strong (10000) dir={currentDirection}");
                         break;
                     case '4':
                         StopEffect(constantEffect);
-                        SetSineForce(sineEffect, 3000, 300_000);
-                        Console.WriteLine("Sine: gentle (3000, 300ms)");
+                        SetSineForce(sineEffect, 3000, 300_000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Sine: gentle (3000, 300ms) dir={currentDirection}");
                         break;
                     case '5':
                         StopEffect(constantEffect);
-                        SetSineForce(sineEffect, 8000, 100_000);
-                        Console.WriteLine("Sine: intense (8000, 100ms)");
+                        SetSineForce(sineEffect, 8000, 100_000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Sine: intense (8000, 100ms) dir={currentDirection}");
+                        break;
+                    case 'l':
+                        currentDirection = 27000;
+                        Console.WriteLine("Direction: LEFT motor (polar 27000 = 270° West)");
+                        break;
+                    case 'r':
+                        currentDirection = 9000;
+                        Console.WriteLine("Direction: RIGHT motor (polar 9000 = 90° East)");
+                        break;
+                    case 'b':
+                        currentDirection = 0;
+                        Console.WriteLine("Direction: BOTH motors (polar 0 = 0° North)");
                         break;
                     case '0':
                         StopEffect(constantEffect);
@@ -300,20 +319,30 @@ class Program
         Console.WriteLine("\nDone.");
     }
 
-    static void SetConstantForce(Effect? effect, int magnitude)
+    static void SetConstantForce(Effect? effect, int magnitude, int direction, int[] axisOffsets)
     {
         if (effect == null) return;
-        effect.SetParameters(new EffectParameters
+        var ep = new EffectParameters
         {
+            Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
+            Axes = axisOffsets.Take(2).ToArray(),
+            Directions = new[] { direction, 0 },
             Parameters = new ConstantForce { Magnitude = magnitude }
-        }, EffectParameterFlags.TypeSpecificParameters | EffectParameterFlags.Start);
+        };
+        effect.SetParameters(ep,
+            EffectParameterFlags.TypeSpecificParameters |
+            EffectParameterFlags.Direction |
+            EffectParameterFlags.Start);
     }
 
-    static void SetSineForce(Effect? effect, int magnitude, int periodMicroseconds)
+    static void SetSineForce(Effect? effect, int magnitude, int periodMicroseconds, int direction, int[] axisOffsets)
     {
         if (effect == null) return;
-        effect.SetParameters(new EffectParameters
+        var ep = new EffectParameters
         {
+            Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
+            Axes = axisOffsets.Take(2).ToArray(),
+            Directions = new[] { direction, 0 },
             Parameters = new PeriodicForce
             {
                 Magnitude = magnitude,
@@ -321,7 +350,11 @@ class Program
                 Phase = 0,
                 Period = periodMicroseconds
             }
-        }, EffectParameterFlags.TypeSpecificParameters | EffectParameterFlags.Start);
+        };
+        effect.SetParameters(ep,
+            EffectParameterFlags.TypeSpecificParameters |
+            EffectParameterFlags.Direction |
+            EffectParameterFlags.Start);
     }
 
     static void StopEffect(Effect? effect)

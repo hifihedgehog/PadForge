@@ -280,7 +280,7 @@ namespace PadForge.Engine
                 return true;
             }
 
-            // Convert HID polar direction (0–32767 → 0–360°) to SDL polar (0–36000 hundredths).
+            // vJoyInterface reads raw HID logical units (0–32767). Convert to SDL polar (0–36000 hundredths of degrees).
             int sdlPolar = (int)(v.Direction / 32767.0 * 36000.0);
             uint features = device.HapticFeatures;
             bool isSingleAxis = device.NumHapticAxes <= 1;
@@ -301,7 +301,7 @@ namespace PadForge.Engine
                 if (isSingleAxis)
                 {
                     // Wheel: project 2D polar direction onto steering axis (X).
-                    // sin(angle) gives X component: HID 0=N → sin=0, 90°→sin=1 (CW), 270°→sin=-1 (CCW).
+                    // sin(angle) gives X component: 0°=N → sin=0, 90°→sin=1 (CW), 270°→sin=-1 (CCW).
                     double angleRad = (v.Direction / 32767.0) * 2.0 * Math.PI;
                     double xComponent = Math.Sin(angleRad);
                     short projectedMag = (short)Math.Clamp(scaledMag * xComponent, -10000, 10000);
@@ -593,7 +593,7 @@ namespace PadForge.Engine
         /// For periodic effects: always positive (amplitude).</summary>
         public short SignedMagnitude { get; set; }
 
-        /// <summary>Polar direction in HID units (0–32767, maps to 0–360°).
+        /// <summary>Polar direction in HID logical units (0–32767, maps to 0–360°).
         /// 0 = North/Up, ~8192 = East/Right, ~16384 = South, ~24576 = West/Left.</summary>
         public ushort Direction { get; set; }
 

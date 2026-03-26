@@ -1037,7 +1037,8 @@ namespace PadForge.Common.Input
                 }
 
                 // ── Polar direction → left/right motor split ──
-                // HID polar: 0 = North, ~8192 = East, ~16384 = South, ~24576 = West
+                // vJoyInterface reads raw HID logical units (0–32767) without applying
+                // the logical→physical conversion (LogMax=32767, PhyMax=36000).
                 // For constant force: negative magnitude flips direction 180°.
                 double angleDeg;
                 if (es.Type == FFBEType.ET_CONST && es.Magnitude < 0)

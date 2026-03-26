@@ -859,7 +859,8 @@ namespace PadForge.Common.Input
                 {
                     float vol = useDevice ? ReadAxisFromDevice(action)
                         : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
-                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
+                    if (action.InvertAxis) vol = 1f - vol;
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f), action.ShowVolumeOsd);
                     break;
                 }
                 case MacroActionType.AppVolume:
@@ -867,6 +868,7 @@ namespace PadForge.Common.Input
                     {
                         float vol = useDevice ? ReadAxisFromDevice(action)
                             : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
+                        if (action.InvertAxis) vol = 1f - vol;
                         SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
                     }
                     break;
@@ -874,6 +876,7 @@ namespace PadForge.Common.Input
                 {
                     float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
                         : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    if (action.InvertAxis) deflection = -deflection;
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -887,6 +890,7 @@ namespace PadForge.Common.Input
                 {
                     float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
                         : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    if (action.InvertAxis) deflection = -deflection;
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;

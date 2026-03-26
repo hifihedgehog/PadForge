@@ -64,7 +64,9 @@ public static class DS4Layout
         new("DS4_V2_RightAnalogStick.png", "RightThumbRing", OverlayElementType.StickRing, 874, 530, 165, 147),
         new("DS4_AnalogStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 411, 503, 196, 172),
         new("DS4_AnalogStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 859, 503, 196, 172),
+        // Touchpad click zone: strip between lightbar and touchpad
+        new("", "TouchpadClick", OverlayElementType.Button, 500, 165, 465, 52),
         // Touchpad zone: rectangular area between Share and Options buttons
-        new("", "Touchpad", OverlayElementType.Touchpad, 480, 170, 505, 200),
+        new("", "Touchpad", OverlayElementType.Touchpad, 500, 225, 465, 205),
     };
 }

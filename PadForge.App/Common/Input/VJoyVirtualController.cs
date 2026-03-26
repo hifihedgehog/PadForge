@@ -2085,11 +2085,11 @@ public static class PF_SetupApi {{
     [DllImport(""setupapi.dll"", SetLastError = true)]
     public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
     [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
+    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SP_DEVINFO_DATA DeviceInfoData);
     [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
+    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
     [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
+    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
     [DllImport(""setupapi.dll"", SetLastError = true)]
     public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
     [DllImport(""newdev.dll"", SetLastError = true, CharSet = CharSet.Unicode)]

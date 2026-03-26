@@ -2,6 +2,18 @@
 // Renders Xbox 360 or DS4 controller using PNG overlays from PadForge's 2D asset pack.
 // Touch input for buttons, triggers, D-pad, and dual analog sticks via nipplejs.
 
+// iOS Safari: WebSocket upgrades fail after page navigation but work
+// after reload.  Auto-reload once on first navigation to work around this.
+(function() {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (nav && nav.type === 'navigate' && !sessionStorage.getItem('_ctrl_reloaded')) {
+        sessionStorage.setItem('_ctrl_reloaded', '1');
+        location.reload();
+        return;
+    }
+    sessionStorage.removeItem('_ctrl_reloaded');
+})();
+
 (function () {
     "use strict";
 
@@ -9,11 +21,12 @@
     var params = new URLSearchParams(location.search);
     var layoutType = params.get("layout") || "xbox360";
 
-    // ── Client identity ──
-    var clientId = localStorage.getItem("padforge_client_id");
+    // ── Client identity (per-tab AND per-layout-type so switching pages doesn't collide) ──
+    var clientIdKey = "padforge_client_id_" + layoutType;
+    var clientId = sessionStorage.getItem(clientIdKey);
     if (!clientId) {
         clientId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
-        localStorage.setItem("padforge_client_id", clientId);
+        sessionStorage.setItem(clientIdKey, clientId);
     }
 
     // ── Haptic ──
@@ -34,7 +47,7 @@
     function connect() {
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
         var hasTouchpad = layout && layout.overlays && layout.overlays.some(function(o) { return o.type === "touchpad"; });
-        var wsUrl = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId);
+        var wsUrl = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId) + "&layout=" + encodeURIComponent(layoutType);
         if (hasTouchpad) wsUrl += "&touchpad=1";
         ws = new WebSocket(wsUrl);
 
@@ -107,11 +120,11 @@
                 return;
             }
             layout = JSON.parse(xhr.responseText);
+            connect();
             buildController();
             setupTouchZones();
             setupSticks();
             onResize();
-            connect();
         };
         xhr.onerror = function () {
             setStatus("Failed to load layout");
@@ -128,6 +141,7 @@
         for (var i = 0; i < layout.overlays.length; i++) {
             var ov = layout.overlays[i];
             if (ov.type === "touchpad") continue; // no image — handled by setupTouchpadZone
+            if (!ov.image || ov.image.endsWith("/")) continue; // no image — touch-zone only
             var img = document.createElement("img");
             img.src = "/img/" + ov.image;
             img.dataset.target = ov.target;
@@ -187,7 +201,7 @@
     var activeTouches = {}; // touch.identifier → { zone, cleanup }
 
     // Small meta-buttons that should always be on top of d-pad/trigger zones.
-    var smallButtons = ["ButtonBack", "ButtonStart", "ButtonGuide"];
+    var smallButtons = ["ButtonBack", "ButtonStart", "ButtonGuide", "TouchpadClick"];
 
     function setupTouchZones() {
         var dpadOverlays = [];
@@ -211,6 +225,23 @@
 
             var zone = document.createElement("div");
             zone.className = "touch-zone";
+
+            // Touchpad click: exact positioning, invisible until pressed.
+            if (ov.target === "TouchpadClick") {
+                zone.style.left = (ov.x / layout.baseWidth * 100) + "%";
+                zone.style.top = (ov.y / layout.baseHeight * 100) + "%";
+                zone.style.width = (ov.w / layout.baseWidth * 100) + "%";
+                zone.style.height = (ov.h / layout.baseHeight * 100) + "%";
+                zone.style.zIndex = "15";
+                zone.style.borderRadius = "8px";
+                zone.style.border = "3px solid #00c8e8";
+                zone.style.background = "rgba(152,174,184,0.7)";
+                zone.style.opacity = "0";
+                zone.style.transition = "opacity 0.05s";
+                bindTouchpadClickZone(zone, ov);
+                touchLayer.appendChild(zone);
+                continue;
+            }
 
             // Enlarge touch target by ~40% for mobile fat-finger tolerance.
             var padX = ov.w * 0.2;
@@ -296,6 +327,27 @@
         img.style.clipPath = "inset(" + topClip + "% 0 0 0)";
     }
 
+    function bindTouchpadClickZone(zone, ov) {
+        var code = ov.inputCode;
+        function down(e) {
+            e.preventDefault();
+            zone.style.opacity = "1";
+            send({ type: "input", kind: "button", code: code, value: 1 });
+            haptic();
+        }
+        function up(e) {
+            e.preventDefault();
+            zone.style.opacity = "0";
+            send({ type: "input", kind: "button", code: code, value: 0 });
+        }
+        zone.addEventListener("touchstart", down, { passive: false });
+        zone.addEventListener("touchend", up, { passive: false });
+        zone.addEventListener("touchcancel", up, { passive: false });
+        zone.addEventListener("mousedown", down);
+        zone.addEventListener("mouseup", up);
+        zone.addEventListener("mouseleave", up);
+    }
+
     // ── Touchpad: multi-touch zone for DS4 touchpad ──
     function setupTouchpadZone(ov, lay) {
         var zone = document.createElement("div");
@@ -306,9 +358,18 @@
         zone.style.height = (ov.h / lay.baseHeight * 100) + "%";
         zone.style.zIndex = "15";
         zone.style.borderRadius = "8px";
-        zone.style.border = "2px solid rgba(255,255,255,0.3)";
-        zone.style.background = "rgba(255,255,255,0.05)";
+        zone.style.border = "2px solid rgba(255,255,255,0.5)";
+        zone.style.background = "rgba(100,149,237,0.15)";
         touchLayer.appendChild(zone);
+
+        // Finger preview dots
+        var dot0 = document.createElement("div");
+        dot0.className = "touchpad-dot f0";
+        zone.appendChild(dot0);
+
+        var dot1 = document.createElement("div");
+        dot1.className = "touchpad-dot f1";
+        zone.appendChild(dot1);
 
         var finger0Id = null, finger1Id = null;
 
@@ -320,6 +381,16 @@
             };
         }
 
+        function updateDot(dot, pos, show) {
+            if (show) {
+                dot.style.display = "block";
+                dot.style.left = (pos.x * 100) + "%";
+                dot.style.top = (pos.y * 100) + "%";
+            } else {
+                dot.style.display = "none";
+            }
+        }
+
         zone.addEventListener("touchstart", function(e) {
             e.preventDefault();
             for (var i = 0; i < e.changedTouches.length; i++) {
@@ -328,9 +399,11 @@
                 if (finger0Id === null) {
                     finger0Id = t.identifier;
                     send({ type: "touchpad", finger: 0, x: p.x, y: p.y, down: true });
+                    updateDot(dot0, p, true);
                 } else if (finger1Id === null) {
                     finger1Id = t.identifier;
                     send({ type: "touchpad", finger: 1, x: p.x, y: p.y, down: true });
+                    updateDot(dot1, p, true);
                 }
             }
         }, { passive: false });
@@ -340,10 +413,13 @@
             for (var i = 0; i < e.changedTouches.length; i++) {
                 var t = e.changedTouches[i];
                 var p = normXY(t);
-                if (t.identifier === finger0Id)
+                if (t.identifier === finger0Id) {
                     send({ type: "touchpad", finger: 0, x: p.x, y: p.y, down: true });
-                else if (t.identifier === finger1Id)
+                    updateDot(dot0, p, true);
+                } else if (t.identifier === finger1Id) {
                     send({ type: "touchpad", finger: 1, x: p.x, y: p.y, down: true });
+                    updateDot(dot1, p, true);
+                }
             }
         }, { passive: false });
 
@@ -354,9 +430,11 @@
                 if (t.identifier === finger0Id) {
                     send({ type: "touchpad", finger: 0, x: 0, y: 0, down: false });
                     finger0Id = null;
+                    updateDot(dot0, null, false);
                 } else if (t.identifier === finger1Id) {
                     send({ type: "touchpad", finger: 1, x: 0, y: 0, down: false });
                     finger1Id = null;
+                    updateDot(dot1, null, false);
                 }
             }
         }

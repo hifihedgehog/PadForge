@@ -150,7 +150,10 @@ namespace PadForge.Common.Input
             if (slotCount == 0) return;
 
             // Combine vibration across all mapped slots (max of each motor).
+            // For directional FFB data, use the first slot that has it (no sensible
+            // way to "combine" two different polar directions).
             ushort combinedL = 0, combinedR = 0;
+            Vibration directionalSource = null;
             PadSetting firstPadSetting = null;
             for (int i = 0; i < slotCount; i++)
             {
@@ -168,6 +171,9 @@ namespace PadForge.Common.Input
 
                 if (vib.LeftMotorSpeed > combinedL)  combinedL = vib.LeftMotorSpeed;
                 if (vib.RightMotorSpeed > combinedR) combinedR = vib.RightMotorSpeed;
+
+                if (directionalSource == null && (vib.HasDirectionalData || vib.HasConditionData))
+                    directionalSource = vib;
 
                 if (firstPadSetting == null)
                     firstPadSetting = us.GetPadSetting();
@@ -200,6 +206,28 @@ namespace PadForge.Common.Input
             if (_combinedVibration == null) _combinedVibration = new Vibration();
             _combinedVibration.LeftMotorSpeed = combinedL;
             _combinedVibration.RightMotorSpeed = combinedR;
+
+            // Copy directional/condition FFB data from the first slot that has it.
+            // Without this, HasDirectionalData is always false and the haptic path
+            // in SetDeviceForces is never reached (all FFB falls through to scalar rumble).
+            if (directionalSource != null)
+            {
+                _combinedVibration.HasDirectionalData = directionalSource.HasDirectionalData;
+                _combinedVibration.EffectType = directionalSource.EffectType;
+                _combinedVibration.SignedMagnitude = directionalSource.SignedMagnitude;
+                _combinedVibration.Direction = directionalSource.Direction;
+                _combinedVibration.Period = directionalSource.Period;
+                _combinedVibration.DeviceGain = directionalSource.DeviceGain;
+                _combinedVibration.HasConditionData = directionalSource.HasConditionData;
+                _combinedVibration.ConditionAxisCount = directionalSource.ConditionAxisCount;
+                _combinedVibration.ConditionAxes = directionalSource.ConditionAxes;
+            }
+            else
+            {
+                // Clear stale directional data from previous frame.
+                _combinedVibration.HasDirectionalData = false;
+                _combinedVibration.HasConditionData = false;
+            }
 
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
         }

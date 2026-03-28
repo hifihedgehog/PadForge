@@ -238,8 +238,9 @@ class Program
         SineDone:
 
         // Direction: Polar angle in hundredths of degrees.
-        // 0 = North (both equal), 9000 = East (right motor), 27000 = West (left motor).
-        int currentDirection = 0; // default: both motors
+        // DirectInput convention: direction = where force COMES FROM.
+        // 9000 = from East = pushes stick left, 27000 = from West = pushes stick right.
+        int currentDirection = 0; // default: pushes stick south (force from north)
 
         Console.WriteLine("\nCommands:");
         Console.WriteLine("  [1] Constant - light   (2500)");
@@ -247,9 +248,9 @@ class Program
         Console.WriteLine("  [3] Constant - strong  (10000)");
         Console.WriteLine("  [4] Sine wave - gentle  (3000, 300ms)");
         Console.WriteLine("  [5] Sine wave - intense (8000, 100ms)");
-        Console.WriteLine("  [L] Direction: Left motor only  (270° West)");
-        Console.WriteLine("  [R] Direction: Right motor only (90° East)");
-        Console.WriteLine("  [B] Direction: Both motors      (0° North)");
+        Console.WriteLine("  [L] Direction: Push left   (from East, 90°)");
+        Console.WriteLine("  [R] Direction: Push right  (from West, 270°)");
+        Console.WriteLine("  [B] Direction: Push south  (from North, 0°)");
         Console.WriteLine("  [0] Stop all");
         Console.WriteLine("  [Q] Quit\n");
 
@@ -289,16 +290,16 @@ class Program
                         Console.WriteLine($"Sine: intense (8000, 100ms) dir={currentDirection}");
                         break;
                     case 'l':
-                        currentDirection = 27000;
-                        Console.WriteLine("Direction: LEFT motor (polar 27000 = 270° West)");
+                        currentDirection = 9000;
+                        Console.WriteLine("Direction: Push LEFT (from East, 9000 = 90°)");
                         break;
                     case 'r':
-                        currentDirection = 9000;
-                        Console.WriteLine("Direction: RIGHT motor (polar 9000 = 90° East)");
+                        currentDirection = 27000;
+                        Console.WriteLine("Direction: Push RIGHT (from West, 27000 = 270°)");
                         break;
                     case 'b':
                         currentDirection = 0;
-                        Console.WriteLine("Direction: BOTH motors (polar 0 = 0° North)");
+                        Console.WriteLine("Direction: Push SOUTH (from North, 0 = 0°)");
                         break;
                     case '0':
                         StopEffect(constantEffect);

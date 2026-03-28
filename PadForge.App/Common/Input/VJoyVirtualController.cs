@@ -1037,14 +1037,10 @@ namespace PadForge.Common.Input
                 }
 
                 // ── Polar direction → left/right motor split ──
-                // vJoyInterface reads raw HID logical units (0–32767) without applying
-                // the logical→physical conversion (LogMax=32767, PhyMax=36000).
-                // For constant force: negative magnitude flips direction 180°.
-                double angleDeg;
-                if (es.Type == FFBEType.ET_CONST && es.Magnitude < 0)
-                    angleDeg = ((es.Direction / 32767.0) * 360.0 + 180.0) % 360.0;
-                else
-                    angleDeg = (es.Direction / 32767.0) * 360.0;
+                // DirectInput/HID PID convention: direction = where force COMES FROM.
+                // East (90°) = force from East, pushes stick West (left motor).
+                // +180° converts "from" to "toward" so the motor matches the push direction.
+                double angleDeg = ((es.Direction / 32767.0) * 360.0 + 180.0) % 360.0;
 
                 double angleRad = angleDeg * Math.PI / 180.0;
 

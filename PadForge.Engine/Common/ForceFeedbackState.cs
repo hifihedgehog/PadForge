@@ -207,6 +207,18 @@ namespace PadForge.Engine
             }
 
             // ── Path 2: Standard scalar rumble ──
+            // If we were previously in the directional path, reset directional cache
+            // so re-entering the directional path is always detected as a change.
+            if (_cachedHasDirectional || _cachedHasCondition)
+            {
+                _cachedHasDirectional = false;
+                _cachedHasCondition = false;
+                _cachedEffectType = 0;
+                _cachedSignedMag = 0;
+                _cachedDirection = 0;
+                _cachedPeriod = 0;
+            }
+
             ushort rawLeft = v.LeftMotorSpeed;
             ushort rawRight = v.RightMotorSpeed;
 
@@ -511,8 +523,23 @@ namespace PadForge.Engine
             else
             {
                 bool upd = SDL_UpdateHapticEffect(haptic, _hapticEffectId, ref effect);
-                RumbleLogger.Log($"Haptic update id={_hapticEffectId} -> {upd}");
-                return upd;
+                if (!upd)
+                {
+                    // Update failed — effect may be stale (e.g., another app acquired the
+                    // device in Exclusive mode and released it). Destroy and recreate.
+                    RumbleLogger.Log($"Haptic update id={_hapticEffectId} failed, recreating");
+                    StopAndDestroyHapticEffect(device);
+                    _hapticEffectId = SDL_CreateHapticEffect(haptic, ref effect);
+                    if (_hapticEffectId < 0)
+                    {
+                        RumbleLogger.Log($"Haptic recreate failed: {SDL_GetError()}");
+                        return false;
+                    }
+                    _hapticEffectCreated = true;
+                    return SDL_RunHapticEffect(haptic, _hapticEffectId, SDL_HAPTIC_INFINITY);
+                }
+                RumbleLogger.Log($"Haptic update id={_hapticEffectId} -> ok");
+                return true;
             }
         }
 

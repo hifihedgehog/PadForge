@@ -2484,9 +2484,25 @@ namespace PadForge.Services
             if (deviceGuid.HasValue && deviceGuid.Value != Guid.Empty)
                 _inputManager.TestRumbleTargetGuid[padIndex] = deviceGuid.Value;
 
-            // Set vibration via slot-level state (background thread applies it).
-            if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
-            if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
+            var vib = _inputManager.VibrationStates[padIndex];
+
+            // For vJoy slots, send directional force instead of scalar rumble so FFB
+            // devices (joysticks, wheels) push in the correct direction rather than
+            // just rattling. Direction uses "force comes from" convention:
+            // 9000 = from East = pushes left, 27000 = from West = pushes right.
+            bool isVJoy = _inputManager.SlotControllerTypes[padIndex] == VirtualControllerType.VJoy;
+            if (isVJoy && (left != right))
+            {
+                vib.HasDirectionalData = true;
+                vib.EffectType = (uint)1; // FfbEffectTypes.Const
+                vib.SignedMagnitude = 10000;
+                vib.Direction = (ushort)(left ? 8192 : 24576); // East (~90°) or West (~270°) in HID logical units
+                vib.DeviceGain = 255;
+            }
+
+            // Always set scalar motors too (used by rumble-only devices in the same slot).
+            if (left) vib.LeftMotorSpeed = 65535;
+            if (right) vib.RightMotorSpeed = 65535;
 
             // Schedule clearing after 500ms.
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
@@ -2494,8 +2510,15 @@ namespace PadForge.Services
             {
                 if (_inputManager != null && padIndex < InputManager.MaxPads)
                 {
-                    if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
-                    if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
+                    if (left) vib.LeftMotorSpeed = 0;
+                    if (right) vib.RightMotorSpeed = 0;
+                    if (isVJoy)
+                    {
+                        vib.HasDirectionalData = false;
+                        vib.SignedMagnitude = 0;
+                        vib.Direction = 0;
+                        vib.EffectType = 0;
+                    }
                     _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
                 }
                 clearTimer.Stop();

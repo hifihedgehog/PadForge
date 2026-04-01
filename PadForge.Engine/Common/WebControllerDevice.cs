@@ -62,6 +62,7 @@ namespace PadForge.Engine
         public ushort ProductId => WebProductId;
         public string DevicePath { get; }
         public string SerialNumber => string.Empty;
+        public string SdlGuid => string.Empty;
         public Guid InstanceGuid { get; }
         public Guid ProductGuid => WebProductGuid;
 

@@ -191,8 +191,22 @@
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">
-                                            <Binding Path="Devices_GUID" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="Devices_AppGUID" Source="{x:Static strings:Strings.Instance}"/>
                                             <Binding Path="SelectedDevice.InstanceGuid" Mode="OneWay"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
+                                Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="11" Opacity="0.6"
+                                           common:MarqueeBehavior.IsEnabled="True">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}{1}">
+                                            <Binding Path="Devices_SdlGUID" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="SelectedDevice.SdlGuid" Mode="OneWay"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>

@@ -222,6 +222,11 @@ namespace PadForge.Views
             sb.Append(dev.ButtonCount);
             sb.Append("&hats=");
             sb.Append(dev.PovCount);
+            if (!string.IsNullOrEmpty(dev.SdlGuid))
+            {
+                sb.Append("&sdl_guid=");
+                sb.Append(Uri.EscapeDataString(dev.SdlGuid));
+            }
 
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {

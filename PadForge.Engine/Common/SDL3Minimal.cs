@@ -372,6 +372,27 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern ushort SDL_GetJoystickProductVersion(IntPtr joystick);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_GUID
+        {
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public byte[] data;
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern SDL_GUID SDL_GetJoystickGUID(IntPtr joystick);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GUIDToString(SDL_GUID guid, byte[] pszGUID, int cbGUID);
+
+        public static string GetJoystickGUIDString(IntPtr joystick)
+        {
+            var guid = SDL_GetJoystickGUID(joystick);
+            byte[] buf = new byte[33];
+            SDL_GUIDToString(guid, buf, buf.Length);
+            return System.Text.Encoding.ASCII.GetString(buf).TrimEnd('\0');
+        }
+
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern SDL_JoystickType SDL_GetJoystickType(IntPtr joystick);
 

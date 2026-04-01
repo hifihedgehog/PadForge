@@ -103,6 +103,9 @@ namespace PadForge.Engine
         /// <summary>Device serial number (e.g. Bluetooth MAC address). May be empty.</summary>
         public string SerialNumber { get; private set; } = string.Empty;
 
+        /// <summary>SDL joystick GUID string (32 hex chars) used for gamecontrollerdb matching.</summary>
+        public string SdlGuid { get; private set; } = string.Empty;
+
         /// <summary>
         /// Deterministic instance GUID for this device, derived from VID+PID+Serial
         /// (when serial is available) or device path. Used to match saved settings
@@ -180,6 +183,7 @@ namespace PadForge.Engine
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
+            SdlGuid = GetJoystickGUIDString(Joystick);
 
             // Always capture the raw joystick button count before any gamepad override.
             RawButtonCount = SDL_GetNumJoystickButtons(Joystick);

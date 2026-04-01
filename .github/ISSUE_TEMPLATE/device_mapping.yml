@@ -73,6 +73,17 @@ body:
       description: Number of D-Pad hat switches
       placeholder: "e.g., 1"
 
+  - type: input
+    id: sdl_guid
+    attributes:
+      label: SDL GUID
+      description: |
+        The 32-character SDL GUID shown on the Devices page under "SDL GUID".
+        This is auto-filled when you use the Submit Mapping button in PadForge.
+      placeholder: "e.g., 0300b70c6d04000062c2000000000000"
+    validations:
+      required: true
+
   - type: textarea
     id: button_mapping
     attributes:

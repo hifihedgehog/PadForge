@@ -319,6 +319,8 @@
   <data name="Devices_Product" xml:space="preserve"><value>产品： </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>类型： </value></data>
   <data name="Devices_GUID" xml:space="preserve"><value>GUID： </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>应用GUID： </value></data>
+  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID： </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>实例路径： </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID： </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>提交设备映射</value></data>

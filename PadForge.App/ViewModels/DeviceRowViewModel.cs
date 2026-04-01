@@ -37,6 +37,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _instanceGuid, value);
         }
 
+        private string _sdlGuid = string.Empty;
+
+        /// <summary>SDL joystick GUID (32 hex chars) for gamecontrollerdb matching.</summary>
+        public string SdlGuid
+        {
+            get => _sdlGuid;
+            set => SetProperty(ref _sdlGuid, value);
+        }
+
         private string _deviceName = string.Empty;
 
         /// <summary>Display name of the device.</summary>

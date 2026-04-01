@@ -67,6 +67,10 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public string SerialNumber { get; set; } = string.Empty;
 
+        /// <summary>SDL joystick GUID (32 hex chars) for gamecontrollerdb matching.</summary>
+        [XmlElement]
+        public string SdlGuid { get; set; } = string.Empty;
+
         // ─────────────────────────────────────────────────────────────
         //  Serializable capability properties
         // ─────────────────────────────────────────────────────────────
@@ -358,6 +362,7 @@ namespace PadForge.Engine.Data
             ProdId = wrapper.ProductId;
             DevicePath = wrapper.DevicePath;
             SerialNumber = wrapper.SerialNumber ?? string.Empty;
+            SdlGuid = wrapper.SdlGuid ?? string.Empty;
 
             // Populate device objects.
             DeviceObjects = wrapper.GetDeviceObjects();

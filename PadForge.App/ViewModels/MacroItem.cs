@@ -1438,7 +1438,10 @@ namespace PadForge.ViewModels
         MouseButtonRelease,
 
         /// <summary>Continuously map a source axis to mouse scroll wheel.</summary>
-        MouseScroll
+        MouseScroll,
+
+        /// <summary>Toggle the touchpad overlay visibility.</summary>
+        ToggleTouchpadOverlay
     }
 
     public enum MacroMouseButton

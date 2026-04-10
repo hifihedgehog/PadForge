@@ -209,6 +209,10 @@ namespace PadForge.Services
             // Start web controller server if enabled.
             StartWebServerIfEnabled();
 
+            // Show touchpad overlay if enabled.
+            if (_mainVm.Dashboard.EnableTouchpadOverlay)
+                ShowTouchpadOverlay();
+
             // Start audio bass rumble detector if any slot has it enabled.
             SyncAudioBassDetector();
 
@@ -286,6 +290,9 @@ namespace PadForge.Services
             // Stop web controller server.
             StopWebServer();
 
+            // Hide touchpad overlay.
+            HideTouchpadOverlay();
+
             // Stop audio bass rumble detector.
             StopAudioBassDetector();
 
@@ -351,6 +358,17 @@ namespace PadForge.Services
         {
             if (_inputManager == null || !_inputManager.IsRunning)
                 return;
+
+            // ── Read touchpad overlay state for pipeline ──
+            if (_touchpadOverlay?.IsVisible == true)
+                _inputManager.OverlayTouchpadState = _touchpadOverlay.GetTouchpadState();
+
+            // ── Handle macro-requested touchpad overlay toggle ──
+            if (_inputManager.ToggleTouchpadOverlayRequested)
+            {
+                _inputManager.ToggleTouchpadOverlayRequested = false;
+                ToggleTouchpadOverlay();
+            }
 
             // ── Update Pad ViewModels ──
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
@@ -1582,6 +1600,17 @@ namespace PadForge.Services
                     StartWebServerIfEnabled();
                 }
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableTouchpadOverlay))
+            {
+                if (_mainVm.Dashboard.EnableTouchpadOverlay)
+                    ShowTouchpadOverlay();
+                else
+                    HideTouchpadOverlay();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.TouchpadOverlayOpacity))
+            {
+                _touchpadOverlay?.SetSurfaceOpacity(_mainVm.Dashboard.TouchpadOverlayOpacity);
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1745,6 +1774,78 @@ namespace PadForge.Services
             _webServer = null;
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touchpad Overlay lifecycle
+        // ─────────────────────────────────────────────
+
+        private Views.TouchpadOverlay _touchpadOverlay;
+
+        private void ShowTouchpadOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (_touchpadOverlay == null)
+                {
+                    _touchpadOverlay = new Views.TouchpadOverlay();
+                    _touchpadOverlay.PositionChanged += OnTouchpadOverlayPositionChanged;
+                }
+
+                var dash = _mainVm.Dashboard;
+
+                // Restore persisted size.
+                _touchpadOverlay.Width = dash.TouchpadOverlayWidth;
+                _touchpadOverlay.Height = dash.TouchpadOverlayHeight;
+
+                // Restore persisted position or center on monitor.
+                if (!double.IsNaN(dash.TouchpadOverlayLeft) && !double.IsNaN(dash.TouchpadOverlayTop))
+                {
+                    _touchpadOverlay.Left = dash.TouchpadOverlayLeft;
+                    _touchpadOverlay.Top = dash.TouchpadOverlayTop;
+                }
+                else
+                {
+                    _touchpadOverlay.MoveToMonitor(dash.TouchpadOverlayMonitor);
+                }
+
+                _touchpadOverlay.SetSurfaceOpacity(dash.TouchpadOverlayOpacity);
+                _touchpadOverlay.Show();
+                dash.TouchpadOverlayStatus = Strings.Instance.Common_Running;
+            });
+        }
+
+        private void HideTouchpadOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (_touchpadOverlay != null)
+                {
+                    _touchpadOverlay.Hide();
+                    _mainVm.Dashboard.TouchpadOverlayStatus = Strings.Instance.Common_Stopped;
+                }
+            });
+        }
+
+        /// <summary>Toggles the touchpad overlay visibility (for macro action).</summary>
+        internal void ToggleTouchpadOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                var dash = _mainVm.Dashboard;
+                dash.EnableTouchpadOverlay = !dash.EnableTouchpadOverlay;
+            });
+        }
+
+        private void OnTouchpadOverlayPositionChanged()
+        {
+            if (_touchpadOverlay == null) return;
+            var dash = _mainVm.Dashboard;
+            dash.TouchpadOverlayLeft = _touchpadOverlay.Left;
+            dash.TouchpadOverlayTop = _touchpadOverlay.Top;
+            dash.TouchpadOverlayWidth = _touchpadOverlay.Width;
+            dash.TouchpadOverlayHeight = _touchpadOverlay.Height;
+            dash.TouchpadOverlayMonitor = _touchpadOverlay.GetCurrentMonitor();
         }
 
         private void OnCultureChanged() => _dispatcher.BeginInvoke(RefreshServerStatusStrings);

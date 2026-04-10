@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>로컬 네트워크의 브라우저에 게임패드 UI를 제공합니다.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>스마트폰이나 태블릿 브라우저에서 연결하여 게임패드로 사용할 수 있습니다.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DS4 터치패드 에뮬레이션을 위한 화면 터치 영역.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 활성화</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>불투명도:</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>드라이버</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>장치 없음</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} 스크롤 (최대 {1} 단위)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>마우스 {0} 누르기</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>마우스 {0} 놓기</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>중립</value></data>

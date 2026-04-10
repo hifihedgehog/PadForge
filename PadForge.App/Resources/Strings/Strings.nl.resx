@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Bied een gamepad-interface aan voor browsers op uw lokale netwerk.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Webcontroller-server inschakelen</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbind vanaf een telefoon of tablet-browser om het als gamepad te gebruiken.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Touchoppervlak op het scherm voor DS4-touchpademulatie.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay inschakelen</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Dekking:</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Stuurprogramma's</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Geen apparaat</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen met {0} (max {1} eenheden)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop indrukken {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop loslaten {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Gecentreerd</value></data>

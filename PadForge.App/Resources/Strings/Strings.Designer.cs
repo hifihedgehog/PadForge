@@ -258,6 +258,10 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_WebDescription => Get("Dashboard_WebDescription");
     public string Dashboard_EnableWeb => Get("Dashboard_EnableWeb");
     public string Dashboard_WebFooter => Get("Dashboard_WebFooter");
+    public string Dashboard_TouchpadOverlay => Get("Dashboard_TouchpadOverlay");
+    public string Dashboard_TouchpadOverlayDescription => Get("Dashboard_TouchpadOverlayDescription");
+    public string Dashboard_EnableTouchpadOverlay => Get("Dashboard_EnableTouchpadOverlay");
+    public string Dashboard_TouchpadOverlayOpacity => Get("Dashboard_TouchpadOverlayOpacity");
     public string Dashboard_Drivers => Get("Dashboard_Drivers");
     public string Dashboard_NoDevice => Get("Dashboard_NoDevice");
     public string Settings_Title => Get("Settings_Title");
@@ -603,6 +607,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_ScrollLimit_Format => Get("MacroAction_ScrollLimit_Format");
     public string MacroAction_MousePress_Format => Get("MacroAction_MousePress_Format");
     public string MacroAction_MouseRelease_Format => Get("MacroAction_MouseRelease_Format");
+    public string MacroAction_ToggleTouchpadOverlay => Get("MacroAction_ToggleTouchpadOverlay");
     public string POV_Centered => Get("POV_Centered");
     public string POV_Up => Get("POV_Up");
     public string POV_UpRight => Get("POV_UpRight");

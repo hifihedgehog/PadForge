@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>从手机或平板电脑浏览器连接，用作手柄。</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>触摸板叠加层</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于DS4触摸板模拟的屏幕触摸区域。</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>启用触摸板叠加层</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度：</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>驱动程序</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>无设备</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>滚动 {0}（最大 {1} 单位）</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>按下鼠标 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>释放鼠标 {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触摸板叠加层</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>居中</value></data>

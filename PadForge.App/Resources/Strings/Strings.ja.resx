@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>スマートフォンやタブレットのブラウザから接続してゲームパッドとして使用できます。</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイ</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DS4タッチパッドエミュレーション用の画面上タッチ面。</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイを有効にする</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度:</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>ドライバー</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>デバイスなし</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} スクロール (最大 {1} 単位)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>中央</value></data>

@@ -475,6 +475,38 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Touchpad Overlay ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xEDA4;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_TouchpadOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding EnableTouchpadOverlay}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Slider Value="{Binding TouchpadOverlayOpacity, Mode=TwoWay}"
+                                Minimum="0.05" Maximum="1.0"
+                                TickFrequency="0.05" Width="160"
+                                VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding TouchpadOverlayOpacity, StringFormat={}{0:P0}}"
+                                   VerticalAlignment="Center" Margin="8,0,0,0" FontSize="12"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Ellipse Width="8" Height="8"
+                                 Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}}"
+                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Driver status ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xED5D;" FontFamily="Segoe MDL2 Assets" FontSize="16"

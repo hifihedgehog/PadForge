@@ -295,6 +295,18 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
 
+            // Load touchpad overlay settings.
+            _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
+            _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity > 0
+                ? appSettings.TouchpadOverlayOpacity : 0.25;
+            _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
+            _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
+            _mainVm.Dashboard.TouchpadOverlayTop = appSettings.TouchpadOverlayTop;
+            _mainVm.Dashboard.TouchpadOverlayWidth = appSettings.TouchpadOverlayWidth > 0
+                ? appSettings.TouchpadOverlayWidth : 500;
+            _mainVm.Dashboard.TouchpadOverlayHeight = appSettings.TouchpadOverlayHeight > 0
+                ? appSettings.TouchpadOverlayHeight : 250;
+
             vm.Use2DControllerView = appSettings.Use2DControllerView;
         }
 
@@ -773,6 +785,13 @@ namespace PadForge.Services
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
             profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
+            profile.EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay;
+            profile.TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity;
+            profile.TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor;
+            profile.TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft;
+            profile.TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop;
+            profile.TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth;
+            profile.TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight;
         }
 
         /// <summary>
@@ -1604,6 +1623,27 @@ namespace PadForge.Services
         public int WebControllerPort { get; set; } = 8080;
 
         [XmlElement]
+        public bool EnableTouchpadOverlay { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayOpacity { get; set; } = 0.25;
+
+        [XmlElement]
+        public int TouchpadOverlayMonitor { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayLeft { get; set; } = double.NaN;
+
+        [XmlElement]
+        public double TouchpadOverlayTop { get; set; } = double.NaN;
+
+        [XmlElement]
+        public double TouchpadOverlayWidth { get; set; } = 500;
+
+        [XmlElement]
+        public double TouchpadOverlayHeight { get; set; } = 250;
+
+        [XmlElement]
         public bool Use2DControllerView { get; set; }
 
         /// <summary>
@@ -1870,6 +1910,27 @@ namespace PadForge.Services
         /// <summary>Web controller server port for this profile.</summary>
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;
+
+        [XmlElement]
+        public bool EnableTouchpadOverlay { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayOpacity { get; set; } = 0.25;
+
+        [XmlElement]
+        public int TouchpadOverlayMonitor { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayLeft { get; set; } = double.NaN;
+
+        [XmlElement]
+        public double TouchpadOverlayTop { get; set; } = double.NaN;
+
+        [XmlElement]
+        public double TouchpadOverlayWidth { get; set; } = 500;
+
+        [XmlElement]
+        public double TouchpadOverlayHeight { get; set; } = 250;
     }
 
     /// <summary>

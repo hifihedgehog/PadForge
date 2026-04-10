@@ -621,6 +621,11 @@ namespace PadForge.Common.Input
                     SendMouseButtonInput(action.MouseButton, down: false);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.ToggleTouchpadOverlay:
+                    ToggleTouchpadOverlayRequested = true;
+                    AdvanceAction(macro);
+                    break;
             }
         }
 

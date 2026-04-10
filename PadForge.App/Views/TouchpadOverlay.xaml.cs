@@ -13,6 +13,7 @@ namespace PadForge.Views
     /// Uses WS_EX_NOACTIVATE to prevent stealing focus from games.
     /// First touch = finger 0, second touch = finger 1 (no zones needed).
     /// Double-tap triggers touchpad click.
+    /// Draggable via mouse on surface, resizable via corner grip.
     /// </summary>
     public partial class TouchpadOverlay : Window
     {
@@ -38,10 +39,19 @@ namespace PadForge.Views
         private DateTime _lastTapTime = DateTime.MinValue;
         private const double DoubleTapMs = 300;
 
+        // Resize tracking
+        private bool _isResizing;
+        private Point _resizeStart;
+        private double _resizeStartW, _resizeStartH;
+
+        /// <summary>Fired when the user finishes dragging or resizing (position/size changed).</summary>
+        public event Action PositionChanged;
+
         public TouchpadOverlay()
         {
             InitializeComponent();
             Loaded += OnLoaded;
+            SizeChanged += OnSizeChanged;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -52,6 +62,19 @@ namespace PadForge.Views
 
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
+
+            UpdateSurfaceSize();
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateSurfaceSize();
+        }
+
+        private void UpdateSurfaceSize()
+        {
+            Surface.Width = ActualWidth;
+            Surface.Height = ActualHeight;
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -63,6 +86,96 @@ namespace PadForge.Views
             }
             return IntPtr.Zero;
         }
+
+        // ─────────────────────────────────────────────
+        //  Drag (mouse on surface)
+        // ─────────────────────────────────────────────
+
+        private void Surface_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+            PositionChanged?.Invoke();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Resize (grip in bottom-right corner)
+        // ─────────────────────────────────────────────
+
+        private void ResizeGrip_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isResizing = true;
+            _resizeStart = PointToScreen(e.GetPosition(this));
+            _resizeStartW = Width;
+            _resizeStartH = Height;
+            ResizeGrip.CaptureMouse();
+            e.Handled = true;
+        }
+
+        private void ResizeGrip_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isResizing) return;
+            var current = PointToScreen(e.GetPosition(this));
+            double newW = _resizeStartW + (current.X - _resizeStart.X);
+            double newH = _resizeStartH + (current.Y - _resizeStart.Y);
+            Width = Math.Max(MinWidth, newW);
+            Height = Math.Max(MinHeight, newH);
+        }
+
+        private void ResizeGrip_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!_isResizing) return;
+            _isResizing = false;
+            ResizeGrip.ReleaseMouseCapture();
+            PositionChanged?.Invoke();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Monitor
+        // ─────────────────────────────────────────────
+
+        /// <summary>Moves the overlay to the specified monitor index.</summary>
+        public void MoveToMonitor(int monitorIndex)
+        {
+            var screens = System.Windows.Forms.Screen.AllScreens;
+            if (monitorIndex < 0 || monitorIndex >= screens.Length)
+                monitorIndex = 0;
+
+            var bounds = screens[monitorIndex].WorkingArea;
+            // Center on the target monitor
+            Left = bounds.Left + (bounds.Width - Width) / 2;
+            Top = bounds.Top + (bounds.Height - Height) / 2;
+        }
+
+        /// <summary>Returns the monitor index the overlay's center point is on.</summary>
+        public int GetCurrentMonitor()
+        {
+            double cx = Left + Width / 2;
+            double cy = Top + Height / 2;
+            var screens = System.Windows.Forms.Screen.AllScreens;
+            for (int i = 0; i < screens.Length; i++)
+            {
+                var b = screens[i].Bounds;
+                if (cx >= b.Left && cx < b.Right && cy >= b.Top && cy < b.Bottom)
+                    return i;
+            }
+            return 0;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Surface opacity
+        // ─────────────────────────────────────────────
+
+        /// <summary>Sets the touchpad surface opacity (0.0 = invisible, 1.0 = opaque).</summary>
+        public void SetSurfaceOpacity(double opacity)
+        {
+            Surface.Background = new System.Windows.Media.SolidColorBrush(
+                System.Windows.Media.Color.FromArgb(
+                    (byte)(Math.Clamp(opacity, 0.0, 1.0) * 255), 255, 255, 255));
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touch input
+        // ─────────────────────────────────────────────
 
         protected override void OnTouchDown(TouchEventArgs e)
         {

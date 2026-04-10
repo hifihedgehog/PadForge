@@ -115,6 +115,18 @@ namespace PadForge.Common.Input
         public TouchpadState[] RetrievedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
         /// <summary>
+        /// Touchpad overlay state, read by Step 4 to merge into DS4 touchpad output.
+        /// Written from UI thread (InputService timer), read from polling thread.
+        /// </summary>
+        public TouchpadState OverlayTouchpadState;
+
+        /// <summary>
+        /// Flag set by macro execution to request touchpad overlay toggle.
+        /// Cleared by InputService on the UI thread after processing.
+        /// </summary>
+        public volatile bool ToggleTouchpadOverlayRequested;
+
+        /// <summary>
         /// Per-slot vibration states received from games via ViGEmBus.
         /// </summary>
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];

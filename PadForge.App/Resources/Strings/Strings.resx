@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Serve a gamepad UI to browsers on your local network.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable web controller server</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Connect from a phone or tablet browser to use as a gamepad.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad Overlay</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>On-screen touch surface for DS4 touchpad emulation.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Enable touchpad overlay</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacity:</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Drivers</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>No device</value></data>
 
@@ -522,6 +526,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scroll by {0} (max {1} units)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Mouse Press {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mouse Release {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Toggle Touchpad Overlay</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centered</value></data>

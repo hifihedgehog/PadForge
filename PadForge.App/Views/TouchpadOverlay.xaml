@@ -8,24 +8,39 @@
         Topmost="True"
         ShowInTaskbar="False"
         Focusable="False"
+        MinWidth="150" MinHeight="80"
         Width="500" Height="250"
         WindowStartupLocation="CenterScreen">
 
-    <Canvas x:Name="RootCanvas" ClipToBounds="True">
-        <!-- Touchpad surface -->
-        <Border x:Name="Surface"
-                Canvas.Left="0" Canvas.Top="0"
-                Width="500" Height="250"
-                Background="#30FFFFFF"
-                CornerRadius="8"
-                BorderBrush="#60FFFFFF" BorderThickness="1"/>
+    <Grid>
+        <Canvas x:Name="RootCanvas" ClipToBounds="True">
+            <!-- Touchpad surface (drag region) -->
+            <Border x:Name="Surface"
+                    Canvas.Left="0" Canvas.Top="0"
+                    Background="#30FFFFFF"
+                    CornerRadius="8"
+                    BorderBrush="#60FFFFFF" BorderThickness="1"
+                    MouseLeftButtonDown="Surface_MouseLeftButtonDown"/>
 
-        <!-- Finger indicators -->
-        <Ellipse x:Name="Finger0Dot" Width="20" Height="20"
-                 Fill="#80FF6600" Visibility="Collapsed"
-                 IsHitTestVisible="False"/>
-        <Ellipse x:Name="Finger1Dot" Width="20" Height="20"
-                 Fill="#800066FF" Visibility="Collapsed"
-                 IsHitTestVisible="False"/>
-    </Canvas>
+            <!-- Finger indicators -->
+            <Ellipse x:Name="Finger0Dot" Width="20" Height="20"
+                     Fill="#80FF6600" Visibility="Collapsed"
+                     IsHitTestVisible="False"/>
+            <Ellipse x:Name="Finger1Dot" Width="20" Height="20"
+                     Fill="#800066FF" Visibility="Collapsed"
+                     IsHitTestVisible="False"/>
+        </Canvas>
+
+        <!-- Resize grip (bottom-right corner) -->
+        <Path x:Name="ResizeGrip"
+              Data="M 0,12 L 12,0 L 12,12 Z"
+              Fill="#60FFFFFF"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              Margin="0,0,4,4"
+              Cursor="SizeNWSE"
+              MouseLeftButtonDown="ResizeGrip_MouseLeftButtonDown"
+              MouseMove="ResizeGrip_MouseMove"
+              MouseLeftButtonUp="ResizeGrip_MouseLeftButtonUp"/>
+    </Grid>
 </Window>

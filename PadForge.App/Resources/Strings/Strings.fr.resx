@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Diffuser une interface manette vers les navigateurs de votre réseau local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Activer le serveur de contrôleur web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Connectez-vous depuis un téléphone ou une tablette pour l'utiliser comme manette.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Superposition pavé tactile</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Surface tactile à l'écran pour l'émulation du pavé tactile DS4.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Activer la superposition du pavé tactile</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacité :</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Pilotes</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Aucun appareil</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Défiler de {0} (max {1} unités)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Appui souris {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Relâchement souris {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer la superposition du pavé tactile</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centré</value></data>

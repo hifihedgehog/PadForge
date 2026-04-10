@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Stellt eine Gamepad-Oberfläche für Browser in Ihrem lokalen Netzwerk bereit.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web-Controller-Server aktivieren</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbinden Sie sich von einem Telefon oder Tablet-Browser, um es als Gamepad zu verwenden.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchfläche für DS4-Touchpad-Emulation.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay aktivieren</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Deckkraft:</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Treiber</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Kein Gerät</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen um {0} (max. {1} Einheiten)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Maustaste drücken {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Maustaste loslassen {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay umschalten</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Zentriert</value></data>

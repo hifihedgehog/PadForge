@@ -220,6 +220,10 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sirve una interfaz de mando a navegadores en su red local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Activar servidor de control web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Conéctese desde un teléfono o tableta para usarlo como mando.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Superposición de panel táctil</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superficie táctil en pantalla para emulación del panel táctil de DS4.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Activar superposición de panel táctil</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidad:</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Controladores</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Sin dispositivo</value></data>
 
@@ -521,6 +525,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Desplazar en {0} (máx. {1} unidades)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Presionar ratón {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar ratón {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar superposición de panel táctil</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centrado</value></data>

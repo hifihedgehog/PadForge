@@ -345,7 +345,18 @@ namespace PadForge.ViewModels
         public double TouchpadOverlayOpacity
         {
             get => _touchpadOverlayOpacity;
-            set => SetProperty(ref _touchpadOverlayOpacity, Math.Clamp(value, 0.05, 1.0));
+            set
+            {
+                if (SetProperty(ref _touchpadOverlayOpacity, Math.Clamp(value, 0.05, 1.0)))
+                    OnPropertyChanged(nameof(TouchpadOverlayOpacityPercent));
+            }
+        }
+
+        /// <summary>Opacity as 5–100 integer percentage for NumberBox binding.</summary>
+        public int TouchpadOverlayOpacityPercent
+        {
+            get => (int)Math.Round(_touchpadOverlayOpacity * 100);
+            set => TouchpadOverlayOpacity = value / 100.0;
         }
 
         private int _touchpadOverlayMonitor;

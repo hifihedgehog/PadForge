@@ -290,8 +290,8 @@ namespace PadForge.Services
             // Stop web controller server.
             StopWebServer();
 
-            // Hide touchpad overlay.
-            HideTouchpadOverlay();
+            // Close touchpad overlay (not just hide — prevents shutdown hang).
+            HideTouchpadOverlay(close: true);
 
             // Stop audio bass rumble detector.
             StopAudioBassDetector();
@@ -1815,13 +1815,22 @@ namespace PadForge.Services
             });
         }
 
-        private void HideTouchpadOverlay()
+        private void HideTouchpadOverlay(bool close = false)
         {
             _dispatcher.BeginInvoke(() =>
             {
                 if (_touchpadOverlay != null)
                 {
-                    _touchpadOverlay.Hide();
+                    if (close)
+                    {
+                        _touchpadOverlay.PositionChanged -= OnTouchpadOverlayPositionChanged;
+                        _touchpadOverlay.Close();
+                        _touchpadOverlay = null;
+                    }
+                    else
+                    {
+                        _touchpadOverlay.Hide();
+                    }
                     _mainVm.Dashboard.TouchpadOverlayStatus = Strings.Instance.Common_Stopped;
                 }
             });

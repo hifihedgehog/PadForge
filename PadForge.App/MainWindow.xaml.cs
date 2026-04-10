@@ -858,17 +858,8 @@ namespace PadForge
             }
             if (mw.MainWindowWidth > 0) Width = mw.MainWindowWidth;
             if (mw.MainWindowHeight > 0) Height = mw.MainWindowHeight;
-            if (mw.MainWindowFullScreen)
-            {
-                _isFullScreen = true;
-                WindowStyle = WindowStyle.None;
+            if (!mw.MainWindowFullScreen && mw.MainWindowState == 2)
                 WindowState = WindowState.Maximized;
-                FullScreenIcon.Text = "\uE73F";
-            }
-            else if (mw.MainWindowState == 2)
-            {
-                WindowState = WindowState.Maximized;
-            }
 
             // Sync StartAtLogin with actual registry state (user may have removed it externally).
             _viewModel.Settings.StartAtLogin = Common.StartupHelper.IsStartupEnabled();
@@ -973,6 +964,16 @@ namespace PadForge
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            // Restore fullscreen after window is fully rendered — setting WindowStyle.None
+            // in the constructor gets overridden by FluentWindow initialization.
+            if (_viewModel.Settings.MainWindowFullScreen)
+            {
+                _isFullScreen = true;
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
+                FullScreenIcon.Text = "\uE73F";
+            }
+
             SetupNativeTooltip();
 
             // Driver detection and timer are initialized in the constructor so they

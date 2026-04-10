@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Presionar botón del ratón</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Soltar botón del ratón</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Desplazamiento del ratón</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar superposición de panel táctil</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botones:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinación de teclas:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinación de teclas en formato {Tecla1}{Tecla2} — editable</value></data>

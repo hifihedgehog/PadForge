@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Appui bouton souris</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Relâchement bouton souris</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer la superposition du pavé tactile</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Boutons :</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinaison de touches :</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinaison de touches au format {Touche1}{Touche2} — modifiable</value></data>

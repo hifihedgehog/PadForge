@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>마우스 버튼 누르기</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>마우스 버튼 놓기</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>버튼:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>키 조합:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 형식의 키 조합 — 편집 가능</value></data>

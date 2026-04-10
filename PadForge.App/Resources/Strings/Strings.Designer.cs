@@ -544,6 +544,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_MouseButtonPress => Get("Macro_MouseButtonPress");
     public string Macro_MouseButtonRelease => Get("Macro_MouseButtonRelease");
     public string Macro_MouseScroll => Get("Macro_MouseScroll");
+    public string Macro_ToggleTouchpadOverlay => Get("Macro_ToggleTouchpadOverlay");
     public string Macro_Buttons => Get("Macro_Buttons");
     public string Macro_KeyCombo => Get("Macro_KeyCombo");
     public string Macro_KeyComboTooltip => Get("Macro_KeyComboTooltip");

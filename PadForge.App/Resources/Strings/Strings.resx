@@ -467,6 +467,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Mouse Button Press</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Mouse Button Release</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Toggle Touchpad Overlay</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Buttons:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Key Combo:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Key combo in {Key1}{Key2} format — editable</value></data>

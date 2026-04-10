@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>マウスボタン押下</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>マウスボタン解放</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ボタン:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>キーコンボ:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 形式のキーコンボ — 編集可能</value></data>

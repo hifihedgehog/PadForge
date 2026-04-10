@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Muisknop indrukken</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Muisknop loslaten</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Knoppen:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Toetscombinatie:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Toetscombinatie in {Toets1}{Toets2}-formaat — bewerkbaar</value></data>

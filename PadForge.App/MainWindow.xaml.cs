@@ -838,6 +838,8 @@ namespace PadForge
             Loaded += OnLoaded;
             Closing += OnClosing;
             StateChanged += OnStateChanged;
+            LocationChanged += OnLocationOrSizeChanged;
+            SizeChanged += OnLocationOrSizeChanged;
 
             // Live language switching: refresh sidebar nav items when culture changes.
             Strings.CultureChanged += OnCultureChanged;
@@ -846,6 +848,17 @@ namespace PadForge
             // Settings must be loaded before Show() so App.OnStartup can
             // decide whether to show the window at all (start-minimized-to-tray).
             _settingsService.Initialize();
+
+            // Restore main window position/size/state.
+            var mw = _viewModel.Settings;
+            if (mw.MainWindowLeft >= 0 && mw.MainWindowTop >= 0)
+            {
+                Left = mw.MainWindowLeft;
+                Top = mw.MainWindowTop;
+            }
+            if (mw.MainWindowWidth > 0) Width = mw.MainWindowWidth;
+            if (mw.MainWindowHeight > 0) Height = mw.MainWindowHeight;
+            if (mw.MainWindowState == 2) WindowState = WindowState.Maximized;
 
             // Sync StartAtLogin with actual registry state (user may have removed it externally).
             _viewModel.Settings.StartAtLogin = Common.StartupHelper.IsStartupEnabled();
@@ -3362,6 +3375,25 @@ namespace PadForge
                 Hide();
                 _notifyIcon.Visible = true;
             }
+
+            // Persist window state (Normal or Maximized, not Minimized).
+            if (WindowState != WindowState.Minimized)
+            {
+                _viewModel.Settings.MainWindowState = (int)WindowState;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        private void OnLocationOrSizeChanged(object sender, EventArgs e)
+        {
+            // Only save when in Normal state (Maximized position/size is system-managed).
+            if (WindowState != WindowState.Normal) return;
+            var mw = _viewModel.Settings;
+            mw.MainWindowLeft = Left;
+            mw.MainWindowTop = Top;
+            mw.MainWindowWidth = Width;
+            mw.MainWindowHeight = Height;
+            _settingsService.MarkDirty();
         }
 
         private bool _isRestoring;

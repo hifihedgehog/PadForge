@@ -308,6 +308,13 @@ namespace PadForge.Services
                 ? appSettings.TouchpadOverlayHeight : 250;
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
+
+            // Restore main window position/size (profile-independent).
+            vm.MainWindowLeft = appSettings.MainWindowLeft;
+            vm.MainWindowTop = appSettings.MainWindowTop;
+            vm.MainWindowWidth = appSettings.MainWindowWidth > 0 ? appSettings.MainWindowWidth : 1100;
+            vm.MainWindowHeight = appSettings.MainWindowHeight > 0 ? appSettings.MainWindowHeight : 720;
+            vm.MainWindowState = appSettings.MainWindowState;
         }
 
         /// <summary>
@@ -1027,6 +1034,11 @@ namespace PadForge.Services
                 TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
                 TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
                 TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
+                MainWindowLeft = vm.MainWindowLeft,
+                MainWindowTop = vm.MainWindowTop,
+                MainWindowWidth = vm.MainWindowWidth,
+                MainWindowHeight = vm.MainWindowHeight,
+                MainWindowState = vm.MainWindowState,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
@@ -1649,6 +1661,21 @@ namespace PadForge.Services
 
         [XmlElement]
         public double TouchpadOverlayHeight { get; set; } = 250;
+
+        [XmlElement]
+        public double MainWindowLeft { get; set; } = -1;
+
+        [XmlElement]
+        public double MainWindowTop { get; set; } = -1;
+
+        [XmlElement]
+        public double MainWindowWidth { get; set; } = 1100;
+
+        [XmlElement]
+        public double MainWindowHeight { get; set; } = 720;
+
+        [XmlElement]
+        public int MainWindowState { get; set; } // 0=Normal, 2=Maximized
 
         [XmlElement]
         public bool Use2DControllerView { get; set; }

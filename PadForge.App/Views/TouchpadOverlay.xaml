@@ -11,7 +11,7 @@
         Focusable="False"
         MinWidth="150" MinHeight="80"
         Width="500" Height="250"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="Manual">
 
     <Grid>
         <Canvas x:Name="RootCanvas" ClipToBounds="True">

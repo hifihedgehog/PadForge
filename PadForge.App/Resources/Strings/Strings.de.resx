@@ -224,6 +224,7 @@
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchfläche für DS4-Touchpad-Emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay aktivieren</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Deckkraft:</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Rechtsklick gedrückt halten zum Ziehen</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Treiber</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Kein Gerät</value></data>
 

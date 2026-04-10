@@ -1,6 +1,7 @@
 <Window x:Class="PadForge.Views.TouchpadOverlay"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         Title="PadForge Touchpad"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -20,6 +21,7 @@
                     Background="#30FFFFFF"
                     CornerRadius="8"
                     BorderBrush="#60FFFFFF" BorderThickness="1"
+                    ToolTip="{Binding TouchpadOverlay_DragTooltip, Source={x:Static strings:Strings.Instance}}"
                     MouseRightButtonDown="Surface_MouseRightButtonDown"
                     MouseMove="Surface_MouseMove"
                     MouseRightButtonUp="Surface_MouseRightButtonUp"/>

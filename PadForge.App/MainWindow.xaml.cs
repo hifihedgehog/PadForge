@@ -269,7 +269,14 @@ namespace PadForge
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
                      or nameof(DashboardViewModel.DsuMotionServerPort)
                      or nameof(DashboardViewModel.EnableWebController)
-                     or nameof(DashboardViewModel.WebControllerPort))
+                     or nameof(DashboardViewModel.WebControllerPort)
+                     or nameof(DashboardViewModel.EnableTouchpadOverlay)
+                     or nameof(DashboardViewModel.TouchpadOverlayOpacity)
+                     or nameof(DashboardViewModel.TouchpadOverlayMonitor)
+                     or nameof(DashboardViewModel.TouchpadOverlayLeft)
+                     or nameof(DashboardViewModel.TouchpadOverlayTop)
+                     or nameof(DashboardViewModel.TouchpadOverlayWidth)
+                     or nameof(DashboardViewModel.TouchpadOverlayHeight))
                     _settingsService.MarkDirty();
             };
 

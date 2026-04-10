@@ -1866,7 +1866,11 @@ namespace PadForge.Services
             dash.TouchpadOverlayMonitor = _touchpadOverlay.GetCurrentMonitor();
         }
 
-        private void OnCultureChanged() => _dispatcher.BeginInvoke(RefreshServerStatusStrings);
+        private void OnCultureChanged() => _dispatcher.BeginInvoke(() =>
+        {
+            RefreshServerStatusStrings();
+            SyncDevicesList(); // Re-resolve localized device names (merged keyboards/mice/touchpads).
+        });
 
         /// <summary>
         /// Re-sets server status display strings after a language change.
@@ -2292,6 +2296,7 @@ namespace PadForge.Services
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
                            : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged
+                           : ud.DevicePath == "overlay://touchpad" ? Strings.Instance.Dashboard_TouchpadOverlay
                            : ud.ResolvedName;
             row.ProductName = ud.ProductName;
             row.ProductGuid = ud.ProductGuid;

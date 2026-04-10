@@ -635,6 +635,7 @@ namespace PadForge.ViewModels
         public double MainWindowWidth { get; set; } = 1100;
         public double MainWindowHeight { get; set; } = 720;
         public int MainWindowState { get; set; }
+        public bool MainWindowFullScreen { get; set; }
 
         /// <summary>Observable list of profile names for the UI.</summary>
         public ObservableCollection<ProfileListItem> ProfileItems { get; } = new();

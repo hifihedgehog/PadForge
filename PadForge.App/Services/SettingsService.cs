@@ -315,6 +315,7 @@ namespace PadForge.Services
             vm.MainWindowWidth = appSettings.MainWindowWidth > 0 ? appSettings.MainWindowWidth : 1100;
             vm.MainWindowHeight = appSettings.MainWindowHeight > 0 ? appSettings.MainWindowHeight : 720;
             vm.MainWindowState = appSettings.MainWindowState;
+            vm.MainWindowFullScreen = appSettings.MainWindowFullScreen;
         }
 
         /// <summary>
@@ -1039,6 +1040,7 @@ namespace PadForge.Services
                 MainWindowWidth = vm.MainWindowWidth,
                 MainWindowHeight = vm.MainWindowHeight,
                 MainWindowState = vm.MainWindowState,
+                MainWindowFullScreen = vm.MainWindowFullScreen,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
@@ -1676,6 +1678,9 @@ namespace PadForge.Services
 
         [XmlElement]
         public int MainWindowState { get; set; } // 0=Normal, 2=Maximized
+
+        [XmlElement]
+        public bool MainWindowFullScreen { get; set; }
 
         [XmlElement]
         public bool Use2DControllerView { get; set; }

@@ -858,7 +858,17 @@ namespace PadForge
             }
             if (mw.MainWindowWidth > 0) Width = mw.MainWindowWidth;
             if (mw.MainWindowHeight > 0) Height = mw.MainWindowHeight;
-            if (mw.MainWindowState == 2) WindowState = WindowState.Maximized;
+            if (mw.MainWindowFullScreen)
+            {
+                _isFullScreen = true;
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
+                FullScreenIcon.Text = "\uE73F";
+            }
+            else if (mw.MainWindowState == 2)
+            {
+                WindowState = WindowState.Maximized;
+            }
 
             // Sync StartAtLogin with actual registry state (user may have removed it externally).
             _viewModel.Settings.StartAtLogin = Common.StartupHelper.IsStartupEnabled();
@@ -3026,6 +3036,8 @@ namespace PadForge
                 WindowState = WindowState.Maximized;
                 FullScreenIcon.Text = "\uE73F";
             }
+            _viewModel.Settings.MainWindowFullScreen = _isFullScreen;
+            _settingsService.MarkDirty();
         }
 
         private void TitleBar_MaximizeClicked(Wpf.Ui.Controls.TitleBar sender, RoutedEventArgs args)

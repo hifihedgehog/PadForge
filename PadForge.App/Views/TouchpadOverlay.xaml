@@ -20,9 +20,9 @@
                     Background="#30FFFFFF"
                     CornerRadius="8"
                     BorderBrush="#60FFFFFF" BorderThickness="1"
-                    MouseRightButtonDown="Surface_MouseRightButtonDown"
+                    MouseLeftButtonDown="Surface_MouseLeftButtonDown"
                     MouseMove="Surface_MouseMove"
-                    MouseRightButtonUp="Surface_MouseRightButtonUp"/>
+                    MouseLeftButtonUp="Surface_MouseLeftButtonUp"/>
 
             <!-- Finger indicators -->
             <Ellipse x:Name="Finger0Dot" Width="20" Height="20"

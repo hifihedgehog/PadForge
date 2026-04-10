@@ -490,13 +490,16 @@
                               IsChecked="{Binding EnableTouchpadOverlay}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
                         <Slider Value="{Binding TouchpadOverlayOpacity, Mode=TwoWay}"
                                 Minimum="0.05" Maximum="1.0"
-                                TickFrequency="0.05" Width="160"
-                                VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding TouchpadOverlayOpacity, StringFormat={}{0:P0}}"
-                                   VerticalAlignment="Center" Margin="8,0,0,0" FontSize="12"/>
+                                SmallChange="0.05" LargeChange="0.1"
+                                Width="160" VerticalAlignment="Center"/>
+                        <ui:NumberBox Value="{Binding TouchpadOverlayOpacityPercent, Mode=TwoWay}"
+                                      Minimum="5" Maximum="100"
+                                      SpinButtonPlacementMode="Inline" Width="110"
+                                      Margin="8,0,0,0"/>
+                        <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"

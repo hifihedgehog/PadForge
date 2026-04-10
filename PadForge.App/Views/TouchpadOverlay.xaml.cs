@@ -88,14 +88,13 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Drag (mouse on surface)
+        //  Drag (three-finger touch)
         // ─────────────────────────────────────────────
 
-        private void Surface_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-            PositionChanged?.Invoke();
-        }
+        private int _activeTouchCount;
+        private bool _isDragging;
+        private Point _dragStartScreen;
+        private double _dragStartLeft, _dragStartTop;
 
         // ─────────────────────────────────────────────
         //  Resize (grip in bottom-right corner)
@@ -181,6 +180,20 @@ namespace PadForge.Views
         {
             e.Handled = true;
             CaptureTouch(e.TouchDevice);
+            _activeTouchCount++;
+
+            // Three or more fingers: enter drag mode.
+            if (_activeTouchCount >= 3 && !_isDragging)
+            {
+                _isDragging = true;
+                var screenPos = PointToScreen(e.GetTouchPoint(this).Position);
+                _dragStartScreen = screenPos;
+                _dragStartLeft = Left;
+                _dragStartTop = Top;
+                return;
+            }
+
+            if (_isDragging) return;
 
             var pos = e.GetTouchPoint(this).Position;
             float nx = (float)(pos.X / ActualWidth);
@@ -205,6 +218,15 @@ namespace PadForge.Views
         protected override void OnTouchMove(TouchEventArgs e)
         {
             e.Handled = true;
+
+            if (_isDragging)
+            {
+                var screenPos = PointToScreen(e.GetTouchPoint(this).Position);
+                Left = _dragStartLeft + (screenPos.X - _dragStartScreen.X);
+                Top = _dragStartTop + (screenPos.Y - _dragStartScreen.Y);
+                return;
+            }
+
             var pos = e.GetTouchPoint(this).Position;
             float nx = (float)(pos.X / ActualWidth);
             float ny = (float)(pos.Y / ActualHeight);
@@ -223,6 +245,17 @@ namespace PadForge.Views
         {
             e.Handled = true;
             ReleaseTouchCapture(e.TouchDevice);
+            _activeTouchCount = Math.Max(0, _activeTouchCount - 1);
+
+            if (_isDragging)
+            {
+                if (_activeTouchCount < 3)
+                {
+                    _isDragging = false;
+                    PositionChanged?.Invoke();
+                }
+                return;
+            }
 
             lock (_stateLock)
             {

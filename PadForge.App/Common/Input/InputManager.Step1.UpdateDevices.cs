@@ -775,6 +775,20 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
+        /// Registers the touchpad overlay as a virtual device in the device list.
+        /// </summary>
+        public void RegisterOverlayDevice(TouchpadOverlayDevice device)
+        {
+            if (device == null) return;
+
+            UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
+            ud.LoadFromOverlayDevice(device);
+            ud.IsOnline = true;
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Registers an external (non-SDL) input device into the device list.
         /// Called by WebControllerServer when a browser client connects.
         /// Thread-safe via UserDevices.SyncRoot.

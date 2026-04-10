@@ -141,11 +141,6 @@ namespace PadForge.Common.Input
                                 break;
                             }
                         }
-                        // Overlay touchpad takes priority when active.
-                        var overlayTp = OverlayTouchpadState;
-                        if (overlayTp.Down0 || overlayTp.Down1 || overlayTp.Click)
-                            combinedTp = overlayTp;
-
                         CombinedTouchpadStates[padIndex] = combinedTp;
                     }
                 }

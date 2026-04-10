@@ -1020,6 +1020,13 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
+                EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
+                TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
+                TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
+                TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
+                TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
+                TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
+                TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
@@ -1632,10 +1639,10 @@ namespace PadForge.Services
         public int TouchpadOverlayMonitor { get; set; }
 
         [XmlElement]
-        public double TouchpadOverlayLeft { get; set; } = double.NaN;
+        public double TouchpadOverlayLeft { get; set; } = -1;
 
         [XmlElement]
-        public double TouchpadOverlayTop { get; set; } = double.NaN;
+        public double TouchpadOverlayTop { get; set; } = -1;
 
         [XmlElement]
         public double TouchpadOverlayWidth { get; set; } = 500;
@@ -1921,10 +1928,10 @@ namespace PadForge.Services
         public int TouchpadOverlayMonitor { get; set; }
 
         [XmlElement]
-        public double TouchpadOverlayLeft { get; set; } = double.NaN;
+        public double TouchpadOverlayLeft { get; set; } = -1;
 
         [XmlElement]
-        public double TouchpadOverlayTop { get; set; } = double.NaN;
+        public double TouchpadOverlayTop { get; set; } = -1;
 
         [XmlElement]
         public double TouchpadOverlayWidth { get; set; } = 500;

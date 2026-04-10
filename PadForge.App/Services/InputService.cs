@@ -359,9 +359,9 @@ namespace PadForge.Services
             if (_inputManager == null || !_inputManager.IsRunning)
                 return;
 
-            // ── Read touchpad overlay state for pipeline ──
-            if (_touchpadOverlay?.IsVisible == true)
-                _inputManager.OverlayTouchpadState = _touchpadOverlay.GetTouchpadState();
+            // ── Feed touchpad overlay state into the virtual device ──
+            if (_touchpadOverlay?.IsVisible == true && _touchpadOverlayDevice != null)
+                _touchpadOverlayDevice.UpdateState(_touchpadOverlay.GetTouchpadState());
 
             // ── Handle macro-requested touchpad overlay toggle ──
             if (_inputManager.ToggleTouchpadOverlayRequested)
@@ -1781,6 +1781,7 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         private Views.TouchpadOverlay _touchpadOverlay;
+        private TouchpadOverlayDevice _touchpadOverlayDevice;
 
         private void ShowTouchpadOverlay()
         {
@@ -1799,7 +1800,7 @@ namespace PadForge.Services
                 _touchpadOverlay.Height = dash.TouchpadOverlayHeight;
 
                 // Restore persisted position or center on monitor.
-                if (!double.IsNaN(dash.TouchpadOverlayLeft) && !double.IsNaN(dash.TouchpadOverlayTop))
+                if (dash.TouchpadOverlayLeft >= 0 && dash.TouchpadOverlayTop >= 0)
                 {
                     _touchpadOverlay.Left = dash.TouchpadOverlayLeft;
                     _touchpadOverlay.Top = dash.TouchpadOverlayTop;
@@ -1812,6 +1813,11 @@ namespace PadForge.Services
                 _touchpadOverlay.SetSurfaceOpacity(dash.TouchpadOverlayOpacity);
                 _touchpadOverlay.Show();
                 dash.TouchpadOverlayStatus = Strings.Instance.Common_Running;
+
+                // Register as a virtual touchpad device so it appears in Devices page.
+                if (_touchpadOverlayDevice == null)
+                    _touchpadOverlayDevice = new TouchpadOverlayDevice();
+                _inputManager?.RegisterOverlayDevice(_touchpadOverlayDevice);
             });
         }
 
@@ -1833,6 +1839,9 @@ namespace PadForge.Services
                     }
                     _mainVm.Dashboard.TouchpadOverlayStatus = Strings.Instance.Common_Stopped;
                 }
+                // Unregister the overlay device.
+                if (_touchpadOverlayDevice != null)
+                    _inputManager?.UnregisterExternalDevice(_touchpadOverlayDevice.InstanceGuid);
             });
         }
 

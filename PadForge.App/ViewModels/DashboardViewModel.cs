@@ -368,14 +368,14 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _touchpadOverlayMonitor, value);
         }
 
-        private double _touchpadOverlayLeft = double.NaN;
+        private double _touchpadOverlayLeft = -1;
         public double TouchpadOverlayLeft
         {
             get => _touchpadOverlayLeft;
             set => SetProperty(ref _touchpadOverlayLeft, value);
         }
 
-        private double _touchpadOverlayTop = double.NaN;
+        private double _touchpadOverlayTop = -1;
         public double TouchpadOverlayTop
         {
             get => _touchpadOverlayTop;

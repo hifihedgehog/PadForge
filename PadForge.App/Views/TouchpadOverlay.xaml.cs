@@ -88,13 +88,20 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Drag (three-finger touch)
+        //  Drag (right-click mouse or three-finger touch)
         // ─────────────────────────────────────────────
 
         private int _activeTouchCount;
         private bool _isDragging;
         private Point _dragStartScreen;
         private double _dragStartLeft, _dragStartTop;
+
+        private void Surface_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Right-click drag for mouse-based repositioning.
+            DragMove();
+            PositionChanged?.Invoke();
+        }
 
         // ─────────────────────────────────────────────
         //  Resize (grip in bottom-right corner)

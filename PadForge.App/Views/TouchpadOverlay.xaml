@@ -19,7 +19,8 @@
                     Canvas.Left="0" Canvas.Top="0"
                     Background="#30FFFFFF"
                     CornerRadius="8"
-                    BorderBrush="#60FFFFFF" BorderThickness="1"/>
+                    BorderBrush="#60FFFFFF" BorderThickness="1"
+                    MouseRightButtonDown="Surface_MouseRightButtonDown"/>
 
             <!-- Finger indicators -->
             <Ellipse x:Name="Finger0Dot" Width="20" Height="20"

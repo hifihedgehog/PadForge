@@ -98,10 +98,8 @@ namespace PadForge.Views
 
         private bool _isMouseDragging;
 
-        private void Surface_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Surface_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Touch events set e.Handled=true, suppressing synthesized mouse events.
-            // Only real mouse clicks reach here.
             _isMouseDragging = true;
             _dragStartScreen = PointToScreen(e.GetPosition(this));
             _dragStartLeft = Left;
@@ -118,7 +116,7 @@ namespace PadForge.Views
             Top = _dragStartTop + (current.Y - _dragStartScreen.Y);
         }
 
-        private void Surface_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Surface_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (!_isMouseDragging) return;
             _isMouseDragging = false;

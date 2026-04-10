@@ -224,6 +224,7 @@
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于DS4触摸板模拟的屏幕触摸区域。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>启用触摸板叠加层</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度：</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>右键按住拖动</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>驱动程序</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>无设备</value></data>
 

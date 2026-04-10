@@ -224,6 +224,7 @@
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superfície de toque na tela para emulação do touchpad do DS4.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativar sobreposição de touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidade:</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clique com botão direito e segure para arrastar</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Drivers</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Sem dispositivo</value></data>
 

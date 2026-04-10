@@ -609,6 +609,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_MousePress_Format => Get("MacroAction_MousePress_Format");
     public string MacroAction_MouseRelease_Format => Get("MacroAction_MouseRelease_Format");
     public string MacroAction_ToggleTouchpadOverlay => Get("MacroAction_ToggleTouchpadOverlay");
+    public string TouchpadOverlay_DragTooltip => Get("TouchpadOverlay_DragTooltip");
     public string POV_Centered => Get("POV_Centered");
     public string POV_Up => Get("POV_Up");
     public string POV_UpRight => Get("POV_UpRight");

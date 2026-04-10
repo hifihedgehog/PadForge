@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Maustaste drücken</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Maustaste loslassen</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Maus-Scrollen</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay umschalten</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Tasten:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Tastenkombination:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Tastenkombination im Format {Taste1}{Taste2} — bearbeitbar</value></data>

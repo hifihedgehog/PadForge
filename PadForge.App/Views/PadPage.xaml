@@ -649,6 +649,7 @@
                                             <ComboBoxItem Content="{Binding Macro_MouseButtonPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonPress}"/>
                                             <ComboBoxItem Content="{Binding Macro_MouseButtonRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonRelease}"/>
                                             <ComboBoxItem Content="{Binding Macro_MouseScroll, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseScroll}"/>
+                                            <ComboBoxItem Content="{Binding Macro_ToggleTouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ToggleTouchpadOverlay}"/>
                                         </ComboBox>
                                     </StackPanel>
 

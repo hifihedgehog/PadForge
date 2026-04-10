@@ -466,6 +466,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>按下鼠标按钮</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>释放鼠标按钮</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>鼠标滚轮</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触摸板叠加层</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>按钮：</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>组合键：</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>按键组合，格式为 {Key1}{Key2} — 可编辑</value></data>

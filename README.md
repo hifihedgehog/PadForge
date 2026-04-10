@@ -4,6 +4,10 @@
 
 <h1 align="center">PadForge</h1>
 
+*"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins."* — 2 Nephi 25:26
+
+*Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.*
+
 <p align="center">
   <strong>Turn any input device into any virtual controller.</strong><br>
   Gamepads, joysticks, keyboards, mice, and touchscreens — mapped to Xbox 360, DualShock 4, DirectInput, MIDI, or Keyboard+Mouse output that games treat as real hardware.

@@ -96,10 +96,31 @@ namespace PadForge.Views
         private Point _dragStartScreen;
         private double _dragStartLeft, _dragStartTop;
 
+        private bool _isMouseDragging;
+
         private void Surface_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Right-click drag for mouse-based repositioning.
-            DragMove();
+            _isMouseDragging = true;
+            _dragStartScreen = PointToScreen(e.GetPosition(this));
+            _dragStartLeft = Left;
+            _dragStartTop = Top;
+            Surface.CaptureMouse();
+            e.Handled = true;
+        }
+
+        private void Surface_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isMouseDragging) return;
+            var current = PointToScreen(e.GetPosition(this));
+            Left = _dragStartLeft + (current.X - _dragStartScreen.X);
+            Top = _dragStartTop + (current.Y - _dragStartScreen.Y);
+        }
+
+        private void Surface_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!_isMouseDragging) return;
+            _isMouseDragging = false;
+            Surface.ReleaseMouseCapture();
             PositionChanged?.Invoke();
         }
 

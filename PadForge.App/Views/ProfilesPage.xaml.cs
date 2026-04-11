@@ -191,17 +191,24 @@ namespace PadForge.Views
                         int axisCount = ud.CapAxeCount > 0 ? Math.Min(ud.CapAxeCount, axes.Length) : axes.Length;
                         for (int i = 0; i < axisCount && i < baseline.Length; i++)
                         {
-                            float delta = Math.Abs((axes[i] - baseline[i]) / 65535f);
-                            if (delta >= AxisRecordDeltaThreshold)
+                            float rawDelta = (axes[i] - baseline[i]) / 65535f;
+                            float absDelta = Math.Abs(rawDelta);
+                            if (absDelta >= AxisRecordDeltaThreshold)
                             {
-                                // Store the current absolute position as the threshold
-                                // (the trigger fires when the axis reaches this point again).
+                                // Determine direction from baseline movement.
+                                var direction = rawDelta > 0
+                                    ? AxisTriggerDirection.Positive
+                                    : AxisTriggerDirection.Negative;
+
                                 float currentNormalized = axes[i] / 65535f;
                                 entries.Add(new TriggerButtonEntry
                                 {
                                     IsAxis = true,
                                     AxisIndex = i,
-                                    AxisThreshold = Math.Max(0.1f, currentNormalized - 0.1f),
+                                    AxisThreshold = direction == AxisTriggerDirection.Positive
+                                        ? Math.Max(0.1f, currentNormalized - 0.1f)
+                                        : Math.Min(0.9f, currentNormalized + 0.1f),
+                                    AxisDirection = direction,
                                     DeviceInstanceGuid = ud.InstanceGuid,
                                     DeviceProductGuid = ud.ProductGuid
                                 });

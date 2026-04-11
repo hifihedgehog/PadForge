@@ -2114,6 +2114,12 @@ namespace PadForge.Services
         [XmlElement]
         public float AxisThreshold { get; set; } = 0.5f;
 
+        /// <summary>
+        /// Axis direction: Positive (axis > threshold) or Negative (axis &lt; 1-threshold).
+        /// </summary>
+        [XmlElement]
+        public AxisTriggerDirection AxisDirection { get; set; }
+
         /// <summary>Instance GUID of the device this entry was recorded from.</summary>
         [XmlElement]
         public Guid DeviceInstanceGuid { get; set; }
@@ -2121,6 +2127,12 @@ namespace PadForge.Services
         /// <summary>Product GUID for same-type device matching in "Any Device" mode.</summary>
         [XmlElement]
         public Guid DeviceProductGuid { get; set; }
+    }
+
+    public enum AxisTriggerDirection
+    {
+        Positive, // Axis value above threshold (e.g., stick right, trigger pulled)
+        Negative  // Axis value below 1-threshold (e.g., stick left)
     }
 
     public enum SwitchProfileMode

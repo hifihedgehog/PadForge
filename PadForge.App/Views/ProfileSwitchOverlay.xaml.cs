@@ -175,12 +175,14 @@ namespace PadForge.Views
 
         private void ShowFlyout()
         {
-            // Position: centered horizontally, ~6px above work area bottom.
-            // WorkArea.Bottom = top of taskbar.
             var screen = SystemParameters.WorkArea;
-            Show();
 
-            // Measure after Show so DesiredSize is valid.
+            // Force layout so ActualWidth reflects current content before positioning.
+            UpdateLayout();
+            Show();
+            UpdateLayout();
+
+            // Center horizontally, 16px above taskbar.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
             Top = screen.Bottom - ActualHeight - 16;
 
@@ -189,9 +191,6 @@ namespace PadForge.Views
             Opacity = 0;
 
             var slideUp = new DoubleAnimation(40, 0, TimeSpan.FromMilliseconds(367));
-            slideUp.SetValue(Timeline.DesiredFrameRateProperty, 60);
-            var keySpline = new KeySplineAnimation();
-            // Approximate cubic-bezier(0.1, 0.9, 0.2, 1.0) with QuadraticEase EaseOut
             slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
 
             // Opacity: 83ms hold at 0, then 83ms linear fade to 1
@@ -226,6 +225,4 @@ namespace PadForge.Views
         }
     }
 
-    // Stub to avoid compile error from removed reference
-    internal class KeySplineAnimation { }
 }

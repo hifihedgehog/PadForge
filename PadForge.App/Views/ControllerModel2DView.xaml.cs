@@ -247,8 +247,12 @@ namespace PadForge.Views
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)
         {
-            var uri = new Uri($"pack://application:,,,/{resourcePath}", UriKind.Absolute);
-            var bitmap = new BitmapImage(uri);
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(resourcePath, UriKind.Relative);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
             var img = new Image
             {
                 Source = bitmap,

@@ -212,7 +212,7 @@ namespace PadForge.Views
 
             // Center horizontally.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            _restingTop = screen.Bottom - ActualHeight - 1;
+            _restingTop = screen.Bottom - ActualHeight - 13;
 
             // Start below the taskbar, slide up to resting position.
             Top = screen.Bottom;

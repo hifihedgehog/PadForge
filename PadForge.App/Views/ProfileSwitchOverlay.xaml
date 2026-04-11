@@ -1,6 +1,7 @@
 <Window x:Class="PadForge.Views.ProfileSwitchOverlay"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -11,30 +12,36 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="Manual">
 
+    <!-- Win11 flyout: matches volume/brightness/keyboard layout popup -->
     <Border x:Name="FlyoutBorder"
             CornerRadius="8"
-            Padding="20,12"
-            MinWidth="240"
-            Background="#E0202020"
-            BorderBrush="#40FFFFFF"
+            Padding="16,12,20,12"
+            MinWidth="280"
+            MaxWidth="400"
+            Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
             BorderThickness="1">
 
         <Border.Effect>
-            <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.25" Color="Black"/>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="2" Opacity="0.35"
+                              Direction="270" Color="Black"/>
         </Border.Effect>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <!-- Status icon — Segoe Fluent Icons (Win11) with fallback to MDL2 -->
             <TextBlock x:Name="StatusIcon"
                        Text="&#xE8F1;"
-                       FontFamily="Segoe MDL2 Assets"
-                       FontSize="18" VerticalAlignment="Center"
-                       Margin="0,0,10,0"
-                       Foreground="White"/>
+                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                       FontSize="16" VerticalAlignment="Center"
+                       Margin="0,0,12,0"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
 
+            <!-- Profile name / status text -->
             <TextBlock x:Name="StatusText"
                        FontSize="14" FontWeight="SemiBold"
+                       FontFamily="Segoe UI Variable Display, Segoe UI"
                        VerticalAlignment="Center"
-                       Foreground="White"/>
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
         </StackPanel>
     </Border>
 </Window>

@@ -26,7 +26,7 @@ namespace PadForge.ViewModels
             DeleteCommand = new RelayCommand(() => _deleteCallback?.Invoke(this));
             ClearCommand = new RelayCommand(() =>
             {
-                Data.TriggerRawButtons = null;
+                Data.TriggerEntries = null;
                 OnPropertyChanged(nameof(ButtonComboDisplay));
                 _saveCallback?.Invoke(this);
             });
@@ -174,10 +174,32 @@ namespace PadForge.ViewModels
         {
             get
             {
-                var buttons = Data.TriggerRawButtons;
-                if (buttons == null || buttons.Length == 0)
+                var entries = Data.TriggerEntries;
+                if (entries == null || entries.Length == 0)
                     return Strings.Instance.Common_None;
-                return string.Join(" + ", buttons.Select(b => $"B{b}"));
+                return string.Join(" + ", entries.Select(e =>
+                {
+                    // Show device name prefix if cross-device combo.
+                    string prefix = "";
+                    if (entries.Length > 1)
+                    {
+                        var devices = SettingsManager.UserDevices?.Items;
+                        if (devices != null)
+                        {
+                            lock (SettingsManager.UserDevices.SyncRoot)
+                            {
+                                var ud = devices.FirstOrDefault(d => d.InstanceGuid == e.DeviceInstanceGuid);
+                                if (ud != null)
+                                {
+                                    string shortName = ud.ResolvedName;
+                                    if (shortName.Length > 12) shortName = shortName.Substring(0, 10) + "..";
+                                    prefix = shortName + ":";
+                                }
+                            }
+                        }
+                    }
+                    return $"{prefix}B{e.ButtonIndex}";
+                }));
             }
         }
 
@@ -200,17 +222,13 @@ namespace PadForge.ViewModels
             ? Strings.Instance.Profiles_ShortcutLearning
             : Strings.Instance.Profiles_ShortcutLearn;
 
-        public void SetLearnedButtons(int[] rawButtons, Guid deviceGuid)
+        /// <summary>
+        /// Called when Learn mode captures buttons. Sets TriggerEntries from
+        /// the recorded per-button device associations.
+        /// </summary>
+        public void SetLearnedButtons(TriggerButtonEntry[] entries)
         {
-            Data.TriggerRawButtons = rawButtons;
-            if (Data.TriggerDeviceGuid == Guid.Empty)
-            {
-                // Keep "Any Device" — don't override.
-            }
-            else
-            {
-                Data.TriggerDeviceGuid = deviceGuid;
-            }
+            Data.TriggerEntries = entries;
             IsLearning = false;
             OnPropertyChanged(nameof(ButtonComboDisplay));
             OnPropertyChanged(nameof(LearnButtonText));

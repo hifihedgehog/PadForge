@@ -9,7 +9,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
-    public partial class ProfileSwitchOverlay : Wpf.Ui.Controls.FluentWindow
+    public partial class ProfileSwitchOverlay : Window
     {
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_NOACTIVATE = 0x08000000;
@@ -22,6 +22,15 @@ namespace PadForge.Views
 
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
+
+        private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+        private const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
+        private const int DWMWCP_ROUND = 2;          // 8px rounded corners
+        private const int DWMSBT_TRANSIENTWINDOW = 3; // Acrylic (transient surface)
 
         // Win11 confirmator icons
         private const string ProfileIcon = "\uE8F1";
@@ -54,6 +63,14 @@ namespace PadForge.Views
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
 
+            // DWM: 8px rounded corners (same as Win11 volume OSD).
+            int cornerPref = DWMWCP_ROUND;
+            DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPref, sizeof(int));
+
+            // DWM: Acrylic backdrop (transient surface, same material as volume OSD).
+            int backdrop = DWMSBT_TRANSIENTWINDOW;
+            DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdrop, sizeof(int));
+
             ApplyTheme();
         }
 
@@ -68,16 +85,22 @@ namespace PadForge.Views
             _isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                 == Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
-            // Acrylic backdrop handles the background. Just set text colors.
-            Wpf.Ui.Appearance.ApplicationThemeManager.Apply(this);
+            var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd != IntPtr.Zero)
+            {
+                int darkMode = _isDark ? 1 : 0;
+                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkMode, sizeof(int));
+            }
 
             if (_isDark)
             {
+                Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x2D, 0x2D));
                 StatusIcon.Foreground = Brushes.White;
                 StatusText.Foreground = Brushes.White;
             }
             else
             {
+                Background = new SolidColorBrush(Color.FromRgb(0xF3, 0xF3, 0xF3));
                 StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
                 StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
             }

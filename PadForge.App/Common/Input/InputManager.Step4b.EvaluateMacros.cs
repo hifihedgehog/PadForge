@@ -1475,14 +1475,15 @@ namespace PadForge.Common.Input
                     var buttons = ud.InputState.Buttons;
                     return entry.ButtonIndex >= 0 && entry.ButtonIndex < buttons.Length && buttons[entry.ButtonIndex];
                 }
-                return false; // Device not found.
+                return false;
             }
 
-            // "Any Device" — check all devices with matching product GUID.
+            // "Any Device" — check all non-aggregate devices with matching product GUID.
             for (int d = 0; d < devices.Count; d++)
             {
                 var ud = devices[d];
                 if (!ud.IsOnline || ud.InputState == null) continue;
+                if (ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
                 if (entry.DeviceProductGuid != Guid.Empty && ud.ProductGuid != entry.DeviceProductGuid)
                     continue;
                 var buttons = ud.InputState.Buttons;

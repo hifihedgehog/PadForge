@@ -137,6 +137,8 @@ namespace PadForge.Views
                 {
                     if (!ud.IsOnline || ud.InputState == null) continue;
                     if (filterGuid != Guid.Empty && ud.InstanceGuid != filterGuid) continue;
+                    // Skip merged/aggregate devices — they duplicate the child device's buttons.
+                    if (ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
 
                     var buttons = ud.InputState.Buttons;
                     for (int i = 0; i < buttons.Length; i++)

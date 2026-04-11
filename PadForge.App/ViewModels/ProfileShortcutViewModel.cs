@@ -266,13 +266,18 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isLearning, value))
+                {
                     OnPropertyChanged(nameof(LearnButtonText));
+                    OnPropertyChanged(nameof(LearnButtonIcon));
+                }
             }
         }
 
         public string LearnButtonText => _isLearning
             ? Strings.Instance.Profiles_ShortcutLearning
             : Strings.Instance.Profiles_ShortcutLearn;
+
+        public string LearnButtonIcon => _isLearning ? "\uE71A" : "\uE7C8"; // Stop : Record
 
         /// <summary>
         /// Called when Learn mode captures buttons. Sets TriggerEntries from

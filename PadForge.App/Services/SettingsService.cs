@@ -245,6 +245,10 @@ namespace PadForge.Services
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
+            // Migrate legacy global macros and store.
+            if (appSettings.GlobalMacros != null)
+                foreach (var gm in appSettings.GlobalMacros)
+                    gm.MigrateLegacyTrigger();
             SettingsManager.GlobalMacros = appSettings.GlobalMacros;
 
             // Load per-slot created/enabled state BEFORE OutputType,
@@ -2036,18 +2040,72 @@ namespace PadForge.Services
         [XmlElement]
         public string TargetProfileId { get; set; }
 
-        /// <summary>Device GUID for trigger source. Guid.Empty = any connected device.</summary>
-        [XmlElement]
-        public Guid TriggerDeviceGuid { get; set; }
+        /// <summary>
+        /// Per-button trigger entries. Each entry has a button index, the device instance
+        /// GUID it was recorded from, and the product GUID for same-type matching.
+        /// Supports cross-device combos (e.g., Shift on keyboard + Start on gamepad).
+        /// </summary>
+        [XmlArray("TriggerEntries")]
+        [XmlArrayItem("Entry")]
+        public TriggerButtonEntry[] TriggerEntries { get; set; }
 
-        /// <summary>Raw button indices that must all be pressed simultaneously.</summary>
+        /// <summary>Legacy: flat button index array from old XML. Migrated on load.</summary>
         [XmlArray("TriggerButtons")]
         [XmlArrayItem("Index")]
-        public int[] TriggerRawButtons { get; set; }
+        public int[] LegacyTriggerRawButtons { get; set; }
+
+        /// <summary>Legacy: single device GUID from old XML.</summary>
+        [XmlElement]
+        public Guid TriggerDeviceGuid { get; set; }
 
         /// <summary>Runtime-only: previous frame trigger state for edge detection.</summary>
         [XmlIgnore]
         public bool WasTriggerActive { get; set; }
+
+        /// <summary>True if this macro has any trigger buttons configured.</summary>
+        [XmlIgnore]
+        public bool HasTrigger => TriggerEntries != null && TriggerEntries.Length > 0;
+
+        /// <summary>
+        /// Migrates legacy flat button array to per-button entries.
+        /// Called once during settings load.
+        /// </summary>
+        public void MigrateLegacyTrigger()
+        {
+            if (TriggerEntries != null || LegacyTriggerRawButtons == null)
+                return;
+
+            TriggerEntries = new TriggerButtonEntry[LegacyTriggerRawButtons.Length];
+            for (int i = 0; i < LegacyTriggerRawButtons.Length; i++)
+            {
+                TriggerEntries[i] = new TriggerButtonEntry
+                {
+                    ButtonIndex = LegacyTriggerRawButtons[i],
+                    DeviceInstanceGuid = TriggerDeviceGuid,
+                    DeviceProductGuid = System.Guid.Empty
+                };
+            }
+            LegacyTriggerRawButtons = null; // Clear so next save uses new format.
+        }
+    }
+
+    /// <summary>
+    /// A single button in a global macro trigger combo. Each button tracks
+    /// which device it was recorded from, enabling cross-device combos.
+    /// </summary>
+    public class TriggerButtonEntry
+    {
+        /// <summary>Raw button index on the source device.</summary>
+        [XmlElement]
+        public int ButtonIndex { get; set; }
+
+        /// <summary>Instance GUID of the device this button was recorded from.</summary>
+        [XmlElement]
+        public Guid DeviceInstanceGuid { get; set; }
+
+        /// <summary>Product GUID for same-type device matching in "Any Device" mode.</summary>
+        [XmlElement]
+        public Guid DeviceProductGuid { get; set; }
     }
 
     public enum SwitchProfileMode

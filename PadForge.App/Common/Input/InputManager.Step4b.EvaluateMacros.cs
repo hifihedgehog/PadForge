@@ -1423,65 +1423,71 @@ namespace PadForge.Common.Input
             for (int m = 0; m < globalMacros.Length; m++)
             {
                 var gm = globalMacros[m];
-                if (gm?.TriggerRawButtons == null || gm.TriggerRawButtons.Length == 0)
-                    continue;
+                if (!gm.HasTrigger) continue;
 
                 bool triggerActive = CheckGlobalMacroTrigger(gm);
                 bool wasTriggerActive = gm.WasTriggerActive;
                 gm.WasTriggerActive = triggerActive;
 
-                // OnPress only — profile switch shouldn't repeat while held.
                 if (triggerActive && !wasTriggerActive)
                     QueueProfileSwitch(gm);
             }
         }
 
+        /// <summary>
+        /// Checks whether all buttons in the trigger combo are currently pressed.
+        /// Supports cross-device combos: each button entry specifies its own device.
+        /// For "Any Device" entries (DeviceInstanceGuid == Empty), checks all devices
+        /// with matching product GUID.
+        /// </summary>
         private bool CheckGlobalMacroTrigger(GlobalMacroData gm)
         {
-            if (gm.TriggerDeviceGuid == Guid.Empty)
-                return CheckRawButtonTriggerAnyDevice(gm.TriggerRawButtons);
-            return CheckRawButtonTriggerDevice(gm.TriggerDeviceGuid, gm.TriggerRawButtons);
-        }
+            var entries = gm.TriggerEntries;
+            if (entries == null || entries.Length == 0) return false;
 
-        private bool CheckRawButtonTriggerAnyDevice(int[] rawIndices)
-        {
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return false;
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    var entry = entries[i];
+                    if (!IsButtonPressed(entry, devices))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool IsButtonPressed(TriggerButtonEntry entry, System.Collections.Generic.List<Engine.Data.UserDevice> devices)
+        {
+            if (entry.DeviceInstanceGuid != Guid.Empty)
+            {
+                // Specific device — check only that device.
                 for (int d = 0; d < devices.Count; d++)
                 {
                     var ud = devices[d];
-                    if (!ud.IsOnline || ud.InputState == null) continue;
-
+                    if (ud.InstanceGuid != entry.DeviceInstanceGuid) continue;
+                    if (!ud.IsOnline || ud.InputState == null) return false;
                     var buttons = ud.InputState.Buttons;
-                    bool allPressed = true;
-                    for (int i = 0; i < rawIndices.Length; i++)
-                    {
-                        int idx = rawIndices[i];
-                        if (idx < 0 || idx >= buttons.Length || !buttons[idx])
-                        { allPressed = false; break; }
-                    }
-                    if (allPressed) return true;
+                    return entry.ButtonIndex >= 0 && entry.ButtonIndex < buttons.Length && buttons[entry.ButtonIndex];
                 }
+                return false; // Device not found.
+            }
+
+            // "Any Device" — check all devices with matching product GUID.
+            for (int d = 0; d < devices.Count; d++)
+            {
+                var ud = devices[d];
+                if (!ud.IsOnline || ud.InputState == null) continue;
+                if (entry.DeviceProductGuid != Guid.Empty && ud.ProductGuid != entry.DeviceProductGuid)
+                    continue;
+                var buttons = ud.InputState.Buttons;
+                if (entry.ButtonIndex >= 0 && entry.ButtonIndex < buttons.Length && buttons[entry.ButtonIndex])
+                    return true;
             }
             return false;
-        }
-
-        private bool CheckRawButtonTriggerDevice(Guid guid, int[] rawIndices)
-        {
-            var ud = FindOnlineDeviceByInstanceGuid(guid);
-            if (ud == null || !ud.IsOnline || ud.InputState == null) return false;
-
-            var buttons = ud.InputState.Buttons;
-            for (int i = 0; i < rawIndices.Length; i++)
-            {
-                int idx = rawIndices[i];
-                if (idx < 0 || idx >= buttons.Length || !buttons[idx])
-                    return false;
-            }
-            return true;
         }
 
         private void QueueProfileSwitch(GlobalMacroData gm)

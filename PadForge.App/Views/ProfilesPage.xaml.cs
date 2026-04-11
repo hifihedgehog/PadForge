@@ -75,8 +75,7 @@ namespace PadForge.Views
         private DispatcherTimer _learnTimer;
         private DateTime _learnStartTime;
         private const double LearnTimeoutSeconds = 5;
-        private int[] _learnCandidateButtons;
-        private Guid _learnCandidateDevice;
+        private string _learnCandidateSignature;
         private int _learnHoldFrames;
         private const int LearnHoldRequired = 3; // ~100ms at 30Hz
 
@@ -97,8 +96,9 @@ namespace PadForge.Views
 
             _learningShortcut = shortcut;
             shortcut.IsLearning = true;
+            shortcut.Data.TriggerEntries = null; // Clear previous.
             _learnStartTime = DateTime.UtcNow;
-            _learnCandidateButtons = null;
+            _learnCandidateSignature = null;
             _learnHoldFrames = 0;
 
             _learnTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
@@ -121,11 +121,12 @@ namespace PadForge.Views
                 return;
             }
 
-            // Poll all online devices for any pressed buttons.
-            // Require stable hold for LearnHoldRequired frames to avoid capturing
-            // transient partial combos.
+            // Scan ALL devices for pressed buttons simultaneously.
+            // Supports cross-device combos (e.g., Shift on keyboard + Start on gamepad).
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
+
+            var candidateEntries = new System.Collections.Generic.List<TriggerButtonEntry>();
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
@@ -134,43 +135,49 @@ namespace PadForge.Views
                     if (!ud.IsOnline || ud.InputState == null) continue;
 
                     var buttons = ud.InputState.Buttons;
-                    var pressed = new System.Collections.Generic.List<int>();
                     for (int i = 0; i < buttons.Length; i++)
                     {
-                        if (buttons[i]) pressed.Add(i);
-                    }
-
-                    if (pressed.Count > 0)
-                    {
-                        var arr = pressed.ToArray();
-                        if (_learnCandidateButtons != null &&
-                            arr.Length == _learnCandidateButtons.Length &&
-                            arr.SequenceEqual(_learnCandidateButtons) &&
-                            _learnCandidateDevice == ud.InstanceGuid)
+                        if (buttons[i])
                         {
-                            _learnHoldFrames++;
-                            if (_learnHoldFrames >= LearnHoldRequired)
+                            candidateEntries.Add(new TriggerButtonEntry
                             {
-                                _learnTimer.Stop();
-                                _learningShortcut.SetLearnedButtons(arr, ud.InstanceGuid);
-                                _learningShortcut = null;
-                                return;
-                            }
+                                ButtonIndex = i,
+                                DeviceInstanceGuid = ud.InstanceGuid,
+                                DeviceProductGuid = ud.ProductGuid
+                            });
                         }
-                        else
-                        {
-                            _learnCandidateButtons = arr;
-                            _learnCandidateDevice = ud.InstanceGuid;
-                            _learnHoldFrames = 1;
-                        }
-                        return; // Don't check other devices this frame.
                     }
                 }
             }
 
-            // No buttons pressed on any device — reset candidate.
-            _learnCandidateButtons = null;
-            _learnHoldFrames = 0;
+            if (candidateEntries.Count > 0)
+            {
+                // Check stability: same set of buttons held for LearnHoldRequired frames.
+                string signature = string.Join("|", candidateEntries.Select(
+                    e => $"{e.DeviceInstanceGuid}:{e.ButtonIndex}"));
+
+                if (signature == _learnCandidateSignature)
+                {
+                    _learnHoldFrames++;
+                    if (_learnHoldFrames >= LearnHoldRequired)
+                    {
+                        _learnTimer.Stop();
+                        _learningShortcut.SetLearnedButtons(candidateEntries.ToArray());
+                        _learningShortcut = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    _learnCandidateSignature = signature;
+                    _learnHoldFrames = 1;
+                }
+            }
+            else
+            {
+                _learnCandidateSignature = null;
+                _learnHoldFrames = 0;
+            }
         }
 
         private void CancelLearn()

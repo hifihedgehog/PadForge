@@ -26,22 +26,12 @@ namespace PadForge.Views
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
 
-        [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-        private static readonly IntPtr HWND_TOP = IntPtr.Zero;
-        private const uint SWP_NOMOVE = 0x0002;
-        private const uint SWP_NOSIZE = 0x0001;
-        private const uint SWP_NOACTIVATE = 0x0010;
-        private const uint SWP_SHOWWINDOW = 0x0040;
-
         private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
         private const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
-        private const int DWMWCP_ROUND = 2;          // 8px rounded corners
-        private const int DWMSBT_TRANSIENTWINDOW = 3; // Acrylic (transient surface)
+        private const int DWMWCP_ROUND = 2;
+        private const int DWMSBT_TRANSIENTWINDOW = 3;
 
-        // Win11 confirmator icons
         private const string ProfileIcon = "\uE8F1";
         private const string InitializingIcon = "\uE895";
         private const string ActiveIcon = "\uE73E";
@@ -72,24 +62,20 @@ namespace PadForge.Views
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
 
-            // DWM: 8px rounded corners (same as Win11 volume OSD).
+            // DWM rounded corners.
             int cornerPref = DWMWCP_ROUND;
             DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPref, sizeof(int));
 
-            // DWM: Acrylic backdrop (transient surface, same material as volume OSD).
+            // DWM acrylic backdrop.
             int backdrop = DWMSBT_TRANSIENTWINDOW;
             DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdrop, sizeof(int));
 
             ApplyTheme();
         }
 
-        private const int WM_NCCALCSIZE = 0x0083;
-
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_MOUSEACTIVATE) { handled = true; return (IntPtr)MA_NOACTIVATE; }
-            // Remove non-client area (title bar/border) while keeping DWM rounded corners.
-            if (msg == WM_NCCALCSIZE && wParam != IntPtr.Zero) { handled = true; return IntPtr.Zero; }
             return IntPtr.Zero;
         }
 
@@ -126,7 +112,6 @@ namespace PadForge.Views
             _showingInitializing = false;
 
             ApplyTheme();
-
             StatusIcon.BeginAnimation(OpacityProperty, null);
             StatusIcon.Opacity = 1;
             StatusIcon.Text = ProfileIcon;
@@ -206,10 +191,9 @@ namespace PadForge.Views
         {
             _dismissTimer.Stop();
             _dismissTimer.Tick -= OnDismissThenClose;
-            BeginFadeOut();
+            Hide();
+            ApplyTheme();
         }
-
-        private double _restingTop;
 
         private void ShowFlyout()
         {
@@ -219,35 +203,9 @@ namespace PadForge.Views
             Show();
             UpdateLayout();
 
-            // Position: center horizontally, bottom of window at taskbar top + 13px gap.
-            // The window is 90px tall (45px visible + 45px hidden below).
-            // The visible top half sits 13px above the taskbar.
+            // Center horizontally, 13px above taskbar.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - 45 - 13; // Only 45px visible above taskbar.
-
-            // Slide the flyout border up from the bottom (hidden) half into the visible half.
-            var transform = new TranslateTransform(0, 45);
-            FlyoutBorder.RenderTransform = transform;
-
-            var slideUp = new DoubleAnimation(45, 0, TimeSpan.FromMilliseconds(300));
-            slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
-            transform.BeginAnimation(TranslateTransform.YProperty, slideUp);
-        }
-
-        private void BeginFadeOut()
-        {
-            var transform = FlyoutBorder.RenderTransform as TranslateTransform ?? new TranslateTransform(0, 0);
-            FlyoutBorder.RenderTransform = transform;
-
-            var slideDown = new DoubleAnimation(0, 45, TimeSpan.FromMilliseconds(300));
-            slideDown.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn };
-            slideDown.Completed += (_, _) =>
-            {
-                Hide();
-                ApplyTheme();
-            };
-            transform.BeginAnimation(TranslateTransform.YProperty, slideDown);
+            Top = screen.Bottom - ActualHeight - 13;
         }
     }
-
 }

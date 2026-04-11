@@ -2095,11 +2095,26 @@ namespace PadForge.Services
     /// </summary>
     public class TriggerButtonEntry
     {
-        /// <summary>Raw button index on the source device.</summary>
+        /// <summary>Raw button index on the source device (when IsAxis=false).</summary>
         [XmlElement]
         public int ButtonIndex { get; set; }
 
-        /// <summary>Instance GUID of the device this button was recorded from.</summary>
+        /// <summary>True if this entry represents an axis threshold, not a button.</summary>
+        [XmlElement]
+        public bool IsAxis { get; set; }
+
+        /// <summary>Raw axis index on the source device (when IsAxis=true).</summary>
+        [XmlElement]
+        public int AxisIndex { get; set; }
+
+        /// <summary>
+        /// Axis threshold as normalized value (0.0–1.0). The axis must exceed this
+        /// value to be considered active. Default 0.5 (50%).
+        /// </summary>
+        [XmlElement]
+        public float AxisThreshold { get; set; } = 0.5f;
+
+        /// <summary>Instance GUID of the device this entry was recorded from.</summary>
         [XmlElement]
         public Guid DeviceInstanceGuid { get; set; }
 

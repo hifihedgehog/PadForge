@@ -1455,31 +1455,31 @@ namespace PadForge.Common.Input
                 for (int i = 0; i < entries.Length; i++)
                 {
                     var entry = entries[i];
-                    if (!IsButtonPressed(entry, devices))
+                    if (!IsEntryActive(entry, devices))
                         return false;
                 }
             }
             return true;
         }
 
-        private static bool IsButtonPressed(TriggerButtonEntry entry, System.Collections.Generic.List<Engine.Data.UserDevice> devices)
+        private static bool IsEntryActive(TriggerButtonEntry entry, System.Collections.Generic.List<Engine.Data.UserDevice> devices)
         {
             if (entry.DeviceInstanceGuid != Guid.Empty)
             {
-                // Specific device — check only that device.
+                // Specific device.
                 for (int d = 0; d < devices.Count; d++)
                 {
                     var ud = devices[d];
                     if (ud.InstanceGuid != entry.DeviceInstanceGuid) continue;
                     if (!ud.IsOnline || ud.InputState == null) return false;
-                    var buttons = ud.InputState.Buttons;
-                    return entry.ButtonIndex >= 0 && entry.ButtonIndex < buttons.Length && buttons[entry.ButtonIndex];
+                    return entry.IsAxis
+                        ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold)
+                        : CheckButtonActive(ud.InputState, entry.ButtonIndex);
                 }
                 return false;
             }
 
             // "Any Device" — check all devices with matching product GUID.
-            // Skip aggregates since they duplicate child devices.
             for (int d = 0; d < devices.Count; d++)
             {
                 var ud = devices[d];
@@ -1487,11 +1487,27 @@ namespace PadForge.Common.Input
                 if (ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
                 if (entry.DeviceProductGuid != Guid.Empty && ud.ProductGuid != entry.DeviceProductGuid)
                     continue;
-                var buttons = ud.InputState.Buttons;
-                if (entry.ButtonIndex >= 0 && entry.ButtonIndex < buttons.Length && buttons[entry.ButtonIndex])
-                    return true;
+                bool active = entry.IsAxis
+                    ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold)
+                    : CheckButtonActive(ud.InputState, entry.ButtonIndex);
+                if (active) return true;
             }
             return false;
+        }
+
+        private static bool CheckButtonActive(Engine.CustomInputState state, int index)
+        {
+            var buttons = state.Buttons;
+            return index >= 0 && index < buttons.Length && buttons[index];
+        }
+
+        private static bool CheckAxisActive(Engine.CustomInputState state, int index, float threshold)
+        {
+            var axes = state.Axis;
+            if (index < 0 || index >= axes.Length) return false;
+            // Axis values are 0–65535 (center=32767). Normalize to 0.0–1.0.
+            float normalized = axes[index] / 65535f;
+            return normalized >= threshold;
         }
 
         private void QueueProfileSwitch(GlobalMacroData gm)

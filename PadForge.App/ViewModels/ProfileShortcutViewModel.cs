@@ -176,10 +176,12 @@ namespace PadForge.ViewModels
             get
             {
                 var entries = Data.TriggerEntries;
+                if (_isRecording && (entries == null || entries.Length == 0))
+                    return $"{Strings.Instance.Profiles_ShortcutLearning} ({_recordingCountdown}s)";
                 if (entries == null || entries.Length == 0)
                     return Strings.Instance.Common_None;
 
-                return string.Join(" + ", entries.Select(e =>
+                string combo = string.Join(" + ", entries.Select(e =>
                 {
                     string name = e.IsAxis
                         ? ResolveAxisName(e.AxisIndex, e.DeviceInstanceGuid)
@@ -187,6 +189,7 @@ namespace PadForge.ViewModels
                     string deviceName = ResolveDeviceName(e.DeviceInstanceGuid);
                     return deviceName != null ? $"{name} ({deviceName})" : name;
                 }));
+                return _isRecording ? $"{combo} ({_recordingCountdown}s)" : combo;
             }
         }
 
@@ -293,13 +296,13 @@ namespace PadForge.ViewModels
         //  Learn mode
         // ─────────────────────────────────────────────
 
-        private bool _isLearning;
+        private bool _isRecording;
         public bool IsRecording
         {
-            get => _isLearning;
+            get => _isRecording;
             set
             {
-                if (SetProperty(ref _isLearning, value))
+                if (SetProperty(ref _isRecording, value))
                 {
                     OnPropertyChanged(nameof(LearnButtonText));
                     OnPropertyChanged(nameof(LearnButtonIcon));
@@ -307,11 +310,11 @@ namespace PadForge.ViewModels
             }
         }
 
-        public string LearnButtonText => _isLearning
+        public string LearnButtonText => _isRecording
             ? Strings.Instance.Profiles_ShortcutLearning
             : Strings.Instance.Profiles_ShortcutLearn;
 
-        public string LearnButtonIcon => _isLearning ? "\uE71A" : "\uE7C8"; // Stop : Record
+        public string LearnButtonIcon => _isRecording ? "\uE71A" : "\uE7C8"; // Stop : Record
 
         /// <summary>
         /// Called when Learn mode captures buttons. Sets TriggerEntries from
@@ -334,6 +337,18 @@ namespace PadForge.ViewModels
 
         /// <summary>Notifies the UI that the combo display changed (during live recording).</summary>
         public void NotifyComboChanged() => OnPropertyChanged(nameof(ButtonComboDisplay));
+
+        private int _recordingCountdown;
+        /// <summary>Seconds remaining in the recording countdown.</summary>
+        public int RecordingCountdown
+        {
+            get => _recordingCountdown;
+            set
+            {
+                if (SetProperty(ref _recordingCountdown, value))
+                    OnPropertyChanged(nameof(ButtonComboDisplay));
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Commands

@@ -323,7 +323,6 @@
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>이 장치 및 해당 설정을 제거합니다</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>제품: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>유형: </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
   <data name="Devices_AppGUID" xml:space="preserve"><value>앱 GUID: </value></data>
   <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>인스턴스 경로: </value></data>

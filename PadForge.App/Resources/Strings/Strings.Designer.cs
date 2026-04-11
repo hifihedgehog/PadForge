@@ -352,7 +352,6 @@ public class Strings : INotifyPropertyChanged
     public string Devices_RemoveTooltip => Get("Devices_RemoveTooltip");
     public string Devices_Product => Get("Devices_Product");
     public string Devices_Type => Get("Devices_Type");
-    public string Devices_GUID => Get("Devices_GUID");
     public string Devices_AppGUID => Get("Devices_AppGUID");
     public string Devices_SdlGUID => Get("Devices_SdlGUID");
     public string Devices_InstancePath => Get("Devices_InstancePath");

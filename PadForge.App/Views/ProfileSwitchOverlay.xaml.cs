@@ -74,9 +74,13 @@ namespace PadForge.Views
             ApplyTheme();
         }
 
+        private const int WM_NCCALCSIZE = 0x0083;
+
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_MOUSEACTIVATE) { handled = true; return (IntPtr)MA_NOACTIVATE; }
+            // Remove non-client area (title bar/border) while keeping DWM rounded corners.
+            if (msg == WM_NCCALCSIZE && wParam != IntPtr.Zero) { handled = true; return IntPtr.Zero; }
             return IntPtr.Zero;
         }
 
@@ -208,7 +212,7 @@ namespace PadForge.Views
 
             // Center horizontally.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            _restingTop = screen.Bottom - ActualHeight;
+            _restingTop = screen.Bottom - ActualHeight - 1;
 
             // Start below the taskbar, slide up to resting position.
             Top = screen.Bottom;

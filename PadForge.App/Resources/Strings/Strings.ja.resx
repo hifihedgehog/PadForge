@@ -118,9 +118,10 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus が未インストールです</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>コントローラー待機中</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>1つ以上のコントローラーがオフライン</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput ドライバーが未インストールです</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus 未インストール)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (最大 {0})</value></data>

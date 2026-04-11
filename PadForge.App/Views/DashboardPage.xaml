@@ -147,7 +147,7 @@
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
                                                         </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="{Binding Main_AwaitingControllers, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_AwaitingDevices, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>

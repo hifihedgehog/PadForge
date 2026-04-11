@@ -118,9 +118,10 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus 未安装</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>等待控制器</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>等待设备</value></data>
   <data name="Main_Active" xml:space="preserve"><value>活跃</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>正在初始化</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput 驱动未安装</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360（ViGEmBus 未安装）</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360（最多 {0} 个）</value></data>

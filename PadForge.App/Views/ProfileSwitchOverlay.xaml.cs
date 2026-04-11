@@ -26,15 +26,20 @@ namespace PadForge.Views
         private const string ProfileIcon = "\uE8F1";
         private const string InitializingIcon = "\uE895";
         private const string ActiveIcon = "\uE73E";
+        private const string OfflineIcon = "\uE7BA";
 
         // Slide travel distance — enough to fully hide the flyout below the clip boundary.
         private const double SlideTravel = 80;
+
+        // Max time to wait when no slot is actively initializing (offline devices).
+        private const double IdleTimeoutSeconds = 3;
 
         private readonly DispatcherTimer _dismissTimer;
         private readonly DispatcherTimer _initMonitorTimer;
         private readonly TranslateTransform _slideTransform;
         private bool _showingInitializing;
         private bool _isDark = true;
+        private DateTime _initMonitorStart;
 
         public Func<(bool anyInitializing, bool allReady)> CheckInitState { get; set; }
 
@@ -156,6 +161,7 @@ namespace PadForge.Views
         {
             _dismissTimer.Stop();
             _dismissTimer.Tick -= OnDismissThenMonitorInit;
+            _initMonitorStart = DateTime.UtcNow;
             _initMonitorTimer.Start();
         }
 
@@ -171,11 +177,28 @@ namespace PadForge.Views
             var (anyInit, allReady) = CheckInitState();
 
             if (anyInit && !_showingInitializing)
+            {
                 ShowInitializing();
-            else if (allReady)
+            }
+            else if (!anyInit && _showingInitializing)
+            {
+                // Initializing just finished — give a fresh timeout window
+                // to evaluate whether all devices are actually online.
+                _showingInitializing = false;
+                _initMonitorStart = DateTime.UtcNow;
+            }
+
+            if (allReady)
             {
                 _initMonitorTimer.Stop();
                 ShowActive();
+            }
+            else if (!anyInit && (DateTime.UtcNow - _initMonitorStart).TotalSeconds >= IdleTimeoutSeconds)
+            {
+                // Nothing is actively initializing and some slots are offline.
+                _initMonitorTimer.Stop();
+                _showingInitializing = false;
+                ShowOffline();
             }
         }
 
@@ -203,6 +226,23 @@ namespace PadForge.Views
             StatusIcon.Text = ActiveIcon;
             StatusText.Text = Strings.Instance.Main_Active;
             StatusIcon.SetResourceReference(ForegroundProperty, "SystemAccentColorPrimaryBrush");
+
+            ShowFlyout();
+
+            _dismissTimer.Tick -= OnDismissThenMonitorInit;
+            _dismissTimer.Tick -= OnDismissThenClose;
+            _dismissTimer.Tick += OnDismissThenClose;
+            _dismissTimer.Interval = TimeSpan.FromSeconds(2);
+            _dismissTimer.Start();
+        }
+
+        private void ShowOffline()
+        {
+            StatusIcon.BeginAnimation(OpacityProperty, null);
+            StatusIcon.Opacity = 1;
+            StatusIcon.Text = OfflineIcon;
+            StatusText.Text = Strings.Instance.Main_ControllersOffline;
+            StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xB9, 0x00));
 
             ShowFlyout();
 

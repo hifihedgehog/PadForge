@@ -118,9 +118,10 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus가 설치되지 않음</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>엔진 중지됨</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>컨트롤러 대기 중</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>장치 대기 중</value></data>
   <data name="Main_Active" xml:space="preserve"><value>활성</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>초기화 중</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput 드라이버가 설치되지 않음</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus 미설치)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (최대 {0})</value></data>

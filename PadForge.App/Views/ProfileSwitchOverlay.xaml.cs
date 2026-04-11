@@ -184,7 +184,7 @@ namespace PadForge.Views
 
             // Center horizontally, 16px above taskbar.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight - 16;
+            Top = screen.Bottom - ActualHeight - 4;
 
             var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;

@@ -246,7 +246,7 @@
                                             Width="70" Margin="0,0,4,0"/>
 
                                     <!-- Clear button -->
-                                    <Button Command="{Binding ClearCommand}" Width="34" Margin="0,0,4,0">
+                                    <Button Command="{Binding ClearCommand}" Width="40" Margin="0,0,4,0">
                                         <TextBlock Text="&#xE894;" FontFamily="Segoe MDL2 Assets"/>
                                         <Button.ToolTip>
                                             <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
@@ -254,7 +254,7 @@
                                     </Button>
 
                                     <!-- Delete button -->
-                                    <Button Command="{Binding DeleteCommand}" Width="34">
+                                    <Button Command="{Binding DeleteCommand}" Width="40">
                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
                                         <Button.ToolTip>
                                             <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>

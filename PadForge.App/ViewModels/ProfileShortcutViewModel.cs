@@ -189,7 +189,11 @@ namespace PadForge.ViewModels
         public bool IsLearning
         {
             get => _isLearning;
-            set => SetProperty(ref _isLearning, value);
+            set
+            {
+                if (SetProperty(ref _isLearning, value))
+                    OnPropertyChanged(nameof(LearnButtonText));
+            }
         }
 
         public string LearnButtonText => _isLearning

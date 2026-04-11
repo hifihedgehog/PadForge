@@ -155,7 +155,7 @@ namespace PadForge.Views
             StatusIcon.Opacity = 1;
             StatusIcon.Text = ActiveIcon;
             StatusText.Text = Strings.Instance.Main_Active;
-            StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50));
+            StatusIcon.SetResourceReference(ForegroundProperty, "SystemAccentColorPrimaryBrush");
 
             ShowFlyout();
 
@@ -184,7 +184,7 @@ namespace PadForge.Views
 
             // Center horizontally, 16px above taskbar.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight - 2;
+            Top = screen.Bottom - ActualHeight;
 
             var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;

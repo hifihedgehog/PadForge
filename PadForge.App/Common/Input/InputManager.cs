@@ -458,6 +458,10 @@ namespace PadForge.Common.Input
                             // Read input states even in idle mode so the Devices
                             // page preview works for unassigned devices.
                             UpdateInputStates();
+
+                            // Evaluate global macros (profile shortcuts) even in idle
+                            // so the user can switch away from an empty profile.
+                            EvaluateGlobalMacros();
                         }
                         catch (Exception ex)
                         {

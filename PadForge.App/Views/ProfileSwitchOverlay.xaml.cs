@@ -206,16 +206,21 @@ namespace PadForge.Views
         {
             var screen = SystemParameters.WorkArea;
 
-            UpdateLayout();
+            // Clear any active animation so we can set Top directly.
+            BeginAnimation(TopProperty, null);
+
+            // Position off-screen (behind taskbar) BEFORE showing.
+            Left = screen.Left + (screen.Width - 200) / 2; // Estimate width for initial centering.
+            Top = screen.Bottom;
+
             Show();
             UpdateLayout();
 
-            // Center horizontally.
+            // Re-center with actual measured width.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
             _restingTop = screen.Bottom - ActualHeight - 13;
 
-            // Start below the taskbar, slide up to resting position.
-            Top = screen.Bottom;
+            // Slide up from behind the taskbar.
             var slideUp = new DoubleAnimation(screen.Bottom, _restingTop, TimeSpan.FromMilliseconds(300));
             slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
             BeginAnimation(TopProperty, slideUp);

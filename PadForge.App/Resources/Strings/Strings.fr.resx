@@ -202,8 +202,8 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profil précédent</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Profil spécifique</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>N'importe quel appareil connecté</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Apprendre</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Appuyez...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Enregistrer</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Enregistrement...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Aucun périphérique sélectionné.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Index de slot invalide : {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Échec de l'assignation du périphérique.</value></data>

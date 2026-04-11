@@ -202,8 +202,8 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>이전 프로필</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>특정 프로필</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>연결된 아무 장치</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>학습</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>누르세요...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>녹음</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>녹음 중...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>장치가 선택되지 않았습니다.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>잘못된 슬롯 인덱스: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>장치 할당에 실패했습니다.</value></data>

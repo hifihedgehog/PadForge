@@ -202,8 +202,8 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>上一个配置文件</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>指定配置文件</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>任意已连接设备</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>学习</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>按下...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>录制</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>录制中...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>未选择设备。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>无效的插槽索引: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>设备分配失败。</value></data>

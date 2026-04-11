@@ -1,11 +1,8 @@
-<ui:FluentWindow x:Class="PadForge.Views.ProfileSwitchOverlay"
+<Window x:Class="PadForge.Views.ProfileSwitchOverlay"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         WindowStyle="None"
         ResizeMode="NoResize"
-        WindowBackdropType="Acrylic"
-        ExtendsContentIntoTitleBar="True"
         Topmost="True"
         ShowInTaskbar="False"
         ShowActivated="False"
@@ -13,14 +10,9 @@
         SizeToContent="Width"
         Height="45"
         WindowStartupLocation="Manual"
-        Background="Transparent">
+        Background="#2C2D2D">
 
-    <!--
-        Win11 Hardware Confirmator (volume OSD) — pixel-measured.
-        Uses system acrylic backdrop via FluentWindow + DWM corner rounding.
-        Background: acrylic over #2C2D2D, Border: #121313 1px, Corner: 8px (DWM).
-    -->
-    <Grid x:Name="ContentPanel" Margin="16,0,16,0">
+    <Grid Margin="16,0,16,0">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock x:Name="StatusIcon"
                        Text="&#xE8F1;"
@@ -37,4 +29,4 @@
                        Foreground="White"/>
         </StackPanel>
     </Grid>
-</ui:FluentWindow>
+</Window>

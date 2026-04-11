@@ -12,44 +12,41 @@
         WindowStartupLocation="Manual">
 
     <!--
-        Win11 Hardware Confirmator (volume/brightness OSD) replica.
-        Design tokens from WinUI 3 source + measured from live Win11 24H2:
-        - OverlayCornerRadius: 8px
-        - AcrylicBackgroundFillColorDefault: TintColor=#2C2C2C, TintOpacity=0.15
-        - WPF fallback (no compositor acrylic): #E8202020 (≈91% opaque dark)
-        - Height: ~36px (measured from 2560x1600 150% screenshot)
-        - Width: content-driven, ~220px for text-only
-        - Gap above taskbar: ~6px
-        - No visible border stroke
-        - Text: Segoe UI Variable Text, 13px
-        - Icon: Segoe Fluent Icons, 14px, slightly muted white
+        Win11 Hardware Confirmator (volume OSD) — pixel-measured from live capture.
+        Physical pixels at 150% DPI → logical px:
+          Background: #2C2D2D (measured R=44 G=45 B=45, fully opaque after compositing)
+          Width: ~200 logical px (content-driven for our text-only variant)
+          Height: 45 logical px (68 physical / 1.5)
+          Corner radius: 8px (OverlayCornerRadius, confirmed by anti-alias gradient)
+          Gap above taskbar: 16 logical px (24 physical)
+          Shadow region: 8-16px below OSD, gradient #0F1011→#171819
     -->
     <Border x:Name="FlyoutBorder"
-            CornerRadius="14"
-            Height="40"
-            Padding="14,0,16,0"
-            Background="#F03B3B3B"
+            CornerRadius="8"
+            Height="45"
+            Padding="16,0,16,0"
+            Background="#2C2D2D"
             BorderThickness="0">
 
         <Border.Effect>
-            <DropShadowEffect BlurRadius="16" ShadowDepth="4"
-                              Direction="270" Opacity="0.15" Color="Black"/>
+            <DropShadowEffect BlurRadius="12" ShadowDepth="6"
+                              Direction="270" Opacity="0.4" Color="#0F1011"/>
         </Border.Effect>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock x:Name="StatusIcon"
                        Text="&#xE8F1;"
                        FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                       FontSize="14"
+                       FontSize="16"
                        VerticalAlignment="Center"
-                       Margin="0,0,8,0"
-                       Foreground="#CCFFFFFF"/>
+                       Margin="0,0,10,0"
+                       Foreground="White"/>
 
             <TextBlock x:Name="StatusText"
-                       FontSize="13"
+                       FontSize="14"
                        FontFamily="Segoe UI Variable Text, Segoe UI"
                        VerticalAlignment="Center"
-                       Foreground="#EEFFFFFF"/>
+                       Foreground="White"/>
         </StackPanel>
     </Border>
 </Window>

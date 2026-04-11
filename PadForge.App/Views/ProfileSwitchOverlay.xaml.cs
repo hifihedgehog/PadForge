@@ -70,16 +70,14 @@ namespace PadForge.Views
 
             if (_isDark)
             {
-                // Dark: very dark semi-transparent background, faint black border
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE6, 0x2C, 0x2C, 0x2C));
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x2C, 0x2C));
                 FlyoutStroke.Color = Color.FromArgb(0x33, 0x00, 0x00, 0x00);
                 StatusIcon.Foreground = Brushes.White;
                 StatusText.Foreground = Brushes.White;
             }
             else
             {
-                // Light: near-white semi-transparent background, very faint border
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE6, 0xF9, 0xF9, 0xF9));
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0xF9, 0xF9, 0xF9));
                 FlyoutStroke.Color = Color.FromArgb(0x0F, 0x00, 0x00, 0x00);
                 StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
                 StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
@@ -178,19 +176,19 @@ namespace PadForge.Views
 
         private void ShowFlyout()
         {
-            // Position: center-bottom, 80px above work area bottom (Win11 default)
+            // Position: centered horizontally, just above taskbar (12px gap).
+            // WorkArea.Bottom is the top of the taskbar.
             var screen = SystemParameters.WorkArea;
             Left = screen.Left + (screen.Width - 360) / 2;
-            Top = screen.Bottom - ActualHeight - 80;
+            Top = screen.Bottom - ActualHeight - 12;
 
-            // Win11 open animation: 40px slide-up, 367ms decelerate, 166ms opacity with 83ms delay
             var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;
             Opacity = 0;
             Show();
 
-            // Recalculate position after Show() measures the window
-            Top = screen.Bottom - ActualHeight - 80;
+            // Recalculate after Show() measures
+            Top = screen.Bottom - ActualHeight - 12;
 
             var slideUp = new DoubleAnimation(40, 0, TimeSpan.FromMilliseconds(367));
             slideUp.SetValue(Timeline.DesiredFrameRateProperty, 60);

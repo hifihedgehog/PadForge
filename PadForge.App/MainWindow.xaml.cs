@@ -3212,6 +3212,7 @@ namespace PadForge
                 _viewModel.Settings.ActiveProfileInfo = profile.Name;
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileLoaded_Format, profile.Name);
             }
+            _settingsService.MarkDirty();
         }
 
         private void OnRevertToDefault(object sender, EventArgs e)
@@ -3219,6 +3220,7 @@ namespace PadForge
             _inputService.RevertToDefaultProfile();
             _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
             _viewModel.StatusText = Strings.Instance.Status_ProfileRevertedDefault;
+            _settingsService.MarkDirty();
         }
 
         /// <summary>

@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>기본값</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>컨트롤러 단축키</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>프로필 단축키</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>컨트롤러의 버튼 조합으로 프로필을 전환합니다.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>단축키 추가</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>다음 프로필</value></data>

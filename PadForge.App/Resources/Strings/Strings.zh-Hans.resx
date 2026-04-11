@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>配置文件已切换: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>配置文件已切换: 默认</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>默认</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>手柄快捷键</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>配置文件快捷键</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>为任意手柄分配按键组合来切换配置文件。</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>添加快捷键</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>下一个配置文件</value></data>

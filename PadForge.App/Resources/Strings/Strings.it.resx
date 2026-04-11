@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profilo cambiato: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profilo cambiato: Predefinito</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Predefinito</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Scorciatoie controller</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Scorciatoie profilo</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Assegna combinazioni di pulsanti per cambiare profilo da qualsiasi controller.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Aggiungi scorciatoia</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profilo successivo</value></data>

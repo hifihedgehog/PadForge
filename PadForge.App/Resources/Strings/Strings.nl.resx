@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiel gewisseld: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiel gewisseld: Standaard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standaard</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Controller-snelkoppelingen</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Profiel-snelkoppelingen</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Wijs knoppencombinaties toe om van profiel te wisselen vanaf elke controller.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Snelkoppeling toevoegen</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Volgend profiel</value></data>

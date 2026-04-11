@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profile switched: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profile switched: Default</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Default</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Controller Shortcuts</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Profile Shortcuts</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Assign button combos to switch profiles from any controller.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Add Shortcut</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Next Profile</value></data>

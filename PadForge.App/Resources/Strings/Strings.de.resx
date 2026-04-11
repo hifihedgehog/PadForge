@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil gewechselt: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil gewechselt: Standard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standard</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Controller-Tastenkombinationen</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Profil-Tastenkombinationen</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Tastenkombinationen zum Profilwechsel von jedem Controller zuweisen.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Tastenkombination hinzufügen</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Nächstes Profil</value></data>

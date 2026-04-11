@@ -179,49 +179,39 @@ namespace PadForge.Views
 
             // Force layout so ActualWidth reflects current content before positioning.
             UpdateLayout();
+            Opacity = 1; // No fade — slide only.
             Show();
             UpdateLayout();
 
-            // Center horizontally, 16px above taskbar.
+            // Center horizontally, flush with work area bottom.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
             Top = screen.Bottom - ActualHeight;
 
-            var transform = new TranslateTransform(0, 40);
+            // Slide up from behind the taskbar — no opacity animation.
+            var transform = new TranslateTransform(0, ActualHeight);
             FlyoutBorder.RenderTransform = transform;
-            Opacity = 0;
 
-            var slideUp = new DoubleAnimation(40, 0, TimeSpan.FromMilliseconds(367));
+            var slideUp = new DoubleAnimation(ActualHeight, 0, TimeSpan.FromMilliseconds(300));
             slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
 
-            // Opacity: 83ms hold at 0, then 83ms linear fade to 1
-            var fadeIn = new DoubleAnimationUsingKeyFrames();
-            fadeIn.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(83))));
-            fadeIn.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(166))));
-
             transform.BeginAnimation(TranslateTransform.YProperty, slideUp);
-            BeginAnimation(OpacityProperty, fadeIn);
         }
 
         private void BeginFadeOut()
         {
-            // Win11 close: 367ms slide-down, opacity 1->0 in 166ms, hidden at 250ms
+            // Slide down behind the taskbar — no opacity fade.
             var transform = FlyoutBorder.RenderTransform as TranslateTransform ?? new TranslateTransform(0, 0);
             FlyoutBorder.RenderTransform = transform;
 
-            var slideDown = new DoubleAnimation(0, 40, TimeSpan.FromMilliseconds(367));
+            var slideDown = new DoubleAnimation(0, ActualHeight, TimeSpan.FromMilliseconds(300));
             slideDown.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn };
-
-            var fadeOut = new DoubleAnimationUsingKeyFrames();
-            fadeOut.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(83))));
-            fadeOut.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(250))));
-            fadeOut.Completed += (_, _) =>
+            slideDown.Completed += (_, _) =>
             {
                 Hide();
-                ApplyTheme(); // Reset green icon color
+                ApplyTheme();
             };
 
             transform.BeginAnimation(TranslateTransform.YProperty, slideDown);
-            BeginAnimation(OpacityProperty, fadeOut);
         }
     }
 

@@ -25,15 +25,15 @@
         - Icon: Segoe Fluent Icons, 14px, slightly muted white
     -->
     <Border x:Name="FlyoutBorder"
-            CornerRadius="8"
-            Height="36"
-            Padding="12,0,14,0"
-            Background="#E8202020"
+            CornerRadius="14"
+            Height="40"
+            Padding="14,0,16,0"
+            Background="#F03B3B3B"
             BorderThickness="0">
 
         <Border.Effect>
-            <DropShadowEffect BlurRadius="8" ShadowDepth="2"
-                              Direction="270" Opacity="0.2" Color="Black"/>
+            <DropShadowEffect BlurRadius="16" ShadowDepth="4"
+                              Direction="270" Opacity="0.15" Color="Black"/>
         </Border.Effect>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

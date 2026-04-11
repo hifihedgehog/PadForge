@@ -70,8 +70,8 @@ namespace PadForge.Views
 
             if (_isDark)
             {
-                // Acrylic fallback: TintColor=#202020, ~91% opaque
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE8, 0x20, 0x20, 0x20));
+                // Matches native Win11 volume OSD observed background
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xF0, 0x3B, 0x3B, 0x3B));
                 StatusIcon.Foreground = new SolidColorBrush(Color.FromArgb(0xCC, 0xFF, 0xFF, 0xFF));
                 StatusText.Foreground = new SolidColorBrush(Color.FromArgb(0xEE, 0xFF, 0xFF, 0xFF));
             }
@@ -183,7 +183,7 @@ namespace PadForge.Views
 
             // Measure after Show so DesiredSize is valid.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight - 6;
+            Top = screen.Bottom - ActualHeight - 8;
 
             var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;

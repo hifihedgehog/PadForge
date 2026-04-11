@@ -1,87 +1,40 @@
-<Window x:Class="PadForge.Views.ProfileSwitchOverlay"
+<ui:FluentWindow x:Class="PadForge.Views.ProfileSwitchOverlay"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowBackdropType="Acrylic"
+        ExtendsContentIntoTitleBar="True"
         Topmost="True"
         ShowInTaskbar="False"
         ShowActivated="False"
         Focusable="False"
-        SizeToContent="WidthAndHeight"
-        WindowStartupLocation="Manual">
+        SizeToContent="Width"
+        Height="45"
+        WindowStartupLocation="Manual"
+        Background="Transparent">
 
     <!--
         Win11 Hardware Confirmator (volume OSD) — pixel-measured.
-        Background: #2C2D2D, Height: 45px, Corner radius: 8px, Gap: 16px above taskbar.
-        Outer margin provides space for the subtle shadow without clipping corners.
+        Uses system acrylic backdrop via FluentWindow + DWM corner rounding.
+        Background: acrylic over #2C2D2D, Border: #121313 1px, Corner: 8px (DWM).
     -->
-    <Grid Margin="16,8,16,16">
-        <Border x:Name="FlyoutBorder"
-                CornerRadius="8"
-                Height="45"
-                Padding="16,0,16,0"
-                BorderBrush="#121313"
-                BorderThickness="1">
+    <Grid x:Name="ContentPanel" Margin="16,0,16,0">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock x:Name="StatusIcon"
+                       Text="&#xE8F1;"
+                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"
+                       Foreground="White"/>
 
-            <Border.Background>
-                <!-- Acrylic noise: base #2C2D2D with a subtle dithered overlay -->
-                <DrawingBrush TileMode="Tile" Viewport="0,0,4,4" ViewportUnits="Absolute"
-                              Opacity="1">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <!-- Base color fill -->
-                            <GeometryDrawing Brush="#2C2D2D">
-                                <GeometryDrawing.Geometry>
-                                    <RectangleGeometry Rect="0,0,4,4"/>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                            <!-- Noise: alternating slightly lighter/darker pixels -->
-                            <GeometryDrawing Brush="#2E2F2F">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,1,1"/>
-                                        <RectangleGeometry Rect="2,1,1,1"/>
-                                        <RectangleGeometry Rect="1,2,1,1"/>
-                                        <RectangleGeometry Rect="3,3,1,1"/>
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                            <GeometryDrawing Brush="#2A2B2B">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="1,0,1,1"/>
-                                        <RectangleGeometry Rect="3,1,1,1"/>
-                                        <RectangleGeometry Rect="0,3,1,1"/>
-                                        <RectangleGeometry Rect="2,2,1,1"/>
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Border.Background>
-
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="16" ShadowDepth="3"
-                                  Direction="270" Opacity="0.25" Color="Black"/>
-            </Border.Effect>
-
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock x:Name="StatusIcon"
-                           Text="&#xE8F1;"
-                           FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                           FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,10,0"
-                           Foreground="White"/>
-
-                <TextBlock x:Name="StatusText"
-                           FontSize="14"
-                           FontFamily="Segoe UI Variable Text, Segoe UI"
-                           VerticalAlignment="Center"
-                           Foreground="White"/>
-            </StackPanel>
-        </Border>
+            <TextBlock x:Name="StatusText"
+                       FontSize="14"
+                       FontFamily="Segoe UI Variable Text, Segoe UI"
+                       VerticalAlignment="Center"
+                       Foreground="White"/>
+        </StackPanel>
     </Grid>
-</Window>
+</ui:FluentWindow>

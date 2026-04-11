@@ -9,7 +9,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
-    public partial class ProfileSwitchOverlay : Window
+    public partial class ProfileSwitchOverlay : Wpf.Ui.Controls.FluentWindow
     {
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_NOACTIVATE = 0x08000000;
@@ -68,16 +68,16 @@ namespace PadForge.Views
             _isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                 == Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
+            // Acrylic backdrop handles the background. Just set text colors.
+            Wpf.Ui.Appearance.ApplicationThemeManager.Apply(this);
+
             if (_isDark)
             {
-                // Measured from live Win11 volume OSD: #2C2D2D (R=44 G=45 B=45)
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x2D, 0x2D));
                 StatusIcon.Foreground = Brushes.White;
                 StatusText.Foreground = Brushes.White;
             }
             else
             {
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0xF3, 0xF3, 0xF3));
                 StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
                 StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
             }
@@ -173,45 +173,41 @@ namespace PadForge.Views
             BeginFadeOut();
         }
 
+        private double _restingTop;
+
         private void ShowFlyout()
         {
             var screen = SystemParameters.WorkArea;
 
-            // Force layout so ActualWidth reflects current content before positioning.
             UpdateLayout();
-            Opacity = 1; // No fade — slide only.
             Show();
             UpdateLayout();
 
-            // Center horizontally, flush with work area bottom.
+            // Center horizontally.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight;
+            _restingTop = screen.Bottom - ActualHeight;
 
-            // Slide up from behind the taskbar — no opacity animation.
-            var transform = new TranslateTransform(0, ActualHeight);
-            FlyoutBorder.RenderTransform = transform;
-
-            var slideUp = new DoubleAnimation(ActualHeight, 0, TimeSpan.FromMilliseconds(300));
+            // Start below the taskbar, slide up to resting position.
+            Top = screen.Bottom;
+            var slideUp = new DoubleAnimation(screen.Bottom, _restingTop, TimeSpan.FromMilliseconds(300));
             slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
-
-            transform.BeginAnimation(TranslateTransform.YProperty, slideUp);
+            BeginAnimation(TopProperty, slideUp);
         }
 
         private void BeginFadeOut()
         {
-            // Slide down behind the taskbar — no opacity fade.
-            var transform = FlyoutBorder.RenderTransform as TranslateTransform ?? new TranslateTransform(0, 0);
-            FlyoutBorder.RenderTransform = transform;
-
-            var slideDown = new DoubleAnimation(0, ActualHeight, TimeSpan.FromMilliseconds(300));
+            // Slide down behind the taskbar.
+            var screen = SystemParameters.WorkArea;
+            var slideDown = new DoubleAnimation(_restingTop, screen.Bottom, TimeSpan.FromMilliseconds(300));
             slideDown.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn };
             slideDown.Completed += (_, _) =>
             {
+                BeginAnimation(TopProperty, null); // Clear animation so Top can be set directly next time.
                 Hide();
                 ApplyTheme();
             };
 
-            transform.BeginAnimation(TranslateTransform.YProperty, slideDown);
+            BeginAnimation(TopProperty, slideDown);
         }
     }
 

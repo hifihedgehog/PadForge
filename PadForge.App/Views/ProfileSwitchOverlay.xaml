@@ -21,9 +21,46 @@
                 CornerRadius="8"
                 Height="45"
                 Padding="16,0,16,0"
-                Background="#2C2D2D"
                 BorderBrush="#121313"
                 BorderThickness="1">
+
+            <Border.Background>
+                <!-- Acrylic noise: base #2C2D2D with a subtle dithered overlay -->
+                <DrawingBrush TileMode="Tile" Viewport="0,0,4,4" ViewportUnits="Absolute"
+                              Opacity="1">
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <!-- Base color fill -->
+                            <GeometryDrawing Brush="#2C2D2D">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="0,0,4,4"/>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Noise: alternating slightly lighter/darker pixels -->
+                            <GeometryDrawing Brush="#2E2F2F">
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <RectangleGeometry Rect="0,0,1,1"/>
+                                        <RectangleGeometry Rect="2,1,1,1"/>
+                                        <RectangleGeometry Rect="1,2,1,1"/>
+                                        <RectangleGeometry Rect="3,3,1,1"/>
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <GeometryDrawing Brush="#2A2B2B">
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <RectangleGeometry Rect="1,0,1,1"/>
+                                        <RectangleGeometry Rect="3,1,1,1"/>
+                                        <RectangleGeometry Rect="0,3,1,1"/>
+                                        <RectangleGeometry Rect="2,2,1,1"/>
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Border.Background>
 
             <Border.Effect>
                 <DropShadowEffect BlurRadius="16" ShadowDepth="3"

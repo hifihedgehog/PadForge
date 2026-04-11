@@ -247,12 +247,16 @@ namespace PadForge.Views
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)
         {
+            // Load from embedded resource stream — avoids pack:// URI scheme issues
+            // on .NET 10 single-file publish where PackUriHelper.ValidatePartUri fails.
+            var sri = Application.GetResourceStream(new Uri(resourcePath, UriKind.Relative));
             var bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.UriSource = new Uri(resourcePath, UriKind.Relative);
+            bitmap.StreamSource = sri.Stream;
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
             bitmap.Freeze();
+            sri.Stream.Dispose();
             var img = new Image
             {
                 Source = bitmap,

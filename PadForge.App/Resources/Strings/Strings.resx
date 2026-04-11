@@ -202,8 +202,8 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Previous Profile</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Specific Profile</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Any Connected Device</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Learn</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Press...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Record</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Recording...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>No device selected.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Invalid slot index: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Failed to assign device.</value></data>

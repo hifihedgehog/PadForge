@@ -202,8 +202,8 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Vorig profiel</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Specifiek profiel</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Elk verbonden apparaat</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Leren</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Druk...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Opnemen</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Opname...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Geen apparaat geselecteerd.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ongeldige slotindex: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Apparaattoewijzing mislukt.</value></data>

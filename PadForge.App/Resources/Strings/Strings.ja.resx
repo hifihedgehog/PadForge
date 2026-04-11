@@ -202,8 +202,8 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>前のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>特定のプロファイル</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>接続中の任意のデバイス</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>学習</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>押して...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>録音</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>録音中...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>

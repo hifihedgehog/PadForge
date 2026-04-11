@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services;
@@ -177,29 +178,80 @@ namespace PadForge.ViewModels
                 var entries = Data.TriggerEntries;
                 if (entries == null || entries.Length == 0)
                     return Strings.Instance.Common_None;
+
                 return string.Join(" + ", entries.Select(e =>
                 {
-                    // Show device name prefix if cross-device combo.
-                    string prefix = "";
-                    if (entries.Length > 1)
-                    {
-                        var devices = SettingsManager.UserDevices?.Items;
-                        if (devices != null)
-                        {
-                            lock (SettingsManager.UserDevices.SyncRoot)
-                            {
-                                var ud = devices.FirstOrDefault(d => d.InstanceGuid == e.DeviceInstanceGuid);
-                                if (ud != null)
-                                {
-                                    string shortName = ud.ResolvedName;
-                                    if (shortName.Length > 12) shortName = shortName.Substring(0, 10) + "..";
-                                    prefix = shortName + ":";
-                                }
-                            }
-                        }
-                    }
-                    return $"{prefix}B{e.ButtonIndex}";
+                    string buttonName = ResolveButtonName(e.ButtonIndex, e.DeviceInstanceGuid);
+                    string deviceName = ResolveDeviceName(e.DeviceInstanceGuid);
+                    return deviceName != null ? $"{buttonName} ({deviceName})" : buttonName;
                 }));
+            }
+        }
+
+        /// <summary>
+        /// Resolves a raw button index to a friendly name. Uses gamepad standard
+        /// names (A, B, X, Y, etc.) for indices 0-10 on gamepad-type devices.
+        /// </summary>
+        private static string ResolveButtonName(int index, Guid deviceGuid)
+        {
+            // Standard gamepad button names (SDL gamepad API order, indices 0-10).
+            bool isGamepad = false;
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices != null)
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
+                    if (ud != null)
+                        isGamepad = ud.CapType == Engine.InputDeviceType.Gamepad;
+                }
+            }
+
+            if (isGamepad && index >= 0 && index <= 10)
+            {
+                return index switch
+                {
+                    0 => "A",
+                    1 => "B",
+                    2 => "X",
+                    3 => "Y",
+                    4 => Strings.Instance.Btn_LeftShoulder,
+                    5 => Strings.Instance.Btn_RightShoulder,
+                    6 => Strings.Instance.Btn_Back,
+                    7 => Strings.Instance.Btn_Start,
+                    8 => Strings.Instance.Btn_LeftStickButton,
+                    9 => Strings.Instance.Btn_RightStickButton,
+                    10 => Strings.Instance.Btn_Guide,
+                    _ => $"B{index}"
+                };
+            }
+
+            // Keyboard: try to resolve virtual key name.
+            if (devices != null)
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
+                    if (ud != null && ud.CapType == Engine.InputDeviceType.Keyboard)
+                    {
+                        if (Enum.IsDefined(typeof(VirtualKey), index))
+                            return ((VirtualKey)index).ToString();
+                    }
+                }
+            }
+
+            return string.Format(Strings.Instance.Macro_Btn_Format, index + 1);
+        }
+
+        private static string ResolveDeviceName(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return null;
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return null;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
+                return ud?.ResolvedName;
             }
         }
 

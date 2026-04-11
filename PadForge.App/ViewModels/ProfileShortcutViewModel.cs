@@ -292,7 +292,7 @@ namespace PadForge.ViewModels
             _saveCallback?.Invoke(this);
         }
 
-        public void CancelLearn()
+        public void CancelRecording()
         {
             IsLearning = false;
             OnPropertyChanged(nameof(LearnButtonText));

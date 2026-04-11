@@ -68,16 +68,16 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Shortcut button learning
+        //  Shortcut button recording
         // ─────────────────────────────────────────────
 
-        private ProfileShortcutViewModel _learningShortcut;
-        private DispatcherTimer _learnTimer;
-        private DateTime _learnStartTime;
-        private const double LearnTimeoutSeconds = 5;
-        private string _learnCandidateSignature;
-        private int _learnHoldFrames;
-        private const int LearnHoldRequired = 3; // ~100ms at 30Hz
+        private ProfileShortcutViewModel _recordingShortcut;
+        private DispatcherTimer _recordTimer;
+        private DateTime _recordStartTime;
+        private const double RecordTimeoutSeconds = 5;
+        private string _recordCandidateSignature;
+        private int _recordHoldFrames;
+        private const int RecordHoldRequired = 3; // ~100ms at 30Hz
 
         private void ShortcutLearn_Click(object sender, RoutedEventArgs e)
         {
@@ -86,45 +86,50 @@ namespace PadForge.Views
 
             if (shortcut.IsLearning)
             {
-                CancelLearn();
+                CancelRecording();
                 return;
             }
 
-            // Cancel any in-progress learning on another shortcut.
-            if (_learningShortcut != null)
-                CancelLearn();
+            // Cancel any in-progress recording on another shortcut.
+            if (_recordingShortcut != null)
+                CancelRecording();
 
-            _learningShortcut = shortcut;
+            _recordingShortcut = shortcut;
             shortcut.IsLearning = true;
             shortcut.Data.TriggerEntries = null; // Clear previous.
-            _learnStartTime = DateTime.UtcNow;
-            _learnCandidateSignature = null;
-            _learnHoldFrames = 0;
+            _recordStartTime = DateTime.UtcNow;
+            _recordCandidateSignature = null;
+            _recordHoldFrames = 0;
 
-            _learnTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
-            _learnTimer.Tick += LearnTimer_Tick;
-            _learnTimer.Start();
+            // Suppress global macro evaluation so recorded buttons don't trigger a switch.
+            InputService?.SetSuppressGlobalMacros(true);
+
+            _recordTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
+            _recordTimer.Tick += RecordTimer_Tick;
+            _recordTimer.Start();
         }
 
-        private void LearnTimer_Tick(object sender, EventArgs e)
+        private void RecordTimer_Tick(object sender, EventArgs e)
         {
-            if (_learningShortcut == null)
+            if (_recordingShortcut == null)
             {
-                _learnTimer?.Stop();
+                _recordTimer?.Stop();
                 return;
             }
 
             // Timeout.
-            if ((DateTime.UtcNow - _learnStartTime).TotalSeconds > LearnTimeoutSeconds)
+            if ((DateTime.UtcNow - _recordStartTime).TotalSeconds > RecordTimeoutSeconds)
             {
-                CancelLearn();
+                CancelRecording();
                 return;
             }
 
-            // Scan ALL devices for pressed buttons simultaneously.
-            // Supports cross-device combos (e.g., Shift on keyboard + Start on gamepad).
+            // Scan devices for pressed buttons. If a specific device is selected
+            // in the dropdown, only scan that device. "Any Device" scans all.
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
+
+            var filterGuid = _recordingShortcut.Data.TriggerDeviceGuid; // Empty = any
 
             var candidateEntries = new System.Collections.Generic.List<TriggerButtonEntry>();
 
@@ -133,6 +138,7 @@ namespace PadForge.Views
                 foreach (var ud in devices)
                 {
                     if (!ud.IsOnline || ud.InputState == null) continue;
+                    if (filterGuid != Guid.Empty && ud.InstanceGuid != filterGuid) continue;
 
                     var buttons = ud.InputState.Buttons;
                     for (int i = 0; i < buttons.Length; i++)
@@ -152,39 +158,41 @@ namespace PadForge.Views
 
             if (candidateEntries.Count > 0)
             {
-                // Check stability: same set of buttons held for LearnHoldRequired frames.
+                // Check stability: same set of buttons held for RecordHoldRequired frames.
                 string signature = string.Join("|", candidateEntries.Select(
                     e => $"{e.DeviceInstanceGuid}:{e.ButtonIndex}"));
 
-                if (signature == _learnCandidateSignature)
+                if (signature == _recordCandidateSignature)
                 {
-                    _learnHoldFrames++;
-                    if (_learnHoldFrames >= LearnHoldRequired)
+                    _recordHoldFrames++;
+                    if (_recordHoldFrames >= RecordHoldRequired)
                     {
-                        _learnTimer.Stop();
-                        _learningShortcut.SetLearnedButtons(candidateEntries.ToArray());
-                        _learningShortcut = null;
+                        _recordTimer.Stop();
+                        _recordingShortcut.SetLearnedButtons(candidateEntries.ToArray());
+                        _recordingShortcut = null;
+                        InputService?.SetSuppressGlobalMacros(false);
                         return;
                     }
                 }
                 else
                 {
-                    _learnCandidateSignature = signature;
-                    _learnHoldFrames = 1;
+                    _recordCandidateSignature = signature;
+                    _recordHoldFrames = 1;
                 }
             }
             else
             {
-                _learnCandidateSignature = null;
-                _learnHoldFrames = 0;
+                _recordCandidateSignature = null;
+                _recordHoldFrames = 0;
             }
         }
 
-        private void CancelLearn()
+        private void CancelRecording()
         {
-            _learnTimer?.Stop();
-            _learningShortcut?.CancelLearn();
-            _learningShortcut = null;
+            _recordTimer?.Stop();
+            _recordingShortcut?.CancelRecording();
+            _recordingShortcut = null;
+            InputService?.SetSuppressGlobalMacros(false);
         }
     }
 }

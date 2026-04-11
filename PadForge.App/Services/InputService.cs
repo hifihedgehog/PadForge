@@ -1875,6 +1875,12 @@ namespace PadForge.Services
             });
         }
 
+        /// <summary>Suppresses or resumes global macro evaluation (during shortcut recording).</summary>
+        internal void SetSuppressGlobalMacros(bool suppress)
+        {
+            if (_inputManager != null) _inputManager.SuppressGlobalMacros = suppress;
+        }
+
         /// <summary>Toggles the touchpad overlay visibility (for macro action).</summary>
         internal void ToggleTouchpadOverlay()
         {

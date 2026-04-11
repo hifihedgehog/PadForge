@@ -247,16 +247,38 @@ namespace PadForge.Views
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)
         {
-            // Load from embedded resource stream — avoids pack:// URI scheme issues
-            // on .NET 10 single-file publish where PackUriHelper.ValidatePartUri fails.
-            var sri = Application.GetResourceStream(new Uri(resourcePath, UriKind.Relative));
+            // Load from assembly manifest resource stream directly — bypasses the
+            // pack:// URI scheme entirely, which throws "Part URI cannot end with a
+            // forward slash" on .NET 10 single-file publish.
+            // WPF Resource items are stored as lowercase paths with '/' → '.' conversion
+            // under the assembly's .g.resources stream.
+            var asm = System.Reflection.Assembly.GetExecutingAssembly();
+            string resName = resourcePath.Replace('/', '.').Replace('\\', '.').ToLowerInvariant();
+
+            // WPF resources are in "<assemblyname>.g.resources" → find via ResourceManager.
+            var rm = new System.Resources.ResourceManager(
+                asm.GetName().Name + ".g", asm);
+            using var stream = rm.GetStream(resName.Replace('.', '/'));
+            if (stream == null)
+            {
+                // Fallback: try the original path as-is (forward slashes, lowercase).
+                using var stream2 = rm.GetStream(resourcePath.ToLowerInvariant());
+                if (stream2 != null)
+                    return CreateImageFromStream(stream2, x, y, w, h);
+                // Resource not found — return empty placeholder to avoid crash.
+                return new Image { Width = w, Height = h };
+            }
+            return CreateImageFromStream(stream, x, y, w, h);
+        }
+
+        private static Image CreateImageFromStream(System.IO.Stream stream, double x, double y, double w, double h)
+        {
             var bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.StreamSource = sri.Stream;
+            bitmap.StreamSource = stream;
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
             bitmap.Freeze();
-            sri.Stream.Dispose();
             var img = new Image
             {
                 Source = bitmap,

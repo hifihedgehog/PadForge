@@ -2930,6 +2930,11 @@ namespace PadForge.Services
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
                 // Scan raw buttons from devices mapped to this pad slot.
+                // Capture only the CURRENT simultaneously-held set (not accumulated).
+                var currentRawButtons = new HashSet<int>();
+                var currentPovs = new HashSet<string>();
+                Guid currentDeviceGuid = Guid.Empty;
+
                 var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(_recordingPadIndex);
                 if (slotSettings != null)
                 {
@@ -2943,20 +2948,18 @@ namespace PadForge.Services
                         if (_recordingDeviceGuid != Guid.Empty && _recordingDeviceGuid != ud.InstanceGuid)
                             continue;
 
-                        // Check for any pressed buttons on this device.
                         var buttons = ud.InputState.Buttons;
                         int count = Math.Min(buttons.Length, ud.Device?.RawButtonCount ?? buttons.Length);
                         for (int i = 0; i < count; i++)
                         {
                             if (buttons[i])
                             {
-                                if (_recordingDeviceGuid == Guid.Empty)
-                                    _recordingDeviceGuid = ud.InstanceGuid;
-                                _recordedRawButtons.Add(i);
+                                if (currentDeviceGuid == Guid.Empty)
+                                    currentDeviceGuid = ud.InstanceGuid;
+                                currentRawButtons.Add(i);
                             }
                         }
 
-                        // Check for any active POV hats on this device.
                         var povs = ud.InputState.Povs;
                         if (povs != null)
                         {
@@ -2964,13 +2967,22 @@ namespace PadForge.Services
                             {
                                 if (povs[p] >= 0)
                                 {
-                                    if (_recordingDeviceGuid == Guid.Empty)
-                                        _recordingDeviceGuid = ud.InstanceGuid;
-                                    _recordedPovs.Add($"{p}:{povs[p]}");
+                                    if (currentDeviceGuid == Guid.Empty)
+                                        currentDeviceGuid = ud.InstanceGuid;
+                                    currentPovs.Add($"{p}:{povs[p]}");
                                 }
                             }
                         }
                     }
+                }
+
+                // Replace the recorded set with the current frame's state.
+                // Only update if something is pressed (keep last combo when released).
+                if (currentRawButtons.Count > 0 || currentPovs.Count > 0)
+                {
+                    _recordedRawButtons = currentRawButtons;
+                    _recordedPovs = currentPovs;
+                    _recordingDeviceGuid = currentDeviceGuid;
                 }
 
                 // Update live display text (buttons + POVs + axes combined, device name at end).
@@ -3002,12 +3014,16 @@ namespace PadForge.Services
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
-                // Custom vJoy: accumulate from the combined raw state.
+                // Custom vJoy: capture current frame's buttons (not accumulated).
                 var rawState = _inputManager.CombinedVJoyRawStates[_recordingPadIndex];
                 if (rawState.Buttons != null && _recordedCustomButtons != null)
                 {
+                    bool anyPressed = false;
                     for (int w = 0; w < rawState.Buttons.Length && w < _recordedCustomButtons.Length; w++)
-                        _recordedCustomButtons[w] |= rawState.Buttons[w];
+                        if (rawState.Buttons[w] != 0) anyPressed = true;
+                    if (anyPressed)
+                        Array.Copy(rawState.Buttons, _recordedCustomButtons,
+                            Math.Min(rawState.Buttons.Length, _recordedCustomButtons.Length));
                 }
 
                 // Update live display (buttons + axes combined).
@@ -3023,10 +3039,11 @@ namespace PadForge.Services
             }
             else
             {
-                // Gamepad preset OutputController: accumulate from the combined Xbox-mapped state.
+                // Gamepad preset OutputController: capture current frame's buttons (not accumulated).
                 var gp = _inputManager.CombinedOutputStates[_recordingPadIndex];
                 ushort xboxButtons = gp.Buttons;
-                _recordedButtons |= xboxButtons;
+                if (xboxButtons != 0)
+                    _recordedButtons = xboxButtons;
 
                 // Update live display (buttons + axes combined).
                 {

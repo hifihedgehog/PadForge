@@ -556,9 +556,20 @@
                                                    FontWeight="SemiBold"
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </Grid>
-                                    <Button Content="{Binding RecordTriggerButtonText}"
-                                            Command="{Binding RecordTriggerCommand}"
-                                            Padding="8,4"/>
+                                    <!-- Record/Stop button -->
+                                    <Button Command="{Binding RecordTriggerCommand}" Width="40" Margin="0,0,4,0">
+                                        <TextBlock Text="{Binding RecordTriggerIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding RecordTriggerButtonText}"/>
+                                        </Button.ToolTip>
+                                    </Button>
+                                    <!-- Clear trigger button -->
+                                    <Button Command="{Binding ClearTriggerCommand}" Width="40">
+                                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Button.ToolTip>
+                                    </Button>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
                                            FontSize="11" TextWrapping="Wrap"

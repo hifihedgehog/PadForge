@@ -181,9 +181,11 @@ namespace PadForge.ViewModels
 
                 return string.Join(" + ", entries.Select(e =>
                 {
-                    string buttonName = ResolveButtonName(e.ButtonIndex, e.DeviceInstanceGuid);
+                    string name = e.IsAxis
+                        ? ResolveAxisName(e.AxisIndex, e.DeviceInstanceGuid)
+                        : ResolveButtonName(e.ButtonIndex, e.DeviceInstanceGuid);
                     string deviceName = ResolveDeviceName(e.DeviceInstanceGuid);
-                    return deviceName != null ? $"{buttonName} ({deviceName})" : buttonName;
+                    return deviceName != null ? $"{name} ({deviceName})" : name;
                 }));
             }
         }
@@ -241,6 +243,38 @@ namespace PadForge.ViewModels
             }
 
             return string.Format(Strings.Instance.Macro_Btn_Format, index + 1);
+        }
+
+        private static string ResolveAxisName(int index, Guid deviceGuid)
+        {
+            // Standard gamepad axis names (SDL order: LX, LY, LT, RX, RY, RT).
+            bool isGamepad = false;
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices != null)
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
+                    if (ud != null)
+                        isGamepad = ud.CapType == Engine.InputDeviceType.Gamepad;
+                }
+            }
+
+            if (isGamepad && index >= 0 && index <= 5)
+            {
+                return index switch
+                {
+                    0 => "LX",
+                    1 => "LY",
+                    2 => "LT",
+                    3 => "RX",
+                    4 => "RY",
+                    5 => "RT",
+                    _ => $"Axis {index}"
+                };
+            }
+
+            return $"Axis {index}";
         }
 
         private static string ResolveDeviceName(Guid deviceGuid)

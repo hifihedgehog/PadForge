@@ -141,6 +141,7 @@ namespace PadForge.Views
                     // duplicate child device buttons. But allow if explicitly selected.
                     if (filterGuid == Guid.Empty && ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
 
+                    // Detect pressed buttons.
                     var buttons = ud.InputState.Buttons;
                     for (int i = 0; i < buttons.Length; i++)
                     {
@@ -152,6 +153,28 @@ namespace PadForge.Views
                                 DeviceInstanceGuid = ud.InstanceGuid,
                                 DeviceProductGuid = ud.ProductGuid
                             });
+                        }
+                    }
+
+                    // Detect axes exceeding 50% threshold.
+                    var axes = ud.InputState.Axis;
+                    if (axes != null)
+                    {
+                        int axisCount = ud.CapAxeCount > 0 ? Math.Min(ud.CapAxeCount, axes.Length) : axes.Length;
+                        for (int i = 0; i < axisCount; i++)
+                        {
+                            float normalized = axes[i] / 65535f;
+                            if (normalized >= 0.5f)
+                            {
+                                entries.Add(new TriggerButtonEntry
+                                {
+                                    IsAxis = true,
+                                    AxisIndex = i,
+                                    AxisThreshold = 0.5f,
+                                    DeviceInstanceGuid = ud.InstanceGuid,
+                                    DeviceProductGuid = ud.ProductGuid
+                                });
+                            }
                         }
                     }
                 }

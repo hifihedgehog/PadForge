@@ -1097,7 +1097,7 @@
                                     <DataTemplate>
                                         <Button Command="{Binding ToggleRecordCommand}"
                                                 IsEnabled="{Binding IsRecordable}"
-                                                Width="36" HorizontalAlignment="Center" Margin="2">
+                                                Width="40" HorizontalAlignment="Center" Margin="2">
                                             <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
                                             <Button.ToolTip>
                                                 <TextBlock Text="{Binding RecordButtonText}"/>
@@ -1111,7 +1111,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding ClearCommand}"
-                                                Width="36" HorizontalAlignment="Center" Margin="2">
+                                                Width="40" HorizontalAlignment="Center" Margin="2">
                                             <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
                                             <Button.ToolTip>
                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>

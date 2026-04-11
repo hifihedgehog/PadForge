@@ -176,9 +176,6 @@ namespace PadForge
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
 
-            // Load profile shortcuts into the ViewModel.
-            LoadProfileShortcuts();
-
             // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
             _viewModel.Settings.HasAnyViGEmSlots = () =>
             {
@@ -853,6 +850,9 @@ namespace PadForge
             // Settings must be loaded before Show() so App.OnStartup can
             // decide whether to show the window at all (start-minimized-to-tray).
             _settingsService.Initialize();
+
+            // Load profile shortcuts after settings are loaded.
+            LoadProfileShortcuts();
 
             // Restore main window position/size/state.
             var mw = _viewModel.Settings;

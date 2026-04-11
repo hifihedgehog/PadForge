@@ -291,8 +291,21 @@ namespace PadForge.Services
             StopWebServer();
 
             // Close overlay windows (not just hide — prevents shutdown hang).
-            HideTouchpadOverlay(close: true);
-            if (_switchOverlay != null) { _switchOverlay.Close(); _switchOverlay = null; }
+            // Must dispatch to UI thread since Stop() may be called from Task.Run.
+            _dispatcher.Invoke(() =>
+            {
+                if (_touchpadOverlay != null)
+                {
+                    _touchpadOverlay.PositionChanged -= OnTouchpadOverlayPositionChanged;
+                    _touchpadOverlay.Close();
+                    _touchpadOverlay = null;
+                }
+                if (_switchOverlay != null)
+                {
+                    _switchOverlay.Close();
+                    _switchOverlay = null;
+                }
+            });
 
             // Stop audio bass rumble detector.
             StopAudioBassDetector();

@@ -250,9 +250,11 @@
 
                                     <!-- Button combo display (fills remaining space, marquee scrolls if too long) -->
                                     <Border Grid.Column="3" ClipToBounds="True" Margin="0,0,6,0">
-                                        <TextBlock Text="{Binding ButtonComboDisplay}"
-                                                   VerticalAlignment="Center"
-                                                   common:MarqueeBehavior.IsEnabled="True"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding ButtonComboDisplay}"
+                                                       VerticalAlignment="Center"
+                                                       common:MarqueeBehavior.IsEnabled="True"/>
+                                        </StackPanel>
                                     </Border>
 
                                     <!-- Action buttons (right-justified) -->

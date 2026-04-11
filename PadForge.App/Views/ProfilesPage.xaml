@@ -240,10 +240,13 @@
                                     <TextBlock Text="{Binding ButtonComboDisplay}" VerticalAlignment="Center"
                                                MinWidth="100" Margin="0,0,6,0"/>
 
-                                    <!-- Learn button -->
-                                    <Button Content="{Binding LearnButtonText}"
-                                            Click="ShortcutLearn_Click"
-                                            Width="70" Margin="0,0,4,0"/>
+                                    <!-- Learn/Record button -->
+                                    <Button Click="ShortcutLearn_Click" Width="40" Margin="0,0,4,0">
+                                        <TextBlock Text="{Binding LearnButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding LearnButtonText}"/>
+                                        </Button.ToolTip>
+                                    </Button>
 
                                     <!-- Clear button -->
                                     <Button Command="{Binding ClearCommand}" Width="40" Margin="0,0,4,0">

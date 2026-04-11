@@ -215,44 +215,38 @@ namespace PadForge.Views
         {
             var screen = SystemParameters.WorkArea;
 
-            // Clear any active animation so we can set Top directly.
-            BeginAnimation(TopProperty, null);
-
-            // Position off-screen (behind taskbar) BEFORE showing.
-            Left = screen.Left + (screen.Width - 200) / 2; // Estimate width for initial centering.
-            Top = screen.Bottom;
-
+            UpdateLayout();
             Show();
             UpdateLayout();
 
-            // Place above normal windows but below the taskbar (which is topmost).
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-
-            // Re-center with actual measured width.
+            // Position: center horizontally, bottom of window at taskbar top + 13px gap.
+            // The window is 90px tall (45px visible + 45px hidden below).
+            // The visible top half sits 13px above the taskbar.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            _restingTop = screen.Bottom - ActualHeight - 13;
+            Top = screen.Bottom - 45 - 13; // Only 45px visible above taskbar.
 
-            // Slide up from behind the taskbar.
-            var slideUp = new DoubleAnimation(screen.Bottom, _restingTop, TimeSpan.FromMilliseconds(300));
+            // Slide the flyout border up from the bottom (hidden) half into the visible half.
+            var transform = new TranslateTransform(0, 45);
+            FlyoutBorder.RenderTransform = transform;
+
+            var slideUp = new DoubleAnimation(45, 0, TimeSpan.FromMilliseconds(300));
             slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
-            BeginAnimation(TopProperty, slideUp);
+            transform.BeginAnimation(TranslateTransform.YProperty, slideUp);
         }
 
         private void BeginFadeOut()
         {
-            // Slide down behind the taskbar.
-            var screen = SystemParameters.WorkArea;
-            var slideDown = new DoubleAnimation(_restingTop, screen.Bottom, TimeSpan.FromMilliseconds(300));
+            var transform = FlyoutBorder.RenderTransform as TranslateTransform ?? new TranslateTransform(0, 0);
+            FlyoutBorder.RenderTransform = transform;
+
+            var slideDown = new DoubleAnimation(0, 45, TimeSpan.FromMilliseconds(300));
             slideDown.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn };
             slideDown.Completed += (_, _) =>
             {
-                BeginAnimation(TopProperty, null); // Clear animation so Top can be set directly next time.
                 Hide();
                 ApplyTheme();
             };
-
-            BeginAnimation(TopProperty, slideDown);
+            transform.BeginAnimation(TranslateTransform.YProperty, slideDown);
         }
     }
 

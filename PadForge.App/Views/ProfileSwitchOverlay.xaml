@@ -2,31 +2,57 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStyle="None"
+        AllowsTransparency="True"
         ResizeMode="NoResize"
-        Topmost="False"
+        Topmost="True"
         ShowInTaskbar="False"
         ShowActivated="False"
         Focusable="False"
         SizeToContent="Width"
-        Height="45"
+        Height="90"
         WindowStartupLocation="Manual"
-        Background="#2C2D2D">
+        Background="Transparent">
 
-    <Grid Margin="16,0,16,0">
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBlock x:Name="StatusIcon"
-                       Text="&#xE8F1;"
-                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                       FontSize="16"
-                       VerticalAlignment="Center"
-                       Margin="0,0,10,0"
-                       Foreground="White"/>
+    <!--
+        The window is twice the flyout height (90px) and transparent.
+        The top half is the visible flyout area; the bottom half extends
+        behind the taskbar. The inner Border slides up from the bottom
+        half into the top half, simulating emergence from behind the taskbar.
+        ClipToBounds on the outer Grid clips it at the 45px midpoint.
+    -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock x:Name="StatusText"
-                       FontSize="14"
-                       FontFamily="Segoe UI Variable Text, Segoe UI"
-                       VerticalAlignment="Center"
-                       Foreground="White"/>
-        </StackPanel>
+        <!-- Clip region: only the top 45px row is visible -->
+        <Grid Grid.Row="0" ClipToBounds="True">
+            <Border x:Name="FlyoutBorder"
+                    CornerRadius="8"
+                    Height="45"
+                    Padding="16,0,16,0"
+                    Background="#2C2D2D"
+                    BorderBrush="#474747"
+                    BorderThickness="1"
+                    VerticalAlignment="Top">
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="StatusIcon"
+                               Text="&#xE8F1;"
+                               FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"
+                               Foreground="White"/>
+
+                    <TextBlock x:Name="StatusText"
+                               FontSize="14"
+                               FontFamily="Segoe UI Variable Text, Segoe UI"
+                               VerticalAlignment="Center"
+                               Foreground="White"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

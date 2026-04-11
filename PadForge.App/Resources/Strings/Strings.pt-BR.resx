@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil alterado: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil alterado: Padrão</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Padrão</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atalhos do controle</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atalhos de perfil</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Atribuir combinações de botões para trocar de perfil em qualquer controle.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Adicionar atalho</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Próximo perfil</value></data>

@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>デフォルト</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>コントローラーショートカット</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>プロファイルショートカット</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>コントローラーのボタンの組み合わせでプロファイルを切り替えます。</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>ショートカットを追加</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>次のプロファイル</value></data>

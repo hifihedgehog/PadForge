@@ -195,7 +195,7 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil cambiado: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil cambiado: Predeterminado</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Predeterminado</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atajos de mando</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atajos de perfil</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Asignar combinaciones de botones para cambiar de perfil desde cualquier mando.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Añadir atajo</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Siguiente perfil</value></data>

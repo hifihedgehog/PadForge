@@ -1478,7 +1478,8 @@ namespace PadForge.Common.Input
                 return false;
             }
 
-            // "Any Device" — check all non-aggregate devices with matching product GUID.
+            // "Any Device" — check all devices with matching product GUID.
+            // Skip aggregates since they duplicate child devices.
             for (int d = 0; d < devices.Count; d++)
             {
                 var ud = devices[d];

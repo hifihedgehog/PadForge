@@ -323,7 +323,6 @@
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>Type: </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
   <data name="Devices_AppGUID" xml:space="preserve"><value>App-GUID: </value></data>
   <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL-GUID: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>Instantiepad: </value></data>

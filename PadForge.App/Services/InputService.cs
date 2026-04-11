@@ -3293,6 +3293,18 @@ namespace PadForge.Services
             if (profile.WebControllerPort >= 1024 && profile.WebControllerPort <= 65535)
                 _mainVm.Dashboard.WebControllerPort = profile.WebControllerPort;
 
+            // ── Apply touchpad overlay settings ──
+            _mainVm.Dashboard.EnableTouchpadOverlay = profile.EnableTouchpadOverlay;
+            _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity > 0
+                ? profile.TouchpadOverlayOpacity : 0.25;
+            _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
+            _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
+            _mainVm.Dashboard.TouchpadOverlayTop = profile.TouchpadOverlayTop;
+            _mainVm.Dashboard.TouchpadOverlayWidth = profile.TouchpadOverlayWidth > 0
+                ? profile.TouchpadOverlayWidth : 500;
+            _mainVm.Dashboard.TouchpadOverlayHeight = profile.TouchpadOverlayHeight > 0
+                ? profile.TouchpadOverlayHeight : 250;
+
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
 

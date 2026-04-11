@@ -738,6 +738,24 @@ namespace PadForge.Services
                 // configs from the profile's own snapshot.
                 ApplyVJoyConfigs(active.VJoyConfigs);
                 ApplyMidiConfigs(active.MidiConfigs);
+
+                // Apply DSU/Web/overlay settings from the active profile.
+                _mainVm.Dashboard.EnableDsuMotionServer = active.EnableDsuMotionServer;
+                if (active.DsuMotionServerPort >= 1024 && active.DsuMotionServerPort <= 65535)
+                    _mainVm.Dashboard.DsuMotionServerPort = active.DsuMotionServerPort;
+                _mainVm.Dashboard.EnableWebController = active.EnableWebController;
+                if (active.WebControllerPort >= 1024 && active.WebControllerPort <= 65535)
+                    _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
+                _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
+                _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity > 0
+                    ? active.TouchpadOverlayOpacity : 0.25;
+                _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
+                _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
+                _mainVm.Dashboard.TouchpadOverlayTop = active.TouchpadOverlayTop;
+                _mainVm.Dashboard.TouchpadOverlayWidth = active.TouchpadOverlayWidth > 0
+                    ? active.TouchpadOverlayWidth : 500;
+                _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
+                    ? active.TouchpadOverlayHeight : 250;
             }
         }
 

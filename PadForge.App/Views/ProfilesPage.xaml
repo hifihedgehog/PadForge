@@ -204,15 +204,14 @@
             </Border>
 
             <!-- ═══ Controller Shortcuts ═══ -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Profiles_Shortcuts, Source={x:Static strings:Strings.Instance}}"
-                           Style="{StaticResource SubtitleTextBlockStyle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+            <Border Style="{StaticResource CardBorder}" Margin="0,20,0,0">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Profiles_Shortcuts, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding Profiles_ShortcutsDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
@@ -247,13 +246,20 @@
                                             Width="70" Margin="0,0,4,0"/>
 
                                     <!-- Clear button -->
-                                    <Button Content="&#xE894;" FontFamily="Segoe MDL2 Assets"
-                                            Command="{Binding ClearCommand}" Width="30" Margin="0,0,4,0"
-                                            ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ClearCommand}" Width="34" Margin="0,0,4,0">
+                                        <TextBlock Text="&#xE894;" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Button.ToolTip>
+                                    </Button>
 
                                     <!-- Delete button -->
-                                    <Button Content="&#xE74D;" FontFamily="Segoe MDL2 Assets"
-                                            Command="{Binding DeleteCommand}" Width="30"/>
+                                    <Button Command="{Binding DeleteCommand}" Width="34">
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Button.ToolTip>
+                                    </Button>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

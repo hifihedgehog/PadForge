@@ -125,6 +125,12 @@ namespace PadForge.Common.Input
         public volatile bool PendingProfileSwitchIsManual;
 
         /// <summary>
+        /// Set true while recording a shortcut combo. Suppresses global macro
+        /// evaluation so the recorded buttons don't immediately trigger a switch.
+        /// </summary>
+        public volatile bool SuppressGlobalMacros;
+
+        /// <summary>
         /// Flag set by macro execution to request touchpad overlay toggle.
         /// Cleared by InputService on the UI thread after processing.
         /// </summary>

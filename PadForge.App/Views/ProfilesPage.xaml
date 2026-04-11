@@ -218,52 +218,62 @@
                     <ItemsControl ItemsSource="{Binding ProfileShortcuts}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
                                     <!-- Mode: Next/Previous/Specific -->
-                                    <ComboBox ItemsSource="{Binding SwitchModes}"
+                                    <ComboBox Grid.Column="0"
+                                              ItemsSource="{Binding SwitchModes}"
                                               SelectedValue="{Binding SwitchMode}"
                                               SelectedValuePath="Mode"
                                               Width="130" Margin="0,0,6,0"/>
 
                                     <!-- Profile dropdown (Specific only) -->
-                                    <ComboBox ItemsSource="{Binding ProfileNames}"
+                                    <ComboBox Grid.Column="1"
+                                              ItemsSource="{Binding ProfileNames}"
                                               SelectedItem="{Binding TargetProfileName}"
                                               Width="140" Margin="0,0,6,0"
                                               Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                     <!-- Device dropdown -->
-                                    <ComboBox ItemsSource="{Binding DeviceOptions}"
+                                    <ComboBox Grid.Column="2"
+                                              ItemsSource="{Binding DeviceOptions}"
                                               SelectedItem="{Binding SelectedDeviceName}"
-                                              Width="180" Margin="0,0,6,0"/>
+                                              Width="220" Margin="0,0,6,0"/>
 
-                                    <!-- Button combo display -->
-                                    <TextBlock Text="{Binding ButtonComboDisplay}" VerticalAlignment="Center"
-                                               MinWidth="100" Margin="0,0,6,0"/>
+                                    <!-- Button combo display (fills remaining space) -->
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding ButtonComboDisplay}" VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis" Margin="0,0,6,0"/>
 
-                                    <!-- Learn/Record button -->
-                                    <Button Click="ShortcutLearn_Click" Width="40" Margin="0,0,4,0">
-                                        <TextBlock Text="{Binding LearnButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
-                                        <Button.ToolTip>
-                                            <TextBlock Text="{Binding LearnButtonText}"/>
-                                        </Button.ToolTip>
-                                    </Button>
-
-                                    <!-- Clear button -->
-                                    <Button Command="{Binding ClearCommand}" Width="40" Margin="0,0,4,0">
-                                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
-                                        <Button.ToolTip>
-                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                                        </Button.ToolTip>
-                                    </Button>
-
-                                    <!-- Delete button -->
-                                    <Button Command="{Binding DeleteCommand}" Width="40">
-                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
-                                        <Button.ToolTip>
-                                            <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
-                                        </Button.ToolTip>
-                                    </Button>
-                                </StackPanel>
+                                    <!-- Action buttons (right-justified) -->
+                                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                        <Button Click="ShortcutLearn_Click" Width="40" Margin="0,0,4,0">
+                                            <TextBlock Text="{Binding LearnButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                            <Button.ToolTip>
+                                                <TextBlock Text="{Binding LearnButtonText}"/>
+                                            </Button.ToolTip>
+                                        </Button>
+                                        <Button Command="{Binding ClearCommand}" Width="40" Margin="0,0,4,0">
+                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                            <Button.ToolTip>
+                                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                            </Button.ToolTip>
+                                        </Button>
+                                        <Button Command="{Binding DeleteCommand}" Width="40">
+                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
+                                            <Button.ToolTip>
+                                                <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
+                                            </Button.ToolTip>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

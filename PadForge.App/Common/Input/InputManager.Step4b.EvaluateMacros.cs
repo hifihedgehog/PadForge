@@ -1416,6 +1416,8 @@ namespace PadForge.Common.Input
 
         private void EvaluateGlobalMacros()
         {
+            if (SuppressGlobalMacros) return;
+
             var globalMacros = SettingsManager.GlobalMacros;
             if (globalMacros == null || globalMacros.Length == 0)
                 return;

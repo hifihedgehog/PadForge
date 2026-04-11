@@ -18,7 +18,7 @@
         <Border x:Name="FlyoutBorder"
                 CornerRadius="8"
                 Height="48"
-                Background="#E6202020"
+                Background="#FF2C2C2C"
                 BorderThickness="1">
 
             <Border.BorderBrush>

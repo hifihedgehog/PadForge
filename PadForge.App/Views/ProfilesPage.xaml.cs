@@ -73,20 +73,17 @@ namespace PadForge.Views
 
         private ProfileShortcutViewModel _recordingShortcut;
         private DispatcherTimer _recordTimer;
-        private DateTime _recordStartTime;
-        private const double RecordTimeoutSeconds = 5;
-        private string _recordCandidateSignature;
-        private int _recordHoldFrames;
-        private const int RecordHoldRequired = 3; // ~100ms at 30Hz
+        private TriggerButtonEntry[] _lastRecordedEntries;
 
         private void ShortcutLearn_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not FrameworkElement fe || fe.DataContext is not ProfileShortcutViewModel shortcut)
                 return;
 
-            if (shortcut.IsLearning)
+            if (shortcut.IsRecording)
             {
-                CancelRecording();
+                // Stop recording — commit whatever was last captured.
+                StopRecording();
                 return;
             }
 
@@ -95,18 +92,27 @@ namespace PadForge.Views
                 CancelRecording();
 
             _recordingShortcut = shortcut;
-            shortcut.IsLearning = true;
-            shortcut.Data.TriggerEntries = null; // Clear previous.
-            _recordStartTime = DateTime.UtcNow;
-            _recordCandidateSignature = null;
-            _recordHoldFrames = 0;
+            _lastRecordedEntries = null;
+            shortcut.IsRecording = true;
+            shortcut.Data.TriggerEntries = null;
 
-            // Suppress global macro evaluation so recorded buttons don't trigger a switch.
             InputService?.SetSuppressGlobalMacros(true);
 
             _recordTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             _recordTimer.Tick += RecordTimer_Tick;
             _recordTimer.Start();
+        }
+
+        private void StopRecording()
+        {
+            _recordTimer?.Stop();
+            if (_recordingShortcut != null && _lastRecordedEntries != null && _lastRecordedEntries.Length > 0)
+                _recordingShortcut.SetLearnedButtons(_lastRecordedEntries);
+            else
+                _recordingShortcut?.CancelRecording();
+            _recordingShortcut = null;
+            _lastRecordedEntries = null;
+            InputService?.SetSuppressGlobalMacros(false);
         }
 
         private void RecordTimer_Tick(object sender, EventArgs e)
@@ -117,21 +123,13 @@ namespace PadForge.Views
                 return;
             }
 
-            // Timeout.
-            if ((DateTime.UtcNow - _recordStartTime).TotalSeconds > RecordTimeoutSeconds)
-            {
-                CancelRecording();
-                return;
-            }
-
-            // Scan devices for pressed buttons. If a specific device is selected
-            // in the dropdown, only scan that device. "Any Device" scans all.
+            // Scan devices for pressed buttons and update the live display.
+            // Nothing is committed until the user clicks stop.
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
-            var filterGuid = _recordingShortcut.Data.TriggerDeviceGuid; // Empty = any
-
-            var candidateEntries = new System.Collections.Generic.List<TriggerButtonEntry>();
+            var filterGuid = _recordingShortcut.Data.TriggerDeviceGuid;
+            var entries = new System.Collections.Generic.List<TriggerButtonEntry>();
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
@@ -145,7 +143,7 @@ namespace PadForge.Views
                     {
                         if (buttons[i])
                         {
-                            candidateEntries.Add(new TriggerButtonEntry
+                            entries.Add(new TriggerButtonEntry
                             {
                                 ButtonIndex = i,
                                 DeviceInstanceGuid = ud.InstanceGuid,
@@ -156,34 +154,13 @@ namespace PadForge.Views
                 }
             }
 
-            if (candidateEntries.Count > 0)
+            // Update live display if buttons are pressed.
+            if (entries.Count > 0)
             {
-                // Check stability: same set of buttons held for RecordHoldRequired frames.
-                string signature = string.Join("|", candidateEntries.Select(
-                    e => $"{e.DeviceInstanceGuid}:{e.ButtonIndex}"));
-
-                if (signature == _recordCandidateSignature)
-                {
-                    _recordHoldFrames++;
-                    if (_recordHoldFrames >= RecordHoldRequired)
-                    {
-                        _recordTimer.Stop();
-                        _recordingShortcut.SetLearnedButtons(candidateEntries.ToArray());
-                        _recordingShortcut = null;
-                        InputService?.SetSuppressGlobalMacros(false);
-                        return;
-                    }
-                }
-                else
-                {
-                    _recordCandidateSignature = signature;
-                    _recordHoldFrames = 1;
-                }
-            }
-            else
-            {
-                _recordCandidateSignature = null;
-                _recordHoldFrames = 0;
+                _lastRecordedEntries = entries.ToArray();
+                // Temporarily set entries for display, but don't save yet.
+                _recordingShortcut.Data.TriggerEntries = _lastRecordedEntries;
+                _recordingShortcut.NotifyComboChanged();
             }
         }
 

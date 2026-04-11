@@ -260,7 +260,7 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         private bool _isLearning;
-        public bool IsLearning
+        public bool IsRecording
         {
             get => _isLearning;
             set
@@ -286,7 +286,7 @@ namespace PadForge.ViewModels
         public void SetLearnedButtons(TriggerButtonEntry[] entries)
         {
             Data.TriggerEntries = entries;
-            IsLearning = false;
+            IsRecording = false;
             OnPropertyChanged(nameof(ButtonComboDisplay));
             OnPropertyChanged(nameof(LearnButtonText));
             _saveCallback?.Invoke(this);
@@ -294,9 +294,12 @@ namespace PadForge.ViewModels
 
         public void CancelRecording()
         {
-            IsLearning = false;
-            OnPropertyChanged(nameof(LearnButtonText));
+            IsRecording = false;
+            OnPropertyChanged(nameof(ButtonComboDisplay));
         }
+
+        /// <summary>Notifies the UI that the combo display changed (during live recording).</summary>
+        public void NotifyComboChanged() => OnPropertyChanged(nameof(ButtonComboDisplay));
 
         // ─────────────────────────────────────────────
         //  Commands

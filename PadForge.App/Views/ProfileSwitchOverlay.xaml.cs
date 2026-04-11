@@ -23,6 +23,7 @@ namespace PadForge.Views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+        // Win11 confirmator icons
         private const string ProfileIcon = "\uE8F1";
         private const string InitializingIcon = "\uE895";
         private const string ActiveIcon = "\uE73E";
@@ -30,6 +31,7 @@ namespace PadForge.Views
         private readonly DispatcherTimer _dismissTimer;
         private readonly DispatcherTimer _initMonitorTimer;
         private bool _showingInitializing;
+        private bool _isDark = true;
 
         public Func<(bool anyInitializing, bool allReady)> CheckInitState { get; set; }
 
@@ -52,8 +54,7 @@ namespace PadForge.Views
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
 
-            // Apply the app's current WPF UI theme to this standalone window.
-            Wpf.Ui.Appearance.ApplicationThemeManager.Apply(this);
+            ApplyTheme();
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -62,16 +63,39 @@ namespace PadForge.Views
             return IntPtr.Zero;
         }
 
+        private void ApplyTheme()
+        {
+            _isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
+                == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+
+            if (_isDark)
+            {
+                // Dark: very dark semi-transparent background, faint black border
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE6, 0x2C, 0x2C, 0x2C));
+                FlyoutStroke.Color = Color.FromArgb(0x33, 0x00, 0x00, 0x00);
+                StatusIcon.Foreground = Brushes.White;
+                StatusText.Foreground = Brushes.White;
+            }
+            else
+            {
+                // Light: near-white semi-transparent background, very faint border
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE6, 0xF9, 0xF9, 0xF9));
+                FlyoutStroke.Color = Color.FromArgb(0x0F, 0x00, 0x00, 0x00);
+                StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
+                StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
+            }
+        }
+
         public void ShowProfileName(string profileName)
         {
-            // Cancel any in-progress sequence.
             _dismissTimer.Stop();
             _initMonitorTimer.Stop();
             _showingInitializing = false;
 
+            ApplyTheme();
+
             StatusIcon.BeginAnimation(OpacityProperty, null);
             StatusIcon.Opacity = 1;
-            StatusIcon.SetResourceReference(ForegroundProperty, "TextFillColorPrimaryBrush");
             StatusIcon.Text = ProfileIcon;
             StatusText.Text = profileName;
 
@@ -103,9 +127,7 @@ namespace PadForge.Views
             var (anyInit, allReady) = CheckInitState();
 
             if (anyInit && !_showingInitializing)
-            {
                 ShowInitializing();
-            }
             else if (allReady)
             {
                 _initMonitorTimer.Stop();
@@ -118,7 +140,6 @@ namespace PadForge.Views
             _showingInitializing = true;
             StatusIcon.Text = InitializingIcon;
             StatusText.Text = Strings.Instance.Main_Initializing;
-            StatusIcon.SetResourceReference(ForegroundProperty, "TextFillColorPrimaryBrush");
 
             var flash = new DoubleAnimation(1.0, 0.3, TimeSpan.FromMilliseconds(600))
             {
@@ -127,7 +148,6 @@ namespace PadForge.Views
                 EasingFunction = new SineEase()
             };
             StatusIcon.BeginAnimation(OpacityProperty, flash);
-
             ShowFlyout();
         }
 
@@ -158,19 +178,30 @@ namespace PadForge.Views
 
         private void ShowFlyout()
         {
-            Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            // Position: center-bottom, 80px above work area bottom (Win11 default)
             var screen = SystemParameters.WorkArea;
-            Left = (screen.Width - DesiredSize.Width) / 2 + screen.Left;
-            Top = screen.Bottom - DesiredSize.Height - 80;
+            Left = screen.Left + (screen.Width - 360) / 2;
+            Top = screen.Bottom - ActualHeight - 80;
 
-            var transform = new TranslateTransform(0, 20);
+            // Win11 open animation: 40px slide-up, 367ms decelerate, 166ms opacity with 83ms delay
+            var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;
             Opacity = 0;
             Show();
 
-            var slideUp = new DoubleAnimation(20, 0, TimeSpan.FromMilliseconds(200))
-            { EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut } };
-            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(150));
+            // Recalculate position after Show() measures the window
+            Top = screen.Bottom - ActualHeight - 80;
+
+            var slideUp = new DoubleAnimation(40, 0, TimeSpan.FromMilliseconds(367));
+            slideUp.SetValue(Timeline.DesiredFrameRateProperty, 60);
+            var keySpline = new KeySplineAnimation();
+            // Approximate cubic-bezier(0.1, 0.9, 0.2, 1.0) with QuadraticEase EaseOut
+            slideUp.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+
+            // Opacity: 83ms hold at 0, then 83ms linear fade to 1
+            var fadeIn = new DoubleAnimationUsingKeyFrames();
+            fadeIn.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(83))));
+            fadeIn.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(166))));
 
             transform.BeginAnimation(TranslateTransform.YProperty, slideUp);
             BeginAnimation(OpacityProperty, fadeIn);
@@ -178,14 +209,27 @@ namespace PadForge.Views
 
         private void BeginFadeOut()
         {
-            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300))
-            { EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn } };
+            // Win11 close: 367ms slide-down, opacity 1->0 in 166ms, hidden at 250ms
+            var transform = FlyoutBorder.RenderTransform as TranslateTransform ?? new TranslateTransform(0, 0);
+            FlyoutBorder.RenderTransform = transform;
+
+            var slideDown = new DoubleAnimation(0, 40, TimeSpan.FromMilliseconds(367));
+            slideDown.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn };
+
+            var fadeOut = new DoubleAnimationUsingKeyFrames();
+            fadeOut.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(83))));
+            fadeOut.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(250))));
             fadeOut.Completed += (_, _) =>
             {
                 Hide();
-                StatusIcon.SetResourceReference(ForegroundProperty, "TextFillColorPrimaryBrush");
+                ApplyTheme(); // Reset green icon color
             };
+
+            transform.BeginAnimation(TranslateTransform.YProperty, slideDown);
             BeginAnimation(OpacityProperty, fadeOut);
         }
     }
+
+    // Stub to avoid compile error from removed reference
+    internal class KeySplineAnimation { }
 }

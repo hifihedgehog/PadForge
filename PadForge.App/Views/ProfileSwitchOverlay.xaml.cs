@@ -51,6 +51,9 @@ namespace PadForge.Views
 
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
+
+            // Apply the app's current WPF UI theme to this standalone window.
+            Wpf.Ui.Appearance.ApplicationThemeManager.Apply(this);
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -68,7 +71,7 @@ namespace PadForge.Views
 
             StatusIcon.BeginAnimation(OpacityProperty, null);
             StatusIcon.Opacity = 1;
-            StatusIcon.Foreground = Brushes.White;
+            StatusIcon.SetResourceReference(ForegroundProperty, "TextFillColorPrimaryBrush");
             StatusIcon.Text = ProfileIcon;
             StatusText.Text = profileName;
 
@@ -115,7 +118,7 @@ namespace PadForge.Views
             _showingInitializing = true;
             StatusIcon.Text = InitializingIcon;
             StatusText.Text = Strings.Instance.Main_Initializing;
-            StatusIcon.Foreground = Brushes.White;
+            StatusIcon.SetResourceReference(ForegroundProperty, "TextFillColorPrimaryBrush");
 
             var flash = new DoubleAnimation(1.0, 0.3, TimeSpan.FromMilliseconds(600))
             {
@@ -180,7 +183,7 @@ namespace PadForge.Views
             fadeOut.Completed += (_, _) =>
             {
                 Hide();
-                StatusIcon.Foreground = Brushes.White;
+                StatusIcon.SetResourceReference(ForegroundProperty, "TextFillColorPrimaryBrush");
             };
             BeginAnimation(OpacityProperty, fadeOut);
         }

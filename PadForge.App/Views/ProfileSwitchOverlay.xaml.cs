@@ -70,17 +70,16 @@ namespace PadForge.Views
 
             if (_isDark)
             {
-                // Matches native Win11 volume OSD observed background
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xF0, 0x3B, 0x3B, 0x3B));
-                StatusIcon.Foreground = new SolidColorBrush(Color.FromArgb(0xCC, 0xFF, 0xFF, 0xFF));
-                StatusText.Foreground = new SolidColorBrush(Color.FromArgb(0xEE, 0xFF, 0xFF, 0xFF));
+                // Measured from live Win11 volume OSD: #2C2D2D (R=44 G=45 B=45)
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x2D, 0x2D));
+                StatusIcon.Foreground = Brushes.White;
+                StatusText.Foreground = Brushes.White;
             }
             else
             {
-                // Acrylic fallback: TintColor=#F9F9F9, ~91% opaque
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE8, 0xF9, 0xF9, 0xF9));
-                StatusIcon.Foreground = new SolidColorBrush(Color.FromArgb(0xCC, 0x1A, 0x1A, 0x1A));
-                StatusText.Foreground = new SolidColorBrush(Color.FromArgb(0xEE, 0x1A, 0x1A, 0x1A));
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0xF3, 0xF3, 0xF3));
+                StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
+                StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
             }
         }
 
@@ -183,7 +182,7 @@ namespace PadForge.Views
 
             // Measure after Show so DesiredSize is valid.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight - 8;
+            Top = screen.Bottom - ActualHeight - 16;
 
             var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;

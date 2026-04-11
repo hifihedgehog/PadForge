@@ -74,6 +74,8 @@ namespace PadForge.Views
         private ProfileShortcutViewModel _recordingShortcut;
         private DispatcherTimer _recordTimer;
         private TriggerButtonEntry[] _lastRecordedEntries;
+        private Dictionary<Guid, int[]> _recordAxisBaselines; // per-device axis baselines
+        private const float AxisRecordDeltaThreshold = 0.25f; // 25% delta from baseline
 
         private void ShortcutLearn_Click(object sender, RoutedEventArgs e)
         {
@@ -95,6 +97,21 @@ namespace PadForge.Views
             _lastRecordedEntries = null;
             shortcut.IsRecording = true;
             shortcut.Data.TriggerEntries = null;
+
+            // Capture axis baselines for all devices so we detect movement, not resting position.
+            _recordAxisBaselines = new Dictionary<Guid, int[]>();
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices != null)
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    foreach (var ud in devices)
+                    {
+                        if (ud.IsOnline && ud.InputState?.Axis != null)
+                            _recordAxisBaselines[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                    }
+                }
+            }
 
             InputService?.SetSuppressGlobalMacros(true);
 
@@ -156,21 +173,25 @@ namespace PadForge.Views
                         }
                     }
 
-                    // Detect axes exceeding 50% threshold.
+                    // Detect axes that moved significantly from their baseline.
                     var axes = ud.InputState.Axis;
-                    if (axes != null)
+                    if (axes != null && _recordAxisBaselines != null
+                        && _recordAxisBaselines.TryGetValue(ud.InstanceGuid, out var baseline))
                     {
                         int axisCount = ud.CapAxeCount > 0 ? Math.Min(ud.CapAxeCount, axes.Length) : axes.Length;
-                        for (int i = 0; i < axisCount; i++)
+                        for (int i = 0; i < axisCount && i < baseline.Length; i++)
                         {
-                            float normalized = axes[i] / 65535f;
-                            if (normalized >= 0.5f)
+                            float delta = Math.Abs((axes[i] - baseline[i]) / 65535f);
+                            if (delta >= AxisRecordDeltaThreshold)
                             {
+                                // Store the current absolute position as the threshold
+                                // (the trigger fires when the axis reaches this point again).
+                                float currentNormalized = axes[i] / 65535f;
                                 entries.Add(new TriggerButtonEntry
                                 {
                                     IsAxis = true,
                                     AxisIndex = i,
-                                    AxisThreshold = 0.5f,
+                                    AxisThreshold = Math.Max(0.1f, currentNormalized - 0.1f),
                                     DeviceInstanceGuid = ud.InstanceGuid,
                                     DeviceProductGuid = ud.ProductGuid
                                 });

@@ -23,21 +23,16 @@ namespace PadForge.Views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
-
-        private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
-        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
-        private const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
-        private const int DWMWCP_ROUND = 2;
-        private const int DWMSBT_TRANSIENTWINDOW = 3;
-
         private const string ProfileIcon = "\uE8F1";
         private const string InitializingIcon = "\uE895";
         private const string ActiveIcon = "\uE73E";
 
+        // Slide travel distance — enough to fully hide the flyout below the clip boundary.
+        private const double SlideTravel = 80;
+
         private readonly DispatcherTimer _dismissTimer;
         private readonly DispatcherTimer _initMonitorTimer;
+        private readonly TranslateTransform _slideTransform;
         private bool _showingInitializing;
         private bool _isDark = true;
 
@@ -46,6 +41,11 @@ namespace PadForge.Views
         public ProfileSwitchOverlay()
         {
             InitializeComponent();
+
+            // Slide animation transform on the inner FlyoutPanel; ClipPanel clips it.
+            _slideTransform = new TranslateTransform(0, SlideTravel);
+            FlyoutPanel.RenderTransform = _slideTransform;
+
             Loaded += OnLoaded;
 
             _dismissTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
@@ -62,14 +62,6 @@ namespace PadForge.Views
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
 
-            // DWM rounded corners.
-            int cornerPref = DWMWCP_ROUND;
-            DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPref, sizeof(int));
-
-            // DWM acrylic backdrop.
-            int backdrop = DWMSBT_TRANSIENTWINDOW;
-            DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdrop, sizeof(int));
-
             ApplyTheme();
         }
 
@@ -84,26 +76,60 @@ namespace PadForge.Views
             _isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                 == Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
-            var hwnd = new WindowInteropHelper(this).Handle;
-            if (hwnd != IntPtr.Zero)
-            {
-                int darkMode = _isDark ? 1 : 0;
-                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkMode, sizeof(int));
-            }
-
             if (_isDark)
             {
-                Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x2D, 0x2D));
+                // Pixel-measured from native Win11 volume OSD.
+                var bg = new SolidColorBrush(Color.FromRgb(0x2D, 0x2E, 0x2E));
+                ShadowBorder.Background = bg;
+                ContentBorder.Background = bg;
+                ContentBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(0x14, 0x15, 0x16));
                 StatusIcon.Foreground = Brushes.White;
                 StatusText.Foreground = Brushes.White;
             }
             else
             {
-                Background = new SolidColorBrush(Color.FromRgb(0xF3, 0xF3, 0xF3));
+                var bg = new SolidColorBrush(Color.FromRgb(0xEF, 0xEF, 0xEF));
+                ShadowBorder.Background = bg;
+                ContentBorder.Background = bg;
+                ContentBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(0xD0, 0xD0, 0xD0));
                 StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
                 StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
             }
         }
+
+        // ── Slide animations ──────────────────────────────────
+
+        private void SlideIn()
+        {
+            // Snap to off-screen position so the first rendered frame is hidden.
+            _slideTransform.BeginAnimation(TranslateTransform.YProperty, null);
+            _slideTransform.Y = SlideTravel;
+
+            // Defer animation start until after the first render pass so WPF
+            // doesn't coalesce the start and end into a single frame.
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, () =>
+            {
+                var anim = new DoubleAnimation(SlideTravel, 0, TimeSpan.FromMilliseconds(300))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                };
+                _slideTransform.BeginAnimation(TranslateTransform.YProperty, anim);
+            });
+        }
+
+        private void SlideOut(Action onCompleted)
+        {
+            _slideTransform.BeginAnimation(TranslateTransform.YProperty, null);
+
+            var anim = new DoubleAnimation(0, SlideTravel, TimeSpan.FromMilliseconds(250))
+            {
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+            };
+            anim.Completed += (_, _) => onCompleted?.Invoke();
+            _slideTransform.BeginAnimation(TranslateTransform.YProperty, anim);
+        }
+
+        // ── Public API ────────────────────────────────────────
 
         public void ShowProfileName(string profileName)
         {
@@ -191,8 +217,12 @@ namespace PadForge.Views
         {
             _dismissTimer.Stop();
             _dismissTimer.Tick -= OnDismissThenClose;
-            Hide();
-            ApplyTheme();
+
+            SlideOut(() =>
+            {
+                Hide();
+                ApplyTheme();
+            });
         }
 
         private void ShowFlyout()
@@ -203,9 +233,11 @@ namespace PadForge.Views
             Show();
             UpdateLayout();
 
-            // Center horizontally, 13px above taskbar.
+            // Center horizontally. Bottom margin (15px in XAML) provides gap above taskbar.
             Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight - 13;
+            Top = screen.Bottom - ActualHeight;
+
+            SlideIn();
         }
     }
 }

@@ -1947,9 +1947,42 @@ namespace PadForge.Services
                 {
                     allReady = false;
                 }
+                else if (!IsSlotDeviceOnline(i))
+                {
+                    // VC is connected but no assigned physical device is online.
+                    allReady = false;
+                }
             }
 
             return (anyInit, allReady);
+        }
+
+        /// <summary>
+        /// Returns true if at least one physical device assigned to this slot is online,
+        /// or if the slot has no device assignments (e.g. keyboard/mouse VC).
+        /// </summary>
+        private bool IsSlotDeviceOnline(int padIndex)
+        {
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings.Count == 0)
+                return true; // No device assignment required.
+
+            var devices = SettingsManager.UserDevices;
+            if (devices == null)
+                return false;
+
+            lock (devices.SyncRoot)
+            {
+                foreach (var s in slotSettings)
+                {
+                    foreach (var ud in devices.Items)
+                    {
+                        if (ud.InstanceGuid == s.InstanceGuid && ud.IsOnline)
+                            return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private void OnCultureChanged() => _dispatcher.BeginInvoke(() =>

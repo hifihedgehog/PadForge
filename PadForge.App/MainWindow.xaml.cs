@@ -1382,7 +1382,7 @@ namespace PadForge
             else if (navItem.ConnectedDeviceCount == 0)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
-                powerTooltip = Strings.Instance.Main_AwaitingControllers;
+                powerTooltip = Strings.Instance.Main_AwaitingDevices;
             }
             else
             {

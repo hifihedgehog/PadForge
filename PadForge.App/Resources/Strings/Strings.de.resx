@@ -118,9 +118,10 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtueller Controller {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus nicht installiert</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Engine angehalten</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>Warte auf Controller</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>Warte auf Geräte</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Aktiv</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Initialisierung</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>Ein oder mehrere Controller offline</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput-Treiber nicht installiert</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus nicht installiert)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (max. {0})</value></data>

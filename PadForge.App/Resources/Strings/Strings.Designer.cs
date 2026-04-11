@@ -160,9 +160,10 @@ public class Strings : INotifyPropertyChanged
     public string Main_VirtualController_Format => Get("Main_VirtualController_Format");
     public string Main_ViGEmNotInstalled => Get("Main_ViGEmNotInstalled");
     public string Main_EngineStopped => Get("Main_EngineStopped");
-    public string Main_AwaitingControllers => Get("Main_AwaitingControllers");
+    public string Main_AwaitingDevices => Get("Main_AwaitingDevices");
     public string Main_Active => Get("Main_Active");
     public string Main_Initializing => Get("Main_Initializing");
+    public string Main_ControllersOffline => Get("Main_ControllersOffline");
     public string Main_DirectInputDriverNotInstalled => Get("Main_DirectInputDriverNotInstalled");
     public string Main_Xbox360_ViGEmNotInstalled => Get("Main_Xbox360_ViGEmNotInstalled");
     public string Main_Xbox360_Max_Format => Get("Main_Xbox360_Max_Format");

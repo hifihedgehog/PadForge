@@ -201,13 +201,18 @@ namespace PadForge.Views
                                     : AxisTriggerDirection.Negative;
 
                                 float currentNormalized = axes[i] / 65535f;
+                                // For positive: threshold is slightly below recorded position.
+                                // For negative: threshold is slightly above recorded position.
+                                // This ensures the center rest position (~0.5) doesn't trigger.
+                                float triggerThreshold = direction == AxisTriggerDirection.Positive
+                                    ? Math.Max(0.6f, currentNormalized - 0.05f)   // Must be well above center
+                                    : Math.Min(0.4f, currentNormalized + 0.05f);  // Must be well below center
+
                                 entries.Add(new TriggerButtonEntry
                                 {
                                     IsAxis = true,
                                     AxisIndex = i,
-                                    AxisThreshold = direction == AxisTriggerDirection.Positive
-                                        ? Math.Max(0.1f, currentNormalized - 0.1f)
-                                        : Math.Min(0.9f, currentNormalized + 0.1f),
+                                    AxisThreshold = triggerThreshold,
                                     AxisDirection = direction,
                                     DeviceInstanceGuid = ud.InstanceGuid,
                                     DeviceProductGuid = ud.ProductGuid

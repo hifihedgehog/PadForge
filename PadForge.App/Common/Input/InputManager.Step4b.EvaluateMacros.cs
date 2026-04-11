@@ -1507,9 +1507,13 @@ namespace PadForge.Common.Input
             var axes = state.Axis;
             if (index < 0 || index >= axes.Length) return false;
             float normalized = axes[index] / 65535f;
+            // Threshold is stored as the recorded position with margin.
+            // Positive: axis must be above threshold (e.g., > 0.75 for stick right).
+            // Negative: axis must be below threshold (e.g., < 0.25 for stick left).
+            // The threshold itself already encodes the direction-appropriate value.
             return direction == AxisTriggerDirection.Positive
                 ? normalized >= threshold
-                : normalized <= (1f - threshold);
+                : normalized <= threshold;
         }
 
         private void QueueProfileSwitch(GlobalMacroData gm)

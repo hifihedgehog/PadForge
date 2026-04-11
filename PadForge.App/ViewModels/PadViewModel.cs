@@ -1364,8 +1364,29 @@ namespace PadForge.ViewModels
         public bool IsMapAllActive
         {
             get => _isMapAllActive;
-            set => SetProperty(ref _isMapAllActive, value);
+            set
+            {
+                if (SetProperty(ref _isMapAllActive, value))
+                {
+                    OnPropertyChanged(nameof(MapAllButtonText));
+                    OnPropertyChanged(nameof(MapAllButtonTooltip));
+                    _mapAllCommand?.NotifyCanExecuteChanged();
+                    _stopMapAllCommand?.NotifyCanExecuteChanged();
+                }
+            }
         }
+
+        public string MapAllButtonText =>
+            IsMapAllActive ? Strings.Instance.Common_Stop : Strings.Instance.Pad_MapAll;
+
+        public string MapAllButtonTooltip =>
+            IsMapAllActive ? Strings.Instance.Common_Stop : Strings.Instance.Pad_MapAllOneByOne;
+
+        private RelayCommand _stopMapAllCommand;
+        public RelayCommand StopMapAllCommand =>
+            _stopMapAllCommand ??= new RelayCommand(
+                () => MapAllCancelRequested?.Invoke(this, EventArgs.Empty),
+                () => IsMapAllActive);
 
         /// <summary>When true, the current Map All step is recording the negative direction of an axis.</summary>
         internal bool MapAllRecordingNeg { get; set; }

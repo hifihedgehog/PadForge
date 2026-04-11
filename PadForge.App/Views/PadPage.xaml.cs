@@ -303,6 +303,17 @@ namespace PadForge.Views
                 padVm.StopMapAll();
         }
 
+        private void MapAllToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is PadViewModel padVm)
+            {
+                if (padVm.IsMapAllActive)
+                    padVm.StopMapAll();
+                else if (padVm.MapAllCommand.CanExecute(null))
+                    padVm.MapAllCommand.Execute(null);
+            }
+        }
+
         private void CalibrateCenter_Click(object sender, RoutedEventArgs e)
         {
             if (((System.Windows.Controls.Button)sender).DataContext is ViewModels.StickConfigItem item)

@@ -1018,9 +1018,10 @@
                         <Button Content="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyFromCommand}"
                                 Padding="8,4" Margin="0,0,8,0"
                                 ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="{Binding Pad_MapAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding MapAllCommand}"
+                        <Button Content="{Binding MapAllButtonText}"
                                 Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{Binding Pad_MapAllOneByOne, Source={x:Static strings:Strings.Instance}}"/>
+                                ToolTip="{Binding MapAllButtonTooltip}"
+                                Click="MapAllToggle_Click"/>
                         <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" FontStyle="Italic"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

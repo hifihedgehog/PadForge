@@ -22,7 +22,8 @@
                 Height="45"
                 Padding="16,0,16,0"
                 Background="#2C2D2D"
-                BorderThickness="0">
+                BorderBrush="#121313"
+                BorderThickness="1">
 
             <Border.Effect>
                 <DropShadowEffect BlurRadius="16" ShadowDepth="3"

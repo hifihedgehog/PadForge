@@ -247,7 +247,7 @@
 
                                     <!-- Clear button -->
                                     <Button Command="{Binding ClearCommand}" Width="40" Margin="0,0,4,0">
-                                        <TextBlock Text="&#xE894;" FontFamily="Segoe MDL2 Assets"/>
+                                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
                                         <Button.ToolTip>
                                             <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                         </Button.ToolTip>

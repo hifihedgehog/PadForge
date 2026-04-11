@@ -33,6 +33,9 @@ namespace PadForge.Views
         /// <summary>Set by MainWindow to enable shortcut recording.</summary>
         internal InputService InputService { get; set; }
 
+        /// <summary>Set by MainWindow to trigger settings save on shortcut changes.</summary>
+        internal Action OnShortcutsChanged { get; set; }
+
         private void AddShortcut_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not SettingsViewModel vm) return;
@@ -56,11 +59,12 @@ namespace PadForge.Views
                 SaveShortcutsToSettings(vm);
         }
 
-        private static void SaveShortcutsToSettings(SettingsViewModel vm)
+        private void SaveShortcutsToSettings(SettingsViewModel vm)
         {
             SettingsManager.GlobalMacros = vm.ProfileShortcuts
                 .Select(s => s.Data)
                 .ToArray();
+            OnShortcutsChanged?.Invoke();
         }
 
         // ─────────────────────────────────────────────
@@ -71,6 +75,10 @@ namespace PadForge.Views
         private DispatcherTimer _learnTimer;
         private DateTime _learnStartTime;
         private const double LearnTimeoutSeconds = 5;
+        private int[] _learnCandidateButtons;
+        private Guid _learnCandidateDevice;
+        private int _learnHoldFrames;
+        private const int LearnHoldRequired = 3; // ~100ms at 30Hz
 
         private void ShortcutLearn_Click(object sender, RoutedEventArgs e)
         {
@@ -90,6 +98,8 @@ namespace PadForge.Views
             _learningShortcut = shortcut;
             shortcut.IsLearning = true;
             _learnStartTime = DateTime.UtcNow;
+            _learnCandidateButtons = null;
+            _learnHoldFrames = 0;
 
             _learnTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             _learnTimer.Tick += LearnTimer_Tick;
@@ -112,6 +122,8 @@ namespace PadForge.Views
             }
 
             // Poll all online devices for any pressed buttons.
+            // Require stable hold for LearnHoldRequired frames to avoid capturing
+            // transient partial combos.
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
@@ -130,13 +142,35 @@ namespace PadForge.Views
 
                     if (pressed.Count > 0)
                     {
-                        _learnTimer.Stop();
-                        _learningShortcut.SetLearnedButtons(pressed.ToArray(), ud.InstanceGuid);
-                        _learningShortcut = null;
-                        return;
+                        var arr = pressed.ToArray();
+                        if (_learnCandidateButtons != null &&
+                            arr.Length == _learnCandidateButtons.Length &&
+                            arr.SequenceEqual(_learnCandidateButtons) &&
+                            _learnCandidateDevice == ud.InstanceGuid)
+                        {
+                            _learnHoldFrames++;
+                            if (_learnHoldFrames >= LearnHoldRequired)
+                            {
+                                _learnTimer.Stop();
+                                _learningShortcut.SetLearnedButtons(arr, ud.InstanceGuid);
+                                _learningShortcut = null;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            _learnCandidateButtons = arr;
+                            _learnCandidateDevice = ud.InstanceGuid;
+                            _learnHoldFrames = 1;
+                        }
+                        return; // Don't check other devices this frame.
                     }
                 }
             }
+
+            // No buttons pressed on any device — reset candidate.
+            _learnCandidateButtons = null;
+            _learnHoldFrames = 0;
         }
 
         private void CancelLearn()

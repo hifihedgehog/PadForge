@@ -290,8 +290,9 @@ namespace PadForge.Services
             // Stop web controller server.
             StopWebServer();
 
-            // Close touchpad overlay (not just hide — prevents shutdown hang).
+            // Close overlay windows (not just hide — prevents shutdown hang).
             HideTouchpadOverlay(close: true);
+            if (_switchOverlay != null) { _switchOverlay.Close(); _switchOverlay = null; }
 
             // Stop audio bass rumble detector.
             StopAudioBassDetector();

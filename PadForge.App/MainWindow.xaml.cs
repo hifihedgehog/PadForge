@@ -174,6 +174,7 @@ namespace PadForge
             _recorderService = new RecorderService(_viewModel);
             _deviceService = new DeviceService(_viewModel, _settingsService);
             ProfilesPageView.InputService = _inputService;
+            ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
 
             // Load profile shortcuts into the ViewModel.
             LoadProfileShortcuts();

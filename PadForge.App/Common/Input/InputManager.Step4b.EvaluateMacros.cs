@@ -1473,7 +1473,7 @@ namespace PadForge.Common.Input
                     if (ud.InstanceGuid != entry.DeviceInstanceGuid) continue;
                     if (!ud.IsOnline || ud.InputState == null) return false;
                     return entry.IsAxis
-                        ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold)
+                        ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold, entry.AxisDirection)
                         : CheckButtonActive(ud.InputState, entry.ButtonIndex);
                 }
                 return false;
@@ -1501,13 +1501,15 @@ namespace PadForge.Common.Input
             return index >= 0 && index < buttons.Length && buttons[index];
         }
 
-        private static bool CheckAxisActive(Engine.CustomInputState state, int index, float threshold)
+        private static bool CheckAxisActive(Engine.CustomInputState state, int index, float threshold,
+            AxisTriggerDirection direction = AxisTriggerDirection.Positive)
         {
             var axes = state.Axis;
             if (index < 0 || index >= axes.Length) return false;
-            // Axis values are 0–65535 (center=32767). Normalize to 0.0–1.0.
             float normalized = axes[index] / 65535f;
-            return normalized >= threshold;
+            return direction == AxisTriggerDirection.Positive
+                ? normalized >= threshold
+                : normalized <= (1f - threshold);
         }
 
         private void QueueProfileSwitch(GlobalMacroData gm)

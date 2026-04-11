@@ -184,7 +184,7 @@ namespace PadForge.ViewModels
                 string combo = string.Join(" + ", entries.Select(e =>
                 {
                     string name = e.IsAxis
-                        ? ResolveAxisName(e.AxisIndex, e.DeviceInstanceGuid)
+                        ? ResolveAxisName(e.AxisIndex, e.DeviceInstanceGuid, e.AxisDirection)
                         : ResolveButtonName(e.ButtonIndex, e.DeviceInstanceGuid);
                     string deviceName = ResolveDeviceName(e.DeviceInstanceGuid);
                     return deviceName != null ? $"{name} ({deviceName})" : name;
@@ -248,9 +248,8 @@ namespace PadForge.ViewModels
             return string.Format(Strings.Instance.Macro_Btn_Format, index + 1);
         }
 
-        private static string ResolveAxisName(int index, Guid deviceGuid)
+        private static string ResolveAxisName(int index, Guid deviceGuid, AxisTriggerDirection direction)
         {
-            // Standard gamepad axis names (SDL order: LX, LY, LT, RX, RY, RT).
             bool isGamepad = false;
             var devices = SettingsManager.UserDevices?.Items;
             if (devices != null)
@@ -263,9 +262,11 @@ namespace PadForge.ViewModels
                 }
             }
 
+            string dirSuffix = direction == AxisTriggerDirection.Positive ? "+" : "\u2013"; // + or –
+
             if (isGamepad && index >= 0 && index <= 5)
             {
-                return index switch
+                string name = index switch
                 {
                     0 => "LX",
                     1 => "LY",
@@ -275,9 +276,10 @@ namespace PadForge.ViewModels
                     5 => "RT",
                     _ => $"Axis {index}"
                 };
+                return $"{name}{dirSuffix}";
             }
 
-            return $"Axis {index}";
+            return $"Axis {index}{dirSuffix}";
         }
 
         private static string ResolveDeviceName(Guid deviceGuid)

@@ -51,6 +51,9 @@ namespace PadForge.Common.Input
         /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
         public static bool EnableAutoProfileSwitching { get; set; }
 
+        /// <summary>Global macros for profile shortcuts and other app-wide actions.</summary>
+        public static GlobalMacroData[] GlobalMacros { get; set; }
+
         // ─────────────────────────────────────────────
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────

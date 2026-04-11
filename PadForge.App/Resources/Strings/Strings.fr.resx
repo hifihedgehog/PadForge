@@ -195,6 +195,15 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil changé : {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil changé : Par défaut</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Par défaut</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Raccourcis manette</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Attribuer des combinaisons de boutons pour changer de profil depuis n'importe quelle manette.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>Ajouter un raccourci</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profil suivant</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profil précédent</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Profil spécifique</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>N'importe quel appareil connecté</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Apprendre</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Appuyez...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Aucun périphérique sélectionné.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Index de slot invalide : {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Échec de l'assignation du périphérique.</value></data>

@@ -195,6 +195,15 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profilo cambiato: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profilo cambiato: Predefinito</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Predefinito</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Scorciatoie controller</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Assegna combinazioni di pulsanti per cambiare profilo da qualsiasi controller.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>Aggiungi scorciatoia</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profilo successivo</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profilo precedente</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Profilo specifico</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Qualsiasi dispositivo collegato</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Impara</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Premi...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Nessun dispositivo selezionato.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Indice slot non valido: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Assegnazione dispositivo non riuscita.</value></data>

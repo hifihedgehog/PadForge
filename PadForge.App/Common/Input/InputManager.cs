@@ -115,6 +115,16 @@ namespace PadForge.Common.Input
         public TouchpadState[] RetrievedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
         /// <summary>
+        /// Pending profile switch ID queued by global macro evaluation.
+        /// "\0" = no pending switch. null = switch to default profile.
+        /// Consumed by InputService on the UI thread.
+        /// </summary>
+        public string PendingProfileSwitchId = "\0";
+
+        /// <summary>Whether the pending profile switch was triggered manually (shortcut).</summary>
+        public bool PendingProfileSwitchIsManual;
+
+        /// <summary>
         /// Flag set by macro execution to request touchpad overlay toggle.
         /// Cleared by InputService on the UI thread after processing.
         /// </summary>

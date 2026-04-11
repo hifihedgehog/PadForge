@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using PadForge.Common;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Services;
 using PadForge.ViewModels;
 
 // ─────────────────────────────────────────────
@@ -238,6 +239,8 @@ namespace PadForge.Common.Input
         /// </summary>
         private void EvaluateMacros()
         {
+            EvaluateGlobalMacros();
+
             for (int i = 0; i < MaxPads; i++)
             {
                 var macros = MacroSnapshots[i];
@@ -1405,6 +1408,123 @@ namespace PadForge.Common.Input
             public uint uMsg;
             public ushort wParamL;
             public ushort wParamH;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Global macro evaluation (profile shortcuts)
+        // ─────────────────────────────────────────────
+
+        private void EvaluateGlobalMacros()
+        {
+            var globalMacros = SettingsManager.GlobalMacros;
+            if (globalMacros == null || globalMacros.Length == 0)
+                return;
+
+            for (int m = 0; m < globalMacros.Length; m++)
+            {
+                var gm = globalMacros[m];
+                if (gm?.TriggerRawButtons == null || gm.TriggerRawButtons.Length == 0)
+                    continue;
+
+                bool triggerActive = CheckGlobalMacroTrigger(gm);
+                bool wasTriggerActive = gm.WasTriggerActive;
+                gm.WasTriggerActive = triggerActive;
+
+                // OnPress only — profile switch shouldn't repeat while held.
+                if (triggerActive && !wasTriggerActive)
+                    QueueProfileSwitch(gm);
+            }
+        }
+
+        private bool CheckGlobalMacroTrigger(GlobalMacroData gm)
+        {
+            if (gm.TriggerDeviceGuid == Guid.Empty)
+                return CheckRawButtonTriggerAnyDevice(gm.TriggerRawButtons);
+            return CheckRawButtonTriggerDevice(gm.TriggerDeviceGuid, gm.TriggerRawButtons);
+        }
+
+        private bool CheckRawButtonTriggerAnyDevice(int[] rawIndices)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return false;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int d = 0; d < devices.Count; d++)
+                {
+                    var ud = devices[d];
+                    if (!ud.IsOnline || ud.InputState == null) continue;
+
+                    var buttons = ud.InputState.Buttons;
+                    bool allPressed = true;
+                    for (int i = 0; i < rawIndices.Length; i++)
+                    {
+                        int idx = rawIndices[i];
+                        if (idx < 0 || idx >= buttons.Length || !buttons[idx])
+                        { allPressed = false; break; }
+                    }
+                    if (allPressed) return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckRawButtonTriggerDevice(Guid guid, int[] rawIndices)
+        {
+            var ud = FindOnlineDeviceByInstanceGuid(guid);
+            if (ud == null || !ud.IsOnline || ud.InputState == null) return false;
+
+            var buttons = ud.InputState.Buttons;
+            for (int i = 0; i < rawIndices.Length; i++)
+            {
+                int idx = rawIndices[i];
+                if (idx < 0 || idx >= buttons.Length || !buttons[idx])
+                    return false;
+            }
+            return true;
+        }
+
+        private void QueueProfileSwitch(GlobalMacroData gm)
+        {
+            string targetId;
+            switch (gm.SwitchMode)
+            {
+                case SwitchProfileMode.Specific:
+                    targetId = gm.TargetProfileId;
+                    break;
+                case SwitchProfileMode.Next:
+                    targetId = GetNextProfileId(+1);
+                    break;
+                case SwitchProfileMode.Previous:
+                    targetId = GetNextProfileId(-1);
+                    break;
+                default:
+                    return;
+            }
+
+            PendingProfileSwitchId = targetId;
+            PendingProfileSwitchIsManual = true;
+        }
+
+        private string GetNextProfileId(int direction)
+        {
+            var profiles = SettingsManager.Profiles;
+            if (profiles == null || profiles.Count == 0) return null;
+
+            string currentId = SettingsManager.ActiveProfileId;
+
+            // Build ordered list: [null (default), profile0, profile1, ...]
+            int currentIndex = 0; // default
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                if (profiles[i].Id == currentId)
+                { currentIndex = i + 1; break; }
+            }
+
+            int totalCount = profiles.Count + 1; // +1 for default
+            int nextIndex = (currentIndex + direction + totalCount) % totalCount;
+
+            return nextIndex == 0 ? null : profiles[nextIndex - 1].Id;
         }
     }
 }

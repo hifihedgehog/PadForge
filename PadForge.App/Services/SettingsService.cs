@@ -245,6 +245,7 @@ namespace PadForge.Services
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
+            SettingsManager.GlobalMacros = appSettings.GlobalMacros;
 
             // Load per-slot created/enabled state BEFORE OutputType,
             // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
@@ -1035,6 +1036,7 @@ namespace PadForge.Services
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
+                GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
                 SlotCreated = isDefault
                     ? (bool[])SettingsManager.SlotCreated.Clone()
@@ -1745,6 +1747,14 @@ namespace PadForge.Services
         [XmlElement("DefaultProfileSnapshot")]
         public ProfileData DefaultProfileSnapshot { get; set; }
 
+        /// <summary>
+        /// Global macros for profile shortcuts and other app-wide actions.
+        /// Null on old settings files — no shortcuts configured.
+        /// </summary>
+        [XmlArray("GlobalMacros")]
+        [XmlArrayItem("GlobalMacro")]
+        public GlobalMacroData[] GlobalMacros { get; set; }
+
     }
 
     /// <summary>
@@ -2007,5 +2017,43 @@ namespace PadForge.Services
 
         [XmlElement]
         public string PadSettingChecksum { get; set; }
+    }
+
+    /// <summary>
+    /// A global macro that runs regardless of which profile is active.
+    /// Currently used for profile shortcuts; future uses include overlay
+    /// toggles, global volume, etc.
+    /// </summary>
+    public class GlobalMacroData
+    {
+        [XmlAttribute]
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+        [XmlElement]
+        public SwitchProfileMode SwitchMode { get; set; }
+
+        /// <summary>For Specific mode: target profile ID. Null for Next/Previous.</summary>
+        [XmlElement]
+        public string TargetProfileId { get; set; }
+
+        /// <summary>Device GUID for trigger source. Guid.Empty = any connected device.</summary>
+        [XmlElement]
+        public Guid TriggerDeviceGuid { get; set; }
+
+        /// <summary>Raw button indices that must all be pressed simultaneously.</summary>
+        [XmlArray("TriggerButtons")]
+        [XmlArrayItem("Index")]
+        public int[] TriggerRawButtons { get; set; }
+
+        /// <summary>Runtime-only: previous frame trigger state for edge detection.</summary>
+        [XmlIgnore]
+        public bool WasTriggerActive { get; set; }
+    }
+
+    public enum SwitchProfileMode
+    {
+        Specific,
+        Next,
+        Previous
     }
 }

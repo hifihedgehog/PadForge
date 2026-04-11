@@ -195,6 +195,15 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil cambiado: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil cambiado: Predeterminado</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Predeterminado</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atajos de mando</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Asignar combinaciones de botones para cambiar de perfil desde cualquier mando.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>Añadir atajo</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Siguiente perfil</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Perfil anterior</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Perfil específico</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Cualquier dispositivo conectado</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Aprender</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Pulse...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>No hay dispositivo seleccionado.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Índice de ranura no válido: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Error al asignar dispositivo.</value></data>

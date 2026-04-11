@@ -370,6 +370,22 @@ namespace PadForge.Services
                 ToggleTouchpadOverlay();
             }
 
+            // ── Handle macro-requested profile switch ──
+            string pendingSwitch = _inputManager.PendingProfileSwitchId;
+            if (pendingSwitch != "\0")
+            {
+                bool isManual = _inputManager.PendingProfileSwitchIsManual;
+                _inputManager.PendingProfileSwitchId = "\0";
+                _inputManager.PendingProfileSwitchIsManual = false;
+
+                if (isManual && _foregroundMonitor != null)
+                    _foregroundMonitor.SetManualOverride(SettingsManager.ActiveProfileId);
+
+                OnProfileSwitchRequired(pendingSwitch);
+                ShowProfileSwitchOverlay(pendingSwitch);
+                _settingsService?.MarkDirty();
+            }
+
             // ── Update Pad ViewModels ──
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
@@ -1864,6 +1880,54 @@ namespace PadForge.Services
             dash.TouchpadOverlayWidth = _touchpadOverlay.Width;
             dash.TouchpadOverlayHeight = _touchpadOverlay.Height;
             dash.TouchpadOverlayMonitor = _touchpadOverlay.GetCurrentMonitor();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Profile switch overlay
+        // ─────────────────────────────────────────────
+
+        private Views.ProfileSwitchOverlay _switchOverlay;
+
+        private void ShowProfileSwitchOverlay(string profileId)
+        {
+            string name = profileId != null
+                ? SettingsManager.Profiles.Find(p => p.Id == profileId)?.Name
+                : Strings.Instance.Common_Default;
+
+            if (_switchOverlay == null)
+            {
+                _switchOverlay = new Views.ProfileSwitchOverlay();
+                _switchOverlay.CheckInitState = CheckAllSlotsInitState;
+            }
+
+            _switchOverlay.ShowProfileName(name ?? Strings.Instance.Common_Default);
+        }
+
+        private (bool anyInitializing, bool allReady) CheckAllSlotsInitState()
+        {
+            if (_inputManager == null)
+                return (false, true);
+
+            bool anyInit = false;
+            bool allReady = true;
+
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i])
+                    continue;
+
+                if (_inputManager.IsVirtualControllerInitializing(i))
+                {
+                    anyInit = true;
+                    allReady = false;
+                }
+                else if (!_inputManager.IsVirtualControllerConnected(i))
+                {
+                    allReady = false;
+                }
+            }
+
+            return (anyInit, allReady);
         }
 
         private void OnCultureChanged() => _dispatcher.BeginInvoke(() =>

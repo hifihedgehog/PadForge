@@ -195,6 +195,15 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>기본값</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>컨트롤러 단축키</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>컨트롤러의 버튼 조합으로 프로필을 전환합니다.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>단축키 추가</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>다음 프로필</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>이전 프로필</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>특정 프로필</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>연결된 아무 장치</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>학습</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>누르세요...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>장치가 선택되지 않았습니다.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>잘못된 슬롯 인덱스: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>장치 할당에 실패했습니다.</value></data>

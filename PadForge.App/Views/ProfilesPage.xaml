@@ -203,6 +203,67 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Controller Shortcuts ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding Profiles_Shortcuts, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Profiles_ShortcutsDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+
+                    <ItemsControl ItemsSource="{Binding ProfileShortcuts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <!-- Mode: Next/Previous/Specific -->
+                                    <ComboBox ItemsSource="{Binding SwitchModes}"
+                                              SelectedValue="{Binding SwitchMode}"
+                                              SelectedValuePath="Mode"
+                                              Width="130" Margin="0,0,6,0"/>
+
+                                    <!-- Profile dropdown (Specific only) -->
+                                    <ComboBox ItemsSource="{Binding ProfileNames}"
+                                              SelectedItem="{Binding TargetProfileName}"
+                                              Width="140" Margin="0,0,6,0"
+                                              Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Device dropdown -->
+                                    <ComboBox ItemsSource="{Binding DeviceOptions}"
+                                              SelectedItem="{Binding SelectedDeviceName}"
+                                              Width="180" Margin="0,0,6,0"/>
+
+                                    <!-- Button combo display -->
+                                    <TextBlock Text="{Binding ButtonComboDisplay}" VerticalAlignment="Center"
+                                               MinWidth="100" Margin="0,0,6,0"/>
+
+                                    <!-- Learn button -->
+                                    <Button Content="{Binding LearnButtonText}"
+                                            Click="ShortcutLearn_Click"
+                                            Width="70" Margin="0,0,4,0"/>
+
+                                    <!-- Clear button -->
+                                    <Button Content="&#xE894;" FontFamily="Segoe MDL2 Assets"
+                                            Command="{Binding ClearCommand}" Width="30" Margin="0,0,4,0"
+                                            ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+
+                                    <!-- Delete button -->
+                                    <Button Content="&#xE74D;" FontFamily="Segoe MDL2 Assets"
+                                            Command="{Binding DeleteCommand}" Width="30"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Button Content="{Binding Profiles_AddShortcut, Source={x:Static strings:Strings.Instance}}"
+                            Click="AddShortcut_Click" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

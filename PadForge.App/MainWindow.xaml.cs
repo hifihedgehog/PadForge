@@ -173,6 +173,10 @@ namespace PadForge
             _inputService = new InputService(_viewModel) { SettingsService = _settingsService };
             _recorderService = new RecorderService(_viewModel);
             _deviceService = new DeviceService(_viewModel, _settingsService);
+            ProfilesPageView.InputService = _inputService;
+
+            // Load profile shortcuts into the ViewModel.
+            LoadProfileShortcuts();
 
             // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
             _viewModel.Settings.HasAnyViGEmSlots = () =>
@@ -3220,6 +3224,28 @@ namespace PadForge
             _inputService.RevertToDefaultProfile();
             _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
             _viewModel.StatusText = Strings.Instance.Status_ProfileRevertedDefault;
+            _settingsService.MarkDirty();
+        }
+
+        private void LoadProfileShortcuts()
+        {
+            var shortcuts = SettingsManager.GlobalMacros;
+            if (shortcuts == null) return;
+
+            foreach (var data in shortcuts)
+            {
+                var vm = new ViewModels.ProfileShortcutViewModel(data,
+                    s => { _viewModel.Settings.ProfileShortcuts.Remove(s); SaveProfileShortcuts(); },
+                    _ => SaveProfileShortcuts());
+                _viewModel.Settings.ProfileShortcuts.Add(vm);
+            }
+        }
+
+        private void SaveProfileShortcuts()
+        {
+            SettingsManager.GlobalMacros = _viewModel.Settings.ProfileShortcuts
+                .Select(s => s.Data)
+                .ToArray();
             _settingsService.MarkDirty();
         }
 

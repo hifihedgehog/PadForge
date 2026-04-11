@@ -1,0 +1,40 @@
+<Window x:Class="PadForge.Views.ProfileSwitchOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Focusable="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="Manual">
+
+    <Border x:Name="FlyoutBorder"
+            CornerRadius="8"
+            Padding="20,12"
+            MinWidth="240"
+            Background="#E0202020"
+            BorderBrush="#40FFFFFF"
+            BorderThickness="1">
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.25" Color="Black"/>
+        </Border.Effect>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock x:Name="StatusIcon"
+                       Text="&#xE8F1;"
+                       FontFamily="Segoe MDL2 Assets"
+                       FontSize="18" VerticalAlignment="Center"
+                       Margin="0,0,10,0"
+                       Foreground="White"/>
+
+            <TextBlock x:Name="StatusText"
+                       FontSize="14" FontWeight="SemiBold"
+                       VerticalAlignment="Center"
+                       Foreground="White"/>
+        </StackPanel>
+    </Border>
+</Window>

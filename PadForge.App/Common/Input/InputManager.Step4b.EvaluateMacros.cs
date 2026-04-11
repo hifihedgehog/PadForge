@@ -458,6 +458,7 @@ namespace PadForge.Common.Input
             }
 
             // 2. Process the current sequential action (skip over continuous ones).
+            sequenceRestart:
             while (macro.CurrentActionIndex < macro.Actions.Count)
             {
                 var action = macro.Actions[macro.CurrentActionIndex];
@@ -491,6 +492,7 @@ namespace PadForge.Common.Input
                 {
                     macro.CurrentActionIndex = 0;
                     macro.ActionStartTime = DateTime.UtcNow;
+                    goto sequenceRestart; // Re-enter to execute first action this frame
                 }
             }
             else
@@ -815,6 +817,7 @@ namespace PadForge.Common.Input
             }
 
             // 2. Process the current sequential action (skip over continuous ones).
+            sequenceRestartRaw:
             while (macro.CurrentActionIndex < macro.Actions.Count)
             {
                 var action = macro.Actions[macro.CurrentActionIndex];
@@ -845,6 +848,7 @@ namespace PadForge.Common.Input
                 {
                     macro.CurrentActionIndex = 0;
                     macro.ActionStartTime = DateTime.UtcNow;
+                    goto sequenceRestartRaw; // Re-enter to execute first action this frame
                 }
             }
             else

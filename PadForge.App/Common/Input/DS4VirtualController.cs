@@ -173,7 +173,7 @@ namespace PadForge.Common.Input
             // ── Special buttons (offset 6: bSpecial) ──
             byte special = 0;
             if ((gp.Buttons & Gamepad.GUIDE) != 0) special |= 0x01;  // PS
-            if (tp.Click) special |= 0x02;  // Touchpad Click
+            if (tp.Click || (gp.Buttons & Gamepad.TOUCHPAD) != 0) special |= 0x02;  // Touchpad Click
             buf[6] = special;
 
             // ── Triggers (offsets 7-8) ──

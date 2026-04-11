@@ -8,53 +8,48 @@
         ShowInTaskbar="False"
         ShowActivated="False"
         Focusable="False"
-        SizeToContent="Height"
-        Width="360"
+        SizeToContent="WidthAndHeight"
         WindowStartupLocation="Manual">
 
-    <!-- Outer margin reserves space for the drop shadow -->
-    <Border Padding="29,29,29,42">
-        <!-- Win11 hardware confirmator flyout -->
-        <Border x:Name="FlyoutBorder"
-                CornerRadius="8"
-                Height="48"
-                Background="#FF2C2C2C"
-                BorderThickness="1">
+    <!--
+        Win11 Hardware Confirmator (volume/brightness OSD) replica.
+        Design tokens from WinUI 3 source + measured from live Win11 24H2:
+        - OverlayCornerRadius: 8px
+        - AcrylicBackgroundFillColorDefault: TintColor=#2C2C2C, TintOpacity=0.15
+        - WPF fallback (no compositor acrylic): #E8202020 (≈91% opaque dark)
+        - Height: ~36px (measured from 2560x1600 150% screenshot)
+        - Width: content-driven, ~220px for text-only
+        - Gap above taskbar: ~6px
+        - No visible border stroke
+        - Text: Segoe UI Variable Text, 13px
+        - Icon: Segoe Fluent Icons, 14px, slightly muted white
+    -->
+    <Border x:Name="FlyoutBorder"
+            CornerRadius="8"
+            Height="36"
+            Padding="12,0,14,0"
+            Background="#E8202020"
+            BorderThickness="0">
 
-            <Border.BorderBrush>
-                <SolidColorBrush x:Name="FlyoutStroke" Color="#33000000"/>
-            </Border.BorderBrush>
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="8" ShadowDepth="2"
+                              Direction="270" Opacity="0.2" Color="Black"/>
+        </Border.Effect>
 
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="28" ShadowDepth="12"
-                                  Direction="270" Opacity="0.3" Color="Black"/>
-            </Border.Effect>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock x:Name="StatusIcon"
+                       Text="&#xE8F1;"
+                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                       FontSize="14"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0"
+                       Foreground="#CCFFFFFF"/>
 
-            <Grid Margin="16,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Icon -->
-                <TextBlock x:Name="StatusIcon"
-                           Grid.Column="0"
-                           Text="&#xE8F1;"
-                           FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                           FontSize="16"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,12,0"
-                           Foreground="White"/>
-
-                <!-- Text -->
-                <TextBlock x:Name="StatusText"
-                           Grid.Column="1"
-                           FontSize="14" FontWeight="SemiBold"
-                           FontFamily="Segoe UI Variable Display, Segoe UI"
-                           VerticalAlignment="Center"
-                           Foreground="White"/>
-            </Grid>
-        </Border>
+            <TextBlock x:Name="StatusText"
+                       FontSize="13"
+                       FontFamily="Segoe UI Variable Text, Segoe UI"
+                       VerticalAlignment="Center"
+                       Foreground="#EEFFFFFF"/>
+        </StackPanel>
     </Border>
 </Window>

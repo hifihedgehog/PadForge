@@ -70,17 +70,17 @@ namespace PadForge.Views
 
             if (_isDark)
             {
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0x2C, 0x2C, 0x2C));
-                FlyoutStroke.Color = Color.FromArgb(0x33, 0x00, 0x00, 0x00);
-                StatusIcon.Foreground = Brushes.White;
-                StatusText.Foreground = Brushes.White;
+                // Acrylic fallback: TintColor=#202020, ~91% opaque
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE8, 0x20, 0x20, 0x20));
+                StatusIcon.Foreground = new SolidColorBrush(Color.FromArgb(0xCC, 0xFF, 0xFF, 0xFF));
+                StatusText.Foreground = new SolidColorBrush(Color.FromArgb(0xEE, 0xFF, 0xFF, 0xFF));
             }
             else
             {
-                FlyoutBorder.Background = new SolidColorBrush(Color.FromRgb(0xF9, 0xF9, 0xF9));
-                FlyoutStroke.Color = Color.FromArgb(0x0F, 0x00, 0x00, 0x00);
-                StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
-                StatusText.Foreground = new SolidColorBrush(Color.FromRgb(0x1A, 0x1A, 0x1A));
+                // Acrylic fallback: TintColor=#F9F9F9, ~91% opaque
+                FlyoutBorder.Background = new SolidColorBrush(Color.FromArgb(0xE8, 0xF9, 0xF9, 0xF9));
+                StatusIcon.Foreground = new SolidColorBrush(Color.FromArgb(0xCC, 0x1A, 0x1A, 0x1A));
+                StatusText.Foreground = new SolidColorBrush(Color.FromArgb(0xEE, 0x1A, 0x1A, 0x1A));
             }
         }
 
@@ -176,19 +176,18 @@ namespace PadForge.Views
 
         private void ShowFlyout()
         {
-            // Position: centered horizontally, just above taskbar (12px gap).
-            // WorkArea.Bottom is the top of the taskbar.
+            // Position: centered horizontally, ~6px above work area bottom.
+            // WorkArea.Bottom = top of taskbar.
             var screen = SystemParameters.WorkArea;
-            Left = screen.Left + (screen.Width - 360) / 2;
-            Top = screen.Bottom - ActualHeight - 12;
+            Show();
+
+            // Measure after Show so DesiredSize is valid.
+            Left = screen.Left + (screen.Width - ActualWidth) / 2;
+            Top = screen.Bottom - ActualHeight - 6;
 
             var transform = new TranslateTransform(0, 40);
             FlyoutBorder.RenderTransform = transform;
             Opacity = 0;
-            Show();
-
-            // Recalculate after Show() measures
-            Top = screen.Bottom - ActualHeight - 12;
 
             var slideUp = new DoubleAnimation(40, 0, TimeSpan.FromMilliseconds(367));
             slideUp.SetValue(Timeline.DesiredFrameRateProperty, 60);

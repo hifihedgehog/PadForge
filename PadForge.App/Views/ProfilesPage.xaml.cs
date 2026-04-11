@@ -74,8 +74,10 @@ namespace PadForge.Views
         private ProfileShortcutViewModel _recordingShortcut;
         private DispatcherTimer _recordTimer;
         private TriggerButtonEntry[] _lastRecordedEntries;
-        private Dictionary<Guid, int[]> _recordAxisBaselines; // per-device axis baselines
-        private const float AxisRecordDeltaThreshold = 0.25f; // 25% delta from baseline
+        private Dictionary<Guid, int[]> _recordAxisBaselines;
+        private const float AxisRecordDeltaThreshold = 0.25f;
+        private DateTime _recordStartTime;
+        private const double RecordTimeoutSeconds = 5;
 
         private void ShortcutLearn_Click(object sender, RoutedEventArgs e)
         {
@@ -83,11 +85,7 @@ namespace PadForge.Views
                 return;
 
             if (shortcut.IsRecording)
-            {
-                // Stop recording — commit whatever was last captured.
-                StopRecording();
-                return;
-            }
+                return; // Recording in progress — timeout will auto-stop.
 
             // Cancel any in-progress recording on another shortcut.
             if (_recordingShortcut != null)
@@ -113,6 +111,7 @@ namespace PadForge.Views
                 }
             }
 
+            _recordStartTime = DateTime.UtcNow;
             InputService?.SetSuppressGlobalMacros(true);
 
             _recordTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
@@ -140,8 +139,19 @@ namespace PadForge.Views
                 return;
             }
 
+            // Auto-stop after timeout — saves last-held combo.
+            double elapsed = (DateTime.UtcNow - _recordStartTime).TotalSeconds;
+            if (elapsed >= RecordTimeoutSeconds)
+            {
+                StopRecording();
+                return;
+            }
+
+            // Show countdown in the combo display.
+            int remaining = (int)Math.Ceiling(RecordTimeoutSeconds - elapsed);
+            _recordingShortcut.RecordingCountdown = remaining;
+
             // Scan devices for pressed buttons and update the live display.
-            // Nothing is committed until the user clicks stop.
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 

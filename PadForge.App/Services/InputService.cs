@@ -84,6 +84,8 @@ namespace PadForge.Services
         private Dictionary<MacroAxisTarget, MacroAxisDirection> _recordedAxisDirections;
         private HashSet<string> _recordedPovs; // stored as "povIndex:centidegrees"
         private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
+        private const double MacroRecordTimeoutSeconds = 5;
+        private DateTime _macroRecordStartTime;
         private float[] _macroAxisBaseline;              // axis values at recording start
         private MacroAxisTarget _macroAxisCandidate;     // axis being held
         private float _macroAxisCandidateDelta;          // delta sign of the candidate axis
@@ -2767,6 +2769,7 @@ namespace PadForge.Services
             // Capture axis baseline so we detect movement delta, not absolute position.
             _macroAxisBaseline = CaptureAxisBaseline(padIndex, macro.TriggerSource, macro.ButtonStyle);
 
+            _macroRecordStartTime = DateTime.UtcNow;
             macro.RecordingLiveText = "Press buttons or move axis...";
             macro.IsRecordingTrigger = true;
         }
@@ -2861,6 +2864,13 @@ namespace PadForge.Services
 
             if (_recordingPadIndex < 0 || _recordingPadIndex >= InputManager.MaxPads)
                 return;
+
+            // Auto-stop after timeout.
+            if ((DateTime.UtcNow - _macroRecordStartTime).TotalSeconds >= MacroRecordTimeoutSeconds)
+            {
+                StopMacroTriggerRecording();
+                return;
+            }
 
             // Read current axis values for delta detection.
             float[] currentAxes = ReadCurrentAxes(

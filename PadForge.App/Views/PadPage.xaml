@@ -552,7 +552,6 @@
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                                         <TextBlock Text="{Binding RecordingLiveText}"
                                                    VerticalAlignment="Center"
-                                                   Foreground="{DynamicResource SystemAccentColorSecondaryBrush}"
                                                    FontWeight="SemiBold"
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </Grid>
@@ -1093,25 +1092,31 @@
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
                                                 Width="60"/>
                             <!-- Record button -->
-                            <DataGridTemplateColumn Header="" Width="100">
+                            <DataGridTemplateColumn Header="" Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="{Binding RecordButtonText}"
-                                                Command="{Binding ToggleRecordCommand}"
+                                        <Button Command="{Binding ToggleRecordCommand}"
                                                 IsEnabled="{Binding IsRecordable}"
-                                                Padding="6,2" Margin="2"
-                                                MinWidth="85" HorizontalAlignment="Center"/>
+                                                Width="36" HorizontalAlignment="Center" Margin="2">
+                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                            <Button.ToolTip>
+                                                <TextBlock Text="{Binding RecordButtonText}"/>
+                                            </Button.ToolTip>
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Clear button -->
-                            <DataGridTemplateColumn Header="" Width="100">
+                            <DataGridTemplateColumn Header="" Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
-                                                Command="{Binding ClearCommand}"
-                                                Padding="6,2" Margin="2"
-                                                MinWidth="85" HorizontalAlignment="Center"/>
+                                        <Button Command="{Binding ClearCommand}"
+                                                Width="36" HorizontalAlignment="Center" Margin="2">
+                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                            <Button.ToolTip>
+                                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                            </Button.ToolTip>
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -301,6 +301,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isRecording, value))
                 {
                     OnPropertyChanged(nameof(RecordButtonText));
+                    OnPropertyChanged(nameof(RecordButtonIcon));
                 }
             }
         }
@@ -309,6 +310,8 @@ namespace PadForge.ViewModels
         /// Text for the record button: "Record" or "Recording..." (with a visual cue).
         /// </summary>
         public string RecordButtonText => IsRecording ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
+
+        public string RecordButtonIcon => IsRecording ? "\uE71A" : "\uE7C8"; // Stop : Record
 
         // ─────────────────────────────────────────────
         //  Live value display

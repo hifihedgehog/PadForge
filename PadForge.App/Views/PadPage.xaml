@@ -456,12 +456,10 @@
                          MAP ALL — Controller tab controls
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
-                        <Button Content="{Binding Pad_MapAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding MapAllCommand}"
+                        <Button Content="{Binding MapAllButtonText}"
                                 Padding="16,8" FontSize="14"
-                                ToolTip="{Binding Pad_MapAllTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}" Padding="12,6" FontSize="14"
-                                Visibility="{Binding IsMapAllActive, Converter={StaticResource BoolToVisibilityConverter}}"
-                                Click="MapAllStop_Click"/>
+                                ToolTip="{Binding MapAllButtonTooltip}"
+                                Click="MapAllToggle_Click"/>
                         <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
                                    VerticalAlignment="Center" Margin="8,0,0,0"
                                    Foreground="#FF2196F3"

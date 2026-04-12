@@ -12,7 +12,7 @@ namespace PadForge.Common.Input
         private bool _disposed;
         private Gamepad _lastState;
 
-        public VirtualControllerType Type => VirtualControllerType.Xbox360;
+        public VirtualControllerType Type => VirtualControllerType.Microsoft;
         public bool IsConnected { get; private set; }
         public int FeedbackPadIndex { get; set; }
 

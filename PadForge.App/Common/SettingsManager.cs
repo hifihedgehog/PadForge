@@ -360,7 +360,7 @@ namespace PadForge.Common.Input
         /// <param name="ud">The device to create defaults for.</param>
         /// <returns>A PadSetting with sensible default mappings.</returns>
         public static PadSetting CreateDefaultPadSetting(UserDevice ud,
-            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Xbox360)
+            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Microsoft)
         {
             var ps = new PadSetting();
 
@@ -435,7 +435,7 @@ namespace PadForge.Common.Input
                 ps.ForceSwapMotor = "0";
 
                 // Touchpad auto-mapping for DS4 output + touchpad-capable device.
-                if (outputType == Engine.VirtualControllerType.DualShock4 && ud.HasTouchpad)
+                if (outputType == Engine.VirtualControllerType.Sony && ud.HasTouchpad)
                 {
                     ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                     ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
@@ -452,7 +452,7 @@ namespace PadForge.Common.Input
 
             // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to DS4.
             if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
-                outputType == Engine.VirtualControllerType.DualShock4)
+                outputType == Engine.VirtualControllerType.Sony)
             {
                 ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                 ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";

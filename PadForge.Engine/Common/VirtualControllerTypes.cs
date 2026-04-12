@@ -3,21 +3,33 @@ using System;
 namespace PadForge.Engine
 {
     /// <summary>
-    /// Type of virtual controller to create.
+    /// Top-level category for a virtual controller. The actual device identity
+    /// (Xbox 360 Wired, DualSense, Logitech G920, etc.) is selected within each
+    /// category via a per-slot preset config or, for Extended, a custom HID
+    /// descriptor. Numeric values are preserved from v2 (Xbox360→Microsoft,
+    /// DualShock4→Sony, VJoy→Extended) so existing settings files load.
     /// </summary>
     public enum VirtualControllerType
     {
-        Xbox360 = 0,
-        DualShock4 = 1,
-        VJoy = 2,
+        /// <summary>Microsoft category — Xbox 360, Xbox One, Xbox Series, Elite, Adaptive.</summary>
+        Microsoft = 0,
+        /// <summary>Sony category — DualShock 3/4, DualSense, DualSense Edge, PS Move.</summary>
+        Sony = 1,
+        /// <summary>Extended category — any of the 220+ remaining HIDMaestro profiles
+        /// (Logitech, Thrustmaster, Fanatec, Hori, 8BitDo, etc.) plus user-defined
+        /// custom HID descriptors.</summary>
+        Extended = 2,
+        /// <summary>MIDI controller (Windows MIDI Services).</summary>
         Midi = 3,
+        /// <summary>Keyboard + Mouse output (built-in, no driver).</summary>
         KeyboardMouse = 4
     }
 
     /// <summary>
-    /// Abstraction over ViGEm virtual controller operations.
-    /// Concrete implementations (Xbox360VirtualController, DS4VirtualController)
-    /// live in the App assembly where the ViGEm NuGet reference exists.
+    /// Abstraction over a virtual controller. The single concrete
+    /// implementation in v3 is HMaestroVirtualController, plus
+    /// MidiVirtualController and KeyboardMouseVirtualController for the
+    /// non-HID output types.
     /// </summary>
     public interface IVirtualController : IDisposable
     {

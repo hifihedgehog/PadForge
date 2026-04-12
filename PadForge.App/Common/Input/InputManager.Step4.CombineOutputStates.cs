@@ -35,11 +35,11 @@ namespace PadForge.Common.Input
                     // Use non-allocating overload with pre-allocated buffer.
                     int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 
-                    bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.VJoy
+                    bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.Extended
                                      && SlotVJoyIsCustom[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
-                    bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.DualShock4;
+                    bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.Sony;
 
                     if (slotCount == 0)
                     {

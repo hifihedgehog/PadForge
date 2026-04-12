@@ -77,7 +77,7 @@ namespace PadForge.Views
             if (sender is Button btn && btn.Tag is int slotIndex)
             {
                 if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsViGEmInstalled) return;
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Xbox360));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Microsoft));
             }
         }
 
@@ -86,7 +86,7 @@ namespace PadForge.Views
             if (sender is Button btn && btn.Tag is int slotIndex)
             {
                 if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsViGEmInstalled) return;
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.DualShock4));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Sony));
             }
         }
 
@@ -95,7 +95,7 @@ namespace PadForge.Views
             if (sender is Button btn && btn.Tag is int slotIndex)
             {
                 if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsVJoyInstalled) return;
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.VJoy));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Extended));
             }
         }
 
@@ -450,7 +450,7 @@ namespace PadForge.Views
             foreach (var item in SlotsItemsControl.Items)
                 if (item is ViewModels.SlotSummary s && s.PadIndex == padIndex)
                     return s.OutputType;
-            return VirtualControllerType.Xbox360;
+            return VirtualControllerType.Microsoft;
         }
 
         private bool IsInsertionInSameTypeGroup(int insertionVisualPos, VirtualControllerType sourceType, List<CardBounds> cards)

@@ -305,13 +305,13 @@ namespace PadForge.Common.Input
                 bool anyVJoySlotExists = false;
                 for (int i = 0; i < MaxPads; i++)
                 {
-                    if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                    if (SlotControllerTypes[i] == VirtualControllerType.Extended &&
                         SettingsManager.SlotCreated[i])
                         anyVJoySlotExists = true;
 
                     if (_virtualControllers[i] is VJoyVirtualController)
                         totalVJoyNeeded++;  // Already running — always count
-                    else if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                    else if (SlotControllerTypes[i] == VirtualControllerType.Extended &&
                              SettingsManager.SlotCreated[i] &&
                              SettingsManager.SlotEnabled[i] &&
                              IsSlotActive(i))
@@ -331,7 +331,7 @@ namespace PadForge.Common.Input
                     {
                         for (int dbg = 0; dbg < MaxPads; dbg++)
                         {
-                            if (SlotControllerTypes[dbg] == VirtualControllerType.VJoy && SettingsManager.SlotCreated[dbg])
+                            if (SlotControllerTypes[dbg] == VirtualControllerType.Extended && SettingsManager.SlotCreated[dbg])
                             {
                                 bool slotActive = IsSlotActive(dbg);
                                 int inactiveCount = _slotInactiveCounter[dbg];
@@ -383,7 +383,7 @@ namespace PadForge.Common.Input
                             }
                             // Mark active vJoy slots as initializing during descriptor change.
                             // Slots with no device assigned stay yellow ("Awaiting controllers").
-                            if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                            if (SlotControllerTypes[i] == VirtualControllerType.Extended &&
                                 SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
                                 _slotInitializing[i] = IsSlotActive(i);
                         }
@@ -447,7 +447,7 @@ namespace PadForge.Common.Input
                         for (int i = 0; i < MaxPads; i++)
                         {
                             if (_virtualControllers[i] is not VJoyVirtualController &&
-                                SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                SlotControllerTypes[i] == VirtualControllerType.Extended &&
                                 SettingsManager.SlotCreated[i] &&
                                 SettingsManager.SlotEnabled[i] &&
                                 IsSlotActive(i))
@@ -485,7 +485,7 @@ namespace PadForge.Common.Input
                         {
                             for (int i = 0; i < MaxPads; i++)
                             {
-                                if (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                if (SlotControllerTypes[i] == VirtualControllerType.Extended &&
                                     SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
                                     _slotInitializing[i] = IsSlotActive(i);
                             }
@@ -522,7 +522,7 @@ namespace PadForge.Common.Input
                             // so they must not inflate the expectedId sequence.
                             bool countsAsVjoy =
                                 _virtualControllers[i] is VJoyVirtualController ||
-                                (SlotControllerTypes[i] == VirtualControllerType.VJoy &&
+                                (SlotControllerTypes[i] == VirtualControllerType.Extended &&
                                  SettingsManager.SlotCreated[i] &&
                                  SettingsManager.SlotEnabled[i] &&
                                  IsSlotActive(i));
@@ -564,8 +564,8 @@ namespace PadForge.Common.Input
                         continue;
 
                     var newType = SlotControllerTypes[padIndex];
-                    if (newType != VirtualControllerType.Xbox360 &&
-                        newType != VirtualControllerType.DualShock4)
+                    if (newType != VirtualControllerType.Microsoft &&
+                        newType != VirtualControllerType.Sony)
                         continue;
 
                     // Destroy any same-type VCs at higher slot indices.
@@ -600,7 +600,7 @@ namespace PadForge.Common.Input
                         // registry descriptor count must match exactly. Creating a VC
                         // for an inactive vJoy slot would consume a device ID that the
                         // active slot needs.
-                        if (SlotControllerTypes[padIndex] == VirtualControllerType.VJoy &&
+                        if (SlotControllerTypes[padIndex] == VirtualControllerType.Extended &&
                             !IsSlotActive(padIndex))
                             continue;
 
@@ -812,53 +812,41 @@ namespace PadForge.Common.Input
         {
             var controllerType = SlotControllerTypes[padIndex];
 
-            // vJoy, MIDI, and KeyboardMouse don't need ViGEm, but Xbox 360 and DS4 do.
-            if (controllerType != VirtualControllerType.VJoy
-                && controllerType != VirtualControllerType.Midi
-                && controllerType != VirtualControllerType.KeyboardMouse
-                && _vigemClient == null)
-                return null;
+            // MIDI and KeyboardMouse stay on their dedicated implementations.
+            // Microsoft / Sony / Extended now route through HIDMaestro.
+            if (controllerType == VirtualControllerType.Microsoft
+                || controllerType == VirtualControllerType.Sony
+                || controllerType == VirtualControllerType.Extended)
+            {
+                EnsureHMaestroContext();
+                if (_hmaestroContext == null) return null;
+            }
 
             IVirtualController vc = null;
             try
             {
-                // Snapshot XInput slot mask BEFORE connecting (Xbox 360 only).
-                uint maskBefore = 0;
-                if (controllerType == VirtualControllerType.Xbox360)
-                    maskBefore = GetXInputConnectedSlotMask();
-
                 vc = controllerType switch
                 {
-                    VirtualControllerType.DualShock4 => new DS4VirtualController(_vigemClient),
-                    VirtualControllerType.VJoy => CreateVJoyController(),
+                    VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, "xbox-360-wired"),
+                    VirtualControllerType.Sony => CreateHMaestroController(VirtualControllerType.Sony, "dualshock-4-v2"),
+                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, "xbox-360-wired"),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
-                    _ => new Xbox360VirtualController(_vigemClient)
+                    _ => null
                 };
 
                 if (vc == null) return null;
                 vc.Connect();
 
-                // Wait for the new XInput slot to appear (Xbox 360 only).
-                // DS4 and vJoy virtual controllers don't appear in the XInput stack.
-                if (controllerType == VirtualControllerType.Xbox360)
-                {
-                    var waitSw = Stopwatch.StartNew();
-                    while (waitSw.ElapsedMilliseconds < 50)
-                    {
-                        uint maskAfter = GetXInputConnectedSlotMask();
-                        if (maskAfter != maskBefore)
-                            break;
-                        Thread.SpinWait(100);
-                    }
-                }
-
-                if (controllerType == VirtualControllerType.Xbox360)
+                // Per-type counters retained for Step 1's IsViGEmVirtualDevice
+                // filter while it still matches against ViGEm VID/PID heuristics.
+                // The filter will be replaced in a later checkpoint.
+                if (controllerType == VirtualControllerType.Microsoft)
                 {
                     _activeVigemCount++;
                     _activeXbox360Count++;
                 }
-                else if (controllerType == VirtualControllerType.DualShock4)
+                else if (controllerType == VirtualControllerType.Sony)
                 {
                     _activeVigemCount++;
                     _activeDs4Count++;
@@ -873,6 +861,22 @@ namespace PadForge.Common.Input
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Constructs a HIDMaestro-backed virtual controller using the named
+        /// embedded profile. The profile slug must match a profile shipped in
+        /// HIDMaestro.Core's embedded catalog (225 profiles across 32 vendors).
+        /// </summary>
+        private IVirtualController CreateHMaestroController(VirtualControllerType type, string profileId)
+        {
+            var profile = _hmaestroContext.GetProfile(profileId);
+            if (profile == null)
+            {
+                RaiseError($"HIDMaestro profile '{profileId}' not found.", null);
+                return null;
+            }
+            return new HMaestroVirtualController(_hmaestroContext, profile, type);
         }
 
         /// <summary>
@@ -942,13 +946,13 @@ namespace PadForge.Common.Input
             {
                 // Snapshot for Xbox 360 slot mask wait.
                 uint maskBefore = 0;
-                if (vcType == VirtualControllerType.Xbox360)
+                if (vcType == VirtualControllerType.Microsoft)
                     maskBefore = GetXInputConnectedSlotMask();
 
                 vc.Disconnect();
 
                 // Brief wait for the slot to disappear from the XInput stack.
-                if (vcType == VirtualControllerType.Xbox360)
+                if (vcType == VirtualControllerType.Microsoft)
                 {
                     var waitSw = Stopwatch.StartNew();
                     while (waitSw.ElapsedMilliseconds < 50)
@@ -970,12 +974,12 @@ namespace PadForge.Common.Input
                 // Counter decrements MUST happen even if Disconnect/Dispose throws.
                 // Otherwise _activeXbox360Count stays inflated and the filter
                 // over-filters on subsequent UpdateDevices cycles.
-                if (vcType == VirtualControllerType.Xbox360)
+                if (vcType == VirtualControllerType.Microsoft)
                 {
                     _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                     _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
                 }
-                else if (vcType == VirtualControllerType.DualShock4)
+                else if (vcType == VirtualControllerType.Sony)
                 {
                     _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
                     _activeDs4Count = Math.Max(0, _activeDs4Count - 1);

@@ -168,8 +168,8 @@ namespace PadForge.Services
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
                 if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
                 {
-                    if (_mainVm.Pads[i].OutputType == VirtualControllerType.Xbox360) expectedXbox++;
-                    else if (_mainVm.Pads[i].OutputType == VirtualControllerType.DualShock4) expectedDs4++;
+                    if (_mainVm.Pads[i].OutputType == VirtualControllerType.Microsoft) expectedXbox++;
+                    else if (_mainVm.Pads[i].OutputType == VirtualControllerType.Sony) expectedDs4++;
                 }
             }
 
@@ -664,11 +664,11 @@ namespace PadForge.Services
 
                 switch (padVm.OutputType)
                 {
-                    case VirtualControllerType.DualShock4:
+                    case VirtualControllerType.Sony:
                         ds4Count++;
                         slot.TypeInstanceLabel = ds4Count.ToString();
                         break;
-                    case VirtualControllerType.VJoy:
+                    case VirtualControllerType.Extended:
                         vjoyCount++;
                         slot.TypeInstanceLabel = vjoyCount.ToString();
                         break;
@@ -1026,7 +1026,7 @@ namespace PadForge.Services
                 Triggers = cfg.TriggerCount
             };
             _inputManager.SlotVJoyIsCustom[slotIndex] =
-                padVm.OutputType == VirtualControllerType.VJoy && !cfg.IsGamepadPreset;
+                padVm.OutputType == VirtualControllerType.Extended && !cfg.IsGamepadPreset;
         }
 
         /// <summary>
@@ -2636,9 +2636,9 @@ namespace PadForge.Services
                     activeSlots.Add(i);
                     switch (_mainVm.Pads[i].OutputType)
                     {
-                        case VirtualControllerType.Xbox360: xboxCount++; break;
-                        case VirtualControllerType.DualShock4: ds4Count++; break;
-                        case VirtualControllerType.VJoy: vjoyCount++; break;
+                        case VirtualControllerType.Microsoft: xboxCount++; break;
+                        case VirtualControllerType.Sony: ds4Count++; break;
+                        case VirtualControllerType.Extended: vjoyCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
                     }
                 }
@@ -2757,7 +2757,7 @@ namespace PadForge.Services
             // devices (joysticks, wheels) push in the correct direction rather than
             // just rattling. Direction uses "force comes from" convention:
             // 9000 = from East = pushes left, 27000 = from West = pushes right.
-            bool isVJoy = _inputManager.SlotControllerTypes[padIndex] == VirtualControllerType.VJoy;
+            bool isVJoy = _inputManager.SlotControllerTypes[padIndex] == VirtualControllerType.Extended;
             if (isVJoy && (left != right))
             {
                 vib.HasDirectionalData = true;
@@ -3270,7 +3270,7 @@ namespace PadForge.Services
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i] ||
-                    _mainVm.Pads[i].OutputType != VirtualControllerType.VJoy)
+                    _mainVm.Pads[i].OutputType != VirtualControllerType.Extended)
                     continue;
                 var cfg = _mainVm.Pads[i].VJoyConfig;
                 list.Add(new VJoySlotConfigData
@@ -3414,7 +3414,7 @@ namespace PadForge.Services
                     int idx = cfgData.SlotIndex;
                     if (idx >= 0 && idx < _mainVm.Pads.Count &&
                         SettingsManager.SlotCreated[idx] &&
-                        _mainVm.Pads[idx].OutputType == VirtualControllerType.VJoy)
+                        _mainVm.Pads[idx].OutputType == VirtualControllerType.Extended)
                     {
                         var cfg = _mainVm.Pads[idx].VJoyConfig;
                         cfg.Preset = cfgData.Preset;
@@ -3831,9 +3831,9 @@ namespace PadForge.Services
 
         private static int GetTypePriority(VirtualControllerType type) => type switch
         {
-            VirtualControllerType.Xbox360 => 0,
-            VirtualControllerType.DualShock4 => 1,
-            VirtualControllerType.VJoy => 2,
+            VirtualControllerType.Microsoft => 0,
+            VirtualControllerType.Sony => 1,
+            VirtualControllerType.Extended => 2,
             VirtualControllerType.KeyboardMouse => 3,
             VirtualControllerType.Midi => 4,
             _ => 5

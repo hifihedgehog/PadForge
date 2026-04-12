@@ -76,7 +76,7 @@ namespace PadForge.Common.Input
                     // For custom vJoy slots, also produce the raw vJoy output state.
                     int slot = us.MapTo;
                     if (slot >= 0 && slot < MaxPads &&
-                        SlotControllerTypes[slot] == VirtualControllerType.VJoy &&
+                        SlotControllerTypes[slot] == VirtualControllerType.Extended &&
                         SlotVJoyIsCustom[slot])
                     {
                         var cfg = SlotVJoyConfigs[slot];
@@ -101,7 +101,7 @@ namespace PadForge.Common.Input
 
                     // For DS4 slots, produce touchpad state from input device.
                     if (slot >= 0 && slot < MaxPads &&
-                        SlotControllerTypes[slot] == VirtualControllerType.DualShock4)
+                        SlotControllerTypes[slot] == VirtualControllerType.Sony)
                     {
                         us.TouchpadOutputState = MapInputToTouchpad(ud.InputState, ps, us.TouchpadOutputState);
                     }

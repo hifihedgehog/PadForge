@@ -228,8 +228,8 @@ namespace PadForge
             {
                 for (int i = 0; i < InputManager.MaxPads; i++)
                     if (SettingsManager.SlotCreated[i] &&
-                        (_viewModel.Pads[i].OutputType == VirtualControllerType.Xbox360 ||
-                         _viewModel.Pads[i].OutputType == VirtualControllerType.DualShock4))
+                        (_viewModel.Pads[i].OutputType == VirtualControllerType.Microsoft ||
+                         _viewModel.Pads[i].OutputType == VirtualControllerType.Sony))
                         return true;
                 return false;
             };
@@ -237,7 +237,7 @@ namespace PadForge
             {
                 for (int i = 0; i < InputManager.MaxPads; i++)
                     if (SettingsManager.SlotCreated[i] &&
-                        _viewModel.Pads[i].OutputType == VirtualControllerType.VJoy)
+                        _viewModel.Pads[i].OutputType == VirtualControllerType.Extended)
                         return true;
                 return false;
             };
@@ -1421,7 +1421,7 @@ namespace PadForge
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = Strings.Instance.Main_EngineStopped;
             }
-            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.VJoy && outputType != VirtualControllerType.Midi && outputType != VirtualControllerType.KeyboardMouse)
+            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.Extended && outputType != VirtualControllerType.Midi && outputType != VirtualControllerType.KeyboardMouse)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = Strings.Instance.Main_ViGEmNotInstalled;
@@ -1858,8 +1858,8 @@ namespace PadForge
             if (!_viewModel.Dashboard.IsViGEmInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox360);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox360;
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Microsoft);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Microsoft;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -1872,8 +1872,8 @@ namespace PadForge
             if (!_viewModel.Dashboard.IsViGEmInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.DualShock4);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.DualShock4;
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Sony);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Sony;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -1888,8 +1888,8 @@ namespace PadForge
             {
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.VJoy);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.VJoy;
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -2488,9 +2488,9 @@ namespace PadForge
                 if (!SettingsManager.SlotCreated[i]) continue;
                 switch (_viewModel.Pads[i].OutputType)
                 {
-                    case VirtualControllerType.Xbox360: xboxCount++; break;
-                    case VirtualControllerType.DualShock4: ds4Count++; break;
-                    case VirtualControllerType.VJoy: vjoyCount++; break;
+                    case VirtualControllerType.Microsoft: xboxCount++; break;
+                    case VirtualControllerType.Sony: ds4Count++; break;
+                    case VirtualControllerType.Extended: vjoyCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
@@ -2621,9 +2621,9 @@ namespace PadForge
                 if (!SettingsManager.SlotCreated[i]) continue;
                 switch (_viewModel.Pads[i].OutputType)
                 {
-                    case VirtualControllerType.Xbox360: xboxCount++; break;
-                    case VirtualControllerType.DualShock4: ds4Count++; break;
-                    case VirtualControllerType.VJoy: vjoyCount++; break;
+                    case VirtualControllerType.Microsoft: xboxCount++; break;
+                    case VirtualControllerType.Sony: ds4Count++; break;
+                    case VirtualControllerType.Extended: vjoyCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
@@ -2659,11 +2659,11 @@ namespace PadForge
             {
                 if (xboxDisabled) return;
                 popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Xbox360);
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Microsoft);
                 if (newSlot >= 0)
                 {
                     _inputService.EnsureTypeGroupOrder();
-                    int nav = FindLastSlotOfType(VirtualControllerType.Xbox360);
+                    int nav = FindLastSlotOfType(VirtualControllerType.Microsoft);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
@@ -2698,11 +2698,11 @@ namespace PadForge
             {
                 if (ds4Disabled) return;
                 popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.DualShock4);
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Sony);
                 if (newSlot >= 0)
                 {
                     _inputService.EnsureTypeGroupOrder();
-                    int nav = FindLastSlotOfType(VirtualControllerType.DualShock4);
+                    int nav = FindLastSlotOfType(VirtualControllerType.Sony);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
@@ -2741,11 +2741,11 @@ namespace PadForge
 
                 // Device nodes are created on demand by the engine (CreateVJoyController)
                 // when the slot becomes active — same pattern as ViGEm.
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.VJoy);
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Extended);
                 if (newSlot >= 0)
                 {
                     _inputService.EnsureTypeGroupOrder();
-                    int nav = FindLastSlotOfType(VirtualControllerType.VJoy);
+                    int nav = FindLastSlotOfType(VirtualControllerType.Extended);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
@@ -3595,7 +3595,7 @@ namespace PadForge
             try
             {
                 var copyOutputType = padVm.OutputType;
-                bool copyIsCustomVJoy = copyOutputType == VirtualControllerType.VJoy
+                bool copyIsCustomVJoy = copyOutputType == VirtualControllerType.Extended
                     && !padVm.VJoyConfig.IsGamepadPreset;
                 Clipboard.SetText(ps.ToJson(copyOutputType, copyIsCustomVJoy));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
@@ -3620,7 +3620,7 @@ namespace PadForge
                 }
 
                 var targetType = padVm.OutputType;
-                bool targetIsCustomVJoy = targetType == VirtualControllerType.VJoy
+                bool targetIsCustomVJoy = targetType == VirtualControllerType.Extended
                     && !padVm.VJoyConfig.IsGamepadPreset;
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
@@ -3674,13 +3674,13 @@ namespace PadForge
                             : string.Format(Strings.Instance.Status_Unmapped_Format, $"{us.InstanceGuid:D}");
 
                         // Determine layout type from the slot's output type.
-                        var outputType = VirtualControllerType.Xbox360;
+                        var outputType = VirtualControllerType.Microsoft;
                         bool isCustomVJoy = false;
                         if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
                         {
                             var srcPad = _viewModel.Pads[us.MapTo];
                             outputType = srcPad.OutputType;
-                            isCustomVJoy = outputType == VirtualControllerType.VJoy
+                            isCustomVJoy = outputType == VirtualControllerType.Extended
                                 && !srcPad.VJoyConfig.IsGamepadPreset;
                         }
 
@@ -3711,7 +3711,7 @@ namespace PadForge
             {
                 var srcEntry = dialog.SelectedEntry;
                 var targetOutputType = padVm.OutputType;
-                bool targetIsCustomVJoy = targetOutputType == VirtualControllerType.VJoy
+                bool targetIsCustomVJoy = targetOutputType == VirtualControllerType.Extended
                     && !padVm.VJoyConfig.IsGamepadPreset;
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
@@ -3772,9 +3772,9 @@ namespace PadForge
                     activeSlots.Add(i);
                     switch (_viewModel.Pads[i].OutputType)
                     {
-                        case VirtualControllerType.Xbox360: xboxCount++; break;
-                        case VirtualControllerType.DualShock4: ds4Count++; break;
-                        case VirtualControllerType.VJoy: vjoyCount++; break;
+                        case VirtualControllerType.Microsoft: xboxCount++; break;
+                        case VirtualControllerType.Sony: ds4Count++; break;
+                        case VirtualControllerType.Extended: vjoyCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
                         case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                     }

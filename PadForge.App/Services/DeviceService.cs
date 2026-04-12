@@ -373,7 +373,7 @@ namespace PadForge.Services
         /// Creates the next available virtual controller slot with the specified type.
         /// Returns the slot index (0–15) or -1 if all slots are taken.
         /// </summary>
-        public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox360)
+        public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Microsoft)
         {
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -387,7 +387,7 @@ namespace PadForge.Services
                     // Reset vJoy config to Xbox 360 default for fresh slots.
                     // Without this, stale custom configs from previously-deleted vJoy slots
                     // (still in XML) leak into newly-created slots.
-                    if (controllerType == VirtualControllerType.VJoy)
+                    if (controllerType == VirtualControllerType.Extended)
                         _mainVm.Pads[i].VJoyConfig.Preset = VJoyPreset.Xbox360;
 
                     SettingsManager.SlotCreated[i] = true;

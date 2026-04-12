@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> assignés, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connectés</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serveur de mouvement</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Serveur DSU/cemuhook pour les données gyroscope et accéléromètre.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activer le serveur de mouvement DSU (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Serveur DSU/CemuHook Motion Provider protocol pour les données de gyroscope et d'accéléromètre.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activer le serveur de mouvement DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port :</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fournit les données gyro/accéléromètre à Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Contrôleur Web</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Activer le serveur de contrôleur web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Connectez-vous depuis un téléphone ou une tablette pour l'utiliser comme manette.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Superposition pavé tactile</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Surface tactile à l'écran pour l'émulation du pavé tactile DS4.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Surface tactile à l'écran pour l'émulation de pavé tactile compatible DualShock 4 et DualSense.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Activer la superposition du pavé tactile</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacité :</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clic droit maintenu pour déplacer</value></data>

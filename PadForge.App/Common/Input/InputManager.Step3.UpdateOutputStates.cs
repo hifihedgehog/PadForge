@@ -283,7 +283,7 @@ namespace PadForge.Common.Input
         {
             var result = new MappingDescriptor();
 
-            if (string.IsNullOrWhiteSpace(descriptor) || descriptor == "0" || descriptor == "")
+            if (string.IsNullOrWhiteSpace(descriptor) || descriptor == "0")
                 return result;
 
             string s = descriptor.Trim();

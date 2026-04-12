@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapeados, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> conectados</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de Movimento</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/cemuhook para dados de giroscópio e acelerômetro.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ativar servidor de movimento DSU (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/CemuHook Motion Provider protocol para dados de giroscópio e acelerômetro.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar servidor de movimento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Porta:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornece dados de giroscópio/acelerômetro para Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controle Web</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar servidor de controle web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Conecte de um celular ou tablet pelo navegador para usar como gamepad.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Sobreposição de touchpad</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superfície de toque na tela para emulação do touchpad do DS4.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superfície de toque na tela para emulação de touchpad compatível com DualShock 4 e DualSense.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativar sobreposição de touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidade:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clique com botão direito e segure para arrastar</value></data>

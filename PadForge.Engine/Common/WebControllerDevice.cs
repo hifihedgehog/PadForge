@@ -47,7 +47,7 @@ namespace PadForge.Engine
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
         public int NumButtons => _isTouchpadDevice ? 0 : (HasTouchpad ? 21 : NumGamepadButtons);
-        public int RawButtonCount => HasTouchpad ? 21 : NumGamepadButtons;
+        public int RawButtonCount => _isTouchpadDevice ? 0 : (HasTouchpad ? 21 : NumGamepadButtons);
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public bool HasRumble => true;
         public bool HasHaptic => false;

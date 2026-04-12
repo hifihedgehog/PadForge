@@ -3462,8 +3462,7 @@ namespace PadForge.Services
 
             // ── Apply touchpad overlay settings ──
             _mainVm.Dashboard.EnableTouchpadOverlay = profile.EnableTouchpadOverlay;
-            _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity > 0
-                ? profile.TouchpadOverlayOpacity : 0.25;
+            _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
             _mainVm.Dashboard.TouchpadOverlayTop = profile.TouchpadOverlayTop;

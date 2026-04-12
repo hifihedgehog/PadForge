@@ -15,7 +15,6 @@
                 <!-- Custom theme overrides -->
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="RangeSliderThumbFill" Color="#F0F0F0"/>
-                    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="#FF3A3A3A"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

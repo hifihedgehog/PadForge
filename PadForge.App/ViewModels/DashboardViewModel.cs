@@ -24,9 +24,7 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Dashboard_Title;
             OnPropertyChanged(nameof(PollingFrequencyText));
-            OnPropertyChanged(nameof(ViGEmStatusText));
             OnPropertyChanged(nameof(HidHideStatusText));
-            OnPropertyChanged(nameof(VJoyStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
         }
 
@@ -168,26 +166,6 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
-        //  ViGEmBus status
-        // ─────────────────────────────────────────────
-
-        private bool _isViGEmInstalled;
-
-        /// <summary>Whether ViGEmBus is installed.</summary>
-        public bool IsViGEmInstalled
-        {
-            get => _isViGEmInstalled;
-            set
-            {
-                if (SetProperty(ref _isViGEmInstalled, value))
-                    OnPropertyChanged(nameof(ViGEmStatusText));
-            }
-        }
-
-        /// <summary>Display text for ViGEmBus status.</summary>
-        public string ViGEmStatusText => IsViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
-
-        // ─────────────────────────────────────────────
         //  HidHide status
         // ─────────────────────────────────────────────
 
@@ -206,26 +184,6 @@ namespace PadForge.ViewModels
 
         /// <summary>Display text for HidHide status.</summary>
         public string HidHideStatusText => IsHidHideInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
-
-        // ─────────────────────────────────────────────
-        //  vJoy status
-        // ─────────────────────────────────────────────
-
-        private bool _isVJoyInstalled;
-
-        /// <summary>Whether the vJoy driver is installed.</summary>
-        public bool IsVJoyInstalled
-        {
-            get => _isVJoyInstalled;
-            set
-            {
-                if (SetProperty(ref _isVJoyInstalled, value))
-                    OnPropertyChanged(nameof(VJoyStatusText));
-            }
-        }
-
-        /// <summary>Display text for vJoy status.</summary>
-        public string VJoyStatusText => IsVJoyInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         // ─────────────────────────────────────────────
         //  Windows MIDI Services status

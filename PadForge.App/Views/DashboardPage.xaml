@@ -152,13 +152,6 @@
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                            <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="ToolTip" Value="{Binding Main_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
-                                                    </MultiDataTrigger>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                             <Condition Binding="{Binding DataContext.EngineStateKey, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="{Binding Main_EngineStopped, Source={x:Static strings:Strings.Instance}}"/>
@@ -185,14 +178,6 @@
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
                                                                 <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Foreground" Value="#FFFFC107"/>
-                                                        </MultiDataTrigger>
-                                                        <!-- Enabled but ViGEmBus not installed: yellow -->
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                                <Condition Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                                         </MultiDataTrigger>
@@ -244,19 +229,15 @@
                                     <!-- Game controller type buttons (all types shown for all cards) -->
                                     <StackPanel Orientation="Horizontal">
 
-                                        <!-- Xbox type button -->
+                                        <!-- Microsoft (Xbox-family) type button -->
                                         <Button Click="XboxType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox360">
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Microsoft">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
-                                                            <Setter Property="Cursor" Value="No"/>
-                                                            <Setter Property="ToolTip" Value="{Binding Main_Xbox360_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -266,7 +247,7 @@
                                                   Width="13" Height="13" Stretch="Uniform"/>
                                         </Button>
 
-                                        <!-- PS type button -->
+                                        <!-- Sony (PlayStation-family) type button -->
                                         <Button Margin="1,0,0,0"
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
@@ -274,12 +255,8 @@
                                                     <Setter Property="Opacity" Value="0.3"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding OutputType}" Value="DualShock4">
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Sony">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DataContext.IsViGEmInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
-                                                            <Setter Property="Cursor" Value="No"/>
-                                                            <Setter Property="ToolTip" Value="{Binding Main_DS4_ViGEmNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -289,7 +266,7 @@
                                                   Width="13" Height="13" Stretch="Uniform"/>
                                         </Button>
 
-                                        <!-- vJoy type button -->
+                                        <!-- Extended (custom DI) type button -->
                                         <Button Margin="1,0,0,0"
                                                 Click="VJoyType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
@@ -297,12 +274,8 @@
                                                     <Setter Property="Opacity" Value="0.3"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_DirectInput, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding OutputType}" Value="VJoy">
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DataContext.IsVJoyInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
-                                                            <Setter Property="Cursor" Value="No"/>
-                                                            <Setter Property="ToolTip" Value="{Binding Main_DI_DriverNotInstalled, Source={x:Static strings:Strings.Instance}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -538,8 +511,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal">
@@ -556,26 +527,6 @@
                     </StackPanel>
                     <TextBlock Grid.Row="1" Grid.Column="1"
                                Text="{Binding MidiServicesStatusText}" Opacity="0.7"
-                               Margin="0,8,0,0"/>
-
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="ViGEmBus" FontWeight="SemiBold"/>
-                    </StackPanel>
-                    <TextBlock Grid.Row="2" Grid.Column="1"
-                               Text="{Binding ViGEmStatusText}" Opacity="0.7"
-                               Margin="0,8,0,0"/>
-
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
-                        <Path Data="M11.915 15H13V9.874A4.002 4.002 0 0 1 14 2a4 4 0 0 1 1 7.874V15h2a3 3 0 0 1 3 3v4H4v-4a3 3 0 0 1 3-3h.085A1.5 1.5 0 0 1 8.5 14h2a1.5 1.5 0 0 1 1.415 1z"
-                              Fill="{DynamicResource TextFillColorPrimaryBrush}"
-                              Width="14" Height="14" Stretch="Uniform"
-                              VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="vJoy" FontWeight="SemiBold"/>
-                    </StackPanel>
-                    <TextBlock Grid.Row="3" Grid.Column="1"
-                               Text="{Binding VJoyStatusText}" Opacity="0.7"
                                Margin="0,8,0,0"/>
 
                 </Grid>

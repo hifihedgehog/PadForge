@@ -224,23 +224,6 @@ namespace PadForge
             });
 
             // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
-            _viewModel.Settings.HasAnyViGEmSlots = () =>
-            {
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                    if (SettingsManager.SlotCreated[i] &&
-                        (_viewModel.Pads[i].OutputType == VirtualControllerType.Microsoft ||
-                         _viewModel.Pads[i].OutputType == VirtualControllerType.Sony))
-                        return true;
-                return false;
-            };
-            _viewModel.Settings.HasAnyVJoySlots = () =>
-            {
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                    if (SettingsManager.SlotCreated[i] &&
-                        _viewModel.Pads[i].OutputType == VirtualControllerType.Extended)
-                        return true;
-                return false;
-            };
             _viewModel.Settings.HasAnyMidiSlots = () =>
             {
                 for (int i = 0; i < InputManager.MaxPads; i++)
@@ -1369,11 +1352,6 @@ namespace PadForge
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = Strings.Instance.Main_EngineStopped;
             }
-            else if (!_viewModel.Dashboard.IsViGEmInstalled && outputType != VirtualControllerType.Extended && outputType != VirtualControllerType.Midi && outputType != VirtualControllerType.KeyboardMouse)
-            {
-                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
-                powerTooltip = Strings.Instance.Main_ViGEmNotInstalled;
-            }
             else if (navItem.ConnectedDeviceCount == 0)
             {
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
@@ -1453,10 +1431,10 @@ namespace PadForge
                 Margin = new Thickness(6, -3, 6, 0)
             });
 
-            // Type-switch buttons: Xbox / DS4 / vJoy / KBM / MIDI — shown for all cards.
-            // Driver availability checks.
-            bool hasViGEm = _viewModel.Dashboard.IsViGEmInstalled;
-            bool hasVJoy = _viewModel.Dashboard.IsVJoyInstalled;
+            // Type-switch buttons: Microsoft / Sony / Extended / KBM / MIDI — shown for all cards.
+            // HIDMaestro is always available (embedded in HIDMaestro.Core.dll), so the
+            // Microsoft / Sony / Extended categories are always enabled. MIDI still
+            // depends on Windows MIDI Services.
             bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
 
             // Xbox type button — use SetResourceReference for theme-aware Fill.
@@ -1471,14 +1449,14 @@ namespace PadForge
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPath,
-                ToolTip = hasViGEm ? Strings.Instance.ControllerType_Xbox360 : Strings.Instance.Main_Xbox360_ViGEmNotInstalled,
+                ToolTip = Strings.Instance.ControllerType_Xbox360,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isXbox ? 1.0 : 0.3,
-                Cursor = hasViGEm ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
+                Cursor = System.Windows.Input.Cursors.Hand,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
             };
@@ -1497,14 +1475,14 @@ namespace PadForge
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4Path,
-                ToolTip = hasViGEm ? Strings.Instance.ControllerType_DualShock4 : Strings.Instance.Main_DS4_ViGEmNotInstalled,
+                ToolTip = Strings.Instance.ControllerType_DualShock4,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isDS4 ? 1.0 : 0.3,
-                Cursor = hasViGEm ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
+                Cursor = System.Windows.Input.Cursors.Hand,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
@@ -1524,14 +1502,14 @@ namespace PadForge
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPath,
-                ToolTip = hasVJoy ? Strings.Instance.ControllerType_DirectInput : Strings.Instance.Main_DI_DriverNotInstalled,
+                ToolTip = Strings.Instance.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 Opacity = isVJoy ? 1.0 : 0.3,
-                Cursor = hasVJoy ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
+                Cursor = System.Windows.Input.Cursors.Hand,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
@@ -1799,11 +1777,10 @@ namespace PadForge
             }
         }
 
-        /// <summary>Handles sidebar Xbox type button click.</summary>
+        /// <summary>Handles sidebar Microsoft (Xbox-family) type button click.</summary>
         private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            if (!_viewModel.Dashboard.IsViGEmInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Microsoft);
@@ -1813,11 +1790,10 @@ namespace PadForge
             }
         }
 
-        /// <summary>Handles sidebar DualShock 4 type button click.</summary>
+        /// <summary>Handles sidebar Sony (PlayStation-family) type button click.</summary>
         private void OnSidebarTypeDS4(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            if (!_viewModel.Dashboard.IsViGEmInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Sony);
@@ -1827,15 +1803,12 @@ namespace PadForge
             }
         }
 
-        /// <summary>Handles sidebar vJoy type button click.</summary>
+        /// <summary>Handles sidebar Extended (custom DI) type button click.</summary>
         private void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            if (!_viewModel.Dashboard.IsVJoyInstalled) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
-                // Device nodes are created on demand by the engine (CreateVJoyController)
-                // when the slot becomes active — same pattern as ViGEm.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.EnsureTypeGroupOrder();
@@ -2587,14 +2560,13 @@ namespace PadForge
             };
             xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
-            bool vigemInstalled = _viewModel.Dashboard.IsViGEmInstalled;
-            bool xboxDisabled = xboxAtCapacity || !vigemInstalled;
+            bool xboxDisabled = xboxAtCapacity;
             if (xboxDisabled) xboxPopupPath.Opacity = 0.35;
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPopupPath,
-                ToolTip = !vigemInstalled ? Strings.Instance.Main_Xbox360_ViGEmNotInstalled
-                        : xboxAtCapacity ? string.Format(Strings.Instance.Main_Xbox360_Max_Format, SettingsManager.MaxXbox360Slots)
+                ToolTip = xboxAtCapacity
+                        ? string.Format(Strings.Instance.Main_Xbox360_Max_Format, SettingsManager.MaxXbox360Slots)
                         : Strings.Instance.ControllerType_Xbox360,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
@@ -2627,13 +2599,13 @@ namespace PadForge
             };
             ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
-            bool ds4Disabled = ds4AtCapacity || !vigemInstalled;
+            bool ds4Disabled = ds4AtCapacity;
             if (ds4Disabled) ds4PopupPath.Opacity = 0.35;
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4PopupPath,
-                ToolTip = !vigemInstalled ? Strings.Instance.Main_DS4_ViGEmNotInstalled
-                        : ds4AtCapacity ? string.Format(Strings.Instance.Main_DS4_Max_Format, SettingsManager.MaxDS4Slots)
+                ToolTip = ds4AtCapacity
+                        ? string.Format(Strings.Instance.Main_DS4_Max_Format, SettingsManager.MaxDS4Slots)
                         : Strings.Instance.ControllerType_DualShock4,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
@@ -2666,14 +2638,13 @@ namespace PadForge
             };
             vjoyPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool vjoyAtCapacity = vjoyCount >= SettingsManager.MaxVJoySlots;
-            bool vjoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
-            bool vjoyDisabled = vjoyAtCapacity || !vjoyInstalled;
+            bool vjoyDisabled = vjoyAtCapacity;
             if (vjoyDisabled) vjoyPopupPath.Opacity = 0.35;
             var vjoyBtn = new System.Windows.Controls.Button
             {
                 Content = vjoyPopupPath,
-                ToolTip = !vjoyInstalled ? Strings.Instance.Main_DI_DriverNotInstalled
-                        : vjoyAtCapacity ? string.Format(Strings.Instance.Main_DI_Max_Format, SettingsManager.MaxVJoySlots)
+                ToolTip = vjoyAtCapacity
+                        ? string.Format(Strings.Instance.Main_DI_Max_Format, SettingsManager.MaxVJoySlots)
                         : Strings.Instance.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
@@ -2687,8 +2658,6 @@ namespace PadForge
                 if (vjoyDisabled) return;
                 popup.IsOpen = false;
 
-                // Device nodes are created on demand by the engine (CreateVJoyController)
-                // when the slot becomes active — same pattern as ViGEm.
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Extended);
                 if (newSlot >= 0)
                 {

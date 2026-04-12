@@ -423,17 +423,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _connectedDeviceCount, value);
         }
 
-        private bool _isViGEmInstalled;
-
-        /// <summary>
-        /// Whether the ViGEmBus driver is installed and available.
-        /// </summary>
-        public bool IsViGEmInstalled
-        {
-            get => _isViGEmInstalled;
-            set => SetProperty(ref _isViGEmInstalled, value);
-        }
-
         // ─────────────────────────────────────────────
         //  Commands
         // ─────────────────────────────────────────────

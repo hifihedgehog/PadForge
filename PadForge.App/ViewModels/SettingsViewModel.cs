@@ -88,9 +88,7 @@ namespace PadForge.ViewModels
         protected override void OnCultureChanged()
         {
             Title = Strings.Instance.Settings_Title;
-            OnPropertyChanged(nameof(ViGEmStatusText));
             OnPropertyChanged(nameof(HidHideStatusText));
-            OnPropertyChanged(nameof(VJoyStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
 
             // Refresh the default profile's display name in the list.
@@ -125,61 +123,6 @@ namespace PadForge.ViewModels
                 }
             }
         }
-
-        // ─────────────────────────────────────────────
-        //  ViGEmBus driver
-        // ─────────────────────────────────────────────
-
-        private bool _isViGEmInstalled;
-
-        /// <summary>Whether the ViGEmBus driver is installed.</summary>
-        public bool IsViGEmInstalled
-        {
-            get => _isViGEmInstalled;
-            set
-            {
-                if (SetProperty(ref _isViGEmInstalled, value))
-                {
-                    OnPropertyChanged(nameof(ViGEmStatusText));
-                    _installViGEmCommand?.NotifyCanExecuteChanged();
-                    _uninstallViGEmCommand?.NotifyCanExecuteChanged();
-                }
-            }
-        }
-
-        /// <summary>ViGEmBus status display text.</summary>
-        public string ViGEmStatusText => _isViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
-
-        private string _vigemVersion = string.Empty;
-
-        /// <summary>ViGEmBus driver version string.</summary>
-        public string ViGEmVersion
-        {
-            get => _vigemVersion;
-            set => SetProperty(ref _vigemVersion, value);
-        }
-
-        private RelayCommand _installViGEmCommand;
-
-        /// <summary>Command to install the ViGEmBus driver.</summary>
-        public RelayCommand InstallViGEmCommand =>
-            _installViGEmCommand ??= new RelayCommand(
-                () => InstallViGEmRequested?.Invoke(this, EventArgs.Empty),
-                () => !_isViGEmInstalled);
-
-        private RelayCommand _uninstallViGEmCommand;
-
-        /// <summary>Command to uninstall the ViGEmBus driver.</summary>
-        public RelayCommand UninstallViGEmCommand =>
-            _uninstallViGEmCommand ??= new RelayCommand(
-                () => UninstallViGEmRequested?.Invoke(this, EventArgs.Empty),
-                () => _isViGEmInstalled && !HasAnyViGEmSlots());
-
-        /// <summary>Raised when the user requests ViGEmBus installation.</summary>
-        public event EventHandler InstallViGEmRequested;
-
-        /// <summary>Raised when the user requests ViGEmBus uninstallation.</summary>
-        public event EventHandler UninstallViGEmRequested;
 
         // ─────────────────────────────────────────────
         //  HidHide driver
@@ -286,61 +229,6 @@ namespace PadForge.ViewModels
         internal void RaiseWhitelistChanged() => WhitelistChanged?.Invoke(this, EventArgs.Empty);
 
         // ─────────────────────────────────────────────
-        //  vJoy driver
-        // ─────────────────────────────────────────────
-
-        private bool _isVJoyInstalled;
-
-        /// <summary>Whether the vJoy driver is installed and the DLL is accessible.</summary>
-        public bool IsVJoyInstalled
-        {
-            get => _isVJoyInstalled;
-            set
-            {
-                if (SetProperty(ref _isVJoyInstalled, value))
-                {
-                    OnPropertyChanged(nameof(VJoyStatusText));
-                    _installVJoyCommand?.NotifyCanExecuteChanged();
-                    _uninstallVJoyCommand?.NotifyCanExecuteChanged();
-                }
-            }
-        }
-
-        /// <summary>vJoy status display text.</summary>
-        public string VJoyStatusText => _isVJoyInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
-
-        private string _vjoyVersion = string.Empty;
-
-        /// <summary>vJoy driver version string.</summary>
-        public string VJoyVersion
-        {
-            get => _vjoyVersion;
-            set => SetProperty(ref _vjoyVersion, value);
-        }
-
-        private RelayCommand _installVJoyCommand;
-
-        /// <summary>Command to install the vJoy driver.</summary>
-        public RelayCommand InstallVJoyCommand =>
-            _installVJoyCommand ??= new RelayCommand(
-                () => InstallVJoyRequested?.Invoke(this, EventArgs.Empty),
-                () => !_isVJoyInstalled);
-
-        private RelayCommand _uninstallVJoyCommand;
-
-        /// <summary>Command to uninstall the vJoy driver.</summary>
-        public RelayCommand UninstallVJoyCommand =>
-            _uninstallVJoyCommand ??= new RelayCommand(
-                () => UninstallVJoyRequested?.Invoke(this, EventArgs.Empty),
-                () => _isVJoyInstalled && !HasAnyVJoySlots());
-
-        /// <summary>Raised when the user requests vJoy installation.</summary>
-        public event EventHandler InstallVJoyRequested;
-
-        /// <summary>Raised when the user requests vJoy uninstallation.</summary>
-        public event EventHandler UninstallVJoyRequested;
-
-        // ─────────────────────────────────────────────
         //  Windows MIDI Services
         // ─────────────────────────────────────────────
 
@@ -404,18 +292,6 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Set by MainWindow to provide slot-type queries for uninstall guards.
-        /// Returns true if any created slot uses ViGEm (Xbox 360 or DS4).
-        /// </summary>
-        internal Func<bool> HasAnyViGEmSlots { get; set; } = () => false;
-
-        /// <summary>
-        /// Set by MainWindow to provide slot-type queries for uninstall guards.
-        /// Returns true if any created slot uses vJoy.
-        /// </summary>
-        internal Func<bool> HasAnyVJoySlots { get; set; } = () => false;
-
-        /// <summary>
-        /// Set by MainWindow to provide slot-type queries for uninstall guards.
         /// Returns true if any created slot uses MIDI.
         /// </summary>
         internal Func<bool> HasAnyMidiSlots { get; set; } = () => false;
@@ -432,8 +308,6 @@ namespace PadForge.ViewModels
         /// </summary>
         public void RefreshDriverGuards()
         {
-            _uninstallViGEmCommand?.NotifyCanExecuteChanged();
-            _uninstallVJoyCommand?.NotifyCanExecuteChanged();
             _uninstallHidHideCommand?.NotifyCanExecuteChanged();
             _uninstallMidiServicesCommand?.NotifyCanExecuteChanged();
         }

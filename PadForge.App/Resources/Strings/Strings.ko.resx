@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 매핑됨, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 연결됨</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>모션 서버</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>자이로 및 가속도계 데이터를 위한 DSU/cemuhook 서버입니다.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>자이로 및 가속도계 데이터를 위한 DSU/CemuHook Motion Provider protocol 서버.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>포트:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로/가속도 데이터를 제공합니다.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>웹 컨트롤러</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>스마트폰이나 태블릿 브라우저에서 연결하여 게임패드로 사용할 수 있습니다.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DS4 터치패드 에뮬레이션을 위한 화면 터치 영역.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DualShock 4 및 DualSense 호환 터치패드 에뮬레이션을 위한 화면 터치 표면.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 활성화</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>불투명도:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>우클릭한 채로 드래그하여 이동</value></data>

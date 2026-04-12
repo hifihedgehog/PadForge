@@ -302,8 +302,7 @@ namespace PadForge.Services
 
             // Load touchpad overlay settings.
             _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
-            _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity > 0
-                ? appSettings.TouchpadOverlayOpacity : 0.25;
+            _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
             _mainVm.Dashboard.TouchpadOverlayTop = appSettings.TouchpadOverlayTop;
@@ -752,8 +751,7 @@ namespace PadForge.Services
                 if (active.WebControllerPort >= 1024 && active.WebControllerPort <= 65535)
                     _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
                 _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
-                _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity > 0
-                    ? active.TouchpadOverlayOpacity : 0.25;
+                _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity;
                 _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
                 _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
                 _mainVm.Dashboard.TouchpadOverlayTop = active.TouchpadOverlayTop;

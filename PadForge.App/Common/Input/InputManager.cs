@@ -684,11 +684,6 @@ namespace PadForge.Common.Input
             if (slotA < 0 || slotA >= MaxPads) return;
             if (slotB < 0 || slotB >= MaxPads) return;
 
-            // Hold VJoySyncLock so the polling thread's descriptor sync doesn't
-            // observe a half-swapped state (configs from one slot + VC from another).
-            lock (VJoySyncLock)
-            {
-
             // Swap engine config arrays.
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
@@ -730,11 +725,6 @@ namespace PadForge.Common.Input
                 _virtualControllers[slotA].FeedbackPadIndex = slotA;
             if (_virtualControllers[slotB] != null)
                 _virtualControllers[slotB].FeedbackPadIndex = slotB;
-
-            // Update vJoy FFB device map entries that reference the swapped indices.
-            VJoyVirtualController.UpdateFfbPadIndex(slotA, slotB);
-
-            } // end lock (VJoySyncLock)
         }
 
         // ─────────────────────────────────────────────

@@ -200,7 +200,13 @@ namespace PadForge
                 else if (WindowState == WindowState.Minimized || !IsActive)
                 {
                     // Minimized or behind other windows — bring to foreground.
-                    WindowState = WindowState.Normal;
+                    if (_isFullScreen)
+                    {
+                        WindowStyle = WindowStyle.None;
+                        WindowState = WindowState.Maximized;
+                    }
+                    else
+                        WindowState = WindowState.Normal;
                     Activate();
                     ForceToForeground(hwnd);
                 }
@@ -3487,10 +3493,14 @@ namespace PadForge
             _isRestoring = true;
             try
             {
+                if (_isFullScreen)
+                    WindowStyle = WindowStyle.None;
                 Show();
-                WindowState = WindowState.Normal;
+                WindowState = _isFullScreen ? WindowState.Maximized : WindowState.Normal;
                 Activate();
                 _notifyIcon.Visible = false;
+                if (_isFullScreen)
+                    ForceToForeground(new System.Windows.Interop.WindowInteropHelper(this).Handle);
 
                 // Re-apply theme so TitleBar ButtonsForeground updates (stale when
                 // the window was never rendered, e.g. start-minimized-to-tray).

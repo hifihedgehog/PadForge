@@ -233,7 +233,7 @@
                                               ItemsSource="{Binding SwitchModes}"
                                               SelectedValue="{Binding SwitchMode}"
                                               SelectedValuePath="Mode"
-                                              Width="130" Margin="0,0,6,0"/>
+                                              Width="155" Margin="0,0,6,0"/>
 
                                     <!-- Profile dropdown (Specific only) -->
                                     <ComboBox Grid.Column="1"

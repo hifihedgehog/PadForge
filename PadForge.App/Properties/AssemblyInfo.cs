@@ -20,5 +20,5 @@ using System.Windows;
 
 [assembly: Guid("F0E1D2C3-B4A5-6789-0123-456789ABCDEF")]
 
-[assembly: AssemblyVersion("2.4.0.0")]
-[assembly: AssemblyFileVersion("2.4.0.0")]
+[assembly: AssemblyVersion("2.4.1.0")]
+[assembly: AssemblyFileVersion("2.4.1.0")]

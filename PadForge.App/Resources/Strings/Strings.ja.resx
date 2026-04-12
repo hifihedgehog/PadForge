@@ -202,6 +202,7 @@
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>次のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>前のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>特定のプロファイル</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ウィンドウの切替</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>接続中の任意のデバイス</value></data>
   <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>録音</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>録音中...</value></data>

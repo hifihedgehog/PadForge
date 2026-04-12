@@ -63,6 +63,7 @@ namespace PadForge.ViewModels
             new(SwitchProfileMode.Next, Strings.Instance.Profiles_ShortcutMode_Next),
             new(SwitchProfileMode.Previous, Strings.Instance.Profiles_ShortcutMode_Previous),
             new(SwitchProfileMode.Specific, Strings.Instance.Profiles_ShortcutMode_Specific),
+            new(SwitchProfileMode.ToggleWindow, Strings.Instance.Profiles_ShortcutMode_ToggleWindow),
         };
 
         // ─────────────────────────────────────────────

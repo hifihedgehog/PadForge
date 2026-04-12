@@ -125,6 +125,12 @@ namespace PadForge.Common.Input
         public volatile bool PendingProfileSwitchIsManual;
 
         /// <summary>
+        /// Pending window toggle queued by global macro evaluation.
+        /// Consumed by InputService on the UI thread.
+        /// </summary>
+        public volatile bool PendingToggleWindow;
+
+        /// <summary>
         /// Set true while recording a shortcut combo. Suppresses global macro
         /// evaluation so the recorded buttons don't immediately trigger a switch.
         /// </summary>

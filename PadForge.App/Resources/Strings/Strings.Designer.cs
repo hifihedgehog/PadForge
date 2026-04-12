@@ -242,6 +242,7 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_ShortcutMode_Next => Get("Profiles_ShortcutMode_Next");
     public string Profiles_ShortcutMode_Previous => Get("Profiles_ShortcutMode_Previous");
     public string Profiles_ShortcutMode_Specific => Get("Profiles_ShortcutMode_Specific");
+    public string Profiles_ShortcutMode_ToggleWindow => Get("Profiles_ShortcutMode_ToggleWindow");
     public string Profiles_ShortcutDevice_Any => Get("Profiles_ShortcutDevice_Any");
     public string Profiles_ShortcutLearn => Get("Profiles_ShortcutLearn");
     public string Profiles_ShortcutLearning => Get("Profiles_ShortcutLearning");

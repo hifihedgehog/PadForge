@@ -202,6 +202,7 @@
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profilo successivo</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profilo precedente</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Profilo specifico</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Attiva/disattiva finestra</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Qualsiasi dispositivo collegato</value></data>
   <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Registra</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Registrazione...</value></data>

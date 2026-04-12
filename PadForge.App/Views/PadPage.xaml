@@ -145,13 +145,13 @@
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{StaticResource GenericControllerIcon}"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox360">
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Microsoft">
                                             <Setter Property="Source" Value="{StaticResource XboxControllerIcon}"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="DualShock4">
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Sony">
                                             <Setter Property="Source" Value="{StaticResource DS4ControllerIcon}"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="VJoy">
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                             <Setter Property="Source" Value="{StaticResource VJoyControllerIcon}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">

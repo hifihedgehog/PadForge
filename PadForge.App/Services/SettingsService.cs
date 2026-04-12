@@ -279,11 +279,22 @@ namespace PadForge.Services
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotControllerTypes.Length; i++)
                 {
                     // Only load types for created slots. Uncreated slots keep the
-                    // default (Xbox360) to prevent stale values from previous sessions
+                    // default (Microsoft) to prevent stale values from previous sessions
                     // leaking into the engine's SlotControllerTypes array.
                     if (SettingsManager.SlotCreated[i] &&
                         Enum.IsDefined(typeof(Engine.VirtualControllerType), appSettings.SlotControllerTypes[i]))
                         _mainVm.Pads[i].OutputType = (Engine.VirtualControllerType)appSettings.SlotControllerTypes[i];
+                }
+            }
+
+            // Load per-slot HIDMaestro profile slugs (after OutputType so the
+            // OutputType setter doesn't clear them via its category-change reset).
+            if (appSettings.SlotProfileIds != null)
+            {
+                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotProfileIds.Length; i++)
+                {
+                    if (SettingsManager.SlotCreated[i])
+                        _mainVm.Pads[i].ProfileId = appSettings.SlotProfileIds[i];
                 }
             }
 
@@ -738,6 +749,15 @@ namespace PadForge.Services
                     }
                 }
 
+                if (active.SlotProfileIds != null)
+                {
+                    for (int i = 0; i < _mainVm.Pads.Count && i < active.SlotProfileIds.Length; i++)
+                    {
+                        if (SettingsManager.SlotCreated[i])
+                            _mainVm.Pads[i].ProfileId = active.SlotProfileIds[i];
+                    }
+                }
+
                 // Now that SlotCreated and OutputType are restored, apply vJoy/MIDI
                 // configs from the profile's own snapshot.
                 ApplyVJoyConfigs(active.VJoyConfigs);
@@ -808,6 +828,8 @@ namespace PadForge.Services
             profile.SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
             profile.SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                 .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
+            profile.SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
+                .Select(i => _mainVm.Pads[i].ProfileId).ToArray();
             profile.VJoyConfigs = BuildVJoyConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
@@ -985,10 +1007,14 @@ namespace PadForge.Services
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
 
-            // Collect per-slot controller types from PadViewModels.
+            // Collect per-slot controller types and HIDMaestro profile slugs.
             var slotTypes = new int[_mainVm.Pads.Count];
+            var slotProfileIds = new string[_mainVm.Pads.Count];
             for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
                 slotTypes[i] = (int)_mainVm.Pads[i].OutputType;
+                slotProfileIds[i] = _mainVm.Pads[i].ProfileId;
+            }
 
             // Collect per-slot vJoy configurations.
             var vjoyConfigs = new System.Collections.Generic.List<ViewModels.VJoySlotConfigData>();
@@ -1027,6 +1053,7 @@ namespace PadForge.Services
                 ActiveProfileId = SettingsManager.ActiveProfileId,
                 GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
+                SlotProfileIds = isDefault ? slotProfileIds : defaultSnap.SlotProfileIds,
                 SlotCreated = isDefault
                     ? (bool[])SettingsManager.SlotCreated.Clone()
                     : defaultSnap.SlotCreated,
@@ -1625,6 +1652,15 @@ namespace PadForge.Services
         public int[] SlotControllerTypes { get; set; }
 
         /// <summary>
+        /// Per-slot HIDMaestro profile slug (e.g. "xbox-360-wired",
+        /// "dualsense", "logitech-g920"). Empty string falls back to a
+        /// category-appropriate default in the engine. Added in v3.0.0.
+        /// </summary>
+        [XmlArray("SlotProfileIds")]
+        [XmlArrayItem("Id")]
+        public string[] SlotProfileIds { get; set; }
+
+        /// <summary>
         /// Which virtual controller slots have been explicitly created.
         /// Null on old settings files — auto-populated from existing assignments.
         /// </summary>
@@ -1940,6 +1976,14 @@ namespace PadForge.Services
         [XmlArray("ProfileSlotControllerTypes")]
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
+
+        /// <summary>
+        /// Per-slot HIDMaestro profile slug saved with this profile. Added
+        /// in v3.0.0; null on profiles saved by v2.x.
+        /// </summary>
+        [XmlArray("ProfileSlotProfileIds")]
+        [XmlArrayItem("Id")]
+        public string[] SlotProfileIds { get; set; }
 
         /// <summary>Per-slot vJoy configurations saved with this profile.</summary>
         [XmlArray("ProfileVJoyConfigs")]

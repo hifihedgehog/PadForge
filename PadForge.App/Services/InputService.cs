@@ -1920,6 +1920,7 @@ namespace PadForge.Services
             {
                 _switchOverlay = new Views.ProfileSwitchOverlay();
                 _switchOverlay.CheckInitState = CheckAllSlotsInitState;
+                _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
             }
 
             _switchOverlay.ShowProfileName(name ?? Strings.Instance.Common_Default);
@@ -1947,41 +1948,52 @@ namespace PadForge.Services
                 {
                     allReady = false;
                 }
-                else if (!IsSlotDeviceOnline(i))
-                {
-                    // VC is connected but no assigned physical device is online.
-                    allReady = false;
-                }
             }
 
             return (anyInit, allReady);
         }
 
         /// <summary>
-        /// Returns true if at least one physical device assigned to this slot is online,
-        /// or if the slot has no device assignments (e.g. keyboard/mouse VC).
+        /// Returns true if any created+enabled controller slot has no online
+        /// physical devices assigned. Used by the flyout to show a warning
+        /// after the "Active" state.
         /// </summary>
-        private bool IsSlotDeviceOnline(int padIndex)
+        private bool CheckAnyControllerOffline()
         {
-            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
-            if (slotSettings.Count == 0)
-                return true; // No device assignment required.
-
-            var devices = SettingsManager.UserDevices;
-            if (devices == null)
-                return false;
-
-            lock (devices.SyncRoot)
+            for (int i = 0; i < InputManager.MaxPads; i++)
             {
-                foreach (var s in slotSettings)
+                if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i])
+                    continue;
+
+                var slotSettings = SettingsManager.GetSettingsForSlot(i);
+                if (slotSettings.Count == 0)
+                    return true; // No devices assigned — controller is offline.
+
+                bool anyOnline = false;
+                var devices = SettingsManager.UserDevices;
+                if (devices != null)
                 {
-                    foreach (var ud in devices.Items)
+                    lock (devices.SyncRoot)
                     {
-                        if (ud.InstanceGuid == s.InstanceGuid && ud.IsOnline)
-                            return true;
+                        foreach (var s in slotSettings)
+                        {
+                            foreach (var ud in devices.Items)
+                            {
+                                if (ud.InstanceGuid == s.InstanceGuid && ud.IsOnline)
+                                {
+                                    anyOnline = true;
+                                    break;
+                                }
+                            }
+                            if (anyOnline) break;
+                        }
                     }
                 }
+
+                if (!anyOnline)
+                    return true; // This controller has no online devices.
             }
+
             return false;
         }
 

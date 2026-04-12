@@ -179,12 +179,6 @@ namespace PadForge.Common.Input
             if (!VirtualControllersEnabled)
                 return;
 
-            // ViGEm is only required for Xbox 360 and DS4 virtual controllers.
-            // vJoy uses its own driver and works independently. Only try to
-            // initialize ViGEm if it hasn't permanently failed.
-            if (!_vigemClientFailed)
-                EnsureViGEmClient();
-
             // --- Pass 1: Handle type changes, destruction, and activity tracking ---
             bool anyNeedsCreate = false;
 
@@ -627,36 +621,16 @@ namespace PadForge.Common.Input
 
             try
             {
-                // Snapshot for Xbox 360 slot mask wait.
-                uint maskBefore = 0;
-                if (vcType == VirtualControllerType.Microsoft)
-                    maskBefore = GetXInputConnectedSlotMask();
-
                 vc.Disconnect();
-
-                // Brief wait for the slot to disappear from the XInput stack.
-                if (vcType == VirtualControllerType.Microsoft)
-                {
-                    var waitSw = Stopwatch.StartNew();
-                    while (waitSw.ElapsedMilliseconds < 50)
-                    {
-                        uint maskAfter = GetXInputConnectedSlotMask();
-                        if (maskAfter != maskBefore)
-                            break;
-                        Thread.SpinWait(100);
-                    }
-                }
-
-                // Dispose releases the native ViGEm target handle (vigem_target_free).
-                // Without this, the ViGEm target leaks and phantom USB devices remain.
                 vc.Dispose();
             }
             catch { /* best effort */ }
             finally
             {
                 // Counter decrements MUST happen even if Disconnect/Dispose throws.
-                // Otherwise _activeXbox360Count stays inflated and the filter
-                // over-filters on subsequent UpdateDevices cycles.
+                // Counters are read by Step 1's transitional ViGEm filter; they
+                // disappear when that filter is replaced with HIDMaestro
+                // device-path detection.
                 if (vcType == VirtualControllerType.Microsoft)
                 {
                     _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
@@ -668,9 +642,6 @@ namespace PadForge.Common.Input
                     _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
                 }
             }
-
-            // Single-node model: only 1 ROOT\HIDCLASS device node ever exists.
-            // No node trimming needed — the node stays alive for the session.
         }
 
         private void DestroyAllVirtualControllers(bool preserveVJoyNodes = false)

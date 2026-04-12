@@ -75,28 +75,19 @@ namespace PadForge.Views
         private void XboxType_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-            {
-                if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsViGEmInstalled) return;
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Microsoft));
-            }
         }
 
         private void DS4Type_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-            {
-                if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsViGEmInstalled) return;
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Sony));
-            }
         }
 
         private void VJoyType_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-            {
-                if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsVJoyInstalled) return;
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Extended));
-            }
         }
 
         private void KeyboardMouseType_Click(object sender, RoutedEventArgs e)

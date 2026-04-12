@@ -116,30 +116,21 @@
   <data name="Main_FullScreen" xml:space="preserve"><value>全画面表示</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge を表示</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
-  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus が未インストールです</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>1つ以上のコントローラーがオフライン</value></data>
-  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput ドライバーが未インストールです</value></data>
-  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus 未インストール)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (最大 {0})</value></data>
-  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4 (ViGEmBus 未インストール)</value></data>
   <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4 (最大 {0})</value></data>
-  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput (ドライバー未インストール)</value></data>
   <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput (最大 {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services が必要です)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (最大 {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
-  <data name="Status_InstallingViGEm" xml:space="preserve"><value>ViGEmBus をインストールしています…</value></data>
-  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>ViGEmBus をアンインストールしています…</value></data>
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide をインストールしています…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide をアンインストールしています…</value></data>
-  <data name="Status_InstallingVJoy" xml:space="preserve"><value>vJoy をインストールしています…</value></data>
-  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>vJoy をアンインストールしています…</value></data>
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services をダウンロードしています…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services をダウンロードしてインストールしています…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services をアンインストールしています…</value></data>
@@ -153,14 +144,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ 下)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← 左)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ 上)</value></data>
-  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>ViGEmBus を検出しました — エンジンを再起動しました。</value></data>
-  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>vJoy ドライバーを検出しました — エンジンを再起動しました。</value></data>
-  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>vJoy ドライバーをインストールしました — エンジンを再起動しました。</value></data>
-  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>vJoy ドライバーを削除しました — エンジンを再起動しました。</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll が見つかりません</value></data>
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll が見つかりません！ PadForge.exe と同じフォルダーに SDL3.dll を配置してください。ダウンロード先: https://github.com/libsdl-org/SDL/releases</value></data>
-  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>ViGEmBus ドライバーが検出されませんでした。仮想コントローラー出力は無効です。</value></data>
-  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>ViGEm の確認に失敗しました: {0}</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ドライバー操作に失敗しました: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>設定をクリップボードにコピーしました。</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>コピーに失敗しました: {0}</value></data>
@@ -264,10 +249,6 @@
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>ホワイトリスト登録済みアプリケーション</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>これらのアプリケーションは非表示のデバイスを引き続き認識できます。PadForge は常に自動的にホワイトリストに登録されます。</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>追加...</value></data>
-  <data name="Settings_ViGEmBus" xml:space="preserve"><value>ViGEmBus ドライバー</value></data>
-  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>Xbox 360 および DualShock 4 出力用の仮想コントローラードライバーです。</value></data>
-  <data name="Settings_VJoy" xml:space="preserve"><value>vJoy ドライバー</value></data>
-  <data name="Settings_VJoyDesc" xml:space="preserve"><value>カスタム DirectInput デバイス出力用の仮想ジョイスティックドライバーです。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力用の SDK ランタイムです。GitHub からダウンロードされます (~210 MB)。</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (ビルド 26100) 以降が必要です</value></data>
@@ -298,10 +279,6 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>コントローラー入力および列挙</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>デバイスごとのキーボードおよびマウス入力</value></data>
-  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
-  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>仮想コントローラードライバー (Xbox 360、DualShock 4)</value></data>
-  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
-  <data name="About_VJoyDesc" xml:space="preserve"><value>カスタム DirectInput 出力用の仮想ジョイスティックドライバー</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力 (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>

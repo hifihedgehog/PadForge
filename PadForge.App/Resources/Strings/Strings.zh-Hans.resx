@@ -116,30 +116,21 @@
   <data name="Main_FullScreen" xml:space="preserve"><value>全屏</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>显示 PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}</value></data>
-  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus 未安装</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>等待设备</value></data>
   <data name="Main_Active" xml:space="preserve"><value>活跃</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>正在初始化</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
-  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput 驱动未安装</value></data>
-  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360（ViGEmBus 未安装）</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360（最多 {0} 个）</value></data>
-  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4（ViGEmBus 未安装）</value></data>
   <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4（最多 {0} 个）</value></data>
-  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput（驱动未安装）</value></data>
   <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput（最多 {0} 个）</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>键盘 + 鼠标（最多 {0} 个）</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI（需要 Windows MIDI Services）</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI（最多 {0} 个）</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
-  <data name="Status_InstallingViGEm" xml:space="preserve"><value>正在安装 ViGEmBus…</value></data>
-  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>正在卸载 ViGEmBus…</value></data>
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>正在安装 HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>正在卸载 HidHide…</value></data>
-  <data name="Status_InstallingVJoy" xml:space="preserve"><value>正在安装 vJoy…</value></data>
-  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>正在卸载 vJoy…</value></data>
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>正在下载 Windows MIDI Services…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>正在下载并安装 Windows MIDI Services…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载 Windows MIDI Services…</value></data>
@@ -153,14 +144,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>（↓ 下）</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>（← 左）</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>（↑ 上）</value></data>
-  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>检测到 ViGEmBus — 引擎已重启。</value></data>
-  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>检测到 vJoy 驱动 — 引擎已重启。</value></data>
-  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>vJoy 驱动已安装 — 引擎已重启。</value></data>
-  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>vJoy 驱动已移除 — 引擎已重启。</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>未找到 SDL3.dll</value></data>
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>未找到 SDL3.dll！请将 SDL3.dll 放置在 PadForge.exe 旁边。下载地址：https://github.com/libsdl-org/SDL/releases</value></data>
-  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>未检测到 ViGEmBus 驱动。虚拟控制器输出已禁用。</value></data>
-  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>ViGEm 检测失败：{0}</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>驱动操作失败：{0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>设置已复制到剪贴板。</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>复制失败：{0}</value></data>
@@ -264,10 +249,6 @@
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>白名单应用程序</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>这些应用程序仍然可以看到被隐藏的设备。PadForge 始终自动列入白名单。</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>添加...</value></data>
-  <data name="Settings_ViGEmBus" xml:space="preserve"><value>ViGEmBus 驱动</value></data>
-  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>用于 Xbox 360 和 DualShock 4 输出的虚拟控制器驱动。</value></data>
-  <data name="Settings_VJoy" xml:space="preserve"><value>vJoy 驱动</value></data>
-  <data name="Settings_VJoyDesc" xml:space="preserve"><value>用于自定义 DirectInput 设备输出的虚拟摇杆驱动。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>用于虚拟 MIDI 设备输出的 SDK 运行时。从 GitHub 下载（约 210 MB）。</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>需要 Windows 11 24H2（内部版本 26100）或更高版本</value></data>
@@ -298,10 +279,6 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>控制器输入和枚举</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>按设备区分的键盘和鼠标输入</value></data>
-  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
-  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>虚拟控制器驱动（Xbox 360、DualShock 4）</value></data>
-  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
-  <data name="About_VJoyDesc" xml:space="preserve"><value>用于自定义 DirectInput 输出的虚拟摇杆驱动</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>虚拟 MIDI 设备输出（Windows MIDI Services）</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>

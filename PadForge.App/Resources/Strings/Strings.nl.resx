@@ -116,30 +116,21 @@
   <data name="Main_FullScreen" xml:space="preserve"><value>Volledig scherm</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge tonen</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuele Controller {0}</value></data>
-  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus niet geïnstalleerd</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Engine gestopt</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>Wachten op apparaten</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Actief</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Initialiseren</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Een of meer controllers offline</value></data>
-  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput-stuurprogramma niet geïnstalleerd</value></data>
-  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus niet geïnstalleerd)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (max {0})</value></data>
-  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4 (ViGEmBus niet geïnstalleerd)</value></data>
   <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4 (max {0})</value></data>
-  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput (stuurprogramma niet geïnstalleerd)</value></data>
   <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput (max {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Toetsenbord + Muis (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (vereist Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
-  <data name="Status_InstallingViGEm" xml:space="preserve"><value>ViGEmBus wordt geïnstalleerd…</value></data>
-  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>ViGEmBus wordt verwijderd…</value></data>
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wordt geïnstalleerd…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>HidHide wordt verwijderd…</value></data>
-  <data name="Status_InstallingVJoy" xml:space="preserve"><value>vJoy wordt geïnstalleerd…</value></data>
-  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>vJoy wordt verwijderd…</value></data>
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services wordt gedownload…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services wordt gedownload en geïnstalleerd…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wordt verwijderd…</value></data>
@@ -153,14 +144,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ omlaag)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← links)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ omhoog)</value></data>
-  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>ViGEmBus gedetecteerd — engine herstart.</value></data>
-  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>vJoy-stuurprogramma gedetecteerd — engine herstart.</value></data>
-  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>vJoy-stuurprogramma geïnstalleerd — engine herstart.</value></data>
-  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>vJoy-stuurprogramma verwijderd — engine herstart.</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NIET GEVONDEN</value></data>
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll niet gevonden! Plaats SDL3.dll naast PadForge.exe. Download van https://github.com/libsdl-org/SDL/releases</value></data>
-  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>ViGEmBus-stuurprogramma niet gedetecteerd. Virtuele controller-uitvoer uitgeschakeld.</value></data>
-  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>ViGEm-controle mislukt: {0}</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Stuurprogrammabewerking mislukt: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Instellingen naar klembord gekopieerd.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Kopiëren mislukt: {0}</value></data>
@@ -264,10 +249,6 @@
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Toegestane toepassingen</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Deze toepassingen kunnen verborgen apparaten nog steeds zien. PadForge wordt altijd automatisch toegestaan.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Toevoegen...</value></data>
-  <data name="Settings_ViGEmBus" xml:space="preserve"><value>ViGEmBus-stuurprogramma</value></data>
-  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>Virtueel controller-stuurprogramma voor Xbox 360- en DualShock 4-uitvoer.</value></data>
-  <data name="Settings_VJoy" xml:space="preserve"><value>vJoy-stuurprogramma</value></data>
-  <data name="Settings_VJoyDesc" xml:space="preserve"><value>Virtueel joystick-stuurprogramma voor aangepaste DirectInput-apparaatuitvoer.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-runtime voor virtuele MIDI-apparaatuitvoer. Gedownload van GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Vereist Windows 11 24H2 (build 26100) of hoger</value></data>
@@ -298,10 +279,6 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-invoer en -detectie</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Apparaatspecifieke toetsenbord- en muisinvoer</value></data>
-  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
-  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>Virtueel controller-stuurprogramma (Xbox 360, DualShock 4)</value></data>
-  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
-  <data name="About_VJoyDesc" xml:space="preserve"><value>Virtueel joystick-stuurprogramma voor aangepaste DirectInput-uitvoer</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuele MIDI-apparaatuitvoer (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>

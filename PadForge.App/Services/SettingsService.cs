@@ -334,7 +334,7 @@ namespace PadForge.Services
                 int idx = cfgData.SlotIndex;
                 if (idx >= 0 && idx < _mainVm.Pads.Count &&
                     SettingsManager.SlotCreated[idx] &&
-                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.VJoy)
+                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Extended)
                 {
                     var cfg = _mainVm.Pads[idx].VJoyConfig;
                     cfg.Preset = cfgData.Preset;
@@ -634,7 +634,7 @@ namespace PadForge.Services
 
                 // Set after actions are populated so propagation reaches all of them.
                 var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
-                int btnCount = (padVm.OutputType == VirtualControllerType.VJoy ? padVm.VJoyConfig?.ButtonCount : null) ?? 11;
+                int btnCount = (padVm.OutputType == VirtualControllerType.Extended ? padVm.VJoyConfig?.ButtonCount : null) ?? 11;
                 macro.CustomButtonCount = btnCount;
                 macro.ButtonStyle = style;
                 foreach (var action in macro.Actions)
@@ -1070,7 +1070,7 @@ namespace PadForge.Services
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i] ||
-                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.VJoy)
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.Extended)
                     continue;
                 var cfg = _mainVm.Pads[i].VJoyConfig;
                 list.Add(new ViewModels.VJoySlotConfigData

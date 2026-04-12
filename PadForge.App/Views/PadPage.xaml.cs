@@ -74,7 +74,7 @@ namespace PadForge.Views
         private bool IsCustomVJoy()
         {
             if (DataContext is PadViewModel vm &&
-                vm.OutputType == Engine.VirtualControllerType.VJoy &&
+                vm.OutputType == Engine.VirtualControllerType.Extended &&
                 !vm.VJoyConfig.IsGamepadPreset)
                 return true;
             return false;
@@ -346,7 +346,7 @@ namespace PadForge.Views
         {
             if (DataContext is not PadViewModel vm) return;
 
-            bool isVJoy = vm.OutputType == Engine.VirtualControllerType.VJoy;
+            bool isVJoy = vm.OutputType == Engine.VirtualControllerType.Extended;
             VJoyConfigBar.Visibility = isVJoy ? Visibility.Visible : Visibility.Collapsed;
 
             if (isVJoy)

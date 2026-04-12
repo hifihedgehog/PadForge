@@ -25,7 +25,7 @@ namespace PadForge.Common.Input
         /// <summary>Monotonic timestamp in 10µs ticks (wraps at ushort.MaxValue).</summary>
         private ushort _timestamp;
 
-        public VirtualControllerType Type => VirtualControllerType.DualShock4;
+        public VirtualControllerType Type => VirtualControllerType.Sony;
         public bool IsConnected { get; private set; }
         public int FeedbackPadIndex { get; set; }
 

@@ -23,7 +23,7 @@ namespace PadForge.Engine.Data
         /// </summary>
         public static MappingSlot GetPosition(string propertyName, VirtualControllerType type, bool isCustomVJoy)
         {
-            if (type == VirtualControllerType.VJoy && isCustomVJoy)
+            if (type == VirtualControllerType.Extended && isCustomVJoy)
                 return GetVJoyPosition(propertyName);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPosition(propertyName);
@@ -38,7 +38,7 @@ namespace PadForge.Engine.Data
         /// </summary>
         public static string GetPropertyName(MappingSlot slot, VirtualControllerType type, bool isCustomVJoy)
         {
-            if (type == VirtualControllerType.VJoy && isCustomVJoy)
+            if (type == VirtualControllerType.Extended && isCustomVJoy)
                 return GetVJoyPropertyName(slot);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPropertyName(slot);
@@ -287,7 +287,7 @@ namespace PadForge.Engine.Data
 
         private static LayoutKind GetLayoutKind(VirtualControllerType type, bool isCustomVJoy)
         {
-            if (type == VirtualControllerType.VJoy && isCustomVJoy)
+            if (type == VirtualControllerType.Extended && isCustomVJoy)
                 return LayoutKind.VJoyCustom;
             if (type == VirtualControllerType.Midi)
                 return LayoutKind.Midi;
@@ -308,9 +308,9 @@ namespace PadForge.Engine.Data
                 LayoutKind.Kbm        => "KB+M",
                 _ => type switch
                 {
-                    VirtualControllerType.Xbox360    => "Xbox 360",
-                    VirtualControllerType.DualShock4 => "DualShock 4",
-                    VirtualControllerType.VJoy       => "vJoy (Gamepad)",
+                    VirtualControllerType.Microsoft    => "Xbox 360",
+                    VirtualControllerType.Sony => "DualShock 4",
+                    VirtualControllerType.Extended       => "vJoy (Gamepad)",
                     _ => type.ToString()
                 }
             };

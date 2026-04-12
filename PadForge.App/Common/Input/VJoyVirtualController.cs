@@ -370,7 +370,7 @@ namespace PadForge.Common.Input
         private int _reacquireFailCount;
         private const int MaxReacquireRetries = 50; // ~50ms at 1kHz before giving up
 
-        public VirtualControllerType Type => VirtualControllerType.VJoy;
+        public VirtualControllerType Type => VirtualControllerType.Extended;
         public bool IsConnected => _connected;
         public int FeedbackPadIndex { get; set; }
 

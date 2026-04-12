@@ -1017,7 +1017,7 @@ namespace PadForge.Engine.Data
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
         /// </summary>
-        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Xbox360, bool isCustomVJoy = false)
+        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Microsoft, bool isCustomVJoy = false)
         {
             // Flush live dicts to arrays before serializing.
             FlushVJoyMappings();
@@ -1087,7 +1087,7 @@ namespace PadForge.Engine.Data
         public static PadSetting FromJson(string json,
             out VirtualControllerType sourceOutputType, out bool sourceIsCustomVJoy)
         {
-            sourceOutputType = VirtualControllerType.Xbox360;
+            sourceOutputType = VirtualControllerType.Microsoft;
             sourceIsCustomVJoy = false;
 
             if (string.IsNullOrWhiteSpace(json))
@@ -1215,7 +1215,7 @@ namespace PadForge.Engine.Data
             // Read from gamepad properties (Xbox/DS4/vJoy gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
-                !(sourceType == VirtualControllerType.VJoy && sourceIsCustomVJoy))
+                !(sourceType == VirtualControllerType.Extended && sourceIsCustomVJoy))
             {
                 foreach (string propName in MappingPropertyNames)
                 {
@@ -1231,7 +1231,7 @@ namespace PadForge.Engine.Data
             }
 
             // Read from vJoy dictionary (vJoy custom source)
-            if (sourceType == VirtualControllerType.VJoy && sourceIsCustomVJoy
+            if (sourceType == VirtualControllerType.Extended && sourceIsCustomVJoy
                 && source.VJoyMappingEntries != null)
             {
                 foreach (var e in source.VJoyMappingEntries)
@@ -1270,7 +1270,7 @@ namespace PadForge.Engine.Data
             // Step 3: Write translated positions to target layout.
 
             // Clear existing target mappings first.
-            if (targetType == VirtualControllerType.VJoy && targetIsCustomVJoy)
+            if (targetType == VirtualControllerType.Extended && targetIsCustomVJoy)
             {
                 VJoyMappingEntries = null;
                 _vjoyMappingDict = null;
@@ -1302,7 +1302,7 @@ namespace PadForge.Engine.Data
                 string targetKey = MappingTranslation.GetPropertyName(kvp.Key, targetType, targetIsCustomVJoy);
                 if (targetKey == null) continue; // No equivalent in target layout — silently dropped.
 
-                if (targetType == VirtualControllerType.VJoy && targetIsCustomVJoy)
+                if (targetType == VirtualControllerType.Extended && targetIsCustomVJoy)
                     SetVJoyMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.Midi)
                     SetMidiMapping(targetKey, kvp.Value);

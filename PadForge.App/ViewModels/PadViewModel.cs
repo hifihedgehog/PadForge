@@ -137,7 +137,7 @@ namespace PadForge.ViewModels
         private void OnVJoyConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             // When vJoy config changes (preset, counts), rebuild dynamic collections
-            if (OutputType == VirtualControllerType.VJoy)
+            if (OutputType == VirtualControllerType.Extended)
             {
                 switch (e.PropertyName)
                 {
@@ -426,7 +426,7 @@ namespace PadForge.ViewModels
         {
             Mappings.Clear();
 
-            bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
+            bool isCustomVJoy = OutputType == VirtualControllerType.Extended && !VJoyConfig.IsGamepadPreset;
             if (OutputType == VirtualControllerType.KeyboardMouse)
                 InitializeKeyboardMouseMappings();
             else if (OutputType == VirtualControllerType.Midi)
@@ -445,8 +445,8 @@ namespace PadForge.ViewModels
         /// </summary>
         private void InitializeGamepadMappings()
         {
-            bool isDS4 = OutputType == VirtualControllerType.DualShock4
-                || (OutputType == VirtualControllerType.VJoy && VJoyConfig.Preset == VJoyPreset.DualShock4);
+            bool isDS4 = OutputType == VirtualControllerType.Sony
+                || (OutputType == VirtualControllerType.Extended && VJoyConfig.Preset == VJoyPreset.DualShock4);
 
             // Buttons
             if (isDS4)
@@ -948,7 +948,7 @@ namespace PadForge.ViewModels
             }
 
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
-            bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
+            bool isCustomVJoy = OutputType == VirtualControllerType.Extended && !VJoyConfig.IsGamepadPreset;
             if (isCustomVJoy)
                 count = VJoyConfig.ThumbstickCount;
 
@@ -986,7 +986,7 @@ namespace PadForge.ViewModels
                 return;
 
             int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
-            bool isCustomVJoy = OutputType == VirtualControllerType.VJoy && !VJoyConfig.IsGamepadPreset;
+            bool isCustomVJoy = OutputType == VirtualControllerType.Extended && !VJoyConfig.IsGamepadPreset;
             if (isCustomVJoy)
                 count = VJoyConfig.TriggerCount;
 
@@ -1240,7 +1240,7 @@ namespace PadForge.ViewModels
         private void SyncMacroButtonStyle()
         {
             var style = MacroButtonNames.DeriveStyle(_outputType, _vJoyConfig?.Preset ?? VJoyPreset.Xbox360);
-            int btnCount = (_outputType == VirtualControllerType.VJoy ? _vJoyConfig?.ButtonCount : null) ?? 11;
+            int btnCount = (_outputType == VirtualControllerType.Extended ? _vJoyConfig?.ButtonCount : null) ?? 11;
             foreach (var macro in Macros)
             {
                 macro.ButtonStyle = style;

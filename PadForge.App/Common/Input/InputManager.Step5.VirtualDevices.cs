@@ -31,11 +31,21 @@ namespace PadForge.Common.Input
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
 
         /// <summary>
-        /// Configured virtual controller type per slot. The UI writes to this
-        /// array via InputService at 30Hz. Step 5 reads it at ~1000Hz to detect
-        /// type changes and recreate controllers accordingly.
+        /// Configured virtual controller category per slot (Microsoft / Sony /
+        /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;
+        /// Step 5 reads it at ~1000Hz to detect type changes and recreate
+        /// controllers accordingly.
         /// </summary>
         public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
+
+        /// <summary>
+        /// Per-slot HIDMaestro profile slug. Identifies which of the 225
+        /// embedded profiles the slot uses (e.g. "xbox-360-wired",
+        /// "dualsense", "logitech-g920"). Empty string falls back to a
+        /// category-appropriate default in CreateHMaestroController.
+        /// Ignored for MIDI and KeyboardMouse slots.
+        /// </summary>
+        public string[] SlotProfileIds { get; } = new string[MaxPads];
 
         /// <summary>
         /// Per-slot HID descriptor layout (axis/button/POV counts) for the
@@ -146,6 +156,10 @@ namespace PadForge.Common.Input
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _createCooldown[padIndex] = 0; // Reset cooldown on type change
+                    // The old profile slug belongs to the old category and is
+                    // not valid for the new one. Clear it so CreateVirtualController
+                    // falls back to the new category's default profile.
+                    SlotProfileIds[padIndex] = null;
                     // Only show initializing if the slot has an active device that
                     // will trigger VC recreation. Empty slots (no device assigned)
                     // should show "Awaiting controllers" (yellow), not "Initializing".
@@ -384,9 +398,18 @@ namespace PadForge.Common.Input
 
         // ─────────────────────────────────────────────
         //  Virtual controller management
-        //  Uses XInput slot mask delta to detect which
-        //  slot the new virtual controller occupies.
         // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Default HIDMaestro profile slug for each category. Used when a
+        /// slot has no explicit SlotProfileIds[] value (e.g. v2 settings
+        /// migrated to v3, or a new slot created via the Add Controller
+        /// popup before the user picks a preset). Real per-slot preset
+        /// selection lands in a follow-up checkpoint.
+        /// </summary>
+        private const string DefaultMicrosoftProfileId = "xbox-360-wired";
+        private const string DefaultSonyProfileId = "dualshock-4-v2";
+        private const string DefaultExtendedProfileId = "xbox-360-wired";
 
         private IVirtualController CreateVirtualController(int padIndex)
         {
@@ -402,14 +425,27 @@ namespace PadForge.Common.Input
                 if (_hmaestroContext == null) return null;
             }
 
+            // Resolve the per-slot HIDMaestro profile slug, falling back to
+            // the category default if the slot has no explicit selection.
+            string slotProfileId = SlotProfileIds[padIndex];
+            string profileId = !string.IsNullOrEmpty(slotProfileId)
+                ? slotProfileId
+                : controllerType switch
+                {
+                    VirtualControllerType.Microsoft => DefaultMicrosoftProfileId,
+                    VirtualControllerType.Sony => DefaultSonyProfileId,
+                    VirtualControllerType.Extended => DefaultExtendedProfileId,
+                    _ => null
+                };
+
             IVirtualController vc = null;
             try
             {
                 vc = controllerType switch
                 {
-                    VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, "xbox-360-wired"),
-                    VirtualControllerType.Sony => CreateHMaestroController(VirtualControllerType.Sony, "dualshock-4-v2"),
-                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, "xbox-360-wired"),
+                    VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, profileId),
+                    VirtualControllerType.Sony => CreateHMaestroController(VirtualControllerType.Sony, profileId),
+                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
                     _ => null

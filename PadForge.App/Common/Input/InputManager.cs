@@ -659,6 +659,8 @@ namespace PadForge.Common.Input
             // travels with the card (not recomputed from MapTo).
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (SlotProfileIds[slotA], SlotProfileIds[slotB]) =
+                (SlotProfileIds[slotB], SlotProfileIds[slotA]);
             (SlotCustomLayouts[slotA], SlotCustomLayouts[slotB]) =
                 (SlotCustomLayouts[slotB], SlotCustomLayouts[slotA]);
             (SlotExtendedIsCustom[slotA], SlotExtendedIsCustom[slotB]) =
@@ -687,6 +689,8 @@ namespace PadForge.Common.Input
             // Swap engine config arrays.
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+            (SlotProfileIds[slotA], SlotProfileIds[slotB]) =
+                (SlotProfileIds[slotB], SlotProfileIds[slotA]);
             (SlotCustomLayouts[slotA], SlotCustomLayouts[slotB]) =
                 (SlotCustomLayouts[slotB], SlotCustomLayouts[slotA]);
             (SlotExtendedIsCustom[slotA], SlotExtendedIsCustom[slotB]) =

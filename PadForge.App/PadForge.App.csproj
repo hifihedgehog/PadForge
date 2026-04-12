@@ -68,6 +68,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
+    <!-- Legacy v2 driver installers retained ONLY for the v3 first-run cleanup
+         wizard, which uninstalls vJoy and ViGEmBus from upgrading users'
+         systems. Both resources are removed in v3.1 once the migration window
+         has passed. -->
+    <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
+    <EmbeddedResource Include="Resources\vJoyDriver.zip" />
     <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
     <EmbeddedResource Include="3DModels\**\*.obj" />
     <!-- 2D controller model assets (Gamepad-Asset-Pack by AL2009man, MIT license) -->

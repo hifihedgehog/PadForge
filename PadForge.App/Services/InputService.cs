@@ -149,25 +149,12 @@ namespace PadForge.Services
 
             // Copy controller types and per-slot configs immediately so Step 5
             // creates the correct VC types from the first polling cycle.
-            int expectedXbox = 0, expectedDs4 = 0;
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
                 SyncVJoyConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
-                if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
-                {
-                    if (_mainVm.Pads[i].OutputType == VirtualControllerType.Microsoft) expectedXbox++;
-                    else if (_mainVm.Pads[i].OutputType == VirtualControllerType.Sony) expectedDs4++;
-                }
             }
-
-            // Pre-initialize expected counts so Step 1's transitional ViGEm
-            // filter catches our virtual controllers on the very first
-            // UpdateDevices() cycle (before Step 5 has created any actual VCs).
-            // The filter will be replaced with HIDMaestro device-path detection
-            // in a later checkpoint, removing this PreInitialize call.
-            _inputManager.PreInitializeVigemCounts(expectedXbox, expectedDs4);
 
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;

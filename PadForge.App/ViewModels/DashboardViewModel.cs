@@ -186,15 +186,6 @@ namespace PadForge.ViewModels
         /// <summary>Display text for ViGEmBus status.</summary>
         public string ViGEmStatusText => IsViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
-        private string _vigemVersion = string.Empty;
-
-        /// <summary>ViGEmBus driver version string (if installed).</summary>
-        public string ViGEmVersion
-        {
-            get => _vigemVersion;
-            set => SetProperty(ref _vigemVersion, value);
-        }
-
         // ─────────────────────────────────────────────
         //  HidHide status
         // ─────────────────────────────────────────────

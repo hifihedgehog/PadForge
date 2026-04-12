@@ -3711,11 +3711,6 @@ namespace PadForge.Services
         /// engine arrays, settings, and ViewModel state, then refreshes UI.
         /// Must be called on the UI thread.
         /// </summary>
-        /// <summary>
-        /// Moves a controller slot from its current visual position to a new one
-        /// by performing adjacent bubble swaps through the active slots list.
-        /// UI is refreshed once after all swaps complete.
-        /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
             if (padIndexA == padIndexB) return;
@@ -3725,6 +3720,11 @@ namespace PadForge.Services
             RefreshAfterSlotReorder();
         }
 
+        /// <summary>
+        /// Moves a controller slot from its current visual position to a new one
+        /// by performing adjacent bubble swaps through the active slots list.
+        /// UI is refreshed once after all swaps complete.
+        /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
         {
             var activeSlots = new List<int>();

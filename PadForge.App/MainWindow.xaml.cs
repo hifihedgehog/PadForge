@@ -3748,7 +3748,6 @@ namespace PadForge
 
                 var version = DriverInstaller.GetViGEmVersion();
                 _viewModel.Settings.ViGEmVersion = version ?? string.Empty;
-                _viewModel.Dashboard.ViGEmVersion = version ?? string.Empty;
 
                 if (!installed)
                     _viewModel.StatusText = Strings.Instance.Status_ViGEmNotDetected;

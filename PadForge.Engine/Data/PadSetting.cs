@@ -841,7 +841,9 @@ namespace PadForge.Engine.Data
             (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0) ||
             (_vjoyMappingDict != null && _vjoyMappingDict.Count > 0) ||
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
-            (_midiMappingDict != null && _midiMappingDict.Count > 0);
+            (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
+            (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
+            (_kbmMappingDict != null && _kbmMappingDict.Count > 0);
 
         /// <summary>
         /// Clears all mapping descriptors (standard, vJoy, and MIDI) while preserving
@@ -865,11 +867,13 @@ namespace PadForge.Engine.Data
             TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
             TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
 
-            // vJoy/MIDI mapping dictionaries and arrays.
+            // vJoy/MIDI/KBM mapping dictionaries and arrays.
             VJoyMappingEntries = null;
             _vjoyMappingDict = null;
             MidiMappingEntries = null;
             _midiMappingDict = null;
+            KbmMappingEntries = null;
+            _kbmMappingDict = null;
         }
 
         /// <summary>
@@ -916,6 +920,13 @@ namespace PadForge.Engine.Data
             if (MidiMappingEntries != null)
             {
                 foreach (var e in MidiMappingEntries)
+                    Add(e.Value);
+            }
+
+            // KBM custom mappings
+            if (KbmMappingEntries != null)
+            {
+                foreach (var e in KbmMappingEntries)
                     Add(e.Value);
             }
 

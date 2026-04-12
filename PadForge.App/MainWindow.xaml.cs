@@ -29,6 +29,19 @@ namespace PadForge
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
+        /// <summary>
+        /// Forces the window to the foreground even when another app owns focus.
+        /// Briefly sets WPF Topmost to push above all windows, then clears it
+        /// so the window behaves normally. No synthetic input injected.
+        /// </summary>
+        private void ForceToForeground(IntPtr hwnd)
+        {
+            Topmost = true;
+            Activate();
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input,
+                () => Topmost = false);
+        }
+
         private readonly MainViewModel _viewModel;
         private InputService _inputService;
         private SettingsService _settingsService;
@@ -177,17 +190,23 @@ namespace PadForge
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
             _inputService.ToggleMainWindow = () => Dispatcher.Invoke(() =>
             {
+                var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+
                 if (!IsVisible)
                 {
                     RestoreFromTray();
+                    ForceToForeground(hwnd);
                 }
-                else if (WindowState == WindowState.Minimized)
+                else if (WindowState == WindowState.Minimized || !IsActive)
                 {
+                    // Minimized or behind other windows — bring to foreground.
                     WindowState = WindowState.Normal;
                     Activate();
+                    ForceToForeground(hwnd);
                 }
                 else
                 {
+                    // Foreground and visible — minimize.
                     if (_viewModel.Settings.MinimizeToTray)
                     {
                         Hide();

@@ -605,10 +605,10 @@
   <data name="Preview_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dead Zone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dead Zone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Linear:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Empfindlichkeitskurven</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Doppelklick zum Hinzufügen. Rechtsklick zum Entfernen. Ziehen zum Anpassen.</value></data>
@@ -621,7 +621,7 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>X-Achse</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-Achse</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Bereich:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Empfindlichkeitskurve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Doppelklick zum Hinzufügen. Rechtsklick zum Entfernen. Ziehen zum Anpassen.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Vorlage:</value></data>
@@ -637,10 +637,10 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Mittenversatz X zurücksetzen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Mittenversatz Y zurücksetzen</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Auf Skaliert Radial zurücksetzen</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Dead Zone X zurücksetzen</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Dead Zone Y zurücksetzen</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X zurücksetzen</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y zurücksetzen</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Deadzone X zurücksetzen</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Deadzone Y zurücksetzen</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X zurücksetzen</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y zurücksetzen</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Linear zurücksetzen</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Empfindlichkeit X zurücksetzen</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Empfindlichkeit Y zurücksetzen</value></data>
@@ -649,7 +649,7 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Min. Bereich Y zurücksetzen</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Max. Bereich Y zurücksetzen</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Bereich zurücksetzen</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone zurücksetzen</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-Deadzone zurücksetzen</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Gesamtverstärkung zurücksetzen</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linken Motor zurücksetzen</value></data>

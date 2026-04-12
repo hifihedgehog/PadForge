@@ -284,10 +284,10 @@ namespace PadForge.ViewModels
         public string RawDisplay =>
             $"X: {_rawX} ({(_rawX + 32768.0) / 655.35:F1}%)  Y: {_rawY} ({(_rawY + 32768.0) / 655.35:F1}%)";
 
-        /// <summary>Unprocessed hardware value for calibration (not affected by offset/dead zone).</summary>
+        /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         public short HardwareRawX { get; set; }
 
-        /// <summary>Unprocessed hardware value for calibration (not affected by offset/dead zone).</summary>
+        /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         public short HardwareRawY { get; set; }
 
         /// <summary>Raw axis index for X in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
@@ -315,7 +315,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Builds a 0..1 → 0..1 curve for triggers (unsigned, dead zone flattened).
+        /// Builds a 0..1 → 0..1 curve for triggers (unsigned, deadzone flattened).
         /// </summary>
         internal static PointCollection BuildTriggerCurvePoints(string curveString, double deadZone, double maxRange, int chartSize = 120, int sampleCount = 64)
         {

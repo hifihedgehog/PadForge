@@ -290,7 +290,7 @@
   <data name="About_Title" xml:space="preserve"><value>Sobre</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Utilitário de Mapeamento de Controles</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork moderno do x360ce — reconstruído com SDL3, WPF e .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge mapeia qualquer controle, teclado ou mouse para controles virtuais Xbox 360, DualShock 4, DirectInput personalizado ou MIDI via ViGEmBus, vJoy e Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para entrada de teclado e mouse, e fornece uma interface moderna Fluent Design para mapeamento, configuração de zona morta e gerenciamento de force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge mapeia qualquer controle, teclado ou mouse para controles virtuais Xbox 360, DualShock 4, DirectInput personalizado ou MIDI via ViGEmBus, vJoy e Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para entrada de teclado e mouse, e fornece uma interface moderna Fluent Design para mapeamento, configuração de zona-morta e gerenciamento de force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Desenvolvido com</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime e framework WPF</value></data>
@@ -422,7 +422,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origem</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opções</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morta eixo para botão</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona-morta eixo para botão</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverter</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metade</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>
@@ -436,7 +436,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Amostrando...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Deslocamento Central X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Deslocamento Central Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Zona Morta:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Zona-Morta:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Radial Escalada</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radial</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axial</value></data>
@@ -605,10 +605,10 @@
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dead Zone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dead Zone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Linear:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Curvas de Sensibilidade</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Duplo clique para adicionar ponto. Clique direito para remover. Arraste para ajustar.</value></data>
@@ -621,7 +621,7 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>Eixo X</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eixo Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Alcance:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curva de Sensibilidade</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Duplo clique para adicionar ponto. Clique direito para remover. Arraste para ajustar.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Predefinição:</value></data>
@@ -637,10 +637,10 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Redefinir Deslocamento Central X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Redefinir Deslocamento Central Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redefinir para Radial Escalonado</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redefinir Dead Zone X</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redefinir Dead Zone Y</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redefinir Anti-Dead Zone X</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Redefinir Anti-Dead Zone Y</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redefinir Deadzone X</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redefinir Deadzone Y</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redefinir Anti-Deadzone X</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Redefinir Anti-Deadzone Y</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Redefinir Linear</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Redefinir Sensibilidade X</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Redefinir Sensibilidade Y</value></data>
@@ -649,7 +649,7 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Redefinir Alcance Mín. Y</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Redefinir Alcance Máx. Y</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Redefinir Alcance</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Redefinir Anti-Dead Zone</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Redefinir Anti-Deadzone</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Redefinir Sensibilidade</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Redefinir Ganho Geral</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>

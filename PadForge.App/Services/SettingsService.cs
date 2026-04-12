@@ -466,7 +466,7 @@ namespace PadForge.Services
                 padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
                 padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
 
-                // Load dead zone settings (independent X/Y).
+                // Load deadzone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
                 padVm.LeftDeadZoneY = TryParseDouble(ps.LeftThumbDeadZoneY, 0);
@@ -500,7 +500,7 @@ namespace PadForge.Services
                 padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
                 padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
 
-                // Load trigger dead zone settings.
+                // Load trigger deadzone settings.
                 padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
                 padVm.RightTriggerDeadZone = TryParseDouble(ps.RightTriggerDeadZone, 0);
                 padVm.LeftTriggerAntiDeadZone = TryParseDouble(ps.LeftTriggerAntiDeadZone, 0);
@@ -562,7 +562,7 @@ namespace PadForge.Services
                     mapping.NegSourceDescriptor = negValue ?? string.Empty;
                 }
 
-                // Load per-mapping dead zone.
+                // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(mapping.TargetSettingName);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
@@ -1241,7 +1241,7 @@ namespace PadForge.Services
                     ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
                     ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
-                    // Write dead zone settings (independent X/Y).
+                    // Write deadzone settings (independent X/Y).
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
                     ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString(ic);
@@ -1274,7 +1274,7 @@ namespace PadForge.Services
                     ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString(ic);
                     ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString(ic);
 
-                    // Write trigger dead zone settings.
+                    // Write trigger deadzone settings.
                     ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString(ic);
                     ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString(ic);
                     ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString(ic);
@@ -1312,7 +1312,7 @@ namespace PadForge.Services
                         ps.SetVJoyMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
-                    // Write mapping descriptors and per-mapping dead zones.
+                    // Write mapping descriptors and per-mapping deadzones.
                     foreach (var mapping in padVm.Mappings)
                     {
                         SetPadSettingProperty(ps, mapping.TargetSettingName, mapping.SourceDescriptor);

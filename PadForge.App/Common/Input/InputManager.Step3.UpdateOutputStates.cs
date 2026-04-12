@@ -199,7 +199,7 @@ namespace PadForge.Common.Input
             // for the UI preview so it can apply its own pipeline without double-processing.
             rawMapped = gp;
 
-            // ── Trigger dead zones ──
+            // ── Trigger deadzones ──
             gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
                 TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
                 TryParseDoubleStatic(ps.LeftTriggerAntiDeadZone, 0),
@@ -211,7 +211,7 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.RightTriggerMaxRange, 100),
                 Common.CurveLut.GetOrBuild(ps.RightTriggerSensitivityCurve));
 
-            // ── Center offsets (applied before dead zone) ──
+            // ── Center offsets (applied before deadzone) ──
             gp.ThumbLX = ApplyCenterOffset(gp.ThumbLX, TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0));
             gp.ThumbLY = ApplyCenterOffset(gp.ThumbLY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
             gp.ThumbRX = ApplyCenterOffset(gp.ThumbRX, TryParseDoubleStatic(ps.RightThumbCenterOffsetX, 0));
@@ -750,8 +750,8 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Applies dead zone, anti-dead zone, and linear scaling to a pair
-        /// of thumbstick axes (X and Y) using the specified dead zone shape algorithm.
+        /// Applies deadzone, anti-deadzone, and linear scaling to a pair
+        /// of thumbstick axes (X and Y) using the specified deadzone shape algorithm.
         /// </summary>
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             double deadZoneX, double deadZoneY,
@@ -816,7 +816,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Post-deadzone per-axis processing: sensitivity curve, anti-dead zone, linear.
+        /// Post-deadzone per-axis processing: sensitivity curve, anti-deadzone, linear.
         /// Input remapped is [0,1], sign is ±1.
         /// </summary>
         private static short ApplyPostDeadZone(double remapped, double sign,
@@ -968,7 +968,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Applies a center offset correction to a single axis. The offset is a percentage
-        /// of the full axis range (-100 to 100). Applied before dead zone processing.
+        /// of the full axis range (-100 to 100). Applied before deadzone processing.
         /// </summary>
         private static short ApplyCenterOffset(short value, double offsetPercent)
         {
@@ -978,7 +978,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Applies dead zone processing to a single axis.
+        /// Applies deadzone processing to a single axis.
         /// </summary>
         private static short ApplySingleDeadZone(short value, double deadZone, double antiDeadZone, double linear, double maxRangePos = 100, double maxRangeNeg = 100, double[] lut = null)
         {
@@ -990,7 +990,7 @@ namespace PadForge.Common.Input
             double sign = Math.Sign(norm);
             double magnitude = Math.Abs(norm);
 
-            // Dead zone: values within the dead zone are zeroed.
+            // Deadzone: values within the deadzone are zeroed.
             double dzNorm = deadZone / 100.0;
             if (magnitude < dzNorm)
                 return 0;
@@ -1008,7 +1008,7 @@ namespace PadForge.Common.Input
             if (lut != null)
                 remapped = Common.CurveLut.Lookup(lut, remapped);
 
-            // Anti-dead zone: offset the output minimum.
+            // Anti-deadzone: offset the output minimum.
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
 
@@ -1025,10 +1025,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Applies dead zone, anti-dead zone, and max range processing to a trigger value (0–65535).
-        /// Dead zone: values below the threshold percentage are zeroed.
+        /// Applies deadzone, anti-deadzone, and max range processing to a trigger value (0–65535).
+        /// Deadzone: values below the threshold percentage are zeroed.
         /// Max range: caps the input so full physical press maps to this percentage ceiling.
-        /// Anti-dead zone: remaps the output so small presses register past the game's dead zone.
+        /// Anti-deadzone: remaps the output so small presses register past the game's deadzone.
         /// </summary>
         private static ushort ApplyTriggerDeadZone(ushort value, double deadZone, double antiDeadZone, double maxRange, double[] lut = null)
         {
@@ -1055,7 +1055,7 @@ namespace PadForge.Common.Input
             if (lut != null)
                 remapped = Common.CurveLut.Lookup(lut, remapped);
 
-            // Anti-dead zone: offset the output minimum.
+            // Anti-deadzone: offset the output minimum.
             double adzNorm = antiDeadZone / 100.0;
             double output = adzNorm + remapped * (1.0 - adzNorm);
 
@@ -1130,8 +1130,8 @@ namespace PadForge.Common.Input
                 raw.Povs[p] = DirectionToContinuousPov(up, down, left, right);
             }
 
-            // ── Dead zones ──
-            // Apply stick/trigger dead zones using the same axis layout as
+            // ── Deadzones ──
+            // Apply stick/trigger deadzones using the same axis layout as
             // VJoySlotConfig.ComputeAxisLayout (interleaved groups of X,Y,T).
             int interleave = Math.Min(cfg.Sticks, cfg.Triggers);
             for (int g = 0; g < cfg.Sticks; g++)
@@ -1232,7 +1232,7 @@ namespace PadForge.Common.Input
                         break;
                 }
                 // Triggers use signed short in raw path; convert to unsigned 16-bit range,
-                // apply trigger dead zone, then convert back.
+                // apply trigger deadzone, then convert back.
                 ushort asUshort = (ushort)(raw.Axes[ti] - short.MinValue);
                 asUshort = ApplyTriggerDeadZone(asUshort, dz, adz, maxR, tlut);
                 // Back to signed short range
@@ -1396,11 +1396,11 @@ namespace PadForge.Common.Input
             raw.PreDzMouseDeltaX = raw.MouseDeltaX;
             raw.PreDzMouseDeltaY = raw.MouseDeltaY;
 
-            // ── Center offsets (applied before dead zone, same as gamepad path) ──
+            // ── Center offsets (applied before deadzone, same as gamepad path) ──
             raw.MouseDeltaX = ApplyCenterOffset(raw.MouseDeltaX, TryParseDoubleStatic(ps.LeftThumbCenterOffsetX, 0));
             raw.MouseDeltaY = ApplyCenterOffset(raw.MouseDeltaY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
 
-            // ── Mouse movement dead zone + sensitivity (uses Left Thumb settings) ──
+            // ── Mouse movement deadzone + sensitivity (uses Left Thumb settings) ──
             ApplyDeadZone(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
                 TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
                 TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0),
@@ -1432,7 +1432,7 @@ namespace PadForge.Common.Input
             // Snapshot pre-deadzone scroll for stick preview.
             raw.PreDzScrollDelta = raw.ScrollDelta;
 
-            // ── Scroll dead zone + sensitivity (uses Right Thumb settings, scroll on Y axis) ──
+            // ── Scroll deadzone + sensitivity (uses Right Thumb settings, scroll on Y axis) ──
             // Scroll is a signed bidirectional axis — use stick deadzone with X=0.
             {
                 short scrollX = 0;

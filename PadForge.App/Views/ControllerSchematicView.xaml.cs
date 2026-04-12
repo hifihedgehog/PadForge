@@ -205,7 +205,7 @@ namespace PadForge.Views
 
         private StickWidget CreateStickWidget(int index, int axisXIdx, int axisYIdx, double x, double y)
         {
-            // Outer circle (dead zone ring)
+            // Outer circle (deadzone ring)
             var outer = new Ellipse
             {
                 Width = StickSize,

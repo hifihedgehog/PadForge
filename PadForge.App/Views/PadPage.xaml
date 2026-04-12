@@ -13,7 +13,7 @@
              d:DesignHeight="700" d:DesignWidth="900">
 
     <UserControl.Resources>
-        <!-- Style for dead zone slider groups -->
+        <!-- Style for deadzone slider groups -->
         <Style x:Key="DzLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="200"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -1133,7 +1133,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!-- Dead Zone (per-mapping axis activation threshold) -->
+                            <!-- Deadzone (per-mapping axis activation threshold) -->
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Width="230">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -1558,7 +1558,7 @@
 
                                         <!-- Left: sliders and live bar -->
                                         <StackPanel Grid.Column="0">
-                                            <!-- Range (dual-thumb: dead zone floor — max range ceiling) -->
+                                            <!-- Range (dual-thumb: deadzone floor — max range ceiling) -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <controls:RangeSlider

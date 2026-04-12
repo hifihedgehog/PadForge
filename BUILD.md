@@ -40,7 +40,7 @@ PadForge.sln
 │   ├── Data/
 │   │   ├── UserDevice.cs          Physical device record (serializable + runtime)
 │   │   ├── UserSetting.cs         Device-to-slot link (serializable)
-│   │   └── PadSetting.cs          Mapping configuration (mappings, dead zones, FF)
+│   │   └── PadSetting.cs          Mapping configuration (mappings, deadzones, FF)
 │   └── Properties/
 │       └── AssemblyInfo.cs
 │
@@ -70,7 +70,7 @@ PadForge.sln
 │   │
 │   ├── Views/
 │   │   ├── DashboardPage.xaml / .cs         Slot cards, engine stats, driver status
-│   │   ├── PadPage.xaml / .cs               Mapping grid, dead zones, force feedback, macros
+│   │   ├── PadPage.xaml / .cs               Mapping grid, deadzones, force feedback, macros
 │   │   ├── DevicesPage.xaml / .cs           Card-based device list + visual raw input state
 │   │   ├── ProfilesPage.xaml / .cs          Per-app profile management and auto-switching
 │   │   ├── SettingsPage.xaml / .cs          Theme, engine, drivers, diagnostics
@@ -101,7 +101,7 @@ PadForge.sln
 │   │   ├── ViewModelBase.cs            INotifyPropertyChanged base
 │   │   ├── MainViewModel.cs            Root: navigation, pads, engine status, commands
 │   │   ├── DashboardViewModel.cs       Overview: slot summaries, engine stats, driver info
-│   │   ├── PadViewModel.cs             Per-slot: visualizer, mappings, dead zones, macros
+│   │   ├── PadViewModel.cs             Per-slot: visualizer, mappings, deadzones, macros
 │   │   ├── MappingItem.cs              Single mapping row: target, source, recording, options
 │   │   ├── MacroItem.cs                Macro: trigger, actions, timing, button style, custom vJoy
 │   │   ├── DevicesViewModel.cs         Device list, raw state display, slot assignment
@@ -126,7 +126,7 @@ PadForge.sln
 │   │
 │   ├── Converter/                      WPF value converters (bool, axis, visibility, etc.)
 │   ├── Controls/
-│   │   └── RangeSlider.cs              Custom dead zone range slider control
+│   │   └── RangeSlider.cs              Custom deadzone range slider control
 │   │
 │   ├── Resources/
 │   │   ├── ControllerIcons.xaml        XAML icon resource dictionary

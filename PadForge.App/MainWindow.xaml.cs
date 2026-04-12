@@ -466,7 +466,7 @@ namespace PadForge
                     }
                 };
 
-                // Pad setting changes (dead zones, force feedback, etc.) trigger autosave.
+                // Pad setting changes (deadzones, force feedback, etc.) trigger autosave.
                 pad.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName is

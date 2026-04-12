@@ -971,7 +971,7 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Pushes ViewModel slider values (dead zones, force feedback, linear)
+        /// Pushes ViewModel slider values (deadzones, force feedback, linear)
         /// directly to PadSetting objects so the engine picks them up immediately.
         /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
         /// </summary>
@@ -1050,7 +1050,7 @@ namespace PadForge.Services
             ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
             ps.RightThumbDeadZoneShape = padVm.RightDeadZoneShape.ToString();
 
-            // Anti-dead zones (per-axis).
+            // Anti-deadzones (per-axis).
             ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString();
             ps.LeftThumbAntiDeadZoneY = padVm.LeftAntiDeadZoneY.ToString();
             ps.RightThumbAntiDeadZoneX = padVm.RightAntiDeadZoneX.ToString();
@@ -1076,7 +1076,7 @@ namespace PadForge.Services
             ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString();
             ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString();
 
-            // Trigger dead zones.
+            // Trigger deadzones.
             ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
             ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
             ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
@@ -1142,7 +1142,7 @@ namespace PadForge.Services
                         }
                     }
 
-                    // Save per-mapping dead zone.
+                    // Save per-mapping deadzone.
                     if (mapping.MappingDeadZone > 0)
                         ps.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
                     else
@@ -1202,7 +1202,7 @@ namespace PadForge.Services
             padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
             padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
 
-            // Trigger dead zones.
+            // Trigger deadzones.
             padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
             padVm.RightTriggerDeadZone = TryParseDouble(ps.RightTriggerDeadZone, 0);
             padVm.LeftTriggerAntiDeadZone = TryParseDouble(ps.LeftTriggerAntiDeadZone, 0);
@@ -1246,7 +1246,7 @@ namespace PadForge.Services
                     MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
                 }
 
-                // Load per-mapping dead zone.
+                // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(target);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
@@ -1470,7 +1470,7 @@ namespace PadForge.Services
         /// <summary>
         /// Called when a pad's mappings are rebuilt (e.g., OutputType or vJoy preset changed).
         /// Reloads mapping descriptors from the PadSetting so auto-mapped inputs are preserved.
-        /// Does NOT reload dead zone / force feedback settings — those are intentionally reset
+        /// Does NOT reload deadzone / force feedback settings — those are intentionally reset
         /// by PadViewModel.ResetDeadZoneSettings() when the OutputType or vJoy preset changes.
         /// </summary>
         private void OnMappingsRebuilt(object sender, EventArgs e)
@@ -1486,7 +1486,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Loads only mapping descriptors from a device's PadSetting into the ViewModel.
-        /// Unlike <see cref="LoadPadSettingToViewModel"/>, this does NOT touch dead zone,
+        /// Unlike <see cref="LoadPadSettingToViewModel"/>, this does NOT touch deadzone,
         /// force feedback, or other tuning properties — only mapping source descriptors.
         /// </summary>
         private static void LoadMappingDescriptorsOnly(PadViewModel padVm, Guid instanceGuid)
@@ -1513,7 +1513,7 @@ namespace PadForge.Services
                     MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
                 }
 
-                // Load per-mapping dead zone.
+                // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(target);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }

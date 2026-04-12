@@ -420,7 +420,7 @@ namespace PadForge.Common.Input
                 ps.RightThumbButton = "Button 9";
                 ps.ButtonGuide = "Button 10";
 
-                // Default dead zones and gains.
+                // Default deadzones and gains.
                 ps.LeftThumbDeadZoneX = "0";
                 ps.LeftThumbDeadZoneY = "0";
                 ps.RightThumbDeadZoneX = "0";

@@ -24,7 +24,7 @@
         Content padding: 16,10,16,10
     -->
     <!-- ClipToBounds on outer grid clips the slide animation behind the taskbar edge -->
-    <Grid x:Name="ClipPanel" ClipToBounds="True">
+    <Grid ClipToBounds="True">
         <Grid x:Name="FlyoutPanel" Margin="10,10,10,14">
             <!-- Shadow layer: empty border with DropShadowEffect, behind content.
                  Keeping the effect OFF the content border preserves ClearType text. -->

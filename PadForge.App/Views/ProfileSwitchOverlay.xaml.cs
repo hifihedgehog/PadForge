@@ -35,7 +35,6 @@ namespace PadForge.Views
         private readonly DispatcherTimer _initMonitorTimer;
         private readonly TranslateTransform _slideTransform;
         private bool _showingInitializing;
-        private bool _isDark = true;
 
         public Func<(bool anyInitializing, bool allReady)> CheckInitState { get; set; }
         public Func<bool> CheckAnyOffline { get; set; }
@@ -75,10 +74,10 @@ namespace PadForge.Views
 
         private void ApplyTheme()
         {
-            _isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
+            bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                 == Wpf.Ui.Appearance.ApplicationTheme.Dark;
 
-            if (_isDark)
+            if (isDark)
             {
                 // Pixel-measured from native Win11 volume OSD.
                 var bg = new SolidColorBrush(Color.FromRgb(0x2D, 0x2E, 0x2E));

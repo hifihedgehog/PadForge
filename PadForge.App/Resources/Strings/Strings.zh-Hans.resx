@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 已映射，</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 已连接</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>体感服务器</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>用于陀螺仪和加速度计数据的 DSU/cemuhook 服务器。</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（cemuhook）</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>用于陀螺仪和加速度计数据的 DSU/CemuHook Motion Provider protocol 服务器。</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 运动服务器 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口：</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪/加速度计数据。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>网页控制器</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>从手机或平板电脑浏览器连接，用作手柄。</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>触摸板叠加层</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于DS4触摸板模拟的屏幕触摸区域。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于 DualShock 4 和 DualSense 兼容触摸板模拟的屏幕触摸表面。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>启用触摸板叠加层</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度：</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>右键按住拖动</value></data>

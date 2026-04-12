@@ -305,7 +305,7 @@ namespace PadForge.ViewModels
                         RefreshCounts();
                     }
                 },
-                () => HasSelectedDevice && _selectedDevice != null);
+                () => HasSelectedDevice);
 
         /// <summary>Raised when a refresh is requested.</summary>
         public event EventHandler RefreshRequested;

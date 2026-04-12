@@ -2516,9 +2516,7 @@ namespace PadForge
                 return;
             }
 
-            // StaysOpen=false closes the popup when the anchor is clicked, then the
-            // click handler fires and would immediately reopen it. Suppress reopening
-            // if the popup was just dismissed within the same click cycle.
+            // Suppress reopening if the popup was just dismissed within the same click cycle.
             if ((DateTime.UtcNow - _popupClosedAt).TotalMilliseconds < 300)
                 return;
 
@@ -2551,10 +2549,13 @@ namespace PadForge
                 };
             }
 
-            var border = new System.Windows.Controls.Border
+            // Separate shadow element pattern: shadow on empty border behind,
+            // content border on top without Effect (avoids corner artifacts).
+            var container = new System.Windows.Controls.Grid { Margin = new Thickness(10) };
+
+            var shadowBorder = new System.Windows.Controls.Border
             {
                 CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(6),
                 Effect = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     BlurRadius = 8,
@@ -2562,7 +2563,54 @@ namespace PadForge
                     ShadowDepth = 2
                 }
             };
-            border.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "PopupBackgroundBrush");
+            container.Children.Add(shadowBorder);
+
+            var border = new System.Windows.Controls.Border
+            {
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(6)
+            };
+            container.Children.Add(border);
+
+            // Dismiss on any click outside the popup content.
+            System.Windows.Input.MouseButtonEventHandler dismissHandler = (s, e) =>
+            {
+                if (!popup.IsOpen) return;
+                if (e.OriginalSource is DependencyObject source)
+                {
+                    var parent = source;
+                    while (parent != null)
+                    {
+                        if (parent == border) return;
+                        parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                    }
+                }
+                popup.IsOpen = false;
+            };
+            PreviewMouseDown += dismissHandler;
+            popup.Closed += (s, e) => PreviewMouseDown -= dismissHandler;
+
+            // Theme-aware popup background.
+            void ApplyPopupTheme()
+            {
+                bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
+                    == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+                var color = dark ? System.Windows.Media.Color.FromRgb(0x3A, 0x3A, 0x3A)
+                                 : System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3);
+                var brush = new System.Windows.Media.SolidColorBrush(color);
+                shadowBorder.Background = brush;
+                border.Background = brush;
+            }
+            ApplyPopupTheme();
+
+            // Live-update if theme changes while popup is open.
+            void OnThemeChangedWhileOpen(Wpf.Ui.Appearance.ApplicationTheme currentTheme, System.Windows.Media.Color _)
+                => Dispatcher.BeginInvoke(ApplyPopupTheme);
+            Wpf.Ui.Appearance.ApplicationThemeManager.Changed += OnThemeChangedWhileOpen;
+            popup.Closed += (s, e) =>
+            {
+                Wpf.Ui.Appearance.ApplicationThemeManager.Changed -= OnThemeChangedWhileOpen;
+            };
 
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
@@ -2703,7 +2751,7 @@ namespace PadForge
             };
             stack.Children.Add(vjoyBtn);
 
-            // Keyboard+Mouse button — MDL2 glyph E961.
+            // Keyboard+Mouse button — MDL2 glyph E961, theme-aware foreground.
             var kbmPopupIcon = new System.Windows.Controls.TextBlock
             {
                 Text = "\uE961",
@@ -2712,6 +2760,7 @@ namespace PadForge
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            kbmPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
             bool kbmAtCapacity = kbmCount >= SettingsManager.MaxKeyboardMouseSlots;
             if (kbmAtCapacity) kbmPopupIcon.Opacity = 0.35;
             var kbmPopupBtn = new System.Windows.Controls.Button
@@ -2749,6 +2798,7 @@ namespace PadForge
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            midiPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
             bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
             bool midiDisabled = !midiAvailable || midiAtCapacity;
@@ -2782,7 +2832,7 @@ namespace PadForge
             stack.Children.Add(midiBtn);
 
             border.Child = stack;
-            popup.Child = border;
+            popup.Child = container;
             popup.IsOpen = true;
         }
 

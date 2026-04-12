@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapped, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connected</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/cemuhook server for gyro and accelerometer data.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU motion server (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU motion server (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Provides gyro/accel data to Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web Controller</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable web controller server</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Connect from a phone or tablet browser to use as a gamepad.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad Overlay</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>On-screen touch surface for DS4 touchpad emulation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>On-screen touch surface for DualShock 4 and DualSense-compatible touchpad emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Enable touchpad overlay</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacity:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Right-click and hold to drag</value></data>

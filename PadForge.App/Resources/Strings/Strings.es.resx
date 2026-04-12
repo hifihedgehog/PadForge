@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> asignados, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> conectados</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de movimiento</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/cemuhook para datos de giroscopio y acelerómetro.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activar servidor de movimiento DSU (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/CemuHook Motion Provider protocol para datos de giroscopio y acelerómetro.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar servidor de movimiento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Puerto:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Proporciona datos de giroscopio/acelerómetro a Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Control web</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Activar servidor de control web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Conéctese desde un teléfono o tableta para usarlo como mando.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Superposición de panel táctil</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superficie táctil en pantalla para emulación del panel táctil de DS4.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superficie táctil en pantalla para emulación de touchpad compatible con DualShock 4 y DualSense.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Activar superposición de panel táctil</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidad:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clic derecho y mantener para arrastrar</value></data>

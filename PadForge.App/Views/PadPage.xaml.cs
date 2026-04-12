@@ -346,6 +346,13 @@ namespace PadForge.Views
         {
             if (DataContext is not PadViewModel vm) return;
 
+            // HIDMaestro profile picker bar — visible for Microsoft / Sony / Extended.
+            HMaestroProfileBar.Visibility = vm.HasHMaestroProfileBar
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            // Legacy v2 vJoy custom-axis bar — visible only for Extended slots
+            // until the proper Extended custom descriptor editor lands.
             bool isVJoy = vm.OutputType == Engine.VirtualControllerType.Extended;
             VJoyConfigBar.Visibility = isVJoy ? Visibility.Visible : Visibility.Collapsed;
 

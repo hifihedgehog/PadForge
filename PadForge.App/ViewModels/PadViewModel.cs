@@ -88,6 +88,8 @@ namespace PadForge.ViewModels
                     // profile slug — clear it so the engine falls back to
                     // the new category's default profile.
                     ProfileId = null;
+                    OnPropertyChanged(nameof(AvailableProfiles));
+                    OnPropertyChanged(nameof(HasHMaestroProfileBar));
                     ResetDeadZoneSettings();
                     RebuildMappings();
                     RebuildStickConfigs();
@@ -108,6 +110,30 @@ namespace PadForge.ViewModels
             get => _profileId;
             set => SetProperty(ref _profileId, value);
         }
+
+        /// <summary>
+        /// HIDMaestro profile list for the current category, filtered for the
+        /// PadPage profile picker dropdown. Empty for MIDI / KeyboardMouse
+        /// slots which don't use HIDMaestro.
+        /// </summary>
+        public System.Collections.Generic.IReadOnlyList<HIDMaestro.HMProfile> AvailableProfiles =>
+            _outputType switch
+            {
+                VirtualControllerType.Microsoft => HMaestroProfileCatalog.MicrosoftProfiles,
+                VirtualControllerType.Sony => HMaestroProfileCatalog.SonyProfiles,
+                VirtualControllerType.Extended => HMaestroProfileCatalog.ExtendedProfiles,
+                _ => System.Array.Empty<HIDMaestro.HMProfile>()
+            };
+
+        /// <summary>
+        /// True when the slot's category uses an HIDMaestro profile (Microsoft /
+        /// Sony / Extended). Drives the visibility of the profile picker bar
+        /// on the PadPage.
+        /// </summary>
+        public bool HasHMaestroProfileBar =>
+            _outputType == VirtualControllerType.Microsoft
+            || _outputType == VirtualControllerType.Sony
+            || _outputType == VirtualControllerType.Extended;
 
         private string _typeInstanceLabel = "1";
         /// <summary>Per-type instance number label (e.g., "1", "2"). Set by RefreshNavControllerItems.</summary>

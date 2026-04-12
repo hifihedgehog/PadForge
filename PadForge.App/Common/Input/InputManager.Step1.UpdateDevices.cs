@@ -347,80 +347,34 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  ViGEm virtual device detection
+        //  HIDMaestro virtual device detection
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Checks whether an SDL device is a ViGEm virtual controller
-        /// (our own output device that must not be opened as an input device).
+        /// Checks whether an SDL device is a HIDMaestro virtual controller
+        /// (our own output device that must not be opened as an input device,
+        /// or SDL would feed our outputs back into themselves as inputs and
+        /// create a feedback loop).
         ///
-        /// Detection methods:
-        ///   1. Device path containing ViGEm signatures ("vigem", "virtual")
-        ///   2. Zero VID/PID + SDL game controller + active ViGEm count > 0
-        ///   3. Xbox 360 VID/PID (045E:028E) — filter up to _activeXbox360Count
-        ///   4. DS4 VID/PID (054C:05C4) — filter up to _activeDs4Count
-        ///
-        /// For Xbox 360 and DS4, we use our own count of virtual controllers
-        /// created by Step 5 rather than walking the PnP device tree. ViGEm DS4
-        /// devices don't register under USB\VID_054C&amp;PID_05C4 in the registry
-        /// (they use ViGEmBus's own bus enumerator), making PnP tree walks unreliable.
+        /// Detection: HIDMaestro devices are enumerated under hardware ID
+        /// `root\HIDMaestro` (see hidmaestro.inf). Their PnP instance paths
+        /// contain `HIDMAESTRO` regardless of how the profile spoofs VID/PID
+        /// for the host application's view. Matching the path is the only
+        /// reliable way to filter our own outputs since HIDMaestro intentionally
+        /// reports real Xbox / DualSense / wheel VID/PIDs to make virtual
+        /// devices indistinguishable from real ones at the application layer.
         /// </summary>
         private bool IsViGEmVirtualDevice(SdlDeviceWrapper wrapper)
         {
-            // ── Check device path for ViGEm signatures ──
             string path = wrapper.DevicePath;
-            if (!string.IsNullOrEmpty(path))
-            {
-                string pathLower = path.ToLowerInvariant();
-                if (pathLower.Contains("vigem") || pathLower.Contains("virtual"))
-                    return true;
-            }
+            if (string.IsNullOrEmpty(path))
+                return false;
 
-            // ── Zero VID/PID + recognized as game controller ──
-            // ViGEm devices may report VID/PID as 0 through SDL's
-            // pre-open enumeration. If a device has no VID/PID but SDL
-            // recognizes it as a standard game controller, AND we currently
-            // have ViGEm virtual controllers active (or expect to), it's very likely virtual.
-            if (wrapper.VendorId == 0 && wrapper.ProductId == 0)
-            {
-                if ((_activeVigemCount > 0 || _expectedXbox360Count > 0 || _expectedDs4Count > 0)
-                    && wrapper.IsGameController)
-                    return true;
-            }
-
-            // ── vJoy VID/PID — our own virtual joystick output device ──
-            // vJoy devices (VID=1234 PID=BEAD) must not be opened as input devices.
-            // SDL opening the HID device can interfere with vJoyInterface.dll's
-            // write path (the driver's HID report mechanism).
-            if (wrapper.VendorId == 0x1234 && wrapper.ProductId == 0xBEAD)
-                return true;
-
-            // ── Xbox 360 VID/PID — ViGEm emulates exactly this ──
-            // ViGEm Xbox 360 virtual controllers report VID=045E PID=028E.
-            // Modern real Xbox controllers use different PIDs (0B12, 0B13, 0B20, etc.)
-            // — only the original Xbox 360 controller from 2005 uses 028E.
-            // When we have any active/expected Xbox VCs, filter ALL 045E:028E devices
-            // to prevent feedback loops where stale ViGEm nodes slip through a
-            // counter-based filter and cause exponential virtual controller creation.
-            if (wrapper.VendorId == 0x045E && wrapper.ProductId == 0x028E)
-            {
-                int filterCount = Math.Max(_activeXbox360Count, _expectedXbox360Count);
-                if (filterCount > 0)
-                    return true;
-            }
-
-            // ── DS4 VID/PID — ViGEm emulates Sony DS4 ──
-            // Same logic: filter ALL 054C:05C4 devices when we have active/expected DS4 VCs.
-            // Real DS4 controllers with this exact PID are rare (original DualShock 4 v1);
-            // newer DS4s and DualSense use different PIDs.
-            if (wrapper.VendorId == 0x054C && wrapper.ProductId == 0x05C4)
-            {
-                int filterCount = Math.Max(_activeDs4Count, _expectedDs4Count);
-                if (filterCount > 0)
-                    return true;
-            }
-
-            return false;
+            // The XUSB companion (HMXInput.dll, used for Xbox 360 wired
+            // profiles) creates a second device node with the literal
+            // "HMXINPUT" enumerator. Match either signature.
+            string pathUpper = path.ToUpperInvariant();
+            return pathUpper.Contains("HIDMAESTRO") || pathUpper.Contains("HMXINPUT");
         }
 
         // ─────────────────────────────────────────────

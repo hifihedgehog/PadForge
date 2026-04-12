@@ -60,47 +60,6 @@ namespace PadForge.Common.Input
         internal MidiSlotConfig[] _midiConfigs = new MidiSlotConfig[MaxPads];
 
         /// <summary>
-        /// Count of currently active ViGEm virtual controllers.
-        /// Used by IsViGEmVirtualDevice() in Step 1 for zero-VID/PID heuristic.
-        /// </summary>
-        private int _activeVigemCount;
-
-        /// <summary>
-        /// Count of currently active ViGEm Xbox 360 virtual controllers.
-        /// Used by IsViGEmVirtualDevice() to filter the correct number of 045E:028E devices.
-        /// </summary>
-        private int _activeXbox360Count;
-
-        /// <summary>
-        /// Count of currently active ViGEm DS4 virtual controllers.
-        /// Used by IsViGEmVirtualDevice() to filter the correct number of 054C:05C4 devices.
-        /// </summary>
-        private int _activeDs4Count;
-
-        /// <summary>
-        /// Expected ViGEm Xbox 360 / DS4 virtual controller counts, pre-initialized
-        /// from slot configuration BEFORE the polling loop starts. Used by
-        /// IsViGEmVirtualDevice() to filter ViGEm devices on the very first
-        /// UpdateDevices() call — before Step 5 has created any actual VCs.
-        /// Without this, _activeXbox360Count is 0 on the first cycle, causing
-        /// all stale ViGEm 045E:028E devices to pass through the filter as
-        /// "real" Xbox controllers.
-        /// </summary>
-        private int _expectedXbox360Count;
-        private int _expectedDs4Count;
-
-        /// <summary>
-        /// Pre-initializes expected ViGEm counts from the slot configuration.
-        /// Must be called before Start() so the first UpdateDevices() cycle
-        /// filters ViGEm devices correctly.
-        /// </summary>
-        public void PreInitializeVigemCounts(int xbox360Count, int ds4Count)
-        {
-            _expectedXbox360Count = xbox360Count;
-            _expectedDs4Count = ds4Count;
-        }
-
-        /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.
         /// Virtual controllers are only destroyed after a sustained inactivity period
         /// to prevent transient <see cref="IsSlotActive"/> false returns from
@@ -459,19 +418,6 @@ namespace PadForge.Common.Input
                 if (vc == null) return null;
                 vc.Connect();
 
-                // Per-type counters retained for Step 1's IsViGEmVirtualDevice
-                // filter while it still matches against ViGEm VID/PID heuristics.
-                // The filter will be replaced in a later checkpoint.
-                if (controllerType == VirtualControllerType.Microsoft)
-                {
-                    _activeVigemCount++;
-                    _activeXbox360Count++;
-                }
-                else if (controllerType == VirtualControllerType.Sony)
-                {
-                    _activeVigemCount++;
-                    _activeDs4Count++;
-                }
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
 
                 return vc;
@@ -534,31 +480,12 @@ namespace PadForge.Common.Input
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
 
-            var vcType = vc.Type;
-
             try
             {
                 vc.Disconnect();
                 vc.Dispose();
             }
             catch { /* best effort */ }
-            finally
-            {
-                // Counter decrements MUST happen even if Disconnect/Dispose throws.
-                // Counters are read by Step 1's transitional ViGEm filter; they
-                // disappear when that filter is replaced with HIDMaestro
-                // device-path detection.
-                if (vcType == VirtualControllerType.Microsoft)
-                {
-                    _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
-                    _activeXbox360Count = Math.Max(0, _activeXbox360Count - 1);
-                }
-                else if (vcType == VirtualControllerType.Sony)
-                {
-                    _activeVigemCount = Math.Max(0, _activeVigemCount - 1);
-                    _activeDs4Count = Math.Max(0, _activeDs4Count - 1);
-                }
-            }
         }
 
         private void DestroyAllVirtualControllers()
@@ -568,10 +495,6 @@ namespace PadForge.Common.Input
                 DestroyVirtualController(i);
                 _virtualControllers[i] = null;
             }
-
-            _activeVigemCount = 0;
-            _activeXbox360Count = 0;
-            _activeDs4Count = 0;
         }
     }
 }

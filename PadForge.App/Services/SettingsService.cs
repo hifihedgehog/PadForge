@@ -691,7 +691,7 @@ namespace PadForge.Services
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Executables = FormatExePaths(p.ExecutableNames),
+                        Executables = InputService.FormatExePaths(p.ExecutableNames),
                     };
                     UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
                     _mainVm.Settings.ProfileItems.Add(item);
@@ -875,19 +875,6 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Formats pipe-separated full paths into a display string showing just file names.
-        /// </summary>
-        private static string FormatExePaths(string pipeSeparatedPaths)
-        {
-            if (string.IsNullOrEmpty(pipeSeparatedPaths))
-                return string.Empty;
-
-            var parts = pipeSeparatedPaths.Split('|', StringSplitOptions.RemoveEmptyEntries);
-            var names = new string[parts.Length];
-            for (int i = 0; i < parts.Length; i++)
-                names[i] = System.IO.Path.GetFileName(parts[i]);
-            return string.Join(", ", names);
-        }
 
         // ─────────────────────────────────────────────
         //  Save

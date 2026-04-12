@@ -1432,7 +1432,7 @@ namespace PadForge.Common.Input
                 gm.WasTriggerActive = triggerActive;
 
                 if (triggerActive && !wasTriggerActive)
-                    QueueProfileSwitch(gm);
+                    HandleGlobalMacroAction(gm);
             }
         }
 
@@ -1516,7 +1516,7 @@ namespace PadForge.Common.Input
                 : normalized <= threshold;
         }
 
-        private void QueueProfileSwitch(GlobalMacroData gm)
+        private void HandleGlobalMacroAction(GlobalMacroData gm)
         {
             if (gm.SwitchMode == SwitchProfileMode.ToggleWindow)
             {

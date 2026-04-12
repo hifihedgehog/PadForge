@@ -116,30 +116,21 @@
   <data name="Main_FullScreen" xml:space="preserve"><value>Tela cheia</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostrar PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Controle Virtual {0}</value></data>
-  <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus não instalado</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor parado</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>Aguardando dispositivos</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Ativo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inicializando</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Um ou mais controles offline</value></data>
-  <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>Driver DirectInput não instalado</value></data>
-  <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus não instalado)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (máx. {0})</value></data>
-  <data name="Main_DS4_ViGEmNotInstalled" xml:space="preserve"><value>DualShock 4 (ViGEmBus não instalado)</value></data>
   <data name="Main_DS4_Max_Format" xml:space="preserve"><value>DualShock 4 (máx. {0})</value></data>
-  <data name="Main_DI_DriverNotInstalled" xml:space="preserve"><value>DirectInput (driver não instalado)</value></data>
   <data name="Main_DI_Max_Format" xml:space="preserve"><value>DirectInput (máx. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Teclado + Mouse (máx. {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (requer Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (máx. {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
-  <data name="Status_InstallingViGEm" xml:space="preserve"><value>Instalando ViGEmBus…</value></data>
-  <data name="Status_UninstallingViGEm" xml:space="preserve"><value>Desinstalando ViGEmBus…</value></data>
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Instalando HidHide…</value></data>
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>Desinstalando HidHide…</value></data>
-  <data name="Status_InstallingVJoy" xml:space="preserve"><value>Instalando vJoy…</value></data>
-  <data name="Status_UninstallingVJoy" xml:space="preserve"><value>Desinstalando vJoy…</value></data>
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Baixando Windows MIDI Services…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Baixando e instalando Windows MIDI Services…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Desinstalando Windows MIDI Services…</value></data>
@@ -153,14 +144,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ baixo)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← esquerda)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ cima)</value></data>
-  <data name="Status_ViGEmDetectedRestarted" xml:space="preserve"><value>ViGEmBus detectado — motor reiniciado.</value></data>
-  <data name="Status_VJoyDetectedRestarted" xml:space="preserve"><value>Driver vJoy detectado — motor reiniciado.</value></data>
-  <data name="Status_VJoyInstalledRestarted" xml:space="preserve"><value>Driver vJoy instalado — motor reiniciado.</value></data>
-  <data name="Status_VJoyRemovedRestarted" xml:space="preserve"><value>Driver vJoy removido — motor reiniciado.</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NÃO ENCONTRADO</value></data>
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll não encontrado! Coloque SDL3.dll ao lado de PadForge.exe. Baixe em https://github.com/libsdl-org/SDL/releases</value></data>
-  <data name="Status_ViGEmNotDetected" xml:space="preserve"><value>Driver ViGEmBus não detectado. Saída de controle virtual desativada.</value></data>
-  <data name="Status_ViGEmCheckFailed_Format" xml:space="preserve"><value>Verificação do ViGEm falhou: {0}</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operação do driver falhou: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Configurações copiadas para a área de transferência.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Falha ao copiar: {0}</value></data>
@@ -264,10 +249,6 @@
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Aplicativos na Lista de Permissões</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Estes aplicativos ainda podem ver dispositivos ocultos. PadForge é sempre adicionado automaticamente à lista de permissões.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Adicionar...</value></data>
-  <data name="Settings_ViGEmBus" xml:space="preserve"><value>Driver ViGEmBus</value></data>
-  <data name="Settings_ViGEmDesc" xml:space="preserve"><value>Driver de controle virtual para saída Xbox 360 e DualShock 4.</value></data>
-  <data name="Settings_VJoy" xml:space="preserve"><value>Driver vJoy</value></data>
-  <data name="Settings_VJoyDesc" xml:space="preserve"><value>Driver de joystick virtual para saída personalizada DirectInput.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK para saída de dispositivo MIDI virtual. Baixado do GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requer Windows 11 24H2 (build 26100) ou posterior</value></data>
@@ -298,10 +279,6 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Entrada e enumeração de controles</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Entrada de teclado e mouse por dispositivo</value></data>
-  <data name="About_ViGEmBus" xml:space="preserve"><value>ViGEmBus</value></data>
-  <data name="About_ViGEmBusDesc" xml:space="preserve"><value>Driver de controle virtual (Xbox 360, DualShock 4)</value></data>
-  <data name="About_VJoy" xml:space="preserve"><value>vJoy</value></data>
-  <data name="About_VJoyDesc" xml:space="preserve"><value>Driver de joystick virtual para saída DirectInput personalizada</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Saída de dispositivo MIDI virtual (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>

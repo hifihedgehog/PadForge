@@ -290,7 +290,7 @@
   <data name="About_Title" xml:space="preserve"><value>Over</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Controller-toewijzingshulpprogramma</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce — opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge wijst elke controller, elk toetsenbord of elke muis toe aan virtuele Xbox 360-, DualShock 4-, aangepaste DirectInput- of MIDI-controllers via ViGEmBus, vJoy en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord- en muisinvoer, en biedt een moderne Fluent Design-interface voor toewijzing, dode-zoneconfiguratie en force-feedbackbeheer.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge wijst elke controller, elk toetsenbord of elke muis toe aan virtuele Xbox 360-, DualShock 4-, aangepaste DirectInput- of MIDI-controllers via ViGEmBus, vJoy en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord- en muisinvoer, en biedt een moderne Fluent Design-interface voor toewijzing, deadzoneconfiguratie en force-feedbackbeheer.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework</value></data>
@@ -422,7 +422,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Bron</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Waarde</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opties</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>As-naar-knop dode zone</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>As-naar-knop deadzone</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverteren</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Half</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineair</value></data>
@@ -436,7 +436,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Meten...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middenverschuiving X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Dode-zonevorm:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Deadzonevorm:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Geschaald radiaal</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radiaal</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axiaal</value></data>
@@ -598,10 +598,10 @@
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
 
   <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dode zone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dode zone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-dode zone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-dode zone Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-deadzone Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Lineair:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Gevoeligheidscurven</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Dubbelklik op de grafiek om een punt toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
@@ -614,7 +614,7 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>X-as</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-as</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Bereik:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dode zone:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Gevoeligheidscurve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklik om toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Voorinstelling:</value></data>
@@ -634,10 +634,10 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Middenverschuiving X herstellen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y herstellen</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Herstellen naar Geschaald Radiaal</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Dode zone X herstellen</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Dode zone Y herstellen</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-dode zone X herstellen</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-dode zone Y herstellen</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Deadzone X herstellen</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Deadzone Y herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-deadzone Y herstellen</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Lineair herstellen</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Gevoeligheid X herstellen</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Gevoeligheid Y herstellen</value></data>
@@ -646,7 +646,7 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Min bereik Y herstellen</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Max bereik Y herstellen</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Bereik herstellen</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-dode zone herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-deadzone herstellen</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Gevoeligheid herstellen</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Totale versterking herstellen</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>

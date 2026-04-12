@@ -39,7 +39,7 @@
 
 - **Record mappings interactively** — Press a button on your device to bind it, pick from a dropdown of every available input (including raw buttons beyond the standard 11), or run "Map All" for one-pass setup; auto-mapping handles recognized gamepads, and force-raw mode bypasses incorrect SDL3 remapping; dropdowns persist when devices are offline
 - **Shape sensitivity curves** — Per-axis editors for sticks (independent X and Y) and triggers with 6 presets (Linear, Smooth, Aggressive, Instant, S-Curve, Delay) or custom multi-point drag-and-drop curves; a live indicator tracks real-time position
-- **Dial in dead zones** — 6 algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis dead zone, anti-dead zone, and linear response for sticks and triggers, live preview, stick center offset calibration, max range, and per-mapping axis-to-button activation thresholds with half-axis support for centered joysticks
+- **Dial in deadzones** — 6 algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis deadzone, anti-deadzone, and linear response for sticks and triggers, live preview, stick center offset calibration, max range, and per-mapping axis-to-button activation thresholds with half-axis support for centered joysticks
 
 ### Force Feedback & Rumble
 
@@ -64,7 +64,7 @@
 
 ### Polish
 
-- **Poll at 1000 Hz** — Sub-millisecond jitter via high-resolution waitable timers, bit-perfect axis passthrough at default settings, double-precision dead zone math, and 15-bit (32768-position) vJoy axis output exceeding physical ADC resolution
+- **Poll at 1000 Hz** — Sub-millisecond jitter via high-resolution waitable timers, bit-perfect axis passthrough at default settings, double-precision deadzone math, and 15-bit (32768-position) vJoy axis output exceeding physical ADC resolution
 - **Localize on the fly** — Change language from Settings without restarting; community-contributed translations via .resx resource files
 - **Minimize to tray** — System tray icon, start minimized, or launch at login
 - **Deploy as a single file** — Portable self-contained executable, no installer
@@ -89,13 +89,13 @@ Flat schematic reflecting the same live button, stick, and trigger state as the 
 ![Mappings](screenshots/mappings.jpg)
 Full mapping grid with record-by-press, dropdown selection, inversion, and half-axis options — output labels adapt to controller type (DS4 shown).
 
-### Stick Dead Zones
+### Stick Deadzones
 ![Sticks](screenshots/sticks.jpg)
-Per-axis dead zone, anti-dead zone, and linear response with live circular previews, 6 shape algorithms, and per-axis sensitivity curve editors.
+Per-axis deadzone, anti-deadzone, and linear response with live circular previews, 6 shape algorithms, and per-axis sensitivity curve editors.
 
-### Trigger Dead Zones
+### Trigger Deadzones
 ![Triggers](screenshots/triggers.jpg)
-Range sliders, anti-dead zone, and live value bars for each trigger alongside per-trigger sensitivity curves.
+Range sliders, anti-deadzone, and live value bars for each trigger alongside per-trigger sensitivity curves.
 
 ### Force Feedback / Rumble
 ![Force Feedback](screenshots/force-feedback.jpg)

@@ -829,13 +829,13 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Mappings"
     Tab "Mappings"; Cap "pad-mappings"
 
-    # 8. Sticks (default view with curves and dead zone shapes visible)
+    # 8. Sticks (default view with curves and deadzone shapes visible)
     Write-Host "[$(Next)/$total] Sticks"
     Tab "Sticks"; Start-Sleep -Milliseconds 500; Cap "pad-sticks"
 
-    # 9. Sticks — dead zone shape dropdown open
+    # 9. Sticks — deadzone shape dropdown open
     # Original coords (946, 437) + 32px vertical offset for branding bar at 200% DPI
-    Write-Host "[$(Next)/$total] Sticks - dead zone shape dropdown"
+    Write-Host "[$(Next)/$total] Sticks - deadzone shape dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
     [Win32]::ClickAt(946, 469)

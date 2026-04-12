@@ -67,9 +67,7 @@
     <Content Include="gamecontrollerdb_padforge.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Resources\ViGEmBus_1.22.0_x64_x86_arm64.exe" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
-    <EmbeddedResource Include="Resources\vJoyDriver.zip" />
     <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
     <EmbeddedResource Include="3DModels\**\*.obj" />
     <!-- 2D controller model assets (Gamepad-Asset-Pack by AL2009man, MIT license) -->
@@ -82,7 +80,6 @@
     <PackageReference Include="WPF-UI" Version="4.2.0" />
     <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.27.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Nefarius.ViGEm.Client" Version="1.21.256" />
     <PackageReference Include="Microsoft.Windows.Devices.Midi2" Version="1.0.16-rc.3.7" />
     <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
   </ItemGroup>

@@ -77,9 +77,9 @@ namespace PadForge.Common.Input
                     int slot = us.MapTo;
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.Extended &&
-                        SlotVJoyIsCustom[slot])
+                        SlotExtendedIsCustom[slot])
                     {
-                        var cfg = SlotVJoyConfigs[slot];
+                        var cfg = SlotCustomLayouts[slot];
                         us.VJoyRawOutputState = MapInputToVJoyRaw(ud.InputState, ps, cfg);
                     }
 
@@ -1087,7 +1087,7 @@ namespace PadForge.Common.Input
         /// arbitrary numbers of axes, buttons, and POVs.
         /// </summary>
         private static VJoyRawState MapInputToVJoyRaw(CustomInputState state, PadSetting ps,
-            VJoyVirtualController.VJoyDeviceConfig cfg)
+            CustomControllerLayout cfg)
         {
             var raw = VJoyRawState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
             raw.Clear(); // POVs need to start centered

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using HIDMaestro;
-using Nefarius.ViGEm.Client;
 using PadForge.Engine;
 using PadForge.ViewModels;
 
@@ -18,15 +17,11 @@ namespace PadForge.Common.Input
         //  (Xbox 360 or DualShock 4) via the IVirtualController abstraction.
         // ─────────────────────────────────────────────
 
-        /// <summary>Shared ViGEmClient instance (one per process).</summary>
-        private static ViGEmClient _vigemClient;
-        private static readonly object _vigemClientLock = new object();
-        private static bool _vigemClientFailed;
-
         /// <summary>
-        /// Shared HIDMaestro context (one per process). Replaces ViGEmBus +
-        /// vJoy in v3. Initialized lazily on first use, owns all HMController
-        /// instances created by HMaestroVirtualController.
+        /// Shared HIDMaestro context (one per process). Owns all HMController
+        /// instances created by HMaestroVirtualController. Initialized lazily
+        /// on first use; the embedded UMDF2 driver is installed via pnputil
+        /// (idempotent) the first time CreateController is called.
         /// </summary>
         private static HMContext _hmaestroContext;
         private static readonly object _hmaestroContextLock = new object();
@@ -43,18 +38,20 @@ namespace PadForge.Common.Input
         public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
 
         /// <summary>
-        /// Per-slot vJoy HID descriptor config (axes, buttons, POVs).
-        /// Written by InputService from PadViewModel.VJoyConfig. Read by Step 5
-        /// to pass per-device configs to EnsureDevicesAvailable.
+        /// Per-slot HID descriptor layout (axis/button/POV counts) for the
+        /// Extended virtual controller pipeline. Written by InputService from
+        /// the slot's per-type config; read by Step 3 / Step 5 to translate
+        /// per-mapping output into raw HID report indices.
         /// </summary>
-        internal VJoyVirtualController.VJoyDeviceConfig[] SlotVJoyConfigs { get; } = new VJoyVirtualController.VJoyDeviceConfig[MaxPads];
+        internal CustomControllerLayout[] SlotCustomLayouts { get; } = new CustomControllerLayout[MaxPads];
 
         /// <summary>
-        /// Per-slot flag: true if this vJoy slot uses Custom preset (raw axis/button pipeline),
-        /// false if it uses a gamepad preset (Xbox360/DS4 → Gamepad struct pipeline).
-        /// Written by InputService from PadViewModel.VJoyConfig.IsGamepadPreset.
+        /// Per-slot flag: true if this Extended slot uses the raw custom-axis
+        /// pipeline (arbitrary axis/button/POV counts), false if it uses a
+        /// preset gamepad pipeline (Microsoft / Sony category) that maps
+        /// through the Gamepad struct.
         /// </summary>
-        internal bool[] SlotVJoyIsCustom { get; } = new bool[MaxPads];
+        internal bool[] SlotExtendedIsCustom { get; } = new bool[MaxPads];
 
         /// <summary>
         /// Per-slot MIDI configuration snapshot. Written by InputService at 30Hz.
@@ -136,11 +133,8 @@ namespace PadForge.Common.Input
         /// <summary>Whether virtual controller output is enabled.</summary>
         public bool VirtualControllersEnabled { get; set; } = true;
 
-        /// <summary>Whether ViGEmBus driver is reachable.</summary>
-        public bool IsViGEmAvailable => _vigemClient != null;
-
         /// <summary>
-        /// Returns true if the specified pad slot has an active ViGEm virtual controller.
+        /// Returns true if the specified pad slot has an active virtual controller.
         /// Used by the UI to show connected status on dashboard cards.
         /// </summary>
         public bool IsVirtualControllerConnected(int padIndex)
@@ -189,7 +183,6 @@ namespace PadForge.Common.Input
                 // Detect controller type change — destroy old if type differs.
                 if (vc != null && vc.Type != SlotControllerTypes[padIndex])
                 {
-                    VJoyVirtualController.DiagLog($"Pass1: Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, destroying old VC");
                     RumbleLogger.Log($"[Step5] Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, recreating");
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
@@ -312,17 +305,16 @@ namespace PadForge.Common.Input
 
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
-                        // Custom vJoy slots use SubmitRawState for arbitrary axis/button counts.
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.
-                        if (vc is VJoyVirtualController vjoyVc && SlotVJoyIsCustom[padIndex])
-                            vjoyVc.SubmitRawState(CombinedVJoyRawStates[padIndex]);
-                        else if (vc is MidiVirtualController midiVc)
+                        // Everything else (Microsoft / Sony / Extended via HIDMaestro)
+                        // submits the standard Gamepad state. The DS4 raw report path
+                        // (touchpad/gyro) lives inside HMaestroVirtualController and is
+                        // dispatched there based on the active profile.
+                        if (vc is MidiVirtualController midiVc)
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else if (vc is KeyboardMouseVirtualController kbmVc)
                             kbmVc.SubmitKbmState(CombinedKbmRawStates[padIndex]);
-                        else if (vc is DS4VirtualController ds4Vc)
-                            ds4Vc.SubmitGamepadState(CombinedOutputStates[padIndex], CombinedTouchpadStates[padIndex]);
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
@@ -331,54 +323,6 @@ namespace PadForge.Common.Input
                 {
                     RaiseError($"Error updating virtual controller for pad {padIndex}", ex);
                 }
-            }
-        }
-
-        // ─────────────────────────────────────────────
-        //  ViGEm client lifecycle
-        // ─────────────────────────────────────────────
-
-        private void EnsureViGEmClient()
-        {
-            if (_vigemClient != null || _vigemClientFailed)
-                return;
-
-            lock (_vigemClientLock)
-            {
-                if (_vigemClient != null || _vigemClientFailed)
-                    return;
-
-                try
-                {
-                    _vigemClient = new ViGEmClient();
-                }
-                catch (Nefarius.ViGEm.Client.Exceptions.VigemBusNotFoundException)
-                {
-                    _vigemClientFailed = true;
-                    RaiseError("ViGEmBus driver is not installed.", null);
-                }
-                catch (Exception ex)
-                {
-                    _vigemClientFailed = true;
-                    RaiseError("Failed to initialize ViGEmClient.", ex);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Static check: is ViGEmBus driver installed?
-        /// Called by the UI on startup to populate SettingsViewModel.
-        /// </summary>
-        public static bool CheckViGEmInstalled()
-        {
-            try
-            {
-                using var client = new ViGEmClient();
-                return true;
-            }
-            catch
-            {
-                return false;
             }
         }
 
@@ -557,33 +501,6 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Creates a vJoy virtual controller using the next available device ID.
-        /// Device nodes are pre-provisioned by UpdateVirtualDevices() before this
-        /// method is called, so this just finds a free ID and returns a controller.
-        /// Returns null if vJoy driver is not installed or no free devices found.
-        /// </summary>
-        private IVirtualController CreateVJoyController()
-        {
-            VJoyVirtualController.DiagLog($"CreateVJoyController called");
-
-            VJoyVirtualController.EnsureDllLoaded();
-            if (!VJoyVirtualController.IsDllLoaded)
-            {
-                RaiseError("vJoy driver is not installed (vJoyInterface.dll not found).", null);
-                return null;
-            }
-
-            uint deviceId = VJoyVirtualController.FindFreeDeviceId();
-            VJoyVirtualController.DiagLog($"CreateVJoyController: FindFreeDeviceId={deviceId}");
-            if (deviceId == 0)
-            {
-                RaiseError("No free vJoy devices after node creation.", null);
-                return null;
-            }
-            return new VJoyVirtualController(deviceId);
-        }
-
-        /// <summary>
         /// Creates a MIDI virtual controller for the given pad slot.
         /// Reads port name and config from the PadViewModel's MidiConfig.
         /// Returns null if the configured port is not found.
@@ -644,7 +561,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void DestroyAllVirtualControllers(bool preserveVJoyNodes = false)
+        private void DestroyAllVirtualControllers()
         {
             for (int i = 0; i < MaxPads; i++)
             {
@@ -655,203 +572,6 @@ namespace PadForge.Common.Input
             _activeVigemCount = 0;
             _activeXbox360Count = 0;
             _activeDs4Count = 0;
-
-            if (preserveVJoyNodes)
-            {
-                // Disable the node instead of removing it. The DLL's internal device
-                // handle stays valid for when the node is re-enabled via RestartDeviceNode.
-                // This matches the EnsureDevicesAvailable(0) pattern.
-                try { VJoyVirtualController.DisableDeviceNode(); } catch { }
-            }
-            else
-            {
-                // Full removal — for final app shutdown. Prevents orphaned nodes
-                // from showing in joy.cpl after PadForge exits.
-                try { VJoyVirtualController.RemoveAllDeviceNodes(); } catch { }
-            }
-        }
-
-        // ─────────────────────────────────────────────
-        //  Stale ViGEm device cleanup
-        //
-        //  ViGEm bus driver may leave orphaned USB device nodes
-        //  when a feeder app exits without calling Dispose() on
-        //  its virtual controller targets. These stale nodes
-        //  appear as real Xbox 360 / DS4 controllers to SDL.
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Removes stale ViGEm USB device nodes that survived from previous sessions.
-        /// ViGEm assigns short numeric serials (01, 02, ..., 16) to Xbox 360 targets.
-        /// Real Xbox 360 controllers have longer hardware serials.
-        /// Must be called BEFORE Start() so SDL doesn't enumerate the stale nodes.
-        /// </summary>
-        public static void CleanupStaleVigemDevices()
-        {
-            try
-            {
-                // ViGEm Xbox 360 virtual controllers are in the XnaComposite class
-                // with instance IDs like USB\VID_045E&PID_028E\01.
-                var staleIds = EnumerateStaleVigemIds("XnaComposite");
-
-                if (staleIds.Count == 0) return;
-
-                Debug.WriteLine($"[ViGEm] Cleaning up {staleIds.Count} stale device node(s)");
-                foreach (string id in staleIds)
-                {
-                    try
-                    {
-                        var removePsi = new ProcessStartInfo
-                        {
-                            FileName = "pnputil.exe",
-                            Arguments = $"/remove-device \"{id}\" /subtree",
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            RedirectStandardError = true,
-                            CreateNoWindow = true
-                        };
-                        using var removeProc = Process.Start(removePsi);
-                        removeProc?.WaitForExit(5_000);
-                        Debug.WriteLine($"[ViGEm] Removed stale device: {id}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"[ViGEm] Failed to remove {id}: {ex.Message}");
-                    }
-                }
-
-                // Brief wait for PnP to fully process the removals before SDL init.
-                Thread.Sleep(500);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[ViGEm] CleanupStaleVigemDevices exception: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Enumerates stale ViGEm device instance IDs in the given device class.
-        /// ViGEm Xbox 360 targets: USB\VID_045E&amp;PID_028E\NN (short numeric serial).
-        /// Real Xbox controllers have longer alphanumeric serials.
-        /// </summary>
-        private static List<string> EnumerateStaleVigemIds(string deviceClass)
-        {
-            var results = new List<string>();
-            try
-            {
-                var psi = new ProcessStartInfo
-                {
-                    FileName = "pnputil.exe",
-                    Arguments = $"/enum-devices /class {deviceClass}",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                };
-
-                using var proc = Process.Start(psi);
-                if (proc == null) return results;
-                string output = proc.StandardOutput.ReadToEnd();
-                proc.WaitForExit(5_000);
-
-                string currentInstanceId = null;
-                foreach (string rawLine in output.Split('\n'))
-                {
-                    string line = rawLine.Trim();
-                    if (line.IndexOf("Instance ID", StringComparison.OrdinalIgnoreCase) >= 0
-                        && line.Contains(":"))
-                    {
-                        currentInstanceId = line.Substring(line.IndexOf(':') + 1).Trim();
-                    }
-                    else if (string.IsNullOrEmpty(line))
-                    {
-                        if (currentInstanceId != null && IsVigemInstanceId(currentInstanceId))
-                            results.Add(currentInstanceId);
-                        currentInstanceId = null;
-                    }
-                }
-                if (currentInstanceId != null && IsVigemInstanceId(currentInstanceId))
-                    results.Add(currentInstanceId);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[ViGEm] EnumerateStaleVigemIds({deviceClass}) exception: {ex.Message}");
-            }
-            return results;
-        }
-
-        /// <summary>
-        /// Checks if a PnP instance ID looks like a ViGEm virtual controller.
-        /// ViGEm assigns short numeric serials (1-2 digits): USB\VID_045E&amp;PID_028E\01
-        /// Real Xbox controllers have long alphanumeric serials.
-        /// </summary>
-        private static bool IsVigemInstanceId(string instanceId)
-        {
-            // USB\VID_045E&PID_028E\NN (Xbox 360)
-            if (!instanceId.StartsWith("USB\\", StringComparison.OrdinalIgnoreCase))
-                return false;
-
-            int lastBackslash = instanceId.LastIndexOf('\\');
-            if (lastBackslash < 0) return false;
-
-            string serial = instanceId.Substring(lastBackslash + 1);
-            // ViGEm serials are short numeric strings (1-2 digits).
-            // Real USB controllers have longer alphanumeric serials.
-            if (serial.Length > 2 || serial.Length == 0) return false;
-            foreach (char c in serial)
-                if (!char.IsDigit(c)) return false;
-
-            string upperPath = instanceId.ToUpperInvariant();
-            return upperPath.Contains("VID_045E&PID_028E") ||
-                   upperPath.Contains("VID_054C&PID_05C4");
-        }
-
-        // ─────────────────────────────────────────────
-        //  XInput slot mask — direct P/Invoke to xinput1_4.dll
-        //
-        //  Used for ViGEm virtual controller management only
-        //  (detecting when a newly created Xbox 360 virtual
-        //  controller appears in the XInput stack).
-        // ─────────────────────────────────────────────
-
-        [DllImport("xinput1_4.dll", EntryPoint = "#100")]
-        private static extern uint XInputGetStateEx(
-            uint dwUserIndex, ref XInputStateInternal pState);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct XInputGamepadInternal
-        {
-            public ushort wButtons;
-            public byte bLeftTrigger;
-            public byte bRightTrigger;
-            public short sThumbLX;
-            public short sThumbLY;
-            public short sThumbRX;
-            public short sThumbRY;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct XInputStateInternal
-        {
-            public uint dwPacketNumber;
-            public XInputGamepadInternal Gamepad;
-        }
-
-        private const uint XINPUT_ERROR_DEVICE_NOT_CONNECTED = 0x048F;
-
-        /// <summary>
-        /// Returns a bitmask of connected XInput slots (bit 0 = slot 0, etc.).
-        /// Probes slots 0–3 directly via xinput1_4.dll.
-        /// </summary>
-        private static uint GetXInputConnectedSlotMask()
-        {
-            uint mask = 0;
-            for (uint i = 0; i < 4; i++)
-            {
-                var state = new XInputStateInternal();
-                if (XInputGetStateEx(i, ref state) != XINPUT_ERROR_DEVICE_NOT_CONNECTED)
-                    mask |= (1u << (int)i);
-            }
-            return mask;
         }
     }
 }

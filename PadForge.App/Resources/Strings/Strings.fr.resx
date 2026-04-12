@@ -249,6 +249,8 @@
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Applications autorisées</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Ces applications peuvent toujours voir les appareils masqués. PadForge est toujours autorisé automatiquement.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ajouter...</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>Pilote HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Moteur de contrôleur HID virtuel en mode utilisateur. Intégré à PadForge.App — installé automatiquement à la première création d'un contrôleur virtuel. Remplace ViGEmBus et vJoy dans la v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK pour la sortie de périphériques MIDI virtuels. Téléchargé depuis GitHub (~210 Mo).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Nécessite Windows 11 24H2 (build 26100) ou ultérieur</value></data>

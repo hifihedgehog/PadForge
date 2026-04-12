@@ -284,6 +284,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_WhitelistedApps => Get("Settings_WhitelistedApps");
     public string Settings_WhitelistDesc => Get("Settings_WhitelistDesc");
     public string Settings_AddDots => Get("Settings_AddDots");
+    public string Settings_HIDMaestro => Get("Settings_HIDMaestro");
+    public string Settings_HIDMaestroDesc => Get("Settings_HIDMaestroDesc");
     public string Settings_MidiServices => Get("Settings_MidiServices");
     public string Settings_MidiDesc => Get("Settings_MidiDesc");
     public string Settings_MidiOsRequired => Get("Settings_MidiOsRequired");

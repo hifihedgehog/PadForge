@@ -84,6 +84,10 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _outputType, value))
                 {
+                    // Category change invalidates the previous HIDMaestro
+                    // profile slug — clear it so the engine falls back to
+                    // the new category's default profile.
+                    ProfileId = null;
                     ResetDeadZoneSettings();
                     RebuildMappings();
                     RebuildStickConfigs();
@@ -91,6 +95,18 @@ namespace PadForge.ViewModels
                     SyncMacroButtonStyle();
                 }
             }
+        }
+
+        private string _profileId;
+        /// <summary>
+        /// HIDMaestro profile slug for this slot (e.g. "xbox-360-wired",
+        /// "dualsense", "logitech-g920"). Null/empty falls back to the
+        /// active category's default profile in CreateVirtualController.
+        /// </summary>
+        public string ProfileId
+        {
+            get => _profileId;
+            set => SetProperty(ref _profileId, value);
         }
 
         private string _typeInstanceLabel = "1";

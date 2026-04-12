@@ -152,6 +152,7 @@ namespace PadForge.Services
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
+                _inputManager.SlotProfileIds[i] = _mainVm.Pads[i].ProfileId;
                 SyncVJoyConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
             }
@@ -948,10 +949,11 @@ namespace PadForge.Services
             {
                 var padVm = _mainVm.Pads[i];
 
-                // Sync output type and vJoy config to engine (always, even when no device is selected).
+                // Sync output type and per-slot config to engine (always, even when no device is selected).
                 if (_inputManager != null && i < InputManager.MaxPads)
                 {
                     _inputManager.SlotControllerTypes[i] = padVm.OutputType;
+                    _inputManager.SlotProfileIds[i] = padVm.ProfileId;
                     SyncVJoyConfigToSlot(i, padVm);
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
                 }

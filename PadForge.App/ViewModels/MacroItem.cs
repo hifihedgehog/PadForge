@@ -36,6 +36,7 @@ namespace PadForge.ViewModels
         private void OnCultureChanged()
         {
             OnPropertyChanged(nameof(RecordTriggerButtonText));
+            OnPropertyChanged(nameof(RecordTriggerIcon));
             OnPropertyChanged(nameof(TriggerDisplayText));
         }
 
@@ -310,12 +311,18 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isRecordingTrigger, value))
+                {
                     OnPropertyChanged(nameof(RecordTriggerButtonText));
+                    OnPropertyChanged(nameof(RecordTriggerIcon));
+                }
             }
         }
 
         public string RecordTriggerButtonText =>
             IsRecordingTrigger ? Strings.Instance.Common_Stop : Strings.Instance.Macro_RecordTrigger;
+
+        public string RecordTriggerIcon =>
+            IsRecordingTrigger ? "\uE71A" : "\uE7C8"; // Stop : Record
 
         private string _recordingLiveText = "";
 
@@ -597,6 +604,20 @@ namespace PadForge.ViewModels
             {
                 IsRecordingTrigger = !IsRecordingTrigger;
                 RecordTriggerRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        private RelayCommand _clearTriggerCommand;
+        public RelayCommand ClearTriggerCommand =>
+            _clearTriggerCommand ??= new RelayCommand(() =>
+            {
+                TriggerButtons = 0;
+                TriggerCustomButtonWords = new uint[4];
+                TriggerRawButtons = Array.Empty<int>();
+                TriggerDeviceGuid = Guid.Empty;
+                TriggerAxisTargets = Array.Empty<MacroAxisTarget>();
+                TriggerAxisDirections = Array.Empty<MacroAxisDirection>();
+                TriggerPovs = Array.Empty<string>();
+                OnPropertyChanged(nameof(TriggerDisplayText));
             });
 
         private RelayCommand _addActionCommand;
@@ -1334,6 +1355,7 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonPress => string.Format(Strings.Instance.MacroAction_MousePress_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
+                    MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -1438,7 +1460,10 @@ namespace PadForge.ViewModels
         MouseButtonRelease,
 
         /// <summary>Continuously map a source axis to mouse scroll wheel.</summary>
-        MouseScroll
+        MouseScroll,
+
+        /// <summary>Toggle the touchpad overlay visibility.</summary>
+        ToggleTouchpadOverlay
     }
 
     public enum MacroMouseButton

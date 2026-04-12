@@ -133,7 +133,7 @@ namespace PadForge.Engine
         /// <param name="ud">The user device data model (for device reference).</param>
         /// <param name="device">The SDL device wrapper to rumble.</param>
         /// <param name="ps">PadSetting containing force feedback configuration.</param>
-        /// <param name="v">Vibration values from the XInput state (LeftMotorSpeed, RightMotorSpeed).</param>
+        /// <param name="v">Vibration values from the virtual controller callback (LeftMotorSpeed, RightMotorSpeed).</param>
         public void SetDeviceForces(UserDevice ud, ISdlInputDevice device, PadSetting ps, Vibration v)
         {
             if (device == null || (!device.HasRumble && !device.HasHaptic))
@@ -207,6 +207,18 @@ namespace PadForge.Engine
             }
 
             // ── Path 2: Standard scalar rumble ──
+            // If we were previously in the directional path, reset directional cache
+            // so re-entering the directional path is always detected as a change.
+            if (_cachedHasDirectional || _cachedHasCondition)
+            {
+                _cachedHasDirectional = false;
+                _cachedHasCondition = false;
+                _cachedEffectType = 0;
+                _cachedSignedMag = 0;
+                _cachedDirection = 0;
+                _cachedPeriod = 0;
+            }
+
             ushort rawLeft = v.LeftMotorSpeed;
             ushort rawRight = v.RightMotorSpeed;
 
@@ -280,7 +292,7 @@ namespace PadForge.Engine
                 return true;
             }
 
-            // Convert HID polar direction (0–32767 → 0–360°) to SDL polar (0–36000 hundredths).
+            // vJoyInterface reads raw HID logical units (0–32767). Convert to SDL polar (0–36000 hundredths of degrees).
             int sdlPolar = (int)(v.Direction / 32767.0 * 36000.0);
             uint features = device.HapticFeatures;
             bool isSingleAxis = device.NumHapticAxes <= 1;
@@ -301,7 +313,7 @@ namespace PadForge.Engine
                 if (isSingleAxis)
                 {
                     // Wheel: project 2D polar direction onto steering axis (X).
-                    // sin(angle) gives X component: HID 0=N → sin=0, 90°→sin=1 (CW), 270°→sin=-1 (CCW).
+                    // sin(angle) gives X component: 0°=N → sin=0, 90°→sin=1 (CW), 270°→sin=-1 (CCW).
                     double angleRad = (v.Direction / 32767.0) * 2.0 * Math.PI;
                     double xComponent = Math.Sin(angleRad);
                     short projectedMag = (short)Math.Clamp(scaledMag * xComponent, -10000, 10000);
@@ -511,8 +523,23 @@ namespace PadForge.Engine
             else
             {
                 bool upd = SDL_UpdateHapticEffect(haptic, _hapticEffectId, ref effect);
-                RumbleLogger.Log($"Haptic update id={_hapticEffectId} -> {upd}");
-                return upd;
+                if (!upd)
+                {
+                    // Update failed — effect may be stale (e.g., another app acquired the
+                    // device in Exclusive mode and released it). Destroy and recreate.
+                    RumbleLogger.Log($"Haptic update id={_hapticEffectId} failed, recreating");
+                    StopAndDestroyHapticEffect(device);
+                    _hapticEffectId = SDL_CreateHapticEffect(haptic, ref effect);
+                    if (_hapticEffectId < 0)
+                    {
+                        RumbleLogger.Log($"Haptic recreate failed: {SDL_GetError()}");
+                        return false;
+                    }
+                    _hapticEffectCreated = true;
+                    return SDL_RunHapticEffect(haptic, _hapticEffectId, SDL_HAPTIC_INFINITY);
+                }
+                RumbleLogger.Log($"Haptic update id={_hapticEffectId} -> ok");
+                return true;
             }
         }
 
@@ -561,7 +588,7 @@ namespace PadForge.Engine
     }
 
     // ─────────────────────────────────────────────────────────────────
-    //  Vibration — lightweight struct matching XInput XINPUT_VIBRATION
+    //  Vibration — force feedback / rumble state for a virtual controller slot
     // ─────────────────────────────────────────────────────────────────
 
     /// <summary>
@@ -593,7 +620,7 @@ namespace PadForge.Engine
         /// For periodic effects: always positive (amplitude).</summary>
         public short SignedMagnitude { get; set; }
 
-        /// <summary>Polar direction in HID units (0–32767, maps to 0–360°).
+        /// <summary>Polar direction in HID logical units (0–32767, maps to 0–360°).
         /// 0 = North/Up, ~8192 = East/Right, ~16384 = South, ~24576 = West/Left.</summary>
         public ushort Direction { get; set; }
 

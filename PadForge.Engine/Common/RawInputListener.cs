@@ -373,9 +373,8 @@ namespace PadForge.Engine
         public static DeviceInfo[] EnumerateKeyboards()
         {
             var devices = EnumerateDevicesByType(RIM_TYPEKEYBOARD);
-            if (devices.Length < 2) return devices;
 
-            // Prepend the aggregate device.
+            // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
             result[0] = new DeviceInfo
             {
@@ -395,9 +394,8 @@ namespace PadForge.Engine
         public static DeviceInfo[] EnumerateMice()
         {
             var devices = EnumerateDevicesByType(RIM_TYPEMOUSE);
-            if (devices.Length < 2) return devices;
 
-            // Prepend the aggregate device.
+            // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
             result[0] = new DeviceInfo
             {
@@ -479,7 +477,7 @@ namespace PadForge.Engine
         ///   2. RIDI_DEVICEINFO — uses the Raw Input API to get the HID sub-struct
         ///   3. Device path parsing — extracts VID_xxxx&amp;PID_xxxx from the path string
         /// </summary>
-        private static void GetDeviceVidPid(IntPtr hDevice, string devicePath, out ushort vendorId, out ushort productId)
+        public static void GetDeviceVidPid(IntPtr hDevice, string devicePath, out ushort vendorId, out ushort productId)
         {
             vendorId = 0;
             productId = 0;
@@ -573,7 +571,7 @@ namespace PadForge.Engine
         ///   4. VID:PID label
         ///   5. Generic "Keyboard" / "Mouse"
         /// </summary>
-        private static string ExtractFriendlyName(string devicePath, uint type)
+        public static string ExtractFriendlyName(string devicePath, uint type)
         {
             string fallback = type == RIM_TYPEKEYBOARD ? "Keyboard" : "Mouse";
             if (string.IsNullOrEmpty(devicePath)) return fallback;
@@ -829,7 +827,7 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Copies the keyboard state for a specific device into the destination array.
-        /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to get the OR-merged state of all keyboards.
+        /// Pass <see cref="AggregateKeyboardHandle"/> to get the OR-merged state of all keyboards.
         /// </summary>
         public static void GetKeyboardState(IntPtr hDevice, bool[] dest, int count)
         {
@@ -853,6 +851,29 @@ namespace PadForge.Engine
             if (_keyboardStates.TryGetValue(hDevice, out bool[] devState))
                 Array.Copy(devState, dest, n);
             // If device hasn't sent any input yet, dest stays all-false (default).
+        }
+
+        /// <summary>
+        /// Returns true if there is active mouse state for the given handle.
+        /// </summary>
+        public static bool HasMouseState(IntPtr hDevice) =>
+            hDevice != IntPtr.Zero && _mouseStates.ContainsKey(hDevice);
+
+        /// <summary>
+        /// Resolves the current Raw Input handle for a mouse device by path.
+        /// Handles can change after other HID registrations (e.g. PTP touchpad).
+        /// Returns IntPtr.Zero if no active handle matches the path.
+        /// </summary>
+        public static IntPtr ResolveMouseHandle(string devicePath)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return IntPtr.Zero;
+            foreach (var kvp in _mouseStates)
+            {
+                string name = GetDeviceName(kvp.Key);
+                if (!string.IsNullOrEmpty(name) && name.Equals(devicePath, StringComparison.OrdinalIgnoreCase))
+                    return kvp.Key;
+            }
+            return IntPtr.Zero;
         }
 
         /// <summary>
@@ -894,7 +915,7 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Copies mouse button states for a specific device.
-        /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to get OR-merged buttons from all mice.
+        /// Pass <see cref="AggregateMouseHandle"/> to get OR-merged buttons from all mice.
         /// </summary>
         public static void GetMouseButtons(IntPtr hDevice, bool[] dest)
         {
@@ -1066,6 +1087,7 @@ namespace PadForge.Engine
                 else if (header.dwType == RIM_TYPEMOUSE)
                 {
                     var mouse = Marshal.PtrToStructure<RAWMOUSE>(dataPtr);
+
                     MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
 
                     if (mouse.lLastX != 0)

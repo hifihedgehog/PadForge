@@ -33,6 +33,7 @@ namespace PadForge.Engine
         public bool HasHaptic => false;
         public bool HasGyro => false;
         public bool HasAccel => false;
+        public bool HasTouchpad => false;
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;
@@ -41,6 +42,7 @@ namespace PadForge.Engine
         public ushort ProductId { get; private set; }
         public string DevicePath { get; private set; } = string.Empty;
         public string SerialNumber => string.Empty;
+        public string SdlGuid => string.Empty;
         public Guid InstanceGuid { get; private set; }
         public Guid ProductGuid { get; private set; }
 
@@ -56,8 +58,15 @@ namespace PadForge.Engine
                     var devices = RawInputListener.EnumerateMice();
                     for (int i = 0; i < devices.Length; i++)
                     {
-                        if (devices[i].Handle == _rawInputHandle)
+                        // Match by path (handles can change after PTP registration).
+                        if (!string.IsNullOrEmpty(DevicePath) &&
+                            devices[i].DevicePath == DevicePath)
+                        {
+                            // Update stale handle if it changed.
+                            if (devices[i].Handle != _rawInputHandle)
+                                _rawInputHandle = devices[i].Handle;
                             return true;
+                        }
                     }
                     return false;
                 }
@@ -71,6 +80,12 @@ namespace PadForge.Engine
                 return false;
             }
         }
+
+        /// <summary>
+        /// Updates the Raw Input handle when the same physical device is
+        /// re-enumerated with a new handle (e.g. after PTP registration).
+        /// </summary>
+        public void UpdateHandle(IntPtr newHandle) => _rawInputHandle = newHandle;
 
         /// <summary>
         /// Opens the mouse from a Raw Input device enumeration result.
@@ -102,6 +117,9 @@ namespace PadForge.Engine
         {
             var state = new CustomInputState();
 
+            // _rawInputHandle is kept up-to-date by Step 1. When PTP claims the
+            // trackpad's mouse collection, Step 1 redirects all mouse wrappers to
+            // IntPtr.Zero (Windows' synthetic mouse output at hDevice=0).
             RawInputListener.ConsumeMouseDelta(_rawInputHandle, out int dx, out int dy);
             state.Axis[0] = Math.Clamp(AxisCenter + (int)(dx * MotionScale), 0, 65535);
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);

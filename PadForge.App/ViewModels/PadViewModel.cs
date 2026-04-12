@@ -16,7 +16,7 @@ namespace PadForge.ViewModels
     /// ViewModel for a single virtual controller slot (one of 16 pads).
     /// Features:
     ///   #1 — Multi-device selection: SelectedMappedDevice picks which device to configure
-    ///   #2 — Expanded dead zones: per-axis X/Y, trigger dead zones, anti-dead zone, linear
+    ///   #2 — Expanded deadzones: per-axis X/Y, trigger deadzones, anti-deadzone, linear
     ///   #4 — Macro foundation: trigger combos → action sequences
     /// </summary>
     public partial class PadViewModel : ViewModelBase
@@ -223,7 +223,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// The currently selected device within this slot for configuration.
-        /// When changed, the mapping grid and dead zone settings should update
+        /// When changed, the mapping grid and deadzone settings should update
         /// to reflect THIS device's PadSetting.
         /// </summary>
         public MappedDeviceInfo SelectedMappedDevice
@@ -493,6 +493,18 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "LeftThumbAxisY", MappingCategory.LeftStick, "LeftThumbAxisYNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
+
+            // Touchpad (DS4 only)
+            if (isDS4)
+            {
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX1, "TouchpadX1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY1, "TouchpadY1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX2, "TouchpadX2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY2, "TouchpadY2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact1, "TouchpadContact1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact2, "TouchpadContact2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
+            }
         }
 
         /// <summary>
@@ -726,8 +738,8 @@ namespace PadForge.ViewModels
         public ICommand ResetAudioRightMotorCommand => _resetAudioRightMotorCommand ??= new RelayCommand(() => AudioRumbleRightMotor = 100);
 
         // ═══════════════════════════════════════════════
-        //  #2: Expanded dead zone settings
-        //  Per-axis X/Y, anti-dead zone, linear, trigger dead zones
+        //  #2: Expanded deadzone settings
+        //  Per-axis X/Y, anti-deadzone, linear, trigger deadzones
         // ═══════════════════════════════════════════════
 
         /// <summary>
@@ -748,7 +760,7 @@ namespace PadForge.ViewModels
             RightMotorStrength = 100;
         }
 
-        /// <summary>Resets all dead zone, anti-dead zone, linear, and trigger settings to defaults.</summary>
+        /// <summary>Resets all deadzone, anti-deadzone, linear, and trigger settings to defaults.</summary>
         private void ResetDeadZoneSettings()
         {
             LeftDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
@@ -996,7 +1008,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Pushes current VM dead zone properties into a StickConfigItem.
+        /// Pushes current VM deadzone properties into a StickConfigItem.
         /// Called on rebuild and when settings are loaded.
         /// </summary>
         public void SyncStickItemFromVm(StickConfigItem item)
@@ -1352,8 +1364,29 @@ namespace PadForge.ViewModels
         public bool IsMapAllActive
         {
             get => _isMapAllActive;
-            set => SetProperty(ref _isMapAllActive, value);
+            set
+            {
+                if (SetProperty(ref _isMapAllActive, value))
+                {
+                    OnPropertyChanged(nameof(MapAllButtonText));
+                    OnPropertyChanged(nameof(MapAllButtonTooltip));
+                    _mapAllCommand?.NotifyCanExecuteChanged();
+                    _stopMapAllCommand?.NotifyCanExecuteChanged();
+                }
+            }
         }
+
+        public string MapAllButtonText =>
+            IsMapAllActive ? Strings.Instance.Common_Stop : Strings.Instance.Pad_MapAll;
+
+        public string MapAllButtonTooltip =>
+            IsMapAllActive ? Strings.Instance.Common_Stop : Strings.Instance.Pad_MapAllOneByOne;
+
+        private RelayCommand _stopMapAllCommand;
+        public RelayCommand StopMapAllCommand =>
+            _stopMapAllCommand ??= new RelayCommand(
+                () => MapAllCancelRequested?.Invoke(this, EventArgs.Empty),
+                () => IsMapAllActive);
 
         /// <summary>When true, the current Map All step is recording the negative direction of an axis.</summary>
         internal bool MapAllRecordingNeg { get; set; }
@@ -1407,6 +1440,14 @@ namespace PadForge.ViewModels
             }
 
             var mapping = Mappings[MapAllCurrentIndex];
+
+            // Skip non-recordable categories (touchpad inputs can't be isolated by touch).
+            if (!mapping.IsRecordable)
+            {
+                MapAllCurrentIndex++;
+                AdvanceMapAll();
+                return;
+            }
 
             // Switch to Controller tab (index 0) for stick axes so the 3D arrow is visible.
             // The 3D model is only on the Controller tab; if Map All was started from the
@@ -1628,7 +1669,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Processes both stick axes together through the shape-aware dead zone pipeline.
+        /// Processes both stick axes together through the shape-aware deadzone pipeline.
         /// Uses the same algorithms as Step3's ApplyDeadZone for preview consistency.
         /// </summary>
         private static (double visualX, double outputX, double visualY, double outputY)
@@ -1862,7 +1903,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Applies the trigger processing pipeline (dead zone, max range, curve, anti-dead zone)
+        /// Applies the trigger processing pipeline (deadzone, max range, curve, anti-deadzone)
         /// to a raw 0–1 trigger value for preview display. Mirrors Step3's ApplyTriggerDeadZone.
         /// </summary>
         private static double ProcessTriggerForPreview(double rawNorm, TriggerConfigItem trig)
@@ -1877,7 +1918,7 @@ namespace PadForge.ViewModels
             double remapped = Math.Min((t - dz) / (mr - dz), 1.0);
             double output = StickConfigItem.ApplyCurve(remapped, trig.SensitivityCurve);
 
-            // Anti-dead zone: offset the output minimum
+            // Anti-deadzone: offset the output minimum
             double adz = trig.AntiDeadZone / 100.0;
             if (adz > 0)
                 output = adz + output * (1.0 - adz);

@@ -113,13 +113,15 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 장치</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>컨트롤러 추가</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>가상 컨트롤러 삭제</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>전체 화면</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge 표시</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus가 설치되지 않음</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>엔진 중지됨</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>컨트롤러 대기 중</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>장치 대기 중</value></data>
   <data name="Main_Active" xml:space="preserve"><value>활성</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>초기화 중</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput 드라이버가 설치되지 않음</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus 미설치)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (최대 {0})</value></data>
@@ -194,6 +196,16 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>기본값</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>프로필 단축키</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>컨트롤러의 버튼 조합으로 프로필을 전환합니다.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>단축키 추가</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>다음 프로필</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>이전 프로필</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>특정 프로필</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>창 전환</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>연결된 아무 장치</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>녹음</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>녹음 중...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>장치가 선택되지 않았습니다.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>잘못된 슬롯 인덱스: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>장치 할당에 실패했습니다.</value></data>
@@ -219,6 +231,11 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>로컬 네트워크의 브라우저에 게임패드 UI를 제공합니다.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>스마트폰이나 태블릿 브라우저에서 연결하여 게임패드로 사용할 수 있습니다.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DS4 터치패드 에뮬레이션을 위한 화면 터치 영역.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 활성화</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>불투명도:</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>우클릭한 채로 드래그하여 이동</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>드라이버</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>장치 없음</value></data>
 
@@ -289,8 +306,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>가상 MIDI 장치 출력 (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 컨트롤러 시각화</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF용 Fluent Design 테마</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF용 Fluent 2 디자인 시스템</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>데이터 바인딩을 위한 CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>라이선스</value></data>
@@ -305,17 +322,20 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>보조</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>마우스</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>키보드</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>터치패드</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>장치</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>모든 키보드 (병합)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>모든 마우스 (병합)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>모든 터치패드 (병합됨)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>장치</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 온라인 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 전체</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>이 장치 및 해당 설정을 제거합니다</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>제품: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>유형: </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>앱 GUID: </value></data>
+  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>인스턴스 경로: </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>장치 매핑 제출</value></data>
@@ -457,6 +477,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>마우스 버튼 누르기</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>마우스 버튼 놓기</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>버튼:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>키 조합:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 형식의 키 조합 — 편집 가능</value></data>
@@ -516,6 +537,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} 스크롤 (최대 {1} 단위)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>마우스 {0} 누르기</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>마우스 {0} 놓기</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>중립</value></data>
@@ -722,7 +744,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>응용 프로그램</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>절전</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>숫자 키패드</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>숫자 키패드 {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>구분 기호</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -813,5 +835,29 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>저음 차단 초기화</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>왼쪽 모터 초기화</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>터치패드 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>터치패드 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>터치패드 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>터치패드 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>터치패드 1 터치</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>터치패드 2 터치</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>터치패드 클릭</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>터치패드</value></data>
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>숫자 키패드 *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>숫자 키패드 +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>숫자 키패드 -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>숫자 키패드 .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>숫자 키패드 /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>세미콜론</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>등호</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>쉼표</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>마이너스</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>마침표</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>슬래시</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>그레이브</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>왼쪽 대괄호</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>백슬래시</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>오른쪽 대괄호</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>아포스트로피</value></data>
 
 </root>

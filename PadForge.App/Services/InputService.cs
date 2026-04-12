@@ -73,6 +73,9 @@ namespace PadForge.Services
         /// </summary>
         public SettingsService SettingsService { set => _settingsService = value; }
 
+        /// <summary>Callback to toggle main window visibility. Set by MainWindow.</summary>
+        public Action ToggleMainWindow { get; set; }
+
         // ── Macro trigger recording state ──
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
@@ -84,6 +87,8 @@ namespace PadForge.Services
         private Dictionary<MacroAxisTarget, MacroAxisDirection> _recordedAxisDirections;
         private HashSet<string> _recordedPovs; // stored as "povIndex:centidegrees"
         private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
+        private const double MacroRecordTimeoutSeconds = 5;
+        private DateTime _macroRecordStartTime;
         private float[] _macroAxisBaseline;              // axis values at recording start
         private MacroAxisTarget _macroAxisCandidate;     // axis being held
         private float _macroAxisCandidateDelta;          // delta sign of the candidate axis
@@ -209,6 +214,10 @@ namespace PadForge.Services
             // Start web controller server if enabled.
             StartWebServerIfEnabled();
 
+            // Show touchpad overlay if enabled.
+            if (_mainVm.Dashboard.EnableTouchpadOverlay)
+                ShowTouchpadOverlay();
+
             // Start audio bass rumble detector if any slot has it enabled.
             SyncAudioBassDetector();
 
@@ -286,6 +295,24 @@ namespace PadForge.Services
             // Stop web controller server.
             StopWebServer();
 
+            // Close overlay windows (not just hide — prevents shutdown hang).
+            // Must dispatch to UI thread since Stop() may be called from Task.Run.
+            _dispatcher.Invoke(() =>
+            {
+                if (_touchpadOverlay != null)
+                {
+                    _touchpadOverlay.PositionChanged -= OnTouchpadOverlayPositionChanged;
+                    _touchpadOverlay.Close();
+                    _touchpadOverlay = null;
+                }
+                if (_switchOverlay != null)
+                {
+                    _switchOverlay.StopTimers();
+                    _switchOverlay.Close();
+                    _switchOverlay = null;
+                }
+            });
+
             // Stop audio bass rumble detector.
             StopAudioBassDetector();
 
@@ -351,6 +378,40 @@ namespace PadForge.Services
         {
             if (_inputManager == null || !_inputManager.IsRunning)
                 return;
+
+            // ── Feed touchpad overlay state into the virtual device ──
+            if (_touchpadOverlay?.IsVisible == true && _touchpadOverlayDevice != null)
+                _touchpadOverlayDevice.UpdateState(_touchpadOverlay.GetTouchpadState());
+
+            // ── Handle macro-requested touchpad overlay toggle ──
+            if (_inputManager.ToggleTouchpadOverlayRequested)
+            {
+                _inputManager.ToggleTouchpadOverlayRequested = false;
+                ToggleTouchpadOverlay();
+            }
+
+            // ── Handle macro-requested profile switch ──
+            string pendingSwitch = _inputManager.PendingProfileSwitchId;
+            if (pendingSwitch != "\0")
+            {
+                bool isManual = _inputManager.PendingProfileSwitchIsManual;
+                _inputManager.PendingProfileSwitchId = "\0";
+                _inputManager.PendingProfileSwitchIsManual = false;
+
+                if (isManual && _foregroundMonitor != null)
+                    _foregroundMonitor.SetManualOverride(SettingsManager.ActiveProfileId);
+
+                OnProfileSwitchRequired(pendingSwitch);
+                ShowProfileSwitchOverlay(pendingSwitch);
+                _settingsService?.MarkDirty();
+            }
+
+            // ── Handle macro-requested window toggle ──
+            if (_inputManager.PendingToggleWindow)
+            {
+                _inputManager.PendingToggleWindow = false;
+                ToggleMainWindow?.Invoke();
+            }
 
             // ── Update Pad ViewModels ──
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
@@ -704,9 +765,11 @@ namespace PadForge.Services
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
+                bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse, isTouchpad);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+                devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
             }
 
             devVm.HasRawData = true;
@@ -742,9 +805,11 @@ namespace PadForge.Services
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse);
+                bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
+                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse, isTouchpad2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+                devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
             }
 
             devVm.HasRawData = true;
@@ -805,6 +870,17 @@ namespace PadForge.Services
                 devVm.AccelY = state.Accel[1];
                 devVm.AccelZ = state.Accel[2];
             }
+
+            // Update touchpad finger positions.
+            if (ud.HasTouchpad || ud.IsTouchpad)
+            {
+                devVm.TouchpadX0 = state.TouchpadFingers[0];
+                devVm.TouchpadY0 = state.TouchpadFingers[1];
+                devVm.TouchpadDown0 = state.TouchpadDown[0];
+                devVm.TouchpadX1 = state.TouchpadFingers[3];
+                devVm.TouchpadY1 = state.TouchpadFingers[4];
+                devVm.TouchpadDown1 = state.TouchpadDown[1];
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -860,6 +936,20 @@ namespace PadForge.Services
             else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
                 s = s.Substring(1);
 
+            // Touchpad descriptors: "Touchpad 0 Finger N X/Y/Down"
+            if (s.StartsWith("Touchpad", StringComparison.Ordinal))
+            {
+                // Parse finger index and axis from descriptor.
+                // Format: "Touchpad 0 Finger 0 X", "Touchpad 0 Finger 1 Down"
+                if (s.Contains("Finger 0 X")) return (int)(state.TouchpadFingers[0] * 1000);
+                if (s.Contains("Finger 0 Y")) return (int)(state.TouchpadFingers[1] * 1000);
+                if (s.Contains("Finger 0 Down")) return state.TouchpadDown[0] ? 1 : 0;
+                if (s.Contains("Finger 1 X")) return (int)(state.TouchpadFingers[3] * 1000);
+                if (s.Contains("Finger 1 Y")) return (int)(state.TouchpadFingers[4] * 1000);
+                if (s.Contains("Finger 1 Down")) return state.TouchpadDown[1] ? 1 : 0;
+                return 0;
+            }
+
             string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return 0;
@@ -881,7 +971,7 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Pushes ViewModel slider values (dead zones, force feedback, linear)
+        /// Pushes ViewModel slider values (deadzones, force feedback, linear)
         /// directly to PadSetting objects so the engine picks them up immediately.
         /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
         /// </summary>
@@ -960,7 +1050,7 @@ namespace PadForge.Services
             ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
             ps.RightThumbDeadZoneShape = padVm.RightDeadZoneShape.ToString();
 
-            // Anti-dead zones (per-axis).
+            // Anti-deadzones (per-axis).
             ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString();
             ps.LeftThumbAntiDeadZoneY = padVm.LeftAntiDeadZoneY.ToString();
             ps.RightThumbAntiDeadZoneX = padVm.RightAntiDeadZoneX.ToString();
@@ -986,7 +1076,7 @@ namespace PadForge.Services
             ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString();
             ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString();
 
-            // Trigger dead zones.
+            // Trigger deadzones.
             ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
             ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
             ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
@@ -1052,7 +1142,7 @@ namespace PadForge.Services
                         }
                     }
 
-                    // Save per-mapping dead zone.
+                    // Save per-mapping deadzone.
                     if (mapping.MappingDeadZone > 0)
                         ps.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
                     else
@@ -1064,7 +1154,7 @@ namespace PadForge.Services
         /// <summary>
         /// Loads a specific device's PadSetting into the PadViewModel.
         /// </summary>
-        private static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
+        internal static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
         {
             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
             if (us == null) return;
@@ -1112,7 +1202,7 @@ namespace PadForge.Services
             padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
             padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
 
-            // Trigger dead zones.
+            // Trigger deadzones.
             padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
             padVm.RightTriggerDeadZone = TryParseDouble(ps.RightTriggerDeadZone, 0);
             padVm.LeftTriggerAntiDeadZone = TryParseDouble(ps.LeftTriggerAntiDeadZone, 0);
@@ -1146,17 +1236,17 @@ namespace PadForge.Services
                 string target = mapping.TargetSettingName;
                 string value = GetMappingValue(ps, target);
                 mapping.LoadDescriptor(value);
-                ResolveDisplayText(mapping, ud);
+                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
                     string negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
-                    ResolveNegDisplayText(mapping, ud);
+                    MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
                 }
 
-                // Load per-mapping dead zone.
+                // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(target);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
@@ -1194,300 +1284,12 @@ namespace PadForge.Services
         /// the device identified by the given instance GUID.
         /// For keyboards, "Button 65" becomes "A". For mice, "Button 0" becomes "Left Click".
         /// </summary>
-        internal static void ResolveDisplayText(MappingItem mapping, Guid instanceGuid)
-        {
-            ResolveDisplayText(mapping, FindUserDevice(instanceGuid));
-        }
+        // Display text resolution delegated to MappingDisplayResolver.
+        internal static void ResolveDisplayText(MappingItem mapping, Guid instanceGuid) =>
+            MappingDisplayResolver.ResolveDisplayText(mapping, FindUserDevice(instanceGuid));
 
-        private static void ResolveDisplayText(MappingItem mapping, UserDevice ud)
-        {
-            if (mapping == null || string.IsNullOrEmpty(mapping.SourceDescriptor))
-                return;
-
-            // For joystick/gamepad devices in raw mode, use numbered naming ("Button 0",
-            // "Axis 1", etc.) instead of friendly device object names.
-            // Raw mode = ForceRawJoystickMode enabled, or a non-gamepad joystick-class device.
-            if (ud != null && UseRawNumberedNaming(ud))
-            {
-                string resolved = ResolveRawNumberedText(mapping.SourceDescriptor);
-                if (resolved != null)
-                    mapping.SetResolvedSourceText(resolved);
-                return;
-            }
-
-            var objects = ud?.DeviceObjects;
-            if (objects == null || objects.Length == 0)
-                return;
-
-            // Parse the descriptor to get type + index.
-            string s = mapping.SourceDescriptor;
-            // Strip I/H prefixes for parsing.
-            string prefix = "";
-            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
-            { prefix = s.Substring(0, 2); s = s.Substring(2); }
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-            { prefix = s.Substring(0, 1); s = s.Substring(1); }
-            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-            { prefix = s.Substring(0, 1); s = s.Substring(1); }
-
-            string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
-                return;
-
-            string typeName = parts[0].ToLowerInvariant();
-
-            // Find the matching DeviceObjectItem.
-            for (int i = 0; i < objects.Length; i++)
-            {
-                var obj = objects[i];
-                if (obj.InputIndex != index)
-                    continue;
-
-                bool match = typeName switch
-                {
-                    "button" => obj.IsButton,
-                    "axis" => obj.IsAxis && !obj.IsSlider,
-                    "slider" => obj.IsSlider,
-                    "pov" => obj.IsPov,
-                    _ => false
-                };
-
-                if (match && !string.IsNullOrEmpty(obj.Name))
-                {
-                    // Build display text: e.g. "A" or "Inv. Left Stick X"
-                    string display = LocalizeObjectName(obj.Name);
-
-                    // For POV descriptors with a direction suffix (e.g., "POV 0 Up"),
-                    // use "D-Pad Up" for gamepads or "POV 0 Up" for raw devices.
-                    if (typeName == "pov" && parts.Length >= 3)
-                    {
-                        string dir = ResolvePovDirection(parts[2]);
-                        display = obj.Name == "D-Pad"
-                            ? $"{display} {dir}"
-                            : string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
-                    }
-
-                    if (!string.IsNullOrEmpty(prefix))
-                    {
-                        string prefixLabel = ResolvePrefixLabel(prefix);
-                        if (!string.IsNullOrEmpty(prefixLabel))
-                            display = $"{prefixLabel} {display}";
-                    }
-                    mapping.SetResolvedSourceText(display);
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Resolves the negative-direction descriptor to a human-friendly display name.
-        /// </summary>
-        internal static void ResolveNegDisplayText(MappingItem mapping, Guid instanceGuid)
-        {
-            ResolveNegDisplayText(mapping, FindUserDevice(instanceGuid));
-        }
-
-        private static void ResolveNegDisplayText(MappingItem mapping, UserDevice ud)
-        {
-            if (mapping == null || string.IsNullOrEmpty(mapping.NegSourceDescriptor))
-                return;
-
-            // For joystick/gamepad devices in raw mode, use numbered naming.
-            if (ud != null && UseRawNumberedNaming(ud))
-            {
-                string resolved = ResolveRawNumberedText(mapping.NegSourceDescriptor);
-                if (resolved != null)
-                    mapping.SetResolvedNegText(resolved);
-                return;
-            }
-
-            var objects = ud?.DeviceObjects;
-            if (objects == null || objects.Length == 0)
-                return;
-
-            string resolved2 = ResolveDescriptorText(mapping.NegSourceDescriptor, objects);
-            if (resolved2 != null)
-                mapping.SetResolvedNegText(resolved2);
-        }
-
-        /// <summary>
-        /// Resolves a descriptor string to a human-readable name using device object metadata.
-        /// Returns null if no match found.
-        /// </summary>
-        private static string ResolveDescriptorText(string descriptor, DeviceObjectItem[] objects)
-        {
-            string s = descriptor;
-            string prefix = "";
-            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
-            { prefix = s.Substring(0, 2); s = s.Substring(2); }
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-            { prefix = s.Substring(0, 1); s = s.Substring(1); }
-            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-            { prefix = s.Substring(0, 1); s = s.Substring(1); }
-
-            string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
-                return null;
-
-            string typeName = parts[0].ToLowerInvariant();
-
-            for (int i = 0; i < objects.Length; i++)
-            {
-                var obj = objects[i];
-                if (obj.InputIndex != index)
-                    continue;
-
-                bool match = typeName switch
-                {
-                    "button" => obj.IsButton,
-                    "axis" => obj.IsAxis && !obj.IsSlider,
-                    "slider" => obj.IsSlider,
-                    "pov" => obj.IsPov,
-                    _ => false
-                };
-
-                if (match && !string.IsNullOrEmpty(obj.Name))
-                {
-                    string display = LocalizeObjectName(obj.Name);
-
-                    if (typeName == "pov" && parts.Length >= 3)
-                    {
-                        string dir = ResolvePovDirection(parts[2]);
-                        display = obj.Name == "D-Pad"
-                            ? $"{display} {dir}"
-                            : string.Format(Strings.Instance.Mapping_POV_Format, index, dir);
-                    }
-
-                    if (!string.IsNullOrEmpty(prefix))
-                    {
-                        string prefixLabel = ResolvePrefixLabel(prefix);
-                        if (!string.IsNullOrEmpty(prefixLabel))
-                            display = $"{prefixLabel} {display}";
-                    }
-                    return display;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Maps an Engine-level object name (invariant English) to its localized display string.
-        /// Falls back to the original name if no localization is defined.
-        /// </summary>
-        internal static string LocalizeObjectName(string name)
-        {
-            // Try exact match first (gamepad names, single hat, standard axes).
-            var s = Strings.Instance;
-            var localized = name switch
-            {
-                // Gamepad axes
-                "Left Stick X" => s.DevObj_LeftStickX,
-                "Left Stick Y" => s.DevObj_LeftStickY,
-                "Left Trigger" => s.DevObj_LeftTrigger,
-                "Right Stick X" => s.DevObj_RightStickX,
-                "Right Stick Y" => s.DevObj_RightStickY,
-                "Right Trigger" => s.DevObj_RightTrigger,
-                // Gamepad hat
-                "D-Pad" => s.DevObj_DPad,
-                // Gamepad buttons (only the ones that need translation)
-                "Left Shoulder" => s.DevObj_LeftShoulder,
-                "Right Shoulder" => s.DevObj_RightShoulder,
-                "Left Stick Button" => s.DevObj_LeftStickButton,
-                "Right Stick Button" => s.DevObj_RightStickButton,
-                "Back" => s.DevObj_Back,
-                "Start" => s.DevObj_Start,
-                "Guide" => s.DevObj_Guide,
-                // Raw axes
-                "X Axis" => s.DevObj_XAxis,
-                "Y Axis" => s.DevObj_YAxis,
-                "Z Axis" => s.DevObj_ZAxis,
-                "X Rotation" => s.DevObj_XRotation,
-                "Y Rotation" => s.DevObj_YRotation,
-                "Z Rotation" => s.DevObj_ZRotation,
-                // Raw POV (single)
-                "POV" => s.DevObj_POV,
-                _ => null
-            };
-            if (localized != null) return localized;
-
-            // Parametric patterns: "Slider 0", "POV 2", "Button 5"
-            if (name.StartsWith("Slider ", StringComparison.Ordinal) &&
-                int.TryParse(name.AsSpan(7), out int sliderIdx))
-                return string.Format(s.DevObj_Slider, sliderIdx);
-
-            if (name.StartsWith("POV ", StringComparison.Ordinal) &&
-                int.TryParse(name.AsSpan(4), out int hatIdx))
-                return string.Format(s.DevObj_POVN, hatIdx);
-
-            if (name.StartsWith("Button ", StringComparison.Ordinal) &&
-                int.TryParse(name.AsSpan(7), out int btnIdx))
-                return string.Format(s.DevObj_Button, btnIdx);
-
-            return name;
-        }
-
-        private static string ResolvePrefixLabel(string prefix) => prefix.ToUpperInvariant() switch
-        {
-            "I" => Strings.Instance.Mapping_Inv,
-            "H" => Strings.Instance.Mapping_Half,
-            "IH" => Strings.Instance.Mapping_InvHalf,
-            _ => ""
-        };
-
-        private static string ResolvePovDirection(string dir) => dir switch
-        {
-            "Up" => Strings.Instance.POV_Up,
-            "UpRight" => Strings.Instance.POV_UpRight,
-            "Right" => Strings.Instance.POV_Right,
-            "DownRight" => Strings.Instance.POV_DownRight,
-            "Down" => Strings.Instance.POV_Down,
-            "DownLeft" => Strings.Instance.POV_DownLeft,
-            "Left" => Strings.Instance.POV_Left,
-            "UpLeft" => Strings.Instance.POV_UpLeft,
-            _ => dir
-        };
-
-        /// <summary>
-        /// Builds a numbered display string from a raw descriptor (e.g., "Button 0", "Axis 1",
-        /// "POV 0 Up") with I/H/IH prefix support. Used when Force Raw Joystick Mode is active.
-        /// </summary>
-        private static string ResolveRawNumberedText(string descriptor)
-        {
-            string s = descriptor;
-            string prefix = "";
-            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
-            { prefix = s.Substring(0, 2); s = s.Substring(2); }
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-            { prefix = s.Substring(0, 1); s = s.Substring(1); }
-            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-            { prefix = s.Substring(0, 1); s = s.Substring(1); }
-
-            string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
-                return null;
-
-            string typeName = parts[0].ToLowerInvariant();
-            var si = Strings.Instance;
-            string display = typeName switch
-            {
-                "button" => string.Format(si.DevObj_Button, index),
-                "axis" => string.Format(si.DevObj_AxisN, index),
-                "slider" => string.Format(si.DevObj_Slider, index),
-                "pov" when parts.Length >= 3 => string.Format(si.Mapping_POV_Format,
-                    index, ResolvePovDirection(parts[2])),
-                "pov" => string.Format(si.DevObj_POVN, index),
-                _ => s
-            };
-
-            if (!string.IsNullOrEmpty(prefix))
-            {
-                string prefixLabel = ResolvePrefixLabel(prefix);
-                if (!string.IsNullOrEmpty(prefixLabel))
-                    display = $"{prefixLabel} {display}";
-            }
-
-            return display;
-        }
+        internal static void ResolveNegDisplayText(MappingItem mapping, Guid instanceGuid) =>
+            MappingDisplayResolver.ResolveNegDisplayText(mapping, FindUserDevice(instanceGuid));
 
         /// <summary>
         /// Handles dropdown input selection: resolves the display text for the newly
@@ -1503,7 +1305,7 @@ namespace PadForge.Services
                 var selected = padVm.SelectedMappedDevice;
                 if (selected == null || selected.InstanceGuid == Guid.Empty) break;
                 var ud = FindUserDevice(selected.InstanceGuid);
-                ResolveDisplayText(mapping, ud);
+                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
                 mapping.SyncSelectedInputFromDescriptor();
                 break;
             }
@@ -1519,7 +1321,7 @@ namespace PadForge.Services
         {
             if (padVm == null) return;
 
-            var choices = BuildInputChoices(ud);
+            var choices = MappingDisplayResolver.BuildInputChoices(ud);
             foreach (var mapping in padVm.Mappings)
             {
                 mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
@@ -1531,141 +1333,6 @@ namespace PadForge.Services
                 mapping.SyncSelectedInputFromDescriptor();
             }
         }
-
-        /// <summary>
-        /// Builds the list of available input choices from a device.
-        /// Returns axes, buttons, POVs (with directions), and sliders.
-        /// </summary>
-        private static InputChoice[] BuildInputChoices(UserDevice ud)
-        {
-            var list = new System.Collections.Generic.List<InputChoice>();
-
-            if (ud == null)
-                return list.ToArray();
-
-            var si = Strings.Instance;
-
-            if (ud.DeviceObjects != null && ud.DeviceObjects.Length > 0)
-            {
-                bool useRaw = UseRawNumberedNaming(ud);
-
-                // Axes (non-slider)
-                foreach (var obj in ud.DeviceObjects)
-                {
-                    if (!obj.IsAxis || obj.IsSlider) continue;
-                    string descriptor = $"Axis {obj.InputIndex}";
-                    string display = useRaw
-                        ? string.Format(si.DevObj_AxisN, obj.InputIndex)
-                        : LocalizeObjectName(obj.Name);
-                    list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-                }
-
-                // Sliders
-                foreach (var obj in ud.DeviceObjects)
-                {
-                    if (!obj.IsSlider) continue;
-                    string descriptor = $"Slider {obj.InputIndex}";
-                    string display = useRaw
-                        ? string.Format(si.DevObj_Slider, obj.InputIndex)
-                        : LocalizeObjectName(obj.Name);
-                    list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-                }
-
-                // Buttons
-                foreach (var obj in ud.DeviceObjects)
-                {
-                    if (!obj.IsButton) continue;
-                    string descriptor = $"Button {obj.InputIndex}";
-                    string display = useRaw
-                        ? string.Format(si.DevObj_Button, obj.InputIndex)
-                        : LocalizeObjectName(obj.Name);
-                    list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-                }
-
-                // POVs (with 4 cardinal directions each)
-                string[] povDirs = { "Up", "Right", "Down", "Left" };
-                foreach (var obj in ud.DeviceObjects)
-                {
-                    if (!obj.IsPov) continue;
-                    foreach (string dir in povDirs)
-                    {
-                        string descriptor = $"POV {obj.InputIndex} {dir}";
-                        string dirDisplay = ResolvePovDirection(dir);
-                        string display = useRaw || obj.Name != "D-Pad"
-                            ? string.Format(si.Mapping_POV_Format, obj.InputIndex, dirDisplay)
-                            : $"{LocalizeObjectName(obj.Name)} {dirDisplay}";
-                        list.Add(new InputChoice { Descriptor = descriptor, DisplayName = display });
-                    }
-                }
-            }
-            else
-            {
-                // Fallback: build from capability counts when DeviceObjects is unavailable
-                // (device has never been online in this session or in prior sessions).
-                bool isGamepad = !UseRawNumberedNaming(ud);
-
-                // Gamepad axis names: LX(0) LY(1) LT(2) RX(3) RY(4) RT(5)
-                string[] gpAxisNames = isGamepad
-                    ? new[] { si.DevObj_LeftStickX, si.DevObj_LeftStickY, si.DevObj_LeftTrigger,
-                              si.DevObj_RightStickX, si.DevObj_RightStickY, si.DevObj_RightTrigger }
-                    : null;
-
-                for (int i = 0; i < ud.CapAxeCount; i++)
-                {
-                    string display = (gpAxisNames != null && i < gpAxisNames.Length)
-                        ? gpAxisNames[i]
-                        : string.Format(si.DevObj_AxisN, i);
-                    list.Add(new InputChoice { Descriptor = $"Axis {i}", DisplayName = display });
-                }
-
-                // Gamepad button names: A(0) B(1) X(2) Y(3) LB(4) RB(5) Back(6) Start(7) LS(8) RS(9) Guide(10)
-                string[] gpBtnNames = isGamepad
-                    ? new[] { "A", "B", "X", "Y",
-                              si.DevObj_LeftShoulder, si.DevObj_RightShoulder,
-                              si.DevObj_Back, si.DevObj_Start,
-                              si.DevObj_LeftStickButton, si.DevObj_RightStickButton,
-                              si.DevObj_Guide }
-                    : null;
-
-                int btnCount = Math.Max(ud.CapButtonCount, ud.RawButtonCount);
-                for (int i = 0; i < btnCount; i++)
-                {
-                    string display = (gpBtnNames != null && i < gpBtnNames.Length)
-                        ? gpBtnNames[i]
-                        : string.Format(si.DevObj_Button, i);
-                    list.Add(new InputChoice { Descriptor = $"Button {i}", DisplayName = display });
-                }
-
-                for (int i = 0; i < ud.CapPovCount; i++)
-                {
-                    foreach (string dir in new[] { "Up", "Right", "Down", "Left" })
-                    {
-                        string dirDisplay = ResolvePovDirection(dir);
-                        string display = isGamepad && i == 0
-                            ? $"{si.DevObj_DPad} {dirDisplay}"
-                            : string.Format(si.Mapping_POV_Format, i, dirDisplay);
-                        list.Add(new InputChoice
-                        {
-                            Descriptor = $"POV {i} {dir}",
-                            DisplayName = display
-                        });
-                    }
-                }
-            }
-
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// Returns true when the device should use raw numbered naming (Button 0, Axis 1, etc.)
-        /// on the Mappings tab. This applies to joystick/gamepad devices in raw mode:
-        /// ForceRawJoystickMode enabled, or non-gamepad joystick-class devices.
-        /// </summary>
-        private static bool UseRawNumberedNaming(UserDevice ud) =>
-            ud.ForceRawJoystickMode ||
-            (ud.CapType != InputDeviceType.Gamepad &&
-             ud.CapType != InputDeviceType.Mouse &&
-             ud.CapType != InputDeviceType.Keyboard);
 
         // ─────────────────────────────────────────────
         //  Copy / Paste settings
@@ -1803,7 +1470,7 @@ namespace PadForge.Services
         /// <summary>
         /// Called when a pad's mappings are rebuilt (e.g., OutputType or vJoy preset changed).
         /// Reloads mapping descriptors from the PadSetting so auto-mapped inputs are preserved.
-        /// Does NOT reload dead zone / force feedback settings — those are intentionally reset
+        /// Does NOT reload deadzone / force feedback settings — those are intentionally reset
         /// by PadViewModel.ResetDeadZoneSettings() when the OutputType or vJoy preset changes.
         /// </summary>
         private void OnMappingsRebuilt(object sender, EventArgs e)
@@ -1819,7 +1486,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Loads only mapping descriptors from a device's PadSetting into the ViewModel.
-        /// Unlike <see cref="LoadPadSettingToViewModel"/>, this does NOT touch dead zone,
+        /// Unlike <see cref="LoadPadSettingToViewModel"/>, this does NOT touch deadzone,
         /// force feedback, or other tuning properties — only mapping source descriptors.
         /// </summary>
         private static void LoadMappingDescriptorsOnly(PadViewModel padVm, Guid instanceGuid)
@@ -1836,17 +1503,17 @@ namespace PadForge.Services
                 string target = mapping.TargetSettingName;
                 string value = GetMappingValue(ps, target);
                 mapping.LoadDescriptor(value);
-                ResolveDisplayText(mapping, ud);
+                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
                     string negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
-                    ResolveNegDisplayText(mapping, ud);
+                    MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
                 }
 
-                // Load per-mapping dead zone.
+                // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(target);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
@@ -1975,6 +1642,17 @@ namespace PadForge.Services
                     StopWebServer();
                     StartWebServerIfEnabled();
                 }
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableTouchpadOverlay))
+            {
+                if (_mainVm.Dashboard.EnableTouchpadOverlay)
+                    ShowTouchpadOverlay();
+                else
+                    HideTouchpadOverlay();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.TouchpadOverlayOpacity))
+            {
+                _touchpadOverlay?.SetSurfaceOpacity(_mainVm.Dashboard.TouchpadOverlayOpacity);
             }
         }
 
@@ -2141,7 +1819,200 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerClientCount = 0;
         }
 
-        private void OnCultureChanged() => _dispatcher.BeginInvoke(RefreshServerStatusStrings);
+        // ─────────────────────────────────────────────
+        //  Touchpad Overlay lifecycle
+        // ─────────────────────────────────────────────
+
+        private Views.TouchpadOverlay _touchpadOverlay;
+        private TouchpadOverlayDevice _touchpadOverlayDevice;
+
+        private void ShowTouchpadOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (_touchpadOverlay == null)
+                {
+                    _touchpadOverlay = new Views.TouchpadOverlay();
+                    _touchpadOverlay.PositionChanged += OnTouchpadOverlayPositionChanged;
+                }
+
+                var dash = _mainVm.Dashboard;
+
+                // Restore persisted size.
+                _touchpadOverlay.Width = dash.TouchpadOverlayWidth;
+                _touchpadOverlay.Height = dash.TouchpadOverlayHeight;
+
+                // Restore persisted position or center on monitor.
+                if (dash.TouchpadOverlayLeft >= 0 && dash.TouchpadOverlayTop >= 0)
+                {
+                    _touchpadOverlay.Left = dash.TouchpadOverlayLeft;
+                    _touchpadOverlay.Top = dash.TouchpadOverlayTop;
+                }
+                else
+                {
+                    _touchpadOverlay.MoveToMonitor(dash.TouchpadOverlayMonitor);
+                }
+
+                _touchpadOverlay.SetSurfaceOpacity(dash.TouchpadOverlayOpacity);
+                _touchpadOverlay.Show();
+                dash.TouchpadOverlayStatus = Strings.Instance.Common_Running;
+
+                // Register as a virtual touchpad device so it appears in Devices page.
+                if (_touchpadOverlayDevice == null)
+                    _touchpadOverlayDevice = new TouchpadOverlayDevice();
+                _inputManager?.RegisterOverlayDevice(_touchpadOverlayDevice);
+            });
+        }
+
+        private void HideTouchpadOverlay(bool close = false)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (_touchpadOverlay != null)
+                {
+                    if (close)
+                    {
+                        _touchpadOverlay.PositionChanged -= OnTouchpadOverlayPositionChanged;
+                        _touchpadOverlay.Close();
+                        _touchpadOverlay = null;
+                    }
+                    else
+                    {
+                        _touchpadOverlay.Hide();
+                    }
+                    _mainVm.Dashboard.TouchpadOverlayStatus = Strings.Instance.Common_Stopped;
+                }
+                // Unregister the overlay device.
+                if (_touchpadOverlayDevice != null)
+                    _inputManager?.UnregisterExternalDevice(_touchpadOverlayDevice.InstanceGuid);
+            });
+        }
+
+        /// <summary>Suppresses or resumes global macro evaluation (during shortcut recording).</summary>
+        internal void SetSuppressGlobalMacros(bool suppress)
+        {
+            if (_inputManager != null) _inputManager.SuppressGlobalMacros = suppress;
+        }
+
+        /// <summary>Toggles the touchpad overlay visibility (for macro action).</summary>
+        internal void ToggleTouchpadOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                var dash = _mainVm.Dashboard;
+                dash.EnableTouchpadOverlay = !dash.EnableTouchpadOverlay;
+            });
+        }
+
+        private void OnTouchpadOverlayPositionChanged()
+        {
+            if (_touchpadOverlay == null) return;
+            var dash = _mainVm.Dashboard;
+            dash.TouchpadOverlayLeft = _touchpadOverlay.Left;
+            dash.TouchpadOverlayTop = _touchpadOverlay.Top;
+            dash.TouchpadOverlayWidth = _touchpadOverlay.Width;
+            dash.TouchpadOverlayHeight = _touchpadOverlay.Height;
+            dash.TouchpadOverlayMonitor = _touchpadOverlay.GetCurrentMonitor();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Profile switch overlay
+        // ─────────────────────────────────────────────
+
+        private Views.ProfileSwitchOverlay _switchOverlay;
+
+        private void ShowProfileSwitchOverlay(string profileId)
+        {
+            string name = profileId != null
+                ? SettingsManager.Profiles.Find(p => p.Id == profileId)?.Name
+                : Strings.Instance.Common_Default;
+
+            if (_switchOverlay == null)
+            {
+                _switchOverlay = new Views.ProfileSwitchOverlay();
+                _switchOverlay.CheckInitState = CheckAllSlotsInitState;
+                _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
+            }
+
+            _switchOverlay.ShowProfileName(name ?? Strings.Instance.Common_Default);
+        }
+
+        private (bool anyInitializing, bool allReady) CheckAllSlotsInitState()
+        {
+            if (_inputManager == null)
+                return (false, true);
+
+            bool anyInit = false;
+            bool allReady = true;
+
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i])
+                    continue;
+
+                if (_inputManager.IsVirtualControllerInitializing(i))
+                {
+                    anyInit = true;
+                    allReady = false;
+                }
+                else if (!_inputManager.IsVirtualControllerConnected(i))
+                {
+                    allReady = false;
+                }
+            }
+
+            return (anyInit, allReady);
+        }
+
+        /// <summary>
+        /// Returns true if any created+enabled controller slot has no online
+        /// physical devices assigned. Used by the flyout to show a warning
+        /// after the "Active" state.
+        /// </summary>
+        private bool CheckAnyControllerOffline()
+        {
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i])
+                    continue;
+
+                var slotSettings = SettingsManager.GetSettingsForSlot(i);
+                if (slotSettings.Count == 0)
+                    return true; // No devices assigned — controller is offline.
+
+                bool anyOnline = false;
+                var devices = SettingsManager.UserDevices;
+                if (devices != null)
+                {
+                    lock (devices.SyncRoot)
+                    {
+                        foreach (var s in slotSettings)
+                        {
+                            foreach (var ud in devices.Items)
+                            {
+                                if (ud.InstanceGuid == s.InstanceGuid && ud.IsOnline)
+                                {
+                                    anyOnline = true;
+                                    break;
+                                }
+                            }
+                            if (anyOnline) break;
+                        }
+                    }
+                }
+
+                if (!anyOnline)
+                    return true; // This controller has no online devices.
+            }
+
+            return false;
+        }
+
+        private void OnCultureChanged() => _dispatcher.BeginInvoke(() =>
+        {
+            RefreshServerStatusStrings();
+            SyncDevicesList(); // Re-resolve localized device names (merged keyboards/mice/touchpads).
+        });
 
         /// <summary>
         /// Re-sets server status display strings after a language change.
@@ -2428,7 +2299,7 @@ namespace PadForge.Services
                         if (ud.IsKeyboard)
                             keys.Add(buttonIndex); // buttonIndex is the VKey code
                         else if (ud.IsMouse)
-                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=R, 2=M, etc.
+                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=M, 2=R, 3=X1, 4=X2
                     }
                 }
             }
@@ -2563,8 +2434,11 @@ namespace PadForge.Services
         private void PopulateDeviceRow(DeviceRowViewModel row, UserDevice ud)
         {
             row.InstanceGuid = ud.InstanceGuid;
+            row.SdlGuid = ud.SdlGuid;
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
+                           : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged
+                           : ud.DevicePath == "overlay://touchpad" ? Strings.Instance.Dashboard_TouchpadOverlay
                            : ud.ResolvedName;
             row.ProductName = ud.ProductName;
             row.ProductGuid = ud.ProductGuid;
@@ -2579,6 +2453,7 @@ namespace PadForge.Services
             row.HasRumble = ud.HasForceFeedback;
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
+            row.HasTouchpad = ud.HasTouchpad;
             row.DevicePath = ud.DevicePath;
 
             // Resolve the HID instance path for display.
@@ -2620,6 +2495,7 @@ namespace PadForge.Services
                 InputDeviceType.Supplemental => "Supplemental",
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
+                InputDeviceType.Touchpad => "Touchpad",
                 _ => "Device"
             };
 
@@ -2875,9 +2751,25 @@ namespace PadForge.Services
             if (deviceGuid.HasValue && deviceGuid.Value != Guid.Empty)
                 _inputManager.TestRumbleTargetGuid[padIndex] = deviceGuid.Value;
 
-            // Set vibration via slot-level state (background thread applies it).
-            if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 32768;
-            if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 32768;
+            var vib = _inputManager.VibrationStates[padIndex];
+
+            // For vJoy slots, send directional force instead of scalar rumble so FFB
+            // devices (joysticks, wheels) push in the correct direction rather than
+            // just rattling. Direction uses "force comes from" convention:
+            // 9000 = from East = pushes left, 27000 = from West = pushes right.
+            bool isVJoy = _inputManager.SlotControllerTypes[padIndex] == VirtualControllerType.VJoy;
+            if (isVJoy && (left != right))
+            {
+                vib.HasDirectionalData = true;
+                vib.EffectType = (uint)1; // FfbEffectTypes.Const
+                vib.SignedMagnitude = 10000;
+                vib.Direction = (ushort)(left ? 8192 : 24576); // East (~90°) or West (~270°) in HID logical units
+                vib.DeviceGain = 255;
+            }
+
+            // Always set scalar motors too (used by rumble-only devices in the same slot).
+            if (left) vib.LeftMotorSpeed = 65535;
+            if (right) vib.RightMotorSpeed = 65535;
 
             // Schedule clearing after 500ms.
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
@@ -2885,8 +2777,15 @@ namespace PadForge.Services
             {
                 if (_inputManager != null && padIndex < InputManager.MaxPads)
                 {
-                    if (left) _inputManager.VibrationStates[padIndex].LeftMotorSpeed = 0;
-                    if (right) _inputManager.VibrationStates[padIndex].RightMotorSpeed = 0;
+                    if (left) vib.LeftMotorSpeed = 0;
+                    if (right) vib.RightMotorSpeed = 0;
+                    if (isVJoy)
+                    {
+                        vib.HasDirectionalData = false;
+                        vib.SignedMagnitude = 0;
+                        vib.Direction = 0;
+                        vib.EffectType = 0;
+                    }
                     _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
                 }
                 clearTimer.Stop();
@@ -2926,6 +2825,7 @@ namespace PadForge.Services
             // Capture axis baseline so we detect movement delta, not absolute position.
             _macroAxisBaseline = CaptureAxisBaseline(padIndex, macro.TriggerSource, macro.ButtonStyle);
 
+            _macroRecordStartTime = DateTime.UtcNow;
             macro.RecordingLiveText = "Press buttons or move axis...";
             macro.IsRecordingTrigger = true;
         }
@@ -3021,6 +2921,13 @@ namespace PadForge.Services
             if (_recordingPadIndex < 0 || _recordingPadIndex >= InputManager.MaxPads)
                 return;
 
+            // Auto-stop after timeout.
+            if ((DateTime.UtcNow - _macroRecordStartTime).TotalSeconds >= MacroRecordTimeoutSeconds)
+            {
+                StopMacroTriggerRecording();
+                return;
+            }
+
             // Read current axis values for delta detection.
             float[] currentAxes = ReadCurrentAxes(
                 _recordingPadIndex, _recordingMacro.TriggerSource, _recordingMacro.ButtonStyle);
@@ -3089,6 +2996,11 @@ namespace PadForge.Services
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
                 // Scan raw buttons from devices mapped to this pad slot.
+                // Capture only the CURRENT simultaneously-held set (not accumulated).
+                var currentRawButtons = new HashSet<int>();
+                var currentPovs = new HashSet<string>();
+                Guid currentDeviceGuid = Guid.Empty;
+
                 var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(_recordingPadIndex);
                 if (slotSettings != null)
                 {
@@ -3102,20 +3014,18 @@ namespace PadForge.Services
                         if (_recordingDeviceGuid != Guid.Empty && _recordingDeviceGuid != ud.InstanceGuid)
                             continue;
 
-                        // Check for any pressed buttons on this device.
                         var buttons = ud.InputState.Buttons;
                         int count = Math.Min(buttons.Length, ud.Device?.RawButtonCount ?? buttons.Length);
                         for (int i = 0; i < count; i++)
                         {
                             if (buttons[i])
                             {
-                                if (_recordingDeviceGuid == Guid.Empty)
-                                    _recordingDeviceGuid = ud.InstanceGuid;
-                                _recordedRawButtons.Add(i);
+                                if (currentDeviceGuid == Guid.Empty)
+                                    currentDeviceGuid = ud.InstanceGuid;
+                                currentRawButtons.Add(i);
                             }
                         }
 
-                        // Check for any active POV hats on this device.
                         var povs = ud.InputState.Povs;
                         if (povs != null)
                         {
@@ -3123,13 +3033,22 @@ namespace PadForge.Services
                             {
                                 if (povs[p] >= 0)
                                 {
-                                    if (_recordingDeviceGuid == Guid.Empty)
-                                        _recordingDeviceGuid = ud.InstanceGuid;
-                                    _recordedPovs.Add($"{p}:{povs[p]}");
+                                    if (currentDeviceGuid == Guid.Empty)
+                                        currentDeviceGuid = ud.InstanceGuid;
+                                    currentPovs.Add($"{p}:{povs[p]}");
                                 }
                             }
                         }
                     }
+                }
+
+                // Replace the recorded set with the current frame's state.
+                // Only update if something is pressed (keep last combo when released).
+                if (currentRawButtons.Count > 0 || currentPovs.Count > 0)
+                {
+                    _recordedRawButtons = currentRawButtons;
+                    _recordedPovs = currentPovs;
+                    _recordingDeviceGuid = currentDeviceGuid;
                 }
 
                 // Update live display text (buttons + POVs + axes combined, device name at end).
@@ -3161,12 +3080,16 @@ namespace PadForge.Services
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
-                // Custom vJoy: accumulate from the combined raw state.
+                // Custom vJoy: capture current frame's buttons (not accumulated).
                 var rawState = _inputManager.CombinedVJoyRawStates[_recordingPadIndex];
                 if (rawState.Buttons != null && _recordedCustomButtons != null)
                 {
+                    bool anyPressed = false;
                     for (int w = 0; w < rawState.Buttons.Length && w < _recordedCustomButtons.Length; w++)
-                        _recordedCustomButtons[w] |= rawState.Buttons[w];
+                        if (rawState.Buttons[w] != 0) anyPressed = true;
+                    if (anyPressed)
+                        Array.Copy(rawState.Buttons, _recordedCustomButtons,
+                            Math.Min(rawState.Buttons.Length, _recordedCustomButtons.Length));
                 }
 
                 // Update live display (buttons + axes combined).
@@ -3182,10 +3105,11 @@ namespace PadForge.Services
             }
             else
             {
-                // Gamepad preset OutputController: accumulate from the combined Xbox-mapped state.
+                // Gamepad preset OutputController: capture current frame's buttons (not accumulated).
                 var gp = _inputManager.CombinedOutputStates[_recordingPadIndex];
                 ushort xboxButtons = gp.Buttons;
-                _recordedButtons |= xboxButtons;
+                if (xboxButtons != 0)
+                    _recordedButtons = xboxButtons;
 
                 // Update live display (buttons + axes combined).
                 {
@@ -3536,6 +3460,18 @@ namespace PadForge.Services
             if (profile.WebControllerPort >= 1024 && profile.WebControllerPort <= 65535)
                 _mainVm.Dashboard.WebControllerPort = profile.WebControllerPort;
 
+            // ── Apply touchpad overlay settings ──
+            _mainVm.Dashboard.EnableTouchpadOverlay = profile.EnableTouchpadOverlay;
+            _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity > 0
+                ? profile.TouchpadOverlayOpacity : 0.25;
+            _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
+            _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
+            _mainVm.Dashboard.TouchpadOverlayTop = profile.TouchpadOverlayTop;
+            _mainVm.Dashboard.TouchpadOverlayWidth = profile.TouchpadOverlayWidth > 0
+                ? profile.TouchpadOverlayWidth : 500;
+            _mainVm.Dashboard.TouchpadOverlayHeight = profile.TouchpadOverlayHeight > 0
+                ? profile.TouchpadOverlayHeight : 250;
+
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
 
@@ -3661,15 +3597,119 @@ namespace PadForge.Services
         /// </summary>
         public void RefreshProfileTopology() => RefreshActiveProfileTopologyLabel();
 
+        // ─────────────────────────────────────────────
+        //  Profile CRUD (domain logic, called by MainWindow UI handlers)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Creates a new empty profile (no VCs, no device assignments).
+        /// Returns the created ProfileData.
+        /// </summary>
+        public ProfileData CreateEmptyProfile(string name, string pipeSeparatedExePaths)
+        {
+            var profile = new ProfileData
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Name = name.Trim(),
+                ExecutableNames = pipeSeparatedExePaths,
+                Entries = Array.Empty<ProfileEntry>(),
+                PadSettings = Array.Empty<PadSetting>(),
+                SlotCreated = new bool[InputManager.MaxPads],
+                SlotEnabled = new bool[InputManager.MaxPads],
+                SlotControllerTypes = new int[InputManager.MaxPads],
+            };
+            SettingsManager.Profiles.Add(profile);
+            return profile;
+        }
+
+        /// <summary>
+        /// Snapshots the current runtime state into a new named profile.
+        /// Returns the created ProfileData.
+        /// </summary>
+        public ProfileData CreateSnapshotProfile(string name, string pipeSeparatedExePaths)
+        {
+            var snapshot = SnapshotCurrentProfile();
+            snapshot.Id = Guid.NewGuid().ToString("N");
+            snapshot.Name = name.Trim();
+            snapshot.ExecutableNames = pipeSeparatedExePaths;
+            SettingsManager.Profiles.Add(snapshot);
+            return snapshot;
+        }
+
+        /// <summary>
+        /// Deletes a profile by ID. If the deleted profile was active, reverts to default.
+        /// Returns true if the active profile changed (reverted to default).
+        /// </summary>
+        public bool DeleteProfile(string profileId)
+        {
+            SettingsManager.Profiles.RemoveAll(p => p.Id == profileId);
+
+            bool wasActive = SettingsManager.ActiveProfileId == profileId;
+            if (wasActive)
+            {
+                SettingsManager.ActiveProfileId = null;
+                ApplyDefaultProfile();
+            }
+            RefreshProfileTopology();
+            return wasActive;
+        }
+
+        /// <summary>
+        /// Updates a profile's name and executable paths.
+        /// Returns the updated ProfileData, or null if not found.
+        /// </summary>
+        public ProfileData EditProfile(string profileId, string newName, string newPipeSeparatedExePaths)
+        {
+            var profile = SettingsManager.Profiles.Find(p => p.Id == profileId);
+            if (profile == null) return null;
+            profile.Name = newName;
+            profile.ExecutableNames = newPipeSeparatedExePaths;
+            return profile;
+        }
+
+        /// <summary>
+        /// Loads (activates) a profile by ID. Saves outgoing profile state first.
+        /// </summary>
+        public void LoadProfile(string profileId)
+        {
+            var profile = SettingsManager.Profiles.Find(p => p.Id == profileId);
+            if (profile == null) return;
+            if (SettingsManager.ActiveProfileId == profile.Id) return;
+
+            SaveActiveProfileState();
+            SettingsManager.ActiveProfileId = profile.Id;
+            ApplyProfile(profile);
+        }
+
+        /// <summary>
+        /// Reverts to the default profile. Saves outgoing profile state first.
+        /// </summary>
+        public void RevertToDefaultProfile()
+        {
+            if (SettingsManager.ActiveProfileId == null) return;
+            SaveActiveProfileState();
+            SettingsManager.ActiveProfileId = null;
+            ApplyDefaultProfile();
+        }
+
+        /// <summary>
+        /// Formats pipe-separated full paths into a display string showing just file names.
+        /// </summary>
+        public static string FormatExePaths(string pipeSeparatedPaths)
+        {
+            if (string.IsNullOrEmpty(pipeSeparatedPaths))
+                return string.Empty;
+            var parts = pipeSeparatedPaths.Split('|', StringSplitOptions.RemoveEmptyEntries);
+            var names = new string[parts.Length];
+            for (int i = 0; i < parts.Length; i++)
+                names[i] = System.IO.Path.GetFileName(parts[i]);
+            return string.Join(", ", names);
+        }
+
         /// <summary>
         /// Swaps two virtual controller slots across all layers:
         /// engine arrays, settings, and ViewModel state, then refreshes UI.
         /// Must be called on the UI thread.
-        /// </summary>
-        /// <summary>
-        /// Moves a controller slot from its current visual position to a new one
-        /// by performing adjacent bubble swaps through the active slots list.
-        /// UI is refreshed once after all swaps complete.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
@@ -3680,6 +3720,11 @@ namespace PadForge.Services
             RefreshAfterSlotReorder();
         }
 
+        /// <summary>
+        /// Moves a controller slot from its current visual position to a new one
+        /// by performing adjacent bubble swaps through the active slots list.
+        /// UI is refreshed once after all swaps complete.
+        /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
         {
             var activeSlots = new List<int>();

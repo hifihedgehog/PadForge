@@ -35,11 +35,14 @@ namespace PadForge.Common.Input
                         RetrievedOutputStates[padIndex] = CombinedOutputStates[padIndex];
                         if (vc is KeyboardMouseVirtualController)
                             RetrievedKbmRawStates[padIndex] = CombinedKbmRawStates[padIndex];
+                        if (vc is DS4VirtualController)
+                            RetrievedTouchpadStates[padIndex] = CombinedTouchpadStates[padIndex];
                     }
                     else
                     {
                         RetrievedOutputStates[padIndex].Clear();
                         RetrievedKbmRawStates[padIndex].Clear();
+                        RetrievedTouchpadStates[padIndex] = default;
                     }
                 }
                 catch (Exception ex)

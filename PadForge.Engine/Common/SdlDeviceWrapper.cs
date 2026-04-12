@@ -79,6 +79,9 @@ namespace PadForge.Engine
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         public bool HasAccel { get; private set; }
 
+        /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
+        public bool HasTouchpad { get; private set; }
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 
@@ -99,6 +102,9 @@ namespace PadForge.Engine
 
         /// <summary>Device serial number (e.g. Bluetooth MAC address). May be empty.</summary>
         public string SerialNumber { get; private set; } = string.Empty;
+
+        /// <summary>SDL joystick GUID string (32 hex chars) used for gamecontrollerdb matching.</summary>
+        public string SdlGuid { get; private set; } = string.Empty;
 
         /// <summary>
         /// Deterministic instance GUID for this device, derived from VID+PID+Serial
@@ -177,6 +183,7 @@ namespace PadForge.Engine
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
+            SdlGuid = GetJoystickGUIDString(Joystick);
 
             // Always capture the raw joystick button count before any gamepad override.
             RawButtonCount = SDL_GetNumJoystickButtons(Joystick);
@@ -223,6 +230,7 @@ namespace PadForge.Engine
                 HasAccel = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL);
                 if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
                 if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+                HasTouchpad = SDL_GetNumGamepadTouchpads(GameController) > 0;
             }
 
             // Always try the haptic API for force feedback devices (joysticks,
@@ -451,6 +459,52 @@ namespace PadForge.Engine
             if (HasAccel)
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
 
+            // --- Touchpad (DS4/DualSense/Steam Deck) ---
+            if (HasTouchpad)
+            {
+                int numTouchpads = SDL_GetNumGamepadTouchpads(GameController);
+
+                // Finger 0: touchpad 0, finger 0
+                if (SDL_GetGamepadTouchpadFinger(GameController, 0, 0,
+                        out bool down0, out float x0, out float y0, out float p0))
+                {
+                    state.TouchpadDown[0] = down0;
+                    state.TouchpadFingers[0] = x0;
+                    state.TouchpadFingers[1] = y0;
+                    state.TouchpadFingers[2] = p0;
+                }
+
+                // Finger 1: touchpad 0 finger 1, or touchpad 1 finger 0 (Steam Deck)
+                bool gotFinger1 = false;
+                if (SDL_GetNumGamepadTouchpadFingers(GameController, 0) >= 2)
+                {
+                    gotFinger1 = SDL_GetGamepadTouchpadFinger(GameController, 0, 1,
+                        out bool d1, out float x1, out float y1, out float p1);
+                    if (gotFinger1)
+                    {
+                        state.TouchpadDown[1] = d1;
+                        state.TouchpadFingers[3] = x1;
+                        state.TouchpadFingers[4] = y1;
+                        state.TouchpadFingers[5] = p1;
+                    }
+                }
+                if (!gotFinger1 && numTouchpads >= 2)
+                {
+                    if (SDL_GetGamepadTouchpadFinger(GameController, 1, 0,
+                            out bool d1b, out float x1b, out float y1b, out float p1b))
+                    {
+                        state.TouchpadDown[1] = d1b;
+                        state.TouchpadFingers[3] = x1b;
+                        state.TouchpadFingers[4] = y1b;
+                        state.TouchpadFingers[5] = p1b;
+                    }
+                }
+
+                // Touchpad click button
+                state.TouchpadClick = SDL_GetGamepadButton(GameController,
+                    SDL_GAMEPAD_BUTTON_TOUCHPAD);
+            }
+
             return state;
         }
 
@@ -611,8 +665,10 @@ namespace PadForge.Engine
             }
             else if (!string.IsNullOrEmpty(devicePath))
             {
-                // Good for wired/USB devices whose path is stable.
-                identifier = devicePath;
+                // Include VID/PID so different hardware sharing the same
+                // path (e.g. two different Xbox controllers in XInput#0)
+                // gets distinct identity.
+                identifier = $"{devicePath}:{vid:X4}:{pid:X4}";
             }
             else
             {

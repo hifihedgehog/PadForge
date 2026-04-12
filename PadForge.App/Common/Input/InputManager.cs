@@ -53,6 +53,9 @@ namespace PadForge.Common.Input
         private bool _sdlInitialized;
         private bool _disposed;
 
+        /// <summary>Precision touchpad reader for laptop PTP input.</summary>
+        private PrecisionTouchpadReader _ptpReader;
+
         /// <summary>Stopwatch for timing enumeration intervals.</summary>
         private readonly Stopwatch _enumerationTimer = new Stopwatch();
 
@@ -91,6 +94,12 @@ namespace PadForge.Common.Input
         public KbmRawState[] CombinedKbmRawStates { get; } = new KbmRawState[MaxPads];
 
         /// <summary>
+        /// Combined touchpad states for DS4 slots.
+        /// Written by Step 4 (background thread), read by Step 5.
+        /// </summary>
+        public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
+
+        /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
         public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
@@ -99,6 +108,39 @@ namespace PadForge.Common.Input
         /// Retrieved KBM raw states for UI display (keyboard key + mouse state preview).
         /// </summary>
         public KbmRawState[] RetrievedKbmRawStates { get; } = new KbmRawState[MaxPads];
+
+        /// <summary>
+        /// Retrieved touchpad states for UI display.
+        /// </summary>
+        public TouchpadState[] RetrievedTouchpadStates { get; } = new TouchpadState[MaxPads];
+
+        /// <summary>
+        /// Pending profile switch ID queued by global macro evaluation.
+        /// "\0" = no pending switch. null = switch to default profile.
+        /// Consumed by InputService on the UI thread.
+        /// </summary>
+        public volatile string PendingProfileSwitchId = "\0";
+
+        /// <summary>Whether the pending profile switch was triggered manually (shortcut).</summary>
+        public volatile bool PendingProfileSwitchIsManual;
+
+        /// <summary>
+        /// Pending window toggle queued by global macro evaluation.
+        /// Consumed by InputService on the UI thread.
+        /// </summary>
+        public volatile bool PendingToggleWindow;
+
+        /// <summary>
+        /// Set true while recording a shortcut combo. Suppresses global macro
+        /// evaluation so the recorded buttons don't immediately trigger a switch.
+        /// </summary>
+        public volatile bool SuppressGlobalMacros;
+
+        /// <summary>
+        /// Flag set by macro execution to request touchpad overlay toggle.
+        /// Cleared by InputService on the UI thread after processing.
+        /// </summary>
+        public volatile bool ToggleTouchpadOverlayRequested;
 
         /// <summary>
         /// Per-slot vibration states received from games via ViGEmBus.
@@ -280,6 +322,12 @@ namespace PadForge.Common.Input
 
             RawInputListener.Start();
 
+            // PTP reader always runs so Devices page can preview touchpad input.
+            // Note: on shared hardware (laptop trackpads), the digitizer registration
+            // stops Windows from synthesizing mouse reports for the same device.
+            _ptpReader = new PrecisionTouchpadReader();
+            _ptpReader.Start();
+
             _running = true;
             _enumerationTimer.Restart();
             _frequencyTimer.Restart();
@@ -311,6 +359,10 @@ namespace PadForge.Common.Input
             }
 
             RawInputListener.Stop();
+
+            _ptpReader?.Stop();
+            _ptpReader?.Dispose();
+            _ptpReader = null;
 
             StopAllForceFeedback();
             DestroyAllVirtualControllers(preserveVJoyNodes);
@@ -418,6 +470,10 @@ namespace PadForge.Common.Input
                             // Read input states even in idle mode so the Devices
                             // page preview works for unassigned devices.
                             UpdateInputStates();
+
+                            // Evaluate global macros (profile shortcuts) even in idle
+                            // so the user can switch away from an empty profile.
+                            EvaluateGlobalMacros();
                         }
                         catch (Exception ex)
                         {

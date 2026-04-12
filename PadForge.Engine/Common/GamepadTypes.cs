@@ -29,6 +29,7 @@ namespace PadForge.Engine
         public const ushort LEFT_SHOULDER = 0x0100;
         public const ushort RIGHT_SHOULDER = 0x0200;
         public const ushort GUIDE = 0x0400;
+        public const ushort TOUCHPAD = 0x0800;  // DS4-only, used by macros
         public const ushort A = 0x1000;
         public const ushort B = 0x2000;
         public const ushort X = 0x4000;
@@ -57,6 +58,30 @@ namespace PadForge.Engine
             ThumbRX = 0;
             ThumbRY = 0;
         }
+    }
+
+    /// <summary>
+    /// DS4 touchpad state for virtual DS4 output via DS4_REPORT_EX.
+    /// Coordinates are normalized 0-1, matching SDL3 touchpad API output.
+    /// </summary>
+    public struct TouchpadState
+    {
+        /// <summary>Finger 0 X position (0-1 normalized, left to right).</summary>
+        public float X0;
+        /// <summary>Finger 0 Y position (0-1 normalized, top to bottom).</summary>
+        public float Y0;
+        /// <summary>Finger 1 X position.</summary>
+        public float X1;
+        /// <summary>Finger 1 Y position.</summary>
+        public float Y1;
+        /// <summary>Finger 0 contact state.</summary>
+        public bool Down0;
+        /// <summary>Finger 1 contact state.</summary>
+        public bool Down1;
+        /// <summary>Touchpad click button.</summary>
+        public bool Click;
+        /// <summary>Increments on each finger down/up transition (for DS4_TOUCH encoding).</summary>
+        public byte PacketCounter;
     }
 
     /// <summary>

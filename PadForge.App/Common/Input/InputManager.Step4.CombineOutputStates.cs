@@ -39,6 +39,7 @@ namespace PadForge.Common.Input
                                      && SlotVJoyIsCustom[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
+                    bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.DualShock4;
 
                     if (slotCount == 0)
                     {
@@ -46,6 +47,7 @@ namespace PadForge.Common.Input
                         if (isCustomVJoy) CombinedVJoyRawStates[padIndex].Clear();
                         if (isMidi) CombinedMidiRawStates[padIndex].Clear();
                         if (isKbm) CombinedKbmRawStates[padIndex].Clear();
+                        if (isDs4) CombinedTouchpadStates[padIndex] = default;
                         continue;
                     }
 
@@ -56,6 +58,7 @@ namespace PadForge.Common.Input
                         if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = _padIndexBuffer[0].VJoyRawOutputState;
                         if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
+                        if (isDs4) CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
                         continue;
                     }
 
@@ -122,6 +125,24 @@ namespace PadForge.Common.Input
                     if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = combinedRaw;
                     if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
                     if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
+
+                    // Touchpad: first device with active finger wins (single-source).
+                    if (isDs4)
+                    {
+                        var combinedTp = default(TouchpadState);
+                        for (int si = 0; si < slotCount; si++)
+                        {
+                            var us = _padIndexBuffer[si];
+                            if (us == null) continue;
+                            var tp = us.TouchpadOutputState;
+                            if (tp.Down0 || tp.Down1 || tp.Click)
+                            {
+                                combinedTp = tp;
+                                break;
+                            }
+                        }
+                        CombinedTouchpadStates[padIndex] = combinedTp;
+                    }
                 }
                 catch (Exception ex)
                 {

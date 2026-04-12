@@ -824,7 +824,7 @@ namespace PadForge.Views
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
             {
-                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                var accentBrush = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"];
                 if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
             }
             catch { }
@@ -1038,7 +1038,7 @@ namespace PadForge.Views
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
             {
-                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                var accentBrush = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"];
                 if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
             }
             catch { }
@@ -1095,7 +1095,7 @@ namespace PadForge.Views
             var accentColor = Color.FromRgb(0x21, 0x96, 0xF3);
             try
             {
-                var accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                var accentBrush = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"];
                 if (accentBrush is SolidColorBrush scb) accentColor = scb.Color;
             }
             catch { }

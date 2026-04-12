@@ -113,6 +113,32 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isMouseDevice, value);
         }
 
+        private bool _isTouchpadDevice;
+        /// <summary>Whether the currently selected device is a touchpad.</summary>
+        public bool IsTouchpadDevice
+        {
+            get => _isTouchpadDevice;
+            set => SetProperty(ref _isTouchpadDevice, value);
+        }
+
+        private bool _hasTouchpadData;
+        /// <summary>Whether the selected device has touchpad data to display.</summary>
+        public bool HasTouchpadData
+        {
+            get => _hasTouchpadData;
+            set => SetProperty(ref _hasTouchpadData, value);
+        }
+
+        // Touchpad finger positions (0-1 normalized) for the preview.
+        private double _touchpadX0, _touchpadY0, _touchpadX1, _touchpadY1;
+        private bool _touchpadDown0, _touchpadDown1;
+        public double TouchpadX0 { get => _touchpadX0; set => SetProperty(ref _touchpadX0, value); }
+        public double TouchpadY0 { get => _touchpadY0; set => SetProperty(ref _touchpadY0, value); }
+        public double TouchpadX1 { get => _touchpadX1; set => SetProperty(ref _touchpadX1, value); }
+        public double TouchpadY1 { get => _touchpadY1; set => SetProperty(ref _touchpadY1, value); }
+        public bool TouchpadDown0 { get => _touchpadDown0; set => SetProperty(ref _touchpadDown0, value); }
+        public bool TouchpadDown1 { get => _touchpadDown1; set => SetProperty(ref _touchpadDown1, value); }
+
         private double _mouseMotionX, _mouseMotionY;
         public double MouseMotionX { get => _mouseMotionX; set => SetProperty(ref _mouseMotionX, value); }
         public double MouseMotionY { get => _mouseMotionY; set => SetProperty(ref _mouseMotionY, value); }
@@ -163,7 +189,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Rebuilds the raw state collections for a new device with the given capabilities.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount, bool isKeyboard = false, bool isMouse = false)
+        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false)
         {
             RawAxes.Clear();
             if (!isMouse)
@@ -176,6 +202,7 @@ namespace PadForge.ViewModels
             KeyboardKeys.Clear();
             IsKeyboardDevice = isKeyboard;
             IsMouseDevice = isMouse;
+            IsTouchpadDevice = isTouchpad;
 
             if (isKeyboard)
             {
@@ -212,9 +239,11 @@ namespace PadForge.ViewModels
             KeyboardKeys.Clear();
             IsKeyboardDevice = false;
             IsMouseDevice = false;
+            IsTouchpadDevice = false;
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
+            HasTouchpadData = false;
             LastRawStateDeviceGuid = Guid.Empty;
         }
 

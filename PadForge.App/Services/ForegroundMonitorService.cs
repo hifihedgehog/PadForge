@@ -22,6 +22,14 @@ namespace PadForge.Services
         private string _lastMatchedProfileId;
 
         /// <summary>
+        /// Set by manual profile switch (shortcut or UI). While true,
+        /// the foreground monitor won't re-trigger the same auto-profile.
+        /// Cleared when the foreground exe matches a different profile.
+        /// </summary>
+        public bool ManualOverrideActive { get; private set; }
+        private string _overrideProfileId;
+
+        /// <summary>
         /// Raised when the foreground process matches a different profile than the
         /// currently active one. The string argument is the profile ID to switch to,
         /// or null to revert to the default profile.
@@ -65,8 +73,28 @@ namespace PadForge.Services
             if (matchedId != _lastMatchedProfileId)
             {
                 _lastMatchedProfileId = matchedId;
+
+                if (ManualOverrideActive)
+                {
+                    if (matchedId == _overrideProfileId)
+                        return; // Same auto-profile the user overrode — don't re-trigger.
+                    // Different profile or default — user moved on, clear override.
+                    ManualOverrideActive = false;
+                    _overrideProfileId = null;
+                }
+
                 ProfileSwitchRequired?.Invoke(matchedId);
             }
+        }
+
+        /// <summary>
+        /// Sets the manual override flag so auto-switching won't re-trigger
+        /// the same profile the user manually overrode.
+        /// </summary>
+        public void SetManualOverride(string currentProfileId)
+        {
+            ManualOverrideActive = true;
+            _overrideProfileId = currentProfileId;
         }
 
         private static string GetForegroundExePath()

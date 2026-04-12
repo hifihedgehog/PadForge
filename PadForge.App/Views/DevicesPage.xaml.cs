@@ -2,8 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ModernWpf.Controls;
-using ModernWpf.Controls.Primitives;
+using NavigationView = Wpf.Ui.Controls.NavigationView;
+using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Resources.Strings;
 
 namespace PadForge.Views
@@ -13,6 +13,41 @@ namespace PadForge.Views
         public DevicesPage()
         {
             InitializeComponent();
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is ViewModels.DevicesViewModel oldVm)
+                oldVm.PropertyChanged -= OnVmPropertyChanged;
+            if (e.NewValue is ViewModels.DevicesViewModel newVm)
+                newVm.PropertyChanged += OnVmPropertyChanged;
+        }
+
+        private void OnVmPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(ViewModels.DevicesViewModel.TouchpadX0)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY0)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadX1)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY1))
+            {
+                UpdateTouchpadDots();
+            }
+        }
+
+        private void UpdateTouchpadDots()
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            if (TouchpadPreviewBorder.Visibility != Visibility.Visible) return;
+
+            double w = TouchpadPreviewBorder.ActualWidth;
+            double h = TouchpadPreviewBorder.ActualHeight;
+            if (w <= 0 || h <= 0) return;
+
+            Canvas.SetLeft(TouchpadDot0, vm.TouchpadX0 * w - 7);
+            Canvas.SetTop(TouchpadDot0, vm.TouchpadY0 * h - 7);
+            Canvas.SetLeft(TouchpadDot1, vm.TouchpadX1 * w - 7);
+            Canvas.SetTop(TouchpadDot1, vm.TouchpadY1 * h - 7);
         }
 
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)
@@ -82,7 +117,7 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Shows a ModernWpf Flyout with a warning and Proceed/Cancel buttons.
+        /// Shows a WPF UI Flyout with a warning and Proceed/Cancel buttons.
         /// Re-checks the toggle and notifies only if the user clicks Proceed.
         /// </summary>
         private void ShowHidingWarningFlyout(CheckBox cb, ViewModels.DevicesViewModel vm,
@@ -111,7 +146,8 @@ namespace PadForge.Views
                 Margin = new Thickness(0, 0, 8, 0),
                 MinWidth = 80
             };
-            proceedBtn.SetResourceReference(Control.StyleProperty, "AccentButtonStyle");
+            proceedBtn.SetResourceReference(System.Windows.Controls.Control.ForegroundProperty, "TextOnAccentFillColorPrimaryBrush");
+            proceedBtn.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "AccentFillColorDefaultBrush");
 
             var cancelBtn = new Button
             {
@@ -132,15 +168,23 @@ namespace PadForge.Views
             content.Children.Add(messageText);
             content.Children.Add(buttonPanel);
 
-            var flyout = new Flyout
+            var flyout = new Wpf.Ui.Controls.Flyout
             {
                 Content = content,
-                Placement = FlyoutPlacementMode.Bottom
+                Placement = System.Windows.Controls.Primitives.PlacementMode.Top
             };
+
+            // Add flyout to the visual tree near the target, then open it.
+            var target = cb ?? (FrameworkElement)this;
+            if (target.Parent is System.Windows.Controls.Panel panel)
+            {
+                panel.Children.Add(flyout);
+            }
+            flyout.IsOpen = true;
 
             proceedBtn.Click += (s, ev) =>
             {
-                flyout.Hide();
+                flyout.IsOpen = false;
                 if (cb != null)
                 {
                     // Temporarily unhook to avoid re-entering HidingToggle_Changed.
@@ -154,9 +198,7 @@ namespace PadForge.Views
                 vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
             };
 
-            cancelBtn.Click += (s, ev) => flyout.Hide();
-
-            flyout.ShowAt(cb ?? (FrameworkElement)this);
+            cancelBtn.Click += (s, ev) => flyout.IsOpen = false;
         }
 
         private void SubmitMapping_Click(object sender, RoutedEventArgs e)
@@ -180,6 +222,11 @@ namespace PadForge.Views
             sb.Append(dev.ButtonCount);
             sb.Append("&hats=");
             sb.Append(dev.PovCount);
+            if (!string.IsNullOrEmpty(dev.SdlGuid))
+            {
+                sb.Append("&sdl_guid=");
+                sb.Append(Uri.EscapeDataString(dev.SdlGuid));
+            }
 
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {

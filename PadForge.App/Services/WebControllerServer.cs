@@ -35,7 +35,7 @@ namespace PadForge.Services
         private volatile bool _running;
         private int _port;
         private string _localIp;
-        private int _nextPadId;
+        private readonly ConcurrentDictionary<string, int> _typePadCounters = new();
         private readonly ConcurrentDictionary<string, int> _clientPadIds = new();
         private bool _disposed;
 
@@ -147,7 +147,7 @@ namespace PadForge.Services
             _listener = null;
             _clients.Clear();
             _clientPadIds.Clear();
-            _nextPadId = 0;
+            _typePadCounters.Clear();
 
             StatusChanged?.Invoke(this, Strings.Instance.Common_Stopped);
         }
@@ -180,18 +180,20 @@ namespace PadForge.Services
                 }
 
                 Log(
-                    $"[WebServer] Request: {ctx.Request.HttpMethod} {ctx.Request.Url?.AbsolutePath} " +
+                    $"[WebServer] Request: {ctx.Request.HttpMethod} {ctx.Request.Url?.AbsolutePath}{ctx.Request.Url?.Query} " +
                     $"IsWebSocket={ctx.Request.IsWebSocketRequest}");
 
                 if (ctx.Request.IsWebSocketRequest)
                 {
-                    // Handle WebSocket on thread pool.
                     _ = Task.Run(() => HandleWebSocketAsync(ctx));
                 }
                 else
                 {
-                    // Serve static files.
-                    ServeStaticFile(ctx);
+                    // Serve static files on thread pool so the accept loop
+                    // can immediately process the next request (e.g. WebSocket
+                    // upgrade that arrives while a page is still being served).
+                    var captured = ctx;
+                    _ = Task.Run(() => ServeStaticFile(captured));
                 }
             }
         }
@@ -205,6 +207,7 @@ namespace PadForge.Services
             try
             {
                 var path = ctx.Request.Url?.AbsolutePath ?? "/";
+
                 if (path == "/") path = "/index.html";
 
                 // Layout API endpoint.
@@ -243,9 +246,18 @@ namespace PadForge.Services
                     return;
                 }
 
+                // Read into buffer so we can set Content-Length (avoids chunked
+                // encoding which can stall keep-alive on some mobile browsers).
+                using var ms = new MemoryStream();
+                stream.CopyTo(ms);
+                var body = ms.ToArray();
+
                 ctx.Response.ContentType = GetContentType(path);
                 ctx.Response.StatusCode = 200;
-                stream.CopyTo(ctx.Response.OutputStream);
+                ctx.Response.ContentLength64 = body.Length;
+                ctx.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                ctx.Response.Headers["Pragma"] = "no-cache";
+                ctx.Response.OutputStream.Write(body, 0, body.Length);
                 ctx.Response.Close();
             }
             catch
@@ -285,18 +297,35 @@ namespace PadForge.Services
                     return;
                 }
 
+                var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
+                var layoutParam = ctx.Request.QueryString["layout"] ?? "xbox360";
+
                 Log(
-                    $"[WebServer] Accepting WebSocket from {ctx.Request.RemoteEndPoint}...");
+                    $"[WebServer] Accepting WebSocket from {ctx.Request.RemoteEndPoint} type={clientType} layout={layoutParam}...");
                 var wsCtx = await ctx.AcceptWebSocketAsync(null);
                 ws = wsCtx.WebSocket;
                 Log(
                     $"[WebServer] WebSocket accepted, state={ws.State}");
 
                 // Create device — reuse pad number for reconnecting clients.
-                var padId = _clientPadIds.GetOrAdd(clientId,
-                    _ => Interlocked.Increment(ref _nextPadId));
-                var name = $"Web Controller {padId}";
-                var device = new WebControllerDevice(clientId, name);
+                bool isTouchpadClient = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
+                bool hasTouchpad = isTouchpadClient ||
+                    ctx.Request.QueryString["touchpad"] == "1";
+                // Per-type pad numbering: each type (xbox360/ds4/touchpad) starts at 1.
+                var typeKey = isTouchpadClient ? "touchpad" : layoutParam.ToLowerInvariant();
+                var compositeKey = typeKey + ":" + clientId;
+                var padId = _clientPadIds.GetOrAdd(compositeKey,
+                    _ => _typePadCounters.AddOrUpdate(typeKey, 1, (_, v) => v + 1));
+                string name;
+                if (isTouchpadClient)
+                    name = $"Web Touchpad {padId}";
+                else if (typeKey == "ds4")
+                    name = $"DualShock 4 Web Controller {padId}";
+                else
+                    name = $"Xbox 360 Web Controller {padId}";
+                var device = new WebControllerDevice(compositeKey, name, isTouchpadClient);
+                if (hasTouchpad && !isTouchpadClient)
+                    device.HasTouchpad = true; // DS4 gamepad with touchpad zone
                 device.SetConnected(true);
 
                 var cts = new CancellationTokenSource();
@@ -309,7 +338,7 @@ namespace PadForge.Services
                     _ = SendJsonAsync(ws, new { type = "rumble", left = (int)low, right = (int)high }, cts.Token);
                 };
 
-                _clients[clientId] = session;
+                _clients[compositeKey] = session;
 
                 // Notify that a device connected.
                 DeviceConnected?.Invoke(device);
@@ -346,7 +375,7 @@ namespace PadForge.Services
 
                 // Cleanup.
                 device.SetConnected(false);
-                _clients.TryRemove(clientId, out _);
+                _clients.TryRemove(compositeKey, out _);
 
                 DeviceDisconnected?.Invoke(device);
                 StatusChanged?.Invoke(this, _clients.Count > 0
@@ -395,6 +424,25 @@ namespace PadForge.Services
                         device.UpdateAxis(code, value);
                     else if (kind == "pov")
                         device.UpdatePov(value);
+                }
+                else if (type == "touchpad")
+                {
+                    // DS4 controller page sends touchpad messages from a gamepad
+                    // connection — enable touchpad capability on first touch.
+                    device.HasTouchpad = true;
+
+                    if (root.TryGetProperty("click", out _))
+                    {
+                        device.UpdateTouchpadClick(true);
+                    }
+                    else
+                    {
+                        int finger = root.TryGetProperty("finger", out var fp) ? fp.GetInt32() : 0;
+                        float x = root.TryGetProperty("x", out var xp) ? (float)xp.GetDouble() : 0f;
+                        float y = root.TryGetProperty("y", out var yp) ? (float)yp.GetDouble() : 0f;
+                        bool down = root.TryGetProperty("down", out var dp) && dp.GetBoolean();
+                        device.UpdateTouchpadFinger(finger, x, y, down);
+                    }
                 }
             }
             catch
@@ -476,6 +524,7 @@ namespace PadForge.Services
             ["RightTrigger"] = ("axis", 5),
             ["LeftThumbRing"] = ("stick", 0),   // axes 0,1
             ["RightThumbRing"] = ("stick", 3),  // axes 3,4
+            ["TouchpadClick"] = ("button", 20),
         };
 
         private void ServeLayoutApi(HttpListenerContext ctx)
@@ -510,6 +559,7 @@ namespace PadForge.Services
                         OverlayElementType.Trigger => "trigger",
                         OverlayElementType.StickRing => "stickRing",
                         OverlayElementType.StickClick => "stickClick",
+                        OverlayElementType.Touchpad => "touchpad",
                         _ => "button"
                     };
 

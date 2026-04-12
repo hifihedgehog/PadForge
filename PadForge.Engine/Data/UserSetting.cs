@@ -119,7 +119,7 @@ namespace PadForge.Engine.Data
 
         /// <summary>
         /// Raw mapped state: axis-selected and Y-negated but BEFORE center offset,
-        /// dead zone, anti-dead zone, linear, and max range processing.
+        /// deadzone, anti-deadzone, linear, and max range processing.
         /// Used by the UI preview to apply its own pipeline without double-processing.
         /// </summary>
         [XmlIgnore]
@@ -146,6 +146,13 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public KbmRawState KbmRawOutputState { get; set; }
+
+        /// <summary>
+        /// DS4 touchpad output state for this device.
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public TouchpadState TouchpadOutputState { get; set; }
 
         /// <summary>
         /// Cached PadSetting reference. Set by SettingsManager during settings load.

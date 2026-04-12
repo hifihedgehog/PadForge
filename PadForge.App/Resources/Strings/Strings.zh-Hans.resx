@@ -113,13 +113,15 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 个设备</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>添加控制器</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>删除虚拟控制器</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>全屏</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>显示 PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus 未安装</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>等待控制器</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>等待设备</value></data>
   <data name="Main_Active" xml:space="preserve"><value>活跃</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>正在初始化</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput 驱动未安装</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360（ViGEmBus 未安装）</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360（最多 {0} 个）</value></data>
@@ -194,6 +196,16 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>配置文件已切换: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>配置文件已切换: 默认</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>默认</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>配置文件快捷键</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>为任意手柄分配按键组合来切换配置文件。</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>添加快捷键</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>下一个配置文件</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>上一个配置文件</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>指定配置文件</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>切换窗口</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>任意已连接设备</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>录制</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>录制中...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>未选择设备。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>无效的插槽索引: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>设备分配失败。</value></data>
@@ -219,6 +231,11 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>从手机或平板电脑浏览器连接，用作手柄。</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>触摸板叠加层</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于DS4触摸板模拟的屏幕触摸区域。</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>启用触摸板叠加层</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度：</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>右键按住拖动</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>驱动程序</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>无设备</value></data>
 
@@ -289,8 +306,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>虚拟 MIDI 设备输出（Windows MIDI Services）</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 控制器可视化</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 的 Fluent Design 主题</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 的 Fluent 2 设计系统</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>用于数据绑定的 CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>许可证</value></data>
@@ -305,17 +322,20 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>辅助</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>鼠标</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>键盘</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>设备</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>所有键盘 (合并)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>所有鼠标 (合并)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>所有触控板（合并）</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>设备</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在线 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 总计</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此设备及其设置</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>产品： </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>类型： </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID： </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>应用GUID： </value></data>
+  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID： </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>实例路径： </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID： </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>提交设备映射</value></data>
@@ -457,6 +477,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>按下鼠标按钮</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>释放鼠标按钮</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>鼠标滚轮</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触摸板叠加层</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>按钮：</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>组合键：</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>按键组合，格式为 {Key1}{Key2} — 可编辑</value></data>
@@ -516,6 +537,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>滚动 {0}（最大 {1} 单位）</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>按下鼠标 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>释放鼠标 {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触摸板叠加层</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>居中</value></data>
@@ -680,7 +702,7 @@
   <data name="Btn_Share" xml:space="preserve"><value>分享</value></data>
   <data name="Btn_Options" xml:space="preserve"><value>选项</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
-  <data name="Btn_Touchpad" xml:space="preserve"><value>触摸板</value></data>
+  <data name="Btn_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>鼠标左键</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>鼠标右键</value></data>
@@ -722,7 +744,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>应用程序</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>睡眠</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>小键盘</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>小键盘 {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>分隔符</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -813,5 +835,29 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>重置低音截止</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>触控板 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>触控板 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>触控板 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>触控板 1 触摸</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>触控板 2 触摸</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>触控板</value></data>
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>数字键盘 *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>数字键盘 +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>数字键盘 -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>数字键盘 .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>数字键盘 /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>分号</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>等号</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>逗号</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>减号</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>句号</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>斜杠</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>重音符</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>左方括号</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>反斜杠</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>右方括号</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>撇号</value></data>
 
 </root>

@@ -17,7 +17,7 @@ namespace PadForge.Engine.Data
     /// <see cref="PadSettingChecksum"/>. Multiple UserSettings can share the same
     /// PadSetting when devices use identical mappings.
     /// 
-    /// Numeric settings (dead zones, gains) are stored as strings for XML
+    /// Numeric settings (deadzones, gains) are stored as strings for XML
     /// serialization consistency with the original format.
     /// </summary>
     public partial class PadSetting
@@ -87,12 +87,12 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightTriggerDeadZone { get; set; } = "0";
 
         /// <summary>
-        /// Anti-dead zone for the left trigger (0–100%). Offsets the output range minimum
-        /// so small physical presses register past the game's built-in trigger dead zone.
+        /// Anti-deadzone for the left trigger (0–100%). Offsets the output range minimum
+        /// so small physical presses register past the game's built-in trigger deadzone.
         /// </summary>
         [XmlElement] public string LeftTriggerAntiDeadZone { get; set; } = "0";
 
-        /// <summary>Anti-dead zone for the right trigger (0–100%).</summary>
+        /// <summary>Anti-deadzone for the right trigger (0–100%).</summary>
         [XmlElement] public string RightTriggerAntiDeadZone { get; set; } = "0";
 
         /// <summary>
@@ -123,43 +123,43 @@ namespace PadForge.Engine.Data
         //  Dead zone settings
         // ─────────────────────────────────────────────
 
-        /// <summary>Left stick dead zone X (0–100%).</summary>
+        /// <summary>Left stick deadzone X (0–100%).</summary>
         [XmlElement] public string LeftThumbDeadZoneX { get; set; } = "0";
 
-        /// <summary>Left stick dead zone Y (0–100%).</summary>
+        /// <summary>Left stick deadzone Y (0–100%).</summary>
         [XmlElement] public string LeftThumbDeadZoneY { get; set; } = "0";
 
-        /// <summary>Right stick dead zone X (0–100%).</summary>
+        /// <summary>Right stick deadzone X (0–100%).</summary>
         [XmlElement] public string RightThumbDeadZoneX { get; set; } = "0";
 
-        /// <summary>Right stick dead zone Y (0–100%).</summary>
+        /// <summary>Right stick deadzone Y (0–100%).</summary>
         [XmlElement] public string RightThumbDeadZoneY { get; set; } = "0";
 
-        /// <summary>Left stick dead zone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
+        /// <summary>Left stick deadzone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
         [XmlElement] public string LeftThumbDeadZoneShape { get; set; } = "2";
 
-        /// <summary>Right stick dead zone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
+        /// <summary>Right stick deadzone shape (DeadZoneShape enum). Default 2 = ScaledRadial.</summary>
         [XmlElement] public string RightThumbDeadZoneShape { get; set; } = "2";
 
         /// <summary>
-        /// Left stick anti-dead zone (0–100%). Offsets the output range minimum
-        /// so small physical movements register past the game's built-in dead zone.
+        /// Left stick anti-deadzone (0–100%). Offsets the output range minimum
+        /// so small physical movements register past the game's built-in deadzone.
         /// </summary>
         [XmlElement] public string LeftThumbAntiDeadZone { get; set; } = "0";
 
-        /// <summary>Right stick anti-dead zone (0–100%). Legacy unified property — use per-axis X/Y instead.</summary>
+        /// <summary>Right stick anti-deadzone (0–100%). Legacy unified property — use per-axis X/Y instead.</summary>
         [XmlElement] public string RightThumbAntiDeadZone { get; set; } = "0";
 
-        /// <summary>Left stick anti-dead zone X axis (0–100%).</summary>
+        /// <summary>Left stick anti-deadzone X axis (0–100%).</summary>
         [XmlElement] public string LeftThumbAntiDeadZoneX { get; set; } = "0";
 
-        /// <summary>Left stick anti-dead zone Y axis (0–100%).</summary>
+        /// <summary>Left stick anti-deadzone Y axis (0–100%).</summary>
         [XmlElement] public string LeftThumbAntiDeadZoneY { get; set; } = "0";
 
-        /// <summary>Right stick anti-dead zone X axis (0–100%).</summary>
+        /// <summary>Right stick anti-deadzone X axis (0–100%).</summary>
         [XmlElement] public string RightThumbAntiDeadZoneX { get; set; } = "0";
 
-        /// <summary>Right stick anti-dead zone Y axis (0–100%).</summary>
+        /// <summary>Right stick anti-deadzone Y axis (0–100%).</summary>
         [XmlElement] public string RightThumbAntiDeadZoneY { get; set; } = "0";
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace PadForge.Engine.Data
         //  Stick center offset calibration
         // ─────────────────────────────────────────────
 
-        /// <summary>Left stick X center offset (-100 to 100%). Corrects stick drift before dead zone.</summary>
+        /// <summary>Left stick X center offset (-100 to 100%). Corrects stick drift before deadzone.</summary>
         [XmlElement] public string LeftThumbCenterOffsetX { get; set; } = "0";
 
         /// <summary>Left stick Y center offset (-100 to 100%).</summary>
@@ -300,6 +300,18 @@ namespace PadForge.Engine.Data
 
         /// <summary>Invert right stick Y axis.</summary>
         [XmlElement] public string RightThumbAxisYInvert { get; set; } = "0";
+
+        // ─────────────────────────────────────────────
+        //  DS4 touchpad mappings
+        // ─────────────────────────────────────────────
+
+        [XmlElement] public string TouchpadX1 { get; set; } = "";
+        [XmlElement] public string TouchpadY1 { get; set; } = "";
+        [XmlElement] public string TouchpadX2 { get; set; } = "";
+        [XmlElement] public string TouchpadY2 { get; set; } = "";
+        [XmlElement] public string TouchpadContact1 { get; set; } = "";
+        [XmlElement] public string TouchpadContact2 { get; set; } = "";
+        [XmlElement] public string TouchpadClick { get; set; } = "";
 
         // ─────────────────────────────────────────────
         //  vJoy custom mappings (dictionary-based)
@@ -501,7 +513,7 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
-        //  Per-mapping dead zones (axis activation threshold)
+        //  Per-mapping deadzones (axis activation threshold)
         // ─────────────────────────────────────────────
 
         [XmlArray("MappingDeadZones")]
@@ -566,7 +578,7 @@ namespace PadForge.Engine.Data
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Migrates legacy unified anti-dead zone values to per-axis properties.
+        /// Migrates legacy unified anti-deadzone values to per-axis properties.
         /// Call after deserialization when loading old settings files.
         /// </summary>
         public void MigrateAntiDeadZones()
@@ -656,6 +668,15 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbAxisYNeg); sb.Append('|');
             sb.Append(RightThumbAxisXNeg); sb.Append('|');
             sb.Append(RightThumbAxisYNeg); sb.Append('|');
+
+            // Touchpad
+            sb.Append(TouchpadX1); sb.Append('|');
+            sb.Append(TouchpadY1); sb.Append('|');
+            sb.Append(TouchpadX2); sb.Append('|');
+            sb.Append(TouchpadY2); sb.Append('|');
+            sb.Append(TouchpadContact1); sb.Append('|');
+            sb.Append(TouchpadContact2); sb.Append('|');
+            sb.Append(TouchpadClick); sb.Append('|');
 
             // Dead zones
             sb.Append(LeftThumbDeadZoneX); sb.Append('|');
@@ -749,7 +770,7 @@ namespace PadForge.Engine.Data
                 }
             }
 
-            // Per-mapping dead zones (sorted for deterministic checksum)
+            // Per-mapping deadzones (sorted for deterministic checksum)
             EnsureMappingDeadZoneDict();
             if (_mappingDeadZoneDict.Count > 0)
             {
@@ -810,14 +831,23 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbAxisYNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisXNeg) ||
             !string.IsNullOrEmpty(RightThumbAxisYNeg) ||
+            !string.IsNullOrEmpty(TouchpadX1) ||
+            !string.IsNullOrEmpty(TouchpadY1) ||
+            !string.IsNullOrEmpty(TouchpadX2) ||
+            !string.IsNullOrEmpty(TouchpadY2) ||
+            !string.IsNullOrEmpty(TouchpadContact1) ||
+            !string.IsNullOrEmpty(TouchpadContact2) ||
+            !string.IsNullOrEmpty(TouchpadClick) ||
             (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0) ||
             (_vjoyMappingDict != null && _vjoyMappingDict.Count > 0) ||
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
-            (_midiMappingDict != null && _midiMappingDict.Count > 0);
+            (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
+            (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
+            (_kbmMappingDict != null && _kbmMappingDict.Count > 0);
 
         /// <summary>
         /// Clears all mapping descriptors (standard, vJoy, and MIDI) while preserving
-        /// dead zone, force feedback, and other non-mapping configuration.
+        /// deadzone, force feedback, and other non-mapping configuration.
         /// Call before writing a new set of mappings to prevent stale leftovers
         /// from a previous mapping layout (e.g., switching Xbox 360 preset → custom vJoy).
         /// </summary>
@@ -834,12 +864,16 @@ namespace PadForge.Engine.Data
             RightThumbAxisX = RightThumbAxisY = "";
             LeftThumbAxisXNeg = LeftThumbAxisYNeg = "";
             RightThumbAxisXNeg = RightThumbAxisYNeg = "";
+            TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
+            TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
 
-            // vJoy/MIDI mapping dictionaries and arrays.
+            // vJoy/MIDI/KBM mapping dictionaries and arrays.
             VJoyMappingEntries = null;
             _vjoyMappingDict = null;
             MidiMappingEntries = null;
             _midiMappingDict = null;
+            KbmMappingEntries = null;
+            _kbmMappingDict = null;
         }
 
         /// <summary>
@@ -869,6 +903,12 @@ namespace PadForge.Engine.Data
             Add(LeftThumbAxisXNeg); Add(LeftThumbAxisYNeg);
             Add(RightThumbAxisXNeg); Add(RightThumbAxisYNeg);
 
+            // Touchpad
+            Add(TouchpadX1); Add(TouchpadY1);
+            Add(TouchpadX2); Add(TouchpadY2);
+            Add(TouchpadContact1); Add(TouchpadContact2);
+            Add(TouchpadClick);
+
             // vJoy custom mappings
             if (VJoyMappingEntries != null)
             {
@@ -880,6 +920,13 @@ namespace PadForge.Engine.Data
             if (MidiMappingEntries != null)
             {
                 foreach (var e in MidiMappingEntries)
+                    Add(e.Value);
+            }
+
+            // KBM custom mappings
+            if (KbmMappingEntries != null)
+            {
+                foreach (var e in KbmMappingEntries)
                     Add(e.Value);
             }
 
@@ -959,6 +1006,11 @@ namespace PadForge.Engine.Data
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),
             // Threshold
             nameof(AxisToButtonThreshold),
+            // Touchpad
+            nameof(TouchpadX1), nameof(TouchpadY1),
+            nameof(TouchpadX2), nameof(TouchpadY2),
+            nameof(TouchpadContact1), nameof(TouchpadContact2),
+            nameof(TouchpadClick),
         };
 
         /// <summary>
@@ -1126,7 +1178,7 @@ namespace PadForge.Engine.Data
         /// Copies mappings from another PadSetting with cross-layout translation.
         /// When source and target use the same layout, delegates to <see cref="CopyFrom"/>.
         /// When layouts differ, translates mapping positions (e.g., ButtonA → VJoyBtn0)
-        /// and copies non-mapping settings (dead zones, sensitivity, FFB) directly.
+        /// and copies non-mapping settings (deadzones, sensitivity, FFB) directly.
         /// </summary>
         public void CopyFromTranslated(PadSetting source,
             VirtualControllerType sourceType, bool sourceIsCustomVJoy,
@@ -1145,7 +1197,7 @@ namespace PadForge.Engine.Data
             source.FlushMidiMappings();
             source.FlushKbmMappings();
 
-            // Step 1: Copy non-mapping settings directly (dead zones, sensitivity, FFB, etc.)
+            // Step 1: Copy non-mapping settings directly (deadzones, sensitivity, FFB, etc.)
             // These use the same property names regardless of output layout.
             var type = GetType();
             foreach (string name in CopyablePropertyNames)

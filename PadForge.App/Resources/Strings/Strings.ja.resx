@@ -113,13 +113,15 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>仮想コントローラーを削除</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>全画面表示</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge を表示</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus が未インストールです</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>コントローラー待機中</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>1つ以上のコントローラーがオフライン</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput ドライバーが未インストールです</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus 未インストール)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (最大 {0})</value></data>
@@ -194,6 +196,16 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>デフォルト</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>プロファイルショートカット</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>コントローラーのボタンの組み合わせでプロファイルを切り替えます。</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>ショートカットを追加</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>次のプロファイル</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>前のプロファイル</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>特定のプロファイル</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ウィンドウの切替</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>接続中の任意のデバイス</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>録音</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>録音中...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>
@@ -219,6 +231,11 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>スマートフォンやタブレットのブラウザから接続してゲームパッドとして使用できます。</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイ</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DS4タッチパッドエミュレーション用の画面上タッチ面。</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイを有効にする</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度:</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>右クリック長押しでドラッグ</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>ドライバー</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>デバイスなし</value></data>
 
@@ -289,8 +306,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力 (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D コントローラービジュアライゼーション</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 用 Fluent Design テーマ</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 用 Fluent 2 デザインシステム</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
@@ -305,17 +322,20 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>補助</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>マウス</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>デバイス</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>すべてのキーボード (統合)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>すべてのマウス (統合)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>すべてのタッチパッド（統合）</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>デバイス</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> オンライン / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 合計</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>このデバイスとその設定を削除します</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>製品: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>種類: </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>アプリGUID: </value></data>
+  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>インスタンスパス: </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>デバイスマッピングを送信</value></data>
@@ -457,6 +477,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>マウスボタン押下</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>マウスボタン解放</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ボタン:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>キーコンボ:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 形式のキーコンボ — 編集可能</value></data>
@@ -516,6 +537,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} スクロール (最大 {1} 単位)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>中央</value></data>
@@ -722,7 +744,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>アプリケーション</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>スリープ</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>テンキー</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>テンキー {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>区切り</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -813,5 +835,29 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>低音カットオフをリセット</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>タッチパッド 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>タッチパッド 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>タッチパッド 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>タッチパッド 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>タッチパッド 1 タッチ</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>タッチパッド 2 タッチ</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>タッチパッドクリック</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>テンキー *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>テンキー +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>テンキー -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>テンキー .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>テンキー /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>セミコロン</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>等号</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>コンマ</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>マイナス</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>ピリオド</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>スラッシュ</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>グレイヴ</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>左角括弧</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>バックスラッシュ</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>右角括弧</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>アポストロフィ</value></data>
 
 </root>

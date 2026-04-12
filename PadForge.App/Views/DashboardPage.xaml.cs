@@ -6,7 +6,8 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ModernWpf.Controls;
+using NavigationView = Wpf.Ui.Controls.NavigationView;
+using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Engine;
 
 namespace PadForge.Views
@@ -222,15 +223,19 @@ namespace PadForge.Views
 
             Mouse.Capture(SlotsItemsControl, CaptureMode.SubTree);
 
+            // Compute mouse offset from card top-left so the adorner doesn't jump.
+            var cardTopLeft = card.TranslatePoint(new Point(0, 0), SlotsItemsControl);
+            var grabOffset = new Point(startPos.X - cardTopLeft.X, startPos.Y - cardTopLeft.Y);
+
             _dragAdornerLayer = AdornerLayer.GetAdornerLayer(SlotsItemsControl);
             if (_dragAdornerLayer != null && snapshot != null)
             {
                 _dragAdorner = new CardDragAdorner(SlotsItemsControl, snapshot,
-                    new Size(card.ActualWidth, card.ActualHeight));
+                    new Size(card.ActualWidth, card.ActualHeight), grabOffset);
                 _dragAdorner.UpdatePosition(startPos);
                 _dragAdornerLayer.Add(_dragAdorner);
 
-                var accent = TryFindResource("SystemControlHighlightAccentBrush") as Brush
+                var accent = TryFindResource("SystemAccentColorSecondaryBrush") as Brush
                           ?? Brushes.DodgerBlue;
                 _insertionAdorner = new InsertionLineAdorner(SlotsItemsControl, accent);
                 _dragAdornerLayer.Add(_insertionAdorner);
@@ -536,7 +541,7 @@ namespace PadForge.Views
                 var card = FindChildBorder(container);
                 if (card != null && card.Tag is int idx && idx == padIndex)
                 {
-                    var accent = TryFindResource("SystemControlHighlightAccentBrush") as Brush
+                    var accent = TryFindResource("SystemAccentColorSecondaryBrush") as Brush
                               ?? Brushes.DodgerBlue;
                     card.BorderBrush = accent;
                     _dragSwapHighlight = card;
@@ -558,13 +563,15 @@ namespace PadForge.Views
         {
             private readonly ImageBrush _brush;
             private readonly Size _size;
+            private readonly Point _grabOffset;
             private Point _position;
 
-            public CardDragAdorner(UIElement adornedElement, ImageSource snapshot, Size cardSize)
+            public CardDragAdorner(UIElement adornedElement, ImageSource snapshot, Size cardSize, Point grabOffset)
                 : base(adornedElement)
             {
                 _brush = new ImageBrush(snapshot);
                 _size = cardSize;
+                _grabOffset = grabOffset;
                 IsHitTestVisible = false;
             }
 
@@ -578,8 +585,8 @@ namespace PadForge.Views
             {
                 dc.DrawRectangle(_brush, null,
                     new Rect(
-                        _position.X - _size.Width / 2,
-                        _position.Y - _size.Height / 2,
+                        _position.X - _grabOffset.X,
+                        _position.Y - _grabOffset.Y,
                         _size.Width, _size.Height));
             }
         }

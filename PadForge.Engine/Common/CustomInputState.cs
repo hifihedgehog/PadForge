@@ -63,6 +63,18 @@ namespace PadForge.Engine
         public float[] Accel;
 
         /// <summary>
+        /// Touchpad finger data: 6 floats — [finger*3+0]=x, [finger*3+1]=y, [finger*3+2]=pressure.
+        /// Values are normalized 0-1. Only populated for devices with a touchpad.
+        /// </summary>
+        public float[] TouchpadFingers;
+
+        /// <summary>Finger contact state: [0]=finger 0, [1]=finger 1.</summary>
+        public bool[] TouchpadDown;
+
+        /// <summary>Physical touchpad click button.</summary>
+        public bool TouchpadClick;
+
+        /// <summary>
         /// Creates a new zeroed input state with default array sizes.
         /// All axes and sliders default to 0, all POVs default to -1 (centered),
         /// all buttons default to false (released).
@@ -75,42 +87,12 @@ namespace PadForge.Engine
             Buttons = new bool[MaxButtons];
             Gyro = new float[3];
             Accel = new float[3];
+            TouchpadFingers = new float[6];
+            TouchpadDown = new bool[2];
 
             // Initialize POVs to centered.
             for (int i = 0; i < Povs.Length; i++)
                 Povs[i] = -1;
-        }
-
-        /// <summary>
-        /// Creates a new input state by copying from the provided arrays.
-        /// Arrays are copied (not referenced) to ensure snapshot isolation.
-        /// </summary>
-        /// <param name="axes">Source axis values. Copied up to <see cref="MaxAxis"/> elements.</param>
-        /// <param name="sliders">Source slider values. Copied up to <see cref="MaxSliders"/> elements.</param>
-        /// <param name="povs">Source POV values. Copied up to <see cref="MaxPovs"/> elements.</param>
-        /// <param name="buttons">Source button states. Copied up to <see cref="MaxButtons"/> elements.</param>
-        public CustomInputState(int[] axes, int[] sliders, int[] povs, bool[] buttons)
-        {
-            Axis = new int[MaxAxis];
-            Sliders = new int[MaxSliders];
-            Povs = new int[MaxPovs];
-            Buttons = new bool[MaxButtons];
-
-            // Initialize POVs to centered before copy.
-            for (int i = 0; i < Povs.Length; i++)
-                Povs[i] = -1;
-
-            if (axes != null)
-                Array.Copy(axes, 0, Axis, 0, Math.Min(axes.Length, MaxAxis));
-
-            if (sliders != null)
-                Array.Copy(sliders, 0, Sliders, 0, Math.Min(sliders.Length, MaxSliders));
-
-            if (povs != null)
-                Array.Copy(povs, 0, Povs, 0, Math.Min(povs.Length, MaxPovs));
-
-            if (buttons != null)
-                Array.Copy(buttons, 0, Buttons, 0, Math.Min(buttons.Length, MaxButtons));
         }
 
         /// <summary>
@@ -125,6 +107,9 @@ namespace PadForge.Engine
             Array.Copy(Buttons, clone.Buttons, MaxButtons);
             Array.Copy(Gyro, clone.Gyro, 3);
             Array.Copy(Accel, clone.Accel, 3);
+            Array.Copy(TouchpadFingers, clone.TouchpadFingers, 6);
+            Array.Copy(TouchpadDown, clone.TouchpadDown, 2);
+            clone.TouchpadClick = TouchpadClick;
             return clone;
         }
 

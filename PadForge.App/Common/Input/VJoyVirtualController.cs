@@ -33,14 +33,7 @@ namespace PadForge.Common.Input
     {
         private const string Dll = "setupapi.dll";
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SP_DEVINFO_DATA
-        {
-            public int cbSize;
-            public Guid ClassGuid;
-            public int DevInst;
-            public IntPtr Reserved;
-        }
+        // SP_DEVINFO_DATA shared via SetupApiInterop.SP_DEVINFO_DATA
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct SP_CLASSINSTALL_HEADER
@@ -62,19 +55,19 @@ namespace PadForge.Common.Input
         internal static extern IntPtr SetupDiGetClassDevsW(ref Guid ClassGuid, string Enumerator, IntPtr hwndParent, int Flags);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiEnumDeviceInfo(IntPtr DeviceInfoSet, int MemberIndex, ref SP_DEVINFO_DATA DeviceInfoData);
+        internal static extern bool SetupDiEnumDeviceInfo(IntPtr DeviceInfoSet, int MemberIndex, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport(Dll, SetLastError = true, CharSet = CharSet.Unicode)]
-        internal static extern bool SetupDiGetDeviceInstanceIdW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, char[] DeviceInstanceId, int DeviceInstanceIdSize, out int RequiredSize);
+        internal static extern bool SetupDiGetDeviceInstanceIdW(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData, char[] DeviceInstanceId, int DeviceInstanceIdSize, out int RequiredSize);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiSetClassInstallParamsW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, ref SP_PROPCHANGE_PARAMS ClassInstallParams, int ClassInstallParamsSize);
+        internal static extern bool SetupDiSetClassInstallParamsW(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData, ref SP_PROPCHANGE_PARAMS ClassInstallParams, int ClassInstallParamsSize);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+        internal static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport(Dll, SetLastError = true)]
-        internal static extern bool SetupDiRemoveDevice(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
+        internal static extern bool SetupDiRemoveDevice(IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport(Dll, SetLastError = true)]
         internal static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
@@ -104,7 +97,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -159,7 +152,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -211,7 +204,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -248,7 +241,7 @@ namespace PadForge.Common.Input
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>() };
                 char[] idBuf = new char[256];
                 for (int i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
@@ -1044,13 +1037,10 @@ namespace PadForge.Common.Input
                 }
 
                 // ── Polar direction → left/right motor split ──
-                // HID polar: 0 = North, ~8192 = East, ~16384 = South, ~24576 = West
-                // For constant force: negative magnitude flips direction 180°.
-                double angleDeg;
-                if (es.Type == FFBEType.ET_CONST && es.Magnitude < 0)
-                    angleDeg = ((es.Direction / 32767.0) * 360.0 + 180.0) % 360.0;
-                else
-                    angleDeg = (es.Direction / 32767.0) * 360.0;
+                // DirectInput/HID PID convention: direction = where force COMES FROM.
+                // East (90°) = force from East, pushes stick West (left motor).
+                // +180° converts "from" to "toward" so the motor matches the push direction.
+                double angleDeg = ((es.Direction / 32767.0) * 360.0 + 180.0) % 360.0;
 
                 double angleRad = angleDeg * Math.PI / 180.0;
 
@@ -1418,10 +1408,7 @@ namespace PadForge.Common.Input
             return EnsureDevicesAvailableCore(requiredCount, perDeviceConfigs);
         }
 
-        public static bool EnsureDevicesAvailable(int requiredCount = 1)
-        {
-            return EnsureDevicesAvailableCore(requiredCount, null);
-        }
+
 
         private static bool EnsureDevicesAvailableCore(int requiredCount, VJoyDeviceConfig[] perDeviceConfigs)
         {
@@ -2080,30 +2067,7 @@ try {{
     $dst = ""$env:SystemRoot\System32\drivers\vjoy.sys""
     if (-not (Test-Path $dst) -and (Test-Path $src)) {{ Copy-Item $src $dst -Force }}
 
-    Add-Type -TypeDefinition @'
-using System;
-using System.Runtime.InteropServices;
-public static class PF_SetupApi {{
-    public const int DIF_REGISTERDEVICE = 0x19;
-    public const int SPDRP_HARDWAREID = 0x01;
-    public const int DICD_GENERATE_ID = 0x01;
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SP_DEVINFO_DATA {{ public int cbSize; public Guid ClassGuid; public int DevInst; public IntPtr Reserved; }}
-    [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
-    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SP_DEVINFO_DATA DeviceInfoData);
-    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
-    [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
-    [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
-    [DllImport(""newdev.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool UpdateDriverForPlugAndPlayDevicesW(IntPtr hwndParent, string HardwareId, string FullInfPath, int InstallFlags, out bool bRebootRequired);
-}}
-'@
+" + SetupApiInterop.GetPsSetupApiSnippet() + $@"
     $hidGuid = [Guid]::new('{{745a17a0-74d3-11d0-b6fe-00a0c90f57da}}')
     $hwid = 'root\VID_1234&PID_BEAD&REV_0222'
     $infPath = '{vjoyDir.Replace("'", "''")}\vjoy.inf'
@@ -2187,11 +2151,16 @@ public static class PF_SetupApi {{
             bool anyChanged = false;
             try
             {
-                using var baseKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
-                    @"SYSTEM\CurrentControlSet\services\vjoy\Parameters", writable: true);
+                // Use CreateSubKey so the Parameters key is created if it doesn't exist.
+                // After a fresh driver install, vjoy.sys uses compiled-in defaults (8/8/0)
+                // and does NOT create the Parameters key or DeviceNN subkeys. OpenSubKey
+                // would return null here, silently skipping descriptor writes and leaving
+                // the device with the wrong configuration.
+                using var baseKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(
+                    @"SYSTEM\CurrentControlSet\services\vjoy\Parameters");
                 if (baseKey == null)
                 {
-                    DiagLog("WriteDeviceDescriptors: FAILED — baseKey is null (cannot open registry for write)");
+                    DiagLog("WriteDeviceDescriptors: FAILED — cannot create/open Parameters registry key");
                     return false;
                 }
 
@@ -2222,14 +2191,9 @@ public static class PF_SetupApi {{
                 // disturbing live device nodes whose driver has already read the registry.
                 for (int i = 1; i <= requiredCount; i++)
                 {
-                    // Use per-device config if available, otherwise default Xbox 360 layout.
-                    int nAxes = 6, nButtons = 11, nPovs = 1;
-                    if (perDeviceConfigs != null && i - 1 < perDeviceConfigs.Length)
-                    {
-                        nAxes = perDeviceConfigs[i - 1].Axes;
-                        nButtons = perDeviceConfigs[i - 1].Buttons;
-                        nPovs = perDeviceConfigs[i - 1].Povs;
-                    }
+                    int nAxes = perDeviceConfigs[i - 1].Axes;
+                    int nButtons = perDeviceConfigs[i - 1].Buttons;
+                    int nPovs = perDeviceConfigs[i - 1].Povs;
 
                     byte[] descriptor = BuildHidDescriptor((byte)i, nAxes, nButtons, nPovs);
                     string keyName = $"Device{i:D2}";
@@ -2280,7 +2244,7 @@ public static class PF_SetupApi {{
         ///   1 byte report ID + 16 axes × 4 bytes + 4 POV DWORDs + 128 button bits (16 bytes).
         /// Disabled axes/POVs/buttons are constant padding so offsets always match.
         /// </summary>
-        private static byte[] BuildHidDescriptor(byte reportId, int nAxes, int nButtons, int nPovs)
+        internal static byte[] BuildHidDescriptor(byte reportId, int nAxes, int nButtons, int nPovs)
         {
             nAxes = Math.Clamp(nAxes, 0, 8);
             nButtons = Math.Clamp(nButtons, 0, 128);

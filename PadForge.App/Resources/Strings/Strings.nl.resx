@@ -113,13 +113,15 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparaat/apparaten</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller toevoegen</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuele controller verwijderen</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>Volledig scherm</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge tonen</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuele Controller {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus niet geïnstalleerd</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Engine gestopt</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>Wachten op controllers</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>Wachten op apparaten</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Actief</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Initialiseren</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>Een of meer controllers offline</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>DirectInput-stuurprogramma niet geïnstalleerd</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus niet geïnstalleerd)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (max {0})</value></data>
@@ -194,6 +196,16 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiel gewisseld: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiel gewisseld: Standaard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standaard</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Profiel-snelkoppelingen</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Wijs knoppencombinaties toe om van profiel te wisselen vanaf elke controller.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>Snelkoppeling toevoegen</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Volgend profiel</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Vorig profiel</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Specifiek profiel</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Venster wisselen</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Elk verbonden apparaat</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Opnemen</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Opname...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Geen apparaat geselecteerd.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ongeldige slotindex: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Apparaattoewijzing mislukt.</value></data>
@@ -219,6 +231,11 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Bied een gamepad-interface aan voor browsers op uw lokale netwerk.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Webcontroller-server inschakelen</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbind vanaf een telefoon of tablet-browser om het als gamepad te gebruiken.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Touchoppervlak op het scherm voor DS4-touchpademulatie.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay inschakelen</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Dekking:</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Rechtsklik en vasthouden om te slepen</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Stuurprogramma's</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Geen apparaat</value></data>
 
@@ -273,7 +290,7 @@
   <data name="About_Title" xml:space="preserve"><value>Over</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Controller-toewijzingshulpprogramma</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce — opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge wijst elke controller, elk toetsenbord of elke muis toe aan virtuele Xbox 360-, DualShock 4-, aangepaste DirectInput- of MIDI-controllers via ViGEmBus, vJoy en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord- en muisinvoer, en biedt een moderne Fluent Design-interface voor toewijzing, dode-zoneconfiguratie en force-feedbackbeheer.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge wijst elke controller, elk toetsenbord of elke muis toe aan virtuele Xbox 360-, DualShock 4-, aangepaste DirectInput- of MIDI-controllers via ViGEmBus, vJoy en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord- en muisinvoer, en biedt een moderne Fluent Design-interface voor toewijzing, deadzoneconfiguratie en force-feedbackbeheer.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework</value></data>
@@ -289,8 +306,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuele MIDI-apparaatuitvoer (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-controllervisualisatie</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent Design-thema voor WPF</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2-ontwerpsysteem voor WPF</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm voor gegevensbinding</value></data>
   <data name="About_License" xml:space="preserve"><value>Licentie</value></data>
@@ -305,17 +322,20 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>Aanvullend</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>Muis</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Toetsenbord</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Apparaat</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Alle toetsenborden (samengevoegd)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Alle muizen (samengevoegd)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Alle touchpads (samengevoegd)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Apparaten</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totaal</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>Type: </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>App-GUID: </value></data>
+  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL-GUID: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>Instantiepad: </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Apparaattoewijzing indienen</value></data>
@@ -402,7 +422,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Bron</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Waarde</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opties</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>As-naar-knop dode zone</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>As-naar-knop deadzone</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverteren</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Half</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineair</value></data>
@@ -416,7 +436,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Meten...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middenverschuiving X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Dode-zonevorm:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Deadzonevorm:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Geschaald radiaal</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radiaal</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axiaal</value></data>
@@ -457,6 +477,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Muisknop indrukken</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Muisknop loslaten</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Knoppen:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Toetscombinatie:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Toetscombinatie in {Toets1}{Toets2}-formaat — bewerkbaar</value></data>
@@ -516,6 +537,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen met {0} (max {1} eenheden)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop indrukken {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop loslaten {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Gecentreerd</value></data>
@@ -576,10 +598,10 @@
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
 
   <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dode zone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dode zone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-dode zone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-dode zone Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-deadzone Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Lineair:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Gevoeligheidscurven</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Dubbelklik op de grafiek om een punt toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
@@ -592,7 +614,7 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>X-as</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-as</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Bereik:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dode zone:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Gevoeligheidscurve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklik om toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Voorinstelling:</value></data>
@@ -612,10 +634,10 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Middenverschuiving X herstellen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y herstellen</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Herstellen naar Geschaald Radiaal</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Dode zone X herstellen</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Dode zone Y herstellen</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-dode zone X herstellen</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-dode zone Y herstellen</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Deadzone X herstellen</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Deadzone Y herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Anti-deadzone Y herstellen</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Lineair herstellen</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Gevoeligheid X herstellen</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Gevoeligheid Y herstellen</value></data>
@@ -624,7 +646,7 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Min bereik Y herstellen</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Max bereik Y herstellen</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Bereik herstellen</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-dode zone herstellen</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Anti-deadzone herstellen</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Gevoeligheid herstellen</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Totale versterking herstellen</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
@@ -726,7 +748,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>Toepassingen</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>Slaapstand</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>Numeriek toetsenbord</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>Numeriek toetsenbord {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Scheidingsteken</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -831,5 +853,29 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Basafsnijding herstellen</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 aanraking</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 aanraking</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-klik</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numeriek toetsenbord *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>Numeriek toetsenbord +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>Numeriek toetsenbord -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>Numeriek toetsenbord .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>Numeriek toetsenbord /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>Puntkomma</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>Gelijkteken</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>Komma</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>Min</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>Punt</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>Schuine streep</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>Accent grave</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>Linker haakje</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>Omgekeerde schuine streep</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>Rechter haakje</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrof</value></data>
 
 </root>

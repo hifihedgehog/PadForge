@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using HIDMaestro;
 using Nefarius.ViGEm.Client;
 using PadForge.Engine;
 using PadForge.ViewModels;
@@ -21,6 +22,15 @@ namespace PadForge.Common.Input
         private static ViGEmClient _vigemClient;
         private static readonly object _vigemClientLock = new object();
         private static bool _vigemClientFailed;
+
+        /// <summary>
+        /// Shared HIDMaestro context (one per process). Replaces ViGEmBus +
+        /// vJoy in v3. Initialized lazily on first use, owns all HMController
+        /// instances created by HMaestroVirtualController.
+        /// </summary>
+        private static HMContext _hmaestroContext;
+        private static readonly object _hmaestroContextLock = new object();
+        private static bool _hmaestroContextFailed;
 
         /// <summary>Virtual controller targets (one per slot).</summary>
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
@@ -687,6 +697,61 @@ namespace PadForge.Common.Input
             try
             {
                 using var client = new ViGEmClient();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  HIDMaestro context lifecycle (v3)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Lazily initialize the shared HMContext, load embedded profiles, and
+        /// install the HIDMaestro driver if needed. Idempotent — safe to call
+        /// every Start(). The caller must already be elevated; PadForge
+        /// auto-elevates on launch when virtual device drivers are present.
+        /// </summary>
+        private void EnsureHMaestroContext()
+        {
+            if (_hmaestroContext != null || _hmaestroContextFailed)
+                return;
+
+            lock (_hmaestroContextLock)
+            {
+                if (_hmaestroContext != null || _hmaestroContextFailed)
+                    return;
+
+                try
+                {
+                    var ctx = new HMContext();
+                    ctx.LoadDefaultProfiles();
+                    ctx.InstallDriver();
+                    _hmaestroContext = ctx;
+                }
+                catch (Exception ex)
+                {
+                    _hmaestroContextFailed = true;
+                    RaiseError("Failed to initialize HIDMaestro.", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Static check: is HIDMaestro available on this machine? Currently
+        /// returns true if the embedded SDK can construct a context (which
+        /// it always can — the driver, profiles, and signing tools all ship
+        /// inside HIDMaestro.Core.dll). Reserved for future use if we ever
+        /// detect a missing prerequisite.
+        /// </summary>
+        public static bool CheckHMaestroInstalled()
+        {
+            try
+            {
+                using var ctx = new HMContext();
                 return true;
             }
             catch

@@ -54,7 +54,8 @@
 
 ### System Integration
 
-- **Activate profiles per application** — Switch controller configurations automatically when specific apps gain focus
+- **Activate profiles per application** — Switch controller configurations automatically when specific apps gain focus; a Win11-style flyout shows the profile name, initialization progress, and offline controller warnings
+- **Switch profiles by controller shortcut** — Assign button combos (cross-device, with axis direction support) to cycle Next/Previous, jump to a specific profile, or toggle the PadForge window — all without touching the keyboard
 - **Hide physical controllers** — HidHide driver-level hiding prevents double input; low-level hooks consume only mapped keyboard and mouse inputs without a driver; per-device toggles auto-enable for gamepads with safety warnings for mice and keyboards
 - **Manage drivers in one click** — Install or remove ViGEmBus, HidHide, vJoy, and Windows MIDI Services from inside PadForge with built-in device blacklisting and app whitelisting
 

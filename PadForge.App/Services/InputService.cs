@@ -1965,6 +1965,11 @@ namespace PadForge.Services
                 if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i])
                     continue;
 
+                // MIDI and KeyboardMouse VCs don't require physical device assignments.
+                var vcType = _mainVm.Pads[i].OutputType;
+                if (vcType == VirtualControllerType.Midi || vcType == VirtualControllerType.KeyboardMouse)
+                    continue;
+
                 var slotSettings = SettingsManager.GetSettingsForSlot(i);
                 if (slotSettings.Count == 0)
                     return true; // No devices assigned — controller is offline.

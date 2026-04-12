@@ -36,7 +36,7 @@ namespace PadForge.Common.Input
                     int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 
                     bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.Extended
-                                     && SlotVJoyIsCustom[padIndex];
+                                     && SlotExtendedIsCustom[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
                     bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.Sony;

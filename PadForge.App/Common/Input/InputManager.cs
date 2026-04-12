@@ -345,7 +345,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Stops the background polling thread and waits for it to exit.
         /// </summary>
-        public void Stop(bool preserveVJoyNodes = false)
+        public void Stop()
         {
             if (!_running)
                 return;
@@ -365,7 +365,7 @@ namespace PadForge.Common.Input
             _ptpReader = null;
 
             StopAllForceFeedback();
-            DestroyAllVirtualControllers(preserveVJoyNodes);
+            DestroyAllVirtualControllers();
             CloseAllDevices();
 
             _enumerationTimer.Stop();
@@ -659,10 +659,10 @@ namespace PadForge.Common.Input
             // travels with the card (not recomputed from MapTo).
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
-            (SlotVJoyConfigs[slotA], SlotVJoyConfigs[slotB]) =
-                (SlotVJoyConfigs[slotB], SlotVJoyConfigs[slotA]);
-            (SlotVJoyIsCustom[slotA], SlotVJoyIsCustom[slotB]) =
-                (SlotVJoyIsCustom[slotB], SlotVJoyIsCustom[slotA]);
+            (SlotCustomLayouts[slotA], SlotCustomLayouts[slotB]) =
+                (SlotCustomLayouts[slotB], SlotCustomLayouts[slotA]);
+            (SlotExtendedIsCustom[slotA], SlotExtendedIsCustom[slotB]) =
+                (SlotExtendedIsCustom[slotB], SlotExtendedIsCustom[slotA]);
             (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
                 (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
@@ -671,7 +671,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Swaps only data arrays between two slots: SlotControllerTypes,
-        /// SlotVJoyConfigs, SlotVJoyIsCustom, TestRumbleTargetGuid, MacroSnapshots.
+        /// SlotCustomLayouts, SlotExtendedIsCustom, TestRumbleTargetGuid, MacroSnapshots.
         /// Does NOT touch virtual controllers or their lifecycle.
         /// Used by EnsureTypeGroupOrder so Step 5 detects the type mismatch
         /// and handles VC recreation naturally on the polling thread,
@@ -687,10 +687,10 @@ namespace PadForge.Common.Input
             // Swap engine config arrays.
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
-            (SlotVJoyConfigs[slotA], SlotVJoyConfigs[slotB]) =
-                (SlotVJoyConfigs[slotB], SlotVJoyConfigs[slotA]);
-            (SlotVJoyIsCustom[slotA], SlotVJoyIsCustom[slotB]) =
-                (SlotVJoyIsCustom[slotB], SlotVJoyIsCustom[slotA]);
+            (SlotCustomLayouts[slotA], SlotCustomLayouts[slotB]) =
+                (SlotCustomLayouts[slotB], SlotCustomLayouts[slotA]);
+            (SlotExtendedIsCustom[slotA], SlotExtendedIsCustom[slotB]) =
+                (SlotExtendedIsCustom[slotB], SlotExtendedIsCustom[slotA]);
             (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
                 (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
             (MacroSnapshots[slotA], MacroSnapshots[slotB]) =

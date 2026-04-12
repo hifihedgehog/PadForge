@@ -35,7 +35,10 @@ namespace PadForge.Common.Input
                         RetrievedOutputStates[padIndex] = CombinedOutputStates[padIndex];
                         if (vc is KeyboardMouseVirtualController)
                             RetrievedKbmRawStates[padIndex] = CombinedKbmRawStates[padIndex];
-                        if (vc is DS4VirtualController)
+                        // Touchpad state is forwarded for Sony category slots (DS4 /
+                        // DualSense profiles support the touchpad raw report). The UI
+                        // consumer ignores it for slots that don't.
+                        if (SlotControllerTypes[padIndex] == VirtualControllerType.Sony)
                             RetrievedTouchpadStates[padIndex] = CombinedTouchpadStates[padIndex];
                     }
                     else

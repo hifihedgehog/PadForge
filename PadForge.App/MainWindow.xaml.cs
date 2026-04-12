@@ -329,12 +329,6 @@ namespace PadForge
                     _settingsService.MarkDirty();
             };
 
-            // Wire ViGEm install/uninstall commands.
-            _viewModel.Settings.InstallViGEmRequested += async (s, e) => await RunDriverOperationAsync(
-                Strings.Instance.Status_InstallingViGEm, DriverInstaller.InstallViGEmBus, RefreshViGEmStatus);
-            _viewModel.Settings.UninstallViGEmRequested += async (s, e) => await RunDriverOperationAsync(
-                Strings.Instance.Status_UninstallingViGEm, DriverInstaller.UninstallViGEmBus, RefreshViGEmStatus);
-
             // Wire HidHide install/uninstall commands.
             _viewModel.Settings.InstallHidHideRequested += async (s, e) => await RunDriverOperationAsync(
                 Strings.Instance.Status_InstallingHidHide, DriverInstaller.InstallHidHide, RefreshHidHideStatus);
@@ -366,12 +360,6 @@ namespace PadForge
             {
                 _inputService?.ApplyDeviceHiding();
             };
-
-            // Wire vJoy install/uninstall commands.
-            _viewModel.Settings.InstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
-                Strings.Instance.Status_InstallingVJoy, DriverInstaller.InstallVJoy, OnVJoyDriverChanged);
-            _viewModel.Settings.UninstallVJoyRequested += async (s, e) => await RunDriverOperationAsync(
-                Strings.Instance.Status_UninstallingVJoy, DriverInstaller.UninstallVJoy, OnVJoyDriverChanged);
 
             // Wire MIDI Services install/uninstall commands.
             _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
@@ -934,11 +922,7 @@ namespace PadForge
 
             // Detect drivers early (before sidebar rebuild) so power icons show correct
             // colors even when starting minimized to tray (where OnLoaded never fires).
-            RefreshViGEmStatus();
-            _previousViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
             RefreshHidHideStatus();
-            RefreshVJoyStatus();
-            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
             RefreshMidiServicesStatus();
             StartDriverStatusTimer();
 
@@ -972,44 +956,8 @@ namespace PadForge
             };
             _driverStatusTimer.Tick += (s, ev) =>
             {
-                bool wasViGEmInstalled = _previousViGEmInstalled;
-                RefreshViGEmStatus();
                 RefreshHidHideStatus();
-                RefreshVJoyStatus();
                 RefreshMidiServicesStatus();
-
-                bool nowViGEmInstalled = _viewModel.Dashboard.IsViGEmInstalled;
-                _previousViGEmInstalled = nowViGEmInstalled;
-
-                // ViGEm installed mid-session: restart engine to recreate ViGEmClient and virtual controllers.
-                if (!wasViGEmInstalled && nowViGEmInstalled && _viewModel.IsEngineRunning)
-                {
-                    _inputService.Stop();
-                    _inputService.Start();
-                    _viewModel.StatusText = Strings.Instance.Status_ViGEmDetectedRestarted;
-                }
-
-                // ViGEm status changed: force full sidebar rebuild for power icon colors.
-                if (wasViGEmInstalled != nowViGEmInstalled)
-                    RebuildControllerSection();
-
-                // vJoy installed/reinstalled mid-session: reset cached state and restart engine.
-                bool wasVJoyInstalled = _previousVJoyInstalled;
-                bool nowVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
-                _previousVJoyInstalled = nowVJoyInstalled;
-
-                if (wasVJoyInstalled != nowVJoyInstalled)
-                {
-                    // Always reset cached DLL/registry state on any install status change.
-                    PadForge.Common.Input.VJoyVirtualController.ResetState();
-
-                    if (nowVJoyInstalled && _viewModel.IsEngineRunning)
-                    {
-                        _inputService.Stop(preserveVJoyNodes: true);
-                        _inputService.Start();
-                        _viewModel.StatusText = Strings.Instance.Status_VJoyDetectedRestarted;
-                    }
-                }
             };
             _driverStatusTimer.Start();
         }
@@ -3788,29 +3736,6 @@ namespace PadForge
             _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 
-        private void RefreshViGEmStatus()
-        {
-            try
-            {
-                bool installed = PadForge.Common.Input.InputManager.CheckViGEmInstalled();
-                _viewModel.Settings.IsViGEmInstalled = installed;
-                _viewModel.Dashboard.IsViGEmInstalled = installed;
-
-                var version = DriverInstaller.GetViGEmVersion();
-                _viewModel.Settings.ViGEmVersion = version ?? string.Empty;
-
-                if (!installed)
-                    _viewModel.StatusText = Strings.Instance.Status_ViGEmNotDetected;
-            }
-            catch (Exception ex)
-            {
-                _viewModel.Settings.IsViGEmInstalled = false;
-                _viewModel.Dashboard.IsViGEmInstalled = false;
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_ViGEmCheckFailed_Format, ex.Message);
-            }
-            if (_navDashboard != null) RefreshControllerNavItemsInPlace();
-        }
-
         private void RefreshHidHideStatus()
         {
             try
@@ -3825,23 +3750,6 @@ namespace PadForge
                 _viewModel.Settings.IsHidHideInstalled = false;
                 _viewModel.Dashboard.IsHidHideInstalled = false;
             }
-        }
-
-        private void RefreshVJoyStatus()
-        {
-            try
-            {
-                bool installed = DriverInstaller.IsVJoyInstalled();
-                _viewModel.Settings.IsVJoyInstalled = installed;
-                _viewModel.Dashboard.IsVJoyInstalled = installed;
-                _viewModel.Settings.VJoyVersion = DriverInstaller.GetVJoyVersion() ?? string.Empty;
-            }
-            catch
-            {
-                _viewModel.Settings.IsVJoyInstalled = false;
-                _viewModel.Dashboard.IsVJoyInstalled = false;
-            }
-            if (_navDashboard != null) RefreshControllerNavItemsInPlace();
         }
 
         private void RefreshMidiServicesStatus()
@@ -3861,30 +3769,5 @@ namespace PadForge
             if (_navDashboard != null) RefreshControllerNavItemsInPlace();
         }
 
-        /// <summary>
-        /// Called after vJoy install/uninstall via PadForge's own buttons.
-        /// Resets cached vJoy state and restarts the engine so the new driver
-        /// is picked up immediately without requiring a PadForge relaunch.
-        /// </summary>
-        private void OnVJoyDriverChanged()
-        {
-            RefreshVJoyStatus();
-            _previousVJoyInstalled = _viewModel.Dashboard.IsVJoyInstalled;
-
-            PadForge.Common.Input.VJoyVirtualController.ResetState();
-
-            if (_viewModel.IsEngineRunning)
-            {
-                // Preserve vJoy device nodes during restart so the DLL's internal
-                // device handles stay valid. Nodes are disabled (not removed) during
-                // Stop, then re-enabled by EnsureDevicesAvailable when vJoy slots
-                // become active — same pattern as "delete last vJoy + re-add".
-                _inputService.Stop(preserveVJoyNodes: true);
-                _inputService.Start();
-                _viewModel.StatusText = _viewModel.Dashboard.IsVJoyInstalled
-                    ? Strings.Instance.Status_VJoyInstalledRestarted
-                    : Strings.Instance.Status_VJoyRemovedRestarted;
-            }
-        }
     }
 }

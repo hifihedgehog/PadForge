@@ -249,7 +249,7 @@ namespace PadForge.Common.Input
 
                 try
                 {
-                    if (SlotVJoyIsCustom[i])
+                    if (SlotExtendedIsCustom[i])
                         EvaluateSlotMacrosCustomVJoy(ref CombinedVJoyRawStates[i], macros);
                     else
                         EvaluateSlotMacros(ref CombinedOutputStates[i], macros);

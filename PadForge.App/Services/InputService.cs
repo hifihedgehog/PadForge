@@ -143,23 +143,12 @@ namespace PadForge.Services
 
             _stopped = false;
 
-            // Remove stale ViGEm USB device nodes left over from previous sessions
-            // (e.g., app crash without Dispose, or old builds that didn't call Dispose).
-            // Must run BEFORE SDL initialization so stale nodes aren't enumerated.
-            InputManager.CleanupStaleVigemDevices();
-
-            // Don't remove vJoy nodes on startup — Step 5's EnsureDevicesAvailable
-            // handles the correct descriptor count, creates missing nodes, removes excess,
-            // and restarts when descriptors change. Removing here causes an unnecessary
-            // 10+ second remove+recreate cycle on every normal restart (especially on
-            // Win11 builds where pnputil /remove-device returns 3010 and scan-devices
-            // takes ~10 seconds to clean up ghost PDOs).
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
 
-            // Copy controller types and vJoy configs immediately so Step 5 creates
-            // the correct VC types from the first polling cycle (don't wait for UI timer sync).
+            // Copy controller types and per-slot configs immediately so Step 5
+            // creates the correct VC types from the first polling cycle.
             int expectedXbox = 0, expectedDs4 = 0;
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
@@ -173,9 +162,11 @@ namespace PadForge.Services
                 }
             }
 
-            // Pre-initialize expected ViGEm counts so the device filter catches
-            // ViGEm virtual controllers on the very first UpdateDevices() cycle
-            // (before Step 5 has created any actual VCs).
+            // Pre-initialize expected counts so Step 1's transitional ViGEm
+            // filter catches our virtual controllers on the very first
+            // UpdateDevices() cycle (before Step 5 has created any actual VCs).
+            // The filter will be replaced with HIDMaestro device-path detection
+            // in a later checkpoint, removing this PreInitialize call.
             _inputManager.PreInitializeVigemCounts(expectedXbox, expectedDs4);
 
             // Subscribe to engine events (raised on background thread).
@@ -257,7 +248,7 @@ namespace PadForge.Services
         /// </summary>
         private bool _stopped;
 
-        public void Stop(bool preserveVJoyNodes = false)
+        public void Stop()
         {
             if (_stopped) return;
             _stopped = true;
@@ -325,9 +316,7 @@ namespace PadForge.Services
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
-                // Pass preserveVJoyNodes so engine teardown disables (not removes)
-                // vJoy device nodes when we're about to restart immediately.
-                _inputManager.Stop(preserveVJoyNodes);
+                _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
             }
@@ -347,18 +336,6 @@ namespace PadForge.Services
                 row.IsOnline = false;
             _mainVm.Devices.RefreshCounts();
 
-            if (!preserveVJoyNodes)
-            {
-                // Remove vJoy device nodes so dormant devices don't appear in
-                // Game Controllers — games may latch onto them as valid input.
-                // Allow up to 3s for cleanup, then let the app exit regardless.
-                if (VJoyVirtualController.CountExistingDevices() > 0)
-                {
-                    var cleanupTask = System.Threading.Tasks.Task.Run(
-                        () => VJoyVirtualController.RemoveAllDeviceNodes());
-                    cleanupTask.Wait(TimeSpan.FromSeconds(3));
-                }
-            }
         }
 
         /// <summary>
@@ -423,7 +400,7 @@ namespace PadForge.Services
                 padVm.UpdateFromEngineState(gp, vibration);
 
                 // For custom vJoy slots, also push the combined VJoyRawState.
-                if (_inputManager.SlotVJoyIsCustom[i])
+                if (_inputManager.SlotExtendedIsCustom[i])
                     padVm.UpdateFromVJoyRawState(_inputManager.CombinedVJoyRawStates[i]);
 
                 // For MIDI slots, push the combined MidiRawState.
@@ -453,12 +430,12 @@ namespace PadForge.Services
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                     {
                         var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
-                        if (_inputManager.SlotVJoyIsCustom[i] && us != null)
+                        if (_inputManager.SlotExtendedIsCustom[i] && us != null)
                             padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
                         else
                             padVm.UpdateDeviceState(us?.RawMappedState ?? default);
                     }
-                    else if (!_inputManager.SlotVJoyIsCustom[i])
+                    else if (!_inputManager.SlotExtendedIsCustom[i])
                     {
                         padVm.UpdateDeviceState(gp);
                     }
@@ -1011,13 +988,15 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Syncs a PadViewModel's VJoyConfig to the InputManager's per-slot config array.
+        /// Syncs a PadViewModel's per-slot custom controller layout to the
+        /// InputManager. The Extended pipeline reads these counts to translate
+        /// per-mapping output into raw HID report indices.
         /// </summary>
         private void SyncVJoyConfigToSlot(int slotIndex, PadViewModel padVm)
         {
             if (_inputManager == null || slotIndex >= InputManager.MaxPads) return;
             var cfg = padVm.VJoyConfig;
-            _inputManager.SlotVJoyConfigs[slotIndex] = new VJoyVirtualController.VJoyDeviceConfig
+            _inputManager.SlotCustomLayouts[slotIndex] = new CustomControllerLayout
             {
                 Axes = cfg.TotalAxes,
                 Buttons = cfg.ButtonCount,
@@ -1025,7 +1004,7 @@ namespace PadForge.Services
                 Sticks = cfg.ThumbstickCount,
                 Triggers = cfg.TriggerCount
             };
-            _inputManager.SlotVJoyIsCustom[slotIndex] =
+            _inputManager.SlotExtendedIsCustom[slotIndex] =
                 padVm.OutputType == VirtualControllerType.Extended && !cfg.IsGamepadPreset;
         }
 

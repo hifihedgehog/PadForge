@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> マッピング済み、</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 接続済み</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>モーションサーバー</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用の DSU/cemuhook サーバーです。</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU モーションサーバー (cemuhook) を有効にする</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用のDSU/CemuHook Motion Provider protocolサーバー。</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSUモーションサーバーを有効化（CemuHook Motion Provider protocol）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>ポート:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロ/加速度データを提供します。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>スマートフォンやタブレットのブラウザから接続してゲームパッドとして使用できます。</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DS4タッチパッドエミュレーション用の画面上タッチ面。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DualShock 4およびDualSense対応タッチパッドエミュレーション用の画面上タッチサーフェス。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイを有効にする</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>右クリック長押しでドラッグ</value></data>

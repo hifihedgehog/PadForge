@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewezen, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> verbonden</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsserver</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/cemuhook-server voor gyroscoop- en versnellingsmetergegevens.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol-server voor gyroscoop- en versnellingsmetergegevens.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Poort:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyro-/versnellingsgegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Webcontroller</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Webcontroller-server inschakelen</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbind vanaf een telefoon of tablet-browser om het als gamepad te gebruiken.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Touchoppervlak op het scherm voor DS4-touchpademulatie.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Touch-oppervlak op het scherm voor DualShock 4 en DualSense-compatibele touchpad-emulatie.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay inschakelen</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Dekking:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Rechtsklik en vasthouden om te slepen</value></data>

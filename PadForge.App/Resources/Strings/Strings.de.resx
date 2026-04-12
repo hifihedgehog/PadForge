@@ -223,8 +223,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> zugeordnet, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> verbunden</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegungsserver</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/cemuhook-Server für Gyro- und Beschleunigungssensordaten.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (cemuhook)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol-Server für Gyroskop- und Beschleunigungsmesserdaten.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyro-/Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web-Controller</value></data>
@@ -232,7 +232,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web-Controller-Server aktivieren</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbinden Sie sich von einem Telefon oder Tablet-Browser, um es als Gamepad zu verwenden.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchfläche für DS4-Touchpad-Emulation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchoberfläche für DualShock 4 und DualSense-kompatible Touchpad-Emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay aktivieren</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Deckkraft:</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Rechtsklick gedrückt halten zum Ziehen</value></data>

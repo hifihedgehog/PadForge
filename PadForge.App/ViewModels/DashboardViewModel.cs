@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using PadForge.Engine;
 using PadForge.Resources.Strings;
 
@@ -268,6 +269,10 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _dsuMotionServerPort, Math.Clamp(value, 1024, 65535));
         }
 
+        private RelayCommand _resetDsuPortCommand;
+        public RelayCommand ResetDsuPortCommand =>
+            _resetDsuPortCommand ??= new RelayCommand(() => DsuMotionServerPort = 26760);
+
         private string _dsuServerStatus = Strings.Instance.Common_Stopped;
 
         /// <summary>Current status of the DSU server for UI display.</summary>
@@ -298,6 +303,10 @@ namespace PadForge.ViewModels
             get => _webControllerPort;
             set => SetProperty(ref _webControllerPort, Math.Clamp(value, 1024, 65535));
         }
+
+        private RelayCommand _resetWebPortCommand;
+        public RelayCommand ResetWebPortCommand =>
+            _resetWebPortCommand ??= new RelayCommand(() => WebControllerPort = 8080);
 
         private string _webControllerStatus = Strings.Instance.Common_Stopped;
 
@@ -338,17 +347,21 @@ namespace PadForge.ViewModels
             get => _touchpadOverlayOpacity;
             set
             {
-                if (SetProperty(ref _touchpadOverlayOpacity, Math.Clamp(value, 0.05, 1.0)))
+                if (SetProperty(ref _touchpadOverlayOpacity, Math.Clamp(value, 0.0, 1.0)))
                     OnPropertyChanged(nameof(TouchpadOverlayOpacityPercent));
             }
         }
 
-        /// <summary>Opacity as 5–100 integer percentage for NumberBox binding.</summary>
+        /// <summary>Opacity as 0–100 integer percentage for NumberBox binding.</summary>
         public int TouchpadOverlayOpacityPercent
         {
             get => (int)Math.Round(_touchpadOverlayOpacity * 100);
             set => TouchpadOverlayOpacity = value / 100.0;
         }
+
+        private RelayCommand _resetOpacityCommand;
+        public RelayCommand ResetOpacityCommand =>
+            _resetOpacityCommand ??= new RelayCommand(() => TouchpadOverlayOpacity = 0.25);
 
         private int _touchpadOverlayMonitor;
 

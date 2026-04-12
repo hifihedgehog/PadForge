@@ -132,6 +132,12 @@ namespace PadForge.Views
 
         // ── Public API ────────────────────────────────────────
 
+        public void StopTimers()
+        {
+            _dismissTimer.Stop();
+            _initMonitorTimer.Stop();
+        }
+
         public void ShowProfileName(string profileName)
         {
             _dismissTimer.Stop();

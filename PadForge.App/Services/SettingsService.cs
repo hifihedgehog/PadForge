@@ -2139,6 +2139,7 @@ namespace PadForge.Services
     {
         Specific,
         Next,
-        Previous
+        Previous,
+        ToggleWindow
     }
 }

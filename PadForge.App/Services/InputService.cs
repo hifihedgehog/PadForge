@@ -73,6 +73,9 @@ namespace PadForge.Services
         /// </summary>
         public SettingsService SettingsService { set => _settingsService = value; }
 
+        /// <summary>Callback to toggle main window visibility. Set by MainWindow.</summary>
+        public Action ToggleMainWindow { get; set; }
+
         // ── Macro trigger recording state ──
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
@@ -304,6 +307,7 @@ namespace PadForge.Services
                 }
                 if (_switchOverlay != null)
                 {
+                    _switchOverlay.StopTimers();
                     _switchOverlay.Close();
                     _switchOverlay = null;
                 }
@@ -400,6 +404,13 @@ namespace PadForge.Services
                 OnProfileSwitchRequired(pendingSwitch);
                 ShowProfileSwitchOverlay(pendingSwitch);
                 _settingsService?.MarkDirty();
+            }
+
+            // ── Handle macro-requested window toggle ──
+            if (_inputManager.PendingToggleWindow)
+            {
+                _inputManager.PendingToggleWindow = false;
+                ToggleMainWindow?.Invoke();
             }
 
             // ── Update Pad ViewModels ──

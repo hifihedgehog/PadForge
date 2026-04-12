@@ -175,6 +175,28 @@ namespace PadForge
             _deviceService = new DeviceService(_viewModel, _settingsService);
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
+            _inputService.ToggleMainWindow = () => Dispatcher.Invoke(() =>
+            {
+                if (!IsVisible)
+                {
+                    RestoreFromTray();
+                }
+                else if (WindowState == WindowState.Minimized)
+                {
+                    WindowState = WindowState.Normal;
+                    Activate();
+                }
+                else
+                {
+                    if (_viewModel.Settings.MinimizeToTray)
+                    {
+                        Hide();
+                        _notifyIcon.Visible = true;
+                    }
+                    else
+                        WindowState = WindowState.Minimized;
+                }
+            });
 
             // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
             _viewModel.Settings.HasAnyViGEmSlots = () =>
@@ -3450,6 +3472,30 @@ namespace PadForge
                 WindowState = WindowState.Normal;
                 Activate();
                 _notifyIcon.Visible = false;
+
+                // Re-apply theme so TitleBar ButtonsForeground updates (stale when
+                // the window was never rendered, e.g. start-minimized-to-tray).
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+                {
+                    OnThemeChanged(this, _viewModel.Settings.SelectedThemeIndex);
+
+                    // TitleBar.ButtonsForeground may not resolve on first show.
+                    // Clear any stale local value so the XAML binding re-establishes,
+                    // then nudge with a direct set that won't stick past the next
+                    // theme change (ClearValue lets the binding win again next time).
+                    FullScreenIcon.ClearValue(System.Windows.Controls.TextBlock.ForegroundProperty);
+                    FullScreenIcon.InvalidateProperty(System.Windows.Controls.TextBlock.ForegroundProperty);
+
+                    // If the binding still hasn't resolved, force-set as fallback.
+                    if (FullScreenIcon.Foreground is not System.Windows.Media.SolidColorBrush scb
+                        || scb.Color == System.Windows.Media.Colors.Black)
+                    {
+                        bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
+                            == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+                        if (isDark)
+                            FullScreenIcon.Foreground = System.Windows.Media.Brushes.White;
+                    }
+                });
             }
             finally { _isRestoring = false; }
         }

@@ -1518,6 +1518,12 @@ namespace PadForge.Common.Input
 
         private void QueueProfileSwitch(GlobalMacroData gm)
         {
+            if (gm.SwitchMode == SwitchProfileMode.ToggleWindow)
+            {
+                PendingToggleWindow = true;
+                return;
+            }
+
             string targetId;
             switch (gm.SwitchMode)
             {

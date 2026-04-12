@@ -128,6 +128,7 @@ namespace PadForge.Views
                 _recordingShortcut?.CancelRecording();
             _recordingShortcut = null;
             _lastRecordedEntries = null;
+            _recordAxisBaselines = null;
             InputService?.SetSuppressGlobalMacros(false);
         }
 
@@ -238,6 +239,7 @@ namespace PadForge.Views
             _recordTimer?.Stop();
             _recordingShortcut?.CancelRecording();
             _recordingShortcut = null;
+            _recordAxisBaselines = null;
             InputService?.SetSuppressGlobalMacros(false);
         }
     }

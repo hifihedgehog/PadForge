@@ -186,15 +186,6 @@ namespace PadForge.ViewModels
         /// <summary>Display text for ViGEmBus status.</summary>
         public string ViGEmStatusText => IsViGEmInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
-        private string _vigemVersion = string.Empty;
-
-        /// <summary>ViGEmBus driver version string (if installed).</summary>
-        public string ViGEmVersion
-        {
-            get => _vigemVersion;
-            set => SetProperty(ref _vigemVersion, value);
-        }
-
         // ─────────────────────────────────────────────
         //  HidHide status
         // ─────────────────────────────────────────────
@@ -324,6 +315,84 @@ namespace PadForge.ViewModels
         {
             get => _webControllerClientCount;
             set => SetProperty(ref _webControllerClientCount, value);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touchpad Overlay
+        // ─────────────────────────────────────────────
+
+        private bool _enableTouchpadOverlay;
+
+        /// <summary>Whether the touchpad overlay is enabled (visible).</summary>
+        public bool EnableTouchpadOverlay
+        {
+            get => _enableTouchpadOverlay;
+            set => SetProperty(ref _enableTouchpadOverlay, value);
+        }
+
+        private double _touchpadOverlayOpacity = 0.25;
+
+        /// <summary>Surface opacity of the touchpad overlay (0.0–1.0).</summary>
+        public double TouchpadOverlayOpacity
+        {
+            get => _touchpadOverlayOpacity;
+            set
+            {
+                if (SetProperty(ref _touchpadOverlayOpacity, Math.Clamp(value, 0.05, 1.0)))
+                    OnPropertyChanged(nameof(TouchpadOverlayOpacityPercent));
+            }
+        }
+
+        /// <summary>Opacity as 5–100 integer percentage for NumberBox binding.</summary>
+        public int TouchpadOverlayOpacityPercent
+        {
+            get => (int)Math.Round(_touchpadOverlayOpacity * 100);
+            set => TouchpadOverlayOpacity = value / 100.0;
+        }
+
+        private int _touchpadOverlayMonitor;
+
+        /// <summary>Monitor index for the touchpad overlay (0 = primary).</summary>
+        public int TouchpadOverlayMonitor
+        {
+            get => _touchpadOverlayMonitor;
+            set => SetProperty(ref _touchpadOverlayMonitor, value);
+        }
+
+        private double _touchpadOverlayLeft = -1;
+        public double TouchpadOverlayLeft
+        {
+            get => _touchpadOverlayLeft;
+            set => SetProperty(ref _touchpadOverlayLeft, value);
+        }
+
+        private double _touchpadOverlayTop = -1;
+        public double TouchpadOverlayTop
+        {
+            get => _touchpadOverlayTop;
+            set => SetProperty(ref _touchpadOverlayTop, value);
+        }
+
+        private double _touchpadOverlayWidth = 500;
+        public double TouchpadOverlayWidth
+        {
+            get => _touchpadOverlayWidth;
+            set => SetProperty(ref _touchpadOverlayWidth, Math.Max(150, value));
+        }
+
+        private double _touchpadOverlayHeight = 250;
+        public double TouchpadOverlayHeight
+        {
+            get => _touchpadOverlayHeight;
+            set => SetProperty(ref _touchpadOverlayHeight, Math.Max(80, value));
+        }
+
+        private string _touchpadOverlayStatus = Strings.Instance.Common_Stopped;
+
+        public string TouchpadOverlayStatus
+        {
+            get => _touchpadOverlayStatus;
+            set => SetProperty(ref _touchpadOverlayStatus, value ?? Strings.Instance.Common_Stopped);
         }
 
     }

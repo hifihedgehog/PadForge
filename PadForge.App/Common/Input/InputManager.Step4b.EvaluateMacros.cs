@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using PadForge.Common;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Services;
 using PadForge.ViewModels;
 
 // ─────────────────────────────────────────────
@@ -238,6 +239,8 @@ namespace PadForge.Common.Input
         /// </summary>
         private void EvaluateMacros()
         {
+            EvaluateGlobalMacros();
+
             for (int i = 0; i < MaxPads; i++)
             {
                 var macros = MacroSnapshots[i];
@@ -458,6 +461,7 @@ namespace PadForge.Common.Input
             }
 
             // 2. Process the current sequential action (skip over continuous ones).
+            sequenceRestart:
             while (macro.CurrentActionIndex < macro.Actions.Count)
             {
                 var action = macro.Actions[macro.CurrentActionIndex];
@@ -491,6 +495,7 @@ namespace PadForge.Common.Input
                 {
                     macro.CurrentActionIndex = 0;
                     macro.ActionStartTime = DateTime.UtcNow;
+                    goto sequenceRestart; // Re-enter to execute first action this frame
                 }
             }
             else
@@ -619,6 +624,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.MouseButtonRelease:
                     SendMouseButtonInput(action.MouseButton, down: false);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleTouchpadOverlay:
+                    ToggleTouchpadOverlayRequested = true;
                     AdvanceAction(macro);
                     break;
             }
@@ -810,6 +820,7 @@ namespace PadForge.Common.Input
             }
 
             // 2. Process the current sequential action (skip over continuous ones).
+            sequenceRestartRaw:
             while (macro.CurrentActionIndex < macro.Actions.Count)
             {
                 var action = macro.Actions[macro.CurrentActionIndex];
@@ -840,6 +851,7 @@ namespace PadForge.Common.Input
                 {
                     macro.CurrentActionIndex = 0;
                     macro.ActionStartTime = DateTime.UtcNow;
+                    goto sequenceRestartRaw; // Re-enter to execute first action this frame
                 }
             }
             else
@@ -859,7 +871,8 @@ namespace PadForge.Common.Input
                 {
                     float vol = useDevice ? ReadAxisFromDevice(action)
                         : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
-                    SetSystemVolume(vol * (action.VolumeLimit / 100f));
+                    if (action.InvertAxis) vol = 1f - vol;
+                    SetSystemVolume(vol * (action.VolumeLimit / 100f), action.ShowVolumeOsd);
                     break;
                 }
                 case MacroActionType.AppVolume:
@@ -867,6 +880,7 @@ namespace PadForge.Common.Input
                     {
                         float vol = useDevice ? ReadAxisFromDevice(action)
                             : ReadAxisAsVolumeRaw(in raw, action.AxisTarget);
+                        if (action.InvertAxis) vol = 1f - vol;
                         SetAppVolume(vol * (action.VolumeLimit / 100f), action.ProcessName);
                     }
                     break;
@@ -874,6 +888,7 @@ namespace PadForge.Common.Input
                 {
                     float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
                         : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    if (action.InvertAxis) deflection = -deflection;
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -887,6 +902,7 @@ namespace PadForge.Common.Input
                 {
                     float deflection = useDevice ? ReadAxisFromDeviceAsMouse(action)
                         : ReadAxisAsMouseRaw(in raw, action.AxisTarget);
+                    if (action.InvertAxis) deflection = -deflection;
                     action.MouseAccumulator += deflection * action.MouseSensitivity;
                     int delta = (int)action.MouseAccumulator;
                     action.MouseAccumulator -= delta;
@@ -1392,6 +1408,161 @@ namespace PadForge.Common.Input
             public uint uMsg;
             public ushort wParamL;
             public ushort wParamH;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Global macro evaluation (profile shortcuts)
+        // ─────────────────────────────────────────────
+
+        private void EvaluateGlobalMacros()
+        {
+            if (SuppressGlobalMacros) return;
+
+            var globalMacros = SettingsManager.GlobalMacros;
+            if (globalMacros == null || globalMacros.Length == 0)
+                return;
+
+            for (int m = 0; m < globalMacros.Length; m++)
+            {
+                var gm = globalMacros[m];
+                if (!gm.HasTrigger) continue;
+
+                bool triggerActive = CheckGlobalMacroTrigger(gm);
+                bool wasTriggerActive = gm.WasTriggerActive;
+                gm.WasTriggerActive = triggerActive;
+
+                if (triggerActive && !wasTriggerActive)
+                    HandleGlobalMacroAction(gm);
+            }
+        }
+
+        /// <summary>
+        /// Checks whether all buttons in the trigger combo are currently pressed.
+        /// Supports cross-device combos: each button entry specifies its own device.
+        /// For "Any Device" entries (DeviceInstanceGuid == Empty), checks all devices
+        /// with matching product GUID.
+        /// </summary>
+        private bool CheckGlobalMacroTrigger(GlobalMacroData gm)
+        {
+            var entries = gm.TriggerEntries;
+            if (entries == null || entries.Length == 0) return false;
+
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return false;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    var entry = entries[i];
+                    if (!IsEntryActive(entry, devices))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool IsEntryActive(TriggerButtonEntry entry, System.Collections.Generic.List<Engine.Data.UserDevice> devices)
+        {
+            if (entry.DeviceInstanceGuid != Guid.Empty)
+            {
+                // Specific device.
+                for (int d = 0; d < devices.Count; d++)
+                {
+                    var ud = devices[d];
+                    if (ud.InstanceGuid != entry.DeviceInstanceGuid) continue;
+                    if (!ud.IsOnline || ud.InputState == null) return false;
+                    return entry.IsAxis
+                        ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold, entry.AxisDirection)
+                        : CheckButtonActive(ud.InputState, entry.ButtonIndex);
+                }
+                return false;
+            }
+
+            // "Any Device" — check all devices with matching product GUID.
+            for (int d = 0; d < devices.Count; d++)
+            {
+                var ud = devices[d];
+                if (!ud.IsOnline || ud.InputState == null) continue;
+                if (ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
+                if (entry.DeviceProductGuid != Guid.Empty && ud.ProductGuid != entry.DeviceProductGuid)
+                    continue;
+                bool active = entry.IsAxis
+                    ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold)
+                    : CheckButtonActive(ud.InputState, entry.ButtonIndex);
+                if (active) return true;
+            }
+            return false;
+        }
+
+        private static bool CheckButtonActive(Engine.CustomInputState state, int index)
+        {
+            var buttons = state.Buttons;
+            return index >= 0 && index < buttons.Length && buttons[index];
+        }
+
+        private static bool CheckAxisActive(Engine.CustomInputState state, int index, float threshold,
+            AxisTriggerDirection direction = AxisTriggerDirection.Positive)
+        {
+            var axes = state.Axis;
+            if (index < 0 || index >= axes.Length) return false;
+            float normalized = axes[index] / 65535f;
+            // Threshold is stored as the recorded position with margin.
+            // Positive: axis must be above threshold (e.g., > 0.75 for stick right).
+            // Negative: axis must be below threshold (e.g., < 0.25 for stick left).
+            // The threshold itself already encodes the direction-appropriate value.
+            return direction == AxisTriggerDirection.Positive
+                ? normalized >= threshold
+                : normalized <= threshold;
+        }
+
+        private void HandleGlobalMacroAction(GlobalMacroData gm)
+        {
+            if (gm.SwitchMode == SwitchProfileMode.ToggleWindow)
+            {
+                PendingToggleWindow = true;
+                return;
+            }
+
+            string targetId;
+            switch (gm.SwitchMode)
+            {
+                case SwitchProfileMode.Specific:
+                    targetId = gm.TargetProfileId;
+                    break;
+                case SwitchProfileMode.Next:
+                    targetId = GetNextProfileId(+1);
+                    break;
+                case SwitchProfileMode.Previous:
+                    targetId = GetNextProfileId(-1);
+                    break;
+                default:
+                    return;
+            }
+
+            PendingProfileSwitchId = targetId;
+            PendingProfileSwitchIsManual = true;
+        }
+
+        private string GetNextProfileId(int direction)
+        {
+            var profiles = SettingsManager.Profiles;
+            if (profiles == null || profiles.Count == 0) return null;
+
+            string currentId = SettingsManager.ActiveProfileId;
+
+            // Build ordered list: [null (default), profile0, profile1, ...]
+            int currentIndex = 0; // default
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                if (profiles[i].Id == currentId)
+                { currentIndex = i + 1; break; }
+            }
+
+            int totalCount = profiles.Count + 1; // +1 for default
+            int nextIndex = (currentIndex + direction + totalCount) % totalCount;
+
+            return nextIndex == 0 ? null : profiles[nextIndex - 1].Id;
         }
     }
 }

@@ -37,6 +37,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _instanceGuid, value);
         }
 
+        private string _sdlGuid = string.Empty;
+
+        /// <summary>SDL joystick GUID (32 hex chars) for gamecontrollerdb matching.</summary>
+        public string SdlGuid
+        {
+            get => _sdlGuid;
+            set => SetProperty(ref _sdlGuid, value);
+        }
+
         private string _deviceName = string.Empty;
 
         /// <summary>Display name of the device.</summary>
@@ -200,6 +209,7 @@ namespace PadForge.ViewModels
             "Supplemental" => Strings.Instance.DeviceType_Supplemental,
             "Mouse" => Strings.Instance.DeviceType_Mouse,
             "Keyboard" => Strings.Instance.DeviceType_Keyboard,
+            "Touchpad" => Strings.Instance.DeviceType_Touchpad,
             _ => Strings.Instance.DeviceType_Device
         };
 
@@ -228,6 +238,15 @@ namespace PadForge.ViewModels
         {
             get => _hasAccel;
             set => SetProperty(ref _hasAccel, value);
+        }
+
+        private bool _hasTouchpad;
+
+        /// <summary>Whether the device has a touchpad.</summary>
+        public bool HasTouchpad
+        {
+            get => _hasTouchpad;
+            set => SetProperty(ref _hasTouchpad, value);
         }
 
         // ─────────────────────────────────────────────
@@ -346,14 +365,31 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad";
 
         /// <summary>Capabilities summary string for display.</summary>
-        public string CapabilitiesSummary =>
-            string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount) +
-            (_hasRumble ? ", " + Strings.Instance.Devices_Rumble : "") +
-            (_hasGyro ? ", " + Strings.Instance.Devices_Gyro : "") +
-            (_hasAccel ? ", " + Strings.Instance.Devices_Accel : "");
+        public string CapabilitiesSummary
+        {
+            get
+            {
+                bool isTouchpadType = DeviceTypeKey == "Touchpad";
+
+                // Touchpad-only devices: skip "0 axes, 0 buttons, 0 POV" noise.
+                var sb = new System.Text.StringBuilder();
+                if (!isTouchpadType)
+                    sb.Append(string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount));
+
+                void Append(string cap) { if (sb.Length > 0) sb.Append(", "); sb.Append(cap); }
+
+                if (_hasRumble) Append(Strings.Instance.Devices_Rumble);
+                if (_hasGyro) Append(Strings.Instance.Devices_Gyro);
+                if (_hasAccel) Append(Strings.Instance.Devices_Accel);
+                // Only show "Touchpad" capability on non-touchpad-type devices (e.g. DualSense gamepad).
+                if (_hasTouchpad && !isTouchpadType) Append(Strings.Instance.Btn_Touchpad);
+
+                return sb.Length > 0 ? sb.ToString() : Strings.Instance.Btn_Touchpad;
+            }
+        }
 
         /// <summary>
         /// Refreshes computed display properties.

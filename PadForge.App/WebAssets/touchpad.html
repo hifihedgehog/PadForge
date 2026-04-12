@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PadForge - Touchpad</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: none; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: #16213e;
+            font-size: 14px;
+        }
+        .header a { color: #888; text-decoration: none; }
+        .header a:hover { color: #e94560; }
+        .status { color: #888; font-size: 12px; }
+        .status.connected { color: #4ade80; }
+        .touchpad {
+            flex: 1;
+            position: relative;
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            margin: 8px;
+        }
+        .finger-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+        .finger-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
+        .finger-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">&larr; Back</a>
+        <span>PadForge Touchpad</span>
+        <span id="status" class="status">Connecting...</span>
+    </div>
+    <div class="touchpad" id="touchpad">
+        <div class="finger-dot f0" id="dot0" style="display:none;"></div>
+        <div class="finger-dot f1" id="dot1" style="display:none;"></div>
+    </div>
+
+    <script>
+    // iOS Safari: WebSocket upgrades fail after page navigation but work
+    // after reload.  Auto-reload once on first navigation to work around this.
+    (function() {
+        var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        if (nav && nav.type === 'navigate' && !sessionStorage.getItem('_tp_reloaded')) {
+            sessionStorage.setItem('_tp_reloaded', '1');
+            location.reload();
+            return;
+        }
+        sessionStorage.removeItem('_tp_reloaded');
+    })();
+    (function() {
+        var ws = null;
+        var statusEl = document.getElementById('status');
+        var touchpad = document.getElementById('touchpad');
+        var dot0 = document.getElementById('dot0');
+        var dot1 = document.getElementById('dot1');
+
+        // Track active touches: first touch = finger 0, second = finger 1
+        var finger0Id = null;
+        var finger1Id = null;
+        var lastTap = 0;
+
+        // Per-tab client identity (survives refresh, unique per tab and type).
+        var clientId = sessionStorage.getItem('padforge_client_id_touchpad');
+        if (!clientId) {
+            clientId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+            sessionStorage.setItem('padforge_client_id_touchpad', clientId);
+        }
+
+        function connect() {
+            if (ws) { try { ws.close(); } catch(e) {} }
+            var host = location.host;
+            ws = new WebSocket('ws://' + host + '/ws?type=touchpad&id=' + encodeURIComponent(clientId));
+            // Timeout: if connection doesn't open within 3s, force-retry.
+            var timer = setTimeout(function() {
+                if (ws.readyState !== 1) { try { ws.close(); } catch(e) {} connect(); }
+            }, 3000);
+            ws.onopen = function() {
+                clearTimeout(timer);
+                statusEl.textContent = 'Connected';
+                statusEl.className = 'status connected';
+            };
+            ws.onclose = function() {
+                clearTimeout(timer);
+                statusEl.textContent = 'Reconnecting...';
+                statusEl.className = 'status';
+                setTimeout(connect, 500);
+            };
+            ws.onerror = function() { ws.close(); };
+        }
+
+        function send(msg) {
+            if (ws && ws.readyState === 1)
+                ws.send(JSON.stringify(msg));
+        }
+
+        function normalize(touch) {
+            var rect = touchpad.getBoundingClientRect();
+            return {
+                x: Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)),
+                y: Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height))
+            };
+        }
+
+        function updateDot(dot, pos, show) {
+            if (show) {
+                var rect = touchpad.getBoundingClientRect();
+                dot.style.display = 'block';
+                dot.style.left = (pos.x * rect.width) + 'px';
+                dot.style.top = (pos.y * rect.height) + 'px';
+            } else {
+                dot.style.display = 'none';
+            }
+        }
+
+        touchpad.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var pos = normalize(t);
+                var finger;
+
+                if (finger0Id === null) {
+                    finger0Id = t.identifier;
+                    finger = 0;
+                } else if (finger1Id === null) {
+                    finger1Id = t.identifier;
+                    finger = 1;
+                } else {
+                    continue; // ignore 3+ fingers
+                }
+
+                send({ type: 'touchpad', finger: finger, x: pos.x, y: pos.y, down: true });
+                updateDot(finger === 0 ? dot0 : dot1, pos, true);
+            }
+        });
+
+        touchpad.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var pos = normalize(t);
+                var finger;
+
+                if (t.identifier === finger0Id) finger = 0;
+                else if (t.identifier === finger1Id) finger = 1;
+                else continue;
+
+                send({ type: 'touchpad', finger: finger, x: pos.x, y: pos.y, down: true });
+                updateDot(finger === 0 ? dot0 : dot1, pos, true);
+            }
+        });
+
+        touchpad.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                var finger;
+
+                if (t.identifier === finger0Id) {
+                    finger = 0;
+                    finger0Id = null;
+                } else if (t.identifier === finger1Id) {
+                    finger = 1;
+                    finger1Id = null;
+                } else {
+                    continue;
+                }
+
+                send({ type: 'touchpad', finger: finger, x: 0, y: 0, down: false });
+                updateDot(finger === 0 ? dot0 : dot1, null, false);
+
+                // Double-tap detection for click
+                if (finger === 0) {
+                    var now = Date.now();
+                    if (now - lastTap < 300) {
+                        send({ type: 'touchpad', click: true });
+                        lastTap = 0;
+                    } else {
+                        lastTap = now;
+                    }
+                }
+            }
+        });
+
+        touchpad.addEventListener('touchcancel', function(e) {
+            e.preventDefault();
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                var t = e.changedTouches[i];
+                if (t.identifier === finger0Id) {
+                    finger0Id = null;
+                    send({ type: 'touchpad', finger: 0, x: 0, y: 0, down: false });
+                    updateDot(dot0, null, false);
+                } else if (t.identifier === finger1Id) {
+                    finger1Id = null;
+                    send({ type: 'touchpad', finger: 1, x: 0, y: 0, down: false });
+                    updateDot(dot1, null, false);
+                }
+            }
+        });
+
+        connect();
+    })();
+    </script>
+</body>
+</html>

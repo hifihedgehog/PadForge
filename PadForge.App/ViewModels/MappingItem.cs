@@ -301,6 +301,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isRecording, value))
                 {
                     OnPropertyChanged(nameof(RecordButtonText));
+                    OnPropertyChanged(nameof(RecordButtonIcon));
                 }
             }
         }
@@ -309,6 +310,8 @@ namespace PadForge.ViewModels
         /// Text for the record button: "Record" or "Recording..." (with a visual cue).
         /// </summary>
         public string RecordButtonText => IsRecording ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
+
+        public string RecordButtonIcon => IsRecording ? "\uE71A" : "\uE7C8"; // Stop : Record
 
         // ─────────────────────────────────────────────
         //  Live value display
@@ -401,7 +404,7 @@ namespace PadForge.ViewModels
         private int _mappingDeadZone = 50;
 
         /// <summary>
-        /// Per-mapping dead zone percentage (0–100). When non-zero, overrides the
+        /// Per-mapping deadzone percentage (0–100). When non-zero, overrides the
         /// global AxisToButtonThreshold for this specific axis-to-button mapping.
         /// Only meaningful when the source is an axis or slider.
         /// </summary>
@@ -412,7 +415,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// True when the dead zone column is applicable for this row:
+        /// True when the deadzone column is applicable for this row:
         /// the source is an axis/slider AND the target is a discrete output
         /// (button, d-pad, POV, key, note) — NOT an axis-to-axis mapping.
         /// </summary>
@@ -442,6 +445,12 @@ namespace PadForge.ViewModels
                 return true;
             }
         }
+
+        /// <summary>
+        /// Whether this mapping row supports recording (button press detection).
+        /// Touchpad rows can't be isolated by touch (X and Y fire simultaneously).
+        /// </summary>
+        public bool IsRecordable => Category != MappingCategory.Touchpad;
 
         /// <summary>
         /// Rebuilds the source descriptor when inversion or half-axis options change.
@@ -518,7 +527,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetDeadZoneCommand;
 
-        /// <summary>Command to reset the per-mapping dead zone to default (50%).</summary>
+        /// <summary>Command to reset the per-mapping deadzone to default (50%).</summary>
         public RelayCommand ResetDeadZoneCommand =>
             _resetDeadZoneCommand ??= new RelayCommand(() => MappingDeadZone = 50);
 
@@ -547,7 +556,8 @@ namespace PadForge.ViewModels
         DPad,
         Triggers,
         LeftStick,
-        RightStick
+        RightStick,
+        Touchpad
     }
 
     /// <summary>

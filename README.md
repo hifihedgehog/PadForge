@@ -4,6 +4,10 @@
 
 <h1 align="center">PadForge</h1>
 
+*"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins."* — 2 Nephi 25:26
+
+*Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.*
+
 <p align="center">
   <strong>Turn any input device into any virtual controller.</strong><br>
   Gamepads, joysticks, keyboards, mice, and touchscreens — mapped to Xbox 360, DualShock 4, DirectInput, MIDI, or Keyboard+Mouse output that games treat as real hardware.
@@ -35,7 +39,7 @@
 
 - **Record mappings interactively** — Press a button on your device to bind it, pick from a dropdown of every available input (including raw buttons beyond the standard 11), or run "Map All" for one-pass setup; auto-mapping handles recognized gamepads, and force-raw mode bypasses incorrect SDL3 remapping; dropdowns persist when devices are offline
 - **Shape sensitivity curves** — Per-axis editors for sticks (independent X and Y) and triggers with 6 presets (Linear, Smooth, Aggressive, Instant, S-Curve, Delay) or custom multi-point drag-and-drop curves; a live indicator tracks real-time position
-- **Dial in dead zones** — 6 algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis dead zone, anti-dead zone, and linear response for sticks and triggers, live preview, stick center offset calibration, max range, and per-mapping axis-to-button activation thresholds with half-axis support for centered joysticks
+- **Dial in deadzones** — 6 algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis deadzone, anti-deadzone, and linear response for sticks and triggers, live preview, stick center offset calibration, max range, and per-mapping axis-to-button activation thresholds with half-axis support for centered joysticks
 
 ### Force Feedback & Rumble
 
@@ -50,7 +54,8 @@
 
 ### System Integration
 
-- **Activate profiles per application** — Switch controller configurations automatically when specific apps gain focus
+- **Activate profiles per application** — Switch controller configurations automatically when specific apps gain focus; a Win11-style flyout shows the profile name, initialization progress, and offline controller warnings
+- **Switch profiles by controller shortcut** — Assign button combos (cross-device, with axis direction support) to cycle Next/Previous, jump to a specific profile, or toggle the PadForge window — all without touching the keyboard
 - **Hide physical controllers** — HidHide driver-level hiding prevents double input; low-level hooks consume only mapped keyboard and mouse inputs without a driver; per-device toggles auto-enable for gamepads with safety warnings for mice and keyboards
 - **Manage drivers in one click** — Install or remove ViGEmBus, HidHide, vJoy, and Windows MIDI Services from inside PadForge with built-in device blacklisting and app whitelisting
 
@@ -60,7 +65,7 @@
 
 ### Polish
 
-- **Poll at 1000 Hz** — Sub-millisecond jitter via high-resolution waitable timers, bit-perfect axis passthrough at default settings, double-precision dead zone math, and 15-bit (32768-position) vJoy axis output exceeding physical ADC resolution
+- **Poll at 1000 Hz** — Sub-millisecond jitter via high-resolution waitable timers, bit-perfect axis passthrough at default settings, double-precision deadzone math, and 15-bit (32768-position) vJoy axis output exceeding physical ADC resolution
 - **Localize on the fly** — Change language from Settings without restarting; community-contributed translations via .resx resource files
 - **Minimize to tray** — System tray icon, start minimized, or launch at login
 - **Deploy as a single file** — Portable self-contained executable, no installer
@@ -85,13 +90,13 @@ Flat schematic reflecting the same live button, stick, and trigger state as the 
 ![Mappings](screenshots/mappings.jpg)
 Full mapping grid with record-by-press, dropdown selection, inversion, and half-axis options — output labels adapt to controller type (DS4 shown).
 
-### Stick Dead Zones
+### Stick Deadzones
 ![Sticks](screenshots/sticks.jpg)
-Per-axis dead zone, anti-dead zone, and linear response with live circular previews, 6 shape algorithms, and per-axis sensitivity curve editors.
+Per-axis deadzone, anti-deadzone, and linear response with live circular previews, 6 shape algorithms, and per-axis sensitivity curve editors.
 
-### Trigger Dead Zones
+### Trigger Deadzones
 ![Triggers](screenshots/triggers.jpg)
-Range sliders, anti-dead zone, and live value bars for each trigger alongside per-trigger sensitivity curves.
+Range sliders, anti-deadzone, and live value bars for each trigger alongside per-trigger sensitivity curves.
 
 ### Force Feedback / Rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
@@ -203,7 +208,7 @@ PadForge stands on the shoulders of these projects. Please consider supporting t
 
 ## Donations
 
-Knowing PadForge is useful is reward enough. If you truly insist on donating, please donate to your charity of choice and bless humanity. Also consider donating directly to the upstream projects listed above — they made all of this possible.
+Knowing PadForge is useful is reward enough. If you truly insist on donating, please donate to your charity of choice and bless humanity. If you can't think of one, consider [Humanitarian Services of The Church of Jesus Christ of Latter-day Saints](https://philanthropies.churchofjesuschrist.org/humanitarian-services). Also consider donating directly to the upstream projects listed above — they made all of this possible.
 
 **My promise:** PadForge will never become paid, freemium, or Patreon early-access paywalled. Free means free.
 

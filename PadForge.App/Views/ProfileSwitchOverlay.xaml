@@ -1,0 +1,66 @@
+<Window x:Class="PadForge.Views.ProfileSwitchOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Focusable="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="Manual"
+        Background="Transparent">
+
+    <!--
+        Win11 volume OSD replica — pixel-measured at 2560x1600 150% DPI.
+        All values derived from physical pixel data / 1.5.
+
+        Background: #2D2E2E (measured R=45 G=46 B=46, ±2 noise)
+        Border: #141516 (measured R=20 G=21 B=22, DARK, 1 logical px)
+        Corner radius: 8px (confirmed from anti-alias arc pattern)
+        Gap above taskbar: 15px (22 physical / 1.5)
+        Shadow: separate element — empty border with effect behind, content on top
+        Content padding: 16,10,16,10
+    -->
+    <!-- ClipToBounds on outer grid clips the slide animation behind the taskbar edge -->
+    <Grid ClipToBounds="True">
+        <Grid x:Name="FlyoutPanel" Margin="10,10,10,14">
+            <!-- Shadow layer: empty border with DropShadowEffect, behind content.
+                 Keeping the effect OFF the content border preserves ClearType text. -->
+            <Border x:Name="ShadowBorder"
+                    CornerRadius="8"
+                    Background="#2D2E2E">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="3"
+                                      Direction="270" Opacity="0.30" Color="Black"/>
+                </Border.Effect>
+            </Border>
+
+            <!-- Content layer: no Effect, so ClearType works and no gray bleed -->
+            <Border x:Name="ContentBorder"
+                    CornerRadius="8"
+                    Background="#2D2E2E"
+                    BorderBrush="#141516"
+                    BorderThickness="1">
+                <Grid Margin="16,13,16,13">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="StatusIcon"
+                                   Text="&#xE8F1;"
+                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"
+                                   Foreground="White"/>
+
+                        <TextBlock x:Name="StatusText"
+                                   FontSize="14"
+                                   FontFamily="Segoe UI Variable Text, Segoe UI"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

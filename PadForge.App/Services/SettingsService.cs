@@ -245,6 +245,11 @@ namespace PadForge.Services
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
+            // Migrate legacy global macros and store.
+            if (appSettings.GlobalMacros != null)
+                foreach (var gm in appSettings.GlobalMacros)
+                    gm.MigrateLegacyTrigger();
+            SettingsManager.GlobalMacros = appSettings.GlobalMacros;
 
             // Load per-slot created/enabled state BEFORE OutputType,
             // because setting OutputType fires PropertyChanged → RefreshNavControllerItems()
@@ -295,7 +300,27 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
 
+            // Load touchpad overlay settings.
+            _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
+            _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity > 0
+                ? appSettings.TouchpadOverlayOpacity : 0.25;
+            _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
+            _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
+            _mainVm.Dashboard.TouchpadOverlayTop = appSettings.TouchpadOverlayTop;
+            _mainVm.Dashboard.TouchpadOverlayWidth = appSettings.TouchpadOverlayWidth > 0
+                ? appSettings.TouchpadOverlayWidth : 500;
+            _mainVm.Dashboard.TouchpadOverlayHeight = appSettings.TouchpadOverlayHeight > 0
+                ? appSettings.TouchpadOverlayHeight : 250;
+
             vm.Use2DControllerView = appSettings.Use2DControllerView;
+
+            // Restore main window position/size (profile-independent).
+            vm.MainWindowLeft = appSettings.MainWindowLeft;
+            vm.MainWindowTop = appSettings.MainWindowTop;
+            vm.MainWindowWidth = appSettings.MainWindowWidth > 0 ? appSettings.MainWindowWidth : 1100;
+            vm.MainWindowHeight = appSettings.MainWindowHeight > 0 ? appSettings.MainWindowHeight : 720;
+            vm.MainWindowState = appSettings.MainWindowState;
+            vm.MainWindowFullScreen = appSettings.MainWindowFullScreen;
         }
 
         /// <summary>
@@ -441,7 +466,7 @@ namespace PadForge.Services
                 padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
                 padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
 
-                // Load dead zone settings (independent X/Y).
+                // Load deadzone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
                 padVm.LeftDeadZoneY = TryParseDouble(ps.LeftThumbDeadZoneY, 0);
@@ -475,7 +500,7 @@ namespace PadForge.Services
                 padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
                 padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
 
-                // Load trigger dead zone settings.
+                // Load trigger deadzone settings.
                 padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
                 padVm.RightTriggerDeadZone = TryParseDouble(ps.RightTriggerDeadZone, 0);
                 padVm.LeftTriggerAntiDeadZone = TryParseDouble(ps.LeftTriggerAntiDeadZone, 0);
@@ -537,7 +562,7 @@ namespace PadForge.Services
                     mapping.NegSourceDescriptor = negValue ?? string.Empty;
                 }
 
-                // Load per-mapping dead zone.
+                // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(mapping.TargetSettingName);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
             }
@@ -666,7 +691,7 @@ namespace PadForge.Services
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Executables = FormatExePaths(p.ExecutableNames),
+                        Executables = InputService.FormatExePaths(p.ExecutableNames),
                     };
                     UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
                     _mainVm.Settings.ProfileItems.Add(item);
@@ -718,6 +743,24 @@ namespace PadForge.Services
                 // configs from the profile's own snapshot.
                 ApplyVJoyConfigs(active.VJoyConfigs);
                 ApplyMidiConfigs(active.MidiConfigs);
+
+                // Apply DSU/Web/overlay settings from the active profile.
+                _mainVm.Dashboard.EnableDsuMotionServer = active.EnableDsuMotionServer;
+                if (active.DsuMotionServerPort >= 1024 && active.DsuMotionServerPort <= 65535)
+                    _mainVm.Dashboard.DsuMotionServerPort = active.DsuMotionServerPort;
+                _mainVm.Dashboard.EnableWebController = active.EnableWebController;
+                if (active.WebControllerPort >= 1024 && active.WebControllerPort <= 65535)
+                    _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
+                _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
+                _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity > 0
+                    ? active.TouchpadOverlayOpacity : 0.25;
+                _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
+                _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
+                _mainVm.Dashboard.TouchpadOverlayTop = active.TouchpadOverlayTop;
+                _mainVm.Dashboard.TouchpadOverlayWidth = active.TouchpadOverlayWidth > 0
+                    ? active.TouchpadOverlayWidth : 500;
+                _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
+                    ? active.TouchpadOverlayHeight : 250;
             }
         }
 
@@ -773,6 +816,13 @@ namespace PadForge.Services
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
             profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
+            profile.EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay;
+            profile.TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity;
+            profile.TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor;
+            profile.TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft;
+            profile.TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop;
+            profile.TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth;
+            profile.TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight;
         }
 
         /// <summary>
@@ -825,19 +875,6 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Formats pipe-separated full paths into a display string showing just file names.
-        /// </summary>
-        private static string FormatExePaths(string pipeSeparatedPaths)
-        {
-            if (string.IsNullOrEmpty(pipeSeparatedPaths))
-                return string.Empty;
-
-            var parts = pipeSeparatedPaths.Split('|', StringSplitOptions.RemoveEmptyEntries);
-            var names = new string[parts.Length];
-            for (int i = 0; i < parts.Length; i++)
-                names[i] = System.IO.Path.GetFileName(parts[i]);
-            return string.Join(", ", names);
-        }
 
         // ─────────────────────────────────────────────
         //  Save
@@ -990,6 +1027,7 @@ namespace PadForge.Services
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
+                GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
                 SlotCreated = isDefault
                     ? (bool[])SettingsManager.SlotCreated.Clone()
@@ -1001,6 +1039,19 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
+                EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
+                TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
+                TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
+                TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
+                TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
+                TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
+                TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
+                MainWindowLeft = vm.MainWindowLeft,
+                MainWindowTop = vm.MainWindowTop,
+                MainWindowWidth = vm.MainWindowWidth,
+                MainWindowHeight = vm.MainWindowHeight,
+                MainWindowState = vm.MainWindowState,
+                MainWindowFullScreen = vm.MainWindowFullScreen,
                 Use2DControllerView = vm.Use2DControllerView,
                 EnableInputHiding = vm.EnableInputHiding,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
@@ -1177,7 +1228,7 @@ namespace PadForge.Services
                     ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
                     ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
-                    // Write dead zone settings (independent X/Y).
+                    // Write deadzone settings (independent X/Y).
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
                     ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString(ic);
@@ -1210,7 +1261,7 @@ namespace PadForge.Services
                     ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString(ic);
                     ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString(ic);
 
-                    // Write trigger dead zone settings.
+                    // Write trigger deadzone settings.
                     ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString(ic);
                     ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString(ic);
                     ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString(ic);
@@ -1248,7 +1299,7 @@ namespace PadForge.Services
                         ps.SetVJoyMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
-                    // Write mapping descriptors and per-mapping dead zones.
+                    // Write mapping descriptors and per-mapping deadzones.
                     foreach (var mapping in padVm.Mappings)
                     {
                         SetPadSettingProperty(ps, mapping.TargetSettingName, mapping.SourceDescriptor);
@@ -1604,6 +1655,45 @@ namespace PadForge.Services
         public int WebControllerPort { get; set; } = 8080;
 
         [XmlElement]
+        public bool EnableTouchpadOverlay { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayOpacity { get; set; } = 0.25;
+
+        [XmlElement]
+        public int TouchpadOverlayMonitor { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayLeft { get; set; } = -1;
+
+        [XmlElement]
+        public double TouchpadOverlayTop { get; set; } = -1;
+
+        [XmlElement]
+        public double TouchpadOverlayWidth { get; set; } = 500;
+
+        [XmlElement]
+        public double TouchpadOverlayHeight { get; set; } = 250;
+
+        [XmlElement]
+        public double MainWindowLeft { get; set; } = -1;
+
+        [XmlElement]
+        public double MainWindowTop { get; set; } = -1;
+
+        [XmlElement]
+        public double MainWindowWidth { get; set; } = 1100;
+
+        [XmlElement]
+        public double MainWindowHeight { get; set; } = 720;
+
+        [XmlElement]
+        public int MainWindowState { get; set; } // 0=Normal, 2=Maximized
+
+        [XmlElement]
+        public bool MainWindowFullScreen { get; set; }
+
+        [XmlElement]
         public bool Use2DControllerView { get; set; }
 
         /// <summary>
@@ -1647,6 +1737,14 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement("DefaultProfileSnapshot")]
         public ProfileData DefaultProfileSnapshot { get; set; }
+
+        /// <summary>
+        /// Global macros for profile shortcuts and other app-wide actions.
+        /// Null on old settings files — no shortcuts configured.
+        /// </summary>
+        [XmlArray("GlobalMacros")]
+        [XmlArrayItem("GlobalMacro")]
+        public GlobalMacroData[] GlobalMacros { get; set; }
 
     }
 
@@ -1870,6 +1968,27 @@ namespace PadForge.Services
         /// <summary>Web controller server port for this profile.</summary>
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;
+
+        [XmlElement]
+        public bool EnableTouchpadOverlay { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayOpacity { get; set; } = 0.25;
+
+        [XmlElement]
+        public int TouchpadOverlayMonitor { get; set; }
+
+        [XmlElement]
+        public double TouchpadOverlayLeft { get; set; } = -1;
+
+        [XmlElement]
+        public double TouchpadOverlayTop { get; set; } = -1;
+
+        [XmlElement]
+        public double TouchpadOverlayWidth { get; set; } = 500;
+
+        [XmlElement]
+        public double TouchpadOverlayHeight { get; set; } = 250;
     }
 
     /// <summary>
@@ -1889,5 +2008,125 @@ namespace PadForge.Services
 
         [XmlElement]
         public string PadSettingChecksum { get; set; }
+    }
+
+    /// <summary>
+    /// A global macro that runs regardless of which profile is active.
+    /// Currently used for profile shortcuts; future uses include overlay
+    /// toggles, global volume, etc.
+    /// </summary>
+    public class GlobalMacroData
+    {
+        [XmlAttribute]
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+        [XmlElement]
+        public SwitchProfileMode SwitchMode { get; set; }
+
+        /// <summary>For Specific mode: target profile ID. Null for Next/Previous.</summary>
+        [XmlElement]
+        public string TargetProfileId { get; set; }
+
+        /// <summary>
+        /// Per-button trigger entries. Each entry has a button index, the device instance
+        /// GUID it was recorded from, and the product GUID for same-type matching.
+        /// Supports cross-device combos (e.g., Shift on keyboard + Start on gamepad).
+        /// </summary>
+        [XmlArray("TriggerEntries")]
+        [XmlArrayItem("Entry")]
+        public TriggerButtonEntry[] TriggerEntries { get; set; }
+
+        /// <summary>Legacy: flat button index array from old XML. Migrated on load.</summary>
+        [XmlArray("TriggerButtons")]
+        [XmlArrayItem("Index")]
+        public int[] LegacyTriggerRawButtons { get; set; }
+
+        /// <summary>Legacy: single device GUID from old XML.</summary>
+        [XmlElement]
+        public Guid TriggerDeviceGuid { get; set; }
+
+        /// <summary>Runtime-only: previous frame trigger state for edge detection.</summary>
+        [XmlIgnore]
+        public bool WasTriggerActive { get; set; }
+
+        /// <summary>True if this macro has any trigger buttons configured.</summary>
+        [XmlIgnore]
+        public bool HasTrigger => TriggerEntries != null && TriggerEntries.Length > 0;
+
+        /// <summary>
+        /// Migrates legacy flat button array to per-button entries.
+        /// Called once during settings load.
+        /// </summary>
+        public void MigrateLegacyTrigger()
+        {
+            if (TriggerEntries != null || LegacyTriggerRawButtons == null)
+                return;
+
+            TriggerEntries = new TriggerButtonEntry[LegacyTriggerRawButtons.Length];
+            for (int i = 0; i < LegacyTriggerRawButtons.Length; i++)
+            {
+                TriggerEntries[i] = new TriggerButtonEntry
+                {
+                    ButtonIndex = LegacyTriggerRawButtons[i],
+                    DeviceInstanceGuid = TriggerDeviceGuid,
+                    DeviceProductGuid = System.Guid.Empty
+                };
+            }
+            LegacyTriggerRawButtons = null; // Clear so next save uses new format.
+        }
+    }
+
+    /// <summary>
+    /// A single button in a global macro trigger combo. Each button tracks
+    /// which device it was recorded from, enabling cross-device combos.
+    /// </summary>
+    public class TriggerButtonEntry
+    {
+        /// <summary>Raw button index on the source device (when IsAxis=false).</summary>
+        [XmlElement]
+        public int ButtonIndex { get; set; }
+
+        /// <summary>True if this entry represents an axis threshold, not a button.</summary>
+        [XmlElement]
+        public bool IsAxis { get; set; }
+
+        /// <summary>Raw axis index on the source device (when IsAxis=true).</summary>
+        [XmlElement]
+        public int AxisIndex { get; set; }
+
+        /// <summary>
+        /// Axis threshold as normalized value (0.0–1.0). The axis must exceed this
+        /// value to be considered active. Default 0.5 (50%).
+        /// </summary>
+        [XmlElement]
+        public float AxisThreshold { get; set; } = 0.5f;
+
+        /// <summary>
+        /// Axis direction: Positive (axis > threshold) or Negative (axis &lt; 1-threshold).
+        /// </summary>
+        [XmlElement]
+        public AxisTriggerDirection AxisDirection { get; set; }
+
+        /// <summary>Instance GUID of the device this entry was recorded from.</summary>
+        [XmlElement]
+        public Guid DeviceInstanceGuid { get; set; }
+
+        /// <summary>Product GUID for same-type device matching in "Any Device" mode.</summary>
+        [XmlElement]
+        public Guid DeviceProductGuid { get; set; }
+    }
+
+    public enum AxisTriggerDirection
+    {
+        Positive, // Axis value above threshold (e.g., stick right, trigger pulled)
+        Negative  // Axis value below 1-threshold (e.g., stick left)
+    }
+
+    public enum SwitchProfileMode
+    {
+        Specific,
+        Next,
+        Previous,
+        ToggleWindow
     }
 }

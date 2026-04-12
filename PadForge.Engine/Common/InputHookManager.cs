@@ -196,7 +196,7 @@ namespace PadForge.Engine.Common
 
         /// <summary>
         /// Updates the set of mouse button identifiers to suppress.
-        /// Button IDs: 0=Left, 1=Right, 2=Middle, 3=XButton1, 4=XButton2.
+        /// Button IDs: 0=Left, 1=Middle, 2=Right, 3=XButton1, 4=XButton2.
         /// Pass an empty set to stop suppressing mouse input.
         /// </summary>
         public void SetSuppressedMouseButtons(HashSet<int> buttons)
@@ -245,7 +245,7 @@ namespace PadForge.Engine.Common
         /// <summary>
         /// Merges suppressed mouse-button state into a destination boolean array.
         /// Same principle as <see cref="MergeHookedKeyState"/> but for WH_MOUSE_LL.
-        /// Button IDs: 0=Left, 1=Right, 2=Middle, 3=X1, 4=X2.
+        /// Button IDs: 0=Left, 1=Middle, 2=Right, 3=X1, 4=X2.
         /// </summary>
         public static void MergeHookedMouseState(bool[] dest, int count)
         {
@@ -373,11 +373,11 @@ namespace PadForge.Engine.Common
                 case WM_LBUTTONDOWN:
                 case WM_LBUTTONUP:
                     return 0;
-                case WM_RBUTTONDOWN:
-                case WM_RBUTTONUP:
-                    return 1;
                 case WM_MBUTTONDOWN:
                 case WM_MBUTTONUP:
+                    return 1;
+                case WM_RBUTTONDOWN:
+                case WM_RBUTTONUP:
                     return 2;
                 case WM_XBUTTONDOWN:
                 case WM_XBUTTONUP:

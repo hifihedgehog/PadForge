@@ -132,7 +132,7 @@ namespace PadForge.ViewModels
         /// Raised once after <see cref="RefreshNavControllerItems"/> finishes all
         /// collection changes. MainWindow subscribes to this instead of
         /// <c>NavControllerItems.CollectionChanged</c> to avoid multiple rapid
-        /// sidebar rebuilds that corrupt ModernWpf's internal ItemsRepeater.
+        /// sidebar rebuilds that corrupt WPF UI's internal ItemsRepeater.
         /// </summary>
         public event EventHandler NavControllerItemsRefreshed;
 

@@ -113,13 +113,15 @@
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivo(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Adicionar Controle</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Excluir controle virtual</value></data>
+  <data name="Main_FullScreen" xml:space="preserve"><value>Tela cheia</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostrar PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Controle Virtual {0}</value></data>
   <data name="Main_ViGEmNotInstalled" xml:space="preserve"><value>ViGEmBus não instalado</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor parado</value></data>
-  <data name="Main_AwaitingControllers" xml:space="preserve"><value>Aguardando controles</value></data>
+  <data name="Main_AwaitingDevices" xml:space="preserve"><value>Aguardando dispositivos</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Ativo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inicializando</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>Um ou mais controles offline</value></data>
   <data name="Main_DirectInputDriverNotInstalled" xml:space="preserve"><value>Driver DirectInput não instalado</value></data>
   <data name="Main_Xbox360_ViGEmNotInstalled" xml:space="preserve"><value>Xbox 360 (ViGEmBus não instalado)</value></data>
   <data name="Main_Xbox360_Max_Format" xml:space="preserve"><value>Xbox 360 (máx. {0})</value></data>
@@ -194,6 +196,16 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil alterado: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil alterado: Padrão</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Padrão</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atalhos de perfil</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Atribuir combinações de botões para trocar de perfil em qualquer controle.</value></data>
+  <data name="Profiles_AddShortcut" xml:space="preserve"><value>Adicionar atalho</value></data>
+  <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Próximo perfil</value></data>
+  <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Perfil anterior</value></data>
+  <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Perfil específico</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Alternar janela</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Qualquer dispositivo conectado</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Gravar</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gravando...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Nenhum dispositivo selecionado.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Índice de slot inválido: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Falha ao atribuir dispositivo.</value></data>
@@ -219,6 +231,11 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sirva uma interface de gamepad para navegadores na sua rede local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar servidor de controle web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Conecte de um celular ou tablet pelo navegador para usar como gamepad.</value></data>
+  <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Sobreposição de touchpad</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superfície de toque na tela para emulação do touchpad do DS4.</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativar sobreposição de touchpad</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidade:</value></data>
+  <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clique com botão direito e segure para arrastar</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Drivers</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Sem dispositivo</value></data>
 
@@ -273,7 +290,7 @@
   <data name="About_Title" xml:space="preserve"><value>Sobre</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Utilitário de Mapeamento de Controles</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork moderno do x360ce — reconstruído com SDL3, WPF e .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge mapeia qualquer controle, teclado ou mouse para controles virtuais Xbox 360, DualShock 4, DirectInput personalizado ou MIDI via ViGEmBus, vJoy e Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para entrada de teclado e mouse, e fornece uma interface moderna Fluent Design para mapeamento, configuração de zona morta e gerenciamento de force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge mapeia qualquer controle, teclado ou mouse para controles virtuais Xbox 360, DualShock 4, DirectInput personalizado ou MIDI via ViGEmBus, vJoy e Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para entrada de teclado e mouse, e fornece uma interface moderna Fluent Design para mapeamento, configuração de zona-morta e gerenciamento de force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Desenvolvido com</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime e framework WPF</value></data>
@@ -289,8 +306,8 @@
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Saída de dispositivo MIDI virtual (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Visualização 3D de controles</value></data>
-  <data name="About_ModernWpf" xml:space="preserve"><value>ModernWpf</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Tema Fluent Design para WPF</value></data>
+  <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Sistema de design Fluent 2 para WPF</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm para data binding</value></data>
   <data name="About_License" xml:space="preserve"><value>Licença</value></data>
@@ -305,17 +322,20 @@
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>Suplementar</value></data>
   <data name="DeviceType_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="DeviceType_Keyboard" xml:space="preserve"><value>Teclado</value></data>
+  <data name="DeviceType_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Dispositivo</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Todos os teclados (combinados)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Todos os mouses (combinados)</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Todos os touchpads (combinados)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivos</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Remover este dispositivo e suas configurações</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Produto: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>Tipo: </value></data>
-  <data name="Devices_GUID" xml:space="preserve"><value>GUID: </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>GUID do app: </value></data>
+  <data name="Devices_SdlGUID" xml:space="preserve"><value>GUID SDL: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>Caminho da Instância: </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Enviar Mapeamento de Dispositivo</value></data>
@@ -402,7 +422,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origem</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opções</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morta eixo para botão</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona-morta eixo para botão</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverter</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metade</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>
@@ -416,7 +436,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Amostrando...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Deslocamento Central X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Deslocamento Central Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Zona Morta:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Zona-Morta:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Radial Escalada</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radial</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axial</value></data>
@@ -457,6 +477,7 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pressionar Botão do Mouse</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Soltar Botão do Mouse</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Scroll do Mouse</value></data>
+  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar sobreposição de touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botões:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinação de Teclas:</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinação de teclas no formato {Tecla1}{Tecla2} — editável</value></data>
@@ -516,6 +537,7 @@
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scroll em {0} (máx. {1} unidades)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Pressionar Mouse {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar Mouse {0}</value></data>
+  <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar sobreposição de touchpad</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centralizado</value></data>
@@ -583,10 +605,10 @@
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Dead Zone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Dead Zone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Dead Zone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Dead Zone Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Linear:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Curvas de Sensibilidade</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Duplo clique para adicionar ponto. Clique direito para remover. Arraste para ajustar.</value></data>
@@ -599,7 +621,7 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>Eixo X</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eixo Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Alcance:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Dead Zone:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curva de Sensibilidade</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Duplo clique para adicionar ponto. Clique direito para remover. Arraste para ajustar.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Predefinição:</value></data>
@@ -615,10 +637,10 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Redefinir Deslocamento Central X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Redefinir Deslocamento Central Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redefinir para Radial Escalonado</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redefinir Dead Zone X</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redefinir Dead Zone Y</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redefinir Anti-Dead Zone X</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Redefinir Anti-Dead Zone Y</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redefinir Deadzone X</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redefinir Deadzone Y</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redefinir Anti-Deadzone X</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Redefinir Anti-Deadzone Y</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Redefinir Linear</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Redefinir Sensibilidade X</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Redefinir Sensibilidade Y</value></data>
@@ -627,7 +649,7 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Redefinir Alcance Mín. Y</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Redefinir Alcance Máx. Y</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Redefinir Alcance</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Redefinir Anti-Dead Zone</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Redefinir Anti-Deadzone</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Redefinir Sensibilidade</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Redefinir Ganho Geral</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>
@@ -722,7 +744,7 @@
   <data name="Key_Apps" xml:space="preserve"><value>Aplicativos</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>Suspensão</value></data>
   <!-- Numpad -->
-  <data name="Key_Numpad" xml:space="preserve"><value>Teclado numérico</value></data>
+  <data name="Key_Numpad" xml:space="preserve"><value>Teclado numérico {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Separador</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -813,5 +835,29 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Redefinir Corte de Graves</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Redefinir Motor Direito</value></data>
+  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
+  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
+  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
+  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
+  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Toque no touchpad 1</value></data>
+  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Toque no touchpad 2</value></data>
+  <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clique no touchpad</value></data>
+  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Key_NumpadMultiply" xml:space="preserve"><value>Teclado numérico *</value></data>
+  <data name="Key_NumpadAdd" xml:space="preserve"><value>Teclado numérico +</value></data>
+  <data name="Key_NumpadSubtract" xml:space="preserve"><value>Teclado numérico -</value></data>
+  <data name="Key_NumpadDecimal" xml:space="preserve"><value>Teclado numérico .</value></data>
+  <data name="Key_NumpadDivide" xml:space="preserve"><value>Teclado numérico /</value></data>
+  <data name="Key_Semicolon" xml:space="preserve"><value>Ponto e vírgula</value></data>
+  <data name="Key_Equals" xml:space="preserve"><value>Igual</value></data>
+  <data name="Key_Comma" xml:space="preserve"><value>Vírgula</value></data>
+  <data name="Key_Minus" xml:space="preserve"><value>Menos</value></data>
+  <data name="Key_Period" xml:space="preserve"><value>Ponto</value></data>
+  <data name="Key_Slash" xml:space="preserve"><value>Barra</value></data>
+  <data name="Key_Grave" xml:space="preserve"><value>Acento grave</value></data>
+  <data name="Key_LeftBracket" xml:space="preserve"><value>Colchete esquerdo</value></data>
+  <data name="Key_Backslash" xml:space="preserve"><value>Barra invertida</value></data>
+  <data name="Key_RightBracket" xml:space="preserve"><value>Colchete direito</value></data>
+  <data name="Key_Apostrophe" xml:space="preserve"><value>Apóstrofo</value></data>
 
 </root>

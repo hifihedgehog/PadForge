@@ -51,6 +51,9 @@ namespace PadForge.Common.Input
         /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
         public static bool EnableAutoProfileSwitching { get; set; }
 
+        /// <summary>Global macros for profile shortcuts and other app-wide actions.</summary>
+        public static GlobalMacroData[] GlobalMacros { get; set; }
+
         // ─────────────────────────────────────────────
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────
@@ -417,7 +420,7 @@ namespace PadForge.Common.Input
                 ps.RightThumbButton = "Button 9";
                 ps.ButtonGuide = "Button 10";
 
-                // Default dead zones and gains.
+                // Default deadzones and gains.
                 ps.LeftThumbDeadZoneX = "0";
                 ps.LeftThumbDeadZoneY = "0";
                 ps.RightThumbDeadZoneX = "0";
@@ -431,11 +434,38 @@ namespace PadForge.Common.Input
                 ps.RightMotorStrength = "100";
                 ps.ForceSwapMotor = "0";
 
+                // Touchpad auto-mapping for DS4 output + touchpad-capable device.
+                if (outputType == Engine.VirtualControllerType.DualShock4 && ud.HasTouchpad)
+                {
+                    ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
+                    ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
+                    ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
+                    ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
+                    ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
+                    ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+                    ps.TouchpadClick = "Button 20";
+                }
+
                 ps.UpdateChecksum();
                 return ps;
             }
 
-            // Non-gamepad devices are not auto-mapped.
+            // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to DS4.
+            if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
+                outputType == Engine.VirtualControllerType.DualShock4)
+            {
+                ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
+                ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
+                ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
+                ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
+                ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
+                ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+
+                ps.UpdateChecksum();
+                return ps;
+            }
+
+            // Non-gamepad, non-touchpad devices are not auto-mapped.
             // The user must manually record mappings for these devices.
 
             ps.UpdateChecksum();

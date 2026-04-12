@@ -67,6 +67,10 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public string SerialNumber { get; set; } = string.Empty;
 
+        /// <summary>SDL joystick GUID (32 hex chars) for gamecontrollerdb matching.</summary>
+        [XmlElement]
+        public string SdlGuid { get; set; } = string.Empty;
+
         // ─────────────────────────────────────────────────────────────
         //  Serializable capability properties
         // ─────────────────────────────────────────────────────────────
@@ -103,6 +107,10 @@ namespace PadForge.Engine.Data
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         [XmlElement]
         public bool HasAccel { get; set; }
+
+        /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
+        [XmlElement]
+        public bool HasTouchpad { get; set; }
 
         // ─────────────────────────────────────────────────────────────
         //  Serializable metadata
@@ -233,6 +241,10 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsKeyboard => CapType == InputDeviceType.Keyboard;
 
+        /// <summary>True if this device is a precision touchpad (CapType == InputDeviceType.Touchpad).</summary>
+        [XmlIgnore]
+        public bool IsTouchpad => CapType == InputDeviceType.Touchpad;
+
         /// <summary>True if the device has at least one force-feedback actuator, SDL rumble, or SDL haptic support.</summary>
         [XmlIgnore]
         public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && (Device.HasRumble || Device.HasHaptic));
@@ -344,11 +356,13 @@ namespace PadForge.Engine.Data
             // Sensor capabilities.
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
+            HasTouchpad = wrapper.HasTouchpad;
 
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;
             DevicePath = wrapper.DevicePath;
             SerialNumber = wrapper.SerialNumber ?? string.Empty;
+            SdlGuid = wrapper.SdlGuid ?? string.Empty;
 
             // Populate device objects.
             DeviceObjects = wrapper.GetDeviceObjects();
@@ -390,6 +404,16 @@ namespace PadForge.Engine.Data
         /// Populates the device identity and capabilities from a <see cref="WebControllerDevice"/>.
         /// </summary>
         public void LoadFromWebDevice(WebControllerDevice wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
+        /// Populates the device identity and capabilities from a <see cref="TouchpadOverlayDevice"/>.
+        /// </summary>
+        public void LoadFromOverlayDevice(TouchpadOverlayDevice wrapper)
         {
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));

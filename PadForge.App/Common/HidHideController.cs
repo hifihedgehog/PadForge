@@ -69,26 +69,19 @@ namespace PadForge.Common
         [DllImport("setupapi.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetupDiEnumDeviceInfo(
-            IntPtr DeviceInfoSet, uint MemberIndex, ref SP_DEVINFO_DATA DeviceInfoData);
+            IntPtr DeviceInfoSet, uint MemberIndex, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData);
 
         [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetupDiGetDeviceInstanceIdW(
-            IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData,
+            IntPtr DeviceInfoSet, ref SetupApiInterop.SP_DEVINFO_DATA DeviceInfoData,
             char[] DeviceInstanceId, uint DeviceInstanceIdSize, out uint RequiredSize);
 
         [DllImport("setupapi.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct SP_DEVINFO_DATA
-        {
-            public int cbSize;
-            public Guid ClassGuid;
-            public int DevInst;
-            public IntPtr Reserved;
-        }
+        // SP_DEVINFO_DATA shared via SetupApiInterop.SP_DEVINFO_DATA
 
         private static readonly Guid GUID_DEVCLASS_HIDCLASS = new("745a17a0-74d3-11d0-b6fe-00a0c90f57da");
         private const uint DIGCF_PRESENT = 0x02;
@@ -286,8 +279,8 @@ namespace PadForge.Common
 
             try
             {
-                var devInfoData = new SP_DEVINFO_DATA();
-                devInfoData.cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>();
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA();
+                devInfoData.cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>();
 
                 for (uint i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {

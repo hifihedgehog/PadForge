@@ -67,12 +67,6 @@ namespace PadForge.Engine
         public ObjectAspect Aspect { get; set; } = ObjectAspect.Position;
 
         /// <summary>
-        /// Whether this object is a force-feedback actuator.
-        /// </summary>
-        public bool IsForceActuator =>
-            (ObjectType & DeviceObjectTypeFlags.ForceFeedbackActuator) != 0;
-
-        /// <summary>
         /// Whether this object is an axis (absolute or relative).
         /// </summary>
         public bool IsAxis =>

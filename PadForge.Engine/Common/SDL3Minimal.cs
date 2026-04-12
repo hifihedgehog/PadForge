@@ -73,72 +73,6 @@ namespace SDL3
             SDL_JOYSTICK_TYPE_COUNT = 10
         }
 
-        public enum SDL_PowerState : int
-        {
-            SDL_POWERSTATE_ERROR = -1,
-            SDL_POWERSTATE_UNKNOWN = 0,
-            SDL_POWERSTATE_ON_BATTERY = 1,
-            SDL_POWERSTATE_NO_BATTERY = 2,
-            SDL_POWERSTATE_CHARGING = 3,
-            SDL_POWERSTATE_CHARGED = 4
-        }
-
-        // ─────────────────────────────────────────────
-        //  Structs
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// 16-byte GUID structure used by SDL for device identification.
-        /// Renamed from SDL_JoystickGUID in SDL2 to SDL_GUID in SDL3.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SDL_GUID
-        {
-            public byte data0;
-            public byte data1;
-            public byte data2;
-            public byte data3;
-            public byte data4;
-            public byte data5;
-            public byte data6;
-            public byte data7;
-            public byte data8;
-            public byte data9;
-            public byte data10;
-            public byte data11;
-            public byte data12;
-            public byte data13;
-            public byte data14;
-            public byte data15;
-
-            /// <summary>
-            /// Converts the SDL GUID to a .NET <see cref="System.Guid"/>.
-            /// </summary>
-            public Guid ToGuid()
-            {
-                return new Guid(
-                    (int)(data0 | (data1 << 8) | (data2 << 16) | (data3 << 24)),
-                    (short)(data4 | (data5 << 8)),
-                    (short)(data6 | (data7 << 8)),
-                    data8, data9, data10, data11,
-                    data12, data13, data14, data15);
-            }
-
-            /// <summary>
-            /// Converts the raw 16 bytes to a byte array.
-            /// </summary>
-            public byte[] ToByteArray()
-            {
-                return new byte[]
-                {
-                    data0, data1, data2, data3,
-                    data4, data5, data6, data7,
-                    data8, data9, data10, data11,
-                    data12, data13, data14, data15
-                };
-            }
-        }
-
         // ─────────────────────────────────────────────
         //  Core lifecycle
         // ─────────────────────────────────────────────
@@ -216,9 +150,6 @@ namespace SDL3
                 SDL_free(ptr);
             }
         }
-
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_GUID SDL_GetJoystickGUIDForID(uint instance_id);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern ushort SDL_GetJoystickVendorForID(uint instance_id);
@@ -381,6 +312,7 @@ namespace SDL3
         public const int SDL_GAMEPAD_BUTTON_DPAD_DOWN = 12;
         public const int SDL_GAMEPAD_BUTTON_DPAD_LEFT = 13;
         public const int SDL_GAMEPAD_BUTTON_DPAD_RIGHT = 14;
+        public const int SDL_GAMEPAD_BUTTON_TOUCHPAD = 20;
         public const int SDL_GAMEPAD_BUTTON_COUNT = 21;
 
         // ─────────────────────────────────────────────
@@ -440,6 +372,27 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern ushort SDL_GetJoystickProductVersion(IntPtr joystick);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_GUID
+        {
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public byte[] data;
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern SDL_GUID SDL_GetJoystickGUID(IntPtr joystick);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GUIDToString(SDL_GUID guid, byte[] pszGUID, int cbGUID);
+
+        public static string GetJoystickGUIDString(IntPtr joystick)
+        {
+            var guid = SDL_GetJoystickGUID(joystick);
+            byte[] buf = new byte[33];
+            SDL_GUIDToString(guid, buf, buf.Length);
+            return System.Text.Encoding.ASCII.GetString(buf).TrimEnd('\0');
+        }
+
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern SDL_JoystickType SDL_GetJoystickType(IntPtr joystick);
 
@@ -461,9 +414,6 @@ namespace SDL3
             return ptr != IntPtr.Zero ? Marshal.PtrToStringUTF8(ptr) : null;
         }
 
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_GUID SDL_GetJoystickGUID(IntPtr joystick);
-
         // ─────────────────────────────────────────────
         //  Properties system (for capability queries)
         // ─────────────────────────────────────────────
@@ -484,9 +434,6 @@ namespace SDL3
         // ─────────────────────────────────────────────
         //  Power info (replaces SDL_JoystickCurrentPowerLevel)
         // ─────────────────────────────────────────────
-
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_PowerState SDL_GetJoystickPowerInfo(IntPtr joystick, out int percent);
 
         // ─────────────────────────────────────────────
         //  Gamepad sensors (gyro / accelerometer)
@@ -528,6 +475,33 @@ namespace SDL3
         /// </summary>
         public static bool SDL_GetGamepadSensorData(IntPtr gamepad, int type, float[] data, int num_values) =>
             _SDL_GetGamepadSensorData(gamepad, type, data, num_values);
+
+        // ─────────────────────────────────────────────
+        //  Gamepad touchpad
+        // ─────────────────────────────────────────────
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetNumGamepadTouchpads(IntPtr gamepad);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetNumGamepadTouchpadFingers(IntPtr gamepad, int touchpad);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadTouchpadFinger")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadTouchpadFinger(
+            IntPtr gamepad, int touchpad, int finger,
+            [MarshalAs(UnmanagedType.U1)] out bool down,
+            out float x, out float y, out float pressure);
+
+        /// <summary>
+        /// Gets the state of a touchpad finger. x/y are normalized 0-1, pressure is 0-1.
+        /// Returns true on success.
+        /// </summary>
+        public static bool SDL_GetGamepadTouchpadFinger(
+            IntPtr gamepad, int touchpad, int finger,
+            out bool down, out float x, out float y, out float pressure) =>
+            _SDL_GetGamepadTouchpadFinger(gamepad, touchpad, finger,
+                out down, out x, out y, out pressure);
 
         // ─────────────────────────────────────────────
         //  Rumble / haptics

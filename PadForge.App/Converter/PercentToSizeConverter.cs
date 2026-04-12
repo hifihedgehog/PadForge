@@ -8,7 +8,7 @@ namespace PadForge.Converters
     /// Converts a percentage value (0–100) to a pixel size.
     /// ConverterParameter = max size in pixels (e.g., "200" or "-100" for offset).
     /// Output = value / 100.0 * |parameter|, with sign preserved for offsets.
-    /// Used for dead zone ring visualization on stick previews.
+    /// Used for deadzone ring visualization on stick previews.
     /// </summary>
     public sealed class PercentToSizeConverter : IValueConverter
     {

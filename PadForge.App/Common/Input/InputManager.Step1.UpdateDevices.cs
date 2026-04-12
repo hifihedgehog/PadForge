@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using SDL3;
 using static SDL3.SDL;
 
@@ -183,6 +184,128 @@ namespace PadForge.Common.Input
                     catch { /* best effort — next cycle will retry */ }
                     finally { _rawInputEnumRunning = false; }
                 });
+            }
+
+            // --- Phase 1d: Precision Touchpads (per-hardware device) ---
+            if (_ptpReader != null && _ptpReader.IsAvailable)
+            {
+                var ptpDevices = _ptpReader.GetDevices();
+                var currentPtpHandles = new HashSet<IntPtr>();
+
+                foreach (var (handle, name, path, vid, pid) in ptpDevices)
+                {
+                    currentPtpHandles.Add(handle);
+                    var guid = SdlDeviceWrapper.BuildInstanceGuid(path, vid, pid, 0);
+
+                    // If the user removed this device from the Devices page,
+                    // the handle is still tracked but the UserDevice is gone.
+                    // Reset tracking so it gets recreated.
+                    if (_openedPtpHandles.Contains(handle) &&
+                        FindOnlineDeviceByInstanceGuid(guid) == null)
+                    {
+                        _openedPtpHandles.Remove(handle);
+                    }
+
+                    if (!_openedPtpHandles.Contains(handle))
+                    {
+                        UserDevice ud = FindOrCreateUserDevice(guid);
+                        ud.LoadInstance(guid, name, guid, name);
+                        ud.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
+                        ud.DevicePath = path;
+                        ud.VendorId = vid;
+                        ud.ProdId = pid;
+                        ud.IsOnline = true;
+                        ud.HasTouchpad = true;
+                        _openedPtpHandles.Add(handle);
+                        _ptpHandleToGuid[handle] = guid;
+                        changed = true;
+                    }
+                }
+
+                // Detect disconnected PTP devices.
+                var disconnected = new List<IntPtr>();
+                foreach (var h in _openedPtpHandles)
+                {
+                    if (!currentPtpHandles.Contains(h))
+                    {
+                        if (_ptpHandleToGuid.TryGetValue(h, out var guid))
+                        {
+                            var ud = FindOnlineDeviceByInstanceGuid(guid);
+                            if (ud != null) ud.IsOnline = false;
+                            _ptpHandleToGuid.Remove(h);
+                        }
+                        disconnected.Add(h);
+                        changed = true;
+                    }
+                }
+                foreach (var h in disconnected)
+                    _openedPtpHandles.Remove(h);
+
+                // "All Touchpads (Merged)" aggregate device — always present when PTP is available.
+                // Reset flag if the user removed the merged device from the Devices page.
+                if (_ptpMergedCreated && FindOnlineDeviceByInstanceGuid(PtpMergedGuid) == null)
+                    _ptpMergedCreated = false;
+
+                if (!_ptpMergedCreated)
+                {
+                    UserDevice mergedUd = FindOrCreateUserDevice(PtpMergedGuid);
+                    mergedUd.LoadInstance(PtpMergedGuid,
+                        Strings.Instance.Devices_AllTouchpadsMerged,
+                        PtpMergedGuid,
+                        Strings.Instance.Devices_AllTouchpadsMerged);
+                    mergedUd.LoadCapabilities(0, 0, 0, InputDeviceType.Touchpad);
+                    mergedUd.DevicePath = "aggregate://touchpads";
+                    mergedUd.IsOnline = true;
+                    mergedUd.HasTouchpad = true;
+                    _ptpMergedCreated = true;
+                    changed = true;
+                }
+                // PTP claims the digitizer collection, which causes Windows to
+                // send synthetic mouse WM_INPUT with hDevice=0 instead of the
+                // original per-device handle. Redirect all mouse wrappers that
+                // share hardware with a PTP device to IntPtr.Zero.
+                // Only redirect mice that share hardware with a PTP device
+                // (same VID/PID = same physical chip, different HID collection).
+                // Retry each cycle until at least one redirect succeeds, since
+                // PTP device VID/PID isn't known until first touchpad contact.
+                if (!_ptpMouseRedirected && ptpDevices.Length > 0)
+                {
+                    var ptpVidPids = new HashSet<(ushort, ushort)>();
+                    foreach (var (_, _, _, vid, pid) in ptpDevices)
+                    {
+                        if (vid != 0 || pid != 0)
+                            ptpVidPids.Add((vid, pid));
+                    }
+
+                    if (ptpVidPids.Count > 0)
+                    {
+                        var devices = SettingsManager.UserDevices;
+                        if (devices != null)
+                        {
+                            lock (devices.SyncRoot)
+                            {
+                                foreach (var ud in devices.Items)
+                                {
+                                    if (ud.IsOnline && ud.Device is SdlMouseWrapper mw &&
+                                        mw.RawInputHandle != IntPtr.Zero &&
+                                        mw.RawInputHandle != RawInputListener.AggregateMouseHandle &&
+                                        ptpVidPids.Contains((ud.VendorId, ud.ProdId)))
+                                    {
+                                        mw.UpdateHandle(IntPtr.Zero);
+                                        _ptpMouseRedirected = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (_ptpMergedCreated)
+            {
+                var mergedUd = FindOnlineDeviceByInstanceGuid(PtpMergedGuid);
+                if (mergedUd != null) mergedUd.IsOnline = false;
+                _ptpMergedCreated = false;
+                changed = true;
             }
 
             // --- Phase 2: Detect disconnected SDL devices ---
@@ -457,6 +580,15 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly HashSet<IntPtr> _openedKeyboardHandles = new HashSet<IntPtr>();
 
+        /// <summary>Tracked PTP device handles.</summary>
+        private readonly HashSet<IntPtr> _openedPtpHandles = new();
+        private readonly Dictionary<IntPtr, Guid> _ptpHandleToGuid = new();
+
+        /// <summary>Fixed GUID for the merged touchpad aggregate device.</summary>
+        private static readonly Guid PtpMergedGuid = new("50545000-ffff-ffff-5054-505450505450");
+        private bool _ptpMergedCreated;
+        private bool _ptpMouseRedirected;
+
         /// <summary>
         /// Tracked Raw Input mouse device handles.
         /// </summary>
@@ -519,6 +651,15 @@ namespace PadForge.Common.Input
                 if (_openedMouseHandles.Contains(mouse.Handle))
                     continue;
 
+                // Skip if an existing device with the same path is already tracked
+                // (possibly redirected to IntPtr.Zero by PTP). Don't re-create it.
+                if (!string.IsNullOrEmpty(mouse.DevicePath))
+                {
+                    var existingUd = FindOnlineDeviceByDevicePath(mouse.DevicePath);
+                    if (existingUd != null)
+                        continue;
+                }
+
                 try
                 {
                     var wrapper = new SdlMouseWrapper();
@@ -560,25 +701,49 @@ namespace PadForge.Common.Input
                 currentSet.Add(currentDevices[i].Handle);
 
             var disconnected = new List<IntPtr>();
+            var redirected = new List<IntPtr>();
             bool changed = false;
 
             foreach (IntPtr handle in trackedHandles)
             {
                 if (!currentSet.Contains(handle))
                 {
-                    // Find by InstanceGuid (built from device path, same as wrapper).
                     UserDevice ud = FindOnlineDeviceByHandle(handle);
                     if (ud != null)
                     {
-                        MarkDeviceOffline(ud);
-                        changed = true;
+                        // When PTP is active, the trackpad's mouse collection
+                        // disappears from GetRawInputDeviceList but synthetic
+                        // mouse WM_INPUT still arrives at hDevice=0. Keep the
+                        // device online and redirect its wrapper to IntPtr.Zero.
+                        if (_ptpReader != null && _ptpReader.IsAvailable &&
+                            ud.Device is SdlMouseWrapper mouseWrapper)
+                        {
+                            mouseWrapper.UpdateHandle(IntPtr.Zero);
+                            redirected.Add(handle);
+                        }
+                        else
+                        {
+                            MarkDeviceOffline(ud);
+                            changed = true;
+                            disconnected.Add(handle);
+                        }
                     }
-                    disconnected.Add(handle);
+                    else
+                    {
+                        disconnected.Add(handle);
+                    }
                 }
             }
 
             foreach (IntPtr handle in disconnected)
                 trackedHandles.Remove(handle);
+
+            // Redirected devices: swap old handle for IntPtr.Zero in tracking.
+            foreach (IntPtr handle in redirected)
+            {
+                trackedHandles.Remove(handle);
+                trackedHandles.Add(IntPtr.Zero);
+            }
 
             return changed;
         }
@@ -608,6 +773,20 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  External device registration (web controllers)
         // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Registers the touchpad overlay as a virtual device in the device list.
+        /// </summary>
+        public void RegisterOverlayDevice(TouchpadOverlayDevice device)
+        {
+            if (device == null) return;
+
+            UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
+            ud.LoadFromOverlayDevice(device);
+            ud.IsOnline = true;
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
 
         /// <summary>
         /// Registers an external (non-SDL) input device into the device list.
@@ -673,6 +852,23 @@ namespace PadForge.Common.Input
                     if (d.Device is SdlKeyboardWrapper kb && kb.RawInputHandle == handle)
                         return d;
                     if (d.Device is SdlMouseWrapper mouse && mouse.RawInputHandle == handle)
+                        return d;
+                }
+                return null;
+            }
+        }
+
+        private UserDevice FindOnlineDeviceByDevicePath(string path)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null || string.IsNullOrEmpty(path)) return null;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d.IsOnline && d.DevicePath == path)
                         return d;
                 }
                 return null;

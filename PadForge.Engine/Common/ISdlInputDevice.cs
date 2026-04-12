@@ -19,6 +19,7 @@ namespace PadForge.Engine
         bool HasHaptic { get; }
         bool HasGyro { get; }
         bool HasAccel { get; }
+        bool HasTouchpad { get; }
         HapticEffectStrategy HapticStrategy { get; }
         IntPtr HapticHandle { get; }
         uint HapticFeatures { get; }
@@ -30,6 +31,7 @@ namespace PadForge.Engine
         Guid ProductGuid { get; }
         string DevicePath { get; }
         string SerialNumber { get; }
+        string SdlGuid { get; }
 
         CustomInputState GetCurrentState(bool forceRaw = false);
         DeviceObjectItem[] GetDeviceObjects();

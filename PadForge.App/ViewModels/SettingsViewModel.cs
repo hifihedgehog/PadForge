@@ -626,6 +626,20 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _use2DControllerView, value);
         }
 
+        // ─────────────────────────────────────────────
+        //  Main window position/size (profile-independent)
+        // ─────────────────────────────────────────────
+
+        public double MainWindowLeft { get; set; } = -1;
+        public double MainWindowTop { get; set; } = -1;
+        public double MainWindowWidth { get; set; } = 1100;
+        public double MainWindowHeight { get; set; } = 720;
+        public int MainWindowState { get; set; }
+        public bool MainWindowFullScreen { get; set; }
+
+        /// <summary>Observable collection of profile shortcut rows for the UI.</summary>
+        public ObservableCollection<ProfileShortcutViewModel> ProfileShortcuts { get; } = new();
+
         /// <summary>Observable list of profile names for the UI.</summary>
         public ObservableCollection<ProfileListItem> ProfileItems { get; } = new();
 

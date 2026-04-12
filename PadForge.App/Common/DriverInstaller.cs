@@ -26,29 +26,10 @@ namespace PadForge.Common
             => Path.Combine(Path.GetTempPath(), "PadForge_ViGEmBus");
 
         /// <summary>
-        /// Install ViGEmBus driver. Extracts the embedded bootstrapper,
-        /// unpacks the MSI, and runs msiexec /i with elevation.
-        /// </summary>
-        public static void InstallViGEmBus()
-        {
-            try
-            {
-                var exePath = ExtractEmbeddedResource(ViGEmBusResourceName, GetViGEmBusTempDir());
-                var extractDir = ExtractInstallerBundle(exePath, GetViGEmBusTempDir());
-                var msiPath = FindMsi(extractDir,
-                    Environment.Is64BitOperatingSystem ? "ViGEmBus.x64.msi" : "ViGEmBus.msi",
-                    "ViGEmBus*.msi");
-
-                RunMsiElevated($"/i \"{msiPath}\" /qb /norestart");
-            }
-            finally
-            {
-                CleanupTempDir(GetViGEmBusTempDir());
-            }
-        }
-
-        /// <summary>
-        /// Uninstall ViGEmBus driver via msiexec /x with elevation.
+        /// Uninstall ViGEmBus driver via msiexec /x with elevation. Retained
+        /// in v3 only for the first-run cleanup wizard that removes legacy
+        /// v2 driver installs from upgrading users' systems. Will be removed
+        /// after the migration window.
         /// </summary>
         public static void UninstallViGEmBus()
         {
@@ -126,141 +107,14 @@ namespace PadForge.Common
             => Path.Combine(Path.GetTempPath(), "PadForge_vJoy");
 
         /// <summary>
-        /// Install vJoy driver. Bypasses the Inno Setup installer entirely:
-        /// 1. Cleans up stale driver/service/registry entries
-        /// 2. Extracts the signed driver package from an embedded zip
-        ///    to "C:\Program Files\vJoy"
-        /// 3. Adds the driver to the Windows driver store
-        /// 4. Creates a persistent device node via SetupAPI so vJoy devices
-        ///    are immediately available without per-session UAC prompts
-        /// Everything runs in one elevated PowerShell script (single UAC prompt).
-        /// </summary>
-        public static void InstallVJoy()
-        {
-            try
-            {
-                // Extract the embedded zip to a temp directory.
-                var zipPath = ExtractEmbeddedResource(VJoyResourceName, GetVJoyTempDir());
-
-                string vjoyDir = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
-                string vjoyInf = Path.Combine(vjoyDir, "vjoy.inf");
-
-                // Find stale driver store entries before building the script.
-                var oemInfs = FindVJoyOemInfs();
-
-                string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.ps1");
-                string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_install.log");
-
-                // Build OEM inf removal commands.
-                string oemDeleteCmds = string.Join("\n",
-                    oemInfs.Select(inf => $"pnputil /delete-driver {inf} /uninstall /force 2>&1 | Out-Null"));
-
-                File.WriteAllText(scriptPath, $@"
-$ErrorActionPreference = 'Continue'
-$log = '{logPath.Replace("'", "''")}'
-try {{
-    ""[$(Get-Date -Format 'HH:mm:ss')] vJoy install starting"" | Out-File $log -Force
-
-    # Step 1: Pre-install cleanup.
-    # Remove device nodes FIRST so the driver can unload, THEN stop/delete the service.
-    for ($i = 0; $i -le 15; $i++) {{
-        pnputil /remove-device ""ROOT\HIDCLASS\$($i.ToString('D4'))"" /subtree 2>&1 | Out-Null
-    }}
-    Start-Sleep -Seconds 2
-    sc.exe stop vjoy 2>&1 | Out-Null
-    Start-Sleep -Seconds 2
-    {oemDeleteCmds}
-    sc.exe delete vjoy 2>&1 | Out-Null
-    # Remove service registry keys from ALL ControlSets.
-    foreach ($cs in @('CurrentControlSet','ControlSet001','ControlSet002','ControlSet003')) {{
-        Remove-Item ""HKLM:\SYSTEM\$cs\Services\vjoy"" -Recurse -Force -ErrorAction SilentlyContinue
-    }}
-    Remove-Item '{vjoyDir.Replace("'", "''")}' -Recurse -Force -ErrorAction SilentlyContinue
-    Remove-Item ""$env:SystemRoot\System32\drivers\vjoy.sys"" -Force -ErrorAction SilentlyContinue
-    ""[$(Get-Date -Format 'HH:mm:ss')] Cleanup done"" | Out-File $log -Append
-
-    # Step 2: Extract driver files from zip.
-    New-Item -Path '{vjoyDir.Replace("'", "''")}' -ItemType Directory -Force | Out-Null
-    Expand-Archive -Path '{zipPath.Replace("'", "''")}' -DestinationPath '{vjoyDir.Replace("'", "''")}' -Force
-    ""[$(Get-Date -Format 'HH:mm:ss')] Files extracted"" | Out-File $log -Append
-
-    # Step 3: Add driver to the store.
-    $pnpResult = pnputil /add-driver '{vjoyInf.Replace("'", "''")}' /install 2>&1
-    $pnpResult | Out-File $log -Append
-    ""[$(Get-Date -Format 'HH:mm:ss')] pnputil done"" | Out-File $log -Append
-
-    # Step 4: Create a persistent device node via SetupAPI.
-    # This makes vJoy immediately available without per-session UAC prompts.
-" + SetupApiInterop.GetPsSetupApiSnippet() + $@"
-
-    $hidGuid = [Guid]::new('{{745a17a0-74d3-11d0-b6fe-00a0c90f57da}}')
-    $hwid = 'root\VID_1234&PID_BEAD&REV_0222'
-    $infPath = '{vjoyInf.Replace("'", "''")}'
-    $hwidBytes = [System.Text.Encoding]::Unicode.GetBytes($hwid + [char]0 + [char]0)
-
-    $dis = [PF_SetupApi]::SetupDiCreateDeviceInfoList([ref]$hidGuid, [IntPtr]::Zero)
-    if ($dis -eq [IntPtr]::new(-1)) {{ ""FAIL: SetupDiCreateDeviceInfoList"" | Out-File $log -Append; exit 1 }}
-
-    $did = New-Object PF_SetupApi+SP_DEVINFO_DATA
-    $did.cbSize = [Runtime.InteropServices.Marshal]::SizeOf([type][PF_SetupApi+SP_DEVINFO_DATA])
-
-    $ok = [PF_SetupApi]::SetupDiCreateDeviceInfoW($dis, 'HIDClass', [ref]$hidGuid, 'vJoy Device', [IntPtr]::Zero, [PF_SetupApi]::DICD_GENERATE_ID, [ref]$did)
-    if (-not $ok) {{
-        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        ""FAIL: CreateDeviceInfo err=$e"" | Out-File $log -Append
-        [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
-        exit 1
-    }}
-
-    $ok = [PF_SetupApi]::SetupDiSetDeviceRegistryPropertyW($dis, [ref]$did, [PF_SetupApi]::SPDRP_HARDWAREID, $hwidBytes, $hwidBytes.Length)
-    if (-not $ok) {{
-        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        ""FAIL: SetHardwareID err=$e"" | Out-File $log -Append
-        [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
-        exit 1
-    }}
-
-    $ok = [PF_SetupApi]::SetupDiCallClassInstaller([PF_SetupApi]::DIF_REGISTERDEVICE, $dis, [ref]$did)
-    if (-not $ok) {{
-        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        ""FAIL: RegisterDevice err=$e"" | Out-File $log -Append
-        [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
-        exit 1
-    }}
-    [PF_SetupApi]::SetupDiDestroyDeviceInfoList($dis) | Out-Null
-
-    # Install the driver on the new device node.
-    $reboot = $false
-    $ok = [PF_SetupApi]::UpdateDriverForPlugAndPlayDevicesW([IntPtr]::Zero, $hwid, $infPath, 1, [ref]$reboot)
-    if (-not $ok) {{
-        $e = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        ""FAIL: UpdateDriver err=$e"" | Out-File $log -Append
-        exit 1
-    }}
-
-    ""[$(Get-Date -Format 'HH:mm:ss')] Device node created and driver loaded"" | Out-File $log -Append
-    ""OK"" | Out-File $log -Append
-}} catch {{
-    ""EXCEPTION: $_"" | Out-File $log -Append
-    exit 1
-}}
-");
-
-                RunElevated("powershell.exe",
-                    $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"");
-                try { File.Delete(scriptPath); } catch { }
-            }
-            finally
-            {
-                CleanupTempDir(GetVJoyTempDir());
-            }
-        }
-
-        /// <summary>
         /// Uninstall vJoy driver. Removes device nodes first (so the driver
         /// can unload cleanly), then removes the driver from the store,
         /// deletes the service, and cleans up the install directory.
+        /// Retained in v3 only for the first-run cleanup wizard that removes
+        /// the legacy v2 vJoy install from upgrading users' systems —
+        /// PadForge owns this custom SetupAPI deployment so the standard
+        /// vJoy installer cannot remove it. Will be deleted after the
+        /// migration window closes.
         /// </summary>
         public static void UninstallVJoy()
         {

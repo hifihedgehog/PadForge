@@ -5,7 +5,10 @@ namespace PadForge.Common
 {
     /// <summary>
     /// Shared SetupAPI P/Invoke declarations and structs used by
-    /// HidHideController, VJoyVirtualController, and DriverInstaller.
+    /// HidHideController. The vJoy-specific PowerShell snippet generator
+    /// was deleted in v3 along with the live vJoy install path; the
+    /// DriverInstaller.UninstallVJoy method retains its own bundled
+    /// PowerShell uninstall script for the v3 cleanup wizard.
     /// </summary>
     internal static class SetupApiInterop
     {
@@ -33,40 +36,5 @@ namespace PadForge.Common
 
         [DllImport("setupapi.dll")]
         internal static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
-
-        /// <summary>
-        /// Inline C# type definition for PowerShell Add-Type scripts that need
-        /// SetupAPI device node creation. Shared between DriverInstaller and
-        /// VJoyVirtualController to avoid duplication. Contains the raw C# source
-        /// with proper braces/quotes — use <see cref="GetPsSetupApiSnippet"/> to
-        /// get a version safe for C# interpolated strings.
-        /// </summary>
-        internal static string GetPsSetupApiSnippet()
-        {
-            return @"    Add-Type -TypeDefinition @'
-using System;
-using System.Runtime.InteropServices;
-public static class PF_SetupApi {
-    public const int DIF_REGISTERDEVICE = 0x19;
-    public const int SPDRP_HARDWAREID = 0x01;
-    public const int DICD_GENERATE_ID = 0x01;
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SP_DEVINFO_DATA { public int cbSize; public Guid ClassGuid; public int DevInst; public IntPtr Reserved; }
-    [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
-    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName, ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, ref SP_DEVINFO_DATA DeviceInfoData);
-    [DllImport(""setupapi.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData, int Property, byte[] PropertyBuffer, int PropertyBufferSize);
-    [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, ref SP_DEVINFO_DATA DeviceInfoData);
-    [DllImport(""setupapi.dll"", SetLastError = true)]
-    public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
-    [DllImport(""newdev.dll"", SetLastError = true, CharSet = CharSet.Unicode)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool UpdateDriverForPlugAndPlayDevicesW(IntPtr hwndParent, string HardwareId, string FullInfPath, int InstallFlags, out bool bRebootRequired);
-}
-'@";
-        }
     }
 }

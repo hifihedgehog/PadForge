@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -61,34 +60,8 @@ namespace PadForge
                 catch { /* ignore parse errors, use system default */ }
             }
 
-            // vJoy device node creation/removal requires admin privileges.
-            // If the vJoy driver is installed, relaunch elevated.
-            if (!IsRunningAsAdmin() && IsVJoyDriverInstalled())
-            {
-                try
-                {
-                    var exePath = Environment.ProcessPath
-                        ?? Process.GetCurrentProcess().MainModule?.FileName;
-                    if (exePath != null)
-                    {
-                        var psi = new ProcessStartInfo
-                        {
-                            FileName = exePath,
-                            Verb = "runas",
-                            UseShellExecute = true,
-                            Arguments = string.Join(" ", e.Args)
-                        };
-                        Process.Start(psi);
-                    }
-                }
-                catch (System.ComponentModel.Win32Exception)
-                {
-                    // UAC cancelled — continue unelevated (vJoy won't work fully).
-                }
-                _singleInstanceMutex?.ReleaseMutex();
-                Shutdown();
-                return;
-            }
+            // Elevation is guaranteed by app.manifest (requireAdministrator).
+            // Windows prompts on launch and shows the UAC shield on the icon.
 
             // Apply system theme (follows OS light/dark setting).
             ApplicationThemeManager.ApplySystemTheme();
@@ -249,19 +222,5 @@ namespace PadForge
                     trace.Contains("NotifyPartitionIsZombie"));
         }
 
-        private static bool IsRunningAsAdmin()
-        {
-            using var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        private static bool IsVJoyDriverInstalled()
-        {
-            // Fast file check — avoids loading the DLL just to test.
-            string vjoyDir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
-            return File.Exists(Path.Combine(vjoyDir, "vJoyInterface.dll"));
-        }
     }
 }

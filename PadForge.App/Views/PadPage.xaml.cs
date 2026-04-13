@@ -346,53 +346,78 @@ namespace PadForge.Views
         {
             if (DataContext is not PadViewModel vm) return;
 
-            // HIDMaestro profile picker bar — visible for Microsoft / Sony / Extended.
-            HMaestroProfileBar.Visibility = vm.HasHMaestroProfileBar
+            bool isExtended = vm.OutputType == Engine.VirtualControllerType.Extended;
+
+            // Microsoft / Sony use the compact preset dropdown bar; Extended
+            // has its own full config bar with profile + override fields, so
+            // hide the compact bar when Extended is active.
+            HMaestroProfileBar.Visibility = (vm.HasHMaestroProfileBar && !isExtended)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 
-            // Legacy v2 vJoy custom-axis bar — visible only for Extended slots
-            // until the proper Extended custom descriptor editor lands.
-            bool isVJoy = vm.OutputType == Engine.VirtualControllerType.Extended;
-            VJoyConfigBar.Visibility = isVJoy ? Visibility.Visible : Visibility.Collapsed;
+            VJoyConfigBar.Visibility = isExtended ? Visibility.Visible : Visibility.Collapsed;
 
-            if (isVJoy)
+            if (isExtended)
             {
                 _syncingVJoyConfig = true;
-                VJoyPresetCombo.SelectedIndex = (int)vm.VJoyConfig.Preset;
-                SyncVJoyCustomFields(vm);
+                SyncExtendedFields(vm);
                 _syncingVJoyConfig = false;
             }
         }
 
-        private void SyncVJoyCustomFields(PadViewModel vm)
+        private void SyncExtendedFields(PadViewModel vm)
         {
             if (vm?.VJoyConfig == null) return;
-            bool isCustom = vm.VJoyConfig.Preset == VJoyPreset.Custom;
-            VJoyCustomPanel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
 
-            if (isCustom)
-            {
-                VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
-                VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
-                VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
-                VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
-            }
+            VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
+            VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
+            VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
+            VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+
+            // Identity override — seeded from the active profile's metadata
+            // if the per-slot override fields are empty.
+            var profile = vm.AvailableProfiles?.FirstOrDefault(p =>
+                string.Equals(p.Id, vm.ProfileId, System.StringComparison.OrdinalIgnoreCase));
+
+            ExtendedNameBox.Text = profile?.Name ?? string.Empty;
+            ExtendedVidBox.Text = profile != null ? $"0x{profile.VendorId:X4}" : string.Empty;
+            ExtendedPidBox.Text = profile != null ? $"0x{profile.ProductId:X4}" : string.Empty;
+
+            ExtendedTouchpadChk.IsChecked = false;
+            ExtendedRumbleChk.IsChecked = true;
         }
 
-        private void VJoyPresetCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)
         {
-            if (_syncingVJoyConfig) return;
-            if (DataContext is not PadViewModel vm) return;
-            if (VJoyPresetCombo.SelectedIndex < 0) return;
+            // Placeholder — Extended spoof/override fields will drive a custom
+            // HMProfileBuilder once the profile-modification pipeline lands.
+            // For now the values are purely visual so the UI matches v3 spec.
+        }
 
-            // Re-automap devices BEFORE setting preset so that when
-            // RebuildMappings → OnMappingsRebuilt fires, PadSetting is already correct.
-            SettingsManager.ReAutoMapSlot(vm.PadIndex, vm.OutputType);
-            vm.VJoyConfig.Preset = (VJoyPreset)VJoyPresetCombo.SelectedIndex;
+        private void ExtendedOverride_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) ExtendedOverride_Changed(sender, e);
+        }
 
-            SyncVJoyCustomFields(vm);
-            ApplyViewMode();
+        /// <summary>
+        /// Swallow arrow keys when the preset dropdown is closed. Without this,
+        /// the ComboBox handles Up/Down/Left/Right to cycle selections even
+        /// with focus held implicitly, which collides with keyboard keys a
+        /// user has mapped as input source — pressing Up to drive their
+        /// virtual controller would also cycle the preset dropdown.
+        /// When the dropdown IS open, arrow keys pass through as normal so
+        /// explicit navigation of the list still works.
+        /// </summary>
+        private void ProfileCombo_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is not ComboBox cb || cb.IsDropDownOpen) return;
+            if (e.Key == Key.Up || e.Key == Key.Down
+                || e.Key == Key.Left || e.Key == Key.Right
+                || e.Key == Key.PageUp || e.Key == Key.PageDown
+                || e.Key == Key.Home || e.Key == Key.End)
+            {
+                e.Handled = true;
+            }
         }
 
         private void VJoyCustomValue_Changed(object sender, RoutedEventArgs e)
@@ -409,7 +434,6 @@ namespace PadForge.Views
         private void ApplyVJoyCustomValues()
         {
             if (DataContext is not PadViewModel vm) return;
-            if (vm.VJoyConfig.Preset != VJoyPreset.Custom) return;
 
             if (int.TryParse(VJoyStickCountBox.Text, out int sticks))
                 vm.VJoyConfig.ThumbstickCount = sticks;

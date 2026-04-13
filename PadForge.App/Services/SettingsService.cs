@@ -323,6 +323,7 @@ namespace PadForge.Services
                 ? appSettings.TouchpadOverlayHeight : 250;
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
+            vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
 
             // Restore main window position/size (profile-independent).
             vm.MainWindowLeft = appSettings.MainWindowLeft;
@@ -1078,6 +1079,7 @@ namespace PadForge.Services
                 MainWindowState = vm.MainWindowState,
                 MainWindowFullScreen = vm.MainWindowFullScreen,
                 Use2DControllerView = vm.Use2DControllerView,
+                LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 EnableInputHiding = vm.EnableInputHiding,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
@@ -1729,6 +1731,17 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool Use2DControllerView { get; set; }
+
+        /// <summary>
+        /// True after the v3 first-run cleanup wizard has been shown to the
+        /// user, regardless of whether they accepted or declined. Prevents
+        /// the dialog from re-prompting on every launch. Defaults to false
+        /// on v2.x settings files (so v2 → v3 upgraders see the prompt
+        /// once); v3 fresh-install settings files start true since there
+        /// are no legacy drivers to clean up.
+        /// </summary>
+        [XmlElement]
+        public bool LegacyDriverCleanupOffered { get; set; }
 
         /// <summary>
         /// Global master switch for device hiding (HidHide + input hooks).

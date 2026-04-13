@@ -296,7 +296,7 @@ namespace PadForge.Common
                                 && (instanceId.Contains(vidBle02, StringComparison.OrdinalIgnoreCase)
                                     || instanceId.Contains(vidBle01, StringComparison.OrdinalIgnoreCase)));
 
-                        if (match)
+                        if (match && !IsHidMaestroDevice(instanceId))
                             result.Add(instanceId);
                     }
                 }
@@ -308,6 +308,104 @@ namespace PadForge.Common
 
             return result;
         }
+
+        /// <summary>
+        /// Returns true if the specified PnP device instance (or any of its
+        /// ancestors) belongs to HIDMaestro. HIDMaestro virtual devices share
+        /// their spoofed VID/PID with the real hardware they impersonate, so
+        /// <see cref="FindInstanceIdsByVidPid"/> would otherwise return them
+        /// alongside real devices and PadForge would accidentally HidHide its
+        /// own virtuals — making them invisible to DirectInput / joy.cpl.
+        ///
+        /// Uses the canonical DEVPKEY_Device_Manufacturer = "HIDMaestro"
+        /// property written by every HIDMaestro INF. Nothing else on a
+        /// Windows system reports that manufacturer string.
+        /// </summary>
+        /// <summary>Public alias so callers scrubbing stale cached entries can filter.</summary>
+        public static bool IsHidMaestroDeviceInstance(string instanceId) => IsHidMaestroDevice(instanceId);
+
+        private static bool IsHidMaestroDevice(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return false;
+
+            // Fast string-pattern check on the leaf ID itself.
+            if (MatchesHidMaestroPattern(instanceId)) return true;
+
+            // If the device isn't present in PnP right now, the fast-path
+            // check above is all we can do.
+            if (CM_Locate_DevNodeW(out uint devInst, instanceId, 0) != 0)
+                return false;
+
+            // Walk the parent chain. At each level test both the INSTANCE ID
+            // string and the manufacturer registry value — catching either
+            // lets us filter HIDMaestro-parented HID children correctly
+            // regardless of whether the MFG property read succeeds (char[]
+            // marshalling of CM_Get_DevNode_Registry_Property can silently
+            // return empty for some devices; the string check is the
+            // reliable backstop).
+            var idBuf = new System.Text.StringBuilder(512);
+            for (int depth = 0; depth < 16; depth++)
+            {
+                // --- parent instance ID string check ---
+                idBuf.Clear();
+                idBuf.EnsureCapacity(512);
+                if (CM_Get_Device_IDW(devInst, idBuf, idBuf.Capacity, 0) == 0)
+                {
+                    string curId = idBuf.ToString();
+                    if (MatchesHidMaestroPattern(curId))
+                        return true;
+                }
+
+                // --- manufacturer property check ---
+                var mfg = new char[128];
+                int mfgLen = mfg.Length * 2;
+                if (CM_Get_DevNode_Registry_PropertyW(devInst, CM_DRP_MFG, out _, mfg, ref mfgLen, 0) == 0)
+                {
+                    int strLen = 0;
+                    while (strLen < mfg.Length && mfg[strLen] != '\0') strLen++;
+                    if (string.Equals(new string(mfg, 0, strLen),
+                                      "HIDMaestro", StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+
+                if (CM_Get_Parent(out uint parent, devInst, 0) != 0) break;
+                if (parent == 0 || parent == devInst) break;
+                devInst = parent;
+            }
+            return false;
+        }
+
+        private static bool MatchesHidMaestroPattern(string id)
+        {
+            if (id == null) return false;
+            if (id.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0
+                || id.IndexOf("HMCOMPANION", StringComparison.OrdinalIgnoreCase) >= 0
+                || id.IndexOf("HMXINPUT", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            // ROOT\VID_*&IG_* / ROOT\VID_*&XI_* are HIDMaestro's xinputhid
+            // and XUSB root enumerators. Real devices never root at ROOT\VID_.
+            if (id.StartsWith(@"ROOT\VID_", StringComparison.OrdinalIgnoreCase)
+                && (id.IndexOf("&IG_", StringComparison.OrdinalIgnoreCase) >= 0
+                    || id.IndexOf("&XI_", StringComparison.OrdinalIgnoreCase) >= 0))
+                return true;
+            return false;
+        }
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_Device_IDW(uint devInst, System.Text.StringBuilder buffer, int len, int flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Locate_DevNodeW(out uint devInst, string deviceId, int flags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Parent(out uint parent, uint devInst, int flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_DevNode_Registry_PropertyW(
+            uint devInst, uint property, out uint pulRegDataType,
+            [Out] char[] buffer, ref int length, uint flags);
+
+        private const uint CM_DRP_MFG = 0x0D;
 
         /// <summary>
         /// Converts a device path (\\?\HID#VID_...) to a PnP device instance ID

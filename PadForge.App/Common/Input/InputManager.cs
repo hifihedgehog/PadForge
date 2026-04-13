@@ -366,6 +366,7 @@ namespace PadForge.Common.Input
 
             StopAllForceFeedback();
             DestroyAllVirtualControllers();
+            DisposeHMaestroContextOnShutdown();
             CloseAllDevices();
 
             _enumerationTimer.Stop();
@@ -710,8 +711,8 @@ namespace PadForge.Common.Input
                 (_slotInactiveCounter[slotB], _slotInactiveCounter[slotA]);
             (_slotInitializing[slotA], _slotInitializing[slotB]) =
                 (_slotInitializing[slotB], _slotInitializing[slotA]);
-            (_createCooldown[slotA], _createCooldown[slotB]) =
-                (_createCooldown[slotB], _createCooldown[slotA]);
+            (_createFailed[slotA], _createFailed[slotB]) =
+                (_createFailed[slotB], _createFailed[slotA]);
             (VibrationStates[slotA], VibrationStates[slotB]) =
                 (VibrationStates[slotB], VibrationStates[slotA]);
             (CombinedOutputStates[slotA], CombinedOutputStates[slotB]) =

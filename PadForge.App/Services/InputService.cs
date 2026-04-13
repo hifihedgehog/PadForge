@@ -2076,6 +2076,53 @@ namespace PadForge.Services
                             var realIds = HidHideController.FindInstanceIdsByVidPid(
                                 (ushort)ud.VendorId, (ushort)ud.ProdId);
 
+                            // Scrub any HIDMaestro-manufactured instance IDs that
+                            // got cached from a previous PadForge version whose
+                            // FindInstanceIdsByVidPid didn't yet filter them.
+                            // Without this scrub, pre-existing XML records keep
+                            // blacklisting our own virtual devices via HidHide on
+                            // every load, hiding them from DirectInput.
+                            //
+                            // First pass: collect VID&PID&IG signatures of any
+                            // ROOT\VID_* siblings in the cached list. Those are
+                            // HIDMaestro root devices — any HID\VID_ child sharing
+                            // their VID/PID/IG combo is also HIDMaestro's.
+                            var hmVidPidIgs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                            foreach (var cachedId in ud.HidHideInstanceIds)
+                            {
+                                if (cachedId.StartsWith(@"ROOT\VID_", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    // Extract the "VID_XXXX&PID_YYYY&IG_NN" signature.
+                                    int slash = cachedId.IndexOf('\\', 5);
+                                    if (slash > 0)
+                                        hmVidPidIgs.Add(cachedId.Substring(5, slash - 5));
+                                }
+                            }
+
+                            for (int i = ud.HidHideInstanceIds.Count - 1; i >= 0; i--)
+                            {
+                                string cachedId = ud.HidHideInstanceIds[i];
+                                bool scrub = HidHideController.IsHidMaestroDeviceInstance(cachedId);
+
+                                if (!scrub && hmVidPidIgs.Count > 0
+                                    && cachedId.StartsWith(@"HID\VID_", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    int slash = cachedId.IndexOf('\\', 4);
+                                    if (slash > 0)
+                                    {
+                                        string sig = cachedId.Substring(4, slash - 4);
+                                        if (hmVidPidIgs.Contains(sig))
+                                            scrub = true;
+                                    }
+                                }
+
+                                if (scrub)
+                                {
+                                    ud.HidHideInstanceIds.RemoveAt(i);
+                                    cacheUpdated = true;
+                                }
+                            }
+
                             if (realIds.Count > 0)
                             {
                                 // Merge — never discard cached IDs. Preserves

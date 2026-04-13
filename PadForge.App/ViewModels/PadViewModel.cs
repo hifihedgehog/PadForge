@@ -108,7 +108,11 @@ namespace PadForge.ViewModels
         public string ProfileId
         {
             get => _profileId;
-            set => SetProperty(ref _profileId, value);
+            set
+            {
+                if (SetProperty(ref _profileId, value))
+                    ConfigItemDirtyCallback?.Invoke();
+            }
         }
 
         /// <summary>

@@ -19,6 +19,7 @@
     <Copyright>Copyright © PadForge Contributors</Copyright>
     <Description>PadForge — Modern controller mapping application.</Description>
     <ApplicationIcon>Resources\PadForge.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <!-- Single-file portable publish: dotnet publish -c Release -->

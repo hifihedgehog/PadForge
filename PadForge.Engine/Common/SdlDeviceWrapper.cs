@@ -241,7 +241,7 @@ namespace PadForge.Engine
 
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
-            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId, SerialNumber);
+            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId, SerialNumber, SdlGuid);
 
             return true;
         }
@@ -654,14 +654,44 @@ namespace PadForge.Engine
         /// Priority: VID+PID+Serial (stable across reboots for BT devices),
         /// then device path, then VID+PID+SDL instance ID as last resort.
         /// </summary>
-        public static Guid BuildInstanceGuid(string devicePath, ushort vid, ushort pid, uint instanceId, string serial = null)
+        public static Guid BuildInstanceGuid(string devicePath, ushort vid, ushort pid, uint instanceId, string serial = null, string sdlGuid = null)
         {
             string identifier;
+            bool isXInputPath = devicePath != null
+                && devicePath.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase);
 
             if (!string.IsNullOrEmpty(serial))
             {
                 // Best: serial number (e.g. BT MAC) is stable across reboots/re-pairs.
                 identifier = $"serial:{vid:X4}:{pid:X4}:{serial}";
+            }
+            else if (isXInputPath)
+            {
+                // SDL's "XInput#N" path is slot-dependent and SDL's GUID is
+                // derived from a name that includes the slot number, so
+                // neither is a stable identifier across slot reshuffles.
+                // Look up the physical PnP instance for this VID/PID
+                // (filtering out HIDMaestro-parented virtuals) — that path
+                // contains the BT MAC or USB hub/port address and is
+                // completely slot-independent.
+                string physicalPath = null;
+                try { physicalPath = StableXInputInstance.Find(vid, pid); }
+                catch { physicalPath = null; }
+
+                if (!string.IsNullOrEmpty(physicalPath))
+                {
+                    identifier = $"pnp:{physicalPath}";
+                }
+                else if (!string.IsNullOrEmpty(sdlGuid) && !sdlGuid.All(c => c == '0'))
+                {
+                    // Fallback: SDL GUID (still slot-dependent, but better
+                    // than the raw XInput#N path).
+                    identifier = $"sdlguid:{sdlGuid}";
+                }
+                else
+                {
+                    identifier = $"{devicePath}:{vid:X4}:{pid:X4}";
+                }
             }
             else if (!string.IsNullOrEmpty(devicePath))
             {

@@ -45,9 +45,10 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _sonyProfiles; }
         }
 
-        /// <summary>Everything that isn't Microsoft or Sony — Logitech wheels,
-        /// Thrustmaster HOTAS, Fanatec sims, Hori arcade sticks, 8BitDo
-        /// retros, etc. ~191 profiles.</summary>
+        /// <summary>The full catalog — every profile HIDMaestro ships. Extended
+        /// is the DirectInput/vJoy replacement category and exposes all 225
+        /// profiles plus (future) the custom profile editor. Microsoft and
+        /// Sony are convenience subsets of this same list.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
             get { EnsureInitialized(); return _extendedProfiles; }
@@ -86,10 +87,11 @@ namespace PadForge.Common.Input
                         .Where(p => string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
-                    _extendedProfiles = _allProfiles
-                        .Where(p => !string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase)
-                                 && !string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
-                        .ToList();
+                    // Extended lists the entire catalog — it's the
+                    // DirectInput/vJoy replacement and the advanced slot where
+                    // the user picks from every profile or (future) builds
+                    // custom ones. Microsoft/Sony are curated subsets.
+                    _extendedProfiles = _allProfiles;
                 }
                 catch
                 {

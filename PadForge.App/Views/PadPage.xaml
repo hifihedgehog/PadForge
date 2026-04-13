@@ -269,7 +269,8 @@
                           ItemsSource="{Binding AvailableProfiles}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
-                          SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                          SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          PreviewKeyDown="ProfileCombo_PreviewKeyDown"/>
             </StackPanel>
         </Border>
 
@@ -278,52 +279,87 @@
              (visible only when OutputType == VJoy)
              ══════════════════════════════════════ -->
         <Border x:Name="VJoyConfigBar" Grid.Row="1" Margin="4,4,4,0"
-                Padding="10,6" CornerRadius="4"
+                Padding="10,8" CornerRadius="4"
                 Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
                 BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
                 Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <!-- Preset selector -->
-                <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,6,0"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
-                <ComboBox x:Name="VJoyPresetCombo" Width="130" VerticalAlignment="Center"
-                          AutomationProperties.AutomationId="VJoyPresetCombo"
-                          SelectionChanged="VJoyPresetCombo_SelectionChanged">
-                    <ComboBoxItem Content="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}"/>
-                    <ComboBoxItem Content="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}"/>
-                    <ComboBoxItem Content="{Binding Pad_Custom, Source={x:Static strings:Strings.Instance}}"/>
-                </ComboBox>
+            <StackPanel>
+                <!-- Row 1: Profile picker + Import-from-device -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Profile" VerticalAlignment="Center" Margin="0,0,6,0"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
+                    <ComboBox x:Name="ExtendedProfileCombo" Width="260" VerticalAlignment="Center"
+                              ItemsSource="{Binding AvailableProfiles}"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="Id"
+                              SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              PreviewKeyDown="ProfileCombo_PreviewKeyDown"/>
+                    <Button x:Name="ExtendedImportBtn" Content="Import from device…"
+                            Margin="12,0,0,0" VerticalAlignment="Center"
+                            IsEnabled="False"
+                            ToolTip="Coming soon — capture HID descriptor from a plugged-in device"/>
+                </StackPanel>
 
-                <!-- Custom config spinners (visible when Custom preset) -->
-                <StackPanel x:Name="VJoyCustomPanel" Orientation="Horizontal" Margin="16,0,0,0"
-                            Visibility="Collapsed">
-                    <TextBlock Text="{Binding Pad_VJoySticks, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                <!-- Row 2: Identity override (Name / VID / PID) -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
+                    <TextBlock Text="Name" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBox x:Name="ExtendedNameBox" Width="170" VerticalAlignment="Center"
+                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+
+                    <TextBlock Text="VID" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBox x:Name="ExtendedVidBox" Width="60" VerticalAlignment="Center"
+                             TextAlignment="Center"
+                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+
+                    <TextBlock Text="PID" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBox x:Name="ExtendedPidBox" Width="60" VerticalAlignment="Center"
+                             TextAlignment="Center"
+                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+                </StackPanel>
+
+                <!-- Row 3: Layout override (Sticks / Triggers / POVs / Buttons) -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
+                    <TextBlock Text="{Binding Pad_VJoySticks, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyStickCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{Binding Pad_VJoyTriggers, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoyTriggers, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyTriggerCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{Binding Pad_VJoyPOVs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoyPOVs, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyPovCountBox"
                              TextAlignment="Center" Text="1"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{Binding Pad_VJoyButtons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
+                    <TextBlock Text="{Binding Pad_VJoyButtons, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
                              AutomationProperties.AutomationId="VJoyButtonCountBox"
                              TextAlignment="Center" Text="11"
                              LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+
+                    <CheckBox x:Name="ExtendedTouchpadChk" Content="Touchpad" Margin="14,0,0,0"
+                              VerticalAlignment="Center"
+                              Checked="ExtendedOverride_Changed" Unchecked="ExtendedOverride_Changed"/>
+                    <CheckBox x:Name="ExtendedRumbleChk" Content="Rumble" Margin="10,0,0,0"
+                              VerticalAlignment="Center"
+                              Checked="ExtendedOverride_Changed" Unchecked="ExtendedOverride_Changed"/>
                 </StackPanel>
             </StackPanel>
         </Border>

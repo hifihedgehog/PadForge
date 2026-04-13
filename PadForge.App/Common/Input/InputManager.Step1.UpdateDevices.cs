@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Engine;
@@ -73,6 +74,75 @@ namespace PadForge.Common.Input
 
             bool changed = false;
 
+            // After a HIDMaestro virtual controller claims an XInput slot,
+            // SDL's internal state for the OTHER slots (the real Xbox the
+            // user wants to read from) can go stale — the SDL_JoystickID
+            // stays alive but subsequent state reads return zero. Drop every
+            // open SDL joystick handle so they get reopened clean on this
+            // pass. The existing UserDevice records are keyed by InstanceGuid
+            // and live in SettingsManager.UserDevices separately from the
+            // _openedSdlInstanceIds tracking set, so the mapping the user
+            // configured is preserved — only the SDL handles cycle.
+            if (_sdlJoysticksNeedReopen)
+            {
+                _sdlJoysticksNeedReopen = false;
+                var sdlIds = _openedSdlInstanceIds.ToArray();
+                try { System.IO.File.AppendAllText(@"C:\PadForge\filter-debug.log",
+                    $"[{DateTime.Now:HH:mm:ss.fff}] FORCE REOPEN: closing {sdlIds.Length} SDL handles: [{string.Join(",", sdlIds)}]\n"); } catch { }
+                foreach (uint sid in sdlIds)
+                {
+                    var u = FindOnlineDeviceBySdlInstanceId(sid);
+                    if (u?.Device != null)
+                    {
+                        try { u.Device.Dispose(); } catch { }
+                        u.Device = null;
+                    }
+                    _openedSdlInstanceIds.Remove(sid);
+                }
+            }
+
+            // Dump current SDL joystick list + raw XInput state per slot.
+            var snapshotIds = SDL_GetJoysticks();
+            try {
+                var sb = new System.Text.StringBuilder();
+                sb.Append($"[{DateTime.Now:HH:mm:ss.fff}] Step1 snapshot: ");
+                foreach (uint id in snapshotIds)
+                {
+                    string path = SDL_GetJoystickPathForID(id) ?? "<null>";
+                    sb.Append($"SDL#{id}='{path}' ");
+                }
+                sb.Append("| XInput:");
+                for (int slot = 0; slot < 4; slot++)
+                {
+                    int rc = XInputGetStateRaw(slot, out var st);
+                    if (rc == 0)
+                        sb.Append($" s{slot}=pkt{st.dwPacketNumber},btn0x{st.Gamepad.wButtons:X4},LX{st.Gamepad.sThumbLX}");
+                    else
+                        sb.Append($" s{slot}=empty");
+                }
+                sb.AppendLine();
+                System.IO.File.AppendAllText(@"C:\PadForge\filter-debug.log", sb.ToString());
+            } catch { }
+
+            // Revalidate the HIDMaestro-filtered SDL IDs every cycle: if the
+            // underlying XInput slot no longer belongs to one of our virtual
+            // controllers (e.g. the virtual was destroyed and the real moved
+            // back into that slot), remove the ID from the filter cache so
+            // the real device is re-opened on this pass. Without this the
+            // filtered cache is sticky across virtual lifecycle and can
+            // permanently mask the user's real input device.
+            var cached = _filteredVigemInstanceIds.ToArray();
+            foreach (uint cid in cached)
+            {
+                string cp = SDL_GetJoystickPathForID(cid) ?? string.Empty;
+                if (cp.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase)
+                    && int.TryParse(cp.Substring(7), out int cslot)
+                    && !IsHidMaestroXInputSlot(cslot))
+                {
+                    _filteredVigemInstanceIds.Remove(cid);
+                }
+            }
+
             // SDL3: Get array of instance IDs for all connected joysticks.
             uint[] joystickIds = SDL_GetJoysticks();
 
@@ -94,6 +164,28 @@ namespace PadForge.Common.Input
                     if (_openedSdlInstanceIds.Contains(instanceId))
                         continue;
 
+                    // ── Pre-open filtering ──
+                    // CRITICAL: query the device path via SDL_GetJoystickPathForID
+                    // WITHOUT opening the joystick, and skip HIDMaestro virtual
+                    // devices before any HID handle is opened.
+                    //
+                    // Opening SDL joysticks for xinputhid profiles (e.g.
+                    // xbox-series-xs-bt) disturbs the PnP settling process —
+                    // even an open+immediate-close makes the HID collection
+                    // invisible to DirectInput, so joy.cpl and games miss the
+                    // device entirely. The test app works because it never
+                    // enumerates with SDL. Filter pre-open, NOT post-open.
+                    string prePath = SDL_GetJoystickPathForID(instanceId) ?? string.Empty;
+                    bool hmMatch = !string.IsNullOrEmpty(prePath) && IsHidMaestroAncestor(prePath);
+                    try { System.IO.File.AppendAllText(@"C:\PadForge\filter-debug.log",
+                        $"[{DateTime.Now:HH:mm:ss.fff}] Step1 enum SDL#{instanceId} prePath='{prePath}' → {(hmMatch ? "FILTER" : "PASS")}\n"); } catch { }
+                    if (hmMatch)
+                    {
+                        Debug.WriteLine($"[Step1] Pre-open filtered HIDMaestro device: SDL#{instanceId} path={prePath}");
+                        _filteredVigemInstanceIds.Add(instanceId);
+                        continue;
+                    }
+
                     // Open the device by instance ID.
                     var wrapper = new SdlDeviceWrapper();
                     if (!wrapper.Open(instanceId))
@@ -102,11 +194,12 @@ namespace PadForge.Common.Input
                         continue;
                     }
 
-                    // ── Post-open filtering ──
-                    // Skip ViGEm virtual controllers (our own output devices).
+                    // ── Post-open filtering (fallback) ──
+                    // Still check post-open in case the pre-open path query
+                    // returned an empty or unrecognized path — defence in depth.
                     if (IsViGEmVirtualDevice(wrapper))
                     {
-                        Debug.WriteLine($"[Step1] Filtered ViGEm device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
+                        Debug.WriteLine($"[Step1] Post-open filtered HIDMaestro device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                         _filteredVigemInstanceIds.Add(instanceId);
                         wrapper.Dispose();
                         continue;
@@ -370,12 +463,147 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(path))
                 return false;
 
-            // The XUSB companion (HMXInput.dll, used for Xbox 360 wired
-            // profiles) creates a second device node with the literal
-            // "HMXINPUT" enumerator. Match either signature.
+            // Fast path: direct substring match catches the unspoofed cases
+            // (root enumerator in the device interface symlink).
             string pathUpper = path.ToUpperInvariant();
-            return pathUpper.Contains("HIDMAESTRO") || pathUpper.Contains("HMXINPUT");
+            if (pathUpper.Contains("HIDMAESTRO") || pathUpper.Contains("HMXINPUT"))
+                return true;
+
+            // HIDMaestro profiles spoof real Xbox / Sony / wheel VID+PID for
+            // the HID child collection, so the SDL symlink (e.g.
+            // "\\?\HID#VID_045E&PID_028E#...") looks identical to a genuine
+            // device. Walk the PnP parent chain to find the root enumerator —
+            // HIDMaestro devices live under ROOT\HIDMAESTRO* (see driver INFs:
+            // HIDMaestro, HIDMaestroGamepad, HIDMaestroUSB, HIDMaestroXna,
+            // HIDMaestroXnaHid, HIDMaestroXUSB).
+            return IsHidMaestroAncestor(path);
         }
+
+        private bool IsHidMaestroAncestor(string symlinkPath)
+        {
+            // SDL uses a synthetic "XInput#N" path for its XInput backend —
+            // there's no PnP tree to walk. Consult the live HMController list
+            // directly: if any of our virtual controllers has claimed this
+            // XInput slot, filter it. This is the ONLY case where real and
+            // virtual Xbox devices share an identical SDL path, so without
+            // this check both show up in the Devices list and a physical
+            // controller mapping can race onto the wrong slot at startup.
+            if (symlinkPath != null
+                && symlinkPath.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase)
+                && symlinkPath.Length > 7
+                && int.TryParse(symlinkPath.Substring(7), out int xiSlot)
+                && IsHidMaestroXInputSlot(xiSlot))
+            {
+                return true;
+            }
+
+            // Convert HID device interface symlink to a PnP device instance ID.
+            //   "\\?\HID#VID_045E&PID_028E#7&abc&0&0000#{4d1e55b2-...}"
+            // → "HID\VID_045E&PID_028E\7&abc&0&0000"
+            string s = symlinkPath;
+            if (s.StartsWith(@"\\?\")) s = s.Substring(4);
+            int brace = s.IndexOf('{');
+            if (brace >= 0) s = s.Substring(0, brace).TrimEnd('#');
+            string instanceId = s.Replace('#', '\\');
+
+            uint devInst;
+            int locateRc = CM_Locate_DevNodeW(out devInst, instanceId, 0);
+            if (locateRc != 0)
+            {
+                return false;
+            }
+
+            // Walk the PnP parent chain. At each level check both the
+            // instance ID (for legacy HIDMaestro root enumerator patterns)
+            // and DEVPKEY_Device_Manufacturer (the canonical identifier —
+            // set to "HIDMaestro" on every root device our SDK creates and
+            // nowhere else on the system). Manufacturer string is the most
+            // reliable signal: real Xbox BT controllers report "(Standard
+            // system devices)", real Xbox wired USB devices report
+            // "Microsoft", never "HIDMaestro". Matching on Manufacturer
+            // means spoofed VID/PID profiles (xbox-series-xs-bt etc.) are
+            // filtered correctly regardless of how Windows chooses to name
+            // their enumerator path on a given machine.
+            var idBuffer = new System.Text.StringBuilder(512);
+            for (int depth = 0; depth < 16; depth++)
+            {
+                // --- Manufacturer property check ---
+                var mfg = new char[128];
+                int mfgLen = mfg.Length * 2;
+                if (CM_Get_DevNode_Registry_PropertyW(devInst, CM_DRP_MFG, out _, mfg, ref mfgLen, 0) == 0)
+                {
+                    int strLen = 0;
+                    while (strLen < mfg.Length && mfg[strLen] != '\0') strLen++;
+                    string mfgStr = new string(mfg, 0, strLen);
+                    if (string.Equals(mfgStr, "HIDMaestro", StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+
+                // --- Instance ID string check (legacy patterns) ---
+                idBuffer.Clear();
+                idBuffer.EnsureCapacity(512);
+                if (CM_Get_Device_IDW(devInst, idBuffer, idBuffer.Capacity, 0) == 0)
+                {
+                    string id = idBuffer.ToString();
+                    if (id.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0
+                        || id.IndexOf("HMCOMPANION", StringComparison.OrdinalIgnoreCase) >= 0
+                        || id.IndexOf("HMXINPUT", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return true;
+
+                    if (id.StartsWith(@"ROOT\VID_", StringComparison.OrdinalIgnoreCase)
+                        && (id.IndexOf("&IG_", StringComparison.OrdinalIgnoreCase) >= 0
+                            || id.IndexOf("&XI_", StringComparison.OrdinalIgnoreCase) >= 0))
+                        return true;
+                }
+
+                uint parent;
+                if (CM_Get_Parent(out parent, devInst, 0) != 0) break;
+                if (parent == 0 || parent == devInst) break;
+                devInst = parent;
+            }
+            return false;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct XI_GAMEPAD_DBG
+        {
+            public ushort wButtons;
+            public byte bLeftTrigger;
+            public byte bRightTrigger;
+            public short sThumbLX;
+            public short sThumbLY;
+            public short sThumbRX;
+            public short sThumbRY;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct XI_STATE_DBG
+        {
+            public uint dwPacketNumber;
+            public XI_GAMEPAD_DBG Gamepad;
+        }
+
+        [DllImport("xinput1_4.dll", EntryPoint = "XInputGetState")]
+        private static extern int XInputGetStateRaw(int dwUserIndex, out XI_STATE_DBG pState);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Locate_DevNodeW(out uint devInst, string deviceId, int flags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Parent(out uint parent, uint devInst, int flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_Device_IDW(uint devInst, System.Text.StringBuilder buffer, int len, int flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_DevNode_Registry_PropertyW(
+            uint devInst, uint property, out uint pulRegDataType,
+            [Out] char[] buffer, ref int length, uint flags);
+
+        // CM_DRP_MFG = 0x0D (1-based) — the legacy "Manufacturer" property,
+        // equivalent to DEVPKEY_Device_Manufacturer via the older CfgMgr
+        // property API. Our HIDMaestro INFs write "HIDMaestro" here.
+        private const uint CM_DRP_MFG = 0x0D;
 
         // ─────────────────────────────────────────────
         //  UserDevice lookup helpers

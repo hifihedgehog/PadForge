@@ -500,6 +500,12 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _use2DControllerView, value);
         }
 
+        /// <summary>
+        /// True after the v3 first-run cleanup wizard has been shown to the
+        /// user. Persists across launches so the dialog only appears once.
+        /// </summary>
+        public bool LegacyDriverCleanupOffered { get; set; }
+
         // ─────────────────────────────────────────────
         //  Main window position/size (profile-independent)
         // ─────────────────────────────────────────────

@@ -872,6 +872,10 @@ namespace PadForge
             // Load profile shortcuts after settings are loaded.
             LoadProfileShortcuts();
 
+            // First-run legacy driver cleanup (v2 → v3 upgrade path).
+            Dispatcher.BeginInvoke(new Action(MaybeOfferLegacyDriverCleanup),
+                System.Windows.Threading.DispatcherPriority.Loaded);
+
             // Restore main window position/size/state.
             var mw = _viewModel.Settings;
             if (mw.MainWindowLeft >= 0 && mw.MainWindowTop >= 0)
@@ -986,6 +990,62 @@ namespace PadForge
             // Select the first nav item.
             if (NavView.MenuItems.Count > 0)
                 if (NavView.MenuItems[0] is NavigationViewItem first) first.IsActive = true;
+        }
+
+        private async void MaybeOfferLegacyDriverCleanup()
+        {
+            if (_viewModel.Settings.LegacyDriverCleanupOffered) return;
+
+            bool hasVJoy = DriverInstaller.IsVJoyInstalled();
+            bool hasViGEm = DriverInstaller.GetViGEmVersion() != null;
+            if (!hasVJoy && !hasViGEm)
+            {
+                _viewModel.Settings.LegacyDriverCleanupOffered = true;
+                _settingsService?.MarkDirty();
+                return;
+            }
+
+            var found = new System.Collections.Generic.List<string>();
+            if (hasViGEm) found.Add("ViGEmBus");
+            if (hasVJoy) found.Add("vJoy");
+
+            // Ensure window is visible so the dialog isn't hidden behind tray mode.
+            if (!IsVisible) { try { Show(); } catch { } }
+            if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+            Activate();
+
+            var dialog = new Wpf.Ui.Controls.MessageBox
+            {
+                Title = "Legacy Driver Cleanup",
+                Content =
+                    $"PadForge v3 uses HIDMaestro and no longer needs the legacy driver(s): {string.Join(", ", found)}.\n\n" +
+                    "Would you like PadForge to uninstall them now? This requires elevation and may take a moment.",
+                PrimaryButtonText = "Uninstall",
+                CloseButtonText = "Keep",
+            };
+
+            var result = await dialog.ShowDialogAsync();
+            if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
+            {
+                try
+                {
+                    if (hasViGEm) DriverInstaller.UninstallViGEmBus();
+                    if (hasVJoy) DriverInstaller.UninstallVJoy();
+                }
+                catch (Exception ex)
+                {
+                    var err = new Wpf.Ui.Controls.MessageBox
+                    {
+                        Title = "Legacy Driver Cleanup",
+                        Content = $"Cleanup encountered an error: {ex.Message}\n\nYou can retry later from Settings.",
+                        CloseButtonText = "OK",
+                    };
+                    _ = await err.ShowDialogAsync();
+                }
+            }
+
+            _viewModel.Settings.LegacyDriverCleanupOffered = true;
+            _settingsService?.MarkDirty();
         }
 
         private bool _shutdownComplete;

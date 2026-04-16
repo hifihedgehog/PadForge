@@ -1008,51 +1008,58 @@ namespace PadForge.Services
             var ps = us.GetPadSetting();
             if (ps == null) return;
 
-            // Dead zones (independent X/Y).
-            ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString();
-            ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString();
-            ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString();
-            ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString();
+            // Issue #50: all double→string conversions MUST use InvariantCulture.
+            // Without it, locales like German produce "20,5" (comma separator),
+            // which the load-side TryParseDouble (InvariantCulture, expects "20.5")
+            // silently fails on → returns 0 → the 30Hz sync loop overwrites the
+            // user's setting with 0, destroying it permanently.
+            var ic = System.Globalization.CultureInfo.InvariantCulture;
 
-            // Dead zone shapes.
+            // Dead zones (independent X/Y).
+            ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString(ic);
+            ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString(ic);
+            ps.RightThumbDeadZoneX = padVm.RightDeadZoneX.ToString(ic);
+            ps.RightThumbDeadZoneY = padVm.RightDeadZoneY.ToString(ic);
+
+            // Dead zone shapes (enum — not affected, but consistent).
             ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
             ps.RightThumbDeadZoneShape = padVm.RightDeadZoneShape.ToString();
 
             // Anti-deadzones (per-axis).
-            ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString();
-            ps.LeftThumbAntiDeadZoneY = padVm.LeftAntiDeadZoneY.ToString();
-            ps.RightThumbAntiDeadZoneX = padVm.RightAntiDeadZoneX.ToString();
-            ps.RightThumbAntiDeadZoneY = padVm.RightAntiDeadZoneY.ToString();
+            ps.LeftThumbAntiDeadZoneX = padVm.LeftAntiDeadZoneX.ToString(ic);
+            ps.LeftThumbAntiDeadZoneY = padVm.LeftAntiDeadZoneY.ToString(ic);
+            ps.RightThumbAntiDeadZoneX = padVm.RightAntiDeadZoneX.ToString(ic);
+            ps.RightThumbAntiDeadZoneY = padVm.RightAntiDeadZoneY.ToString(ic);
 
             // Linear response.
-            ps.LeftThumbLinear = padVm.LeftLinear.ToString();
-            ps.RightThumbLinear = padVm.RightLinear.ToString();
+            ps.LeftThumbLinear = padVm.LeftLinear.ToString(ic);
+            ps.RightThumbLinear = padVm.RightLinear.ToString(ic);
 
             // Center offsets.
-            ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString();
-            ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString();
-            ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString();
-            ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString();
+            ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString(ic);
+            ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString(ic);
+            ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString(ic);
+            ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString(ic);
 
             // Max range.
-            ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString();
-            ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString();
-            ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString();
-            ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString();
-            ps.LeftThumbMaxRangeXNeg = padVm.LeftMaxRangeXNeg.ToString();
-            ps.LeftThumbMaxRangeYNeg = padVm.LeftMaxRangeYNeg.ToString();
-            ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString();
-            ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString();
+            ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString(ic);
+            ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString(ic);
+            ps.RightThumbMaxRangeX = padVm.RightMaxRangeX.ToString(ic);
+            ps.RightThumbMaxRangeY = padVm.RightMaxRangeY.ToString(ic);
+            ps.LeftThumbMaxRangeXNeg = padVm.LeftMaxRangeXNeg.ToString(ic);
+            ps.LeftThumbMaxRangeYNeg = padVm.LeftMaxRangeYNeg.ToString(ic);
+            ps.RightThumbMaxRangeXNeg = padVm.RightMaxRangeXNeg.ToString(ic);
+            ps.RightThumbMaxRangeYNeg = padVm.RightMaxRangeYNeg.ToString(ic);
 
             // Trigger deadzones.
-            ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString();
-            ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString();
-            ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString();
-            ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString();
-            ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString();
-            ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString();
+            ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString(ic);
+            ps.RightTriggerDeadZone = padVm.RightTriggerDeadZone.ToString(ic);
+            ps.LeftTriggerAntiDeadZone = padVm.LeftTriggerAntiDeadZone.ToString(ic);
+            ps.RightTriggerAntiDeadZone = padVm.RightTriggerAntiDeadZone.ToString(ic);
+            ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString(ic);
+            ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString(ic);
 
-            // Force feedback.
+            // Force feedback (int properties — not locale-affected).
             ps.ForceOverall = padVm.ForceOverallGain.ToString();
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
@@ -1060,8 +1067,8 @@ namespace PadForge.Services
 
             // Audio bass rumble.
             ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
-            ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1");
-            ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0");
+            ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1", ic);
+            ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0", ic);
             ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
             ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 

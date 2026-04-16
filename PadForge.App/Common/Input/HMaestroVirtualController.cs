@@ -22,6 +22,7 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private bool _disposed;
+        private int _vibLogCount;
         private int? _detectedXInputSlot;
 
         public VirtualControllerType Type => _type;
@@ -232,8 +233,18 @@ namespace PadForge.Common.Input
 
                 var data = pkt.Data.Span;
 
-                // XInput rumble: [0x00, 0x04, leftMotor, rightMotor, 0x00]
-                if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
+                // Log ALL output packets (first 20) to diagnose vibration path.
+                if (_vibLogCount < 20)
+                {
+                    _vibLogCount++;
+                    var hex = new System.Text.StringBuilder();
+                    for (int b = 0; b < Math.Min(data.Length, 12); b++)
+                        hex.Append($"{data[b]:X2} ");
+                    XInputHook.Log($"OutputReceived src={pkt.Source} id=0x{pkt.ReportId:X2} pad{idx} len={data.Length} [{hex}]");
+                }
+
+                // XInput rumble: [0x00, 0x00, leftMotor, rightMotor, 0x00]
+                if (pkt.Source == HMOutputSource.XInput && data.Length >= 4)
                 {
                     ushort newL = (ushort)(data[2] * 257);
                     ushort newR = (ushort)(data[3] * 257);

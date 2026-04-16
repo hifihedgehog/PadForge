@@ -336,6 +336,12 @@ namespace PadForge.Common
             if (CM_Locate_DevNodeW(out uint devInst, instanceId, 0) != 0)
                 return false;
 
+            // Depth-0 hardware ID check: every HIDMaestro HID child has
+            // "HID\HIDMaestro" in its Hardware IDs. Most reliable single
+            // call — catches all profiles immediately.
+            if (HasHidMaestroHardwareId(devInst))
+                return true;
+
             // Walk the parent chain. At each level test both the INSTANCE ID
             // string and the manufacturer registry value — catching either
             // lets us filter HIDMaestro-parented HID children correctly
@@ -405,7 +411,32 @@ namespace PadForge.Common
             uint devInst, uint property, out uint pulRegDataType,
             [Out] char[] buffer, ref int length, uint flags);
 
+        private const uint CM_DRP_HARDWAREID = 0x02;
         private const uint CM_DRP_MFG = 0x0D;
+
+        private static bool HasHidMaestroHardwareId(uint devInst)
+        {
+            var buffer = new char[1024];
+            int length = buffer.Length * 2;
+            if (CM_Get_DevNode_Registry_PropertyW(devInst, CM_DRP_HARDWAREID,
+                    out _, buffer, ref length, 0) != 0)
+                return false;
+
+            int charCount = length / 2;
+            int start = 0;
+            for (int i = 0; i < charCount; i++)
+            {
+                if (buffer[i] == '\0')
+                {
+                    if (i == start) break;
+                    var id = new string(buffer, start, i - start);
+                    if (id.IndexOf("HIDMaestro", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return true;
+                    start = i + 1;
+                }
+            }
+            return false;
+        }
 
         /// <summary>
         /// Converts a device path (\\?\HID#VID_...) to a PnP device instance ID

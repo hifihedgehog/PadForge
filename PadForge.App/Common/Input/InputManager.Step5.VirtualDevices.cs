@@ -103,17 +103,31 @@ namespace PadForge.Common.Input
         // profile change. Cleared whenever a VC is destroyed.
         private readonly bool[] _loggedFirstSubmit = new bool[MaxPads];
 
+        // Per-slot XInput slot number that we're hiding via the hook.
+        // -1 = no XInput slot claimed by the virtual at this pad index.
+        // MUST be initialized to -1 (not default 0) — otherwise the
+        // detection loop thinks slot 0 is "already hidden by another pad"
+        // and skips it, causing the virtual at slot 0 to go undetected.
+        private readonly int[] _hiddenXInputSlot = InitHiddenSlotArray();
+
         /// <summary>
-        /// Set by Step 5 whenever a new HIDMaestro virtual controller lands
-        /// on an XInput slot. Creating a virtual XInput device invalidates
-        /// SDL's internal per-joystick state for the OTHER XInput slots
-        /// (the real Xbox controllers) — SDL keeps the SDL_JoystickID alive
-        /// but the underlying handle is stale and reads return zero. Step 1
-        /// reads this flag at the top of its next pass and force-closes
-        /// all currently-open SDL joysticks so they get re-opened clean.
+        /// Set by Step 5 after updating the XInput hook mask. Step 1
+        /// consumes this to close all SDL joystick handles so they get
+        /// re-enumerated — SDL's XInput backend will now skip the masked
+        /// slots and the virtual never enters PadForge's device list.
         /// </summary>
         internal bool _sdlJoysticksNeedReopen;
 
+        private static int[] InitHiddenSlotArray()
+        {
+            var arr = new int[MaxPads];
+            for (int i = 0; i < arr.Length; i++) arr[i] = -1;
+            return arr;
+        }
+
+        /// <summary>
+        /// Set by Step 5 whenever a new HIDMaestro virtual controller lands
+        /// on an XInput slot. Creating a virtual XInput device invalidates
         /// <summary>
         /// Per-slot flag: true while a virtual controller is being created.
         /// Set true just before creation, cleared when the controller reports
@@ -371,43 +385,102 @@ namespace PadForge.Common.Input
                         if (_createFailed[padIndex])
                             continue;
 
-                        VcLifecycleLog.Log($"pad{padIndex} CREATE {SlotControllerTypes[padIndex]} profile='{SlotProfileIds[padIndex]}'");
                         RumbleLogger.Log($"[Step5] Pad{padIndex} creating {SlotControllerTypes[padIndex]} virtual controller (ordered)");
 
-                        // Snapshot XInput slot packet numbers before create
-                        // so the post-create detection can find which slot
-                        // the virtual actually landed on (xinputhid may
-                        // reshuffle slots — the delta bitmask approach
-                        // can't distinguish direction).
-                        var xiBefore = HMaestroVirtualController.SnapshotXInputPackets();
+                        // For Xbox profiles: ensure HIDMaestro context is up
+                        // (which runs RemoveAllVirtualControllers to clean
+                        // stale devices from prior sessions) BEFORE taking
+                        // the XInput slot snapshot. Otherwise the snapshot
+                        // includes old virtuals and the delta detection can't
+                        // find the new one.
+                        bool isMsSlot = SlotControllerTypes[padIndex] == VirtualControllerType.Microsoft;
+                        if (isMsSlot) EnsureHMaestroContext();
+
+                        int xiBeforeMask = 0;
+                        if (isMsSlot && XInputHook.IsInstalled)
+                        {
+                            // Give XInput time to notice the cleanup.
+                            System.Threading.Thread.Sleep(500);
+                            var bsb = new System.Text.StringBuilder("Before (post-cleanup): ");
+                            for (int s = 0; s < 4; s++)
+                            {
+                                if (XInputHook.GetStateOriginal(s, out var bst) == 0)
+                                {
+                                    xiBeforeMask |= (1 << s);
+                                    bsb.Append($"s{s}=pkt{bst.dwPacketNumber},LX{bst.Gamepad.sThumbLX} ");
+                                }
+                                else bsb.Append($"s{s}=empty ");
+                            }
+                            XInputHook.Log(bsb.ToString());
+                        }
 
                         var vc = CreateVirtualController(padIndex);
                         _virtualControllers[padIndex] = vc;
 
-                        if (vc is HMaestroVirtualController justCreated
-                            && SlotControllerTypes[padIndex] == VirtualControllerType.Microsoft)
+                        // Detect which XInput slot the virtual claimed and
+                        // update the hook mask so SDL never sees it.
+                        if (isMsSlot && vc != null && vc.IsConnected && XInputHook.IsInstalled)
                         {
-                            justCreated.DetectXInputSlotUsingBefore(xiBefore);
+                            // Brief settle for XInput slot claim.
+                            System.Threading.Thread.Sleep(500);
+                            // The virtual always has the LOWEST packet number
+                            // (freshly created, hasn't been polled). Bitmask
+                            // delta can't detect slot REPLACEMENT (xinputhid
+                            // may move the real to a different slot and give
+                            // slot 0 to the virtual — both slots occupied
+                            // before and after, delta = 0). Packet count is
+                            // the only reliable signal.
+                            int virtualSlot = -1;
+                            uint lowestPkt = uint.MaxValue;
+                            var sb = new System.Text.StringBuilder("After: ");
+                            for (int s = 0; s < 4; s++)
+                            {
+                                if (XInputHook.GetStateOriginal(s, out var st) == 0)
+                                {
+                                    sb.Append($"s{s}=pkt{st.dwPacketNumber},LX{st.Gamepad.sThumbLX} ");
+                                    // Only consider slots not already hidden by
+                                    // a DIFFERENT pad's virtual controller.
+                                    bool alreadyHidden = false;
+                                    for (int p = 0; p < MaxPads; p++)
+                                        if (p != padIndex && _hiddenXInputSlot[p] == s)
+                                        { alreadyHidden = true; break; }
+
+                                    if (!alreadyHidden && st.dwPacketNumber < lowestPkt)
+                                    {
+                                        lowestPkt = st.dwPacketNumber;
+                                        virtualSlot = s;
+                                    }
+                                }
+                                else sb.Append($"s{s}=empty ");
+                            }
+                            XInputHook.Log(sb.ToString());
+
+                            if (virtualSlot >= 0 && lowestPkt < 200)
+                            {
+                                _hiddenXInputSlot[padIndex] = virtualSlot;
+                                XInputHook.SetIgnoreSlotMask(
+                                    XInputHook.IgnoreSlotMask | (1 << virtualSlot));
+                                _sdlJoysticksNeedReopen = true;
+                                XInputHook.Log($"Hiding XInput slot {virtualSlot} (pkt={lowestPkt}) for pad{padIndex}, mask=0x{XInputHook.IgnoreSlotMask:X}");
+                            }
+                            else
+                            {
+                                XInputHook.Log($"WARNING: no fresh virtual slot found (lowestPkt={lowestPkt}) for pad{padIndex}");
+                            }
+                        }
+                        else if (isMsSlot && vc != null && vc.IsConnected && !XInputHook.IsInstalled)
+                        {
+                            XInputHook.Log($"WARNING: hook not installed, cannot hide XInput slot for pad{padIndex}");
                         }
 
                         if (vc != null && vc.IsConnected)
                         {
-                            VcLifecycleLog.Log($"pad{padIndex} CREATE success IsConnected=true");
                             _slotInitializing[padIndex] = false;
-                            if (vc is HMaestroVirtualController hmNew)
-                            {
+                            if (vc is HMaestroVirtualController)
                                 anyHMaestroCreatedThisPass = true;
-                                // If the new VC claimed an XInput slot,
-                                // SDL's existing handles for the OTHER
-                                // XInput slots (real controllers) are
-                                // stale. Mark them for re-open.
-                                if (hmNew.XInputSlot.HasValue)
-                                    _sdlJoysticksNeedReopen = true;
-                            }
                         }
                         else if (vc == null)
                         {
-                            VcLifecycleLog.Log($"pad{padIndex} CREATE FAILED — latching, no retry until state changes");
                             _createFailed[padIndex] = true;
                             _slotInitializing[padIndex] = false;
                         }
@@ -742,6 +815,16 @@ namespace PadForge.Common.Input
             if (vc == null) return;
 
             _loggedFirstSubmit[padIndex] = false;
+
+            // Clear the XInput hook mask BEFORE teardown so HIDMaestro's
+            // internal TeardownController can query XInput slots cleanly.
+            int hiddenSlot = _hiddenXInputSlot[padIndex];
+            if (hiddenSlot >= 0)
+            {
+                XInputHook.SetIgnoreSlotMask(
+                    XInputHook.IgnoreSlotMask & ~(1 << hiddenSlot));
+                _hiddenXInputSlot[padIndex] = -1;
+            }
 
             try
             {

@@ -320,6 +320,15 @@ namespace PadForge.Common.Input
             if (!InitializeSdl())
                 return;
 
+            // Install XInput hook AFTER SDL_Init so SDL3's global XInput
+            // function pointers (populated via GetProcAddress during init)
+            // are available for us to scan and overwrite.
+            try { XInputHook.Install(); }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[XInputHook] Install failed: {ex}");
+            }
+
             RawInputListener.Start();
 
             // PTP reader always runs so Devices page can preview touchpad input.

@@ -1013,6 +1013,10 @@ namespace PadForge.Services
             // which the load-side TryParseDouble (InvariantCulture, expects "20.5")
             // silently fails on → returns 0 → the 30Hz sync loop overwrites the
             // user's setting with 0, destroying it permanently.
+            //
+            // WARNING: if you add a new double property below, use .ToString(ic)
+            // — NOT bare .ToString(). Bare ToString is locale-sensitive and will
+            // silently destroy user settings on non-English systems.
             var ic = System.Globalization.CultureInfo.InvariantCulture;
 
             // Dead zones (independent X/Y).

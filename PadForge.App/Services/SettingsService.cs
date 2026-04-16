@@ -1249,6 +1249,9 @@ namespace PadForge.Services
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
                     // Issue #50: all double→string conversions MUST use InvariantCulture.
+                    // WARNING: if you add a new double property below, use .ToString(ic)
+                    // — NOT bare .ToString(). See InputService.SaveViewModelToPadSetting
+                    // for the full explanation of the locale data-loss bug.
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
 
                     // Write audio bass rumble settings.

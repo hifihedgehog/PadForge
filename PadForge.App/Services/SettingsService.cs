@@ -1248,15 +1248,17 @@ namespace PadForge.Services
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
+                    // Issue #50: all double→string conversions MUST use InvariantCulture.
+                    var ic = System.Globalization.CultureInfo.InvariantCulture;
+
                     // Write audio bass rumble settings.
                     ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
-                    ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1");
-                    ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0");
+                    ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1", ic);
+                    ps.AudioRumbleCutoffHz = padVm.AudioRumbleCutoffHz.ToString("F0", ic);
                     ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
                     ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
                     // Write deadzone settings (independent X/Y).
-                    var ic = System.Globalization.CultureInfo.InvariantCulture;
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
                     ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString(ic);
                     ps.LeftThumbDeadZoneY = padVm.LeftDeadZoneY.ToString(ic);

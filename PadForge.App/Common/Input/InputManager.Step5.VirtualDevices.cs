@@ -28,6 +28,16 @@ namespace PadForge.Common.Input
         private static bool _hmaestroContextFailed;
         private static bool _processExitHookRegistered;
 
+        /// <summary>
+        /// Set once <see cref="DisposeHMaestroContextOnShutdown"/> has run a
+        /// full synchronous teardown inside OnClosing's Task.Run. The AppDomain
+        /// ProcessExit handler checks this flag and skips its static
+        /// <see cref="HMContext.RemoveAllVirtualControllers"/> call — otherwise
+        /// the safety-net sweep enumerates the PnP tree after Close() returns
+        /// and adds 5–6s of lingering headless work after the window vanishes.
+        /// </summary>
+        private static volatile bool _cleanShutdownPerformed;
+
         /// <summary>Virtual controller targets (one per slot).</summary>
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
 
@@ -174,30 +184,17 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Returns true if the given XInput slot (0..3) is currently claimed
         /// by one of PadForge's HIDMaestro virtual controllers. Used by Step 1
-        /// to filter SDL's synthetic XInput#N device paths — without this the
-        /// virtual and the real Xbox both show up in the Devices list with
-        /// non-deterministic slot ordering.
+        /// as a belt-and-suspenders fallback — the primary filter is the
+        /// XInputHook mask which prevents SDL from enumerating the slot at all.
         /// </summary>
         public bool IsHidMaestroXInputSlot(int xinputSlot)
         {
             if (xinputSlot < 0) return false;
-            var sb = new System.Text.StringBuilder();
-            sb.Append($"[{DateTime.Now:HH:mm:ss.fff}] IsHidMaestroXInputSlot({xinputSlot}) scan: ");
-            bool match = false;
             for (int i = 0; i < MaxPads; i++)
             {
-                if (_virtualControllers[i] is HMaestroVirtualController hm)
-                {
-                    sb.Append($"pad{i}={hm.ProfileId}/slot={hm.XInputSlot?.ToString() ?? "null"}; ");
-                    if (hm.XInputSlot == xinputSlot)
-                    {
-                        match = true;
-                    }
-                }
+                if (_hiddenXInputSlot[i] == xinputSlot) return true;
             }
-            sb.Append($"→ {(match ? "MATCH" : "NO MATCH")}\n");
-            try { System.IO.File.AppendAllText(@"C:\PadForge\filter-debug.log", sb.ToString()); } catch { }
-            return match;
+            return false;
         }
 
         /// <summary>
@@ -423,35 +420,68 @@ namespace PadForge.Common.Input
                         {
                             // Brief settle for XInput slot claim.
                             System.Threading.Thread.Sleep(500);
-                            // The virtual always has the LOWEST packet number
-                            // (freshly created, hasn't been polled). Bitmask
-                            // delta can't detect slot REPLACEMENT (xinputhid
-                            // may move the real to a different slot and give
-                            // slot 0 to the virtual — both slots occupied
-                            // before and after, delta = 0). Packet count is
-                            // the only reliable signal.
+                            // Primary signal: slot that went from EMPTY (before)
+                            // to OCCUPIED (after) = the new virtual. This is
+                            // unambiguous even when a real same-VID/PID device
+                            // is already bound — its slot stays occupied in
+                            // both snapshots, so it's never mistaken for the
+                            // virtual. Fallback: if xinputhid reshuffled and
+                            // no "empty → occupied" transition exists, pick
+                            // the slot with the lowest packet number among
+                            // slots occupied after — the fresh virtual starts
+                            // near 0 while any pre-existing real device has a
+                            // higher count from ongoing XInput polling.
                             int virtualSlot = -1;
                             uint lowestPkt = uint.MaxValue;
                             var sb = new System.Text.StringBuilder("After: ");
+
+                            // Pass 1: prefer a slot that transitioned
+                            // empty → occupied.
                             for (int s = 0; s < 4; s++)
                             {
+                                bool wasEmpty = (xiBeforeMask & (1 << s)) == 0;
                                 if (XInputHook.GetStateOriginal(s, out var st) == 0)
                                 {
                                     sb.Append($"s{s}=pkt{st.dwPacketNumber},LX{st.Gamepad.sThumbLX} ");
-                                    // Only consider slots not already hidden by
-                                    // a DIFFERENT pad's virtual controller.
                                     bool alreadyHidden = false;
                                     for (int p = 0; p < MaxPads; p++)
                                         if (p != padIndex && _hiddenXInputSlot[p] == s)
                                         { alreadyHidden = true; break; }
 
-                                    if (!alreadyHidden && st.dwPacketNumber < lowestPkt)
+                                    if (!alreadyHidden && wasEmpty
+                                        && st.dwPacketNumber < lowestPkt)
                                     {
                                         lowestPkt = st.dwPacketNumber;
                                         virtualSlot = s;
                                     }
                                 }
                                 else sb.Append($"s{s}=empty ");
+                            }
+
+                            // Pass 2 (fallback): no new slot appeared (rare
+                            // xinputhid reshuffle edge). Pick the lowest-pkt
+                            // slot among slots NOT already hidden by another
+                            // pad. Only accept if pkt < 200 to avoid latching
+                            // onto a real device with an ongoing input stream.
+                            if (virtualSlot < 0)
+                            {
+                                lowestPkt = uint.MaxValue;
+                                for (int s = 0; s < 4; s++)
+                                {
+                                    if (XInputHook.GetStateOriginal(s, out var st) == 0)
+                                    {
+                                        bool alreadyHidden = false;
+                                        for (int p = 0; p < MaxPads; p++)
+                                            if (p != padIndex && _hiddenXInputSlot[p] == s)
+                                            { alreadyHidden = true; break; }
+
+                                        if (!alreadyHidden && st.dwPacketNumber < lowestPkt)
+                                        {
+                                            lowestPkt = st.dwPacketNumber;
+                                            virtualSlot = s;
+                                        }
+                                    }
+                                }
                             }
                             XInputHook.Log(sb.ToString());
 
@@ -607,6 +637,7 @@ namespace PadForge.Common.Input
                         _processExitHookRegistered = true;
                         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
                         {
+                            if (_cleanShutdownPerformed) return;
                             try { HMContext.RemoveAllVirtualControllers(); } catch { }
                         };
                     }
@@ -859,6 +890,7 @@ namespace PadForge.Common.Input
                 try { ctx.Dispose(); }
                 catch (Exception ex) { RaiseError("Error disposing HIDMaestro context", ex); }
             }
+            _cleanShutdownPerformed = true;
         }
 
         private void DestroyAllVirtualControllers()

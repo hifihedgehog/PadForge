@@ -103,10 +103,21 @@ namespace PadForge.Common.Input
         /// Install hooks by patching SDL3.dll's global XInput function
         /// pointers. MUST be called AFTER SDL_Init (which populates the
         /// pointers via GetProcAddress) and before SDL starts polling.
+        ///
+        /// Diagnostic: set the env var PADFORGE_DISABLE_XINPUT_HOOK=1 to
+        /// skip install. The virtual will show in the Devices list but
+        /// cross-process XInput traffic is untouched — use this to A/B
+        /// test whether the hook affects browser vibration.
         /// </summary>
         public static bool Install()
         {
             if (_installed) return true;
+
+            if (Environment.GetEnvironmentVariable("PADFORGE_DISABLE_XINPUT_HOOK") == "1")
+            {
+                Log("Install skipped: PADFORGE_DISABLE_XINPUT_HOOK=1");
+                return false;
+            }
 
             try
             {

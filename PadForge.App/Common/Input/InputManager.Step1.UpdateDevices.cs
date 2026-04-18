@@ -147,8 +147,6 @@ namespace PadForge.Common.Input
                     // enumerates with SDL. Filter pre-open, NOT post-open.
                     string prePath = SDL_GetJoystickPathForID(instanceId) ?? string.Empty;
                     bool hmMatch = !string.IsNullOrEmpty(prePath) && IsHidMaestroAncestor(prePath);
-                    try { System.IO.File.AppendAllText(@"C:\PadForge\filter-debug.log",
-                        $"[{DateTime.Now:HH:mm:ss.fff}] Step1 enum SDL#{instanceId} prePath='{prePath}' → {(hmMatch ? "FILTER" : "PASS")}\n"); } catch { }
                     if (hmMatch)
                     {
                         Debug.WriteLine($"[Step1] Pre-open filtered HIDMaestro device: SDL#{instanceId} path={prePath}");

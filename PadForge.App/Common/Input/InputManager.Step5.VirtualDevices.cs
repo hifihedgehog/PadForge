@@ -120,6 +120,7 @@ namespace PadForge.Common.Input
         // and skips it, causing the virtual at slot 0 to go undetected.
         private readonly int[] _hiddenXInputSlot = InitHiddenSlotArray();
 
+
         /// <summary>
         /// Set by Step 5 after updating the XInput hook mask. Step 1
         /// consumes this to close all SDL joystick handles so they get
@@ -504,8 +505,19 @@ namespace PadForge.Common.Input
                         int xiBeforeMask = 0;
                         if (isMsSlot && XInputHook.IsInstalled)
                         {
-                            // Give XInput time to notice the cleanup.
-                            System.Threading.Thread.Sleep(500);
+                            // Take the pre-create snapshot directly after
+                            // destroy. HMController.Dispose() -> TeardownController
+                            // -> DeviceManager.RemoveDevice(forceFallbacks:true)
+                            // is synchronous, so by the time we reach here, the
+                            // old virtual is removed from the kernel. Any slot
+                            // still reporting "connected" in this snapshot is
+                            // either the real controller (possibly reshuffled
+                            // by xinputhid onto the just-freed slot) or a
+                            // pre-existing sibling virtual. Either way, the
+                            // new virtual that CreateController is about to
+                            // produce will land on an empty slot (xinputhid
+                            // picks lowest available), so Pass 1's empty ->
+                            // occupied detection works off this snapshot.
                             var bsb = new System.Text.StringBuilder("Before (post-cleanup): ");
                             for (int s = 0; s < 4; s++)
                             {
@@ -524,27 +536,50 @@ namespace PadForge.Common.Input
 
                         // Detect which XInput slot the virtual claimed and
                         // update the hook mask so SDL never sees it.
+                        //
+                        // Event-driven poll. Some profiles (notably
+                        // xbox-360-wired, which uses the XUSB companion
+                        // instead of xinputhid) take a variable amount of
+                        // time after CreateController returns before the
+                        // XUSB slot becomes queryable via XInputGetState.
+                        // That delay is machine-specific and cannot be
+                        // safely estimated with a fixed timer. Instead we
+                        // poll GetStateOriginal until a fresh slot is
+                        // detected (Pass 1 or Pass 2 below), breaking
+                        // immediately on success.
+                        //
+                        // Primary signal: a slot that went from EMPTY
+                        // (before) to OCCUPIED (after) with a low packet
+                        // number (fresh virtual). Unambiguous even when a
+                        // real same-VID/PID device is already bound, since
+                        // the real's slot stays occupied in both snapshots.
+                        //
+                        // Fallback: if xinputhid reshuffled and no
+                        // empty-to-occupied transition exists, pick the
+                        // slot with the lowest packet number among slots
+                        // occupied after. The fresh virtual starts near 0
+                        // while any pre-existing real device has a higher
+                        // count from ongoing XInput polling. The
+                        // `lowestPkt < 200` gate rejects latching onto a
+                        // pre-existing real slot before XUSB has attached.
                         if (isMsSlot && vc != null && vc.IsConnected && XInputHook.IsInstalled)
                         {
-                            // Brief settle for XInput slot claim.
-                            System.Threading.Thread.Sleep(500);
-                            // Primary signal: slot that went from EMPTY (before)
-                            // to OCCUPIED (after) = the new virtual. This is
-                            // unambiguous even when a real same-VID/PID device
-                            // is already bound — its slot stays occupied in
-                            // both snapshots, so it's never mistaken for the
-                            // virtual. Fallback: if xinputhid reshuffled and
-                            // no "empty → occupied" transition exists, pick
-                            // the slot with the lowest packet number among
-                            // slots occupied after — the fresh virtual starts
-                            // near 0 while any pre-existing real device has a
-                            // higher count from ongoing XInput polling.
+                            // Single-shot Pass 1 detection. CreateController
+                            // has already blocked until xinputhid claimed the
+                            // slot (via the SDK's WaitForXInputSlotClaim), so
+                            // the new virtual is visible via GetStateOriginal
+                            // immediately. Pass 1 is empty-to-occupied only;
+                            // no arbitrary packet-count threshold, no retry
+                            // loop. If Pass 1 misses (rare: the before
+                            // snapshot was taken after a kernel race that
+                            // made the new virtual's destination slot appear
+                            // already-occupied), the packet-count reconcile
+                            // picks up the slot within 250-500 ms via
+                            // counter-growth observation, which is immune to
+                            // init-burst values.
                             int virtualSlot = -1;
-                            uint lowestPkt = uint.MaxValue;
+                            uint selectedPkt = 0;
                             var sb = new System.Text.StringBuilder("After: ");
-
-                            // Pass 1: prefer a slot that transitioned
-                            // empty → occupied.
                             for (int s = 0; s < 4; s++)
                             {
                                 bool wasEmpty = (xiBeforeMask & (1 << s)) == 0;
@@ -557,53 +592,27 @@ namespace PadForge.Common.Input
                                         { alreadyHidden = true; break; }
 
                                     if (!alreadyHidden && wasEmpty
-                                        && st.dwPacketNumber < lowestPkt)
+                                        && (virtualSlot < 0 || st.dwPacketNumber < selectedPkt))
                                     {
-                                        lowestPkt = st.dwPacketNumber;
+                                        selectedPkt = st.dwPacketNumber;
                                         virtualSlot = s;
                                     }
                                 }
                                 else sb.Append($"s{s}=empty ");
                             }
-
-                            // Pass 2 (fallback): no new slot appeared (rare
-                            // xinputhid reshuffle edge). Pick the lowest-pkt
-                            // slot among slots NOT already hidden by another
-                            // pad. Only accept if pkt < 200 to avoid latching
-                            // onto a real device with an ongoing input stream.
-                            if (virtualSlot < 0)
-                            {
-                                lowestPkt = uint.MaxValue;
-                                for (int s = 0; s < 4; s++)
-                                {
-                                    if (XInputHook.GetStateOriginal(s, out var st) == 0)
-                                    {
-                                        bool alreadyHidden = false;
-                                        for (int p = 0; p < MaxPads; p++)
-                                            if (p != padIndex && _hiddenXInputSlot[p] == s)
-                                            { alreadyHidden = true; break; }
-
-                                        if (!alreadyHidden && st.dwPacketNumber < lowestPkt)
-                                        {
-                                            lowestPkt = st.dwPacketNumber;
-                                            virtualSlot = s;
-                                        }
-                                    }
-                                }
-                            }
                             XInputHook.Log(sb.ToString());
 
-                            if (virtualSlot >= 0 && lowestPkt < 200)
+                            if (virtualSlot >= 0)
                             {
                                 _hiddenXInputSlot[padIndex] = virtualSlot;
                                 XInputHook.SetIgnoreSlotMask(
                                     XInputHook.IgnoreSlotMask | (1 << virtualSlot));
                                 _sdlJoysticksNeedReopen = true;
-                                XInputHook.Log($"Hiding XInput slot {virtualSlot} (pkt={lowestPkt}) for pad{padIndex}, mask=0x{XInputHook.IgnoreSlotMask:X}");
+                                XInputHook.Log($"Hiding XInput slot {virtualSlot} (pkt={selectedPkt}) for pad{padIndex}, mask=0x{XInputHook.IgnoreSlotMask:X}");
                             }
                             else
                             {
-                                XInputHook.Log($"WARNING: no fresh virtual slot found (lowestPkt={lowestPkt}) for pad{padIndex}");
+                                XInputHook.Log($"Pass 1 miss for pad{padIndex}; reconcile will pick up slot from packet-count growth");
                             }
                         }
                         else if (isMsSlot && vc != null && vc.IsConnected && !XInputHook.IsInstalled)

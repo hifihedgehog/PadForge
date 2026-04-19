@@ -564,21 +564,34 @@ namespace PadForge.Common.Input
                         // pre-existing real slot before XUSB has attached.
                         if (isMsSlot && vc != null && vc.IsConnected && XInputHook.IsInstalled)
                         {
-                            // Single-shot Pass 1 detection. CreateController
-                            // has already blocked until xinputhid claimed the
-                            // slot (via the SDK's WaitForXInputSlotClaim), so
-                            // the new virtual is visible via GetStateOriginal
-                            // immediately. Pass 1 is empty-to-occupied only;
-                            // no arbitrary packet-count threshold, no retry
-                            // loop. If Pass 1 misses (rare: the before
-                            // snapshot was taken after a kernel race that
-                            // made the new virtual's destination slot appear
-                            // already-occupied), the packet-count reconcile
-                            // picks up the slot within 250-500 ms via
-                            // counter-growth observation, which is immune to
-                            // init-burst values.
+                            // Single-shot detection after CreateController
+                            // returns (SDK's WaitForXInputSlotClaim has
+                            // already surfaced the slot, so the new virtual
+                            // is readable right now).
+                            //
+                            // Selection rule: lowest packet count wins,
+                            // wasEmpty breaks ties. Pure empty->occupied
+                            // (the previous rule) is wrong when xinputhid
+                            // reshuffles a real controller onto the
+                            // just-freed old slot and gives the new slot to
+                            // the fresh virtual. Example from a real log:
+                            //   Before: s0=pkt6395 s1=empty
+                            //   After:  s0=pkt1    s1=pkt6395
+                            // wasEmpty-only picked s1 (physical, reshuffled)
+                            // because s1 transitioned empty->occupied, even
+                            // though the fresh virtual was at s0 with the
+                            // low packet count. Lowest-pkt picks s0
+                            // (pkt=1) correctly; a user-driven real
+                            // controller always has a higher carried pkt
+                            // than a freshly-created virtual. wasEmpty
+                            // remains a tiebreaker for the rare case where
+                            // a real is genuinely idle with pkt=0 and ties
+                            // the new virtual's initial 0; the one that
+                            // appeared at a previously-empty slot is the
+                            // virtual.
                             int virtualSlot = -1;
-                            uint selectedPkt = 0;
+                            uint selectedPkt = uint.MaxValue;
+                            bool selectedWasEmpty = false;
                             var sb = new System.Text.StringBuilder("After: ");
                             for (int s = 0; s < 4; s++)
                             {
@@ -590,11 +603,17 @@ namespace PadForge.Common.Input
                                     for (int p = 0; p < MaxPads; p++)
                                         if (p != padIndex && _hiddenXInputSlot[p] == s)
                                         { alreadyHidden = true; break; }
+                                    if (alreadyHidden) continue;
 
-                                    if (!alreadyHidden && wasEmpty
-                                        && (virtualSlot < 0 || st.dwPacketNumber < selectedPkt))
+                                    bool better =
+                                        virtualSlot < 0 ||
+                                        st.dwPacketNumber < selectedPkt ||
+                                        (st.dwPacketNumber == selectedPkt
+                                            && wasEmpty && !selectedWasEmpty);
+                                    if (better)
                                     {
                                         selectedPkt = st.dwPacketNumber;
+                                        selectedWasEmpty = wasEmpty;
                                         virtualSlot = s;
                                     }
                                 }
@@ -608,11 +627,11 @@ namespace PadForge.Common.Input
                                 XInputHook.SetIgnoreSlotMask(
                                     XInputHook.IgnoreSlotMask | (1 << virtualSlot));
                                 _sdlJoysticksNeedReopen = true;
-                                XInputHook.Log($"Hiding XInput slot {virtualSlot} (pkt={selectedPkt}) for pad{padIndex}, mask=0x{XInputHook.IgnoreSlotMask:X}");
+                                XInputHook.Log($"Hiding XInput slot {virtualSlot} (pkt={selectedPkt}, wasEmpty={selectedWasEmpty}) for pad{padIndex}, mask=0x{XInputHook.IgnoreSlotMask:X}");
                             }
                             else
                             {
-                                XInputHook.Log($"Pass 1 miss for pad{padIndex}; reconcile will pick up slot from packet-count growth");
+                                XInputHook.Log($"No candidate slot for pad{padIndex}; reconcile will pick up slot from packet-count growth");
                             }
                         }
                         else if (isMsSlot && vc != null && vc.IsConnected && !XInputHook.IsInstalled)

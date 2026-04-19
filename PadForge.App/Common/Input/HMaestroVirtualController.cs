@@ -28,6 +28,8 @@ namespace PadForge.Common.Input
         public bool IsConnected { get; private set; }
         public int FeedbackPadIndex { get; set; }
         public string ProfileId => _profile.Id;
+        public ushort ProfileVendorId => _profile.VendorId;
+        public ushort ProfileProductId => _profile.ProductId;
 
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
@@ -101,17 +103,15 @@ namespace PadForge.Common.Input
 
                 var data = pkt.Data.Span;
 
-                // Rate-limited diagnostics: first 3 packets always, then ONLY
-                // packets with apparent non-zero motor bytes. Avoids Step2-style
-                // hot-path I/O floods while still capturing vibration evidence.
-                bool nonZeroShape = data.Length >= 5 && (data[2] != 0 || data[3] != 0
-                                     || (data.Length >= 7 && (data[5] != 0 || data[6] != 0)));
-                bool shouldLog = _anyOutputPacketCount < 3
-                                 || (nonZeroShape && _motorNonzeroCount < 30);
-                if (shouldLog)
+                // Diagnostic: log every packet up to 100 per controller.
+                // Cannot filter on non-zero motors because the "stop" packet
+                // (all-zero motors) is exactly what we need to see when
+                // investigating stuck-vibration symptoms. Capture the full
+                // stream, then review the log for the start-then-stop
+                // sequence.
+                if (_anyOutputPacketCount < 100)
                 {
                     _anyOutputPacketCount++;
-                    if (nonZeroShape) _motorNonzeroCount++;
                     try
                     {
                         var hex = new System.Text.StringBuilder();

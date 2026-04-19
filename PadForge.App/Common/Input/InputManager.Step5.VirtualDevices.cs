@@ -128,6 +128,44 @@ namespace PadForge.Common.Input
         /// </summary>
         internal bool _sdlJoysticksNeedReopen;
 
+        /// <summary>
+        /// Snapshot of SDL joystick instance IDs taken at the moment a
+        /// Microsoft-type virtual was destroyed. Null when no teardown is
+        /// in progress. Step1 diffs the current SDL enumeration against
+        /// this snapshot each cycle; when the set changes and then holds
+        /// stable for <see cref="MsTeardownStableDebounceMs"/>, the
+        /// xinputhid teardown is complete and Step1 fires the forced SDL
+        /// handle close+reopen. This recovers from the identity-swap
+        /// where SDL binds the physical Xbox to the virtual's stale
+        /// InstanceGuid during teardown, without depending on an
+        /// arbitrary wall-clock timer.
+        /// </summary>
+        private HashSet<uint> _msTeardownSdlSnapshot;
+
+        /// <summary>Last-observed SDL instance ID set during an active teardown watch.
+        /// Compared cycle-to-cycle to detect a stable post-teardown state.</summary>
+        private HashSet<uint> _msTeardownLastObservedIds;
+
+        /// <summary>UTC timestamp of the first cycle where the current SDL enumeration
+        /// matched the previous cycle's enumeration AND differed from
+        /// <see cref="_msTeardownSdlSnapshot"/>. When this timestamp is
+        /// <see cref="MsTeardownStableDebounceMs"/> ms old, the reopen fires.</summary>
+        private DateTime _msTeardownStableSince = DateTime.MinValue;
+
+        /// <summary>Max wall-clock window to keep a teardown watch active. If no
+        /// SDL-observable settle happens in this window, the watch is cleared
+        /// without firing a reopen. Catches the edge case where xinputhid
+        /// teardown produces no SDL-visible transition.</summary>
+        private const double MsTeardownWatchMaxSeconds = 20.0;
+        private DateTime _msTeardownStartedAt = DateTime.MinValue;
+
+        /// <summary>Debounce window in milliseconds. Once SDL's joystick list has
+        /// changed from the pre-destroy snapshot, it must hold stable for this long
+        /// before we consider xinputhid teardown complete. 500 ms is ~500 polling
+        /// cycles at 1 kHz. Short enough to feel instant, long enough to filter
+        /// xinputhid's transient reshuffles during teardown.</summary>
+        private const int MsTeardownStableDebounceMs = 500;
+
         private static int[] InitHiddenSlotArray()
         {
             var arr = new int[MaxPads];
@@ -214,6 +252,76 @@ namespace PadForge.Common.Input
         {
             if (!VirtualControllersEnabled)
                 return;
+
+            // Track xinputhid slot reshuffles for any active Microsoft virtual.
+            // xinputhid reassigns slot numbers at runtime; our static mask set
+            // at create time drifts and causes 2s on / 2s off input stalls on
+            // a coexisting real Xbox controller. This call reads the live slot
+            // from PnP and updates the mask whenever xinputhid has moved the
+            // virtual to a different slot. See
+            // InputManager.Step5.XInputSlotReconcile.cs for the full rationale.
+            ReconcileMicrosoftVirtualSlots();
+
+            // Event-driven SDL re-enumeration after a Microsoft-type teardown.
+            // Poll SDL's joystick list and compare against the pre-destroy
+            // snapshot. Once the list differs from the snapshot AND holds
+            // stable across consecutive cycles for MsTeardownStableDebounceMs,
+            // xinputhid is done rearranging and we fire the forced close+reopen.
+            // No arbitrary wall-clock wait: the trigger is SDL's own observation
+            // that its enumeration has stabilized. A hard max-window prevents a
+            // watch from lingering forever if xinputhid produces no SDL-visible
+            // transition.
+            if (_msTeardownSdlSnapshot != null)
+            {
+                try
+                {
+                    uint[] currentArr = SDL3.SDL.SDL_GetJoysticks() ?? System.Array.Empty<uint>();
+                    var current = new HashSet<uint>(currentArr);
+
+                    bool changedFromSnapshot = !current.SetEquals(_msTeardownSdlSnapshot);
+                    bool stableVsLast = current.SetEquals(_msTeardownLastObservedIds);
+
+                    if (changedFromSnapshot && stableVsLast)
+                    {
+                        if (_msTeardownStableSince == DateTime.MinValue)
+                        {
+                            _msTeardownStableSince = DateTime.UtcNow;
+                        }
+                        else if ((DateTime.UtcNow - _msTeardownStableSince).TotalMilliseconds
+                                 >= MsTeardownStableDebounceMs)
+                        {
+                            _sdlJoysticksNeedReopen = true;
+                            _msTeardownSdlSnapshot = null;
+                            _msTeardownLastObservedIds = null;
+                            _msTeardownStableSince = DateTime.MinValue;
+                            _msTeardownStartedAt = DateTime.MinValue;
+                        }
+                    }
+                    else
+                    {
+                        _msTeardownStableSince = DateTime.MinValue;
+                    }
+
+                    _msTeardownLastObservedIds = current;
+
+                    if (_msTeardownSdlSnapshot != null
+                        && (DateTime.UtcNow - _msTeardownStartedAt).TotalSeconds
+                           > MsTeardownWatchMaxSeconds)
+                    {
+                        _msTeardownSdlSnapshot = null;
+                        _msTeardownLastObservedIds = null;
+                        _msTeardownStableSince = DateTime.MinValue;
+                        _msTeardownStartedAt = DateTime.MinValue;
+                    }
+                }
+                catch
+                {
+                    _msTeardownSdlSnapshot = null;
+                    _msTeardownLastObservedIds = null;
+                    _msTeardownStableSince = DateTime.MinValue;
+                    _msTeardownStartedAt = DateTime.MinValue;
+                }
+            }
 
             // --- Pass 1: Handle type changes, destruction, and activity tracking ---
             bool anyNeedsCreate = false;
@@ -724,7 +832,14 @@ namespace PadForge.Common.Input
         /// popup before the user picks a preset). Real per-slot preset
         /// selection lands in a follow-up checkpoint.
         /// </summary>
-        private const string DefaultMicrosoftProfileId = "xbox-360-wired";
+        // xbox-series-xs-bt rather than xbox-360-wired so new Microsoft
+        // slots work out of the box with browser-sourced force feedback.
+        // Browsers using WGI or GameInput paths (Chrome on Win11 in
+        // particular) don't route FFB to the Xbox 360 XUSB companion, so
+        // xbox-360-wired vibrates in native games but stays silent for
+        // browser "Vibration, infinite" tests. xbox-series-xs-bt uses the
+        // HID output path that browsers drive reliably.
+        private const string DefaultMicrosoftProfileId = "xbox-series-xs-bt";
         private const string DefaultSonyProfileId = "dualshock-4-v2";
         private const string DefaultExtendedProfileId = "xbox-360-wired";
 
@@ -855,6 +970,32 @@ namespace PadForge.Common.Input
                 XInputHook.SetIgnoreSlotMask(
                     XInputHook.IgnoreSlotMask & ~(1 << hiddenSlot));
                 _hiddenXInputSlot[padIndex] = -1;
+            }
+
+            // If this is a Microsoft-type virtual (xinputhid or XUSB backend),
+            // arm an SDL-observation watch. On each subsequent Step5 cycle, we
+            // compare the current SDL joystick list against the snapshot taken
+            // here. When it changes AND then holds stable for
+            // `MsTeardownStableDebounceMs` ms, xinputhid teardown is observably
+            // complete and we fire the forced SDL close+reopen. This replaces
+            // the prior arbitrary-timer approach with an event-driven trigger
+            // that scales with actual machine performance instead of a fixed
+            // wall-clock delay.
+            if (vc.Type == VirtualControllerType.Microsoft)
+            {
+                try
+                {
+                    uint[] current = SDL3.SDL.SDL_GetJoysticks() ?? System.Array.Empty<uint>();
+                    _msTeardownSdlSnapshot = new HashSet<uint>(current);
+                    _msTeardownLastObservedIds = new HashSet<uint>(current);
+                }
+                catch
+                {
+                    _msTeardownSdlSnapshot = new HashSet<uint>();
+                    _msTeardownLastObservedIds = new HashSet<uint>();
+                }
+                _msTeardownStableSince = DateTime.MinValue;
+                _msTeardownStartedAt = DateTime.UtcNow;
             }
 
             try

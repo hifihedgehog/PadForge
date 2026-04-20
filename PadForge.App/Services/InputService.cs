@@ -3846,6 +3846,16 @@ namespace PadForge.Services
             (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
                 (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
 
+            // Profile ID must swap with the slot. SyncViewModelToPadSettings
+            // pushes padVm.ProfileId back into _inputManager.SlotProfileIds
+            // every tick, so if the VM isn't swapped here, the engine's
+            // correctly-swapped SlotProfileIds gets overwritten with the
+            // original values on the next sync and the profile visually
+            // "stays put" even though devices moved. The profile travels
+            // with its slot contents (devices, macros, layout) on reorder.
+            (_mainVm.Pads[a].ProfileId, _mainVm.Pads[b].ProfileId) =
+                (_mainVm.Pads[b].ProfileId, _mainVm.Pads[a].ProfileId);
+
             // Swap the entire VJoySlotConfig objects so the UI shows the correct
             // config after reorder. The setter re-subscribes PropertyChanged.
             (_mainVm.Pads[a].VJoyConfig, _mainVm.Pads[b].VJoyConfig) =

@@ -130,6 +130,20 @@ namespace PadForge.Common.Input
         internal bool _sdlJoysticksNeedReopen;
 
         /// <summary>
+        /// Per-slot async-dispose tracker. When a user-initiated swap/move
+        /// calls <see cref="DestroyVirtualController(int, bool)"/> with
+        /// <c>asyncDispose: true</c>, the thread-pool task that runs
+        /// <c>vc.Disconnect()</c> + <c>vc.Dispose()</c> is recorded here.
+        /// Pass 2 (creation) skips an entire pass while any of these tasks
+        /// are still running, so new VCs are only created once every old
+        /// xinputhid / XUSB companion has released its kernel slot. This
+        /// preserves ascending-slot-order creation: xinputhid's lowest-
+        /// available-slot allocation returns the expected kernel slots
+        /// rather than whatever happened to be free mid-teardown.
+        /// </summary>
+        private readonly System.Threading.Tasks.Task[] _pendingDisposeTask = new System.Threading.Tasks.Task[MaxPads];
+
+        /// <summary>
         /// Snapshot of SDL joystick instance IDs taken at the moment a
         /// Microsoft-type virtual was destroyed. Null when no teardown is
         /// in progress. Step1 diffs the current SDL enumeration against
@@ -462,8 +476,27 @@ namespace PadForge.Common.Input
             // HIDMaestro assigns its own controller indices internally; we
             // don't need ViGEm-style sequential ordering or vJoy device-node
             // pre-provisioning. Each slot creates its HMController on demand.
+            //
+            // Gate on any pending async-dispose tasks (from user-initiated
+            // swap/move paths) completing first. xinputhid allocates the
+            // lowest-available kernel slot per CreateController, so new VCs
+            // must not be created while old ones are still releasing kernel
+            // slots — that would produce out-of-order kernel assignments
+            // relative to PadForge slot indices. Skipping this pass lets
+            // polling continue unblocked while teardown finishes; Step 5
+            // retries next cycle (~1ms later).
+            bool anyDisposePending = false;
+            for (int i = 0; i < MaxPads; i++)
+            {
+                var t = _pendingDisposeTask[i];
+                if (t != null)
+                {
+                    if (!t.IsCompleted) { anyDisposePending = true; break; }
+                    _pendingDisposeTask[i] = null;
+                }
+            }
             bool anyHMaestroCreatedThisPass = false;
-            if (anyNeedsCreate)
+            if (anyNeedsCreate && !anyDisposePending)
             {
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
                 {
@@ -594,6 +627,34 @@ namespace PadForge.Common.Input
                             // the new virtual's initial 0; the one that
                             // appeared at a previously-empty slot is the
                             // virtual.
+                            // Fresh-virtual-signature selection.
+                            //
+                            // A freshly-created virtual has a packet counter
+                            // that is essentially zero at this moment: the VC
+                            // was just constructed and Pass 3 has not yet
+                            // submitted any state (one-create-per-pass break
+                            // runs Pass 3 AFTER this detection, in the same
+                            // polling cycle). Any slot with pkt greater than
+                            // FreshVirtualPktCeiling is almost certainly a
+                            // real device with carried packet history from
+                            // user input. wasEmpty is a secondary positive
+                            // signal — a slot that transitioned empty to
+                            // occupied during this create is the new virtual
+                            // regardless of its pkt, since nothing else
+                            // could have appeared there.
+                            //
+                            // If no slot matches either signal, DON'T mask.
+                            // The xinputhid reshuffle that happens during
+                            // HIDMaestro teardown can leave the new virtual
+                            // not yet surfaced at detection time. Masking an
+                            // occupied-from-before slot in that case hides
+                            // the user's real controller instead. Fall
+                            // through to the packet-count reconciler in
+                            // XInputSlotReconcile, which catches the slot
+                            // on later cycles once the virtual starts
+                            // submitting state.
+                            const uint FreshVirtualPktCeiling = 10;
+
                             int virtualSlot = -1;
                             uint selectedPkt = uint.MaxValue;
                             bool selectedWasEmpty = false;
@@ -610,6 +671,12 @@ namespace PadForge.Common.Input
                                         { alreadyHidden = true; break; }
                                     if (alreadyHidden) continue;
 
+                                    bool freshSignature =
+                                        wasEmpty || st.dwPacketNumber <= FreshVirtualPktCeiling;
+                                    if (!freshSignature) continue;
+
+                                    // Among fresh candidates: lowest pkt wins;
+                                    // wasEmpty breaks ties.
                                     bool better =
                                         virtualSlot < 0 ||
                                         st.dwPacketNumber < selectedPkt ||
@@ -636,7 +703,7 @@ namespace PadForge.Common.Input
                             }
                             else
                             {
-                                XInputHook.Log($"No candidate slot for pad{padIndex}; reconcile will pick up slot from packet-count growth");
+                                XInputHook.Log($"No fresh-signature slot for pad{padIndex} — not masking this cycle, reconcile will pick up slot from packet-count growth");
                             }
                         }
                         else if (isMsSlot && vc != null && vc.IsConnected && !XInputHook.IsInstalled)
@@ -649,11 +716,26 @@ namespace PadForge.Common.Input
                             _slotInitializing[padIndex] = false;
                             if (vc is HMaestroVirtualController)
                                 anyHMaestroCreatedThisPass = true;
+
+                            // Create at most one virtual per polling cycle.
+                            // The remaining passes in THIS polling cycle
+                            // (FinalizeNames below, then Pass 3) submit the
+                            // first state frame to this newly-created VC.
+                            // Only on the NEXT polling cycle does Pass 2
+                            // revisit to create the next slot. That's the
+                            // universal "wait until the previous is actually
+                            // submit-ready" gate — works for Microsoft,
+                            // Sony, Extended, MIDI, and KeyboardMouse
+                            // without relying on XInput-specific signals.
+                            break;
                         }
                         else if (vc == null)
                         {
                             _createFailed[padIndex] = true;
                             _slotInitializing[padIndex] = false;
+                            // Creation failed. Don't break — try the next
+                            // slot in the same pass. _createFailed keeps us
+                            // from looping on this one.
                         }
                     }
                 }
@@ -989,6 +1071,24 @@ namespace PadForge.Common.Input
         }
 
         private void DestroyVirtualController(int padIndex)
+            => DestroyVirtualController(padIndex, asyncDispose: false);
+
+        /// <summary>
+        /// Destroy the virtual controller at <paramref name="padIndex"/>.
+        /// When <paramref name="asyncDispose"/> is true, the fast housekeeping
+        /// (hook-mask clear, SDL-teardown watch arm) runs synchronously on the
+        /// caller's thread, but the slow HIDMaestro teardown call
+        /// (<c>vc.Disconnect()</c> + <c>vc.Dispose()</c>, up to ~11s for
+        /// Microsoft xinputhid profiles) is queued to the thread pool. The
+        /// <c>_virtualControllers[padIndex]</c> slot is cleared here so Step 5
+        /// sees the slot as empty on its next pass.
+        ///
+        /// Used by user-initiated swap/move paths so the UI thread does not
+        /// block on HIDMaestro teardown. Recreation is gated by the existing
+        /// SDL-teardown observation watch in Step 5, so the new VC won't come
+        /// up before the old device leaves the SDL list.
+        /// </summary>
+        private void DestroyVirtualController(int padIndex, bool asyncDispose)
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
@@ -1031,12 +1131,29 @@ namespace PadForge.Common.Input
                 _msTeardownStartedAt = DateTime.UtcNow;
             }
 
-            try
+            if (asyncDispose)
             {
-                vc.Disconnect();
-                vc.Dispose();
+                // Null the pointer so Step 5 / Dashboard see the slot as empty
+                // immediately. The captured `vc` is disposed in the background.
+                // Track the task so Pass 2 can skip creation until every
+                // pending dispose has finished — this preserves ascending-
+                // slot-order kernel allocation.
+                _virtualControllers[padIndex] = null;
+                _pendingDisposeTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
+                {
+                    try { vc.Disconnect(); vc.Dispose(); }
+                    catch { /* best effort */ }
+                });
             }
-            catch { /* best effort */ }
+            else
+            {
+                try
+                {
+                    vc.Disconnect();
+                    vc.Dispose();
+                }
+                catch { /* best effort */ }
+            }
         }
 
         /// <summary>

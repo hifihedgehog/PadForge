@@ -146,11 +146,9 @@ namespace PadForge.Common
             var oemInfs = FindExtendedOemInfs();
 
             string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.cmd");
-            string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.log");
             using (var sw = new StreamWriter(scriptPath))
             {
                 sw.WriteLine("@echo off");
-                sw.WriteLine($"echo [%date% %time%] vJoy uninstall starting > \"{logPath}\"");
 
                 // IMPORTANT: Remove device nodes FIRST so the driver can fully
                 // unload from the kernel. If we stop/delete the service while
@@ -172,7 +170,7 @@ namespace PadForge.Common
 
                 // Remove driver from driver store.
                 foreach (var inf in oemInfs)
-                    sw.WriteLine($"pnputil /delete-driver {inf} /uninstall /force >> \"{logPath}\" 2>&1");
+                    sw.WriteLine($"pnputil /delete-driver {inf} /uninstall /force >nul 2>&1");
 
                 // Delete the install directory and stale driver binary.
                 sw.WriteLine($"rmdir /s /q \"{vjoyDir}\" >nul 2>&1");
@@ -180,8 +178,6 @@ namespace PadForge.Common
 
                 // Remove legacy Inno Setup uninstall registry entries (if present).
                 sw.WriteLine("powershell -NoProfile -Command \"Get-ChildItem 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall','HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall' -EA SilentlyContinue | Where-Object { (Get-ItemProperty $_.PSPath -EA SilentlyContinue).DisplayName -like '*vJoy*' } | Remove-Item -Recurse -Force -EA SilentlyContinue\" >nul 2>&1");
-
-                sw.WriteLine($"echo [%time%] Done >> \"{logPath}\"");
             }
 
             RunElevated("cmd.exe", $"/c \"{scriptPath}\"");

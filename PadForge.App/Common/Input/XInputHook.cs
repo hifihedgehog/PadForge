@@ -115,7 +115,6 @@ namespace PadForge.Common.Input
 
             if (Environment.GetEnvironmentVariable("PADFORGE_DISABLE_XINPUT_HOOK") == "1")
             {
-                Log("Install skipped: PADFORGE_DISABLE_XINPUT_HOOK=1");
                 return false;
             }
 
@@ -123,7 +122,7 @@ namespace PadForge.Common.Input
             {
                 // Get the real XInput function addresses that SDL stored.
                 IntPtr xinputModule = LoadLibraryW("xinput1_4.dll");
-                if (xinputModule == IntPtr.Zero) { Log("LoadLibrary failed"); return false; }
+                if (xinputModule == IntPtr.Zero) {return false; }
 
                 // SDL3 prefers ordinal 100 (XInputGetStateEx).
                 _realGetState = GetProcAddressByOrdinal(xinputModule, (IntPtr)100);
@@ -132,9 +131,8 @@ namespace PadForge.Common.Input
                 _realGetCaps = GetProcAddressByName(xinputModule, "XInputGetCapabilities");
 
                 if (_realGetState == IntPtr.Zero || _realGetCaps == IntPtr.Zero)
-                { Log("GetProcAddress failed"); return false; }
+                {return false; }
 
-                Log($"Real GetState=0x{_realGetState:X} GetCaps=0x{_realGetCaps:X}");
 
                 // Cache delegates for calling the real functions from hooks.
                 _realGetStateDel = Marshal.GetDelegateForFunctionPointer<XInputGetStateDelegate>(_realGetState);
@@ -150,19 +148,17 @@ namespace PadForge.Common.Input
 
                 // Scan SDL3.dll's loaded image for the stored pointers and overwrite.
                 IntPtr sdlModule = GetModuleHandleW("SDL3.dll");
-                if (sdlModule == IntPtr.Zero) { Log("SDL3.dll not loaded"); Cleanup(); return false; }
+                if (sdlModule == IntPtr.Zero) {Cleanup(); return false; }
 
-                Log($"SDL3.dll=0x{sdlModule:X} hookGetState=0x{hookGetStatePtr:X} hookGetCaps=0x{hookGetCapsPtr:X}");
 
                 _patchLocationGetState = FindPointerInModule(sdlModule, _realGetState);
                 _patchLocationGetCaps = FindPointerInModule(sdlModule, _realGetCaps);
 
                 if (_patchLocationGetState == IntPtr.Zero)
-                { Log("Could not find GetState pointer in SDL3.dll"); Cleanup(); return false; }
+                {Cleanup(); return false; }
                 if (_patchLocationGetCaps == IntPtr.Zero)
-                { Log("Could not find GetCaps pointer in SDL3.dll"); Cleanup(); return false; }
+                {Cleanup(); return false; }
 
-                Log($"PatchLocation GetState=0x{_patchLocationGetState:X} GetCaps=0x{_patchLocationGetCaps:X}");
 
                 // Overwrite the pointers. .data section is typically writable,
                 // but VirtualProtect just in case.
@@ -170,12 +166,10 @@ namespace PadForge.Common.Input
                 WritePointer(_patchLocationGetCaps, hookGetCapsPtr);
 
                 _installed = true;
-                Log("Install complete");
                 return true;
             }
             catch (Exception ex)
             {
-                Log($"Install EXCEPTION: {ex}");
                 try { Cleanup(); } catch { }
                 return false;
             }
@@ -197,38 +191,13 @@ namespace PadForge.Common.Input
         //  Hook implementations
         // ─────────────────────────────────────────────
 
-        // Per-slot call counters split by masked vs forwarded. Readable by
-        // the call-rate reporter for hang/saturation diagnostics. Interlocked
-        // writes; reader snapshots by Interlocked.Exchange in SampleAndReset.
-        private static long _getStateMaskedCalls0, _getStateMaskedCalls1,
-                            _getStateMaskedCalls2, _getStateMaskedCalls3;
-        private static long _getStateForwardedCalls0, _getStateForwardedCalls1,
-                            _getStateForwardedCalls2, _getStateForwardedCalls3;
-
         private static int HookedGetState(int dwUserIndex, out XINPUT_STATE pState)
         {
             if (dwUserIndex >= 0 && dwUserIndex < 4
                 && (_ignoreSlotMask & (1 << dwUserIndex)) != 0)
             {
-                switch (dwUserIndex)
-                {
-                    case 0: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls0); break;
-                    case 1: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls1); break;
-                    case 2: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls2); break;
-                    case 3: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls3); break;
-                }
                 pState = default;
                 return ERROR_DEVICE_NOT_CONNECTED;
-            }
-            if (dwUserIndex >= 0 && dwUserIndex < 4)
-            {
-                switch (dwUserIndex)
-                {
-                    case 0: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls0); break;
-                    case 1: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls1); break;
-                    case 2: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls2); break;
-                    case 3: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls3); break;
-                }
             }
             return _realGetStateDel(dwUserIndex, out pState);
         }
@@ -242,26 +211,6 @@ namespace PadForge.Common.Input
                 return ERROR_DEVICE_NOT_CONNECTED;
             }
             return _realGetCapsDel(dwUserIndex, dwFlags, out pCaps);
-        }
-
-        /// <summary>
-        /// Atomically read and zero the per-slot call counters. Returns an
-        /// 8-element array: [masked0, masked1, masked2, masked3,
-        /// forwarded0, forwarded1, forwarded2, forwarded3].
-        /// </summary>
-        public static long[] SampleAndResetCallCounts()
-        {
-            return new[]
-            {
-                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls0, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls1, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls2, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls3, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls0, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls1, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls2, 0),
-                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls3, 0),
-            };
         }
 
         // ─────────────────────────────────────────────
@@ -304,12 +253,6 @@ namespace PadForge.Common.Input
             _realGetCapsDel = null;
             _patchLocationGetState = IntPtr.Zero;
             _patchLocationGetCaps = IntPtr.Zero;
-        }
-
-        internal static void Log(string msg)
-        {
-            try { System.IO.File.AppendAllText(@"C:\PadForge\xinput-hook.log",
-                $"[{DateTime.Now:HH:mm:ss.fff}] {msg}\n"); } catch { }
         }
 
         // ─────────────────────────────────────────────

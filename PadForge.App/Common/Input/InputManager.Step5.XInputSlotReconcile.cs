@@ -225,11 +225,6 @@ namespace PadForge.Common.Input
                 }
                 XInputHook.SetIgnoreSlotMask(mask);
                 _sdlJoysticksNeedReopen = true;
-
-                XInputHook.Log(
-                    $"Multi-pad reconcile: {log} " +
-                    $"growth=[{growth[0]},{growth[1]},{growth[2]},{growth[3]}] " +
-                    $"mask=0x{mask:X}");
             }
 
             return changed;

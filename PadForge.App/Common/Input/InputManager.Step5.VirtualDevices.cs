@@ -211,11 +211,9 @@ namespace PadForge.Common.Input
                     {
                         HIDMaestro.HMOemNameOverride.Set(vid, pid, desiredLabel);
                         _lastAppliedOemLabel[padIndex] = desiredLabel;
-                        VcLifecycleLog.Log($"pad{padIndex} OEM-override label update VID_{vid:X4}&PID_{pid:X4} -> \"{desiredLabel}\"");
                     }
                     catch (Exception ex)
                     {
-                        VcLifecycleLog.Log($"pad{padIndex} OEM-override relabel failed: {ex.Message}");
                     }
                 }
             }
@@ -231,11 +229,9 @@ namespace PadForge.Common.Input
                 _oemOverrideRefs[key] = n + 1;
                 _oemOverrideClaimedVidPid[padIndex] = key;
                 _lastAppliedOemLabel[padIndex] = label;
-                VcLifecycleLog.Log($"pad{padIndex} OEM-override live Set VID_{vid:X4}&PID_{pid:X4} label=\"{label}\" refs={n + 1}");
             }
             catch (Exception ex)
             {
-                VcLifecycleLog.Log($"pad{padIndex} OEM-override live Set failed: {ex.Message}");
             }
         }
 
@@ -253,17 +249,14 @@ namespace PadForge.Common.Input
                     ushort vid = (ushort)(claimedKey >> 16);
                     ushort pid = (ushort)(claimedKey & 0xFFFF);
                     HIDMaestro.HMOemNameOverride.Clear(vid, pid);
-                    VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear VID_{vid:X4}&PID_{pid:X4} ({reason}, last ref)");
                 }
                 catch (Exception ex)
                 {
-                    VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear failed: {ex.Message}");
                 }
             }
             else
             {
                 _oemOverrideRefs[claimedKey] = n;
-                VcLifecycleLog.Log($"pad{padIndex} OEM-override deref ({reason}) refs={n}");
             }
         }
 
@@ -462,11 +455,6 @@ namespace PadForge.Common.Input
             if (!VirtualControllersEnabled)
                 return;
 
-            // Diagnostic: emit per-slot XInput call rates and per-virtual
-            // SubmitState rates every 5 seconds. See CallRateReporter for
-            // context. Negligible overhead when nothing is saturating.
-            MaybeReportCallRates();
-
             // Apply any live changes to OEM-name overrides that the user
             // toggled or edited on an active Extended slot. This is
             // independent of VC lifecycle — HMOemNameOverride is purely a
@@ -553,8 +541,6 @@ namespace PadForge.Common.Input
                 // Detect controller type change — destroy old if type differs.
                 if (vc != null && vc.Type != SlotControllerTypes[padIndex])
                 {
-                    VcLifecycleLog.Log($"pad{padIndex} DESTROY type-change {vc.Type}->{SlotControllerTypes[padIndex]}");
-                    RumbleLogger.Log($"[Step5] Pad{padIndex} type changed {vc.Type}->{SlotControllerTypes[padIndex]}, recreating");
                     // Set Initializing BEFORE the destroy+create blocks so the
                     // UI's 30Hz read sees the flag during the full transition
                     // window — Xbox teardown alone can take 5-11 seconds per
@@ -580,8 +566,6 @@ namespace PadForge.Common.Input
                     string desired = SlotProfileIds[padIndex];
                     if (!string.IsNullOrEmpty(desired) && desired != hmVc.ProfileId)
                     {
-                        VcLifecycleLog.Log($"pad{padIndex} DESTROY profile-change '{hmVc.ProfileId}'->'{desired}'");
-                        RumbleLogger.Log($"[Step5] Pad{padIndex} profile changed {hmVc.ProfileId}->{desired}, recreating");
                         // Flag BEFORE destroy (see type-change comment above).
                         if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                         else _slotInitializing[padIndex] = false;
@@ -616,8 +600,6 @@ namespace PadForge.Common.Input
 
                     if (psChanged || layoutChanged)
                     {
-                        VcLifecycleLog.Log(
-                            $"pad{padIndex} DESTROY extended-config-change psChanged={psChanged} layoutChanged={layoutChanged}");
                         if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                         else _slotInitializing[padIndex] = false;
                         DestroyVirtualController(padIndex);
@@ -632,8 +614,6 @@ namespace PadForge.Common.Input
                 // (slot still created + enabled, but physical device offline).
                 if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
                 {
-                    VcLifecycleLog.Log($"pad{padIndex} DESTROY slot-{(SettingsManager.SlotCreated[padIndex] ? "disabled" : "deleted")}");
-                    RumbleLogger.Log($"[Step5] Pad{padIndex} slot {(SettingsManager.SlotCreated[padIndex] ? "disabled" : "deleted")}, destroying virtual controller immediately");
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
@@ -648,9 +628,6 @@ namespace PadForge.Common.Input
 
                 if (slotActive)
                 {
-                    if (_slotInactiveCounter[padIndex] > 0)
-                        RumbleLogger.Log($"[Step5] Pad{padIndex} active again after {_slotInactiveCounter[padIndex]} inactive cycles");
-
                     _slotInactiveCounter[padIndex] = 0;
 
                     if (vc == null)
@@ -663,8 +640,6 @@ namespace PadForge.Common.Input
                 {
                     // No devices mapped to this slot — user explicitly unassigned
                     // all devices. Destroy immediately (not a transient disconnect).
-                    VcLifecycleLog.Log($"pad{padIndex} DESTROY no-devices-mapped");
-                    RumbleLogger.Log($"[Step5] Pad{padIndex} no devices mapped, destroying virtual controller immediately");
                     DestroyVirtualController(padIndex);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
@@ -677,9 +652,6 @@ namespace PadForge.Common.Input
                     // Device(s) mapped but offline — transient disconnect.
                     // Grace period preserves rumble feedback through USB hiccups.
                     _slotInactiveCounter[padIndex]++;
-
-                    if (_slotInactiveCounter[padIndex] == 1)
-                        RumbleLogger.Log($"[Step5] Pad{padIndex} !slotActive (vc={vc != null}) VibL={VibrationStates[padIndex].LeftMotorSpeed} VibR={VibrationStates[padIndex].RightMotorSpeed}");
 
                     // Grace-period destroy applies to non-HIDMaestro virtual
                     // types (MIDI, KeyboardMouse). HIDMaestro VCs are NEVER
@@ -697,8 +669,6 @@ namespace PadForge.Common.Input
                         && vc != null
                         && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
                     {
-                        VcLifecycleLog.Log($"pad{padIndex} DESTROY inactive-grace-elapsed (slotActive=false for {SlotDestroyGraceCycles} cycles, HasAnyDeviceMapped={HasAnyDeviceMapped(padIndex)})");
-                        RumbleLogger.Log($"[Step5] Pad{padIndex} destroying virtual controller after {SlotDestroyGraceCycles} inactive cycles");
                         DestroyVirtualController(padIndex);
                         _virtualControllers[padIndex] = null;
                         VibrationStates[padIndex].LeftMotorSpeed = 0;
@@ -764,7 +734,6 @@ namespace PadForge.Common.Input
                         if (_createFailed[padIndex])
                             continue;
 
-                        RumbleLogger.Log($"[Step5] Pad{padIndex} creating {SlotControllerTypes[padIndex]} virtual controller (ordered)");
 
                         // For Xbox profiles: ensure HIDMaestro context is up
                         // (which runs RemoveAllVirtualControllers to clean
@@ -791,17 +760,11 @@ namespace PadForge.Common.Input
                             // produce will land on an empty slot (xinputhid
                             // picks lowest available), so Pass 1's empty ->
                             // occupied detection works off this snapshot.
-                            var bsb = new System.Text.StringBuilder("Before (post-cleanup): ");
                             for (int s = 0; s < 4; s++)
                             {
                                 if (XInputHook.GetStateOriginal(s, out var bst) == 0)
-                                {
                                     xiBeforeMask |= (1 << s);
-                                    bsb.Append($"s{s}=pkt{bst.dwPacketNumber},LX{bst.Gamepad.sThumbLX} ");
-                                }
-                                else bsb.Append($"s{s}=empty ");
                             }
-                            XInputHook.Log(bsb.ToString());
                         }
 
                         var vc = CreateVirtualController(padIndex);
@@ -893,13 +856,11 @@ namespace PadForge.Common.Input
                             int virtualSlot = -1;
                             uint selectedPkt = uint.MaxValue;
                             bool selectedWasEmpty = false;
-                            var sb = new System.Text.StringBuilder("After: ");
                             for (int s = 0; s < 4; s++)
                             {
                                 bool wasEmpty = (xiBeforeMask & (1 << s)) == 0;
                                 if (XInputHook.GetStateOriginal(s, out var st) == 0)
                                 {
-                                    sb.Append($"s{s}=pkt{st.dwPacketNumber},LX{st.Gamepad.sThumbLX} ");
                                     bool alreadyHidden = false;
                                     for (int p = 0; p < MaxPads; p++)
                                         if (p != padIndex && _hiddenXInputSlot[p] == s)
@@ -924,9 +885,7 @@ namespace PadForge.Common.Input
                                         virtualSlot = s;
                                     }
                                 }
-                                else sb.Append($"s{s}=empty ");
                             }
-                            XInputHook.Log(sb.ToString());
 
                             if (virtualSlot >= 0)
                             {
@@ -934,16 +893,7 @@ namespace PadForge.Common.Input
                                 XInputHook.SetIgnoreSlotMask(
                                     XInputHook.IgnoreSlotMask | (1 << virtualSlot));
                                 _sdlJoysticksNeedReopen = true;
-                                XInputHook.Log($"Hiding XInput slot {virtualSlot} (pkt={selectedPkt}, wasEmpty={selectedWasEmpty}) for pad{padIndex}, mask=0x{XInputHook.IgnoreSlotMask:X}");
                             }
-                            else
-                            {
-                                XInputHook.Log($"No fresh-signature slot for pad{padIndex} — not masking this cycle, reconcile will pick up slot from packet-count growth");
-                            }
-                        }
-                        else if (isMsSlot && vc != null && vc.IsConnected && !XInputHook.IsInstalled)
-                        {
-                            XInputHook.Log($"WARNING: hook not installed, cannot hide XInput slot for pad{padIndex}");
                         }
 
                         if (vc != null && vc.IsConnected)
@@ -988,12 +938,10 @@ namespace PadForge.Common.Input
                 {
                     try
                     {
-                        VcLifecycleLog.Log("FinalizeNames() after Pass 2 batch create");
                         _hmaestroContext.FinalizeNames();
                     }
                     catch (Exception ex)
                     {
-                        VcLifecycleLog.Log($"FinalizeNames threw (non-fatal): {ex.Message}");
                     }
                 }
             }
@@ -1008,7 +956,6 @@ namespace PadForge.Common.Input
                     if (vc != null && vc.IsConnected && _slotInitializing[padIndex])
                     {
                         _slotInitializing[padIndex] = false;
-                        VcLifecycleLog.Log($"pad{padIndex} Pass3 cleared _slotInitializing (vc connected)");
                     }
 
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
@@ -1018,7 +965,6 @@ namespace PadForge.Common.Input
                         if (!_loggedFirstSubmit[padIndex])
                         {
                             _loggedFirstSubmit[padIndex] = true;
-                            VcLifecycleLog.Log($"pad{padIndex} Pass3 first submit ({vc.GetType().Name}, IsConnected={vc.IsConnected})");
                         }
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.
@@ -1087,21 +1033,14 @@ namespace PadForge.Common.Input
                     // step fails with "device using INF" because stale device nodes
                     // still reference the old driver package. Matches the HIDMaestro
                     // test app pattern (test/Program.cs:94) and SDK contract.
-                    VcLifecycleLog.Log("EnsureHMaestroContext: RemoveAllVirtualControllers() preflight");
                     try { HMContext.RemoveAllVirtualControllers(); }
                     catch (Exception cleanEx)
                     {
-                        VcLifecycleLog.Log($"  preflight RemoveAllVirtualControllers threw (non-fatal): {cleanEx.Message}");
                     }
 
-                    VcLifecycleLog.Log("EnsureHMaestroContext: new HMContext()");
                     var ctx = new HMContext();
-                    VcLifecycleLog.Log("EnsureHMaestroContext: LoadDefaultProfiles()");
                     int n = ctx.LoadDefaultProfiles();
-                    VcLifecycleLog.Log($"  -> loaded {n} profiles");
-                    VcLifecycleLog.Log("EnsureHMaestroContext: InstallDriver()");
                     ctx.InstallDriver();
-                    VcLifecycleLog.Log("EnsureHMaestroContext: InstallDriver OK");
                     _hmaestroContext = ctx;
 
                     // Safety net: purge any devices we created if the process
@@ -1120,7 +1059,6 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    VcLifecycleLog.Log($"EnsureHMaestroContext FAILED: {ex.GetType().Name}: {ex.Message}\n{ex}");
                     _hmaestroContextFailed = true;
                     RaiseError("Failed to initialize HIDMaestro.", ex);
                 }
@@ -1245,7 +1183,6 @@ namespace PadForge.Common.Input
                 EnsureHMaestroContext();
                 if (_hmaestroContext == null)
                 {
-                    VcLifecycleLog.Log($"pad{padIndex} CreateVirtualController: _hmaestroContext is null (failed={_hmaestroContextFailed})");
                     return null;
                 }
             }
@@ -1296,7 +1233,6 @@ namespace PadForge.Common.Input
             }
             catch (Exception ex)
             {
-                VcLifecycleLog.Log($"pad{padIndex} CREATE EXCEPTION: {ex.GetType().Name}: {ex.Message}\n{ex}");
                 vc?.Dispose();
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
@@ -1324,7 +1260,6 @@ namespace PadForge.Common.Input
         {
             if (_hmaestroContext == null)
             {
-                VcLifecycleLog.Log($"CreateHMaestroController: _hmaestroContext is null");
                 return null;
             }
             // Look up via HIDMaestro's catalog first (the 125+ real profiles).
@@ -1336,7 +1271,6 @@ namespace PadForge.Common.Input
                            ?? HMaestroProfileCatalog.GetProfileById(profileId);
             if (baseProfile == null)
             {
-                VcLifecycleLog.Log($"CreateHMaestroController: GetProfile('{profileId}') returned null");
                 RaiseError($"HIDMaestro profile '{profileId}' not found.", null);
                 return null;
             }
@@ -1398,25 +1332,18 @@ namespace PadForge.Common.Input
                         }
 
                         effectiveProfile = builder.Build();
-                        VcLifecycleLog.Log(
-                            $"CreateHMaestroController: pad{padIndex} custom profile from '{profileId}' " +
-                            $"productOverride={productStringOverrides} layoutOverride={layoutOverrides} " +
-                            $"sticks={userSticks} triggers={userTriggers} povs={userPovs} buttons={userButtons}");
                     }
                     catch (Exception ex)
                     {
-                        VcLifecycleLog.Log($"pad{padIndex} custom profile build failed, falling back to catalog: {ex.Message}");
                         effectiveProfile = baseProfile;
                     }
                 }
                 else
                 {
-                    VcLifecycleLog.Log($"CreateHMaestroController: profile '{profileId}' resolved (catalog, no overrides)");
                 }
             }
             else
             {
-                VcLifecycleLog.Log($"CreateHMaestroController: profile '{profileId}' resolved, constructing wrapper");
             }
 
             // Record what configuration this VC was built with so Pass 1 can
@@ -1591,21 +1518,5 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static class VcLifecycleLog
-        {
-            private static readonly object _lock = new object();
-            private const string Path = @"C:\PadForge\vc-lifecycle.log";
-
-            public static void Log(string msg)
-            {
-                try
-                {
-                    lock (_lock)
-                        System.IO.File.AppendAllText(Path,
-                            $"[{DateTime.Now:HH:mm:ss.fff}] {msg}\n");
-                }
-                catch { }
-            }
-        }
     }
 }

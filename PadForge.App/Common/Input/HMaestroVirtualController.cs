@@ -21,7 +21,6 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private bool _disposed;
-        private int _anyOutputPacketCount;
         private int _motorNonzeroCount;
 
         public VirtualControllerType Type => _type;
@@ -30,18 +29,6 @@ namespace PadForge.Common.Input
         public string ProfileId => _profile.Id;
         public ushort ProfileVendorId => _profile.VendorId;
         public ushort ProfileProductId => _profile.ProductId;
-
-        /// <summary>
-        /// Per-controller SubmitState counter. Incremented each time
-        /// <see cref="SubmitGamepadState"/> forwards a frame to the SDK.
-        /// The call-rate reporter atomically exchanges this to 0 each
-        /// sample window. Used to confirm we are actually submitting at
-        /// the rate we think we are, and to identify any per-virtual
-        /// imbalance when running multi-pad setups.
-        /// </summary>
-        private long _submitStateCalls;
-        public long SampleAndResetSubmitStateCalls()
-            => System.Threading.Interlocked.Exchange(ref _submitStateCalls, 0);
 
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
@@ -75,7 +62,6 @@ namespace PadForge.Common.Input
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref _submitStateCalls);
 
             // No dedup and no rate limit here — Step 5 already honors the
             // user-configured polling interval (default 1kHz). HIDMaestro is
@@ -129,7 +115,6 @@ namespace PadForge.Common.Input
         public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
         {
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref _submitStateCalls);
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 
@@ -226,25 +211,6 @@ namespace PadForge.Common.Input
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
                 var data = pkt.Data.Span;
-
-                // Diagnostic: log every packet up to 100 per controller.
-                // Cannot filter on non-zero motors because the "stop" packet
-                // (all-zero motors) is exactly what we need to see when
-                // investigating stuck-vibration symptoms. Capture the full
-                // stream, then review the log for the start-then-stop
-                // sequence.
-                if (_anyOutputPacketCount < 100)
-                {
-                    _anyOutputPacketCount++;
-                    try
-                    {
-                        var hex = new System.Text.StringBuilder();
-                        for (int b = 0; b < Math.Min(data.Length, 12); b++)
-                            hex.Append($"{data[b]:X2} ");
-                        System.IO.File.AppendAllText(@"C:\PadForge\vibration-debug.log",
-                            $"[{DateTime.Now:HH:mm:ss.fff}] pad{idx} profile={_profile.Id} src={pkt.Source} id=0x{pkt.ReportId:X2} len={data.Length} [{hex}]\n");
-                    } catch { }
-                }
 
                 // XInput vibration packet layout (from IOCTL_XUSB_SET_STATE):
                 //   data[0] = 0x00 (command)

@@ -218,5 +218,36 @@
                 </StackPanel>
             </Border>
         </Grid>
+
+        <!-- ═══════════════════════════════════════════
+             Startup overlay — shown while the orphan-sweep
+             task (App.OrphanSweepTask) is still running at
+             launch. Hidden automatically when the task
+             completes.
+             ═══════════════════════════════════════════ -->
+        <Grid x:Name="StartupOverlay"
+              Grid.RowSpan="3"
+              Visibility="Collapsed"
+              Panel.ZIndex="1001">
+            <Border Background="#CC000000"/>
+            <Border Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
+                    CornerRadius="8" Padding="32,24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="320">
+                <StackPanel HorizontalAlignment="Center">
+                    <ui:ProgressRing IsIndeterminate="True"
+                                     Width="40" Height="40"
+                                     Margin="0,0,0,16"/>
+                    <TextBlock FontSize="16" FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Text="{Binding Main_StartingUp, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock FontSize="13" Opacity="0.7"
+                               Margin="0,6,0,4" HorizontalAlignment="Center"
+                               TextWrapping="Wrap" TextAlignment="Center"
+                               Text="{Binding Main_CleaningPreviousSession, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

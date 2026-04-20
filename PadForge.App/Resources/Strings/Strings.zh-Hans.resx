@@ -108,6 +108,8 @@
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>正在关闭 PadForge...</value></data>
+  <data name="Main_StartingUp" xml:space="preserve"><value>正在启动 PadForge…</value></data>
+  <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>正在清理上一次会话遗留的虚拟控制器。</value></data>
   <data name="Main_ReleasingControllers" xml:space="preserve"><value>正在释放虚拟控制器</value></data>
   <data name="Main_PleaseWait" xml:space="preserve"><value>请稍候...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 个设备</value></data>

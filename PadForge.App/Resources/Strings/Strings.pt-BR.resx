@@ -108,6 +108,8 @@
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Fechando PadForge...</value></data>
+  <data name="Main_StartingUp" xml:space="preserve"><value>Iniciando PadForge…</value></data>
+  <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Limpando controles virtuais deixados por uma sessão anterior.</value></data>
   <data name="Main_ReleasingControllers" xml:space="preserve"><value>Liberando controles virtuais</value></data>
   <data name="Main_PleaseWait" xml:space="preserve"><value>Por favor, aguarde...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivo(s)</value></data>

@@ -334,6 +334,21 @@ namespace PadForge.Views
                 SyncMidiConfigBar();
                 ApplyViewMode();
             }
+            else if (e.PropertyName == nameof(PadViewModel.ProfileId))
+            {
+                // When the user picks a new Extended profile, re-seed every
+                // field in the config bar (Name/VID/PID plus layout counts)
+                // so the UI reflects the selected profile's identity and
+                // capabilities. Without this the fields keep the previous
+                // profile's values and only refresh on slot switch.
+                if (DataContext is PadViewModel vm
+                    && vm.OutputType == Engine.VirtualControllerType.Extended)
+                {
+                    _syncingVJoyConfig = true;
+                    SyncExtendedFields(vm);
+                    _syncingVJoyConfig = false;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -369,13 +384,10 @@ namespace PadForge.Views
         {
             if (vm?.VJoyConfig == null) return;
 
-            VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
-            VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
-            VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
-            VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
-
-            // Identity override — seeded from the active profile's metadata
-            // if the per-slot override fields are empty.
+            // Resolve the active HIDMaestro profile and drive every field in
+            // the Extended config bar from its metadata. The profile IS the
+            // VC's identity in v3 — all fields reflect it directly rather
+            // than the v2 vJoy per-slot overrides.
             var profile = vm.AvailableProfiles?.FirstOrDefault(p =>
                 string.Equals(p.Id, vm.ProfileId, System.StringComparison.OrdinalIgnoreCase));
 
@@ -383,6 +395,40 @@ namespace PadForge.Views
             ExtendedVidBox.Text = profile != null ? $"0x{profile.VendorId:X4}" : string.Empty;
             ExtendedPidBox.Text = profile != null ? $"0x{profile.ProductId:X4}" : string.Empty;
 
+            if (profile != null)
+            {
+                // Layout counts derived from the profile's HID descriptor.
+                // HMProfile exposes total AxisCount, ButtonCount, HasHat.
+                // Sticks/triggers split is not directly exposed by the SDK,
+                // so use the standard gamepad convention: first four axes
+                // pair into two sticks (LX/LY/RX/RY), remaining axes are
+                // triggers. Works for typical gamepads (6 axes → 2+2);
+                // degenerate cases (joysticks with 2-3 axes) collapse to
+                // 1 stick + remainder triggers.
+                int axes = profile.AxisCount;
+                int sticks = System.Math.Min(axes, 4) / 2;
+                int triggers = System.Math.Max(0, axes - sticks * 2);
+
+                VJoyStickCountBox.Text = sticks.ToString();
+                VJoyTriggerCountBox.Text = triggers.ToString();
+                VJoyPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
+                VJoyButtonCountBox.Text = profile.ButtonCount.ToString();
+            }
+            else
+            {
+                // No profile resolved (e.g. catalog not loaded yet) — fall
+                // back to the persisted VJoyConfig so the UI has something
+                // to show rather than blank fields.
+                VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
+                VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
+                VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
+                VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+            }
+
+            // Touchpad and rumble caps aren't exposed by HMProfile directly,
+            // so leave as user-facing defaults. Rumble routes through
+            // HMController.OutputReceived unconditionally — profiles without
+            // physical rumble simply never deliver output packets.
             ExtendedTouchpadChk.IsChecked = false;
             ExtendedRumbleChk.IsChecked = true;
         }

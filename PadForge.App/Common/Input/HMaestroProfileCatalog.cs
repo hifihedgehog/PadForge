@@ -45,10 +45,10 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _sonyProfiles; }
         }
 
-        /// <summary>The full catalog — every profile HIDMaestro ships. Extended
-        /// is the DirectInput/vJoy replacement category and exposes all 225
-        /// profiles plus (future) the custom profile editor. Microsoft and
-        /// Sony are convenience subsets of this same list.</summary>
+        /// <summary>Profiles that are NEITHER Microsoft nor Sony — third-party
+        /// gamepads, flight sticks, wheels, HOTAS, etc. Mutually exclusive with
+        /// MicrosoftProfiles and SonyProfiles so each profile appears in
+        /// exactly one category bucket.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
             get { EnsureInitialized(); return _extendedProfiles; }
@@ -75,7 +75,17 @@ namespace PadForge.Common.Input
                     using var ctx = new HMContext();
                     ctx.LoadDefaultProfiles();
 
+                    // Filter undeployable profiles at catalog load. HIDMaestro
+                    // ships some profile JSONs that lack a HID descriptor —
+                    // HMContext.CreateController throws ArgumentException
+                    // "Profile 'X' has no HID descriptor and cannot be
+                    // deployed." for those. Excluding them at the catalog
+                    // level prevents the user from selecting a broken
+                    // profile in any dropdown, so creation never attempts a
+                    // controller it can't deploy. When HIDMaestro ships a
+                    // fixed catalog, these profiles reappear automatically.
                     _allProfiles = ctx.AllProfiles
+                        .Where(p => p.IsDeployable)
                         .OrderBy(p => p.Id, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
@@ -87,11 +97,14 @@ namespace PadForge.Common.Input
                         .Where(p => string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
-                    // Extended lists the entire catalog — it's the
-                    // DirectInput/vJoy replacement and the advanced slot where
-                    // the user picks from every profile or (future) builds
-                    // custom ones. Microsoft/Sony are curated subsets.
-                    _extendedProfiles = _allProfiles;
+                    // Extended = everything that's not Microsoft or Sony.
+                    // Mutually exclusive with the other two buckets so a
+                    // profile doesn't appear twice in the category dropdowns.
+                    _extendedProfiles = _allProfiles
+                        .Where(p =>
+                            !string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase) &&
+                            !string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
+                        .ToList();
                 }
                 catch
                 {

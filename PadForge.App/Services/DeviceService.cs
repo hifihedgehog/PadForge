@@ -384,6 +384,15 @@ namespace PadForge.Services
                     // and doesn't trigger a premature sidebar rebuild.
                     _mainVm.Pads[i].OutputType = controllerType;
 
+                    // Populate ProfileId with the category default so the
+                    // profile-picker dropdown shows the selected default
+                    // immediately on create. Engine-side CreateVirtualController
+                    // falls back to the same default when SlotProfileIds is
+                    // null, but that fallback is silent — without this the
+                    // dropdown would show no selection until the user picks
+                    // one manually.
+                    _mainVm.Pads[i].ProfileId = InputManager.GetDefaultProfileId(controllerType);
+
                     // Reset vJoy config to Xbox 360 default for fresh slots.
                     // Without this, stale custom configs from previously-deleted vJoy slots
                     // (still in XML) leak into newly-created slots.

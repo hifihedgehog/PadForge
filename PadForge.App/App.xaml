@@ -18,6 +18,17 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
+            <!--
+                WPF UI's default ComboBox style sets ScrollViewer.VerticalScrollBarVisibility
+                to Hidden, which kills the fade-in scrollbar that its DynamicScrollViewer
+                template would otherwise provide. Flipping it to Auto app-wide restores the
+                Fluent/WinUI "show on scroll, fade on idle" behavior so long profile
+                dropdowns are actually navigable.
+            -->
+            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            </Style>
+
             <!-- Global Converters -->
             <conv:BoolToColorConverter x:Key="BoolToColorConverter" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

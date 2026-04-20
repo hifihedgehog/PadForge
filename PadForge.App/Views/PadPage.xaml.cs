@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -414,6 +415,7 @@ namespace PadForge.Views
             ExtendedVidBox.Text = profile != null ? $"0x{profile.VendorId:X4}" : string.Empty;
             ExtendedPidBox.Text = profile != null ? $"0x{profile.ProductId:X4}" : string.Empty;
             ExtendedOemOverrideChk.IsChecked = vm.ExtendedConfig?.OemNameOverride == true;
+            ExtendedCustomizeChk.IsChecked = vm.ExtendedConfig?.Customize == true;
 
             if (profile != null)
             {
@@ -476,6 +478,53 @@ namespace PadForge.Views
             if (_syncingExtendedConfig) return;
             if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
             vm.ExtendedConfig.OemNameOverride = ExtendedOemOverrideChk.IsChecked == true;
+        }
+
+        private void ExtendedCustomize_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (_syncingExtendedConfig) return;
+            if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
+            vm.ExtendedConfig.Customize = ExtendedCustomizeChk.IsChecked == true;
+        }
+
+        private void ExtendedResetDefaults_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
+
+            // Resolve the active catalog profile. Every override field below
+            // is snapped back to that profile's declared value — the user
+            // gets a clean slate matching what HIDMaestro would build if
+            // Customize were turned off.
+            var profile = vm.AvailableProfiles?.FirstOrDefault(p =>
+                string.Equals(p.Id, vm.ProfileId, System.StringComparison.OrdinalIgnoreCase));
+            if (profile == null) return;
+
+            int axes = profile.AxisCount;
+            int sticks = System.Math.Min(axes, 4) / 2;
+            int triggers = System.Math.Max(0, axes - sticks * 2);
+
+            // Write the config first (fires property-changed → persist +
+            // triggers Pass 1 destroy/rebuild when Customize is active and
+            // the values differ from the applied snapshot). _syncingExtendedConfig
+            // blocks the nested SyncExtendedFields call from re-firing these
+            // setters through the textbox LostFocus path.
+            _syncingExtendedConfig = true;
+            try
+            {
+                vm.ExtendedConfig.ProductString = !string.IsNullOrEmpty(profile.ProductString)
+                    ? profile.ProductString
+                    : profile.Name ?? string.Empty;
+                vm.ExtendedConfig.ThumbstickCount = sticks;
+                vm.ExtendedConfig.TriggerCount = triggers;
+                vm.ExtendedConfig.PovCount = profile.HasHat ? 1 : 0;
+                vm.ExtendedConfig.ButtonCount = profile.ButtonCount;
+                vm.ExtendedConfig.OemNameOverride = false;
+            }
+            finally { _syncingExtendedConfig = false; }
+
+            // Refresh the UI from the freshly-reset config so the textboxes
+            // and checkbox reflect the new state.
+            SyncExtendedFields(vm);
         }
 
         /// <summary>

@@ -66,6 +66,23 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _buttonCount, Math.Clamp(value, 0, 128));
         }
 
+        private bool _customize;
+        /// <summary>
+        /// Master toggle for the Extended config bar's override fields. When
+        /// false (default), the VC is built from the catalog profile with no
+        /// customizations — Product String, layout counts, and OEM override
+        /// are ignored even if they hold values. When true, each sub-field is
+        /// applied on top of the catalog profile via HMProfileBuilder. Lets
+        /// users flip between pristine catalog behavior and customized
+        /// behavior with a single toggle, and keeps the UI honest about
+        /// which fields actually affect the live device.
+        /// </summary>
+        public bool Customize
+        {
+            get => _customize;
+            set => SetProperty(ref _customize, value);
+        }
+
         private bool _oemNameOverride;
         /// <summary>
         /// Whether this slot claims the Windows DirectInput OEM-name table
@@ -174,5 +191,6 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int ButtonCount { get; set; } = 11;
         [XmlAttribute] public bool OemNameOverride { get; set; }
         [XmlAttribute] public string ProductString { get; set; } = string.Empty;
+        [XmlAttribute] public bool Customize { get; set; }
     }
 }

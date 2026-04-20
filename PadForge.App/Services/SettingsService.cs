@@ -359,6 +359,7 @@ namespace PadForge.Services
                     }
                     cfg.OemNameOverride = cfgData.OemNameOverride;
                     cfg.ProductString = cfgData.ProductString ?? string.Empty;
+                    cfg.Customize = cfgData.Customize;
                 }
             }
         }
@@ -1033,7 +1034,8 @@ namespace PadForge.Services
                     PovCount = cfg.PovCount,
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
-                    ProductString = cfg.ProductString
+                    ProductString = cfg.ProductString,
+                    Customize = cfg.Customize
                 });
             }
 
@@ -1115,7 +1117,8 @@ namespace PadForge.Services
                     PovCount = cfg.PovCount,
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
-                    ProductString = cfg.ProductString
+                    ProductString = cfg.ProductString,
+                    Customize = cfg.Customize
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;

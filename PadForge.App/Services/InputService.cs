@@ -985,6 +985,32 @@ namespace PadForge.Services
         {
             if (_inputManager == null || slotIndex >= InputManager.MaxPads) return;
             var cfg = padVm.ExtendedConfig;
+
+            // Resolve the effective label for the OEM-name override and the
+            // custom ProductString. cfg.ProductString is empty until the user
+            // explicitly edits the textbox; fall back to the active profile's
+            // catalog ProductString so toggling OEM override alone (without
+            // typing anything) still picks up a meaningful label from the
+            // same value the UI is showing.
+            string effectiveLabel = cfg.ProductString ?? string.Empty;
+            if (string.IsNullOrEmpty(effectiveLabel))
+            {
+                var profile = HMaestroProfileCatalog.GetProfileById(padVm.ProfileId);
+                effectiveLabel = !string.IsNullOrEmpty(profile?.ProductString)
+                    ? profile.ProductString
+                    : profile?.Name ?? string.Empty;
+            }
+
+            bool customize = padVm.OutputType == VirtualControllerType.Extended && cfg.Customize;
+
+            // Layout counts must always flow through — Step 3 reads them to
+            // populate ExtendedRawState's axes/buttons/POVs from the
+            // per-mapping targets. Zeroing them when Customize is off would
+            // silently drop every mapped button/axis for a non-customized
+            // Extended slot because Step 3's population loops are bounded by
+            // these counts. The values come from ExtendedConfig which
+            // SyncExtendedConfigFromProfile already seeds to match the
+            // active profile's HID descriptor when a profile is selected.
             _inputManager.SlotCustomLayouts[slotIndex] = new CustomControllerLayout
             {
                 Axes = cfg.TotalAxes,
@@ -995,8 +1021,16 @@ namespace PadForge.Services
             };
             _inputManager.SlotExtendedIsCustom[slotIndex] =
                 padVm.OutputType == VirtualControllerType.Extended && !cfg.IsGamepadPreset;
-            _inputManager.SlotOemOverrideEnabled[slotIndex] = cfg.OemNameOverride;
-            _inputManager.SlotOemOverrideLabel[slotIndex] = cfg.ProductString ?? string.Empty;
+
+            // The Customize flag gates only the override-producing paths
+            // (custom HMProfile build, OEM name override). When off we still
+            // push the label value so it's available if Customize later
+            // flips on without re-editing, but SlotExtendedCustomize tells
+            // CreateHMaestroController and ApplyLiveOemOverrideUpdates to
+            // ignore it until the user opts in.
+            _inputManager.SlotExtendedCustomize[slotIndex] = customize;
+            _inputManager.SlotOemOverrideEnabled[slotIndex] = customize && cfg.OemNameOverride;
+            _inputManager.SlotOemOverrideLabel[slotIndex] = customize ? effectiveLabel : string.Empty;
         }
 
         /// <summary>

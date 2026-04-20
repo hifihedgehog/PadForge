@@ -75,6 +75,19 @@ namespace PadForge.Common.Input
         internal bool[] SlotExtendedIsCustom { get; } = new bool[MaxPads];
 
         /// <summary>
+        /// Per-slot flag: true if the user has toggled the Customize master
+        /// checkbox in the Extended config bar. Gates every override path
+        /// (custom ProductString, custom HID descriptor, OEM name override)
+        /// so the VC is built from the catalog profile with no mutations
+        /// when Customize is off. Layout counts in
+        /// <see cref="SlotCustomLayouts"/> stay populated either way because
+        /// Step 3 reads them to shape the raw-state mapping grid — zeroing
+        /// them out would silently drop every button/axis mapping for
+        /// non-customized Extended slots.
+        /// </summary>
+        internal bool[] SlotExtendedCustomize { get; } = new bool[MaxPads];
+
+        /// <summary>
         /// Per-slot flag: true if this slot should claim the DirectInput
         /// OEM-name table for its profile's VID:PID on create. Mirrored from
         /// PadViewModel.ExtendedConfig.OemNameOverride by InputService.
@@ -103,6 +116,157 @@ namespace PadForge.Common.Input
         /// the user edited the profile or flag in between. -1 when inactive.
         /// </summary>
         private readonly uint[] _oemOverrideClaimedVidPid = new uint[MaxPads];
+
+        /// <summary>
+        /// Per-slot snapshot of the ProductString that was baked into the
+        /// active VC's HMProfile on create. Compared against the current
+        /// <see cref="SlotOemOverrideLabel"/> in Pass 1 to detect when the
+        /// user edited the Extended config bar's Product String field — a
+        /// live edit triggers destroy + recreate so HIDMaestro rebuilds
+        /// the virtual with the updated iProduct string.
+        /// </summary>
+        private readonly string[] _extendedAppliedProductString = new string[MaxPads];
+
+        /// <summary>
+        /// Per-slot snapshot of the stick/trigger/POV/button layout that was
+        /// baked into the active VC's HID descriptor on create. Compared
+        /// against <see cref="SlotCustomLayouts"/> in Pass 1 to detect a
+        /// layout-count edit; mismatch triggers destroy + recreate so
+        /// HIDMaestro regenerates the descriptor via HidDescriptorBuilder.
+        /// </summary>
+        private readonly CustomControllerLayout[] _extendedAppliedLayout = new CustomControllerLayout[MaxPads];
+
+        /// <summary>
+        /// Per-slot last-applied OEM override label, compared against the
+        /// desired <see cref="SlotOemOverrideLabel"/> on each polling cycle
+        /// to detect product-string edits that should re-push the claim.
+        /// Null when no OEM claim is currently held for this slot.
+        /// </summary>
+        private readonly string[] _lastAppliedOemLabel = new string[MaxPads];
+
+        /// <summary>
+        /// Apply any user toggles of the Extended OEM-override checkbox or
+        /// edits to the Product String field that happened since the last
+        /// polling cycle. Works live, without destroying the VC — HIDMaestro's
+        /// HMOemNameOverride is purely a DirectInput registry operation
+        /// (joy.cpl label) and doesn't intersect with the device lifecycle.
+        ///
+        /// Decisions per slot:
+        ///   - VC missing, has claim → Clear and drop claim (defensive; destroy
+        ///     should already have done this, but catch orphans here too).
+        ///   - VC present, desired enabled, no claim → Set and record claim.
+        ///   - VC present, desired enabled, claim on different (VID,PID) → Clear
+        ///     the old claim, Set the new one.
+        ///   - VC present, desired enabled, same claim, label differs → Set again
+        ///     (SDK replaces the label but preserves the first-capture's original
+        ///     so a chain of Sets always restores to the pre-HIDMaestro state).
+        ///   - VC present, desired disabled, has claim → Clear.
+        ///   - Otherwise → no-op.
+        /// </summary>
+        private void ApplyLiveOemOverrideUpdates()
+        {
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                var vc = _virtualControllers[padIndex] as HMaestroVirtualController;
+                uint claimed = _oemOverrideClaimedVidPid[padIndex];
+
+                if (vc == null)
+                {
+                    if (claimed != 0)
+                    {
+                        // Orphaned claim — release it so refs don't leak.
+                        ReleaseOemOverrideClaim(padIndex, claimed, "orphan-no-vc");
+                    }
+                    continue;
+                }
+
+                bool desiredEnabled = SlotOemOverrideEnabled[padIndex];
+                string desiredLabel = SlotOemOverrideLabel[padIndex] ?? string.Empty;
+                ushort vid = vc.ProfileVendorId;
+                ushort pid = vc.ProfileProductId;
+                uint desiredKey = ((uint)vid << 16) | pid;
+                string lastLabel = _lastAppliedOemLabel[padIndex];
+
+                bool wantClaim = desiredEnabled && !string.IsNullOrEmpty(desiredLabel) && vid != 0 && pid != 0;
+
+                if (!wantClaim)
+                {
+                    if (claimed != 0)
+                        ReleaseOemOverrideClaim(padIndex, claimed, "override-disabled");
+                    continue;
+                }
+
+                if (claimed != desiredKey)
+                {
+                    if (claimed != 0)
+                        ReleaseOemOverrideClaim(padIndex, claimed, "vidpid-changed");
+                    TryAcquireOemOverrideClaim(padIndex, vid, pid, desiredLabel);
+                    continue;
+                }
+
+                // Same VID:PID — only re-push if the label actually changed.
+                if (!string.Equals(lastLabel, desiredLabel, StringComparison.Ordinal))
+                {
+                    try
+                    {
+                        HIDMaestro.HMOemNameOverride.Set(vid, pid, desiredLabel);
+                        _lastAppliedOemLabel[padIndex] = desiredLabel;
+                        VcLifecycleLog.Log($"pad{padIndex} OEM-override label update VID_{vid:X4}&PID_{pid:X4} -> \"{desiredLabel}\"");
+                    }
+                    catch (Exception ex)
+                    {
+                        VcLifecycleLog.Log($"pad{padIndex} OEM-override relabel failed: {ex.Message}");
+                    }
+                }
+            }
+        }
+
+        private void TryAcquireOemOverrideClaim(int padIndex, ushort vid, ushort pid, string label)
+        {
+            try
+            {
+                HIDMaestro.HMOemNameOverride.Set(vid, pid, label);
+                uint key = ((uint)vid << 16) | pid;
+                _oemOverrideRefs.TryGetValue(key, out int n);
+                _oemOverrideRefs[key] = n + 1;
+                _oemOverrideClaimedVidPid[padIndex] = key;
+                _lastAppliedOemLabel[padIndex] = label;
+                VcLifecycleLog.Log($"pad{padIndex} OEM-override live Set VID_{vid:X4}&PID_{pid:X4} label=\"{label}\" refs={n + 1}");
+            }
+            catch (Exception ex)
+            {
+                VcLifecycleLog.Log($"pad{padIndex} OEM-override live Set failed: {ex.Message}");
+            }
+        }
+
+        private void ReleaseOemOverrideClaim(int padIndex, uint claimedKey, string reason)
+        {
+            _oemOverrideClaimedVidPid[padIndex] = 0;
+            _lastAppliedOemLabel[padIndex] = null;
+            if (!_oemOverrideRefs.TryGetValue(claimedKey, out int n)) return;
+            n--;
+            if (n <= 0)
+            {
+                _oemOverrideRefs.Remove(claimedKey);
+                try
+                {
+                    ushort vid = (ushort)(claimedKey >> 16);
+                    ushort pid = (ushort)(claimedKey & 0xFFFF);
+                    HIDMaestro.HMOemNameOverride.Clear(vid, pid);
+                    VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear VID_{vid:X4}&PID_{pid:X4} ({reason}, last ref)");
+                }
+                catch (Exception ex)
+                {
+                    VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear failed: {ex.Message}");
+                }
+            }
+            else
+            {
+                _oemOverrideRefs[claimedKey] = n;
+                VcLifecycleLog.Log($"pad{padIndex} OEM-override deref ({reason}) refs={n}");
+            }
+        }
+
 
         /// <summary>
         /// Per-slot MIDI configuration snapshot. Written by InputService at 30Hz.
@@ -303,6 +467,12 @@ namespace PadForge.Common.Input
             // context. Negligible overhead when nothing is saturating.
             MaybeReportCallRates();
 
+            // Apply any live changes to OEM-name overrides that the user
+            // toggled or edited on an active Extended slot. This is
+            // independent of VC lifecycle — HMOemNameOverride is purely a
+            // DirectInput registry claim, no device rebuild required.
+            ApplyLiveOemOverrideUpdates();
+
             // Track xinputhid slot reshuffles for any active Microsoft virtual.
             // xinputhid reassigns slot numbers at runtime; our static mask set
             // at create time drifts and causes 2s on / 2s off input stalls on
@@ -418,6 +588,41 @@ namespace PadForge.Common.Input
                         DestroyVirtualController(padIndex);
                         _virtualControllers[padIndex] = null;
                         _createFailed[padIndex] = false; // Profile change — allow retry
+                        vc = null;
+                    }
+                }
+
+                // Detect Extended config edits on an already-connected slot:
+                // ProductString edited, or stick/trigger/POV/button counts
+                // changed. Both require a rebuild because HIDMaestro bakes
+                // iProduct and the HID descriptor at CreateController time.
+                // Compare the current desired config against the snapshot
+                // recorded when the VC was last created.
+                if (vc is HMaestroVirtualController hmExtVc
+                    && SlotControllerTypes[padIndex] == VirtualControllerType.Extended)
+                {
+                    string desiredPs = SlotOemOverrideLabel[padIndex] ?? string.Empty;
+                    var desiredLayout = SlotCustomLayouts[padIndex];
+                    bool psChanged = !string.Equals(
+                        desiredPs,
+                        _extendedAppliedProductString[padIndex] ?? string.Empty,
+                        StringComparison.Ordinal);
+                    var appliedLayout = _extendedAppliedLayout[padIndex];
+                    bool layoutChanged =
+                        desiredLayout.Sticks != appliedLayout.Sticks ||
+                        desiredLayout.Triggers != appliedLayout.Triggers ||
+                        desiredLayout.Povs != appliedLayout.Povs ||
+                        desiredLayout.Buttons != appliedLayout.Buttons;
+
+                    if (psChanged || layoutChanged)
+                    {
+                        VcLifecycleLog.Log(
+                            $"pad{padIndex} DESTROY extended-config-change psChanged={psChanged} layoutChanged={layoutChanged}");
+                        if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
+                        else _slotInitializing[padIndex] = false;
+                        DestroyVirtualController(padIndex);
+                        _virtualControllers[padIndex] = null;
+                        _createFailed[padIndex] = false;
                         vc = null;
                     }
                 }
@@ -1052,9 +1257,9 @@ namespace PadForge.Common.Input
             {
                 vc = controllerType switch
                 {
-                    VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, profileId),
-                    VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId),
-                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId),
+                    VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, profileId, padIndex),
+                    VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex),
+                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId, padIndex),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
                     _ => null
@@ -1064,12 +1269,9 @@ namespace PadForge.Common.Input
 
                 // Claim the DirectInput OEM-name table entry for this slot's
                 // profile BEFORE Connect, so the label is in place before
-                // Windows enumerates the new virtual device. Set is
-                // idempotent at the HIDMaestro level (repeated Set on the
-                // same VID:PID replaces the label but preserves the
-                // original-value capture), and we also ref-count locally so
-                // the pair of slots using the same profile doesn't get the
-                // override cleared when only one of them is destroyed.
+                // Windows enumerates the new virtual device. The live-update
+                // pass at the top of UpdateVirtualDevices handles subsequent
+                // toggles and edits; this is the initial acquisition.
                 if (controllerType == VirtualControllerType.Extended
                     && SlotOemOverrideEnabled[padIndex]
                     && vc is HMaestroVirtualController hmOem)
@@ -1078,21 +1280,7 @@ namespace PadForge.Common.Input
                     ushort pid = hmOem.ProfileProductId;
                     string label = SlotOemOverrideLabel[padIndex];
                     if (!string.IsNullOrEmpty(label) && vid != 0 && pid != 0)
-                    {
-                        try
-                        {
-                            HIDMaestro.HMOemNameOverride.Set(vid, pid, label);
-                            uint key = ((uint)vid << 16) | pid;
-                            _oemOverrideRefs.TryGetValue(key, out int n);
-                            _oemOverrideRefs[key] = n + 1;
-                            _oemOverrideClaimedVidPid[padIndex] = key;
-                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Set VID_{vid:X4}&PID_{pid:X4} label=\"{label}\" refs={n + 1}");
-                        }
-                        catch (Exception ex)
-                        {
-                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Set failed: {ex.Message}");
-                        }
-                    }
+                        TryAcquireOemOverrideClaim(padIndex, vid, pid, label);
                 }
 
                 vc.Connect();
@@ -1114,23 +1302,119 @@ namespace PadForge.Common.Input
         /// Constructs a HIDMaestro-backed virtual controller using the named
         /// embedded profile. The profile slug must match a profile shipped in
         /// HIDMaestro.Core's embedded catalog (225 profiles across 32 vendors).
+        ///
+        /// For Extended slots, applies per-slot customizations on top of the
+        /// catalog profile via <see cref="HMProfileBuilder"/>:
+        ///   - ProductString override drives the iProduct string reported to
+        ///     games and Device Manager (separate from OEM-name override,
+        ///     which targets DirectInput's registry table).
+        ///   - Custom stick/trigger/POV/button counts regenerate the HID
+        ///     report descriptor via <see cref="HidDescriptorBuilder"/> so
+        ///     the virtual actually presents the requested layout to
+        ///     downstream consumers. Without this, editing those fields
+        ///     only re-shaped the PadForge mapping grid without affecting
+        ///     the real device.
         /// </summary>
-        private IVirtualController CreateHMaestroController(VirtualControllerType type, string profileId)
+        private IVirtualController CreateHMaestroController(VirtualControllerType type, string profileId, int padIndex)
         {
             if (_hmaestroContext == null)
             {
                 VcLifecycleLog.Log($"CreateHMaestroController: _hmaestroContext is null");
                 return null;
             }
-            var profile = _hmaestroContext.GetProfile(profileId);
-            if (profile == null)
+            var baseProfile = _hmaestroContext.GetProfile(profileId);
+            if (baseProfile == null)
             {
                 VcLifecycleLog.Log($"CreateHMaestroController: GetProfile('{profileId}') returned null");
                 RaiseError($"HIDMaestro profile '{profileId}' not found.", null);
                 return null;
             }
-            VcLifecycleLog.Log($"CreateHMaestroController: profile '{profileId}' resolved, constructing wrapper");
-            return new HMaestroVirtualController(_hmaestroContext, profile, type);
+
+            HMProfile effectiveProfile = baseProfile;
+
+            if (type == VirtualControllerType.Extended && SlotExtendedCustomize[padIndex])
+            {
+                string userProductString = SlotOemOverrideLabel[padIndex];
+                bool productStringOverrides =
+                    !string.IsNullOrEmpty(userProductString)
+                    && !string.Equals(userProductString, baseProfile.ProductString, StringComparison.Ordinal);
+
+                var layout = SlotCustomLayouts[padIndex];
+                int userSticks = layout.Sticks;
+                int userTriggers = layout.Triggers;
+                int userPovs = layout.Povs;
+                int userButtons = layout.Buttons;
+
+                // Compare against the profile's declared layout. Extended
+                // profiles have an AxisCount/ButtonCount/HasHat on HMProfile;
+                // if any user value differs from what the catalog descriptor
+                // declares, regenerate.
+                int profSticks = Math.Min(baseProfile.AxisCount, 4) / 2;
+                int profTriggers = Math.Max(0, baseProfile.AxisCount - profSticks * 2);
+                int profPovs = baseProfile.HasHat ? 1 : 0;
+                int profButtons = baseProfile.ButtonCount;
+
+                bool layoutOverrides =
+                    (userSticks > 0 || userTriggers > 0 || userPovs > 0 || userButtons > 0) &&
+                    (userSticks != profSticks
+                     || userTriggers != profTriggers
+                     || userPovs != profPovs
+                     || userButtons != profButtons);
+
+                if (productStringOverrides || layoutOverrides)
+                {
+                    try
+                    {
+                        var builder = new HMProfileBuilder().FromProfile(baseProfile);
+
+                        if (productStringOverrides)
+                            builder.ProductString(userProductString);
+
+                        if (layoutOverrides)
+                        {
+                            var descBuilder = new HidDescriptorBuilder().Gamepad();
+                            for (int s = 0; s < userSticks; s++)
+                                descBuilder.AddStick(s == 0 ? "Left" : "Right", 16);
+                            for (int t = 0; t < userTriggers; t++)
+                                descBuilder.AddTrigger(t == 0 ? "Left" : "Right", 8);
+                            if (userPovs > 0)
+                                descBuilder.AddHat();
+                            if (userButtons > 0)
+                                descBuilder.AddButtons(userButtons);
+                            byte[] descBytes = descBuilder.Build();
+                            builder.Descriptor(descBytes);
+                            builder.InputReportSize(descBuilder.InputReportByteSize);
+                        }
+
+                        effectiveProfile = builder.Build();
+                        VcLifecycleLog.Log(
+                            $"CreateHMaestroController: pad{padIndex} custom profile from '{profileId}' " +
+                            $"productOverride={productStringOverrides} layoutOverride={layoutOverrides} " +
+                            $"sticks={userSticks} triggers={userTriggers} povs={userPovs} buttons={userButtons}");
+                    }
+                    catch (Exception ex)
+                    {
+                        VcLifecycleLog.Log($"pad{padIndex} custom profile build failed, falling back to catalog: {ex.Message}");
+                        effectiveProfile = baseProfile;
+                    }
+                }
+                else
+                {
+                    VcLifecycleLog.Log($"CreateHMaestroController: profile '{profileId}' resolved (catalog, no overrides)");
+                }
+            }
+            else
+            {
+                VcLifecycleLog.Log($"CreateHMaestroController: profile '{profileId}' resolved, constructing wrapper");
+            }
+
+            // Record what configuration this VC was built with so Pass 1 can
+            // detect config deltas and trigger a rebuild when the user edits
+            // the Extended override fields on a live slot.
+            _extendedAppliedProductString[padIndex] = SlotOemOverrideLabel[padIndex] ?? string.Empty;
+            _extendedAppliedLayout[padIndex] = SlotCustomLayouts[padIndex];
+
+            return new HMaestroVirtualController(_hmaestroContext, effectiveProfile, type);
         }
 
         /// <summary>
@@ -1187,39 +1471,16 @@ namespace PadForge.Common.Input
 
             _loggedFirstSubmit[padIndex] = false;
 
-            // Release this slot's claim on the DirectInput OEM-name table, if
-            // it held one. Ref count gates the actual HMOemNameOverride.Clear
-            // call so sibling slots targeting the same profile keep the
-            // override active until the last holder releases.
+            // Release this slot's OEM-name claim, if it held one. Ref count
+            // gates the actual HMOemNameOverride.Clear call so sibling slots
+            // targeting the same profile keep the override active until the
+            // last holder releases. Also resets the applied-config snapshot
+            // so a subsequent recreate rebuilds from scratch.
             uint claimedKey = _oemOverrideClaimedVidPid[padIndex];
             if (claimedKey != 0)
-            {
-                _oemOverrideClaimedVidPid[padIndex] = 0;
-                if (_oemOverrideRefs.TryGetValue(claimedKey, out int n))
-                {
-                    n--;
-                    if (n <= 0)
-                    {
-                        _oemOverrideRefs.Remove(claimedKey);
-                        try
-                        {
-                            ushort vid = (ushort)(claimedKey >> 16);
-                            ushort pid = (ushort)(claimedKey & 0xFFFF);
-                            HIDMaestro.HMOemNameOverride.Clear(vid, pid);
-                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear VID_{vid:X4}&PID_{pid:X4} (last ref)");
-                        }
-                        catch (Exception ex)
-                        {
-                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear failed: {ex.Message}");
-                        }
-                    }
-                    else
-                    {
-                        _oemOverrideRefs[claimedKey] = n;
-                        VcLifecycleLog.Log($"pad{padIndex} OEM-override deref refs={n}");
-                    }
-                }
-            }
+                ReleaseOemOverrideClaim(padIndex, claimedKey, "destroy");
+            _extendedAppliedProductString[padIndex] = null;
+            _extendedAppliedLayout[padIndex] = default;
 
             // Clear the XInput hook mask BEFORE teardown so HIDMaestro's
             // internal TeardownController can query XInput slots cleanly.

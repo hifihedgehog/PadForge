@@ -273,7 +273,7 @@
   <data name="About_Title" xml:space="preserve"><value>关于</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>控制器映射工具</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce 的现代分支 — 使用 SDL3、WPF 和 .NET 10 重新构建</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge 可将任何控制器、键盘或鼠标映射为虚拟 Xbox 360、DualShock 4、自定义 DirectInput 或 MIDI 控制器，通过 ViGEmBus、vJoy 和 Windows MIDI Services 实现。它使用 SDL3 处理控制器输入，使用 Windows Raw Input 处理键盘和鼠标输入，并提供现代 Fluent Design 界面，用于映射配置、死区设置和力反馈管理。</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge 可将任何输入设备转换为任何虚拟控制器。游戏手柄、摇杆、键盘、鼠标和触摸屏可映射为虚拟游戏控制器（Xbox、PlayStation、飞行摇杆、方向盘、第三方手柄）或键盘+鼠标/MIDI 输出，让游戏将其识别为真实硬件 — 由 HIDMaestro 和 Windows MIDI Services 提供支持。它使用 SDL3 处理控制器输入，使用 Windows Raw Input 处理键盘和鼠标输入，使用 HidHide 按游戏隐藏设备，并提供现代 Fluent Design 界面，用于映射配置、死区、灵敏度曲线和力反馈管理。</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>构建技术</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>运行时和 WPF 框架</value></data>

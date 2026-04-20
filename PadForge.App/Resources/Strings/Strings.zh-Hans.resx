@@ -364,10 +364,10 @@
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>力反馈</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>预设</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>自定义</value></data>
-  <data name="Pad_VJoySticks" xml:space="preserve"><value>摇杆</value></data>
-  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>扳机</value></data>
-  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POV</value></data>
-  <data name="Pad_VJoyButtons" xml:space="preserve"><value>按钮</value></data>
+  <data name="Pad_ExtendedSticks" xml:space="preserve"><value>摇杆</value></data>
+  <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳机</value></data>
+  <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
+  <data name="Pad_ExtendedButtons" xml:space="preserve"><value>按钮</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>通道</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI 通道（1-16）</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 数量</value></data>
@@ -763,12 +763,12 @@
   <data name="Mouse_X" xml:space="preserve"><value>鼠标 X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>鼠标 Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>滚轮</value></data>
-  <data name="VJoy_Stick_Format" xml:space="preserve"><value>摇杆 {0} X</value></data>
-  <data name="VJoy_StickY_Format" xml:space="preserve"><value>摇杆 {0} Y</value></data>
-  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>扳机 {0}</value></data>
-  <data name="VJoy_Button_Format" xml:space="preserve"><value>按钮 {0}</value></data>
-  <data name="VJoy_DPad" xml:space="preserve"><value>十字键</value></data>
-  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="Extended_Stick_Format" xml:space="preserve"><value>摇杆 {0} X</value></data>
+  <data name="Extended_StickY_Format" xml:space="preserve"><value>摇杆 {0} Y</value></data>
+  <data name="Extended_Trigger_Format" xml:space="preserve"><value>扳机 {0}</value></data>
+  <data name="Extended_Button_Format" xml:space="preserve"><value>按钮 {0}</value></data>
+  <data name="Extended_DPad" xml:space="preserve"><value>十字键</value></data>
+  <data name="Extended_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
   <data name="MacroAxis_XAxis" xml:space="preserve"><value>左摇杆 X</value></data>
   <data name="MacroAxis_YAxis" xml:space="preserve"><value>左摇杆 Y</value></data>
   <data name="MacroAxis_XRotation" xml:space="preserve"><value>右摇杆 X</value></data>

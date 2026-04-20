@@ -116,7 +116,7 @@
         <Grid.RowDefinitions>
             <!-- Row 0: Device selector header -->
             <RowDefinition Height="Auto"/>
-            <!-- Row 1: vJoy config bar (visible only for vJoy slots) -->
+            <!-- Row 1: Extended config bar (visible only for Extended slots) -->
             <RowDefinition Height="Auto"/>
             <!-- Row 2: Configuration tabs -->
             <RowDefinition Height="*"/>
@@ -152,7 +152,7 @@
                                             <Setter Property="Source" Value="{StaticResource DS4ControllerIcon}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">
-                                            <Setter Property="Source" Value="{StaticResource VJoyControllerIcon}"/>
+                                            <Setter Property="Source" Value="{StaticResource ExtendedControllerIcon}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -275,10 +275,10 @@
         </Border>
 
         <!-- ══════════════════════════════════════
-             ROW 1: VJOY CONFIGURATION BAR
-             (visible only when OutputType == VJoy)
+             ROW 1: EXTENDED CONFIGURATION BAR
+             (visible only when OutputType == Extended)
              ══════════════════════════════════════ -->
-        <Border x:Name="VJoyConfigBar" Grid.Row="1" Margin="4,4,4,0"
+        <Border x:Name="ExtendedConfigBar" Grid.Row="1" Margin="4,4,4,0"
                 Padding="10,8" CornerRadius="4"
                 Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
                 BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
@@ -322,37 +322,37 @@
 
                 <!-- Row 3: Layout override (Sticks / Triggers / POVs / Buttons) -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
-                    <TextBlock Text="{Binding Pad_VJoySticks, Source={x:Static strings:Strings.Instance}}"
+                    <TextBlock Text="{Binding Pad_ExtendedSticks, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="VJoyStickCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="VJoyStickCountBox"
+                    <TextBox x:Name="ExtendedStickCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="ExtendedStickCountBox"
                              TextAlignment="Center" Text="2"
-                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{Binding Pad_VJoyTriggers, Source={x:Static strings:Strings.Instance}}"
+                    <TextBlock Text="{Binding Pad_ExtendedTriggers, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="VJoyTriggerCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="VJoyTriggerCountBox"
+                    <TextBox x:Name="ExtendedTriggerCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="ExtendedTriggerCountBox"
                              TextAlignment="Center" Text="2"
-                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{Binding Pad_VJoyPOVs, Source={x:Static strings:Strings.Instance}}"
+                    <TextBlock Text="{Binding Pad_ExtendedPOVs, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="VJoyPovCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="VJoyPovCountBox"
+                    <TextBox x:Name="ExtendedPovCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="ExtendedPovCountBox"
                              TextAlignment="Center" Text="1"
-                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
-                    <TextBlock Text="{Binding Pad_VJoyButtons, Source={x:Static strings:Strings.Instance}}"
+                    <TextBlock Text="{Binding Pad_ExtendedButtons, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="VJoyButtonCountBox" Width="72" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="VJoyButtonCountBox"
+                    <TextBox x:Name="ExtendedButtonCountBox" Width="72" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="ExtendedButtonCountBox"
                              TextAlignment="Center" Text="11"
-                             LostFocus="VJoyCustomValue_Changed" KeyDown="VJoyCustomValue_KeyDown"/>
+                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
                     <CheckBox x:Name="ExtendedTouchpadChk" Content="Touchpad" Margin="14,0,0,0"
                               VerticalAlignment="Center"

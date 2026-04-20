@@ -120,7 +120,7 @@ namespace PadForge.Common
         {
             string vjoyDir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
-            var oemInfs = FindVJoyOemInfs();
+            var oemInfs = FindExtendedOemInfs();
 
             string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.cmd");
             string logPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.log");
@@ -164,7 +164,7 @@ namespace PadForge.Common
             RunElevated("cmd.exe", $"/c \"{scriptPath}\"");
             try { File.Delete(scriptPath); } catch { }
 
-            CleanVJoyRegistryArtifacts();
+            CleanExtendedRegistryArtifacts();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace PadForge.Common
         /// to hang on reinstall. Does NOT touch pnputil or files — those are needed
         /// by the installer to register the driver via UpdateDriverForPlugAndPlayDevices.
         /// </summary>
-        private static void CleanVJoyRegistryArtifacts()
+        private static void CleanExtendedRegistryArtifacts()
         {
             try
             {
@@ -196,7 +196,7 @@ namespace PadForge.Common
                     catch { }
                 }
 
-                CleanVJoyDeviceClassEntries();
+                CleanExtendedDeviceClassEntries();
 
                 try
                 {
@@ -214,7 +214,7 @@ namespace PadForge.Common
         /// {781ef630-72b2-11d2-b852-00c04fad5101} under ControlSet001\Control\Class.
         /// Only deletes subkeys where the "Class" value equals "vjoy".
         /// </summary>
-        private static void CleanVJoyDeviceClassEntries()
+        private static void CleanExtendedDeviceClassEntries()
         {
             const string classPath = @"SYSTEM\ControlSet001\Control\Class\{781ef630-72b2-11d2-b852-00c04fad5101}";
             try
@@ -244,7 +244,7 @@ namespace PadForge.Common
         /// Runs pnputil /enum-drivers and finds OEM .inf names that belong to vJoy
         /// (published by "Shaul" or containing "vjoy" in the driver package name).
         /// </summary>
-        private static string[] FindVJoyOemInfs()
+        private static string[] FindExtendedOemInfs()
         {
             try
             {
@@ -270,7 +270,7 @@ namespace PadForge.Common
                 var results = new System.Collections.Generic.List<string>();
                 string[] lines = output.Split('\n');
                 string currentOem = null;
-                bool isVJoyBlock = false;
+                bool isExtendedBlock = false;
 
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -281,24 +281,24 @@ namespace PadForge.Common
                         line.Contains(":"))
                     {
                         // Save any previous match.
-                        if (isVJoyBlock && currentOem != null)
+                        if (isExtendedBlock && currentOem != null)
                             results.Add(currentOem);
 
                         string value = line.Substring(line.IndexOf(':') + 1).Trim();
                         currentOem = value;
-                        isVJoyBlock = false;
+                        isExtendedBlock = false;
                     }
                     // Check if this block mentions Shaul or vjoy.
                     else if (currentOem != null &&
                              (line.IndexOf("shaul", StringComparison.OrdinalIgnoreCase) >= 0 ||
                               line.IndexOf("vjoy", StringComparison.OrdinalIgnoreCase) >= 0))
                     {
-                        isVJoyBlock = true;
+                        isExtendedBlock = true;
                     }
                 }
 
                 // Don't forget the last block.
-                if (isVJoyBlock && currentOem != null)
+                if (isExtendedBlock && currentOem != null)
                     results.Add(currentOem);
 
                 return results.ToArray();
@@ -318,7 +318,7 @@ namespace PadForge.Common
         /// Detects both our minimal install (vjoy.sys in Program Files) and
         /// legacy Inno Setup installs (registry uninstall entry).
         /// </summary>
-        public static bool IsVJoyInstalled()
+        public static bool IsExtendedInstalled()
         {
             // Primary: check for our minimal driver install.
             string vjoyDir = Path.Combine(

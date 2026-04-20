@@ -158,6 +158,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hidHideVersion, value);
         }
 
+        private string _hidMaestroVersion = GetEmbeddedHidMaestroVersion();
+
+        /// <summary>HIDMaestro SDK version string, read from the embedded
+        /// HIDMaestro.Core assembly at startup.</summary>
+        public string HIDMaestroVersion
+        {
+            get => _hidMaestroVersion;
+            set => SetProperty(ref _hidMaestroVersion, value);
+        }
+
+        private static string GetEmbeddedHidMaestroVersion()
+        {
+            try
+            {
+                var asm = typeof(HIDMaestro.HMContext).Assembly;
+                var v = asm.GetName().Version;
+                return v != null ? $"v{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
+            }
+            catch { return string.Empty; }
+        }
+
         private RelayCommand _installHidHideCommand;
 
         /// <summary>Command to install the HidHide driver.</summary>
@@ -662,7 +683,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
 
-        public bool HasNoSlots => XboxCount == 0 && DS4Count == 0 && VJoyCount == 0 && MidiCount == 0 && KbmCount == 0;
+        public bool HasNoSlots => XboxCount == 0 && DS4Count == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0;
 
         private int _xboxCount;
         public int XboxCount
@@ -678,11 +699,11 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _ds4Count, value);
         }
 
-        private int _vjoyCount;
-        public int VJoyCount
+        private int _extendedCount;
+        public int ExtendedCount
         {
-            get => _vjoyCount;
-            set => SetProperty(ref _vjoyCount, value);
+            get => _extendedCount;
+            set => SetProperty(ref _extendedCount, value);
         }
 
         private int _midiCount;

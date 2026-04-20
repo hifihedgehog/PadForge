@@ -33,7 +33,7 @@ namespace PadForge.Views
         {
             ApplyViewMode();
             SyncTabStripSelection();
-            SyncVJoyConfigBar();
+            SyncExtendedConfigBar();
             SyncMidiConfigBar();
         }
 
@@ -48,7 +48,7 @@ namespace PadForge.Views
 
             ApplyViewMode();
             SyncTabStripSelection();
-            SyncVJoyConfigBar();
+            SyncExtendedConfigBar();
             SyncMidiConfigBar();
         }
 
@@ -71,13 +71,15 @@ namespace PadForge.Views
             ApplyViewMode();
         }
 
-        private bool IsCustomVJoy()
+        private bool IsExtended()
         {
-            if (DataContext is PadViewModel vm &&
-                vm.OutputType == Engine.VirtualControllerType.Extended &&
-                !vm.VJoyConfig.IsGamepadPreset)
-                return true;
-            return false;
+            // Extended always uses the schematic preview in v3. The old
+            // ExtendedConfig.IsGamepadPreset branch was a v2 hold-over that
+            // routed Extended slots with a default Xbox 360 preset into
+            // the 2D/3D Xbox controller model, which looks wrong for any
+            // non-Xbox HIDMaestro profile (wheels, HOTAS, F710, etc.).
+            return DataContext is PadViewModel vm
+                && vm.OutputType == Engine.VirtualControllerType.Extended;
         }
 
         private bool IsMidi()
@@ -96,7 +98,7 @@ namespace PadForge.Views
 
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
-            bool isSchematic = IsCustomVJoy();
+            bool isSchematic = IsExtended();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             if (isKBM)
@@ -121,7 +123,7 @@ namespace PadForge.Views
             }
             else if (isSchematic)
             {
-                // Custom vJoy: show schematic view, hide 2D/3D toggle
+                // Custom Extended: show schematic view, hide 2D/3D toggle
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Visible;
@@ -174,7 +176,7 @@ namespace PadForge.Views
         {
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
-            bool isSchematic = IsCustomVJoy();
+            bool isSchematic = IsExtended();
             bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             // Unbind all first
@@ -330,7 +332,7 @@ namespace PadForge.Views
                 SyncTabStripSelection();
             else if (e.PropertyName == nameof(PadViewModel.OutputType))
             {
-                SyncVJoyConfigBar();
+                SyncExtendedConfigBar();
                 SyncMidiConfigBar();
                 ApplyViewMode();
             }
@@ -344,20 +346,20 @@ namespace PadForge.Views
                 if (DataContext is PadViewModel vm
                     && vm.OutputType == Engine.VirtualControllerType.Extended)
                 {
-                    _syncingVJoyConfig = true;
+                    _syncingExtendedConfig = true;
                     SyncExtendedFields(vm);
-                    _syncingVJoyConfig = false;
+                    _syncingExtendedConfig = false;
                 }
             }
         }
 
         // ─────────────────────────────────────────────
-        //  vJoy configuration bar
+        //  Extended configuration bar
         // ─────────────────────────────────────────────
 
-        private bool _syncingVJoyConfig;
+        private bool _syncingExtendedConfig;
 
-        private void SyncVJoyConfigBar()
+        private void SyncExtendedConfigBar()
         {
             if (DataContext is not PadViewModel vm) return;
 
@@ -370,24 +372,24 @@ namespace PadForge.Views
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 
-            VJoyConfigBar.Visibility = isExtended ? Visibility.Visible : Visibility.Collapsed;
+            ExtendedConfigBar.Visibility = isExtended ? Visibility.Visible : Visibility.Collapsed;
 
             if (isExtended)
             {
-                _syncingVJoyConfig = true;
+                _syncingExtendedConfig = true;
                 SyncExtendedFields(vm);
-                _syncingVJoyConfig = false;
+                _syncingExtendedConfig = false;
             }
         }
 
         private void SyncExtendedFields(PadViewModel vm)
         {
-            if (vm?.VJoyConfig == null) return;
+            if (vm?.ExtendedConfig == null) return;
 
             // Resolve the active HIDMaestro profile and drive every field in
             // the Extended config bar from its metadata. The profile IS the
             // VC's identity in v3 — all fields reflect it directly rather
-            // than the v2 vJoy per-slot overrides.
+            // than the v2 Extended per-slot overrides.
             var profile = vm.AvailableProfiles?.FirstOrDefault(p =>
                 string.Equals(p.Id, vm.ProfileId, System.StringComparison.OrdinalIgnoreCase));
 
@@ -409,20 +411,20 @@ namespace PadForge.Views
                 int sticks = System.Math.Min(axes, 4) / 2;
                 int triggers = System.Math.Max(0, axes - sticks * 2);
 
-                VJoyStickCountBox.Text = sticks.ToString();
-                VJoyTriggerCountBox.Text = triggers.ToString();
-                VJoyPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
-                VJoyButtonCountBox.Text = profile.ButtonCount.ToString();
+                ExtendedStickCountBox.Text = sticks.ToString();
+                ExtendedTriggerCountBox.Text = triggers.ToString();
+                ExtendedPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
+                ExtendedButtonCountBox.Text = profile.ButtonCount.ToString();
             }
             else
             {
                 // No profile resolved (e.g. catalog not loaded yet) — fall
-                // back to the persisted VJoyConfig so the UI has something
+                // back to the persisted ExtendedConfig so the UI has something
                 // to show rather than blank fields.
-                VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
-                VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
-                VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
-                VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+                ExtendedStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+                ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
+                ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+                ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
             }
 
             // Touchpad and rumble caps aren't exposed by HMProfile directly,
@@ -466,35 +468,35 @@ namespace PadForge.Views
             }
         }
 
-        private void VJoyCustomValue_Changed(object sender, RoutedEventArgs e)
+        private void ExtendedCustomValue_Changed(object sender, RoutedEventArgs e)
         {
-            ApplyVJoyCustomValues();
+            ApplyExtendedCustomValues();
         }
 
-        private void VJoyCustomValue_KeyDown(object sender, KeyEventArgs e)
+        private void ExtendedCustomValue_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                ApplyVJoyCustomValues();
+                ApplyExtendedCustomValues();
         }
 
-        private void ApplyVJoyCustomValues()
+        private void ApplyExtendedCustomValues()
         {
             if (DataContext is not PadViewModel vm) return;
 
-            if (int.TryParse(VJoyStickCountBox.Text, out int sticks))
-                vm.VJoyConfig.ThumbstickCount = sticks;
-            if (int.TryParse(VJoyTriggerCountBox.Text, out int triggers))
-                vm.VJoyConfig.TriggerCount = triggers;
-            if (int.TryParse(VJoyPovCountBox.Text, out int povs))
-                vm.VJoyConfig.PovCount = povs;
-            if (int.TryParse(VJoyButtonCountBox.Text, out int buttons))
-                vm.VJoyConfig.ButtonCount = buttons;
+            if (int.TryParse(ExtendedStickCountBox.Text, out int sticks))
+                vm.ExtendedConfig.ThumbstickCount = sticks;
+            if (int.TryParse(ExtendedTriggerCountBox.Text, out int triggers))
+                vm.ExtendedConfig.TriggerCount = triggers;
+            if (int.TryParse(ExtendedPovCountBox.Text, out int povs))
+                vm.ExtendedConfig.PovCount = povs;
+            if (int.TryParse(ExtendedButtonCountBox.Text, out int buttons))
+                vm.ExtendedConfig.ButtonCount = buttons;
 
             // Reflect clamped values back into text boxes
-            VJoyStickCountBox.Text = vm.VJoyConfig.ThumbstickCount.ToString();
-            VJoyTriggerCountBox.Text = vm.VJoyConfig.TriggerCount.ToString();
-            VJoyPovCountBox.Text = vm.VJoyConfig.PovCount.ToString();
-            VJoyButtonCountBox.Text = vm.VJoyConfig.ButtonCount.ToString();
+            ExtendedStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+            ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
+            ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+            ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
         }
 
         // ─────────────────────────────────────────────

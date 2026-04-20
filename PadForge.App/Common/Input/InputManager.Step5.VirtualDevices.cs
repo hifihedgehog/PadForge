@@ -225,7 +225,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Returns true if the specified pad slot is currently initializing
-        /// (creating a virtual controller or reconfiguring vJoy descriptors).
+        /// (creating a virtual controller or reconfiguring Extended descriptors).
         /// Used by the UI to show a flashing green indicator.
         /// </summary>
         public bool IsVirtualControllerInitializing(int padIndex)
@@ -474,7 +474,7 @@ namespace PadForge.Common.Input
 
             // --- Pass 2: Create virtual controllers ---
             // HIDMaestro assigns its own controller indices internally; we
-            // don't need ViGEm-style sequential ordering or vJoy device-node
+            // don't need ViGEm-style sequential ordering or Extended device-node
             // pre-provisioning. Each slot creates its HMController on demand.
             //
             // Gate on any pending async-dispose tasks (from user-initiated

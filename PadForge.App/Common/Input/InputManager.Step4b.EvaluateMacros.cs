@@ -250,7 +250,7 @@ namespace PadForge.Common.Input
                 try
                 {
                     if (SlotExtendedIsCustom[i])
-                        EvaluateSlotMacrosCustomVJoy(ref CombinedVJoyRawStates[i], macros);
+                        EvaluateSlotMacrosExtended(ref CombinedExtendedRawStates[i], macros);
                     else
                         EvaluateSlotMacros(ref CombinedOutputStates[i], macros);
                 }
@@ -679,12 +679,12 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  Custom vJoy macro evaluation
-        //  Mirrors EvaluateSlotMacros but operates on VJoyRawState
+        //  Custom Extended macro evaluation
+        //  Mirrors EvaluateSlotMacros but operates on ExtendedRawState
         //  with uint[] button words instead of ushort Gamepad.Buttons.
         // ─────────────────────────────────────────────
 
-        private void EvaluateSlotMacrosCustomVJoy(ref VJoyRawState raw, MacroItem[] macros)
+        private void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
         {
             for (int m = 0; m < macros.Length; m++)
             {
@@ -715,7 +715,7 @@ namespace PadForge.Common.Input
                         else if (macro.UsesCustomTrigger)
                             buttonOk = CheckCustomButtonTrigger(raw, macro);
                         else
-                            buttonOk = false; // Xbox bitmask triggers don't apply to custom vJoy
+                            buttonOk = false; // Xbox bitmask triggers don't apply to custom Extended
                     }
                     if (macro.UsesPovTrigger)
                         povOk = CheckRawPovTrigger(macro);
@@ -773,7 +773,7 @@ namespace PadForge.Common.Input
                 }
 
                 if (macro.IsExecuting && macro.Actions.Count > 0)
-                    ExecuteMacroActionsCustomVJoy(ref raw, macro);
+                    ExecuteMacroActionsExtended(ref raw, macro);
 
                 // Consume trigger buttons.
                 if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
@@ -790,7 +790,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Checks whether all custom trigger buttons are currently pressed in the raw state.
         /// </summary>
-        private static bool CheckCustomButtonTrigger(in VJoyRawState raw, MacroItem macro)
+        private static bool CheckCustomButtonTrigger(in ExtendedRawState raw, MacroItem macro)
         {
             var tw = macro.TriggerCustomButtonWords;
             if (raw.Buttons == null) return false;
@@ -806,10 +806,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Executes macro actions against a VJoyRawState (custom vJoy button words).
+        /// Executes macro actions against a ExtendedRawState (custom Extended button words).
         /// Same parallel-continuous pattern as ExecuteMacroActions.
         /// </summary>
-        private void ExecuteMacroActionsCustomVJoy(ref VJoyRawState raw, MacroItem macro)
+        private void ExecuteMacroActionsExtended(ref ExtendedRawState raw, MacroItem macro)
         {
             // 1. Always run ALL continuous actions every frame.
             for (int i = 0; i < macro.Actions.Count; i++)
@@ -861,8 +861,8 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Executes a single continuous action for vJoy raw state.</summary>
-        private void ExecuteSingleActionRaw(ref VJoyRawState raw, MacroAction action)
+        /// <summary>Executes a single continuous action for Extended raw state.</summary>
+        private void ExecuteSingleActionRaw(ref ExtendedRawState raw, MacroAction action)
         {
             bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
@@ -913,8 +913,8 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Executes a sequential action for vJoy raw state.</summary>
-        private void ExecuteSequentialActionRaw(ref VJoyRawState raw, MacroItem macro, MacroAction action)
+        /// <summary>Executes a sequential action for Extended raw state.</summary>
+        private void ExecuteSequentialActionRaw(ref ExtendedRawState raw, MacroItem macro, MacroAction action)
         {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
@@ -996,8 +996,8 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Applies an AxisSet action to a VJoyRawState.</summary>
-        private static void ApplyAxisActionRaw(ref VJoyRawState raw, MacroAction action)
+        /// <summary>Applies an AxisSet action to a ExtendedRawState.</summary>
+        private static void ApplyAxisActionRaw(ref ExtendedRawState raw, MacroAction action)
         {
             int axisIndex = action.AxisTarget switch
             {
@@ -1185,10 +1185,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Reads the current value of a source axis from a VJoyRawState
+        /// Reads the current value of a source axis from a ExtendedRawState
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        internal static float ReadAxisAsVolumeRaw(in VJoyRawState raw, MacroAxisTarget target)
+        internal static float ReadAxisAsVolumeRaw(in ExtendedRawState raw, MacroAxisTarget target)
         {
             int axisIndex = target switch
             {
@@ -1304,7 +1304,7 @@ namespace PadForge.Common.Input
             _ => 0f
         };
 
-        private static float ReadAxisAsMouseRaw(in VJoyRawState raw, MacroAxisTarget target)
+        private static float ReadAxisAsMouseRaw(in ExtendedRawState raw, MacroAxisTarget target)
         {
             int axisIndex = target switch
             {

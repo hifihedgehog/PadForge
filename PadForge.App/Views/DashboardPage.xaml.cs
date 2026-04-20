@@ -84,7 +84,7 @@ namespace PadForge.Views
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Sony));
         }
 
-        private void VJoyType_Click(object sender, RoutedEventArgs e)
+        private void ExtendedType_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Extended));

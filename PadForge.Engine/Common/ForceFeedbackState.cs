@@ -5,9 +5,9 @@ using static SDL3.SDL;
 namespace PadForge.Engine
 {
     /// <summary>
-    /// FFB effect type constants matching vJoy FFBEType enum values.
+    /// FFB effect type constants matching Extended FFBEType enum values.
     /// Defined here so the Engine can interpret Vibration.EffectType without
-    /// referencing the App-layer VJoyVirtualController.
+    /// referencing the App-layer ExtendedVirtualController.
     /// </summary>
     public static class FfbEffectTypes
     {
@@ -292,7 +292,7 @@ namespace PadForge.Engine
                 return true;
             }
 
-            // vJoyInterface reads raw HID logical units (0–32767). Convert to SDL polar (0–36000 hundredths of degrees).
+            // HID output reads raw HID logical units (0–32767). Convert to SDL polar (0–36000 hundredths of degrees).
             int sdlPolar = (int)(v.Direction / 32767.0 * 36000.0);
             uint features = device.HapticFeatures;
             bool isSingleAxis = device.NumHapticAxes <= 1;
@@ -595,7 +595,7 @@ namespace PadForge.Engine
     /// Represents vibration/force feedback state for a virtual controller slot.
     /// Carries both scalar motor speeds (for rumble devices) and directional FFB
     /// data (for haptic joysticks/wheels). ViGEm Xbox/DS4 callbacks only set the
-    /// scalar fields; vJoy FFB callback populates directional fields as well.
+    /// scalar fields; Extended FFB callback populates directional fields as well.
     /// </summary>
     public class Vibration
     {
@@ -607,9 +607,9 @@ namespace PadForge.Engine
         /// <summary>Right motor (high-frequency, light buzz) speed. Range: 0–65535.</summary>
         public ushort RightMotorSpeed { get; set; }
 
-        // ── Directional FFB (populated by vJoy FFB callback for haptic devices) ──
+        // ── Directional FFB (populated by Extended FFB callback for haptic devices) ──
 
-        /// <summary>True when directional FFB data is available (vJoy path).</summary>
+        /// <summary>True when directional FFB data is available (Extended path).</summary>
         public bool HasDirectionalData { get; set; }
 
         /// <summary>Primary effect type for the dominant running effect.</summary>

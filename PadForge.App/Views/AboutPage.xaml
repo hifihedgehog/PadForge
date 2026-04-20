@@ -76,9 +76,9 @@
                                Text="{Binding About_ViGEmBusDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="4" Text="{Binding About_VJoy, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="4" Text="{Binding About_Extended, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="4" Grid.Column="1"
-                               Text="{Binding About_VJoyDesc, Source={x:Static strings:Strings.Instance}}"
+                               Text="{Binding About_ExtendedDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
                     <TextBlock Grid.Row="5" Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>

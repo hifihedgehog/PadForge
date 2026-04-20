@@ -2,8 +2,8 @@ namespace PadForge.Engine
 {
     /// <summary>
     /// Per-slot HID descriptor shape for the Extended (custom DirectInput)
-    /// virtual controller path. Replaces the v2 VJoyDeviceConfig struct that
-    /// lived inside VJoyVirtualController. The Step 3 → Step 5 pipeline reads
+    /// virtual controller path. Replaces the v2 ExtendedDeviceConfig struct that
+    /// lived inside ExtendedVirtualController. The Step 3 → Step 5 pipeline reads
     /// these counts to translate per-axis/button/POV mappings into the
     /// corresponding raw HID report indices.
     /// </summary>

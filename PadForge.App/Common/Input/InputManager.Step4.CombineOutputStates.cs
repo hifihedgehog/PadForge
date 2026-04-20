@@ -35,7 +35,7 @@ namespace PadForge.Common.Input
                     // Use non-allocating overload with pre-allocated buffer.
                     int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 
-                    bool isCustomVJoy = SlotControllerTypes[padIndex] == VirtualControllerType.Extended
+                    bool isExtended = SlotControllerTypes[padIndex] == VirtualControllerType.Extended
                                      && SlotExtendedIsCustom[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
@@ -44,7 +44,7 @@ namespace PadForge.Common.Input
                     if (slotCount == 0)
                     {
                         CombinedOutputStates[padIndex].Clear();
-                        if (isCustomVJoy) CombinedVJoyRawStates[padIndex].Clear();
+                        if (isExtended) CombinedExtendedRawStates[padIndex].Clear();
                         if (isMidi) CombinedMidiRawStates[padIndex].Clear();
                         if (isKbm) CombinedKbmRawStates[padIndex].Clear();
                         if (isDs4) CombinedTouchpadStates[padIndex] = default;
@@ -55,7 +55,7 @@ namespace PadForge.Common.Input
                     {
                         // Single device — no combination needed, direct copy.
                         CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
-                        if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = _padIndexBuffer[0].VJoyRawOutputState;
+                        if (isExtended) CombinedExtendedRawStates[padIndex] = _padIndexBuffer[0].ExtendedRawOutputState;
                         if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
                         if (isDs4) CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
@@ -64,7 +64,7 @@ namespace PadForge.Common.Input
 
                     // Multiple devices — merge all states.
                     var combined = new Gamepad();
-                    VJoyRawState combinedRaw = default;
+                    ExtendedRawState combinedRaw = default;
                     bool firstRaw = true;
                     MidiRawState combinedMidi = default;
                     bool firstMidi = true;
@@ -80,9 +80,9 @@ namespace PadForge.Common.Input
                         var gp = us.OutputState;
                         MergeGamepad(ref combined, ref gp);
 
-                        if (isCustomVJoy)
+                        if (isExtended)
                         {
-                            var rawState = us.VJoyRawOutputState;
+                            var rawState = us.ExtendedRawOutputState;
                             if (firstRaw)
                             {
                                 combinedRaw = rawState;
@@ -90,7 +90,7 @@ namespace PadForge.Common.Input
                             }
                             else
                             {
-                                MergeVJoyRaw(ref combinedRaw, ref rawState);
+                                MergeExtendedRaw(ref combinedRaw, ref rawState);
                             }
                         }
 
@@ -122,7 +122,7 @@ namespace PadForge.Common.Input
                     }
 
                     CombinedOutputStates[padIndex] = combined;
-                    if (isCustomVJoy) CombinedVJoyRawStates[padIndex] = combinedRaw;
+                    if (isExtended) CombinedExtendedRawStates[padIndex] = combinedRaw;
                     if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
                     if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
 
@@ -185,10 +185,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Merges a source VJoyRawState into a destination.
+        /// Merges a source ExtendedRawState into a destination.
         /// Axes: largest magnitude wins. Buttons: OR. POVs: first non-centered.
         /// </summary>
-        private static void MergeVJoyRaw(ref VJoyRawState dest, ref VJoyRawState src)
+        private static void MergeExtendedRaw(ref ExtendedRawState dest, ref ExtendedRawState src)
         {
             if (src.Axes != null && dest.Axes != null)
             {

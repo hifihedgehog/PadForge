@@ -268,7 +268,7 @@
 
                                         <!-- Extended (custom DI) type button -->
                                         <Button Margin="1,0,0,0"
-                                                Click="VJoyType_Click" Tag="{Binding PadIndex}">
+                                                Click="ExtendedType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>

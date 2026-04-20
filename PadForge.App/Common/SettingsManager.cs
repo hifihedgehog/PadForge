@@ -65,8 +65,8 @@ namespace PadForge.Common.Input
         /// <summary>Maximum number of DualShock 4 virtual controllers.</summary>
         public const int MaxDS4Slots = InputManager.MaxPads;
 
-        /// <summary>Maximum number of vJoy virtual controllers (vJoy driver limit).</summary>
-        public const int MaxVJoySlots = 16;
+        /// <summary>Maximum number of Extended virtual controllers (Extended driver limit).</summary>
+        public const int MaxExtendedSlots = 16;
 
         /// <summary>Maximum number of MIDI virtual controllers.</summary>
         public const int MaxMidiSlots = InputManager.MaxPads;

@@ -298,7 +298,7 @@ namespace PadForge.Services
                 }
             }
 
-            ApplyVJoyConfigs(appSettings.VJoyConfigs);
+            ApplyExtendedConfigs(appSettings.ExtendedConfigs);
             ApplyMidiConfigs(appSettings.MidiConfigs);
 
             // Load DSU motion server settings (now on Dashboard VM).
@@ -335,10 +335,10 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Applies per-slot vJoy configurations.
-        /// Only restores configs for slots that are currently created as vJoy.
+        /// Applies per-slot Extended configurations.
+        /// Only restores configs for slots that are currently created as Extended.
         /// </summary>
-        private void ApplyVJoyConfigs(ViewModels.VJoySlotConfigData[] configs)
+        private void ApplyExtendedConfigs(ViewModels.ExtendedSlotConfigData[] configs)
         {
             if (configs == null) return;
             foreach (var cfgData in configs)
@@ -348,9 +348,9 @@ namespace PadForge.Services
                     SettingsManager.SlotCreated[idx] &&
                     _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Extended)
                 {
-                    var cfg = _mainVm.Pads[idx].VJoyConfig;
+                    var cfg = _mainVm.Pads[idx].ExtendedConfig;
                     cfg.Preset = cfgData.Preset;
-                    if (cfgData.Preset == ViewModels.VJoyPreset.Custom)
+                    if (cfgData.Preset == ViewModels.ExtendedPreset.Custom)
                     {
                         cfg.ThumbstickCount = cfgData.ThumbstickCount;
                         cfg.TriggerCount = cfgData.TriggerCount;
@@ -522,34 +522,34 @@ namespace PadForge.Services
                 // Sync dynamic stick/trigger config items from the loaded VM properties.
                 padVm.SyncAllConfigItemsFromVm();
 
-                // Load vJoy custom stick/trigger settings for indices 2+ from dictionary.
+                // Load Extended custom stick/trigger settings for indices 2+ from dictionary.
                 foreach (var stick in padVm.StickConfigs)
                 {
                     if (stick.Index < 2) continue;
                     int g = stick.Index;
-                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetVJoyMapping($"VJoyStick{g}DzShape"));
-                    stick.DeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}DzX"), 0);
-                    stick.DeadZoneY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}DzY"), 0);
-                    stick.AntiDeadZoneX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzX"), 0);
-                    stick.AntiDeadZoneY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}AdzY"), 0);
-                    stick.Linear = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}Linear"), 0);
-                    stick.SensitivityCurveX = ps.GetVJoyMapping($"VJoyStick{g}CurveX") ?? "0,0;1,1";
-                    stick.SensitivityCurveY = ps.GetVJoyMapping($"VJoyStick{g}CurveY") ?? "0,0;1,1";
-                    stick.CenterOffsetX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofX"), 0);
-                    stick.CenterOffsetY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}CofY"), 0);
-                    stick.MaxRangeX = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrX"), 100);
-                    stick.MaxRangeY = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrY"), 100);
-                    stick.MaxRangeXNeg = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrXN"), stick.MaxRangeX);
-                    stick.MaxRangeYNeg = TryParseDouble(ps.GetVJoyMapping($"VJoyStick{g}MrYN"), stick.MaxRangeY);
+                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetExtendedMapping($"VJoyStick{g}DzShape"));
+                    stick.DeadZoneX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}DzX"), 0);
+                    stick.DeadZoneY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}DzY"), 0);
+                    stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}AdzX"), 0);
+                    stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}AdzY"), 0);
+                    stick.Linear = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}Linear"), 0);
+                    stick.SensitivityCurveX = ps.GetExtendedMapping($"VJoyStick{g}CurveX") ?? "0,0;1,1";
+                    stick.SensitivityCurveY = ps.GetExtendedMapping($"VJoyStick{g}CurveY") ?? "0,0;1,1";
+                    stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}CofX"), 0);
+                    stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}CofY"), 0);
+                    stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrX"), 100);
+                    stick.MaxRangeY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrY"), 100);
+                    stick.MaxRangeXNeg = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrXN"), stick.MaxRangeX);
+                    stick.MaxRangeYNeg = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrYN"), stick.MaxRangeY);
                 }
                 foreach (var trig in padVm.TriggerConfigs)
                 {
                     if (trig.Index < 2) continue;
                     int g = trig.Index;
-                    trig.DeadZone = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Dz"), 0);
-                    trig.AntiDeadZone = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Adz"), 0);
-                    trig.MaxRange = TryParseDouble(ps.GetVJoyMapping($"VJoyTrigger{g}Mr"), 100);
-                    trig.SensitivityCurve = ps.GetVJoyMapping($"VJoyTrigger{g}Curve") ?? "0,0;1,1";
+                    trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"VJoyTrigger{g}Dz"), 0);
+                    trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"VJoyTrigger{g}Adz"), 0);
+                    trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"VJoyTrigger{g}Mr"), 100);
+                    trig.SensitivityCurve = ps.GetExtendedMapping($"VJoyTrigger{g}Curve") ?? "0,0;1,1";
                 }
 
                 // Load mapping descriptors into mapping rows.
@@ -645,8 +645,8 @@ namespace PadForge.Services
                 }
 
                 // Set after actions are populated so propagation reaches all of them.
-                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.VJoyConfig?.Preset ?? VJoyPreset.Xbox360);
-                int btnCount = (padVm.OutputType == VirtualControllerType.Extended ? padVm.VJoyConfig?.ButtonCount : null) ?? 11;
+                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.ExtendedConfig?.Preset ?? ExtendedPreset.Xbox360);
+                int btnCount = (padVm.OutputType == VirtualControllerType.Extended ? padVm.ExtendedConfig?.ButtonCount : null) ?? 11;
                 macro.CustomButtonCount = btnCount;
                 macro.ButtonStyle = style;
                 foreach (var action in macro.Actions)
@@ -759,9 +759,9 @@ namespace PadForge.Services
                     }
                 }
 
-                // Now that SlotCreated and OutputType are restored, apply vJoy/MIDI
+                // Now that SlotCreated and OutputType are restored, apply Extended/MIDI
                 // configs from the profile's own snapshot.
-                ApplyVJoyConfigs(active.VJoyConfigs);
+                ApplyExtendedConfigs(active.ExtendedConfigs);
                 ApplyMidiConfigs(active.MidiConfigs);
 
                 // Apply DSU/Web/overlay settings from the active profile.
@@ -831,7 +831,7 @@ namespace PadForge.Services
                 .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray();
             profile.SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
                 .Select(i => _mainVm.Pads[i].ProfileId).ToArray();
-            profile.VJoyConfigs = BuildVJoyConfigSnapshot();
+            profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
@@ -852,11 +852,11 @@ namespace PadForge.Services
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy, out int midi, out int kbm);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int extendedCount, out int midi, out int kbm);
             var parts = new System.Collections.Generic.List<string>();
             if (xbox > 0) parts.Add($"{xbox}x Xbox");
             if (ds4 > 0) parts.Add($"{ds4}x DS4");
-            if (vjoy > 0) parts.Add($"{vjoy}x vJoy");
+            if (extendedCount > 0) parts.Add($"{extendedCount}x Extended");
             if (midi > 0) parts.Add($"{midi}x MIDI");
             if (kbm > 0) parts.Add($"{kbm}x KB+M");
             return parts.Count > 0 ? string.Join(", ", parts) : Strings.Instance.Profiles_NoSlots;
@@ -865,19 +865,19 @@ namespace PadForge.Services
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int vjoy, out int midi, out int kbm);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int extendedCount, out int midi, out int kbm);
             item.XboxCount = xbox;
             item.DS4Count = ds4;
-            item.VJoyCount = vjoy;
+            item.ExtendedCount = extendedCount;
             item.MidiCount = midi;
             item.KbmCount = kbm;
             item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
         }
 
         private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
-            out int xbox, out int ds4, out int vjoy, out int midi, out int kbm)
+            out int xbox, out int ds4, out int extendedCount, out int midi, out int kbm)
         {
-            xbox = 0; ds4 = 0; vjoy = 0; midi = 0; kbm = 0;
+            xbox = 0; ds4 = 0; extendedCount = 0; midi = 0; kbm = 0;
             if (slotCreated == null) return;
             for (int i = 0; i < slotCreated.Length; i++)
             {
@@ -887,7 +887,7 @@ namespace PadForge.Services
                 switch (type)
                 {
                     case 1: ds4++; break;
-                    case 2: vjoy++; break;
+                    case 2: extendedCount++; break;
                     case 3: midi++; break;
                     case 4: kbm++; break;
                     default: xbox++; break;
@@ -923,7 +923,7 @@ namespace PadForge.Services
                 // before collecting data for serialization.
                 UpdatePadSettingsFromViewModels();
 
-                // Flush vJoy mappings from in-memory dictionaries to serializable arrays,
+                // Flush Extended mappings from in-memory dictionaries to serializable arrays,
                 // then recompute checksums for ALL PadSettings and sync to UserSettings.
                 lock (SettingsManager.UserSettings.SyncRoot)
                 {
@@ -932,7 +932,7 @@ namespace PadForge.Services
                         var ps = us.GetPadSetting();
                         if (ps != null)
                         {
-                            ps.FlushVJoyMappings();
+                            ps.FlushExtendedMappings();
                             ps.FlushMidiMappings();
                             ps.FlushKbmMappings();
                             ps.FlushMappingDeadZones();
@@ -1017,12 +1017,12 @@ namespace PadForge.Services
                 slotProfileIds[i] = _mainVm.Pads[i].ProfileId;
             }
 
-            // Collect per-slot vJoy configurations.
-            var vjoyConfigs = new System.Collections.Generic.List<ViewModels.VJoySlotConfigData>();
+            // Collect per-slot Extended configurations.
+            var extendedConfigs = new System.Collections.Generic.List<ViewModels.ExtendedSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                var cfg = _mainVm.Pads[i].VJoyConfig;
-                vjoyConfigs.Add(new ViewModels.VJoySlotConfigData
+                var cfg = _mainVm.Pads[i].ExtendedConfig;
+                extendedConfigs.Add(new ViewModels.ExtendedSlotConfigData
                 {
                     SlotIndex = i,
                     Preset = cfg.Preset,
@@ -1084,25 +1084,25 @@ namespace PadForge.Services
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
-                VJoyConfigs = isDefault ? vjoyConfigs.ToArray() : defaultSnap.VJoyConfigs,
+                ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
                 DefaultProfileSnapshot = isDefault ? null : defaultSnap
             };
         }
 
         /// <summary>
-        /// Snapshots vJoy configs for only created vJoy slots (for profile storage).
+        /// Snapshots Extended configs for only created Extended slots (for profile storage).
         /// </summary>
-        private ViewModels.VJoySlotConfigData[] BuildVJoyConfigSnapshot()
+        private ViewModels.ExtendedSlotConfigData[] BuildExtendedConfigSnapshot()
         {
-            var list = new System.Collections.Generic.List<ViewModels.VJoySlotConfigData>();
+            var list = new System.Collections.Generic.List<ViewModels.ExtendedSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i] ||
                     _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.Extended)
                     continue;
-                var cfg = _mainVm.Pads[i].VJoyConfig;
-                list.Add(new ViewModels.VJoySlotConfigData
+                var cfg = _mainVm.Pads[i].ExtendedConfig;
+                list.Add(new ViewModels.ExtendedSlotConfigData
                 {
                     SlotIndex = i,
                     Preset = cfg.Preset,
@@ -1301,34 +1301,34 @@ namespace PadForge.Services
                     ps.LeftTriggerMaxRange = padVm.LeftTriggerMaxRange.ToString(ic);
                     ps.RightTriggerMaxRange = padVm.RightTriggerMaxRange.ToString(ic);
 
-                    // Write vJoy custom stick/trigger settings for indices 2+ to dictionary.
+                    // Write Extended custom stick/trigger settings for indices 2+ to dictionary.
                     foreach (var stick in padVm.StickConfigs)
                     {
                         if (stick.Index < 2) continue;
                         int g = stick.Index;
-                        ps.SetVJoyMapping($"VJoyStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
-                        ps.SetVJoyMapping($"VJoyStick{g}DzX", stick.DeadZoneX.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}DzY", stick.DeadZoneY.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}Linear", stick.Linear.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}CurveX", stick.SensitivityCurveX);
-                        ps.SetVJoyMapping($"VJoyStick{g}CurveY", stick.SensitivityCurveY);
-                        ps.SetVJoyMapping($"VJoyStick{g}CofX", stick.CenterOffsetX.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}CofY", stick.CenterOffsetY.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}MrX", stick.MaxRangeX.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}MrY", stick.MaxRangeY.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
+                        ps.SetExtendedMapping($"VJoyStick{g}DzX", stick.DeadZoneX.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}DzY", stick.DeadZoneY.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}Linear", stick.Linear.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}CurveX", stick.SensitivityCurveX);
+                        ps.SetExtendedMapping($"VJoyStick{g}CurveY", stick.SensitivityCurveY);
+                        ps.SetExtendedMapping($"VJoyStick{g}CofX", stick.CenterOffsetX.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}CofY", stick.CenterOffsetY.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}MrX", stick.MaxRangeX.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                     }
                     foreach (var trig in padVm.TriggerConfigs)
                     {
                         if (trig.Index < 2) continue;
                         int g = trig.Index;
-                        ps.SetVJoyMapping($"VJoyTrigger{g}Dz", trig.DeadZone.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyTrigger{g}Mr", trig.MaxRange.ToString(ic));
-                        ps.SetVJoyMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve);
+                        ps.SetExtendedMapping($"VJoyTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                        ps.SetExtendedMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
                     // Write mapping descriptors and per-mapping deadzones.
@@ -1503,15 +1503,15 @@ namespace PadForge.Services
 
         /// <summary>
         /// Gets a string property value from a PadSetting by property name.
-        /// For keys starting with "VJoy", uses the dictionary-based VJoy mapping system.
+        /// For keys starting with "Extended", uses the dictionary-based Extended mapping system.
         /// </summary>
         private static string GetPadSettingProperty(PadSetting ps, string propertyName)
         {
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return string.Empty;
 
-            if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
-                return ps.GetVJoyMapping(propertyName);
+            if (propertyName.StartsWith("Extended", StringComparison.Ordinal))
+                return ps.GetExtendedMapping(propertyName);
             if (propertyName.StartsWith("Midi", StringComparison.Ordinal))
                 return ps.GetMidiMapping(propertyName);
             if (propertyName.StartsWith("Kbm", StringComparison.Ordinal))
@@ -1526,17 +1526,17 @@ namespace PadForge.Services
 
         /// <summary>
         /// Sets a string property value on a PadSetting by property name.
-        /// For keys starting with "VJoy", uses the dictionary-based VJoy mapping system.
+        /// For keys starting with "Extended", uses the dictionary-based Extended mapping system.
         /// </summary>
         private static void SetPadSettingProperty(PadSetting ps, string propertyName, string value)
         {
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return;
 
-            // vJoy custom mappings use dictionary-based storage
-            if (propertyName.StartsWith("VJoy", StringComparison.Ordinal))
+            // Extended custom mappings use dictionary-based storage
+            if (propertyName.StartsWith("Extended", StringComparison.Ordinal))
             {
-                ps.SetVJoyMapping(propertyName, value ?? string.Empty);
+                ps.SetExtendedMapping(propertyName, value ?? string.Empty);
                 return;
             }
 
@@ -1766,12 +1766,12 @@ namespace PadForge.Services
         public string[] HidHideWhitelistPaths { get; set; }
 
         /// <summary>
-        /// Per-slot vJoy configuration (preset, axis/button counts).
+        /// Per-slot Extended configuration (preset, axis/button counts).
         /// Null on old settings files — uses Xbox360 preset defaults.
         /// </summary>
-        [XmlArray("VJoyConfigs")]
+        [XmlArray("ExtendedConfigs")]
         [XmlArrayItem("Config")]
-        public ViewModels.VJoySlotConfigData[] VJoyConfigs { get; set; }
+        public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
 
         /// <summary>
         /// Per-slot MIDI configuration (port, channel, CC/note mappings).
@@ -1849,7 +1849,7 @@ namespace PadForge.Services
         [XmlElement]
         public int RepeatDelayMs { get; set; } = 100;
 
-        /// <summary>Hex-encoded custom vJoy trigger button words (e.g. "00000003,00000000,00000000,00000000").</summary>
+        /// <summary>Hex-encoded custom Extended trigger button words (e.g. "00000003,00000000,00000000,00000000").</summary>
         [XmlElement]
         public string TriggerCustomButtons { get; set; }
 
@@ -1882,7 +1882,7 @@ namespace PadForge.Services
         [XmlElement]
         public ushort ButtonFlags { get; set; }
 
-        /// <summary>Hex-encoded custom vJoy button words for this action.</summary>
+        /// <summary>Hex-encoded custom Extended button words for this action.</summary>
         [XmlElement]
         public string CustomButtons { get; set; }
 
@@ -2003,10 +2003,10 @@ namespace PadForge.Services
         [XmlArrayItem("Id")]
         public string[] SlotProfileIds { get; set; }
 
-        /// <summary>Per-slot vJoy configurations saved with this profile.</summary>
-        [XmlArray("ProfileVJoyConfigs")]
-        [XmlArrayItem("VJoyConfig")]
-        public ViewModels.VJoySlotConfigData[] VJoyConfigs { get; set; }
+        /// <summary>Per-slot Extended configurations saved with this profile.</summary>
+        [XmlArray("ProfileExtendedConfigs")]
+        [XmlArrayItem("ExtendedConfig")]
+        public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
 
         /// <summary>Per-slot MIDI configurations saved with this profile.</summary>
         [XmlArray("ProfileMidiConfigs")]

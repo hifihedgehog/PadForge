@@ -7,7 +7,7 @@ namespace PadForge.Engine
     /// (Xbox 360 Wired, DualSense, Logitech G920, etc.) is selected within each
     /// category via a per-slot preset config or, for Extended, a custom HID
     /// descriptor. Numeric values are preserved from v2 (Xbox360→Microsoft,
-    /// DualShock4→Sony, VJoy→Extended) so existing settings files load.
+    /// DualShock4→Sony, (VJoy→Extended, kept for v2→v3 migration) so existing settings files load.
     /// </summary>
     public enum VirtualControllerType
     {

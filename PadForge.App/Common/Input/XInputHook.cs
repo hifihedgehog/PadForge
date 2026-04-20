@@ -197,13 +197,38 @@ namespace PadForge.Common.Input
         //  Hook implementations
         // ─────────────────────────────────────────────
 
+        // Per-slot call counters split by masked vs forwarded. Readable by
+        // the call-rate reporter for hang/saturation diagnostics. Interlocked
+        // writes; reader snapshots by Interlocked.Exchange in SampleAndReset.
+        private static long _getStateMaskedCalls0, _getStateMaskedCalls1,
+                            _getStateMaskedCalls2, _getStateMaskedCalls3;
+        private static long _getStateForwardedCalls0, _getStateForwardedCalls1,
+                            _getStateForwardedCalls2, _getStateForwardedCalls3;
+
         private static int HookedGetState(int dwUserIndex, out XINPUT_STATE pState)
         {
             if (dwUserIndex >= 0 && dwUserIndex < 4
                 && (_ignoreSlotMask & (1 << dwUserIndex)) != 0)
             {
+                switch (dwUserIndex)
+                {
+                    case 0: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls0); break;
+                    case 1: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls1); break;
+                    case 2: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls2); break;
+                    case 3: System.Threading.Interlocked.Increment(ref _getStateMaskedCalls3); break;
+                }
                 pState = default;
                 return ERROR_DEVICE_NOT_CONNECTED;
+            }
+            if (dwUserIndex >= 0 && dwUserIndex < 4)
+            {
+                switch (dwUserIndex)
+                {
+                    case 0: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls0); break;
+                    case 1: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls1); break;
+                    case 2: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls2); break;
+                    case 3: System.Threading.Interlocked.Increment(ref _getStateForwardedCalls3); break;
+                }
             }
             return _realGetStateDel(dwUserIndex, out pState);
         }
@@ -217,6 +242,26 @@ namespace PadForge.Common.Input
                 return ERROR_DEVICE_NOT_CONNECTED;
             }
             return _realGetCapsDel(dwUserIndex, dwFlags, out pCaps);
+        }
+
+        /// <summary>
+        /// Atomically read and zero the per-slot call counters. Returns an
+        /// 8-element array: [masked0, masked1, masked2, masked3,
+        /// forwarded0, forwarded1, forwarded2, forwarded3].
+        /// </summary>
+        public static long[] SampleAndResetCallCounts()
+        {
+            return new[]
+            {
+                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls0, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls1, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls2, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateMaskedCalls3, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls0, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls1, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls2, 0),
+                System.Threading.Interlocked.Exchange(ref _getStateForwardedCalls3, 0),
+            };
         }
 
         // ─────────────────────────────────────────────

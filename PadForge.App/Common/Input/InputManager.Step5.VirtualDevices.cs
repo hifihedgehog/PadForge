@@ -254,6 +254,11 @@ namespace PadForge.Common.Input
             if (!VirtualControllersEnabled)
                 return;
 
+            // Diagnostic: emit per-slot XInput call rates and per-virtual
+            // SubmitState rates every 5 seconds. See CallRateReporter for
+            // context. Negligible overhead when nothing is saturating.
+            MaybeReportCallRates();
+
             // Track xinputhid slot reshuffles for any active Microsoft virtual.
             // xinputhid reassigns slot numbers at runtime; our static mask set
             // at create time drifts and causes 2s on / 2s off input stalls on

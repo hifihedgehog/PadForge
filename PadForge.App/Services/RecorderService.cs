@@ -429,7 +429,7 @@ namespace PadForge.Services
                 return negRecording ? axisPositive : !axisPositive;
 
             // Extended bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
-            if (target.StartsWith("VJoyAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
+            if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
                 return negRecording ? axisPositive : !axisPositive;
 
             // KBM bidirectional axes: never auto-invert. The full analog axis
@@ -446,7 +446,7 @@ namespace PadForge.Services
                 return !axisPositive;
 
             // Extended trigger axes (unidirectional, no neg direction): same as gamepad triggers.
-            if (target.StartsWith("VJoyAxis", StringComparison.Ordinal))
+            if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal))
                 return !axisPositive;
 
             // All other targets (buttons, d-pad, etc.): invert when the user pushed

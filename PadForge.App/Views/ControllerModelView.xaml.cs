@@ -169,7 +169,7 @@ namespace PadForge.Views
             var type = _vm.OutputType;
             string needed = type switch
             {
-                VirtualControllerType.Sony => "DS4",
+                VirtualControllerType.PlayStation => "DS4",
                 VirtualControllerType.Extended when _vm.ExtendedConfig?.Preset == ExtendedPreset.DualShock4 => "DS4",
                 _ => "XBOX360"
             };

@@ -365,7 +365,7 @@ namespace PadForge.Views
 
             bool isExtended = vm.OutputType == Engine.VirtualControllerType.Extended;
 
-            // Microsoft / Sony use the compact preset dropdown bar; Extended
+            // Microsoft / PlayStation use the compact preset dropdown bar; Extended
             // has its own full config bar with profile + override fields, so
             // hide the compact bar when Extended is active.
             HMaestroProfileBar.Visibility = (vm.HasHMaestroProfileBar && !isExtended)
@@ -393,9 +393,27 @@ namespace PadForge.Views
             var profile = vm.AvailableProfiles?.FirstOrDefault(p =>
                 string.Equals(p.Id, vm.ProfileId, System.StringComparison.OrdinalIgnoreCase));
 
-            ExtendedNameBox.Text = profile?.Name ?? string.Empty;
+            // ProductString is the OS-visible identity — written to the
+            // device registry's iProduct, surfaced to joy.cpl and games via
+            // IOCTL_HID_GET_STRING, and used as the Device Manager
+            // FriendlyName fallback. HMProfile.Name is catalog-only (SDK
+            // search + console). Populate the textbox from ProductString so
+            // the value shown is what downstream consumers will see, with
+            // Name as a fallback for profiles whose ProductString is unset.
+            // Prefer a persisted per-slot ProductString (user-edited) if set;
+            // otherwise seed from the active profile's catalog value so the
+            // field always shows the OS-visible identity. Falls back to
+            // profile.Name for catalog entries where ProductString is unset.
+            string persistedProductString = vm.ExtendedConfig?.ProductString ?? string.Empty;
+            string profileProductString = !string.IsNullOrEmpty(profile?.ProductString)
+                ? profile.ProductString
+                : profile?.Name ?? string.Empty;
+            ExtendedProductStringBox.Text = !string.IsNullOrEmpty(persistedProductString)
+                ? persistedProductString
+                : profileProductString;
             ExtendedVidBox.Text = profile != null ? $"0x{profile.VendorId:X4}" : string.Empty;
             ExtendedPidBox.Text = profile != null ? $"0x{profile.ProductId:X4}" : string.Empty;
+            ExtendedOemOverrideChk.IsChecked = vm.ExtendedConfig?.OemNameOverride == true;
 
             if (profile != null)
             {
@@ -437,14 +455,27 @@ namespace PadForge.Views
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)
         {
-            // Placeholder — Extended spoof/override fields will drive a custom
-            // HMProfileBuilder once the profile-modification pipeline lands.
-            // For now the values are purely visual so the UI matches v3 spec.
+            // Persist the user-edited Product String to the slot's
+            // ExtendedConfig. When OEM Name Override is active, Step 5 uses
+            // this value as the label for HMOemNameOverride.Set at VC-create
+            // time. VID/PID are profile-defined and not user-editable — those
+            // textboxes are display-only for the active profile.
+            if (_syncingExtendedConfig) return;
+            if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
+            if (sender == ExtendedProductStringBox)
+                vm.ExtendedConfig.ProductString = ExtendedProductStringBox.Text ?? string.Empty;
         }
 
         private void ExtendedOverride_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter) ExtendedOverride_Changed(sender, e);
+        }
+
+        private void ExtendedOemOverride_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (_syncingExtendedConfig) return;
+            if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
+            vm.ExtendedConfig.OemNameOverride = ExtendedOemOverrideChk.IsChecked == true;
         }
 
         /// <summary>

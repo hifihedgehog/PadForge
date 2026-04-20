@@ -190,7 +190,7 @@ namespace PadForge.ViewModels
 
                 switch (pad.OutputType)
                 {
-                    case VirtualControllerType.Sony:
+                    case VirtualControllerType.PlayStation:
                         ds4Count++;
                         instanceNum = ds4Count;
                         iconKey = "DS4ControllerIcon";

@@ -310,9 +310,9 @@ namespace PadForge.Views
                 double cy = pos.Y - StickSize / 2;
                 string target;
                 if (Math.Abs(cx) > Math.Abs(cy))
-                    target = cx > 0 ? $"VJoyAxis{axisXIdx}" : $"VJoyAxis{axisXIdx}Neg";
+                    target = cx > 0 ? $"ExtendedAxis{axisXIdx}" : $"ExtendedAxis{axisXIdx}Neg";
                 else
-                    target = cy > 0 ? $"VJoyAxis{axisYIdx}" : $"VJoyAxis{axisYIdx}Neg";
+                    target = cy > 0 ? $"ExtendedAxis{axisYIdx}" : $"ExtendedAxis{axisYIdx}Neg";
                 ControllerElementRecordRequested?.Invoke(this, target);
             };
 
@@ -384,7 +384,7 @@ namespace PadForge.Views
             // Click-to-record
             bg.MouseLeftButtonDown += (s, e) =>
             {
-                ControllerElementRecordRequested?.Invoke(this, $"VJoyAxis{axisIdx}");
+                ControllerElementRecordRequested?.Invoke(this, $"ExtendedAxis{axisIdx}");
             };
 
             return new TriggerWidget
@@ -488,7 +488,7 @@ namespace PadForge.Views
                     dir = cx > 0 ? "Right" : "Left";
                 else
                     dir = cy > 0 ? "Down" : "Up";
-                ControllerElementRecordRequested?.Invoke(this, $"VJoyPov{index}{dir}");
+                ControllerElementRecordRequested?.Invoke(this, $"ExtendedPov{index}{dir}");
                 e.Handled = true;
             };
 
@@ -550,7 +550,7 @@ namespace PadForge.Views
 
             circle.MouseLeftButtonDown += (s, e) =>
             {
-                ControllerElementRecordRequested?.Invoke(this, $"VJoyBtn{index}");
+                ControllerElementRecordRequested?.Invoke(this, $"ExtendedBtn{index}");
             };
 
             return new ButtonWidget { ButtonIndex = index, Circle = circle };
@@ -599,10 +599,10 @@ namespace PadForge.Views
             // Check sticks (match ExtendedAxisN where N is either X or Y index)
             foreach (var w in _stickWidgets)
             {
-                if (baseTarget == $"VJoyAxis{w.AxisXIndex}" || baseTarget == $"VJoyAxis{w.AxisYIndex}")
+                if (baseTarget == $"ExtendedAxis{w.AxisXIndex}" || baseTarget == $"ExtendedAxis{w.AxisYIndex}")
                 {
                     bool isNeg = t.EndsWith("Neg", StringComparison.Ordinal);
-                    bool isX = baseTarget == $"VJoyAxis{w.AxisXIndex}";
+                    bool isX = baseTarget == $"ExtendedAxis{w.AxisXIndex}";
                     // Determine arrow angle: right=90, left=270, up=0, down=180
                     // Y: Neg = up (top of stick in WPF), non-Neg = down (bottom)
                     double angle;
@@ -624,7 +624,7 @@ namespace PadForge.Views
             // Check triggers
             foreach (var w in _triggerWidgets)
             {
-                if (baseTarget == $"VJoyAxis{w.AxisIndex}")
+                if (baseTarget == $"ExtendedAxis{w.AxisIndex}")
                 {
                     w.Fill.Fill = highlight ? FlashBrush : AccentBrush;
                     return;
@@ -634,7 +634,7 @@ namespace PadForge.Views
             // Check buttons
             foreach (var w in _buttonWidgets)
             {
-                if (t == $"VJoyBtn{w.ButtonIndex}")
+                if (t == $"ExtendedBtn{w.ButtonIndex}")
                 {
                     w.Circle.Stroke = highlight ? FlashBrush : DimBrush;
                     w.Circle.StrokeThickness = highlight ? 2.5 : 1.5;
@@ -642,15 +642,15 @@ namespace PadForge.Views
                 }
             }
 
-            // Check POVs (match VJoyPov{N}Up/Down/Left/Right)
+            // Check POVs (match ExtendedPov{N}Up/Down/Left/Right)
             foreach (var w in _povWidgets)
             {
-                if (t.StartsWith($"VJoyPov{w.PovIndex}", StringComparison.Ordinal))
+                if (t.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal))
                 {
                     w.Arrow.Fill = highlight ? FlashBrush : AccentBrush;
                     w.Arrow.Visibility = Visibility.Visible;
                     // Show arrow pointing in the target direction
-                    string dir = t.Substring($"VJoyPov{w.PovIndex}".Length);
+                    string dir = t.Substring($"ExtendedPov{w.PovIndex}".Length);
                     double angle = dir switch
                     {
                         "Up" => 0,
@@ -709,7 +709,7 @@ namespace PadForge.Views
             foreach (var w in _povWidgets)
             {
                 if (w.Outer.IsMouseOver) continue;
-                if (_flashTarget != null && _flashTarget.StartsWith($"VJoyPov{w.PovIndex}", StringComparison.Ordinal)) continue;
+                if (_flashTarget != null && _flashTarget.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal)) continue;
 
                 int povValue = -1;
                 if (raw.Povs != null && w.PovIndex < raw.Povs.Length)

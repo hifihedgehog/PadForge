@@ -234,7 +234,7 @@
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox360, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Microsoft">
                                                             <Setter Property="Opacity" Value="1.0"/>
@@ -253,7 +253,7 @@
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_DualShock4, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Sony">
                                                             <Setter Property="Opacity" Value="1.0"/>
@@ -272,7 +272,7 @@
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
                                                     <Setter Property="Opacity" Value="0.3"/>
-                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_DirectInput, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_Extended, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                                             <Setter Property="Opacity" Value="1.0"/>

@@ -253,7 +253,7 @@
 
         <!-- ══════════════════════════════════════
              ROW 1: HIDMAESTRO PROFILE PICKER BAR
-             (visible for Microsoft / Sony / Extended slots)
+             (visible for Microsoft / PlayStation / Extended slots)
              ══════════════════════════════════════ -->
         <Border x:Name="HMaestroProfileBar" Grid.Row="1" Margin="4,4,4,0"
                 Padding="10,6" CornerRadius="4"
@@ -264,7 +264,7 @@
                 <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
                            VerticalAlignment="Center" Margin="0,0,6,0"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
-                <ComboBox x:Name="HMaestroProfileCombo" Width="320" VerticalAlignment="Center"
+                <ComboBox x:Name="HMaestroProfileCombo" Width="420" VerticalAlignment="Center"
                           AutomationProperties.AutomationId="HMaestroProfileCombo"
                           ItemsSource="{Binding AvailableProfiles}"
                           DisplayMemberPath="Name"
@@ -288,7 +288,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Profile" VerticalAlignment="Center" Margin="0,0,6,0"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
-                    <ComboBox x:Name="ExtendedProfileCombo" Width="260" VerticalAlignment="Center"
+                    <ComboBox x:Name="ExtendedProfileCombo" Width="420" VerticalAlignment="Center"
                               ItemsSource="{Binding AvailableProfiles}"
                               DisplayMemberPath="Name"
                               SelectedValuePath="Id"
@@ -300,12 +300,18 @@
                             ToolTip="Coming soon — capture HID descriptor from a plugged-in device"/>
                 </StackPanel>
 
-                <!-- Row 2: Identity override (Name / VID / PID) -->
+                <!-- Row 2: Identity override (Product String / VID / PID) -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
-                    <TextBlock Text="Name" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedNameBox" Width="170" VerticalAlignment="Center"
+                    <TextBlock Text="Product String" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               ToolTip="Overrides the iProduct string the OS reports to games and joy.cpl. Drives the Device Manager FriendlyName when no separate description is set."/>
+                    <TextBox x:Name="ExtendedProductStringBox" Width="280" VerticalAlignment="Center"
                              LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+
+                    <CheckBox x:Name="ExtendedOemOverrideChk" Margin="6,0,0,0"
+                              VerticalAlignment="Center" Content="OEM override"
+                              Checked="ExtendedOemOverride_Toggled" Unchecked="ExtendedOemOverride_Toggled"
+                              ToolTip="Claim the Windows DirectInput OEM-name table entry for this profile's VID:PID. joy.cpl and DirectInput UIs normally read that table before the HID iProduct string — enable this so the Product String above wins. Off by default."/>
 
                     <TextBlock Text="VID" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

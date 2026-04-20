@@ -1491,9 +1491,9 @@ namespace PadForge
                 Margin = new Thickness(6, -3, 6, 0)
             });
 
-            // Type-switch buttons: Microsoft / Sony / Extended / KBM / MIDI — shown for all cards.
+            // Type-switch buttons: Microsoft / PlayStation / Extended / KBM / MIDI — shown for all cards.
             // HIDMaestro is always available (embedded in HIDMaestro.Core.dll), so the
-            // Microsoft / Sony / Extended categories are always enabled. MIDI still
+            // Microsoft / PlayStation / Extended categories are always enabled. MIDI still
             // depends on Windows MIDI Services.
             bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
 
@@ -1509,7 +1509,7 @@ namespace PadForge
             var xboxBtn = new System.Windows.Controls.Button
             {
                 Content = xboxPath,
-                ToolTip = Strings.Instance.ControllerType_Xbox360,
+                ToolTip = Strings.Instance.ControllerType_Xbox,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
@@ -1535,7 +1535,7 @@ namespace PadForge
             var ds4Btn = new System.Windows.Controls.Button
             {
                 Content = ds4Path,
-                ToolTip = Strings.Instance.ControllerType_DualShock4,
+                ToolTip = Strings.Instance.ControllerType_PlayStation,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
@@ -1562,7 +1562,7 @@ namespace PadForge
             var extendedBtn = new System.Windows.Controls.Button
             {
                 Content = extendedPath,
-                ToolTip = Strings.Instance.ControllerType_DirectInput,
+                ToolTip = Strings.Instance.ControllerType_Extended,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
@@ -1856,8 +1856,8 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Sony);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Sony;
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.EnsureTypeGroupOrder();
                 _settingsService.MarkDirty();
             }
@@ -2470,7 +2470,7 @@ namespace PadForge
                 switch (_viewModel.Pads[i].OutputType)
                 {
                     case VirtualControllerType.Microsoft: xboxCount++; break;
-                    case VirtualControllerType.Sony: ds4Count++; break;
+                    case VirtualControllerType.PlayStation: ds4Count++; break;
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
@@ -2603,7 +2603,7 @@ namespace PadForge
                 switch (_viewModel.Pads[i].OutputType)
                 {
                     case VirtualControllerType.Microsoft: xboxCount++; break;
-                    case VirtualControllerType.Sony: ds4Count++; break;
+                    case VirtualControllerType.PlayStation: ds4Count++; break;
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
@@ -2626,8 +2626,8 @@ namespace PadForge
             {
                 Content = xboxPopupPath,
                 ToolTip = xboxAtCapacity
-                        ? string.Format(Strings.Instance.Main_Xbox360_Max_Format, SettingsManager.MaxXbox360Slots)
-                        : Strings.Instance.ControllerType_Xbox360,
+                        ? string.Format(Strings.Instance.Main_Xbox_Max_Format, SettingsManager.MaxXbox360Slots)
+                        : Strings.Instance.ControllerType_Xbox,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
@@ -2665,8 +2665,8 @@ namespace PadForge
             {
                 Content = ds4PopupPath,
                 ToolTip = ds4AtCapacity
-                        ? string.Format(Strings.Instance.Main_DS4_Max_Format, SettingsManager.MaxDS4Slots)
-                        : Strings.Instance.ControllerType_DualShock4,
+                        ? string.Format(Strings.Instance.Main_PlayStation_Max_Format, SettingsManager.MaxDS4Slots)
+                        : Strings.Instance.ControllerType_PlayStation,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
@@ -2678,11 +2678,11 @@ namespace PadForge
             {
                 if (ds4Disabled) return;
                 popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Sony);
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.PlayStation);
                 if (newSlot >= 0)
                 {
                     _inputService.EnsureTypeGroupOrder();
-                    int nav = FindLastSlotOfType(VirtualControllerType.Sony);
+                    int nav = FindLastSlotOfType(VirtualControllerType.PlayStation);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
@@ -2704,8 +2704,8 @@ namespace PadForge
             {
                 Content = extendedPopupPath,
                 ToolTip = extendedAtCapacity
-                        ? string.Format(Strings.Instance.Main_DI_Max_Format, SettingsManager.MaxExtendedSlots)
-                        : Strings.Instance.ControllerType_DirectInput,
+                        ? string.Format(Strings.Instance.Main_Extended_Max_Format, SettingsManager.MaxExtendedSlots)
+                        : Strings.Instance.ControllerType_Extended,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
@@ -3769,7 +3769,7 @@ namespace PadForge
                     switch (_viewModel.Pads[i].OutputType)
                     {
                         case VirtualControllerType.Microsoft: xboxCount++; break;
-                        case VirtualControllerType.Sony: ds4Count++; break;
+                        case VirtualControllerType.PlayStation: ds4Count++; break;
                         case VirtualControllerType.Extended: extendedCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
                         case VirtualControllerType.KeyboardMouse: kbmCount++; break;

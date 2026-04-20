@@ -42,6 +42,15 @@ namespace PadForge
 
             base.OnStartup(e);
 
+            // Replay any HIDMaestro OEM-name overrides left by a prior
+            // session that didn't get a clean Clear (crash, force-kill,
+            // power loss). Restores the DirectInput OEM table to its
+            // pre-override state before we create any virtuals or apply
+            // new overrides. Idempotent — no-op when no orphan records
+            // exist. Requires admin (HKLM write); PadForge auto-elevates.
+            try { HIDMaestro.HMOemNameOverride.RecoverOrphans(); }
+            catch { /* best effort — continue without recovery */ }
+
             // Apply saved language preference before any UI is created.
             var settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.xml");
             if (File.Exists(settingsPath))

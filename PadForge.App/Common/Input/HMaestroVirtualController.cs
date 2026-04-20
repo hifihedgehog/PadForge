@@ -10,7 +10,7 @@ namespace PadForge.Common.Input
     /// classes — one IVirtualController implementation handles every preset
     /// and custom HID descriptor through a single SDK surface.
     ///
-    /// The Type property reports the user-facing category (Microsoft / Sony /
+    /// The Type property reports the user-facing category (Microsoft / PlayStation /
     /// Extended) so existing per-type counting logic in InputService keeps
     /// working. The actual HIDMaestro profile is supplied at construction.
     /// </summary>
@@ -99,6 +99,94 @@ namespace PadForge.Common.Input
                 RightTrigger = gp.RightTrigger / 65535f,
                 Buttons = MapButtons(gp.Buttons),
                 Hat = MapHat(gp.Buttons),
+            };
+
+            _controller.SubmitState(state);
+        }
+
+        /// <summary>
+        /// Submit an ExtendedRawState (produced by the Extended dynamic
+        /// mapping path) directly to HIDMaestro. Covers the full HMGamepadState
+        /// surface — 6 axes, 13 buttons, and a hat — without going through
+        /// the XInput Gamepad intermediate, so Touchpad/Share buttons and
+        /// arbitrary profile layouts aren't truncated the way
+        /// <see cref="SubmitGamepadState"/>'s 11-button XInput bitmap would.
+        ///
+        /// Axis layout follows ExtendedSlotConfig.ComputeAxisLayout for the
+        /// 2-stick/2-trigger case: axes[0,1] = LX/LY, axes[2] = LT,
+        /// axes[3,4] = RX/RY, axes[5] = RT.
+        ///
+        /// ExtendedRawState.Axes is in HID convention per Step 3
+        /// (positive = down/right), matching HMGamepadState's internal
+        /// convention, so no Y negation needed — pass signed short
+        /// straight through as a normalized float. Triggers in the raw
+        /// state are signed short centered at 0; convert to the 0..1
+        /// float range HMGamepadState expects.
+        /// </summary>
+        public void SubmitExtendedRawState(ExtendedRawState raw)
+        {
+            if (_controller == null) return;
+            System.Threading.Interlocked.Increment(ref _submitStateCalls);
+
+            short Ax(int i) => (raw.Axes != null && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
+
+            // Normalize signed short to -1..+1 float.
+            float Norm(short v) => v / 32767f;
+
+            // Triggers arrive as signed short in the raw state; shift the
+            // zero point so a released trigger (raw -32768) maps to 0.0 and
+            // fully pressed (raw 32767) maps to 1.0.
+            float Trig(short v) => (v + 32768) / 65535f;
+
+            // HMButton is a [Flags] uint enum with named members for bits 0..12
+            // (A..Share). HidReportBuilder iterates bits 0..31 of the mask
+            // passed as (uint)state.Buttons, so any bit we set beyond 12
+            // still surfaces — it maps to the profile's corresponding
+            // descriptor button position (direct index, or via the profile's
+            // ButtonMap if one is declared). Profiles with 13+ buttons (Stadia,
+            // flight sticks, wheels, etc.) rely on this to receive inputs
+            // past the named button range. Pass through all 32 bits from
+            // the raw state mask verbatim.
+            uint buttonMask = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                if (raw.IsButtonPressed(i))
+                    buttonMask |= 1u << i;
+            }
+            var buttons = (HMButton)buttonMask;
+
+            var hat = HMHat.None;
+            if (raw.Povs != null && raw.Povs.Length > 0)
+            {
+                int pov = raw.Povs[0];
+                if (pov >= 0)
+                {
+                    int octant = ((pov + 2250) / 4500) % 8;
+                    hat = octant switch
+                    {
+                        0 => HMHat.North,
+                        1 => HMHat.NorthEast,
+                        2 => HMHat.East,
+                        3 => HMHat.SouthEast,
+                        4 => HMHat.South,
+                        5 => HMHat.SouthWest,
+                        6 => HMHat.West,
+                        7 => HMHat.NorthWest,
+                        _ => HMHat.None
+                    };
+                }
+            }
+
+            var state = new HMGamepadState
+            {
+                LeftStickX = Norm(Ax(0)),
+                LeftStickY = Norm(Ax(1)),
+                RightStickX = Norm(Ax(3)),
+                RightStickY = Norm(Ax(4)),
+                LeftTrigger = Trig(Ax(2)),
+                RightTrigger = Trig(Ax(5)),
+                Buttons = buttons,
+                Hat = hat,
             };
 
             _controller.SubmitState(state);

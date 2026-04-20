@@ -41,18 +41,6 @@ namespace PadForge.Services
 
         private readonly ConcurrentDictionary<string, ClientSession> _clients = new();
         private Dictionary<string, byte[]> _imageCache;
-        private static readonly string _logPath = System.IO.Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory, "webserver.log");
-
-        private static void Log(string msg)
-        {
-            try
-            {
-                var line = $"[{DateTime.Now:HH:mm:ss.fff}] {msg}\n";
-                File.AppendAllText(_logPath, line);
-            }
-            catch { }
-        }
 
         /// <summary>Raised when server status changes (for UI display).</summary>
         public event EventHandler<string> StatusChanged;
@@ -104,7 +92,6 @@ namespace PadForge.Services
                     IsBackground = true
                 };
                 _acceptThread.Start();
-                Log($"Server started on port {port}");
 
                 var url = $"http://{_localIp}:{port}";
                 StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningOn_Format, url));
@@ -178,10 +165,6 @@ namespace PadForge.Services
                     if (!_running) break;
                     continue;
                 }
-
-                Log(
-                    $"[WebServer] Request: {ctx.Request.HttpMethod} {ctx.Request.Url?.AbsolutePath}{ctx.Request.Url?.Query} " +
-                    $"IsWebSocket={ctx.Request.IsWebSocketRequest}");
 
                 if (ctx.Request.IsWebSocketRequest)
                 {
@@ -300,12 +283,8 @@ namespace PadForge.Services
                 var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
                 var layoutParam = ctx.Request.QueryString["layout"] ?? "xbox360";
 
-                Log(
-                    $"[WebServer] Accepting WebSocket from {ctx.Request.RemoteEndPoint} type={clientType} layout={layoutParam}...");
                 var wsCtx = await ctx.AcceptWebSocketAsync(null);
                 ws = wsCtx.WebSocket;
-                Log(
-                    $"[WebServer] WebSocket accepted, state={ws.State}");
 
                 // Create device — reuse pad number for reconnecting clients.
                 bool isTouchpadClient = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
@@ -395,8 +374,7 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
-                Log(
-                    $"[WebServer] WebSocket error: {ex.GetType().Name}: {ex.Message}");
+                _ = ex;
                 // Connection failed before WebSocket established.
                 try { ctx.Response.Close(); } catch { }
             }
@@ -499,7 +477,6 @@ namespace PadForge.Services
             foreach (var ov in DS4Layout.Overlays)
                 Load($"2DModels/DS4/{ov.ImageFile}");
 
-            Log($"Image cache loaded: {cache.Count} files");
             return cache;
         }
 

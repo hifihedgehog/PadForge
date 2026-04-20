@@ -35,8 +35,7 @@ PadForge.sln
 │   │   ├── GamepadTypes.cs        Gamepad/OutputState/VJoyRawState types
 │   │   ├── VirtualControllerTypes.cs  IVirtualController + VirtualControllerType enum
 │   │   ├── RawInputListener.cs    Windows Raw Input listener
-│   │   ├── InputHookManager.cs    WH_KEYBOARD_LL / WH_MOUSE_LL input suppression hooks
-│   │   └── RumbleLogger.cs        Diagnostic rumble event logger
+│   │   └── InputHookManager.cs    WH_KEYBOARD_LL / WH_MOUSE_LL input suppression hooks
 │   ├── Data/
 │   │   ├── UserDevice.cs          Physical device record (serializable + runtime)
 │   │   ├── UserSetting.cs         Device-to-slot link (serializable)

@@ -90,12 +90,10 @@ namespace PadForge.Engine
 
             if (device.HasHaptic)
             {
-                RumbleLogger.Log("StopDeviceForces (haptic) called");
                 StopAndDestroyHapticEffect(device);
             }
             else if (device.HasRumble)
             {
-                RumbleLogger.Log("StopDeviceForces called");
                 device.StopRumble();
             }
             else
@@ -240,7 +238,6 @@ namespace PadForge.Engine
             if (finalLeft == _cachedLeftMotorSpeed && finalRight == _cachedRightMotorSpeed)
                 return;
 
-            RumbleLogger.Log($"CHANGE L:{_cachedLeftMotorSpeed}->{finalLeft} R:{_cachedRightMotorSpeed}->{finalRight} (raw L:{rawLeft} R:{rawRight} gain:{overallGain})");
 
             bool scalarSuccess;
             if (device.HasHaptic)
@@ -250,12 +247,10 @@ namespace PadForge.Engine
             else if (finalLeft == 0 && finalRight == 0)
             {
                 scalarSuccess = device.StopRumble();
-                RumbleLogger.Log($"StopRumble -> {scalarSuccess}");
             }
             else
             {
                 scalarSuccess = device.SetRumble(finalLeft, finalRight, uint.MaxValue);
-                RumbleLogger.Log($"SetRumble({finalLeft},{finalRight},MAX) -> {scalarSuccess}");
             }
 
             if (scalarSuccess)
@@ -288,7 +283,6 @@ namespace PadForge.Engine
             if (scaledMag == 0)
             {
                 StopAndDestroyHapticEffect(device);
-                RumbleLogger.Log("Directional haptic stop (zero mag)");
                 return true;
             }
 
@@ -367,7 +361,6 @@ namespace PadForge.Engine
                 return SetHapticForces(device, v.LeftMotorSpeed, v.RightMotorSpeed);
             }
 
-            RumbleLogger.Log($"Directional haptic type={effectType} mag={scaledMag} dir={v.Direction} period={v.Period} singleAxis={isSingleAxis}");
             return ApplyHapticEffect(device, ref effect);
         }
 
@@ -433,7 +426,6 @@ namespace PadForge.Engine
                 }
             }
 
-            RumbleLogger.Log($"Condition haptic type={effectType} axes={axisCount} gain={gainScale:F2}");
             return ApplyHapticEffect(device, ref effect);
         }
 
@@ -452,7 +444,6 @@ namespace PadForge.Engine
             if (left == 0 && right == 0)
             {
                 StopAndDestroyHapticEffect(device);
-                RumbleLogger.Log("Haptic stop (zero)");
                 return true;
             }
 
@@ -511,13 +502,11 @@ namespace PadForge.Engine
                 _hapticEffectId = SDL_CreateHapticEffect(haptic, ref effect);
                 if (_hapticEffectId < 0)
                 {
-                    RumbleLogger.Log($"SDL_CreateHapticEffect failed: {SDL_GetError()}");
                     return false;
                 }
                 _hapticEffectCreated = true;
 
                 bool run = SDL_RunHapticEffect(haptic, _hapticEffectId, SDL_HAPTIC_INFINITY);
-                RumbleLogger.Log($"Haptic create+run id={_hapticEffectId} -> {run}");
                 return run;
             }
             else
@@ -527,18 +516,15 @@ namespace PadForge.Engine
                 {
                     // Update failed — effect may be stale (e.g., another app acquired the
                     // device in Exclusive mode and released it). Destroy and recreate.
-                    RumbleLogger.Log($"Haptic update id={_hapticEffectId} failed, recreating");
                     StopAndDestroyHapticEffect(device);
                     _hapticEffectId = SDL_CreateHapticEffect(haptic, ref effect);
                     if (_hapticEffectId < 0)
                     {
-                        RumbleLogger.Log($"Haptic recreate failed: {SDL_GetError()}");
                         return false;
                     }
                     _hapticEffectCreated = true;
                     return SDL_RunHapticEffect(haptic, _hapticEffectId, SDL_HAPTIC_INFINITY);
                 }
-                RumbleLogger.Log($"Haptic update id={_hapticEffectId} -> ok");
                 return true;
             }
         }

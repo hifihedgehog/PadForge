@@ -290,12 +290,10 @@ namespace PadForge.Engine
             IntPtr h = SDL_OpenHapticFromJoystick(Joystick);
             if (h == IntPtr.Zero)
             {
-                RumbleLogger.Log($"OpenHaptic: SDL_OpenHapticFromJoystick failed for '{Name}': {SDL_GetError()}");
                 return;
             }
 
             uint features = SDL_GetHapticFeatures(h);
-            RumbleLogger.Log($"OpenHaptic: '{Name}' features=0x{features:X8} rumble={HasRumble}");
 
             if (features == 0)
             {
@@ -309,7 +307,6 @@ namespace PadForge.Engine
             if (HasRumble && (features & SDL_HAPTIC_LEFTRIGHT) != 0)
             {
                 // Gamepad with LeftRight haptic — simple rumble works fine, skip haptic.
-                RumbleLogger.Log($"OpenHaptic: '{Name}' has rumble + LeftRight, preferring simple rumble");
                 SDL_CloseHaptic(h);
                 return;
             }
@@ -334,7 +331,6 @@ namespace PadForge.Engine
                 return;
             }
 
-            RumbleLogger.Log($"OpenHaptic: '{Name}' strategy={HapticStrategy}");
 
             // Set gain to maximum if the device supports it.
             if ((features & SDL_HAPTIC_GAIN) != 0)

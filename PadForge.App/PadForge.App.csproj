@@ -63,9 +63,7 @@
              Condition="Exists('Resources\SDL3\x64\libusb-1.0.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="gamecontrollerdb_padforge.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
     <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
     <EmbeddedResource Include="3DModels\**\*.obj" />

@@ -273,7 +273,7 @@
   <data name="About_Title" xml:space="preserve"><value>About</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Controller Mapping Utility</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Modern fork of x360ce — rebuilt with SDL3, WPF, and .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge turns any input device into any virtual controller. Gamepads, joysticks, keyboards, mice, and touchscreens are mapped to Xbox 360, DualShock 4, DirectInput, Keyboard+Mouse, or MIDI output that games treat as real hardware — powered by ViGEmBus, vJoy, and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse, and provides a modern Fluent Design interface for mapping, deadzones, sensitivity curves, and force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge turns any input device into any virtual controller. Gamepads, joysticks, keyboards, mice, and touchscreens are mapped to Xbox, PlayStation, Extended, Keyboard+Mouse, or MIDI output that games treat as real hardware — powered by HIDMaestro and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse, HidHide for per-game device masking, and provides a modern Fluent Design interface for mapping, deadzones, sensitivity curves, and force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Built With</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime and WPF framework</value></data>
@@ -290,7 +290,14 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm for data binding</value></data>
   <data name="About_License" xml:space="preserve"><value>License</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>This software is licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). 3D controller models adapted from Handheld Companion (CC BY-NC-SA 4.0). 2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT). Original codebase forked from x360ce (MIT). SDL3 is licensed under the zlib License. Windows MIDI Services is licensed under the MIT License. ViGEmBus, vJoy, HelixToolkit, and WPF UI are licensed under the MIT License.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>This software is licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). 3D controller models adapted from Handheld Companion (CC BY-NC-SA 4.0). 2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT). Original codebase forked from x360ce (MIT). SDL3 is licensed under the zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit, and WPF UI are licensed under the MIT License.</value></data>
+  <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine (replaces ViGEmBus and vJoy)</value></data>
+  <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel driver for hiding physical devices from games</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>Testimony</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins." — 2 Nephi 25:26</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>

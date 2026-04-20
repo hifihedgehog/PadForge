@@ -368,6 +368,22 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Knoppen</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importeren vanaf apparaat…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Binnenkort — HID-descriptor van een aangesloten apparaat overnemen.</value></data>
+  <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Aanpassen</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Schakelt de velden voor identiteits- en indelingsoverrides hieronder in. Wanneer uit, gebruikt de virtuele controller het HIDMaestro-profiel exact zoals geleverd.</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Zet alle overridevelden terug naar de catalogwaarden van het huidige profiel (productnaam, VID, PID, aantal sticks/triggers/POV's/knoppen) en schakelt de OEM-override uit.</value></data>
+  <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Productnaam</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Overschrijft de iProduct-tekenreeks die het besturingssysteem aan games en joy.cpl meldt. Bepaalt ook de naam in Apparaatbeheer.</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM-override</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Claimt de vermelding in de DirectInput OEM-naamtabel voor de VID:PID van het profiel. joy.cpl en DirectInput lezen deze tabel vóór de HID iProduct-tekenreeks — schakel in zodat de productnaam hierboven wint. Standaard uit.</value></data>
+  <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
+  <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
+  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>Trillen</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>Getuigenis</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>„En wij spreken over Christus, wij verheugen ons in Christus, wij prediken Christus, wij profeteren over Christus, en wij schrijven overeenkomstig onze profetieën, opdat onze kinderen zullen weten bij welke bron zij vergeving van hun zonden kunnen zoeken." — 2 Nephi 25:26</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>Eer, glorie en lof aan de Heer Jezus Christus, de bron van alle waarheid, voor eeuwig en altijd.</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanaal</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-kanaal (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-aantal</value></data>

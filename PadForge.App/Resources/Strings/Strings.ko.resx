@@ -368,6 +368,22 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>트리거</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>버튼</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>장치에서 가져오기…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>출시 예정 — 연결된 장치에서 HID 설명자를 가져옵니다.</value></data>
+  <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>사용자 지정</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>아래의 아이덴티티 및 레이아웃 재정의 필드를 활성화합니다. 꺼져 있으면 가상 컨트롤러는 HIDMaestro 프로파일을 그대로 사용합니다.</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>모든 재정의 필드를 현재 프로파일의 카탈로그 값(제품 이름, VID, PID, 스틱/트리거/POV/버튼 수)으로 되돌리고 OEM 재정의를 해제합니다.</value></data>
+  <data name="Pad_ExtendedProductString" xml:space="preserve"><value>제품 이름</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>운영 체제가 게임 및 joy.cpl에 보고하는 iProduct 문자열을 재정의합니다. 장치 관리자에 표시되는 이름도 제어합니다.</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM 재정의</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>프로파일의 VID:PID에 대한 DirectInput OEM 이름 테이블 항목을 점유합니다. joy.cpl과 DirectInput은 HID iProduct보다 이 테이블을 먼저 읽으므로, 위의 제품 이름이 우선하도록 하려면 활성화하십시오. 기본값은 꺼짐.</value></data>
+  <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
+  <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
+  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>터치패드</value></data>
+  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>진동</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>간증</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>"우리가 그리스도에 대하여 말하고, 그리스도를 기뻐하며, 그리스도를 전파하고, 그리스도에 대하여 예언하며, 또한 우리의 예언을 좇아 기록하나니, 이는 우리의 자녀들이 자기들의 죄 사함을 받기 위하여 어느 근원을 바라보아야 할 것인지를 알게 하려 함이라." — 니파이후서 25:26</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>모든 진리의 근원이신 주 예수 그리스도께 영광과 존귀와 찬양이 영원무궁토록 있을지어다.</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>채널</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI 채널 (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 개수</value></data>

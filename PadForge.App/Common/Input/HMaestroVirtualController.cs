@@ -112,9 +112,12 @@ namespace PadForge.Common.Input
         /// arbitrary profile layouts aren't truncated the way
         /// <see cref="SubmitGamepadState"/>'s 11-button XInput bitmap would.
         ///
-        /// Axis layout follows ExtendedSlotConfig.ComputeAxisLayout for the
-        /// 2-stick/2-trigger case: axes[0,1] = LX/LY, axes[2] = LT,
-        /// axes[3,4] = RX/RY, axes[5] = RT.
+        /// Axis indices are computed via the same interleave logic as
+        /// <see cref="PadForge.ViewModels.ExtendedSlotConfig.ComputeAxisLayout"/>
+        /// so the right-stick axes land at the correct offsets regardless of
+        /// whether the active profile has 0, 1, or 2 triggers. Hardcoding
+        /// (3, 4) for right-stick X/Y silently dropped Stick 2 Y for every
+        /// 0-trigger or 1-trigger profile.
         ///
         /// ExtendedRawState.Axes is in HID convention per Step 3
         /// (positive = down/right), matching HMGamepadState's internal
@@ -123,12 +126,12 @@ namespace PadForge.Common.Input
         /// state are signed short centered at 0; convert to the 0..1
         /// float range HMGamepadState expects.
         /// </summary>
-        public void SubmitExtendedRawState(ExtendedRawState raw)
+        public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
         {
             if (_controller == null) return;
             System.Threading.Interlocked.Increment(ref _submitStateCalls);
 
-            short Ax(int i) => (raw.Axes != null && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
+            short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 
             // Normalize signed short to -1..+1 float.
             float Norm(short v) => v / 32767f;
@@ -137,6 +140,26 @@ namespace PadForge.Common.Input
             // zero point so a released trigger (raw -32768) maps to 0.0 and
             // fully pressed (raw 32767) maps to 1.0.
             float Trig(short v) => (v + 32768) / 65535f;
+
+            // Replicate ExtendedSlotConfig.ComputeAxisLayout. Interleaved
+            // groups of (stickX, stickY, trigger) while both sticks and
+            // triggers are available; trailing sticks (no-trigger case) pack
+            // sequentially at (prev, prev+1), trailing triggers pack one
+            // index at a time after that. Guard -1 on anything we don't have.
+            int interleave = System.Math.Min(sticks, triggers);
+            int StickX(int g) =>
+                g < interleave ? g * 3
+                : g < sticks   ? interleave * 3 + (g - interleave) * 2
+                               : -1;
+            int StickY(int g) => StickX(g) >= 0 ? StickX(g) + 1 : -1;
+            int TriggerIdx(int g) =>
+                g < interleave ? g * 3 + 2
+                : g < triggers ? interleave * 3 + System.Math.Max(0, sticks - interleave) * 2 + (g - interleave)
+                               : -1;
+
+            int lxi = StickX(0), lyi = StickY(0);
+            int rxi = StickX(1), ryi = StickY(1);
+            int lti = TriggerIdx(0), rti = TriggerIdx(1);
 
             // HMButton is a [Flags] uint enum with named members for bits 0..12
             // (A..Share). HidReportBuilder iterates bits 0..31 of the mask
@@ -179,12 +202,12 @@ namespace PadForge.Common.Input
 
             var state = new HMGamepadState
             {
-                LeftStickX = Norm(Ax(0)),
-                LeftStickY = Norm(Ax(1)),
-                RightStickX = Norm(Ax(3)),
-                RightStickY = Norm(Ax(4)),
-                LeftTrigger = Trig(Ax(2)),
-                RightTrigger = Trig(Ax(5)),
+                LeftStickX = Norm(Ax(lxi)),
+                LeftStickY = Norm(Ax(lyi)),
+                RightStickX = Norm(Ax(rxi)),
+                RightStickY = Norm(Ax(ryi)),
+                LeftTrigger = Trig(Ax(lti)),
+                RightTrigger = Trig(Ax(rti)),
                 Buttons = buttons,
                 Hat = hat,
             };

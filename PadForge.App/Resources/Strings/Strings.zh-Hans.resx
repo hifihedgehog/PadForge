@@ -368,6 +368,22 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>按钮</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>从设备导入…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>即将推出 — 从已连接的设备捕获 HID 描述符。</value></data>
+  <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>自定义</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>启用下方的身份和布局覆盖字段。关闭时,虚拟控制器将完全按照 HIDMaestro 提供的配置文件创建。</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>将所有覆盖字段恢复为当前配置文件的目录值(产品名称、VID、PID、摇杆/扳机/POV/按钮数量),并清除 OEM 覆盖标志。</value></data>
+  <data name="Pad_ExtendedProductString" xml:space="preserve"><value>产品名称</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>覆盖操作系统向游戏和 joy.cpl 报告的 iProduct 字符串。也会控制设备管理器中显示的名称。</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>覆盖 OEM</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>占用此配置文件 VID:PID 的 DirectInput OEM 名称表条目。joy.cpl 和 DirectInput 在 HID iProduct 字符串之前读取该表 — 启用后,上方的产品名称将优先显示。默认关闭。</value></data>
+  <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
+  <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
+  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>触摸板</value></data>
+  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>震动</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>见证</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>「我们谈论基督,我们以基督为乐,我们传扬基督,我们预言基督,我们也照我们的预言写作,好使我们的儿女得以知道他们可以仰望什么根源,以求他们的罪得赦。」— 尼腓二书 25:26</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>愿荣耀、尊贵、赞美归于主耶稣基督,一切真理的根源,直到永永远远。</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>通道</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI 通道（1-16）</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 数量</value></data>

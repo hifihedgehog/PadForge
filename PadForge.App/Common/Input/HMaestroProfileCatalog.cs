@@ -37,6 +37,21 @@ namespace PadForge.Common.Input
         private static List<HMProfile> _playStationProfiles = new();
         private static List<HMProfile> _extendedProfiles = new();
 
+        /// <summary>
+        /// Source of user-imported HIDMaestro profile JSONs to mix into the
+        /// Extended category alongside the built-in catalog. Populated by
+        /// the settings layer on startup (profiles live in PadForge.xml
+        /// under &lt;UserProfiles&gt;) and re-populated after every live
+        /// import. EnsureInitialized invokes the provider once per load; if
+        /// it's null or returns null, only the built-in catalog + the
+        /// synthetic Custom entry appear.
+        /// </summary>
+        public static System.Func<System.Collections.Generic.IReadOnlyList<string>> UserProfilesProvider { get; set; }
+
+        /// <summary>Raised after the catalog is (re)built so UI bindings
+        /// that depend on Extended/All profile lists can refresh.</summary>
+        public static event System.EventHandler CatalogReloaded;
+
         /// <summary>All loaded profiles, ordered by ID slug.</summary>
         public static IReadOnlyList<HMProfile> AllProfiles
         {
@@ -75,6 +90,25 @@ namespace PadForge.Common.Input
                 string.Equals(p.Id, id, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Force the catalog to re-initialize on the next access. Call
+        /// after a user imports a new profile so the Extended dropdown
+        /// picks it up.
+        /// </summary>
+        public static void Reload()
+        {
+            lock (_initLock)
+            {
+                _initialized = false;
+                _allProfiles = new();
+                _microsoftProfiles = new();
+                _playStationProfiles = new();
+                _extendedProfiles = new();
+            }
+            EnsureInitialized();
+            CatalogReloaded?.Invoke(null, System.EventArgs.Empty);
+        }
+
         private static void EnsureInitialized()
         {
             if (_initialized) return;
@@ -82,10 +116,45 @@ namespace PadForge.Common.Input
             {
                 if (_initialized) return;
 
+                string userTempDir = null;
                 try
                 {
                     using var ctx = new HMContext();
                     ctx.LoadDefaultProfiles();
+
+                    // Write any user-imported profile JSONs to a temp
+                    // directory and load them through HMContext so they
+                    // participate in the same parsing + validation path as
+                    // the built-in catalog. HIDMaestro only exposes a
+                    // directory-based loader, so we stage the JSONs to
+                    // disk just long enough for LoadProfilesFromDirectory
+                    // to consume them.
+                    var userJsons = UserProfilesProvider?.Invoke();
+                    if (userJsons != null && userJsons.Count > 0)
+                    {
+                        userTempDir = System.IO.Path.Combine(
+                            System.IO.Path.GetTempPath(),
+                            $"padforge-userprofiles-{System.Guid.NewGuid():N}");
+                        try
+                        {
+                            System.IO.Directory.CreateDirectory(userTempDir);
+                            for (int i = 0; i < userJsons.Count; i++)
+                            {
+                                var json = userJsons[i];
+                                if (string.IsNullOrWhiteSpace(json)) continue;
+                                System.IO.File.WriteAllText(
+                                    System.IO.Path.Combine(userTempDir, $"user-{i:D4}.json"),
+                                    json);
+                            }
+                            ctx.LoadProfilesFromDirectory(userTempDir);
+                        }
+                        catch
+                        {
+                            // User-profile staging/loading is best-effort —
+                            // a single corrupt entry must not break the
+                            // catalog. Built-in profiles are already loaded.
+                        }
+                    }
 
                     // Filter undeployable profiles at catalog load. HIDMaestro
                     // ships some profile JSONs that lack a HID descriptor —
@@ -139,6 +208,14 @@ namespace PadForge.Common.Input
                 {
                     // Catalog unavailable — leave the empty lists in place.
                     // The engine's own HMContext will surface the real error.
+                }
+                finally
+                {
+                    if (userTempDir != null)
+                    {
+                        try { System.IO.Directory.Delete(userTempDir, recursive: true); }
+                        catch { }
+                    }
                 }
 
                 _initialized = true;

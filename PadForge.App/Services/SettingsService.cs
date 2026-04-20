@@ -42,6 +42,7 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private string _settingsFilePath;
         private DispatcherTimer _autoSaveTimer;
+        private readonly List<UserProfileData> _userProfiles = new();
 
         /// <summary>
         /// Full path to the active settings file.
@@ -202,6 +203,27 @@ namespace PadForge.Services
                 // Load app settings into ViewModel.
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);
+
+                // Publish user-imported HIDMaestro profiles to the catalog
+                // so they appear in the Extended dropdown alongside the
+                // built-in entries. _userProfiles is the in-memory mirror
+                // of AppSettings.UserProfiles, mutated live by
+                // AddUserProfile() and serialized back out on save.
+                _userProfiles.Clear();
+                if (data.AppSettings?.UserProfiles != null)
+                {
+                    foreach (var p in data.AppSettings.UserProfiles)
+                    {
+                        if (p != null && !string.IsNullOrWhiteSpace(p.Json))
+                            _userProfiles.Add(p);
+                    }
+                }
+                Common.Input.HMaestroProfileCatalog.UserProfilesProvider =
+                    () => _userProfiles
+                        .Where(p => !string.IsNullOrWhiteSpace(p?.Json))
+                        .Select(p => p.Json)
+                        .ToList();
+                Common.Input.HMaestroProfileCatalog.Reload();
 
                 // Load pad-specific settings.
                 if (data.PadSettings != null)
@@ -1091,6 +1113,7 @@ namespace PadForge.Services
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
+                UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
                 DefaultProfileSnapshot = isDefault ? null : defaultSnap
             };
@@ -1476,6 +1499,149 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Snapshot of the current user-profile store for UI presentation
+        /// in the Manage Profiles dialog. Returns id + display name pairs
+        /// (the name is pulled from each profile's JSON "name" field,
+        /// which already carries the "(User Generated)" suffix applied on
+        /// import).
+        /// </summary>
+        public IReadOnlyList<Views.ManageProfilesDialog.ImportedProfileRow> GetUserProfileRows()
+        {
+            var list = new List<Views.ManageProfilesDialog.ImportedProfileRow>();
+            foreach (var p in _userProfiles)
+            {
+                if (p == null || string.IsNullOrWhiteSpace(p.Json)) continue;
+                string name = p.Id;
+                try
+                {
+                    var root = System.Text.Json.Nodes.JsonNode.Parse(p.Json)?.AsObject();
+                    var n = root?["name"]?.GetValue<string>();
+                    if (!string.IsNullOrWhiteSpace(n)) name = n;
+                }
+                catch { }
+                list.Add(new Views.ManageProfilesDialog.ImportedProfileRow
+                {
+                    Id = p.Id,
+                    Name = name,
+                });
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Remove a user-imported profile from the store by id. Any slot
+        /// whose ProfileId matched the deleted entry gets reset to the
+        /// synthetic padforge-custom entry so no slot points at a missing
+        /// profile after the delete lands.
+        /// </summary>
+        public void RemoveUserProfile(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return;
+            int removed = _userProfiles.RemoveAll(p =>
+                string.Equals(p?.Id, id, StringComparison.OrdinalIgnoreCase));
+            if (removed == 0) return;
+
+            // Reset any slot that was using the deleted profile so the
+            // dropdown doesn't land on a now-missing id. padforge-custom
+            // is the safe default for Extended slots (the Extended default
+            // per InputManager.GetDefaultProfileId).
+            foreach (var padVm in _mainVm.Pads)
+            {
+                if (string.Equals(padVm?.ProfileId, id, StringComparison.OrdinalIgnoreCase))
+                    padVm.ProfileId = Common.Input.HMaestroProfileCatalog.CustomProfileId;
+            }
+
+            Common.Input.HMaestroProfileCatalog.Reload();
+            MarkDirty();
+        }
+
+        /// <summary>
+        /// Write a user-imported profile's JSON to the given file path.
+        /// Caller is responsible for prompting the user for the file
+        /// location. Throws on failure so the dialog can surface the
+        /// error.
+        /// </summary>
+        public void ExportUserProfile(string id, string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(filePath))
+                return;
+            var entry = _userProfiles.FirstOrDefault(p =>
+                string.Equals(p?.Id, id, StringComparison.OrdinalIgnoreCase));
+            if (entry == null || string.IsNullOrWhiteSpace(entry.Json))
+                throw new InvalidOperationException($"User profile '{id}' not found.");
+
+            // Pretty-print the JSON on export — the stored form is compact
+            // to keep PadForge.xml tight, but files written for contribution
+            // / inspection are more useful with indentation.
+            string pretty = entry.Json;
+            try
+            {
+                var root = System.Text.Json.Nodes.JsonNode.Parse(entry.Json);
+                if (root != null)
+                    pretty = root.ToJsonString(
+                        new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+            }
+            catch { }
+            System.IO.File.WriteAllText(filePath, pretty);
+        }
+
+        /// <summary>
+        /// Persist a newly-extracted HIDMaestro profile JSON into the user
+        /// profile store. Applies the "-user" id suffix and the
+        /// " (User Generated)" name suffix (forcing uniqueness against the
+        /// built-in catalog), deduplicates by Id so re-importing the same
+        /// device overwrites the prior capture, triggers a catalog reload
+        /// so the Extended dropdown picks up the new entry, and marks
+        /// settings dirty. Returns the suffixed id so the caller can set
+        /// the current slot's ProfileId directly.
+        /// </summary>
+        public string AddUserProfile(string extractedJson)
+        {
+            if (string.IsNullOrWhiteSpace(extractedJson)) return null;
+
+            string suffixed;
+            try
+            {
+                var root = System.Text.Json.Nodes.JsonNode.Parse(extractedJson)?.AsObject();
+                if (root == null) return null;
+
+                string baseId = root["id"]?.GetValue<string>();
+                string baseName = root["name"]?.GetValue<string>();
+                if (string.IsNullOrWhiteSpace(baseId)) return null;
+
+                if (!baseId.EndsWith("-user", StringComparison.OrdinalIgnoreCase))
+                    baseId += "-user";
+                if (!string.IsNullOrEmpty(baseName) && !baseName.Contains("(User Generated)"))
+                    baseName = $"{baseName} (User Generated)";
+
+                root["id"] = baseId;
+                if (baseName != null) root["name"] = baseName;
+                suffixed = root.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
+            }
+            catch
+            {
+                return null;
+            }
+
+            string id;
+            try
+            {
+                var root = System.Text.Json.Nodes.JsonNode.Parse(suffixed)?.AsObject();
+                id = root?["id"]?.GetValue<string>();
+            }
+            catch { id = null; }
+            if (string.IsNullOrWhiteSpace(id)) return null;
+
+            _userProfiles.RemoveAll(p =>
+                string.Equals(p.Id, id, StringComparison.OrdinalIgnoreCase));
+            _userProfiles.Add(new UserProfileData { Id = id, Json = suffixed });
+
+            Common.Input.HMaestroProfileCatalog.Reload();
+            MarkDirty();
+            return id;
+        }
+
+        /// <summary>
         /// Marks settings as dirty (unsaved changes) and schedules an autosave
         /// after a 2-second debounce period.
         /// </summary>
@@ -1783,6 +1949,19 @@ namespace PadForge.Services
         public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
 
         /// <summary>
+        /// User-imported HIDMaestro profile JSONs, captured via
+        /// HMDeviceExtractor from controllers the user owns. Each entry is
+        /// the full profile JSON (as emitted by HMDeviceExtractor.ToJson)
+        /// stored verbatim so no in-app serializer has to know the
+        /// schema — HIDMaestro parses them through its own loader on
+        /// startup. Appear in the Extended dropdown alongside the built-in
+        /// catalog after the next catalog reload.
+        /// </summary>
+        [XmlArray("UserProfiles")]
+        [XmlArrayItem("Profile")]
+        public UserProfileData[] UserProfiles { get; set; }
+
+        /// <summary>
         /// Per-slot MIDI configuration (port, channel, CC/note mappings).
         /// Null on old settings files — uses defaults.
         /// </summary>
@@ -1946,6 +2125,19 @@ namespace PadForge.Services
         /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
         [XmlElement]
         public bool ShowVolumeOsd { get; set; } = true;
+    }
+
+    /// <summary>
+    /// A single user-imported HIDMaestro profile stored in PadForge.xml.
+    /// Id is the stable profile slug (dedup key across imports); Json is
+    /// the full HMProfile JSON as emitted by HMDeviceExtractor.ToJson. The
+    /// JSON is stored verbatim as element text so HIDMaestro's own loader
+    /// parses it, letting us avoid a parallel schema in PadForge.
+    /// </summary>
+    public class UserProfileData
+    {
+        [XmlAttribute] public string Id { get; set; } = string.Empty;
+        [XmlText] public string Json { get; set; } = string.Empty;
     }
 
     /// <summary>

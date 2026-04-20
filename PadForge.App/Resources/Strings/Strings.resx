@@ -375,8 +375,35 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Buttons</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Import from device…</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Coming soon — capture HID descriptor from a plugged-in device</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Imported profiles…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Manage user-imported HIDMaestro profiles: capture a new one from a connected device, export an existing one to JSON, or delete one you no longer need.</value></data>
+  <data name="ImportFromDevice_Title" xml:space="preserve"><value>Import from Device</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>Pick a connected HID device. PadForge captures its descriptor, identity, and layout and saves it as a new Extended profile named "(User Generated)". The profile lives inside PadForge.xml so it travels with your settings.</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Imported Profiles</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>User-imported HIDMaestro profiles are stored inside PadForge.xml and appear in every Extended slot's profile dropdown. Capture a new one from a connected device below, or export / delete an existing one.</value></data>
+  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Your imported profiles ({0})</value></data>
+  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Connected devices available to import</value></data>
+  <data name="ManageProfiles_Export" xml:space="preserve"><value>Export…</value></data>
+  <data name="ManageProfiles_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="ManageProfiles_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Export Profile JSON</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Delete imported profile?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Delete "{0}"? Any slot currently using this profile will fall back to the synthetic Custom entry.</value></data>
+  <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exported to {0}</value></data>
+  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Export failed: {0}</value></data>
+  <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Deleted "{0}".</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Import from file…</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Import Profile JSON</value></data>
+  <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Imported from {0}.</value></data>
+  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Read failed: {0}</value></data>
+  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>Connected devices:</value></data>
+  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="ImportFromDevice_Import" xml:space="preserve"><value>Import</value></data>
+  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(unnamed HID device)</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Found {0} HID interface(s).</value></data>
+  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumerate failed: {0}</value></data>
+  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extract failed: {0}</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Could not parse the extracted profile JSON — nothing was saved.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Customize</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Enable the identity and layout override fields below. When off, the virtual controller uses the selected profile's built-in identity and HID descriptor exactly as shipped by HIDMaestro.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Snap every override field back to the current profile's catalog values (Product String, VID, PID, stick/trigger/POV/button counts) and clear the OEM override flag.</value></data>

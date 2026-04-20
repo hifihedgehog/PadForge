@@ -198,16 +198,28 @@ See [BUILD.md](BUILD.md) for project structure, architecture, and developer refe
 
 ## Missing an emulation target?
 
-PadForge's controller picker is the set of HIDMaestro profiles with a captured HID descriptor. A few known controllers are still missing their captures, so they don't appear in the picker. If you own one of those controllers, you can unlock it for every PadForge user in about ten seconds:
+PadForge's controller picker is the set of HIDMaestro profiles with a captured HID descriptor. A few known controllers are still missing their captures, so they don't appear in the picker. If you own one of those controllers, you can capture it yourself using PadForge's built-in **Imported Profiles** dialog — no extra downloads, no standalone tool.
 
-- Plug the controller in
-- Run `HIDMaestroProfileExtractor.exe` (shipped as a separate download alongside each PadForge release)
-- Pick your device, click **Extract**, click **Save as…**
-- Open a [profile contribution issue on HIDMaestro](https://github.com/hifihedgehog/HIDMaestro/issues/new?template=profile-contribution.yml) and attach the saved JSON
+To capture and use a profile locally:
 
-Your one capture unlocks that emulation target for everyone on the next HIDMaestro release PadForge picks up.
+- Create or open any Extended-type slot
+- On the slot's Controller page, click **Imported profiles…** on the Extended config bar
+- Under **Connected devices available to import**, pick your plugged-in device and click **Import**
+- Your new profile appears in the slot's dropdown with a "(User Generated)" suffix and is selectable on every Extended slot going forward
 
-The tool reads only the cached HID descriptor (metadata). It does not read, record, or forward your controller's input. No admin required.
+Profiles live inside `PadForge.xml`, so they travel with your settings.
+
+To share or contribute upstream:
+
+- In the same dialog, select your imported profile under **Your imported profiles**
+- Click **Export…** and save the JSON
+- Open a [profile contribution issue on HIDMaestro](https://github.com/hifihedgehog/HIDMaestro/issues/new?template=profile-contribution.yml) and attach the file — once merged, the profile ships in the next HIDMaestro release for everyone
+
+To use a profile someone else captured:
+
+- Click **Import from file…** in the same dialog and select the `.json` they sent you
+
+PadForge reads only the cached HID descriptor (metadata). It does not read, record, or forward your controller's input during capture. No admin required.
 
 ---
 

@@ -85,9 +85,12 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _outputType, value))
                 {
                     // Category change invalidates the previous HIDMaestro
-                    // profile slug — clear it so the engine falls back to
-                    // the new category's default profile.
-                    ProfileId = null;
+                    // profile slug. Assign the new category's default up
+                    // front so the PadPage dropdown shows a valid selection
+                    // immediately instead of blank until the user picks
+                    // one. Engine-side fallback still catches null, but the
+                    // UI binds to ProfileId directly.
+                    ProfileId = PadForge.Common.Input.InputManager.GetDefaultProfileId(value);
                     OnPropertyChanged(nameof(AvailableProfiles));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
                     ResetDeadZoneSettings();

@@ -31,6 +31,18 @@ namespace PadForge.Common.Input
         public ushort ProfileVendorId => _profile.VendorId;
         public ushort ProfileProductId => _profile.ProductId;
 
+        /// <summary>
+        /// Per-controller SubmitState counter. Incremented each time
+        /// <see cref="SubmitGamepadState"/> forwards a frame to the SDK.
+        /// The call-rate reporter atomically exchanges this to 0 each
+        /// sample window. Used to confirm we are actually submitting at
+        /// the rate we think we are, and to identify any per-virtual
+        /// imbalance when running multi-pad setups.
+        /// </summary>
+        private long _submitStateCalls;
+        public long SampleAndResetSubmitStateCalls()
+            => System.Threading.Interlocked.Exchange(ref _submitStateCalls, 0);
+
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
             _ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
@@ -63,6 +75,7 @@ namespace PadForge.Common.Input
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;
+            System.Threading.Interlocked.Increment(ref _submitStateCalls);
 
             // No dedup and no rate limit here — Step 5 already honors the
             // user-configured polling interval (default 1kHz). HIDMaestro is

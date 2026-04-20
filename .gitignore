@@ -92,3 +92,8 @@ $RECYCLE.BIN/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Editor/tool artifacts
+null
+publish_output/
+

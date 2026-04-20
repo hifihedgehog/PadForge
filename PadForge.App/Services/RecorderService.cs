@@ -428,7 +428,7 @@ namespace PadForge.Services
                       or "LeftThumbAxisY" or "RightThumbAxisY")
                 return negRecording ? axisPositive : !axisPositive;
 
-            // VJoy bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
+            // Extended bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
             if (target.StartsWith("VJoyAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
                 return negRecording ? axisPositive : !axisPositive;
 
@@ -445,7 +445,7 @@ namespace PadForge.Services
             if (target == "LeftTrigger" || target == "RightTrigger")
                 return !axisPositive;
 
-            // VJoy trigger axes (unidirectional, no neg direction): same as gamepad triggers.
+            // Extended trigger axes (unidirectional, no neg direction): same as gamepad triggers.
             if (target.StartsWith("VJoyAxis", StringComparison.Ordinal))
                 return !axisPositive;
 

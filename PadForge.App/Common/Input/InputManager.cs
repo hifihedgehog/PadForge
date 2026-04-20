@@ -20,7 +20,7 @@ namespace PadForge.Common.Input
     ///   Step 2: Read input states from SDL
     ///   Step 3: Map CustomInputState → OutputState via PadSetting rules
     ///   Step 4: Combine multiple devices per virtual controller slot
-    ///   Step 5: Feed virtual controllers (ViGEm, vJoy, MIDI)
+    ///   Step 5: Feed virtual controllers (ViGEm, Extended, MIDI)
     ///   Step 6: Copy combined output states for UI display
     /// 
     /// Thread safety: the background thread writes UserDevice.InputState (atomic reference swap).
@@ -76,10 +76,10 @@ namespace PadForge.Common.Input
         public Gamepad[] CombinedOutputStates { get; } = new Gamepad[MaxPads];
 
         /// <summary>
-        /// Combined vJoy raw output states for custom vJoy slots.
+        /// Combined Extended raw output states for custom Extended slots.
         /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
-        public VJoyRawState[] CombinedVJoyRawStates { get; } = new VJoyRawState[MaxPads];
+        public ExtendedRawState[] CombinedExtendedRawStates { get; } = new ExtendedRawState[MaxPads];
 
         /// <summary>
         /// Combined MIDI raw output states for MIDI slots.
@@ -738,8 +738,8 @@ namespace PadForge.Common.Input
                 (VibrationStates[slotB], VibrationStates[slotA]);
             (CombinedOutputStates[slotA], CombinedOutputStates[slotB]) =
                 (CombinedOutputStates[slotB], CombinedOutputStates[slotA]);
-            (CombinedVJoyRawStates[slotA], CombinedVJoyRawStates[slotB]) =
-                (CombinedVJoyRawStates[slotB], CombinedVJoyRawStates[slotA]);
+            (CombinedExtendedRawStates[slotA], CombinedExtendedRawStates[slotB]) =
+                (CombinedExtendedRawStates[slotB], CombinedExtendedRawStates[slotA]);
             (CombinedMidiRawStates[slotA], CombinedMidiRawStates[slotB]) =
                 (CombinedMidiRawStates[slotB], CombinedMidiRawStates[slotA]);
             (CombinedKbmRawStates[slotA], CombinedKbmRawStates[slotB]) =

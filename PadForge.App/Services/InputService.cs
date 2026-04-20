@@ -153,7 +153,7 @@ namespace PadForge.Services
             {
                 _inputManager.SlotControllerTypes[i] = _mainVm.Pads[i].OutputType;
                 _inputManager.SlotProfileIds[i] = _mainVm.Pads[i].ProfileId;
-                SyncVJoyConfigToSlot(i, _mainVm.Pads[i]);
+                SyncExtendedConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
             }
 
@@ -387,9 +387,9 @@ namespace PadForge.Services
 
                 padVm.UpdateFromEngineState(gp, vibration);
 
-                // For custom vJoy slots, also push the combined VJoyRawState.
+                // For custom Extended slots, also push the combined ExtendedRawState.
                 if (_inputManager.SlotExtendedIsCustom[i])
-                    padVm.UpdateFromVJoyRawState(_inputManager.CombinedVJoyRawStates[i]);
+                    padVm.UpdateFromExtendedRawState(_inputManager.CombinedExtendedRawStates[i]);
 
                 // For MIDI slots, push the combined MidiRawState.
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
@@ -419,7 +419,7 @@ namespace PadForge.Services
                     {
                         var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                         if (_inputManager.SlotExtendedIsCustom[i] && us != null)
-                            padVm.UpdateFromVJoyRawState(us.VJoyRawOutputState);
+                            padVm.UpdateFromExtendedRawState(us.ExtendedRawOutputState);
                         else
                             padVm.UpdateDeviceState(us?.RawMappedState ?? default);
                     }
@@ -617,7 +617,7 @@ namespace PadForge.Services
                     : Strings.Instance.Common_Idle;
             }
 
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, globalCount = 0;
+            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
@@ -634,8 +634,8 @@ namespace PadForge.Services
                         slot.TypeInstanceLabel = ds4Count.ToString();
                         break;
                     case VirtualControllerType.Extended:
-                        vjoyCount++;
-                        slot.TypeInstanceLabel = vjoyCount.ToString();
+                        extendedCount++;
+                        slot.TypeInstanceLabel = extendedCount.ToString();
                         break;
                     case VirtualControllerType.Midi:
                         midiCount++;
@@ -954,7 +954,7 @@ namespace PadForge.Services
                 {
                     _inputManager.SlotControllerTypes[i] = padVm.OutputType;
                     _inputManager.SlotProfileIds[i] = padVm.ProfileId;
-                    SyncVJoyConfigToSlot(i, padVm);
+                    SyncExtendedConfigToSlot(i, padVm);
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
                 }
 
@@ -981,10 +981,10 @@ namespace PadForge.Services
         /// InputManager. The Extended pipeline reads these counts to translate
         /// per-mapping output into raw HID report indices.
         /// </summary>
-        private void SyncVJoyConfigToSlot(int slotIndex, PadViewModel padVm)
+        private void SyncExtendedConfigToSlot(int slotIndex, PadViewModel padVm)
         {
             if (_inputManager == null || slotIndex >= InputManager.MaxPads) return;
-            var cfg = padVm.VJoyConfig;
+            var cfg = padVm.ExtendedConfig;
             _inputManager.SlotCustomLayouts[slotIndex] = new CustomControllerLayout
             {
                 Axes = cfg.TotalAxes,
@@ -1089,11 +1089,11 @@ namespace PadForge.Services
                 foreach (var mapping in padVm.Mappings)
                 {
                     string target = mapping.TargetSettingName;
-                    if (target.StartsWith("VJoy", StringComparison.Ordinal))
+                    if (target.StartsWith("Extended", StringComparison.Ordinal))
                     {
-                        ps.SetVJoyMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        ps.SetExtendedMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
-                            ps.SetVJoyMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                            ps.SetExtendedMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
                     else if (target.StartsWith("Midi", StringComparison.Ordinal))
                     {
@@ -1233,8 +1233,8 @@ namespace PadForge.Services
 
         private static string GetMappingValue(PadSetting ps, string key)
         {
-            if (key.StartsWith("VJoy", StringComparison.Ordinal))
-                return ps.GetVJoyMapping(key);
+            if (key.StartsWith("Extended", StringComparison.Ordinal))
+                return ps.GetExtendedMapping(key);
             if (key.StartsWith("Midi", StringComparison.Ordinal))
                 return ps.GetMidiMapping(key);
             if (key.StartsWith("Kbm", StringComparison.Ordinal))
@@ -1349,8 +1349,8 @@ namespace PadForge.Services
         /// Applies a PadSetting from a source layout to the current device with cross-layout translation.
         /// </summary>
         public void ApplyPadSettingToCurrentDeviceTranslated(int padIndex, PadSetting source,
-            VirtualControllerType sourceType, bool sourceIsCustomVJoy,
-            VirtualControllerType targetType, bool targetIsCustomVJoy)
+            VirtualControllerType sourceType, bool sourceIsExtended,
+            VirtualControllerType targetType, bool targetIsExtended)
         {
             if (source == null || padIndex < 0 || padIndex >= _mainVm.Pads.Count)
                 return;
@@ -1367,7 +1367,7 @@ namespace PadForge.Services
             if (ps == null) return;
 
             // Copy with cross-layout translation.
-            ps.CopyFromTranslated(source, sourceType, sourceIsCustomVJoy, targetType, targetIsCustomVJoy);
+            ps.CopyFromTranslated(source, sourceType, sourceIsExtended, targetType, targetIsExtended);
 
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
@@ -1447,10 +1447,10 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Called when a pad's mappings are rebuilt (e.g., OutputType or vJoy preset changed).
+        /// Called when a pad's mappings are rebuilt (e.g., OutputType or Extended preset changed).
         /// Reloads mapping descriptors from the PadSetting so auto-mapped inputs are preserved.
         /// Does NOT reload deadzone / force feedback settings — those are intentionally reset
-        /// by PadViewModel.ResetDeadZoneSettings() when the OutputType or vJoy preset changes.
+        /// by PadViewModel.ResetDeadZoneSettings() when the OutputType or Extended preset changes.
         /// </summary>
         private void OnMappingsRebuilt(object sender, EventArgs e)
         {
@@ -2500,6 +2500,21 @@ namespace PadForge.Services
                 var realIds = HidHideController.FindInstanceIdsByVidPid(
                     (ushort)ud.VendorId, (ushort)ud.ProdId);
                 row.HidHideInstancePath = realIds.Count > 0 ? realIds[0] : string.Empty;
+
+                // Persist the resolved IDs onto the UserDevice so the details
+                // pane can still show the instance path after the device goes
+                // offline. FindInstanceIdsByVidPid only returns a result while
+                // the device is physically attached; without this cache, a
+                // disconnected XInput gamepad had no fallback and the path
+                // went blank. Keyboards/mice already have non-XInput
+                // DevicePaths that resolve via DevicePathToInstanceId so they
+                // stayed populated when offline — this closes the gap for
+                // XInput devices.
+                if (realIds.Count > 0)
+                {
+                    ud.HidHideInstanceIds.Clear();
+                    ud.HidHideInstanceIds.AddRange(realIds);
+                }
             }
             else
                 row.HidHideInstancePath = string.Empty;
@@ -2654,7 +2669,7 @@ namespace PadForge.Services
 
             // Build the list of created slot indices for the dashboard.
             var activeSlots = new List<int>();
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0;
+            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (SettingsManager.SlotCreated[i])
@@ -2664,14 +2679,14 @@ namespace PadForge.Services
                     {
                         case VirtualControllerType.Microsoft: xboxCount++; break;
                         case VirtualControllerType.Sony: ds4Count++; break;
-                        case VirtualControllerType.Extended: vjoyCount++; break;
+                        case VirtualControllerType.Extended: extendedCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
                     }
                 }
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots
-                           || vjoyCount < SettingsManager.MaxVJoySlots
+                           || extendedCount < SettingsManager.MaxExtendedSlots
                            || midiCount < SettingsManager.MaxMidiSlots;
             _mainVm.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
 
@@ -2779,12 +2794,12 @@ namespace PadForge.Services
 
             var vib = _inputManager.VibrationStates[padIndex];
 
-            // For vJoy slots, send directional force instead of scalar rumble so FFB
+            // For Extended slots, send directional force instead of scalar rumble so FFB
             // devices (joysticks, wheels) push in the correct direction rather than
             // just rattling. Direction uses "force comes from" convention:
             // 9000 = from East = pushes left, 27000 = from West = pushes right.
-            bool isVJoy = _inputManager.SlotControllerTypes[padIndex] == VirtualControllerType.Extended;
-            if (isVJoy && (left != right))
+            bool isExtended = _inputManager.SlotControllerTypes[padIndex] == VirtualControllerType.Extended;
+            if (isExtended && (left != right))
             {
                 vib.HasDirectionalData = true;
                 vib.EffectType = (uint)1; // FfbEffectTypes.Const
@@ -2805,7 +2820,7 @@ namespace PadForge.Services
                 {
                     if (left) vib.LeftMotorSpeed = 0;
                     if (right) vib.RightMotorSpeed = 0;
-                    if (isVJoy)
+                    if (isExtended)
                     {
                         vib.HasDirectionalData = false;
                         vib.SignedMagnitude = 0;
@@ -2902,7 +2917,7 @@ namespace PadForge.Services
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered
                      && _recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
             {
-                // Custom vJoy button path.
+                // Custom Extended button path.
                 _recordingMacro.TriggerCustomButtonWords = (uint[])_recordedCustomButtons.Clone();
                 _recordingMacro.TriggerButtons = 0;
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
@@ -3106,8 +3121,8 @@ namespace PadForge.Services
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
-                // Custom vJoy: capture current frame's buttons (not accumulated).
-                var rawState = _inputManager.CombinedVJoyRawStates[_recordingPadIndex];
+                // Custom Extended: capture current frame's buttons (not accumulated).
+                var rawState = _inputManager.CombinedExtendedRawStates[_recordingPadIndex];
                 if (rawState.Buttons != null && _recordedCustomButtons != null)
                 {
                     bool anyPressed = false;
@@ -3189,8 +3204,8 @@ namespace PadForge.Services
             }
             else if (style == MacroButtonStyle.Numbered)
             {
-                // vJoy raw state path.
-                var rawState = _inputManager.CombinedVJoyRawStates[padIndex];
+                // Extended raw state path.
+                var rawState = _inputManager.CombinedExtendedRawStates[padIndex];
                 MacroAxisTarget[] axes = {
                     MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
                     MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
@@ -3281,7 +3296,7 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
-                VJoyConfigs = SnapshotVJoyConfigs(),
+                ExtendedConfigs = SnapshotExtendedConfigs(),
                 MidiConfigs = SnapshotMidiConfigs(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
@@ -3290,16 +3305,16 @@ namespace PadForge.Services
             };
         }
 
-        private VJoySlotConfigData[] SnapshotVJoyConfigs()
+        private ExtendedSlotConfigData[] SnapshotExtendedConfigs()
         {
-            var list = new List<VJoySlotConfigData>();
+            var list = new List<ExtendedSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i] ||
                     _mainVm.Pads[i].OutputType != VirtualControllerType.Extended)
                     continue;
-                var cfg = _mainVm.Pads[i].VJoyConfig;
-                list.Add(new VJoySlotConfigData
+                var cfg = _mainVm.Pads[i].ExtendedConfig;
+                list.Add(new ExtendedSlotConfigData
                 {
                     SlotIndex = i,
                     Preset = cfg.Preset,
@@ -3432,19 +3447,19 @@ namespace PadForge.Services
                 }
             }
 
-            // ── Apply vJoy/MIDI configurations ──
-            if (profile.VJoyConfigs != null)
+            // ── Apply Extended/MIDI configurations ──
+            if (profile.ExtendedConfigs != null)
             {
-                foreach (var cfgData in profile.VJoyConfigs)
+                foreach (var cfgData in profile.ExtendedConfigs)
                 {
                     int idx = cfgData.SlotIndex;
                     if (idx >= 0 && idx < _mainVm.Pads.Count &&
                         SettingsManager.SlotCreated[idx] &&
                         _mainVm.Pads[idx].OutputType == VirtualControllerType.Extended)
                     {
-                        var cfg = _mainVm.Pads[idx].VJoyConfig;
+                        var cfg = _mainVm.Pads[idx].ExtendedConfig;
                         cfg.Preset = cfgData.Preset;
-                        if (cfgData.Preset == VJoyPreset.Custom)
+                        if (cfgData.Preset == ExtendedPreset.Custom)
                         {
                             cfg.ThumbstickCount = cfgData.ThumbstickCount;
                             cfg.TriggerCount = cfgData.TriggerCount;
@@ -3581,7 +3596,7 @@ namespace PadForge.Services
                     profile.SlotCreated = snapshot.SlotCreated;
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
-                    profile.VJoyConfigs = snapshot.VJoyConfigs;
+                    profile.ExtendedConfigs = snapshot.ExtendedConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
@@ -3776,7 +3791,7 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Re-sorts created slots so types are grouped: Xbox 360, then DS4, then vJoy.
+        /// Re-sorts created slots so types are grouped: Xbox 360, then DS4, then Extended.
         /// Uses adjacent SwapSlots calls (same-type swaps are zero-flicker).
         /// Returns true if any reordering was performed.
         /// </summary>
@@ -3838,7 +3853,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Swaps ViewModel-side slot data that must travel with the slot during reorder:
-        /// OutputType and VJoyConfig. Engine-side arrays are swapped separately by
+        /// OutputType and ExtendedConfig. Engine-side arrays are swapped separately by
         /// InputManager.SwapSlotData/SwapSlots.
         /// </summary>
         private void SwapPadViewModelSlotData(int a, int b)
@@ -3856,10 +3871,10 @@ namespace PadForge.Services
             (_mainVm.Pads[a].ProfileId, _mainVm.Pads[b].ProfileId) =
                 (_mainVm.Pads[b].ProfileId, _mainVm.Pads[a].ProfileId);
 
-            // Swap the entire VJoySlotConfig objects so the UI shows the correct
+            // Swap the entire ExtendedSlotConfig objects so the UI shows the correct
             // config after reorder. The setter re-subscribes PropertyChanged.
-            (_mainVm.Pads[a].VJoyConfig, _mainVm.Pads[b].VJoyConfig) =
-                (_mainVm.Pads[b].VJoyConfig, _mainVm.Pads[a].VJoyConfig);
+            (_mainVm.Pads[a].ExtendedConfig, _mainVm.Pads[b].ExtendedConfig) =
+                (_mainVm.Pads[b].ExtendedConfig, _mainVm.Pads[a].ExtendedConfig);
 
             (_mainVm.Pads[a].MidiConfig, _mainVm.Pads[b].MidiConfig) =
                 (_mainVm.Pads[b].MidiConfig, _mainVm.Pads[a].MidiConfig);
@@ -3881,9 +3896,9 @@ namespace PadForge.Services
 
             // Rebuild mapping item collections and reload PadSettings into ViewModels.
             // RebuildMappings must come first: SwapPadViewModelSlotData swaps OutputType
-            // and VJoyConfig, but when both slots are vJoy (same OutputType), the setter's
+            // and ExtendedConfig, but when both slots are Extended (same OutputType), the setter's
             // SetProperty returns false and RebuildMappings is never called. This leaves
-            // the wrong mapping layout (e.g., custom VJoyBtn0 items in an Xbox 360 preset slot).
+            // the wrong mapping layout (e.g., ExtendedBtn0 items in an Xbox 360 preset slot).
             for (int i = 0; i < _mainVm.Pads.Count; i++)
                 _mainVm.Pads[i].RebuildMappings();
 

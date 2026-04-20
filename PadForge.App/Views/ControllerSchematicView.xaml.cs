@@ -14,7 +14,7 @@ using PadForge.ViewModels;
 namespace PadForge.Views
 {
     /// <summary>
-    /// Programmatic schematic view for custom vJoy controllers.
+    /// Programmatic schematic view for custom Extended controllers.
     /// Displays stick position circles, trigger bars, POV compasses, and button grids.
     /// </summary>
     public partial class ControllerSchematicView : UserControl
@@ -71,7 +71,7 @@ namespace PadForge.Views
             if (_vm != null)
             {
                 _vm.PropertyChanged -= OnVmPropertyChanged;
-                _vm.VJoyConfig.PropertyChanged -= OnVJoyConfigPropertyChanged;
+                _vm.ExtendedConfig.PropertyChanged -= OnExtendedConfigPropertyChanged;
             }
 
             _vm = vm;
@@ -81,7 +81,7 @@ namespace PadForge.Views
                 CompositionTarget.Rendering -= OnRendering;
                 CompositionTarget.Rendering += OnRendering;
                 _vm.PropertyChanged += OnVmPropertyChanged;
-                _vm.VJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
+                _vm.ExtendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;
                 RebuildLayout();
             }
         }
@@ -92,7 +92,7 @@ namespace PadForge.Views
             if (_vm != null)
             {
                 _vm.PropertyChanged -= OnVmPropertyChanged;
-                _vm.VJoyConfig.PropertyChanged -= OnVJoyConfigPropertyChanged;
+                _vm.ExtendedConfig.PropertyChanged -= OnExtendedConfigPropertyChanged;
             }
             _vm = null;
             _layoutBuilt = false;
@@ -100,7 +100,7 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(PadViewModel.VJoyOutputSnapshot))
+            if (e.PropertyName == nameof(PadViewModel.ExtendedOutputSnapshot))
             {
                 _dirty = true;
                 return;
@@ -119,7 +119,7 @@ namespace PadForge.Views
             }
         }
 
-        private void OnVJoyConfigPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnExtendedConfigPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Rebuild layout when config counts change
             Dispatcher.Invoke(RebuildLayout);
@@ -138,7 +138,7 @@ namespace PadForge.Views
             _buttonWidgets.Clear();
 
             if (_vm == null) return;
-            var cfg = _vm.VJoyConfig;
+            var cfg = _vm.ExtendedConfig;
             if (cfg == null || cfg.IsGamepadPreset) return;
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
@@ -446,7 +446,7 @@ namespace PadForge.Views
             SchematicCanvas.Children.Add(arrowCanvas);
 
             // Label
-            string povLabel = _vm.VJoyConfig.PovCount == 1 ? Strings.Instance.Preview_DPad : string.Format(Strings.Instance.Preview_POV_Format, index + 1);
+            string povLabel = _vm.ExtendedConfig.PovCount == 1 ? Strings.Instance.Preview_DPad : string.Format(Strings.Instance.Preview_POV_Format, index + 1);
             var label = CreateLabel(povLabel, x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
@@ -596,7 +596,7 @@ namespace PadForge.Views
             // Strip "Neg" suffix for matching
             string baseTarget = t.EndsWith("Neg", StringComparison.Ordinal) ? t[..^3] : t;
 
-            // Check sticks (match VJoyAxisN where N is either X or Y index)
+            // Check sticks (match ExtendedAxisN where N is either X or Y index)
             foreach (var w in _stickWidgets)
             {
                 if (baseTarget == $"VJoyAxis{w.AxisXIndex}" || baseTarget == $"VJoyAxis{w.AxisYIndex}")
@@ -675,7 +675,7 @@ namespace PadForge.Views
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 
-            var raw = _vm.VJoyOutputSnapshot;
+            var raw = _vm.ExtendedOutputSnapshot;
 
             // Update sticks
             foreach (var w in _stickWidgets)

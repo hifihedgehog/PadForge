@@ -20,7 +20,7 @@ namespace PadForge.Views
             public Guid InstanceGuid { get; set; }
             public PadSetting PadSetting { get; set; }
             public VirtualControllerType OutputType { get; set; }
-            public bool IsCustomVJoy { get; set; }
+            public bool IsExtended { get; set; }
         }
 
         /// <summary>

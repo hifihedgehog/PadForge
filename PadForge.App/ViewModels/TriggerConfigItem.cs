@@ -10,7 +10,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// Represents one trigger section in the dynamic Triggers tab.
     /// For gamepad presets (Xbox 360/DS4): index 0 = Left, index 1 = Right.
-    /// For custom vJoy: index 0..N based on TriggerCount.
+    /// For custom Extended: index 0..N based on TriggerCount.
     /// </summary>
     public class TriggerConfigItem : ObservableObject
     {
@@ -100,7 +100,7 @@ namespace PadForge.ViewModels
         /// <summary>Formatted display: "32768 (50.0%)"</summary>
         public string RawDisplay => $"{_rawValue} ({_rawValue / 655.35:F1}%)";
 
-        /// <summary>Raw axis index in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisIndex { get; }
 
         // ── Reset commands ──

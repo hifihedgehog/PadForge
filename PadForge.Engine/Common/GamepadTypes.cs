@@ -85,11 +85,11 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// Raw vJoy output state for custom (non-gamepad) configurations.
+    /// Raw Extended output state for custom (non-gamepad) configurations.
     /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
     /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.
     /// </summary>
-    public struct VJoyRawState
+    public struct ExtendedRawState
     {
         /// <summary>Up to 8 axes (short range). Index = axis number.</summary>
         public short[] Axes;
@@ -100,10 +100,10 @@ namespace PadForge.Engine
         /// <summary>Up to 4 POV hat switches. -1 = centered, 0-35900 = direction in hundredths of degrees.</summary>
         public int[] Povs;
 
-        /// <summary>Creates a zeroed VJoyRawState with the specified capacities.</summary>
-        public static VJoyRawState Create(int nAxes, int nButtons, int nPovs)
+        /// <summary>Creates a zeroed ExtendedRawState with the specified capacities.</summary>
+        public static ExtendedRawState Create(int nAxes, int nButtons, int nPovs)
         {
-            return new VJoyRawState
+            return new ExtendedRawState
             {
                 Axes = new short[Math.Min(nAxes, 8)],
                 Buttons = new uint[(Math.Min(nButtons, 128) + 31) / 32],

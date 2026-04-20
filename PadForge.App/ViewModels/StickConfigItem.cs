@@ -13,7 +13,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// Represents one thumbstick section in the dynamic Sticks tab.
     /// For gamepad presets (Xbox 360/DS4): index 0 = Left, index 1 = Right.
-    /// For custom vJoy: index 0..N based on ThumbstickCount.
+    /// For custom Extended: index 0..N based on ThumbstickCount.
     /// </summary>
     public class StickConfigItem : ObservableObject
     {
@@ -290,10 +290,10 @@ namespace PadForge.ViewModels
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         public short HardwareRawY { get; set; }
 
-        /// <summary>Raw axis index for X in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index for X in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisXIndex { get; }
 
-        /// <summary>Raw axis index for Y in VJoyRawState.Axes (custom vJoy only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index for Y in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisYIndex { get; }
 
         // ── Sensitivity curve charts (using CurveEditor UserControl now) ──
@@ -306,7 +306,7 @@ namespace PadForge.ViewModels
 
         public void RebuildCurvePoints() { /* CurveEditor redraws via CurveString binding */ }
 
-        /// <summary>Apply curve using spline LUT. Used by preview and vJoy processing.</summary>
+        /// <summary>Apply curve using spline LUT. Used by preview and Extended processing.</summary>
         internal static double ApplyCurve(double magnitude, string curveString)
         {
             var lut = CurveLut.GetOrBuild(curveString);

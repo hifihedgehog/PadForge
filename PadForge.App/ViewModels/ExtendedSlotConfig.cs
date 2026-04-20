@@ -3,22 +3,22 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
 {
-    public enum VJoyPreset { Xbox360, DualShock4, Custom }
+    public enum ExtendedPreset { Xbox360, DualShock4, Custom }
 
     /// <summary>
-    /// Per-slot vJoy configuration. Drives stick/trigger/POV/button counts,
+    /// Per-slot Extended configuration. Drives stick/trigger/POV/button counts,
     /// HID descriptor generation, and mapping item generation.
     /// For Xbox360/DS4 presets, counts are fixed. For Custom, user-chosen.
     /// DirectInput limit: 8 axes max (shared between sticks and triggers),
     /// 128 buttons, 4 POVs.
     /// </summary>
-    public class VJoySlotConfig : ObservableObject
+    public class ExtendedSlotConfig : ObservableObject
     {
         /// <summary>DirectInput maximum axis count (shared between sticks and triggers).</summary>
         public const int MaxAxes = 8;
 
-        private VJoyPreset _preset = VJoyPreset.Xbox360;
-        public VJoyPreset Preset
+        private ExtendedPreset _preset = ExtendedPreset.Xbox360;
+        public ExtendedPreset Preset
         {
             get => _preset;
             set
@@ -66,7 +66,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _buttonCount, Math.Clamp(value, 0, 128));
         }
 
-        /// <summary>Total vJoy axes = ThumbstickCount * 2 + TriggerCount (max 8).</summary>
+        /// <summary>Total Extended axes = ThumbstickCount * 2 + TriggerCount (max 8).</summary>
         public int TotalAxes => Math.Min(ThumbstickCount * 2 + TriggerCount, MaxAxes);
 
         /// <summary>Maximum thumbstick count given current TriggerCount.</summary>
@@ -79,7 +79,7 @@ namespace PadForge.ViewModels
         /// Whether this config uses a gamepad-style layout (Xbox 360 or DS4 preset)
         /// vs a raw axis/button layout (Custom preset).
         /// </summary>
-        public bool IsGamepadPreset => Preset != VJoyPreset.Custom;
+        public bool IsGamepadPreset => Preset != ExtendedPreset.Custom;
 
         /// <summary>
         /// Computes the interleaved axis layout: [StickX, StickY, Trigger] per group.
@@ -114,13 +114,13 @@ namespace PadForge.ViewModels
         {
             switch (_preset)
             {
-                case VJoyPreset.Xbox360:
+                case ExtendedPreset.Xbox360:
                     ThumbstickCount = 2;
                     TriggerCount = 2;
                     PovCount = 1;
                     ButtonCount = 11;
                     break;
-                case VJoyPreset.DualShock4:
+                case ExtendedPreset.DualShock4:
                     ThumbstickCount = 2;
                     TriggerCount = 2;
                     PovCount = 1;
@@ -132,12 +132,12 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>
-    /// Serializable DTO for persisting VJoySlotConfig in PadForge.xml.
+    /// Serializable DTO for persisting ExtendedSlotConfig in PadForge.xml.
     /// </summary>
-    public class VJoySlotConfigData
+    public class ExtendedSlotConfigData
     {
         [XmlAttribute] public int SlotIndex { get; set; }
-        [XmlAttribute] public VJoyPreset Preset { get; set; }
+        [XmlAttribute] public ExtendedPreset Preset { get; set; }
         [XmlAttribute] public int ThumbstickCount { get; set; } = 2;
         [XmlAttribute] public int TriggerCount { get; set; } = 2;
         [XmlAttribute] public int PovCount { get; set; } = 1;

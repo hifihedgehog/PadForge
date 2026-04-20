@@ -6,7 +6,7 @@ namespace PadForge.Common.Input
 {
     /// <summary>
     /// Unified virtual controller backed by HIDMaestro. Replaces the v2
-    /// Xbox360VirtualController, DS4VirtualController, and VJoyVirtualController
+    /// Xbox360VirtualController, DS4VirtualController, and ExtendedVirtualController
     /// classes — one IVirtualController implementation handles every preset
     /// and custom HID descriptor through a single SDK surface.
     ///

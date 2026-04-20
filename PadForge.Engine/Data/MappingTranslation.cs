@@ -14,32 +14,32 @@ namespace PadForge.Engine.Data
 
     /// <summary>
     /// Translates mapping property names between different virtual controller layouts
-    /// (Xbox 360/DS4, vJoy custom, MIDI, KB+M) using positional equivalence.
+    /// (Xbox 360/DS4, Extended custom, MIDI, KB+M) using positional equivalence.
     /// </summary>
     public static class MappingTranslation
     {
         /// <summary>
         /// Maps a layout-specific property name to its canonical position.
         /// </summary>
-        public static MappingSlot GetPosition(string propertyName, VirtualControllerType type, bool isCustomVJoy)
+        public static MappingSlot GetPosition(string propertyName, VirtualControllerType type, bool isExtended)
         {
-            if (type == VirtualControllerType.Extended && isCustomVJoy)
-                return GetVJoyPosition(propertyName);
+            if (type == VirtualControllerType.Extended && isExtended)
+                return GetExtendedPosition(propertyName);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPosition(propertyName);
             if (type == VirtualControllerType.KeyboardMouse)
                 return GetKbmPosition(propertyName);
-            // Xbox360 / DS4 / vJoy gamepad preset
+            // Xbox360 / DS4 / Extended gamepad preset
             return GetGamepadPosition(propertyName);
         }
 
         /// <summary>
         /// Maps a canonical position to a layout-specific property name.
         /// </summary>
-        public static string GetPropertyName(MappingSlot slot, VirtualControllerType type, bool isCustomVJoy)
+        public static string GetPropertyName(MappingSlot slot, VirtualControllerType type, bool isExtended)
         {
-            if (type == VirtualControllerType.Extended && isCustomVJoy)
-                return GetVJoyPropertyName(slot);
+            if (type == VirtualControllerType.Extended && isExtended)
+                return GetExtendedPropertyName(slot);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPropertyName(slot);
             if (type == VirtualControllerType.KeyboardMouse)
@@ -48,7 +48,7 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
-        //  Gamepad (Xbox 360 / DS4 / vJoy gamepad preset)
+        //  Gamepad (Xbox 360 / DS4 / Extended gamepad preset)
         // ─────────────────────────────────────────────
 
         private static readonly Dictionary<string, MappingSlot> _gamepadMap = new()
@@ -100,10 +100,10 @@ namespace PadForge.Engine.Data
             => _gamepadReverse.TryGetValue(slot, out var name) ? name : null;
 
         // ─────────────────────────────────────────────
-        //  vJoy Custom
+        //  Extended Custom
         // ─────────────────────────────────────────────
 
-        private static MappingSlot GetVJoyPosition(string name)
+        private static MappingSlot GetExtendedPosition(string name)
         {
             if (name == null) return null;
 
@@ -119,7 +119,7 @@ namespace PadForge.Engine.Data
             if (name.StartsWith("VJoyAxis") && int.TryParse(name.AsSpan(8), out int axIdx))
                 return new(ControlCategory.Axis, axIdx);
 
-            // VJoyPov0Up, VJoyPov0Down, etc. — only POV 0 maps to D-Pad
+            // legacy VJoyPov0Up, VJoyPov0Down PadSetting keys, etc. — only POV 0 maps to D-Pad
             if (name.StartsWith("VJoyPov0"))
             {
                 if (name.EndsWith("Up")) return new(ControlCategory.DPad, 0);
@@ -131,7 +131,7 @@ namespace PadForge.Engine.Data
             return null;
         }
 
-        private static string GetVJoyPropertyName(MappingSlot slot) => slot.Category switch
+        private static string GetExtendedPropertyName(MappingSlot slot) => slot.Category switch
         {
             ControlCategory.Button  => $"VJoyBtn{slot.Position}",
             ControlCategory.Axis    => $"VJoyAxis{slot.Position}",
@@ -274,43 +274,43 @@ namespace PadForge.Engine.Data
         /// (direct property copy is sufficient, no translation needed).
         /// </summary>
         public static bool IsSameLayout(
-            VirtualControllerType srcType, bool srcIsCustomVJoy,
-            VirtualControllerType tgtType, bool tgtIsCustomVJoy)
+            VirtualControllerType srcType, bool srcIsExtended,
+            VirtualControllerType tgtType, bool tgtIsExtended)
         {
             // Xbox360 and DS4 share the same gamepad property names.
-            var srcLayout = GetLayoutKind(srcType, srcIsCustomVJoy);
-            var tgtLayout = GetLayoutKind(tgtType, tgtIsCustomVJoy);
+            var srcLayout = GetLayoutKind(srcType, srcIsExtended);
+            var tgtLayout = GetLayoutKind(tgtType, tgtIsExtended);
             return srcLayout == tgtLayout;
         }
 
-        private enum LayoutKind { Gamepad, VJoyCustom, Midi, Kbm }
+        private enum LayoutKind { Gamepad, Extended, Midi, Kbm }
 
-        private static LayoutKind GetLayoutKind(VirtualControllerType type, bool isCustomVJoy)
+        private static LayoutKind GetLayoutKind(VirtualControllerType type, bool isExtended)
         {
-            if (type == VirtualControllerType.Extended && isCustomVJoy)
-                return LayoutKind.VJoyCustom;
+            if (type == VirtualControllerType.Extended && isExtended)
+                return LayoutKind.Extended;
             if (type == VirtualControllerType.Midi)
                 return LayoutKind.Midi;
             if (type == VirtualControllerType.KeyboardMouse)
                 return LayoutKind.Kbm;
-            return LayoutKind.Gamepad; // Xbox360, DS4, vJoy gamepad preset
+            return LayoutKind.Gamepad; // Xbox360, DS4, Extended gamepad preset
         }
 
         /// <summary>
-        /// Returns a short display label for the layout type (e.g., "Xbox 360", "vJoy Custom", "MIDI", "KB+M").
+        /// Returns a short display label for the layout type (e.g., "Xbox 360", "Extended Custom", "MIDI", "KB+M").
         /// </summary>
-        public static string GetLayoutLabel(VirtualControllerType type, bool isCustomVJoy)
+        public static string GetLayoutLabel(VirtualControllerType type, bool isExtended)
         {
-            return GetLayoutKind(type, isCustomVJoy) switch
+            return GetLayoutKind(type, isExtended) switch
             {
-                LayoutKind.VJoyCustom => "vJoy",
+                LayoutKind.Extended => "Extended",
                 LayoutKind.Midi       => "MIDI",
                 LayoutKind.Kbm        => "KB+M",
                 _ => type switch
                 {
                     VirtualControllerType.Microsoft    => "Xbox 360",
                     VirtualControllerType.Sony => "DualShock 4",
-                    VirtualControllerType.Extended       => "vJoy (Gamepad)",
+                    VirtualControllerType.Extended       => "Extended (Gamepad)",
                     _ => type.ToString()
                 }
             };

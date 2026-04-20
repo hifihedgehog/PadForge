@@ -364,10 +364,10 @@
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Voreinstellung</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Benutzerdefiniert</value></data>
-  <data name="Pad_VJoySticks" xml:space="preserve"><value>Sticks</value></data>
-  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POVs</value></data>
-  <data name="Pad_VJoyButtons" xml:space="preserve"><value>Tasten</value></data>
+  <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
+  <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Tasten</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanal</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-Kanal (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-Anzahl</value></data>
@@ -763,12 +763,12 @@
   <data name="Mouse_X" xml:space="preserve"><value>Maus X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>Maus Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Scrollen</value></data>
-  <data name="VJoy_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
-  <data name="VJoy_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
-  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
-  <data name="VJoy_Button_Format" xml:space="preserve"><value>Taste {0}</value></data>
-  <data name="VJoy_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
-  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="Extended_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
+  <data name="Extended_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
+  <data name="Extended_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
+  <data name="Extended_Button_Format" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="Extended_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
+  <data name="Extended_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
   <data name="MacroAxis_XAxis" xml:space="preserve"><value>Linker Stick X</value></data>
   <data name="MacroAxis_YAxis" xml:space="preserve"><value>Linker Stick Y</value></data>
   <data name="MacroAxis_XRotation" xml:space="preserve"><value>Rechter Stick X</value></data>

@@ -27,7 +27,7 @@ namespace PadForge.ViewModels
             _slotNumber = padIndex + 1;
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
-            _vJoyConfig.PropertyChanged += OnVJoyConfigPropertyChanged;
+            _extendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
@@ -111,8 +111,50 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _profileId, value))
+                {
+                    // For Extended slots, the profile defines the VC's layout.
+                    // Sync ExtendedConfig's stick/trigger/POV/button counts from
+                    // the newly-selected profile's HID descriptor metadata,
+                    // then rebuild the mapping grid + stick/trigger configs
+                    // so the UI reflects the profile's actual axes/buttons.
+                    // Microsoft/Sony slots have fixed layouts that don't
+                    // vary per profile, so no rebuild is needed there.
+                    if (_outputType == VirtualControllerType.Extended)
+                    {
+                        SyncExtendedConfigFromProfile();
+                        RebuildMappings();
+                        RebuildStickConfigs();
+                        RebuildTriggerConfigs();
+                    }
                     ConfigItemDirtyCallback?.Invoke();
+                }
             }
+        }
+
+        /// <summary>
+        /// Populates ExtendedConfig's layout counts from the active HIDMaestro
+        /// profile so the dynamic Extended mapping grid auto-sizes to match
+        /// the profile's actual HID descriptor. Follows the gamepad convention
+        /// — first four axes pair into two sticks (LX/LY/RX/RY), remaining
+        /// axes are triggers; POVs come from HasHat; buttons from ButtonCount.
+        /// Sets Preset to Custom so downstream isExtended checks route
+        /// through the dynamic mapping path rather than the Xbox 360 layout.
+        /// </summary>
+        private void SyncExtendedConfigFromProfile()
+        {
+            var profile = AvailableProfiles?.FirstOrDefault(p =>
+                string.Equals(p.Id, _profileId, System.StringComparison.OrdinalIgnoreCase));
+            if (profile == null) return;
+
+            int axes = profile.AxisCount;
+            int sticks = System.Math.Min(axes, 4) / 2;
+            int triggers = System.Math.Max(0, axes - sticks * 2);
+
+            _extendedConfig.Preset = ExtendedPreset.Custom;
+            _extendedConfig.ThumbstickCount = sticks;
+            _extendedConfig.TriggerCount = triggers;
+            _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
+            _extendedConfig.ButtonCount = profile.ButtonCount;
         }
 
         /// <summary>
@@ -159,52 +201,52 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
-        //  vJoy per-slot configuration
+        //  Extended per-slot configuration
         // ═══════════════════════════════════════════════
 
-        private VJoySlotConfig _vJoyConfig = new();
+        private ExtendedSlotConfig _extendedConfig = new();
 
         /// <summary>
-        /// Per-slot vJoy configuration (preset, axis/button counts).
-        /// Always present — only meaningful when OutputType == VJoy.
+        /// Per-slot Extended configuration (preset, axis/button counts).
+        /// Always present — only meaningful when OutputType == Extended.
         /// </summary>
-        public VJoySlotConfig VJoyConfig
+        public ExtendedSlotConfig ExtendedConfig
         {
-            get => _vJoyConfig;
+            get => _extendedConfig;
             set
             {
-                if (_vJoyConfig != null)
-                    _vJoyConfig.PropertyChanged -= OnVJoyConfigPropertyChanged;
-                if (SetProperty(ref _vJoyConfig, value) && value != null)
-                    value.PropertyChanged += OnVJoyConfigPropertyChanged;
+                if (_extendedConfig != null)
+                    _extendedConfig.PropertyChanged -= OnExtendedConfigPropertyChanged;
+                if (SetProperty(ref _extendedConfig, value) && value != null)
+                    value.PropertyChanged += OnExtendedConfigPropertyChanged;
             }
         }
 
-        private void OnVJoyConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnExtendedConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            // When vJoy config changes (preset, counts), rebuild dynamic collections
+            // When Extended config changes (preset, counts), rebuild dynamic collections
             if (OutputType == VirtualControllerType.Extended)
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(VJoySlotConfig.Preset):
+                    case nameof(ExtendedSlotConfig.Preset):
                         ResetDeadZoneSettings();
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
                         SyncMacroButtonStyle();
                         break;
-                    case nameof(VJoySlotConfig.ThumbstickCount):
-                    case nameof(VJoySlotConfig.TriggerCount):
+                    case nameof(ExtendedSlotConfig.ThumbstickCount):
+                    case nameof(ExtendedSlotConfig.TriggerCount):
                         ResetDeadZoneSettings();
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
                         break;
-                    case nameof(VJoySlotConfig.PovCount):
+                    case nameof(ExtendedSlotConfig.PovCount):
                         RebuildMappings();
                         break;
-                    case nameof(VJoySlotConfig.ButtonCount):
+                    case nameof(ExtendedSlotConfig.ButtonCount):
                         RebuildMappings();
                         SyncMacroButtonStyle();
                         break;
@@ -465,20 +507,26 @@ namespace PadForge.ViewModels
         public event EventHandler MappingsRebuilt;
 
         /// <summary>
-        /// Rebuilds the Mappings collection based on the current OutputType and vJoy config.
-        /// Labels follow the output type's convention (Xbox 360/DS4/vJoy numbered).
+        /// Rebuilds the Mappings collection based on the current OutputType and Extended config.
+        /// Labels follow the output type's convention (Xbox 360/DS4/Extended numbered).
         /// </summary>
         public void RebuildMappings()
         {
             Mappings.Clear();
 
-            bool isCustomVJoy = OutputType == VirtualControllerType.Extended && !VJoyConfig.IsGamepadPreset;
+            // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
+// HIDMaestro profile defines the exact axis/button count and no two
+// profiles share the same layout. Microsoft/Sony keep their fixed
+// gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
+// v2-era concept: they routed Extended through Xbox 360 labels, which
+// is wrong when the selected profile is e.g. a flight stick or wheel.
+bool isExtended = OutputType == VirtualControllerType.Extended;
             if (OutputType == VirtualControllerType.KeyboardMouse)
                 InitializeKeyboardMouseMappings();
             else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
-            else if (isCustomVJoy)
-                InitializeVJoyCustomMappings();
+            else if (isExtended)
+                InitializeExtendedCustomMappings();
             else
                 InitializeGamepadMappings();
 
@@ -487,12 +535,12 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Standard gamepad mappings (21 items). Labels depend on the effective output type:
-        /// Xbox 360 naming for Xbox360 / vJoy-Xbox360, DS4 naming for DualShock4 / vJoy-DS4.
+        /// Xbox 360 naming for Xbox360 / Extended-Xbox360, DS4 naming for DualShock4 / Extended-DS4.
         /// </summary>
         private void InitializeGamepadMappings()
         {
             bool isDS4 = OutputType == VirtualControllerType.Sony
-                || (OutputType == VirtualControllerType.Extended && VJoyConfig.Preset == VJoyPreset.DualShock4);
+                || (OutputType == VirtualControllerType.Extended && ExtendedConfig.Preset == ExtendedPreset.DualShock4);
 
             // Buttons
             if (isDS4)
@@ -663,12 +711,12 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Dynamic vJoy Custom mappings — numbered buttons, sticks, triggers, POVs.
+        /// Dynamic Extended Custom mappings — numbered buttons, sticks, triggers, POVs.
         /// Axis layout interleaves sticks and triggers: [Stick0 X,Y | Trig0 | Stick1 X,Y | Trig1 | ...].
         /// </summary>
-        private void InitializeVJoyCustomMappings()
+        private void InitializeExtendedCustomMappings()
         {
-            var cfg = VJoyConfig;
+            var cfg = ExtendedConfig;
             int stickCount = cfg.ThumbstickCount;
             int triggerCount = cfg.TriggerCount;
 
@@ -678,22 +726,22 @@ namespace PadForge.ViewModels
             for (int i = 0; i < stickCount; i++)
             {
                 var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_Stick_Format, i + 1), $"VJoyAxis{stickAxisX[i]}", cat, $"VJoyAxis{stickAxisX[i]}Neg"));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_StickY_Format, i + 1), $"VJoyAxis{stickAxisY[i]}", cat, $"VJoyAxis{stickAxisY[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"VJoyAxis{stickAxisX[i]}", cat, $"VJoyAxis{stickAxisX[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"VJoyAxis{stickAxisY[i]}", cat, $"VJoyAxis{stickAxisY[i]}Neg"));
             }
 
             // Trigger axes (unpaired)
             for (int i = 0; i < triggerCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_Trigger_Format, i + 1), $"VJoyAxis{triggerAxis[i]}", MappingCategory.Triggers));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"VJoyAxis{triggerAxis[i]}", MappingCategory.Triggers));
 
             // Buttons
             for (int i = 0; i < cfg.ButtonCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.VJoy_Button_Format, i + 1), $"VJoyBtn{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Button_Format, i + 1), $"VJoyBtn{i}", MappingCategory.Buttons));
 
             // POVs
             for (int i = 0; i < cfg.PovCount; i++)
             {
-                string label = cfg.PovCount == 1 ? Strings.Instance.VJoy_DPad : string.Format(Strings.Instance.VJoy_POV_Format, i + 1);
+                string label = cfg.PovCount == 1 ? Strings.Instance.Extended_DPad : string.Format(Strings.Instance.Extended_POV_Format, i + 1);
                 Mappings.Add(new MappingItem($"{label} Up", $"VJoyPov{i}Up", MappingCategory.DPad));
                 Mappings.Add(new MappingItem($"{label} Down", $"VJoyPov{i}Down", MappingCategory.DPad));
                 Mappings.Add(new MappingItem($"{label} Left", $"VJoyPov{i}Left", MappingCategory.DPad));
@@ -958,7 +1006,7 @@ namespace PadForge.ViewModels
         //  Dynamic stick/trigger config items for the Sticks and Triggers tabs.
         //  These collections drive the ItemsControl-based dynamic UI.
         //  For gamepad presets: 2 sticks, 2 triggers.
-        //  For custom vJoy: N sticks, M triggers.
+        //  For custom Extended: N sticks, M triggers.
         // ═══════════════════════════════════════════════
 
         public ObservableCollection<StickConfigItem> StickConfigs { get; } = new();
@@ -968,8 +1016,8 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the StickConfigs collection based on the current output type.
-        /// For Xbox 360/DS4 (or vJoy with gamepad preset): always 2 sticks (Left, Right).
-        /// For vJoy Custom: N sticks based on ThumbstickCount.
+        /// For Xbox 360/DS4 (or Extended with gamepad preset): always 2 sticks (Left, Right).
+        /// For Extended Custom: N sticks based on ThumbstickCount.
         /// </summary>
         public void RebuildStickConfigs()
         {
@@ -993,18 +1041,24 @@ namespace PadForge.ViewModels
                 return;
             }
 
-            int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
-            bool isCustomVJoy = OutputType == VirtualControllerType.Extended && !VJoyConfig.IsGamepadPreset;
-            if (isCustomVJoy)
-                count = VJoyConfig.ThumbstickCount;
+            int count = 2; // Default for Xbox 360, DS4, Extended gamepad presets
+            // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
+// HIDMaestro profile defines the exact axis/button count and no two
+// profiles share the same layout. Microsoft/Sony keep their fixed
+// gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
+// v2-era concept: they routed Extended through Xbox 360 labels, which
+// is wrong when the selected profile is e.g. a flight stick or wheel.
+bool isExtended = OutputType == VirtualControllerType.Extended;
+            if (isExtended)
+                count = ExtendedConfig.ThumbstickCount;
 
             int[] axX = null, axY = null, trAx = null;
-            if (isCustomVJoy && count > 0)
-                VJoyConfig.ComputeAxisLayout(out axX, out axY, out trAx);
+            if (isExtended && count > 0)
+                ExtendedConfig.ComputeAxisLayout(out axX, out axY, out trAx);
 
             for (int i = 0; i < count; i++)
             {
-                string title = isCustomVJoy
+                string title = isExtended
                     ? string.Format(Strings.Instance.Stick_Format, i + 1)
                     : i == 0 ? Strings.Instance.Stick_LeftThumbstick : Strings.Instance.Stick_RightThumbstick;
                 int xiIdx = axX != null ? axX[i] : -1;
@@ -1018,8 +1072,8 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the TriggerConfigs collection based on the current output type.
-        /// For Xbox 360/DS4 (or vJoy with gamepad preset): always 2 triggers (Left, Right).
-        /// For vJoy Custom: N triggers based on TriggerCount.
+        /// For Xbox 360/DS4 (or Extended with gamepad preset): always 2 triggers (Left, Right).
+        /// For Extended Custom: N triggers based on TriggerCount.
         /// </summary>
         public void RebuildTriggerConfigs()
         {
@@ -1031,18 +1085,24 @@ namespace PadForge.ViewModels
             if (OutputType == VirtualControllerType.KeyboardMouse)
                 return;
 
-            int count = 2; // Default for Xbox 360, DS4, vJoy gamepad presets
-            bool isCustomVJoy = OutputType == VirtualControllerType.Extended && !VJoyConfig.IsGamepadPreset;
-            if (isCustomVJoy)
-                count = VJoyConfig.TriggerCount;
+            int count = 2; // Default for Xbox 360, DS4, Extended gamepad presets
+            // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
+// HIDMaestro profile defines the exact axis/button count and no two
+// profiles share the same layout. Microsoft/Sony keep their fixed
+// gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
+// v2-era concept: they routed Extended through Xbox 360 labels, which
+// is wrong when the selected profile is e.g. a flight stick or wheel.
+bool isExtended = OutputType == VirtualControllerType.Extended;
+            if (isExtended)
+                count = ExtendedConfig.TriggerCount;
 
             int[] axX = null, axY = null, trAx = null;
-            if (isCustomVJoy && count > 0)
-                VJoyConfig.ComputeAxisLayout(out axX, out axY, out trAx);
+            if (isExtended && count > 0)
+                ExtendedConfig.ComputeAxisLayout(out axX, out axY, out trAx);
 
             for (int i = 0; i < count; i++)
             {
-                string title = isCustomVJoy
+                string title = isExtended
                     ? string.Format(Strings.Instance.Trigger_Format, i + 1)
                     : i == 0 ? Strings.Instance.Btn_LeftTrigger : Strings.Instance.Btn_RightTrigger;
                 int ai = trAx != null ? trAx[i] : -1;
@@ -1189,7 +1249,7 @@ namespace PadForge.ViewModels
                     ConfigItemDirtyCallback?.Invoke();
                     break;
                 default:
-                    // vJoy custom sticks 2+: values stored directly on ConfigItem,
+                    // Extended custom sticks 2+: values stored directly on ConfigItem,
                     // persisted via SettingsService.UpdatePadSettingsFromViewModels.
                     ConfigItemDirtyCallback?.Invoke();
                     break;
@@ -1224,7 +1284,7 @@ namespace PadForge.ViewModels
                     ConfigItemDirtyCallback?.Invoke();
                     break;
                 default:
-                    // vJoy custom triggers 2+: values stored directly on ConfigItem,
+                    // Extended custom triggers 2+: values stored directly on ConfigItem,
                     // persisted via SettingsService.UpdatePadSettingsFromViewModels.
                     ConfigItemDirtyCallback?.Invoke();
                     break;
@@ -1262,7 +1322,7 @@ namespace PadForge.ViewModels
                 var macro = new MacroItem
                 {
                     Name = $"Macro {Macros.Count + 1}",
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _vJoyConfig?.Preset ?? VJoyPreset.Xbox360)
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _extendedConfig?.Preset ?? ExtendedPreset.Xbox360)
                 };
                 Macros.Add(macro);
                 SelectedMacro = macro;
@@ -1281,12 +1341,12 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Syncs macro button display style to all macros when the output
-        /// controller type or vJoy preset changes.
+        /// controller type or Extended preset changes.
         /// </summary>
         private void SyncMacroButtonStyle()
         {
-            var style = MacroButtonNames.DeriveStyle(_outputType, _vJoyConfig?.Preset ?? VJoyPreset.Xbox360);
-            int btnCount = (_outputType == VirtualControllerType.Extended ? _vJoyConfig?.ButtonCount : null) ?? 11;
+            var style = MacroButtonNames.DeriveStyle(_outputType, _extendedConfig?.Preset ?? ExtendedPreset.Xbox360);
+            int btnCount = (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
             foreach (var macro in Macros)
             {
                 macro.ButtonStyle = style;
@@ -1502,7 +1562,7 @@ namespace PadForge.ViewModels
                 SelectedConfigTab = 0;
 
             // Detect Y axis: standard controllers use "AxisY" in the setting name,
-            // custom vJoy uses "Stick N Y" in the label (setting name is "VJoyAxisN").
+            // custom Extended uses "Stick N Y" in the label (setting name is "ExtendedAxisN").
             bool isYAxis = mapping.TargetSettingName.Contains("AxisY")
                         || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal);
 
@@ -1973,14 +2033,14 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
-        //  VJoy raw state snapshot (for custom vJoy schematic view)
+        //  Extended raw state snapshot (for custom Extended schematic view)
         // ═══════════════════════════════════════════════
 
         /// <summary>
-        /// Latest VJoyRawState snapshot for custom vJoy display.
+        /// Latest ExtendedRawState snapshot for custom Extended display.
         /// Updated at 30Hz alongside UpdateFromEngineState.
         /// </summary>
-        public VJoyRawState VJoyOutputSnapshot { get; private set; }
+        public ExtendedRawState ExtendedOutputSnapshot { get; private set; }
 
         /// <summary>
         /// Latest KbmRawState snapshot for KBM preview display.
@@ -1989,12 +2049,12 @@ namespace PadForge.ViewModels
         public KbmRawState KbmOutputSnapshot { get; set; }
 
         /// <summary>
-        /// Updates the combined output display from a VJoyRawState (custom vJoy slots).
+        /// Updates the combined output display from a ExtendedRawState (custom Extended slots).
         /// Syncs live values to StickConfigs/TriggerConfigs and stores the raw snapshot.
         /// </summary>
-        public void UpdateFromVJoyRawState(VJoyRawState raw)
+        public void UpdateFromExtendedRawState(ExtendedRawState raw)
         {
-            VJoyOutputSnapshot = raw;
+            ExtendedOutputSnapshot = raw;
 
             // Sync stick config items from raw axes
             foreach (var stick in StickConfigs)
@@ -2038,7 +2098,7 @@ namespace PadForge.ViewModels
                 }
             }
 
-            OnPropertyChanged(nameof(VJoyOutputSnapshot));
+            OnPropertyChanged(nameof(ExtendedOutputSnapshot));
         }
 
         // ═══════════════════════════════════════════════

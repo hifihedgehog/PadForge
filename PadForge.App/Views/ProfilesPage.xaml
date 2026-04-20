@@ -102,13 +102,13 @@
                                                            VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Border>
-                                        <!-- vJoy count badge -->
+                                        <!-- Extended count badge -->
                                         <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
                                                 Background="{DynamicResource SubtleFillColorSecondaryBrush}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding VJoyCount}" Value="0">
+                                                        <DataTrigger Binding="{Binding ExtendedCount}" Value="0">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -119,7 +119,7 @@
                                                       Fill="{DynamicResource TextFillColorPrimaryBrush}"
                                                       Width="10" Height="10" Stretch="Uniform"
                                                       VerticalAlignment="Center" Opacity="0.6"/>
-                                                <TextBlock Text="{Binding VJoyCount}" FontSize="10"
+                                                <TextBlock Text="{Binding ExtendedCount}" FontSize="10"
                                                            Opacity="0.7" Margin="3,0,0,0"
                                                            VerticalAlignment="Center"/>
                                             </StackPanel>

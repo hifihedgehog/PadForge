@@ -84,9 +84,15 @@ namespace PadForge.Common.Input
                     // profile in any dropdown, so creation never attempts a
                     // controller it can't deploy. When HIDMaestro ships a
                     // fixed catalog, these profiles reappear automatically.
+                    // Sort by display Name, not Id slug. The dropdown's
+                    // DisplayMemberPath is "Name" so the user sees the
+                    // product name; slug order produced a visually
+                    // unsorted list (e.g. "Logitech F710" after
+                    // "HORI Fighting Stick" but before "Thrustmaster T300"
+                    // matches slug "logitech-f710" but reads wrong).
                     _allProfiles = ctx.AllProfiles
                         .Where(p => p.IsDeployable)
-                        .OrderBy(p => p.Id, StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
                     _microsoftProfiles = _allProfiles

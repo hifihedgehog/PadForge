@@ -126,12 +126,12 @@ namespace PadForge.Engine.Data
         public Gamepad RawMappedState { get; set; }
 
         /// <summary>
-        /// The mapped vJoy raw output state computed in Step 3 for custom vJoy slots.
-        /// Only populated when the slot uses VJoy with Custom preset.
+        /// The mapped Extended raw output state computed in Step 3 for custom Extended slots.
+        /// Only populated when the slot uses Extended with Custom preset.
         /// Written by the background thread, read by Step 4.
         /// </summary>
         [XmlIgnore]
-        public VJoyRawState VJoyRawOutputState { get; set; }
+        public ExtendedRawState ExtendedRawOutputState { get; set; }
 
         /// <summary>
         /// The mapped MIDI raw output state computed in Step 3 for MIDI slots.

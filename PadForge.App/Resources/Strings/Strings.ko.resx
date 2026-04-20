@@ -364,10 +364,10 @@
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>포스 피드백</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>프리셋</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>사용자 정의</value></data>
-  <data name="Pad_VJoySticks" xml:space="preserve"><value>스틱</value></data>
-  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>트리거</value></data>
-  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POV</value></data>
-  <data name="Pad_VJoyButtons" xml:space="preserve"><value>버튼</value></data>
+  <data name="Pad_ExtendedSticks" xml:space="preserve"><value>스틱</value></data>
+  <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>트리거</value></data>
+  <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
+  <data name="Pad_ExtendedButtons" xml:space="preserve"><value>버튼</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>채널</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI 채널 (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 개수</value></data>
@@ -763,12 +763,12 @@
   <data name="Mouse_X" xml:space="preserve"><value>마우스 X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>마우스 Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>스크롤</value></data>
-  <data name="VJoy_Stick_Format" xml:space="preserve"><value>스틱 {0} X</value></data>
-  <data name="VJoy_StickY_Format" xml:space="preserve"><value>스틱 {0} Y</value></data>
-  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>트리거 {0}</value></data>
-  <data name="VJoy_Button_Format" xml:space="preserve"><value>버튼 {0}</value></data>
-  <data name="VJoy_DPad" xml:space="preserve"><value>D-Pad</value></data>
-  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="Extended_Stick_Format" xml:space="preserve"><value>스틱 {0} X</value></data>
+  <data name="Extended_StickY_Format" xml:space="preserve"><value>스틱 {0} Y</value></data>
+  <data name="Extended_Trigger_Format" xml:space="preserve"><value>트리거 {0}</value></data>
+  <data name="Extended_Button_Format" xml:space="preserve"><value>버튼 {0}</value></data>
+  <data name="Extended_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Extended_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
   <data name="MacroAxis_XAxis" xml:space="preserve"><value>왼쪽 스틱 X</value></data>
   <data name="MacroAxis_YAxis" xml:space="preserve"><value>왼쪽 스틱 Y</value></data>
   <data name="MacroAxis_XRotation" xml:space="preserve"><value>오른쪽 스틱 X</value></data>

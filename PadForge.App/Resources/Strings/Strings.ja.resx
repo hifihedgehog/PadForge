@@ -364,10 +364,10 @@
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>プリセット</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>カスタム</value></data>
-  <data name="Pad_VJoySticks" xml:space="preserve"><value>スティック</value></data>
-  <data name="Pad_VJoyTriggers" xml:space="preserve"><value>トリガー</value></data>
-  <data name="Pad_VJoyPOVs" xml:space="preserve"><value>POV</value></data>
-  <data name="Pad_VJoyButtons" xml:space="preserve"><value>ボタン</value></data>
+  <data name="Pad_ExtendedSticks" xml:space="preserve"><value>スティック</value></data>
+  <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>トリガー</value></data>
+  <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
+  <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>チャンネル</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI チャンネル (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 数</value></data>
@@ -763,12 +763,12 @@
   <data name="Mouse_X" xml:space="preserve"><value>マウス X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>マウス Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>スクロール</value></data>
-  <data name="VJoy_Stick_Format" xml:space="preserve"><value>スティック {0} X</value></data>
-  <data name="VJoy_StickY_Format" xml:space="preserve"><value>スティック {0} Y</value></data>
-  <data name="VJoy_Trigger_Format" xml:space="preserve"><value>トリガー {0}</value></data>
-  <data name="VJoy_Button_Format" xml:space="preserve"><value>ボタン {0}</value></data>
-  <data name="VJoy_DPad" xml:space="preserve"><value>十字キー</value></data>
-  <data name="VJoy_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
+  <data name="Extended_Stick_Format" xml:space="preserve"><value>スティック {0} X</value></data>
+  <data name="Extended_StickY_Format" xml:space="preserve"><value>スティック {0} Y</value></data>
+  <data name="Extended_Trigger_Format" xml:space="preserve"><value>トリガー {0}</value></data>
+  <data name="Extended_Button_Format" xml:space="preserve"><value>ボタン {0}</value></data>
+  <data name="Extended_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="Extended_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
   <data name="MacroAxis_XAxis" xml:space="preserve"><value>左スティック X</value></data>
   <data name="MacroAxis_YAxis" xml:space="preserve"><value>左スティック Y</value></data>
   <data name="MacroAxis_XRotation" xml:space="preserve"><value>右スティック X</value></data>

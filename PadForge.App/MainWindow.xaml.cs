@@ -57,7 +57,7 @@ namespace PadForge
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
         private bool _previousViGEmInstalled;
-        private bool _previousVJoyInstalled;
+        private bool _previousExtendedInstalled;
 
         // Drag reorder state for sidebar controller cards.
         private Point _cardDragStartPoint;
@@ -452,7 +452,7 @@ namespace PadForge
                 foreach (var mapping in pad.Mappings)
                     WireMappingItemEvents(mapping, capturedPad);
 
-                // Re-wire when mappings are rebuilt (OutputType or vJoy config change).
+                // Re-wire when mappings are rebuilt (OutputType or Extended config change).
                 pad.Mappings.CollectionChanged += (s, e) =>
                 {
                     if (e.NewItems != null)
@@ -490,11 +490,11 @@ namespace PadForge
                         _settingsService.MarkDirty();
                 };
 
-                // vJoy custom stick/trigger config changes (indices 2+) trigger autosave.
+                // Extended custom stick/trigger config changes (indices 2+) trigger autosave.
                 pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
 
-                // VJoyConfig property changes (preset, counts) trigger autosave.
-                pad.VJoyConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+                // ExtendedConfig property changes (preset, counts) trigger autosave.
+                pad.ExtendedConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
             }
 
             // Recorder completion marks settings dirty + clear flash + advance Map All.
@@ -726,7 +726,7 @@ namespace PadForge
 
                     // Y axes record neg (up in game) first due to NegateAxis inversion.
                     // Pre-set _pendingNegMapping so the recorder result goes to NegSourceDescriptor.
-                    // For vJoy custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
+                    // For Extended custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
                     bool isYAxis = mapping.HasNegDirection
                         && (mapping.TargetSettingName.Contains("AxisY")
                             || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
@@ -902,7 +902,7 @@ namespace PadForge
             if (ShouldStartMinimizedToTray)
                 _notifyIcon.Visible = true;
 
-            // Enforce type-group ordering (Xbox 360 > DS4 > vJoy) on startup.
+            // Enforce type-group ordering (Xbox 360 > DS4 > Extended) on startup.
             // Handles backward-compat with old configs that have interleaved types.
             if (_inputService.EnsureTypeGroupOrder(silent: true))
                 _settingsService.MarkDirty();
@@ -918,7 +918,7 @@ namespace PadForge
             _viewModel.RefreshNavControllerItems();
             RefreshDashboardActiveSlots();
 
-            // vJoy device nodes are created on demand by the engine (CreateVJoyController)
+            // Extended device nodes are created on demand by the engine (CreateExtendedController)
             // when slots become active — same pattern as ViGEm. No pre-creation needed.
             if (_viewModel.Settings.AutoStartEngine)
                 _inputService.Start();
@@ -996,9 +996,9 @@ namespace PadForge
         {
             if (_viewModel.Settings.LegacyDriverCleanupOffered) return;
 
-            bool hasVJoy = DriverInstaller.IsVJoyInstalled();
+            bool hasExtended = DriverInstaller.IsExtendedInstalled();
             bool hasViGEm = DriverInstaller.GetViGEmVersion() != null;
-            if (!hasVJoy && !hasViGEm)
+            if (!hasExtended && !hasViGEm)
             {
                 _viewModel.Settings.LegacyDriverCleanupOffered = true;
                 _settingsService?.MarkDirty();
@@ -1007,7 +1007,7 @@ namespace PadForge
 
             var found = new System.Collections.Generic.List<string>();
             if (hasViGEm) found.Add("ViGEmBus");
-            if (hasVJoy) found.Add("vJoy");
+            if (hasExtended) found.Add("Extended");
 
             // Ensure window is visible so the dialog isn't hidden behind tray mode.
             if (!IsVisible) { try { Show(); } catch { } }
@@ -1030,7 +1030,7 @@ namespace PadForge
                 try
                 {
                     if (hasViGEm) DriverInstaller.UninstallViGEmBus();
-                    if (hasVJoy) DriverInstaller.UninstallVJoy();
+                    if (hasExtended) DriverInstaller.UninstallVJoy();
                 }
                 catch (Exception ex)
                 {
@@ -1090,7 +1090,7 @@ namespace PadForge
             // Unwire device service.
             _deviceService?.UnwireEvents();
 
-            // Run the slow shutdown work (controller disposal, vJoy node removal) off the UI thread.
+            // Run the slow shutdown work (controller disposal, Extended node removal) off the UI thread.
             await System.Threading.Tasks.Task.Run(() =>
             {
                 _recorderService?.Dispose();
@@ -1110,7 +1110,7 @@ namespace PadForge
         // SVG path data for controller type icons — shared via ControllerIcons static class.
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
-        private const string VJoySvgPath = Common.ControllerIcons.VJoySvgPath;
+        private const string ExtendedSvgPath = Common.ControllerIcons.ExtendedSvgPath;
 
 
         /// <summary>Static nav items whose Content must be refreshed on culture change.</summary>
@@ -1358,7 +1358,7 @@ namespace PadForge
             string iconKey = navItem.IconKey;
             bool isXbox = iconKey == "XboxControllerIcon";
             bool isDS4 = iconKey == "DS4ControllerIcon";
-            bool isVJoy = iconKey == "VJoyControllerIcon";
+            bool isExtended = iconKey == "ExtendedControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
             bool isKbm = iconKey == "KeyboardMouseControllerIcon";
 
@@ -1550,32 +1550,32 @@ namespace PadForge
             ds4Btn.Click += OnSidebarTypeDS4;
             row.Children.Add(ds4Btn);
 
-            // vJoy type button — use SetResourceReference for theme-aware Fill.
-            var vjoyPath = new System.Windows.Shapes.Path
+            // Extended type button — use SetResourceReference for theme-aware Fill.
+            var extendedPath = new System.Windows.Shapes.Path
             {
-                Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
+                Data = System.Windows.Media.Geometry.Parse(ExtendedSvgPath),
                 Width = 13,
                 Height = 13,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            vjoyPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            var vjoyBtn = new System.Windows.Controls.Button
+            extendedPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+            var extendedBtn = new System.Windows.Controls.Button
             {
-                Content = vjoyPath,
+                Content = extendedPath,
                 ToolTip = Strings.Instance.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
-                Opacity = isVJoy ? 1.0 : 0.3,
+                Opacity = isExtended ? 1.0 : 0.3,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            vjoyBtn.Click += OnSidebarTypeVJoy;
-            row.Children.Add(vjoyBtn);
+            extendedBtn.Click += OnSidebarTypeExtended;
+            row.Children.Add(extendedBtn);
 
             // Keyboard+Mouse type button — MDL2 glyph E961 (always available).
             var kbmBtn = new System.Windows.Controls.Button
@@ -1768,10 +1768,10 @@ namespace PadForge
             var row2 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
 
             string iconKey = navItem.IconKey;
-            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon" || iconKey == "VJoyControllerIcon")
+            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon" || iconKey == "ExtendedControllerIcon")
             {
                 string svgPath = iconKey == "XboxControllerIcon" ? XboxSvgPath
-                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath : VJoySvgPath;
+                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath : ExtendedSvgPath;
                 var path = new System.Windows.Shapes.Path
                 {
                     Data = System.Windows.Media.Geometry.Parse(svgPath),
@@ -1864,7 +1864,7 @@ namespace PadForge
         }
 
         /// <summary>Handles sidebar Extended (custom DI) type button click.</summary>
-        private void OnSidebarTypeVJoy(object sender, RoutedEventArgs e)
+        private void OnSidebarTypeExtended(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
@@ -2463,7 +2463,7 @@ namespace PadForge
         /// </summary>
         private bool HasAnyControllerTypeCapacity()
         {
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -2471,14 +2471,14 @@ namespace PadForge
                 {
                     case VirtualControllerType.Microsoft: xboxCount++; break;
                     case VirtualControllerType.Sony: ds4Count++; break;
-                    case VirtualControllerType.Extended: vjoyCount++; break;
+                    case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
             }
             return xboxCount < SettingsManager.MaxXbox360Slots
                 || ds4Count < SettingsManager.MaxDS4Slots
-                || vjoyCount < SettingsManager.MaxVJoySlots
+                || extendedCount < SettingsManager.MaxExtendedSlots
                 || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots)
                 || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
         }
@@ -2596,7 +2596,7 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Count existing slots by type for per-type capacity check.
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -2604,7 +2604,7 @@ namespace PadForge
                 {
                     case VirtualControllerType.Microsoft: xboxCount++; break;
                     case VirtualControllerType.Sony: ds4Count++; break;
-                    case VirtualControllerType.Extended: vjoyCount++; break;
+                    case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
@@ -2688,34 +2688,34 @@ namespace PadForge
             };
             stack.Children.Add(ds4Btn);
 
-            // vJoy button — theme-aware icon fill.
-            var vjoyPopupPath = new System.Windows.Shapes.Path
+            // Extended button — theme-aware icon fill.
+            var extendedPopupPath = new System.Windows.Shapes.Path
             {
-                Data = System.Windows.Media.Geometry.Parse(VJoySvgPath),
+                Data = System.Windows.Media.Geometry.Parse(ExtendedSvgPath),
                 Width = 28,
                 Height = 28,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            vjoyPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            bool vjoyAtCapacity = vjoyCount >= SettingsManager.MaxVJoySlots;
-            bool vjoyDisabled = vjoyAtCapacity;
-            if (vjoyDisabled) vjoyPopupPath.Opacity = 0.35;
-            var vjoyBtn = new System.Windows.Controls.Button
+            extendedPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+            bool extendedAtCapacity = extendedCount >= SettingsManager.MaxExtendedSlots;
+            bool extendedDisabled = extendedAtCapacity;
+            if (extendedDisabled) extendedPopupPath.Opacity = 0.35;
+            var extendedBtn = new System.Windows.Controls.Button
             {
-                Content = vjoyPopupPath,
-                ToolTip = vjoyAtCapacity
-                        ? string.Format(Strings.Instance.Main_DI_Max_Format, SettingsManager.MaxVJoySlots)
+                Content = extendedPopupPath,
+                ToolTip = extendedAtCapacity
+                        ? string.Format(Strings.Instance.Main_DI_Max_Format, SettingsManager.MaxExtendedSlots)
                         : Strings.Instance.ControllerType_DirectInput,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = vjoyDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+                Cursor = extendedDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(vjoyBtn, "AddVJoyBtn");
-            vjoyBtn.Click += (s, e) =>
+            System.Windows.Automation.AutomationProperties.SetAutomationId(extendedBtn, "AddExtendedBtn");
+            extendedBtn.Click += (s, e) =>
             {
-                if (vjoyDisabled) return;
+                if (extendedDisabled) return;
                 popup.IsOpen = false;
 
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Extended);
@@ -2726,7 +2726,7 @@ namespace PadForge
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
-            stack.Children.Add(vjoyBtn);
+            stack.Children.Add(extendedBtn);
 
             // Keyboard+Mouse button — MDL2 glyph E961, theme-aware foreground.
             var kbmPopupIcon = new System.Windows.Controls.TextBlock
@@ -3098,8 +3098,23 @@ namespace PadForge
             }
         }
 
+        // Touch-input debounce for toggle buttons. On a touchscreen, a single
+        // finger tap generates both a touch event chain and a promoted mouse
+        // click, so Click fires twice for one tap. The toggle then flips and
+        // flips back, making the tap appear to do nothing. Track the last
+        // invocation tick and swallow a second invocation that lands within
+        // TouchClickDebounceMs of the first. Mouse clicks on a regular
+        // pointer aren't affected — they don't fire back-to-back that fast.
+        private const int TouchClickDebounceMs = 400;
+        private long _lastFullScreenClickTick;
+        private long _lastMaximizeClickTick;
+
         private void FullScreenBtn_Click(object sender, RoutedEventArgs e)
         {
+            long now = Environment.TickCount64;
+            if (now - _lastFullScreenClickTick < TouchClickDebounceMs) return;
+            _lastFullScreenClickTick = now;
+
             if (_isFullScreen)
             {
                 // Exit full screen.
@@ -3122,6 +3137,10 @@ namespace PadForge
 
         private void TitleBar_MaximizeClicked(Wpf.Ui.Controls.TitleBar sender, RoutedEventArgs args)
         {
+            long now = Environment.TickCount64;
+            if (now - _lastMaximizeClickTick < TouchClickDebounceMs) return;
+            _lastMaximizeClickTick = now;
+
             if (_isFullScreen)
             {
                 // Exit full screen before TitleBar toggles maximize/restore.
@@ -3327,7 +3346,7 @@ namespace PadForge
         /// <summary>
         /// Wires StartRecordingRequested, StopRecordingRequested, and PropertyChanged
         /// for a single MappingItem. Called both on initial setup and when Mappings
-        /// are rebuilt (OutputType change, vJoy config change).
+        /// are rebuilt (OutputType change, Extended config change).
         /// </summary>
         private void WireMappingItemEvents(MappingItem mapping, PadViewModel capturedPad)
         {
@@ -3339,7 +3358,7 @@ namespace PadForge
 
                     // Y axes: record neg (up in game) first due to NegateAxis inversion.
                     // For standard gamepad: TargetSettingName contains "AxisY".
-                    // For vJoy custom sticks: TargetSettingName is "VJoyAxisN" — check label for "Y".
+                    // For Extended custom sticks: TargetSettingName is "ExtendedAxisN" — check label for "Y".
                     bool isYAxis = mi.HasNegDirection
                         && (mi.TargetSettingName.Contains("AxisY")
                             || mi.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
@@ -3572,9 +3591,9 @@ namespace PadForge
             try
             {
                 var copyOutputType = padVm.OutputType;
-                bool copyIsCustomVJoy = copyOutputType == VirtualControllerType.Extended
-                    && !padVm.VJoyConfig.IsGamepadPreset;
-                Clipboard.SetText(ps.ToJson(copyOutputType, copyIsCustomVJoy));
+                bool copyIsExtended = copyOutputType == VirtualControllerType.Extended
+                    /* Extended always uses dynamic layout */;
+                Clipboard.SetText(ps.ToJson(copyOutputType, copyIsExtended));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
             }
             catch (Exception ex)
@@ -3589,7 +3608,7 @@ namespace PadForge
             {
                 string json = Clipboard.GetText();
                 var ps = PadSetting.FromJson(json,
-                    out VirtualControllerType srcType, out bool srcIsCustomVJoy);
+                    out VirtualControllerType srcType, out bool srcIsExtended);
                 if (ps == null)
                 {
                     _viewModel.StatusText = Strings.Instance.Status_InvalidClipboard;
@@ -3597,13 +3616,13 @@ namespace PadForge
                 }
 
                 var targetType = padVm.OutputType;
-                bool targetIsCustomVJoy = targetType == VirtualControllerType.Extended
-                    && !padVm.VJoyConfig.IsGamepadPreset;
+                bool targetIsExtended = targetType == VirtualControllerType.Extended
+                    /* Extended always uses dynamic layout */;
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
                     padVm.PadIndex, ps,
-                    srcType, srcIsCustomVJoy,
-                    targetType, targetIsCustomVJoy);
+                    srcType, srcIsExtended,
+                    targetType, targetIsExtended);
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
             }
@@ -3652,16 +3671,16 @@ namespace PadForge
 
                         // Determine layout type from the slot's output type.
                         var outputType = VirtualControllerType.Microsoft;
-                        bool isCustomVJoy = false;
+                        bool isExtended = false;
                         if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
                         {
                             var srcPad = _viewModel.Pads[us.MapTo];
                             outputType = srcPad.OutputType;
-                            isCustomVJoy = outputType == VirtualControllerType.Extended
-                                && !srcPad.VJoyConfig.IsGamepadPreset;
+                            isExtended = outputType == VirtualControllerType.Extended
+                                /* Extended always uses dynamic layout */;
                         }
 
-                        string layoutLabel = $"({MappingTranslation.GetLayoutLabel(outputType, isCustomVJoy)})";
+                        string layoutLabel = $"({MappingTranslation.GetLayoutLabel(outputType, isExtended)})";
 
                         entries.Add(new CopyFromDialog.DeviceEntry
                         {
@@ -3671,7 +3690,7 @@ namespace PadForge
                             InstanceGuid = us.InstanceGuid,
                             PadSetting = ps,
                             OutputType = outputType,
-                            IsCustomVJoy = isCustomVJoy
+                            IsExtended = isExtended
                         });
                     }
                 }
@@ -3688,13 +3707,13 @@ namespace PadForge
             {
                 var srcEntry = dialog.SelectedEntry;
                 var targetOutputType = padVm.OutputType;
-                bool targetIsCustomVJoy = targetOutputType == VirtualControllerType.Extended
-                    && !padVm.VJoyConfig.IsGamepadPreset;
+                bool targetIsExtended = targetOutputType == VirtualControllerType.Extended
+                    /* Extended always uses dynamic layout */;
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
                     padVm.PadIndex, srcEntry.PadSetting,
-                    srcEntry.OutputType, srcEntry.IsCustomVJoy,
-                    targetOutputType, targetIsCustomVJoy);
+                    srcEntry.OutputType, srcEntry.IsExtended,
+                    targetOutputType, targetIsExtended);
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;
             }
@@ -3741,7 +3760,7 @@ namespace PadForge
         private void RefreshDashboardActiveSlots()
         {
             var activeSlots = new System.Collections.Generic.List<int>();
-            int xboxCount = 0, ds4Count = 0, vjoyCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (SettingsManager.SlotCreated[i])
@@ -3751,7 +3770,7 @@ namespace PadForge
                     {
                         case VirtualControllerType.Microsoft: xboxCount++; break;
                         case VirtualControllerType.Sony: ds4Count++; break;
-                        case VirtualControllerType.Extended: vjoyCount++; break;
+                        case VirtualControllerType.Extended: extendedCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
                         case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                     }
@@ -3759,7 +3778,7 @@ namespace PadForge
             }
             bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
                            || ds4Count < SettingsManager.MaxDS4Slots
-                           || vjoyCount < SettingsManager.MaxVJoySlots
+                           || extendedCount < SettingsManager.MaxExtendedSlots
                            || midiCount < SettingsManager.MaxMidiSlots
                            || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
             _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);

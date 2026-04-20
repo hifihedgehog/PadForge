@@ -5,8 +5,8 @@ namespace PadForge.Common
 {
     /// <summary>
     /// Shared SetupAPI P/Invoke declarations and structs used by
-    /// HidHideController. The vJoy-specific PowerShell snippet generator
-    /// was deleted in v3 along with the live vJoy install path; the
+    /// HidHideController. The Extended-specific PowerShell snippet generator
+    /// was deleted in v3 along with the live Extended install path; the
     /// DriverInstaller.UninstallVJoy method retains its own bundled
     /// PowerShell uninstall script for the v3 cleanup wizard.
     /// </summary>

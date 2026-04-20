@@ -83,7 +83,7 @@ namespace PadForge.ViewModels
         private uint[] _triggerCustomButtonWords = new uint[4];
 
         /// <summary>
-        /// For custom vJoy OutputController triggers: wide button bitmask (128 buttons).
+        /// For custom Extended OutputController triggers: wide button bitmask (128 buttons).
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public uint[] TriggerCustomButtonWords
@@ -338,7 +338,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Determines button display names based on output controller type.
-        /// Set by PadViewModel when OutputType/VJoyPreset changes.
+        /// Set by PadViewModel when OutputType/ExtendedPreset changes.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public MacroButtonStyle ButtonStyle
@@ -358,7 +358,7 @@ namespace PadForge.ViewModels
         private int _customButtonCount = 11;
 
         /// <summary>
-        /// Number of buttons for custom vJoy (from VJoyConfig.ButtonCount).
+        /// Number of buttons for custom Extended (from ExtendedConfig.ButtonCount).
         /// Propagated to actions for ButtonOptions generation.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -758,7 +758,7 @@ namespace PadForge.ViewModels
         private int _customButtonCount = 11;
 
         /// <summary>
-        /// Number of buttons to show for Numbered style (from VJoyConfig.ButtonCount).
+        /// Number of buttons to show for Numbered style (from ExtendedConfig.ButtonCount).
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public int CustomButtonCount
@@ -794,12 +794,12 @@ namespace PadForge.ViewModels
             }
         }
 
-        // ── Custom vJoy button storage (128 buttons max) ──
+        // ── Custom Extended button storage (128 buttons max) ──
 
         private uint[] _customButtonWords = new uint[4];
 
         /// <summary>
-        /// For ButtonPress/ButtonRelease with custom vJoy: wide button bitmask (4 × 32-bit = 128 buttons).
+        /// For ButtonPress/ButtonRelease with custom Extended: wide button bitmask (4 × 32-bit = 128 buttons).
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public uint[] CustomButtonWords
@@ -827,7 +827,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Sets/clears a custom vJoy button (0-based index).</summary>
+        /// <summary>Sets/clears a custom Extended button (0-based index).</summary>
         public void SetCustomButton(int index, bool pressed)
         {
             int word = index / 32;
@@ -839,7 +839,7 @@ namespace PadForge.ViewModels
             RefreshCustomButtonOptions();
         }
 
-        /// <summary>Returns true if the specified custom vJoy button is pressed.</summary>
+        /// <summary>Returns true if the specified custom Extended button is pressed.</summary>
         public bool IsCustomButtonPressed(int index)
         {
             int word = index / 32;
@@ -872,7 +872,7 @@ namespace PadForge.ViewModels
                 {
                     if (_buttonStyle == MacroButtonStyle.Numbered)
                     {
-                        // Dynamic list for custom vJoy — N buttons from config.
+                        // Dynamic list for custom Extended — N buttons from config.
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
                             list.Add(new GamepadButtonOption(this, string.Format(Strings.Instance.Macro_Btn_Format, i + 1), customIndex: i));
@@ -1544,7 +1544,7 @@ namespace PadForge.ViewModels
         /// <summary>Xbox/DS4 bitmask flag (0 for custom mode).</summary>
         public ushort Flag { get; }
 
-        /// <summary>Custom vJoy button index (0-based). -1 = use Flag on ushort.</summary>
+        /// <summary>Custom Extended button index (0-based). -1 = use Flag on ushort.</summary>
         public int CustomIndex { get; }
 
         public bool IsChecked
@@ -1575,7 +1575,7 @@ namespace PadForge.ViewModels
             CustomIndex = -1;
         }
 
-        /// <summary>Custom vJoy button index mode (0-based).</summary>
+        /// <summary>Custom Extended button index mode (0-based).</summary>
         public GamepadButtonOption(MacroAction parent, string label, int customIndex)
         {
             _parent = parent;
@@ -1595,7 +1595,7 @@ namespace PadForge.ViewModels
     {
         Xbox360,
         DualShock4,
-        Numbered  // vJoy Custom: "Btn 1", "Btn 2", etc.
+        Numbered  // Extended Custom: "Btn 1", "Btn 2", etc.
     }
 
     public static class MacroButtonNames
@@ -1619,7 +1619,7 @@ namespace PadForge.ViewModels
             return string.Join(" + ", defs.Where(d => (flags & d.Flag) != 0).Select(d => d.Label));
         }
 
-        /// <summary>Formats custom vJoy button words into a human-readable string.</summary>
+        /// <summary>Formats custom Extended button words into a human-readable string.</summary>
         public static string FormatCustomButtons(uint[] words)
         {
             if (words == null || words.All(w => w == 0)) return Strings.Instance.Macro_None;
@@ -1635,16 +1635,16 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Derives the button style from the output controller type and vJoy preset.
+        /// Derives the button style from the output controller type and Extended preset.
         /// </summary>
         public static MacroButtonStyle DeriveStyle(
-            VirtualControllerType outputType, VJoyPreset vJoyPreset = VJoyPreset.Xbox360) => outputType switch
+            VirtualControllerType outputType, ExtendedPreset extendedPreset = ExtendedPreset.Xbox360) => outputType switch
         {
             VirtualControllerType.Sony => MacroButtonStyle.DualShock4,
-            VirtualControllerType.Extended => vJoyPreset switch
+            VirtualControllerType.Extended => extendedPreset switch
             {
-                VJoyPreset.DualShock4 => MacroButtonStyle.DualShock4,
-                VJoyPreset.Custom => MacroButtonStyle.Numbered,
+                ExtendedPreset.DualShock4 => MacroButtonStyle.DualShock4,
+                ExtendedPreset.Custom => MacroButtonStyle.Numbered,
                 _ => MacroButtonStyle.Xbox360
             },
             _ => MacroButtonStyle.Xbox360
@@ -1673,7 +1673,7 @@ namespace PadForge.ViewModels
             (Strings.Instance.Btn_Left, 0x0004), (Strings.Instance.Btn_Right, 0x0008),
         };
 
-        // vJoy Custom: Xbox bitmask bits → vJoy button numbers (see SubmitGamepadState mapping).
+        // Extended Custom: Xbox bitmask bits → Extended button numbers (see SubmitGamepadState mapping).
         // D-pad still shows direction names (they map to POV, not buttons).
         private static (string Label, ushort Flag)[] BuildNumberedDefs()
         {

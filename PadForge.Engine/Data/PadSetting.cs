@@ -314,71 +314,71 @@ namespace PadForge.Engine.Data
         [XmlElement] public string TouchpadClick { get; set; } = "";
 
         // ─────────────────────────────────────────────
-        //  vJoy custom mappings (dictionary-based)
-        //  Used for custom vJoy configurations with arbitrary axis/button/POV counts.
+        //  Extended custom mappings (dictionary-based)
+        //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
         //  Keys use target names like "VJoyAxis0", "VJoyAxis0Neg", "VJoyBtn0",
         //  "VJoyPov0Up", etc. Values are mapping descriptors (same format as above).
         // ─────────────────────────────────────────────
 
-        /// <summary>Serializable array for XML persistence of vJoy mappings.</summary>
+        /// <summary>Serializable array for XML persistence of Extended mappings.</summary>
         [XmlArray("VJoyMappings")]
         [XmlArrayItem("Map")]
-        public VJoyMappingEntry[] VJoyMappingEntries { get; set; }
+        public ExtendedMappingEntry[] ExtendedMappingEntries { get; set; }
 
         [XmlIgnore]
-        private Dictionary<string, string> _vjoyMappingDict;
+        private Dictionary<string, string> _extendedMappingDict;
 
-        /// <summary>Gets a vJoy mapping value by key (e.g., "VJoyAxis0", "VJoyBtn5").</summary>
-        public string GetVJoyMapping(string key)
+        /// <summary>Gets an Extended mapping value by key (e.g., "VJoyAxis0", "VJoyBtn5").</summary>
+        public string GetExtendedMapping(string key)
         {
-            EnsureVJoyDict();
-            return _vjoyMappingDict.TryGetValue(key, out var val) ? val : "";
+            EnsureExtendedDict();
+            return _extendedMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
-        /// <summary>Sets a vJoy mapping value by key.</summary>
-        public void SetVJoyMapping(string key, string value)
+        /// <summary>Sets an Extended mapping value by key.</summary>
+        public void SetExtendedMapping(string key, string value)
         {
-            EnsureVJoyDict();
+            EnsureExtendedDict();
             if (string.IsNullOrEmpty(value))
-                _vjoyMappingDict.Remove(key);
+                _extendedMappingDict.Remove(key);
             else
-                _vjoyMappingDict[key] = value;
+                _extendedMappingDict[key] = value;
         }
 
-        /// <summary>Flushes the in-memory dictionary back to the serializable array.</summary>
-        public void FlushVJoyMappings()
+        /// <summary>Flushes the Extended mapping dict back to the serializable array.</summary>
+        public void FlushExtendedMappings()
         {
-            if (_vjoyMappingDict == null) return; // Not initialized — array is canonical.
-            if (_vjoyMappingDict.Count == 0)
+            if (_extendedMappingDict == null) return; // Not initialized — array is canonical.
+            if (_extendedMappingDict.Count == 0)
             {
-                VJoyMappingEntries = null;
+                ExtendedMappingEntries = null;
                 return;
             }
-            var entries = new VJoyMappingEntry[_vjoyMappingDict.Count];
+            var entries = new ExtendedMappingEntry[_extendedMappingDict.Count];
             int i = 0;
-            foreach (var kvp in _vjoyMappingDict)
-                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            VJoyMappingEntries = entries;
+            foreach (var kvp in _extendedMappingDict)
+                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            ExtendedMappingEntries = entries;
         }
 
-        private readonly object _vjoyDictLock = new();
+        private readonly object _extendedDictLock = new();
 
-        private void EnsureVJoyDict()
+        private void EnsureExtendedDict()
         {
-            if (_vjoyMappingDict != null) return;
-            lock (_vjoyDictLock)
+            if (_extendedMappingDict != null) return;
+            lock (_extendedDictLock)
             {
-                if (_vjoyMappingDict != null) return;
+                if (_extendedMappingDict != null) return;
                 var dict = new Dictionary<string, string>(StringComparer.Ordinal);
-                if (VJoyMappingEntries != null)
+                if (ExtendedMappingEntries != null)
                 {
-                    foreach (var e in VJoyMappingEntries)
+                    foreach (var e in ExtendedMappingEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
                             dict[e.Key] = e.Value;
                     }
                 }
-                _vjoyMappingDict = dict;
+                _extendedMappingDict = dict;
             }
         }
 
@@ -391,7 +391,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MidiMappings")]
         [XmlArrayItem("Map")]
-        public VJoyMappingEntry[] MidiMappingEntries { get; set; }
+        public ExtendedMappingEntry[] MidiMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _midiMappingDict;
@@ -419,10 +419,10 @@ namespace PadForge.Engine.Data
                 MidiMappingEntries = null;
                 return;
             }
-            var entries = new VJoyMappingEntry[_midiMappingDict.Count];
+            var entries = new ExtendedMappingEntry[_midiMappingDict.Count];
             int i = 0;
             foreach (var kvp in _midiMappingDict)
-                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
             MidiMappingEntries = entries;
         }
 
@@ -456,7 +456,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("KbmMappings")]
         [XmlArrayItem("Map")]
-        public VJoyMappingEntry[] KbmMappingEntries { get; set; }
+        public ExtendedMappingEntry[] KbmMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _kbmMappingDict;
@@ -484,10 +484,10 @@ namespace PadForge.Engine.Data
                 KbmMappingEntries = null;
                 return;
             }
-            var entries = new VJoyMappingEntry[_kbmMappingDict.Count];
+            var entries = new ExtendedMappingEntry[_kbmMappingDict.Count];
             int i = 0;
             foreach (var kvp in _kbmMappingDict)
-                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
             KbmMappingEntries = entries;
         }
 
@@ -518,7 +518,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MappingDeadZones")]
         [XmlArrayItem("Map")]
-        public VJoyMappingEntry[] MappingDeadZoneEntries { get; set; }
+        public ExtendedMappingEntry[] MappingDeadZoneEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _mappingDeadZoneDict;
@@ -547,10 +547,10 @@ namespace PadForge.Engine.Data
                 MappingDeadZoneEntries = null;
                 return;
             }
-            var entries = new VJoyMappingEntry[_mappingDeadZoneDict.Count];
+            var entries = new ExtendedMappingEntry[_mappingDeadZoneDict.Count];
             int i = 0;
             foreach (var kvp in _mappingDeadZoneDict)
-                entries[i++] = new VJoyMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
             MappingDeadZoneEntries = entries;
         }
 
@@ -734,15 +734,15 @@ namespace PadForge.Engine.Data
 
             sb.Append(AxisToButtonThreshold); sb.Append('|');
 
-            // vJoy custom mappings (sorted for deterministic checksum)
-            EnsureVJoyDict();
-            if (_vjoyMappingDict.Count > 0)
+            // Extended custom mappings (sorted for deterministic checksum)
+            EnsureExtendedDict();
+            if (_extendedMappingDict.Count > 0)
             {
-                var keys = new List<string>(_vjoyMappingDict.Keys);
+                var keys = new List<string>(_extendedMappingDict.Keys);
                 keys.Sort(StringComparer.Ordinal);
                 foreach (var key in keys)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_vjoyMappingDict[key]); sb.Append('|');
+                    sb.Append(key); sb.Append('='); sb.Append(_extendedMappingDict[key]); sb.Append('|');
                 }
             }
 
@@ -838,18 +838,18 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(TouchpadContact1) ||
             !string.IsNullOrEmpty(TouchpadContact2) ||
             !string.IsNullOrEmpty(TouchpadClick) ||
-            (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0) ||
-            (_vjoyMappingDict != null && _vjoyMappingDict.Count > 0) ||
+            (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0) ||
+            (_extendedMappingDict != null && _extendedMappingDict.Count > 0) ||
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
             (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
             (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
             (_kbmMappingDict != null && _kbmMappingDict.Count > 0);
 
         /// <summary>
-        /// Clears all mapping descriptors (standard, vJoy, and MIDI) while preserving
+        /// Clears all mapping descriptors (standard, Extended, and MIDI) while preserving
         /// deadzone, force feedback, and other non-mapping configuration.
         /// Call before writing a new set of mappings to prevent stale leftovers
-        /// from a previous mapping layout (e.g., switching Xbox 360 preset → custom vJoy).
+        /// from a previous mapping layout (e.g., switching Xbox 360 preset → custom Extended).
         /// </summary>
         public void ClearMappingDescriptors()
         {
@@ -867,9 +867,9 @@ namespace PadForge.Engine.Data
             TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
             TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
 
-            // vJoy/MIDI/KBM mapping dictionaries and arrays.
-            VJoyMappingEntries = null;
-            _vjoyMappingDict = null;
+            // Extended/MIDI/KBM mapping dictionaries and arrays.
+            ExtendedMappingEntries = null;
+            _extendedMappingDict = null;
             MidiMappingEntries = null;
             _midiMappingDict = null;
             KbmMappingEntries = null;
@@ -878,7 +878,7 @@ namespace PadForge.Engine.Data
 
         /// <summary>
         /// Returns all non-empty mapping descriptor strings from this PadSetting.
-        /// Includes standard button/axis/dpad/trigger mappings, vJoy, and MIDI custom entries.
+        /// Includes standard button/axis/dpad/trigger mappings, Extended, and MIDI custom entries.
         /// </summary>
         public List<string> GetAllMappingDescriptors()
         {
@@ -909,10 +909,10 @@ namespace PadForge.Engine.Data
             Add(TouchpadContact1); Add(TouchpadContact2);
             Add(TouchpadClick);
 
-            // vJoy custom mappings
-            if (VJoyMappingEntries != null)
+            // Extended custom mappings
+            if (ExtendedMappingEntries != null)
             {
-                foreach (var e in VJoyMappingEntries)
+                foreach (var e in ExtendedMappingEntries)
                     Add(e.Value);
             }
 
@@ -1017,10 +1017,10 @@ namespace PadForge.Engine.Data
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
         /// </summary>
-        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Microsoft, bool isCustomVJoy = false)
+        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Microsoft, bool isExtended = false)
         {
             // Flush live dicts to arrays before serializing.
-            FlushVJoyMappings();
+            FlushExtendedMappings();
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
@@ -1030,7 +1030,7 @@ namespace PadForge.Engine.Data
 
             // Embed layout metadata for cross-layout paste support.
             dict["__OutputType"] = ((int)outputType).ToString();
-            dict["__IsCustomVJoy"] = isCustomVJoy ? "1" : "0";
+            dict["__IsExtended"] = isExtended ? "1" : "0";
 
             foreach (string name in CopyablePropertyNames)
             {
@@ -1039,13 +1039,13 @@ namespace PadForge.Engine.Data
                     dict[name] = prop.GetValue(this) as string ?? "";
             }
 
-            // Include vJoy/MIDI/KBM mapping arrays if present.
-            if (VJoyMappingEntries != null && VJoyMappingEntries.Length > 0)
+            // Include Extended/MIDI/KBM mapping arrays if present.
+            if (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0)
             {
-                var vjoyList = new List<Dictionary<string, string>>();
-                foreach (var e in VJoyMappingEntries)
-                    vjoyList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
-                dict["__VJoyMappings"] = JsonSerializer.Serialize(vjoyList);
+                var extendedList = new List<Dictionary<string, string>>();
+                foreach (var e in ExtendedMappingEntries)
+                    extendedList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__ExtendedMappings"] = JsonSerializer.Serialize(extendedList);
             }
             if (MidiMappingEntries != null && MidiMappingEntries.Length > 0)
             {
@@ -1075,7 +1075,7 @@ namespace PadForge.Engine.Data
         /// <summary>
         /// Deserializes a JSON string into a new PadSetting.
         /// Returns null if the JSON is invalid or not a PadSetting export.
-        /// Also extracts embedded layout metadata (OutputType, IsCustomVJoy) if present.
+        /// Also extracts embedded layout metadata (OutputType, IsExtended) if present.
         /// </summary>
         public static PadSetting FromJson(string json)
             => FromJson(json, out _, out _);
@@ -1085,10 +1085,10 @@ namespace PadForge.Engine.Data
         /// source layout type embedded in the JSON (if any).
         /// </summary>
         public static PadSetting FromJson(string json,
-            out VirtualControllerType sourceOutputType, out bool sourceIsCustomVJoy)
+            out VirtualControllerType sourceOutputType, out bool sourceIsExtended)
         {
             sourceOutputType = VirtualControllerType.Microsoft;
-            sourceIsCustomVJoy = false;
+            sourceIsExtended = false;
 
             if (string.IsNullOrWhiteSpace(json))
                 return null;
@@ -1103,8 +1103,8 @@ namespace PadForge.Engine.Data
                 if (dict.TryGetValue("__OutputType", out var otStr) && int.TryParse(otStr, out int otVal)
                     && Enum.IsDefined(typeof(VirtualControllerType), otVal))
                     sourceOutputType = (VirtualControllerType)otVal;
-                if (dict.TryGetValue("__IsCustomVJoy", out var cvStr))
-                    sourceIsCustomVJoy = cvStr == "1";
+                if (dict.TryGetValue("__IsExtended", out var cvStr))
+                    sourceIsExtended = cvStr == "1";
 
                 var ps = new PadSetting();
                 var type = typeof(PadSetting);
@@ -1113,8 +1113,8 @@ namespace PadForge.Engine.Data
                 {
                     if (kvp.Key.StartsWith("__"))
                     {
-                        if (kvp.Key == "__VJoyMappings")
-                            ps.VJoyMappingEntries = DeserializeMappingArray(kvp.Value);
+                        if (kvp.Key == "__ExtendedMappings")
+                            ps.ExtendedMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MidiMappings")
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")
@@ -1136,16 +1136,16 @@ namespace PadForge.Engine.Data
             }
         }
 
-        private static VJoyMappingEntry[] DeserializeMappingArray(string json)
+        private static ExtendedMappingEntry[] DeserializeMappingArray(string json)
         {
             try
             {
                 var list = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(json);
                 if (list == null) return null;
-                var arr = new VJoyMappingEntry[list.Count];
+                var arr = new ExtendedMappingEntry[list.Count];
                 for (int i = 0; i < list.Count; i++)
                 {
-                    arr[i] = new VJoyMappingEntry
+                    arr[i] = new ExtendedMappingEntry
                     {
                         Key = list[i].TryGetValue("Key", out var k) ? k : "",
                         Value = list[i].TryGetValue("Value", out var v) ? v : ""
@@ -1177,23 +1177,23 @@ namespace PadForge.Engine.Data
         /// <summary>
         /// Copies mappings from another PadSetting with cross-layout translation.
         /// When source and target use the same layout, delegates to <see cref="CopyFrom"/>.
-        /// When layouts differ, translates mapping positions (e.g., ButtonA → VJoyBtn0)
+        /// When layouts differ, translates mapping positions (e.g., ButtonA → VJoyBtn0 legacy token)
         /// and copies non-mapping settings (deadzones, sensitivity, FFB) directly.
         /// </summary>
         public void CopyFromTranslated(PadSetting source,
-            VirtualControllerType sourceType, bool sourceIsCustomVJoy,
-            VirtualControllerType targetType, bool targetIsCustomVJoy)
+            VirtualControllerType sourceType, bool sourceIsExtended,
+            VirtualControllerType targetType, bool targetIsExtended)
         {
             if (source == null) return;
 
             // Same layout? Use direct copy.
-            if (MappingTranslation.IsSameLayout(sourceType, sourceIsCustomVJoy, targetType, targetIsCustomVJoy))
+            if (MappingTranslation.IsSameLayout(sourceType, sourceIsExtended, targetType, targetIsExtended))
             {
                 CopyFrom(source);
                 return;
             }
 
-            source.FlushVJoyMappings();
+            source.FlushExtendedMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
 
@@ -1212,10 +1212,10 @@ namespace PadForge.Engine.Data
             // Step 2: Collect all source mappings as (position → descriptor value).
             var translated = new Dictionary<MappingSlot, string>();
 
-            // Read from gamepad properties (Xbox/DS4/vJoy gamepad preset source)
+            // Read from gamepad properties (Xbox/DS4/Extended gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
-                !(sourceType == VirtualControllerType.Extended && sourceIsCustomVJoy))
+                !(sourceType == VirtualControllerType.Extended && sourceIsExtended))
             {
                 foreach (string propName in MappingPropertyNames)
                 {
@@ -1230,11 +1230,11 @@ namespace PadForge.Engine.Data
                 }
             }
 
-            // Read from vJoy dictionary (vJoy custom source)
-            if (sourceType == VirtualControllerType.Extended && sourceIsCustomVJoy
-                && source.VJoyMappingEntries != null)
+            // Read from Extended dictionary (Extended custom source)
+            if (sourceType == VirtualControllerType.Extended && sourceIsExtended
+                && source.ExtendedMappingEntries != null)
             {
-                foreach (var e in source.VJoyMappingEntries)
+                foreach (var e in source.ExtendedMappingEntries)
                 {
                     if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
                     var slot = MappingTranslation.GetPosition(e.Key, sourceType, true);
@@ -1270,10 +1270,10 @@ namespace PadForge.Engine.Data
             // Step 3: Write translated positions to target layout.
 
             // Clear existing target mappings first.
-            if (targetType == VirtualControllerType.Extended && targetIsCustomVJoy)
+            if (targetType == VirtualControllerType.Extended && targetIsExtended)
             {
-                VJoyMappingEntries = null;
-                _vjoyMappingDict = null;
+                ExtendedMappingEntries = null;
+                _extendedMappingDict = null;
             }
             else if (targetType == VirtualControllerType.Midi)
             {
@@ -1299,11 +1299,11 @@ namespace PadForge.Engine.Data
             // Write translated values.
             foreach (var kvp in translated)
             {
-                string targetKey = MappingTranslation.GetPropertyName(kvp.Key, targetType, targetIsCustomVJoy);
+                string targetKey = MappingTranslation.GetPropertyName(kvp.Key, targetType, targetIsExtended);
                 if (targetKey == null) continue; // No equivalent in target layout — silently dropped.
 
-                if (targetType == VirtualControllerType.Extended && targetIsCustomVJoy)
-                    SetVJoyMapping(targetKey, kvp.Value);
+                if (targetType == VirtualControllerType.Extended && targetIsExtended)
+                    SetExtendedMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.Midi)
                     SetMidiMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.KeyboardMouse)
@@ -1318,7 +1318,7 @@ namespace PadForge.Engine.Data
             }
 
             // Flush dictionaries to arrays for persistence.
-            FlushVJoyMappings();
+            FlushExtendedMappings();
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
@@ -1340,15 +1340,15 @@ namespace PadForge.Engine.Data
             }
 
             // Flush source dicts to arrays so we copy the latest live data
-            // (SetVJoyMapping/SetMidiMapping update the dict, not the array).
-            source.FlushVJoyMappings();
+            // (SetExtendedMapping/SetMidiMapping update the dict, not the array).
+            source.FlushExtendedMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
             source.FlushMappingDeadZones();
 
             // Deep-copy arrays and invalidate our cached dictionaries.
-            VJoyMappingEntries = DeepCopyMappings(source.VJoyMappingEntries);
-            _vjoyMappingDict = null;
+            ExtendedMappingEntries = DeepCopyMappings(source.ExtendedMappingEntries);
+            _extendedMappingDict = null;
             MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
             _midiMappingDict = null;
             KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
@@ -1357,12 +1357,12 @@ namespace PadForge.Engine.Data
             _mappingDeadZoneDict = null;
         }
 
-        private static VJoyMappingEntry[] DeepCopyMappings(VJoyMappingEntry[] src)
+        private static ExtendedMappingEntry[] DeepCopyMappings(ExtendedMappingEntry[] src)
         {
             if (src == null || src.Length == 0) return null;
-            var arr = new VJoyMappingEntry[src.Length];
+            var arr = new ExtendedMappingEntry[src.Length];
             for (int i = 0; i < src.Length; i++)
-                arr[i] = new VJoyMappingEntry { Key = src[i].Key, Value = src[i].Value };
+                arr[i] = new ExtendedMappingEntry { Key = src[i].Key, Value = src[i].Value };
             return arr;
         }
 
@@ -1379,9 +1379,9 @@ namespace PadForge.Engine.Data
     }
 
     /// <summary>
-    /// Key-value entry for vJoy/MIDI mapping persistence in XML.
+    /// Key-value entry for Extended/MIDI mapping persistence in XML.
     /// </summary>
-    public class VJoyMappingEntry
+    public class ExtendedMappingEntry
     {
         [XmlAttribute] public string Key { get; set; } = "";
         [XmlAttribute] public string Value { get; set; } = "";

@@ -196,6 +196,21 @@ See [BUILD.md](BUILD.md) for project structure, architecture, and developer refe
 
 ---
 
+## Missing an emulation target?
+
+PadForge's controller picker is the set of HIDMaestro profiles with a captured HID descriptor. A few known controllers are still missing their captures, so they don't appear in the picker. If you own one of those controllers, you can unlock it for every PadForge user in about ten seconds:
+
+- Plug the controller in
+- Run `HIDMaestroProfileExtractor.exe` (shipped as a separate download alongside each PadForge release)
+- Pick your device, click **Extract**, click **Save as…**
+- Open a [profile contribution issue on HIDMaestro](https://github.com/hifihedgehog/HIDMaestro/issues/new?template=profile-contribution.yml) and attach the saved JSON
+
+Your one capture unlocks that emulation target for everyone on the next HIDMaestro release PadForge picks up.
+
+The tool reads only the cached HID descriptor (metadata). It does not read, record, or forward your controller's input. No admin required.
+
+---
+
 ## Upstream projects and acknowledgments
 
 PadForge stands on these projects. Please consider supporting them directly.

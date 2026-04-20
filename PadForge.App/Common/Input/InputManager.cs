@@ -641,10 +641,11 @@ namespace PadForge.Common.Input
             var vcB = _virtualControllers[slotB];
             var typeA = vcA?.Type ?? SlotControllerTypes[slotA];
             var typeB = vcB?.Type ?? SlotControllerTypes[slotB];
+            bool sameProfile = SlotProfileIds[slotA] == SlotProfileIds[slotB];
 
-            if (typeA == typeB)
+            if (typeA == typeB && sameProfile)
             {
-                // Same type — virtual controllers stay at their indices.
+                // Same type AND same profile — pure rename via MapTo.
                 // SettingsManager.SwapSlots (called by InputService) swaps
                 // MapTo values, which reroutes the entire pipeline:
                 //   Step 3 maps device input using MapTo → OutputState
@@ -655,12 +656,23 @@ namespace PadForge.Common.Input
             }
             else
             {
-                // Cross-type swap — must destroy both VCs so Step 5 recreates
-                // them with the correct types in ascending slot order.
-                DestroyVirtualController(slotA);
-                DestroyVirtualController(slotB);
-                _virtualControllers[slotA] = null;
-                _virtualControllers[slotB] = null;
+                // Cross-type OR same-type-different-profile. Either case needs
+                // destroy + recreate because the VC carries profile-specific
+                // state (HID descriptor, driver path, VID/PID). Intra-family
+                // resorts like xbox-360-wired ↔ xbox-series-xs-bt differ in
+                // driver path (XUSB vs xinputhid) even though both are type
+                // Microsoft — the VC object cannot be reused across profiles.
+                //
+                // Async dispose so the UI thread returns immediately instead
+                // of blocking on HIDMaestro teardown (~11s per Microsoft
+                // profile). The fast housekeeping (hook-mask clear, SDL
+                // teardown watch arm) runs synchronously inside
+                // DestroyVirtualController; only the Disconnect/Dispose call
+                // goes to the thread pool. The slot pointer is nulled
+                // synchronously so Step 5 sees the slot as empty on its
+                // next pass and can rebuild in ascending slot order.
+                DestroyVirtualController(slotA, asyncDispose: true);
+                DestroyVirtualController(slotB, asyncDispose: true);
                 _slotInactiveCounter[slotA] = 0;
                 _slotInactiveCounter[slotB] = 0;
             }

@@ -367,8 +367,35 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>트리거</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>버튼</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>장치에서 가져오기…</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>출시 예정 — 연결된 장치에서 HID 설명자를 가져옵니다.</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>가져온 프로필…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>사용자가 가져온 HIDMaestro 프로필을 관리합니다: 연결된 장치에서 새로 캡처하거나, 기존 프로필을 JSON으로 내보내거나, 더 이상 필요하지 않은 프로필을 삭제합니다.</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>가져온 프로필</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>사용자가 가져온 HIDMaestro 프로필은 PadForge.xml 내부에 저장되며 모든 Extended 슬롯의 프로필 드롭다운에 표시됩니다. 아래에서 연결된 장치에서 새로 캡처하거나 기존 프로필을 내보내기 / 삭제할 수 있습니다.</value></data>
+  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>가져온 프로필 ({0})</value></data>
+  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>가져올 수 있는 연결된 장치</value></data>
+  <data name="ManageProfiles_Export" xml:space="preserve"><value>내보내기…</value></data>
+  <data name="ManageProfiles_Delete" xml:space="preserve"><value>삭제</value></data>
+  <data name="ManageProfiles_Close" xml:space="preserve"><value>닫기</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>프로필 JSON 내보내기</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>가져온 프로필을 삭제하시겠습니까?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}"을(를) 삭제하시겠습니까? 이 프로필을 사용 중인 슬롯은 합성 Custom 항목으로 되돌아갑니다.</value></data>
+  <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0}(으)로 내보냈습니다</value></data>
+  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>내보내기 실패: {0}</value></data>
+  <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}"을(를) 삭제했습니다.</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>파일에서 가져오기…</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>프로필 JSON 가져오기</value></data>
+  <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0}에서 가져왔습니다.</value></data>
+  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>읽기 실패: {0}</value></data>
+  <data name="ImportFromDevice_Title" xml:space="preserve"><value>장치에서 가져오기</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>연결된 HID 장치를 선택하세요. PadForge가 해당 장치의 설명자, 식별 정보 및 레이아웃을 캡처하여 「(User Generated)」 접미어가 붙은 새 Extended 프로필로 저장합니다. 프로필은 PadForge.xml 내부에 저장되어 설정과 함께 이동합니다.</value></data>
+  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>연결된 장치:</value></data>
+  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>새로 고침</value></data>
+  <data name="ImportFromDevice_Import" xml:space="preserve"><value>가져오기</value></data>
+  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(이름 없는 HID 장치)</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0}개의 HID 인터페이스를 찾았습니다.</value></data>
+  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>열거 실패: {0}</value></data>
+  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>추출 실패: {0}</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>추출된 프로필 JSON을 구문 분석할 수 없습니다 — 저장된 것이 없습니다.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>사용자 지정</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>아래의 아이덴티티 및 레이아웃 재정의 필드를 활성화합니다. 꺼져 있으면 가상 컨트롤러는 HIDMaestro 프로파일을 그대로 사용합니다.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>모든 재정의 필드를 현재 프로파일의 카탈로그 값(제품 이름, VID, PID, 스틱/트리거/POV/버튼 수)으로 되돌리고 OEM 재정의를 해제합니다.</value></data>

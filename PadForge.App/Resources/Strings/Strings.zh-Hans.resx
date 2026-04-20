@@ -367,8 +367,35 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>按钮</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>从设备导入…</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>即将推出 — 从已连接的设备捕获 HID 描述符。</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>已导入的配置文件…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>管理用户导入的 HIDMaestro 配置文件：从已连接的设备捕获新配置文件、将现有配置文件导出为 JSON，或删除不再需要的配置文件。</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>已导入的配置文件</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>用户导入的 HIDMaestro 配置文件存储在 PadForge.xml 中，并出现在每个 Extended 插槽的配置文件下拉菜单中。从下方已连接的设备捕获新配置文件，或导出 / 删除现有配置文件。</value></data>
+  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>已导入的配置文件（{0}）</value></data>
+  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>可供导入的已连接设备</value></data>
+  <data name="ManageProfiles_Export" xml:space="preserve"><value>导出…</value></data>
+  <data name="ManageProfiles_Delete" xml:space="preserve"><value>删除</value></data>
+  <data name="ManageProfiles_Close" xml:space="preserve"><value>关闭</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>导出配置文件 JSON</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>删除已导入的配置文件？</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>删除「{0}」？任何使用此配置文件的插槽将回退到合成 Custom 条目。</value></data>
+  <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>已导出到 {0}</value></data>
+  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>导出失败：{0}</value></data>
+  <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>已删除「{0}」。</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>从文件导入…</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>导入配置文件 JSON</value></data>
+  <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>已从 {0} 导入。</value></data>
+  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>读取失败：{0}</value></data>
+  <data name="ImportFromDevice_Title" xml:space="preserve"><value>从设备导入</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>选择一个已连接的 HID 设备。PadForge 将捕获其描述符、标识和布局，并将其保存为带有「(User Generated)」后缀的新 Extended 配置文件。该配置文件直接存储在 PadForge.xml 中，与您的设置一起移动。</value></data>
+  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>已连接设备：</value></data>
+  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>刷新</value></data>
+  <data name="ImportFromDevice_Import" xml:space="preserve"><value>导入</value></data>
+  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>（未命名 HID 设备）</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>找到 {0} 个 HID 接口。</value></data>
+  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>枚举失败：{0}</value></data>
+  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>提取失败：{0}</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>无法解析提取的配置文件 JSON — 未保存任何内容。</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>自定义</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>启用下方的身份和布局覆盖字段。关闭时,虚拟控制器将完全按照 HIDMaestro 提供的配置文件创建。</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>将所有覆盖字段恢复为当前配置文件的目录值(产品名称、VID、PID、摇杆/扳机/POV/按钮数量),并清除 OEM 覆盖标志。</value></data>

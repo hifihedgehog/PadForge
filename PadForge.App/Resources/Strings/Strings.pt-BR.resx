@@ -367,8 +367,35 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botões</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importar do dispositivo…</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Em breve — capturar o descritor HID de um dispositivo conectado.</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Perfis importados…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gerenciar perfis HIDMaestro importados pelo usuário: capturar um novo de um dispositivo conectado, exportar um existente para JSON, ou excluir um que não é mais necessário.</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Perfis importados</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Os perfis HIDMaestro importados pelo usuário são armazenados dentro do PadForge.xml e aparecem no menu suspenso de perfis de cada slot Extended. Capture um novo de um dispositivo conectado abaixo, ou exporte / exclua um existente.</value></data>
+  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Seus perfis importados ({0})</value></data>
+  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Dispositivos conectados disponíveis para importação</value></data>
+  <data name="ManageProfiles_Export" xml:space="preserve"><value>Exportar…</value></data>
+  <data name="ManageProfiles_Delete" xml:space="preserve"><value>Excluir</value></data>
+  <data name="ManageProfiles_Close" xml:space="preserve"><value>Fechar</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportar JSON de perfil</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Excluir perfil importado?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Excluir "{0}"? Qualquer slot usando este perfil voltará para a entrada sintética Custom.</value></data>
+  <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exportado para {0}</value></data>
+  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Exportação falhou: {0}</value></data>
+  <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" excluído.</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importar do arquivo…</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importar JSON de perfil</value></data>
+  <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importado de {0}.</value></data>
+  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Leitura falhou: {0}</value></data>
+  <data name="ImportFromDevice_Title" xml:space="preserve"><value>Importar do dispositivo</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>Escolha um dispositivo HID conectado. O PadForge captura seu descritor, identidade e layout e os salva como um novo perfil Extended com sufixo "(User Generated)". O perfil é armazenado dentro do PadForge.xml e viaja junto com suas configurações.</value></data>
+  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>Dispositivos conectados:</value></data>
+  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Atualizar</value></data>
+  <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importar</value></data>
+  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispositivo HID sem nome)</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Encontrada(s) {0} interface(s) HID.</value></data>
+  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumeração falhou: {0}</value></data>
+  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extração falhou: {0}</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Não foi possível analisar o JSON do perfil extraído — nada foi salvo.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personalizar</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Habilita os campos de substituição de identidade e layout abaixo. Quando desativado, o controlador virtual usa o perfil do HIDMaestro como enviado.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Restaura todos os campos de substituição para os valores do catálogo do perfil atual (nome do produto, VID, PID, quantidade de analógicos/gatilhos/POVs/botões) e desativa a substituição OEM.</value></data>

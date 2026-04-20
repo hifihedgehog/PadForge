@@ -45,6 +45,12 @@ namespace PadForge
         private readonly MainViewModel _viewModel;
         private InputService _inputService;
         private SettingsService _settingsService;
+
+        /// <summary>Exposes the app's SettingsService to dialogs / pages
+        /// that need to persist runtime changes (e.g. the Import from
+        /// Device dialog's AddUserProfile call). Reachable via
+        /// Application.Current.MainWindow cast.</summary>
+        public SettingsService SettingsService => _settingsService;
         private RecorderService _recorderService;
         private DeviceService _deviceService;
         private Popup _controllerTypePopup;

@@ -367,8 +367,35 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>トリガー</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ボタン</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>デバイスから読み込む…</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>近日対応 — 接続中のデバイスから HID ディスクリプタを取得します。</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>インポート済みプロファイル…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルを管理します：接続されたデバイスから新しく取り込む、既存のものを JSON にエクスポート、または不要になったものを削除します。</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>インポート済みプロファイル</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルは PadForge.xml 内に保存され、すべての Extended スロットのプロファイルドロップダウンに表示されます。以下の接続デバイスから新しく取り込むか、既存のものをエクスポート／削除できます。</value></data>
+  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>インポート済みのプロファイル（{0}）</value></data>
+  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>インポート可能な接続デバイス</value></data>
+  <data name="ManageProfiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
+  <data name="ManageProfiles_Delete" xml:space="preserve"><value>削除</value></data>
+  <data name="ManageProfiles_Close" xml:space="preserve"><value>閉じる</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>プロファイル JSON をエクスポート</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>インポートしたプロファイルを削除しますか？</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>「{0}」を削除しますか？このプロファイルを使用しているスロットは合成 Custom エントリに戻ります。</value></data>
+  <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} にエクスポートしました</value></data>
+  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>エクスポートに失敗しました：{0}</value></data>
+  <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>「{0}」を削除しました。</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ファイルからインポート…</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>プロファイル JSON をインポート</value></data>
+  <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} からインポートしました。</value></data>
+  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました：{0}</value></data>
+  <data name="ImportFromDevice_Title" xml:space="preserve"><value>デバイスからインポート</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>接続されている HID デバイスを選択してください。PadForge はディスクリプタ、識別情報、レイアウトを取得し、「(User Generated)」サフィックス付きの新しい Extended プロファイルとして保存します。プロファイルは PadForge.xml 内に保存されるため、設定と一緒に持ち運べます。</value></data>
+  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>接続されたデバイス：</value></data>
+  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>更新</value></data>
+  <data name="ImportFromDevice_Import" xml:space="preserve"><value>インポート</value></data>
+  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>（名前なしの HID デバイス）</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} 個の HID インターフェースが見つかりました。</value></data>
+  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>列挙に失敗しました：{0}</value></data>
+  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>抽出に失敗しました：{0}</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>抽出したプロファイル JSON を解析できませんでした — 何も保存されていません。</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>カスタマイズ</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>下のアイデンティティおよびレイアウト上書きフィールドを有効にします。オフの場合、仮想コントローラーは HIDMaestro が提供するプロファイルそのままで作成されます。</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>すべての上書きフィールドを現在のプロファイルのカタログ値(製品名、VID、PID、スティック/トリガー/POV/ボタン数)に戻し、OEM 上書きを解除します。</value></data>

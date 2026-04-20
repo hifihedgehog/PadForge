@@ -28,9 +28,19 @@ namespace PadForge.ViewModels
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             _extendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;
+            // AvailableProfiles is a computed property that reads from
+            // HMaestroProfileCatalog. When the catalog reloads (e.g. after
+            // a user import), raise PropertyChanged so the dropdown's
+            // ItemsSource binding picks up the new entries.
+            HMaestroProfileCatalog.CatalogReloaded += OnCatalogReloaded;
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
+        }
+
+        private void OnCatalogReloaded(object sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(AvailableProfiles));
         }
 
         protected override void OnCultureChanged()

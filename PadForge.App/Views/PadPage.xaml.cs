@@ -579,6 +579,29 @@ namespace PadForge.Views
             ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
         }
 
+        private void ExtendedImportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm) return;
+
+            var mainWindow = Application.Current.MainWindow as MainWindow;
+            var settingsService = mainWindow?.SettingsService;
+            if (settingsService == null) return;
+
+            var dialog = new ManageProfilesDialog(settingsService)
+            {
+                Owner = Application.Current.MainWindow
+            };
+            if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ImportedProfileId))
+            {
+                // Auto-select a newly-imported profile on the current slot.
+                // Catalog.Reload already ran inside AddUserProfile so the
+                // Extended dropdown has the new id before this assignment
+                // hits the binding. Dialog returns false on plain close
+                // (no import); in that path we don't touch the slot.
+                vm.ProfileId = dialog.ImportedProfileId;
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  MIDI configuration bar
         // ─────────────────────────────────────────────

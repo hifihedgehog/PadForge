@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:uictrl="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
              xmlns:conv="clr-namespace:PadForge.Converters"
 >
 
@@ -20,13 +21,98 @@
 
             <!--
                 WPF UI's default ComboBox style sets ScrollViewer.VerticalScrollBarVisibility
-                to Hidden, which kills the fade-in scrollbar that its DynamicScrollViewer
-                template would otherwise provide. Flipping it to Auto app-wide restores the
-                Fluent/WinUI "show on scroll, fade on idle" behavior so long profile
-                dropdowns are actually navigable.
+                to Hidden, which suppresses the scrollbar entirely. Force it Visible so
+                the scrollbar element is present in the template, and pair with the
+                always-on DynamicScrollBar retemplate below so the track/thumb are
+                actually rendered instead of fading in only on hover.
+
+                BasedOn must target WPF UI's DefaultComboBoxStyle — basing off
+                {x:Type ComboBox} falls back to the unthemed system style.
             -->
-            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+                <Setter Property="MaxDropDownHeight" Value="200"/>
+            </Style>
+
+            <!--
+                Always-visible DynamicScrollBar retemplate.
+                WPF UI's shipped template starts PART_Border, PART_Track, and the line
+                buttons at Opacity=0 and fades them in on IsMouseOver / IsInteracted
+                (Fluent "passive scrollbar"). We want the track + thumb always visible,
+                so copy the template with those opacities set to 1 and the opacity
+                storyboards stripped. Width hover-expand (6→8) kept since it's cheap
+                and matches Fluent feel.
+            -->
+            <ControlTemplate x:Key="AlwaysVisibleDynamicVerticalScrollBar" TargetType="{x:Type uictrl:DynamicScrollBar}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition MaxHeight="14"/>
+                        <RowDefinition Height="0.00001*"/>
+                        <RowDefinition MaxHeight="14"/>
+                    </Grid.RowDefinitions>
+                    <Border x:Name="PART_Border" Grid.RowSpan="3" Width="12"
+                            HorizontalAlignment="Center"
+                            Background="{DynamicResource ScrollBarTrackFillPointerOver}"
+                            CornerRadius="6" Opacity="1"/>
+                    <Track x:Name="PART_Track" Grid.Row="1" Width="6"
+                           IsDirectionReversed="True" Opacity="1">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Command="ScrollBar.PageUpCommand" Style="{DynamicResource DynamicScrollBarPageButton}"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb Margin="0" Padding="0" Style="{DynamicResource DynamicScrollBarThumb}"/>
+                        </Track.Thumb>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Command="ScrollBar.PageDownCommand" Style="{DynamicResource DynamicScrollBarPageButton}"/>
+                        </Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="AlwaysVisibleDynamicHorizontalScrollBar" TargetType="{x:Type uictrl:DynamicScrollBar}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MaxWidth="14"/>
+                        <ColumnDefinition Width="0.00001*"/>
+                        <ColumnDefinition MaxWidth="14"/>
+                    </Grid.ColumnDefinitions>
+                    <Border x:Name="PART_Border" Grid.ColumnSpan="3" Height="12"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource ScrollBarTrackFillPointerOver}"
+                            CornerRadius="6" Opacity="1"/>
+                    <Track x:Name="PART_Track" Grid.Column="1" Height="6"
+                           Opacity="1">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Command="ScrollBar.PageLeftCommand" Style="{DynamicResource DynamicScrollBarPageButton}"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb Margin="0" Padding="0" Style="{DynamicResource DynamicScrollBarThumb}"/>
+                        </Track.Thumb>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Command="ScrollBar.PageRightCommand" Style="{DynamicResource DynamicScrollBarPageButton}"/>
+                        </Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+            </ControlTemplate>
+
+            <Style TargetType="{x:Type uictrl:DynamicScrollBar}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Style.Triggers>
+                    <Trigger Property="Orientation" Value="Horizontal">
+                        <Setter Property="Width" Value="Auto"/>
+                        <Setter Property="Height" Value="14"/>
+                        <Setter Property="Template" Value="{StaticResource AlwaysVisibleDynamicHorizontalScrollBar}"/>
+                    </Trigger>
+                    <Trigger Property="Orientation" Value="Vertical">
+                        <Setter Property="Width" Value="14"/>
+                        <Setter Property="Height" Value="Auto"/>
+                        <Setter Property="Template" Value="{StaticResource AlwaysVisibleDynamicVerticalScrollBar}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!-- Global Converters -->

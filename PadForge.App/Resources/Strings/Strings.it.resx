@@ -266,8 +266,7 @@
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versione SDL</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Lingua</value></data>
-  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Scegli la lingua di visualizzazione preferita. Richiede il riavvio.</value></data>
-  <data name="Settings_RestartRequired" xml:space="preserve"><value>Il cambio di lingua richiede un riavvio per avere effetto.</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Scegli la lingua di visualizzazione preferita.</value></data>
 
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Informazioni</value></data>

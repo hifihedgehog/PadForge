@@ -94,15 +94,23 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _outputType, value))
                 {
-                    // Category change invalidates the previous HIDMaestro
-                    // profile slug. Assign the new category's default up
-                    // front so the PadPage dropdown shows a valid selection
-                    // immediately instead of blank until the user picks
-                    // one. Engine-side fallback still catches null, but the
-                    // UI binds to ProfileId directly.
-                    ProfileId = PadForge.Common.Input.InputManager.GetDefaultProfileId(value);
+                    // Raise AvailableProfiles FIRST so the dropdown's
+                    // ItemsSource refreshes to the new category's profile
+                    // list BEFORE the ProfileId assignment below triggers
+                    // the SelectedValue binding. With the old order (ProfileId
+                    // first), SelectedValue resolved against the stale
+                    // previous-category ItemsSource, failed to match, and
+                    // left the dropdown visually blank even though the
+                    // backend was running with the correct default profile.
                     OnPropertyChanged(nameof(AvailableProfiles));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
+
+                    // Category change invalidates the previous HIDMaestro
+                    // profile slug. Assign the new category's default so the
+                    // dropdown lands on a valid selection immediately. The
+                    // engine-side fallback still catches null, but the UI
+                    // binds to ProfileId directly.
+                    ProfileId = PadForge.Common.Input.InputManager.GetDefaultProfileId(value);
                     ResetDeadZoneSettings();
                     RebuildMappings();
                     RebuildStickConfigs();

@@ -65,24 +65,16 @@ SDL3
   https://github.com/libsdl-org/SDL
   Licensed under the zlib License
 
-ViGEmBus
-  https://github.com/nefarius/ViGEmBus
-  Licensed under MIT License
-
-Nefarius.ViGEm.Client
-  https://github.com/nefarius/ViGEm.NET
-  Licensed under MIT License
-
-vJoy
-  https://github.com/BrunnerInnovation/vJoy
+HIDMaestro
+  https://github.com/hifihedgehog/HIDMaestro
   Licensed under MIT License
 
 HelixToolkit
   https://github.com/helix-toolkit/helix-toolkit
   Licensed under MIT License
 
-ModernWpf
-  https://github.com/Kinnara/ModernWpf
+WPF UI
+  https://github.com/lepoco/wpfui
   Licensed under MIT License
 
 CommunityToolkit.Mvvm

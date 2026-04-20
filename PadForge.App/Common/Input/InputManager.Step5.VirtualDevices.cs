@@ -954,9 +954,29 @@ namespace PadForge.Common.Input
         // xbox-360-wired vibrates in native games but stays silent for
         // browser "Vibration, infinite" tests. xbox-series-xs-bt uses the
         // HID output path that browsers drive reliably.
-        private const string DefaultMicrosoftProfileId = "xbox-series-xs-bt";
-        private const string DefaultSonyProfileId = "dualshock-4-v2";
-        private const string DefaultExtendedProfileId = "xbox-360-wired";
+        public const string DefaultMicrosoftProfileId = "xbox-series-xs-bt";
+        public const string DefaultSonyProfileId = "dualshock-4-v2";
+        // logitech-f710 is Extended's default — a widely-recognized generic
+        // gamepad with a working DirectInput mode. xbox-360-wired (the old
+        // default) belongs in Microsoft, not Extended, and the two buckets
+        // are now mutually exclusive.
+        public const string DefaultExtendedProfileId = "logitech-f710";
+
+        /// <summary>
+        /// Returns the default HIDMaestro profile slug for a given VC category,
+        /// or null for categories that don't use HIDMaestro (MIDI, KeyboardMouse).
+        /// Used by both CreateVirtualController (engine-side fallback when
+        /// SlotProfileIds is null) and DeviceService.CreateSlot (populates the
+        /// ViewModel's ProfileId so the profile-picker dropdown shows the
+        /// selected default immediately on slot create).
+        /// </summary>
+        public static string GetDefaultProfileId(VirtualControllerType type) => type switch
+        {
+            VirtualControllerType.Microsoft => DefaultMicrosoftProfileId,
+            VirtualControllerType.Sony => DefaultSonyProfileId,
+            VirtualControllerType.Extended => DefaultExtendedProfileId,
+            _ => null
+        };
 
         private IVirtualController CreateVirtualController(int padIndex)
         {
@@ -981,13 +1001,7 @@ namespace PadForge.Common.Input
             string slotProfileId = SlotProfileIds[padIndex];
             string profileId = !string.IsNullOrEmpty(slotProfileId)
                 ? slotProfileId
-                : controllerType switch
-                {
-                    VirtualControllerType.Microsoft => DefaultMicrosoftProfileId,
-                    VirtualControllerType.Sony => DefaultSonyProfileId,
-                    VirtualControllerType.Extended => DefaultExtendedProfileId,
-                    _ => null
-                };
+                : GetDefaultProfileId(controllerType);
 
             IVirtualController vc = null;
             try

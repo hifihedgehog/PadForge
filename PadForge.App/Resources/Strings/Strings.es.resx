@@ -266,8 +266,7 @@
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Entorno de ejecución .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versión de SDL</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Idioma</value></data>
-  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Elija su idioma de visualización preferido. Requiere reinicio.</value></data>
-  <data name="Settings_RestartRequired" xml:space="preserve"><value>El cambio de idioma requiere un reinicio para surtir efecto.</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Elija su idioma de visualización preferido.</value></data>
 
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Acerca de</value></data>

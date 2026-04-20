@@ -266,8 +266,7 @@
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 런타임</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 버전</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>언어</value></data>
-  <data name="Settings_LanguageDesc" xml:space="preserve"><value>선호하는 표시 언어를 선택하십시오. 재시작이 필요합니다.</value></data>
-  <data name="Settings_RestartRequired" xml:space="preserve"><value>언어 변경을 적용하려면 재시작이 필요합니다.</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>선호하는 표시 언어를 선택하십시오.</value></data>
 
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>정보</value></data>

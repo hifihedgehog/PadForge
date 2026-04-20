@@ -266,8 +266,7 @@
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 运行时</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 版本</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>语言</value></data>
-  <data name="Settings_LanguageDesc" xml:space="preserve"><value>选择您喜欢的显示语言。需要重启应用。</value></data>
-  <data name="Settings_RestartRequired" xml:space="preserve"><value>语言更改需要重启应用才能生效。</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>选择您喜欢的显示语言。</value></data>
 
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>关于</value></data>

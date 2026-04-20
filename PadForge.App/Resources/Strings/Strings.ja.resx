@@ -266,8 +266,7 @@
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ランタイム</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL バージョン</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>言語</value></data>
-  <data name="Settings_LanguageDesc" xml:space="preserve"><value>表示言語を選択してください。変更を反映するには再起動が必要です。</value></data>
-  <data name="Settings_RestartRequired" xml:space="preserve"><value>言語の変更を反映するには再起動が必要です。</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>表示言語を選択してください。</value></data>
 
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>PadForge について</value></data>

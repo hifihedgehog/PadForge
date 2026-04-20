@@ -266,8 +266,7 @@
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-versie</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Taal</value></data>
-  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Kies uw gewenste weergavetaal. Vereist herstart.</value></data>
-  <data name="Settings_RestartRequired" xml:space="preserve"><value>Taalwijziging vereist een herstart om van kracht te worden.</value></data>
+  <data name="Settings_LanguageDesc" xml:space="preserve"><value>Kies uw gewenste weergavetaal.</value></data>
 
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Over</value></data>

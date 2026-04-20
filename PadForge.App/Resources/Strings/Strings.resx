@@ -369,6 +369,19 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Buttons</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Import from device…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Coming soon — capture HID descriptor from a plugged-in device</value></data>
+  <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Customize</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Enable the identity and layout override fields below. When off, the virtual controller uses the selected profile's built-in identity and HID descriptor exactly as shipped by HIDMaestro.</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Snap every override field back to the current profile's catalog values (Product String, VID, PID, stick/trigger/POV/button counts) and clear the OEM override flag.</value></data>
+  <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Product String</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Overrides the iProduct string the OS reports to games and joy.cpl. Drives the Device Manager FriendlyName when no separate description is set.</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM override</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Claim the Windows DirectInput OEM-name table entry for this profile's VID:PID. joy.cpl and DirectInput UIs normally read that table before the HID iProduct string — enable this so the Product String above wins. Off by default.</value></data>
+  <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
+  <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
+  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>Rumble</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Channel</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI channel (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC Count</value></data>

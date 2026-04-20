@@ -122,6 +122,13 @@ namespace PadForge.ViewModels
                     if (_outputType == VirtualControllerType.Extended)
                     {
                         SyncExtendedConfigFromProfile();
+                        // Force Customize on whenever the user picks the
+                        // synthetic "Custom" entry — it's only useful as a
+                        // customization target, so making the user toggle
+                        // Customize separately would be UX friction. Other
+                        // profiles keep Customize in its current state.
+                        if (string.Equals(value, HMaestroProfileCatalog.CustomProfileId, System.StringComparison.Ordinal))
+                            _extendedConfig.Customize = true;
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();

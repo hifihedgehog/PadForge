@@ -18,6 +18,18 @@ namespace PadForge.Common.Input
     /// </summary>
     public static class HMaestroProfileCatalog
     {
+        /// <summary>
+        /// Reserved profile id for the synthetic "Custom" entry that PadForge
+        /// injects at the top of the Extended dropdown. When a slot has this
+        /// id selected, the Customize master toggle is forced on and the VC
+        /// is built from a generic Xbox 360-like descriptor (2 sticks, 2
+        /// triggers, 1 hat, 11 buttons) via HMProfileBuilder, with the user
+        /// editing ProductString / VID / PID / stick-trigger-POV-button
+        /// counts directly. Distinct from any real HIDMaestro profile id so
+        /// it can't collide with a future catalog entry.
+        /// </summary>
+        public const string CustomProfileId = "padforge-custom";
+
         private static readonly object _initLock = new object();
         private static bool _initialized;
         private static List<HMProfile> _allProfiles = new();
@@ -103,14 +115,25 @@ namespace PadForge.Common.Input
                         .Where(p => string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
-                    // Extended = everything that's not Microsoft or Sony.
-                    // Mutually exclusive with the other two buckets so a
-                    // profile doesn't appear twice in the category dropdowns.
-                    _extendedProfiles = _allProfiles
+                    // Extended = everything that's not Microsoft or Sony,
+                    // plus the synthetic "Custom" entry at the top so the
+                    // user can define a fully custom VC without inheriting
+                    // from any catalog profile. Custom sorts first to
+                    // make it the discoverable default for new Extended
+                    // slots. Also prepended to _allProfiles so that
+                    // GetProfileById lookups resolve it for Step 5's
+                    // CreateHMaestroController fallback path — HIDMaestro's
+                    // own HMContext.GetProfile doesn't know about the
+                    // synthetic.
+                    var custom = BuildCustomProfile();
+                    _allProfiles.Insert(0, custom);
+                    var extended = new List<HMProfile> { custom };
+                    extended.AddRange(_allProfiles
                         .Where(p =>
+                            p.Id != CustomProfileId &&
                             !string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase) &&
-                            !string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
-                        .ToList();
+                            !string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase)));
+                    _extendedProfiles = extended;
                 }
                 catch
                 {
@@ -120,6 +143,52 @@ namespace PadForge.Common.Input
 
                 _initialized = true;
             }
+        }
+
+        /// <summary>
+        /// Build the synthetic "Custom" profile that anchors the Extended
+        /// dropdown. Standard Xbox 360-like layout: 2 16-bit sticks, 2
+        /// 8-bit triggers, 1 hat switch, 11 buttons — matches the default
+        /// ExtendedConfig values so the dropdown and the override fields
+        /// agree on initial selection. Users edit any of these via the
+        /// Customize panel.
+        ///
+        /// VID:PID 0xBEEF:0xF000 — PadForge faux-VID convention. 0xBEEF
+        /// is our implicit in-program VID (already used by
+        /// WebControllerDevice and TouchpadOverlayDevice); the PID
+        /// namespace under it is partitioned so the class of device is
+        /// legible in hex dumps and joy.cpl:
+        ///   0xCA7x — input sources (web, overlay touchpad)
+        ///   0xF0xx — Forge synthetic output devices (this profile + any
+        ///            future custom-shaped VC variants)
+        /// This is squatting, not a registered allocation — no real
+        /// USB-IF VID is held by 0xBEEF so collision risk with real
+        /// hardware is negligible.
+        /// </summary>
+        private static HMProfile BuildCustomProfile()
+        {
+            byte[] descriptor = new HidDescriptorBuilder()
+                .Gamepad()
+                .AddStick("Left", 16)
+                .AddStick("Right", 16)
+                .AddTrigger("Left", 8)
+                .AddTrigger("Right", 8)
+                .AddHat()
+                .AddButtons(11)
+                .Build();
+
+            return new HMProfileBuilder()
+                .Id(CustomProfileId)
+                .Name("Custom")
+                .Vendor("Custom")
+                .Vid(0xBEEF)
+                .Pid(0xF000)
+                .ProductString("PadForge Game Controller")
+                .ManufacturerString("PadForge")
+                .Type("gamepad")
+                .Connection("usb")
+                .Descriptor(descriptor)
+                .Build();
         }
     }
 }

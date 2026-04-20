@@ -1209,11 +1209,12 @@ namespace PadForge.Common.Input
         // HID output path that browsers drive reliably.
         public const string DefaultMicrosoftProfileId = "xbox-series-xs-bt";
         public const string DefaultPlayStationProfileId = "dualshock-4-v2";
-        // logitech-f710 is Extended's default — a widely-recognized generic
-        // gamepad with a working DirectInput mode. xbox-360-wired (the old
-        // default) belongs in Microsoft, not Extended, and the two buckets
-        // are now mutually exclusive.
-        public const string DefaultExtendedProfileId = "logitech-f710";
+        // The synthetic "Custom" entry anchors Extended — new slots start
+        // there with Customize auto-enabled and the user fills in the
+        // VID/PID/ProductString/layout from scratch. Previous catalog-
+        // inheritance default (logitech-f710) would have new users pick
+        // up Logitech VID/PID surprise-unexpectedly.
+        public const string DefaultExtendedProfileId = HMaestroProfileCatalog.CustomProfileId;
 
         /// <summary>
         /// Returns the default HIDMaestro profile slug for a given VC category,
@@ -1326,7 +1327,13 @@ namespace PadForge.Common.Input
                 VcLifecycleLog.Log($"CreateHMaestroController: _hmaestroContext is null");
                 return null;
             }
-            var baseProfile = _hmaestroContext.GetProfile(profileId);
+            // Look up via HIDMaestro's catalog first (the 125+ real profiles).
+            // Fall back to HMaestroProfileCatalog for PadForge-injected
+            // synthetic entries like "padforge-custom" that HIDMaestro
+            // doesn't know about — those are built at runtime via
+            // HMProfileBuilder and only live in PadForge's wrapper catalog.
+            var baseProfile = _hmaestroContext.GetProfile(profileId)
+                           ?? HMaestroProfileCatalog.GetProfileById(profileId);
             if (baseProfile == null)
             {
                 VcLifecycleLog.Log($"CreateHMaestroController: GetProfile('{profileId}') returned null");

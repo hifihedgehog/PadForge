@@ -1019,8 +1019,17 @@ namespace PadForge.Services
                 Sticks = cfg.ThumbstickCount,
                 Triggers = cfg.TriggerCount
             };
+            // v2 also gated this on !cfg.IsGamepadPreset because Extended with an
+            // Xbox 360 / DS4 preset ran through the regular gamepad pipeline
+            // instead of producing raw HID axes/buttons. v3 has no preset
+            // routing — Extended always produces raw output per the selected
+            // HIDMaestro profile — so the gate is OutputType alone. Keeping
+            // the preset check left fresh Extended slots (Preset=Xbox360
+            // default) with SlotExtendedIsCustom=false, which told Step 3 to
+            // skip ExtendedRawOutputState population entirely and nothing
+            // reached the virtual controller until the user toggled profiles.
             _inputManager.SlotExtendedIsCustom[slotIndex] =
-                padVm.OutputType == VirtualControllerType.Extended && !cfg.IsGamepadPreset;
+                padVm.OutputType == VirtualControllerType.Extended;
 
             // The Customize flag gates only the override-producing paths
             // (custom HMProfile build, OEM name override). When off we still

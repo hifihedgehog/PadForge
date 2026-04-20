@@ -1042,7 +1042,11 @@ namespace PadForge.Common.Input
                             // HMGamepadState surface — 6 axes, 13 buttons, and
                             // hat — without the lossy 11-button XInput Gamepad
                             // bitmap intermediate.
-                            hmExt.SubmitExtendedRawState(CombinedExtendedRawStates[padIndex]);
+                            var layout = SlotCustomLayouts[padIndex];
+                            hmExt.SubmitExtendedRawState(
+                                CombinedExtendedRawStates[padIndex],
+                                layout.Sticks,
+                                layout.Triggers);
                         }
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);

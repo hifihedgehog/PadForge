@@ -406,6 +406,13 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ExtendedPid => Get("Pad_ExtendedPid");
     public string Pad_ExtendedTouchpad => Get("Pad_ExtendedTouchpad");
     public string Pad_ExtendedRumble => Get("Pad_ExtendedRumble");
+    public string About_HIDMaestro => Get("About_HIDMaestro");
+    public string About_HIDMaestroDesc => Get("About_HIDMaestroDesc");
+    public string About_HidHide => Get("About_HidHide");
+    public string About_HidHideDesc => Get("About_HidHideDesc");
+    public string About_Testimony => Get("About_Testimony");
+    public string About_TestimonyScripture => Get("About_TestimonyScripture");
+    public string About_TestimonyDoxology => Get("About_TestimonyDoxology");
     public string Pad_MidiChannel => Get("Pad_MidiChannel");
     public string Pad_MidiChannelTooltip => Get("Pad_MidiChannelTooltip");
     public string Pad_MidiCCCount => Get("Pad_MidiCCCount");

@@ -368,6 +368,22 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>トリガー</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ボタン</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>デバイスから読み込む…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>近日対応 — 接続中のデバイスから HID ディスクリプタを取得します。</value></data>
+  <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>カスタマイズ</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>下のアイデンティティおよびレイアウト上書きフィールドを有効にします。オフの場合、仮想コントローラーは HIDMaestro が提供するプロファイルそのままで作成されます。</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>すべての上書きフィールドを現在のプロファイルのカタログ値(製品名、VID、PID、スティック/トリガー/POV/ボタン数)に戻し、OEM 上書きを解除します。</value></data>
+  <data name="Pad_ExtendedProductString" xml:space="preserve"><value>製品名</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>OS がゲームや joy.cpl に報告する iProduct 文字列を上書きします。デバイスマネージャーに表示される名前にも反映されます。</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM 上書き</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>プロファイルの VID:PID に対する DirectInput の OEM 名テーブルエントリを取得します。joy.cpl と DirectInput は HID の iProduct より先にこのテーブルを読み込むため、上の製品名を優先させたい場合に有効化します。既定ではオフ。</value></data>
+  <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
+  <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
+  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>振動</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>証</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>「わたしたちはキリストについて語り,キリストを喜び,キリストを説き,キリストについて預言し,また自分たちの子孫が罪の赦しを受けるためにどこに頼ることができるかを知ることができるように,預言に従って書き記すのである。」— ニーファイ第二書 25:26</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>すべての真理の源である主イエス・キリストに,永遠にわたり栄光と誉れと賛美あれ。</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>チャンネル</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI チャンネル (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 数</value></data>

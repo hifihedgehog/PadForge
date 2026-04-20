@@ -368,6 +368,22 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botões</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importar do dispositivo…</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Em breve — capturar o descritor HID de um dispositivo conectado.</value></data>
+  <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personalizar</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Habilita os campos de substituição de identidade e layout abaixo. Quando desativado, o controlador virtual usa o perfil do HIDMaestro como enviado.</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Restaura todos os campos de substituição para os valores do catálogo do perfil atual (nome do produto, VID, PID, quantidade de analógicos/gatilhos/POVs/botões) e desativa a substituição OEM.</value></data>
+  <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Nome do produto</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Substitui a string iProduct que o sistema operacional informa aos jogos e ao joy.cpl. Também controla o nome exibido no Gerenciador de Dispositivos.</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>Substituir OEM</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Reivindica a entrada da tabela OEM do DirectInput para a VID:PID do perfil. O joy.cpl e o DirectInput leem essa tabela antes da string iProduct do HID — ative para que o nome do produto acima prevaleça. Desativado por padrão.</value></data>
+  <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
+  <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
+  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>Vibração</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>Testemunho</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>"E falamos de Cristo, regozijamo-nos em Cristo, pregamos Cristo, profetizamos de Cristo e escrevemos segundo as nossas profecias, para que nossos filhos saibam a que fonte podem recorrer em busca da remissão de seus pecados." — 2 Néfi 25:26</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glória, honra e louvor ao Senhor Jesus Cristo, fonte de toda a verdade, para todo o sempre.</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Canal</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Quantidade de CC</value></data>

@@ -71,14 +71,14 @@
                                Text="{Binding About_RawInputDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="3" Text="{Binding About_ViGEmBus, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="3" Text="{Binding About_HIDMaestro, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="3" Grid.Column="1"
-                               Text="{Binding About_ViGEmBusDesc, Source={x:Static strings:Strings.Instance}}"
+                               Text="{Binding About_HIDMaestroDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="4" Text="{Binding About_Extended, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="4" Text="{Binding About_HidHide, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="4" Grid.Column="1"
-                               Text="{Binding About_ExtendedDesc, Source={x:Static strings:Strings.Instance}}"
+                               Text="{Binding About_HidHideDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
                     <TextBlock Grid.Row="5" Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
@@ -112,6 +112,23 @@
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12" LineHeight="18"
                            Text="{Binding About_LicenseText, Source={x:Static strings:Strings.Instance}}"/>
+            </Border>
+
+            <!-- Testimony -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Opacity="0.85" FontSize="13" LineHeight="20"
+                               FontStyle="Italic"
+                               Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock TextWrapping="Wrap" Opacity="0.85" FontSize="13" LineHeight="20"
+                               FontStyle="Italic" Margin="0,12,0,0"
+                               Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
             </Border>
 
         </StackPanel>

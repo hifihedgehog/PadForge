@@ -106,8 +106,16 @@ namespace PadForge.Views
                 return;
             }
 
-            if (e.PropertyName == nameof(PadViewModel.OutputType))
+            if (e.PropertyName == nameof(PadViewModel.OutputType)
+                || e.PropertyName == nameof(PadViewModel.ProfileId))
             {
+                // ProfileId changes need an explicit rebuild: when the incoming
+                // profile's layout happens to match ExtendedConfig's current
+                // values exactly (e.g. selecting "padforge-custom" while the
+                // config already holds its 2/2/1/11 defaults), every setter
+                // inside SyncExtendedConfigFromProfile is a no-op and no
+                // ExtendedConfig.PropertyChanged fires, so the config-change
+                // listener below would never trigger the rebuild.
                 Dispatcher.Invoke(RebuildLayout);
                 return;
             }
@@ -139,7 +147,16 @@ namespace PadForge.Views
 
             if (_vm == null) return;
             var cfg = _vm.ExtendedConfig;
-            if (cfg == null || cfg.IsGamepadPreset) return;
+            // IsGamepadPreset was a v2 gate that suppressed the schematic when an
+            // Extended slot had the Xbox360/DS4 preset — in v3 Extended always
+            // uses the schematic (PadPage routes by OutputType alone), and
+            // fresh slots start with Preset=Xbox360 by default until
+            // SyncExtendedConfigFromProfile overwrites it. Gating on Preset
+            // meant any initial load of a profile whose layout already matched
+            // ExtendedConfig's defaults (2 sticks, 2 triggers, 1 POV, 11
+            // buttons) left the preview blank, since SetProperty on Preset
+            // returned false and no PropertyChanged fired.
+            if (cfg == null) return;
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
 

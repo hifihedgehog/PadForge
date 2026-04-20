@@ -51,6 +51,22 @@ namespace PadForge
             try { HIDMaestro.HMOemNameOverride.RecoverOrphans(); }
             catch { /* best effort — continue without recovery */ }
 
+            // Sweep any HIDMaestro virtual devices left over from a prior
+            // session that didn't cleanly dispose (crash, force-kill,
+            // power loss). Without this pre-pass, the orphans still
+            // enumerate on the first SDL device scan and surface in the
+            // Devices list until the user creates their first Microsoft
+            // VC — EnsureHMaestroContext's lazy sweep only fires when
+            // something kicks off a VC build. For xinputhid-backed
+            // Microsoft profiles, the XInputHook mask also starts at 0
+            // so the orphan slot is visible to SDL's XInput backend until
+            // the user recreates the VC and a fresh mask entry lands.
+            // Sweeping now removes the kernel-side presence entirely, so
+            // neither path lists it. Idempotent static API — no HMContext
+            // required; safe to call before driver install.
+            try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
+            catch { /* best effort — continue without sweep */ }
+
             // Apply saved language preference before any UI is created.
             var settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.xml");
             if (File.Exists(settingsPath))

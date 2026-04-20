@@ -335,14 +335,14 @@
                     <TextBlock Text="{Binding Pad_ExtendedVid, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedVidBox" Width="60" VerticalAlignment="Center"
+                    <TextBox x:Name="ExtendedVidBox" Width="78" VerticalAlignment="Center"
                              TextAlignment="Center"
                              LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
 
                     <TextBlock Text="{Binding Pad_ExtendedPid, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedPidBox" Width="60" VerticalAlignment="Center"
+                    <TextBox x:Name="ExtendedPidBox" Width="78" VerticalAlignment="Center"
                              TextAlignment="Center"
                              LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
                 </StackPanel>

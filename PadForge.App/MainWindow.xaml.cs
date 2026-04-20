@@ -928,6 +928,23 @@ namespace PadForge
             // when slots become active — same pattern as ViGEm. No pre-creation needed.
             if (_viewModel.Settings.AutoStartEngine)
                 _inputService.Start();
+
+            // If the App.OnStartup orphan-sweep task is still running, show
+            // a startup overlay so the user sees "Cleaning up previous
+            // session…" rather than a blank-looking window. Hide the
+            // overlay as soon as the task finishes. Skip the overlay when
+            // the task completed before we got here (common case — no
+            // orphans means the sweep returns in milliseconds) so there's
+            // no flash on a normal launch.
+            var sweep = App.OrphanSweepTask;
+            if (sweep != null && !sweep.IsCompleted)
+            {
+                StartupOverlay.Visibility = System.Windows.Visibility.Visible;
+                sweep.ContinueWith(_ =>
+                {
+                    StartupOverlay.Visibility = System.Windows.Visibility.Collapsed;
+                }, System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
+            }
         }
 
         /// <summary>Whether the app should start minimized (to taskbar).</summary>

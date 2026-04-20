@@ -259,6 +259,11 @@ namespace PadForge.Common.Input
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
                 // SDL_INIT_VIDEO is required for keyboard/mouse enumeration.
+                // Note: SDL_Init itself does not enumerate joysticks; the
+                // orphan-sweep Wait lives in Step 1's UpdateDevices so the
+                // wait happens on the polling thread, not here on the UI
+                // thread (InputService.Start is called from MainWindow's
+                // constructor before window.Show runs).
                 if (!SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMEPAD | SDL_INIT_VIDEO | SDL_INIT_HAPTIC))
                 {
                     string error = SDL_GetError();

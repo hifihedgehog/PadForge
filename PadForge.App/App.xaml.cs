@@ -28,6 +28,18 @@ namespace PadForge
         private WindowState _windowStateBeforeSleep;
         private bool _windowVisibleBeforeSleep;
 
+        /// <summary>
+        /// Background task sweeping HIDMaestro virtual controllers orphaned
+        /// by a prior session that didn't cleanly dispose (crash, force-kill,
+        /// power loss). Kicked off during OnStartup so the main window can
+        /// render immediately; awaited from <see cref="InputManager.InitializeSdl"/>
+        /// before SDL enumerates devices so the orphans never surface in
+        /// Devices list or XInput slots. By the time the user's engine Start
+        /// fires, the sweep is typically already complete; the Wait there
+        /// is the safety catch when a heavy kernel cleanup runs long.
+        /// </summary>
+        public static System.Threading.Tasks.Task OrphanSweepTask { get; private set; }
+
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -53,19 +65,23 @@ namespace PadForge
 
             // Sweep any HIDMaestro virtual devices left over from a prior
             // session that didn't cleanly dispose (crash, force-kill,
-            // power loss). Without this pre-pass, the orphans still
-            // enumerate on the first SDL device scan and surface in the
-            // Devices list until the user creates their first Microsoft
-            // VC — EnsureHMaestroContext's lazy sweep only fires when
-            // something kicks off a VC build. For xinputhid-backed
-            // Microsoft profiles, the XInputHook mask also starts at 0
-            // so the orphan slot is visible to SDL's XInput backend until
-            // the user recreates the VC and a fresh mask entry lands.
-            // Sweeping now removes the kernel-side presence entirely, so
-            // neither path lists it. Idempotent static API — no HMContext
-            // required; safe to call before driver install.
-            try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
-            catch { /* best effort — continue without sweep */ }
+            // power loss). The sweep has to complete before SDL enumerates
+            // devices — otherwise orphans surface in the Devices list and
+            // the XInputHook mask starts empty so xinputhid-backed orphans
+            // show up in SDL's XInput backend until the user rebuilds the
+            // VC. But the kernel-side removal is slow enough (seconds on
+            // a heavy load) that running it inline here kept the main
+            // window from rendering, which looked like a frozen startup.
+            // Kick the sweep off on a background thread so OnStartup
+            // returns immediately; InputManager.InitializeSdl awaits this
+            // task just before SDL_Init so the ordering guarantee holds.
+            // Idempotent static API — no HMContext required; safe to call
+            // before driver install.
+            OrphanSweepTask = System.Threading.Tasks.Task.Run(() =>
+            {
+                try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
+                catch { /* best effort — continue without sweep */ }
+            });
 
             // Apply saved language preference before any UI is created.
             var settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.xml");

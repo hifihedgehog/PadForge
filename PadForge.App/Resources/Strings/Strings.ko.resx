@@ -108,6 +108,8 @@
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge를 종료하는 중...</value></data>
+  <data name="Main_StartingUp" xml:space="preserve"><value>PadForge를 시작하는 중…</value></data>
+  <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>이전 세션에서 남은 가상 컨트롤러를 정리하는 중입니다.</value></data>
   <data name="Main_ReleasingControllers" xml:space="preserve"><value>가상 컨트롤러 해제 중</value></data>
   <data name="Main_PleaseWait" xml:space="preserve"><value>잠시 기다려 주십시오...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 장치</value></data>

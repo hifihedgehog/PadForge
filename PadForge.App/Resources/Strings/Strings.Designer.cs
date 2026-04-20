@@ -150,6 +150,8 @@ public class Strings : INotifyPropertyChanged
     public string ControllerType_KeyboardMouse => Get("ControllerType_KeyboardMouse");
     public string ControllerType_MIDI => Get("ControllerType_MIDI");
     public string Main_ShuttingDown => Get("Main_ShuttingDown");
+    public string Main_StartingUp => Get("Main_StartingUp");
+    public string Main_CleaningPreviousSession => Get("Main_CleaningPreviousSession");
     public string Main_ReleasingControllers => Get("Main_ReleasingControllers");
     public string Main_PleaseWait => Get("Main_PleaseWait");
     public string Main_DevicesSuffix => Get("Main_DevicesSuffix");

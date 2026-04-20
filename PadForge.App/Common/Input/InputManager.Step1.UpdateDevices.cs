@@ -67,10 +67,28 @@ namespace PadForge.Common.Input
         ///
         /// Fires <see cref="DevicesUpdated"/> if the device list changed.
         /// </summary>
+        private bool _orphanSweepAwaited;
+
         private void UpdateDevices()
         {
             if (!_sdlInitialized)
                 return;
+
+            // Ensure the startup orphan-sweep task has finished before we
+            // enumerate — the sweep runs in App.OnStartup on a background
+            // thread so the main window can present immediately, but we
+            // must not call SDL_GetJoysticks before kernel-side orphans
+            // are gone (otherwise they show up in the Devices list and
+            // xinputhid-backed orphans leak through SDL's XInput backend).
+            // Wait runs here on the polling thread, never on the UI
+            // thread, so any kernel-cleanup latency no longer freezes
+            // window rendering.
+            if (!_orphanSweepAwaited)
+            {
+                _orphanSweepAwaited = true;
+                try { App.OrphanSweepTask?.Wait(); }
+                catch { /* sweep failures already swallowed inside the task */ }
+            }
 
             bool changed = false;
 

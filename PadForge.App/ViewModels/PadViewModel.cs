@@ -117,7 +117,7 @@ namespace PadForge.ViewModels
                     // the newly-selected profile's HID descriptor metadata,
                     // then rebuild the mapping grid + stick/trigger configs
                     // so the UI reflects the profile's actual axes/buttons.
-                    // Microsoft/Sony slots have fixed layouts that don't
+                    // Microsoft/PlayStation slots have fixed layouts that don't
                     // vary per profile, so no rebuild is needed there.
                     if (_outputType == VirtualControllerType.Extended)
                     {
@@ -166,19 +166,19 @@ namespace PadForge.ViewModels
             _outputType switch
             {
                 VirtualControllerType.Microsoft => HMaestroProfileCatalog.MicrosoftProfiles,
-                VirtualControllerType.Sony => HMaestroProfileCatalog.SonyProfiles,
+                VirtualControllerType.PlayStation => HMaestroProfileCatalog.PlayStationProfiles,
                 VirtualControllerType.Extended => HMaestroProfileCatalog.ExtendedProfiles,
                 _ => System.Array.Empty<HIDMaestro.HMProfile>()
             };
 
         /// <summary>
         /// True when the slot's category uses an HIDMaestro profile (Microsoft /
-        /// Sony / Extended). Drives the visibility of the profile picker bar
+        /// PlayStation / Extended). Drives the visibility of the profile picker bar
         /// on the PadPage.
         /// </summary>
         public bool HasHMaestroProfileBar =>
             _outputType == VirtualControllerType.Microsoft
-            || _outputType == VirtualControllerType.Sony
+            || _outputType == VirtualControllerType.PlayStation
             || _outputType == VirtualControllerType.Extended;
 
         private string _typeInstanceLabel = "1";
@@ -516,7 +516,7 @@ namespace PadForge.ViewModels
 
             // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
 // HIDMaestro profile defines the exact axis/button count and no two
-// profiles share the same layout. Microsoft/Sony keep their fixed
+// profiles share the same layout. Microsoft/PlayStation keep their fixed
 // gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
 // v2-era concept: they routed Extended through Xbox 360 labels, which
 // is wrong when the selected profile is e.g. a flight stick or wheel.
@@ -539,7 +539,7 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
         /// </summary>
         private void InitializeGamepadMappings()
         {
-            bool isDS4 = OutputType == VirtualControllerType.Sony
+            bool isDS4 = OutputType == VirtualControllerType.PlayStation
                 || (OutputType == VirtualControllerType.Extended && ExtendedConfig.Preset == ExtendedPreset.DualShock4);
 
             // Buttons
@@ -726,26 +726,26 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
             for (int i = 0; i < stickCount; i++)
             {
                 var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"VJoyAxis{stickAxisX[i]}", cat, $"VJoyAxis{stickAxisX[i]}Neg"));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"VJoyAxis{stickAxisY[i]}", cat, $"VJoyAxis{stickAxisY[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"ExtendedAxis{stickAxisX[i]}", cat, $"ExtendedAxis{stickAxisX[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"ExtendedAxis{stickAxisY[i]}", cat, $"ExtendedAxis{stickAxisY[i]}Neg"));
             }
 
             // Trigger axes (unpaired)
             for (int i = 0; i < triggerCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"VJoyAxis{triggerAxis[i]}", MappingCategory.Triggers));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"ExtendedAxis{triggerAxis[i]}", MappingCategory.Triggers));
 
             // Buttons
             for (int i = 0; i < cfg.ButtonCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Button_Format, i + 1), $"VJoyBtn{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Button_Format, i + 1), $"ExtendedBtn{i}", MappingCategory.Buttons));
 
             // POVs
             for (int i = 0; i < cfg.PovCount; i++)
             {
                 string label = cfg.PovCount == 1 ? Strings.Instance.Extended_DPad : string.Format(Strings.Instance.Extended_POV_Format, i + 1);
-                Mappings.Add(new MappingItem($"{label} Up", $"VJoyPov{i}Up", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Down", $"VJoyPov{i}Down", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Left", $"VJoyPov{i}Left", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Right", $"VJoyPov{i}Right", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Up", $"ExtendedPov{i}Up", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Down", $"ExtendedPov{i}Down", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Left", $"ExtendedPov{i}Left", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Right", $"ExtendedPov{i}Right", MappingCategory.DPad));
             }
         }
 
@@ -1044,7 +1044,7 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
             int count = 2; // Default for Xbox 360, DS4, Extended gamepad presets
             // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
 // HIDMaestro profile defines the exact axis/button count and no two
-// profiles share the same layout. Microsoft/Sony keep their fixed
+// profiles share the same layout. Microsoft/PlayStation keep their fixed
 // gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
 // v2-era concept: they routed Extended through Xbox 360 labels, which
 // is wrong when the selected profile is e.g. a flight stick or wheel.
@@ -1088,7 +1088,7 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
             int count = 2; // Default for Xbox 360, DS4, Extended gamepad presets
             // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
 // HIDMaestro profile defines the exact axis/button count and no two
-// profiles share the same layout. Microsoft/Sony keep their fixed
+// profiles share the same layout. Microsoft/PlayStation keep their fixed
 // gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
 // v2-era concept: they routed Extended through Xbox 360 labels, which
 // is wrong when the selected profile is e.g. a flight stick or wheel.

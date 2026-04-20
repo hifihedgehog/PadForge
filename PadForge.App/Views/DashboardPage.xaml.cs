@@ -81,7 +81,7 @@ namespace PadForge.Views
         private void DS4Type_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Sony));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.PlayStation));
         }
 
         private void ExtendedType_Click(object sender, RoutedEventArgs e)

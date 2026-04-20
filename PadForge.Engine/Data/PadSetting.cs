@@ -316,19 +316,19 @@ namespace PadForge.Engine.Data
         // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
-        //  Keys use target names like "VJoyAxis0", "VJoyAxis0Neg", "VJoyBtn0",
-        //  "VJoyPov0Up", etc. Values are mapping descriptors (same format as above).
+        //  Keys use target names like "ExtendedAxis0", "ExtendedAxis0Neg", "ExtendedBtn0",
+        //  "ExtendedPov0Up", etc. Values are mapping descriptors (same format as above).
         // ─────────────────────────────────────────────
 
         /// <summary>Serializable array for XML persistence of Extended mappings.</summary>
-        [XmlArray("VJoyMappings")]
+        [XmlArray("ExtendedMappings")]
         [XmlArrayItem("Map")]
         public ExtendedMappingEntry[] ExtendedMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _extendedMappingDict;
 
-        /// <summary>Gets an Extended mapping value by key (e.g., "VJoyAxis0", "VJoyBtn5").</summary>
+        /// <summary>Gets an Extended mapping value by key (e.g., "ExtendedAxis0", "ExtendedBtn5").</summary>
         public string GetExtendedMapping(string key)
         {
             EnsureExtendedDict();
@@ -1177,7 +1177,7 @@ namespace PadForge.Engine.Data
         /// <summary>
         /// Copies mappings from another PadSetting with cross-layout translation.
         /// When source and target use the same layout, delegates to <see cref="CopyFrom"/>.
-        /// When layouts differ, translates mapping positions (e.g., ButtonA → VJoyBtn0 legacy token)
+        /// When layouts differ, translates mapping positions (e.g., ButtonA → ExtendedBtn0)
         /// and copies non-mapping settings (deadzones, sensitivity, FFB) directly.
         /// </summary>
         public void CopyFromTranslated(PadSetting source,

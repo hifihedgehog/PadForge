@@ -435,7 +435,7 @@ namespace PadForge.Common.Input
                 ps.ForceSwapMotor = "0";
 
                 // Touchpad auto-mapping for DS4 output + touchpad-capable device.
-                if (outputType == Engine.VirtualControllerType.Sony && ud.HasTouchpad)
+                if (outputType == Engine.VirtualControllerType.PlayStation && ud.HasTouchpad)
                 {
                     ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                     ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
@@ -452,7 +452,7 @@ namespace PadForge.Common.Input
 
             // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to DS4.
             if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
-                outputType == Engine.VirtualControllerType.Sony)
+                outputType == Engine.VirtualControllerType.PlayStation)
             {
                 ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                 ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";

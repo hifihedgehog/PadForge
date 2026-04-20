@@ -66,6 +66,36 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _buttonCount, Math.Clamp(value, 0, 128));
         }
 
+        private bool _oemNameOverride;
+        /// <summary>
+        /// Whether this slot claims the Windows DirectInput OEM-name table
+        /// entry for its profile's VID:PID on create. When true, Step 5
+        /// calls <see cref="HIDMaestro.HMOemNameOverride.Set"/> using
+        /// <see cref="ProductString"/> as the label so joy.cpl and DirectInput
+        /// UIs show that string instead of whatever Windows preloaded for
+        /// the VID:PID (which wins over the profile's HID iProduct for
+        /// common clone PIDs like 0079:0006 "PC TWIN SHOCK Gamepad").
+        /// </summary>
+        public bool OemNameOverride
+        {
+            get => _oemNameOverride;
+            set => SetProperty(ref _oemNameOverride, value);
+        }
+
+        private string _productString = string.Empty;
+        /// <summary>
+        /// User-editable product string. Populated from the active profile's
+        /// <c>ProductString</c> when a profile is selected and the field is
+        /// empty. When <see cref="OemNameOverride"/> is enabled this becomes
+        /// the label pushed to the DirectInput OEM-name registry via
+        /// <see cref="HIDMaestro.HMOemNameOverride.Set"/>.
+        /// </summary>
+        public string ProductString
+        {
+            get => _productString;
+            set => SetProperty(ref _productString, value ?? string.Empty);
+        }
+
         /// <summary>Total Extended axes = ThumbstickCount * 2 + TriggerCount (max 8).</summary>
         public int TotalAxes => Math.Min(ThumbstickCount * 2 + TriggerCount, MaxAxes);
 
@@ -142,5 +172,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int TriggerCount { get; set; } = 2;
         [XmlAttribute] public int PovCount { get; set; } = 1;
         [XmlAttribute] public int ButtonCount { get; set; } = 11;
+        [XmlAttribute] public bool OemNameOverride { get; set; }
+        [XmlAttribute] public string ProductString { get; set; } = string.Empty;
     }
 }

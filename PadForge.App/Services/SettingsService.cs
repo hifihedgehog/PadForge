@@ -357,6 +357,8 @@ namespace PadForge.Services
                         cfg.PovCount = cfgData.PovCount;
                         cfg.ButtonCount = cfgData.ButtonCount;
                     }
+                    cfg.OemNameOverride = cfgData.OemNameOverride;
+                    cfg.ProductString = cfgData.ProductString ?? string.Empty;
                 }
             }
         }
@@ -527,29 +529,29 @@ namespace PadForge.Services
                 {
                     if (stick.Index < 2) continue;
                     int g = stick.Index;
-                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetExtendedMapping($"VJoyStick{g}DzShape"));
-                    stick.DeadZoneX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}DzX"), 0);
-                    stick.DeadZoneY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}DzY"), 0);
-                    stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}AdzX"), 0);
-                    stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}AdzY"), 0);
-                    stick.Linear = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}Linear"), 0);
-                    stick.SensitivityCurveX = ps.GetExtendedMapping($"VJoyStick{g}CurveX") ?? "0,0;1,1";
-                    stick.SensitivityCurveY = ps.GetExtendedMapping($"VJoyStick{g}CurveY") ?? "0,0;1,1";
-                    stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}CofX"), 0);
-                    stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}CofY"), 0);
-                    stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrX"), 100);
-                    stick.MaxRangeY = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrY"), 100);
-                    stick.MaxRangeXNeg = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrXN"), stick.MaxRangeX);
-                    stick.MaxRangeYNeg = TryParseDouble(ps.GetExtendedMapping($"VJoyStick{g}MrYN"), stick.MaxRangeY);
+                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetExtendedMapping($"ExtendedStick{g}DzShape"));
+                    stick.DeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzX"), 0);
+                    stick.DeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzY"), 0);
+                    stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzX"), 0);
+                    stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzY"), 0);
+                    stick.Linear = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}Linear"), 0);
+                    stick.SensitivityCurveX = ps.GetExtendedMapping($"ExtendedStick{g}CurveX") ?? "0,0;1,1";
+                    stick.SensitivityCurveY = ps.GetExtendedMapping($"ExtendedStick{g}CurveY") ?? "0,0;1,1";
+                    stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofX"), 0);
+                    stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofY"), 0);
+                    stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrX"), 100);
+                    stick.MaxRangeY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrY"), 100);
+                    stick.MaxRangeXNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrXN"), stick.MaxRangeX);
+                    stick.MaxRangeYNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrYN"), stick.MaxRangeY);
                 }
                 foreach (var trig in padVm.TriggerConfigs)
                 {
                     if (trig.Index < 2) continue;
                     int g = trig.Index;
-                    trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"VJoyTrigger{g}Dz"), 0);
-                    trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"VJoyTrigger{g}Adz"), 0);
-                    trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"VJoyTrigger{g}Mr"), 100);
-                    trig.SensitivityCurve = ps.GetExtendedMapping($"VJoyTrigger{g}Curve") ?? "0,0;1,1";
+                    trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Dz"), 0);
+                    trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Adz"), 0);
+                    trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Mr"), 100);
+                    trig.SensitivityCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve") ?? "0,0;1,1";
                 }
 
                 // Load mapping descriptors into mapping rows.
@@ -1029,7 +1031,9 @@ namespace PadForge.Services
                     ThumbstickCount = cfg.ThumbstickCount,
                     TriggerCount = cfg.TriggerCount,
                     PovCount = cfg.PovCount,
-                    ButtonCount = cfg.ButtonCount
+                    ButtonCount = cfg.ButtonCount,
+                    OemNameOverride = cfg.OemNameOverride,
+                    ProductString = cfg.ProductString
                 });
             }
 
@@ -1109,7 +1113,9 @@ namespace PadForge.Services
                     ThumbstickCount = cfg.ThumbstickCount,
                     TriggerCount = cfg.TriggerCount,
                     PovCount = cfg.PovCount,
-                    ButtonCount = cfg.ButtonCount
+                    ButtonCount = cfg.ButtonCount,
+                    OemNameOverride = cfg.OemNameOverride,
+                    ProductString = cfg.ProductString
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;
@@ -1306,29 +1312,29 @@ namespace PadForge.Services
                     {
                         if (stick.Index < 2) continue;
                         int g = stick.Index;
-                        ps.SetExtendedMapping($"VJoyStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
-                        ps.SetExtendedMapping($"VJoyStick{g}DzX", stick.DeadZoneX.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}DzY", stick.DeadZoneY.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}Linear", stick.Linear.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}CurveX", stick.SensitivityCurveX);
-                        ps.SetExtendedMapping($"VJoyStick{g}CurveY", stick.SensitivityCurveY);
-                        ps.SetExtendedMapping($"VJoyStick{g}CofX", stick.CenterOffsetX.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}CofY", stick.CenterOffsetY.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}MrX", stick.MaxRangeX.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}MrY", stick.MaxRangeY.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
+                        ps.SetExtendedMapping($"ExtendedStick{g}DzX", stick.DeadZoneX.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}DzY", stick.DeadZoneY.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}Linear", stick.Linear.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}CurveX", stick.SensitivityCurveX);
+                        ps.SetExtendedMapping($"ExtendedStick{g}CurveY", stick.SensitivityCurveY);
+                        ps.SetExtendedMapping($"ExtendedStick{g}CofX", stick.CenterOffsetX.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}CofY", stick.CenterOffsetY.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}MrX", stick.MaxRangeX.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                     }
                     foreach (var trig in padVm.TriggerConfigs)
                     {
                         if (trig.Index < 2) continue;
                         int g = trig.Index;
-                        ps.SetExtendedMapping($"VJoyTrigger{g}Dz", trig.DeadZone.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyTrigger{g}Mr", trig.MaxRange.ToString(ic));
-                        ps.SetExtendedMapping($"VJoyTrigger{g}Curve", trig.SensitivityCurve);
+                        ps.SetExtendedMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                        ps.SetExtendedMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
                     // Write mapping descriptors and per-mapping deadzones.

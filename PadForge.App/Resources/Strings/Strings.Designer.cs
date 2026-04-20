@@ -144,9 +144,9 @@ public class Strings : INotifyPropertyChanged
     public string Common_Ms => Get("Common_Ms");
     public string Common_Unassigned => Get("Common_Unassigned");
     public string Common_PadForge => Get("Common_PadForge");
-    public string ControllerType_Xbox360 => Get("ControllerType_Xbox360");
-    public string ControllerType_DualShock4 => Get("ControllerType_DualShock4");
-    public string ControllerType_DirectInput => Get("ControllerType_DirectInput");
+    public string ControllerType_Xbox => Get("ControllerType_Xbox");
+    public string ControllerType_PlayStation => Get("ControllerType_PlayStation");
+    public string ControllerType_Extended => Get("ControllerType_Extended");
     public string ControllerType_KeyboardMouse => Get("ControllerType_KeyboardMouse");
     public string ControllerType_MIDI => Get("ControllerType_MIDI");
     public string Main_ShuttingDown => Get("Main_ShuttingDown");
@@ -163,9 +163,9 @@ public class Strings : INotifyPropertyChanged
     public string Main_Active => Get("Main_Active");
     public string Main_Initializing => Get("Main_Initializing");
     public string Main_ControllersOffline => Get("Main_ControllersOffline");
-    public string Main_Xbox360_Max_Format => Get("Main_Xbox360_Max_Format");
-    public string Main_DS4_Max_Format => Get("Main_DS4_Max_Format");
-    public string Main_DI_Max_Format => Get("Main_DI_Max_Format");
+    public string Main_Xbox_Max_Format => Get("Main_Xbox_Max_Format");
+    public string Main_PlayStation_Max_Format => Get("Main_PlayStation_Max_Format");
+    public string Main_Extended_Max_Format => Get("Main_Extended_Max_Format");
     public string Main_KBM_Max_Format => Get("Main_KBM_Max_Format");
     public string Main_MIDI_RequiresMidiServices => Get("Main_MIDI_RequiresMidiServices");
     public string Main_MIDI_Max_Format => Get("Main_MIDI_Max_Format");

@@ -20,33 +20,58 @@ namespace PadForge.Common
         //  ViGEmBus
         // ─────────────────────────────────────────────
 
-        private const string ViGEmBusResourceName = "ViGEmBus_1.22.0_x64_x86_arm64.exe";
-
-        private static string GetViGEmBusTempDir()
-            => Path.Combine(Path.GetTempPath(), "PadForge_ViGEmBus");
-
         /// <summary>
-        /// Uninstall ViGEmBus driver via msiexec /x with elevation. Retained
-        /// in v3 only for the first-run cleanup wizard that removes legacy
-        /// v2 driver installs from upgrading users' systems. Will be removed
-        /// after the migration window.
+        /// Uninstall ViGEmBus driver by looking up the MSI ProductCode in the
+        /// Windows Uninstall registry and invoking <c>msiexec /x {ProductCode}</c>.
+        /// Retained in v3 only for the first-run cleanup wizard that removes
+        /// legacy v2 driver installs from upgrading users' systems — v3
+        /// uses HIDMaestro. Registry-based lookup means we don't need to
+        /// embed the 6 MB ViGEmBus installer any more; the MSI is already
+        /// on the user's machine if they have it installed.
         /// </summary>
         public static void UninstallViGEmBus()
         {
-            try
-            {
-                var exePath = ExtractEmbeddedResource(ViGEmBusResourceName, GetViGEmBusTempDir());
-                var extractDir = ExtractInstallerBundle(exePath, GetViGEmBusTempDir());
-                var msiPath = FindMsi(extractDir,
-                    Environment.Is64BitOperatingSystem ? "ViGEmBus.x64.msi" : "ViGEmBus.msi",
-                    "ViGEmBus*.msi");
+            string productCode = FindUninstallProductCode("ViGEm");
+            if (string.IsNullOrEmpty(productCode)) return;
+            RunMsiElevated($"/x {productCode} /qb /norestart");
+        }
 
-                RunMsiElevated($"/x \"{msiPath}\" /qb /norestart");
-            }
-            finally
+        /// <summary>
+        /// Scans the Windows Uninstall registry (64- and 32-bit views) for a
+        /// product whose <c>DisplayName</c> contains <paramref name="displayNameSubstring"/>
+        /// and returns the matching subkey name (the MSI ProductCode GUID in
+        /// the form <c>{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}</c>), or null
+        /// when no match is found. Used for driver uninstalls that don't
+        /// bundle their own MSI.
+        /// </summary>
+        private static string FindUninstallProductCode(string displayNameSubstring)
+        {
+            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
+            foreach (var view in views)
             {
-                CleanupTempDir(GetViGEmBusTempDir());
+                try
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var uninstallKey = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                    if (uninstallKey == null) continue;
+
+                    foreach (var subName in uninstallKey.GetSubKeyNames())
+                    {
+                        using var sub = uninstallKey.OpenSubKey(subName, false);
+                        var name = sub?.GetValue("DisplayName") as string;
+                        if (string.IsNullOrEmpty(name)) continue;
+                        if (name.IndexOf(displayNameSubstring, StringComparison.OrdinalIgnoreCase) < 0) continue;
+
+                        // Only return MSI-format ProductCode GUIDs; fall through
+                        // for Inno/NSIS-style installers that live elsewhere.
+                        if (subName.StartsWith("{") && subName.EndsWith("}"))
+                            return subName;
+                    }
+                }
+                catch { }
             }
+            return null;
         }
 
         // ─────────────────────────────────────────────
@@ -100,8 +125,6 @@ namespace PadForge.Common
         // ─────────────────────────────────────────────
         //  vJoy
         // ─────────────────────────────────────────────
-
-        private const string VJoyResourceName = "vJoyDriver.zip";
 
         private static string GetVJoyTempDir()
             => Path.Combine(Path.GetTempPath(), "PadForge_vJoy");

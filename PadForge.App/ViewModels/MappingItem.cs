@@ -435,7 +435,7 @@ namespace PadForge.ViewModels
 
                 // Check target is a discrete (button-type) output, not an axis.
                 var t = TargetSettingName;
-                if (t.Contains("ThumbAxis") || t.StartsWith("VJoyAxis")
+                if (t.Contains("ThumbAxis") || t.StartsWith("ExtendedAxis")
                     || t.StartsWith("KbmMouse") || t.StartsWith("KbmScroll")
                     || t.StartsWith("MidiCC"))
                     return false;

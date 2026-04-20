@@ -7,7 +7,7 @@ namespace PadForge.Common.Input
 {
     /// <summary>
     /// Read-only catalog of HIDMaestro profiles, partitioned by the v3
-    /// category dropdown (Microsoft / Sony / Extended). Owns its own
+    /// category dropdown (Microsoft / PlayStation / Extended). Owns its own
     /// metadata-only HMContext: it calls LoadDefaultProfiles to enumerate
     /// the 225 embedded profile JSONs but never instantiates HMController
     /// or installs the driver. The engine's separate HMContext in
@@ -22,7 +22,7 @@ namespace PadForge.Common.Input
         private static bool _initialized;
         private static List<HMProfile> _allProfiles = new();
         private static List<HMProfile> _microsoftProfiles = new();
-        private static List<HMProfile> _sonyProfiles = new();
+        private static List<HMProfile> _playStationProfiles = new();
         private static List<HMProfile> _extendedProfiles = new();
 
         /// <summary>All loaded profiles, ordered by ID slug.</summary>
@@ -40,14 +40,14 @@ namespace PadForge.Common.Input
 
         /// <summary>Profiles where vendor == "Sony" (DualShock 3/4, DualSense,
         /// DualSense Edge, PS Move, PS3 Remote, PS Classic).</summary>
-        public static IReadOnlyList<HMProfile> SonyProfiles
+        public static IReadOnlyList<HMProfile> PlayStationProfiles
         {
-            get { EnsureInitialized(); return _sonyProfiles; }
+            get { EnsureInitialized(); return _playStationProfiles; }
         }
 
         /// <summary>Profiles that are NEITHER Microsoft nor Sony — third-party
         /// gamepads, flight sticks, wheels, HOTAS, etc. Mutually exclusive with
-        /// MicrosoftProfiles and SonyProfiles so each profile appears in
+        /// MicrosoftProfiles and PlayStationProfiles so each profile appears in
         /// exactly one category bucket.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
@@ -99,7 +99,7 @@ namespace PadForge.Common.Input
                         .Where(p => string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
-                    _sonyProfiles = _allProfiles
+                    _playStationProfiles = _allProfiles
                         .Where(p => string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 

@@ -629,7 +629,7 @@ namespace PadForge.Services
 
                 switch (padVm.OutputType)
                 {
-                    case VirtualControllerType.Sony:
+                    case VirtualControllerType.PlayStation:
                         ds4Count++;
                         slot.TypeInstanceLabel = ds4Count.ToString();
                         break;
@@ -995,6 +995,8 @@ namespace PadForge.Services
             };
             _inputManager.SlotExtendedIsCustom[slotIndex] =
                 padVm.OutputType == VirtualControllerType.Extended && !cfg.IsGamepadPreset;
+            _inputManager.SlotOemOverrideEnabled[slotIndex] = cfg.OemNameOverride;
+            _inputManager.SlotOemOverrideLabel[slotIndex] = cfg.ProductString ?? string.Empty;
         }
 
         /// <summary>
@@ -2678,7 +2680,7 @@ namespace PadForge.Services
                     switch (_mainVm.Pads[i].OutputType)
                     {
                         case VirtualControllerType.Microsoft: xboxCount++; break;
-                        case VirtualControllerType.Sony: ds4Count++; break;
+                        case VirtualControllerType.PlayStation: ds4Count++; break;
                         case VirtualControllerType.Extended: extendedCount++; break;
                         case VirtualControllerType.Midi: midiCount++; break;
                     }
@@ -3883,7 +3885,7 @@ namespace PadForge.Services
         private static int GetTypePriority(VirtualControllerType type) => type switch
         {
             VirtualControllerType.Microsoft => 0,
-            VirtualControllerType.Sony => 1,
+            VirtualControllerType.PlayStation => 1,
             VirtualControllerType.Extended => 2,
             VirtualControllerType.KeyboardMouse => 3,
             VirtualControllerType.Midi => 4,

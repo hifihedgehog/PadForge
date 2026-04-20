@@ -39,7 +39,7 @@ namespace PadForge.Common.Input
                                      && SlotExtendedIsCustom[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
-                    bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.Sony;
+                    bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation;
 
                     if (slotCount == 0)
                     {

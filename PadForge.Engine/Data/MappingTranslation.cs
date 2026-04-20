@@ -107,20 +107,24 @@ namespace PadForge.Engine.Data
         {
             if (name == null) return null;
 
-            if (name.StartsWith("VJoyBtn") && int.TryParse(name.AsSpan(7), out int btnIdx))
+            const int BtnPrefixLen = 11;   // "ExtendedBtn"
+            const int AxisPrefixLen = 12;  // "ExtendedAxis"
+            const int NegSuffixLen = 3;    // "Neg"
+
+            if (name.StartsWith("ExtendedBtn") && int.TryParse(name.AsSpan(BtnPrefixLen), out int btnIdx))
                 return new(ControlCategory.Button, btnIdx);
 
-            if (name.StartsWith("VJoyAxis") && name.EndsWith("Neg"))
+            if (name.StartsWith("ExtendedAxis") && name.EndsWith("Neg"))
             {
-                if (int.TryParse(name.AsSpan(8, name.Length - 11), out int axNegIdx))
+                if (int.TryParse(name.AsSpan(AxisPrefixLen, name.Length - AxisPrefixLen - NegSuffixLen), out int axNegIdx))
                     return new(ControlCategory.AxisNeg, axNegIdx);
             }
 
-            if (name.StartsWith("VJoyAxis") && int.TryParse(name.AsSpan(8), out int axIdx))
+            if (name.StartsWith("ExtendedAxis") && int.TryParse(name.AsSpan(AxisPrefixLen), out int axIdx))
                 return new(ControlCategory.Axis, axIdx);
 
-            // legacy VJoyPov0Up, VJoyPov0Down PadSetting keys, etc. — only POV 0 maps to D-Pad
-            if (name.StartsWith("VJoyPov0"))
+            // ExtendedPov0Up, ExtendedPov0Down PadSetting keys, etc. — only POV 0 maps to D-Pad
+            if (name.StartsWith("ExtendedPov0"))
             {
                 if (name.EndsWith("Up")) return new(ControlCategory.DPad, 0);
                 if (name.EndsWith("Down")) return new(ControlCategory.DPad, 1);
@@ -133,15 +137,15 @@ namespace PadForge.Engine.Data
 
         private static string GetExtendedPropertyName(MappingSlot slot) => slot.Category switch
         {
-            ControlCategory.Button  => $"VJoyBtn{slot.Position}",
-            ControlCategory.Axis    => $"VJoyAxis{slot.Position}",
-            ControlCategory.AxisNeg => $"VJoyAxis{slot.Position}Neg",
+            ControlCategory.Button  => $"ExtendedBtn{slot.Position}",
+            ControlCategory.Axis    => $"ExtendedAxis{slot.Position}",
+            ControlCategory.AxisNeg => $"ExtendedAxis{slot.Position}Neg",
             ControlCategory.DPad    => slot.Position switch
             {
-                0 => "VJoyPov0Up",
-                1 => "VJoyPov0Down",
-                2 => "VJoyPov0Left",
-                3 => "VJoyPov0Right",
+                0 => "ExtendedPov0Up",
+                1 => "ExtendedPov0Down",
+                2 => "ExtendedPov0Left",
+                3 => "ExtendedPov0Right",
                 _ => null
             },
             _ => null
@@ -309,7 +313,7 @@ namespace PadForge.Engine.Data
                 _ => type switch
                 {
                     VirtualControllerType.Microsoft    => "Xbox 360",
-                    VirtualControllerType.Sony => "DualShock 4",
+                    VirtualControllerType.PlayStation => "DualShock 4",
                     VirtualControllerType.Extended       => "Extended (Gamepad)",
                     _ => type.ToString()
                 }

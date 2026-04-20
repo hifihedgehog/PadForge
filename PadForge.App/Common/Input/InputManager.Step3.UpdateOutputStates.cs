@@ -101,7 +101,7 @@ namespace PadForge.Common.Input
 
                     // For DS4 slots, produce touchpad state from input device.
                     if (slot >= 0 && slot < MaxPads &&
-                        SlotControllerTypes[slot] == VirtualControllerType.Sony)
+                        SlotControllerTypes[slot] == VirtualControllerType.PlayStation)
                     {
                         us.TouchpadOutputState = MapInputToTouchpad(ud.InputState, ps, us.TouchpadOutputState);
                     }
@@ -1102,8 +1102,8 @@ namespace PadForge.Common.Input
             // The display layer (UpdateFromExtendedRawState) applies its own 1.0-Y for LiveY.
             for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
             {
-                string posDesc = ps.GetExtendedMapping($"VJoyAxis{i}");
-                string negDesc = ps.GetExtendedMapping($"VJoyAxis{i}Neg");
+                string posDesc = ps.GetExtendedMapping($"ExtendedAxis{i}");
+                string negDesc = ps.GetExtendedMapping($"ExtendedAxis{i}Neg");
                 raw.Axes[i] = MapToThumbAxisWithNeg(state, posDesc, negDesc);
             }
 
@@ -1111,7 +1111,7 @@ namespace PadForge.Common.Input
             int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
             for (int i = 0; i < cfg.Buttons; i++)
             {
-                string key = $"VJoyBtn{i}";
+                string key = $"ExtendedBtn{i}";
                 string desc = ps.GetExtendedMapping(key);
                 if (MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt))
                     raw.SetButton(i, true);
@@ -1120,8 +1120,8 @@ namespace PadForge.Common.Input
             // ── POVs ──
             for (int p = 0; p < cfg.Povs && p < raw.Povs.Length; p++)
             {
-                string upKey = $"VJoyPov{p}Up", downKey = $"VJoyPov{p}Down";
-                string leftKey = $"VJoyPov{p}Left", rightKey = $"VJoyPov{p}Right";
+                string upKey = $"ExtendedPov{p}Up", downKey = $"ExtendedPov{p}Down";
+                string leftKey = $"ExtendedPov{p}Left", rightKey = $"ExtendedPov{p}Right";
                 bool up = MapToButtonPressed(state, ps.GetExtendedMapping(upKey), TryParseIntStatic(ps.GetMappingDeadZone(upKey), 0), vgt);
                 bool down = MapToButtonPressed(state, ps.GetExtendedMapping(downKey), TryParseIntStatic(ps.GetMappingDeadZone(downKey), 0), vgt);
                 bool left = MapToButtonPressed(state, ps.GetExtendedMapping(leftKey), TryParseIntStatic(ps.GetMappingDeadZone(leftKey), 0), vgt);
@@ -1179,20 +1179,20 @@ namespace PadForge.Common.Input
                         break;
                     default:
                         // Custom Extended sticks 2+: read all settings from Extended dictionary.
-                        dzShape = ParseDeadZoneShape(ps.GetExtendedMapping($"VJoyStick{g}DzShape"));
-                        dzX = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}DzX"), 0);
-                        dzY = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}DzY"), 0);
-                        adzX = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}AdzX"), 0);
-                        adzY = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}AdzY"), 0);
-                        lin = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}Linear"), 0);
-                        lutX = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping($"VJoyStick{g}CurveX"));
-                        lutY = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping($"VJoyStick{g}CurveY"));
-                        cofX = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}CofX"), 0);
-                        cofY = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}CofY"), 0);
-                        mrX = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}MrX"), 100);
-                        mrY = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}MrY"), 100);
-                        mrXN = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}MrXN"), mrX);
-                        mrYN = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyStick{g}MrYN"), mrY);
+                        dzShape = ParseDeadZoneShape(ps.GetExtendedMapping($"ExtendedStick{g}DzShape"));
+                        dzX = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}DzX"), 0);
+                        dzY = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}DzY"), 0);
+                        adzX = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}AdzX"), 0);
+                        adzY = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}AdzY"), 0);
+                        lin = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}Linear"), 0);
+                        lutX = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping($"ExtendedStick{g}CurveX"));
+                        lutY = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping($"ExtendedStick{g}CurveY"));
+                        cofX = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}CofX"), 0);
+                        cofY = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}CofY"), 0);
+                        mrX = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}MrX"), 100);
+                        mrY = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}MrY"), 100);
+                        mrXN = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}MrXN"), mrX);
+                        mrYN = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedStick{g}MrYN"), mrY);
                         break;
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
@@ -1225,10 +1225,10 @@ namespace PadForge.Common.Input
                         break;
                     default:
                         // Custom Extended triggers 2+: read from Extended dictionary.
-                        dz = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyTrigger{g}Dz"), 0);
-                        adz = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyTrigger{g}Adz"), 0);
-                        maxR = TryParseDoubleStatic(ps.GetExtendedMapping($"VJoyTrigger{g}Mr"), 100);
-                        tlut = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping($"VJoyTrigger{g}Curve"));
+                        dz = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedTrigger{g}Dz"), 0);
+                        adz = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedTrigger{g}Adz"), 0);
+                        maxR = TryParseDoubleStatic(ps.GetExtendedMapping($"ExtendedTrigger{g}Mr"), 100);
+                        tlut = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping($"ExtendedTrigger{g}Curve"));
                         break;
                 }
                 // Triggers use signed short in raw path; convert to unsigned 16-bit range,

@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Serialization;
 
 namespace PadForge.Engine
 {
@@ -7,14 +8,19 @@ namespace PadForge.Engine
     /// (Xbox 360 Wired, DualSense, Logitech G920, etc.) is selected within each
     /// category via a per-slot preset config or, for Extended, a custom HID
     /// descriptor. Numeric values are preserved from v2 (Xbox360→Microsoft,
-    /// DualShock4→Sony, (VJoy→Extended, kept for v2→v3 migration) so existing settings files load.
+    /// DualShock4→PlayStation, VJoy→Extended, kept for v2→v3 migration) so
+    /// existing settings files load.
     /// </summary>
     public enum VirtualControllerType
     {
         /// <summary>Microsoft category — Xbox 360, Xbox One, Xbox Series, Elite, Adaptive.</summary>
         Microsoft = 0,
-        /// <summary>Sony category — DualShock 3/4, DualSense, DualSense Edge, PS Move.</summary>
-        Sony = 1,
+        /// <summary>PlayStation category — DualShock 3/4, DualSense, DualSense Edge, PS Move.</summary>
+        // XmlEnum preserves the on-disk name "Sony" so v2/early-v3 PadForge.xml
+        // files deserialize correctly. The in-code identifier is PlayStation
+        // to match the Xbox/PlayStation/Extended family naming shown in the UI.
+        [XmlEnum("Sony")]
+        PlayStation = 1,
         /// <summary>Extended category — any of the 220+ remaining HIDMaestro profiles
         /// (Logitech, Thrustmaster, Fanatec, Hori, 8BitDo, etc.) plus user-defined
         /// custom HID descriptors.</summary>

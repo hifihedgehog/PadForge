@@ -1640,7 +1640,7 @@ namespace PadForge.ViewModels
         public static MacroButtonStyle DeriveStyle(
             VirtualControllerType outputType, ExtendedPreset extendedPreset = ExtendedPreset.Xbox360) => outputType switch
         {
-            VirtualControllerType.Sony => MacroButtonStyle.DualShock4,
+            VirtualControllerType.PlayStation => MacroButtonStyle.DualShock4,
             VirtualControllerType.Extended => extendedPreset switch
             {
                 ExtendedPreset.DualShock4 => MacroButtonStyle.DualShock4,

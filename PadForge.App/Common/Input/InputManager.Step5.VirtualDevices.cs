@@ -42,7 +42,7 @@ namespace PadForge.Common.Input
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
 
         /// <summary>
-        /// Configured virtual controller category per slot (Microsoft / Sony /
+        /// Configured virtual controller category per slot (Microsoft / PlayStation /
         /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;
         /// Step 5 reads it at ~1000Hz to detect type changes and recreate
         /// controllers accordingly.
@@ -69,10 +69,40 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Per-slot flag: true if this Extended slot uses the raw custom-axis
         /// pipeline (arbitrary axis/button/POV counts), false if it uses a
-        /// preset gamepad pipeline (Microsoft / Sony category) that maps
+        /// preset gamepad pipeline (Microsoft / PlayStation category) that maps
         /// through the Gamepad struct.
         /// </summary>
         internal bool[] SlotExtendedIsCustom { get; } = new bool[MaxPads];
+
+        /// <summary>
+        /// Per-slot flag: true if this slot should claim the DirectInput
+        /// OEM-name table for its profile's VID:PID on create. Mirrored from
+        /// PadViewModel.ExtendedConfig.OemNameOverride by InputService.
+        /// </summary>
+        internal bool[] SlotOemOverrideEnabled { get; } = new bool[MaxPads];
+
+        /// <summary>
+        /// Per-slot label pushed to <see cref="HIDMaestro.HMOemNameOverride.Set"/>
+        /// when <see cref="SlotOemOverrideEnabled"/> is true. Mirrored from
+        /// PadViewModel.ExtendedConfig.ProductString.
+        /// </summary>
+        internal string[] SlotOemOverrideLabel { get; } = new string[MaxPads];
+
+        /// <summary>
+        /// Ref count of active OEM-name claims per (VID, PID) tuple. Multiple
+        /// Extended slots can target the same profile; HMOemNameOverride is
+        /// global per VID:PID, so we track refs and only call Clear when the
+        /// last slot releases. Keyed as (vid &lt;&lt; 16) | pid.
+        /// </summary>
+        private readonly System.Collections.Generic.Dictionary<uint, int> _oemOverrideRefs
+            = new System.Collections.Generic.Dictionary<uint, int>();
+
+        /// <summary>
+        /// Per-slot record of the (VID, PID) this slot currently has an OEM
+        /// claim on, so destroy can undo exactly what create applied even if
+        /// the user edited the profile or flag in between. -1 when inactive.
+        /// </summary>
+        private readonly uint[] _oemOverrideClaimedVidPid = new uint[MaxPads];
 
         /// <summary>
         /// Per-slot MIDI configuration snapshot. Written by InputService at 30Hz.
@@ -503,7 +533,7 @@ namespace PadForge.Common.Input
                     if (_virtualControllers[padIndex] == null &&
                         _slotInactiveCounter[padIndex] == 0)
                     {
-                        // All HIDMaestro-backed slots (Microsoft / Sony / Extended)
+                        // All HIDMaestro-backed slots (Microsoft / PlayStation / Extended)
                         // only get a VC when at least one assigned device is
                         // online. Unlike v2 ViGEm — which was cheap enough to
                         // spin up silent empty slots — HIDMaestro creation
@@ -514,7 +544,7 @@ namespace PadForge.Common.Input
                         // function and continue to create unconditionally.
                         var slotType = SlotControllerTypes[padIndex];
                         if ((slotType == VirtualControllerType.Microsoft
-                             || slotType == VirtualControllerType.Sony
+                             || slotType == VirtualControllerType.PlayStation
                              || slotType == VirtualControllerType.Extended)
                             && !IsSlotActive(padIndex))
                             continue;
@@ -787,7 +817,7 @@ namespace PadForge.Common.Input
                         }
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.
-                        // Everything else (Microsoft / Sony / Extended via HIDMaestro)
+                        // Everything else (Microsoft / PlayStation / Extended via HIDMaestro)
                         // submits the standard Gamepad state. The DS4 raw report path
                         // (touchpad/gyro) lives inside HMaestroVirtualController and is
                         // dispatched there based on the active profile.
@@ -795,6 +825,20 @@ namespace PadForge.Common.Input
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else if (vc is KeyboardMouseVirtualController kbmVc)
                             kbmVc.SubmitKbmState(CombinedKbmRawStates[padIndex]);
+                        else if (SlotControllerTypes[padIndex] == VirtualControllerType.Extended
+                                 && SlotExtendedIsCustom[padIndex]
+                                 && vc is HMaestroVirtualController hmExt)
+                        {
+                            // Extended with dynamic profile layout: mappings live
+                            // in ExtendedRawState (ExtendedAxis{N}/ExtendedBtn{N}/
+                            // ExtendedPov{N} target keys populated by Step 3/4)
+                            // not the standard Gamepad. Submit the raw state
+                            // directly to HIDMaestro so we cover the full
+                            // HMGamepadState surface — 6 axes, 13 buttons, and
+                            // hat — without the lossy 11-button XInput Gamepad
+                            // bitmap intermediate.
+                            hmExt.SubmitExtendedRawState(CombinedExtendedRawStates[padIndex]);
+                        }
                         else
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
                     }
@@ -955,7 +999,7 @@ namespace PadForge.Common.Input
         // browser "Vibration, infinite" tests. xbox-series-xs-bt uses the
         // HID output path that browsers drive reliably.
         public const string DefaultMicrosoftProfileId = "xbox-series-xs-bt";
-        public const string DefaultSonyProfileId = "dualshock-4-v2";
+        public const string DefaultPlayStationProfileId = "dualshock-4-v2";
         // logitech-f710 is Extended's default — a widely-recognized generic
         // gamepad with a working DirectInput mode. xbox-360-wired (the old
         // default) belongs in Microsoft, not Extended, and the two buckets
@@ -973,7 +1017,7 @@ namespace PadForge.Common.Input
         public static string GetDefaultProfileId(VirtualControllerType type) => type switch
         {
             VirtualControllerType.Microsoft => DefaultMicrosoftProfileId,
-            VirtualControllerType.Sony => DefaultSonyProfileId,
+            VirtualControllerType.PlayStation => DefaultPlayStationProfileId,
             VirtualControllerType.Extended => DefaultExtendedProfileId,
             _ => null
         };
@@ -983,9 +1027,9 @@ namespace PadForge.Common.Input
             var controllerType = SlotControllerTypes[padIndex];
 
             // MIDI and KeyboardMouse stay on their dedicated implementations.
-            // Microsoft / Sony / Extended now route through HIDMaestro.
+            // Microsoft / PlayStation / Extended now route through HIDMaestro.
             if (controllerType == VirtualControllerType.Microsoft
-                || controllerType == VirtualControllerType.Sony
+                || controllerType == VirtualControllerType.PlayStation
                 || controllerType == VirtualControllerType.Extended)
             {
                 EnsureHMaestroContext();
@@ -1009,7 +1053,7 @@ namespace PadForge.Common.Input
                 vc = controllerType switch
                 {
                     VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, profileId),
-                    VirtualControllerType.Sony => CreateHMaestroController(VirtualControllerType.Sony, profileId),
+                    VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId),
                     VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
@@ -1017,6 +1061,40 @@ namespace PadForge.Common.Input
                 };
 
                 if (vc == null) return null;
+
+                // Claim the DirectInput OEM-name table entry for this slot's
+                // profile BEFORE Connect, so the label is in place before
+                // Windows enumerates the new virtual device. Set is
+                // idempotent at the HIDMaestro level (repeated Set on the
+                // same VID:PID replaces the label but preserves the
+                // original-value capture), and we also ref-count locally so
+                // the pair of slots using the same profile doesn't get the
+                // override cleared when only one of them is destroyed.
+                if (controllerType == VirtualControllerType.Extended
+                    && SlotOemOverrideEnabled[padIndex]
+                    && vc is HMaestroVirtualController hmOem)
+                {
+                    ushort vid = hmOem.ProfileVendorId;
+                    ushort pid = hmOem.ProfileProductId;
+                    string label = SlotOemOverrideLabel[padIndex];
+                    if (!string.IsNullOrEmpty(label) && vid != 0 && pid != 0)
+                    {
+                        try
+                        {
+                            HIDMaestro.HMOemNameOverride.Set(vid, pid, label);
+                            uint key = ((uint)vid << 16) | pid;
+                            _oemOverrideRefs.TryGetValue(key, out int n);
+                            _oemOverrideRefs[key] = n + 1;
+                            _oemOverrideClaimedVidPid[padIndex] = key;
+                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Set VID_{vid:X4}&PID_{pid:X4} label=\"{label}\" refs={n + 1}");
+                        }
+                        catch (Exception ex)
+                        {
+                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Set failed: {ex.Message}");
+                        }
+                    }
+                }
+
                 vc.Connect();
 
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
@@ -1108,6 +1186,40 @@ namespace PadForge.Common.Input
             if (vc == null) return;
 
             _loggedFirstSubmit[padIndex] = false;
+
+            // Release this slot's claim on the DirectInput OEM-name table, if
+            // it held one. Ref count gates the actual HMOemNameOverride.Clear
+            // call so sibling slots targeting the same profile keep the
+            // override active until the last holder releases.
+            uint claimedKey = _oemOverrideClaimedVidPid[padIndex];
+            if (claimedKey != 0)
+            {
+                _oemOverrideClaimedVidPid[padIndex] = 0;
+                if (_oemOverrideRefs.TryGetValue(claimedKey, out int n))
+                {
+                    n--;
+                    if (n <= 0)
+                    {
+                        _oemOverrideRefs.Remove(claimedKey);
+                        try
+                        {
+                            ushort vid = (ushort)(claimedKey >> 16);
+                            ushort pid = (ushort)(claimedKey & 0xFFFF);
+                            HIDMaestro.HMOemNameOverride.Clear(vid, pid);
+                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear VID_{vid:X4}&PID_{pid:X4} (last ref)");
+                        }
+                        catch (Exception ex)
+                        {
+                            VcLifecycleLog.Log($"pad{padIndex} OEM-override Clear failed: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        _oemOverrideRefs[claimedKey] = n;
+                        VcLifecycleLog.Log($"pad{padIndex} OEM-override deref refs={n}");
+                    }
+                }
+            }
 
             // Clear the XInput hook mask BEFORE teardown so HIDMaestro's
             // internal TeardownController can query XInput slots cleanly.

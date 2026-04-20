@@ -273,7 +273,7 @@
   <data name="About_Title" xml:space="preserve"><value>PadForge について</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>コントローラーマッピングユーティリティ</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce のモダンフォーク — SDL3、WPF、.NET 10 で再構築</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆるコントローラー、キーボード、マウスを ViGEmBus、vJoy、Windows MIDI Services を通じて仮想 Xbox 360、DualShock 4、カスタム DirectInput、または MIDI コントローラーにマッピングします。コントローラー入力には SDL3 を、キーボードおよびマウス入力には Windows Raw Input を使用し、マッピング、デッドゾーン設定、フォースフィードバック管理のためのモダンな Fluent Design インターフェースを提供します。</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力デバイスをあらゆる仮想コントローラーに変換します。ゲームパッド、ジョイスティック、キーボード、マウス、タッチスクリーンを、仮想ゲームコントローラー（Xbox、PlayStation、フライトスティック、ステアリングホイール、サードパーティ製ゲームパッド）またはキーボード+マウス／MIDI 出力にマッピングし、ゲームから実際のハードウェアとして認識されます — HIDMaestro と Windows MIDI Services によって実現。コントローラー入力には SDL3、キーボードとマウスには Windows Raw Input、ゲームごとのデバイス隠蔽には HidHide を使用し、マッピング、デッドゾーン、感度曲線、フォースフィードバックのためのモダンな Fluent Design インターフェースを提供します。</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>使用技術</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>ランタイムおよび WPF フレームワーク</value></data>

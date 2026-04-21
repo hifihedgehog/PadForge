@@ -56,6 +56,12 @@ namespace PadForge.Common.Input
         /// empty slot, failed read).</summary>
         private readonly uint[] _lastPacketCount = { uint.MaxValue, uint.MaxValue, uint.MaxValue, uint.MaxValue };
 
+        /// <summary>Last-seen CombinedOutputStates per pad, captured at each
+        /// reconcile sample. Used to detect "output changing but mapped slot
+        /// has no growth" which is the authoritative signal for an xinputhid
+        /// reshuffle moving the VC to a different slot post-create.</summary>
+        private readonly Gamepad[] _lastReconcileOutputSample = new Gamepad[MaxPads];
+
         /// <summary>
         /// Threshold (packet-counter ticks over the sample window) above
         /// which a slot is considered "virtual-driven." Tuned for 250 ms
@@ -134,7 +140,7 @@ namespace PadForge.Common.Input
             // grew by at least MsVirtualSlotMinDelta in the last window.
             // An idle virtual (pad's assigned physical is not being touched,
             // its mapped keyboards aren't being typed) won't make the cut,
-            // and that's fine. We only use this set to assign *new* pads.
+            // and that's fine.
             var slotRanking = new[] { 0, 1, 2, 3 };
             Array.Sort(slotRanking, (a, b) => growth[b].CompareTo(growth[a]));
 
@@ -144,33 +150,58 @@ namespace PadForge.Common.Input
                 if (growth[s] >= MsVirtualSlotMinDelta) highGrowthSlots.Add(s);
             }
 
-            // Build new pad -> slot assignment. Sticky where possible:
-            // existing assignments are only cleared if the slot went empty
-            // (virtual definitely gone from there). An idle virtual
-            // produces low growth that is indistinguishable from an idle
-            // real via this signal alone; if we cleared on low growth we
-            // would unmask idle virtuals and leak them into the Devices
-            // list. So the rule is conservative: present+assigned is
-            // trusted, and only unassigned pads pull from the high-growth
-            // candidate pool.
+            // Detect per-pad output change since last reconcile sample.
+            // When our output state is changing but the slot we think we're
+            // at shows no growth, the VC has been reshuffled to a different
+            // slot by xinputhid. This is the authoritative discriminator
+            // between "idle virtual" (legit low growth) and "reshuffled
+            // virtual" (state changes being submitted but landing elsewhere).
+            var outputChangedSinceSample = new bool[MaxPads];
+            for (int i = 0; i < MaxPads; i++)
+            {
+                if (!GamepadEquals(CombinedOutputStates[i], _lastReconcileOutputSample[i]))
+                    outputChangedSinceSample[i] = true;
+                _lastReconcileOutputSample[i] = CombinedOutputStates[i];
+            }
+
             var newAssignments = new int[MaxPads];
             for (int i = 0; i < MaxPads; i++) newAssignments[i] = _hiddenXInputSlot[i];
 
             var claimedSlots = new HashSet<int>();
 
-            // Pass 1: sticky. Keep every assignment whose slot still has a
-            // device connected. Drop only if the slot is empty now.
+            // Pass 1: classify each pad's current assignment.
+            //  - High-growth current slot: VC is actively driving it. Keep.
+            //  - Empty current slot: VC gone. Clear.
+            //  - Present but low-growth + our output IS changing: reshuffle
+            //    detected (we're pushing state but this slot isn't receiving
+            //    it → VC is elsewhere). Clear; Pass 2 reassigns from the
+            //    high-growth candidate pool.
+            //  - Present + low-growth + our output NOT changing: idle VC.
+            //    Keep sticky to avoid unmasking the idle virtual's slot.
             foreach (int padIdx in msPads)
             {
                 int cur = _hiddenXInputSlot[padIdx];
                 if (cur < 0 || cur >= 4) continue;
-                if (present[cur])
+
+                bool curHighGrowth = growth[cur] >= MsVirtualSlotMinDelta;
+
+                if (curHighGrowth)
                 {
                     claimedSlots.Add(cur);
                 }
-                else
+                else if (!present[cur])
                 {
                     newAssignments[padIdx] = -1;
+                }
+                else if (outputChangedSinceSample[padIdx])
+                {
+                    // Pushing changes to a slot that isn't growing → moved.
+                    newAssignments[padIdx] = -1;
+                }
+                else
+                {
+                    // Idle VC at its current slot. Keep sticky.
+                    claimedSlots.Add(cur);
                 }
             }
 
@@ -228,6 +259,17 @@ namespace PadForge.Common.Input
             }
 
             return changed;
+        }
+
+        private static bool GamepadEquals(in Gamepad a, in Gamepad b)
+        {
+            return a.Buttons == b.Buttons
+                && a.LeftTrigger == b.LeftTrigger
+                && a.RightTrigger == b.RightTrigger
+                && a.ThumbLX == b.ThumbLX
+                && a.ThumbLY == b.ThumbLY
+                && a.ThumbRX == b.ThumbRX
+                && a.ThumbRY == b.ThumbRY;
         }
     }
 }

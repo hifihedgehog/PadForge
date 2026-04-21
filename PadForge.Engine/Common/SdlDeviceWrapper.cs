@@ -1036,7 +1036,7 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// Strategy for translating ViGEm dual-motor rumble values into SDL haptic effects.
+    /// Strategy for translating dual-motor rumble values into SDL haptic effects.
     /// Chosen at device open time based on the device's supported feature flags.
     /// </summary>
     public enum HapticEffectStrategy

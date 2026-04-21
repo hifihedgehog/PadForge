@@ -580,12 +580,13 @@ namespace PadForge.Engine
     /// <summary>
     /// Represents vibration/force feedback state for a virtual controller slot.
     /// Carries both scalar motor speeds (for rumble devices) and directional FFB
-    /// data (for haptic joysticks/wheels). ViGEm Xbox/DS4 callbacks only set the
-    /// scalar fields; Extended FFB callback populates directional fields as well.
+    /// data (for haptic joysticks/wheels). Microsoft/PlayStation HIDMaestro
+    /// feedback callbacks only set the scalar fields; Extended FFB callback
+    /// populates directional fields as well.
     /// </summary>
     public class Vibration
     {
-        // ── Scalar (used by ViGEm Xbox/DS4 callbacks and rumble path) ──
+        // ── Scalar (used by Microsoft/PlayStation feedback callbacks and rumble path) ──
 
         /// <summary>Left motor (low-frequency, heavy rumble) speed. Range: 0–65535.</summary>
         public ushort LeftMotorSpeed { get; set; }

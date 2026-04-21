@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("PadForge.Engine")]
-[assembly: AssemblyDescription("PadForge input engine — SDL3, XInput, and ViGEmBus integration.")]
+[assembly: AssemblyDescription("PadForge input engine — SDL3, Raw Input, and HID device enumeration.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PadForge")]
 [assembly: AssemblyProduct("PadForge")]

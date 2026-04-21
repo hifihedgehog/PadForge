@@ -51,6 +51,25 @@ namespace PadForge.Views
             SyncTabStripSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
+
+            // Re-apply the profile dropdowns' SelectedValue after ItemsSource
+            // populates. WPF's ComboBox with SelectedValuePath can land on a
+            // null selection when the DataContext switch causes SelectedValue
+            // to resolve against an in-flight (pre-populated) ItemsSource —
+            // which bites fresh slots whose PadViewModel still holds the
+            // default OutputType (Microsoft=0) so OutputType's setter never
+            // raised AvailableProfiles during CreateSlot. Deferring to
+            // Loaded-priority lets WPF's binding system populate ItemsSource
+            // first, then we force SelectedValue to re-resolve from source.
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                HMaestroProfileCombo?
+                    .GetBindingExpression(System.Windows.Controls.ComboBox.SelectedValueProperty)?
+                    .UpdateTarget();
+                ExtendedProfileCombo?
+                    .GetBindingExpression(System.Windows.Controls.ComboBox.SelectedValueProperty)?
+                    .UpdateTarget();
+            }), System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         // ─────────────────────────────────────────────

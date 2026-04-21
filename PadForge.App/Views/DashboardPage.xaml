@@ -255,7 +255,7 @@
                                                     <Setter Property="Opacity" Value="0.3"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding OutputType}" Value="Sony">
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
                                                             <Setter Property="Opacity" Value="1.0"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>

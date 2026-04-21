@@ -1003,16 +1003,25 @@ namespace PadForge.Services
                 if (SettingsManager.Profiles.Count > 0)
                     data.Profiles = SettingsManager.Profiles.ToArray();
 
-                // Serialize.
+                // Serialize to an in-memory buffer first so a serializer
+                // crash mid-write never truncates the on-disk file. The old
+                // File.Create path truncated to 0 bytes before serialize
+                // ran, which turned any XmlSerializer exception (e.g. an
+                // embedded-null device name sneaking past the sanitizer)
+                // into catastrophic settings loss at whatever byte was last
+                // flushed (issue #53).
                 var serializer = new XmlSerializer(typeof(SettingsFileData));
                 string dir = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                using (var stream = File.Create(filePath))
+                byte[] serializedBytes;
+                using (var ms = new System.IO.MemoryStream())
                 {
-                    serializer.Serialize(stream, data);
+                    serializer.Serialize(ms, data);
+                    serializedBytes = ms.ToArray();
                 }
+                File.WriteAllBytes(filePath, serializedBytes);
 
                 IsDirty = false;
                 _mainVm.Settings.HasUnsavedChanges = false;

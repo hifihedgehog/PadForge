@@ -373,6 +373,14 @@ namespace PadForge.Common.Input
         /// most recent Microsoft-type DestroyVirtualController. Called by
         /// the slot-empty probe on the happy path, and by the 60 s failsafe
         /// if xinputhid never surfaces an empty reading.
+        ///
+        /// Skips the mask clear if any live pad currently has this slot in
+        /// <see cref="_hiddenXInputSlot"/> — that means xinputhid handed the
+        /// just-freed slot to a newly-created Microsoft VC (common when
+        /// destroy + create run in quick succession on the same pad), and
+        /// the new VC still needs the mask bit to stay hidden from SDL.
+        /// Without this guard, a fast destroy→create on the same slot loses
+        /// the mask 60 s after the destroy when the failsafe fires.
         /// </summary>
         private void ReleaseDeferredXInputMask()
         {
@@ -381,6 +389,14 @@ namespace PadForge.Common.Input
             _pendingXInputMaskClearSlot = -1;
             _pendingMaskSince = DateTime.MinValue;
             _xinputSlotEmptySince = DateTime.MinValue;
+
+            bool stillClaimed = false;
+            for (int p = 0; p < MaxPads; p++)
+            {
+                if (_hiddenXInputSlot[p] == slot) { stillClaimed = true; break; }
+            }
+            if (stillClaimed) return;
+
             XInputHook.SetIgnoreSlotMask(
                 XInputHook.IgnoreSlotMask & ~(1 << slot));
         }

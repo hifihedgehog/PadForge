@@ -931,9 +931,12 @@ namespace PadForge.Engine
                     byte[] buffer = new byte[512];
                     if (HidD_GetProductString(handle, buffer, (uint)buffer.Length))
                     {
-                        string name = Encoding.Unicode.GetString(buffer).TrimEnd('\0');
-                        if (!string.IsNullOrWhiteSpace(name))
-                            return name.Trim();
+                        // Route raw HID product strings through the
+                        // sanitizer so embedded nulls / control chars /
+                        // garbage bytes from cheap USB descriptors don't
+                        // crash XmlSerializer at save time (issue #53).
+                        return DeviceNameSanitizer.Clean(
+                            Encoding.Unicode.GetString(buffer));
                     }
                     return null;
                 }

@@ -421,7 +421,19 @@ namespace PadForge.Services
 
             // Reset PadViewModel so stale settings (deadzone, sensitivity, etc.)
             // don't leak into the next controller created in this slot.
-            _mainVm.Pads[slotIndex].ResetAllSettings();
+            var padVm = _mainVm.Pads[slotIndex];
+            padVm.ResetAllSettings();
+
+            // Clear mapping state too. ResetAllSettings only covers deadzone /
+            // sensitivity / motor; it does NOT clear MappingItem.SourceDescriptor
+            // or SelectedMappedDevice. Without this, creating a new slot at the
+            // same index with the same OutputType (e.g. Microsoft → Microsoft)
+            // leaves the old mapping descriptors visible in the UI — the
+            // OutputType setter is a no-op on same-value assignment so it
+            // doesn't fire RebuildMappings. RebuildMappings here clears the
+            // Mappings collection and re-adds fresh empty-descriptor rows.
+            padVm.SelectedMappedDevice = null;
+            padVm.RebuildMappings();
 
             // Unassign all devices mapped to this slot.
             // Remove entries that are ONLY mapped to this slot (orphans).

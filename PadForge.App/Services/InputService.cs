@@ -1181,7 +1181,23 @@ namespace PadForge.Services
         internal static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
         {
             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
-            if (us == null) return;
+            if (us == null)
+            {
+                // Device isn't actually mapped to this pad (e.g. a rearrange
+                // moved it to a different slot while this pad's cached
+                // SelectedMappedDevice still points here). Clear the UI's
+                // mapping descriptors so stale state doesn't persist in the
+                // Mappings grid — without this, the UI keeps showing the
+                // old device's bindings even though they no longer fire
+                // on this pad.
+                foreach (var mapping in padVm.Mappings)
+                {
+                    mapping.LoadDescriptor(string.Empty);
+                    if (mapping.NegSettingName != null)
+                        mapping.LoadNegDescriptor(string.Empty);
+                }
+                return;
+            }
 
             var ps = us.GetPadSetting();
             if (ps == null) return;
@@ -2637,6 +2653,14 @@ namespace PadForge.Services
                     padVm.MappedDeviceName = "No device mapped";
                     padVm.MappedDeviceGuid = Guid.Empty;
                     padVm.IsDeviceOnline = false;
+                    // Also clear the selected-device pointer. Without this, a
+                    // pad that was stripped of all devices (e.g. a rearrange
+                    // that moved every device to a different slot) keeps its
+                    // old SelectedMappedDevice pointing at a device that is
+                    // no longer on this pad, and subsequent
+                    // LoadPadSettingToViewModel calls return early while the
+                    // stale Mappings / descriptors persist in the UI.
+                    padVm.SelectedMappedDevice = null;
                 }
                 else
                 {

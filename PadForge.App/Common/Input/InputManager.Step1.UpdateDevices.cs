@@ -404,7 +404,23 @@ namespace PadForge.Common.Input
                 }
 
                 // Check if the device is still attached.
-                if (ud.Device == null || !ud.Device.IsAttached)
+                //
+                // Three signals, any one → disconnect:
+                //   (a) The SdlDeviceWrapper handle is null.
+                //   (b) ud.Device.IsAttached returns false (SDL's own
+                //       attached state per SDL_JoystickConnected).
+                //   (c) sdlId is no longer in SDL_GetJoysticks().
+                //
+                // (c) is the belt-and-suspenders for the "SDL keeps a
+                // stale JoystickID after the kernel device is gone"
+                // failure mode (HIDMaestro#11): SDL's internal
+                // JoystickConnected state can still return true after
+                // WM_DEVICECHANGE removal if a handle was ever opened,
+                // leaving ud.Device.IsAttached stuck on. Cross-checking
+                // against the live enumeration makes the undead-ID case
+                // look just like a normal disconnect.
+                bool inCurrentEnum = currentInstanceIds.Contains(sdlId);
+                if (ud.Device == null || !ud.Device.IsAttached || !inCurrentEnum)
                 {
                     MarkDeviceOffline(ud);
                     disconnectedIds.Add(sdlId);

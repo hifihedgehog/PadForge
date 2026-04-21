@@ -357,9 +357,54 @@ namespace PadForge.Common.Input
         /// <summary>Max wall-clock window to keep a teardown watch active. If no
         /// SDL-observable settle happens in this window, the watch is cleared
         /// without firing a reopen. Catches the edge case where xinputhid
-        /// teardown produces no SDL-visible transition.</summary>
-        private const double MsTeardownWatchMaxSeconds = 20.0;
+        /// teardown produces no SDL-visible transition.
+        /// Set generously to accommodate slow hardware: 5-10s is typical on
+        /// modern machines; older CPUs / busy Windows kernels can take
+        /// noticeably longer. This is a failsafe against a stuck watch, not
+        /// a normal-case deadline — the watch should complete on SDL
+        /// enumeration stability long before this fires.</summary>
+        private const double MsTeardownWatchMaxSeconds = 60.0;
         private DateTime _msTeardownStartedAt = DateTime.MinValue;
+
+        /// <summary>
+        /// XInput slot that the in-progress Microsoft-type teardown originally
+        /// claimed. The XInputHook mask bit for this slot stays set until the
+        /// teardown watch signals HIDMaestro has observably finished — holding
+        /// the mask through the 5-10s xinputhid/XUSB teardown window prevents
+        /// SDL's XInput backend from seeing the dying-but-not-gone kernel
+        /// device and enumerating it as a phantom (issue #11). -1 = none
+        /// pending. Cleared by the XInput-slot-empty probe below (authoritative),
+        /// and as fallback on watch timeout / exception paths.
+        /// </summary>
+        private int _pendingXInputMaskClearSlot = -1;
+
+        /// <summary>First-observed UTC timestamp of the XInput slot reporting
+        /// ERROR_DEVICE_NOT_CONNECTED via GetStateOriginal. When this has
+        /// held for <see cref="XInputSlotEmptyDebounceMs"/> ms, we release
+        /// the pending mask. Reset whenever the slot comes back occupied
+        /// (xinputhid transients during teardown). MinValue = not started.
+        /// Using a short debounce, not a wall-clock deadline: short enough
+        /// to be unnoticeable on fast hardware, long enough to reject
+        /// xinputhid flicker.</summary>
+        private DateTime _xinputSlotEmptySince = DateTime.MinValue;
+        private const int XInputSlotEmptyDebounceMs = 500;
+
+        /// <summary>
+        /// Clears the pending XInput mask bit for the slot recorded by the
+        /// most recent Microsoft-type DestroyVirtualController. Called by
+        /// the _msTeardown* watch on each of its three exit paths (stable,
+        /// max-time, exception) so the mask is always released — never
+        /// leaked into a permanent mask that would block a future real or
+        /// virtual controller from taking the slot.
+        /// </summary>
+        private void ReleaseDeferredXInputMask()
+        {
+            int slot = _pendingXInputMaskClearSlot;
+            if (slot < 0) return;
+            _pendingXInputMaskClearSlot = -1;
+            XInputHook.SetIgnoreSlotMask(
+                XInputHook.IgnoreSlotMask & ~(1 << slot));
+        }
 
         /// <summary>Debounce window in milliseconds. Once SDL's joystick list has
         /// changed from the pre-destroy snapshot, it must hold stable for this long
@@ -498,6 +543,14 @@ namespace PadForge.Common.Input
                         else if ((DateTime.UtcNow - _msTeardownStableSince).TotalMilliseconds
                                  >= MsTeardownStableDebounceMs)
                         {
+                            // SDL enumeration has settled — force SDL handle
+                            // reopen so any stale joystick handles are dropped.
+                            // NOTE: this is NOT the correct signal to release
+                            // the deferred XInput mask; SDL "stable" can mean
+                            // "stable WITH the phantom already enumerated"
+                            // (issue #11 failure mode). Mask release is gated
+                            // separately below on direct XInputGetStateOriginal
+                            // probes of the pending slot.
                             _sdlJoysticksNeedReopen = true;
                             _msTeardownSdlSnapshot = null;
                             _msTeardownLastObservedIds = null;
@@ -516,6 +569,8 @@ namespace PadForge.Common.Input
                         && (DateTime.UtcNow - _msTeardownStartedAt).TotalSeconds
                            > MsTeardownWatchMaxSeconds)
                     {
+                        ReleaseDeferredXInputMask();
+                        _xinputSlotEmptySince = DateTime.MinValue;
                         _msTeardownSdlSnapshot = null;
                         _msTeardownLastObservedIds = null;
                         _msTeardownStableSince = DateTime.MinValue;
@@ -524,10 +579,46 @@ namespace PadForge.Common.Input
                 }
                 catch
                 {
+                    ReleaseDeferredXInputMask();
+                    _xinputSlotEmptySince = DateTime.MinValue;
                     _msTeardownSdlSnapshot = null;
                     _msTeardownLastObservedIds = null;
                     _msTeardownStableSince = DateTime.MinValue;
                     _msTeardownStartedAt = DateTime.MinValue;
+                }
+            }
+
+            // Authoritative mask-release probe. When a Microsoft-type VC is
+            // torn down we defer the XInputHook mask clear until we observe
+            // the underlying XInput slot actually report ERROR_DEVICE_NOT_CONNECTED
+            // via the real (unhooked) XInputGetState. SDL-enumeration
+            // stability isn't reliable for this — it can stabilize WITH the
+            // phantom already visible to SDL, at which point releasing the
+            // mask is too late. Polling the real XInput state bypasses SDL
+            // entirely and reflects the xinputhid driver's actual slot
+            // occupancy, so we release exactly when the slot is empty.
+            // Debounced to reject xinputhid flicker during teardown.
+            if (_pendingXInputMaskClearSlot >= 0 && XInputHook.IsInstalled)
+            {
+                int probeRc = XInputHook.GetStateOriginal(
+                    _pendingXInputMaskClearSlot, out _);
+                const int ErrorDeviceNotConnected = 0x048F;
+                if (probeRc == ErrorDeviceNotConnected)
+                {
+                    if (_xinputSlotEmptySince == DateTime.MinValue)
+                        _xinputSlotEmptySince = DateTime.UtcNow;
+                    else if ((DateTime.UtcNow - _xinputSlotEmptySince).TotalMilliseconds
+                             >= XInputSlotEmptyDebounceMs)
+                    {
+                        ReleaseDeferredXInputMask();
+                        _xinputSlotEmptySince = DateTime.MinValue;
+                    }
+                }
+                else
+                {
+                    // Slot came back occupied — xinputhid is still in
+                    // transition. Reset the debounce timer.
+                    _xinputSlotEmptySince = DateTime.MinValue;
                 }
             }
 
@@ -1420,14 +1511,31 @@ namespace PadForge.Common.Input
             _extendedAppliedProductString[padIndex] = null;
             _extendedAppliedLayout[padIndex] = default;
 
-            // Clear the XInput hook mask BEFORE teardown so HIDMaestro's
-            // internal TeardownController can query XInput slots cleanly.
+            // Defer the XInputHook mask clear until HIDMaestro's teardown
+            // has observably completed (the _msTeardown watch below fires
+            // _sdlJoysticksNeedReopen when SDL's enumeration stabilizes).
+            // Clearing the mask immediately on Dispose lets SDL's XInput
+            // backend enumerate the dying-but-not-gone XUSB slot during
+            // the 5-10s xinputhid teardown window — which surfaces as a
+            // "Xbox 360 Controller at XInput#N" phantom (issue #11).
+            // Clearing _hiddenXInputSlot[padIndex] now (so the pad is
+            // marked free for a new VC on the same slot) while keeping
+            // the mask bit set is safe: the bit follows the Microsoft-type
+            // teardown state, not the pad state.
             int hiddenSlot = _hiddenXInputSlot[padIndex];
             if (hiddenSlot >= 0)
             {
-                XInputHook.SetIgnoreSlotMask(
-                    XInputHook.IgnoreSlotMask & ~(1 << hiddenSlot));
                 _hiddenXInputSlot[padIndex] = -1;
+                if (vc.Type == VirtualControllerType.Microsoft)
+                    _pendingXInputMaskClearSlot = hiddenSlot;
+                else
+                {
+                    // Non-Microsoft VCs don't hit the xinputhid teardown
+                    // race (they don't claim XInput slots), so the
+                    // immediate mask clear that worked before stays.
+                    XInputHook.SetIgnoreSlotMask(
+                        XInputHook.IgnoreSlotMask & ~(1 << hiddenSlot));
+                }
             }
 
             // If this is a Microsoft-type virtual (xinputhid or XUSB backend),

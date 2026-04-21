@@ -630,6 +630,32 @@ namespace PadForge.Common.Input
                     {
                         anyNeedsCreate = true;
                         if (!_slotInitializing[padIndex]) BeginInitializing(padIndex);
+
+                        // Ascending-padIndex XInput claim invariant. xinputhid
+                        // assigns the lowest-available kernel slot per
+                        // CreateController, so the order of creation
+                        // determines the kernel-slot ↔ padIndex mapping.
+                        // If this is a Microsoft slot waking up while any
+                        // higher padIndex Microsoft slot already owns a VC,
+                        // tear down the higher ones so Pass 2 rebuilds in
+                        // strict ascending order. Idempotent: the next cycle
+                        // sees vc == null on the torn-down slots and the scan
+                        // finds nothing to destroy.
+                        if (SlotControllerTypes[padIndex] == VirtualControllerType.Microsoft)
+                        {
+                            for (int higher = padIndex + 1; higher < MaxPads; higher++)
+                            {
+                                if (SlotControllerTypes[higher] != VirtualControllerType.Microsoft)
+                                    continue;
+                                if (_virtualControllers[higher] is HMaestroVirtualController)
+                                {
+                                    DestroyVirtualController(higher, asyncDispose: true);
+                                    _virtualControllers[higher] = null;
+                                    _createFailed[higher] = false;
+                                    if (IsSlotActive(higher)) BeginInitializing(higher);
+                                }
+                            }
+                        }
                     }
                 }
                 else if (vc != null && !HasAnyDeviceMapped(padIndex))

@@ -34,13 +34,16 @@ namespace PadForge.Common.Input
         // (Raw Input IntPtr handles instead of SDL uint IDs).
 
         /// <summary>
-        /// SDL instance IDs identified as ViGEm virtual controllers.
-        /// These are skipped entirely on subsequent enumeration cycles to avoid
-        /// the open/close cycle that resets XInput rumble state — SDL3's close
-        /// internally calls XInputSetState(0,0) on the device's XInput slot,
-        /// which triggers ViGEm's FeedbackReceived(0,0) and kills active vibration.
+        /// SDL instance IDs identified as virtual controllers (HIDMaestro
+        /// today; v2-era ViGEm paths also match as defense-in-depth for
+        /// upgrading users pre-cleanup). These are skipped entirely on
+        /// subsequent enumeration cycles to avoid the open/close cycle that
+        /// resets XInput rumble state — SDL3's close internally calls
+        /// XInputSetState(0,0) on the device's XInput slot, which would
+        /// trigger the virtual's feedback callback with zero motors and
+        /// kill active vibration.
         /// </summary>
-        private readonly HashSet<uint> _filteredVigemInstanceIds = new HashSet<uint>();
+        private readonly HashSet<uint> _filteredVirtualInstanceIds = new HashSet<uint>();
 
         // ── Async Raw Input enumeration ──
         // Raw Input keyboard/mouse enumeration is expensive (CreateFile +
@@ -119,7 +122,7 @@ namespace PadForge.Common.Input
             // the real device is re-opened on this pass. Without this the
             // filtered cache is sticky across virtual lifecycle and can
             // permanently mask the user's real input device.
-            var cached = _filteredVigemInstanceIds.ToArray();
+            var cached = _filteredVirtualInstanceIds.ToArray();
             foreach (uint cid in cached)
             {
                 string cp = SDL_GetJoystickPathForID(cid) ?? string.Empty;
@@ -127,7 +130,7 @@ namespace PadForge.Common.Input
                     && int.TryParse(cp.Substring(7), out int cslot)
                     && !IsHidMaestroXInputSlot(cslot))
                 {
-                    _filteredVigemInstanceIds.Remove(cid);
+                    _filteredVirtualInstanceIds.Remove(cid);
                 }
             }
 
@@ -143,7 +146,7 @@ namespace PadForge.Common.Input
                 try
                 {
                     // Skip devices already identified as ViGEm virtual controllers.
-                    if (_filteredVigemInstanceIds.Contains(instanceId))
+                    if (_filteredVirtualInstanceIds.Contains(instanceId))
                         continue;
 
                     // Skip devices we already have open (by SDL instance ID).
@@ -168,7 +171,7 @@ namespace PadForge.Common.Input
                     if (hmMatch)
                     {
                         Debug.WriteLine($"[Step1] Pre-open filtered HIDMaestro device: SDL#{instanceId} path={prePath}");
-                        _filteredVigemInstanceIds.Add(instanceId);
+                        _filteredVirtualInstanceIds.Add(instanceId);
                         continue;
                     }
 
@@ -183,10 +186,10 @@ namespace PadForge.Common.Input
                     // ── Post-open filtering (fallback) ──
                     // Still check post-open in case the pre-open path query
                     // returned an empty or unrecognized path — defence in depth.
-                    if (IsViGEmVirtualDevice(wrapper))
+                    if (IsHidMaestroVirtualDevice(wrapper))
                     {
                         Debug.WriteLine($"[Step1] Post-open filtered HIDMaestro device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
-                        _filteredVigemInstanceIds.Add(instanceId);
+                        _filteredVirtualInstanceIds.Add(instanceId);
                         wrapper.Dispose();
                         continue;
                     }
@@ -416,7 +419,7 @@ namespace PadForge.Common.Input
             }
 
             // Clean up ViGEm IDs that are no longer present (virtual controller destroyed).
-            _filteredVigemInstanceIds.IntersectWith(currentInstanceIds);
+            _filteredVirtualInstanceIds.IntersectWith(currentInstanceIds);
 
             // --- Notify if anything changed ---
             if (changed)
@@ -443,7 +446,7 @@ namespace PadForge.Common.Input
         /// reports real Xbox / DualSense / wheel VID/PIDs to make virtual
         /// devices indistinguishable from real ones at the application layer.
         /// </summary>
-        private bool IsViGEmVirtualDevice(SdlDeviceWrapper wrapper)
+        private bool IsHidMaestroVirtualDevice(SdlDeviceWrapper wrapper)
         {
             string path = wrapper.DevicePath;
             if (string.IsNullOrEmpty(path))

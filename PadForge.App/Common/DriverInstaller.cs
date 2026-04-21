@@ -126,9 +126,6 @@ namespace PadForge.Common
         //  vJoy
         // ─────────────────────────────────────────────
 
-        private static string GetVJoyTempDir()
-            => Path.Combine(Path.GetTempPath(), "PadForge_vJoy");
-
         /// <summary>
         /// Uninstall vJoy driver. Removes device nodes first (so the driver
         /// can unload cleanly), then removes the driver from the store,
@@ -347,31 +344,6 @@ namespace PadForge.Common
 
             // Fallback: check for legacy Inno Setup install via registry.
             return !string.IsNullOrEmpty(GetVJoyVersionFromRegistry());
-        }
-
-        /// <summary>
-        /// Returns the installed vJoy version string, or null if not found.
-        /// </summary>
-        public static string GetVJoyVersion()
-        {
-            // Check our minimal install first.
-            string vjoyDir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
-            if (File.Exists(Path.Combine(vjoyDir, "vjoy.sys")))
-            {
-                // Try to get version from the driver file.
-                try
-                {
-                    var vi = FileVersionInfo.GetVersionInfo(Path.Combine(vjoyDir, "vjoy.sys"));
-                    if (!string.IsNullOrEmpty(vi.FileVersion))
-                        return vi.FileVersion;
-                }
-                catch { }
-                return "Installed";
-            }
-
-            // Fallback: legacy registry detection.
-            return GetVJoyVersionFromRegistry();
         }
 
         private static string GetVJoyVersionFromRegistry()

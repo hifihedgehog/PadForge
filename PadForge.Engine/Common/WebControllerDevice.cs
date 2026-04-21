@@ -17,7 +17,7 @@ namespace PadForge.Engine
         private const int NumGamepadButtons = 11;
         private const int NumGamepadPovs = 1;
 
-        // Distinctive VID/PID to avoid ViGEm filter false positives.
+        // Distinctive VID/PID to avoid virtual-controller filter false positives.
         private const ushort WebVendorId = 0xBEEF;
         private const ushort WebProductId = 0xCA7E;
 

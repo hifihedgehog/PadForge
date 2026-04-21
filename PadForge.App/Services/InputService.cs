@@ -2385,9 +2385,10 @@ namespace PadForge.Services
         /// SettingsManager.UserDevices. Called on the UI thread.
         /// 
         /// Filtering strategy:
-        ///   ViGEm virtual controllers are already filtered out by Step 1
-        ///   (IsViGEmVirtualDevice) via device path inspection. This is a
-        ///   defense-in-depth layer that catches any that leak through.
+        ///   Virtual controllers (HIDMaestro today, or v2 ViGEm residue on
+        ///   upgraders' machines) are already filtered out by Step 1
+        ///   (IsHidMaestroVirtualDevice) via device path inspection. This
+        ///   is a defense-in-depth layer that catches any that leak through.
         /// </summary>
         private void SyncDevicesList()
         {
@@ -2463,9 +2464,10 @@ namespace PadForge.Services
         /// Determines whether a UserDevice is a virtual controller or a shadow device
         /// that should be hidden from the user-facing device list.
         ///
-        /// With SDL3-only mode, ViGEm virtual controllers are primarily filtered
-        /// at the engine level (Step 1, IsViGEmVirtualDevice). This is a
-        /// defense-in-depth layer.
+        /// Virtual controllers (HIDMaestro today, v2 ViGEm residue on
+        /// upgraders' machines) are primarily filtered at the engine level
+        /// (Step 1, IsHidMaestroVirtualDevice). This is a defense-in-depth
+        /// layer.
         /// </summary>
         private static bool IsVirtualOrShadowDevice(UserDevice ud)
         {

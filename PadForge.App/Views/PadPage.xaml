@@ -148,7 +148,7 @@
                                         <DataTrigger Binding="{Binding OutputType}" Value="Microsoft">
                                             <Setter Property="Source" Value="{StaticResource XboxControllerIcon}"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="Sony">
+                                        <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
                                             <Setter Property="Source" Value="{StaticResource DS4ControllerIcon}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">

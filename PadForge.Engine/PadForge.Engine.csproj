@@ -11,7 +11,7 @@
     <Product>PadForge</Product>
     <Company>PadForge</Company>
     <Copyright>Copyright © PadForge Contributors</Copyright>
-    <Description>PadForge input engine — SDL3, XInput, and ViGEmBus integration.</Description>
+    <Description>PadForge input engine — SDL3, Raw Input, and HID device enumeration.</Description>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 

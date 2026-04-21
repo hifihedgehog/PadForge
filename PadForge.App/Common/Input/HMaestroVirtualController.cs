@@ -21,7 +21,6 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private bool _disposed;
-        private int _motorNonzeroCount;
 
         public VirtualControllerType Type => _type;
         public bool IsConnected { get; private set; }

@@ -62,8 +62,6 @@ namespace PadForge
         private string _savedPosDescriptor;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
-        private bool _previousViGEmInstalled;
-        private bool _previousExtendedInstalled;
 
         // Drag reorder state for sidebar controller cards.
         private Point _cardDragStartPoint;
@@ -924,8 +922,9 @@ namespace PadForge
             _viewModel.RefreshNavControllerItems();
             RefreshDashboardActiveSlots();
 
-            // Extended device nodes are created on demand by the engine (CreateExtendedController)
-            // when slots become active — same pattern as ViGEm. No pre-creation needed.
+            // Virtual controllers are created on demand by the engine
+            // (CreateHMaestroController) when slots become active. No
+            // pre-creation needed at startup.
             if (_viewModel.Settings.AutoStartEngine)
                 _inputService.Start();
 
@@ -1017,58 +1016,75 @@ namespace PadForge
 
         private async void MaybeOfferLegacyDriverCleanup()
         {
-            if (_viewModel.Settings.LegacyDriverCleanupOffered) return;
-
-            bool hasExtended = DriverInstaller.IsExtendedInstalled();
-            bool hasViGEm = DriverInstaller.GetViGEmVersion() != null;
-            if (!hasExtended && !hasViGEm)
+            // async void entry point scheduled via Dispatcher.BeginInvoke —
+            // any exception that escapes here unwinds through the dispatcher
+            // and shows a user-facing "unexpected error" dialog. Wrap the
+            // whole flow (including the pre-dialog registry reads, which
+            // can throw on permission / corrupt-hive edge cases) so a
+            // detection failure never pops the unhandled-exception UI.
+            try
             {
+                if (_viewModel.Settings.LegacyDriverCleanupOffered) return;
+
+                bool hasExtended = DriverInstaller.IsExtendedInstalled();
+                bool hasViGEm = DriverInstaller.GetViGEmVersion() != null;
+                if (!hasExtended && !hasViGEm)
+                {
+                    _viewModel.Settings.LegacyDriverCleanupOffered = true;
+                    _settingsService?.MarkDirty();
+                    return;
+                }
+
+                var found = new System.Collections.Generic.List<string>();
+                if (hasViGEm) found.Add("ViGEmBus");
+                if (hasExtended) found.Add("Extended");
+
+                // Ensure window is visible so the dialog isn't hidden behind tray mode.
+                if (!IsVisible) { try { Show(); } catch { } }
+                if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+                Activate();
+
+                var dialog = new Wpf.Ui.Controls.MessageBox
+                {
+                    Title = "Legacy Driver Cleanup",
+                    Content =
+                        $"PadForge v3 uses HIDMaestro and no longer needs the legacy driver(s): {string.Join(", ", found)}.\n\n" +
+                        "Would you like PadForge to uninstall them now? This requires elevation and may take a moment.",
+                    PrimaryButtonText = "Uninstall",
+                    CloseButtonText = "Keep",
+                };
+
+                var result = await dialog.ShowDialogAsync();
+                if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
+                {
+                    try
+                    {
+                        if (hasViGEm) DriverInstaller.UninstallViGEmBus();
+                        if (hasExtended) DriverInstaller.UninstallVJoy();
+                    }
+                    catch (Exception ex)
+                    {
+                        var err = new Wpf.Ui.Controls.MessageBox
+                        {
+                            Title = "Legacy Driver Cleanup",
+                            Content = $"Cleanup encountered an error: {ex.Message}\n\nYou can retry later from Settings.",
+                            CloseButtonText = "OK",
+                        };
+                        _ = await err.ShowDialogAsync();
+                    }
+                }
+
                 _viewModel.Settings.LegacyDriverCleanupOffered = true;
                 _settingsService?.MarkDirty();
-                return;
             }
-
-            var found = new System.Collections.Generic.List<string>();
-            if (hasViGEm) found.Add("ViGEmBus");
-            if (hasExtended) found.Add("Extended");
-
-            // Ensure window is visible so the dialog isn't hidden behind tray mode.
-            if (!IsVisible) { try { Show(); } catch { } }
-            if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
-            Activate();
-
-            var dialog = new Wpf.Ui.Controls.MessageBox
+            catch
             {
-                Title = "Legacy Driver Cleanup",
-                Content =
-                    $"PadForge v3 uses HIDMaestro and no longer needs the legacy driver(s): {string.Join(", ", found)}.\n\n" +
-                    "Would you like PadForge to uninstall them now? This requires elevation and may take a moment.",
-                PrimaryButtonText = "Uninstall",
-                CloseButtonText = "Keep",
-            };
-
-            var result = await dialog.ShowDialogAsync();
-            if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
-            {
-                try
-                {
-                    if (hasViGEm) DriverInstaller.UninstallViGEmBus();
-                    if (hasExtended) DriverInstaller.UninstallVJoy();
-                }
-                catch (Exception ex)
-                {
-                    var err = new Wpf.Ui.Controls.MessageBox
-                    {
-                        Title = "Legacy Driver Cleanup",
-                        Content = $"Cleanup encountered an error: {ex.Message}\n\nYou can retry later from Settings.",
-                        CloseButtonText = "OK",
-                    };
-                    _ = await err.ShowDialogAsync();
-                }
+                // Detection or prompt failed. Swallowing here is correct —
+                // a legacy-cleanup offer glitch should never surface as an
+                // unhandled-exception dialog on first launch. The next
+                // launch will retry since LegacyDriverCleanupOffered is
+                // only flipped on success paths above.
             }
-
-            _viewModel.Settings.LegacyDriverCleanupOffered = true;
-            _settingsService?.MarkDirty();
         }
 
         private bool _shutdownComplete;

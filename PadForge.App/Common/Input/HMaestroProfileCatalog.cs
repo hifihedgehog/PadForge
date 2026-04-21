@@ -65,8 +65,10 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _microsoftProfiles; }
         }
 
-        /// <summary>Profiles where vendor == "Sony" (DualShock 3/4, DualSense,
-        /// DualSense Edge, PS Move, PS3 Remote, PS Classic).</summary>
+        /// <summary>Profiles where vendor == "Sony" (HIDMaestro's JSON still
+        /// uses the Sony vendor string; PadForge surfaces the category as
+        /// "PlayStation" in the UI). Covers DualShock 3/4, DualSense,
+        /// DualSense Edge, PS Move, PS3 Remote, PS Classic.</summary>
         public static IReadOnlyList<HMProfile> PlayStationProfiles
         {
             get { EnsureInitialized(); return _playStationProfiles; }

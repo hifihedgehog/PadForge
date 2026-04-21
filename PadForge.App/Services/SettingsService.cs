@@ -1542,6 +1542,11 @@ namespace PadForge.Services
         /// whose ProfileId matched the deleted entry gets reset to the
         /// synthetic padforge-custom entry so no slot points at a missing
         /// profile after the delete lands.
+        ///
+        /// UI-thread only. Callers are ManageProfilesDialog button
+        /// handlers, which own modal focus for the duration of the call,
+        /// so the slot-reset loop cannot race with a user-driven slot edit
+        /// or a polling-thread read of ProfileId.
         /// </summary>
         public void RemoveUserProfile(string id)
         {
@@ -1552,8 +1557,11 @@ namespace PadForge.Services
 
             // Reset any slot that was using the deleted profile so the
             // dropdown doesn't land on a now-missing id. padforge-custom
-            // is the safe default for Extended slots (the Extended default
-            // per InputManager.GetDefaultProfileId).
+            // is the Extended category's default per
+            // InputManager.GetDefaultProfileId; Microsoft and PlayStation
+            // slots have fixed catalog defaults and don't accept user
+            // imports in the first place, so this reset only ever fires
+            // for Extended slots.
             foreach (var padVm in _mainVm.Pads)
             {
                 if (string.Equals(padVm?.ProfileId, id, StringComparison.OrdinalIgnoreCase))

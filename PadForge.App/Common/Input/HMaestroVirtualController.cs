@@ -29,8 +29,6 @@ namespace PadForge.Common.Input
         public ushort ProfileVendorId => _profile.VendorId;
         public ushort ProfileProductId => _profile.ProductId;
 
-        public int? XInputSlot => _controller?.XInputSlot;
-
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
             _ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));

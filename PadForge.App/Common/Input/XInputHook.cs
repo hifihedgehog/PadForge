@@ -187,14 +187,6 @@ namespace PadForge.Common.Input
                 foreach (var loc in _patchLocationsGetState) WritePointer(loc, hookGetStatePtr);
                 foreach (var loc in _patchLocationsGetCaps) WritePointer(loc, hookGetCapsPtr);
 
-                try
-                {
-                    System.IO.File.AppendAllText(
-                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
-                        $"[XInputHook.Install @ {DateTime.Now:HH:mm:ss.fff}] patched GetState={_patchLocationsGetState.Length} GetCaps={_patchLocationsGetCaps.Length} realGetState=0x{(long)_realGetState:X}\n");
-                }
-                catch { }
-
                 _installed = true;
                 return true;
             }

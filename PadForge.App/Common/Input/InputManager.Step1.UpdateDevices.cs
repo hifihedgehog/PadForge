@@ -51,11 +51,6 @@ namespace PadForge.Common.Input
         /// / pair-disconnect still surfaces to the UI quickly.</summary>
         private const int SdlDisconnectDebounceMs = 2000;
 
-        /// <summary>Cycle counter for throttled XInput slot snapshots written
-        /// to the diagnostic log. At ~1 kHz polling, 1000 cycles ≈ 1 second.</summary>
-        private int _xiSnapshotCycles;
-        private const int XiSnapshotIntervalCycles = 2000;
-
         // Keyboard/mouse tracking moved to _openedKeyboardHandles / _openedMouseHandles
         // (Raw Input IntPtr handles instead of SDL uint IDs).
 
@@ -207,7 +202,6 @@ namespace PadForge.Common.Input
             {
                 int prevMask = XInputHook.IgnoreSlotMask;
                 int desiredMask = 0;
-                System.Text.StringBuilder snapSb = null;
 
                 // Snapshot every slot's CapsEx identity + packet count once
                 // up-front so the group-based ambiguous logic below can pick
@@ -357,32 +351,7 @@ namespace PadForge.Common.Input
                 if (desiredMask != prevMask)
                 {
                     XInputHook.SetIgnoreSlotMask(desiredMask);
-                    if (snapSb == null) snapSb = new System.Text.StringBuilder();
-                    snapSb.AppendLine($"[AuthMask @ {DateTime.Now:HH:mm:ss.fff}] 0x{prevMask:X} -> 0x{desiredMask:X}");
-                    try { System.IO.File.AppendAllText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"), snapSb.ToString()); } catch { }
                 }
-            }
-
-            // Throttled XInput slot snapshot for visibility (every N cycles).
-            if (++_xiSnapshotCycles >= XiSnapshotIntervalCycles)
-            {
-                _xiSnapshotCycles = 0;
-                try
-                {
-                    var sb = new System.Text.StringBuilder();
-                    sb.Append($"[XI-snapshot @ {DateTime.Now:HH:mm:ss.fff}] mask=0x{(XInputHook.IsInstalled ? XInputHook.IgnoreSlotMask : 0):X} ");
-                    for (int s = 0; s < 4; s++)
-                    {
-                        int rc = XInputHook.IsInstalled ? XInputHook.GetStateOriginal(s, out _) : 0x048F;
-                        bool masked = XInputHook.IsInstalled && (XInputHook.IgnoreSlotMask & (1 << s)) != 0;
-                        sb.Append($"s{s}={(rc == 0 ? "conn" : "none")}{(masked ? "M" : "")} ");
-                    }
-                    sb.AppendLine();
-                    System.IO.File.AppendAllText(
-                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
-                        sb.ToString());
-                }
-                catch { }
             }
 
             // SDL3: Get array of instance IDs for all connected joysticks.
@@ -482,16 +451,6 @@ namespace PadForge.Common.Input
                     }
 
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
-
-                    try
-                    {
-                        int hookMaskAtAccept = XInputHook.IsInstalled ? XInputHook.IgnoreSlotMask : -1;
-                        string hookState = XInputHook.IsInstalled ? $"mask=0x{hookMaskAtAccept:X}" : "NOT_INSTALLED";
-                        System.IO.File.AppendAllText(
-                            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
-                            $"[Step1-accepted @ {DateTime.Now:HH:mm:ss.fff}] SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path='{wrapper.DevicePath}' name='{wrapper.Name}' InstanceGuid={wrapper.InstanceGuid} Serial='{wrapper.SerialNumber}' hook[{hookState}]\n");
-                    }
-                    catch { }
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
 

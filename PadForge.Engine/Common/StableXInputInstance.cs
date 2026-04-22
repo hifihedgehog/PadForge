@@ -320,11 +320,6 @@ namespace PadForge.Engine
         public static bool[] FindHidMaestroXInputSlots()
         {
             var result = new bool[4];
-            var diag = new StringBuilder();
-            diag.AppendLine($"[FindHMSlots @ {DateTime.Now:HH:mm:ss.fff}]");
-
-            // Collect HIDMaestro HID children with their VID/PID and any
-            // XInputUserIndex registry value.
             var hmChildren = new List<(ushort vid, ushort pid, int xInputIdx, string instId)>();
 
             var guid = GUID_DEVCLASS_HIDCLASS;
@@ -340,39 +335,22 @@ namespace PadForge.Engine
                 for (uint i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
                 {
                     uint devInst = devInfoData.DevInst;
-
                     if (!IsHidMaestroByHardwareIdOrAncestor(devInst))
                         continue;
-
-                    // Extract VID/PID from the device's instance ID.
                     if (!SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, idBuffer, (uint)idBuffer.Length, out _))
                         continue;
                     int nullIdx = Array.IndexOf(idBuffer, '\0');
                     string instId = nullIdx >= 0 ? new string(idBuffer, 0, nullIdx) : new string(idBuffer);
 
-                    // HIDMaestro exposes TWO HIDClass entries per virtual:
-                    // 1. ROOT\VID_XXXX&PID_YYYY&IG_00\0000 — PnP root enumerator
-                    // 2. HID\VID_XXXX&PID_YYYY&IG_00\...   — HID leaf child
-                    // Both carry the same VID/PID, but they are one logical
-                    // device. If we count both, `hmCount` doubles, and the
-                    // count-safety gate below wrongly thinks every matching
-                    // XInput slot is HM-owned — which masks the REAL
-                    // controller that happens to share the VID/PID. Skip
-                    // the ROOT enumerator and count only the HID leaf.
+                    // Skip ROOT\ enumerators (double-count vs HID\ leaves).
                     if (instId.StartsWith(@"ROOT\", StringComparison.OrdinalIgnoreCase))
-                    {
-                        diag.AppendLine($"  hmRoot (skipped): inst={instId}");
                         continue;
-                    }
 
                     (ushort vid, ushort pid) = ParseVidPid(instId);
                     if (vid == 0 && pid == 0) continue;
 
                     int slot = ReadXInputUserIndex(devInfoSet, ref devInfoData);
                     hmChildren.Add((vid, pid, slot, instId));
-                    diag.AppendLine($"  hmChild: VID={vid:X4} PID={pid:X4} XInputIdx={slot} inst={instId}");
-
-                    // Primary: xinputhid-bound virtuals → direct slot mapping.
                     if (slot >= 0 && slot < 4)
                         result[slot] = true;
                 }
@@ -383,40 +361,17 @@ namespace PadForge.Engine
             }
 
             // Secondary: XUSB-companion virtuals lack XInputUserIndex. Match
-            // by VID/PID via XInputGetCapabilitiesEx at each slot, but with
-            // a count-safety gate: mark a slot only if every XInput slot
-            // currently reporting the same VID/PID can be accounted for by
-            // a HIDMaestro child. If there are fewer HM virtuals than
-            // matching slots (i.e. at least one real controller shares the
-            // VID/PID), we CANNOT distinguish which slots are virtual vs
-            // real by VID/PID alone, so we mark nothing in that VID/PID
-            // group. Missing a virtual here is recoverable: the packet-count
-            // reconciler catches idle virtuals on later cycles. Falsely
-            // masking a real controller (the scenario this gate prevents) is
-            // user-visible and catastrophic.
-            //
-            // Real-world case: HIDMaestro xbox-series-xs-bt profile uses
-            // VID=045E PID=0B13, which is also the VID/PID of the genuine
-            // Xbox Series wireless controller over BT. Without this gate,
-            // a single BT virtual would cause BOTH the virtual's slot AND
-            // the real controller's slot to be masked, making the real
-            // controller disappear from PadForge's Devices list.
+            // by VID/PID via XInputGetCapabilitiesEx at each slot with a
+            // count-safety gate: only mark if every matching slot can be
+            // accounted for by a HM child (prevents false-masking a real
+            // that shares VID/PID like xbox-series-xs-bt vs physical BT).
             var slotVidPid = new (ushort vid, ushort pid, bool ok)[4];
             for (int s = 0; s < 4; s++)
             {
-                if (GetXInputCapabilitiesEx((uint)s, out ushort v, out ushort p))
-                {
-                    slotVidPid[s] = (v, p, true);
-                    diag.AppendLine($"  slot{s}: capsEx VID={v:X4} PID={p:X4} (already={result[s]})");
-                }
-                else
-                {
-                    slotVidPid[s] = (0, 0, false);
-                    diag.AppendLine($"  slot{s}: capsEx FAILED (already={result[s]})");
-                }
+                slotVidPid[s] = GetXInputCapabilitiesEx((uint)s, out ushort v, out ushort p)
+                    ? (v, p, true) : ((ushort)0, (ushort)0, false);
             }
 
-            // Group slots by VID/PID and count HM children per VID/PID.
             var processed = new HashSet<(ushort, ushort)>();
             for (int s = 0; s < 4; s++)
             {
@@ -426,42 +381,20 @@ namespace PadForge.Engine
 
                 int slotCount = 0;
                 for (int t = 0; t < 4; t++)
-                {
-                    if (slotVidPid[t].ok
-                        && slotVidPid[t].vid == key.Item1
-                        && slotVidPid[t].pid == key.Item2)
+                    if (slotVidPid[t].ok && slotVidPid[t].vid == key.Item1 && slotVidPid[t].pid == key.Item2)
                         slotCount++;
-                }
                 int hmCount = 0;
                 foreach (var c in hmChildren)
                     if (c.vid == key.Item1 && c.pid == key.Item2) hmCount++;
 
-                diag.AppendLine($"    group VID={key.Item1:X4} PID={key.Item2:X4}: slots={slotCount} hm={hmCount}");
-
-                if (hmCount == 0) continue;
-                if (hmCount < slotCount)
-                {
-                    // Ambiguous — at least one real controller shares this
-                    // VID/PID. Skip to avoid false-masking the real one.
-                    diag.AppendLine($"      -> ambiguous (real shares VID/PID), NOT masking");
-                    continue;
-                }
-                // hmCount >= slotCount: every slot with this VID/PID is
-                // accounted for by a HM virtual, safe to mark them all.
+                if (hmCount == 0 || hmCount < slotCount) continue;
                 for (int t = 0; t < 4; t++)
                 {
                     if (!slotVidPid[t].ok) continue;
                     if (slotVidPid[t].vid != key.Item1 || slotVidPid[t].pid != key.Item2) continue;
-                    if (result[t]) continue;
                     result[t] = true;
-                    diag.AppendLine($"      -> marking slot {t} (all {slotCount} matching slots are HM)");
                 }
             }
-
-            diag.Append("  RESULT: [");
-            for (int r = 0; r < 4; r++) diag.Append((r == 0 ? "" : ",") + (result[r] ? "HM" : "-"));
-            diag.AppendLine("]");
-            try { System.IO.File.AppendAllText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"), diag.ToString()); } catch { }
 
             return result;
         }

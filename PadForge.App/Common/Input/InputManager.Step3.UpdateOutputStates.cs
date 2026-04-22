@@ -70,28 +70,8 @@ namespace PadForge.Common.Input
                         continue;
 
                     // Map the input state to a gamepad.
-                    var prevOutputButtons = us.OutputState.Buttons;
                     us.OutputState = MapInputToGamepad(ud.InputState, ps, out var rawMapped);
                     us.RawMappedState = rawMapped;
-
-                    // Routing trace: log whenever button bits transition on
-                    // the mapped output. Shows exactly which SDL device
-                    // drove which pad at the moment of a state change, so
-                    // feedback loops (leaked virtual feeding itself) are
-                    // visible in the log as pad N being driven by its own
-                    // InstanceGuid or by a virtual's InstanceGuid.
-                    if (us.OutputState.Buttons != prevOutputButtons)
-                    {
-                        try
-                        {
-                            uint sdlId = ud.Device?.SdlInstanceId ?? 0u;
-                            string path = ud.Device?.DevicePath ?? "(null)";
-                            System.IO.File.AppendAllText(
-                                System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
-                                $"[Step3-route @ {DateTime.Now:HH:mm:ss.fff}] pad{us.MapTo} <- SDL#{sdlId} VID={ud.VendorId:X4} PID={ud.ProdId:X4} path='{path}' InstGuid={us.InstanceGuid} buttons 0x{prevOutputButtons:X4}->0x{us.OutputState.Buttons:X4}\n");
-                        }
-                        catch { }
-                    }
 
                     // For custom Extended slots, also produce the raw Extended output state.
                     int slot = us.MapTo;

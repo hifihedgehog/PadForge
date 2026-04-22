@@ -1158,25 +1158,6 @@ namespace PadForge.Common.Input
                                 virtualSlot = -1;
                             }
 
-                            try
-                            {
-                                var sb = new System.Text.StringBuilder();
-                                sb.AppendLine($"[Step5-create @ {DateTime.Now:HH:mm:ss.fff}] pad={padIndex} profile={(vc is HMaestroVirtualController hmDiag ? hmDiag.ProfileId : "?")} profileVidPid={profileVid:X4}/{profilePid:X4}");
-                                sb.Append($"  slots:");
-                                for (int s = 0; s < 4; s++)
-                                    sb.Append($" s{s}={(postOccupied[s] ? $"{postVid[s]:X4}/{postPid[s]:X4}(pkt={postPkt[s]})" : "-")}");
-                                sb.AppendLine();
-                                sb.AppendLine($"  xiBefore=0x{xiBeforeMask:X} xiAfter=0x{xiAfterMask:X} newSlots=0x{newSlotsMask:X}");
-                                sb.AppendLine($"  predicted={predictedSlot} actual={virtualSlot}");
-                                sb.Append("  _hiddenXInputSlot before=[");
-                                for (int _i = 0; _i < MaxPads; _i++) sb.Append((_i == 0 ? "" : ",") + _hiddenXInputSlot[_i]);
-                                sb.AppendLine($"]  mask=0x{XInputHook.IgnoreSlotMask:X}");
-                                System.IO.File.AppendAllText(
-                                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
-                                    sb.ToString());
-                            }
-                            catch { }
-
                             if (virtualSlot >= 0)
                             {
                                 _hiddenXInputSlot[padIndex] = virtualSlot;

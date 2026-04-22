@@ -1104,17 +1104,41 @@ namespace PadForge.Common.Input
                             // "newly-occupied slot" a misleading signal —
                             // the displaced physical shows up as a "new"
                             // slot even though it isn't the virtual.
+                            // Pick the slot matching profile VID/PID with the
+                            // lowest packet count — that's our just-created
+                            // virtual. Skip slots another pad ALREADY has
+                            // correctly claimed (verified: their pad's
+                            // profile matches the slot's current CapsEx),
+                            // but not slots where the claim is stale — a
+                            // stale claim blocking an identity match would
+                            // cause this pad to miss its actual slot and
+                            // corrupt downstream tracking.
                             int virtualSlot = -1;
                             long bestPkt = long.MaxValue;
                             for (int s = 0; s < 4; s++)
                             {
                                 if (!postOccupied[s]) continue;
                                 if (postVid[s] != profileVid || postPid[s] != profilePid) continue;
-                                // Don't steal a slot another pad already claims.
-                                bool claimed = false;
+
+                                bool claimedValidly = false;
                                 for (int p = 0; p < MaxPads; p++)
-                                    if (p != padIndex && _hiddenXInputSlot[p] == s) { claimed = true; break; }
-                                if (claimed) continue;
+                                {
+                                    if (p == padIndex) continue;
+                                    if (_hiddenXInputSlot[p] != s) continue;
+                                    // Validate the other pad's claim: its
+                                    // current VC profile must match this
+                                    // slot's CapsEx identity. If not, it's
+                                    // a stale claim — ignore it.
+                                    var otherVc = _virtualControllers[p];
+                                    if (otherVc is HMaestroVirtualController otherHm
+                                        && otherHm.ProfileVendorId == postVid[s]
+                                        && otherHm.ProfileProductId == postPid[s])
+                                    {
+                                        claimedValidly = true;
+                                        break;
+                                    }
+                                }
+                                if (claimedValidly) continue;
 
                                 long pkt = (long)postPkt[s];
                                 if (pkt < bestPkt)

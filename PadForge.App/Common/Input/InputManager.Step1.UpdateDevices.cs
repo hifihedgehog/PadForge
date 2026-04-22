@@ -296,16 +296,24 @@ namespace PadForge.Common.Input
                     }
 
                     // Ambiguous: at least one real shares VID/PID. Count
-                    // how many slots should be masked (bounded by expected
-                    // virtuals and actual slot count), and pick the lowest-
+                    // how many slots should be masked and pick the lowest-
                     // packet-count slots — those are our virtuals. The
-                    // leftover high-pkt slots are physicals and stay visible.
+                    // leftover high-pkt slot is the physical and stays
+                    // visible.
+                    //
+                    // Slot-cap: at most one physical per VID/PID (no way
+                    // to have two identical physical Xbox controllers at
+                    // the stable-identity level), so the group can hold
+                    // AT MOST `groupSlots.Count - 1` virtuals. Beyond that,
+                    // xinputhid has evicted one of our virtuals OFF the
+                    // XInput bus entirely — alive in _virtualControllers
+                    // but not at any of the 4 XInput slots. We must not
+                    // count those toward the mask or we'd end up masking
+                    // the physical's slot as the "extra" virtual.
                     if (!expectedVirtualsPerVidPid.TryGetValue(key, out int expected))
                         expected = 0;
-                    // Clamp: can't mask more slots than exist in this group,
-                    // and can't mask more than our in-process tracking says
-                    // we have virtuals.
-                    if (expected > groupSlots.Count) expected = groupSlots.Count;
+                    int slotCapVirtuals = groupSlots.Count - 1; // subtract the one real
+                    if (expected > slotCapVirtuals) expected = slotCapVirtuals;
                     if (expected <= 0) continue;
 
                     groupSlots.Sort((a, b) => slotPkt[a].CompareTo(slotPkt[b]));

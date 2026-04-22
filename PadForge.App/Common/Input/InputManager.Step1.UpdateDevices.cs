@@ -159,19 +159,24 @@ namespace PadForge.Common.Input
             }
 
             // Revalidate the HIDMaestro-filtered SDL IDs every cycle: if the
-            // underlying XInput slot no longer belongs to one of our virtual
-            // controllers (e.g. the virtual was destroyed and the real moved
-            // back into that slot), remove the ID from the filter cache so
-            // the real device is re-opened on this pass. Without this the
-            // filtered cache is sticky across virtual lifecycle and can
-            // permanently mask the user's real input device.
+            // underlying XInput slot is no longer masked by the hook (e.g.
+            // the virtual was destroyed or xinputhid reshuffled a physical
+            // into that slot), remove the ID from the filter cache so the
+            // real device is re-opened on this pass. Authoritative mask is
+            // consulted directly — _hiddenXInputSlot can go stale when
+            // xinputhid reshuffles without our create/destroy triggering,
+            // which would otherwise leave a legitimate physical wedged in
+            // the filter cache forever.
+            int curHookMask = XInputHook.IsInstalled ? XInputHook.IgnoreSlotMask : 0;
             var cached = _filteredVirtualInstanceIds.ToArray();
             foreach (uint cid in cached)
             {
                 string cp = SDL_GetJoystickPathForID(cid) ?? string.Empty;
                 if (cp.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase)
+                    && cp.Length > 7
                     && int.TryParse(cp.Substring(7), out int cslot)
-                    && !IsHidMaestroXInputSlot(cslot))
+                    && cslot >= 0 && cslot < 4
+                    && (curHookMask & (1 << cslot)) == 0)
                 {
                     _filteredVirtualInstanceIds.Remove(cid);
                 }
@@ -203,68 +208,142 @@ namespace PadForge.Common.Input
                 int prevMask = XInputHook.IgnoreSlotMask;
                 int desiredMask = 0;
                 System.Text.StringBuilder snapSb = null;
+
+                // Snapshot every slot's CapsEx identity + packet count once
+                // up-front so the group-based ambiguous logic below can pick
+                // by pkt ranking.
+                var slotVid = new ushort[4];
+                var slotPid = new ushort[4];
+                var slotPkt = new uint[4];
+                var slotOccupied = new bool[4];
                 for (int s = 0; s < 4; s++)
                 {
-                    int rc = XInputHook.GetStateOriginal(s, out _);
-                    bool occupied = rc == 0;
-                    bool claimed = IsHidMaestroXInputSlot(s);
-
-                    if (!occupied)
+                    int rc = XInputHook.GetStateOriginal(s, out var st);
+                    slotOccupied[s] = rc == 0;
+                    slotPkt[s] = st.dwPacketNumber;
+                    if (rc == 0)
                     {
-                        // Slot kernel-empty right now. Keep masked if a pad
-                        // or pending-clear still claims it — xinputhid can
-                        // briefly flicker a slot to empty during teardown
-                        // before re-binding for the final death throes. If
-                        // we drop the bit here, the subsequent re-occupancy
-                        // is visible to SDL as a phantom before the next
-                        // AuthMask pass can re-add the bit. An empty slot
-                        // that is still masked is harmless — SDL sees
-                        // DEVICE_NOT_CONNECTED either way.
-                        if (claimed) desiredMask |= (1 << s);
-                        continue;
+                        PadForge.Engine.StableXInputInstance.TryGetXInputSlotVidPid(
+                            (uint)s, out slotVid[s], out slotPid[s]);
                     }
+                }
 
-                    if (!PadForge.Engine.StableXInputInstance.TryGetXInputSlotVidPid((uint)s, out ushort svid, out ushort spid))
+                // Count how many Microsoft-type HM virtual controllers
+                // currently have each profile VID/PID alive in-process. This
+                // tells us how many slots in each VID/PID group SHOULD be
+                // masked as virtuals. The rest of matching slots are either
+                // physicals or stale — distinguished by packet count below.
+                //
+                // Pending-clear slots are NOT folded into this count —
+                // they represent specific slots, not a pooled count of
+                // "how many dying virtuals exist with this VID/PID."
+                // Inflating the count would cause the group-ranking loop
+                // to mask the physical (the only remaining slot in the
+                // group) once the pending slot has been torn down by
+                // xinputhid. Pending masking is handled per-slot below.
+                var expectedVirtualsPerVidPid = new System.Collections.Generic.Dictionary<(ushort, ushort), int>();
+                for (int p = 0; p < MaxPads; p++)
+                {
+                    var vc = _virtualControllers[p];
+                    if (vc is HMaestroVirtualController hmp
+                        && vc.Type == VirtualControllerType.Microsoft)
                     {
-                        // CapsEx failed; can't classify by identity. Trust
-                        // claimed so the slot stays masked defensively.
-                        if (claimed) desiredMask |= (1 << s);
-                        continue;
+                        var key = (hmp.ProfileVendorId, hmp.ProfileProductId);
+                        if (!expectedVirtualsPerVidPid.TryGetValue(key, out int cnt)) cnt = 0;
+                        expectedVirtualsPerVidPid[key] = cnt + 1;
+                    }
+                }
+
+                // Walk VID/PID groups. Within each group, the N lowest-pkt
+                // slots are the virtuals (pkt is a reliable signal: fresh
+                // virtual pkt is near 0; seasoned physical pkt is ≫100).
+                var processed = new System.Collections.Generic.HashSet<(ushort, ushort)>();
+                for (int s = 0; s < 4; s++)
+                {
+                    if (!slotOccupied[s]) continue;
+                    var key = (slotVid[s], slotPid[s]);
+                    if (key == ((ushort)0, (ushort)0)) continue;
+                    if (!processed.Add(key)) continue;
+
+                    // Collect all slots in this group.
+                    var groupSlots = new System.Collections.Generic.List<int>(4);
+                    for (int t = 0; t < 4; t++)
+                    {
+                        if (slotOccupied[t] && slotVid[t] == key.Item1 && slotPid[t] == key.Item2)
+                            groupSlots.Add(t);
                     }
 
                     string hm = null, real = null;
-                    try { hm = PadForge.Engine.StableXInputInstance.FindHidMaestroChild(svid, spid); } catch { }
-                    try { real = PadForge.Engine.StableXInputInstance.Find(svid, spid); } catch { }
-                    bool hasHm = !string.IsNullOrEmpty(hm);
+                    try { hm = PadForge.Engine.StableXInputInstance.FindHidMaestroChild(key.Item1, key.Item2); } catch { }
+                    try { real = PadForge.Engine.StableXInputInstance.Find(key.Item1, key.Item2); } catch { }
+                    bool knownHmVidPid = PadForge.Engine.StableXInputInstance
+                        .IsKnownHidMaestroVidPid(key.Item1, key.Item2);
+                    bool hasHm = !string.IsNullOrEmpty(hm) || knownHmVidPid;
                     bool hasReal = !string.IsNullOrEmpty(real);
 
-                    // Session-memory fallback: HIDMaestro removes the HID
-                    // child from PnP several seconds before xinputhid's
-                    // kernel slot binding releases. During that window
-                    // FindHidMaestroChild returns null but the slot still
-                    // holds a dying virtual. If the slot's CapsEx VID/PID
-                    // was ever spawned as a HIDMaestro virtual this session,
-                    // treat it as HM regardless of current PnP state.
-                    bool knownHmVidPid = PadForge.Engine.StableXInputInstance
-                        .IsKnownHidMaestroVidPid(svid, spid);
+                    if (!hasHm)
+                    {
+                        // No HM signal at all. None of these slots are ours.
+                        continue;
+                    }
 
-                    if ((hasHm || knownHmVidPid) && !hasReal)
+                    if (!hasReal)
+                    {
+                        // Pure HM group — every slot in this group is a
+                        // virtual. Mask all.
+                        foreach (int t in groupSlots) desiredMask |= (1 << t);
+                        continue;
+                    }
+
+                    // Ambiguous: at least one real shares VID/PID. Count
+                    // how many slots should be masked (bounded by expected
+                    // virtuals and actual slot count), and pick the lowest-
+                    // packet-count slots — those are our virtuals. The
+                    // leftover high-pkt slots are physicals and stay visible.
+                    if (!expectedVirtualsPerVidPid.TryGetValue(key, out int expected))
+                        expected = 0;
+                    // Clamp: can't mask more slots than exist in this group,
+                    // and can't mask more than our in-process tracking says
+                    // we have virtuals.
+                    if (expected > groupSlots.Count) expected = groupSlots.Count;
+                    if (expected <= 0) continue;
+
+                    groupSlots.Sort((a, b) => slotPkt[a].CompareTo(slotPkt[b]));
+                    for (int i = 0; i < expected; i++)
+                    {
+                        desiredMask |= (1 << groupSlots[i]);
+                    }
+                }
+
+                // Pending-clear pass (per-slot).
+                //
+                // For each slot with a pending-clear bit armed (meaning we
+                // recently destroyed a Microsoft virtual that owned this
+                // slot), decide mask inclusion based on CURRENT slot state:
+                //   - Slot is kernel-empty: xinputhid teardown flicker —
+                //     keep the bit set so a brief re-occupancy can't leak.
+                //   - Slot is occupied with the destroyed virtual's
+                //     profile VID/PID: dying virtual is still kernel-bound
+                //     here — keep masked.
+                //   - Slot is occupied with a DIFFERENT VID/PID:
+                //     something else (physical, different virtual) now
+                //     owns this slot. Don't mask via pending; the group-
+                //     ranking pass above has already made the correct
+                //     decision for whatever is now there.
+                for (int s = 0; s < 4; s++)
+                {
+                    if (!_pendingXInputMaskClearSlots[s]) continue;
+                    if (!slotOccupied[s])
                     {
                         desiredMask |= (1 << s);
                         continue;
                     }
-                    if ((hasHm || knownHmVidPid) && hasReal)
+                    var prof = _pendingXInputMaskClearProfile[s];
+                    if ((prof.vid == slotVid[s] && prof.pid == slotPid[s])
+                        || (prof.vid == 0 && prof.pid == 0))
                     {
-                        // Ambiguous. Only mask if a pad or pending-clear
-                        // still claims this exact slot.
-                        if (claimed) desiredMask |= (1 << s);
-                        continue;
+                        desiredMask |= (1 << s);
                     }
-                    // Neither HM signal present. If the slot is claimed,
-                    // trust that — covers the mid-teardown window where
-                    // xinputhid's slot is still bound but the VID/PID is
-                    // for some reason not recognizable.
-                    if (claimed) desiredMask |= (1 << s);
                 }
 
                 if (desiredMask != prevMask)
@@ -723,17 +802,20 @@ namespace PadForge.Common.Input
         private bool IsHidMaestroAncestor(string symlinkPath)
         {
             // SDL uses a synthetic "XInput#N" path for its XInput backend —
-            // there's no PnP tree to walk. Consult the live HMController list
-            // directly: if any of our virtual controllers has claimed this
-            // XInput slot, filter it. This is the ONLY case where real and
-            // virtual Xbox devices share an identical SDL path, so without
-            // this check both show up in the Devices list and a physical
-            // controller mapping can race onto the wrong slot at startup.
+            // there's no PnP tree to walk. Consult the authoritative hook
+            // mask: whatever bits are currently set IS the definition of
+            // "this slot is PadForge's virtual." The Step 1 AuthMask pass
+            // keeps those bits in sync with current kernel state (including
+            // pkt-based ranking for shared-VID/PID groups), so checking it
+            // here matches what SDL sees at its own XInput read — no stale
+            // _hiddenXInputSlot to trip over when xinputhid reshuffles.
             if (symlinkPath != null
                 && symlinkPath.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase)
                 && symlinkPath.Length > 7
                 && int.TryParse(symlinkPath.Substring(7), out int xiSlot)
-                && IsHidMaestroXInputSlot(xiSlot))
+                && xiSlot >= 0 && xiSlot < 4
+                && XInputHook.IsInstalled
+                && (XInputHook.IgnoreSlotMask & (1 << xiSlot)) != 0)
             {
                 return true;
             }

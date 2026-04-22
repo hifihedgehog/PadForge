@@ -1106,13 +1106,22 @@ namespace PadForge.Common.Input
                             // slot even though it isn't the virtual.
                             // Pick the slot matching profile VID/PID with the
                             // lowest packet count — that's our just-created
-                            // virtual. Skip slots another pad ALREADY has
-                            // correctly claimed (verified: their pad's
-                            // profile matches the slot's current CapsEx),
-                            // but not slots where the claim is stale — a
-                            // stale claim blocking an identity match would
-                            // cause this pad to miss its actual slot and
-                            // corrupt downstream tracking.
+                            // virtual. Skip slots another pad already
+                            // validly claims (its pad's profile matches the
+                            // slot's CapsEx).
+                            //
+                            // Fresh-virtual pkt ceiling: a just-created
+                            // HIDMaestro virtual has pkt in single digits
+                            // (one or two SubmitState calls at most). If
+                            // every candidate slot has pkt far beyond that
+                            // ceiling, xinputhid couldn't fit our virtual
+                            // into any of the 4 XInput slots (physical +
+                            // existing virtuals filled them) and the "least
+                            // bad" candidate is actually the physical
+                            // sharing VID/PID. Return -1 in that case so
+                            // the pad records no slot claim — AuthMask will
+                            // handle the group via pkt-ranking regardless.
+                            const long FreshVirtualPktCeiling = 200;
                             int virtualSlot = -1;
                             long bestPkt = long.MaxValue;
                             for (int s = 0; s < 4; s++)
@@ -1125,10 +1134,6 @@ namespace PadForge.Common.Input
                                 {
                                     if (p == padIndex) continue;
                                     if (_hiddenXInputSlot[p] != s) continue;
-                                    // Validate the other pad's claim: its
-                                    // current VC profile must match this
-                                    // slot's CapsEx identity. If not, it's
-                                    // a stale claim — ignore it.
                                     var otherVc = _virtualControllers[p];
                                     if (otherVc is HMaestroVirtualController otherHm
                                         && otherHm.ProfileVendorId == postVid[s]
@@ -1146,6 +1151,11 @@ namespace PadForge.Common.Input
                                     bestPkt = pkt;
                                     virtualSlot = s;
                                 }
+                            }
+                            // Reject seasoned-pkt matches — that's the physical.
+                            if (virtualSlot >= 0 && bestPkt > FreshVirtualPktCeiling)
+                            {
+                                virtualSlot = -1;
                             }
 
                             try
@@ -1801,29 +1811,48 @@ namespace PadForge.Common.Input
                 _hiddenXInputSlot[padIndex] = -1;
                 if (vc.Type == VirtualControllerType.Microsoft && hiddenSlot < 4)
                 {
-                    // Arm the per-slot deferred clear. The probe block at the
-                    // top of UpdateVirtualDevices watches each pending slot
-                    // independently so this destroy cannot clobber another
-                    // pending clear from an earlier destroy in the same
-                    // resort batch.
-                    _pendingXInputMaskClearSlots[hiddenSlot] = true;
-                    _xinputSlotEmptySince[hiddenSlot] = DateTime.MinValue;
-                    _pendingXInputMaskClearSetAt[hiddenSlot] = DateTime.UtcNow;
-
-                    // Record the profile VID/PID of the destroyed virtual so
-                    // the probe can distinguish "kernel slot still bound to
-                    // the dying virtual" (same VID/PID) from "xinputhid
-                    // reshuffled a real/other device onto this slot"
-                    // (different VID/PID). Only the latter is a safe
-                    // early-release signal.
+                    // Validate that _hiddenXInputSlot[padIndex] is still
+                    // current before arming pending. If the pad's virtual
+                    // was evicted off XInput (4-slot limit) or xinputhid
+                    // reshuffled it elsewhere, the slot we're about to
+                    // arm pending on holds something ELSE — armed pending
+                    // with this pad's profile would cause the pending-per-
+                    // slot pass to mask whatever device (potentially the
+                    // physical sharing VID/PID) is actually there.
+                    bool stalePendingTarget = false;
                     if (vc is HMaestroVirtualController hmDying)
                     {
-                        _pendingXInputMaskClearProfile[hiddenSlot] =
-                            (hmDying.ProfileVendorId, hmDying.ProfileProductId);
+                        if (PadForge.Engine.StableXInputInstance.TryGetXInputSlotVidPid(
+                                (uint)hiddenSlot, out var curVid, out var curPid))
+                        {
+                            if (curVid != hmDying.ProfileVendorId
+                                || curPid != hmDying.ProfileProductId)
+                            {
+                                stalePendingTarget = true;
+                            }
+                        }
                     }
-                    else
+
+                    if (!stalePendingTarget)
                     {
-                        _pendingXInputMaskClearProfile[hiddenSlot] = (0, 0);
+                        // Arm the per-slot deferred clear. The probe block at
+                        // the top of UpdateVirtualDevices watches each pending
+                        // slot independently so this destroy cannot clobber
+                        // another pending clear from an earlier destroy in the
+                        // same resort batch.
+                        _pendingXInputMaskClearSlots[hiddenSlot] = true;
+                        _xinputSlotEmptySince[hiddenSlot] = DateTime.MinValue;
+                        _pendingXInputMaskClearSetAt[hiddenSlot] = DateTime.UtcNow;
+
+                        if (vc is HMaestroVirtualController hmDyingRecord)
+                        {
+                            _pendingXInputMaskClearProfile[hiddenSlot] =
+                                (hmDyingRecord.ProfileVendorId, hmDyingRecord.ProfileProductId);
+                        }
+                        else
+                        {
+                            _pendingXInputMaskClearProfile[hiddenSlot] = (0, 0);
+                        }
                     }
                 }
                 else

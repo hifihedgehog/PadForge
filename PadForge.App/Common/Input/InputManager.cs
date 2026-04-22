@@ -391,6 +391,16 @@ namespace PadForge.Common.Input
                 System.Diagnostics.Debug.WriteLine($"[XInputHook] Install failed: {ex}");
             }
 
+            // Wire Engine → App callback so SdlDeviceWrapper.BuildInstanceGuid
+            // can route a virtual at an SDL-visible "XInput#N" path through
+            // the HIDMaestro-distinct identifier branch. Without this, a
+            // virtual that slips past the hook mask (even briefly) would
+            // share its physical's InstanceGuid whenever VID/PID matches,
+            // and the physical's UserSettings rows would get applied to
+            // the virtual — the "virtual overtakes physical" symptom.
+            PadForge.Engine.StableXInputInstance.IsXInputSlotHiddenByHook =
+                slot => (XInputHook.IgnoreSlotMask & (1 << slot)) != 0;
+
             RawInputListener.Start();
 
             // PTP reader always runs so Devices page can preview touchpad input.

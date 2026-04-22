@@ -32,9 +32,15 @@ namespace PadForge.Common.Input
         private static IntPtr _realGetState;
         private static IntPtr _realGetCaps;
 
-        // Locations in SDL3.dll's image where the pointers live.
-        private static IntPtr _patchLocationGetState;
-        private static IntPtr _patchLocationGetCaps;
+        // Locations in SDL3.dll's image where the pointers live. SDL3
+        // typically resolves XInput functions via both ordinal 100
+        // (XInputGetStateEx) and ordinal-less name lookup and may store
+        // the pointer in more than one global — patching only the first
+        // match lets SDL's remaining code path (via an unpatched pointer)
+        // read the real state and enumerate masked slots. Patch every
+        // occurrence so no path leaks.
+        private static IntPtr[] _patchLocationsGetState = Array.Empty<IntPtr>();
+        private static IntPtr[] _patchLocationsGetCaps = Array.Empty<IntPtr>();
 
         // Pinned delegates (prevent GC).
         private static GCHandle _hookedGetStateHandle;
@@ -124,10 +130,18 @@ namespace PadForge.Common.Input
                 IntPtr xinputModule = LoadLibraryW("xinput1_4.dll");
                 if (xinputModule == IntPtr.Zero) {return false; }
 
-                // SDL3 prefers ordinal 100 (XInputGetStateEx).
+                // SDL3 prefers ordinal 100 (XInputGetStateEx — includes the
+                // Guide button) but will also resolve "XInputGetState" by
+                // name as a fallback. Those are two DIFFERENT function
+                // addresses in xinput1_4.dll. SDL may store EITHER or BOTH
+                // in its globals depending on SDL version / build flags,
+                // and an unpatched pointer leaves a path by which SDL reads
+                // the real slot state and ends up seeing our masked virtual.
+                // Patch every storage location of EITHER address.
                 _realGetState = GetProcAddressByOrdinal(xinputModule, (IntPtr)100);
+                IntPtr realGetStateByName = GetProcAddressByName(xinputModule, "XInputGetState");
                 if (_realGetState == IntPtr.Zero)
-                    _realGetState = GetProcAddressByName(xinputModule, "XInputGetState");
+                    _realGetState = realGetStateByName;
                 _realGetCaps = GetProcAddressByName(xinputModule, "XInputGetCapabilities");
 
                 if (_realGetState == IntPtr.Zero || _realGetCaps == IntPtr.Zero)
@@ -151,19 +165,35 @@ namespace PadForge.Common.Input
                 if (sdlModule == IntPtr.Zero) {Cleanup(); return false; }
 
 
-                _patchLocationGetState = FindPointerInModule(sdlModule, _realGetState);
-                _patchLocationGetCaps = FindPointerInModule(sdlModule, _realGetCaps);
+                // Find every place SDL3.dll stores either the ordinal-100 or
+                // the name-resolved XInputGetState pointer.
+                var stateLocations = new System.Collections.Generic.List<IntPtr>(
+                    FindAllPointersInModule(sdlModule, _realGetState));
+                if (realGetStateByName != IntPtr.Zero && realGetStateByName != _realGetState)
+                {
+                    stateLocations.AddRange(FindAllPointersInModule(sdlModule, realGetStateByName));
+                }
+                _patchLocationsGetState = stateLocations.ToArray();
+                _patchLocationsGetCaps = FindAllPointersInModule(sdlModule, _realGetCaps);
 
-                if (_patchLocationGetState == IntPtr.Zero)
+                if (_patchLocationsGetState.Length == 0)
                 {Cleanup(); return false; }
-                if (_patchLocationGetCaps == IntPtr.Zero)
+                if (_patchLocationsGetCaps.Length == 0)
                 {Cleanup(); return false; }
 
 
-                // Overwrite the pointers. .data section is typically writable,
+                // Overwrite every occurrence. .data section is typically writable,
                 // but VirtualProtect just in case.
-                WritePointer(_patchLocationGetState, hookGetStatePtr);
-                WritePointer(_patchLocationGetCaps, hookGetCapsPtr);
+                foreach (var loc in _patchLocationsGetState) WritePointer(loc, hookGetStatePtr);
+                foreach (var loc in _patchLocationsGetCaps) WritePointer(loc, hookGetCapsPtr);
+
+                try
+                {
+                    System.IO.File.AppendAllText(
+                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
+                        $"[XInputHook.Install @ {DateTime.Now:HH:mm:ss.fff}] patched GetState={_patchLocationsGetState.Length} GetCaps={_patchLocationsGetCaps.Length} realGetState=0x{(long)_realGetState:X}\n");
+                }
+                catch { }
 
                 _installed = true;
                 return true;
@@ -178,10 +208,10 @@ namespace PadForge.Common.Input
         /// <summary>Remove hooks, restore original pointers.</summary>
         public static void Uninstall()
         {
-            if (_patchLocationGetState != IntPtr.Zero && _realGetState != IntPtr.Zero)
-                WritePointer(_patchLocationGetState, _realGetState);
-            if (_patchLocationGetCaps != IntPtr.Zero && _realGetCaps != IntPtr.Zero)
-                WritePointer(_patchLocationGetCaps, _realGetCaps);
+            if (_realGetState != IntPtr.Zero)
+                foreach (var loc in _patchLocationsGetState) WritePointer(loc, _realGetState);
+            if (_realGetCaps != IntPtr.Zero)
+                foreach (var loc in _patchLocationsGetCaps) WritePointer(loc, _realGetCaps);
 
             Cleanup();
             _installed = false;
@@ -218,24 +248,28 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Scan a loaded module's image for an 8-byte pointer value.
-        /// Returns the address of the first match, or IntPtr.Zero.
+        /// Scan a loaded module's image for every 8-byte location whose
+        /// value equals <paramref name="targetValue"/>. Returns every match
+        /// so the caller can patch all copies; SDL3 may cache the XInput
+        /// function pointer in multiple globals and patching only the first
+        /// leaves a path by which masked slots can be read.
         /// </summary>
-        private static IntPtr FindPointerInModule(IntPtr moduleBase, IntPtr targetValue)
+        private static IntPtr[] FindAllPointersInModule(IntPtr moduleBase, IntPtr targetValue)
         {
             if (!GetModuleInformation(GetCurrentProcess(), moduleBase, out MODULEINFO info, (uint)Marshal.SizeOf<MODULEINFO>()))
-                return IntPtr.Zero;
+                return Array.Empty<IntPtr>();
 
             long baseAddr = (long)moduleBase;
             long endAddr = baseAddr + (long)info.SizeOfImage - 8;
             long target = (long)targetValue;
 
+            var matches = new System.Collections.Generic.List<IntPtr>(4);
             for (long addr = baseAddr; addr < endAddr; addr += 8)
             {
                 if (Marshal.ReadInt64((IntPtr)addr) == target)
-                    return (IntPtr)addr;
+                    matches.Add((IntPtr)addr);
             }
-            return IntPtr.Zero;
+            return matches.ToArray();
         }
 
         private static void WritePointer(IntPtr location, IntPtr value)
@@ -251,8 +285,8 @@ namespace PadForge.Common.Input
             if (_hookedGetCapsHandle.IsAllocated) _hookedGetCapsHandle.Free();
             _realGetStateDel = null;
             _realGetCapsDel = null;
-            _patchLocationGetState = IntPtr.Zero;
-            _patchLocationGetCaps = IntPtr.Zero;
+            _patchLocationsGetState = Array.Empty<IntPtr>();
+            _patchLocationsGetCaps = Array.Empty<IntPtr>();
         }
 
         // ─────────────────────────────────────────────

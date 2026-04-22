@@ -30,6 +30,32 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly HashSet<uint> _openedSdlInstanceIds = new HashSet<uint>();
 
+        /// <summary>
+        /// First-observed tick (UTC) per SDL instance ID for which the
+        /// device has either vanished from SDL_GetJoysticks or reported
+        /// IsAttached=false. Used by Phase 2 to debounce transient drops —
+        /// xinputhid's slot-assignment pass during virtual creation can
+        /// briefly make a physical controller look disconnected on one
+        /// poll cycle. Calling MarkDeviceOffline on that first cycle nulls
+        /// out ud.Device and freezes the Devices-page preview (S2 violation).
+        /// We only mark offline after the device has been missing for the
+        /// full debounce window.
+        /// </summary>
+        private readonly Dictionary<uint, DateTime> _sdlDisconnectCandidateSince = new();
+
+        /// <summary>Debounce window in ms before a transient SDL drop is treated
+        /// as a real disconnect. Chosen to be longer than the worst-case
+        /// xinputhid reshuffle that a HIDMaestro virtual creation can induce
+        /// on a coexisting physical Xbox (observed up to a few hundred ms on
+        /// a BT-paired Series controller), short enough that a real unplug
+        /// / pair-disconnect still surfaces to the UI quickly.</summary>
+        private const int SdlDisconnectDebounceMs = 2000;
+
+        /// <summary>Cycle counter for throttled XInput slot snapshots written
+        /// to the diagnostic log. At ~1 kHz polling, 1000 cycles ≈ 1 second.</summary>
+        private int _xiSnapshotCycles;
+        private const int XiSnapshotIntervalCycles = 2000;
+
         // Keyboard/mouse tracking moved to _openedKeyboardHandles / _openedMouseHandles
         // (Raw Input IntPtr handles instead of SDL uint IDs).
 
@@ -95,23 +121,40 @@ namespace PadForge.Common.Input
 
             bool changed = false;
 
-            // After Step 5 updates the XInput hook mask, drop all open SDL
-            // joystick handles so the next enumeration pass picks up the
-            // masked state — SDL's XInput backend will skip hidden slots
-            // and the virtual never enters PadForge's device list.
+            // Targeted close for masked-slot leaks only (S2 invariant:
+            // physical controller input must never be interrupted by virtual
+            // lifecycle events). With pre-mask in Step 5 the virtual slot is
+            // hidden from SDL BEFORE the virtual's kernel device exists, so
+            // SDL cannot have the virtual in its joystick list. If an open
+            // handle is nevertheless sitting at a currently-masked XInput
+            // slot, that's either a pre-mask prediction miss or a driver
+            // race — close it so stale virtual state cannot deliver input.
+            // Physical handles at unmasked slots are left untouched.
             if (_sdlJoysticksNeedReopen)
             {
                 _sdlJoysticksNeedReopen = false;
-                var sdlIds = _openedSdlInstanceIds.ToArray();
-                foreach (uint sid in sdlIds)
+                int currentMask = XInputHook.IsInstalled ? XInputHook.IgnoreSlotMask : 0;
+                if (currentMask != 0)
                 {
-                    var u = FindOnlineDeviceBySdlInstanceId(sid);
-                    if (u?.Device != null)
+                    var sdlIds = _openedSdlInstanceIds.ToArray();
+                    foreach (uint sid in sdlIds)
                     {
-                        try { u.Device.Dispose(); } catch { }
-                        u.Device = null;
+                        string p = SDL_GetJoystickPathForID(sid) ?? string.Empty;
+                        if (!p.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase)
+                            || p.Length <= 7
+                            || !int.TryParse(p.Substring(7), out int slot)
+                            || (currentMask & (1 << slot)) == 0)
+                        {
+                            continue;
+                        }
+                        var u = FindOnlineDeviceBySdlInstanceId(sid);
+                        if (u?.Device != null)
+                        {
+                            try { u.Device.Dispose(); } catch { }
+                            u.Device = null;
+                        }
+                        _openedSdlInstanceIds.Remove(sid);
                     }
-                    _openedSdlInstanceIds.Remove(sid);
                 }
             }
 
@@ -132,6 +175,127 @@ namespace PadForge.Common.Input
                 {
                     _filteredVirtualInstanceIds.Remove(cid);
                 }
+            }
+
+            // Authoritative hook-mask recompute — runs every Step 1 pass.
+            //
+            // Instead of letting the mask accumulate incremental updates from
+            // Step 5 (create/destroy), RESET it from scratch here against
+            // current kernel state. For each XInput slot 0-3:
+            //   - Unoccupied: bit clear.
+            //   - HIDMaestro HID child exists AND no real shares VID/PID:
+            //     bit set. Catches orphans from prior force-killed processes,
+            //     our own virtuals wherever xinputhid placed them, and
+            //     reshuffled virtuals that our create-time tracking lost
+            //     track of.
+            //   - Ambiguous (both HM and real HID children match VID/PID,
+            //     e.g. xbox-series-xs-bt virtual coexisting with a real
+            //     Xbox Series BT): consult Step 5's _hiddenXInputSlot map.
+            //     Only mask when a pad explicitly claims this slot; otherwise
+            //     leave clear so the physical stays visible.
+            //   - Real-only (no HM HID child): bit clear.
+            //
+            // Net result: mask can never strand a bit across swaps. A stale
+            // slot that no longer has a HM virtual simply doesn't set a bit
+            // on this pass.
+            if (XInputHook.IsInstalled)
+            {
+                int prevMask = XInputHook.IgnoreSlotMask;
+                int desiredMask = 0;
+                System.Text.StringBuilder snapSb = null;
+                for (int s = 0; s < 4; s++)
+                {
+                    int rc = XInputHook.GetStateOriginal(s, out _);
+                    bool occupied = rc == 0;
+                    bool claimed = IsHidMaestroXInputSlot(s);
+
+                    if (!occupied)
+                    {
+                        // Slot kernel-empty right now. Keep masked if a pad
+                        // or pending-clear still claims it — xinputhid can
+                        // briefly flicker a slot to empty during teardown
+                        // before re-binding for the final death throes. If
+                        // we drop the bit here, the subsequent re-occupancy
+                        // is visible to SDL as a phantom before the next
+                        // AuthMask pass can re-add the bit. An empty slot
+                        // that is still masked is harmless — SDL sees
+                        // DEVICE_NOT_CONNECTED either way.
+                        if (claimed) desiredMask |= (1 << s);
+                        continue;
+                    }
+
+                    if (!PadForge.Engine.StableXInputInstance.TryGetXInputSlotVidPid((uint)s, out ushort svid, out ushort spid))
+                    {
+                        // CapsEx failed; can't classify by identity. Trust
+                        // claimed so the slot stays masked defensively.
+                        if (claimed) desiredMask |= (1 << s);
+                        continue;
+                    }
+
+                    string hm = null, real = null;
+                    try { hm = PadForge.Engine.StableXInputInstance.FindHidMaestroChild(svid, spid); } catch { }
+                    try { real = PadForge.Engine.StableXInputInstance.Find(svid, spid); } catch { }
+                    bool hasHm = !string.IsNullOrEmpty(hm);
+                    bool hasReal = !string.IsNullOrEmpty(real);
+
+                    // Session-memory fallback: HIDMaestro removes the HID
+                    // child from PnP several seconds before xinputhid's
+                    // kernel slot binding releases. During that window
+                    // FindHidMaestroChild returns null but the slot still
+                    // holds a dying virtual. If the slot's CapsEx VID/PID
+                    // was ever spawned as a HIDMaestro virtual this session,
+                    // treat it as HM regardless of current PnP state.
+                    bool knownHmVidPid = PadForge.Engine.StableXInputInstance
+                        .IsKnownHidMaestroVidPid(svid, spid);
+
+                    if ((hasHm || knownHmVidPid) && !hasReal)
+                    {
+                        desiredMask |= (1 << s);
+                        continue;
+                    }
+                    if ((hasHm || knownHmVidPid) && hasReal)
+                    {
+                        // Ambiguous. Only mask if a pad or pending-clear
+                        // still claims this exact slot.
+                        if (claimed) desiredMask |= (1 << s);
+                        continue;
+                    }
+                    // Neither HM signal present. If the slot is claimed,
+                    // trust that — covers the mid-teardown window where
+                    // xinputhid's slot is still bound but the VID/PID is
+                    // for some reason not recognizable.
+                    if (claimed) desiredMask |= (1 << s);
+                }
+
+                if (desiredMask != prevMask)
+                {
+                    XInputHook.SetIgnoreSlotMask(desiredMask);
+                    if (snapSb == null) snapSb = new System.Text.StringBuilder();
+                    snapSb.AppendLine($"[AuthMask @ {DateTime.Now:HH:mm:ss.fff}] 0x{prevMask:X} -> 0x{desiredMask:X}");
+                    try { System.IO.File.AppendAllText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"), snapSb.ToString()); } catch { }
+                }
+            }
+
+            // Throttled XInput slot snapshot for visibility (every N cycles).
+            if (++_xiSnapshotCycles >= XiSnapshotIntervalCycles)
+            {
+                _xiSnapshotCycles = 0;
+                try
+                {
+                    var sb = new System.Text.StringBuilder();
+                    sb.Append($"[XI-snapshot @ {DateTime.Now:HH:mm:ss.fff}] mask=0x{(XInputHook.IsInstalled ? XInputHook.IgnoreSlotMask : 0):X} ");
+                    for (int s = 0; s < 4; s++)
+                    {
+                        int rc = XInputHook.IsInstalled ? XInputHook.GetStateOriginal(s, out _) : 0x048F;
+                        bool masked = XInputHook.IsInstalled && (XInputHook.IgnoreSlotMask & (1 << s)) != 0;
+                        sb.Append($"s{s}={(rc == 0 ? "conn" : "none")}{(masked ? "M" : "")} ");
+                    }
+                    sb.AppendLine();
+                    System.IO.File.AppendAllText(
+                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
+                        sb.ToString());
+                }
+                catch { }
             }
 
             // SDL3: Get array of instance IDs for all connected joysticks.
@@ -168,6 +332,42 @@ namespace PadForge.Common.Input
                     // enumerates with SDL. Filter pre-open, NOT post-open.
                     string prePath = SDL_GetJoystickPathForID(instanceId) ?? string.Empty;
                     bool hmMatch = !string.IsNullOrEmpty(prePath) && IsHidMaestroAncestor(prePath);
+
+                    // XInput#N escape hatch for orphans and startup races:
+                    // IsHidMaestroAncestor's XInput# branch only matches slots
+                    // currently in _hiddenXInputSlot. A virtual left over from
+                    // a prior PadForge session (force-killed, pre-sweep, etc.)
+                    // does NOT appear in _hiddenXInputSlot on this launch, so
+                    // the ancestor check falls through. Catch that case by
+                    // asking whether a HIDMaestro HID child with the SDL
+                    // device's VID/PID exists in the PnP tree. If yes AND no
+                    // real (non-HM) HID child shares the VID/PID, the SDL
+                    // device at this XInput slot MUST be one of our virtuals
+                    // that slipped the mask. Filter it. When both HM and
+                    // non-HM children exist (user has a real sharing VID/PID
+                    // with a HIDMaestro profile, e.g. real Xbox 360 alongside
+                    // xbox-360-wired virtual), the hook mask remains the
+                    // authoritative signal — don't guess here.
+                    if (!hmMatch
+                        && !string.IsNullOrEmpty(prePath)
+                        && prePath.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ushort vid = SDL_GetJoystickVendorForID(instanceId);
+                        ushort pid = SDL_GetJoystickProductForID(instanceId);
+                        if (vid != 0 || pid != 0)
+                        {
+                            string hmChild = null;
+                            string realChild = null;
+                            try { hmChild = PadForge.Engine.StableXInputInstance.FindHidMaestroChild(vid, pid); } catch { }
+                            try { realChild = PadForge.Engine.StableXInputInstance.Find(vid, pid); } catch { }
+                            if (!string.IsNullOrEmpty(hmChild) && string.IsNullOrEmpty(realChild))
+                            {
+                                Debug.WriteLine($"[Step1] Pre-open filtered orphan HIDMaestro XInput device: SDL#{instanceId} path={prePath} VID={vid:X4} PID={pid:X4} hmChild={hmChild}");
+                                hmMatch = true;
+                            }
+                        }
+                    }
+
                     if (hmMatch)
                     {
                         Debug.WriteLine($"[Step1] Pre-open filtered HIDMaestro device: SDL#{instanceId} path={prePath}");
@@ -196,9 +396,16 @@ namespace PadForge.Common.Input
 
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
 
-                    // Find or create the UserDevice record.
-                    // Passes ProductGuid for fallback matching when InstanceGuid changes
-                    // (e.g. Bluetooth device reconnects with a different device path).
+                    try
+                    {
+                        int hookMaskAtAccept = XInputHook.IsInstalled ? XInputHook.IgnoreSlotMask : -1;
+                        string hookState = XInputHook.IsInstalled ? $"mask=0x{hookMaskAtAccept:X}" : "NOT_INSTALLED";
+                        System.IO.File.AppendAllText(
+                            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-sort-diag.log"),
+                            $"[Step1-accepted @ {DateTime.Now:HH:mm:ss.fff}] SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path='{wrapper.DevicePath}' name='{wrapper.Name}' InstanceGuid={wrapper.InstanceGuid} Serial='{wrapper.SerialNumber}' hook[{hookState}]\n");
+                    }
+                    catch { }
+
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
 
                     // Populate from the SDL device.
@@ -390,42 +597,71 @@ namespace PadForge.Common.Input
                 changed = true;
             }
 
-            // --- Phase 2: Detect disconnected SDL devices ---
+            // --- Phase 2: Detect disconnected SDL devices (debounced) ---
+            //
+            // Signals that indicate the device might be gone:
+            //   (a) The SdlDeviceWrapper handle is null.
+            //   (b) ud.Device.IsAttached returns false.
+            //   (c) sdlId is no longer in SDL_GetJoysticks().
+            //
+            // (c) is the belt-and-suspenders for "SDL keeps a stale
+            // JoystickID after the kernel device is gone" (HIDMaestro#11).
+            //
+            // S2 debounce: any one of these signals starts a countdown
+            // (SdlDisconnectDebounceMs). The device is only marked offline
+            // if the condition persists for the full window. This rides out
+            // the xinputhid transients that occur during a HIDMaestro
+            // virtual's kernel creation — those typically resolve within
+            // tens to low hundreds of ms, far under the debounce window —
+            // so a coexisting physical Xbox's SDL handle is preserved and
+            // its Devices-page preview keeps moving. A real disconnect
+            // (unplug, BT pair-drop) stays missing past the window and
+            // surfaces as an offline event with only the debounce latency
+            // of delay.
             var disconnectedIds = new List<uint>();
+            var nowUtc = DateTime.UtcNow;
 
             foreach (uint sdlId in _openedSdlInstanceIds)
             {
-                // Find the UserDevice with this SDL instance ID.
                 UserDevice ud = FindOnlineDeviceBySdlInstanceId(sdlId);
                 if (ud == null)
                 {
+                    // UserDevice itself is gone — no handle to preserve.
                     disconnectedIds.Add(sdlId);
+                    _sdlDisconnectCandidateSince.Remove(sdlId);
                     continue;
                 }
 
-                // Check if the device is still attached.
-                //
-                // Three signals, any one → disconnect:
-                //   (a) The SdlDeviceWrapper handle is null.
-                //   (b) ud.Device.IsAttached returns false (SDL's own
-                //       attached state per SDL_JoystickConnected).
-                //   (c) sdlId is no longer in SDL_GetJoysticks().
-                //
-                // (c) is the belt-and-suspenders for the "SDL keeps a
-                // stale JoystickID after the kernel device is gone"
-                // failure mode (HIDMaestro#11): SDL's internal
-                // JoystickConnected state can still return true after
-                // WM_DEVICECHANGE removal if a handle was ever opened,
-                // leaving ud.Device.IsAttached stuck on. Cross-checking
-                // against the live enumeration makes the undead-ID case
-                // look just like a normal disconnect.
                 bool inCurrentEnum = currentInstanceIds.Contains(sdlId);
-                if (ud.Device == null || !ud.Device.IsAttached || !inCurrentEnum)
+                bool looksDisconnected =
+                    ud.Device == null
+                    || !ud.Device.IsAttached
+                    || !inCurrentEnum;
+
+                if (!looksDisconnected)
                 {
-                    MarkDeviceOffline(ud);
-                    disconnectedIds.Add(sdlId);
-                    changed = true;
+                    // Healthy. Clear any pending debounce for this SDL ID.
+                    _sdlDisconnectCandidateSince.Remove(sdlId);
+                    continue;
                 }
+
+                // Start / continue the debounce window.
+                if (!_sdlDisconnectCandidateSince.TryGetValue(sdlId, out var firstSeen))
+                {
+                    _sdlDisconnectCandidateSince[sdlId] = nowUtc;
+                    continue;
+                }
+
+                if ((nowUtc - firstSeen).TotalMilliseconds < SdlDisconnectDebounceMs)
+                {
+                    continue;
+                }
+
+                // Debounce window elapsed. Real disconnect.
+                MarkDeviceOffline(ud);
+                disconnectedIds.Add(sdlId);
+                _sdlDisconnectCandidateSince.Remove(sdlId);
+                changed = true;
             }
 
             // Clean up tracking for disconnected devices.

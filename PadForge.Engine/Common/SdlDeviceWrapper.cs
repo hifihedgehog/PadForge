@@ -671,66 +671,26 @@ namespace PadForge.Engine
                 // contains the BT MAC or USB hub/port address and is
                 // completely slot-independent.
                 //
-                // Identity-collision guard. When a HIDMaestro virtual shares
-                // VID/PID with a physical (e.g. the xbox-series-xs-bt virtual
-                // alongside a real Xbox Series BT, both VID=045E PID=0B13),
-                // StableXInputInstance.Find skips HIDMaestro devices and
-                // returns the physical's path regardless of which controller
-                // SDL actually opened. That would give BOTH the virtual AND
-                // the physical the SAME InstanceGuid, so the UserSettings
-                // rows keyed by that GUID get applied to whichever SDL
-                // latched onto — the classic "virtual overtakes physical"
-                // symptom.
-                //
-                // Resolution: consult the App-layer hook mask via the
-                // IsXInputSlotHiddenByHook delegate. If this SDL XInput#N
-                // path corresponds to a slot our hook is masking, it's one
-                // of our virtuals that slipped past the filter. Use the HM
-                // HID child's PnP path as the identifier so the virtual
-                // always gets a GUID distinct from the physical.
-                bool slotHiddenByHook = false;
-                if (int.TryParse(devicePath.Substring(7), out int xiSlot))
+                // PadForge's SDL3 fork filters HIDMaestro virtual XInput slots
+                // out of enumeration, so any XInput#N that reaches here is a
+                // real controller. Resolve to the physical HID child's stable
+                // PnP path (BT MAC / USB hub+port) so the identity survives
+                // xinputhid slot reshuffles.
+                string physicalPath = null;
+                try { physicalPath = StableXInputInstance.Find(vid, pid); }
+                catch { physicalPath = null; }
+
+                if (!string.IsNullOrEmpty(physicalPath))
                 {
-                    try { slotHiddenByHook = StableXInputInstance.IsXInputSlotHiddenByHook?.Invoke(xiSlot) == true; }
-                    catch { slotHiddenByHook = false; }
+                    identifier = $"pnp:{physicalPath}";
                 }
-
-                if (slotHiddenByHook)
+                else if (!string.IsNullOrEmpty(sdlGuid) && !sdlGuid.All(c => c == '0'))
                 {
-                    string hmPath = null;
-                    try { hmPath = StableXInputInstance.FindHidMaestroChild(vid, pid); }
-                    catch { hmPath = null; }
-
-                    // Prefer the HM HID child path when we can resolve it
-                    // (stable across slot reshuffles); fall back to a
-                    // slot-qualified identifier so the virtual still differs
-                    // from any physical sharing VID/PID. Never fall through
-                    // to the non-HM physical path below — that's the exact
-                    // collision we're preventing.
-                    identifier = !string.IsNullOrEmpty(hmPath)
-                        ? $"hmvirt:{hmPath}"
-                        : $"hmvirt:slot{xiSlot}:{vid:X4}:{pid:X4}";
+                    identifier = $"sdlguid:{sdlGuid}";
                 }
                 else
                 {
-                    string physicalPath = null;
-                    try { physicalPath = StableXInputInstance.Find(vid, pid); }
-                    catch { physicalPath = null; }
-
-                    if (!string.IsNullOrEmpty(physicalPath))
-                    {
-                        identifier = $"pnp:{physicalPath}";
-                    }
-                    else if (!string.IsNullOrEmpty(sdlGuid) && !sdlGuid.All(c => c == '0'))
-                    {
-                        // Fallback: SDL GUID (still slot-dependent, but better
-                        // than the raw XInput#N path).
-                        identifier = $"sdlguid:{sdlGuid}";
-                    }
-                    else
-                    {
-                        identifier = $"{devicePath}:{vid:X4}:{pid:X4}";
-                    }
+                    identifier = $"{devicePath}:{vid:X4}:{pid:X4}";
                 }
             }
             else if (!string.IsNullOrEmpty(devicePath))

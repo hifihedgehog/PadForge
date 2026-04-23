@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -11,6 +12,13 @@ using PadForge.Resources.Strings;
 
 namespace PadForge
 {
+    internal static class NativeMethods
+    {
+        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        internal static extern bool SetDllDirectory(string lpPathName);
+    }
+
     public partial class App : Application
     {
         private Mutex _singleInstanceMutex;
@@ -54,6 +62,57 @@ namespace PadForge
 
             base.OnStartup(e);
 
+            // Put the single-file extraction directory on Win32's DLL
+            // search path so SDL3's native LoadLibrary("xinput1_4.dll")
+            // finds our OpenXInput-derived copy there instead of
+            // Microsoft's System32 xinput1_4.dll.  Uses SetDllDirectory
+            // (not NativeLibrary.Load) to avoid triggering OpenXInput's
+            // DllMain mid-process — that DllMain does work that's
+            // unsafe under loader lock and hangs if invoked when other
+            // threads are already active.  The OS loader will call it
+            // normally when SDL3 later resolves the DLL via the
+            // extended search path.
+            try
+            {
+                string? extractionDir = null;
+                try
+                {
+                    foreach (System.Diagnostics.ProcessModule mod in System.Diagnostics.Process.GetCurrentProcess().Modules)
+                    {
+                        string? p = null;
+                        try { p = mod?.FileName; } catch { continue; }
+                        if (!string.IsNullOrEmpty(p) && p!.IndexOf(@"\.net\", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            extractionDir = Path.GetDirectoryName(p);
+                            if (!string.IsNullOrEmpty(extractionDir)) break;
+                        }
+                    }
+                }
+                catch { /* module enumeration failed — scan as fallback */ }
+
+                if (string.IsNullOrEmpty(extractionDir))
+                {
+                    try
+                    {
+                        var netRoot = Path.Combine(Path.GetTempPath(), ".net", "PadForge");
+                        if (Directory.Exists(netRoot))
+                        {
+                            extractionDir = Directory.EnumerateDirectories(netRoot)
+                                .Where(d => { try { return File.Exists(Path.Combine(d, "xinput1_4.dll")); } catch { return false; } })
+                                .OrderByDescending(d => { try { return Directory.GetLastWriteTimeUtc(d); } catch { return DateTime.MinValue; } })
+                                .FirstOrDefault();
+                        }
+                    }
+                    catch { /* scan failed — no filter this run */ }
+                }
+
+                if (!string.IsNullOrEmpty(extractionDir))
+                {
+                    NativeMethods.SetDllDirectory(extractionDir);
+                }
+            }
+            catch { /* outer catch — never allow this to take down startup */ }
+
             // Replay any HIDMaestro OEM-name overrides left by a prior
             // session that didn't get a clean Clear (crash, force-kill,
             // power loss). Restores the DirectInput OEM table to its
@@ -65,18 +124,10 @@ namespace PadForge
 
             // Sweep any HIDMaestro virtual devices left over from a prior
             // session that didn't cleanly dispose (crash, force-kill,
-            // power loss). The sweep has to complete before SDL enumerates
-            // devices — otherwise orphans surface in the Devices list and
-            // the XInputHook mask starts empty so xinputhid-backed orphans
-            // show up in SDL's XInput backend until the user rebuilds the
-            // VC. But the kernel-side removal is slow enough (seconds on
-            // a heavy load) that running it inline here kept the main
-            // window from rendering, which looked like a frozen startup.
-            // Kick the sweep off on a background thread so OnStartup
-            // returns immediately; InputManager.InitializeSdl awaits this
-            // task just before SDL_Init so the ordering guarantee holds.
-            // Idempotent static API — no HMContext required; safe to call
-            // before driver install.
+            // power loss). Sweep runs on a background thread so OnStartup
+            // returns immediately; InputManager.UpdateDevices awaits this
+            // task before the first enumeration so stale HM HIDs are gone
+            // by the time PadForge looks at its device list.
             OrphanSweepTask = System.Threading.Tasks.Task.Run(() =>
             {
                 try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }

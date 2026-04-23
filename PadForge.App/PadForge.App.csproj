@@ -63,6 +63,23 @@
              Condition="Exists('Resources\SDL3\x64\libusb-1.0.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!--
+      OpenXInput-derived xinput1_4.dll replaces the system one via DLL search order
+      (application directory before System32 for non-KnownDLLs).  When SDL3 calls
+      LoadLibrary("xinput1_4.dll"), this local copy resolves first and SDL's XInput
+      backend uses it instead of Microsoft's.  devobj.dll is OpenXInput's internal
+      helper it imports from; must be shipped alongside.  Forked from
+      Nemirtingas/OpenXInput with a HIDMaestro classifier added to the enumeration
+      step so HM virtuals are skipped during slot assignment.
+    -->
+    <Content Include="Resources\OpenXInput\x64\xinput1_4.dll" Link="xinput1_4.dll"
+             Condition="Exists('Resources\OpenXInput\x64\xinput1_4.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\OpenXInput\x64\devobj.dll" Link="devobj.dll"
+             Condition="Exists('Resources\OpenXInput\x64\devobj.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
     <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->

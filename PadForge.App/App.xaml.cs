@@ -235,7 +235,7 @@ namespace PadForge
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try { System.IO.File.AppendAllText(@"C:\PadForge\crash.log",
+            try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
                 $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ex2.GetType().Name}: {ex2.Message}\n{ex2.StackTrace}" : e.ExceptionObject?.ToString())}\n\n"); }
             catch { }
 
@@ -266,7 +266,7 @@ namespace PadForge
         {
             e.Handled = true;
 
-            try { System.IO.File.AppendAllText(@"C:\PadForge\crash.log",
+            try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
                 $"[{DateTime.Now:HH:mm:ss}] DISPATCHER: {e.Exception.GetType().Name}: {e.Exception.Message}\n{e.Exception.StackTrace}\n\n"); }
             catch { }
 

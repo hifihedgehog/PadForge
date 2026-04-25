@@ -3846,6 +3846,41 @@ namespace PadForge.Services
         /// When true, performs data swaps only without UI refresh.
         /// Use during startup before the window is loaded.
         /// </param>
+        /// <summary>
+        /// Compacts active slots to indices 0..N-1, eliminating any holes left
+        /// by deletes. Walks once with a two-pointer pattern: each created slot
+        /// shifts down to the next available position via the same swap
+        /// machinery EnsureTypeGroupOrder uses (engine arrays, settings
+        /// UserSetting MapTo, and PadViewModel slot data all travel together).
+        /// Returns true if any compaction occurred.
+        ///
+        /// Called after a slot delete so a subsequent CreateSlot lands at the
+        /// bottom of the type group rather than at slot 0. Stable shift
+        /// preserves type-priority order, so EnsureTypeGroupOrder is not
+        /// required afterward (compaction is a no-op if there are no holes).
+        /// </summary>
+        public bool CompactSlots(bool silent = false)
+        {
+            bool anyCompacted = false;
+            int writePos = 0;
+            for (int readPos = 0; readPos < InputManager.MaxPads; readPos++)
+            {
+                if (!SettingsManager.SlotCreated[readPos]) continue;
+                if (readPos != writePos)
+                {
+                    _inputManager?.SwapSlotData(readPos, writePos);
+                    SettingsManager.SwapSlots(readPos, writePos);
+                    SwapPadViewModelSlotData(readPos, writePos);
+                    anyCompacted = true;
+                }
+                writePos++;
+            }
+
+            if (anyCompacted && !silent)
+                RefreshAfterSlotReorder();
+            return anyCompacted;
+        }
+
         public bool EnsureTypeGroupOrder(bool silent = false)
         {
             var activeSlots = new List<int>();

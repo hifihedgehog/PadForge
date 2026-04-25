@@ -423,6 +423,13 @@ namespace PadForge.Services
             // don't leak into the next controller created in this slot.
             _mainVm.Pads[slotIndex].ResetAllSettings();
 
+            // Clear the PadVm's selected device too — otherwise the mapping
+            // grid retains the previously-loaded device's mapping rows even
+            // after the UserSetting it was driven by has been removed. With
+            // SelectedMappedDevice null, RebuildMappings produces an empty
+            // grid and a new occupant of this slot starts clean.
+            _mainVm.Pads[slotIndex].SelectedMappedDevice = null;
+
             // Unassign all devices mapped to this slot.
             // Remove entries that are ONLY mapped to this slot (orphans).
             // Keep entries that are also mapped to other slots via separate UserSetting instances.

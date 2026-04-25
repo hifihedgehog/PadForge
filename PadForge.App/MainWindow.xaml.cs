@@ -293,6 +293,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.StartAtLogin)
                      or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
                      or nameof(SettingsViewModel.PollingRateMs)
+                     or nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds)
                      or nameof(SettingsViewModel.EnableInputHiding)
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching))
@@ -416,6 +417,24 @@ namespace PadForge
 
             // After assigning a device to a slot, navigate to that controller page.
             _deviceService.NavigateToSlotRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
+
+            // Engine signaled an HM virtual controller's inactivity timeout
+            // fired (all mapped devices offline past the configured threshold).
+            // Treat as a programmatic delete: tear down the slot and compact
+            // the remaining stack with the bubble-up cascade so the
+            // surviving Microsoft VCs reattach to lower xinputhid kernel
+            // slots, matching the behavior XInput exhibits naturally on
+            // physical disconnect/reconnect.
+            _inputService.SlotInactivityTimedOut += (s, padIndex) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (_viewModel.SelectedPadIndex == padIndex)
+                        SelectNavItemByTag("Dashboard");
+                    _deviceService.DeleteSlot(padIndex);
+                    _inputService.CompactSlots(rebuildHmVcs: true);
+                }));
+            };
 
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>

@@ -36,6 +36,20 @@ namespace PadForge.Common.Input
         /// Higher values reduce CPU usage at the cost of input latency.</summary>
         public int PollingIntervalMs { get; set; } = 1;
 
+        /// <summary>Seconds of all-mapped-devices-offline before an HM
+        /// virtual controller is destroyed and its slot removed.  0 disables
+        /// (HM VCs survive arbitrary offline windows).  Default 60.  When
+        /// the destroy fires, surviving HM VCs in the stack bubble down via
+        /// the bubble-up cascade so XInput indices stay contiguous.</summary>
+        public int HmInactivityTimeoutSeconds { get; set; } = 60;
+
+        /// <summary>Raised on the polling thread when an HM VC has reached
+        /// its inactivity timeout.  Listener (MainWindow) marshals to the
+        /// UI thread and runs DeviceService.DeleteSlot + CompactSlots with
+        /// the bubble-up cascade.  Argument is the pad index that timed
+        /// out.</summary>
+        public event System.EventHandler<int> HmVcInactivityDestroyed;
+
         /// <summary>Device re-enumeration interval in milliseconds (every 2 seconds).</summary>
         private const int EnumerationIntervalMs = 2000;
 

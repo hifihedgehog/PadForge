@@ -146,6 +146,7 @@ namespace PadForge.Services
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
+            _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
 
             // Copy controller types and per-slot configs immediately so Step 5
             // creates the correct VC types from the first polling cycle.
@@ -161,6 +162,7 @@ namespace PadForge.Services
             _inputManager.DevicesUpdated += OnDevicesUpdated;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
+            _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
 
             // Subscribe to settings/dashboard property changes for runtime propagation.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
@@ -1618,6 +1620,25 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Raised on the UI thread after the engine reported an HM virtual
+        /// controller's inactivity timeout fired.  MainWindow listens and
+        /// runs DeviceService.DeleteSlot + CompactSlots(rebuildHmVcs:true).
+        /// Argument is the pad index that timed out.
+        /// </summary>
+        public event EventHandler<int> SlotInactivityTimedOut;
+
+        private void OnHmVcInactivityDestroyed(object sender, int padIndex)
+        {
+            // Engine fires on the polling thread.  Marshal to the UI thread
+            // before the listener does the actual delete + compact, since
+            // those touch PadVMs, settings, and the swap pipeline.
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                SlotInactivityTimedOut?.Invoke(this, padIndex);
+            }));
+        }
+
+        /// <summary>
         /// Propagates settings changes to the engine at runtime.
         /// </summary>
         private void OnSettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -1625,6 +1646,10 @@ namespace PadForge.Services
             if (e.PropertyName == nameof(SettingsViewModel.PollingRateMs) && _inputManager != null)
             {
                 _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
+            }
+            else if (e.PropertyName == nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds) && _inputManager != null)
+            {
+                _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
             }
             else if (e.PropertyName == nameof(SettingsViewModel.EnableInputHiding))
             {
@@ -3859,21 +3884,44 @@ namespace PadForge.Services
         /// preserves type-priority order, so EnsureTypeGroupOrder is not
         /// required afterward (compaction is a no-op if there are no holes).
         /// </summary>
-        public bool CompactSlots(bool silent = false)
+        public bool CompactSlots(bool silent = false, bool rebuildHmVcs = true)
         {
             bool anyCompacted = false;
             int writePos = 0;
+            // Track which positions just received a Microsoft-type HM VC via
+            // a shift.  Those VCs are still bound to their old kernel slots;
+            // destroying them lets Pass 2 recreate in ascending pad order so
+            // xinputhid bubbles them down to the lowest free user-indices.
+            // PlayStation/Extended VCs keep their handles (no kernel slot
+            // binding to bubble).
+            var slotsToRebuild = rebuildHmVcs ? new System.Collections.Generic.List<int>() : null;
             for (int readPos = 0; readPos < InputManager.MaxPads; readPos++)
             {
                 if (!SettingsManager.SlotCreated[readPos]) continue;
                 if (readPos != writePos)
                 {
+                    bool wasMicrosoftHmAtRead = rebuildHmVcs
+                        && (_inputManager?.IsMicrosoftHmVcAt(readPos) ?? false);
                     _inputManager?.SwapSlotData(readPos, writePos);
                     SettingsManager.SwapSlots(readPos, writePos);
                     SwapPadViewModelSlotData(readPos, writePos);
                     anyCompacted = true;
+                    if (wasMicrosoftHmAtRead) slotsToRebuild?.Add(writePos);
                 }
                 writePos++;
+            }
+
+            // Tear down the shifted Microsoft HM VCs asynchronously.  Pass
+            // 2's pendingConnect gate already serializes the recreates one
+            // at a time in ascending pad order, which is what xinputhid
+            // needs to allocate consecutive kernel slots.
+            if (slotsToRebuild != null && _inputManager != null)
+            {
+                foreach (var slot in slotsToRebuild)
+                {
+                    try { _inputManager.DestroyVirtualControllerAsync(slot); }
+                    catch { /* best effort — Pass 2 will retry creation */ }
+                }
             }
 
             if (anyCompacted && !silent)

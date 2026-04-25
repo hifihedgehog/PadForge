@@ -394,6 +394,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _pollingRateMs, Math.Clamp(value, 1, 16));
         }
 
+        private int _hmInactivityDestroyTimeoutSeconds = 60;
+
+        /// <summary>
+        /// Seconds the engine waits for any mapped device to return online
+        /// before destroying an HM virtual controller and removing its slot.
+        /// 0 disables (HM VCs survive arbitrary offline windows).  Default
+        /// 60.  Surviving HM VCs bubble down to keep XInput indices
+        /// contiguous after a destroy.
+        /// </summary>
+        public int HmInactivityDestroyTimeoutSeconds
+        {
+            get => _hmInactivityDestroyTimeoutSeconds;
+            set => SetProperty(ref _hmInactivityDestroyTimeoutSeconds, Math.Clamp(value, 0, 3600));
+        }
+
         private bool _enableInputHiding = true;
 
         /// <summary>

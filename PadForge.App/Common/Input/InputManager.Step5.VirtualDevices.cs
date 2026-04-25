@@ -327,6 +327,12 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly System.Threading.Tasks.Task[] _pendingConnectTask = new System.Threading.Tasks.Task[MaxPads];
 
+        /// <summary>Per-slot latch: HM inactivity timeout already fired for
+        /// this slot in the current offline window.  Prevents the polling
+        /// thread from re-firing the event every tick after the threshold
+        /// is crossed.  Cleared when the slot returns to active state.</summary>
+        private readonly bool[] _hmInactivityFired = new bool[MaxPads];
+
         /// <summary>
         /// Per-slot flag: true while a virtual controller is being created.
         /// Set true just before creation, cleared when the controller reports
@@ -504,6 +510,7 @@ namespace PadForge.Common.Input
                 if (slotActive)
                 {
                     _slotInactiveCounter[padIndex] = 0;
+                    _hmInactivityFired[padIndex] = false;
 
                     if (vc == null)
                     {
@@ -528,26 +535,44 @@ namespace PadForge.Common.Input
                     // Grace period preserves rumble feedback through USB hiccups.
                     _slotInactiveCounter[padIndex]++;
 
-                    // Grace-period destroy applies to non-HIDMaestro virtual
-                    // types (MIDI, KeyboardMouse). HIDMaestro VCs are NEVER
-                    // destroyed by the inactive grace: teardown of an Xbox
-                    // Series BT profile takes ~11 seconds, which creates a
-                    // catastrophic destroy→real-reshuffles-back→create loop
-                    // whenever xinputhid transiently invalidates SDL's view
-                    // of the real controller. As long as the user's slot
-                    // mapping exists (the !HasAnyDeviceMapped branch didn't
-                    // fire above), keep the virtual alive. It will only be
-                    // destroyed on explicit slot delete, slot disable, type
-                    // change, or profile change.
                     bool isHMaestro = vc is HMaestroVirtualController;
+
                     if (!isHMaestro
                         && vc != null
                         && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
                     {
+                        // Non-HM (MIDI, KeyboardMouse) destroy on the short
+                        // grace counter — teardown is cheap and there's no
+                        // kernel-slot ordering concern.
                         DestroyVirtualController(padIndex);
                         _virtualControllers[padIndex] = null;
                         VibrationStates[padIndex].LeftMotorSpeed = 0;
                         VibrationStates[padIndex].RightMotorSpeed = 0;
+                    }
+                    else if (isHMaestro
+                             && vc != null
+                             && HmInactivityTimeoutSeconds > 0
+                             && !_hmInactivityFired[padIndex])
+                    {
+                        // HM inactivity timeout.  Setting=0 disables (legacy
+                        // never-destroy behavior — slot survives indefinitely).
+                        // Otherwise: convert seconds to polling cycles, fire
+                        // event once when threshold is crossed, latch so we
+                        // don't re-fire each tick.  UI thread handler runs
+                        // DeleteSlot + CompactSlots(rebuildHmVcs:true) which
+                        // tears down this VC and bubbles surviving Microsoft
+                        // HM VCs down to lower kernel slots.  The latch
+                        // clears whenever the slot returns to active state
+                        // (counter reset above).
+                        int hmThresholdCycles =
+                            (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs);
+                        if (_slotInactiveCounter[padIndex] >= hmThresholdCycles)
+                        {
+                            _hmInactivityFired[padIndex] = true;
+                            VibrationStates[padIndex].LeftMotorSpeed = 0;
+                            VibrationStates[padIndex].RightMotorSpeed = 0;
+                            HmVcInactivityDestroyed?.Invoke(this, padIndex);
+                        }
                     }
                 }
             }
@@ -1172,6 +1197,33 @@ namespace PadForge.Common.Input
 
         private void DestroyVirtualController(int padIndex)
             => DestroyVirtualController(padIndex, asyncDispose: false);
+
+        /// <summary>
+        /// Public entry point for the bubble-up cascade in InputService.
+        /// Tears down the slot's VC asynchronously so the polling thread is
+        /// not blocked, and Pass 2 picks up the now-null slot to recreate
+        /// once any pending dispose has finished.
+        /// </summary>
+        public void DestroyVirtualControllerAsync(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return;
+            DestroyVirtualController(padIndex, asyncDispose: true);
+        }
+
+        /// <summary>
+        /// Returns true if the slot currently holds a Microsoft-type HM
+        /// virtual controller.  Used by CompactSlots' rebuild step to
+        /// decide whether to tear down a just-shifted VC for kernel-slot
+        /// bubble-down (xinputhid binds Microsoft HM VCs to user-indices;
+        /// PlayStation/Extended don't, so they keep their handles).
+        /// </summary>
+        public bool IsMicrosoftHmVcAt(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            var vc = _virtualControllers[padIndex];
+            return vc is HMaestroVirtualController hm
+                && hm.Type == VirtualControllerType.Microsoft;
+        }
 
         /// <summary>
         /// Enforces S1: within each HIDMaestro-backed subgroup (Microsoft /

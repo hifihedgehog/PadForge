@@ -254,6 +254,7 @@ namespace PadForge.Services
             vm.StartAtLogin = appSettings.StartAtLogin;
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
             vm.PollingRateMs = appSettings.PollingRateMs;
+            vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.HidHideWhitelistPaths.Clear();
@@ -1085,6 +1086,7 @@ namespace PadForge.Services
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateMs = vm.PollingRateMs,
+                HmInactivityDestroyTimeoutSeconds = vm.HmInactivityDestroyTimeoutSeconds,
                 ThemeIndex = vm.SelectedThemeIndex,
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
@@ -1461,6 +1463,7 @@ namespace PadForge.Services
             settingsVm.StartAtLogin = false;
             settingsVm.EnablePollingOnFocusLoss = true;
             settingsVm.PollingRateMs = 1;
+            settingsVm.HmInactivityDestroyTimeoutSeconds = 60;
             settingsVm.SelectedThemeIndex = 0;
             settingsVm.EnableInputHiding = true;
             settingsVm.EnableAutoProfileSwitching = false;
@@ -1829,6 +1832,18 @@ namespace PadForge.Services
 
         [XmlElement]
         public int PollingRateMs { get; set; } = 1;
+
+        /// <summary>
+        /// Seconds an HM virtual controller waits for any mapped device to
+        /// come back online before destroying itself.  0 disables (HM VCs
+        /// survive arbitrary offline windows — legacy behavior).  Default
+        /// 60.  When triggered, the slot is removed entirely (same shape
+        /// as user-driven delete) and surviving HM VCs in the stack
+        /// bubble down via CompactSlots so XInput indices stay
+        /// contiguous.
+        /// </summary>
+        [XmlElement]
+        public int HmInactivityDestroyTimeoutSeconds { get; set; } = 60;
 
         [XmlElement]
         public int ThemeIndex { get; set; }

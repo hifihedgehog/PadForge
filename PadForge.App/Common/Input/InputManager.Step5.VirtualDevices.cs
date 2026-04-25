@@ -315,6 +315,19 @@ namespace PadForge.Common.Input
         private readonly System.Threading.Tasks.Task[] _pendingDisposeTask = new System.Threading.Tasks.Task[MaxPads];
 
         /// <summary>
+        /// Per-slot async-connect tracker. Pass 2 hands the
+        /// <c>CreateController</c> + <c>Connect</c> + <c>RegisterFeedbackCallback</c>
+        /// chain to a thread-pool task and stores the task here so the
+        /// polling thread is not blocked on HIDMaestro driver bring-up
+        /// (multi-second per controller for Microsoft xinputhid). Pass 1
+        /// and Pass 2 both gate on this so the slot isn't re-processed
+        /// while creation is in flight, and so only one HM create runs
+        /// at a time globally (xinputhid serializes internally; honoring
+        /// that on our side keeps kernel-slot allocation predictable).
+        /// </summary>
+        private readonly System.Threading.Tasks.Task[] _pendingConnectTask = new System.Threading.Tasks.Task[MaxPads];
+
+        /// <summary>
         /// Per-slot flag: true while a virtual controller is being created.
         /// Set true just before creation, cleared when the controller reports
         /// IsConnected. Read by the UI thread via
@@ -387,6 +400,17 @@ namespace PadForge.Common.Input
 
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
+                // Skip this slot entirely while an async connect is in
+                // flight: the wrapper is being driven through Connect on a
+                // thread-pool task, and any Pass 1 mutation here would race
+                // with that.  Re-evaluate next polling cycle once the task
+                // completes.
+                {
+                    var inFlight = _pendingConnectTask[padIndex];
+                    if (inFlight != null && !inFlight.IsCompleted)
+                        continue;
+                }
+
                 var vc = _virtualControllers[padIndex];
 
                 // Detect controller type change — destroy old if type differs.
@@ -400,7 +424,7 @@ namespace PadForge.Common.Input
                     // same poll cycle as Pass 1 sets it.
                     if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                     else _slotInitializing[padIndex] = false;
-                    DestroyVirtualController(padIndex);
+                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
                     _virtualControllers[padIndex] = null;
                     _createFailed[padIndex] = false; // Type change — allow retry
                     // The old profile slug belongs to the old category and is
@@ -420,7 +444,7 @@ namespace PadForge.Common.Input
                         // Flag BEFORE destroy (see type-change comment above).
                         if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                         else _slotInitializing[padIndex] = false;
-                        DestroyVirtualController(padIndex);
+                        DestroyVirtualController(padIndex, asyncDispose: true);
                         _virtualControllers[padIndex] = null;
                         _createFailed[padIndex] = false; // Profile change — allow retry
                         vc = null;
@@ -453,7 +477,7 @@ namespace PadForge.Common.Input
                     {
                         if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                         else _slotInitializing[padIndex] = false;
-                        DestroyVirtualController(padIndex);
+                        DestroyVirtualController(padIndex, asyncDispose: true);
                         _virtualControllers[padIndex] = null;
                         _createFailed[padIndex] = false;
                         vc = null;
@@ -465,7 +489,7 @@ namespace PadForge.Common.Input
                 // (slot still created + enabled, but physical device offline).
                 if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
                 {
-                    DestroyVirtualController(padIndex);
+                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
                     _slotInitializing[padIndex] = false;
@@ -491,7 +515,7 @@ namespace PadForge.Common.Input
                 {
                     // No devices mapped to this slot — user explicitly unassigned
                     // all devices. Destroy immediately (not a transient disconnect).
-                    DestroyVirtualController(padIndex);
+                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
                     _slotInitializing[padIndex] = false;
@@ -569,8 +593,25 @@ namespace PadForge.Common.Input
                     _pendingDisposeTask[i] = null;
                 }
             }
-            bool anyHMaestroCreatedThisPass = false;
-            if (anyNeedsCreate && !anyDisposePending)
+            // Gate on async-connect tasks too: Pass 2 hands HM creates to
+            // the thread pool so the polling thread stays free to feed
+            // every other live VC during the ~3-11s HIDMaestro driver
+            // bring-up.  We still serialize HM creates one at a time
+            // (xinputhid's lowest-available kernel-slot allocation
+            // depends on previous create having fully bound), so a
+            // single in-flight connect blocks the next create until it
+            // completes.
+            bool anyConnectPending = false;
+            for (int i = 0; i < MaxPads; i++)
+            {
+                var t = _pendingConnectTask[i];
+                if (t != null)
+                {
+                    if (!t.IsCompleted) { anyConnectPending = true; break; }
+                    _pendingConnectTask[i] = null;
+                }
+            }
+            if (anyNeedsCreate && !anyDisposePending && !anyConnectPending)
             {
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
                 {
@@ -613,55 +654,80 @@ namespace PadForge.Common.Input
                         bool isMsSlot = SlotControllerTypes[padIndex] == VirtualControllerType.Microsoft;
                         if (isMsSlot) EnsureHMaestroContext();
 
-                        var vc = CreateVirtualController(padIndex);
-                        _virtualControllers[padIndex] = vc;
+                        bool isHmSlot = slotType == VirtualControllerType.Microsoft
+                                     || slotType == VirtualControllerType.PlayStation
+                                     || slotType == VirtualControllerType.Extended;
 
-                        if (vc != null && vc.IsConnected)
+                        if (isHmSlot)
                         {
-                            _slotInitializing[padIndex] = false;
-                            if (vc is HMaestroVirtualController)
-                                anyHMaestroCreatedThisPass = true;
-
-                            // Create at most one virtual per polling cycle.
-                            // The remaining passes in THIS polling cycle
-                            // (FinalizeNames below, then Pass 3) submit the
-                            // first state frame to this newly-created VC.
-                            // Only on the NEXT polling cycle does Pass 2
-                            // revisit to create the next slot. That's the
-                            // universal "wait until the previous is actually
-                            // submit-ready" gate — works for Microsoft,
-                            // Sony, Extended, MIDI, and KeyboardMouse
-                            // without relying on XInput-specific signals.
+                            // Hand the CreateController + Connect chain to the
+                            // thread pool.  HIDMaestro driver bring-up takes
+                            // multi-second per controller for Microsoft xinputhid
+                            // profiles, and running it on the polling thread
+                            // freezes input submission for every other live VC
+                            // for the duration.  The async path lets polling
+                            // continue at 1 kHz; only the slot whose connect is
+                            // in flight is skipped (vc.SubmitGamepadState early-
+                            // returns when _controller is null, which is the
+                            // case until Connect inside the task completes).
+                            // Gating ensures one HM connect at a time globally,
+                            // so xinputhid's kernel-slot ordering stays
+                            // deterministic.  FinalizeNames is the PnP friendly-
+                            // name fixup (test/Program.cs:199 pattern) and runs
+                            // inline at the tail of the same task so it sees
+                            // the just-bound controller.
+                            int capturedIndex = padIndex;
+                            _pendingConnectTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
+                            {
+                                try
+                                {
+                                    var vcAsync = CreateVirtualController(capturedIndex);
+                                    if (vcAsync != null && vcAsync.IsConnected)
+                                    {
+                                        _virtualControllers[capturedIndex] = vcAsync;
+                                        try { _hmaestroContext?.FinalizeNames(); }
+                                        catch { /* best effort */ }
+                                    }
+                                    else if (vcAsync == null)
+                                    {
+                                        _createFailed[capturedIndex] = true;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    RaiseError($"Failed to create virtual controller for pad {capturedIndex}", ex);
+                                    _createFailed[capturedIndex] = true;
+                                }
+                                finally
+                                {
+                                    _slotInitializing[capturedIndex] = false;
+                                }
+                            });
+                            // One HM connect kicked off per polling cycle.
+                            // The pendingConnect gate above blocks the next
+                            // cycle's Pass 2 from kicking off another until
+                            // this one completes, preserving the
+                            // ascending-kernel-slot allocation guarantee.
                             break;
                         }
-                        else if (vc == null)
+                        else
                         {
-                            _createFailed[padIndex] = true;
-                            _slotInitializing[padIndex] = false;
-                            // Creation failed. Don't break — try the next
-                            // slot in the same pass. _createFailed keeps us
-                            // from looping on this one.
-                        }
-                    }
-                }
+                            // MIDI / KeyboardMouse — cheap construction, fine
+                            // to run inline.  No HIDMaestro driver bring-up.
+                            var vc = CreateVirtualController(padIndex);
+                            _virtualControllers[padIndex] = vc;
 
-                // PnP race fix: after creating one or more HIDMaestro
-                // controllers in this round, wait for every live HID child to
-                // reach DN_STARTED and re-apply friendly names. Matches the
-                // HIDMaestro test app pattern (test/Program.cs:199), where the
-                // SDK docstring explicitly calls out a Windows PnP race in
-                // which the first controller's friendly name gets overwritten
-                // by the second controller's driver-bind activity. The call
-                // is adaptive — polls DN_STARTED and exits early when all
-                // controllers are bound.
-                if (anyHMaestroCreatedThisPass && _hmaestroContext != null)
-                {
-                    try
-                    {
-                        _hmaestroContext.FinalizeNames();
-                    }
-                    catch (Exception ex)
-                    {
+                            if (vc != null && vc.IsConnected)
+                            {
+                                _slotInitializing[padIndex] = false;
+                                break;
+                            }
+                            else if (vc == null)
+                            {
+                                _createFailed[padIndex] = true;
+                                _slotInitializing[padIndex] = false;
+                            }
+                        }
                     }
                 }
             }

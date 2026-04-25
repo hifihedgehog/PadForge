@@ -806,6 +806,7 @@ namespace PadForge
                         SelectNavItemByTag("Dashboard");
 
                     _deviceService.DeleteSlot(slotIndex);
+                    _inputService.CompactSlots();
                     _viewModel.Devices.RefreshSlotButtons();
                     _inputService.RefreshDeviceList();
                 }));
@@ -1960,6 +1961,7 @@ namespace PadForge
                         SelectNavItemByTag("Dashboard");
 
                     _deviceService.DeleteSlot(slotIndex);
+                    _inputService.CompactSlots();
                 }));
             }
         }

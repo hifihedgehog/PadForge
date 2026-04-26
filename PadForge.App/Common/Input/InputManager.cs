@@ -447,7 +447,26 @@ namespace PadForge.Common.Input
             _ptpReader = null;
 
             StopAllForceFeedback();
+
+            // Wait for any in-flight HM lifecycle tasks (Pass 2 connects
+            // and Pass 1 async-dispose teardowns) to complete before we
+            // tear everything down.  Without this wait, a connect task
+            // that's currently inside HMContext.CreateController would
+            // run to completion AFTER Stop returns, set
+            // _virtualControllers[i] to the just-built VC, and the new
+            // VC would never be disposed — an orphaned controller in
+            // the kernel device tree.  AwaitPendingLifecycleTasks is
+            // bounded so a hung HM call can't deadlock shutdown.
+            AwaitPendingLifecycleTasks();
+
             DestroyAllVirtualControllers();
+
+            // Reset initializing flags so post-stop reads return false.
+            // The UI tick has already been stopped by InputService.Stop
+            // before getting here, but InputService also clears the same
+            // flags on the slot ViewModels for immediate visual update.
+            for (int i = 0; i < MaxPads; i++)
+                _slotInitializing[i] = false;
             DisposeHMaestroContextOnShutdown();
             CloseAllDevices();
 

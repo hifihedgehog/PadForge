@@ -1384,5 +1384,38 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>
+        /// Block until every pending HM lifecycle task (connect or async
+        /// dispose) finishes, with a 30-second cap so a hung SDK call
+        /// can't deadlock shutdown.  Called from InputManager.Stop right
+        /// before DestroyAllVirtualControllers so any connect that's
+        /// currently building a kernel device finishes and stores its VC,
+        /// letting DestroyAllVirtualControllers see and tear it down
+        /// properly instead of leaking it.
+        /// </summary>
+        private void AwaitPendingLifecycleTasks()
+        {
+            var tasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>(MaxPads * 2);
+            for (int i = 0; i < MaxPads; i++)
+            {
+                var dispose = _pendingDisposeTask[i];
+                var connect = _pendingConnectTask[i];
+                if (dispose != null) tasks.Add(dispose);
+                if (connect != null) tasks.Add(connect);
+            }
+            if (tasks.Count == 0) return;
+
+            try
+            {
+                System.Threading.Tasks.Task.WaitAll(tasks.ToArray(), TimeSpan.FromSeconds(30));
+            }
+            catch
+            {
+                // Best effort — proceed to teardown regardless.  Any
+                // task that threw will have set _createFailed/etc. on
+                // its slot, and the catch keeps shutdown progressing.
+            }
+        }
+
     }
 }

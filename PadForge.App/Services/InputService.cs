@@ -306,6 +306,7 @@ namespace PadForge.Services
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
+                _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -320,6 +321,20 @@ namespace PadForge.Services
             _mainVm.PollingFrequency = 0;
             _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
             _mainVm.RefreshCommands();
+
+            // Clear "Initializing" indicators on dashboard cards and
+            // sidebar nav items.  The UI timer is already stopped above,
+            // so the per-tick refresh that would normally pull
+            // IsVirtualControllerInitializing(...) from the engine no
+            // longer fires.  Without this explicit reset, any slot that
+            // was mid-init at stop time would keep its flashing-green
+            // icon stuck.  Engine-side _slotInitializing[] is also
+            // cleared inside InputManager.Stop for symmetry; this is
+            // the bound to the visual.
+            foreach (var slot in _mainVm.Dashboard.SlotSummaries)
+                slot.IsInitializing = false;
+            foreach (var nav in _mainVm.NavControllerItems)
+                nav.IsInitializing = false;
 
             // Mark all device rows offline so indicators turn gray.
             foreach (var row in _mainVm.Devices.Devices)

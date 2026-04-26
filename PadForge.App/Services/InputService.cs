@@ -243,43 +243,40 @@ namespace PadForge.Services
             if (_stopped) return;
             _stopped = true;
 
-            // Stop UI timer.
-            if (_uiTimer != null)
-            {
-                _uiTimer.Stop();
-                _uiTimer.Tick -= UiTimer_Tick;
-                _uiTimer = null;
-            }
-
-            // Unsubscribe from ViewModel property changes.
-            _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
-            _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
-            _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
-
-            // Unsubscribe from per-pad events.
-            foreach (var padVm in _mainVm.Pads)
-            {
-                padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
-                padVm.MappingsRebuilt -= OnMappingsRebuilt;
-            }
-
-            // Dispose foreground monitor.
-            if (_foregroundMonitor != null)
-            {
-                _foregroundMonitor.ProfileSwitchRequired -= OnProfileSwitchRequired;
-                _foregroundMonitor = null;
-            }
-
-            // Stop DSU server.
-            StopDsuServer();
-
-            // Stop web controller server.
-            StopWebServer();
-
-            // Close overlay windows (not just hide — prevents shutdown hang).
-            // Must dispatch to UI thread since Stop() may be called from Task.Run.
+            // UI-bound housekeeping (timer, event subscriptions, overlay
+            // windows, foreground monitor) — dispatch via _dispatcher so
+            // this method is safe to call from a worker thread (e.g. the
+            // engine-toggle button wraps Stop in Task.Run to keep the UI
+            // responsive during the multi-second HM kernel teardown).
+            // _dispatcher.Invoke runs inline if we're already on the UI
+            // thread, so the app-close path (which calls Dispose from a
+            // Task.Run) doesn't double-marshal.
             _dispatcher.Invoke(() =>
             {
+                // Stop UI timer (DispatcherTimer must be stopped on the
+                // dispatcher that owns it).
+                if (_uiTimer != null)
+                {
+                    _uiTimer.Stop();
+                    _uiTimer.Tick -= UiTimer_Tick;
+                    _uiTimer = null;
+                }
+
+                // Unsubscribe from ViewModel property changes (event
+                // subscriptions are thread-safe but the surrounding state
+                // touches PadVMs, so we keep this on the UI thread for
+                // the per-pad iteration).
+                _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
+                _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
+                _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
+
+                foreach (var padVm in _mainVm.Pads)
+                {
+                    padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
+                    padVm.MappingsRebuilt -= OnMappingsRebuilt;
+                }
+
+                // Close overlay windows (not just hide — prevents shutdown hang).
                 if (_touchpadOverlay != null)
                 {
                     _touchpadOverlay.PositionChanged -= OnTouchpadOverlayPositionChanged;
@@ -294,13 +291,26 @@ namespace PadForge.Services
                 }
             });
 
-            // Stop audio bass rumble detector.
+            // Background-safe: foreground monitor, servers, audio detector,
+            // device hiding teardown.  None of these touch WPF VMs or UI
+            // controls.
+            if (_foregroundMonitor != null)
+            {
+                _foregroundMonitor.ProfileSwitchRequired -= OnProfileSwitchRequired;
+                _foregroundMonitor = null;
+            }
+            StopDsuServer();
+            StopWebServer();
             StopAudioBassDetector();
-
-            // Remove device hiding (HidHide blacklist entries + input hooks).
             RemoveDeviceHiding();
 
-            // Stop and dispose engine.
+            // Heavy engine teardown — InputManager.Stop calls
+            // AwaitPendingLifecycleTasks (waits for in-flight HM connect /
+            // dispose tasks), DestroyAllVirtualControllers, and
+            // DisposeHMaestroContextOnShutdown.  Each can take many
+            // seconds.  Runs on whatever thread Stop was called from;
+            // engine-toggle button wraps this whole method in Task.Run
+            // for that reason.
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
@@ -312,35 +322,37 @@ namespace PadForge.Services
                 _inputManager = null;
             }
 
-            // Update main VM state.
-            _mainVm.IsEngineRunning = false;
-            _mainVm.Dashboard.EngineStateKey = "Stopped";
-            _mainVm.Dashboard.EngineStatus = Strings.Instance.Common_Stopped;
-            _mainVm.Dashboard.PollingFrequency = 0;
-            _mainVm.Dashboard.OnlineDevices = 0;
-            _mainVm.PollingFrequency = 0;
-            _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
-            _mainVm.RefreshCommands();
+            // Final UI-thread VM updates: marshal back to the dispatcher
+            // so a Task.Run caller sees its visible "Stopped" state
+            // without WPF cross-thread errors.
+            _dispatcher.Invoke(() =>
+            {
+                _mainVm.IsEngineRunning = false;
+                _mainVm.Dashboard.EngineStateKey = "Stopped";
+                _mainVm.Dashboard.EngineStatus = Strings.Instance.Common_Stopped;
+                _mainVm.Dashboard.PollingFrequency = 0;
+                _mainVm.Dashboard.OnlineDevices = 0;
+                _mainVm.PollingFrequency = 0;
+                _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
+                _mainVm.RefreshCommands();
 
-            // Clear "Initializing" indicators on dashboard cards and
-            // sidebar nav items.  The UI timer is already stopped above,
-            // so the per-tick refresh that would normally pull
-            // IsVirtualControllerInitializing(...) from the engine no
-            // longer fires.  Without this explicit reset, any slot that
-            // was mid-init at stop time would keep its flashing-green
-            // icon stuck.  Engine-side _slotInitializing[] is also
-            // cleared inside InputManager.Stop for symmetry; this is
-            // the bound to the visual.
-            foreach (var slot in _mainVm.Dashboard.SlotSummaries)
-                slot.IsInitializing = false;
-            foreach (var nav in _mainVm.NavControllerItems)
-                nav.IsInitializing = false;
+                // Clear "Initializing" indicators on dashboard cards and
+                // sidebar nav items.  Engine-side _slotInitializing[] is
+                // also cleared inside InputManager.Stop for symmetry;
+                // this is the bound-to-visual companion.
+                foreach (var slot in _mainVm.Dashboard.SlotSummaries)
+                    slot.IsInitializing = false;
+                foreach (var nav in _mainVm.NavControllerItems)
+                    nav.IsInitializing = false;
+            });
 
             // Mark all device rows offline so indicators turn gray.
-            foreach (var row in _mainVm.Devices.Devices)
-                row.IsOnline = false;
-            _mainVm.Devices.RefreshCounts();
-
+            _dispatcher.Invoke(() =>
+            {
+                foreach (var row in _mainVm.Devices.Devices)
+                    row.IsOnline = false;
+                _mainVm.Devices.RefreshCounts();
+            });
         }
 
         /// <summary>

@@ -80,6 +80,26 @@
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Idle">
                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                         </DataTrigger>
+                                        <!-- Stopping: red, flashing (mirrors the
+                                             slot-card initializing flash style). -->
+                                        <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping">
+                                            <Setter Property="Foreground" Value="#FFF44336"/>
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard x:Name="FlashRedStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetProperty="Opacity"
+                                                            From="1.0" To="0.15"
+                                                            Duration="0:0:0.5"
+                                                            AutoReverse="True"
+                                                            RepeatBehavior="Forever"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <StopStoryboard BeginStoryboardName="FlashRedStoryboard"/>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>

@@ -187,15 +187,18 @@ Built-in web server turns any touchscreen into a virtual controller with dual an
 | **OS** | Windows 10 or 11 (x64) |
 | **Runtime** | [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) (included in the single-file publish) |
 
-### Optional drivers
+### What's required vs. optional
 
-PadForge installs these from Settings if they aren't already present:
+PadForge ships with the [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) runtime built in. HIDMaestro is what creates virtual controllers &mdash; when you add a slot to the Dashboard, HIDMaestro instantiates a HID device matching the controller "shape" you picked (Xbox Series, DualSense, Logitech wheel, etc.). The HM driver itself is installed once from Settings on first run; per-slot device creation is automatic after that. Required for any output other than Keyboard+Mouse.
 
-| Driver | Purpose |
+The [OpenXInput](https://github.com/hifihedgehog/OpenXinput) shim is bundled inside the PadForge EXE (no install) and filters PadForge's own virtual controllers from its own XInput enumeration.
+
+Two genuinely optional drivers install from Settings only if you need their features:
+
+| Optional driver | Install when |
 |---|---|
-| HIDMaestro | User-mode virtual HID controller engine. Emulates Xbox, PlayStation, flight sticks, wheels, and generic gamepads via 225+ device profiles with full HID descriptor control. |
-| [HidHide](https://github.com/nefarius/HidHide) | Hide physical controllers from games to prevent double input |
-| [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device output |
+| [HidHide](https://github.com/nefarius/HidHide) | Games detect both your physical and virtual controller and you see double input |
+| [Windows MIDI Services](https://github.com/microsoft/MIDI) | You need the MIDI virtual controller type. Requires Windows 11 24H2 (build 26100) or later |
 
 ---
 

@@ -883,5 +883,10 @@
   <data name="Key_Backslash" xml:space="preserve"><value>反斜杠</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>右方括号</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>撇号</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>正在停止…</value></data>
+  <data name="Status_StoppingEngine" xml:space="preserve"><value>正在停止引擎…</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非活动销毁超时：</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>当所有映射设备都离线时，虚拟控制器被销毁前的秒数。0 表示禁用。剩余的控制器会上移以填补空缺，并重新绑定到较低的 XInput 槽位。</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 永不)</value></data>
 
 </root>

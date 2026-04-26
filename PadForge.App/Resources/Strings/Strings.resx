@@ -77,6 +77,8 @@
   <data name="Common_Ready" xml:space="preserve"><value>Ready</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>Stopped</value></data>
   <data name="Common_Running" xml:space="preserve"><value>Running</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>Stopping…</value></data>
+  <data name="Status_StoppingEngine" xml:space="preserve"><value>Stopping engine…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Running on {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Running ({0} clients)</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Listening on :{0}</value></data>
@@ -915,5 +917,8 @@
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Left Motor</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Right Motor</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactivity destroy timeout:</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconds before a virtual controller is destroyed when all mapped devices are offline. 0 disables. Surviving controllers shift up to fill the gap and re-bind to lower XInput slots.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconds (0 = never)</value></data>
 
 </root>

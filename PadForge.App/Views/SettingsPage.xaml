@@ -74,13 +74,13 @@
                                    Opacity="0.6"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Inactivity destroy timeout:" VerticalAlignment="Center"
+                        <TextBlock Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
                                       Minimum="0" Maximum="3600"
                                       SpinButtonPlacementMode="Inline" Width="120"
-                                      ToolTip="Seconds before a virtual controller is destroyed when all mapped devices are offline. 0 disables. Surviving controllers shift up to fill the gap and re-bind to lower XInput slots."/>
-                        <TextBlock Text="seconds (0 = never)" VerticalAlignment="Center" Margin="6,0,0,0"
+                                      ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <TextBlock Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
                                    Opacity="0.6"/>
                     </StackPanel>
                 </StackPanel>

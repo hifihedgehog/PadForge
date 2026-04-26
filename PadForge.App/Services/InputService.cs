@@ -1937,7 +1937,7 @@ namespace PadForge.Services
                 // where centering on a scaled monitor pushed the window past
                 // the physical edge, or a now-detached display).
                 _touchpadOverlay.EnsureOnScreen(dash.TouchpadOverlayMonitor);
-                dash.TouchpadOverlayStatus = Strings.Instance.Common_Running;
+                dash.IsTouchpadOverlayRunning = true;
 
                 // Register as a virtual touchpad device so it appears in Devices page.
                 if (_touchpadOverlayDevice == null)
@@ -1962,7 +1962,7 @@ namespace PadForge.Services
                     {
                         _touchpadOverlay.Hide();
                     }
-                    _mainVm.Dashboard.TouchpadOverlayStatus = Strings.Instance.Common_Stopped;
+                    _mainVm.Dashboard.IsTouchpadOverlayRunning = false;
                 }
                 // Unregister the overlay device.
                 if (_touchpadOverlayDevice != null)

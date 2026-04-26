@@ -883,5 +883,10 @@
   <data name="Key_Backslash" xml:space="preserve"><value>Barre oblique inversée</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>Crochet droit</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrophe</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>Arrêt en cours…</value></data>
+  <data name="Status_StoppingEngine" xml:space="preserve"><value>Arrêt du moteur…</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Délai de destruction par inactivité :</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondes avant qu'un contrôleur virtuel soit détruit lorsque tous les appareils mappés sont hors ligne. 0 désactive. Les contrôleurs restants remontent pour combler le vide et se relient aux slots XInput inférieurs.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secondes (0 = jamais)</value></data>
 
 </root>

@@ -26,6 +26,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PollingFrequencyText));
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(TouchpadOverlayStatus));
         }
 
         // ─────────────────────────────────────────────
@@ -368,13 +369,22 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _touchpadOverlayHeight, Math.Max(80, value));
         }
 
-        private string _touchpadOverlayStatus = Strings.Instance.Common_Stopped;
+        private bool _isTouchpadOverlayRunning;
 
-        public string TouchpadOverlayStatus
+        /// <summary>True when the overlay window is currently shown. Drives
+        /// the localized TouchpadOverlayStatus text below.</summary>
+        public bool IsTouchpadOverlayRunning
         {
-            get => _touchpadOverlayStatus;
-            set => SetProperty(ref _touchpadOverlayStatus, value ?? Strings.Instance.Common_Stopped);
+            get => _isTouchpadOverlayRunning;
+            set
+            {
+                if (SetProperty(ref _isTouchpadOverlayRunning, value))
+                    OnPropertyChanged(nameof(TouchpadOverlayStatus));
+            }
         }
+
+        public string TouchpadOverlayStatus =>
+            _isTouchpadOverlayRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
 
     }
 

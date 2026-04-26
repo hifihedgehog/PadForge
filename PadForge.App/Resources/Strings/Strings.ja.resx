@@ -883,5 +883,10 @@
   <data name="Key_Backslash" xml:space="preserve"><value>バックスラッシュ</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>右角括弧</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>アポストロフィ</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>停止中…</value></data>
+  <data name="Status_StoppingEngine" xml:space="preserve"><value>エンジンを停止中…</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非アクティブ時の破棄タイムアウト:</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに仮想コントローラーが破棄されるまでの秒数。0で無効。残ったコントローラーは隙間を埋めるために上にシフトし、低い XInput スロットに再バインドされます。</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
 
 </root>

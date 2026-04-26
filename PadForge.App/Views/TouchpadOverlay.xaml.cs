@@ -291,9 +291,14 @@ namespace PadForge.Views
         /// <summary>Sets the touchpad surface opacity (0.0 = invisible, 1.0 = opaque).</summary>
         public void SetSurfaceOpacity(double opacity)
         {
+            // AllowsTransparency=True turns the window into a layered HWND
+            // where Windows only routes input to pixels with alpha > 0.
+            // Floor the alpha at 1 so an "invisible" surface still receives
+            // touches/clicks instead of becoming click-through.
+            double clamped = Math.Clamp(opacity, 0.0, 1.0);
+            byte alpha = (byte)Math.Max(1, (int)(clamped * 255));
             Surface.Background = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromArgb(
-                    (byte)(Math.Clamp(opacity, 0.0, 1.0) * 255), 255, 255, 255));
+                System.Windows.Media.Color.FromArgb(alpha, 255, 255, 255));
         }
 
         // ─────────────────────────────────────────────

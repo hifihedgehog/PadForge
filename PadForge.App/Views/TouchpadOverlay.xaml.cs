@@ -218,6 +218,30 @@ namespace PadForge.Views
             Top = topDip + (heightDip - Height) / 2;
         }
 
+        /// <summary>
+        /// If the window's physical-px rect doesn't intersect any monitor's
+        /// working area (e.g. saved position from a now-detached display, or
+        /// stale coords written by an earlier broken centering routine), re-
+        /// center on the requested monitor. Cheap to call after every Show().
+        /// </summary>
+        public void EnsureOnScreen(int preferredMonitor)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd == IntPtr.Zero || !GetWindowRect(hwnd, out RECT r))
+                return;
+
+            var screens = System.Windows.Forms.Screen.AllScreens;
+            foreach (var screen in screens)
+            {
+                var b = screen.WorkingArea;
+                if (r.Right > b.Left && r.Left < b.Right &&
+                    r.Bottom > b.Top && r.Top < b.Bottom)
+                    return; // any overlap is enough
+            }
+
+            MoveToMonitor(preferredMonitor);
+        }
+
         /// <summary>Returns the monitor index the overlay's center point is on.</summary>
         public int GetCurrentMonitor()
         {

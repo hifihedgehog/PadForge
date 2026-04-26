@@ -167,6 +167,7 @@ namespace PadForge.Services
             // Subscribe to settings/dashboard property changes for runtime propagation.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
+            _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested += OnResetTouchpadOverlayPosition;
 
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
@@ -268,6 +269,7 @@ namespace PadForge.Services
                 // the per-pad iteration).
                 _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
                 _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
+                _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested -= OnResetTouchpadOverlayPosition;
                 _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
 
                 foreach (var padVm in _mainVm.Pads)
@@ -1931,6 +1933,10 @@ namespace PadForge.Services
 
                 _touchpadOverlay.SetSurfaceOpacity(dash.TouchpadOverlayOpacity);
                 _touchpadOverlay.Show();
+                // Self-heal stale off-screen saves (e.g. from older builds
+                // where centering on a scaled monitor pushed the window past
+                // the physical edge, or a now-detached display).
+                _touchpadOverlay.EnsureOnScreen(dash.TouchpadOverlayMonitor);
                 dash.TouchpadOverlayStatus = Strings.Instance.Common_Running;
 
                 // Register as a virtual touchpad device so it appears in Devices page.
@@ -1989,6 +1995,27 @@ namespace PadForge.Services
             dash.TouchpadOverlayWidth = _touchpadOverlay.Width;
             dash.TouchpadOverlayHeight = _touchpadOverlay.Height;
             dash.TouchpadOverlayMonitor = _touchpadOverlay.GetCurrentMonitor();
+        }
+
+        private void OnResetTouchpadOverlayPosition(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                var dash = _mainVm.Dashboard;
+                if (_touchpadOverlay != null && _touchpadOverlay.IsVisible)
+                {
+                    // Recenter live, then capture the new DIPs into settings.
+                    _touchpadOverlay.MoveToMonitor(dash.TouchpadOverlayMonitor);
+                    OnTouchpadOverlayPositionChanged();
+                }
+                else
+                {
+                    // Clear the saved coords so the next Show() takes the
+                    // MoveToMonitor branch in ShowTouchpadOverlay.
+                    dash.TouchpadOverlayLeft = -1;
+                    dash.TouchpadOverlayTop = -1;
+                }
+            });
         }
 
         // ─────────────────────────────────────────────

@@ -321,6 +321,16 @@ namespace PadForge.ViewModels
         public RelayCommand ResetOpacityCommand =>
             _resetOpacityCommand ??= new RelayCommand(() => TouchpadOverlayOpacity = 0.25);
 
+        /// <summary>Raised when the user clicks Reset Position. Handler in
+        /// InputService recenters the live overlay (or seeds defaults if not
+        /// open) and clears persisted Left/Top.</summary>
+        public event EventHandler ResetTouchpadOverlayPositionRequested;
+
+        private RelayCommand _resetTouchpadOverlayPositionCommand;
+        public RelayCommand ResetTouchpadOverlayPositionCommand =>
+            _resetTouchpadOverlayPositionCommand ??= new RelayCommand(() =>
+                ResetTouchpadOverlayPositionRequested?.Invoke(this, EventArgs.Empty));
+
         private int _touchpadOverlayMonitor;
 
         /// <summary>Monitor index for the touchpad overlay (0 = primary).</summary>

@@ -12,7 +12,18 @@
 
 PadForge is a Windows controller remapper. It takes input from whatever physical device you have (gamepads, joysticks, keyboards, mice, touchscreens) and feeds it into virtual controllers that games see as real hardware: Xbox, PlayStation, flight sticks, wheels, third-party gamepads, MIDI, or keyboard and mouse.
 
-Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, HIDMaestro, HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.
+Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.
+
+<p align="center">
+  <a href="https://github.com/hifihedgehog/HIDMaestro">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="screenshots/hidmaestro-logo-dark.png">
+      <img src="screenshots/hidmaestro-logo-light.png" alt="HIDMaestro" width="96">
+    </picture>
+  </a>
+  <br>
+  <em>Powered by HIDMaestro &mdash; one driver, 225+ device profiles.</em>
+</p>
 
 ---
 

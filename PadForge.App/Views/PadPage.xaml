@@ -478,7 +478,7 @@
                     <!-- ══════════════════════════════════════
                          CONTROLLER MODEL (2D / 3D)
                          ══════════════════════════════════════ -->
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" AutomationProperties.AutomationId="ControllerModelHost">
                         <views:ControllerModelView x:Name="ControllerModel3D" />
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />

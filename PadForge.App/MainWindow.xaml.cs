@@ -841,12 +841,29 @@ namespace PadForge
             DashboardPageView.EngineToggleRequested += (s, e) =>
             {
                 if (_viewModel.IsEngineRunning)
-                    _inputService.Stop();
+                {
+                    // Show "Stopping" state immediately, then run the heavy
+                    // engine teardown on a thread-pool task so the UI stays
+                    // responsive while AwaitPendingLifecycleTasks +
+                    // DestroyAllVirtualControllers + HMContext.Dispose
+                    // grind through (multi-second per Microsoft xinputhid
+                    // VC).  Sidebar rebuild fires when the teardown
+                    // completes.
+                    _viewModel.IsEngineRunning = false;
+                    _viewModel.Dashboard.EngineStateKey = "Stopping";
+                    _viewModel.StatusText = "Stopping engine…";
+                    _viewModel.RefreshCommands();
+                    System.Threading.Tasks.Task.Run(() => _inputService.Stop())
+                        .ContinueWith(_ => RebuildControllerSection(),
+                            System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
+                }
                 else
+                {
                     _inputService.Start();
-                // Force full sidebar card rebuild — engine state affects power icon colors
-                // but isn't a NavControllerItemViewModel property, so in-place updates miss it.
-                RebuildControllerSection();
+                    // Force full sidebar card rebuild — engine state affects power icon colors
+                    // but isn't a NavControllerItemViewModel property, so in-place updates miss it.
+                    RebuildControllerSection();
+                }
             };
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>

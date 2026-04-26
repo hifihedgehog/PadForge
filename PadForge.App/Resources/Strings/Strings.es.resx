@@ -222,6 +222,7 @@
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superficie táctil en pantalla para emulación de touchpad compatible con DualShock 4 y DualSense.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Activar superposición de panel táctil</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidad:</value></data>
+  <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Restablecer posición</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clic derecho y mantener para arrastrar</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Controladores</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Sin dispositivo</value></data>

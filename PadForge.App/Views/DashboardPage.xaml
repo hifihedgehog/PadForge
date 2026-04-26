@@ -506,14 +506,15 @@
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
                                 ToolTip="Reset"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button Command="{Binding ResetTouchpadOverlayPositionCommand}"
+                                Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
                                  Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12" VerticalAlignment="Center"/>
-                        <Button Command="{Binding ResetTouchpadOverlayPositionCommand}"
-                                Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"
-                                Padding="8,2" Margin="16,0,0,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

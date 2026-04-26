@@ -727,31 +727,58 @@ namespace PadForge.Common.Input
                 // All per-slot arrays are recomputed each frame from MapTo,
                 // so no array swapping needed. Zero game disruption.
             }
+            else if (typeA == typeB)
+            {
+                // Same type but different profiles.  Each slot's live VC
+                // carries a profile that, after the swap, matches the
+                // OTHER slot's expected profile — so a data-only swap
+                // (move both VCs to the other slot) leaves each VC at a
+                // slot whose profile matches its identity.  No teardown
+                // and rebuild needed.
+                //
+                // SwapSlotData does the full per-slot move: engine config
+                // arrays AND _virtualControllers AND _slotInactiveCounter
+                // AND _slotInitializing AND VibrationStates etc., and
+                // updates FeedbackPadIndex on each moved VC so feedback
+                // callbacks still target the correct VibrationStates
+                // element.  Pass 1's profile-change detection on the next
+                // polling cycle sees vc.ProfileId == new SlotProfileIds[i]
+                // and is a no-op.  Caller's SettingsManager.SwapSlots
+                // updates UserSetting MapTo so device routing follows.
+                //
+                // The previous behavior here was to destroy both VCs.
+                // That worked but caused unnecessary "Initializing…"
+                // flashing on slots that just needed to host an
+                // already-built VC of the matching profile, and a
+                // dangling-empty-slot artifact on the destination side
+                // when the source slot was empty pre-swap.  Move-when-
+                // possible eliminates both.
+                SwapSlotData(slotA, slotB);
+                return;
+            }
             else
             {
-                // Cross-type OR same-type-different-profile. Either case needs
-                // destroy + recreate because the VC carries profile-specific
-                // state (HID descriptor, driver path, VID/PID). Intra-family
-                // resorts like xbox-360-wired ↔ xbox-series-xs-bt differ in
-                // driver path (XUSB vs xinputhid) even though both are type
-                // Microsoft — the VC object cannot be reused across profiles.
+                // Cross-type swap (e.g., Microsoft ↔ PlayStation).  The
+                // VCs cannot be reused at each other's slots because the
+                // type itself differs — a Microsoft HM VC at a PlayStation
+                // slot would mismatch the slot's expected output surface.
+                // Destroy both and let Pass 2 rebuild with the correct
+                // types.
                 //
-                // Async dispose so the UI thread returns immediately instead
-                // of blocking on HIDMaestro teardown (~11s per Microsoft
-                // profile). The fast housekeeping (hook-mask clear, SDL
-                // teardown watch arm) runs synchronously inside
-                // DestroyVirtualController; only the Disconnect/Dispose call
-                // goes to the thread pool. The slot pointer is nulled
-                // synchronously so Step 5 sees the slot as empty on its
-                // next pass and can rebuild in ascending slot order.
+                // Async dispose so the UI thread returns immediately
+                // instead of blocking on HIDMaestro teardown (~11s per
+                // Microsoft profile).
                 DestroyVirtualController(slotA, asyncDispose: true);
                 DestroyVirtualController(slotB, asyncDispose: true);
                 _slotInactiveCounter[slotA] = 0;
                 _slotInactiveCounter[slotB] = 0;
             }
 
-            // Always swap type tracking and UI-associated state that
-            // travels with the card (not recomputed from MapTo).
+            // Swap type tracking and UI-associated state that travels with
+            // the card (not recomputed from MapTo).  Reached only by the
+            // same-profile MapTo-rename path and the cross-type destroy
+            // path; the same-type-different-profile path returned early
+            // above after SwapSlotData did the full per-slot move.
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
             (SlotProfileIds[slotA], SlotProfileIds[slotB]) =

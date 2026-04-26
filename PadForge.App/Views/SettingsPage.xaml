@@ -74,7 +74,7 @@
                                    Opacity="0.6"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Inactivity destroy timeout" VerticalAlignment="Center"
+                        <TextBlock Text="Inactivity destroy timeout:" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
                                       Minimum="0" Maximum="3600"

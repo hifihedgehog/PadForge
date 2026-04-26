@@ -510,7 +510,10 @@
                         <Ellipse Width="8" Height="8"
                                  Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12"/>
+                        <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12" VerticalAlignment="Center"/>
+                        <Button Command="{Binding ResetTouchpadOverlayPositionCommand}"
+                                Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"
+                                Padding="8,2" Margin="16,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

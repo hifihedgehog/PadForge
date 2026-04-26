@@ -260,6 +260,7 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_TouchpadOverlayDescription => Get("Dashboard_TouchpadOverlayDescription");
     public string Dashboard_EnableTouchpadOverlay => Get("Dashboard_EnableTouchpadOverlay");
     public string Dashboard_TouchpadOverlayOpacity => Get("Dashboard_TouchpadOverlayOpacity");
+    public string Dashboard_TouchpadOverlayResetPosition => Get("Dashboard_TouchpadOverlayResetPosition");
     public string Dashboard_Drivers => Get("Dashboard_Drivers");
     public string Dashboard_NoDevice => Get("Dashboard_NoDevice");
     public string Settings_Title => Get("Settings_Title");

@@ -114,8 +114,12 @@ Combo triggers from buttons, axes, and POV hats fire action sequences of key pre
 Preview highlighting every mapped key and button in real time.
 
 ### Extended virtual controller
-![Extended](screenshots/vjoy.jpg)
+![Extended](screenshots/extended.jpg)
 225+ HIDMaestro profiles (Xbox, PlayStation, flight sticks, wheels, generic gamepads) plus a synthetic "Custom" entry for building a HID descriptor from scratch. Configure thumbsticks, triggers (up to 8 axes shared between them), buttons (1 to 128), POV hats (0 to 4), VID, PID, product string, and OEM override for the DirectInput name table.
+
+### PlayStation virtual controller
+![PlayStation](screenshots/playstation.jpg)
+DualShock 4 / DualSense / DualSense Edge output through HIDMaestro with a 3D model that rotates and highlights live state.
 
 ### MIDI virtual controller
 ![MIDI](screenshots/midi.jpg)
@@ -232,6 +236,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this project was forked from | MIT |
 | [SDL3](https://github.com/libsdl-org/SDL) | Controller input: joystick, gamepad, and sensor enumeration and reading | zlib |
 | HIDMaestro | Virtual HID controller engine (user-mode UMDF2 driver) with 225+ device profiles covering Xbox, PlayStation, flight sticks, wheels, and generic gamepads | MIT |
+| OpenXInput | Drop-in `xinput1_4.dll` / `devobj.dll` replacement that filters PadForge's own virtual controllers from its own XInput view | upstream trademark disclaimer |
 | [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) | 3D controller models (Xbox 360, DualShock 4 OBJ meshes) | CC BY-NC-SA 4.0 |
 | [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) | 2D controller schematic overlays (Xbox 360, DS4 PNG assets) | MIT |
 | [HelixToolkit](https://github.com/helix-toolkit/helix-toolkit) | 3D viewport rendering for WPF | MIT |
@@ -262,5 +267,6 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **WPF UI** is licensed under the MIT License.
 - **Windows MIDI Services** is licensed under the MIT License.
 - **HidHide** is licensed under the MIT License.
+- **OpenXInput** ships only an upstream Microsoft-trademark disclaimer (no OSS license grant); redistributed as-is under the same terms.
 
 See [LICENSE](LICENSE) for the full license text.

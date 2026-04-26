@@ -1228,10 +1228,36 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                 SyncTriggerItemFromVm(item);
         }
 
+        // Persisted stick-config property names. PropertyChanged on any other
+        // property (LiveX/LiveY/RawX/RawY/LiveInputX/LiveInputY/IsCalibrating
+        // and computed display siblings) is a per-frame UI update, not a
+        // user-config change — must not flag the document dirty.
+        private static readonly System.Collections.Generic.HashSet<string> StickConfigPropertyNames = new()
+        {
+            nameof(StickConfigItem.DeadZoneShape),
+            nameof(StickConfigItem.DeadZoneX), nameof(StickConfigItem.DeadZoneY),
+            nameof(StickConfigItem.AntiDeadZoneX), nameof(StickConfigItem.AntiDeadZoneY),
+            nameof(StickConfigItem.Linear),
+            nameof(StickConfigItem.SensitivityCurveX), nameof(StickConfigItem.SensitivityCurveY),
+            nameof(StickConfigItem.MaxRangeX), nameof(StickConfigItem.MaxRangeY),
+            nameof(StickConfigItem.MaxRangeXNeg), nameof(StickConfigItem.MaxRangeYNeg),
+            nameof(StickConfigItem.CenterOffsetX), nameof(StickConfigItem.CenterOffsetY),
+        };
+
+        private static readonly System.Collections.Generic.HashSet<string> TriggerConfigPropertyNames = new()
+        {
+            nameof(TriggerConfigItem.DeadZone),
+            nameof(TriggerConfigItem.MaxRange),
+            nameof(TriggerConfigItem.AntiDeadZone),
+            nameof(TriggerConfigItem.SensitivityCurve),
+        };
+
         private void OnStickConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (_syncingConfigItems) return;
             if (sender is not StickConfigItem item) return;
+
+            bool isConfigProp = e.PropertyName != null && StickConfigPropertyNames.Contains(e.PropertyName);
 
             // Sync changed property back to VM
             switch (item.Index)
@@ -1254,7 +1280,7 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                         case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): LeftCenterOffsetY = item.CenterOffsetY; break;
                     }
-                    ConfigItemDirtyCallback?.Invoke();
+                    if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
                 case 1:
                     switch (e.PropertyName)
@@ -1274,12 +1300,12 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                         case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
                     }
-                    ConfigItemDirtyCallback?.Invoke();
+                    if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
                 default:
                     // Extended custom sticks 2+: values stored directly on ConfigItem,
                     // persisted via SettingsService.UpdatePadSettingsFromViewModels.
-                    ConfigItemDirtyCallback?.Invoke();
+                    if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
             }
         }
@@ -1288,6 +1314,8 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
         {
             if (_syncingConfigItems) return;
             if (sender is not TriggerConfigItem item) return;
+
+            bool isConfigProp = e.PropertyName != null && TriggerConfigPropertyNames.Contains(e.PropertyName);
 
             switch (item.Index)
             {
@@ -1299,7 +1327,7 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                         case nameof(TriggerConfigItem.AntiDeadZone): LeftTriggerAntiDeadZone = item.AntiDeadZone; break;
                         case nameof(TriggerConfigItem.SensitivityCurve): LeftTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
-                    ConfigItemDirtyCallback?.Invoke();
+                    if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
                 case 1:
                     switch (e.PropertyName)
@@ -1309,12 +1337,12 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                         case nameof(TriggerConfigItem.AntiDeadZone): RightTriggerAntiDeadZone = item.AntiDeadZone; break;
                         case nameof(TriggerConfigItem.SensitivityCurve): RightTriggerSensitivityCurve = item.SensitivityCurve; break;
                     }
-                    ConfigItemDirtyCallback?.Invoke();
+                    if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
                 default:
                     // Extended custom triggers 2+: values stored directly on ConfigItem,
                     // persisted via SettingsService.UpdatePadSettingsFromViewModels.
-                    ConfigItemDirtyCallback?.Invoke();
+                    if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
             }
         }

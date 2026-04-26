@@ -906,6 +906,10 @@
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Time-out voor inactieve verwijdering:</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere XInput-slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconden (0 = nooit)</value></data>
+  <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtuele HID-controller-engine (vervangt ViGEmBus en vJoy)</value></data>
+  <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel-stuurprogramma om fysieke apparaten te verbergen voor games</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput; filtert PadForge's eigen virtuele controllers uit z'n eigen weergave</value></data>
 

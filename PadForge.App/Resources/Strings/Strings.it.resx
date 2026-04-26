@@ -906,6 +906,10 @@
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timeout di distruzione per inattività:</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondi prima che un controller virtuale venga distrutto quando tutti i dispositivi mappati sono offline. 0 disattiva. I controller superstiti si spostano in alto per colmare il vuoto e si ricollegano agli slot XInput inferiori.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secondi (0 = mai)</value></data>
+  <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motore controller HID virtuale in modalità utente (sostituisce ViGEmBus e vJoy)</value></data>
+  <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Driver kernel per nascondere i dispositivi fisici ai giochi</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Sostituto drop-in di XInput; filtra i controller virtuali di PadForge dalla sua stessa vista</value></data>
 

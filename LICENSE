@@ -88,3 +88,8 @@ HidHide
 Windows MIDI Services
   https://github.com/microsoft/MIDI
   Licensed under MIT License
+
+OpenXInput
+  https://github.com/hifihedgehog/OpenXinput (forked for HIDMaestro filtering)
+  Upstream ships only a Microsoft trademark disclaimer; no OSS license is
+  granted. Redistributed as-is under the same terms as upstream.

@@ -292,7 +292,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>用于数据绑定的 CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>许可证</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>本软件基于 CC BY-NC-SA 4.0（知识共享 署名-非商业性使用-相同方式共享 4.0 国际）许可协议发布。3D 控制器模型改编自 Handheld Companion（CC BY-NC-SA 4.0）。2D 控制器素材来自 AL2009man 的 Gamepad-Asset-Pack（MIT）。原始代码库分叉自 x360ce（MIT）。SDL3 基于 zlib 许可协议。Windows MIDI Services 基于 MIT 许可协议。ViGEmBus、vJoy、HelixToolkit 和 ModernWpf 基于 MIT 许可协议。</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本软件基于 CC BY-NC-SA 4.0（知识共享 署名-非商业性使用-相同方式共享 4.0 国际）许可协议发布。3D 控制器模型改编自 Handheld Companion（CC BY-NC-SA 4.0）。2D 控制器素材来自 AL2009man 的 Gamepad-Asset-Pack（MIT）。原始代码库分叉自 x360ce（MIT）。SDL3 基于 zlib 许可协议。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit 和 WPF UI 基于 MIT 许可协议。OpenXInput 仅包含上游项目的商标免责声明，未授予任何 OSS 许可。按相同条款原样再分发。</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>游戏手柄</value></data>
@@ -888,5 +888,7 @@
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非活动销毁超时：</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>当所有映射设备都离线时，虚拟控制器被销毁前的秒数。0 表示禁用。剩余的控制器会上移以填补空缺，并重新绑定到较低的 XInput 槽位。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 永不)</value></data>
+  <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput 即插即用替代品；将 PadForge 自身的虚拟控制器从其自身视图中过滤掉</value></data>
 
 </root>

@@ -250,8 +250,8 @@ namespace PadForge.Common.Input
                 .Gamepad()
                 .AddStick("Left", 16)
                 .AddStick("Right", 16)
-                .AddTrigger("Left", 8)
-                .AddTrigger("Right", 8)
+                .AddTrigger("Left", 16)
+                .AddTrigger("Right", 16)
                 .AddHat()
                 .AddButtons(11)
                 .Build();

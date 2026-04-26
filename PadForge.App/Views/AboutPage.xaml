@@ -57,6 +57,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -76,28 +77,33 @@
                                Text="{Binding About_HIDMaestroDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="4" Text="{Binding About_HidHide, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="4" Text="{Binding About_OpenXInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="4" Grid.Column="1"
+                               Text="{Binding About_OpenXInputDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0"/>
+
+                    <TextBlock Grid.Row="5" Text="{Binding About_HidHide, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1"
                                Text="{Binding About_HidHideDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="5" Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="5" Grid.Column="1"
+                    <TextBlock Grid.Row="6" Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="6" Grid.Column="1"
                                Text="{Binding About_MidiServicesDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="6" Text="{Binding About_HelixToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="6" Grid.Column="1"
+                    <TextBlock Grid.Row="7" Text="{Binding About_HelixToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1"
                                Text="{Binding About_HelixToolkitDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="7" Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="7" Grid.Column="1"
+                    <TextBlock Grid.Row="8" Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="8" Grid.Column="1"
                                Text="{Binding About_ModernWpfDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
 
-                    <TextBlock Grid.Row="8" Text="{Binding About_MvvmToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="8" Grid.Column="1"
+                    <TextBlock Grid.Row="9" Text="{Binding About_MvvmToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="9" Grid.Column="1"
                                Text="{Binding About_MvvmToolkitDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0"/>
                 </Grid>

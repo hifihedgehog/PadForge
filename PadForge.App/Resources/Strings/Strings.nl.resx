@@ -292,7 +292,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm voor gegevensbinding</value></data>
   <data name="About_License" xml:space="preserve"><value>Licentie</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. Windows MIDI Services is gelicentieerd onder de MIT License. ViGEmBus, vJoy, HelixToolkit en ModernWpf zijn gelicentieerd onder de MIT License.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit en WPF UI zijn gelicentieerd onder de MIT License. OpenXInput bevat alleen een handelsmerkdisclaimer van het upstream project; wordt onder dezelfde voorwaarden ongewijzigd opnieuw gedistribueerd.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
@@ -906,5 +906,7 @@
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Time-out voor inactieve verwijdering:</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere XInput-slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconden (0 = nooit)</value></data>
+  <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput; filtert PadForge's eigen virtuele controllers uit z'n eigen weergave</value></data>
 
 </root>

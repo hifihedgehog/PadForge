@@ -443,6 +443,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ExtendedRumble => Get("Pad_ExtendedRumble");
     public string About_HIDMaestro => Get("About_HIDMaestro");
     public string About_HIDMaestroDesc => Get("About_HIDMaestroDesc");
+    public string About_OpenXInput => Get("About_OpenXInput");
+    public string About_OpenXInputDesc => Get("About_OpenXInputDesc");
     public string About_HidHide => Get("About_HidHide");
     public string About_HidHideDesc => Get("About_HidHideDesc");
     public string About_Testimony => Get("About_Testimony");

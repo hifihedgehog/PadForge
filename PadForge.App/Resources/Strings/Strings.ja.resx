@@ -292,7 +292,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から適用されたものです。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。Windows MIDI Services は MIT ライセンスの下でライセンスされています。ViGEmBus、vJoy、HelixToolkit、および ModernWpf は MIT ライセンスの下でライセンスされています。</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から適用されたものです。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、OSS ライセンスは付与されません。同条件のもとそのまま再配布されます。</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>ゲームパッド</value></data>
@@ -888,5 +888,7 @@
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非アクティブ時の破棄タイムアウト:</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに仮想コントローラーが破棄されるまでの秒数。0で無効。残ったコントローラーは隙間を埋めるために上にシフトし、低い XInput スロットに再バインドされます。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
+  <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput のドロップイン置換版。PadForge 自身の仮想コントローラーを自身のビューから除外します</value></data>
 
 </root>

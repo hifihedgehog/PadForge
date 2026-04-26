@@ -1075,7 +1075,7 @@ namespace PadForge
 
                 var found = new System.Collections.Generic.List<string>();
                 if (hasViGEm) found.Add("ViGEmBus");
-                if (hasExtended) found.Add("Extended");
+                if (hasExtended) found.Add("vJoy");
 
                 // Ensure window is visible so the dialog isn't hidden behind tray mode.
                 if (!IsVisible) { try { Show(); } catch { } }

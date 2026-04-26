@@ -486,7 +486,9 @@
                         <views:KBMPreviewView x:Name="KBMPreview" Visibility="Collapsed" />
 
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
-                        <Button x:Name="ViewModeToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        <Button x:Name="ViewModeToggle"
+                                AutomationProperties.AutomationId="ViewModeToggle"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="8,8,0,0" Padding="6,4"
                                 Click="ViewModeToggle_Click" ToolTip="{Binding Pad_SwitchTo2D, Source={x:Static strings:Strings.Instance}}">
                             <TextBlock x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"

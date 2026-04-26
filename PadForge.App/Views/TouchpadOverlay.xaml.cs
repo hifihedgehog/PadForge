@@ -112,8 +112,13 @@ namespace PadForge.Views
         {
             if (!_isMouseDragging) return;
             var current = PointToScreen(e.GetPosition(this));
-            Left = _dragStartLeft + (current.X - _dragStartScreen.X);
-            Top = _dragStartTop + (current.Y - _dragStartScreen.Y);
+            // PointToScreen returns physical screen px; Window.Left/Top are
+            // DIPs at the window's current monitor DPI. Divide the delta by
+            // the DPI scale before applying — otherwise on a 250% monitor
+            // the window moves 2.5× the mouse, etc.
+            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(this);
+            Left = _dragStartLeft + (current.X - _dragStartScreen.X) / dpi.DpiScaleX;
+            Top = _dragStartTop + (current.Y - _dragStartScreen.Y) / dpi.DpiScaleY;
         }
 
         private void Surface_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -142,8 +147,11 @@ namespace PadForge.Views
         {
             if (!_isResizing) return;
             var current = PointToScreen(e.GetPosition(this));
-            double newW = _resizeStartW + (current.X - _resizeStart.X);
-            double newH = _resizeStartH + (current.Y - _resizeStart.Y);
+            // Same px → DIP conversion as the drag handler. Width/Height are
+            // DIPs at the window's monitor DPI.
+            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(this);
+            double newW = _resizeStartW + (current.X - _resizeStart.X) / dpi.DpiScaleX;
+            double newH = _resizeStartH + (current.Y - _resizeStart.Y) / dpi.DpiScaleY;
             Width = Math.Max(MinWidth, newW);
             Height = Math.Max(MinHeight, newH);
         }
@@ -338,8 +346,9 @@ namespace PadForge.Views
             if (_isDragging)
             {
                 var screenPos = PointToScreen(e.GetTouchPoint(this).Position);
-                Left = _dragStartLeft + (screenPos.X - _dragStartScreen.X);
-                Top = _dragStartTop + (screenPos.Y - _dragStartScreen.Y);
+                var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(this);
+                Left = _dragStartLeft + (screenPos.X - _dragStartScreen.X) / dpi.DpiScaleX;
+                Top = _dragStartTop + (screenPos.Y - _dragStartScreen.Y) / dpi.DpiScaleY;
                 return;
             }
 

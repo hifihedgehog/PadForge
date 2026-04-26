@@ -901,5 +901,10 @@
   <data name="Key_Backslash" xml:space="preserve"><value>Barra rovesciata</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>Parentesi quadra destra</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrofo</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>Arresto in corso…</value></data>
+  <data name="Status_StoppingEngine" xml:space="preserve"><value>Arresto motore…</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timeout di distruzione per inattività:</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondi prima che un controller virtuale venga distrutto quando tutti i dispositivi mappati sono offline. 0 disattiva. I controller superstiti si spostano in alto per colmare il vuoto e si ricollegano agli slot XInput inferiori.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secondi (0 = mai)</value></data>
 
 </root>

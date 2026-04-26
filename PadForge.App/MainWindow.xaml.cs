@@ -851,8 +851,8 @@ namespace PadForge
                     // completes.
                     _viewModel.IsEngineRunning = false;
                     _viewModel.Dashboard.EngineStateKey = "Stopping";
-                    _viewModel.Dashboard.EngineStatus = "Stopping…";
-                    _viewModel.StatusText = "Stopping engine…";
+                    _viewModel.Dashboard.EngineStatus = Strings.Instance.Common_Stopping;
+                    _viewModel.StatusText = Strings.Instance.Status_StoppingEngine;
                     _viewModel.RefreshCommands();
                     System.Threading.Tasks.Task.Run(() => _inputService.Stop())
                         .ContinueWith(_ => RebuildControllerSection(),

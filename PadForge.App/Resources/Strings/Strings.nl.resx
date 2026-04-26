@@ -901,5 +901,10 @@
   <data name="Key_Backslash" xml:space="preserve"><value>Omgekeerde schuine streep</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>Rechter haakje</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrof</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>Stoppen…</value></data>
+  <data name="Status_StoppingEngine" xml:space="preserve"><value>Engine wordt gestopt…</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Time-out voor inactieve verwijdering:</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere XInput-slots.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconden (0 = nooit)</value></data>
 
 </root>

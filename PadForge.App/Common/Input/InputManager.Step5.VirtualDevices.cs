@@ -1132,7 +1132,7 @@ namespace PadForge.Common.Input
                             for (int s = 0; s < userSticks; s++)
                                 descBuilder.AddStick(s == 0 ? "Left" : "Right", 16);
                             for (int t = 0; t < userTriggers; t++)
-                                descBuilder.AddTrigger(t == 0 ? "Left" : "Right", 8);
+                                descBuilder.AddTrigger(t == 0 ? "Left" : "Right", 16);
                             if (userPovs > 0)
                                 descBuilder.AddHat();
                             if (userButtons > 0)

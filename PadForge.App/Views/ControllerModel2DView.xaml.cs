@@ -273,14 +273,21 @@ namespace PadForge.Views
 
         private void BuildTouchpadPreview(OverlayElement ov)
         {
-            // Full-zone blue highlight, hidden by default. Shown when the
-            // TouchpadClick button is held — same affordance as a face-button
-            // press on the standard buttons, but covering the whole pad.
+            // Full-zone button-style highlight, hidden by default. Shown when
+            // the TouchpadClick button is held, on hover (lower opacity), and
+            // during the Map All flash. Matches the visual weight of the
+            // per-button PNG overlays — coloured fill plus a border, so it
+            // reads as "this is a button" instead of a flat translucent
+            // rectangle.
+            var fill   = new SolidColorBrush(Color.FromArgb(0xB3, 0x4F, 0xC3, 0xF7)); // Material light blue 400, ~70% alpha
+            var stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x29, 0xB6, 0xF6)); // Material light blue 500
             _touchpadClickHighlight = new Rectangle
             {
                 Width = ov.Width,
                 Height = ov.Height,
-                Fill = new SolidColorBrush(Color.FromArgb(0x66, 0x4F, 0xC3, 0xF7)), // Material light blue 400, ~40% alpha
+                Fill = fill,
+                Stroke = stroke,
+                StrokeThickness = 2,
                 RadiusX = 8,
                 RadiusY = 8,
                 IsHitTestVisible = false,
@@ -326,7 +333,11 @@ namespace PadForge.Views
             // Don't overwrite hover state — HitArea_MouseEnter sets the
             // highlight visible at 0.4 opacity for the click-mapping
             // affordance and HitArea_MouseLeave restores via _dirty=true.
-            if (_hoverTarget != "Touchpad")
+            // Same goes for the Map All flash animation: FlashTick toggles
+            // visibility on the same rectangle, and writing here every render
+            // frame would race with it.
+            bool flashClaimsTouchpad = _flashTarget == "TouchpadClick";
+            if (_hoverTarget != "Touchpad" && !flashClaimsTouchpad)
             {
                 _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
                     ? Visibility.Visible : Visibility.Collapsed;
@@ -728,6 +739,17 @@ namespace PadForge.Views
                 return;
             }
 
+            // Touchpad-click target uses the rectangle highlight built in
+            // BuildTouchpadPreview (the layout has no per-element PNG asset
+            // for the touch surface, so the standard _overlayImages flow
+            // doesn't render anything visible).
+            if (_flashTarget == "TouchpadClick" && _touchpadClickHighlight != null)
+            {
+                _touchpadClickHighlight.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
+                _touchpadClickHighlight.Opacity = 1.0;
+                return;
+            }
+
             // All other targets: flash the overlay image
             if (_overlayImages.TryGetValue(_flashTarget, out var img))
             {
@@ -765,6 +787,14 @@ namespace PadForge.Views
                 highlight.Visibility = Visibility.Collapsed;
             }
             _flashStickClip = null;
+
+            // Touchpad rectangle: hide so UpdateTouchpadPreview's next frame
+            // can set the press-state-driven visibility cleanly.
+            if (_flashTarget == "TouchpadClick" && _touchpadClickHighlight != null)
+            {
+                _touchpadClickHighlight.Visibility = Visibility.Collapsed;
+                _touchpadClickHighlight.Opacity = 1.0;
+            }
 
             // Restore the flashed element to its default state
             if (_flashTarget != null && _overlayImages.TryGetValue(_flashTarget, out var img))

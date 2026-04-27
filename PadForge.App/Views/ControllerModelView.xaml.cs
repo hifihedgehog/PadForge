@@ -330,7 +330,7 @@ namespace PadForge.Views
             // DS4 v2 touch surface ~52 × 23 mm); revisit if the mesh ever
             // changes.
             const double xInsetFrac      = 0.03; // ~1.6 mm bezel each X side
-            const double zTopInsetFrac   = 0.25; // ~8 mm lightbar above the touch area
+            const double zTopInsetFrac   = 0.12; // ~4 mm — pad surface extends up to where the lightbar curve begins
             const double zBottomInsetFrac = 0.05; // ~1.6 mm bezel below
 
             double touchX0 = bounds.X + bounds.SizeX * xInsetFrac;

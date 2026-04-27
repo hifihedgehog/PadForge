@@ -331,7 +331,7 @@ namespace PadForge.Views
             // changes.
             const double xInsetFrac      = 0.03; // ~1.6 mm bezel each X side
             const double zTopInsetFrac   = 0.12; // ~4 mm — pad surface extends up to where the lightbar curve begins
-            const double zBottomInsetFrac = 0.05; // ~1.6 mm bezel below
+            const double zBottomInsetFrac = 0.08; // ~2.6 mm bezel below
 
             double touchX0 = bounds.X + bounds.SizeX * xInsetFrac;
             double touchXSize = bounds.SizeX * (1.0 - 2 * xInsetFrac);

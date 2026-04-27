@@ -74,6 +74,13 @@ namespace PadForge.Engine
         /// <summary>Physical touchpad click button.</summary>
         public bool TouchpadClick;
 
+        /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
+        /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
+        public int BatteryPercent;
+
+        /// <summary>True if the device reports as charging or fully charged.</summary>
+        public bool BatteryCharging;
+
         /// <summary>
         /// Creates a new zeroed input state with default array sizes.
         /// All axes and sliders default to 0, all POVs default to -1 (centered),
@@ -89,6 +96,7 @@ namespace PadForge.Engine
             Accel = new float[3];
             TouchpadFingers = new float[6];
             TouchpadDown = new bool[2];
+            BatteryPercent = -1;
 
             // Initialize POVs to centered.
             for (int i = 0; i < Povs.Length; i++)
@@ -110,6 +118,8 @@ namespace PadForge.Engine
             Array.Copy(TouchpadFingers, clone.TouchpadFingers, 6);
             Array.Copy(TouchpadDown, clone.TouchpadDown, 2);
             clone.TouchpadClick = TouchpadClick;
+            clone.BatteryPercent = BatteryPercent;
+            clone.BatteryCharging = BatteryCharging;
             return clone;
         }
 

@@ -168,6 +168,21 @@ namespace PadForge.Common.Input
         public MotionSnapshot[] MotionSnapshots { get; } = new MotionSnapshot[MaxPads];
 
         /// <summary>
+        /// Per-slot battery percentage (0..100, or -1 if no assigned device
+        /// reports battery). Aggregated alongside MotionSnapshots from the
+        /// first online assigned device whose SDL3 power info is known.
+        /// Read by the Sony Report 0x01 packer.
+        /// </summary>
+        public int[] BatteryPercents { get; } = new int[MaxPads];
+
+        /// <summary>Monotonic frame counter feeding the Sony Report 0x01
+        /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
+        /// PS5 driver) reject duplicate packet-sequence values, so this MUST
+        /// advance every frame regardless of input state.</summary>
+        internal long SonyFrameCounter => _sonyFrameCounter;
+        private long _sonyFrameCounter;
+
+        /// <summary>
         /// DSU motion server reference. When set, the polling thread broadcasts
         /// motion data to subscribed clients after snapshotting sensor data.
         /// </summary>
@@ -777,6 +792,7 @@ namespace PadForge.Common.Input
             {
                 int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
                 bool found = false;
+                int batteryPercent = -1;
 
                 for (int i = 0; i < slotCount; i++)
                 {
@@ -787,11 +803,19 @@ namespace PadForge.Common.Input
                     if (ud == null || !ud.IsOnline || ud.Device == null)
                         continue;
 
-                    if (!ud.Device.HasGyro && !ud.Device.HasAccel)
-                        continue;
-
                     var state = ud.InputState;
                     if (state == null)
+                        continue;
+
+                    // First assigned device that reports battery wins. Battery
+                    // percent is independent of motion presence — a Sony pad
+                    // with no sensors enabled still wants its battery surfaced.
+                    if (batteryPercent < 0 && state.BatteryPercent >= 0)
+                        batteryPercent = state.BatteryPercent;
+
+                    if (found) continue;
+
+                    if (!ud.Device.HasGyro && !ud.Device.HasAccel)
                         continue;
 
                     // SDL standard: Accel in m/s² (Y=up has gravity), Gyro in rad/s
@@ -816,8 +840,9 @@ namespace PadForge.Common.Input
                         HasMotion = true
                     };
                     found = true;
-                    break;
                 }
+
+                BatteryPercents[padIndex] = batteryPercent;
 
                 if (!found)
                 {

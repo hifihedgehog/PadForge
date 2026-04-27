@@ -77,6 +77,18 @@ namespace PadForge.Common.Input
             Disconnect();
         }
 
+        /// <summary>Pass-through to <c>HMController.SubmitRawReport</c> for
+        /// Sony USB Report 0x01 packets carrying touchpad / gyro / accel /
+        /// battery data that <c>HMGamepadState</c> doesn't model. Step 5
+        /// calls this AFTER <see cref="SubmitGamepadState"/> so the GIP
+        /// buffer stays consistent and the raw report overrides the HID
+        /// surface with the full Sony layout.</summary>
+        public void SubmitRawReport(ReadOnlySpan<byte> report)
+        {
+            if (_controller == null) return;
+            _controller.SubmitRawReport(report);
+        }
+
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;

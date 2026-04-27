@@ -808,10 +808,12 @@ namespace PadForge.Common.Input
                         }
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.
-                        // Everything else (Microsoft / PlayStation / Extended via HIDMaestro)
-                        // submits the standard Gamepad state. The DS4 raw report path
-                        // (touchpad/gyro) lives inside HMaestroVirtualController and is
-                        // dispatched there based on the active profile.
+                        // PlayStation slots whose HIDMaestro profile matches a
+                        // Sony USB Report 0x01 layout submit a packed raw report
+                        // alongside the Gamepad state so games see the full
+                        // touchpad / gyro / accel / battery surface — fields
+                        // HMGamepadState can't carry. Other Microsoft / PlayStation /
+                        // Extended-non-custom slots use plain SubmitGamepadState.
                         if (vc is MidiVirtualController midiVc)
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else if (vc is KeyboardMouseVirtualController kbmVc)
@@ -835,7 +837,31 @@ namespace PadForge.Common.Input
                                 layout.Triggers);
                         }
                         else
+                        {
                             vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
+
+                            if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
+                                && vc is HMaestroVirtualController hmPs)
+                            {
+                                var packer = SonyReportPackers.ForProfile(hmPs.ProfileId);
+                                if (packer != null)
+                                {
+                                    Span<byte> raw = stackalloc byte[63];
+                                    var motion = MotionSnapshots[padIndex];
+                                    byte battery = (byte)Math.Clamp(BatteryPercents[padIndex], 0, 100);
+                                    byte connectState = motion.HasMotion ? (byte)0x08 : (byte)0x00;
+                                    packer(
+                                        CombinedOutputStates[padIndex],
+                                        CombinedTouchpadStates[padIndex],
+                                        motion,
+                                        battery,
+                                        connectState,
+                                        unchecked((uint)_sonyFrameCounter++),
+                                        raw);
+                                    hmPs.SubmitRawReport(raw);
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)

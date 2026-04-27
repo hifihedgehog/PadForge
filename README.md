@@ -32,13 +32,14 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 ### Input and output
 
 - Any physical input into any virtual controller. Joysticks, gamepads, keyboards, mice, and touchscreens feed 225+ HIDMaestro profiles spanning Xbox (360, One, Series, Elite, Adaptive), PlayStation (DualShock 3/4, DualSense, DualSense Edge), flight sticks, wheels, HOTAS, and generic gamepads, plus virtual MIDI or keyboard and mouse output. Extended profiles support up to 8 axes, 128 buttons, and 4 POV hats with customizable VID:PID, product string, and HID descriptor.
-- Up to 16 virtual controllers at once, mixing types. Each slot can merge input from multiple physical devices.
+- Up to 16 virtual controllers at once, mixing types. Each slot can merge input from multiple physical devices. Drag-reorder slots within a type group on the Dashboard; the order persists per group.
+- DualShock 4 and DualSense outputs pass the source device's gyro, accelerometer, touchpad, and battery through to the game when the physical controller exposes them.
 - Keyboard and mouse output without a driver: map buttons to key presses, sticks or triggers to mouse movement or scroll.
 - DSU / Cemuhook gyro and accelerometer broadcast over UDP port 26760 for Cemu, Dolphin, and similar emulators.
 
 ### Mapping
 
-- Record a binding by pressing a button, pick from a dropdown (which includes raw buttons beyond the standard 11), or run "Map All" for a one-pass setup.
+- Record a binding by pressing a button, pick from a dropdown (which includes raw buttons beyond the standard 11), or run "Map All" for a one-pass setup. On PlayStation outputs, Map All ends with TouchpadClick.
 - Auto-mapping for recognized gamepads. Force-raw mode bypasses SDL3's remapping when it guesses wrong.
 - Dropdowns persist while devices are offline so you don't lose state on disconnect.
 - Per-axis sensitivity curves for sticks (independent X and Y) and triggers. Six presets (Linear, Smooth, Aggressive, Instant, S-Curve, Delay) or custom multi-point curves with a drag-and-drop editor and a live position indicator.
@@ -54,9 +55,10 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 
 - 3D HelixToolkit controller model. Rotate, zoom, pan. Buttons, sticks, and triggers highlight in real time.
 - 2D schematic showing the same live state in a compact layout.
+- PlayStation 3D and 2D views render a live touchpad surface with finger contact spheres. The touchpad surface itself is a click target for recording the TouchpadClick mapping.
 - Dynamic Extended schematic that auto-sizes to any HIDMaestro profile's sticks, triggers, POVs, and buttons.
 - Keyboard and mouse preview for the KBM output type, showing every mapped key and button.
-- Built-in WebSocket server turns any touchscreen into a wireless controller. Xbox and DS4 layouts, dual analog sticks, 8-way D-pad, triggers, rumble feedback.
+- Built-in WebSocket server turns any touchscreen into a wireless controller. Xbox and DS4 layouts, dual analog sticks, 8-way D-pad, triggers, rumble feedback. The DS4 layout collapses TouchpadClick to button 11 so games see no gaps in the button numbering.
 
 ### Macros
 
@@ -139,7 +141,7 @@ Channel selection (1 to 16), velocity control, CC and note mapping. Axes as Cont
 
 ### Add controller
 ![Add Controller](screenshots/add-controller-popup.jpg)
-Create Microsoft, PlayStation, Extended (flight sticks, wheels, third-party gamepads), Keyboard+Mouse, or MIDI virtual controllers. Type buttons dim at their per-type limit.
+Create Xbox, PlayStation, Extended (flight sticks, wheels, third-party gamepads), Keyboard+Mouse, or MIDI virtual controllers. Type buttons dim at their per-type limit.
 
 ### Profiles
 ![Profiles](screenshots/profiles.jpg)

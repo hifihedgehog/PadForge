@@ -314,13 +314,32 @@ namespace PadForge.Views
                 t.OffsetY = -10000;
                 return;
             }
+
             // DS4 model coords: X = left/right (matches normX 0..1 left→right),
             // Z = top/bottom of body (touch normY 0=top → high Z, 1=bottom →
             // low Z), Y is the surface depth — float the sphere just in
             // front of the touchpad face (Y at bounds.Min.Y + small offset
             // toward the camera, which is -Y in HC's DS4 model).
-            t.OffsetX = bounds.X + (double)normX * bounds.SizeX;
-            t.OffsetZ = bounds.Z + bounds.SizeZ * (1.0 - normY);
+            //
+            // The Screen.obj mesh is larger than the actual touchable surface:
+            // ~3 mm wider on X (small bevel), ~9 mm taller on Z (lightbar at
+            // top, narrow bezel at bottom). Insets below crop the bounding
+            // box down to the touch-sensitive region so finger position maps
+            // visually to where a real DS4 finger would land. Pinned to the
+            // measured Screen.obj bounds (X 55 mm / Z 32.65 mm vs the real
+            // DS4 v2 touch surface ~52 × 23 mm); revisit if the mesh ever
+            // changes.
+            const double xInsetFrac      = 0.03; // ~1.6 mm bezel each X side
+            const double zTopInsetFrac   = 0.25; // ~8 mm lightbar above the touch area
+            const double zBottomInsetFrac = 0.05; // ~1.6 mm bezel below
+
+            double touchX0 = bounds.X + bounds.SizeX * xInsetFrac;
+            double touchXSize = bounds.SizeX * (1.0 - 2 * xInsetFrac);
+            double touchZ0 = bounds.Z + bounds.SizeZ * zBottomInsetFrac;
+            double touchZSize = bounds.SizeZ * (1.0 - zTopInsetFrac - zBottomInsetFrac);
+
+            t.OffsetX = touchX0 + (double)normX * touchXSize;
+            t.OffsetZ = touchZ0 + (1.0 - (double)normY) * touchZSize;
             t.OffsetY = bounds.Y - 1.5;
         }
 

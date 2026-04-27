@@ -29,6 +29,65 @@ namespace PadForge.Views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+        // ── Win32 pointer input (WM_POINTER bypass for touch) ──────────
+        // The overlay's combination of AllowsTransparency=True +
+        // WS_EX_NOACTIVATE + WS_EX_TOOLWINDOW + Focusable=False makes WPF's
+        // per-window stylus subscription fragile on this HWND. Symptom:
+        // after a force-killed prior PadForge process, the new process's
+        // overlay window receives mouse fine but no touch; OnTouchDown
+        // never fires. WPF touch routing in the same process works for
+        // MainWindow, so the issue is window-flag-specific. Reading
+        // WM_POINTER messages directly via WndProc bypasses the broken
+        // WPF stylus path and works reliably for non-activating layered
+        // windows.
+
+        private const int WM_POINTERDOWN   = 0x0246;
+        private const int WM_POINTERUPDATE = 0x0245;
+        private const int WM_POINTERUP     = 0x0247;
+
+        // POINTER_INPUT_TYPE values returned by GetPointerType.
+        private const int PT_TOUCH = 2;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINTER_INFO
+        {
+            public int    pointerType;
+            public uint   pointerId;
+            public uint   frameId;
+            public uint   pointerFlags;
+            public IntPtr sourceDevice;
+            public IntPtr hwndTarget;
+            public POINT  ptPixelLocation;
+            public POINT  ptHimetricLocation;
+            public POINT  ptPixelLocationRaw;
+            public POINT  ptHimetricLocationRaw;
+            public uint   dwTime;
+            public uint   historyCount;
+            public int    InputData;
+            public uint   dwKeyStates;
+            public ulong  PerformanceCount;
+            public int    ButtonChangeType;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetPointerInfo(uint pointerId, out POINTER_INFO info);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetPointerType(uint pointerId, out int pointerType);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetPointerCapture(IntPtr hwnd, uint pointerId);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool ReleasePointerCapture(uint pointerId);
+
+        private static uint GetPointerId(IntPtr wParam)
+            => (uint)(((long)wParam) & 0xFFFF);
+
         // Touch tracking: first touch = finger 0, second = finger 1
         private readonly object _stateLock = new();
         private int? _finger0TouchId;
@@ -114,6 +173,37 @@ namespace PadForge.Views
                 handled = true;
                 return (IntPtr)MA_NOACTIVATE;
             }
+
+            if (msg == WM_POINTERDOWN || msg == WM_POINTERUPDATE || msg == WM_POINTERUP)
+            {
+                uint pointerId = GetPointerId(wParam);
+                if (!GetPointerType(pointerId, out int type) || type != PT_TOUCH)
+                    return IntPtr.Zero;
+                if (!GetPointerInfo(pointerId, out var info))
+                    return IntPtr.Zero;
+
+                // ptPixelLocation is in screen pixels; convert to window-local DIPs.
+                var localDip = PointFromScreen(new System.Windows.Point(
+                    info.ptPixelLocation.X, info.ptPixelLocation.Y));
+
+                if (msg == WM_POINTERDOWN)
+                {
+                    SetPointerCapture(hwnd, pointerId);
+                    OnPointerDown((int)pointerId, localDip.X, localDip.Y);
+                }
+                else if (msg == WM_POINTERUPDATE)
+                {
+                    OnPointerMove((int)pointerId, localDip.X, localDip.Y);
+                }
+                else // WM_POINTERUP
+                {
+                    OnPointerUp((int)pointerId);
+                    ReleasePointerCapture(pointerId);
+                }
+                handled = true;
+                return IntPtr.Zero;
+            }
+
             return IntPtr.Zero;
         }
 
@@ -337,21 +427,18 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Touch input
+        //  Touch input (driven from WM_POINTER WndProc)
         // ─────────────────────────────────────────────
 
-        protected override void OnTouchDown(TouchEventArgs e)
+        private void OnPointerDown(int pointerId, double x, double y)
         {
-            e.Handled = true;
-            CaptureTouch(e.TouchDevice);
-            _activeTouchIds.Add(e.TouchDevice.Id);
+            _activeTouchIds.Add(pointerId);
 
             // Three or more fingers: enter drag mode.
             if (_activeTouchIds.Count >= 3 && !_isDragging)
             {
                 _isDragging = true;
-                var screenPos = PointToScreen(e.GetTouchPoint(this).Position);
-                _dragStartScreen = screenPos;
+                _dragStartScreen = PointToScreen(new System.Windows.Point(x, y));
                 _dragStartLeft = Left;
                 _dragStartTop = Top;
                 return;
@@ -359,58 +446,52 @@ namespace PadForge.Views
 
             if (_isDragging) return;
 
-            var pos = e.GetTouchPoint(this).Position;
-            float nx = (float)(pos.X / ActualWidth);
-            float ny = (float)(pos.Y / ActualHeight);
+            float nx = (float)Math.Clamp(x / ActualWidth,  0.0, 1.0);
+            float ny = (float)Math.Clamp(y / ActualHeight, 0.0, 1.0);
 
             lock (_stateLock)
             {
                 if (_finger0TouchId == null)
                 {
-                    _finger0TouchId = e.TouchDevice.Id;
+                    _finger0TouchId = pointerId;
                     _x0 = nx; _y0 = ny; _down0 = true;
                 }
                 else if (_finger1TouchId == null)
                 {
-                    _finger1TouchId = e.TouchDevice.Id;
+                    _finger1TouchId = pointerId;
                     _x1 = nx; _y1 = ny; _down1 = true;
                 }
             }
             UpdateFingerDots();
         }
 
-        protected override void OnTouchMove(TouchEventArgs e)
+        private void OnPointerMove(int pointerId, double x, double y)
         {
-            e.Handled = true;
-
             if (_isDragging)
             {
-                var screenPos = PointToScreen(e.GetTouchPoint(this).Position);
+                var screenPos = PointToScreen(new System.Windows.Point(x, y));
                 var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(this);
                 Left = _dragStartLeft + (screenPos.X - _dragStartScreen.X) / dpi.DpiScaleX;
-                Top = _dragStartTop + (screenPos.Y - _dragStartScreen.Y) / dpi.DpiScaleY;
+                Top  = _dragStartTop  + (screenPos.Y - _dragStartScreen.Y) / dpi.DpiScaleY;
                 return;
             }
 
-            var pos = e.GetTouchPoint(this).Position;
-            float nx = (float)(pos.X / ActualWidth);
-            float ny = (float)(pos.Y / ActualHeight);
+            float nx = (float)Math.Clamp(x / ActualWidth,  0.0, 1.0);
+            float ny = (float)Math.Clamp(y / ActualHeight, 0.0, 1.0);
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == e.TouchDevice.Id)
+                if (_finger0TouchId == pointerId)
                 { _x0 = nx; _y0 = ny; }
-                else if (_finger1TouchId == e.TouchDevice.Id)
+                else if (_finger1TouchId == pointerId)
                 { _x1 = nx; _y1 = ny; }
             }
             UpdateFingerDots();
         }
 
-        protected override void OnTouchUp(TouchEventArgs e)
+        private void OnPointerUp(int pointerId)
         {
-            e.Handled = true;
-            ReleaseTouchCapture(e.TouchDevice);
-            _activeTouchIds.Remove(e.TouchDevice.Id);
+            _activeTouchIds.Remove(pointerId);
 
             if (_isDragging)
             {
@@ -424,7 +505,7 @@ namespace PadForge.Views
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == e.TouchDevice.Id)
+                if (_finger0TouchId == pointerId)
                 {
                     _finger0TouchId = null;
                     _down0 = false;
@@ -441,7 +522,7 @@ namespace PadForge.Views
                         _click = false;
                     }
                 }
-                else if (_finger1TouchId == e.TouchDevice.Id)
+                else if (_finger1TouchId == pointerId)
                 {
                     _finger1TouchId = null;
                     _down1 = false;

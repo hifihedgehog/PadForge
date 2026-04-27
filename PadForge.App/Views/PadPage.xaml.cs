@@ -93,11 +93,8 @@ namespace PadForge.Views
 
         private bool IsExtended()
         {
-            // Extended always uses the schematic preview in v3. The old
-            // ExtendedConfig.IsGamepadPreset branch was a v2 hold-over that
-            // routed Extended slots with a default Xbox 360 preset into
-            // the 2D/3D Xbox controller model, which looks wrong for any
-            // non-Xbox HIDMaestro profile (wheels, HOTAS, F710, etc.).
+            // Extended always uses the schematic preview, sized to the
+            // active HIDMaestro profile.
             return DataContext is PadViewModel vm
                 && vm.OutputType == Engine.VirtualControllerType.Extended;
         }

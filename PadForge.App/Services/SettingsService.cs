@@ -386,14 +386,10 @@ namespace PadForge.Services
                     _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.Extended)
                 {
                     var cfg = _mainVm.Pads[idx].ExtendedConfig;
-                    cfg.Preset = cfgData.Preset;
-                    if (cfgData.Preset == ViewModels.ExtendedPreset.Custom)
-                    {
-                        cfg.ThumbstickCount = cfgData.ThumbstickCount;
-                        cfg.TriggerCount = cfgData.TriggerCount;
-                        cfg.PovCount = cfgData.PovCount;
-                        cfg.ButtonCount = cfgData.ButtonCount;
-                    }
+                    cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                    cfg.TriggerCount = cfgData.TriggerCount;
+                    cfg.PovCount = cfgData.PovCount;
+                    cfg.ButtonCount = cfgData.ButtonCount;
                     cfg.OemNameOverride = cfgData.OemNameOverride;
                     cfg.ProductString = cfgData.ProductString ?? string.Empty;
                     cfg.Customize = cfgData.Customize;
@@ -685,7 +681,7 @@ namespace PadForge.Services
                 }
 
                 // Set after actions are populated so propagation reaches all of them.
-                var style = MacroButtonNames.DeriveStyle(padVm.OutputType, padVm.ExtendedConfig?.Preset ?? ExtendedPreset.Xbox360);
+                var style = MacroButtonNames.DeriveStyle(padVm.OutputType);
                 int btnCount = (padVm.OutputType == VirtualControllerType.Extended ? padVm.ExtendedConfig?.ButtonCount : null) ?? 11;
                 macro.CustomButtonCount = btnCount;
                 macro.ButtonStyle = style;
@@ -1082,15 +1078,20 @@ namespace PadForge.Services
                 slotProfileIds[i] = _mainVm.Pads[i].ProfileId;
             }
 
-            // Collect per-slot Extended configurations.
+            // Collect per-slot Extended configurations. Only persist for
+            // slots that are actually Extended — Microsoft / PlayStation /
+            // KbM / MIDI slots don't read this and shouldn't carry stale
+            // ExtendedConfig state in the XML.
             var extendedConfigs = new System.Collections.Generic.List<ViewModels.ExtendedSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.Extended)
+                    continue;
                 var cfg = _mainVm.Pads[i].ExtendedConfig;
                 extendedConfigs.Add(new ViewModels.ExtendedSlotConfigData
                 {
                     SlotIndex = i,
-                    Preset = cfg.Preset,
                     ThumbstickCount = cfg.ThumbstickCount,
                     TriggerCount = cfg.TriggerCount,
                     PovCount = cfg.PovCount,
@@ -1180,7 +1181,6 @@ namespace PadForge.Services
                 list.Add(new ViewModels.ExtendedSlotConfigData
                 {
                     SlotIndex = i,
-                    Preset = cfg.Preset,
                     ThumbstickCount = cfg.ThumbstickCount,
                     TriggerCount = cfg.TriggerCount,
                     PovCount = cfg.PovCount,

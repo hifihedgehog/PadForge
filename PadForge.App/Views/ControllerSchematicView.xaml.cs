@@ -147,15 +147,6 @@ namespace PadForge.Views
 
             if (_vm == null) return;
             var cfg = _vm.ExtendedConfig;
-            // IsGamepadPreset was a v2 gate that suppressed the schematic when an
-            // Extended slot had the Xbox360/DS4 preset — in v3 Extended always
-            // uses the schematic (PadPage routes by OutputType alone), and
-            // fresh slots start with Preset=Xbox360 by default until
-            // SyncExtendedConfigFromProfile overwrites it. Gating on Preset
-            // meant any initial load of a profile whose layout already matched
-            // ExtendedConfig's defaults (2 sticks, 2 triggers, 1 POV, 11
-            // buttons) left the preview blank, since SetProperty on Preset
-            // returned false and no PropertyChanged fired.
             if (cfg == null) return;
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);

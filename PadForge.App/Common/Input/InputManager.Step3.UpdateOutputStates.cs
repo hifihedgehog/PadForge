@@ -1491,6 +1491,16 @@ namespace PadForge.Common.Input
                     ? MapToButtonPressed(state, ps.TouchpadContact1)
                     : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
             }
+            else
+            {
+                // Default passthrough: a physical touchpad-capable device with
+                // no explicit touchpad mapping forwards finger 0 directly. This
+                // is what makes a DS4 / DualSense routed to a PlayStation slot
+                // expose its touchpad to games out of the box.
+                tp.X0 = state.TouchpadFingers[0];
+                tp.Y0 = state.TouchpadFingers[1];
+                tp.Down0 = state.TouchpadDown[0];
+            }
 
             // ── Finger 1 ──
             bool isTouchpadSource1 = IsTouchpadDescriptor(ps.TouchpadX2);
@@ -1511,9 +1521,21 @@ namespace PadForge.Common.Input
                     ? MapToButtonPressed(state, ps.TouchpadContact2)
                     : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
             }
+            else
+            {
+                // Default passthrough — see finger 0.
+                tp.X1 = state.TouchpadFingers[3];
+                tp.Y1 = state.TouchpadFingers[4];
+                tp.Down1 = state.TouchpadDown[1];
+            }
 
             // ── Touchpad click ──
-            tp.Click = MapToButtonPressed(state, ps.TouchpadClick);
+            // Explicit mapping wins; otherwise fall back to the physical
+            // touchpad button so a Sony source → PlayStation slot exposes
+            // touchpad clicks out of the box.
+            tp.Click = !string.IsNullOrEmpty(ps.TouchpadClick)
+                ? MapToButtonPressed(state, ps.TouchpadClick)
+                : state.TouchpadClick;
 
             // Increment packet counter on finger state transitions.
             if (tp.Down0 != prev.Down0 || tp.Down1 != prev.Down1)

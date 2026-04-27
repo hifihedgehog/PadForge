@@ -501,8 +501,25 @@ namespace PadForge.Engine
                     SDL_GAMEPAD_BUTTON_TOUCHPAD);
             }
 
+            // --- Battery (refresh ~once per 5s; battery doesn't change at poll rate) ---
+            long now = System.Environment.TickCount64;
+            if (GameController != IntPtr.Zero && now - _lastBatteryReadTick > 5000)
+            {
+                _lastBatteryReadTick = now;
+                int powerState = SDL_GetGamepadPowerInfo(GameController, out int percent);
+                _cachedBatteryPercent = percent;
+                _cachedBatteryCharging = powerState == SDL_POWERSTATE_CHARGING
+                                      || powerState == SDL_POWERSTATE_CHARGED;
+            }
+            state.BatteryPercent = _cachedBatteryPercent;
+            state.BatteryCharging = _cachedBatteryCharging;
+
             return state;
         }
+
+        private long _lastBatteryReadTick;
+        private int _cachedBatteryPercent = -1;
+        private bool _cachedBatteryCharging;
 
         /// <summary>
         /// Parses the SDL gamepad mapping string to find which raw button indices (bN)

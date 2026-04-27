@@ -435,6 +435,22 @@ namespace SDL3
         //  Power info (replaces SDL_JoystickCurrentPowerLevel)
         // ─────────────────────────────────────────────
 
+        // SDL_PowerState
+        public const int SDL_POWERSTATE_ERROR    = -1;
+        public const int SDL_POWERSTATE_UNKNOWN  =  0;
+        public const int SDL_POWERSTATE_ON_BATTERY = 1;
+        public const int SDL_POWERSTATE_NO_BATTERY = 2;
+        public const int SDL_POWERSTATE_CHARGING  = 3;
+        public const int SDL_POWERSTATE_CHARGED   = 4;
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadPowerInfo")]
+        private static extern int _SDL_GetGamepadPowerInfo(IntPtr gamepad, out int percent);
+
+        /// <summary>Returns the gamepad's power state and writes the battery percentage
+        /// (0-100, or -1 if unknown) to <paramref name="percent"/>.</summary>
+        public static int SDL_GetGamepadPowerInfo(IntPtr gamepad, out int percent) =>
+            _SDL_GetGamepadPowerInfo(gamepad, out percent);
+
         // ─────────────────────────────────────────────
         //  Gamepad sensors (gyro / accelerometer)
         // ─────────────────────────────────────────────

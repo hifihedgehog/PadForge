@@ -52,6 +52,36 @@ namespace PadForge.Views
             InitializeComponent();
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
+            IsVisibleChanged += OnIsVisibleChanged;
+        }
+
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // Self-heal any stale touch tracking from a previous session.
+            // OnTouchUp can be skipped if the overlay is hidden mid-touch
+            // (macro toggle, engine stop, screen lock, touch device disconnect)
+            // — leaving _fingerNTouchId / _activeTouchIds / _isDragging in
+            // states that block subsequent finger detection. Resetting on
+            // visibility transitions both directions covers Show/Hide cycles.
+            ResetTouchTracking();
+        }
+
+        private void ResetTouchTracking()
+        {
+            lock (_stateLock)
+            {
+                _finger0TouchId = null;
+                _finger1TouchId = null;
+                _down0 = false;
+                _down1 = false;
+                _x0 = _y0 = _x1 = _y1 = 0f;
+                _click = false;
+                _activeTouchIds.Clear();
+                _isDragging = false;
+                _isMouseDragging = false;
+                _isResizing = false;
+            }
+            UpdateFingerDots();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -91,7 +121,12 @@ namespace PadForge.Views
         //  Drag (right-click mouse or three-finger touch)
         // ─────────────────────────────────────────────
 
-        private int _activeTouchCount;
+        // Active touch device IDs. A set instead of an int counter so the
+        // value can't drift when a touch-up doesn't fire (e.g. window hidden
+        // mid-touch, engine restart, touch device disconnect). The previous
+        // counter approach would tip into drag mode at 2 real fingers if a
+        // phantom +1 was stuck from an earlier session.
+        private readonly System.Collections.Generic.HashSet<int> _activeTouchIds = new();
         private bool _isDragging;
         private Point _dragStartScreen;
         private double _dragStartLeft, _dragStartTop;
@@ -309,10 +344,10 @@ namespace PadForge.Views
         {
             e.Handled = true;
             CaptureTouch(e.TouchDevice);
-            _activeTouchCount++;
+            _activeTouchIds.Add(e.TouchDevice.Id);
 
             // Three or more fingers: enter drag mode.
-            if (_activeTouchCount >= 3 && !_isDragging)
+            if (_activeTouchIds.Count >= 3 && !_isDragging)
             {
                 _isDragging = true;
                 var screenPos = PointToScreen(e.GetTouchPoint(this).Position);
@@ -375,11 +410,11 @@ namespace PadForge.Views
         {
             e.Handled = true;
             ReleaseTouchCapture(e.TouchDevice);
-            _activeTouchCount = Math.Max(0, _activeTouchCount - 1);
+            _activeTouchIds.Remove(e.TouchDevice.Id);
 
             if (_isDragging)
             {
-                if (_activeTouchCount < 3)
+                if (_activeTouchIds.Count < 3)
                 {
                     _isDragging = false;
                     PositionChanged?.Invoke();

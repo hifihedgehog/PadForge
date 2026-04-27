@@ -292,11 +292,13 @@
 
                         <!-- ─── Input Hiding ─── -->
                         <TextBlock Text="{Binding Devices_InputHiding, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
-                                   FontSize="13" Margin="0,0,0,6"/>
+                                   FontSize="13" Margin="0,0,0,6"
+                                   Visibility="{Binding SelectedDevice.ShowInputHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <CheckBox Content="{Binding Devices_HideFromGames, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
                                   IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
+                                  Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                   Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
                                   Margin="0,0,0,4">
                             <CheckBox.ToolTip>

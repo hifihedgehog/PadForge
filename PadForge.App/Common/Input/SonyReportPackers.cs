@@ -45,8 +45,8 @@ namespace PadForge.Common.Input
             in Gamepad gp,
             in TouchpadState tp,
             in MotionSnapshot motion,
-            byte battery,
-            byte connectState,
+            byte batteryPercent,
+            bool charging,
             uint frameCounter,
             Span<byte> dest);
 
@@ -80,7 +80,7 @@ namespace PadForge.Common.Input
 
         private static void PackDs4UsbReport01(
             in Gamepad gp, in TouchpadState tp, in MotionSnapshot motion,
-            byte battery, byte connectState, uint frameCounter, Span<byte> dest)
+            byte batteryPercent, bool charging, uint frameCounter, Span<byte> dest)
         {
             dest.Clear();
 
@@ -130,10 +130,10 @@ namespace PadForge.Common.Input
             dest[9]  = (byte)(ts & 0xFF);
             dest[10] = (byte)(ts >> 8);
 
-            // Battery (byte 11): low nibble = level 0..10, high nibble = flags
-            // (the OS rolls these into the lvlSpecial byte at 30, but DS4Windows
-            // and PS Remote Play also read this one).
-            dest[11] = (byte)(battery & 0x0F);
+            // Battery (byte 11): legacy bBatteryLvl. Modern readers (DS4Windows,
+            // SDL3, ds4drv) consult byte 30 instead, but byte 11 is the older
+            // surface and harmless to populate.
+            dest[11] = ScaleDs4BatteryNibble(batteryPercent, charging);
 
             // Gyro (bytes 12-17), Accel (bytes 18-23): int16 LE.
             WriteI16(dest, 12, ScaleGyro(motion.GyroPitch));
@@ -145,24 +145,51 @@ namespace PadForge.Common.Input
 
             // Bytes 24-28 are reserved (zero from dest.Clear()).
 
-            // Battery level + USB/charging flags (byte 30).
-            dest[30] = (byte)((battery / 10) | (connectState != 0 ? 0x10 : 0x00));
+            // bBatteryLvlSpecial (byte 30): low nibble = battery level scaled
+            // to maxBatteryValue (8 when discharging, 11 when USB charging),
+            // bit 4 = USB charging flag. DS4 readers (Ryochan7's DS4Reader,
+            // DS4Windows) decode this byte for the canonical battery surface.
+            dest[30] = (byte)(ScaleDs4BatteryNibble(batteryPercent, charging)
+                            | (charging ? 0x10 : 0x00));
 
-            // Bytes 31-32 reserved.
-
-            // Touch packets (bytes 33-59): 3 packets × 9 bytes each. PadForge
-            // tracks a single current frame, so packet count = 1 if either
-            // finger is down, else 0. Previous-frame slots stay zero — that
-            // matches what real DS4 firmware does between contact events.
+            // bTouchPacketsN (byte 32): number of touch packets (0..3). PadForge
+            // delivers one current-frame snapshot per polling tick, so packet
+            // count = 1 whenever any finger is down (or just lifted in this
+            // frame).
+            //
+            // sCurrentTouch (bytes 33-41) layout per ViGEm DS4_REPORT_EX:
+            //   33: bPacketCounter
+            //   34: bIsUpTrackingNum1 (bit 7 = NOT down, bits 0-6 = tracking ID)
+            //   35-37: bTouchData1 (12-bit X + 12-bit Y)
+            //   38: bIsUpTrackingNum2
+            //   39-41: bTouchData2
+            //
+            // sPreviousTouch[0..1] (bytes 42-50, 51-59) stay zero — real DS4
+            // firmware leaves them unset between contact events anyway.
             int touchPackets = (tp.Down0 || tp.Down1) ? 1 : 0;
-            dest[33] = (byte)touchPackets;
+            dest[32] = (byte)touchPackets;
             if (touchPackets > 0)
             {
-                dest[34] = tp.PacketCounter;             // packet timestamp byte
-                EncodeDs4Touch(dest.Slice(35, 8), tp);
+                dest[33] = tp.PacketCounter;
+                EncodeDs4Touch(dest.Slice(34, 8), tp);
             }
 
-            // Bytes 61-62 padding (zero from Clear()).
+            // Bytes 60-62 padding (zero from Clear()).
+        }
+
+        // Scale a 0..100 percent value to the DS4 byte-30 nibble. Sony's
+        // firmware uses different ranges depending on charging state — 0..8
+        // when discharging, 0..11 when USB charging. Reader decode:
+        //     percent = (nibble & 0x0F) * 100 / maxBatteryValue
+        // Source: Ryochan7/DS4MapperTest DS4Reader.cs:357-361 and
+        // DS4Device.cs::BATTERY_MAX / BATTERY_MAX_USB constants.
+        private static byte ScaleDs4BatteryNibble(byte batteryPercent, bool charging)
+        {
+            if (batteryPercent > 100) batteryPercent = 100;
+            int max = charging ? 11 : 8;
+            int nibble = (batteryPercent * max + 50) / 100;
+            if (nibble > max) nibble = max;
+            return (byte)(nibble & 0x0F);
         }
 
         private static byte ToDs4Axis(int signedShort)
@@ -190,7 +217,7 @@ namespace PadForge.Common.Input
 
         private static void PackDualSenseUsbReport01(
             in Gamepad gp, in TouchpadState tp, in MotionSnapshot motion,
-            byte battery, byte connectState, uint frameCounter, Span<byte> dest)
+            byte batteryPercent, bool charging, uint frameCounter, Span<byte> dest)
         {
             dest.Clear();
 
@@ -266,13 +293,20 @@ namespace PadForge.Common.Input
             // sequence so games checking for monotonic timer don't trip.
             WriteU32(dest, 48, frameCounter);
 
-            // Battery (byte 52): high nibble = status, low nibble = level 0..10.
-            // Status: 0x0 = discharging, 0x1 = charging, 0x2 = full.
-            byte batteryStatusNibble = connectState != 0 ? (byte)0x10 : (byte)0x00;
-            dest[52] = (byte)(batteryStatusNibble | ((battery / 10) & 0x0F));
+            // Battery (byte 52): low nibble = level 0..10 (percent / 10),
+            // high nibble = status (0x0 = discharging, 0x1 = charging,
+            // 0x2 = full). SDL3's PS5 parser decode:
+            //     status = (byte >> 4) & 0x0F
+            //     percent = (byte & 0x0F) * 10
+            int dsLevel = (batteryPercent + 5) / 10;
+            if (dsLevel > 10) dsLevel = 10;
+            byte status = charging ? (batteryPercent >= 100 ? (byte)0x2 : (byte)0x1) : (byte)0x0;
+            dest[52] = (byte)((status << 4) | (dsLevel & 0x0F));
 
-            // Connect state (byte 53): 0x08 = USB, per SDL3 PS5 parser.
-            dest[53] = connectState;
+            // Connect state (byte 53): 0x08 = USB cable, per SDL3 PS5 parser.
+            // PadForge's virtual is always "USB" from the host's perspective
+            // (HM creates the virtual HID on a USB-shaped bus enumerator).
+            dest[53] = 0x08;
 
             // Bytes 54-62 padding (zero).
         }

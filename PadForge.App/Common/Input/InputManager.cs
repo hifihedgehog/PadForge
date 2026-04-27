@@ -175,6 +175,9 @@ namespace PadForge.Common.Input
         /// </summary>
         public int[] BatteryPercents { get; } = new int[MaxPads];
 
+        /// <summary>Per-slot battery charging flag, paired with <see cref="BatteryPercents"/>.</summary>
+        public bool[] BatteryCharging { get; } = new bool[MaxPads];
+
         /// <summary>Monotonic frame counter feeding the Sony Report 0x01
         /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
         /// PS5 driver) reject duplicate packet-sequence values, so this MUST
@@ -793,6 +796,7 @@ namespace PadForge.Common.Input
                 int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
                 bool found = false;
                 int batteryPercent = -1;
+                bool batteryCharging = false;
 
                 for (int i = 0; i < slotCount; i++)
                 {
@@ -811,7 +815,10 @@ namespace PadForge.Common.Input
                     // percent is independent of motion presence — a Sony pad
                     // with no sensors enabled still wants its battery surfaced.
                     if (batteryPercent < 0 && state.BatteryPercent >= 0)
+                    {
                         batteryPercent = state.BatteryPercent;
+                        batteryCharging = state.BatteryCharging;
+                    }
 
                     if (found) continue;
 
@@ -843,6 +850,7 @@ namespace PadForge.Common.Input
                 }
 
                 BatteryPercents[padIndex] = batteryPercent;
+                BatteryCharging[padIndex] = batteryCharging;
 
                 if (!found)
                 {

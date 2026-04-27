@@ -1285,6 +1285,19 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// True when the slot at <paramref name="padIndex"/> currently holds
+        /// any live virtual controller. Used by InputService's reorder paths
+        /// to gate the kernel-order rebuild: a slot with no live VC has no
+        /// kernel-slot presence, so its visual position cannot perturb
+        /// xinputhid / HM allocation.
+        /// </summary>
+        public bool HasVirtualControllerAt(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            return _virtualControllers[padIndex] != null;
+        }
+
+        /// <summary>
         /// Enforces visual-order kernel-slot allocation within each HM group.
         /// When the lowest visual position whose pad index needs to be created
         /// has any visually-lower active VCs in the same group, those lower-

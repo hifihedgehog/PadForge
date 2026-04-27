@@ -3892,12 +3892,13 @@ namespace PadForge.Services
         /// <summary>
         /// Swap two slots' visual positions within their (shared) group.
         /// The order list is mutated unconditionally; for HM-backed groups
-        /// (Microsoft / PlayStation / Extended), if the swap puts a
-        /// different-profile pad at any visual position than was there
-        /// before, the VCs at that position and every higher position
-        /// are torn down so xinputhid / HIDMaestro re-allocate kernel
-        /// slots in the new visual order. Same-profile shuffles stay
-        /// zero-flicker. Cross-group calls are rejected.
+        /// (Microsoft / PlayStation / Extended), the kernel-order rebuild
+        /// fires from the lowest changed visual position whenever the
+        /// slot now at that position has a live VC. A swap that places a
+        /// disabled or awaiting-devices slot at the lowest changed
+        /// position skips the rebuild — that slot has no kernel presence,
+        /// so its visual position cannot perturb the live VCs' allocation.
+        /// Cross-group calls are rejected.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
@@ -3944,17 +3945,22 @@ namespace PadForge.Services
 
         /// <summary>
         /// After the group's order list has been mutated, find the lowest
-        /// visual position whose profile changed (compared to the snapshot
-        /// in <paramref name="oldOrder"/>) and tear down every live VC at
-        /// that position and lower in the visual stack. Pass 2's
+        /// visual position whose pad index changed (compared to the
+        /// snapshot in <paramref name="oldOrder"/>) and tear down every
+        /// VC at that position and lower in the visual stack. Pass 2's
         /// visual-order gate plus <c>ApplyAscendingIndexPreemption</c>
         /// then recreate them in the new visual order, so xinputhid / HM
         /// kernel-slot allocation matches what the user sees.
         ///
-        /// Same-profile reshuffles return early — kernel-indistinguishable
-        /// from the kernel's view, so no rebuild needed. Non-HM groups
-        /// (KBM, MIDI) also skip; their slot order isn't tied to a
-        /// kernel-side index allocation.
+        /// Gate: the rebuild is skipped when the slot at the lowest
+        /// changed position has no live VC (disabled or awaiting devices).
+        /// A non-emitting slot does not claim a kernel slot, so its visual
+        /// position cannot perturb the live VCs' kernel order.
+        /// <c>ApplyAscendingIndexPreemption</c> re-anchors the order on
+        /// its own when that slot eventually transitions to active.
+        ///
+        /// Non-HM groups (KBM, MIDI) skip; their slot order is not tied
+        /// to a kernel-side index allocation.
         /// </summary>
         private void RebuildKernelOrderAfterReorder(
             VirtualControllerType groupType,
@@ -3972,12 +3978,7 @@ namespace PadForge.Services
             int common = Math.Min(oldOrder.Count, newOrder.Count);
             for (int p = 0; p < common; p++)
             {
-                int oldPad = oldOrder[p];
-                int newPad = newOrder[p];
-                if (oldPad == newPad) continue;
-                string oldProfile = _mainVm.Pads[oldPad].ProfileId ?? string.Empty;
-                string newProfile = _mainVm.Pads[newPad].ProfileId ?? string.Empty;
-                if (!string.Equals(oldProfile, newProfile, StringComparison.Ordinal))
+                if (oldOrder[p] != newOrder[p])
                 {
                     lowestChangedPos = p;
                     break;
@@ -3986,10 +3987,15 @@ namespace PadForge.Services
 
             if (lowestChangedPos < 0) return;
 
+            int newPadAtLowestChanged = newOrder[lowestChangedPos];
+            if (!_inputManager.HasVirtualControllerAt(newPadAtLowestChanged))
+                return;
+
             for (int pos = lowestChangedPos; pos < newOrder.Count; pos++)
             {
                 int padIdx = newOrder[pos];
                 if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
+                if (!_inputManager.HasVirtualControllerAt(padIdx)) continue;
                 try { _inputManager.DestroyVirtualControllerAsync(padIdx); }
                 catch { /* best effort, Pass 2 retries */ }
             }

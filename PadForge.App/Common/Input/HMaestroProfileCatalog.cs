@@ -227,34 +227,39 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Build the synthetic "Custom" profile that anchors the Extended
         /// dropdown. Standard Xbox 360-like layout: 2 16-bit sticks, 2
-        /// 8-bit triggers, 1 hat switch, 11 buttons — matches the default
+        /// 8-bit triggers, 1 hat switch, 11 buttons. Matches the default
         /// ExtendedConfig values so the dropdown and the override fields
         /// agree on initial selection. Users edit any of these via the
         /// Customize panel.
         ///
-        /// VID:PID 0xBEEF:0xF000 — PadForge faux-VID convention. 0xBEEF
-        /// is our implicit in-program VID (already used by
-        /// WebControllerDevice and TouchpadOverlayDevice); the PID
-        /// namespace under it is partitioned so the class of device is
-        /// legible in hex dumps and joy.cpl:
-        ///   0xCA7x — input sources (web, overlay touchpad)
-        ///   0xF0xx — Forge synthetic output devices (this profile + any
-        ///            future custom-shaped VC variants)
-        /// This is squatting, not a registered allocation — no real
-        /// USB-IF VID is held by 0xBEEF so collision risk with real
-        /// hardware is negligible.
+        /// VID:PID 0xBEEF:0xF000, PadForge faux-VID convention. 0xBEEF is
+        /// our implicit in-program VID (already used by WebControllerDevice
+        /// and TouchpadOverlayDevice); the PID namespace under it is
+        /// partitioned so the class of device is legible in hex dumps and
+        /// joy.cpl:
+        ///   0xCA7x: input sources (web, overlay touchpad)
+        ///   0xF0xx: Forge synthetic output devices (this profile + any
+        ///           future custom-shaped VC variants)
+        /// This is squatting, not a registered allocation. No real USB-IF
+        /// VID is held by 0xBEEF so collision risk with real hardware is
+        /// negligible.
+        ///
+        /// AddPidFfbBlock auto-injects the Report ID 0x01 prefix and emits
+        /// the canonical minimum-viable PID FFB descriptor. FromDescriptorBuilder
+        /// derives InputReportSize from the builder's bit count plus the
+        /// Report ID byte. Both APIs landed in HM v1.1.41 (issue #16).
         /// </summary>
         private static HMProfile BuildCustomProfile()
         {
-            byte[] descriptor = new HidDescriptorBuilder()
-                .Gamepad()
+            var b = new HidDescriptorBuilder()
+                .Joystick()
                 .AddStick("Left", 16)
                 .AddStick("Right", 16)
                 .AddTrigger("Left", 16)
                 .AddTrigger("Right", 16)
                 .AddHat()
                 .AddButtons(11)
-                .Build();
+                .AddPidFfbBlock();
 
             return new HMProfileBuilder()
                 .Id(CustomProfileId)
@@ -266,7 +271,7 @@ namespace PadForge.Common.Input
                 .ManufacturerString("PadForge")
                 .Type("gamepad")
                 .Connection("usb")
-                .Descriptor(descriptor)
+                .FromDescriptorBuilder(b)
                 .Build();
         }
     }

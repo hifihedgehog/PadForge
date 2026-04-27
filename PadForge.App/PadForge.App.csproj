@@ -100,12 +100,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
-    <!-- HIDMaestro SDK — pre-built release DLL, NOT a ProjectReference.
+    <!-- HIDMaestro SDK, pre-built release DLL, NOT a ProjectReference.
          Using a ProjectReference would build from source and pick up
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.1.34 (e816549). -->
+         release there. Current: v1.1.41 (ac6a024). -->
     <Reference Include="HIDMaestro.Core">
       <HintPath>Resources\HIDMaestro\HIDMaestro.Core.dll</HintPath>
     </Reference>

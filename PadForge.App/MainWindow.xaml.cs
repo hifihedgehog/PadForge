@@ -431,8 +431,8 @@ namespace PadForge
                 {
                     if (_viewModel.SelectedPadIndex == padIndex)
                         SelectNavItemByTag("Dashboard");
-                    _deviceService.DeleteSlot(padIndex);
-                    _inputService.CompactSlots(rebuildHmVcs: true);
+                    var deletedType = _deviceService.DeleteSlot(padIndex);
+                    _inputService.OnSlotDeleted(padIndex, deletedType, rebuildHmVcs: true);
                 }));
             };
 
@@ -824,8 +824,8 @@ namespace PadForge
                     if (_viewModel.SelectedPadIndex == slotIndex)
                         SelectNavItemByTag("Dashboard");
 
-                    _deviceService.DeleteSlot(slotIndex);
-                    _inputService.CompactSlots();
+                    var deletedType = _deviceService.DeleteSlot(slotIndex);
+                    _inputService.OnSlotDeleted(slotIndex, deletedType);
                     _viewModel.Devices.RefreshSlotButtons();
                     _inputService.RefreshDeviceList();
                 }));
@@ -873,7 +873,7 @@ namespace PadForge
                 // RebuildMappings fires, the PadSetting already has correct mappings.
                 SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
-                _inputService.EnsureTypeGroupOrder();
+                _inputService.MoveSlotToGroupTail(args.SlotIndex);
                 _settingsService.MarkDirty();
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
@@ -944,10 +944,9 @@ namespace PadForge
             if (ShouldStartMinimizedToTray)
                 _notifyIcon.Visible = true;
 
-            // Enforce type-group ordering (Xbox 360 > DS4 > Extended) on startup.
-            // Handles backward-compat with old configs that have interleaved types.
-            if (_inputService.EnsureTypeGroupOrder(silent: true))
-                _settingsService.MarkDirty();
+            // Per-group ordering is built into settings load now (see
+            // SlotOrders.RebuildFromCurrentTopology in SettingsService).
+            // Nothing to do here at startup.
 
             // Detect drivers early (before sidebar rebuild) so power icons show correct
             // colors even when starting minimized to tray (where OnLoaded never fires).
@@ -1260,6 +1259,7 @@ namespace PadForge
                     new Action(() =>
                     {
                         RebuildControllerSection();
+                        RefreshDashboardActiveSlots();
                         _viewModel.Devices.RefreshSlotButtons();
                         _inputService.RefreshProfileTopology();
                     }));
@@ -1922,7 +1922,7 @@ namespace PadForge
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Microsoft);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Microsoft;
-                _inputService.EnsureTypeGroupOrder();
+                _inputService.MoveSlotToGroupTail(padIndex);
                 _settingsService.MarkDirty();
             }
         }
@@ -1935,7 +1935,7 @@ namespace PadForge
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
-                _inputService.EnsureTypeGroupOrder();
+                _inputService.MoveSlotToGroupTail(padIndex);
                 _settingsService.MarkDirty();
             }
         }
@@ -1948,7 +1948,7 @@ namespace PadForge
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
-                _inputService.EnsureTypeGroupOrder();
+                _inputService.MoveSlotToGroupTail(padIndex);
                 _settingsService.MarkDirty();
             }
         }
@@ -1961,7 +1961,7 @@ namespace PadForge
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
-                _inputService.EnsureTypeGroupOrder();
+                _inputService.MoveSlotToGroupTail(padIndex);
                 _settingsService.MarkDirty();
             }
         }
@@ -1975,7 +1975,7 @@ namespace PadForge
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
-                _inputService.EnsureTypeGroupOrder();
+                _inputService.MoveSlotToGroupTail(padIndex);
                 _settingsService.MarkDirty();
             }
         }
@@ -1997,8 +1997,8 @@ namespace PadForge
                     if (_viewModel.SelectedPadIndex == slotIndex)
                         SelectNavItemByTag("Dashboard");
 
-                    _deviceService.DeleteSlot(slotIndex);
-                    _inputService.CompactSlots();
+                    var deletedType = _deviceService.DeleteSlot(slotIndex);
+                    _inputService.OnSlotDeleted(slotIndex, deletedType);
                 }));
             }
         }
@@ -2157,11 +2157,20 @@ namespace PadForge
 
                 if (navViewPos.Y >= topEdge && navViewPos.Y <= bottomEdge)
                 {
-                    // Cursor is in the middle zone — swap mode (skip if it's the source card).
+                    // Cursor is in the middle zone — swap mode.
                     if (i != _dragSourceVisualPos)
                     {
                         isSwap = true;
                         swapCardIndex = i;
+                    }
+                    else
+                    {
+                        // Source's own middle zone: pin dropIndex to the
+                        // source's visual position so the insertion math
+                        // resolves to "no move" instead of falling through
+                        // to the default cards.Count (which would jam the
+                        // card to the bottom on release).
+                        dropIndex = _dragSourceVisualPos;
                     }
                     break;
                 }
@@ -2321,25 +2330,47 @@ namespace PadForge
                 }
                 else if (!_dragIsSwapMode && _dragDropIndex >= 0)
                 {
-                    // Insert mode: convert dropIndex to target visual position.
-                    int targetVisualPos;
+                    // Insert mode: convert dropIndex to target visual position
+                    // (still in GLOBAL sidebar coordinates here).
+                    int targetGlobalPos;
                     if (_dragDropIndex <= _dragSourceVisualPos)
-                        targetVisualPos = _dragDropIndex;
+                        targetGlobalPos = _dragDropIndex;
                     else if (_dragDropIndex <= _dragSourceVisualPos + 1)
-                        targetVisualPos = _dragSourceVisualPos; // no move
+                        targetGlobalPos = _dragSourceVisualPos; // no move
                     else
-                        targetVisualPos = _dragDropIndex - 1;
+                        targetGlobalPos = _dragDropIndex - 1;
 
-                    if (targetVisualPos != _dragSourceVisualPos)
+                    if (targetGlobalPos != _dragSourceVisualPos)
                     {
-                        int srcPad = _dragSourcePadIndex;
-                        int tgtPos = targetVisualPos;
-                        Dispatcher.BeginInvoke(new Action(() =>
+                        // MoveSlot expects a position WITHIN the source's
+                        // group's order list. Translate the global sidebar
+                        // position to group-local by subtracting the count
+                        // of cards in earlier groups. IsInsertionInSameTypeGroup
+                        // upstream guarantees the target is in the same group
+                        // as the source, so the translated position is in
+                        // [0, group_size).
+                        var sourceType = _viewModel.Pads[_dragSourcePadIndex].OutputType;
+                        var cardsAtDrop = GetControllerCardBounds();
+                        int startOfGroup = -1;
+                        for (int i = 0; i < cardsAtDrop.Count; i++)
                         {
-                            _inputService.MoveSlot(srcPad, tgtPos);
-                            _settingsService.MarkDirty();
-                        }));
-                        handled = true;
+                            if (_viewModel.Pads[cardsAtDrop[i].PadIndex].OutputType == sourceType)
+                            {
+                                startOfGroup = i;
+                                break;
+                            }
+                        }
+                        if (startOfGroup >= 0)
+                        {
+                            int srcPad = _dragSourcePadIndex;
+                            int tgtGroupLocalPos = targetGlobalPos - startOfGroup;
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                _inputService.MoveSlot(srcPad, tgtGroupLocalPos);
+                                _settingsService.MarkDirty();
+                            }));
+                            handled = true;
+                        }
                     }
                 }
 
@@ -2541,24 +2572,13 @@ namespace PadForge
         /// </summary>
         private bool HasAnyControllerTypeCapacity()
         {
-            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            // Total active slots is the binding constraint (MaxPads = 16).
+            // Per-group caps are also 16 each, so checking total is correct
+            // for "Add Controller" availability.
+            int total = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
-            {
-                if (!SettingsManager.SlotCreated[i]) continue;
-                switch (_viewModel.Pads[i].OutputType)
-                {
-                    case VirtualControllerType.Microsoft: xboxCount++; break;
-                    case VirtualControllerType.PlayStation: ds4Count++; break;
-                    case VirtualControllerType.Extended: extendedCount++; break;
-                    case VirtualControllerType.Midi: midiCount++; break;
-                    case VirtualControllerType.KeyboardMouse: kbmCount++; break;
-                }
-            }
-            return xboxCount < SettingsManager.MaxXbox360Slots
-                || ds4Count < SettingsManager.MaxDS4Slots
-                || extendedCount < SettingsManager.MaxExtendedSlots
-                || (DriverInstaller.IsMidiServicesInstalled() && midiCount < SettingsManager.MaxMidiSlots)
-                || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
+                if (SettingsManager.SlotCreated[i]) total++;
+            return total < InputManager.MaxPads;
         }
 
         /// <summary>
@@ -2673,11 +2693,16 @@ namespace PadForge
 
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
-            // Count existing slots by type for per-type capacity check.
+            // Total active slots is the binding constraint (MaxPads = 16
+            // across all five groups). When the global total is at the cap
+            // every "Add" button disables uniformly. Per-type counts are
+            // kept for the at-capacity tooltip text.
             int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            int totalActive = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
+                totalActive++;
                 switch (_viewModel.Pads[i].OutputType)
                 {
                     case VirtualControllerType.Microsoft: xboxCount++; break;
@@ -2687,6 +2712,7 @@ namespace PadForge
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
                 }
             }
+            bool globalAtCapacity = totalActive >= InputManager.MaxPads;
 
             // Xbox 360 button — theme-aware icon fill.
             var xboxPopupPath = new System.Windows.Shapes.Path
@@ -2698,7 +2724,7 @@ namespace PadForge
             };
             xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
-            bool xboxDisabled = xboxAtCapacity;
+            bool xboxDisabled = globalAtCapacity || xboxAtCapacity;
             if (xboxDisabled) xboxPopupPath.Opacity = 0.35;
             var xboxBtn = new System.Windows.Controls.Button
             {
@@ -2720,7 +2746,6 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Microsoft);
                 if (newSlot >= 0)
                 {
-                    _inputService.EnsureTypeGroupOrder();
                     int nav = FindLastSlotOfType(VirtualControllerType.Microsoft);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
@@ -2737,7 +2762,7 @@ namespace PadForge
             };
             ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
-            bool ds4Disabled = ds4AtCapacity;
+            bool ds4Disabled = globalAtCapacity || ds4AtCapacity;
             if (ds4Disabled) ds4PopupPath.Opacity = 0.35;
             var ds4Btn = new System.Windows.Controls.Button
             {
@@ -2759,7 +2784,6 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.PlayStation);
                 if (newSlot >= 0)
                 {
-                    _inputService.EnsureTypeGroupOrder();
                     int nav = FindLastSlotOfType(VirtualControllerType.PlayStation);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
@@ -2776,7 +2800,7 @@ namespace PadForge
             };
             extendedPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
             bool extendedAtCapacity = extendedCount >= SettingsManager.MaxExtendedSlots;
-            bool extendedDisabled = extendedAtCapacity;
+            bool extendedDisabled = globalAtCapacity || extendedAtCapacity;
             if (extendedDisabled) extendedPopupPath.Opacity = 0.35;
             var extendedBtn = new System.Windows.Controls.Button
             {
@@ -2799,7 +2823,6 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Extended);
                 if (newSlot >= 0)
                 {
-                    _inputService.EnsureTypeGroupOrder();
                     int nav = FindLastSlotOfType(VirtualControllerType.Extended);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
@@ -2817,7 +2840,8 @@ namespace PadForge
             };
             kbmPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
             bool kbmAtCapacity = kbmCount >= SettingsManager.MaxKeyboardMouseSlots;
-            if (kbmAtCapacity) kbmPopupIcon.Opacity = 0.35;
+            bool kbmDisabled = globalAtCapacity || kbmAtCapacity;
+            if (kbmDisabled) kbmPopupIcon.Opacity = 0.35;
             var kbmPopupBtn = new System.Windows.Controls.Button
             {
                 Content = kbmPopupIcon,
@@ -2827,17 +2851,16 @@ namespace PadForge
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = kbmAtCapacity ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+                Cursor = kbmDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
             System.Windows.Automation.AutomationProperties.SetAutomationId(kbmPopupBtn, "AddKeyboardMouseBtn");
             kbmPopupBtn.Click += (s, e) =>
             {
-                if (kbmAtCapacity) return;
+                if (kbmDisabled) return;
                 popup.IsOpen = false;
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.KeyboardMouse);
                 if (newSlot >= 0)
                 {
-                    _inputService.EnsureTypeGroupOrder();
                     int nav = FindLastSlotOfType(VirtualControllerType.KeyboardMouse);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
@@ -2856,7 +2879,7 @@ namespace PadForge
             midiPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
             bool midiAvailable = DriverInstaller.IsMidiServicesInstalled();
             bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
-            bool midiDisabled = !midiAvailable || midiAtCapacity;
+            bool midiDisabled = !midiAvailable || globalAtCapacity || midiAtCapacity;
             if (midiDisabled) midiPopupIcon.Opacity = 0.35;
             string midiTooltip = !midiAvailable ? Strings.Instance.Main_MIDI_RequiresMidiServices
                                : midiAtCapacity ? string.Format(Strings.Instance.Main_MIDI_Max_Format, SettingsManager.MaxMidiSlots)
@@ -2879,7 +2902,6 @@ namespace PadForge
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.Midi);
                 if (newSlot >= 0)
                 {
-                    _inputService.EnsureTypeGroupOrder();
                     int nav = FindLastSlotOfType(VirtualControllerType.Midi);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
@@ -2901,8 +2923,8 @@ namespace PadForge
 
         /// <summary>
         /// Returns the last created slot index of the given type, or -1 if none.
-        /// Used after EnsureTypeGroupOrder to navigate to a newly created slot
-        /// whose index may have shifted during re-sorting.
+        /// Used after CreateSlot to navigate to the newly added slot, which is
+        /// always the tail of its group's order list.
         /// </summary>
         private int FindLastSlotOfType(VirtualControllerType type)
         {
@@ -3837,28 +3859,25 @@ namespace PadForge
         /// </summary>
         private void RefreshDashboardActiveSlots()
         {
+            // Iterate per-group in the fixed visual order so the dashboard
+            // matches the sidebar's per-group rendering. Slot indices are
+            // stable identifiers; group order owns the layout.
             var activeSlots = new System.Collections.Generic.List<int>();
-            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
-            for (int i = 0; i < InputManager.MaxPads; i++)
+            int totalActive = 0;
+            foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
-                if (SettingsManager.SlotCreated[i])
+                foreach (int padIndex in SettingsManager.SlotOrders.GetOrderFor(groupType))
                 {
-                    activeSlots.Add(i);
-                    switch (_viewModel.Pads[i].OutputType)
-                    {
-                        case VirtualControllerType.Microsoft: xboxCount++; break;
-                        case VirtualControllerType.PlayStation: ds4Count++; break;
-                        case VirtualControllerType.Extended: extendedCount++; break;
-                        case VirtualControllerType.Midi: midiCount++; break;
-                        case VirtualControllerType.KeyboardMouse: kbmCount++; break;
-                    }
+                    if (padIndex < 0 || padIndex >= InputManager.MaxPads) continue;
+                    if (!SettingsManager.SlotCreated[padIndex]) continue;
+                    activeSlots.Add(padIndex);
+                    totalActive++;
                 }
             }
-            bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
-                           || ds4Count < SettingsManager.MaxDS4Slots
-                           || extendedCount < SettingsManager.MaxExtendedSlots
-                           || midiCount < SettingsManager.MaxMidiSlots
-                           || kbmCount < SettingsManager.MaxKeyboardMouseSlots;
+            // Total active slots is bounded by MaxPads. Per-group caps don't
+            // matter for "Add Controller" availability when the global cap is
+            // the binding constraint.
+            bool canAddMore = totalActive < InputManager.MaxPads;
             _viewModel.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
         }
 

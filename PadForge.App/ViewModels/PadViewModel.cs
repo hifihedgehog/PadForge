@@ -2105,13 +2105,37 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
         public KbmRawState KbmOutputSnapshot { get; set; }
 
         /// <summary>
-        /// Updates the combined output display from a ExtendedRawState (custom Extended slots).
-        /// Syncs live values to StickConfigs/TriggerConfigs and stores the raw snapshot.
+        /// Stores the combined virtual-controller output for the Extended
+        /// schematic preview. Writes <see cref="ExtendedOutputSnapshot"/>
+        /// only — does not touch <see cref="StickConfigs"/> or
+        /// <see cref="TriggerConfigs"/>, since those are driven by the
+        /// per-device <see cref="UpdateFromExtendedDeviceState"/> path so
+        /// the per-stick / per-trigger debug tabs can show device-specific
+        /// values without colliding with the schematic's combined view.
+        /// Pre-split this method also wrote the StickConfigs/TriggerConfigs
+        /// live values, which the per-device update path then overwrote on
+        /// the same tick — leaving the schematic showing per-device data
+        /// when a device was selected. Mirrors the Xbox split between
+        /// <see cref="UpdateFromEngineState"/> (combined, schematic) and
+        /// <see cref="UpdateDeviceState"/> (per-device, stick tab).
         /// </summary>
         public void UpdateFromExtendedRawState(ExtendedRawState raw)
         {
             ExtendedOutputSnapshot = raw;
+            OnPropertyChanged(nameof(ExtendedOutputSnapshot));
+        }
 
+        /// <summary>
+        /// Updates per-stick and per-trigger live values for the Extended
+        /// stick/trigger debug tabs. Caller passes either the selected
+        /// device's <c>ExtendedRawOutputState</c> or, when no device is
+        /// selected, the combined slot raw state as a fallback so the tabs
+        /// always show something. Does NOT write
+        /// <see cref="ExtendedOutputSnapshot"/> — that field is owned by
+        /// the schematic preview path.
+        /// </summary>
+        public void UpdateFromExtendedDeviceState(ExtendedRawState raw)
+        {
             // Sync stick config items from raw axes
             foreach (var stick in StickConfigs)
             {
@@ -2153,8 +2177,6 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                     UpdateTriggerCurveDot(trig, rawNorm);
                 }
             }
-
-            OnPropertyChanged(nameof(ExtendedOutputSnapshot));
         }
 
         // ═══════════════════════════════════════════════

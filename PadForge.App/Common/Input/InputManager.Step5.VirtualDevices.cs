@@ -559,9 +559,10 @@ namespace PadForge.Common.Input
                         // Otherwise: convert seconds to polling cycles, fire
                         // event once when threshold is crossed, latch so we
                         // don't re-fire each tick.  UI thread handler runs
-                        // DeleteSlot + CompactSlots(rebuildHmVcs:true) which
-                        // tears down this VC and bubbles surviving Microsoft
-                        // HM VCs down to lower kernel slots.  The latch
+                        // DeleteSlot + InputService.OnSlotDeleted(rebuildHmVcs:true)
+                        // which tears down this VC and bubbles surviving
+                        // Microsoft HM VCs down to lower kernel slots without
+                        // touching slots in any other group.  The latch
                         // clears whenever the slot returns to active state
                         // (counter reset above).
                         int hmThresholdCycles =
@@ -685,6 +686,34 @@ namespace PadForge.Common.Input
 
                         if (isHmSlot)
                         {
+                            // Visual-order gate: only kick off the create for
+                            // the visually-highest eligible HM slot in this
+                            // group. Lower-visual-position slots in the same
+                            // group wait until every visually-higher one has
+                            // been created, so xinputhid's creation-order
+                            // kernel-slot allocation matches the user's
+                            // visual ordering. ApplyAscendingIndexPreemption
+                            // handles the teardown half (lower-visual-pos
+                            // active VCs get torn down when a higher-pos slot
+                            // transitions to active); this gate handles the
+                            // recreate ordering.
+                            var orderList = SettingsManager.SlotOrders.GetOrderFor(slotType);
+                            int myVisualPos = orderList.IndexOf(padIndex);
+                            bool higherStillNeeds = false;
+                            for (int p = 0; p < myVisualPos; p++)
+                            {
+                                int pi = orderList[p];
+                                if (pi < 0 || pi >= MaxPads) continue;
+                                if (_virtualControllers[pi] != null) continue;
+                                if (!SettingsManager.SlotCreated[pi]) continue;
+                                if (!SettingsManager.SlotEnabled[pi]) continue;
+                                if (_createFailed[pi]) continue;
+                                if (!IsSlotActive(pi)) continue;
+                                higherStillNeeds = true;
+                                break;
+                            }
+                            if (higherStillNeeds) continue;
+
                             // Hand the CreateController + Connect chain to the
                             // thread pool.  HIDMaestro driver bring-up takes
                             // multi-second per controller for Microsoft xinputhid
@@ -1128,7 +1157,12 @@ namespace PadForge.Common.Input
 
                         if (layoutOverrides)
                         {
-                            var descBuilder = new HidDescriptorBuilder().Gamepad();
+                            // Mirror BuildCustomProfile. AddPidFfbBlock emits the
+                            // SDK's minimum-viable PID FFB descriptor and auto-
+                            // injects the Report ID 0x01 prefix; FromDescriptorBuilder
+                            // derives InputReportSize from the builder's bit count
+                            // plus the Report ID byte. HM v1.1.41 (issue #16).
+                            var descBuilder = new HidDescriptorBuilder().Joystick();
                             for (int s = 0; s < userSticks; s++)
                                 descBuilder.AddStick(s == 0 ? "Left" : "Right", 16);
                             for (int t = 0; t < userTriggers; t++)
@@ -1137,9 +1171,8 @@ namespace PadForge.Common.Input
                                 descBuilder.AddHat();
                             if (userButtons > 0)
                                 descBuilder.AddButtons(userButtons);
-                            byte[] descBytes = descBuilder.Build();
-                            builder.Descriptor(descBytes);
-                            builder.InputReportSize(descBuilder.InputReportByteSize);
+                            descBuilder.AddPidFfbBlock();
+                            builder.FromDescriptorBuilder(descBuilder);
                         }
 
                         effectiveProfile = builder.Build();
@@ -1212,10 +1245,11 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Returns true if the slot currently holds a Microsoft-type HM
-        /// virtual controller.  Used by CompactSlots' rebuild step to
-        /// decide whether to tear down a just-shifted VC for kernel-slot
-        /// bubble-down (xinputhid binds Microsoft HM VCs to user-indices;
-        /// PlayStation/Extended don't, so they keep their handles).
+        /// virtual controller. Used by InputService.OnSlotDeleted's rebuild
+        /// step to decide whether to tear down a higher-pad-index Microsoft
+        /// VC after a Microsoft delete, so xinputhid bubbles it down to a
+        /// lower kernel slot. PlayStation/Extended VCs don't bind to
+        /// xinputhid kernel slots and don't need this rebuild.
         /// </summary>
         public bool IsMicrosoftHmVcAt(int padIndex)
         {
@@ -1226,21 +1260,27 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Enforces S1: within each HIDMaestro-backed subgroup (Microsoft /
-        /// PlayStation / Extended), virtuals must be created in strictly
-        /// ascending pad index. If a lower-indexed pad is eligible-but-not-
-        /// created while a higher-indexed sibling in the same subgroup already
-        /// has a live VC, destroy the higher one so it recreates AFTER the
-        /// lower pad does in subsequent Pass 2 cycles. Returns true if any
-        /// displacement occurred (signals Pass 2 that there is more work to
-        /// do this round).
+        /// Enforces visual-order kernel-slot allocation within each HM group.
+        /// When the lowest visual position whose pad index needs to be created
+        /// has any visually-lower active VCs in the same group, those lower-
+        /// position VCs are torn down so they recreate AFTER the now-active
+        /// higher-position pad. xinputhid (and HIDMaestro's per-subgroup
+        /// internal index) allocates kernel slots in creation order, so
+        /// rebuilding lower-visual-position slots last gives them higher
+        /// kernel slots than the visually-higher ones, keeping the visual
+        /// order in sync with the kernel-slot order.
         ///
-        /// Async dispose is used so the polling thread is not blocked on
-        /// HIDMaestro teardown (up to ~11s for xinputhid profiles). The
-        /// existing pending-dispose gate in Pass 2 already waits for every
-        /// queued teardown to complete before starting a new creation, so
-        /// the preempted slot's kernel resources are fully released before
-        /// the displaced pad is rebuilt.
+        /// Triggered every tick: catches inactive→active transitions
+        /// (waiting slot gets a device assigned, disabled slot toggled back
+        /// on) and visual-order changes via drag. Per the per-group spec,
+        /// teardown happens regardless of whether the lower-position slots
+        /// share a profile with the transitioning one.
+        ///
+        /// Async dispose used so the polling thread is not blocked on
+        /// HIDMaestro teardown (up to ~11s for xinputhid profiles). Pass 2's
+        /// pending-dispose gate already waits for every queued teardown to
+        /// complete before starting a new creation, so the preempted slots'
+        /// kernel resources are fully released before any rebuild kicks off.
         /// </summary>
         private bool ApplyAscendingIndexPreemption()
         {
@@ -1254,34 +1294,38 @@ namespace PadForge.Common.Input
 
             foreach (var subgroup in hmSubgroups)
             {
-                int lowestNeedsCreate = -1;
-                for (int i = 0; i < MaxPads; i++)
+                var orderList = SettingsManager.SlotOrders.GetOrderFor(subgroup);
+
+                int lowestNeedsCreatePos = -1;
+                for (int pos = 0; pos < orderList.Count; pos++)
                 {
-                    if (SlotControllerTypes[i] != subgroup) continue;
-                    if (_virtualControllers[i] != null) continue;
-                    if (!SettingsManager.SlotCreated[i]) continue;
-                    if (!SettingsManager.SlotEnabled[i]) continue;
-                    if (_createFailed[i]) continue;
-                    if (!IsSlotActive(i)) continue;
-                    lowestNeedsCreate = i;
+                    int padIndex = orderList[pos];
+                    if (padIndex < 0 || padIndex >= MaxPads) continue;
+                    if (_virtualControllers[padIndex] != null) continue;
+                    if (!SettingsManager.SlotCreated[padIndex]) continue;
+                    if (!SettingsManager.SlotEnabled[padIndex]) continue;
+                    if (_createFailed[padIndex]) continue;
+                    if (!IsSlotActive(padIndex)) continue;
+                    lowestNeedsCreatePos = pos;
                     break;
                 }
 
-                if (lowestNeedsCreate < 0) continue;
+                if (lowestNeedsCreatePos < 0) continue;
 
-                for (int i = lowestNeedsCreate + 1; i < MaxPads; i++)
+                for (int pos = lowestNeedsCreatePos + 1; pos < orderList.Count; pos++)
                 {
-                    if (SlotControllerTypes[i] != subgroup) continue;
-                    if (_virtualControllers[i] == null) continue;
+                    int padIndex = orderList[pos];
+                    if (padIndex < 0 || padIndex >= MaxPads) continue;
+                    if (_virtualControllers[padIndex] == null) continue;
 
-                    // The displaced higher-index pad stays enabled; only
-                    // its current VC is torn down. Pass 2 in a later cycle
-                    // (after the pending-dispose gate releases) will recreate
-                    // it — this time AFTER the lower-index pad, preserving
-                    // ascending kernel-slot allocation.
-                    if (IsSlotActive(i)) BeginInitializing(i);
-                    DestroyVirtualController(i, asyncDispose: true);
-                    _createFailed[i] = false;
+                    // Lower-visual-position pad keeps its slot data and
+                    // SlotCreated/SlotEnabled flags. Only its live VC is torn
+                    // down; Pass 2 recreates it after the higher-position
+                    // pad's VC has bound, so xinputhid assigns this VC a
+                    // higher kernel slot.
+                    if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
+                    DestroyVirtualController(padIndex, asyncDispose: true);
+                    _createFailed[padIndex] = false;
                     displacedAny = true;
                 }
             }

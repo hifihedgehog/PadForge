@@ -338,7 +338,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Determines button display names based on output controller type.
-        /// Set by PadViewModel when OutputType/ExtendedPreset changes.
+        /// Set by PadViewModel when OutputType changes.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public MacroButtonStyle ButtonStyle
@@ -1635,19 +1635,16 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Derives the button style from the output controller type and Extended preset.
+        /// Derives the button style from the output controller type. Extended
+        /// slots show numbered labels (Btn1, Btn2, ...) since the active
+        /// HIDMaestro profile drives the layout — Xbox-style "A B X Y" labels
+        /// belong on Microsoft slots, DualShock labels on PlayStation slots.
         /// </summary>
-        public static MacroButtonStyle DeriveStyle(
-            VirtualControllerType outputType, ExtendedPreset extendedPreset = ExtendedPreset.Xbox360) => outputType switch
+        public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType) => outputType switch
         {
             VirtualControllerType.PlayStation => MacroButtonStyle.DualShock4,
-            VirtualControllerType.Extended => extendedPreset switch
-            {
-                ExtendedPreset.DualShock4 => MacroButtonStyle.DualShock4,
-                ExtendedPreset.Custom => MacroButtonStyle.Numbered,
-                _ => MacroButtonStyle.Xbox360
-            },
-            _ => MacroButtonStyle.Xbox360
+            VirtualControllerType.Extended    => MacroButtonStyle.Numbered,
+            _                                 => MacroButtonStyle.Xbox360
         };
 
         private static (string Label, ushort Flag)[] BuildXboxDefs() => new (string, ushort)[]

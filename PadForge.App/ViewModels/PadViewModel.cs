@@ -178,7 +178,6 @@ namespace PadForge.ViewModels
             int sticks = System.Math.Min(axes, 4) / 2;
             int triggers = System.Math.Max(0, axes - sticks * 2);
 
-            _extendedConfig.Preset = ExtendedPreset.Custom;
             _extendedConfig.ThumbstickCount = sticks;
             _extendedConfig.TriggerCount = triggers;
             _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
@@ -252,18 +251,11 @@ namespace PadForge.ViewModels
 
         private void OnExtendedConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            // When Extended config changes (preset, counts), rebuild dynamic collections
+            // When Extended config changes (counts), rebuild dynamic collections
             if (OutputType == VirtualControllerType.Extended)
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(ExtendedSlotConfig.Preset):
-                        ResetDeadZoneSettings();
-                        RebuildMappings();
-                        RebuildStickConfigs();
-                        RebuildTriggerConfigs();
-                        SyncMacroButtonStyle();
-                        break;
                     case nameof(ExtendedSlotConfig.ThumbstickCount):
                     case nameof(ExtendedSlotConfig.TriggerCount):
                         ResetDeadZoneSettings();
@@ -542,18 +534,16 @@ namespace PadForge.ViewModels
         {
             Mappings.Clear();
 
-            // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
-// HIDMaestro profile defines the exact axis/button count and no two
-// profiles share the same layout. Microsoft/PlayStation keep their fixed
-// gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
-// v2-era concept: they routed Extended through Xbox 360 labels, which
-// is wrong when the selected profile is e.g. a flight stick or wheel.
-bool isExtended = OutputType == VirtualControllerType.Extended;
+            // Extended uses the dynamic Extended-style layout in v3: the
+            // HIDMaestro profile defines axis/button counts and no two
+            // profiles share the same layout. Microsoft / PlayStation keep
+            // fixed gamepad grids. KeyboardMouse and MIDI have their own
+            // mapping shapes.
             if (OutputType == VirtualControllerType.KeyboardMouse)
                 InitializeKeyboardMouseMappings();
             else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
-            else if (isExtended)
+            else if (OutputType == VirtualControllerType.Extended)
                 InitializeExtendedCustomMappings();
             else
                 InitializeGamepadMappings();
@@ -562,13 +552,12 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
         }
 
         /// <summary>
-        /// Standard gamepad mappings (21 items). Labels depend on the effective output type:
-        /// Xbox 360 naming for Xbox360 / Extended-Xbox360, DS4 naming for DualShock4 / Extended-DS4.
+        /// Standard gamepad mappings (21 items). Microsoft → Xbox 360 labels,
+        /// PlayStation → DualShock 4 labels.
         /// </summary>
         private void InitializeGamepadMappings()
         {
-            bool isDS4 = OutputType == VirtualControllerType.PlayStation
-                || (OutputType == VirtualControllerType.Extended && ExtendedConfig.Preset == ExtendedPreset.DualShock4);
+            bool isDS4 = OutputType == VirtualControllerType.PlayStation;
 
             // Buttons
             if (isDS4)
@@ -1069,14 +1058,11 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                 return;
             }
 
-            int count = 2; // Default for Xbox 360, DS4, Extended gamepad presets
-            // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
-// HIDMaestro profile defines the exact axis/button count and no two
-// profiles share the same layout. Microsoft/PlayStation keep their fixed
-// gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
-// v2-era concept: they routed Extended through Xbox 360 labels, which
-// is wrong when the selected profile is e.g. a flight stick or wheel.
-bool isExtended = OutputType == VirtualControllerType.Extended;
+            // Microsoft / PlayStation use a fixed 2-stick gamepad grid;
+            // Extended takes its stick count from the active HIDMaestro
+            // profile via ExtendedConfig.
+            int count = 2;
+            bool isExtended = OutputType == VirtualControllerType.Extended;
             if (isExtended)
                 count = ExtendedConfig.ThumbstickCount;
 
@@ -1113,14 +1099,11 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
             if (OutputType == VirtualControllerType.KeyboardMouse)
                 return;
 
-            int count = 2; // Default for Xbox 360, DS4, Extended gamepad presets
-            // Extended ALWAYS uses the dynamic Extended-style layout in v3 — the
-// HIDMaestro profile defines the exact axis/button count and no two
-// profiles share the same layout. Microsoft/PlayStation keep their fixed
-// gamepad grids. The old ExtendedPreset.Xbox360/DualShock4 presets are a
-// v2-era concept: they routed Extended through Xbox 360 labels, which
-// is wrong when the selected profile is e.g. a flight stick or wheel.
-bool isExtended = OutputType == VirtualControllerType.Extended;
+            // Microsoft / PlayStation use a fixed 2-trigger gamepad grid;
+            // Extended takes its trigger count from the active HIDMaestro
+            // profile via ExtendedConfig.
+            int count = 2;
+            bool isExtended = OutputType == VirtualControllerType.Extended;
             if (isExtended)
                 count = ExtendedConfig.TriggerCount;
 
@@ -1378,7 +1361,7 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
                 var macro = new MacroItem
                 {
                     Name = $"Macro {Macros.Count + 1}",
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _extendedConfig?.Preset ?? ExtendedPreset.Xbox360)
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
                 };
                 Macros.Add(macro);
                 SelectedMacro = macro;
@@ -1397,11 +1380,11 @@ bool isExtended = OutputType == VirtualControllerType.Extended;
 
         /// <summary>
         /// Syncs macro button display style to all macros when the output
-        /// controller type or Extended preset changes.
+        /// controller type changes.
         /// </summary>
         private void SyncMacroButtonStyle()
         {
-            var style = MacroButtonNames.DeriveStyle(_outputType, _extendedConfig?.Preset ?? ExtendedPreset.Xbox360);
+            var style = MacroButtonNames.DeriveStyle(_outputType);
             int btnCount = (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
             foreach (var macro in Macros)
             {

@@ -3,12 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
 {
-    public enum ExtendedPreset { Xbox360, DualShock4, Custom }
-
     /// <summary>
     /// Per-slot Extended configuration. Drives stick/trigger/POV/button counts,
-    /// HID descriptor generation, and mapping item generation.
-    /// For Xbox360/DS4 presets, counts are fixed. For Custom, user-chosen.
+    /// HID descriptor generation, and mapping item generation. Counts come from
+    /// the active HIDMaestro profile and may be overridden by the user.
     /// DirectInput limit: 8 axes max (shared between sticks and triggers),
     /// 128 buttons, 4 POVs.
     /// </summary>
@@ -16,17 +14,6 @@ namespace PadForge.ViewModels
     {
         /// <summary>DirectInput maximum axis count (shared between sticks and triggers).</summary>
         public const int MaxAxes = 8;
-
-        private ExtendedPreset _preset = ExtendedPreset.Xbox360;
-        public ExtendedPreset Preset
-        {
-            get => _preset;
-            set
-            {
-                if (SetProperty(ref _preset, value))
-                    ApplyPresetDefaults();
-            }
-        }
 
         private int _thumbstickCount = 2;
         public int ThumbstickCount
@@ -123,12 +110,6 @@ namespace PadForge.ViewModels
         public int MaxTriggers => MaxAxes - _thumbstickCount * 2;
 
         /// <summary>
-        /// Whether this config uses a gamepad-style layout (Xbox 360 or DS4 preset)
-        /// vs a raw axis/button layout (Custom preset).
-        /// </summary>
-        public bool IsGamepadPreset => Preset != ExtendedPreset.Custom;
-
-        /// <summary>
         /// Computes the interleaved axis layout: [StickX, StickY, Trigger] per group.
         /// Sticks and triggers alternate so standard convention holds (X,Y,Z → LX,LY,LT; RX,RY,RZ → RX,RY,RT).
         /// </summary>
@@ -156,26 +137,6 @@ namespace PadForge.ViewModels
             for (int i = interleave; i < TriggerCount; i++)
                 triggerAxis[i] = offset++;
         }
-
-        public void ApplyPresetDefaults()
-        {
-            switch (_preset)
-            {
-                case ExtendedPreset.Xbox360:
-                    ThumbstickCount = 2;
-                    TriggerCount = 2;
-                    PovCount = 1;
-                    ButtonCount = 11;
-                    break;
-                case ExtendedPreset.DualShock4:
-                    ThumbstickCount = 2;
-                    TriggerCount = 2;
-                    PovCount = 1;
-                    ButtonCount = 14;
-                    break;
-                // Custom: keep current values
-            }
-        }
     }
 
     /// <summary>
@@ -184,7 +145,6 @@ namespace PadForge.ViewModels
     public class ExtendedSlotConfigData
     {
         [XmlAttribute] public int SlotIndex { get; set; }
-        [XmlAttribute] public ExtendedPreset Preset { get; set; }
         [XmlAttribute] public int ThumbstickCount { get; set; } = 2;
         [XmlAttribute] public int TriggerCount { get; set; } = 2;
         [XmlAttribute] public int PovCount { get; set; } = 1;

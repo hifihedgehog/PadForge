@@ -1057,15 +1057,8 @@ namespace PadForge.Services
                 Sticks = cfg.ThumbstickCount,
                 Triggers = cfg.TriggerCount
             };
-            // v2 also gated this on !cfg.IsGamepadPreset because Extended with an
-            // Xbox 360 / DS4 preset ran through the regular gamepad pipeline
-            // instead of producing raw HID axes/buttons. v3 has no preset
-            // routing — Extended always produces raw output per the selected
-            // HIDMaestro profile — so the gate is OutputType alone. Keeping
-            // the preset check left fresh Extended slots (Preset=Xbox360
-            // default) with SlotExtendedIsCustom=false, which told Step 3 to
-            // skip ExtendedRawOutputState population entirely and nothing
-            // reached the virtual controller until the user toggled profiles.
+            // Extended always produces raw HID axes/buttons per the active
+            // HIDMaestro profile; the gate is OutputType alone.
             _inputManager.SlotExtendedIsCustom[slotIndex] =
                 padVm.OutputType == VirtualControllerType.Extended;
 
@@ -3454,7 +3447,6 @@ namespace PadForge.Services
                 list.Add(new ExtendedSlotConfigData
                 {
                     SlotIndex = i,
-                    Preset = cfg.Preset,
                     ThumbstickCount = cfg.ThumbstickCount,
                     TriggerCount = cfg.TriggerCount,
                     PovCount = cfg.PovCount,
@@ -3607,14 +3599,10 @@ namespace PadForge.Services
                         _mainVm.Pads[idx].OutputType == VirtualControllerType.Extended)
                     {
                         var cfg = _mainVm.Pads[idx].ExtendedConfig;
-                        cfg.Preset = cfgData.Preset;
-                        if (cfgData.Preset == ExtendedPreset.Custom)
-                        {
-                            cfg.ThumbstickCount = cfgData.ThumbstickCount;
-                            cfg.TriggerCount = cfgData.TriggerCount;
-                            cfg.PovCount = cfgData.PovCount;
-                            cfg.ButtonCount = cfgData.ButtonCount;
-                        }
+                        cfg.ThumbstickCount = cfgData.ThumbstickCount;
+                        cfg.TriggerCount = cfgData.TriggerCount;
+                        cfg.PovCount = cfgData.PovCount;
+                        cfg.ButtonCount = cfgData.ButtonCount;
                     }
                 }
             }

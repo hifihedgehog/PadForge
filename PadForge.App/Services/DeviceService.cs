@@ -396,12 +396,6 @@ namespace PadForge.Services
                     // one manually.
                     _mainVm.Pads[i].ProfileId = InputManager.GetDefaultProfileId(controllerType);
 
-                    // Reset Extended config to Xbox 360 default for fresh slots.
-                    // Without this, stale custom configs from previously-deleted Extended slots
-                    // (still in XML) leak into newly-created slots.
-                    if (controllerType == VirtualControllerType.Extended)
-                        _mainVm.Pads[i].ExtendedConfig.Preset = ExtendedPreset.Xbox360;
-
                     SettingsManager.SlotCreated[i] = true;
                     SettingsManager.SlotEnabled[i] = true;
                     SettingsManager.SlotOrders.Add(i, controllerType);

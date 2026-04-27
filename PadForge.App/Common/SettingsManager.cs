@@ -458,36 +458,6 @@ namespace PadForge.Common.Input
         //  Slot swap
         // ─────────────────────────────────────────────
 
-        /// <summary>
-        /// Swaps all persisted slot data between two indices:
-        /// SlotCreated, SlotEnabled, and UserSettings MapTo values.
-        /// Thread-safe.
-        /// </summary>
-        public static void SwapSlots(int slotA, int slotB)
-        {
-            if (slotA == slotB) return;
-
-            (SlotCreated[slotA], SlotCreated[slotB]) =
-                (SlotCreated[slotB], SlotCreated[slotA]);
-            (SlotEnabled[slotA], SlotEnabled[slotB]) =
-                (SlotEnabled[slotB], SlotEnabled[slotA]);
-
-            var settings = UserSettings;
-            if (settings != null)
-            {
-                lock (settings.SyncRoot)
-                {
-                    foreach (var us in settings.Items)
-                    {
-                        if (us.MapTo == slotA)
-                            us.MapTo = slotB;
-                        else if (us.MapTo == slotB)
-                            us.MapTo = slotA;
-                    }
-                }
-            }
-        }
-
         // ─────────────────────────────────────────────
         //  PadSetting helpers
         // ─────────────────────────────────────────────

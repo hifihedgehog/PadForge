@@ -47,6 +47,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 ### Rumble and force feedback
 
 - Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble.
+- HID PID 1.0 force feedback on Extended controllers: constant, ramp, periodic (sine, square, triangle, sawtooth), and condition effects (spring, damper, friction, inertia) decoded and routed to physical wheels and joysticks with directional pass-through.
 - Audio bass rumble: captures system audio and converts bass frequencies to per-device vibration through a 48 dB/octave filter with configurable sensitivity and cutoff.
 
 ### Visualization

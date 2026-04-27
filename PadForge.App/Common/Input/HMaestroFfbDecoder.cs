@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using HIDMaestro;
 using PadForge.Engine;
 
@@ -57,7 +56,6 @@ namespace PadForge.Common.Input
         /// FfbTest before any HidP introspection.</summary>
         public void PublishInitialState()
         {
-            Trace($"PublishInitialState ctrl={(_controller == null ? "NULL" : "ok")} pool=0x{RamPoolSize:X4} simMax={MaxSimultaneousEffects} flags={_stateFlags}");
             if (_controller == null) return;
             try
             {
@@ -67,41 +65,15 @@ namespace PadForge.Common.Input
                     deviceManagedPool: true,
                     sharedParameterBlocks: true);
                 _controller.PublishPidState(0, _stateFlags);
-                Trace("  publish ok (pool + state)");
             }
-            catch (Exception ex)
+            catch
             {
-                Trace($"  publish exception: {ex.GetType().Name}: {ex.Message}");
+                // Best-effort: HM SDK throws if the controller is mid-tear-down
+                // or the shared section couldn't be mapped. Either way the
+                // device just won't be picked up by DirectInput as an FFB
+                // device, which is the same fall-through behavior as a
+                // non-FFB device.
             }
-        }
-
-        // Diagnostic trace to %TEMP%\padforge-ffb-trace.log. Always on for now
-        // until we've verified the OutputReceived → decoder → Vibration chain.
-        // TODO: gate on PADFORGE_FFB_TRACE=1 once stable.
-        private static readonly bool _trace = true;
-        private static readonly string _traceFile =
-            Path.Combine(Path.GetTempPath(), "padforge-ffb-trace.log");
-        private static readonly object _traceLock = new();
-        private static void Trace(string line)
-        {
-            if (!_trace) return;
-            try
-            {
-                lock (_traceLock)
-                {
-                    File.AppendAllText(_traceFile,
-                        DateTime.Now.ToString("HH:mm:ss.fff ") + line + Environment.NewLine);
-                }
-            }
-            catch { }
-        }
-        private static string Hex(ReadOnlySpan<byte> data, int max = 32)
-        {
-            int n = Math.Min(data.Length, max);
-            var sb = new System.Text.StringBuilder(n * 3);
-            for (int i = 0; i < n; i++) sb.Append(data[i].ToString("X2")).Append(' ');
-            if (data.Length > max) sb.Append("...");
-            return sb.ToString().TrimEnd();
         }
 
         /// <summary>Decode an HM HID-output packet and update internal effect state.
@@ -118,14 +90,12 @@ namespace PadForge.Common.Input
         /// dictionary.</summary>
         public void OnHidFeature(byte reportId, ReadOnlySpan<byte> data)
         {
-            Trace($"OnHidFeature rid=0x{reportId:X2} len={data.Length} data={Hex(data)}");
             if (_controller == null) return;
             if (reportId != HMaestroFfbDescriptor.OutputReportId.SetEffect) return;
             if (data.Length < 1) return;
 
             byte effectType = data[0];
             HMPidBlockLoad bl = _controller.GetCurrentPidBlockLoad();
-            Trace($"  CreateNewEffect type=0x{effectType:X2} → driver-assigned ebi={bl.EffectBlockIndex} status={bl.LoadStatus} remaining={bl.RAMPoolAvailable}");
             if (bl.LoadStatus != PidLoadStatus.Success) return;
 
             lock (_lock)
@@ -172,7 +142,6 @@ namespace PadForge.Common.Input
 
         public void OnHidOutput(byte reportId, ReadOnlySpan<byte> data)
         {
-            Trace($"OnHidOutput rid=0x{reportId:X2} len={data.Length} data={Hex(data)}");
             try
             {
                 lock (_lock)
@@ -188,15 +157,14 @@ namespace PadForge.Common.Input
                         case HMaestroFfbDescriptor.OutputReportId.BlockFree:        DecodeBlockFree(data); break;
                         case HMaestroFfbDescriptor.OutputReportId.DeviceControl:    DecodeDeviceControl(data); break;
                         case HMaestroFfbDescriptor.OutputReportId.DeviceGain:       DecodeDeviceGain(data); break;
-                        default:
-                            Trace($"  unhandled report id 0x{reportId:X2}");
-                            break;
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Trace($"  decode exception: {ex.Message}");
+                // Decoder errors are recoverable: a malformed packet just
+                // doesn't update effect state. The next well-formed packet
+                // re-syncs.
             }
         }
 
@@ -282,8 +250,6 @@ namespace PadForge.Common.Input
                     vib.Period = 0;
                 }
 
-                Trace($"Apply L={vib.LeftMotorSpeed} R={vib.RightMotorSpeed} dir={vib.Direction} type={vib.EffectType} signedMag={vib.SignedMagnitude} hasDir={vib.HasDirectionalData} effects={_effects.Count} runningWithMag={(dominantMag > 0 ? 1 : 0)}");
-
                 if (conditionEffect != null)
                 {
                     vib.HasConditionData = true;
@@ -360,7 +326,6 @@ namespace PadForge.Common.Input
                     es.ConditionAxes[i] = _pending.ConditionAxes[i];
                 es.ConditionAxisCount = Math.Max(es.ConditionAxisCount, _pending.ConditionAxisCount);
             }
-            Trace($"  drained pending: mag={_pending.Magnitude} period={_pending.Period} condAxes={_pending.ConditionAxisCount}");
             _pending = null;
         }
 
@@ -503,6 +468,7 @@ namespace PadForge.Common.Input
                     break;
                 case 4: // device reset
                     _effects.Clear();
+                    _pending = null;
                     _deviceGain = 255;
                     _lastEbi = 0;
                     _stateFlags = PidStateFlags.ActuatorsEnabled | PidStateFlags.ActuatorPower;

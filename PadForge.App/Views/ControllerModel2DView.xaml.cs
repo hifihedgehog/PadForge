@@ -323,8 +323,15 @@ namespace PadForge.Views
             if (_touchpadClickHighlight == null || _touchpadFinger0Dot == null || _touchpadFinger1Dot == null)
                 return;
 
-            _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
-                ? Visibility.Visible : Visibility.Collapsed;
+            // Don't overwrite hover state — HitArea_MouseEnter sets the
+            // highlight visible at 0.4 opacity for the click-mapping
+            // affordance and HitArea_MouseLeave restores via _dirty=true.
+            if (_hoverTarget != "Touchpad")
+            {
+                _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
+                    ? Visibility.Visible : Visibility.Collapsed;
+                _touchpadClickHighlight.Opacity = 1.0;
+            }
 
             UpdateFingerDot(_touchpadFinger0Dot, _vm.TouchpadFinger0Down,
                 _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y);
@@ -495,6 +502,13 @@ namespace PadForge.Views
                     string axis = DetermineAxisFromQuadrant(pos, rect.Width, rect.Height, target);
                     ControllerElementRecordRequested?.Invoke(this, axis);
                 }
+                else if (elemType == OverlayElementType.Touchpad)
+                {
+                    // Touchpad surface routes to the click button — this is the
+                    // affordance for binding the touchpad-press button via the
+                    // big visible region rather than the narrow strip above.
+                    ControllerElementRecordRequested?.Invoke(this, "TouchpadClick");
+                }
                 else
                 {
                     ControllerElementRecordRequested?.Invoke(this, target);
@@ -541,6 +555,17 @@ namespace PadForge.Views
                     return;
 
                 if (_flashTarget == target) return;
+
+                // Touchpad has no per-element overlay image (zone is rendered
+                // by the click highlight rectangle in BuildTouchpadPreview).
+                // Show that rectangle at low opacity for the hover affordance.
+                if (elemType == OverlayElementType.Touchpad && _touchpadClickHighlight != null)
+                {
+                    _hoverTarget = target;
+                    _touchpadClickHighlight.Visibility = Visibility.Visible;
+                    _touchpadClickHighlight.Opacity = 0.4;
+                    return;
+                }
 
                 _hoverTarget = target;
                 img.Visibility = Visibility.Visible;

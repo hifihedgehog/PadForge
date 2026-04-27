@@ -66,6 +66,7 @@ namespace PadForge.Models3D
             RightShoulderMiddle = LoadModel("Shoulder-Right-Middle.obj");
             Screen = LoadModel("Screen.obj");
             Touchpad = Screen; // expose to ControllerModelView for click highlight + finger spheres
+            ClickMap[Screen] = "TouchpadClick"; // make the surface a hit target for mapping
             MainBodyBack = LoadModel("MainBodyBack.obj");
             AuxPort = LoadModel("Aux-Port.obj");
             Triangle = LoadModel("Triangle.obj");

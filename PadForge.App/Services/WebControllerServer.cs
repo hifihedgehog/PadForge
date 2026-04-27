@@ -501,7 +501,7 @@ namespace PadForge.Services
             ["RightTrigger"] = ("axis", 5),
             ["LeftThumbRing"] = ("stick", 0),   // axes 0,1
             ["RightThumbRing"] = ("stick", 3),  // axes 3,4
-            ["TouchpadClick"] = ("button", 20),
+            ["TouchpadClick"] = ("button", 11),
         };
 
         private void ServeLayoutApi(HttpListenerContext ctx)

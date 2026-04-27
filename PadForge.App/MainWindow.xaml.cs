@@ -74,6 +74,23 @@ namespace PadForge
         {
             InitializeComponent();
 
+            // wpfui's TitleBarButton fires its Command twice on a finger tap
+            // because two paths converge: a Win32 hwnd hook catches WM_NCLBUTTONUP
+            // (NC area, via WM_NCHITTEST returning HTMAXBUTTON / HTMINBUTTON /
+            // HTCLOSE) and calls InvokeClick(); AND WPF promotes the same touch
+            // event up through Stylus → Mouse → Button.Click. Maximize is
+            // bistate so the second click reverses the action — minimize and
+            // close hide their second click because the target disappears.
+            //
+            // The Win32 path is the one we want to keep (it's how Snap Layouts
+            // hover and the proper NC-area drag work). Suppress the WPF path
+            // by consuming touch events at the TitleBar before they propagate
+            // into the buttons. Stylus.IsPressAndHoldEnabled on the window
+            // doesn't help here because the bug isn't press-and-hold; it's
+            // straight touch promotion.
+            AppTitleBar.PreviewTouchDown += (_, e) => e.Handled = true;
+            AppTitleBar.PreviewTouchUp   += (_, e) => e.Handled = true;
+
             // Wire NavigationView events in code-behind (WPF UI uses TypedEventHandler).
             NavView.SelectionChanged += NavView_SelectionChanged;
             NavView.ItemInvoked += NavView_ItemInvoked;

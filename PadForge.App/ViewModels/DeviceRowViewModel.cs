@@ -195,7 +195,16 @@ namespace PadForge.ViewModels
         public string DeviceTypeKey
         {
             get => _deviceTypeKey;
-            set { if (SetProperty(ref _deviceTypeKey, value)) OnPropertyChanged(nameof(DeviceType)); }
+            set
+            {
+                if (SetProperty(ref _deviceTypeKey, value))
+                {
+                    OnPropertyChanged(nameof(DeviceType));
+                    OnPropertyChanged(nameof(IsGamepad));
+                    OnPropertyChanged(nameof(ShowInputModeSection));
+                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                }
+            }
         }
 
         /// <summary>Localized device type description for display, derived from DeviceTypeKey.</summary>
@@ -350,6 +359,16 @@ namespace PadForge.ViewModels
         /// (now-empty) body when nothing applies.</summary>
         public bool ShowInputHidingSection => !IsInternalVirtual;
 
+        /// <summary>True when the "Input Mode" section (Force raw joystick mode)
+        /// should be shown. Only real gamepads — virtual web/overlay sources are
+        /// WYSIWYG and have no SDL gamepad-mapping layer to bypass.</summary>
+        public bool ShowInputModeSection => IsGamepad && !IsInternalVirtual;
+
+        /// <summary>True when either the Input Mode or Input Hiding section will
+        /// render. Gates the Separator that sits between Slot Assignment and those
+        /// sections so a virtual device doesn't leave a dangling divider.</summary>
+        public bool ShowInputModeOrHidingSection => ShowInputModeSection || ShowInputHidingSection;
+
         // ─────────────────────────────────────────────
         //  Device path
         // ─────────────────────────────────────────────
@@ -363,7 +382,12 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _devicePath, value))
+                {
                     OnPropertyChanged(nameof(IsInternalVirtual));
+                    OnPropertyChanged(nameof(ShowInputHidingSection));
+                    OnPropertyChanged(nameof(ShowInputModeSection));
+                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                }
             }
         }
 

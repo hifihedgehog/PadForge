@@ -274,10 +274,11 @@
                             </ItemsControl>
                         </WrapPanel>
 
-                        <Separator Margin="0,2,0,8"/>
+                        <Separator Margin="0,2,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowInputModeOrHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                        <!-- ─── Input Mode (gamepads only) ─── -->
-                        <StackPanel Visibility="{Binding SelectedDevice.IsGamepad, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <!-- ─── Input Mode (real gamepads only — virtual web/overlay sources skip) ─── -->
+                        <StackPanel Visibility="{Binding SelectedDevice.ShowInputModeSection, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="{Binding Devices_InputMode, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                        FontSize="13" Margin="0,0,0,6"/>
 

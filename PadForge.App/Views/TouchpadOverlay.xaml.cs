@@ -29,6 +29,14 @@ namespace PadForge.Views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool RegisterTouchWindow(IntPtr hWnd, uint ulFlags);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool UnregisterTouchWindow(IntPtr hWnd);
+
         // Touch tracking: first touch = finger 0, second = finger 1
         private readonly object _stateLock = new();
         private int? _finger0TouchId;
@@ -64,6 +72,26 @@ namespace PadForge.Views
             // states that block subsequent finger detection. Resetting on
             // visibility transitions both directions covers Show/Hide cycles.
             ResetTouchTracking();
+
+            // Force-re-register the window for OS touch input on every show.
+            // Hypothesis: when PadForge is force-killed (Stop-Process /Force or
+            // crash) while the overlay HWND is registered for touch, the new
+            // process's overlay HWND can race with stale OS-side cleanup of
+            // the prior registration, leaving the new window receiving mouse
+            // input fine but no touch. Symptom: cleanly closing + reopening
+            // PadForge fixes it (lets the OS fully tear down between runs);
+            // toggling the overlay alone does not. Unregister-then-register
+            // here forces a fresh OS-level touch registration each time the
+            // window becomes visible.
+            if ((bool)e.NewValue)
+            {
+                var hwnd = new WindowInteropHelper(this).Handle;
+                if (hwnd != IntPtr.Zero)
+                {
+                    UnregisterTouchWindow(hwnd);
+                    RegisterTouchWindow(hwnd, 0);
+                }
+            }
         }
 
         private void ResetTouchTracking()
@@ -89,6 +117,14 @@ namespace PadForge.Views
             var hwnd = new WindowInteropHelper(this).Handle;
             int exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
             SetWindowLong(hwnd, GWL_EXSTYLE, exStyle | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW);
+
+            // Explicit RegisterTouchWindow for the same reason as the
+            // OnIsVisibleChanged path. Idempotent: if WPF's standard touch
+            // init already registered, this returns true and nothing changes.
+            // If it didn't (e.g. due to a race with a prior force-killed
+            // process's stale HWND tracking), this restores the registration.
+            UnregisterTouchWindow(hwnd);
+            RegisterTouchWindow(hwnd, 0);
 
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);

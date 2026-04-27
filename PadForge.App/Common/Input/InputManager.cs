@@ -45,7 +45,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Raised on the polling thread when an HM VC has reached
         /// its inactivity timeout.  Listener (MainWindow) marshals to the
-        /// UI thread and runs DeviceService.DeleteSlot + CompactSlots with
+        /// UI thread and runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
         /// the bubble-up cascade.  Argument is the pad index that timed
         /// out.</summary>
         public event System.EventHandler<int> HmVcInactivityDestroyed;
@@ -716,12 +716,18 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Swaps controller slot data between two positions.
-        /// Same-type swaps keep virtual controllers alive — only the input
-        /// routing changes (via MapTo swap in SettingsManager). This avoids
-        /// ViGEm disconnect/reconnect flicker and preserves XInput indices.
-        /// Cross-type swaps destroy both VCs so Step 5 recreates them with
-        /// the correct types.
+        /// Swaps controller slot data between two positions in the same VC
+        /// type group. Cross-group swaps are forbidden by the spec: each
+        /// group is independent, so any operation that would move a VC
+        /// across the Microsoft / PlayStation / Extended / KbM / MIDI
+        /// boundary must take the type-change path
+        /// (<c>InputService.MoveSlotToGroupTail</c>) instead.
+        ///
+        /// Same-profile swaps are pure renames via MapTo (no array touch).
+        /// Different-profile swaps within a group move every per-slot
+        /// engine array via <see cref="SwapSlotData"/> so each slot's
+        /// VC ends up at a position whose profile matches its identity,
+        /// no teardown required.
         /// </summary>
         public void SwapSlots(int slotA, int slotB)
         {
@@ -733,11 +739,23 @@ namespace PadForge.Common.Input
             var vcB = _virtualControllers[slotB];
             var typeA = vcA?.Type ?? SlotControllerTypes[slotA];
             var typeB = vcB?.Type ?? SlotControllerTypes[slotB];
+
+            if (typeA != typeB)
+            {
+                // Cross-group swap. The spec forbids this. Callers that
+                // want a type change call MoveSlotToGroupTail instead.
+                System.Diagnostics.Debug.Fail(
+                    $"SwapSlots called across groups: slot {slotA}={typeA}, slot {slotB}={typeB}. " +
+                    "Cross-group operations violate the per-group isolation invariant. " +
+                    "Use InputService.MoveSlotToGroupTail for type changes.");
+                return;
+            }
+
             bool sameProfile = SlotProfileIds[slotA] == SlotProfileIds[slotB];
 
-            if (typeA == typeB && sameProfile)
+            if (sameProfile)
             {
-                // Same type AND same profile — pure rename via MapTo.
+                // Same type AND same profile, pure rename via MapTo.
                 // SettingsManager.SwapSlots (called by InputService) swaps
                 // MapTo values, which reroutes the entire pipeline:
                 //   Step 3 maps device input using MapTo → OutputState
@@ -745,81 +763,46 @@ namespace PadForge.Common.Input
                 //   Step 5 feeds CombinedOutputStates[i] → _virtualControllers[i]
                 // All per-slot arrays are recomputed each frame from MapTo,
                 // so no array swapping needed. Zero game disruption.
-            }
-            else if (typeA == typeB)
-            {
-                // Same type but different profiles.  Each slot's live VC
-                // carries a profile that, after the swap, matches the
-                // OTHER slot's expected profile — so a data-only swap
-                // (move both VCs to the other slot) leaves each VC at a
-                // slot whose profile matches its identity.  No teardown
-                // and rebuild needed.
-                //
-                // SwapSlotData does the full per-slot move: engine config
-                // arrays AND _virtualControllers AND _slotInactiveCounter
-                // AND _slotInitializing AND VibrationStates etc., and
-                // updates FeedbackPadIndex on each moved VC so feedback
-                // callbacks still target the correct VibrationStates
-                // element.  Pass 1's profile-change detection on the next
-                // polling cycle sees vc.ProfileId == new SlotProfileIds[i]
-                // and is a no-op.  Caller's SettingsManager.SwapSlots
-                // updates UserSetting MapTo so device routing follows.
-                //
-                // The previous behavior here was to destroy both VCs.
-                // That worked but caused unnecessary "Initializing…"
-                // flashing on slots that just needed to host an
-                // already-built VC of the matching profile, and a
-                // dangling-empty-slot artifact on the destination side
-                // when the source slot was empty pre-swap.  Move-when-
-                // possible eliminates both.
-                SwapSlotData(slotA, slotB);
+
+                // Swap the type-tracking arrays anyway so SlotControllerTypes
+                // and SlotProfileIds stay paired with the slot's other
+                // metadata after the caller's MapTo swap. Same-type same-
+                // profile means these are no-op swaps in practice but the
+                // assignment keeps the code path symmetric.
+                (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
+                    (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
+                (SlotProfileIds[slotA], SlotProfileIds[slotB]) =
+                    (SlotProfileIds[slotB], SlotProfileIds[slotA]);
+                (SlotCustomLayouts[slotA], SlotCustomLayouts[slotB]) =
+                    (SlotCustomLayouts[slotB], SlotCustomLayouts[slotA]);
+                (SlotExtendedIsCustom[slotA], SlotExtendedIsCustom[slotB]) =
+                    (SlotExtendedIsCustom[slotB], SlotExtendedIsCustom[slotA]);
+                (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
+                    (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
+                (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
+                    (MacroSnapshots[slotB], MacroSnapshots[slotA]);
                 return;
             }
-            else
-            {
-                // Cross-type swap (e.g., Microsoft ↔ PlayStation).  The
-                // VCs cannot be reused at each other's slots because the
-                // type itself differs — a Microsoft HM VC at a PlayStation
-                // slot would mismatch the slot's expected output surface.
-                // Destroy both and let Pass 2 rebuild with the correct
-                // types.
-                //
-                // Async dispose so the UI thread returns immediately
-                // instead of blocking on HIDMaestro teardown (~11s per
-                // Microsoft profile).
-                DestroyVirtualController(slotA, asyncDispose: true);
-                DestroyVirtualController(slotB, asyncDispose: true);
-                _slotInactiveCounter[slotA] = 0;
-                _slotInactiveCounter[slotB] = 0;
-            }
 
-            // Swap type tracking and UI-associated state that travels with
-            // the card (not recomputed from MapTo).  Reached only by the
-            // same-profile MapTo-rename path and the cross-type destroy
-            // path; the same-type-different-profile path returned early
-            // above after SwapSlotData did the full per-slot move.
-            (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
-                (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
-            (SlotProfileIds[slotA], SlotProfileIds[slotB]) =
-                (SlotProfileIds[slotB], SlotProfileIds[slotA]);
-            (SlotCustomLayouts[slotA], SlotCustomLayouts[slotB]) =
-                (SlotCustomLayouts[slotB], SlotCustomLayouts[slotA]);
-            (SlotExtendedIsCustom[slotA], SlotExtendedIsCustom[slotB]) =
-                (SlotExtendedIsCustom[slotB], SlotExtendedIsCustom[slotA]);
-            (TestRumbleTargetGuid[slotA], TestRumbleTargetGuid[slotB]) =
-                (TestRumbleTargetGuid[slotB], TestRumbleTargetGuid[slotA]);
-            (MacroSnapshots[slotA], MacroSnapshots[slotB]) =
-                (MacroSnapshots[slotB], MacroSnapshots[slotA]);
+            // Same group, different profile. Move every per-slot array
+            // including the live VC pointers so each VC ends up at the
+            // slot whose ProfileId now matches its identity.
+            SwapSlotData(slotA, slotB);
         }
 
         /// <summary>
-        /// Swaps only data arrays between two slots: SlotControllerTypes,
-        /// SlotCustomLayouts, SlotExtendedIsCustom, TestRumbleTargetGuid, MacroSnapshots.
-        /// Does NOT touch virtual controllers or their lifecycle.
-        /// Used by EnsureTypeGroupOrder so Step 5 detects the type mismatch
-        /// and handles VC recreation naturally on the polling thread,
-        /// avoiding the all-VCs-destroyed-at-once race that causes phantom
-        /// Xbox controllers.
+        /// Same-group full per-slot move. Swaps every engine-side array
+        /// indexed by pad index plus the live VC pointers and updates
+        /// FeedbackPadIndex on each moved VC. Used by within-group
+        /// different-profile swaps so each VC ends up at the slot whose
+        /// ProfileId matches its identity.
+        ///
+        /// Cross-group calls are forbidden by the per-group isolation
+        /// invariant: an Extended VC moved to a Microsoft slot would
+        /// mismatch the slot's expected output surface. Callers that need
+        /// a type change use <c>InputService.MoveSlotToGroupTail</c>
+        /// instead. The assertion below makes the violation impossible to
+        /// land silently.
         /// </summary>
         public void SwapSlotData(int slotA, int slotB)
         {
@@ -827,7 +810,18 @@ namespace PadForge.Common.Input
             if (slotA < 0 || slotA >= MaxPads) return;
             if (slotB < 0 || slotB >= MaxPads) return;
 
-            // Swap engine config arrays.
+            // Per-group isolation invariant. Same-type-only.
+            if (SlotControllerTypes[slotA] != SlotControllerTypes[slotB])
+            {
+                System.Diagnostics.Debug.Fail(
+                    $"SwapSlotData called across groups: slot {slotA}={SlotControllerTypes[slotA]}, " +
+                    $"slot {slotB}={SlotControllerTypes[slotB]}. " +
+                    "Cross-group operations violate per-group isolation. " +
+                    "Use InputService.MoveSlotToGroupTail for type changes.");
+                return;
+            }
+
+            // Engine config arrays declared in InputManager.cs.
             (SlotControllerTypes[slotA], SlotControllerTypes[slotB]) =
                 (SlotControllerTypes[slotB], SlotControllerTypes[slotA]);
             (SlotProfileIds[slotA], SlotProfileIds[slotB]) =
@@ -843,8 +837,34 @@ namespace PadForge.Common.Input
             (_midiConfigs[slotA], _midiConfigs[slotB]) =
                 (_midiConfigs[slotB], _midiConfigs[slotA]);
 
-            // Swap virtual controllers so Step 5 doesn't see a type mismatch
-            // and needlessly destroy/recreate VCs for cross-type reorders.
+            // Per-slot state declared in the Step 5 partial. These were
+            // missing from the pre-refactor swap, leaving the moved VC's
+            // applied-config snapshot at the old index and Pass 1's drift
+            // check would tear the just-moved VC down on the next poll.
+            (SlotExtendedCustomize[slotA], SlotExtendedCustomize[slotB]) =
+                (SlotExtendedCustomize[slotB], SlotExtendedCustomize[slotA]);
+            (SlotOemOverrideEnabled[slotA], SlotOemOverrideEnabled[slotB]) =
+                (SlotOemOverrideEnabled[slotB], SlotOemOverrideEnabled[slotA]);
+            (SlotOemOverrideLabel[slotA], SlotOemOverrideLabel[slotB]) =
+                (SlotOemOverrideLabel[slotB], SlotOemOverrideLabel[slotA]);
+            (_oemOverrideClaimedVidPid[slotA], _oemOverrideClaimedVidPid[slotB]) =
+                (_oemOverrideClaimedVidPid[slotB], _oemOverrideClaimedVidPid[slotA]);
+            (_extendedAppliedProductString[slotA], _extendedAppliedProductString[slotB]) =
+                (_extendedAppliedProductString[slotB], _extendedAppliedProductString[slotA]);
+            (_extendedAppliedLayout[slotA], _extendedAppliedLayout[slotB]) =
+                (_extendedAppliedLayout[slotB], _extendedAppliedLayout[slotA]);
+            (_lastAppliedOemLabel[slotA], _lastAppliedOemLabel[slotB]) =
+                (_lastAppliedOemLabel[slotB], _lastAppliedOemLabel[slotA]);
+            (_loggedFirstSubmit[slotA], _loggedFirstSubmit[slotB]) =
+                (_loggedFirstSubmit[slotB], _loggedFirstSubmit[slotA]);
+            (_pendingDisposeTask[slotA], _pendingDisposeTask[slotB]) =
+                (_pendingDisposeTask[slotB], _pendingDisposeTask[slotA]);
+            (_pendingConnectTask[slotA], _pendingConnectTask[slotB]) =
+                (_pendingConnectTask[slotB], _pendingConnectTask[slotA]);
+            (_hmInactivityFired[slotA], _hmInactivityFired[slotB]) =
+                (_hmInactivityFired[slotB], _hmInactivityFired[slotA]);
+
+            // VC pointers and per-frame state.
             (_virtualControllers[slotA], _virtualControllers[slotB]) =
                 (_virtualControllers[slotB], _virtualControllers[slotA]);
             (_slotInactiveCounter[slotA], _slotInactiveCounter[slotB]) =

@@ -82,6 +82,145 @@ namespace PadForge.Common.Input
             { true, true, true, true, true, true, true, true,
               true, true, true, true, true, true, true, true };
 
+        /// <summary>
+        /// Per-group ordered list of pad indices in user-facing visual order.
+        /// Each pad index appears in exactly one list iff <see cref="SlotCreated"/>[i]
+        /// is true; the group it appears in is determined by the slot's
+        /// <c>OutputType</c>. Ordering within a list drives sidebar / dashboard
+        /// rendering. Cross-group operations are forbidden by design — mutate
+        /// only via the helpers in <see cref="SlotOrders"/>. Persisted to
+        /// settings.
+        /// </summary>
+        public static List<int> MicrosoftSlotOrder { get; set; } = new();
+        public static List<int> PlayStationSlotOrder { get; set; } = new();
+        public static List<int> ExtendedSlotOrder { get; set; } = new();
+        public static List<int> KeyboardMouseSlotOrder { get; set; } = new();
+        public static List<int> MidiSlotOrder { get; set; } = new();
+
+        /// <summary>
+        /// Per-group order helpers. All slot-membership / ordering operations
+        /// route through this surface so the five group lists stay in lockstep
+        /// with <see cref="SlotCreated"/> and the engine's
+        /// <c>SlotControllerTypes</c>.
+        /// </summary>
+        public static class SlotOrders
+        {
+            /// <summary>Return the order list for the given VC type group.</summary>
+            public static List<int> GetOrderFor(Engine.VirtualControllerType type) => type switch
+            {
+                Engine.VirtualControllerType.Microsoft     => MicrosoftSlotOrder,
+                Engine.VirtualControllerType.PlayStation   => PlayStationSlotOrder,
+                Engine.VirtualControllerType.Extended      => ExtendedSlotOrder,
+                Engine.VirtualControllerType.KeyboardMouse => KeyboardMouseSlotOrder,
+                Engine.VirtualControllerType.Midi          => MidiSlotOrder,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
+            };
+
+            /// <summary>Append <paramref name="padIndex"/> to its group's tail
+            /// if it isn't already present. No-op when already present.</summary>
+            public static void Add(int padIndex, Engine.VirtualControllerType type)
+            {
+                var list = GetOrderFor(type);
+                if (!list.Contains(padIndex)) list.Add(padIndex);
+            }
+
+            /// <summary>Remove <paramref name="padIndex"/> from its group's
+            /// list. No-op when absent.</summary>
+            public static void Remove(int padIndex, Engine.VirtualControllerType type)
+            {
+                GetOrderFor(type).Remove(padIndex);
+            }
+
+            /// <summary>Move <paramref name="padIndex"/> from its current group
+            /// to <paramref name="newType"/>'s tail. Used by type-change paths.</summary>
+            public static void MoveToGroupTail(int padIndex,
+                Engine.VirtualControllerType oldType,
+                Engine.VirtualControllerType newType)
+            {
+                if (oldType == newType) return;
+                Remove(padIndex, oldType);
+                Add(padIndex, newType);
+            }
+
+            /// <summary>Move within a single group from
+            /// <paramref name="oldPos"/> to <paramref name="newPos"/>.</summary>
+            public static void MoveWithinGroup(Engine.VirtualControllerType type, int oldPos, int newPos)
+            {
+                var list = GetOrderFor(type);
+                if (oldPos < 0 || oldPos >= list.Count) return;
+                if (newPos < 0 || newPos >= list.Count) return;
+                if (oldPos == newPos) return;
+                int padIndex = list[oldPos];
+                list.RemoveAt(oldPos);
+                list.Insert(newPos, padIndex);
+            }
+
+            /// <summary>Swap two pad indices' positions within their (shared)
+            /// group's order list. Throws if the two pads aren't in the same
+            /// group's list.</summary>
+            public static void SwapWithinGroup(int padA, int padB, Engine.VirtualControllerType type)
+            {
+                var list = GetOrderFor(type);
+                int ia = list.IndexOf(padA);
+                int ib = list.IndexOf(padB);
+                if (ia < 0 || ib < 0) return;
+                (list[ia], list[ib]) = (list[ib], list[ia]);
+            }
+
+            /// <summary>
+            /// Reconcile each group's order list against the current
+            /// engine-side topology (<see cref="SlotCreated"/> and the supplied
+            /// <paramref name="slotTypes"/> map of pad index → VC type).
+            /// For each group: filter the persisted list to entries that are
+            /// still created and still in this group; then append any
+            /// currently-in-this-group pads that the persisted list omitted,
+            /// in ascending pad-index order. Called on settings load and
+            /// profile activation. Both paths supply the persisted lists from
+            /// the loaded settings (or null when none exist) plus the current
+            /// types from the engine. The resulting lists are written back
+            /// onto the static <see cref="MicrosoftSlotOrder"/> &amp;c.
+            /// </summary>
+            public static void RebuildFromCurrentTopology(
+                System.Func<int, Engine.VirtualControllerType> slotType,
+                int[] persistedMicrosoft = null,
+                int[] persistedPlayStation = null,
+                int[] persistedExtended = null,
+                int[] persistedKbm = null,
+                int[] persistedMidi = null)
+            {
+                Reconcile(MicrosoftSlotOrder,     persistedMicrosoft,   slotType, Engine.VirtualControllerType.Microsoft);
+                Reconcile(PlayStationSlotOrder,   persistedPlayStation, slotType, Engine.VirtualControllerType.PlayStation);
+                Reconcile(ExtendedSlotOrder,      persistedExtended,    slotType, Engine.VirtualControllerType.Extended);
+                Reconcile(KeyboardMouseSlotOrder, persistedKbm,         slotType, Engine.VirtualControllerType.KeyboardMouse);
+                Reconcile(MidiSlotOrder,          persistedMidi,        slotType, Engine.VirtualControllerType.Midi);
+            }
+
+            private static void Reconcile(List<int> target, int[] persisted,
+                System.Func<int, Engine.VirtualControllerType> slotType,
+                Engine.VirtualControllerType groupType)
+            {
+                target.Clear();
+                if (persisted != null)
+                {
+                    foreach (int pi in persisted)
+                    {
+                        if (pi < 0 || pi >= InputManager.MaxPads) continue;
+                        if (!SlotCreated[pi]) continue;
+                        if (slotType(pi) != groupType) continue;
+                        if (target.Contains(pi)) continue;
+                        target.Add(pi);
+                    }
+                }
+                for (int pi = 0; pi < InputManager.MaxPads; pi++)
+                {
+                    if (!SlotCreated[pi]) continue;
+                    if (slotType(pi) != groupType) continue;
+                    if (target.Contains(pi)) continue;
+                    target.Add(pi);
+                }
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Initialization
         // ─────────────────────────────────────────────

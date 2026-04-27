@@ -142,12 +142,25 @@ namespace PadForge.ViewModels
         /// </summary>
         public void RefreshNavControllerItems()
         {
-            // Determine which slots have been explicitly created.
+            // Build the active-slot list by concatenating each group's order
+            // list in fixed group order (Microsoft → PlayStation → Extended →
+            // KbM → MIDI). The flat scan that used to drive this only
+            // produced the right visual order while EnsureTypeGroupOrder
+            // forced ascending-pad-index = type-priority. Per the per-group
+            // isolation refactor, slot indices are stable identifiers and
+            // each group owns its visual ordering.
             var activeSlots = new System.Collections.Generic.List<int>();
-            for (int i = 0; i < Pads.Count; i++)
+            foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
-                if (SettingsManager.SlotCreated[i])
-                    activeSlots.Add(i);
+                foreach (int padIndex in SettingsManager.SlotOrders.GetOrderFor(groupType))
+                {
+                    if (padIndex >= 0
+                        && padIndex < Pads.Count
+                        && SettingsManager.SlotCreated[padIndex])
+                    {
+                        activeSlots.Add(padIndex);
+                    }
+                }
             }
 
             // Check if the set of active slots has changed.

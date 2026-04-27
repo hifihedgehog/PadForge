@@ -84,12 +84,61 @@ namespace PadForge.Common
         // SP_DEVINFO_DATA shared via SetupApiInterop.SP_DEVINFO_DATA
 
         private static readonly Guid GUID_DEVCLASS_HIDCLASS = new("745a17a0-74d3-11d0-b6fe-00a0c90f57da");
+        private static readonly Guid GUID_DEVCLASS_XUSBCLASS = new("d61ca365-5af4-4486-998b-9db4734c6ca3");
+        private static readonly Guid GUID_CONTAINER_ID_SYSTEM = new("00000000-0000-0000-ffff-ffffffffffff");
         private const uint DIGCF_PRESENT = 0x02;
 
         private const uint GENERIC_READ = 0x80000000;
         private const uint GENERIC_WRITE = 0x40000000;
         private const uint OPEN_EXISTING = 3;
         private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+
+        // ─────────────────────────────────────────────
+        //  cfgmgr32 P/Invoke for base-container expansion
+        // ─────────────────────────────────────────────
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern int CM_Locate_DevNodeW(
+            out uint pdnDevInst, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, uint ulFlags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Parent(out uint pdnDevInst, uint dnDevInst, uint ulFlags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Child(out uint pdnDevInst, uint dnDevInst, uint ulFlags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Sibling(out uint pdnDevInst, uint dnDevInst, uint ulFlags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_DevNode_PropertyW(
+            uint dnDevInst, in DEVPROPKEY propertyKey,
+            out uint propertyType, byte[] propertyBuffer,
+            ref uint propertyBufferSize, uint ulFlags);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct DEVPROPKEY
+        {
+            public Guid fmtid;
+            public uint pid;
+        }
+
+        // DEVPKEY_Device_ContainerId   {8c7ed206-3f8a-4827-b3ab-ae9e1faefc6c}, 2
+        // DEVPKEY_Device_ClassGuid     {a45c254e-df1c-4efd-8020-67d146a850e0}, 10
+        // DEVPKEY_Device_InstanceId    {78c34fc8-104a-4aca-9ea4-524d52996e57}, 256
+        private static readonly DEVPROPKEY DEVPKEY_Device_ContainerId =
+            new() { fmtid = new Guid("8c7ed206-3f8a-4827-b3ab-ae9e1faefc6c"), pid = 2 };
+        private static readonly DEVPROPKEY DEVPKEY_Device_ClassGuid =
+            new() { fmtid = new Guid("a45c254e-df1c-4efd-8020-67d146a850e0"), pid = 10 };
+        private static readonly DEVPROPKEY DEVPKEY_Device_InstanceId =
+            new() { fmtid = new Guid("78c34fc8-104a-4aca-9ea4-524d52996e57"), pid = 256 };
+
+        private const int CR_SUCCESS = 0;
+        private const int CR_NO_SUCH_VALUE = 0x25;
+        private const int CR_NO_SUCH_DEVNODE = 0x0D;
+        private const uint CM_LOCATE_DEVNODE_PHANTOM = 0x01;
+        private const uint DEVPROP_TYPE_GUID = 0x0000000D;
+        private const uint DEVPROP_TYPE_STRING = 0x00000012;
 
         // ─────────────────────────────────────────────
         //  Tracking: device IDs managed by PadForge
@@ -463,6 +512,148 @@ namespace PadForge.Common
             path = path.TrimEnd('\\');
 
             return string.IsNullOrEmpty(path) ? null : path;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Base-container expansion
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Expand a HID instance ID into the full set of instance paths that
+        /// HidHide Configuration Client would blacklist when the user blocks
+        /// this device. Mirrors the algorithm in
+        /// <c>HidHide/HidHideClient/src/BlacklistDlg.cpp:294-345</c>:
+        ///
+        /// <list type="number">
+        /// <item>Walk parents via Container ID until the parent has a
+        /// different Container ID; the last device with the same ID is the
+        /// base container (typically the USB or XUSB device).</item>
+        /// <item>Get the base container's class GUID
+        /// (<c>DEVPKEY_Device_ClassGuid</c>).</item>
+        /// <item>Count the base container's immediate children. Of those,
+        /// count how many are HID-class.</item>
+        /// <item>If the base container is HID-class or XUSB-class AND every
+        /// child is a HID, add the base container instance path to the
+        /// blacklist too (lets HidHide hide the device at the parent
+        /// boundary so XInput / WGI can't see it through any of the other
+        /// child paths).</item>
+        /// <item>Always add every HID-child instance path.</item>
+        /// </list>
+        ///
+        /// Returns the list with the input <paramref name="hidInstanceId"/>
+        /// preserved (so a single-blacklist call still works) plus any
+        /// additional paths discovered.
+        /// </summary>
+        public static List<string> ExpandToBaseContainerAndChildren(string hidInstanceId)
+        {
+            var result = new List<string>();
+            if (string.IsNullOrEmpty(hidInstanceId)) return result;
+            result.Add(hidInstanceId);
+
+            if (CM_Locate_DevNodeW(out uint hidDevInst, hidInstanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
+                return result;
+
+            Guid hidContainerId = GetContainerId(hidDevInst);
+            if (hidContainerId == Guid.Empty || hidContainerId == GUID_CONTAINER_ID_SYSTEM)
+                return result;
+
+            // Walk parents while Container ID stays the same. The last
+            // matching parent is the base container.
+            uint baseContainer = hidDevInst;
+            uint current = hidDevInst;
+            while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
+            {
+                if (GetContainerId(parent) != hidContainerId) break;
+                baseContainer = parent;
+                current = parent;
+            }
+
+            string baseContainerInstanceId = GetInstanceId(baseContainer);
+            Guid baseContainerClassGuid = GetClassGuid(baseContainer);
+
+            // Enumerate immediate children of base container, count HIDs.
+            int totalChildren = 0;
+            int hidChildren = 0;
+            var hidChildInstanceIds = new List<string>();
+            if (CM_Get_Child(out uint firstChild, baseContainer, 0) == CR_SUCCESS)
+            {
+                uint child = firstChild;
+                while (true)
+                {
+                    totalChildren++;
+                    if (GetClassGuid(child) == GUID_DEVCLASS_HIDCLASS)
+                    {
+                        hidChildren++;
+                        var childInstanceId = GetInstanceId(child);
+                        if (!string.IsNullOrEmpty(childInstanceId))
+                            hidChildInstanceIds.Add(childInstanceId);
+                    }
+                    if (CM_Get_Sibling(out uint sibling, child, 0) != CR_SUCCESS) break;
+                    child = sibling;
+                }
+            }
+
+            // HidHide rule: only blacklist the base container when it's a
+            // HID/XUSB class device AND every child is a HID. For an Xbox
+            // 360 wired controller the base container is XUSB-class with
+            // a single HID child, so this fires; for a USB-class root with
+            // mixed children (e.g. a controller that also exposes audio)
+            // the base container stays unblocked and only the HID
+            // interfaces are filtered.
+            bool blockBase = totalChildren > 0
+                && hidChildren == totalChildren
+                && (baseContainerClassGuid == GUID_DEVCLASS_HIDCLASS
+                 || baseContainerClassGuid == GUID_DEVCLASS_XUSBCLASS)
+                && !string.IsNullOrEmpty(baseContainerInstanceId);
+
+            if (blockBase && !result.Contains(baseContainerInstanceId, StringComparer.OrdinalIgnoreCase))
+                result.Add(baseContainerInstanceId);
+
+            foreach (var id in hidChildInstanceIds)
+                if (!result.Contains(id, StringComparer.OrdinalIgnoreCase))
+                    result.Add(id);
+
+            return result;
+        }
+
+        private static Guid GetContainerId(uint devInst)
+        {
+            byte[] buf = new byte[16];
+            uint size = (uint)buf.Length;
+            int rc = CM_Get_DevNode_PropertyW(devInst, DEVPKEY_Device_ContainerId,
+                out uint type, buf, ref size, 0);
+            if (rc != CR_SUCCESS || type != DEVPROP_TYPE_GUID)
+                return Guid.Empty;
+            return new Guid(buf);
+        }
+
+        private static Guid GetClassGuid(uint devInst)
+        {
+            byte[] buf = new byte[16];
+            uint size = (uint)buf.Length;
+            int rc = CM_Get_DevNode_PropertyW(devInst, DEVPKEY_Device_ClassGuid,
+                out uint type, buf, ref size, 0);
+            if (rc != CR_SUCCESS || type != DEVPROP_TYPE_GUID)
+                return Guid.Empty;
+            return new Guid(buf);
+        }
+
+        private static string GetInstanceId(uint devInst)
+        {
+            // Two-call pattern: first call with empty buffer learns the
+            // required size, second call retrieves the string.
+            uint size = 0;
+            CM_Get_DevNode_PropertyW(devInst, DEVPKEY_Device_InstanceId,
+                out _, null, ref size, 0);
+            if (size == 0) return null;
+            byte[] buf = new byte[size];
+            int rc = CM_Get_DevNode_PropertyW(devInst, DEVPKEY_Device_InstanceId,
+                out uint type, buf, ref size, 0);
+            if (rc != CR_SUCCESS || type != DEVPROP_TYPE_STRING) return null;
+            // Strings are UTF-16 with trailing null.
+            int chars = (int)(size / 2);
+            if (chars > 0 && BitConverter.ToInt16(buf, (chars - 1) * 2) == 0) chars--;
+            return Encoding.Unicode.GetString(buf, 0, chars * 2);
         }
 
         // ─────────────────────────────────────────────

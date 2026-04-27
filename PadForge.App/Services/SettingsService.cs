@@ -321,6 +321,20 @@ namespace PadForge.Services
                 }
             }
 
+            // Reconcile per-group order lists with the loaded topology. Pads
+            // that the persisted lists reference but that are no longer
+            // created (or that have changed types) are dropped; pads that
+            // are created in a group but missing from the persisted list
+            // (legacy XML, externally edited, etc.) are appended in
+            // ascending pad-index order.
+            SettingsManager.SlotOrders.RebuildFromCurrentTopology(
+                pi => _mainVm.Pads[pi].OutputType,
+                appSettings.MicrosoftSlotOrder,
+                appSettings.PlayStationSlotOrder,
+                appSettings.ExtendedSlotOrder,
+                appSettings.KeyboardMouseSlotOrder,
+                appSettings.MidiSlotOrder);
+
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
             ApplyMidiConfigs(appSettings.MidiConfigs);
 
@@ -785,6 +799,17 @@ namespace PadForge.Services
                     }
                 }
 
+                // Reconcile per-group order lists from the profile's saved
+                // arrays against the just-applied topology. Same shape as the
+                // app-load reconcile above.
+                SettingsManager.SlotOrders.RebuildFromCurrentTopology(
+                    pi => _mainVm.Pads[pi].OutputType,
+                    active.MicrosoftSlotOrder,
+                    active.PlayStationSlotOrder,
+                    active.ExtendedSlotOrder,
+                    active.KeyboardMouseSlotOrder,
+                    active.MidiSlotOrder);
+
                 // Now that SlotCreated and OutputType are restored, apply Extended/MIDI
                 // configs from the profile's own snapshot.
                 ApplyExtendedConfigs(active.ExtendedConfigs);
@@ -859,6 +884,11 @@ namespace PadForge.Services
                 .Select(i => _mainVm.Pads[i].ProfileId).ToArray();
             profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
+            profile.MicrosoftSlotOrder     = SettingsManager.MicrosoftSlotOrder.ToArray();
+            profile.PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray();
+            profile.ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray();
+            profile.KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray();
+            profile.MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
@@ -1126,6 +1156,11 @@ namespace PadForge.Services
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
+                MicrosoftSlotOrder     = isDefault ? SettingsManager.MicrosoftSlotOrder.ToArray()     : defaultSnap.MicrosoftSlotOrder,
+                PlayStationSlotOrder   = isDefault ? SettingsManager.PlayStationSlotOrder.ToArray()   : defaultSnap.PlayStationSlotOrder,
+                ExtendedSlotOrder      = isDefault ? SettingsManager.ExtendedSlotOrder.ToArray()      : defaultSnap.ExtendedSlotOrder,
+                KeyboardMouseSlotOrder = isDefault ? SettingsManager.KeyboardMouseSlotOrder.ToArray() : defaultSnap.KeyboardMouseSlotOrder,
+                MidiSlotOrder          = isDefault ? SettingsManager.MidiSlotOrder.ToArray()          : defaultSnap.MidiSlotOrder,
                 DefaultProfileSnapshot = isDefault ? null : defaultSnap
             };
         }
@@ -1835,12 +1870,13 @@ namespace PadForge.Services
 
         /// <summary>
         /// Seconds an HM virtual controller waits for any mapped device to
-        /// come back online before destroying itself.  0 disables (HM VCs
-        /// survive arbitrary offline windows — legacy behavior).  Default
-        /// 60.  When triggered, the slot is removed entirely (same shape
-        /// as user-driven delete) and surviving HM VCs in the stack
-        /// bubble down via CompactSlots so XInput indices stay
-        /// contiguous.
+        /// come back online before destroying itself. 0 disables (HM VCs
+        /// survive arbitrary offline windows, legacy behavior). Default 60.
+        /// When triggered, the slot is removed entirely (same shape as
+        /// user-driven delete) and surviving Microsoft HM VCs in the same
+        /// group bubble down via InputService.OnSlotDeleted so xinputhid
+        /// kernel slots stay contiguous. Slots in other groups are not
+        /// touched.
         /// </summary>
         [XmlElement]
         public int HmInactivityDestroyTimeoutSeconds { get; set; } = 60;
@@ -1884,11 +1920,37 @@ namespace PadForge.Services
 
         /// <summary>
         /// Which virtual controller slots are enabled for ViGEm output.
-        /// Null on old settings files — defaults to all true.
+        /// Null on old settings files, defaults to all true.
         /// </summary>
         [XmlArray("SlotEnabled")]
         [XmlArrayItem("Enabled")]
         public bool[] SlotEnabled { get; set; }
+
+        /// <summary>
+        /// Per-group ordered list of pad indices in user-facing visual order.
+        /// Null on settings predating the per-group ordering refactor; load
+        /// reconstructs ascending pad-index defaults via
+        /// <c>SettingsManager.SlotOrders.RebuildFromCurrentTopology</c>.
+        /// </summary>
+        [XmlArray("MicrosoftSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] MicrosoftSlotOrder { get; set; }
+
+        [XmlArray("PlayStationSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] PlayStationSlotOrder { get; set; }
+
+        [XmlArray("ExtendedSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] ExtendedSlotOrder { get; set; }
+
+        [XmlArray("KeyboardMouseSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] KeyboardMouseSlotOrder { get; set; }
+
+        [XmlArray("MidiSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] MidiSlotOrder { get; set; }
 
         [XmlElement]
         public bool EnableDsuMotionServer { get; set; }
@@ -2240,6 +2302,32 @@ namespace PadForge.Services
         [XmlArray("ProfileExtendedConfigs")]
         [XmlArrayItem("ExtendedConfig")]
         public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
+
+        /// <summary>
+        /// Per-group ordered list of pad indices in user-facing visual order
+        /// at profile-save time. Null on profiles predating the per-group
+        /// ordering refactor; activation reconstructs ascending pad-index
+        /// defaults via <c>SettingsManager.SlotOrders.RebuildFromCurrentTopology</c>.
+        /// </summary>
+        [XmlArray("ProfileMicrosoftSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] MicrosoftSlotOrder { get; set; }
+
+        [XmlArray("ProfilePlayStationSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] PlayStationSlotOrder { get; set; }
+
+        [XmlArray("ProfileExtendedSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] ExtendedSlotOrder { get; set; }
+
+        [XmlArray("ProfileKeyboardMouseSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] KeyboardMouseSlotOrder { get; set; }
+
+        [XmlArray("ProfileMidiSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] MidiSlotOrder { get; set; }
 
         /// <summary>Per-slot MIDI configurations saved with this profile.</summary>
         [XmlArray("ProfileMidiConfigs")]

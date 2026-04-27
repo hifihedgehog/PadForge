@@ -95,6 +95,7 @@ namespace PadForge.Services
             {
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
+                SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
             }
 
             Guid instanceGuid = selectedRow.InstanceGuid;
@@ -163,6 +164,7 @@ namespace PadForge.Services
             {
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
+                SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
             }
 
             var us = SettingsManager.AssignDeviceToSlot(instanceGuid, slotIndex);
@@ -211,6 +213,7 @@ namespace PadForge.Services
             {
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
+                SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
             }
 
             Guid instanceGuid = selectedRow.InstanceGuid;
@@ -401,6 +404,7 @@ namespace PadForge.Services
 
                     SettingsManager.SlotCreated[i] = true;
                     SettingsManager.SlotEnabled[i] = true;
+                    SettingsManager.SlotOrders.Add(i, controllerType);
                     _settingsService.MarkDirty();
                     DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
                     return i;
@@ -411,13 +415,24 @@ namespace PadForge.Services
 
         /// <summary>
         /// Deletes a virtual controller slot. Unassigns all devices from it.
+        /// Returns the type of the deleted slot so callers can drive the
+        /// per-group <c>OnSlotDeleted</c> teardown without re-querying after
+        /// the slot's <c>OutputType</c> has been reset.
         /// </summary>
-        public void DeleteSlot(int slotIndex)
+        public VirtualControllerType DeleteSlot(int slotIndex)
         {
-            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return;
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
+                return VirtualControllerType.Microsoft;
+
+            // Capture before the reset wipes OutputType. Used to remove the
+            // pad index from the correct group's order list and to drive
+            // any group-scoped post-delete rebuild (e.g. xinputhid kernel
+            // slot bubble-down for Microsoft VCs).
+            var deletedType = _mainVm.Pads[slotIndex].OutputType;
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
+            SettingsManager.SlotOrders.Remove(slotIndex, deletedType);
 
             // Reset PadViewModel so stale settings (deadzone, sensitivity, etc.)
             // don't leak into the next controller created in this slot.
@@ -455,6 +470,7 @@ namespace PadForge.Services
             _settingsService.MarkDirty();
             _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, slotIndex + 1);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
+            return deletedType;
         }
 
         /// <summary>

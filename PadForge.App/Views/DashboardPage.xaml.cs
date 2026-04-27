@@ -274,6 +274,14 @@ namespace PadForge.Views
                             swapCardIndex = i;
                         }
                     }
+                    else
+                    {
+                        // Cursor still over the source card. Pin dropIndex
+                        // to source's own visual position so the insertion
+                        // math resolves to "no move" and the closest-edge
+                        // fallback below doesn't pick a far card.
+                        dropIndex = _dragSourceVisualPos;
+                    }
                     break;
                 }
             }
@@ -413,20 +421,37 @@ namespace PadForge.Views
                 }
                 else if (!_dragIsSwapMode && _dragDropIndex >= 0)
                 {
-                    int targetVisualPos;
+                    int targetGlobalPos;
                     if (_dragDropIndex <= _dragSourceVisualPos)
-                        targetVisualPos = _dragDropIndex;
+                        targetGlobalPos = _dragDropIndex;
                     else if (_dragDropIndex <= _dragSourceVisualPos + 1)
-                        targetVisualPos = _dragSourceVisualPos; // no move
+                        targetGlobalPos = _dragSourceVisualPos; // no move
                     else
-                        targetVisualPos = _dragDropIndex - 1;
+                        targetGlobalPos = _dragDropIndex - 1;
 
-                    if (targetVisualPos != _dragSourceVisualPos)
+                    if (targetGlobalPos != _dragSourceVisualPos)
                     {
-                        int srcPad = _dragSourcePadIndex;
-                        int tgtPos = targetVisualPos;
-                        Dispatcher.BeginInvoke(new Action(() =>
-                            SlotMoveRequested?.Invoke(this, (srcPad, tgtPos))));
+                        // Translate global dashboard position to group-local
+                        // (count cards in earlier groups). InputService.MoveSlot
+                        // expects an index into the source group's order list.
+                        var sourceType = GetSlotOutputType(_dragSourcePadIndex);
+                        var cardsAtDrop = GetCardBounds();
+                        int startOfGroup = -1;
+                        for (int i = 0; i < cardsAtDrop.Count; i++)
+                        {
+                            if (GetSlotOutputType(cardsAtDrop[i].PadIndex) == sourceType)
+                            {
+                                startOfGroup = i;
+                                break;
+                            }
+                        }
+                        if (startOfGroup >= 0)
+                        {
+                            int srcPad = _dragSourcePadIndex;
+                            int tgtGroupLocalPos = targetGlobalPos - startOfGroup;
+                            Dispatcher.BeginInvoke(new Action(() =>
+                                SlotMoveRequested?.Invoke(this, (srcPad, tgtGroupLocalPos))));
+                        }
                     }
                 }
             }

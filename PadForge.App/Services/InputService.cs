@@ -450,11 +450,18 @@ namespace PadForge.Services
                     {
                         var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                         if (_inputManager.SlotExtendedIsCustom[i] && us != null)
-                            padVm.UpdateFromExtendedRawState(us.ExtendedRawOutputState);
+                            padVm.UpdateFromExtendedDeviceState(us.ExtendedRawOutputState);
                         else
                             padVm.UpdateDeviceState(us?.RawMappedState ?? default);
                     }
-                    else if (!_inputManager.SlotExtendedIsCustom[i])
+                    else if (_inputManager.SlotExtendedIsCustom[i])
+                    {
+                        // No device selected: fall back to combined for the
+                        // stick/trigger tabs so they aren't stuck on stale
+                        // per-device data from a previous selection.
+                        padVm.UpdateFromExtendedDeviceState(_inputManager.CombinedExtendedRawStates[i]);
+                    }
+                    else
                     {
                         padVm.UpdateDeviceState(gp);
                     }
@@ -1650,9 +1657,11 @@ namespace PadForge.Services
 
         /// <summary>
         /// Raised on the UI thread after the engine reported an HM virtual
-        /// controller's inactivity timeout fired.  MainWindow listens and
-        /// runs DeviceService.DeleteSlot + CompactSlots(rebuildHmVcs:true).
-        /// Argument is the pad index that timed out.
+        /// controller's inactivity timeout fired. MainWindow listens and
+        /// runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
+        /// rebuildHmVcs:true so any surviving Microsoft HM VCs at higher
+        /// pad indices in the Microsoft group bubble down to the lowest
+        /// available kernel slot. Argument is the pad index that timed out.
         /// </summary>
         public event EventHandler<int> SlotInactivityTimedOut;
 
@@ -2203,7 +2212,15 @@ namespace PadForge.Services
                         // If the DevicePath produced a valid HID instance ID, use it directly.
                         if (instanceId != null && instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase))
                         {
-                            desiredIds.Add(instanceId);
+                            // Expand to base-container + sibling HIDs, mirroring
+                            // HidHide Configuration Client. Without this, only
+                            // the SDL-visible HID interface gets blacklisted —
+                            // XInput / WGI continue to see the controller via
+                            // the XUSB base container or other HID children
+                            // (Xbox 360 wired exposes an XUSB-class parent
+                            // with multiple HID descendants).
+                            foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(instanceId))
+                                desiredIds.Add(id);
                         }
                         // Fallback: synthetic paths (e.g., "XInput#0") — look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
@@ -2271,7 +2288,8 @@ namespace PadForge.Services
                                     }
                                 }
                                 foreach (var id in ud.HidHideInstanceIds)
-                                    desiredIds.Add(id);
+                                    foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(id))
+                                        desiredIds.Add(expandedId);
                             }
                             else if (ud.HidHideInstanceIds.Count > 0)
                             {
@@ -2279,7 +2297,8 @@ namespace PadForge.Services
                                 System.Diagnostics.Debug.WriteLine(
                                     $"[ApplyDeviceHiding] Using {ud.HidHideInstanceIds.Count} cached instance IDs for offline device {ud.ResolvedName}");
                                 foreach (var cachedId in ud.HidHideInstanceIds)
-                                    desiredIds.Add(cachedId);
+                                    foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(cachedId))
+                                        desiredIds.Add(expandedId);
                             }
                         }
                     }
@@ -2793,27 +2812,25 @@ namespace PadForge.Services
             // Refresh sidebar and dashboard to reflect which slots are created.
             _mainVm.RefreshNavControllerItems();
 
-            // Build the list of created slot indices for the dashboard.
+            // Build the dashboard's active-slot list by walking each group's
+            // order list in fixed group order. Iterating ascending pad index
+            // here would render the dashboard in pad-index order while the
+            // sidebar renders in per-group order, so the two views would
+            // disagree any time a slot was reordered or a pad index was
+            // sparse within a group.
             var activeSlots = new List<int>();
-            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0;
-            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            int totalActive = 0;
+            foreach (var groupType in VirtualControllerGroups.InOrder)
             {
-                if (SettingsManager.SlotCreated[i])
+                foreach (int padIndex in SettingsManager.SlotOrders.GetOrderFor(groupType))
                 {
-                    activeSlots.Add(i);
-                    switch (_mainVm.Pads[i].OutputType)
-                    {
-                        case VirtualControllerType.Microsoft: xboxCount++; break;
-                        case VirtualControllerType.PlayStation: ds4Count++; break;
-                        case VirtualControllerType.Extended: extendedCount++; break;
-                        case VirtualControllerType.Midi: midiCount++; break;
-                    }
+                    if (padIndex < 0 || padIndex >= _mainVm.Pads.Count) continue;
+                    if (!SettingsManager.SlotCreated[padIndex]) continue;
+                    activeSlots.Add(padIndex);
+                    totalActive++;
                 }
             }
-            bool canAddMore = xboxCount < SettingsManager.MaxXbox360Slots
-                           || ds4Count < SettingsManager.MaxDS4Slots
-                           || extendedCount < SettingsManager.MaxExtendedSlots
-                           || midiCount < SettingsManager.MaxMidiSlots;
+            bool canAddMore = totalActive < InputManager.MaxPads;
             _mainVm.Dashboard.RefreshActiveSlots(activeSlots, canAddMore);
 
             // Update slot summary properties so dashboard cards reflect current state
@@ -3424,6 +3441,11 @@ namespace PadForge.Services
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
                 MidiConfigs = SnapshotMidiConfigs(),
+                MicrosoftSlotOrder     = SettingsManager.MicrosoftSlotOrder.ToArray(),
+                PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray(),
+                ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray(),
+                KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray(),
+                MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
@@ -3572,6 +3594,18 @@ namespace PadForge.Services
                     }
                 }
             }
+
+            // ── Reconcile per-group order lists with the new topology ──
+            // Profile activation has just reset SlotCreated and OutputType for
+            // every slot, so the order lists must be rebuilt from the profile's
+            // saved arrays (or ascending defaults if the profile predates them).
+            SettingsManager.SlotOrders.RebuildFromCurrentTopology(
+                pi => _mainVm.Pads[pi].OutputType,
+                profile.MicrosoftSlotOrder,
+                profile.PlayStationSlotOrder,
+                profile.ExtendedSlotOrder,
+                profile.KeyboardMouseSlotOrder,
+                profile.MidiSlotOrder);
 
             // ── Apply Extended/MIDI configurations ──
             if (profile.ExtendedConfigs != null)
@@ -3724,6 +3758,11 @@ namespace PadForge.Services
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
                     profile.ExtendedConfigs = snapshot.ExtendedConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
+                    profile.MicrosoftSlotOrder     = snapshot.MicrosoftSlotOrder;
+                    profile.PlayStationSlotOrder   = snapshot.PlayStationSlotOrder;
+                    profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;
+                    profile.KeyboardMouseSlotOrder = snapshot.KeyboardMouseSlotOrder;
+                    profile.MidiSlotOrder          = snapshot.MidiSlotOrder;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                     profile.EnableWebController = snapshot.EnableWebController;
@@ -3873,166 +3912,131 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Swaps two virtual controller slots across all layers:
-        /// engine arrays, settings, and ViewModel state, then refreshes UI.
-        /// Must be called on the UI thread.
+        /// Swap two slots' visual positions within their (shared) group.
+        /// Pure visual reorder: only the group's order list is mutated.
+        /// Pad indices, engine state, VCs, devices, and MapTo values are
+        /// untouched — visual position N renders the data at pad index
+        /// <c>orderList[N]</c>, so a reorder of <c>orderList</c> is
+        /// sufficient to flip what the user sees at each card slot.
+        ///
+        /// Same-profile swaps are now zero-flicker by construction (no VC
+        /// touched, no MapTo rename). Different-profile swaps are also
+        /// zero-flicker (each VC stays at its original pad index; only the
+        /// rendering order changes). Cross-group calls are rejected.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
             if (padIndexA == padIndexB) return;
-            _inputManager?.SwapSlots(padIndexA, padIndexB);
-            SettingsManager.SwapSlots(padIndexA, padIndexB);
-            SwapPadViewModelSlotData(padIndexA, padIndexB);
+            if (padIndexA < 0 || padIndexA >= InputManager.MaxPads) return;
+            if (padIndexB < 0 || padIndexB >= InputManager.MaxPads) return;
+
+            var typeA = _mainVm.Pads[padIndexA].OutputType;
+            var typeB = _mainVm.Pads[padIndexB].OutputType;
+            if (typeA != typeB) return; // upstream drag affordance already enforces
+
+            SettingsManager.SlotOrders.SwapWithinGroup(padIndexA, padIndexB, typeA);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
-        /// Moves a controller slot from its current visual position to a new one
-        /// by performing adjacent bubble swaps through the active slots list.
-        /// UI is refreshed once after all swaps complete.
+        /// Move a slot from its current visual position to a new visual
+        /// position within its own group. Pure order-list reorder; engine
+        /// state and VCs are untouched (see <see cref="SwapSlots"/>).
+        /// Cross-group moves go through <see cref="MoveSlotToGroupTail"/>.
         /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
         {
-            var activeSlots = new List<int>();
-            for (int i = 0; i < InputManager.MaxPads; i++)
-                if (SettingsManager.SlotCreated[i])
-                    activeSlots.Add(i);
+            if (sourcePadIndex < 0 || sourcePadIndex >= InputManager.MaxPads) return;
+            if (!SettingsManager.SlotCreated[sourcePadIndex]) return;
 
-            int sourcePos = activeSlots.IndexOf(sourcePadIndex);
+            var groupType = _mainVm.Pads[sourcePadIndex].OutputType;
+            var orderList = SettingsManager.SlotOrders.GetOrderFor(groupType);
+
+            int sourcePos = orderList.IndexOf(sourcePadIndex);
             if (sourcePos < 0) return;
-            if (targetVisualPosition < 0 || targetVisualPosition >= activeSlots.Count) return;
+            if (targetVisualPosition < 0 || targetVisualPosition >= orderList.Count) return;
             if (sourcePos == targetVisualPosition) return;
 
-            // Bubble the source to the target via adjacent swaps (data only).
-            int step = targetVisualPosition > sourcePos ? 1 : -1;
-            for (int i = sourcePos; i != targetVisualPosition; i += step)
-            {
-                int a = activeSlots[i], b = activeSlots[i + step];
-                _inputManager?.SwapSlots(a, b);
-                SettingsManager.SwapSlots(a, b);
-                SwapPadViewModelSlotData(a, b);
-            }
-
+            SettingsManager.SlotOrders.MoveWithinGroup(groupType, sourcePos, targetVisualPosition);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
-        /// Re-sorts created slots so types are grouped: Xbox 360, then DS4, then Extended.
-        /// Uses adjacent SwapSlots calls (same-type swaps are zero-flicker).
-        /// Returns true if any reordering was performed.
+        /// Move a slot to the tail of its (possibly new) group's order list.
+        /// Used when the user changes a slot's type from the sidebar context
+        /// menu or dashboard popup. The slot's pad index stays put; only the
+        /// group membership changes. Step 5 Pass 1's existing type-mismatch
+        /// detection destroys the old VC and Pass 2 creates the new one.
+        /// Slots in OTHER groups are not touched.
         /// </summary>
-        /// <param name="silent">
-        /// When true, performs data swaps only without UI refresh.
-        /// Use during startup before the window is loaded.
-        /// </param>
-        /// <summary>
-        /// Compacts active slots to indices 0..N-1, eliminating any holes left
-        /// by deletes. Walks once with a two-pointer pattern: each created slot
-        /// shifts down to the next available position via the same swap
-        /// machinery EnsureTypeGroupOrder uses (engine arrays, settings
-        /// UserSetting MapTo, and PadViewModel slot data all travel together).
-        /// Returns true if any compaction occurred.
-        ///
-        /// Called after a slot delete so a subsequent CreateSlot lands at the
-        /// bottom of the type group rather than at slot 0. Stable shift
-        /// preserves type-priority order, so EnsureTypeGroupOrder is not
-        /// required afterward (compaction is a no-op if there are no holes).
-        /// </summary>
-        public bool CompactSlots(bool silent = false, bool rebuildHmVcs = true)
+        public void MoveSlotToGroupTail(int padIndex)
         {
-            bool anyCompacted = false;
-            int writePos = 0;
-            // Track which positions just received a Microsoft-type HM VC via
-            // a shift.  Those VCs are still bound to their old kernel slots;
-            // destroying them lets Pass 2 recreate in ascending pad order so
-            // xinputhid bubbles them down to the lowest free user-indices.
-            // PlayStation/Extended VCs keep their handles (no kernel slot
-            // binding to bubble).
-            var slotsToRebuild = rebuildHmVcs ? new System.Collections.Generic.List<int>() : null;
-            for (int readPos = 0; readPos < InputManager.MaxPads; readPos++)
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+            if (!SettingsManager.SlotCreated[padIndex]) return;
+
+            var newType = _mainVm.Pads[padIndex].OutputType;
+
+            // Find the group the slot is currently in (may differ from
+            // newType if the caller already updated OutputType).
+            VirtualControllerType? oldType = null;
+            foreach (var g in VirtualControllerGroups.InOrder)
             {
-                if (!SettingsManager.SlotCreated[readPos]) continue;
-                if (readPos != writePos)
+                if (SettingsManager.SlotOrders.GetOrderFor(g).Contains(padIndex))
                 {
-                    bool wasMicrosoftHmAtRead = rebuildHmVcs
-                        && (_inputManager?.IsMicrosoftHmVcAt(readPos) ?? false);
-                    _inputManager?.SwapSlotData(readPos, writePos);
-                    SettingsManager.SwapSlots(readPos, writePos);
-                    SwapPadViewModelSlotData(readPos, writePos);
-                    anyCompacted = true;
-                    if (wasMicrosoftHmAtRead) slotsToRebuild?.Add(writePos);
-                }
-                writePos++;
-            }
-
-            // Tear down the shifted Microsoft HM VCs asynchronously.  Pass
-            // 2's pendingConnect gate already serializes the recreates one
-            // at a time in ascending pad order, which is what xinputhid
-            // needs to allocate consecutive kernel slots.
-            if (slotsToRebuild != null && _inputManager != null)
-            {
-                foreach (var slot in slotsToRebuild)
-                {
-                    try { _inputManager.DestroyVirtualControllerAsync(slot); }
-                    catch { /* best effort — Pass 2 will retry creation */ }
-                }
-            }
-
-            if (anyCompacted && !silent)
-                RefreshAfterSlotReorder();
-            return anyCompacted;
-        }
-
-        public bool EnsureTypeGroupOrder(bool silent = false)
-        {
-            var activeSlots = new List<int>();
-            for (int i = 0; i < InputManager.MaxPads; i++)
-                if (SettingsManager.SlotCreated[i])
-                    activeSlots.Add(i);
-
-            if (activeSlots.Count <= 1) return false;
-
-            // Check if already in order.
-            bool needsReorder = false;
-            for (int i = 0; i < activeSlots.Count - 1; i++)
-            {
-                if (GetTypePriority(_mainVm.Pads[activeSlots[i]].OutputType) >
-                    GetTypePriority(_mainVm.Pads[activeSlots[i + 1]].OutputType))
-                {
-                    needsReorder = true;
+                    oldType = g;
                     break;
                 }
             }
-            if (!needsReorder) return false;
 
-            // Bubble sort by type priority using adjacent swaps.
-            // Each swap uses current physical indices and current OutputTypes,
-            // so the comparison is always against up-to-date data.
-            bool swapped;
-            do
+            if (oldType == null)
             {
-                swapped = false;
-                for (int i = 0; i < activeSlots.Count - 1; i++)
-                {
-                    int a = activeSlots[i], b = activeSlots[i + 1];
-                    if (GetTypePriority(_mainVm.Pads[a].OutputType) >
-                        GetTypePriority(_mainVm.Pads[b].OutputType))
-                    {
-                        // Data-only swap: don't destroy VCs here.
-                        // Step 5 detects the type mismatch on the polling thread
-                        // and handles VC recreation naturally — avoids the
-                        // all-VCs-destroyed-at-once race that causes phantom controllers.
-                        _inputManager?.SwapSlotData(a, b);
-                        SettingsManager.SwapSlots(a, b);
-                        SwapPadViewModelSlotData(a, b);
-                        swapped = true;
-                    }
-                }
-            } while (swapped);
-
-            if (!silent)
+                // Slot was not in any group's list (newly created via a path
+                // that didn't call SlotOrders.Add). Just append to its target
+                // group's tail.
+                SettingsManager.SlotOrders.Add(padIndex, newType);
+                _settingsService?.MarkDirty();
                 RefreshAfterSlotReorder();
-            return true;
+                return;
+            }
+
+            if (oldType.Value == newType)
+            {
+                // Type didn't actually change. Nothing to move.
+                return;
+            }
+
+            SettingsManager.SlotOrders.MoveToGroupTail(padIndex, oldType.Value, newType);
+            _settingsService?.MarkDirty();
+            RefreshAfterSlotReorder();
+        }
+
+        /// <summary>
+        /// Called after a slot is deleted. Removes the pad index from its
+        /// group's order list and, for Microsoft slots, queues async destroy
+        /// of any live Microsoft HM VCs at higher pad indices in the group
+        /// so xinputhid bubbles them down to the lowest free user-indices on
+        /// recreate. Other groups are not touched.
+        /// </summary>
+        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, bool rebuildHmVcs = true)
+        {
+            // SlotOrders.Remove was already called by DeviceService.DeleteSlot
+            // (so the order list is correct by the time this fires). The
+            // job here is the Microsoft-only kernel-slot rebuild.
+            if (rebuildHmVcs
+                && deletedType == VirtualControllerType.Microsoft
+                && _inputManager != null)
+            {
+                var msOrder = SettingsManager.MicrosoftSlotOrder;
+                foreach (int slot in msOrder)
+                {
+                    if (slot <= padIndex) continue;
+                    if (!_inputManager.IsMicrosoftHmVcAt(slot)) continue;
+                    try { _inputManager.DestroyVirtualControllerAsync(slot); }
+                    catch { /* best effort, Pass 2 retries */ }
+                }
+            }
+
+            RefreshAfterSlotReorder();
         }
 
         /// <summary>
@@ -4064,16 +4068,6 @@ namespace PadForge.Services
                 (_mainVm.Pads[b].MidiConfig, _mainVm.Pads[a].MidiConfig);
         }
 
-        private static int GetTypePriority(VirtualControllerType type) => type switch
-        {
-            VirtualControllerType.Microsoft => 0,
-            VirtualControllerType.PlayStation => 1,
-            VirtualControllerType.Extended => 2,
-            VirtualControllerType.KeyboardMouse => 3,
-            VirtualControllerType.Midi => 4,
-            _ => 5
-        };
-
         private void RefreshAfterSlotReorder()
         {
             UpdatePadDeviceInfo();
@@ -4097,10 +4091,16 @@ namespace PadForge.Services
                 }
             }
 
-            // Force a full sidebar rebuild — RefreshNavControllerItems() only updates
-            // properties in-place (no NavControllerItemsRefreshed event) since slot count
-            // doesn't change during a swap/move, but card visuals need a full rebuild.
-            _mainVm.ForceNavControllerItemsRefreshed();
+            // Refresh the sidebar collection from the per-group order lists.
+            // RefreshNavControllerItems detects pad-index sequence changes and
+            // rebuilds NavControllerItems + fires the change event in the same
+            // step. Pre-refactor this call was ForceNavControllerItemsRefreshed
+            // because the old SwapSlotData kept the activeSlots sequence
+            // identical (data moved between pad indices) and only card visuals
+            // needed a rebuild; in the per-group-order model the activeSlots
+            // sequence itself changes on reorder, so the collection must be
+            // rebuilt before the sidebar UI rerenders.
+            _mainVm.RefreshNavControllerItems();
 
             SyncDevicesList();
             RefreshActiveProfileTopologyLabel();

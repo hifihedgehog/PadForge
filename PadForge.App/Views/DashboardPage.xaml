@@ -425,9 +425,10 @@
                                       Minimum="1024" Maximum="65535"
                                       SpinButtonPlacementMode="Inline" Width="160"/>
                         <Button Command="{Binding ResetDsuPortCommand}"
-                                Content="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="Reset"/>
+                                ToolTip="Reset">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
@@ -461,9 +462,10 @@
                                       Minimum="1024" Maximum="65535"
                                       SpinButtonPlacementMode="Inline" Width="160"/>
                         <Button Command="{Binding ResetWebPortCommand}"
-                                Content="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="Reset"/>
+                                ToolTip="Reset">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
@@ -502,9 +504,10 @@
                                       Margin="8,0,0,0"/>
                         <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                         <Button Command="{Binding ResetOpacityCommand}"
-                                Content="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="Reset"/>
+                                ToolTip="Reset">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <Button Command="{Binding ResetTouchpadOverlayPositionCommand}"

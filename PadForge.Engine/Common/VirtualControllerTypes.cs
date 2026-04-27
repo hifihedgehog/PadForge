@@ -32,6 +32,24 @@ namespace PadForge.Engine
     }
 
     /// <summary>
+    /// The five user-facing VC type groups in fixed visual order.
+    /// Each group is independent: operations on one MUST NOT affect any
+    /// other. The group order matches the sidebar / dashboard rendering
+    /// order and is not user-reorderable.
+    /// </summary>
+    public static class VirtualControllerGroups
+    {
+        public static readonly VirtualControllerType[] InOrder = new[]
+        {
+            VirtualControllerType.Microsoft,
+            VirtualControllerType.PlayStation,
+            VirtualControllerType.Extended,
+            VirtualControllerType.KeyboardMouse,
+            VirtualControllerType.Midi,
+        };
+    }
+
+    /// <summary>
     /// Abstraction over a virtual controller. The single concrete
     /// implementation in v3 is HMaestroVirtualController, plus
     /// MidiVirtualController and KeyboardMouseVirtualController for the

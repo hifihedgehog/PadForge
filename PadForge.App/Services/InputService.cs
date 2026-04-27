@@ -2294,8 +2294,6 @@ namespace PadForge.Services
                             else if (ud.HidHideInstanceIds.Count > 0)
                             {
                                 // Device is offline — use cached IDs to pre-emptively blacklist.
-                                System.Diagnostics.Debug.WriteLine(
-                                    $"[ApplyDeviceHiding] Using {ud.HidHideInstanceIds.Count} cached instance IDs for offline device {ud.ResolvedName}");
                                 foreach (var cachedId in ud.HidHideInstanceIds)
                                     foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(cachedId))
                                         desiredIds.Add(expandedId);
@@ -2303,11 +2301,6 @@ namespace PadForge.Services
                         }
                     }
                 }
-
-                // Diagnostic: log exactly what we're blacklisting.
-                foreach (var id in desiredIds)
-                    System.Diagnostics.Debug.WriteLine($"[ApplyDeviceHiding] Blacklisting: {id}");
-                System.Diagnostics.Debug.WriteLine($"[ApplyDeviceHiding] Total: {desiredIds.Count} instance IDs");
 
                 // Atomically sync — only adds/removes the diff, never clears the blacklist.
                 HidHideController.SyncManagedDevices(desiredIds);
@@ -2332,10 +2325,6 @@ namespace PadForge.Services
                 // Collect all mapped virtual key codes / mouse buttons from this device's mappings.
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
             }
-
-            System.Diagnostics.Debug.WriteLine(
-                $"[ApplyDeviceHiding] suppressedKeys={string.Join(",", suppressedKeys)} " +
-                $"suppressedMouse={string.Join(",", suppressedMouse)}");
 
             if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
             {

@@ -447,13 +447,7 @@ namespace PadForge.Common
         }
 
         [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Get_Device_IDW(uint devInst, System.Text.StringBuilder buffer, int len, int flags);
-
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Locate_DevNodeW(out uint devInst, string deviceId, int flags);
-
-        [DllImport("cfgmgr32.dll")]
-        private static extern int CM_Get_Parent(out uint parent, uint devInst, int flags);
+        private static extern int CM_Get_Device_IDW(uint devInst, System.Text.StringBuilder buffer, int len, uint flags);
 
         [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
         private static extern int CM_Get_DevNode_Registry_PropertyW(

@@ -3891,16 +3891,13 @@ namespace PadForge.Services
 
         /// <summary>
         /// Swap two slots' visual positions within their (shared) group.
-        /// Pure visual reorder: only the group's order list is mutated.
-        /// Pad indices, engine state, VCs, devices, and MapTo values are
-        /// untouched — visual position N renders the data at pad index
-        /// <c>orderList[N]</c>, so a reorder of <c>orderList</c> is
-        /// sufficient to flip what the user sees at each card slot.
-        ///
-        /// Same-profile swaps are now zero-flicker by construction (no VC
-        /// touched, no MapTo rename). Different-profile swaps are also
-        /// zero-flicker (each VC stays at its original pad index; only the
-        /// rendering order changes). Cross-group calls are rejected.
+        /// The order list is mutated unconditionally; for HM-backed groups
+        /// (Microsoft / PlayStation / Extended), if the swap puts a
+        /// different-profile pad at any visual position than was there
+        /// before, the VCs at that position and every higher position
+        /// are torn down so xinputhid / HIDMaestro re-allocate kernel
+        /// slots in the new visual order. Same-profile shuffles stay
+        /// zero-flicker. Cross-group calls are rejected.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
@@ -3912,14 +3909,18 @@ namespace PadForge.Services
             var typeB = _mainVm.Pads[padIndexB].OutputType;
             if (typeA != typeB) return; // upstream drag affordance already enforces
 
+            var oldOrder = SettingsManager.SlotOrders.GetOrderFor(typeA).ToList();
             SettingsManager.SlotOrders.SwapWithinGroup(padIndexA, padIndexB, typeA);
+            RebuildKernelOrderAfterReorder(typeA, oldOrder);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
         /// Move a slot from its current visual position to a new visual
-        /// position within its own group. Pure order-list reorder; engine
-        /// state and VCs are untouched (see <see cref="SwapSlots"/>).
+        /// position within its own group. Mutates the group's order list,
+        /// then triggers the kernel-order rebuild via
+        /// <see cref="RebuildKernelOrderAfterReorder"/> so different-profile
+        /// reshuffles re-allocate kernel slots in the new visual order.
         /// Cross-group moves go through <see cref="MoveSlotToGroupTail"/>.
         /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
@@ -3935,8 +3936,63 @@ namespace PadForge.Services
             if (targetVisualPosition < 0 || targetVisualPosition >= orderList.Count) return;
             if (sourcePos == targetVisualPosition) return;
 
+            var oldOrder = orderList.ToList();
             SettingsManager.SlotOrders.MoveWithinGroup(groupType, sourcePos, targetVisualPosition);
+            RebuildKernelOrderAfterReorder(groupType, oldOrder);
             RefreshAfterSlotReorder();
+        }
+
+        /// <summary>
+        /// After the group's order list has been mutated, find the lowest
+        /// visual position whose profile changed (compared to the snapshot
+        /// in <paramref name="oldOrder"/>) and tear down every live VC at
+        /// that position and lower in the visual stack. Pass 2's
+        /// visual-order gate plus <c>ApplyAscendingIndexPreemption</c>
+        /// then recreate them in the new visual order, so xinputhid / HM
+        /// kernel-slot allocation matches what the user sees.
+        ///
+        /// Same-profile reshuffles return early — kernel-indistinguishable
+        /// from the kernel's view, so no rebuild needed. Non-HM groups
+        /// (KBM, MIDI) also skip; their slot order isn't tied to a
+        /// kernel-side index allocation.
+        /// </summary>
+        private void RebuildKernelOrderAfterReorder(
+            VirtualControllerType groupType,
+            IReadOnlyList<int> oldOrder)
+        {
+            if (_inputManager == null) return;
+            if (groupType != VirtualControllerType.Microsoft
+                && groupType != VirtualControllerType.PlayStation
+                && groupType != VirtualControllerType.Extended)
+                return;
+
+            var newOrder = SettingsManager.SlotOrders.GetOrderFor(groupType);
+
+            int lowestChangedPos = -1;
+            int common = Math.Min(oldOrder.Count, newOrder.Count);
+            for (int p = 0; p < common; p++)
+            {
+                int oldPad = oldOrder[p];
+                int newPad = newOrder[p];
+                if (oldPad == newPad) continue;
+                string oldProfile = _mainVm.Pads[oldPad].ProfileId ?? string.Empty;
+                string newProfile = _mainVm.Pads[newPad].ProfileId ?? string.Empty;
+                if (!string.Equals(oldProfile, newProfile, StringComparison.Ordinal))
+                {
+                    lowestChangedPos = p;
+                    break;
+                }
+            }
+
+            if (lowestChangedPos < 0) return;
+
+            for (int pos = lowestChangedPos; pos < newOrder.Count; pos++)
+            {
+                int padIdx = newOrder[pos];
+                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
+                try { _inputManager.DestroyVirtualControllerAsync(padIdx); }
+                catch { /* best effort, Pass 2 retries */ }
+            }
         }
 
         /// <summary>

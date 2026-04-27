@@ -335,6 +335,21 @@ namespace PadForge.ViewModels
         /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
         public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";
 
+        /// <summary>True for PadForge-internal virtual sources (web controllers, web
+        /// touchpads, the on-screen touchpad overlay). Identified by a URI-scheme
+        /// DevicePath (web://, overlay://) instead of a real Windows HID path.
+        /// HidHide can't blacklist what isn't a Windows HID device, so the
+        /// "Hide from games" toggle hides itself for these sources.</summary>
+        public bool IsInternalVirtual =>
+            !string.IsNullOrEmpty(_devicePath)
+            && (_devicePath.StartsWith("web://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("overlay://", StringComparison.Ordinal));
+
+        /// <summary>True when at least one input-hiding toggle would be shown,
+        /// so the "Input Hiding" section can hide its heading along with its
+        /// (now-empty) body when nothing applies.</summary>
+        public bool ShowInputHidingSection => !IsInternalVirtual;
+
         // ─────────────────────────────────────────────
         //  Device path
         // ─────────────────────────────────────────────
@@ -345,7 +360,11 @@ namespace PadForge.ViewModels
         public string DevicePath
         {
             get => _devicePath;
-            set => SetProperty(ref _devicePath, value);
+            set
+            {
+                if (SetProperty(ref _devicePath, value))
+                    OnPropertyChanged(nameof(IsInternalVirtual));
+            }
         }
 
         private string _hidHideInstancePath = string.Empty;

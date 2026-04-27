@@ -847,15 +847,14 @@ namespace PadForge.Common.Input
                                 if (packer != null)
                                 {
                                     Span<byte> raw = stackalloc byte[63];
-                                    var motion = MotionSnapshots[padIndex];
-                                    byte battery = (byte)Math.Clamp(BatteryPercents[padIndex], 0, 100);
-                                    byte connectState = motion.HasMotion ? (byte)0x08 : (byte)0x00;
+                                    int pct = BatteryPercents[padIndex];
+                                    byte battery = pct < 0 ? (byte)100 : (byte)Math.Clamp(pct, 0, 100);
                                     packer(
                                         CombinedOutputStates[padIndex],
                                         CombinedTouchpadStates[padIndex],
-                                        motion,
+                                        MotionSnapshots[padIndex],
                                         battery,
-                                        connectState,
+                                        BatteryCharging[padIndex],
                                         unchecked((uint)_sonyFrameCounter++),
                                         raw);
                                     hmPs.SubmitRawReport(raw);

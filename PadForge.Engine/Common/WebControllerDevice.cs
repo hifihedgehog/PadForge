@@ -46,8 +46,8 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        public int NumButtons => _isTouchpadDevice ? 0 : (HasTouchpad ? 21 : NumGamepadButtons);
-        public int RawButtonCount => _isTouchpadDevice ? 0 : (HasTouchpad ? 21 : NumGamepadButtons);
+        public int NumButtons => _isTouchpadDevice ? 0 : (HasTouchpad ? NumGamepadButtons + 1 : NumGamepadButtons);
+        public int RawButtonCount => _isTouchpadDevice ? 0 : (HasTouchpad ? NumGamepadButtons + 1 : NumGamepadButtons);
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public bool HasRumble => true;
         public bool HasHaptic => false;
@@ -241,14 +241,18 @@ namespace PadForge.Engine
                     };
                 }
 
-                // Touchpad click as button 20.
+                // Touchpad click as the button immediately after the standard
+                // 11 XInput buttons (index 11). Aligns with Gamepad.TOUCHPAD =
+                // 0x0800 (= bit 11) in the OutputState bitmap and avoids the
+                // dead 11..19 holes that the previous code-20 scheme left in
+                // the Devices-page raw-input preview.
                 items[idx++] = new DeviceObjectItem
                 {
-                    InputIndex = 20,
+                    InputIndex = NumGamepadButtons,
                     ObjectTypeGuid = ObjectGuid.Button,
                     Name = "Touchpad Click",
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumGamepadAxes + 20) * 4,
+                    Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + 6) * 4 + 4,
                     Aspect = ObjectAspect.Position
                 };
             }

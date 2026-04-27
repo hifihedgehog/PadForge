@@ -4039,44 +4039,14 @@ namespace PadForge.Services
             RefreshAfterSlotReorder();
         }
 
-        /// <summary>
-        /// Swaps ViewModel-side slot data that must travel with the slot during reorder:
-        /// OutputType and ExtendedConfig. Engine-side arrays are swapped separately by
-        /// InputManager.SwapSlotData/SwapSlots.
-        /// </summary>
-        private void SwapPadViewModelSlotData(int a, int b)
-        {
-            (_mainVm.Pads[a].OutputType, _mainVm.Pads[b].OutputType) =
-                (_mainVm.Pads[b].OutputType, _mainVm.Pads[a].OutputType);
-
-            // Profile ID must swap with the slot. SyncViewModelToPadSettings
-            // pushes padVm.ProfileId back into _inputManager.SlotProfileIds
-            // every tick, so if the VM isn't swapped here, the engine's
-            // correctly-swapped SlotProfileIds gets overwritten with the
-            // original values on the next sync and the profile visually
-            // "stays put" even though devices moved. The profile travels
-            // with its slot contents (devices, macros, layout) on reorder.
-            (_mainVm.Pads[a].ProfileId, _mainVm.Pads[b].ProfileId) =
-                (_mainVm.Pads[b].ProfileId, _mainVm.Pads[a].ProfileId);
-
-            // Swap the entire ExtendedSlotConfig objects so the UI shows the correct
-            // config after reorder. The setter re-subscribes PropertyChanged.
-            (_mainVm.Pads[a].ExtendedConfig, _mainVm.Pads[b].ExtendedConfig) =
-                (_mainVm.Pads[b].ExtendedConfig, _mainVm.Pads[a].ExtendedConfig);
-
-            (_mainVm.Pads[a].MidiConfig, _mainVm.Pads[b].MidiConfig) =
-                (_mainVm.Pads[b].MidiConfig, _mainVm.Pads[a].MidiConfig);
-        }
-
         private void RefreshAfterSlotReorder()
         {
             UpdatePadDeviceInfo();
 
-            // Rebuild mapping item collections and reload PadSettings into ViewModels.
-            // RebuildMappings must come first: SwapPadViewModelSlotData swaps OutputType
-            // and ExtendedConfig, but when both slots are Extended (same OutputType), the setter's
-            // SetProperty returns false and RebuildMappings is never called. This leaves
-            // the wrong mapping layout (e.g., ExtendedBtn0 items in an Xbox 360 preset slot).
+            // Rebuild mapping item collections so each pad's mapping rows
+            // match its current OutputType. RebuildMappings must run before
+            // LoadPadSettingToViewModel because the latter populates rows
+            // that the former rebuilds.
             for (int i = 0; i < _mainVm.Pads.Count; i++)
                 _mainVm.Pads[i].RebuildMappings();
 
@@ -4091,15 +4061,9 @@ namespace PadForge.Services
                 }
             }
 
-            // Refresh the sidebar collection from the per-group order lists.
-            // RefreshNavControllerItems detects pad-index sequence changes and
-            // rebuilds NavControllerItems + fires the change event in the same
-            // step. Pre-refactor this call was ForceNavControllerItemsRefreshed
-            // because the old SwapSlotData kept the activeSlots sequence
-            // identical (data moved between pad indices) and only card visuals
-            // needed a rebuild; in the per-group-order model the activeSlots
-            // sequence itself changes on reorder, so the collection must be
-            // rebuilt before the sidebar UI rerenders.
+            // The per-group order lists drive the sidebar collection;
+            // RefreshNavControllerItems detects sequence changes and
+            // rebuilds NavControllerItems in the same step.
             _mainVm.RefreshNavControllerItems();
 
             SyncDevicesList();

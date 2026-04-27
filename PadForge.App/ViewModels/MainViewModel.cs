@@ -144,11 +144,8 @@ namespace PadForge.ViewModels
         {
             // Build the active-slot list by concatenating each group's order
             // list in fixed group order (Microsoft → PlayStation → Extended →
-            // KbM → MIDI). The flat scan that used to drive this only
-            // produced the right visual order while EnsureTypeGroupOrder
-            // forced ascending-pad-index = type-priority. Per the per-group
-            // isolation refactor, slot indices are stable identifiers and
-            // each group owns its visual ordering.
+            // KbM → MIDI). Slot indices are stable identifiers; each group
+            // owns its own visual ordering.
             var activeSlots = new System.Collections.Generic.List<int>();
             foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
@@ -245,15 +242,6 @@ namespace PadForge.ViewModels
             // by the PropertyChanged subscriptions wired in RebuildControllerSection.
             if (slotsChanged)
                 NavControllerItemsRefreshed?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Forces a NavControllerItemsRefreshed event even when slot count hasn't changed.
-        /// Used after slot reorder/swap where card visuals need a full rebuild.
-        /// </summary>
-        public void ForceNavControllerItemsRefreshed()
-        {
-            NavControllerItemsRefreshed?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>Dashboard overview ViewModel.</summary>

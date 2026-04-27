@@ -53,14 +53,6 @@ namespace PadForge.Common.Input
             // up to host enumeration. Lazy init on first OutputReceived was
             // too late — the first GetFeature can land before the first
             // SetFeature/Output packet ever does.
-            try
-            {
-                System.IO.File.AppendAllText(
-                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ffb-trace.log"),
-                    $"{System.DateTime.Now:HH:mm:ss.fff} HMaestroVC.Connect vid=0x{_profile.VendorId:X4} pid=0x{_profile.ProductId:X4} customVidMatch={(_profile.VendorId == CustomProfileVid)}\r\n");
-            }
-            catch { }
-
             if (_profile.VendorId == CustomProfileVid)
             {
                 _ffbDecoder = new HMaestroFfbDecoder(_controller);
@@ -85,29 +77,9 @@ namespace PadForge.Common.Input
             Disconnect();
         }
 
-        // Diagnostic: emit a trace line every ~500ms while submitting state
-        // for the Custom-VID slot, so we can see whether HM is even getting
-        // updated input reports and whether the values look sane.
-        private long _lastSubmitTraceTick;
-
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;
-            if (_profile.VendorId == CustomProfileVid)
-            {
-                long now = System.Environment.TickCount64;
-                if (now - _lastSubmitTraceTick > 500)
-                {
-                    _lastSubmitTraceTick = now;
-                    try
-                    {
-                        System.IO.File.AppendAllText(
-                            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ffb-trace.log"),
-                            $"{System.DateTime.Now:HH:mm:ss.fff} SubmitGamepadState LX={gp.ThumbLX} LY={gp.ThumbLY} RX={gp.ThumbRX} RY={gp.ThumbRY} LT={gp.LeftTrigger} RT={gp.RightTrigger} btns=0x{gp.Buttons:X4}\r\n");
-                    }
-                    catch { }
-                }
-            }
 
             // No dedup and no rate limit here — Step 5 already honors the
             // user-configured polling interval (default 1kHz). HIDMaestro is
@@ -161,24 +133,6 @@ namespace PadForge.Common.Input
         public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
         {
             if (_controller == null) return;
-            if (_profile.VendorId == CustomProfileVid)
-            {
-                long now = System.Environment.TickCount64;
-                if (now - _lastSubmitTraceTick > 500)
-                {
-                    _lastSubmitTraceTick = now;
-                    try
-                    {
-                        var ax0 = (raw.Axes != null && raw.Axes.Length > 0) ? raw.Axes[0] : (short)0;
-                        var ax1 = (raw.Axes != null && raw.Axes.Length > 1) ? raw.Axes[1] : (short)0;
-                        uint btnBitmap0 = (raw.Buttons != null && raw.Buttons.Length > 0) ? raw.Buttons[0] : 0u;
-                        System.IO.File.AppendAllText(
-                            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ffb-trace.log"),
-                            $"{System.DateTime.Now:HH:mm:ss.fff} SubmitExtendedRawState sticks={sticks} triggers={triggers} axes[0..1]={ax0},{ax1} btns0=0x{btnBitmap0:X8}\r\n");
-                    }
-                    catch { }
-                }
-            }
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 

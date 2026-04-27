@@ -275,19 +275,20 @@ namespace PadForge.Views
         {
             // Full-zone button-style highlight, hidden by default. Shown when
             // the TouchpadClick button is held, on hover (lower opacity), and
-            // during the Map All flash. Matches the visual weight of the
-            // per-button PNG overlays — coloured fill plus a border, so it
-            // reads as "this is a button" instead of a flat translucent
-            // rectangle.
-            var fill   = new SolidColorBrush(Color.FromArgb(0xB3, 0x4F, 0xC3, 0xF7)); // Material light blue 400, ~70% alpha
-            var stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x29, 0xB6, 0xF6)); // Material light blue 500
+            // during the Map All flash. Style pinned to the colour and stroke
+            // weight extracted from the actual DS4 button PNGs (sampled from
+            // DS4_Face_Button.png at native 99×90: 6 px border in solid
+            // #24D2F6, fill #0F7793 at 50% alpha) so the touchpad reads as
+            // a button of the same family rather than a guess at one.
+            var fill   = new SolidColorBrush(Color.FromArgb(0x80, 0x0F, 0x77, 0x93));
+            var stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x24, 0xD2, 0xF6));
             _touchpadClickHighlight = new Rectangle
             {
                 Width = ov.Width,
                 Height = ov.Height,
                 Fill = fill,
                 Stroke = stroke,
-                StrokeThickness = 2,
+                StrokeThickness = 6,
                 RadiusX = 8,
                 RadiusY = 8,
                 IsHitTestVisible = false,

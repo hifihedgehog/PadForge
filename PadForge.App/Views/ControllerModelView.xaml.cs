@@ -62,6 +62,15 @@ namespace PadForge.Views
         private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
         private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
 
+        // Touchpad preview state (DS4 only — applied each render frame from
+        // PadViewModel.TouchpadFingerN(X,Y,Down) and TouchpadClickPressed)
+        private DiffuseMaterial _touchpadHighlightMaterial; // accent-color blue used while click is held
+        private bool _touchpadCurrentlyHighlighted;          // tracks current swap so we don't churn materials
+        private ModelVisual3D _touchpadFinger0Visual;
+        private ModelVisual3D _touchpadFinger1Visual;
+        private TranslateTransform3D _touchpadFinger0Transform;
+        private TranslateTransform3D _touchpadFinger1Transform;
+
         // Model rotation via left/right-drag or single-touch drag (turntable-style)
         private bool _isRightDragging;
         private bool _isLeftDragging;
@@ -191,12 +200,128 @@ namespace PadForge.Views
                 };
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
+                BuildTouchpadFingerVisuals();
                 _dirty = true;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[ControllerModelView] Failed to load 3D model: {ex}");
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touchpad preview (DS4 only)
+        // ─────────────────────────────────────────────
+
+        private void BuildTouchpadFingerVisuals()
+        {
+            // Tear down any visuals from a previous model.
+            if (_touchpadFinger0Visual != null)
+                ModelVisual3D.Children.Remove(_touchpadFinger0Visual);
+            if (_touchpadFinger1Visual != null)
+                ModelVisual3D.Children.Remove(_touchpadFinger1Visual);
+            _touchpadFinger0Visual = _touchpadFinger1Visual = null;
+            _touchpadFinger0Transform = _touchpadFinger1Transform = null;
+            _touchpadHighlightMaterial = null;
+            _touchpadCurrentlyHighlighted = false;
+
+            if (_currentModel?.Touchpad == null) return;
+
+            var accent = ResolveAccentColor();
+            _touchpadHighlightMaterial = new DiffuseMaterial(
+                new SolidColorBrush(Color.FromArgb(0xC0, accent.R, accent.G, accent.B)));
+
+            (_touchpadFinger0Visual, _touchpadFinger0Transform) = CreateFingerSphere(
+                Color.FromArgb(0xE6, 0xFF, 0x66, 0x00));   // orange — matches the 2D dot
+            (_touchpadFinger1Visual, _touchpadFinger1Transform) = CreateFingerSphere(
+                Color.FromArgb(0xE6, 0x00, 0x66, 0xFF));   // blue — matches the 2D dot
+
+            ModelVisual3D.Children.Add(_touchpadFinger0Visual);
+            ModelVisual3D.Children.Add(_touchpadFinger1Visual);
+        }
+
+        private static (ModelVisual3D visual, TranslateTransform3D transform) CreateFingerSphere(Color color)
+        {
+            var mb = new MeshBuilder();
+            mb.AddSphere(new Point3D(0, 0, 0), 2.5, 12, 8);
+            var material = new DiffuseMaterial(new SolidColorBrush(color));
+            var geo = new GeometryModel3D(mb.ToMesh(), material) { BackMaterial = material };
+            var transform = new TranslateTransform3D();
+            var visual = new ModelVisual3D
+            {
+                Content = geo,
+                Transform = transform,
+            };
+            // Hide initially — UpdateTouchpadPreview3D positions and shows the
+            // visual only while the corresponding finger is down. We "hide" by
+            // translating off-screen since ModelVisual3D has no Visibility.
+            transform.OffsetY = -10000;
+            return (visual, transform);
+        }
+
+        private static Color ResolveAccentColor()
+        {
+            try
+            {
+                var brush = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"];
+                if (brush is SolidColorBrush scb) return scb.Color;
+            }
+            catch { }
+            return Color.FromRgb(0x21, 0x96, 0xF3);
+        }
+
+        private void UpdateTouchpadPreview3D()
+        {
+            if (_currentModel?.Touchpad == null || _vm == null) return;
+
+            // ── Click highlight: swap touchpad surface material ─────────
+            bool clickPressed = _vm.TouchpadClickPressed;
+            if (clickPressed != _touchpadCurrentlyHighlighted
+                && _currentModel.Touchpad.Children.Count > 0
+                && _currentModel.Touchpad.Children[0] is GeometryModel3D geo)
+            {
+                if (clickPressed && _touchpadHighlightMaterial != null)
+                {
+                    geo.Material = _touchpadHighlightMaterial;
+                    geo.BackMaterial = _touchpadHighlightMaterial;
+                    _touchpadCurrentlyHighlighted = true;
+                }
+                else if (_currentModel.DefaultMaterials.TryGetValue(_currentModel.Touchpad, out var defMat))
+                {
+                    geo.Material = defMat;
+                    geo.BackMaterial = defMat;
+                    _touchpadCurrentlyHighlighted = false;
+                }
+            }
+
+            // ── Finger spheres: position above the touchpad surface ─────
+            var bounds = _currentModel.Touchpad.Bounds;
+            if (bounds.IsEmpty) return;
+
+            PositionFingerSphere(_touchpadFinger0Transform,
+                _vm.TouchpadFinger0Down, _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y, bounds);
+            PositionFingerSphere(_touchpadFinger1Transform,
+                _vm.TouchpadFinger1Down, _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y, bounds);
+        }
+
+        private static void PositionFingerSphere(
+            TranslateTransform3D t, bool down, float normX, float normY, Rect3D bounds)
+        {
+            if (t == null) return;
+            if (!down)
+            {
+                // Park well off-screen so the sphere isn't visible / hit-testable.
+                t.OffsetY = -10000;
+                return;
+            }
+            // DS4 model coords: X = left/right (matches normX 0..1 left→right),
+            // Z = top/bottom of body (touch normY 0=top → high Z, 1=bottom →
+            // low Z), Y is the surface depth — float the sphere just in
+            // front of the touchpad face (Y at bounds.Min.Y + small offset
+            // toward the camera, which is -Y in HC's DS4 model).
+            t.OffsetX = bounds.X + (double)normX * bounds.SizeX;
+            t.OffsetZ = bounds.Z + bounds.SizeZ * (1.0 - normY);
+            t.OffsetY = bounds.Y - 1.5;
         }
 
         // ─────────────────────────────────────────────
@@ -232,6 +357,7 @@ namespace PadForge.Views
                 _currentModel.ShoulderTriggerRotationPointCenterRightMillimeter,
                 _currentModel.TriggerMaxAngleDeg,
                 ref _triggerAngleRight);
+            UpdateTouchpadPreview3D();
         }
 
         // ─────────────────────────────────────────────

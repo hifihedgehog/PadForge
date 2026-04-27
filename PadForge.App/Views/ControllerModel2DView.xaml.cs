@@ -50,6 +50,12 @@ namespace PadForge.Views
         // Stick quadrant highlight (uses stick click overlay image, clipped to quadrant)
         private readonly Dictionary<string, Image> _stickHighlights = new();
 
+        // Touchpad preview (DS4 only — built once at canvas time, updated each frame)
+        private Rectangle _touchpadClickHighlight; // full-zone blue overlay when click is held
+        private Ellipse _touchpadFinger0Dot;
+        private Ellipse _touchpadFinger1Dot;
+        private OverlayElement _touchpadOverlay;   // layout entry for positioning the dots
+
         // Layout data
         private double _stickMaxTravel;
 
@@ -225,6 +231,27 @@ namespace PadForge.Views
                     hitRect.MouseMove += StickHitArea_MouseMove;
             }
 
+            // Touchpad preview: a full-zone blue highlight (shown when
+            // TouchpadClick is held) plus two finger dots positioned by the
+            // VM's TouchpadFingerN(X,Y,Down) properties. Mirrors the DS4 web
+            // controller's preview shape.
+            _touchpadClickHighlight = null;
+            _touchpadFinger0Dot = null;
+            _touchpadFinger1Dot = null;
+            _touchpadOverlay = default;
+            if (modelName == "DS4")
+            {
+                foreach (var ov in overlays)
+                {
+                    if (ov.ElementType == OverlayElementType.Touchpad)
+                    {
+                        _touchpadOverlay = ov;
+                        BuildTouchpadPreview(ov);
+                        break;
+                    }
+                }
+            }
+
             // Create stick quadrant highlights using the stick click overlay image
             foreach (var ov in overlays)
             {
@@ -242,6 +269,82 @@ namespace PadForge.Views
                 _stickHighlights[ringTarget] = highlight;
                 ModelCanvas.Children.Add(highlight);
             }
+        }
+
+        private void BuildTouchpadPreview(OverlayElement ov)
+        {
+            // Full-zone blue highlight, hidden by default. Shown when the
+            // TouchpadClick button is held — same affordance as a face-button
+            // press on the standard buttons, but covering the whole pad.
+            _touchpadClickHighlight = new Rectangle
+            {
+                Width = ov.Width,
+                Height = ov.Height,
+                Fill = new SolidColorBrush(Color.FromArgb(0x66, 0x4F, 0xC3, 0xF7)), // Material light blue 400, ~40% alpha
+                RadiusX = 8,
+                RadiusY = 8,
+                IsHitTestVisible = false,
+                Visibility = Visibility.Collapsed,
+            };
+            Canvas.SetLeft(_touchpadClickHighlight, ov.X);
+            Canvas.SetTop(_touchpadClickHighlight, ov.Y);
+            Panel.SetZIndex(_touchpadClickHighlight, 6);
+            ModelCanvas.Children.Add(_touchpadClickHighlight);
+
+            const double dotDiameter = 22;
+            _touchpadFinger0Dot = new Ellipse
+            {
+                Width = dotDiameter,
+                Height = dotDiameter,
+                Fill = new SolidColorBrush(Color.FromArgb(0xCC, 0xFF, 0x66, 0x00)), // orange
+                Stroke = Brushes.White,
+                StrokeThickness = 1.5,
+                IsHitTestVisible = false,
+                Visibility = Visibility.Collapsed,
+            };
+            _touchpadFinger1Dot = new Ellipse
+            {
+                Width = dotDiameter,
+                Height = dotDiameter,
+                Fill = new SolidColorBrush(Color.FromArgb(0xCC, 0x00, 0x66, 0xFF)), // blue
+                Stroke = Brushes.White,
+                StrokeThickness = 1.5,
+                IsHitTestVisible = false,
+                Visibility = Visibility.Collapsed,
+            };
+            Panel.SetZIndex(_touchpadFinger0Dot, 7);
+            Panel.SetZIndex(_touchpadFinger1Dot, 7);
+            ModelCanvas.Children.Add(_touchpadFinger0Dot);
+            ModelCanvas.Children.Add(_touchpadFinger1Dot);
+        }
+
+        private void UpdateTouchpadPreview()
+        {
+            if (_touchpadClickHighlight == null || _touchpadFinger0Dot == null || _touchpadFinger1Dot == null)
+                return;
+
+            _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
+                ? Visibility.Visible : Visibility.Collapsed;
+
+            UpdateFingerDot(_touchpadFinger0Dot, _vm.TouchpadFinger0Down,
+                _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y);
+            UpdateFingerDot(_touchpadFinger1Dot, _vm.TouchpadFinger1Down,
+                _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y);
+        }
+
+        private void UpdateFingerDot(Ellipse dot, bool down, double normX, double normY)
+        {
+            if (!down)
+            {
+                dot.Visibility = Visibility.Collapsed;
+                return;
+            }
+            dot.Visibility = Visibility.Visible;
+            // Center the dot on the normalized touchpad coordinate.
+            double cx = _touchpadOverlay.X + normX * _touchpadOverlay.Width;
+            double cy = _touchpadOverlay.Y + normY * _touchpadOverlay.Height;
+            Canvas.SetLeft(dot, cx - dot.Width / 2);
+            Canvas.SetTop(dot, cy - dot.Height / 2);
         }
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)
@@ -303,6 +406,7 @@ namespace PadForge.Views
             UpdateButtons();
             UpdateTriggers();
             UpdateSticks();
+            UpdateTouchpadPreview();
         }
 
         private void UpdateButtons()

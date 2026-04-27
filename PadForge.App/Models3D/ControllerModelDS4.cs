@@ -65,6 +65,7 @@ namespace PadForge.Models3D
             LeftShoulderMiddle = LoadModel("Shoulder-Left-Middle.obj");
             RightShoulderMiddle = LoadModel("Shoulder-Right-Middle.obj");
             Screen = LoadModel("Screen.obj");
+            Touchpad = Screen; // expose to ControllerModelView for click highlight + finger spheres
             MainBodyBack = LoadModel("MainBodyBack.obj");
             AuxPort = LoadModel("Aux-Port.obj");
             Triangle = LoadModel("Triangle.obj");

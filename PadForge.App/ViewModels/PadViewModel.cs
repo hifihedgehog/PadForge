@@ -474,6 +474,31 @@ namespace PadForge.ViewModels
         private ushort _rawRightTrigger;
         public ushort RawRightTrigger { get => _rawRightTrigger; set => SetProperty(ref _rawRightTrigger, value); }
 
+        // ── Touchpad live state (PlayStation slot only — surfaced for the
+        //    2D / 3D / web preview to render finger dots + click highlight) ──
+        private float _touchpadFinger0X, _touchpadFinger0Y;
+        private bool _touchpadFinger0Down;
+        private float _touchpadFinger1X, _touchpadFinger1Y;
+        private bool _touchpadFinger1Down;
+        private bool _touchpadClickPressed;
+
+        /// <summary>Finger 0 X (0..1, normalized to touchpad width).</summary>
+        public float TouchpadFinger0X { get => _touchpadFinger0X; set => SetProperty(ref _touchpadFinger0X, value); }
+
+        /// <summary>Finger 0 Y (0..1, normalized to touchpad height).</summary>
+        public float TouchpadFinger0Y { get => _touchpadFinger0Y; set => SetProperty(ref _touchpadFinger0Y, value); }
+
+        /// <summary>Finger 0 contact state.</summary>
+        public bool TouchpadFinger0Down { get => _touchpadFinger0Down; set => SetProperty(ref _touchpadFinger0Down, value); }
+
+        public float TouchpadFinger1X { get => _touchpadFinger1X; set => SetProperty(ref _touchpadFinger1X, value); }
+        public float TouchpadFinger1Y { get => _touchpadFinger1Y; set => SetProperty(ref _touchpadFinger1Y, value); }
+        public bool TouchpadFinger1Down { get => _touchpadFinger1Down; set => SetProperty(ref _touchpadFinger1Down, value); }
+
+        /// <summary>True while the touchpad-click button is held (full-surface
+        /// blue highlight in the previews).</summary>
+        public bool TouchpadClickPressed { get => _touchpadClickPressed; set => SetProperty(ref _touchpadClickPressed, value); }
+
         // ── Per-device values for stick/trigger tab previews ──
         // These show the selected device only, not the combined slot.
 
@@ -1735,6 +1760,23 @@ namespace PadForge.ViewModels
                 LeftMotorDisplay = rawL;
                 RightMotorDisplay = rawR;
             }
+        }
+
+        /// <summary>
+        /// Mirrors the per-slot combined touchpad state to the VM so the
+        /// 2D / 3D / web previews can render finger dots and the click
+        /// highlight. Only meaningful for PlayStation slots; harmless on
+        /// other slot types (state stays at zero / false).
+        /// </summary>
+        public void UpdateFromTouchpadState(in Engine.TouchpadState tp)
+        {
+            TouchpadFinger0X = tp.X0;
+            TouchpadFinger0Y = tp.Y0;
+            TouchpadFinger0Down = tp.Down0;
+            TouchpadFinger1X = tp.X1;
+            TouchpadFinger1Y = tp.Y1;
+            TouchpadFinger1Down = tp.Down1;
+            TouchpadClickPressed = tp.Click;
         }
 
         /// <summary>

@@ -9,6 +9,9 @@
         Topmost="True"
         ShowInTaskbar="False"
         Focusable="False"
+        Stylus.IsPressAndHoldEnabled="False"
+        Stylus.IsTapFeedbackEnabled="False"
+        Stylus.IsTouchFeedbackEnabled="False"
         MinWidth="150" MinHeight="80"
         Width="500" Height="250"
         WindowStartupLocation="Manual">

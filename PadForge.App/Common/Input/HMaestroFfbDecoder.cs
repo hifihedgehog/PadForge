@@ -365,22 +365,46 @@ namespace PadForge.Common.Input
             es.Magnitude = Math.Max(Math.Abs(start), Math.Abs(end));
         }
 
-        // Set Condition: [EBI][PBO:4bits][TypeSpecificBlockOffset:2bits×2 axes][CPOffset:2 signed][PosCoeff:2 signed][NegCoeff:2 signed][PosSatur:2][NegSatur:2][DeadBand:2]
-        // Note: bit-packed fields after EBI complicate exact offsets. Approximate:
-        // byte 0 = EBI; byte 1 = packed (PBO 4-bit + TS axis bits); bytes 2-3 = CP Offset; 4-5 = PosCoeff; 6-7 = NegCoeff; 8-9 = PosSatur; 10-11 = NegSatur; 12-13 = DeadBand.
+        // Set Condition Report (0x13). Bit layout pinned to HIDMaestro
+        // v1.1.x's PID FFB block (sdk/HIDMaestro.Core/HidDescriptorBuilder.cs,
+        // BuildMinimumViablePidFfbBlock — "Set Condition (Output, ID 0x13)"):
+        //
+        //   bits   width  field
+        //   ─────  ─────  ─────────────────────────────────────────────
+        //      0      8   EBI (Effect Block Index, 1..40)
+        //      8      4   PBO (Parameter Block Offset, 0..3)
+        //     12      2   TS[0] (Type Specific Block Offset, axis 0)
+        //     14      2   TS[1] (Type Specific Block Offset, axis 1)
+        //     16     16   CP Offset (signed, -10000..10000)
+        //     32     16   PosCoeff (signed)
+        //     48     16   NegCoeff (signed)
+        //     64     16   PosSatur (unsigned, 0..10000)
+        //     80     16   NegSatur (unsigned)
+        //     96     16   DeadBand (unsigned)
+        //    112  total = 14 bytes.
+        //
+        // Per-axis routing reads TS[0] and treats it as an axis index
+        // (0 or 1). PBO is the spec-canonical "which parameter block"
+        // selector; if condition effects produce wrong values after a
+        // future HIDMaestro bump, diff this descriptor block against
+        // the new HM version and decide whether to switch axisIdx to PBO.
         private void DecodeSetCondition(ReadOnlySpan<byte> d)
         {
             if (d.Length < 14) return;
-            byte ebi = d[0];
-            byte packed = d[1];
-            int axisIdx = ((packed >> 4) & 0x03); // approximate: TypeSpecificBlockOffset axis 0/1
-            short cpOffset = ReadI16(d, 2);
-            short posCoeff = ReadI16(d, 4);
-            short negCoeff = ReadI16(d, 6);
-            ushort posSatur = ReadU16(d, 8);
-            ushort negSatur = ReadU16(d, 10);
-            ushort deadBand = ReadU16(d, 12);
 
+            int bit = 0;
+            byte   ebi      = (byte)ReadBitsU(d, ref bit, 8);
+            _                = ReadBitsU(d, ref bit, 4); // PBO — see header comment
+            int    ts0      = (int)ReadBitsU(d, ref bit, 2);
+            _                = ReadBitsU(d, ref bit, 2); // TS[1]
+            short  cpOffset = (short)ReadBitsS(d, ref bit, 16);
+            short  posCoeff = (short)ReadBitsS(d, ref bit, 16);
+            short  negCoeff = (short)ReadBitsS(d, ref bit, 16);
+            ushort posSatur = (ushort)ReadBitsU(d, ref bit, 16);
+            ushort negSatur = (ushort)ReadBitsU(d, ref bit, 16);
+            ushort deadBand = (ushort)ReadBitsU(d, ref bit, 16);
+
+            int axisIdx = ts0;
             if (axisIdx > 1) axisIdx = 0;
 
             var es = GetOrCreateForUpdate(ebi);
@@ -516,6 +540,37 @@ namespace PadForge.Common.Input
 
         private static uint ReadU32(ReadOnlySpan<byte> d, int offset)
             => (uint)(d[offset] | (d[offset + 1] << 8) | (d[offset + 2] << 16) | (d[offset + 3] << 24));
+
+        // HID packs fields LSB-first within a byte; multi-byte fields
+        // continue into the next byte's LSB. A 16-bit field starting at
+        // bit offset 16 occupies bytes 2 (low) and 3 (high), matching
+        // ReadU16's little-endian behavior.
+        private static uint ReadBitsU(ReadOnlySpan<byte> d, ref int bitOffset, int width)
+        {
+            uint v = 0;
+            int outBit = 0;
+            while (width > 0)
+            {
+                int byteIdx = bitOffset >> 3;
+                if (byteIdx >= d.Length) break;
+                int bitInByte = bitOffset & 7;
+                int take = Math.Min(8 - bitInByte, width);
+                uint chunk = (uint)((d[byteIdx] >> bitInByte) & ((1 << take) - 1));
+                v |= chunk << outBit;
+                outBit += take;
+                bitOffset += take;
+                width -= take;
+            }
+            return v;
+        }
+
+        private static int ReadBitsS(ReadOnlySpan<byte> d, ref int bitOffset, int width)
+        {
+            uint u = ReadBitsU(d, ref bitOffset, width);
+            if (width > 0 && width < 32 && (u & (1u << (width - 1))) != 0)
+                u |= ~((1u << width) - 1);
+            return (int)u;
+        }
 
         // HID PID Effect Type → FfbEffectTypes constants
         private static uint MapEffectType(byte hidType) => hidType switch

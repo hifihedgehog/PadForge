@@ -417,6 +417,7 @@ namespace PadForge.Services
                 var vibration = _inputManager.VibrationStates[i];
 
                 padVm.UpdateFromEngineState(gp, vibration);
+                padVm.UpdateFromTouchpadState(_inputManager.CombinedTouchpadStates[i]);
 
                 // For custom Extended slots, also push the combined ExtendedRawState.
                 if (_inputManager.SlotExtendedIsCustom[i])

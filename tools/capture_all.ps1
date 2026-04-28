@@ -7,7 +7,7 @@
     3. Kills and restarts PadForge
     4. Runs full UIA-based capture (~30 screenshots)
     5. Restores PadForge.xml backup
-    Must run elevated (PadForge runs elevated for vJoy).
+    Must run elevated (PadForge runs elevated for HIDMaestro and HidHide).
 #>
 
 param(
@@ -269,12 +269,12 @@ function Find-SlotByType {
         Finds and selects a sidebar slot by controller type, returning the slot element.
         Identifies type by selecting each slot and checking which PadPage elements are
         present in the UIA tree (WPF Collapsed elements are removed from UIA):
-        - vJoy:  VJoyConfigBar AutomationId present
-        - MIDI:  MidiConfigBar AutomationId present
-        - KBM:   KBMPreview AutomationId present (keyboard+mouse preview view)
-        - Xbox360/DS4: none of the above config bars/previews
+        - Extended: ExtendedStickCountBox AutomationId present (Extended-specific config UI)
+        - MIDI:     MidiConfigBar AutomationId present
+        - KBM:      KBMPreview AutomationId present (keyboard+mouse preview view)
+        - Xbox / PlayStation: none of the above config bars/previews
     #>
-    param([string]$Type)  # "Xbox360", "DS4", "vJoy", "KBM", "MIDI"
+    param([string]$Type)  # "Xbox", "PlayStation", "Extended", "KBM", "MIDI"
     $slots = @(Find-AllSlots)
     foreach ($slot in $slots) {
         Select-El $slot -Label "Probe $($slot.Current.Name)" -Delay 800
@@ -290,17 +290,17 @@ function Find-SlotByType {
             Start-Sleep -Milliseconds 500
         }
         # WPF Collapsed elements are not in UIA tree, so presence = Visible
-        $hasVJoy = $null -ne (Find-UIA -Parent $padPage -Aid "VJoyConfigBar")
+        $hasExtended = $null -ne (Find-UIA -Parent $padPage -Aid "ExtendedStickCountBox")
         $hasMidi = $null -ne (Find-UIA -Parent $padPage -Aid "MidiConfigBar")
         $hasKbm  = $null -ne (Find-UIA -Parent $padPage -Aid "KBMPreview")
-        Write-Host "    $($slot.Current.Name): vJoy=$hasVJoy MIDI=$hasMidi KBM=$hasKbm"
+        Write-Host "    $($slot.Current.Name): Extended=$hasExtended MIDI=$hasMidi KBM=$hasKbm"
         $matched = $false
         switch ($Type) {
-            "vJoy"    { $matched = $hasVJoy }
-            "MIDI"    { $matched = $hasMidi }
-            "KBM"     { $matched = $hasKbm }
-            "Xbox360" { $matched = -not $hasVJoy -and -not $hasMidi -and -not $hasKbm }
-            "DS4"     { $matched = -not $hasVJoy -and -not $hasMidi -and -not $hasKbm }
+            "Extended"    { $matched = $hasExtended }
+            "MIDI"        { $matched = $hasMidi }
+            "KBM"         { $matched = $hasKbm }
+            "Xbox"        { $matched = -not $hasExtended -and -not $hasMidi -and -not $hasKbm }
+            "PlayStation" { $matched = -not $hasExtended -and -not $hasMidi -and -not $hasKbm }
         }
         if ($matched) {
             Write-Host "  Found $Type slot: $($slot.Current.Name)" -ForegroundColor Green
@@ -424,7 +424,7 @@ if ($slotEnabledNode) {
 $slotTypesNode = $ns.SelectSingleNode("SlotControllerTypes")
 if ($slotTypesNode) {
     $slotTypesNode.InnerText = ("Xbox360," * 15 + "Xbox360")
-    Write-Host "  Reset all slot types to Xbox360"
+    Write-Host "  Reset all slot types to Xbox (XML enum 'Xbox360' kept verbatim for back-compat)"
 }
 
 # --- Inject a test profile (profiles only -- slots created via UI later) ---
@@ -678,12 +678,14 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
 $remainingSlots = @(Find-AllSlots)
 Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
 
-# Create: Xbox360, DS4, KBM, vJoy, MIDI (order matters for slot indices)
+# Create: Xbox, PlayStation, KBM, Extended, MIDI (order matters for slot indices).
+# AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2 for stable
+# automation hookup; the buttons' accessibility labels are now Xbox / PlayStation.
 $slotTypes = @(
-    @{ Aid = "AddXbox360Btn"; Label = "Xbox 360" },
-    @{ Aid = "AddDS4Btn"; Label = "DualShock 4" },
+    @{ Aid = "AddXbox360Btn"; Label = "Xbox" },
+    @{ Aid = "AddDS4Btn"; Label = "PlayStation" },
     @{ Aid = "AddKeyboardMouseBtn"; Label = "Keyboard+Mouse" },
-    @{ Aid = "AddVJoyBtn"; Label = "vJoy" },
+    @{ Aid = "AddExtendedBtn"; Label = "Extended" },
     @{ Aid = "AddMidiBtn"; Label = "MIDI" }
 )
 foreach ($st in $slotTypes) {
@@ -742,13 +744,13 @@ if ($deviceItems -and $deviceItems.Count -gt 0) {
 }
 Cap "devices"
 
-# ---- 4-12. Xbox360 slot (slot 0 -- macros/mappings/sticks/triggers/ff here) ----
+# ---- 4-12. Xbox slot (slot 0 -- macros/mappings/sticks/triggers/ff here) ----
 Write-Host ""
-Write-Host "--- Xbox360 Slot ---" -ForegroundColor Yellow
+Write-Host "--- Xbox Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
 Write-Host "  Found $($slots.Count) slot(s)"
 if ($slots.Count -ge 1) {
-    Select-El $slots[0] -Label "Xbox360 Slot" -Delay 1000
+    Select-El $slots[0] -Label "Xbox Slot" -Delay 1000
 
     # 4. Controller 3D view
     Write-Host "[$(Next)/$total] Controller - 3D view"
@@ -879,64 +881,63 @@ if ($slots.Count -ge 1) {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
 
-# ---- 14. vJoy slot ----
-# After type-group reorder, order from end is always: ...vJoy, KBM, MIDI
-# Use offsets from end to handle variable number of Xbox360/DS4 slots
+# ---- 14. Extended slot ----
+# After type-group reorder, order from end is always: ...Extended, KBM, MIDI.
+# Use offsets from end to handle variable number of Xbox / PlayStation slots.
 Write-Host ""
-Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
-Write-Host "--- vJoy Slot ---" -ForegroundColor Yellow
+Write-Host "--- Extended Slot ---" -ForegroundColor Yellow
 $slots = @(Find-AllSlots)
-$vjoyIdx = $slots.Count - 3  # After type-group reorder: ...vJoy, KBM, MIDI
-if ($vjoyIdx -ge 0 -and $slots.Count -ge 3) {
-    Write-Host "[$(Next)/$total] vJoy config bar"
-    Select-El $slots[$vjoyIdx] -Label "vJoy Slot" -Delay 1000
+$extendedIdx = $slots.Count - 3  # After type-group reorder: ...Extended, KBM, MIDI
+if ($extendedIdx -ge 0 -and $slots.Count -ge 3) {
+    Write-Host "[$(Next)/$total] Extended config bar"
+    Select-El $slots[$extendedIdx] -Label "Extended Slot" -Delay 1000
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "vJoy Controller Tab" -Delay 1000 }
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "Extended Controller Tab" -Delay 1000 }
 
-        # Switch preset to "Custom" to show the config bar with axis/button/POV dropdowns
-        $presetCombo = Find-UIA -Parent $padPage -Aid "VJoyPresetCombo"
-        if ($presetCombo) {
+        # Switch profile to "Custom" to show the config bar with axis/button/POV dropdowns.
+        $profileCombo = Find-UIA -Parent $padPage -Aid "HMaestroProfileCombo"
+        if ($profileCombo) {
             try {
-                $expandPat = $presetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+                $expandPat = $profileCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
                 $expandPat.Expand()
                 Start-Sleep -Milliseconds 500
                 # Select "Custom" (third item, index 2)
                 $itemsCond = New-Object System.Windows.Automation.PropertyCondition(
                     [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
                     [System.Windows.Automation.ControlType]::ListItem)
-                $items = $presetCombo.FindAll($TC, $itemsCond)
+                $items = $profileCombo.FindAll($TC, $itemsCond)
                 if ($items.Count -ge 3) {
                     $selectPat = $items[2].GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
                     $selectPat.Select()
-                    Write-Host "  Switched to Custom preset" -ForegroundColor Green
+                    Write-Host "  Switched to Custom profile" -ForegroundColor Green
                 }
                 Start-Sleep -Milliseconds 800
             } catch {
-                Write-Host "  !! Could not switch preset: $_" -ForegroundColor Yellow
+                Write-Host "  !! Could not switch profile: $_" -ForegroundColor Yellow
             }
         }
     }
-    Cap "pad-vjoy-configbar"
+    Cap "pad-extended-configbar"
 
-    # 15. vJoy schematic view
-    Write-Host "[$(Next)/$total] vJoy schematic view"
+    # 15. Extended schematic view
+    Write-Host "[$(Next)/$total] Extended schematic view"
     $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
     $toggleX = [int]($ppRect.X + 52)
     $toggleY = [int]($ppRect.Y + 124)
     [Win32]::ForceFG($script:hwnd)
     [Win32]::ClickAt($toggleX, $toggleY)
     Start-Sleep -Milliseconds 600
-    Cap "pad-vjoy-schematic"
+    Cap "pad-extended-schematic"
     # Switch back
     [Win32]::ClickAt($toggleX, $toggleY)
     Start-Sleep -Milliseconds 500
 } else {
-    Write-Host "  !! vJoy slot not found" -ForegroundColor Yellow
+    Write-Host "  !! Extended slot not found" -ForegroundColor Yellow
     $n += 2
 }
 

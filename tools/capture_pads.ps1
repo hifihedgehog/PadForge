@@ -187,11 +187,12 @@ if (-not $slot) {
     $addNav = Find1 -N "Add Controller" -CT ([System.Windows.Automation.ControlType]::ListItem)
     if ($addNav) {
         ClickEl $addNav -d 1000 -lbl "Add Controller Nav"
-        # Click the Xbox 360 button in the popup
+        # Click the Xbox button in the popup. AutomationId AddXbox360Btn
+        # is preserved verbatim from v2; the button label is now "Xbox".
         $xbox = Find1 -A "AddXbox360Btn"
-        if (-not $xbox) { $xbox = Find1 -N "Xbox 360" }
+        if (-not $xbox) { $xbox = Find1 -N "Xbox" }
         if ($xbox) {
-            ClickEl $xbox -d 2000 -lbl "Xbox 360 Button"
+            ClickEl $xbox -d 2000 -lbl "Xbox Button"
             Start-Sleep -Milliseconds 2000
             # Re-scan sidebar
             $uiaWin = $uiaRoot.FindFirst($TC, $pidCond)

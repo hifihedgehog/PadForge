@@ -58,8 +58,9 @@ namespace PadForge.Common.Input
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────
 
-        /// <summary>Maximum number of Xbox 360 virtual controllers.
-        /// XInput only sees 4, but SDL / HIDMaestro support up to MaxPads.</summary>
+        /// <summary>Maximum number of Xbox virtual controllers.
+        /// XInput only sees 4, but SDL / HIDMaestro support up to MaxPads.
+        /// Constant name (<c>MaxXbox360Slots</c>) preserved from v2.</summary>
         public const int MaxXbox360Slots = InputManager.MaxPads;
 
         /// <summary>Maximum number of PlayStation virtual controllers.</summary>

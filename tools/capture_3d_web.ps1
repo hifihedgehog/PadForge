@@ -165,7 +165,7 @@ if ($slot) {
     Start-Sleep -Milliseconds 1000
 }
 
-# Create a new Xbox 360 slot via Add Controller
+# Create a new Xbox slot via Add Controller
 Log "  Creating new slot..."
 $uiaWin = $uiaRoot.FindFirst($TC, $pidCond)
 $addNav = Find1 -N "Add Controller" -CT ([System.Windows.Automation.ControlType]::ListItem)
@@ -173,12 +173,14 @@ if ($addNav) {
     ClickEl $addNav -d 1000 -lbl "Add Controller Nav"
     Start-Sleep -Milliseconds 500
     $uiaWin = $uiaRoot.FindFirst($TC, $pidCond)
+    # AutomationId AddXbox360Btn is preserved verbatim from v2 for stable
+    # automation hookup. The button's accessibility name is now "Xbox".
     $xbox = Find1 -A "AddXbox360Btn"
-    if (-not $xbox) { $xbox = Find1 -N "Xbox 360" -CT ([System.Windows.Automation.ControlType]::Button) }
+    if (-not $xbox) { $xbox = Find1 -N "Xbox" -CT ([System.Windows.Automation.ControlType]::Button) }
     if ($xbox) {
-        ClickEl $xbox -d 3000 -lbl "Xbox 360 Button"
+        ClickEl $xbox -d 3000 -lbl "Xbox Button"
     } else {
-        Log "  !! Xbox 360 button not found"
+        Log "  !! Xbox button not found"
     }
 } else {
     Log "  !! Add Controller not found"

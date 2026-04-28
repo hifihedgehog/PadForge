@@ -57,7 +57,7 @@ namespace PadForge.Views
             // null selection when the DataContext switch causes SelectedValue
             // to resolve against an in-flight (pre-populated) ItemsSource —
             // which bites fresh slots whose PadViewModel still holds the
-            // default OutputType (Microsoft=0) so OutputType's setter never
+            // default OutputType (Xbox=0) so OutputType's setter never
             // raised AvailableProfiles during CreateSlot. Deferring to
             // Loaded-priority lets WPF's binding system populate ItemsSource
             // first, then we force SelectedValue to re-resolve from source.

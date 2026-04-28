@@ -158,7 +158,7 @@
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{StaticResource GenericControllerIcon}"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="Microsoft">
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
                                             <Setter Property="Source" Value="{StaticResource XboxControllerIcon}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">

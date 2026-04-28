@@ -3960,7 +3960,7 @@ namespace PadForge.Services
             IReadOnlyList<int> oldOrder)
         {
             if (_inputManager == null) return;
-            if (groupType != VirtualControllerType.Microsoft
+            if (groupType != VirtualControllerType.Xbox
                 && groupType != VirtualControllerType.PlayStation
                 && groupType != VirtualControllerType.Extended)
                 return;
@@ -4065,7 +4065,7 @@ namespace PadForge.Services
             // (so the order list is correct by the time this fires). The
             // job here is the Xbox-only kernel-slot rebuild.
             if (rebuildHmVcs
-                && deletedType == VirtualControllerType.Microsoft
+                && deletedType == VirtualControllerType.Xbox
                 && _inputManager != null)
             {
                 var xboxOrder = SettingsManager.XboxSlotOrder;

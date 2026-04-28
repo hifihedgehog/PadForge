@@ -1937,8 +1937,8 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Microsoft);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Microsoft;
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 _settingsService.MarkDirty();
             }
@@ -2722,7 +2722,7 @@ namespace PadForge
                 totalActive++;
                 switch (_viewModel.Pads[i].OutputType)
                 {
-                    case VirtualControllerType.Microsoft: xboxCount++; break;
+                    case VirtualControllerType.Xbox: xboxCount++; break;
                     case VirtualControllerType.PlayStation: playstationCount++; break;
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
@@ -2761,10 +2761,10 @@ namespace PadForge
             {
                 if (xboxDisabled) return;
                 popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Microsoft);
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Xbox);
                 if (newSlot >= 0)
                 {
-                    int nav = FindLastSlotOfType(VirtualControllerType.Microsoft);
+                    int nav = FindLastSlotOfType(VirtualControllerType.Xbox);
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
@@ -3790,7 +3790,7 @@ namespace PadForge
                             : string.Format(Strings.Instance.Status_Unmapped_Format, $"{us.InstanceGuid:D}");
 
                         // Determine layout type from the slot's output type.
-                        var outputType = VirtualControllerType.Microsoft;
+                        var outputType = VirtualControllerType.Xbox;
                         bool isExtended = false;
                         if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
                         {

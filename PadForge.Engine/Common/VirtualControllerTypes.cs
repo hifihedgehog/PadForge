@@ -7,15 +7,19 @@ namespace PadForge.Engine
     /// Top-level category for a virtual controller. The actual device identity
     /// (Xbox 360 Wired, DualSense, Logitech G920, etc.) is selected within each
     /// category via a per-slot preset config or, for Extended, a custom HID
-    /// descriptor. Numeric values are preserved from v2 (Xbox360→Microsoft,
-    /// DualShock4→PlayStation, VJoy→Extended, kept for v2→v3 migration) so
-    /// existing settings files load.
+    /// descriptor. Numeric values and on-disk names are preserved from v2
+    /// (Xbox360→Microsoft→Xbox, DualShock4→Sony→PlayStation, VJoy→Extended)
+    /// via XmlEnum so existing settings files load.
     /// </summary>
     public enum VirtualControllerType
     {
-        /// <summary>Xbox family — Xbox 360, Xbox One, Xbox Series, Elite, Adaptive.
-        /// In-code identifier kept as <c>Microsoft</c> for v2 PadForge.xml back-compat.</summary>
-        Microsoft = 0,
+        /// <summary>Xbox family — Xbox 360, Xbox One, Xbox Series, Elite, Adaptive.</summary>
+        // XmlEnum preserves the on-disk name "Microsoft" so v2/early-v3
+        // PadForge.xml files deserialize correctly. The in-code identifier
+        // is Xbox to match the Xbox/PlayStation/Extended family naming
+        // shown in the UI.
+        [XmlEnum("Microsoft")]
+        Xbox = 0,
         /// <summary>PlayStation category — DualShock 3/4, DualSense, DualSense Edge, PS Move.</summary>
         // XmlEnum preserves the on-disk name "Sony" so v2/early-v3 PadForge.xml
         // files deserialize correctly. The in-code identifier is PlayStation
@@ -42,7 +46,7 @@ namespace PadForge.Engine
     {
         public static readonly VirtualControllerType[] InOrder = new[]
         {
-            VirtualControllerType.Microsoft,
+            VirtualControllerType.Xbox,
             VirtualControllerType.PlayStation,
             VirtualControllerType.Extended,
             VirtualControllerType.KeyboardMouse,

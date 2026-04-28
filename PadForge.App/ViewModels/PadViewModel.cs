@@ -192,7 +192,7 @@ namespace PadForge.ViewModels
         public System.Collections.Generic.IReadOnlyList<HIDMaestro.HMProfile> AvailableProfiles =>
             _outputType switch
             {
-                VirtualControllerType.Microsoft => HMaestroProfileCatalog.XboxProfiles,
+                VirtualControllerType.Xbox => HMaestroProfileCatalog.XboxProfiles,
                 VirtualControllerType.PlayStation => HMaestroProfileCatalog.PlayStationProfiles,
                 VirtualControllerType.Extended => HMaestroProfileCatalog.ExtendedProfiles,
                 _ => System.Array.Empty<HIDMaestro.HMProfile>()
@@ -204,7 +204,7 @@ namespace PadForge.ViewModels
         /// on the PadPage.
         /// </summary>
         public bool HasHMaestroProfileBar =>
-            _outputType == VirtualControllerType.Microsoft
+            _outputType == VirtualControllerType.Xbox
             || _outputType == VirtualControllerType.PlayStation
             || _outputType == VirtualControllerType.Extended;
 

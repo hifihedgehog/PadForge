@@ -501,7 +501,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _typeInstanceLabel, value);
         }
 
-        private VirtualControllerType _outputType = VirtualControllerType.Microsoft;
+        private VirtualControllerType _outputType = VirtualControllerType.Xbox;
 
         /// <summary>The virtual controller output type for this slot.</summary>
         public VirtualControllerType OutputType

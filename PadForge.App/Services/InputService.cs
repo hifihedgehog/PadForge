@@ -3472,6 +3472,8 @@ namespace PadForge.Services
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
+                SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
+                    .Select(i => _mainVm.Pads[i].ProfileId).ToArray(),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
                 MidiConfigs = SnapshotMidiConfigs(),
                 XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray(),
@@ -3823,6 +3825,7 @@ namespace PadForge.Services
                     profile.SlotCreated = snapshot.SlotCreated;
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
+                    profile.SlotProfileIds = snapshot.SlotProfileIds;
                     profile.ExtendedConfigs = snapshot.ExtendedConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
                     profile.XboxSlotOrder          = snapshot.XboxSlotOrder;

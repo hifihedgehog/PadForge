@@ -1659,6 +1659,55 @@ namespace PadForge.Services
         /// </summary>
         public event EventHandler<int> SlotInactivityTimedOut;
 
+        /// <summary>
+        /// Handle the engine's HM inactivity timeout. The slot stays
+        /// created, enabled, mapped — only the live VC is torn down so
+        /// its kernel slot frees up. The slot then sits in "awaiting
+        /// devices" state; when its mapped devices come back online,
+        /// Pass 2 recreates the VC automatically. The slot's data
+        /// identity (PadSetting, UserSettings, SlotOrders position, etc.)
+        /// is durable and never touched here. PadForge.xml is not
+        /// modified.
+        ///
+        /// For Xbox slots, the bubble-up cascade also fires so that
+        /// surviving Xbox HM VCs at higher visual positions in the same
+        /// group bubble down to lower xinputhid kernel slots, matching
+        /// the natural disconnect/reconnect shape XInput exhibits when
+        /// a real controller unplugs from the middle of a stack.
+        /// PlayStation / Extended slots don't go through xinputhid so
+        /// they don't need this rebuild.
+        /// </summary>
+        public void OnSlotInactivityTimedOut(int padIndex)
+        {
+            if (_inputManager == null) return;
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+            if (!SettingsManager.SlotCreated[padIndex]) return;
+
+            var slotType = _mainVm.Pads[padIndex].OutputType;
+
+            try { _inputManager.DestroyVirtualControllerAsync(padIndex); }
+            catch { /* best effort */ }
+
+            if (slotType == VirtualControllerType.Xbox)
+            {
+                var xboxOrder = SettingsManager.XboxSlotOrder;
+                int inactivePos = xboxOrder.IndexOf(padIndex);
+                if (inactivePos >= 0)
+                {
+                    for (int p = inactivePos + 1; p < xboxOrder.Count; p++)
+                    {
+                        int higherPad = xboxOrder[p];
+                        if (!_inputManager.IsXboxHmVcAt(higherPad)) continue;
+                        try { _inputManager.DestroyVirtualControllerAsync(higherPad); }
+                        catch { /* best effort, Pass 2 retries */ }
+                    }
+                }
+            }
+
+            // Refresh UI status (slot will show as "awaiting devices").
+            UpdatePadDeviceInfo();
+        }
+
         private void OnHmVcInactivityDestroyed(object sender, int padIndex)
         {
             // Engine fires on the polling thread.  Marshal to the UI thread

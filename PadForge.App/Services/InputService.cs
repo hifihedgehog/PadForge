@@ -3891,10 +3891,20 @@ namespace PadForge.Services
 
         /// <summary>
         /// Swap two slots' visual positions within their (shared) group.
-        /// The order list is mutated unconditionally; whether the kernel
-        /// re-allocates is decided by
-        /// <see cref="RebuildKernelOrderAfterReorder"/>. Cross-group calls
-        /// are rejected.
+        ///
+        /// Pad indices are data identity (mappings, profile, devices,
+        /// settings live at the pad index and never move). Visual position
+        /// is the kernel-slot anchor: in an HM-backed group, the VC at
+        /// visual position V holds kernel slot V. Swapping mutates
+        /// <c>SettingsManager.SlotOrders</c> (the visual order), then
+        /// routes through <see cref="RebuildKernelOrderAfterReorder"/> →
+        /// <see cref="InputManager.RerouteVirtualControllersForReorder"/>,
+        /// which decides per-position whether to reuse the VC at slot V
+        /// (same profile, pure pointer swap) or destroy + recreate
+        /// (profile mismatch).
+        ///
+        /// Cross-group calls are rejected; the upstream drag affordance
+        /// already prevents them.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
@@ -3914,8 +3924,20 @@ namespace PadForge.Services
 
         /// <summary>
         /// Move a slot from its current visual position to a new visual
-        /// position within its own group. Cross-group moves go through
-        /// <see cref="MoveSlotToGroupTail"/>.
+        /// position within its own group.
+        ///
+        /// Same model as <see cref="SwapSlots"/>: pad indices are data
+        /// identity, visual position is the kernel-slot anchor.
+        /// <c>SettingsManager.SlotOrders</c> mutates first, then
+        /// <see cref="RebuildKernelOrderAfterReorder"/> →
+        /// <see cref="InputManager.RerouteVirtualControllersForReorder"/>
+        /// re-points the VC pointers position-by-position, reusing the
+        /// kernel VC at each position when the profile matches and
+        /// destroying + recreating only the positions whose profile
+        /// changed.
+        ///
+        /// Cross-group moves go through <see cref="MoveSlotToGroupTail"/>;
+        /// this method is intra-group only.
         /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
         {

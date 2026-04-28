@@ -409,7 +409,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>触控板</value></data>
-  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>振动</value></data>
+  <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>力反馈</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>见证</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>「我们谈论基督，我们以基督为乐，我们传扬基督，我们预言基督，我们也照我们的预言写作，好使我们的儿女得以知道他们可以仰望什么根源，以求他们的罪得赦。」—— 尼腓二书 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>愿荣耀、尊贵、赞美归于主耶稣基督，一切真理的根源，直到永永远远。</value></data>

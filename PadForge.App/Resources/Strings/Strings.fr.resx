@@ -409,7 +409,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Pavé tactile</value></data>
-  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>Vibration</value></data>
+  <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Retour de force</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Témoignage</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>« Et nous parlons du Christ, nous nous réjouissons dans le Christ, nous prêchons le Christ, nous prophétisons concernant le Christ, et nous écrivons selon nos prophéties, afin que nos enfants sachent vers quelle source ils peuvent se tourner pour la rémission de leurs péchés. » — 2 Néphi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Gloire, honneur et louange au Seigneur Jésus-Christ, source de toute vérité, à tout jamais.</value></data>

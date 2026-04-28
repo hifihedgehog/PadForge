@@ -157,6 +157,26 @@ namespace PadForge.Services
                 if (data == null)
                     return;
 
+                // Pre-deserialization migrations applied to every PadSetting
+                // before they're handed out to UserSettings or the VM.
+                //
+                // TouchpadClick: prior versions auto-mapped this to "Button 11"
+                // because SDL3's HIDAPI PS5/PS4 drivers report touchpad press
+                // at joystick button index 11. v3.0.x makes "Touchpad 0 Click"
+                // the canonical descriptor (consistent with the Touchpad 0
+                // Finger N X/Y/Down family) and stops mirroring the bool into
+                // state.Buttons[11], so legacy "Button 11" stops resolving.
+                // Translate it on load so DualSense / DS4 users don't have to
+                // re-map.
+                if (data.PadSettings != null)
+                {
+                    foreach (var ps in data.PadSettings)
+                    {
+                        if (ps?.TouchpadClick == "Button 11")
+                            ps.TouchpadClick = "Touchpad 0 Click";
+                    }
+                }
+
                 // Populate SettingsManager collections.
                 lock (SettingsManager.UserDevices.SyncRoot)
                 {

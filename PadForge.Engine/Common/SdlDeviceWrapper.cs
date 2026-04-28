@@ -496,25 +496,19 @@ namespace PadForge.Engine
                     }
                 }
 
-                // Touchpad click button
+                // Touchpad click button. Stored on the dedicated
+                // state.TouchpadClick field; consumers reach it via the
+                // "Touchpad 0 Click" descriptor (see Step 3
+                // MapToButtonPressedSingle), parallel to the existing
+                // "Touchpad 0 Finger N X/Y/Down" descriptors. We deliberately
+                // do NOT mirror this into state.Buttons[<index>] — SDL3's
+                // HIDAPI PS5/PS4 drivers report the touchpad at joystick
+                // button 11 and the gamecontrollerdb mapping has
+                // touchpad:b11, putting 11 in _mappedRawButtonIndices, so
+                // the raw-button loop above already skips it. The dedicated
+                // descriptor is the only canonical path.
                 state.TouchpadClick = SDL_GetGamepadButton(GameController,
                     SDL_GAMEPAD_BUTTON_TOUCHPAD);
-
-                // Mirror to state.Buttons[11] so the auto-map's
-                // TouchpadClick = "Button 11" mapping resolves correctly.
-                // SDL3's HIDAPI PS5/PS4 drivers report the touchpad press at
-                // joystick button index 11 (SDL_GAMEPAD_BUTTON_PS5_TOUCHPAD =
-                // 11 in SDL_hidapi_ps5.c, SDL_GAMEPAD_BUTTON_PS4_TOUCHPAD = 11
-                // in SDL_hidapi_ps4.c). The gamecontrollerdb mapping has
-                // touchpad:b11 for both, which puts 11 in the
-                // _mappedRawButtonIndices skip set — so the raw-button loop
-                // above leaves state.Buttons[11] at false. Without this
-                // mirror, the auto-map's "Button 11" descriptor reads false
-                // and the touchpad click never reaches the virtual
-                // controller. Touchpad-capable devices wouldn't have a
-                // separate user-defined button at index 11 either, so this
-                // doesn't displace any other input.
-                state.Buttons[11] = state.TouchpadClick;
             }
 
             // --- Battery (refresh ~once per 5s; battery doesn't change at poll rate) ---

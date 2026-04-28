@@ -421,7 +421,7 @@ namespace PadForge.Services
             // Capture before the reset wipes OutputType. Used to remove the
             // pad index from the correct group's order list and to drive
             // any group-scoped post-delete rebuild (e.g. xinputhid kernel
-            // slot bubble-down for Microsoft VCs).
+            // slot bubble-down for Xbox VCs).
             var deletedType = _mainVm.Pads[slotIndex].OutputType;
 
             SettingsManager.SlotCreated[slotIndex] = false;

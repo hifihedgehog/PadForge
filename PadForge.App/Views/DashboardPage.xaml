@@ -249,7 +249,7 @@
                                     <!-- Game controller type buttons (all types shown for all cards) -->
                                     <StackPanel Orientation="Horizontal">
 
-                                        <!-- Microsoft (Xbox-family) type button -->
+                                        <!-- Xbox type button -->
                                         <Button Click="XboxType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">

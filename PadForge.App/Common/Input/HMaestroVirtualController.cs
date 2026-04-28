@@ -10,7 +10,7 @@ namespace PadForge.Common.Input
     /// classes — one IVirtualController implementation handles every preset
     /// and custom HID descriptor through a single SDK surface.
     ///
-    /// The Type property reports the user-facing category (Microsoft / PlayStation /
+    /// The Type property reports the user-facing category (Xbox / PlayStation /
     /// Extended) so existing per-type counting logic in InputService keeps
     /// working. The actual HIDMaestro profile is supplied at construction.
     /// </summary>

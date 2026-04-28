@@ -42,7 +42,7 @@ namespace PadForge.Common.Input
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
 
         /// <summary>
-        /// Configured virtual controller category per slot (Microsoft / PlayStation /
+        /// Configured virtual controller category per slot (Xbox / PlayStation /
         /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;
         /// Step 5 reads it at ~1000Hz to detect type changes and recreate
         /// controllers accordingly.
@@ -69,7 +69,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Per-slot flag: true if this Extended slot uses the raw custom-axis
         /// pipeline (arbitrary axis/button/POV counts), false if it uses a
-        /// preset gamepad pipeline (Microsoft / PlayStation category) that maps
+        /// preset gamepad pipeline (Xbox / PlayStation category) that maps
         /// through the Gamepad struct.
         /// </summary>
         internal bool[] SlotExtendedIsCustom { get; } = new bool[MaxPads];
@@ -561,7 +561,7 @@ namespace PadForge.Common.Input
                         // don't re-fire each tick.  UI thread handler runs
                         // DeleteSlot + InputService.OnSlotDeleted(rebuildHmVcs:true)
                         // which tears down this VC and bubbles surviving
-                        // Microsoft HM VCs down to lower kernel slots without
+                        // Xbox HM VCs down to lower kernel slots without
                         // touching slots in any other group.  The latch
                         // clears whenever the slot returns to active state
                         // (counter reset above).
@@ -644,7 +644,7 @@ namespace PadForge.Common.Input
                     if (_virtualControllers[padIndex] == null &&
                         _slotInactiveCounter[padIndex] == 0)
                     {
-                        // All HIDMaestro-backed slots (Microsoft / PlayStation / Extended)
+                        // All HIDMaestro-backed slots (Xbox / PlayStation / Extended)
                         // only get a VC when at least one assigned device is
                         // online. Unlike v2 ViGEm — which was cheap enough to
                         // spin up silent empty slots — HIDMaestro creation
@@ -812,7 +812,7 @@ namespace PadForge.Common.Input
                         // Sony USB Report 0x01 layout submit a packed raw report
                         // alongside the Gamepad state so games see the full
                         // touchpad / gyro / accel / battery surface — fields
-                        // HMGamepadState can't carry. Other Microsoft / PlayStation /
+                        // HMGamepadState can't carry. Other Xbox / PlayStation /
                         // Extended-non-custom slots use plain SubmitGamepadState.
                         if (vc is MidiVirtualController midiVc)
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
@@ -1003,14 +1003,14 @@ namespace PadForge.Common.Input
         /// popup before the user picks a preset). Real per-slot preset
         /// selection lands in a follow-up checkpoint.
         /// </summary>
-        // xbox-series-xs-bt rather than xbox-360-wired so new Microsoft
+        // xbox-series-xs-bt rather than xbox-360-wired so new Xbox
         // slots work out of the box with browser-sourced force feedback.
         // Browsers using WGI or GameInput paths (Chrome on Win11 in
         // particular) don't route FFB to the Xbox 360 XUSB companion, so
         // xbox-360-wired vibrates in native games but stays silent for
         // browser "Vibration, infinite" tests. xbox-series-xs-bt uses the
         // HID output path that browsers drive reliably.
-        public const string DefaultMicrosoftProfileId = "xbox-series-xs-bt";
+        public const string DefaultXboxProfileId = "xbox-series-xs-bt";
         public const string DefaultPlayStationProfileId = "dualshock-4-v2";
         // The synthetic "Custom" entry anchors Extended — new slots start
         // there with Customize auto-enabled and the user fills in the
@@ -1029,7 +1029,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public static string GetDefaultProfileId(VirtualControllerType type) => type switch
         {
-            VirtualControllerType.Microsoft => DefaultMicrosoftProfileId,
+            VirtualControllerType.Microsoft => DefaultXboxProfileId,
             VirtualControllerType.PlayStation => DefaultPlayStationProfileId,
             VirtualControllerType.Extended => DefaultExtendedProfileId,
             _ => null
@@ -1040,7 +1040,7 @@ namespace PadForge.Common.Input
             var controllerType = SlotControllerTypes[padIndex];
 
             // MIDI and KeyboardMouse stay on their dedicated implementations.
-            // Microsoft / PlayStation / Extended now route through HIDMaestro.
+            // Xbox / PlayStation / Extended now route through HIDMaestro.
             if (controllerType == VirtualControllerType.Microsoft
                 || controllerType == VirtualControllerType.PlayStation
                 || controllerType == VirtualControllerType.Extended)
@@ -1269,14 +1269,14 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Returns true if the slot currently holds a Microsoft-type HM
+        /// Returns true if the slot currently holds an Xbox-category HM
         /// virtual controller. Used by InputService.OnSlotDeleted's rebuild
-        /// step to decide whether to tear down a higher-pad-index Microsoft
-        /// VC after a Microsoft delete, so xinputhid bubbles it down to a
-        /// lower kernel slot. PlayStation/Extended VCs don't bind to
-        /// xinputhid kernel slots and don't need this rebuild.
+        /// step to decide whether to tear down a higher-pad-index Xbox VC
+        /// after an Xbox delete, so xinputhid bubbles it down to a lower
+        /// kernel slot. PlayStation / Extended VCs don't bind to xinputhid
+        /// kernel slots and don't need this rebuild.
         /// </summary>
-        public bool IsMicrosoftHmVcAt(int padIndex)
+        public bool IsXboxHmVcAt(int padIndex)
         {
             if (padIndex < 0 || padIndex >= MaxPads) return false;
             var vc = _virtualControllers[padIndex];

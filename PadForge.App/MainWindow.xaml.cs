@@ -439,7 +439,7 @@ namespace PadForge
             // fired (all mapped devices offline past the configured threshold).
             // Treat as a programmatic delete: tear down the slot and compact
             // the remaining stack with the bubble-up cascade so the
-            // surviving Microsoft VCs reattach to lower xinputhid kernel
+            // surviving Xbox VCs reattach to lower xinputhid kernel
             // slots, matching the behavior XInput exhibits naturally on
             // physical disconnect/reconnect.
             _inputService.SlotInactivityTimedOut += (s, padIndex) =>
@@ -1585,9 +1585,9 @@ namespace PadForge
                 Margin = new Thickness(6, -3, 6, 0)
             });
 
-            // Type-switch buttons: Microsoft / PlayStation / Extended / KBM / MIDI — shown for all cards.
+            // Type-switch buttons: Xbox / PlayStation / Extended / KBM / MIDI — shown for all cards.
             // HIDMaestro is always available (embedded in HIDMaestro.Core.dll), so the
-            // Microsoft / PlayStation / Extended categories are always enabled. MIDI still
+            // Xbox / PlayStation / Extended categories are always enabled. MIDI still
             // depends on Windows MIDI Services.
             bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
 
@@ -1931,7 +1931,7 @@ namespace PadForge
             }
         }
 
-        /// <summary>Handles sidebar Microsoft (Xbox-family) type button click.</summary>
+        /// <summary>Handles sidebar Xbox type button click.</summary>
         private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
         {
             e.Handled = true;

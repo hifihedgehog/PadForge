@@ -138,7 +138,7 @@ namespace PadForge.ViewModels
                     // the newly-selected profile's HID descriptor metadata,
                     // then rebuild the mapping grid + stick/trigger configs
                     // so the UI reflects the profile's actual axes/buttons.
-                    // Microsoft/PlayStation slots have fixed layouts that don't
+                    // Xbox / PlayStation slots have fixed layouts that don't
                     // vary per profile, so no rebuild is needed there.
                     if (_outputType == VirtualControllerType.Extended)
                     {
@@ -199,7 +199,7 @@ namespace PadForge.ViewModels
             };
 
         /// <summary>
-        /// True when the slot's category uses an HIDMaestro profile (Microsoft /
+        /// True when the slot's category uses an HIDMaestro profile (Xbox /
         /// PlayStation / Extended). Drives the visibility of the profile picker bar
         /// on the PadPage.
         /// </summary>
@@ -561,7 +561,7 @@ namespace PadForge.ViewModels
 
             // Extended uses the dynamic Extended-style layout in v3: the
             // HIDMaestro profile defines axis/button counts and no two
-            // profiles share the same layout. Microsoft / PlayStation keep
+            // profiles share the same layout. Xbox / PlayStation keep
             // fixed gamepad grids. KeyboardMouse and MIDI have their own
             // mapping shapes.
             if (OutputType == VirtualControllerType.KeyboardMouse)
@@ -577,7 +577,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Standard gamepad mappings (21 items). Microsoft → Xbox 360 labels,
+        /// Standard gamepad mappings (21 items). Xbox → Xbox 360 labels,
         /// PlayStation → DualShock 4 labels.
         /// </summary>
         private void InitializeGamepadMappings()
@@ -1083,7 +1083,7 @@ namespace PadForge.ViewModels
                 return;
             }
 
-            // Microsoft / PlayStation use a fixed 2-stick gamepad grid;
+            // Xbox / PlayStation use a fixed 2-stick gamepad grid;
             // Extended takes its stick count from the active HIDMaestro
             // profile via ExtendedConfig.
             int count = 2;
@@ -1124,7 +1124,7 @@ namespace PadForge.ViewModels
             if (OutputType == VirtualControllerType.KeyboardMouse)
                 return;
 
-            // Microsoft / PlayStation use a fixed 2-trigger gamepad grid;
+            // Xbox / PlayStation use a fixed 2-trigger gamepad grid;
             // Extended takes its trigger count from the active HIDMaestro
             // profile via ExtendedConfig.
             int count = 2;

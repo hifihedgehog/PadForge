@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Étendu</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Clavier + Souris</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -125,7 +125,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Un ou plusieurs contrôleurs hors ligne</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (max {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Étendu (max {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Clavier + Souris (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (nécessite Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
@@ -148,7 +148,7 @@
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ haut)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll INTROUVABLE</value></data>
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll introuvable ! Placez SDL3.dll à côté de PadForge.exe. Téléchargez depuis https://github.com/libsdl-org/SDL/releases</value></data>
-  <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Opération sur le pilote échouée : {0}</value></data>
+  <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Échec de l'opération du pilote : {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Paramètres copiés dans le presse-papiers.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Échec de la copie : {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>Le presse-papiers ne contient pas de paramètres PadForge valides.</value></data>
@@ -348,7 +348,7 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Vous êtes sur le point de {0}. Cela affectera {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>masquer cet appareil de toutes les applications</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquer les entrées assignées de cet appareil</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pour toutes les {0} connectées</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pour tous les appareils {0} connectés</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>S'il s'agit de votre seul(e) {0}, vous perdrez la possibilité d'interagir avec votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Si vous assignez des entrées critiques pour l'interaction système (p. ex. clic gauche/droit, mouvement X/Y), vous risquez de perdre le contrôle de votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Si vous assignez des entrées critiques pour l'interaction système (p. ex. touches courantes), vous risquez de perdre le contrôle de votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
@@ -446,7 +446,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Source</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valeur</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Options</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zone-morte axe vers bouton</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zone morte axe vers bouton</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverser</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Demi</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linéaire</value></data>
@@ -460,7 +460,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Échantillonnage...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Décalage central X :</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Décalage central Y :</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forme de la zone-morte :</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forme de la zone morte :</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Radiale mise à l'échelle</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radiale</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axiale</value></data>
@@ -629,10 +629,10 @@
   <data name="Preview_DPad" xml:space="preserve"><value>Croix dir.</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Zone-morte X :</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Zone-morte Y :</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-zone-morte X :</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-zone-morte Y :</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Zone morte X :</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Zone morte Y :</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-zone morte X :</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-zone morte Y :</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Linéaire :</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Courbes de sensibilité</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Double-clic pour ajouter un point. Clic droit pour supprimer. Glisser pour ajuster.</value></data>
@@ -645,13 +645,13 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>Axe X</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Plage :</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zone-morte :</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zone morte :</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Courbe de sensibilité</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Double-clic pour ajouter un point. Clic droit pour supprimer. Glisser pour ajuster.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Préréglage :</value></data>
   <data name="Pad_Live" xml:space="preserve"><value>En direct :</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axe de gâchette</value></data>
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Vibration</value></data>
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retour de force / Vibration</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gain global :</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteur gauche :</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Moteur droit :</value></data>
@@ -660,11 +660,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activité moteur</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Réinitialiser le décalage centre X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Réinitialiser le décalage centre Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Réinitialiser en Radial mis à l'échelle</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Réinitialiser la zone-morte X</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Réinitialiser la zone-morte Y</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Réinitialiser l'anti-zone-morte X</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Réinitialiser l'anti-zone-morte Y</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Réinitialiser en Radiale mise à l'échelle</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Réinitialiser la zone morte X</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Réinitialiser la zone morte Y</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Réinitialiser l'anti-zone morte X</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Réinitialiser l'anti-zone morte Y</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Réinitialiser linéaire</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Réinitialiser la sensibilité X</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Réinitialiser la sensibilité Y</value></data>
@@ -673,24 +673,24 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Réinitialiser la plage min. Y</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Réinitialiser la plage max. Y</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Réinitialiser la plage</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Réinitialiser l'anti-zone-morte</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Réinitialiser l'anti-zone morte</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Réinitialiser la sensibilité</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Réinitialiser le gain global</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Réinitialiser la vue</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Appuyez sur des boutons ou bougez un axe/gâchette pour enregistrer. Les axes sont détectés lorsqu'ils dépassent 50 % de déviation.</value></data>
-  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné (0–100 %) au volume système Windows, mis à l'échelle selon la limite de volume. Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Pendant maintien » + « Jusqu'au relâchement ».</value></data>
-  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Contrôle le volume d'une application spécifique dans le mixeur Windows, mis à l'échelle selon la limite. Entrez le nom du processus (visible dans le Gestionnaire des tâches). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Pendant maintien » + « Jusqu'au relâchement ».</value></data>
-  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné au mouvement de la souris (ou au défilement). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Pendant maintien » + « Jusqu'au relâchement ». Pour stick-vers-souris, créez deux actions : une pour l'axe X, une pour l'axe Y.</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné (0–100 %) au volume système Windows, mis à l'échelle selon la limite de volume. Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Contrôle le volume d'une application spécifique dans le mixeur Windows, mis à l'échelle selon la limite. Entrez le nom du processus (visible dans le Gestionnaire des tâches). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné au mouvement de la souris (ou au défilement). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ». Pour stick vers souris, créez deux actions : une pour l'axe X, une pour l'axe Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverser l'axe</value></data>
   <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Afficher l'OSD du volume</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direction</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Indifférent</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positif</value></data>
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Négatif</value></data>
-  <data name="Btn_LeftShoulder" xml:space="preserve"><value>Gâchette haute gauche</value></data>
-  <data name="Btn_RightShoulder" xml:space="preserve"><value>Gâchette haute droite</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>Bouton d'épaule gauche</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>Bouton d'épaule droit</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>Retour</value></data>
   <data name="Btn_Start" xml:space="preserve"><value>Démarrer</value></data>
   <data name="Btn_Guide" xml:space="preserve"><value>Guide</value></data>
@@ -841,8 +841,8 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Bouton {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Axe {0}</value></data>
-  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Gâchette haute gauche</value></data>
-  <data name="DevObj_RightShoulder" xml:space="preserve"><value>Gâchette haute droite</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>Bouton d'épaule gauche</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>Bouton d'épaule droit</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>Bouton stick gauche</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Bouton stick droit</value></data>
 

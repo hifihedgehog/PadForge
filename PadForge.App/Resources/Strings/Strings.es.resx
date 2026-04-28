@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Extendido</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Teclado + Ratón</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -125,7 +125,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Uno o más controles sin conexión</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (máx. {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Extendido (máx. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Teclado + Ratón (máx. {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (requiere Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (máx. {0})</value></data>
@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Configuración pegada desde el portapapeles.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Error al pegar: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>No hay dispositivo seleccionado del cual copiar.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>No se encontraron otros dispositivos configurados del cual copiar.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>No se encontraron otros dispositivos configurados de los cuales copiar.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Configuración copiada del dispositivo seleccionado.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Perfil "{0}" creado (vacío).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" creado.</value></data>
@@ -175,7 +175,7 @@
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>No hay dispositivo conectado para grabar.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Grabando: presione un botón o mueva un eje para "{0}"...</value></data>
   <data name="Status_RecordingCancelled" xml:space="preserve"><value>Grabación cancelada.</value></data>
-  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Grabación agotada para "{0}".</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tiempo de grabación agotado para "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor iniciado.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor detenido.</value></data>
   <data name="Status_NoMapping" xml:space="preserve"><value>Sin asignación</value></data>
@@ -246,7 +246,7 @@
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Comportamiento de inicio y minimización.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimizar a la bandeja del sistema</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar minimizado</value></data>
-  <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iniciar al iniciar sesión</value></data>
+  <data name="Settings_StartAtLogin" xml:space="preserve"><value>Ejecutar al iniciar sesión</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>Controlador HidHide</value></data>
   <data name="Settings_HidHideDesc" xml:space="preserve"><value>Oculte dispositivos físicos de los juegos para evitar entrada doble.</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Aplicaciones en lista blanca</value></data>
@@ -348,7 +348,7 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Está a punto de {0}. Esto afectará a {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>ocultar este dispositivo de todas las aplicaciones</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquear las entradas asignadas de este dispositivo</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para todos los {0}s conectados</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para todos los dispositivos {0} conectados</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Si este es su único {0}, perderá la capacidad de interactuar con su sistema. Solo proceda si tiene otro dispositivo de entrada disponible.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Si asigna entradas críticas para la interacción del sistema (p. ej. clic izquierdo/derecho, movimiento X/Y), puede perder la capacidad de controlar su sistema. Solo proceda si tiene otro dispositivo de entrada disponible.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Si asigna entradas críticas para la interacción del sistema (p. ej. teclas comunes), puede perder la capacidad de controlar su sistema. Solo proceda si tiene otro dispositivo de entrada disponible.</value></data>
@@ -398,14 +398,14 @@
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Se encontraron {0} interfaz(es) HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumeración fallida: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extracción fallida: {0}</value></data>
-  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>No se pudo analizar el JSON del perfil extraído — nada fue guardado.</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>No se pudo analizar el JSON del perfil extraído — no se guardó nada.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personalizar</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Habilita los campos de sustitución de identidad y disposición. Si está desactivado, el controlador virtual usa el perfil de HIDMaestro tal cual.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Restablece todos los campos de sustitución a los valores de catálogo del perfil actual (cadena de producto, VID, PID, palancas/gatillos/POV/botones) y desactiva la sustitución OEM.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Cadena de producto</value></data>
   <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Sustituye la cadena iProduct que el sistema informa a los juegos y a joy.cpl. Controla también el nombre en el Administrador de dispositivos.</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>Sustituir OEM</value></data>
-  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Reclama la entrada de la tabla OEM de DirectInput para la VID:PID del perfil. joy.cpl y DirectInput leen esa tabla antes que la cadena iProduct — actívalo para que la cadena de producto anterior tenga prioridad. Desactivado por defecto.</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Reclama la entrada de la tabla de nombres OEM de DirectInput de Windows para la VID:PID de este perfil. joy.cpl y las interfaces de DirectInput leen esa tabla antes de la cadena iProduct del HID; actívelo para que la cadena de producto anterior tenga prioridad. Desactivado por defecto.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Panel táctil</value></data>
@@ -446,7 +446,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origen</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opciones</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona-muerta eje a botón</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona muerta de eje a botón</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Invertir</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Mitad</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineal</value></data>
@@ -460,7 +460,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Muestreando...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Desplazamiento central X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Desplazamiento central Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forma de zona-muerta:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forma de zona muerta:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Radial escalada</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radial</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axial</value></data>
@@ -629,10 +629,10 @@
   <data name="Preview_DPad" xml:space="preserve"><value>Cruceta</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Zona muerta X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Zona muerta Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-zona muerta X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-zona muerta Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Lineal:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Curvas de sensibilidad</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Doble clic para agregar punto. Clic derecho para eliminar. Arrastrar para ajustar.</value></data>
@@ -645,13 +645,13 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>Eje X</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona muerta:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curva de sensibilidad</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Doble clic para agregar punto. Clic derecho para eliminar. Arrastrar para ajustar.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Preajuste:</value></data>
   <data name="Pad_Live" xml:space="preserve"><value>En vivo:</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eje del gatillo</value></data>
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Vibración</value></data>
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retroalimentación de fuerza / Vibración</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ganancia total:</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor izquierdo:</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor derecho:</value></data>
@@ -660,11 +660,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Actividad del motor</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Restablecer desplazamiento central X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Restablecer desplazamiento central Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Restablecer a Radial escalado</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Restablecer Deadzone X</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Restablecer Deadzone Y</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Restablecer Anti-Deadzone X</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Restablecer Anti-Deadzone Y</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Restablecer a Radial escalada</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Restablecer zona muerta X</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Restablecer zona muerta Y</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Restablecer anti-zona muerta X</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Restablecer anti-zona muerta Y</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Restablecer lineal</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Restablecer sensibilidad X</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Restablecer sensibilidad Y</value></data>
@@ -673,16 +673,16 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Restablecer rango mín. Y</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Restablecer rango máx. Y</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Restablecer rango</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Restablecer Anti-Deadzone</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Restablecer anti-zona muerta</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Restablecer sensibilidad</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Restablecer ganancia total</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Restablecer motor izquierdo</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Restablecer motor derecho</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Restablecer vista</value></data>
-  <data name="Macro_RecordHint" xml:space="preserve"><value>Presione botones o mueva un eje/gatillo para grabar. Los ejes se detectan cuando se deflectan más del 50 %.</value></data>
-  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado (0–100 %) al volumen del sistema Windows, escalado al límite de volumen. Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
-  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla el volumen de una aplicación específica en el mezclador de volumen de Windows, escalado al límite. Ingrese el nombre del proceso (visible en el Administrador de tareas). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
-  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado al movimiento del ratón (o desplazamiento). Use con disparador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar". Para stick-a-ratón, cree dos acciones: una para el eje X y otra para el eje Y.</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>Presione botones o mueva un eje/gatillo para grabar. Los ejes se detectan cuando se desvían más del 50 %.</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado (0–100 %) al volumen del sistema Windows, escalado al límite de volumen. Use con el activador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla el volumen de una aplicación específica en el mezclador de volumen de Windows, escalado al límite. Ingrese el nombre del proceso (visible en el Administrador de tareas). Use con el activador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado al movimiento del ratón (o desplazamiento). Use con el activador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar". Para palanca a ratón, cree dos acciones: una para el eje X y otra para el eje Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Invertir eje</value></data>
   <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar OSD de volumen</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Dirección</value></data>

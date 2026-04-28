@@ -92,7 +92,7 @@
   <data name="Common_Proceed" xml:space="preserve"><value>Doorgaan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Opnemen</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Opnemen...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Bezig met opnemen...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Wissen</value></data>
   <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Uitgebreid</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Toetsenbord + Muis</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -125,7 +125,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Een of meer controllers offline</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (max {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Uitgebreid (max {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Toetsenbord + Muis (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (vereist Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
@@ -192,7 +192,7 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Venster wisselen</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Elk verbonden apparaat</value></data>
   <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Opnemen</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Opname...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Bezig met opnemen...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Geen apparaat geselecteerd.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ongeldige slotindex: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Apparaattoewijzing mislukt.</value></data>
@@ -210,8 +210,8 @@
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewezen, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> verbonden</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsserver</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol-server voor gyroscoop- en versnellingsmetergegevens.</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (CemuHook Motion Provider protocol)</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider-protocolserver voor gyroscoop- en versnellingsmetergegevens.</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (CemuHook Motion Provider-protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Poort:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyro-/versnellingsgegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Webcontroller</value></data>
@@ -253,7 +253,7 @@
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Deze toepassingen kunnen verborgen apparaten nog steeds zien. PadForge wordt altijd automatisch toegestaan.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Toevoegen...</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro-stuurprogramma</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtuele HID-controllerengine. Ingebed in PadForge.App — wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus. Ingebed in PadForge.App — wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-runtime voor virtuele MIDI-apparaatuitvoer. Gedownload van GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Vereist Windows 11 24H2 (build 26100) of hoger</value></data>
@@ -297,7 +297,7 @@
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
   <data name="DeviceType_Joystick" xml:space="preserve"><value>Joystick</value></data>
-  <data name="DeviceType_Wheel" xml:space="preserve"><value>Stuur</value></data>
+  <data name="DeviceType_Wheel" xml:space="preserve"><value>Stuurwiel</value></data>
   <data name="DeviceType_FlightStick" xml:space="preserve"><value>Vliegstick</value></data>
   <data name="DeviceType_FirstPerson" xml:space="preserve"><value>Eerste persoon</value></data>
   <data name="DeviceType_Supplemental" xml:space="preserve"><value>Aanvullend</value></data>
@@ -559,8 +559,8 @@
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Muis verplaatsen met {0} (max {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Muis scrollen ← {0} (snelheid {1:F0})</value></data>
   <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen met {0} (max {1} eenheden)</value></data>
-  <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop indrukken {0}</value></data>
-  <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop loslaten {0}</value></data>
+  <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop {0} indrukken</value></data>
+  <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop {0} loslaten</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -657,7 +657,7 @@
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Middenverschuiving X herstellen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y herstellen</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Herstellen naar Geschaald Radiaal</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Herstellen naar geschaald radiaal</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Deadzone X herstellen</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Deadzone Y herstellen</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X herstellen</value></data>
@@ -734,7 +734,7 @@
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linkermuisknop</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Rechtermuisknop</value></data>
-  <data name="Key_Cancel" xml:space="preserve"><value>Afbreken</value></data>
+  <data name="Key_Cancel" xml:space="preserve"><value>Break</value></data>
   <data name="Key_MButton" xml:space="preserve"><value>Middelste muisknop</value></data>
   <data name="Key_XButton1" xml:space="preserve"><value>X1-muisknop</value></data>
   <data name="Key_XButton2" xml:space="preserve"><value>X2-muisknop</value></data>
@@ -865,9 +865,9 @@
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>Rechter stickknop</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
-  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audiovibratie</value></data>
+  <data name="Settings_AudioRumble" xml:space="preserve"><value>Audiotrillen</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Controllertrillingen aansturen op basis van basfrequenties van het systeemaudio.</value></data>
-  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Audiovibratie inschakelen</value></data>
+  <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Audiotrillen inschakelen</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Settings_AudioRumble_Cutoff" xml:space="preserve"><value>Basafsnijding (Hz)</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Linkermotor</value></data>
@@ -901,16 +901,16 @@
   <data name="Key_Backslash" xml:space="preserve"><value>Omgekeerde schuine streep</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>Rechter haakje</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrof</value></data>
-  <data name="Common_Stopping" xml:space="preserve"><value>Stoppen…</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>Bezig met stoppen…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Engine wordt gestopt…</value></data>
-  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Time-out voor inactieve verwijdering:</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Time-out voor inactiviteitsverwijdering:</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere XInput-slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconden (0 = nooit)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtuele HID-controller-engine (vervangt ViGEmBus en vJoy)</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus (vervangt ViGEmBus en vJoy)</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel-stuurprogramma om fysieke apparaten te verbergen voor games</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput; filtert PadForge's eigen virtuele controllers uit z'n eigen weergave</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput; filtert PadForge's eigen virtuele controllers uit zijn eigen weergave</value></data>
 
 </root>

@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Estendido</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Teclado + Mouse</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -125,7 +125,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Um ou mais controles offline</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (máx. {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Estendido (máx. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Teclado + Mouse (máx. {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (requer Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (máx. {0})</value></data>
@@ -184,7 +184,7 @@
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil alterado: Padrão</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Padrão</value></data>
   <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atalhos de perfil</value></data>
-  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Atribuir combinações de botões para trocar de perfil em qualquer controle.</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Atribua combinações de botões para alternar perfis a partir de qualquer controle.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Adicionar atalho</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Próximo perfil</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Perfil anterior</value></data>
@@ -241,7 +241,7 @@
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar polling quando a janela perder o foco</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de polling:</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar dispositivos dos jogos</value></data>
-  <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Controle principal para ocultação de dispositivos via HidHide e hooks de entrada de baixo nível. Quando desativado, nenhum dispositivo é ocultado independentemente das configurações individuais.</value></data>
+  <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Chave principal para ocultação de dispositivos via HidHide e hooks de entrada de baixo nível. Quando desativada, nenhum dispositivo é ocultado independentemente das configurações individuais.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Comportamento de inicialização e minimização.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimizar para a bandeja do sistema</value></data>
@@ -253,7 +253,7 @@
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Estes aplicativos ainda podem ver dispositivos ocultos. PadForge é sempre adicionado automaticamente à lista de permissões.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Adicionar...</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>Driver HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motor de controlador HID virtual em modo usuário. Integrado ao PadForge.App: instalado automaticamente na primeira criação de um controlador virtual. Substitui ViGEmBus e vJoy na v3.</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motor de controle HID virtual em modo usuário. Integrado ao PadForge.App — instalado automaticamente na primeira criação de um controle virtual. Substitui ViGEmBus e vJoy na v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK para saída de dispositivo MIDI virtual. Baixado do GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requer Windows 11 24H2 (build 26100) ou posterior</value></data>
@@ -331,7 +331,7 @@
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Instale o driver HidHide para ativar esta opção</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consumir entradas mapeadas (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suprime apenas as teclas/botões específicos que estão mapeados, permitindo que entradas não mapeadas passem</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Estado Bruto de Entrada</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Estado da Entrada Bruta</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Eixos</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Teclado</value></data>
@@ -400,10 +400,10 @@
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extração falhou: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Não foi possível analisar o JSON do perfil extraído — nada foi salvo.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personalizar</value></data>
-  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Habilita os campos de substituição de identidade e layout abaixo. Quando desativado, o controlador virtual usa o perfil do HIDMaestro como enviado.</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Habilita os campos de substituição de identidade e layout abaixo. Quando desativado, o controle virtual usa a identidade integrada e o descritor HID do perfil selecionado exatamente como enviado pelo HIDMaestro.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Restaura todos os campos de substituição para os valores do catálogo do perfil atual (nome do produto, VID, PID, quantidade de analógicos/gatilhos/POVs/botões) e desativa a substituição OEM.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Nome do produto</value></data>
-  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Substitui a string iProduct que o sistema operacional informa aos jogos e ao joy.cpl. Também controla o nome exibido no Gerenciador de Dispositivos.</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Substitui a string iProduct que o sistema operacional informa aos jogos e ao joy.cpl. Define o FriendlyName do Gerenciador de Dispositivos quando nenhuma descrição separada está definida.</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>Substituir OEM</value></data>
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Reivindica a entrada da tabela OEM do DirectInput para a VID:PID do perfil. O joy.cpl e o DirectInput leem essa tabela antes da string iProduct do HID — ative para que o nome do produto acima prevaleça. Desativado por padrão.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -446,7 +446,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origem</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opções</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona-morta eixo para botão</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Deadzone eixo para botão</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverter</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metade</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>
@@ -460,7 +460,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Amostrando...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Deslocamento Central X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Deslocamento Central Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Zona-Morta:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Deadzone:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Radial Escalada</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radial</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axial</value></data>
@@ -500,7 +500,7 @@
   <data name="Macro_MouseMove" xml:space="preserve"><value>Mover Mouse</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pressionar Botão do Mouse</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Soltar Botão do Mouse</value></data>
-  <data name="Macro_MouseScroll" xml:space="preserve"><value>Scroll do Mouse</value></data>
+  <data name="Macro_MouseScroll" xml:space="preserve"><value>Rolagem do Mouse</value></data>
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar sobreposição de touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botões:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinação de Teclas:</value></data>
@@ -557,8 +557,8 @@
   <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>Volume do Aplicativo ← {0} (máx. {1}%)</value></data>
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Mover Mouse ← {0} (velocidade {1:F0})</value></data>
   <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Mover mouse em {0} (máx. {1}px)</value></data>
-  <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Scroll do Mouse ← {0} (velocidade {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scroll em {0} (máx. {1} unidades)</value></data>
+  <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Rolagem do Mouse ← {0} (velocidade {1:F0})</value></data>
+  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Rolagem em {0} (máx. {1} unidades)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Pressionar Mouse {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar Mouse {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar sobreposição de touchpad</value></data>
@@ -660,7 +660,7 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividade do Motor</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Redefinir Deslocamento Central X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Redefinir Deslocamento Central Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redefinir para Radial Escalonado</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redefinir para Radial Escalada</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redefinir Deadzone X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redefinir Deadzone Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redefinir Anti-Deadzone X</value></data>
@@ -679,10 +679,10 @@
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Redefinir Motor Direito</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Redefinir Visualização</value></data>
-  <data name="Macro_RecordHint" xml:space="preserve"><value>Pressione botões ou mova um eixo/gatilho para gravar. Os eixos são detectados quando deflexionados mais de 50%.</value></data>
-  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado (0–100%) para o volume do sistema Windows, escalonado ao limite de volume. Use com gatilho "Sempre", ou botão/eixo com "Enquanto pressionado" + "Até soltar".</value></data>
-  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla o volume de um aplicativo específico no mixer de volume do Windows, escalonado ao limite. Insira o nome do processo (visível no Gerenciador de Tarefas). Use com gatilho "Sempre", ou botão/eixo com "Enquanto pressionado" + "Até soltar".</value></data>
-  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado ao movimento do mouse (ou rolagem). Use com gatilho "Sempre", ou botão/eixo com "Enquanto pressionado" + "Até soltar". Para analógico-para-mouse, crie duas ações: uma para o eixo X e outra para o eixo Y.</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>Pressione botões ou mova um eixo/gatilho para gravar. Os eixos são detectados quando movidos além de 50%.</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado (0–100%) para o volume do sistema Windows, escalonado ao limite de volume. Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla o volume de um aplicativo específico no mixer de volume do Windows, escalonado ao limite de volume. Insira o nome do processo (visível no Gerenciador de Tarefas). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado para o movimento do mouse (ou rolagem). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar". Para usar analógico como mouse, crie duas ações: uma para o eixo X e outra para o eixo Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverter eixo</value></data>
   <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar OSD de volume</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direção</value></data>
@@ -886,13 +886,13 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Parando…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Parando o motor…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tempo limite de destruição por inatividade:</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segundos antes de um controlador virtual ser destruído quando todos os dispositivos mapeados estão offline. 0 desativa. Os controladores restantes sobem para preencher a lacuna e são revinculados a slots XInput inferiores.</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segundos antes de um controle virtual ser destruído quando todos os dispositivos mapeados estão offline. 0 desativa. Os controles restantes sobem para preencher a lacuna e são revinculados a slots XInput inferiores.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundos (0 = nunca)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor de controlador HID virtual em modo usuário (substitui ViGEmBus e vJoy)</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor de controle HID virtual em modo usuário (substitui ViGEmBus e vJoy)</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="About_HidHideDesc" xml:space="preserve"><value>Driver de kernel para ocultar dispositivos físicos dos jogos</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Substituto direto do XInput; filtra os próprios controladores virtuais do PadForge da sua própria visão</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Substituto direto do XInput; filtra os próprios controles virtuais do PadForge da sua própria visão</value></data>
 
 </root>

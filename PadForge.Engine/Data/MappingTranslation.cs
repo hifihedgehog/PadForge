@@ -301,7 +301,7 @@ namespace PadForge.Engine.Data
         }
 
         /// <summary>
-        /// Returns a short display label for the layout type (e.g., "Xbox 360", "Extended Custom", "MIDI", "KB+M").
+        /// Returns a short display label for the layout type (e.g., "Xbox", "Extended Custom", "MIDI", "KB+M").
         /// </summary>
         public static string GetLayoutLabel(VirtualControllerType type, bool isExtended)
         {
@@ -312,8 +312,8 @@ namespace PadForge.Engine.Data
                 LayoutKind.Kbm        => "KB+M",
                 _ => type switch
                 {
-                    VirtualControllerType.Microsoft    => "Xbox 360",
-                    VirtualControllerType.PlayStation => "DualShock 4",
+                    VirtualControllerType.Microsoft    => "Xbox",
+                    VirtualControllerType.PlayStation => "PlayStation",
                     VirtualControllerType.Extended       => "Extended (Gamepad)",
                     _ => type.ToString()
                 }

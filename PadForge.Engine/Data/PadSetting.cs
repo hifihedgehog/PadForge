@@ -849,7 +849,7 @@ namespace PadForge.Engine.Data
         /// Clears all mapping descriptors (standard, Extended, and MIDI) while preserving
         /// deadzone, force feedback, and other non-mapping configuration.
         /// Call before writing a new set of mappings to prevent stale leftovers
-        /// from a previous mapping layout (e.g., switching Xbox 360 preset → custom Extended).
+        /// from a previous mapping layout (e.g., switching Xbox preset → custom Extended).
         /// </summary>
         public void ClearMappingDescriptors()
         {

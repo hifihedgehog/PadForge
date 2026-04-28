@@ -56,9 +56,10 @@ body:
       label: Virtual Controller Type
       description: Which output type were you using?
       options:
-        - Xbox 360
-        - DualShock 4
-        - vJoy
+        - Xbox
+        - PlayStation
+        - Extended
+        - Keyboard+Mouse
         - MIDI
         - N/A
     validations:

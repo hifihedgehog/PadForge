@@ -123,8 +123,8 @@
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>1つ以上のコントローラーがオフライン</value></data>
-  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (最大 {0})</value></data>
-  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (最大 {0})</value></data>
+  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (最大 {0} 台)</value></data>
+  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (最大 {0} 台)</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (最大 {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services が必要です)</value></data>
@@ -219,7 +219,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>スマートフォンやタブレットのブラウザから接続してゲームパッドとして使用できます。</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DualShock 4およびDualSense対応タッチパッドエミュレーション用の画面上タッチサーフェス。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation 対応タッチパッドエミュレーション用の画面上タッチサーフェス。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイを有効にする</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度:</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>位置をリセット</value></data>

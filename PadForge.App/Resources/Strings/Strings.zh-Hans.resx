@@ -123,8 +123,8 @@
   <data name="Main_Active" xml:space="preserve"><value>活跃</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>正在初始化</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
-  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 个）</value></data>
-  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 个）</value></data>
+  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 台）</value></data>
+  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 台）</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput（最多 {0} 个）</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>键盘 + 鼠标（最多 {0} 个）</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI（需要 Windows MIDI Services）</value></data>
@@ -219,7 +219,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>从手机或平板电脑浏览器连接，用作手柄。</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>触摸板叠加层</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于 DualShock 4 和 DualSense 兼容触摸板模拟的屏幕触摸表面。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>用于 PlayStation 兼容触摸板模拟的屏幕触摸表面。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>启用触摸板叠加层</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度：</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>重置位置</value></data>

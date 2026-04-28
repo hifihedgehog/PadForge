@@ -219,7 +219,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web-Controller-Server aktivieren</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Verbinden Sie sich von einem Telefon oder Tablet-Browser, um es als Gamepad zu verwenden.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchoberfläche für DualShock 4 und DualSense-kompatible Touchpad-Emulation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchoberfläche für PlayStation-kompatible Touchpad-Emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay aktivieren</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Deckkraft:</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Position zurücksetzen</value></data>

@@ -123,8 +123,8 @@
   <data name="Main_Active" xml:space="preserve"><value>활성</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>초기화 중</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
-  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0})</value></data>
-  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0})</value></data>
+  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0}개)</value></data>
+  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0}개)</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (최대 {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>키보드 + 마우스 (최대 {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services 필요)</value></data>
@@ -219,7 +219,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>스마트폰이나 태블릿 브라우저에서 연결하여 게임패드로 사용할 수 있습니다.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>DualShock 4 및 DualSense 호환 터치패드 에뮬레이션을 위한 화면 터치 표면.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation 호환 터치패드 에뮬레이션을 위한 화면 터치 표면.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 활성화</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>불투명도:</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>위치 재설정</value></data>

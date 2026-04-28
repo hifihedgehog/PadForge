@@ -3891,14 +3891,13 @@ namespace PadForge.Services
 
         /// <summary>
         /// Swap two slots' visual positions within their (shared) group.
-        /// The order list is mutated unconditionally; for HM-backed groups
-        /// (Microsoft / PlayStation / Extended), the kernel-order rebuild
-        /// fires from the lowest changed visual position whenever the
-        /// slot now at that position has a live VC. A swap that places a
-        /// disabled or awaiting-devices slot at the lowest changed
-        /// position skips the rebuild — that slot has no kernel presence,
-        /// so its visual position cannot perturb the live VCs' allocation.
-        /// Cross-group calls are rejected.
+        /// <paramref name="padIndexA"/> is the user-dragged pad (the source
+        /// the user grabbed); <paramref name="padIndexB"/> is the pad they
+        /// dropped on. The order list is mutated unconditionally; the
+        /// kernel-order rebuild only fires when the dragged pad has a live
+        /// VC. Moving a non-emitting slot (disabled or awaiting devices)
+        /// has no kernel-slot presence to disturb, so the live VCs around
+        /// it are left alone. Cross-group calls are rejected.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
@@ -3912,17 +3911,18 @@ namespace PadForge.Services
 
             var oldOrder = SettingsManager.SlotOrders.GetOrderFor(typeA).ToList();
             SettingsManager.SlotOrders.SwapWithinGroup(padIndexA, padIndexB, typeA);
-            RebuildKernelOrderAfterReorder(typeA, oldOrder);
+            if (_inputManager != null && _inputManager.HasVirtualControllerAt(padIndexA))
+                RebuildKernelOrderAfterReorder(typeA, oldOrder);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
         /// Move a slot from its current visual position to a new visual
-        /// position within its own group. Mutates the group's order list,
-        /// then triggers the kernel-order rebuild via
-        /// <see cref="RebuildKernelOrderAfterReorder"/> so different-profile
-        /// reshuffles re-allocate kernel slots in the new visual order.
-        /// Cross-group moves go through <see cref="MoveSlotToGroupTail"/>.
+        /// position within its own group. <paramref name="sourcePadIndex"/>
+        /// is the user-dragged pad. The kernel-order rebuild fires only
+        /// when the dragged pad has a live VC; dragging a non-emitting
+        /// slot leaves the live VCs around it unchanged. Cross-group
+        /// moves go through <see cref="MoveSlotToGroupTail"/>.
         /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
         {
@@ -3939,28 +3939,23 @@ namespace PadForge.Services
 
             var oldOrder = orderList.ToList();
             SettingsManager.SlotOrders.MoveWithinGroup(groupType, sourcePos, targetVisualPosition);
-            RebuildKernelOrderAfterReorder(groupType, oldOrder);
+            if (_inputManager != null && _inputManager.HasVirtualControllerAt(sourcePadIndex))
+                RebuildKernelOrderAfterReorder(groupType, oldOrder);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
-        /// After the group's order list has been mutated, find the lowest
-        /// visual position whose pad index changed (compared to the
-        /// snapshot in <paramref name="oldOrder"/>) and tear down every
-        /// VC at that position and lower in the visual stack. Pass 2's
-        /// visual-order gate plus <c>ApplyAscendingIndexPreemption</c>
-        /// then recreate them in the new visual order, so xinputhid / HM
-        /// kernel-slot allocation matches what the user sees.
+        /// Tear down every live VC at and below the lowest visual position
+        /// whose pad index changed (compared to <paramref name="oldOrder"/>)
+        /// in the given HM-backed group. Pass 2's visual-order gate plus
+        /// <c>ApplyAscendingIndexPreemption</c> sequence the recreates so
+        /// xinputhid / HM kernel-slot allocation matches the new visual
+        /// order.
         ///
-        /// Gate: the rebuild is skipped when the slot at the lowest
-        /// changed position has no live VC (disabled or awaiting devices).
-        /// A non-emitting slot does not claim a kernel slot, so its visual
-        /// position cannot perturb the live VCs' kernel order.
-        /// <c>ApplyAscendingIndexPreemption</c> re-anchors the order on
-        /// its own when that slot eventually transitions to active.
-        ///
-        /// Non-HM groups (KBM, MIDI) skip; their slot order is not tied
-        /// to a kernel-side index allocation.
+        /// Callers are expected to gate this on their own "is the user
+        /// actually moving an emitting slot?" check. Non-HM groups (KBM,
+        /// MIDI) skip; their slot order is not tied to a kernel-side
+        /// index allocation.
         /// </summary>
         private void RebuildKernelOrderAfterReorder(
             VirtualControllerType groupType,
@@ -3986,10 +3981,6 @@ namespace PadForge.Services
             }
 
             if (lowestChangedPos < 0) return;
-
-            int newPadAtLowestChanged = newOrder[lowestChangedPos];
-            if (!_inputManager.HasVirtualControllerAt(newPadAtLowestChanged))
-                return;
 
             for (int pos = lowestChangedPos; pos < newOrder.Count; pos++)
             {

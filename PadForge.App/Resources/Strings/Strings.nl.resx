@@ -409,7 +409,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>Trillen</value></data>
+  <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Getuigenis</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>„En wij spreken over Christus, wij verheugen ons in Christus, wij prediken Christus, wij profeteren over Christus, en wij schrijven overeenkomstig onze profetieën, opdat onze kinderen zullen weten bij welke bron zij vergeving van hun zonden kunnen zoeken." — 2 Nephi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Eer, glorie en lof aan de Heer Jezus Christus, de bron van alle waarheid, voor eeuwig en altijd.</value></data>

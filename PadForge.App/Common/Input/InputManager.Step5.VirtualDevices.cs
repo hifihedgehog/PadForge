@@ -17,6 +17,65 @@ namespace PadForge.Common.Input
         //  (Xbox / PlayStation / Extended), plus MIDI and KB+M, via the
         //  IVirtualController abstraction.
         // ─────────────────────────────────────────────
+        //
+        //  VC mapping, sorting, and swapping rules
+        //  ---------------------------------------
+        //  These rules govern how PadForge maps pads to virtual controllers
+        //  and what happens on reorder. They are the source of truth for
+        //  any code in this file that touches _virtualControllers, the
+        //  per-VC state arrays, or SettingsManager.SlotOrders.
+        //
+        //  (a) Pad indices are data identity.
+        //      A pad's mappings, profile, devices, settings, and dirty
+        //      flags live at its pad index and never move on reorder.
+        //
+        //  (b) Visual position is the kernel-slot anchor.
+        //      Within an HM-backed group (Xbox / PlayStation / Extended),
+        //      the VC at visual position V holds kernel slot V. The order
+        //      list SlotOrders[group][V] = padIndex says which pad's data
+        //      the VC at slot V is serving.
+        //
+        //  (c) Reorder repoints, not rebuilds.
+        //      When the user drags or swaps within a group, SlotOrders
+        //      mutates. The kernel VC at each visual position stays put;
+        //      the pad-index pointer in _virtualControllers[] moves so
+        //      the data at the new pad-at-position-V feeds into V's
+        //      kernel slot.
+        //
+        //  (d) Same-profile reorders are zero-flicker.
+        //      If pad-old-at-V and pad-new-at-V both want the same HM
+        //      profile slug, the VC at slot V is reused. Pure pointer
+        //      swap in _virtualControllers[] plus FeedbackPadIndex update
+        //      on the moved VC. Per-VC state arrays follow the VC:
+        //      _loggedFirstSubmit, _extendedAppliedProductString,
+        //      _extendedAppliedLayout, _oemOverrideClaimedVidPid,
+        //      _lastAppliedOemLabel.
+        //
+        //  (e) Different-profile positions destroy + recreate.
+        //      Only the positions whose profile actually changed.
+        //      Matching positions in the same reorder still pointer-swap.
+        //
+        //  (f) Per-pad state stays at pad index.
+        //      _slotInactiveCounter, _createFailed, _hmInactivityFired,
+        //      _slotInitializing, _pendingDisposeTask, _pendingConnectTask
+        //      describe the pad's lifecycle, not the VC, so they don't
+        //      move on reorder.
+        //
+        //  (g) Pass 2's visual-order gate and ApplyAscendingIndexPreemption
+        //      handle fresh creates (a slot transitions to active for the
+        //      first time) and recreates after profile-mismatch destroys.
+        //      They don't run on the swap-only path.
+        //
+        //  (h) Non-HM groups (KBM, MIDI) skip the reroute logic.
+        //      Their slot order isn't tied to a kernel-side index
+        //      allocation.
+        //
+        //  (i) Cross-group moves go through MoveSlotToGroupTail, which
+        //      relies on Pass 1 type-change detection to destroy the
+        //      old-group VC; the new group's ordinary creation logic
+        //      spins up the new VC at the tail. The reroute logic is
+        //      intra-group only.
+        // ─────────────────────────────────────────────
 
         /// <summary>
         /// Shared HIDMaestro context (one per process). Owns all HMController
@@ -39,7 +98,14 @@ namespace PadForge.Common.Input
         /// </summary>
         private static volatile bool _cleanShutdownPerformed;
 
-        /// <summary>Virtual controller targets (one per slot).</summary>
+        /// <summary>
+        /// Virtual controller targets, indexed by pad index. The VC at
+        /// index P serves pad P's data, and (for HM-backed groups) its
+        /// kernel slot equals pad P's current visual position within the
+        /// group. Reorder updates these pointers in place; the kernel VC
+        /// at each visual position stays put. See the rules block at the
+        /// top of this file (rules b, c, d).
+        /// </summary>
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
 
         /// <summary>
@@ -700,6 +766,15 @@ namespace PadForge.Common.Input
                             // active VCs get torn down when a higher-pos slot
                             // transitions to active); this gate handles the
                             // recreate ordering.
+                            //
+                            // Scope per rule (g): this gate runs on fresh
+                            // creates (slot transitions to active) and on
+                            // recreates after a profile-mismatch destroy. It
+                            // does NOT run on the swap-only reorder path,
+                            // which routes through
+                            // RerouteVirtualControllersForReorder and re-
+                            // points _virtualControllers without touching
+                            // the kernel.
                             var orderList = SettingsManager.SlotOrders.GetOrderFor(slotType);
                             int myVisualPos = orderList.IndexOf(padIndex);
                             bool higherStillNeeds = false;
@@ -1302,13 +1377,15 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Re-route the live VCs after a same-group visual reorder.
+        /// Implements rules (b), (c), (d), (e) from the rules block at
+        /// the top of this file.
         ///
         /// Active VCs constitute their own ordering within an HM-backed
         /// group. The kernel slot at visual position V (= the kernel slot
         /// the VC at <c>oldOrder[V]</c> currently holds) is anchored to V.
         /// When the user reorders, the data identity at each visual
         /// position changes (per <paramref name="newOrder"/>) but the
-        /// kernel slot at V stays — its serving VC just gets re-routed
+        /// kernel slot at V stays put. Its serving VC just gets re-routed
         /// to feed the new data identity at position V.
         ///
         /// Per-position decision:
@@ -1323,7 +1400,7 @@ namespace PadForge.Common.Input
         /// destroyed (via the regular async-dispose path). Pass 2's
         /// visual-order gate plus <c>ApplyAscendingIndexPreemption</c>
         /// recreate it with the new pad's profile, taking the lowest
-        /// free kernel slot — which is V because all surviving VCs at
+        /// free kernel slot. That slot is V because all surviving VCs at
         /// positions &lt; V keep their slots.</item>
         /// </list>
         ///
@@ -1333,6 +1410,10 @@ namespace PadForge.Common.Input
         /// teardown. Different-profile cycles destroy only the positions
         /// where the profile actually changed; matching positions in the
         /// same reorder still reuse via pointer swap.
+        ///
+        /// Intra-group only. Non-HM groups (KBM, MIDI) early-return per
+        /// rule (h). Cross-group moves go through MoveSlotToGroupTail
+        /// per rule (i).
         /// </summary>
         public void RerouteVirtualControllersForReorder(
             VirtualControllerType groupType,
@@ -1443,21 +1524,27 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Enforces visual-order kernel-slot allocation within each HM group.
-        /// When the lowest visual position whose pad index needs to be created
-        /// has any visually-lower active VCs in the same group, those lower-
-        /// position VCs are torn down so they recreate AFTER the now-active
-        /// higher-position pad. xinputhid (and HIDMaestro's per-subgroup
-        /// internal index) allocates kernel slots in creation order, so
-        /// rebuilding lower-visual-position slots last gives them higher
-        /// kernel slots than the visually-higher ones, keeping the visual
-        /// order in sync with the kernel-slot order.
+        /// Enforces visual-order kernel-slot allocation within each HM group
+        /// for fresh creates and for recreates after a profile-mismatch
+        /// destroy. Does NOT run on the swap-only reorder path: pure
+        /// reorders that share a profile per position go through
+        /// <see cref="RerouteVirtualControllersForReorder"/> and never
+        /// touch the kernel. See rule (g).
         ///
-        /// Triggered every tick: catches inactive→active transitions
+        /// When the lowest visual position whose pad index needs to be
+        /// created has any visually-lower active VCs in the same group,
+        /// those lower-position VCs are torn down so they recreate AFTER
+        /// the now-active higher-position pad. xinputhid (and HIDMaestro's
+        /// per-subgroup internal index) allocates kernel slots in creation
+        /// order, so rebuilding lower-visual-position slots last gives them
+        /// higher kernel slots than the visually-higher ones, keeping the
+        /// visual order in sync with the kernel-slot order.
+        ///
+        /// Triggered every tick. Catches inactive→active transitions
         /// (waiting slot gets a device assigned, disabled slot toggled back
-        /// on) and visual-order changes via drag. Per the per-group spec,
-        /// teardown happens regardless of whether the lower-position slots
-        /// share a profile with the transitioning one.
+        /// on) and the recreate half of profile-mismatch reorders. Per the
+        /// per-group spec, teardown happens regardless of whether the
+        /// lower-position slots share a profile with the transitioning one.
         ///
         /// Async dispose used so the polling thread is not blocked on
         /// HIDMaestro teardown (up to ~11s for xinputhid profiles). Pass 2's

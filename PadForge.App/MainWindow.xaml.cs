@@ -437,19 +437,18 @@ namespace PadForge
 
             // Engine signaled an HM virtual controller's inactivity timeout
             // fired (all mapped devices offline past the configured threshold).
-            // Treat as a programmatic delete: tear down the slot and compact
-            // the remaining stack with the bubble-up cascade so the
-            // surviving Xbox VCs reattach to lower xinputhid kernel
-            // slots, matching the behavior XInput exhibits naturally on
-            // physical disconnect/reconnect.
+            // Tear down only the inactive slot's live VC (so its kernel
+            // slot frees) and run the Xbox bubble-up cascade. The slot
+            // configuration (mappings, profile, devices, SlotCreated,
+            // SlotEnabled, SlotOrders position) is durable and stays in
+            // PadForge.xml. The slot transitions to "awaiting devices"
+            // and recreates its VC automatically when its mapped devices
+            // come back online.
             _inputService.SlotInactivityTimedOut += (s, padIndex) =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    if (_viewModel.SelectedPadIndex == padIndex)
-                        SelectNavItemByTag("Dashboard");
-                    var deletedType = _deviceService.DeleteSlot(padIndex);
-                    _inputService.OnSlotDeleted(padIndex, deletedType, rebuildHmVcs: true);
+                    _inputService.OnSlotInactivityTimedOut(padIndex);
                 }));
             };
 

@@ -553,7 +553,7 @@ namespace PadForge.Common.Input
                     ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
                     ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
                     ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
-                    ps.TouchpadClick = "Button 11";
+                    ps.TouchpadClick = "Touchpad 0 Click";
                 }
 
                 ps.UpdateChecksum();

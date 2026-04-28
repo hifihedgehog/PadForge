@@ -95,11 +95,13 @@ namespace PadForge.ViewModels
         /// <c>HidDescriptorBuilder.AddPidFfbBlock()</c>; games no longer see a
         /// PID device on this slot. Toggling triggers a Pass 1 destroy + recreate
         /// on a live VC because HIDMaestro bakes the descriptor at create time.
-        /// Honored regardless of <see cref="Customize"/>: a slot with Customize
-        /// off uses the catalog profile's layout but skips the PID block when
-        /// this is false; a slot with Customize on uses the user-overridden
-        /// layout. Only the PID block is affected — sticks, triggers, POVs, and
-        /// buttons stay identical to the catalog/customized layout.
+        /// Customize-gated, same shape as <see cref="OemNameOverride"/> and
+        /// <see cref="ProductString"/>: only takes effect when
+        /// <see cref="Customize"/> is true. The stored value persists on the
+        /// VM across Customize toggle off/on so the user's setting is not lost,
+        /// but <c>InputService.SyncExtendedConfigToSlot</c> pushes the catalog
+        /// default (true) to the engine whenever Customize is off — the engine
+        /// never sees a user-set <c>false</c> while Customize is off.
         /// </summary>
         public bool ForceFeedbackEnabled
         {

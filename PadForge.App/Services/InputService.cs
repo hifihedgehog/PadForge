@@ -3575,40 +3575,68 @@ namespace PadForge.Services
                     SettingsManager.SlotEnabled[i] = (profile.SlotEnabled != null && i < profile.SlotEnabled.Length)
                         ? profile.SlotEnabled[i]
                         : willCreate;
+
+                    // HM profile slug. Step 5's per-slot diff
+                    // (InputManager.Step5.VirtualDevices.cs:514-527) reads this
+                    // via _inputManager.SlotProfileIds[i] and only destroys +
+                    // recreates the live VC when the new slug differs from the
+                    // current HMaestroVirtualController.ProfileId. Slots whose
+                    // HM slug matches across profiles stay live, pointer-stable.
+                    // Skipping this apply leaves the slot stuck on the previous
+                    // profile's slug, so the HM identity never switches.
+                    if (willCreate
+                        && profile.SlotProfileIds != null
+                        && i < profile.SlotProfileIds.Length)
+                    {
+                        _mainVm.Pads[i].ProfileId = profile.SlotProfileIds[i];
+                    }
                 }
             }
 
-            // ── Reset all device assignments, then apply profile entries ──
-            // Each profile fully owns slot assignments; unassign everything
-            // first so devices not in this profile don't leak from the previous one.
+            // ── Single-pass transition of device assignments ──
+            // Each profile fully owns slot assignments. Avoid the reset-then-
+            // rebuild shape (set every us.MapTo = -1, then reapply from
+            // profile.Entries) — that opens a window where the polling thread
+            // sees HasAnyDeviceMapped == false for surviving slots and falls
+            // into the immediate-destroy path at
+            // InputManager.Step5.VirtualDevices.cs:590-600, tearing down VCs
+            // that should survive the switch (slots whose mapping is unchanged
+            // between old and new profile would still get destroyed and
+            // recreated needlessly, including kernel-slot reallocation and the
+            // bubble-up cascade).
+            //
+            // Build the desired final assignment map first, then transition
+            // each UserSetting directly: old → new MapTo for entries that
+            // survive, or → -1 for entries dropped from the new profile.
             lock (SettingsManager.UserSettings.SyncRoot)
             {
-                foreach (var us in SettingsManager.UserSettings.Items)
-                    us.MapTo = -1;
+                var assignments = new System.Collections.Generic.Dictionary<UserSetting, (int MapTo, PadSetting Ps)>();
+                var consumed = new System.Collections.Generic.HashSet<UserSetting>();
 
                 if (profile.Entries != null && profile.Entries.Length > 0 &&
                     profile.PadSettings != null && profile.PadSettings.Length > 0)
                 {
                     foreach (var entry in profile.Entries)
                     {
-                        // Find the PadSetting template by checksum first — skip if missing.
                         var template = profile.PadSettings
                             .FirstOrDefault(p => p.PadSettingChecksum == entry.PadSettingChecksum);
                         if (template == null) continue;
 
-                        // Find an UNASSIGNED UserSetting for this device.
-                        // A device mapped to multiple slots has multiple profile entries;
-                        // each must claim a separate UserSetting (MapTo < 0 = unclaimed).
+                        // Find a UserSetting for this entry, gated on
+                        // "not yet consumed by a prior entry in this same
+                        // apply pass" rather than the old MapTo<0 check —
+                        // that check required the bulk reset we're avoiding.
+                        // A device mapped to multiple slots in the new profile
+                        // still claims one UserSetting per entry.
                         var us = SettingsManager.UserSettings.Items
-                            .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid && s.MapTo < 0);
+                            .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid && !consumed.Contains(s));
 
                         if (us == null && entry.ProductGuid != Guid.Empty)
                         {
                             us = SettingsManager.UserSettings.Items
-                                .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid && s.MapTo < 0);
+                                .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid && !consumed.Contains(s));
                         }
 
-                        // No unclaimed UserSetting found — create one for this slot.
                         if (us == null)
                         {
                             us = new UserSetting
@@ -3619,10 +3647,21 @@ namespace PadForge.Services
                             SettingsManager.UserSettings.Items.Add(us);
                         }
 
-                        // Clone and apply PadSetting + slot assignment.
-                        var ps = template.CloneDeep();
-                        us.SetPadSetting(ps);
-                        us.MapTo = entry.MapTo;
+                        consumed.Add(us);
+                        assignments[us] = (entry.MapTo, template.CloneDeep());
+                    }
+                }
+
+                foreach (var us in SettingsManager.UserSettings.Items)
+                {
+                    if (assignments.TryGetValue(us, out var assign))
+                    {
+                        us.SetPadSetting(assign.Ps);
+                        us.MapTo = assign.MapTo;
+                    }
+                    else if (us.MapTo >= 0)
+                    {
+                        us.MapTo = -1;
                     }
                 }
             }

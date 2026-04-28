@@ -3495,7 +3495,14 @@ namespace PadForge.Services
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
-                WebControllerPort = _mainVm.Dashboard.WebControllerPort
+                WebControllerPort = _mainVm.Dashboard.WebControllerPort,
+                EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
+                TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
+                TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
+                TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
+                TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
+                TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
+                TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight
             };
         }
 
@@ -3856,6 +3863,13 @@ namespace PadForge.Services
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                     profile.EnableWebController = snapshot.EnableWebController;
                     profile.WebControllerPort = snapshot.WebControllerPort;
+                    profile.EnableTouchpadOverlay = snapshot.EnableTouchpadOverlay;
+                    profile.TouchpadOverlayOpacity = snapshot.TouchpadOverlayOpacity;
+                    profile.TouchpadOverlayMonitor = snapshot.TouchpadOverlayMonitor;
+                    profile.TouchpadOverlayLeft = snapshot.TouchpadOverlayLeft;
+                    profile.TouchpadOverlayTop = snapshot.TouchpadOverlayTop;
+                    profile.TouchpadOverlayWidth = snapshot.TouchpadOverlayWidth;
+                    profile.TouchpadOverlayHeight = snapshot.TouchpadOverlayHeight;
                 }
             }
         }

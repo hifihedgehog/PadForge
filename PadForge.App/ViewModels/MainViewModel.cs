@@ -76,6 +76,21 @@ namespace PadForge.ViewModels
             get => _isInitializing;
             set => SetProperty(ref _isInitializing, value);
         }
+
+        private bool _isVirtualControllerConnected;
+        /// <summary>
+        /// Whether the live virtual controller for this slot is currently
+        /// alive (created and reporting IsConnected). Drives the sidebar
+        /// indicator's green-vs-yellow decision so the slot stays green
+        /// during the HM-inactivity grace period (VC alive, devices offline)
+        /// and only turns yellow when the timeout actually fires and the VC
+        /// is torn down.
+        /// </summary>
+        public bool IsVirtualControllerConnected
+        {
+            get => _isVirtualControllerConnected;
+            set => SetProperty(ref _isVirtualControllerConnected, value);
+        }
     }
 
     /// <summary>

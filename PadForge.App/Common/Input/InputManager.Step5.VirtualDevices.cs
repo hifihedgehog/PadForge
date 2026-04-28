@@ -628,12 +628,17 @@ namespace PadForge.Common.Input
                         // Otherwise: convert seconds to polling cycles, fire
                         // event once when threshold is crossed, latch so we
                         // don't re-fire each tick.  UI thread handler runs
-                        // DeleteSlot + InputService.OnSlotDeleted(rebuildHmVcs:true)
-                        // which tears down this VC and bubbles surviving
-                        // Xbox HM VCs down to lower kernel slots without
-                        // touching slots in any other group.  The latch
-                        // clears whenever the slot returns to active state
-                        // (counter reset above).
+                        // InputService.OnSlotInactivityTimedOut(padIndex),
+                        // which tears down THIS VC (kernel slot frees) and
+                        // bubbles surviving Xbox HM VCs at higher visual
+                        // positions down to lower kernel slots without
+                        // touching slots in any other group.  The slot
+                        // configuration is preserved end-to-end — only the
+                        // live VC is destroyed, so the slot transitions to
+                        // "awaiting devices" and the same VC is recreated
+                        // automatically by Pass 2 once its mapped devices
+                        // come back online.  The latch clears whenever the
+                        // slot returns to active state (counter reset above).
                         int hmThresholdCycles =
                             (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs);
                         if (_slotInactiveCounter[padIndex] >= hmThresholdCycles)

@@ -78,7 +78,7 @@
   <data name="Common_Stopped" xml:space="preserve"><value>중지됨</value></data>
   <data name="Common_Running" xml:space="preserve"><value>실행 중</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0}에서 실행 중</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>실행 중 ({0} 클라이언트)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>실행 중 (클라이언트 {0}개)</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>포트 {0} 사용 중</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>포트 {0} 접근 거부됨 (관리자로 실행)</value></data>
@@ -91,8 +91,8 @@
   <data name="Common_Browse" xml:space="preserve"><value>찾아보기...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>진행</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>중지</value></data>
-  <data name="Common_Record" xml:space="preserve"><value>녹화</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>녹화 중...</value></data>
+  <data name="Common_Record" xml:space="preserve"><value>기록</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>기록 중...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>지우기</value></data>
   <data name="Common_None" xml:space="preserve"><value>없음</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Extended</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>키보드 + 마우스</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -112,7 +112,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>이전 세션에서 남은 가상 컨트롤러를 정리하는 중입니다.</value></data>
   <data name="Main_ReleasingControllers" xml:space="preserve"><value>가상 컨트롤러 해제 중</value></data>
   <data name="Main_PleaseWait" xml:space="preserve"><value>잠시 기다려 주십시오...</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> 장치</value></data>
+  <data name="Main_DevicesSuffix" xml:space="preserve"><value>대</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>컨트롤러 추가</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>가상 컨트롤러 삭제</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>전체 화면</value></data>
@@ -125,10 +125,10 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0}개)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0}개)</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (최대 {0})</value></data>
-  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>키보드 + 마우스 (최대 {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Extended (최대 {0}개)</value></data>
+  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>키보드 + 마우스 (최대 {0}개)</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services 필요)</value></data>
-  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (최대 {0})</value></data>
+  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (최대 {0}개)</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide 설치 중…</value></data>
@@ -139,8 +139,8 @@
   <data name="Status_OperationCancelled" xml:space="preserve"><value>사용자가 작업을 취소했습니다.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services 설치 실패: {0}</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>장치 목록을 새로고침했습니다.</value></data>
-  <data name="Status_Recorded_Format" xml:space="preserve"><value>녹화 완료 "{0}" ← {1}</value></data>
-  <data name="Status_NowMap_Format" xml:space="preserve"><value>매핑 중: {0} {1}</value></data>
+  <data name="Status_Recorded_Format" xml:space="preserve"><value>"{0}" 기록됨 ← {1}</value></data>
+  <data name="Status_NowMap_Format" xml:space="preserve"><value>매핑할 항목: {0} {1}</value></data>
   <data name="Status_MapPrompt_Format" xml:space="preserve"><value>매핑: {0} {1}  ({2}/{3})</value></data>
   <data name="Status_DirectionRight" xml:space="preserve"><value>(→ 오른쪽)</value></data>
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ 아래)</value></data>
@@ -172,10 +172,10 @@
   <data name="Status_SettingsResetDefaults" xml:space="preserve"><value>설정이 기본값으로 초기화되었습니다.</value></data>
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>디스크에서 설정을 다시 로드했습니다.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>디스크에서 설정 파일을 찾을 수 없습니다.</value></data>
-  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>녹화할 장치가 연결되어 있지 않습니다.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>녹화 중: "{0}"에 대해 버튼을 누르거나 축을 움직이세요...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>녹화가 취소되었습니다.</value></data>
-  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"에 대한 녹화 시간이 초과되었습니다.</value></data>
+  <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>기록할 장치가 연결되어 있지 않습니다.</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 버튼을 누르거나 축을 움직이십시오...</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>기록이 취소되었습니다.</value></data>
+  <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"에 대한 기록 시간이 초과되었습니다.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>엔진이 시작되었습니다.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>엔진이 중지되었습니다.</value></data>
   <data name="Status_NoMapping" xml:space="preserve"><value>매핑 없음</value></data>
@@ -184,15 +184,15 @@
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>기본값</value></data>
   <data name="Profiles_Shortcuts" xml:space="preserve"><value>프로필 단축키</value></data>
-  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>컨트롤러의 버튼 조합으로 프로필을 전환합니다.</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>모든 컨트롤러에서 프로필을 전환할 수 있도록 버튼 조합을 할당합니다.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>단축키 추가</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>다음 프로필</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>이전 프로필</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>특정 프로필</value></data>
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>창 전환</value></data>
-  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>연결된 아무 장치</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>녹음</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>녹음 중...</value></data>
+  <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>연결된 모든 장치</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>기록</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>기록 중...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>장치가 선택되지 않았습니다.</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>잘못된 슬롯 인덱스: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>장치 할당에 실패했습니다.</value></data>
@@ -205,10 +205,10 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>대시보드</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>입력 엔진</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 장치 온라인</value></data>
+  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value>대 온라인</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>가상 컨트롤러</value></data>
-  <data name="Dashboard_Mapped" xml:space="preserve"><value> 매핑됨, </value></data>
-  <data name="Dashboard_Connected" xml:space="preserve"><value> 연결됨</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value>개 매핑됨, </value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value>개 연결됨</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>모션 서버</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>자이로 및 가속도계 데이터를 위한 DSU/CemuHook Motion Provider protocol 서버.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
@@ -275,7 +275,7 @@
   <data name="About_Title" xml:space="preserve"><value>정보</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>컨트롤러 매핑 유틸리티</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce의 현대적 포크 — SDL3, WPF, .NET 10으로 재구축</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge는 모든 입력 장치를 모든 가상 컨트롤러로 변환합니다. 게임패드, 조이스틱, 키보드, 마우스, 터치스크린을 가상 게임 컨트롤러(Xbox, PlayStation, 플라이트 스틱, 휠, 서드파티 게임패드) 또는 키보드+마우스/MIDI 출력으로 매핑하여 게임에서 실제 하드웨어로 인식됩니다 — HIDMaestro 및 Windows MIDI Services로 구동됩니다. 컨트롤러 입력에 SDL3, 키보드와 마우스 입력에 Windows Raw Input, 게임별 장치 숨김에 HidHide를 사용하며, 매핑, 데드존, 감도 곡선 및 포스 피드백을 위한 현대적인 Fluent Design 인터페이스를 제공합니다.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge는 모든 입력 장치를 모든 가상 컨트롤러로 변환합니다. 게임패드, 조이스틱, 키보드, 마우스, 터치스크린을 가상 게임 컨트롤러(Xbox, PlayStation, 플라이트 스틱, 휠, 서드파티 게임패드) 또는 키보드+마우스/MIDI 출력으로 매핑하여 게임이 실제 하드웨어로 인식하게 합니다. HIDMaestro와 Windows MIDI Services로 구동됩니다. 컨트롤러 입력에는 SDL3, 키보드와 마우스 입력에는 Windows Raw Input, 게임별 장치 숨김에는 HidHide를 사용하며, 매핑, 데드존, 감도 곡선, 포스 피드백을 위한 Fluent Design 인터페이스를 제공합니다.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>사용 기술</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>런타임 및 WPF 프레임워크</value></data>
@@ -292,7 +292,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>데이터 바인딩을 위한 CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>라이선스</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>이 소프트웨어는 CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) 라이선스를 따릅니다. 3D 컨트롤러 모델은 Handheld Companion (CC BY-NC-SA 4.0)에서 적용되었습니다. 2D 컨트롤러 에셋은 AL2009man의 Gamepad-Asset-Pack (MIT)에서 가져왔습니다. 원본 코드베이스는 x360ce (MIT)에서 포크되었습니다. SDL3은 zlib 라이선스를 따릅니다. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit, WPF UI는 MIT 라이선스를 따릅니다. OpenXInput은 상위 프로젝트의 상표 면책 조항만 포함하며 OSS 라이선스를 부여하지 않습니다. 동일한 조건으로 그대로 재배포됩니다.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>이 소프트웨어는 CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) 라이선스를 따릅니다. 3D 컨트롤러 모델은 Handheld Companion (CC BY-NC-SA 4.0)에서 가져와 수정한 것입니다. 2D 컨트롤러 에셋은 AL2009man의 Gamepad-Asset-Pack (MIT)에서 가져왔습니다. 원본 코드베이스는 x360ce (MIT)에서 포크되었습니다. SDL3은 zlib 라이선스를 따릅니다. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit, WPF UI는 MIT 라이선스를 따릅니다. OpenXInput은 상위 프로젝트의 상표 면책 조항만 포함하며, 동일한 조건으로 그대로 재배포됩니다.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>게임패드</value></data>
@@ -310,8 +310,8 @@
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>모든 마우스 (병합)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>모든 터치패드 (병합됨)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>장치</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> 온라인 / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> 전체</value></data>
+  <data name="Devices_OnlineTotal" xml:space="preserve"><value>대 온라인 / </value></data>
+  <data name="Devices_Total" xml:space="preserve"><value>대</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>이 장치 및 해당 설정을 제거합니다</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>제품: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>유형: </value></data>
@@ -324,7 +324,7 @@
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>할당 전환</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>입력 모드</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>강제 원시 조이스틱 모드 (게임패드 재매핑 우회)</value></data>
-  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL의 게임패드 매핑 대신 원시 HID 인덱스를 읽습니다 — SDL이 버튼/축 레이아웃을 잘못 인식할 때 사용하십시오</value></data>
+  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL의 게임패드 매핑 대신 원시 HID 인덱스를 읽습니다. SDL이 버튼/축 레이아웃을 잘못 인식할 때 사용하십시오</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>입력 숨기기</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>게임에서 숨기기 (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide 드라이버를 통해 다른 응용 프로그램에서 이 장치를 완전히 숨깁니다</value></data>
@@ -345,14 +345,14 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>진동</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>자이로</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>가속</value></data>
-  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>{0}하려고 합니다. 이 작업은 {1}{2}에 영향을 줍니다.</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>모든 응용 프로그램에서 이 장치를 숨기기</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>이 장치의 매핑된 입력을 차단</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> 연결된 모든 {0}에 대해</value></data>
-  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>이것이 유일한 {0}인 경우 시스템과 상호작용할 수 없게 됩니다. 다른 입력 장치가 있는 경우에만 진행하세요.</value></data>
-  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>시스템 상호작용에 필수적인 입력(예: 좌/우 클릭, X/Y 이동)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있는 경우에만 진행하세요.</value></data>
-  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>시스템 상호작용에 필수적인 입력(예: 자주 사용하는 키)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있는 경우에만 진행하세요.</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0}{1}합니다.
+  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>{0} 작업을 진행하려고 합니다. 이 작업은 {1}{2}에 영향을 줍니다.</value></data>
+  <data name="Devices_HideAction" xml:space="preserve"><value>모든 응용 프로그램에서 이 장치를 숨깁니다</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>이 장치의 매핑된 입력을 차단합니다</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>(연결된 모든 {0}에 적용)</value></data>
+  <data name="Devices_WarnHide_Format" xml:space="preserve"><value>이것이 유일한 {0}인 경우 시스템을 조작할 수 없게 됩니다. 다른 입력 장치가 있을 때만 진행하십시오.</value></data>
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>시스템 조작에 필수적인 입력(예: 좌/우 클릭, X/Y 이동)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있을 때만 진행하십시오.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>시스템 조작에 필수적인 입력(예: 자주 사용하는 키)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있을 때만 진행하십시오.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0} {1}
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>마우스</value></data>
@@ -381,7 +381,7 @@
   <data name="ManageProfiles_Close" xml:space="preserve"><value>닫기</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>프로필 JSON 내보내기</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>가져온 프로필을 삭제하시겠습니까?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}"을(를) 삭제하시겠습니까? 이 프로필을 사용 중인 슬롯은 합성 Custom 항목으로 되돌아갑니다.</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}"을(를) 삭제하시겠습니까? 이 프로필을 사용 중인 슬롯은 기본 제공되는 Custom 항목으로 되돌아갑니다.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0}(으)로 내보냈습니다</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>내보내기 실패: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}"을(를) 삭제했습니다.</value></data>
@@ -390,7 +390,7 @@
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0}에서 가져왔습니다.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>읽기 실패: {0}</value></data>
   <data name="ImportFromDevice_Title" xml:space="preserve"><value>장치에서 가져오기</value></data>
-  <data name="ImportFromDevice_Description" xml:space="preserve"><value>연결된 HID 장치를 선택하세요. PadForge가 해당 장치의 설명자, 식별 정보 및 레이아웃을 캡처하여 「(User Generated)」 접미어가 붙은 새 Extended 프로필로 저장합니다. 프로필은 PadForge.xml 내부에 저장되어 설정과 함께 이동합니다.</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>연결된 HID 장치를 선택하십시오. PadForge가 해당 장치의 설명자, 식별 정보, 레이아웃을 캡처하여 "(User Generated)"라는 이름의 새 Extended 프로필로 저장합니다. 프로필은 PadForge.xml 내부에 저장되므로 설정과 함께 이동합니다.</value></data>
   <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>연결된 장치:</value></data>
   <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>새로 고침</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>가져오기</value></data>
@@ -398,14 +398,14 @@
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0}개의 HID 인터페이스를 찾았습니다.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>열거 실패: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>추출 실패: {0}</value></data>
-  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>추출된 프로필 JSON을 구문 분석할 수 없습니다 — 저장된 것이 없습니다.</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>추출된 프로필 JSON을 구문 분석할 수 없어 저장된 항목이 없습니다.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>사용자 지정</value></data>
-  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>아래의 아이덴티티 및 레이아웃 재정의 필드를 활성화합니다. 꺼져 있으면 가상 컨트롤러는 HIDMaestro 프로파일을 그대로 사용합니다.</value></data>
-  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>모든 재정의 필드를 현재 프로파일의 카탈로그 값(제품 이름, VID, PID, 스틱/트리거/POV/버튼 수)으로 되돌리고 OEM 재정의를 해제합니다.</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>아래의 식별자 및 레이아웃 재정의 필드를 활성화합니다. 꺼져 있으면 가상 컨트롤러는 선택된 프로필에 내장된 식별자와 HID 디스크립터를 HIDMaestro에서 제공하는 그대로 사용합니다.</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>모든 재정의 필드를 현재 프로필의 카탈로그 값(제품 이름, VID, PID, 스틱/트리거/POV/버튼 수)으로 되돌리고 OEM 재정의 플래그를 해제합니다.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>제품 이름</value></data>
-  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>운영 체제가 게임 및 joy.cpl에 보고하는 iProduct 문자열을 재정의합니다. 장치 관리자에 표시되는 이름도 제어합니다.</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>OS가 게임과 joy.cpl에 보고하는 iProduct 문자열을 재정의합니다. 별도의 설명이 지정되지 않았을 때 장치 관리자의 FriendlyName도 이 값을 사용합니다.</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM 재정의</value></data>
-  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>프로파일의 VID:PID에 대한 DirectInput OEM 이름 테이블 항목을 점유합니다. joy.cpl과 DirectInput은 HID iProduct보다 이 테이블을 먼저 읽으므로, 위의 제품 이름이 우선하도록 하려면 활성화하십시오. 기본값은 꺼짐.</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>이 프로필의 VID:PID에 해당하는 Windows DirectInput OEM 이름 테이블 항목을 점유합니다. joy.cpl과 DirectInput UI는 일반적으로 HID iProduct 문자열보다 이 테이블을 먼저 읽으므로, 위의 제품 이름이 우선하도록 하려면 이 옵션을 활성화하십시오. 기본값은 꺼짐.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>터치패드</value></data>
@@ -433,8 +433,8 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>오른쪽 모터</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>전체 매핑</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>매핑: {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>모든 매핑을 순서대로 녹화합니다 — 각 프롬프트에 맞는 버튼/축을 누르십시오</value></data>
-  <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>모든 매핑을 하나씩 순서대로 녹화합니다</value></data>
+  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>모든 매핑을 순서대로 기록합니다. 각 프롬프트에 맞는 버튼/축을 누르십시오</value></data>
+  <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>모든 매핑을 하나씩 순서대로 기록합니다</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>매핑 행을 클릭한 후 컨트롤러의 버튼/축을 눌러 할당하십시오.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>모든 매핑 및 설정을 클립보드에 복사합니다</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>클립보드에서 매핑 및 설정을 붙여넣습니다</value></data>
@@ -456,10 +456,10 @@
   <data name="Curve_SCurve" xml:space="preserve"><value>S 커브</value></data>
   <data name="Curve_Delay" xml:space="preserve"><value>지연</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>사용자 정의</value></data>
-  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>중심 캘리브레이션</value></data>
+  <data name="Pad_CalibrateCenter" xml:space="preserve"><value>중앙 보정</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
-  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중심 오프셋 X:</value></data>
-  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중심 오프셋 Y:</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X:</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y:</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>데드존 형태:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>스케일 방사형</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>방사형</value></data>
@@ -504,7 +504,7 @@
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>버튼:</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>키 조합:</value></data>
-  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 형식의 키 조합 — 편집 가능</value></data>
+  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 형식의 키 조합 (편집 가능)</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>키를 선택하여 추가하십시오. 예: {Control}{Alt}{Delete}</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>지속 시간:</value></data>
   <data name="Macro_Axis" xml:space="preserve"><value>축:</value></data>
@@ -520,7 +520,7 @@
   <data name="Macro_Device" xml:space="preserve"><value>장치:</value></data>
   <data name="Macro_VolumeLimit" xml:space="preserve"><value>볼륨 제한:</value></data>
   <data name="Macro_Process" xml:space="preserve"><value>프로세스:</value></data>
-  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>.exe 없이 프로세스 이름 — 드롭다운에 활성 오디오 세션이 있는 프로세스가 표시됩니다</value></data>
+  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>.exe 확장자 없이 입력하는 프로세스 이름. 드롭다운에는 활성 오디오 세션이 있는 프로세스가 표시됩니다</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>왼쪽</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>오른쪽</value></data>
   <data name="Macro_MouseMiddle" xml:space="preserve"><value>가운데</value></data>
@@ -535,8 +535,8 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>지연 (ms):</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>감도:</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>새 매크로</value></data>
-  <data name="Macro_RecordTrigger" xml:space="preserve"><value>트리거 녹화</value></data>
-  <data name="Macro_NotSet" xml:space="preserve"><value>설정되지 않음 — 녹화를 클릭하십시오</value></data>
+  <data name="Macro_RecordTrigger" xml:space="preserve"><value>트리거 기록</value></data>
+  <data name="Macro_NotSet" xml:space="preserve"><value>설정되지 않음, 기록을 클릭하십시오</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>버튼 {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(없음)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>장치 축 {0}</value></data>
@@ -679,7 +679,7 @@
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>왼쪽 모터 초기화</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>뷰 초기화</value></data>
-  <data name="Macro_RecordHint" xml:space="preserve"><value>버튼을 누르거나 축/트리거를 움직여 기록하세요. 축은 50% 이상 기울었을 때 감지됩니다.</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>버튼을 누르거나 축/트리거를 움직여 기록하십시오. 축은 50% 이상 기울어졌을 때 감지됩니다.</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>선택한 축(0–100%)을 Windows 시스템 볼륨에 지속적으로 매핑하며 볼륨 한도에 맞게 조정됩니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows 볼륨 믹서에서 특정 앱의 볼륨을 한도에 맞게 조정합니다. 프로세스 이름을 입력하세요 (작업 관리자에서 확인). "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>선택한 축을 마우스 이동(또는 스크롤)에 지속적으로 매핑합니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요. 스틱→마우스의 경우 X축과 Y축에 각각 하나씩 두 개의 액션을 만드세요.</value></data>
@@ -715,10 +715,10 @@
   <data name="Btn_Down" xml:space="preserve"><value>아래</value></data>
   <data name="Btn_Left" xml:space="preserve"><value>왼쪽</value></data>
   <data name="Btn_Right" xml:space="preserve"><value>오른쪽</value></data>
-  <data name="Btn_Cross" xml:space="preserve"><value>×버튼</value></data>
-  <data name="Btn_Circle" xml:space="preserve"><value>○버튼</value></data>
-  <data name="Btn_Square" xml:space="preserve"><value>□버튼</value></data>
-  <data name="Btn_Triangle" xml:space="preserve"><value>△버튼</value></data>
+  <data name="Btn_Cross" xml:space="preserve"><value>× 버튼</value></data>
+  <data name="Btn_Circle" xml:space="preserve"><value>○ 버튼</value></data>
+  <data name="Btn_Square" xml:space="preserve"><value>□ 버튼</value></data>
+  <data name="Btn_Triangle" xml:space="preserve"><value>△ 버튼</value></data>
   <data name="Btn_L1" xml:space="preserve"><value>L1</value></data>
   <data name="Btn_R1" xml:space="preserve"><value>R1</value></data>
   <data name="Btn_L3" xml:space="preserve"><value>L3</value></data>

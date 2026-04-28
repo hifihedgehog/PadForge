@@ -3937,20 +3937,12 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Active VCs constitute their own ordering within an HM-backed
-        /// group, independent of where the non-emitting (disabled or
-        /// awaiting-devices) slots sit. The kernel-slot allocation needs
-        /// to follow that active ordering only when it actually changes
-        /// AND the new live position holds a different profile than
-        /// before — same-profile shuffles are kernel-indistinguishable
-        /// and skip.
-        ///
-        /// Walk the live subsequences of <paramref name="oldOrder"/> and
-        /// the new order in parallel. At the lowest live position where
-        /// the profile changed, destroy that live VC and every live VC
-        /// below it. Pass 2's visual-order gate +
-        /// <c>ApplyAscendingIndexPreemption</c> recreate them in the new
-        /// visual order.
+        /// Re-route active VCs after a same-group visual reorder.
+        /// Delegates to <see cref="InputManager.RerouteVirtualControllersForReorder"/>
+        /// which walks <paramref name="oldOrder"/> against the new order
+        /// position by position. Same-profile positions reuse their VC
+        /// via a pointer-only swap; different-profile positions destroy
+        /// the old VC and let Pass 2 recreate.
         ///
         /// Non-HM groups (KBM, MIDI) skip; their slot order is not tied
         /// to a kernel-side index allocation.
@@ -3960,47 +3952,8 @@ namespace PadForge.Services
             IReadOnlyList<int> oldOrder)
         {
             if (_inputManager == null) return;
-            if (groupType != VirtualControllerType.Xbox
-                && groupType != VirtualControllerType.PlayStation
-                && groupType != VirtualControllerType.Extended)
-                return;
-
             var newOrder = SettingsManager.SlotOrders.GetOrderFor(groupType);
-
-            var oldLives = new List<int>(oldOrder.Count);
-            foreach (int padIdx in oldOrder)
-            {
-                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
-                if (_inputManager.HasVirtualControllerAt(padIdx)) oldLives.Add(padIdx);
-            }
-            var newLives = new List<int>(newOrder.Count);
-            foreach (int padIdx in newOrder)
-            {
-                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
-                if (_inputManager.HasVirtualControllerAt(padIdx)) newLives.Add(padIdx);
-            }
-
-            int compareCount = Math.Min(oldLives.Count, newLives.Count);
-            int firstMismatch = compareCount;
-            for (int i = 0; i < compareCount; i++)
-            {
-                string oldProfile = _mainVm.Pads[oldLives[i]].ProfileId ?? string.Empty;
-                string newProfile = _mainVm.Pads[newLives[i]].ProfileId ?? string.Empty;
-                if (!string.Equals(oldProfile, newProfile, StringComparison.Ordinal))
-                {
-                    firstMismatch = i;
-                    break;
-                }
-            }
-
-            if (firstMismatch >= newLives.Count) return;
-
-            for (int i = firstMismatch; i < newLives.Count; i++)
-            {
-                int padIdx = newLives[i];
-                try { _inputManager.DestroyVirtualControllerAsync(padIdx); }
-                catch { /* best effort, Pass 2 retries */ }
-            }
+            _inputManager.RerouteVirtualControllersForReorder(groupType, oldOrder, newOrder);
         }
 
         /// <summary>

@@ -2265,7 +2265,15 @@ namespace PadForge.Services
                         string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
                         // If the DevicePath produced a valid HID instance ID, use it directly.
-                        if (instanceId != null && instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase))
+                        // Match three transports:
+                        //   USB:        HID\VID_054C&PID_0CE6\...           (underscore form)
+                        //   BLE:        HID\{...}&DEV&VID_045E&PID_0B13&... (underscore form, GATT)
+                        //   BT Classic: HID\{...}_VID&0002054c_PID&0ce6\... (ampersand form, BR/EDR over RFCOMM)
+                        // The previous "VID_" substring check rejected BT Classic outright,
+                        // so DualSense over Bluetooth was never blacklisted.
+                        if (instanceId != null
+                            && (instanceId.Contains("VID_", StringComparison.OrdinalIgnoreCase)
+                                || instanceId.Contains("VID&", StringComparison.OrdinalIgnoreCase)))
                         {
                             // Expand to base-container + sibling HIDs, mirroring
                             // HidHide Configuration Client. Without this, only

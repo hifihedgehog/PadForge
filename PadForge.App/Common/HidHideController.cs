@@ -321,6 +321,12 @@ namespace PadForge.Common
             string vidBle02 = $"VID&02{vendorId:X4}";
             string vidBle01 = $"VID&01{vendorId:X4}";
             string pidBle = $"PID&{productId:X4}";
+            // BT Classic HID-over-RFCOMM (Profile 0x1124) format: VID&0002054C
+            // 4-hex source ("0002" = USB-IF, "0001" = SIG) + 4-hex VID. PID is
+            // unchanged (PID&XXXX).  Without these patterns DualSense over
+            // Bluetooth Classic isn't picked up by the synthetic-path fallback.
+            string vidBrEdr02 = $"VID&0002{vendorId:X4}";
+            string vidBrEdr01 = $"VID&0001{vendorId:X4}";
 
             var guid = GUID_DEVCLASS_HIDCLASS;
             IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT);
@@ -339,11 +345,13 @@ namespace PadForge.Common
                         int nullIdx = Array.IndexOf(buffer, '\0');
                         string instanceId = nullIdx >= 0 ? new string(buffer, 0, nullIdx) : new string(buffer);
 
-                        // Match standard USB format or BLE GATT format.
+                        // Match standard USB format, BLE GATT format, or BT Classic BR/EDR format.
                         bool match = instanceId.Contains(vidPidUsb, StringComparison.OrdinalIgnoreCase)
                             || (instanceId.Contains(pidBle, StringComparison.OrdinalIgnoreCase)
                                 && (instanceId.Contains(vidBle02, StringComparison.OrdinalIgnoreCase)
-                                    || instanceId.Contains(vidBle01, StringComparison.OrdinalIgnoreCase)));
+                                    || instanceId.Contains(vidBle01, StringComparison.OrdinalIgnoreCase)
+                                    || instanceId.Contains(vidBrEdr02, StringComparison.OrdinalIgnoreCase)
+                                    || instanceId.Contains(vidBrEdr01, StringComparison.OrdinalIgnoreCase)));
 
                         if (match && !IsHidMaestroDevice(instanceId))
                             result.Add(instanceId);

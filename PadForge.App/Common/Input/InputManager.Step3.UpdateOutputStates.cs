@@ -390,6 +390,23 @@ namespace PadForge.Common.Input
         private static bool MapToButtonPressedSingle(CustomInputState state, string descriptor,
             int deadZonePercent = 0, int globalThresholdPercent = 50)
         {
+            // Touchpad-typed descriptors that resolve to a bool. Parallel to the
+            // "Touchpad N Finger M X/Y/Down" descriptors consumed by Step 3's
+            // touchpad output path; here we recognize:
+            //   "Touchpad N Click"          → state.TouchpadClick (single bool;
+            //                                  N>0 returns false until a future
+            //                                  multi-touchpad-click extension)
+            //   "Touchpad N Finger M Down"  → state.TouchpadDown[M] for finger M
+            // Resolved BEFORE ParseDescriptor because that parser only knows
+            // Axis / Button / Slider / POV — adding a fifth MapType would touch
+            // many call sites, but bool-yielding touchpad descriptors only
+            // need to flow through MapToButtonPressed.
+            if (!string.IsNullOrEmpty(descriptor)
+                && descriptor.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                return MapTouchpadButton(state, descriptor.Trim());
+            }
+
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid)
                 return false;
@@ -1548,5 +1565,52 @@ namespace PadForge.Common.Input
         private static bool IsTouchpadDescriptor(string descriptor) =>
             !string.IsNullOrEmpty(descriptor) &&
             descriptor.StartsWith("Touchpad", StringComparison.Ordinal);
+
+        /// <summary>
+        /// Resolves bool-yielding touchpad descriptors against a CustomInputState.
+        /// Recognized forms:
+        ///   "Touchpad N Click"          — state.TouchpadClick (single bool;
+        ///                                  N is parsed but only N==0 currently
+        ///                                  has a backing field)
+        ///   "Touchpad N Finger M Down"  — state.TouchpadDown[M], finger M's
+        ///                                  contact bool. N is parsed for
+        ///                                  symmetry with the X/Y descriptors.
+        /// Anything else returns false. The N==0 restriction matches the X/Y
+        /// descriptors elsewhere in Step 3 — PadForge models a single logical
+        /// touchpad with up to two fingers regardless of how many physical
+        /// touchpads SDL reports (multi-touchpad devices like the Steam Deck
+        /// fan their fingers into the same two slots).
+        /// </summary>
+        private static bool MapTouchpadButton(CustomInputState state, string descriptor)
+        {
+            // Format: "Touchpad N <suffix>", split on spaces.
+            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 3) return false;
+            if (!int.TryParse(parts[1], out int touchpadIndex)) return false;
+
+            // Click: "Touchpad N Click" — 3 parts.
+            if (parts.Length == 3 && string.Equals(parts[2], "Click", StringComparison.Ordinal))
+            {
+                return touchpadIndex == 0 && state.TouchpadClick;
+            }
+
+            // Finger down: "Touchpad N Finger M Down" — 5 parts.
+            if (parts.Length == 5
+                && string.Equals(parts[2], "Finger", StringComparison.Ordinal)
+                && string.Equals(parts[4], "Down", StringComparison.Ordinal)
+                && int.TryParse(parts[3], out int fingerIndex))
+            {
+                if (touchpadIndex != 0) return false;
+                if (fingerIndex < 0 || fingerIndex >= state.TouchpadDown.Length) return false;
+                return state.TouchpadDown[fingerIndex];
+            }
+
+            // X/Y descriptors are handled by the touchpad output path in
+            // Step 3 directly (BuildTouchpadState reads state.TouchpadFingers),
+            // not via MapToButtonPressed. They don't have a meaningful bool
+            // interpretation, so reject them here so the user can't quietly
+            // assign a stick X to a button.
+            return false;
+        }
     }
 }

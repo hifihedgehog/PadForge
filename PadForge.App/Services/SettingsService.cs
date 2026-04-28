@@ -198,7 +198,14 @@ namespace PadForge.Services
                 }
 
                 // Purge orphaned UserSettings (MapTo == -1) left by older versions.
-                SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
+                // Lock guards the polling thread's FindByInstanceGuid /
+                // FindByPadIndex iteration: Reload() can fire while the engine
+                // is running, and List<T>.RemoveAll mutating concurrently with
+                // a foreach is undefined behavior.
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
+                }
 
                 // Load app settings into ViewModel.
                 if (data.AppSettings != null)
@@ -1099,7 +1106,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
-                    Customize = cfg.Customize
+                    Customize = cfg.Customize,
+                    ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
             }
 

@@ -86,6 +86,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _oemNameOverride, value);
         }
 
+        private bool _forceFeedbackEnabled = true;
+        /// <summary>
+        /// Whether the HID PID 1.0 force-feedback descriptor block is appended
+        /// to this slot's HID descriptor. Default true so existing slots retain
+        /// FFB. When false, Step 5's CreateVirtualController takes the custom-
+        /// descriptor branch and rebuilds the descriptor without
+        /// <c>HidDescriptorBuilder.AddPidFfbBlock()</c>; games no longer see a
+        /// PID device on this slot. Toggling triggers a Pass 1 destroy + recreate
+        /// on a live VC because HIDMaestro bakes the descriptor at create time.
+        /// Honored regardless of <see cref="Customize"/>: a slot with Customize
+        /// off uses the catalog profile's layout but skips the PID block when
+        /// this is false; a slot with Customize on uses the user-overridden
+        /// layout. Only the PID block is affected — sticks, triggers, POVs, and
+        /// buttons stay identical to the catalog/customized layout.
+        /// </summary>
+        public bool ForceFeedbackEnabled
+        {
+            get => _forceFeedbackEnabled;
+            set => SetProperty(ref _forceFeedbackEnabled, value);
+        }
+
         private string _productString = string.Empty;
         /// <summary>
         /// User-editable product string. Populated from the active profile's
@@ -152,5 +173,8 @@ namespace PadForge.ViewModels
         [XmlAttribute] public bool OemNameOverride { get; set; }
         [XmlAttribute] public string ProductString { get; set; } = string.Empty;
         [XmlAttribute] public bool Customize { get; set; }
+        // Default true so v3.0.0/v3.0.1/v3.0.2 PadForge.xml files (which never
+        // wrote this attribute) deserialize with FFB enabled.
+        [XmlAttribute] public bool ForceFeedbackEnabled { get; set; } = true;
     }
 }

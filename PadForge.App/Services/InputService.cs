@@ -1073,6 +1073,11 @@ namespace PadForge.Services
             _inputManager.SlotExtendedCustomize[slotIndex] = customize;
             _inputManager.SlotOemOverrideEnabled[slotIndex] = customize && cfg.OemNameOverride;
             _inputManager.SlotOemOverrideLabel[slotIndex] = customize ? effectiveLabel : string.Empty;
+            // FFB toggle. Off = drop the HID PID 1.0 descriptor block on the
+            // built device. Step 5 detects a flip vs the applied snapshot and
+            // triggers destroy + recreate so HIDMaestro regenerates the
+            // descriptor with or without the PID block to match.
+            _inputManager.SlotExtendedFfbEnabled[slotIndex] = cfg.ForceFeedbackEnabled;
         }
 
         /// <summary>
@@ -3503,7 +3508,11 @@ namespace PadForge.Services
                     ThumbstickCount = cfg.ThumbstickCount,
                     TriggerCount = cfg.TriggerCount,
                     PovCount = cfg.PovCount,
-                    ButtonCount = cfg.ButtonCount
+                    ButtonCount = cfg.ButtonCount,
+                    OemNameOverride = cfg.OemNameOverride,
+                    ProductString = cfg.ProductString,
+                    Customize = cfg.Customize,
+                    ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;
@@ -3695,6 +3704,10 @@ namespace PadForge.Services
                         cfg.TriggerCount = cfgData.TriggerCount;
                         cfg.PovCount = cfgData.PovCount;
                         cfg.ButtonCount = cfgData.ButtonCount;
+                        cfg.OemNameOverride = cfgData.OemNameOverride;
+                        cfg.ProductString = cfgData.ProductString ?? string.Empty;
+                        cfg.Customize = cfgData.Customize;
+                        cfg.ForceFeedbackEnabled = cfgData.ForceFeedbackEnabled;
                     }
                 }
             }

@@ -204,6 +204,33 @@ namespace PadForge.Common.Input
         private readonly CustomControllerLayout[] _extendedAppliedLayout = new CustomControllerLayout[MaxPads];
 
         /// <summary>
+        /// Per-slot Extended FFB-enabled flag. Pushed from
+        /// <c>ExtendedConfig.ForceFeedbackEnabled</c> by InputService. Default
+        /// true: existing slots keep the HID PID 1.0 force-feedback descriptor
+        /// block. False causes <see cref="CreateVirtualController"/> to take
+        /// the custom-descriptor branch unconditionally and rebuild the HID
+        /// descriptor without <c>HidDescriptorBuilder.AddPidFfbBlock()</c>.
+        /// Only honored when <see cref="SlotExtendedCustomize"/> is true.
+        /// </summary>
+        internal bool[] SlotExtendedFfbEnabled { get; } = InitFfbEnabledArray();
+
+        private static bool[] InitFfbEnabledArray()
+        {
+            var a = new bool[MaxPads];
+            for (int i = 0; i < a.Length; i++) a[i] = true;
+            return a;
+        }
+
+        /// <summary>
+        /// Per-slot snapshot of the FFB-enabled flag baked into the active VC's
+        /// HID descriptor on create. Compared against
+        /// <see cref="SlotExtendedFfbEnabled"/> in Pass 1 to detect a toggle;
+        /// mismatch triggers destroy + recreate so HIDMaestro regenerates the
+        /// descriptor with or without the PID block to match.
+        /// </summary>
+        private readonly bool[] _extendedAppliedFfbEnabled = new bool[MaxPads];
+
+        /// <summary>
         /// Per-slot last-applied OEM override label, compared against the
         /// desired <see cref="SlotOemOverrideLabel"/> on each polling cycle
         /// to detect product-string edits that should re-push the claim.
@@ -527,16 +554,18 @@ namespace PadForge.Common.Input
                 }
 
                 // Detect Extended config edits on an already-connected slot:
-                // ProductString edited, or stick/trigger/POV/button counts
-                // changed. Both require a rebuild because HIDMaestro bakes
-                // iProduct and the HID descriptor at CreateController time.
-                // Compare the current desired config against the snapshot
-                // recorded when the VC was last created.
+                // ProductString edited, stick/trigger/POV/button counts
+                // changed, or the force-feedback toggle flipped. Each requires
+                // a rebuild because HIDMaestro bakes iProduct and the HID
+                // descriptor at CreateController time. Compare the current
+                // desired config against the snapshot recorded when the VC was
+                // last created.
                 if (vc is HMaestroVirtualController hmExtVc
                     && SlotControllerTypes[padIndex] == VirtualControllerType.Extended)
                 {
                     string desiredPs = SlotOemOverrideLabel[padIndex] ?? string.Empty;
                     var desiredLayout = SlotCustomLayouts[padIndex];
+                    bool desiredFfb = SlotExtendedFfbEnabled[padIndex];
                     bool psChanged = !string.Equals(
                         desiredPs,
                         _extendedAppliedProductString[padIndex] ?? string.Empty,
@@ -547,8 +576,9 @@ namespace PadForge.Common.Input
                         desiredLayout.Triggers != appliedLayout.Triggers ||
                         desiredLayout.Povs != appliedLayout.Povs ||
                         desiredLayout.Buttons != appliedLayout.Buttons;
+                    bool ffbChanged = desiredFfb != _extendedAppliedFfbEnabled[padIndex];
 
-                    if (psChanged || layoutChanged)
+                    if (psChanged || layoutChanged || ffbChanged)
                     {
                         if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                         else _slotInitializing[padIndex] = false;
@@ -1225,14 +1255,20 @@ namespace PadForge.Common.Input
 
             HMProfile effectiveProfile = baseProfile;
 
-            if (type == VirtualControllerType.Extended && SlotExtendedCustomize[padIndex])
+            if (type == VirtualControllerType.Extended)
             {
-                string userProductString = SlotOemOverrideLabel[padIndex];
-                bool productStringOverrides =
-                    !string.IsNullOrEmpty(userProductString)
+                // Customize-gated overrides (ProductString + layout counts).
+                // FFB toggle is evaluated below regardless of Customize: dropping
+                // the PID block requires a descriptor rebuild whether or not
+                // anything else is being customized.
+                bool customizeOn = SlotExtendedCustomize[padIndex];
+
+                string userProductString = customizeOn ? SlotOemOverrideLabel[padIndex] : null;
+                bool productStringOverrides = customizeOn
+                    && !string.IsNullOrEmpty(userProductString)
                     && !string.Equals(userProductString, baseProfile.ProductString, StringComparison.Ordinal);
 
-                var layout = SlotCustomLayouts[padIndex];
+                var layout = customizeOn ? SlotCustomLayouts[padIndex] : default;
                 int userSticks = layout.Sticks;
                 int userTriggers = layout.Triggers;
                 int userPovs = layout.Povs;
@@ -1247,14 +1283,20 @@ namespace PadForge.Common.Input
                 int profPovs = baseProfile.HasHat ? 1 : 0;
                 int profButtons = baseProfile.ButtonCount;
 
-                bool layoutOverrides =
+                bool layoutOverrides = customizeOn &&
                     (userSticks > 0 || userTriggers > 0 || userPovs > 0 || userButtons > 0) &&
                     (userSticks != profSticks
                      || userTriggers != profTriggers
                      || userPovs != profPovs
                      || userButtons != profButtons);
 
-                if (productStringOverrides || layoutOverrides)
+                // FFB toggle. Disabling FFB requires a custom descriptor build
+                // even when no other override is in effect, because the only
+                // way to drop the PID block is to regenerate the descriptor.
+                bool forceFeedbackEnabled = SlotExtendedFfbEnabled[padIndex];
+                bool ffbOverrides = !forceFeedbackEnabled;
+
+                if (productStringOverrides || layoutOverrides || ffbOverrides)
                 {
                     try
                     {
@@ -1263,23 +1305,33 @@ namespace PadForge.Common.Input
                         if (productStringOverrides)
                             builder.ProductString(userProductString);
 
-                        if (layoutOverrides)
+                        if (layoutOverrides || ffbOverrides)
                         {
+                            // Use the user's layout when they overrode it, else
+                            // fall back to the active profile's layout — we still
+                            // need the same axis/button/POV counts so the device
+                            // looks identical aside from the PID block.
+                            int sticks = layoutOverrides ? userSticks : profSticks;
+                            int triggers = layoutOverrides ? userTriggers : profTriggers;
+                            int povs = layoutOverrides ? userPovs : profPovs;
+                            int buttons = layoutOverrides ? userButtons : profButtons;
+
                             // Mirror BuildCustomProfile. AddPidFfbBlock emits the
                             // SDK's minimum-viable PID FFB descriptor and auto-
                             // injects the Report ID 0x01 prefix; FromDescriptorBuilder
                             // derives InputReportSize from the builder's bit count
                             // plus the Report ID byte. HM v1.1.41 (issue #16).
                             var descBuilder = new HidDescriptorBuilder().Joystick();
-                            for (int s = 0; s < userSticks; s++)
+                            for (int s = 0; s < sticks; s++)
                                 descBuilder.AddStick(s == 0 ? "Left" : "Right", 16);
-                            for (int t = 0; t < userTriggers; t++)
+                            for (int t = 0; t < triggers; t++)
                                 descBuilder.AddTrigger(t == 0 ? "Left" : "Right", 16);
-                            if (userPovs > 0)
+                            if (povs > 0)
                                 descBuilder.AddHat();
-                            if (userButtons > 0)
-                                descBuilder.AddButtons(userButtons);
-                            descBuilder.AddPidFfbBlock();
+                            if (buttons > 0)
+                                descBuilder.AddButtons(buttons);
+                            if (forceFeedbackEnabled)
+                                descBuilder.AddPidFfbBlock();
                             builder.FromDescriptorBuilder(descBuilder);
                         }
 
@@ -1303,6 +1355,7 @@ namespace PadForge.Common.Input
             // the Extended override fields on a live slot.
             _extendedAppliedProductString[padIndex] = SlotOemOverrideLabel[padIndex] ?? string.Empty;
             _extendedAppliedLayout[padIndex] = SlotCustomLayouts[padIndex];
+            _extendedAppliedFfbEnabled[padIndex] = SlotExtendedFfbEnabled[padIndex];
 
             return new HMaestroVirtualController(_hmaestroContext, effectiveProfile, type);
         }
@@ -1442,6 +1495,7 @@ namespace PadForge.Common.Input
             var stateLoggedFirstSubmit = new bool[n];
             var stateExtendedAppliedProductString = new string[n];
             var stateExtendedAppliedLayout = new CustomControllerLayout[n];
+            var stateExtendedAppliedFfbEnabled = new bool[n];
             var stateOemOverrideClaimedVidPid = new uint[n];
             var stateLastAppliedOemLabel = new string[n];
             var destroyOldPads = new List<int>();
@@ -1469,6 +1523,7 @@ namespace PadForge.Common.Input
                     stateLoggedFirstSubmit[V] = _loggedFirstSubmit[oldPad];
                     stateExtendedAppliedProductString[V] = _extendedAppliedProductString[oldPad];
                     stateExtendedAppliedLayout[V] = _extendedAppliedLayout[oldPad];
+                    stateExtendedAppliedFfbEnabled[V] = _extendedAppliedFfbEnabled[oldPad];
                     stateOemOverrideClaimedVidPid[V] = _oemOverrideClaimedVidPid[oldPad];
                     stateLastAppliedOemLabel[V] = _lastAppliedOemLabel[oldPad];
                 }
@@ -1500,6 +1555,7 @@ namespace PadForge.Common.Input
                 _loggedFirstSubmit[oldPad] = false;
                 _extendedAppliedProductString[oldPad] = null;
                 _extendedAppliedLayout[oldPad] = default;
+                _extendedAppliedFfbEnabled[oldPad] = false;
                 _oemOverrideClaimedVidPid[oldPad] = 0;
                 _lastAppliedOemLabel[oldPad] = null;
             }
@@ -1520,6 +1576,7 @@ namespace PadForge.Common.Input
                 _loggedFirstSubmit[newPad] = stateLoggedFirstSubmit[V];
                 _extendedAppliedProductString[newPad] = stateExtendedAppliedProductString[V];
                 _extendedAppliedLayout[newPad] = stateExtendedAppliedLayout[V];
+                _extendedAppliedFfbEnabled[newPad] = stateExtendedAppliedFfbEnabled[V];
                 _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
                 _lastAppliedOemLabel[newPad] = stateLastAppliedOemLabel[V];
 
@@ -1640,6 +1697,7 @@ namespace PadForge.Common.Input
                 ReleaseOemOverrideClaim(padIndex, claimedKey, "destroy");
             _extendedAppliedProductString[padIndex] = null;
             _extendedAppliedLayout[padIndex] = default;
+            _extendedAppliedFfbEnabled[padIndex] = false;
 
             if (asyncDispose)
             {

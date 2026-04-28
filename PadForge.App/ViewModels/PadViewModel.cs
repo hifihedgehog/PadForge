@@ -553,7 +553,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the Mappings collection based on the current OutputType and Extended config.
-        /// Labels follow the output type's convention (Xbox 360/DS4/Extended numbered).
+        /// Labels follow the output type's convention (Xbox 360 / DualShock 4 / Extended numbered).
         /// </summary>
         public void RebuildMappings()
         {
@@ -1058,7 +1058,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the StickConfigs collection based on the current output type.
-        /// For Xbox 360/DS4 (or Extended with gamepad preset): always 2 sticks (Left, Right).
+        /// For Xbox / PlayStation (or Extended with gamepad preset): always 2 sticks (Left, Right).
         /// For Extended Custom: N sticks based on ThumbstickCount.
         /// </summary>
         public void RebuildStickConfigs()
@@ -1111,7 +1111,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the TriggerConfigs collection based on the current output type.
-        /// For Xbox 360/DS4 (or Extended with gamepad preset): always 2 triggers (Left, Right).
+        /// For Xbox / PlayStation (or Extended with gamepad preset): always 2 triggers (Left, Right).
         /// For Extended Custom: N triggers based on TriggerCount.
         /// </summary>
         public void RebuildTriggerConfigs()

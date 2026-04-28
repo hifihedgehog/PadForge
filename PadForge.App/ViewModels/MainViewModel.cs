@@ -54,7 +54,7 @@ namespace PadForge.ViewModels
         }
 
         private bool _isEnabled = true;
-        /// <summary>Whether this virtual controller is enabled (ViGEm active).</summary>
+        /// <summary>Whether this virtual controller slot is enabled.</summary>
         public bool IsEnabled
         {
             get => _isEnabled;

@@ -20,7 +20,8 @@ namespace PadForge.Common.Input
         //  opens newly connected devices, marks disconnected devices as offline.
         //
         //  All controllers (including Xbox/XInput) are handled via SDL3.
-        //  ViGEm virtual controllers are detected and filtered out.
+        //  PadForge's own virtual controllers (HIDMaestro in v3, plus any
+        //  v2 ViGEm residue) are detected and filtered out.
         // ─────────────────────────────────────────────
 
         /// <summary>

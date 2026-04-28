@@ -302,7 +302,7 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightThumbAxisYInvert { get; set; } = "0";
 
         // ─────────────────────────────────────────────
-        //  DS4 touchpad mappings
+        //  PlayStation touchpad mappings
         // ─────────────────────────────────────────────
 
         [XmlElement] public string TouchpadX1 { get; set; } = "";
@@ -1212,7 +1212,7 @@ namespace PadForge.Engine.Data
             // Step 2: Collect all source mappings as (position → descriptor value).
             var translated = new Dictionary<MappingSlot, string>();
 
-            // Read from gamepad properties (Xbox/DS4/Extended gamepad preset source)
+            // Read from gamepad properties (Xbox / PlayStation / Extended gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
                 !(sourceType == VirtualControllerType.Extended && sourceIsExtended))

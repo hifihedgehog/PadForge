@@ -50,7 +50,7 @@ namespace PadForge.Views
         // Stick quadrant highlight (uses stick click overlay image, clipped to quadrant)
         private readonly Dictionary<string, Image> _stickHighlights = new();
 
-        // Touchpad preview (DS4 only — built once at canvas time, updated each frame)
+        // Touchpad preview (PlayStation slots only — built once at canvas time, updated each frame)
         private Rectangle _touchpadClickHighlight; // full-zone blue overlay when click is held
         private Ellipse _touchpadFinger0Dot;
         private Ellipse _touchpadFinger1Dot;

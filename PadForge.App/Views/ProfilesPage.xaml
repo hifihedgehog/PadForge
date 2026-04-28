@@ -80,7 +80,7 @@
                                                            VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Border>
-                                        <!-- DS4 count badge -->
+                                        <!-- PlayStation count badge -->
                                         <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
                                                 Background="{DynamicResource SubtleFillColorSecondaryBrush}">
                                             <Border.Style>

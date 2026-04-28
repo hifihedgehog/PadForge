@@ -12,7 +12,7 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// Represents one thumbstick section in the dynamic Sticks tab.
-    /// For gamepad presets (Xbox 360/DS4): index 0 = Left, index 1 = Right.
+    /// For gamepad presets (Xbox / PlayStation): index 0 = Left, index 1 = Right.
     /// For custom Extended: index 0..N based on ThumbstickCount.
     /// </summary>
     public class StickConfigItem : ObservableObject

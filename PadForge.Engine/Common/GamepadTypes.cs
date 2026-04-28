@@ -29,7 +29,7 @@ namespace PadForge.Engine
         public const ushort LEFT_SHOULDER = 0x0100;
         public const ushort RIGHT_SHOULDER = 0x0200;
         public const ushort GUIDE = 0x0400;
-        public const ushort TOUCHPAD = 0x0800;  // DS4-only, used by macros
+        public const ushort TOUCHPAD = 0x0800;  // PlayStation slots only, used by macros
         public const ushort A = 0x1000;
         public const ushort B = 0x2000;
         public const ushort X = 0x4000;
@@ -61,7 +61,7 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// DS4 touchpad state for virtual DS4 output via DS4_REPORT_EX.
+    /// Touchpad state for virtual PlayStation output via DS4_REPORT_EX.
     /// Coordinates are normalized 0-1, matching SDL3 touchpad API output.
     /// </summary>
     public struct TouchpadState

@@ -12,8 +12,8 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// ViewModel for the Settings page. Manages application-level settings
-    /// including theme selection, ViGEmBus driver management, auto-start
-    /// options, and settings file paths.
+    /// including theme selection, HIDMaestro / HidHide driver management,
+    /// auto-start options, and settings file paths.
     /// </summary>
     public partial class SettingsViewModel : ViewModelBase
     {

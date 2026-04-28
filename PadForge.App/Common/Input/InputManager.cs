@@ -20,7 +20,7 @@ namespace PadForge.Common.Input
     ///   Step 2: Read input states from SDL
     ///   Step 3: Map CustomInputState → OutputState via PadSetting rules
     ///   Step 4: Combine multiple devices per virtual controller slot
-    ///   Step 5: Feed virtual controllers (ViGEm, Extended, MIDI)
+    ///   Step 5: Feed virtual controllers (HIDMaestro for Xbox / PlayStation / Extended, plus MIDI and KB+M)
     ///   Step 6: Copy combined output states for UI display
     /// 
     /// Thread safety: the background thread writes UserDevice.InputState (atomic reference swap).
@@ -108,7 +108,7 @@ namespace PadForge.Common.Input
         public KbmRawState[] CombinedKbmRawStates { get; } = new KbmRawState[MaxPads];
 
         /// <summary>
-        /// Combined touchpad states for DS4 slots.
+        /// Combined touchpad states for PlayStation slots.
         /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
         public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
@@ -157,7 +157,7 @@ namespace PadForge.Common.Input
         public volatile bool ToggleTouchpadOverlayRequested;
 
         /// <summary>
-        /// Per-slot vibration states received from games via ViGEmBus.
+        /// Per-slot vibration states received from games via the active virtual-controller backend.
         /// </summary>
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
 
@@ -512,7 +512,7 @@ namespace PadForge.Common.Input
         private void PollingLoop()
         {
             // Keep timeBeginPeriod(1) — it still helps multimedia timers and
-            // other system timing used by SDL, ViGEm, and the UI dispatcher.
+            // other system timing used by SDL, HIDMaestro, and the UI dispatcher.
             timeBeginPeriod(1);
 
             // High-resolution waitable timer for sub-ms sleeps without

@@ -9,7 +9,7 @@ using PadForge.Engine;
 namespace PadForge.Views
 {
     /// <summary>
-    /// Transparent overlay window that captures touch input for DS4 touchpad emulation.
+    /// Transparent overlay window that captures touch input for PlayStation touchpad emulation.
     /// Uses WS_EX_NOACTIVATE to prevent stealing focus from games.
     /// First touch = finger 0, second touch = finger 1 (no zones needed).
     /// Double-tap triggers touchpad click.

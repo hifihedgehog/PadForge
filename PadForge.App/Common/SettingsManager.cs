@@ -59,7 +59,7 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>Maximum number of Xbox 360 virtual controllers.
-        /// XInput only sees 4, but SDL/ViGEm support up to MaxPads.</summary>
+        /// XInput only sees 4, but SDL / HIDMaestro support up to MaxPads.</summary>
         public const int MaxXbox360Slots = InputManager.MaxPads;
 
         /// <summary>Maximum number of PlayStation virtual controllers.</summary>
@@ -77,7 +77,7 @@ namespace PadForge.Common.Input
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 
-        /// <summary>Whether each slot is enabled for ViGEm output. Persisted to settings.</summary>
+        /// <summary>Whether each slot is enabled for virtual-controller output. Persisted to settings.</summary>
         public static bool[] SlotEnabled { get; set; } = new bool[InputManager.MaxPads]
             { true, true, true, true, true, true, true, true,
               true, true, true, true, true, true, true, true };
@@ -543,7 +543,7 @@ namespace PadForge.Common.Input
                 ps.RightMotorStrength = "100";
                 ps.ForceSwapMotor = "0";
 
-                // Touchpad auto-mapping for DS4 output + touchpad-capable device.
+                // Touchpad auto-mapping for PlayStation output + touchpad-capable device.
                 if (outputType == Engine.VirtualControllerType.PlayStation && ud.HasTouchpad)
                 {
                     ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
@@ -559,7 +559,7 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
-            // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to DS4.
+            // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to PlayStation.
             if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
                 outputType == Engine.VirtualControllerType.PlayStation)
             {

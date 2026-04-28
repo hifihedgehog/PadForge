@@ -267,7 +267,7 @@
                                                   Width="13" Height="13" Stretch="Uniform"/>
                                         </Button>
 
-                                        <!-- Sony (PlayStation-family) type button -->
+                                        <!-- PlayStation type button -->
                                         <Button Margin="1,0,0,0"
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>

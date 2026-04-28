@@ -143,7 +143,7 @@ namespace PadForge.ViewModels
         public void RefreshNavControllerItems()
         {
             // Build the active-slot list by concatenating each group's order
-            // list in fixed group order (Microsoft → PlayStation → Extended →
+            // list in fixed group order (Xbox → PlayStation → Extended →
             // KbM → MIDI). Slot indices are stable identifiers; each group
             // owns its own visual ordering.
             var activeSlots = new System.Collections.Generic.List<int>();

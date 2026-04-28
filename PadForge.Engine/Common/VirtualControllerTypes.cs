@@ -13,7 +13,8 @@ namespace PadForge.Engine
     /// </summary>
     public enum VirtualControllerType
     {
-        /// <summary>Microsoft category — Xbox 360, Xbox One, Xbox Series, Elite, Adaptive.</summary>
+        /// <summary>Xbox family — Xbox 360, Xbox One, Xbox Series, Elite, Adaptive.
+        /// In-code identifier kept as <c>Microsoft</c> for v2 PadForge.xml back-compat.</summary>
         Microsoft = 0,
         /// <summary>PlayStation category — DualShock 3/4, DualSense, DualSense Edge, PS Move.</summary>
         // XmlEnum preserves the on-disk name "Sony" so v2/early-v3 PadForge.xml

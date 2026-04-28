@@ -1653,8 +1653,8 @@ namespace PadForge.Services
         /// Raised on the UI thread after the engine reported an HM virtual
         /// controller's inactivity timeout fired. MainWindow listens and
         /// runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
-        /// rebuildHmVcs:true so any surviving Microsoft HM VCs at higher
-        /// pad indices in the Microsoft group bubble down to the lowest
+        /// rebuildHmVcs:true so any surviving Xbox HM VCs at higher
+        /// pad indices in the Xbox group bubble down to the lowest
         /// available kernel slot. Argument is the pad index that timed out.
         /// </summary>
         public event EventHandler<int> SlotInactivityTimedOut;
@@ -4054,16 +4054,16 @@ namespace PadForge.Services
 
         /// <summary>
         /// Called after a slot is deleted. Removes the pad index from its
-        /// group's order list and, for Microsoft slots, queues async destroy
-        /// of any live Microsoft HM VCs at higher pad indices in the group
-        /// so xinputhid bubbles them down to the lowest free user-indices on
+        /// group's order list and, for Xbox slots, queues async destroy of
+        /// any live Xbox HM VCs at higher pad indices in the group so
+        /// xinputhid bubbles them down to the lowest free user-indices on
         /// recreate. Other groups are not touched.
         /// </summary>
         public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, bool rebuildHmVcs = true)
         {
             // SlotOrders.Remove was already called by DeviceService.DeleteSlot
             // (so the order list is correct by the time this fires). The
-            // job here is the Microsoft-only kernel-slot rebuild.
+            // job here is the Xbox-only kernel-slot rebuild.
             if (rebuildHmVcs
                 && deletedType == VirtualControllerType.Microsoft
                 && _inputManager != null)
@@ -4072,7 +4072,7 @@ namespace PadForge.Services
                 foreach (int slot in xboxOrder)
                 {
                     if (slot <= padIndex) continue;
-                    if (!_inputManager.IsMicrosoftHmVcAt(slot)) continue;
+                    if (!_inputManager.IsXboxHmVcAt(slot)) continue;
                     try { _inputManager.DestroyVirtualControllerAsync(slot); }
                     catch { /* best effort, Pass 2 retries */ }
                 }

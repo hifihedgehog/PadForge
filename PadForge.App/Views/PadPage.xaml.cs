@@ -382,7 +382,7 @@ namespace PadForge.Views
 
             bool isExtended = vm.OutputType == Engine.VirtualControllerType.Extended;
 
-            // Microsoft / PlayStation use the compact preset dropdown bar; Extended
+            // Xbox / PlayStation use the compact preset dropdown bar; Extended
             // has its own full config bar with profile + override fields, so
             // hide the compact bar when Extended is active.
             HMaestroProfileBar.Visibility = (vm.HasHMaestroProfileBar && !isExtended)

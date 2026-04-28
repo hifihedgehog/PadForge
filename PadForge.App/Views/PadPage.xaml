@@ -266,7 +266,7 @@
 
         <!-- ══════════════════════════════════════
              ROW 1: HIDMAESTRO PROFILE PICKER BAR
-             (visible for Microsoft / PlayStation / Extended slots)
+             (visible for Xbox / PlayStation / Extended slots)
              ══════════════════════════════════════ -->
         <Border x:Name="HMaestroProfileBar" Grid.Row="1" Margin="4,4,4,0"
                 Padding="10,6" CornerRadius="4"

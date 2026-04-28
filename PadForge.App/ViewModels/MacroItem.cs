@@ -1638,7 +1638,7 @@ namespace PadForge.ViewModels
         /// Derives the button style from the output controller type. Extended
         /// slots show numbered labels (Btn1, Btn2, ...) since the active
         /// HIDMaestro profile drives the layout — Xbox-style "A B X Y" labels
-        /// belong on Microsoft slots, DualShock labels on PlayStation slots.
+        /// belong on Xbox slots, DualShock labels on PlayStation slots.
         /// </summary>
         public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType) => outputType switch
         {

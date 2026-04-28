@@ -302,7 +302,7 @@ namespace PadForge.Services
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotControllerTypes.Length; i++)
                 {
                     // Only load types for created slots. Uncreated slots keep the
-                    // default (Microsoft) to prevent stale values from previous sessions
+                    // default (Xbox) to prevent stale values from previous sessions
                     // leaking into the engine's SlotControllerTypes array.
                     if (SettingsManager.SlotCreated[i] &&
                         Enum.IsDefined(typeof(Engine.VirtualControllerType), appSettings.SlotControllerTypes[i]))
@@ -1079,7 +1079,7 @@ namespace PadForge.Services
             }
 
             // Collect per-slot Extended configurations. Only persist for
-            // slots that are actually Extended — Microsoft / PlayStation /
+            // slots that are actually Extended — Xbox / PlayStation /
             // KbM / MIDI slots don't read this and shouldn't carry stale
             // ExtendedConfig state in the XML.
             var extendedConfigs = new System.Collections.Generic.List<ViewModels.ExtendedSlotConfigData>();
@@ -1596,7 +1596,7 @@ namespace PadForge.Services
             // Reset any slot that was using the deleted profile so the
             // dropdown doesn't land on a now-missing id. padforge-custom
             // is the Extended category's default per
-            // InputManager.GetDefaultProfileId; Microsoft and PlayStation
+            // InputManager.GetDefaultProfileId; Xbox and PlayStation
             // slots have fixed catalog defaults and don't accept user
             // imports in the first place, so this reset only ever fires
             // for Extended slots.
@@ -1873,7 +1873,7 @@ namespace PadForge.Services
         /// come back online before destroying itself. 0 disables (HM VCs
         /// survive arbitrary offline windows, legacy behavior). Default 60.
         /// When triggered, the slot is removed entirely (same shape as
-        /// user-driven delete) and surviving Microsoft HM VCs in the same
+        /// user-driven delete) and surviving Xbox HM VCs in the same
         /// group bubble down via InputService.OnSlotDeleted so xinputhid
         /// kernel slots stay contiguous. Slots in other groups are not
         /// touched.

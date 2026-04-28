@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Esteso</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Tastiera + Mouse</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -118,14 +118,14 @@
   <data name="Main_FullScreen" xml:space="preserve"><value>Schermo intero</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostra PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Controller virtuale {0}</value></data>
-  <data name="Main_EngineStopped" xml:space="preserve"><value>Engine arrestato</value></data>
+  <data name="Main_EngineStopped" xml:space="preserve"><value>Motore arrestato</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>In attesa dei dispositivi</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Attivo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inizializzazione</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Uno o più controller offline</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (max {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Esteso (max {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Tastiera + Mouse (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (richiede Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
@@ -204,7 +204,7 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Title" xml:space="preserve"><value>Pannello</value></data>
-  <data name="Dashboard_InputEngine" xml:space="preserve"><value>Engine di input</value></data>
+  <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motore di input</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivi online</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controller virtuali</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> assegnati, </value></data>
@@ -235,9 +235,9 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Predefinito di sistema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Chiaro</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Scuro</value></data>
-  <data name="Settings_InputEngine" xml:space="preserve"><value>Engine di input</value></data>
+  <data name="Settings_InputEngine" xml:space="preserve"><value>Motore di input</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configura il comportamento del polling e l'elaborazione in background.</value></data>
-  <data name="Settings_AutoStart" xml:space="preserve"><value>Avvia automaticamente l'engine all'apertura</value></data>
+  <data name="Settings_AutoStart" xml:space="preserve"><value>Avvia automaticamente il motore all'apertura</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continua il polling quando la finestra perde il focus</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervallo di polling:</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Nascondi dispositivi ai giochi</value></data>
@@ -329,8 +329,8 @@
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Nascondi ai giochi (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Nasconde completamente questo dispositivo alle altre applicazioni tramite il driver HidHide</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installa il driver HidHide per abilitare questa opzione</value></data>
-  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consuma input assegnati (hook)</value></data>
-  <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Sopprime solo i tasti/pulsanti specifici che sono assegnati, lasciando passare gli input non assegnati</value></data>
+  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consuma input mappati (hook)</value></data>
+  <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Sopprime solo i tasti/pulsanti specifici che sono mappati, lasciando passare gli input non mappati</value></data>
   <data name="Devices_RawInputState" xml:space="preserve"><value>Stato input grezzo</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Assi</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Pulsanti</value></data>
@@ -347,12 +347,12 @@
   <data name="Devices_Accel" xml:space="preserve"><value>Accel</value></data>
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Stai per {0}. Questo influenzerà {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>nascondere questo dispositivo a tutte le applicazioni</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloccare gli input assegnati da questo dispositivo</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloccare gli input mappati da questo dispositivo</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> per tutti i {0} collegati</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Se questo è il tuo unico {0}, perderai la capacità di interagire con il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
-  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Se assegni input critici per l'interazione di sistema (es. clic sinistro/destro, movimento X/Y), potresti perdere la capacità di controllare il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
-  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Se assegni input critici per l'interazione di sistema (es. tasti comuni), potresti perdere la capacità di controllare il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>Questo {0}{1}.
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Se mappi input critici per l'interazione di sistema (es. clic sinistro/destro, movimento X/Y), potresti perdere la capacità di controllare il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Se mappi input critici per l'interazione di sistema (es. tasti comuni), potresti perdere la capacità di controllare il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>Questa azione servirà a {0}{1}.
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>mouse</value></data>
@@ -400,10 +400,10 @@
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Estrazione fallita: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Impossibile analizzare il JSON del profilo estratto — nulla è stato salvato.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personalizza</value></data>
-  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Abilita i campi di sostituzione di identità e layout. Se disattivato, il controller virtuale usa il profilo HIDMaestro così com'è.</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Abilita i campi di sostituzione di identità e layout qui sotto. Se disattivato, il controller virtuale usa l'identità integrata e il descrittore HID del profilo selezionato esattamente come distribuito da HIDMaestro.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Ripristina tutti i campi di sostituzione ai valori del catalogo del profilo attuale (nome prodotto, VID, PID, numero di levette/grilletti/POV/pulsanti) e disattiva la sostituzione OEM.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Nome prodotto</value></data>
-  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Sostituisce la stringa iProduct che il sistema operativo segnala ai giochi e a joy.cpl. Controlla anche il nome mostrato in Gestione dispositivi.</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Sostituisce la stringa iProduct che il sistema operativo segnala ai giochi e a joy.cpl. Determina il FriendlyName in Gestione dispositivi quando non è impostata una descrizione separata.</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>Sostituisci OEM</value></data>
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Rivendica la voce della tabella OEM di DirectInput per la VID:PID del profilo. joy.cpl e DirectInput leggono quella tabella prima della stringa iProduct HID — abilita per far prevalere il nome prodotto qui sopra. Disattivato per impostazione predefinita.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -427,9 +427,9 @@
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Velocità note-on (0-127). Intensità con cui vengono premuti i tasti virtuali.</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Passa alla vista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Passa alla vista 3D</value></data>
-  <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Clicca per testare il motore sinistro</value></data>
+  <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Clicca per provare il motore sinistro</value></data>
   <data name="Pad_LeftMotor" xml:space="preserve"><value>Motore sinistro</value></data>
-  <data name="Pad_TestRightMotor" xml:space="preserve"><value>Clicca per testare il motore destro</value></data>
+  <data name="Pad_TestRightMotor" xml:space="preserve"><value>Clicca per provare il motore destro</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>Motore destro</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mappa tutto</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mappa: {0}</value></data>
@@ -446,7 +446,7 @@
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sorgente</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valore</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opzioni</value></data>
-  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona-morta asse a pulsante</value></data>
+  <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morta asse-pulsante</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverti</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metà</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineare</value></data>
@@ -460,7 +460,7 @@
   <data name="Pad_Sampling" xml:space="preserve"><value>Campionamento...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset centro X:</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset centro Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forma zona-morta:</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forma zona morta:</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Radiale scalata</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radiale</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Assiale</value></data>
@@ -622,10 +622,10 @@
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
 
   <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Zona-morta X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Zona-morta Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-zona-morta X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-zona-morta Y:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Zona morta X:</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Zona morta Y:</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-zona morta X:</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-zona morta Y:</value></data>
   <data name="Pad_Linear" xml:space="preserve"><value>Lineare:</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Curve di sensibilità</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Doppio clic sul grafico per aggiungere un punto. Clic destro per rimuovere. Trascina per regolare.</value></data>
@@ -638,7 +638,7 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>Asse X</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Asse Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona-morta:</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona morta:</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curva di sensibilità</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Doppio clic per aggiungere un punto. Clic destro per rimuovere. Trascina per regolare.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Predefinito:</value></data>
@@ -650,18 +650,18 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>Guadagno complessivo:</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motore sinistro:</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motore destro:</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>Inverti motori sinistro/destro</value></data>
-  <data name="Pad_TestRumble" xml:space="preserve"><value>Testa vibrazione</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Scambia motori sinistro/destro</value></data>
+  <data name="Pad_TestRumble" xml:space="preserve"><value>Prova vibrazione</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività motori</value></data>
 
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Ripristina offset centro X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Ripristina offset centro Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Ripristina a Radiale scalata</value></data>
-  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Ripristina zona-morta X</value></data>
-  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Ripristina zona-morta Y</value></data>
-  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Ripristina anti-zona-morta X</value></data>
-  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Ripristina anti-zona-morta Y</value></data>
+  <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Ripristina zona morta X</value></data>
+  <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Ripristina zona morta Y</value></data>
+  <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Ripristina anti-zona morta X</value></data>
+  <data name="Pad_ResetAntiDeadZoneY" xml:space="preserve"><value>Ripristina anti-zona morta Y</value></data>
   <data name="Pad_ResetLinear" xml:space="preserve"><value>Ripristina lineare</value></data>
   <data name="Pad_ResetSensitivityX" xml:space="preserve"><value>Ripristina sensibilità X</value></data>
   <data name="Pad_ResetSensitivityY" xml:space="preserve"><value>Ripristina sensibilità Y</value></data>
@@ -670,7 +670,7 @@
   <data name="Pad_ResetMinRangeY" xml:space="preserve"><value>Ripristina range min Y</value></data>
   <data name="Pad_ResetMaxRangeY" xml:space="preserve"><value>Ripristina range max Y</value></data>
   <data name="Pad_ResetRange" xml:space="preserve"><value>Ripristina range</value></data>
-  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Ripristina anti-zona-morta</value></data>
+  <data name="Pad_ResetAntiDeadZone" xml:space="preserve"><value>Ripristina anti-zona morta</value></data>
   <data name="Pad_ResetSensitivity" xml:space="preserve"><value>Ripristina sensibilità</value></data>
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Ripristina guadagno complessivo</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Ripristina motore sinistro</value></data>
@@ -708,7 +708,7 @@
   <data name="Stick_LeftThumbstick" xml:space="preserve"><value>Levetta sinistra</value></data>
   <data name="Stick_RightThumbstick" xml:space="preserve"><value>Levetta destra</value></data>
   <data name="Stick_ScrollWheel" xml:space="preserve"><value>Rotella di scorrimento</value></data>
-  <data name="Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
+  <data name="Stick_Format" xml:space="preserve"><value>Levetta {0}</value></data>
   <data name="Trigger_Format" xml:space="preserve"><value>Grilletto {0}</value></data>
   <data name="Btn_LeftStickX" xml:space="preserve"><value>Levetta sinistra X</value></data>
   <data name="Btn_LeftStickY" xml:space="preserve"><value>Levetta sinistra Y</value></data>

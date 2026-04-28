@@ -75,13 +75,13 @@
   <data name="Common_Installed" xml:space="preserve"><value>インストール済み</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>未インストール</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>準備完了</value></data>
-  <data name="Common_Stopped" xml:space="preserve"><value>停止中</value></data>
+  <data name="Common_Stopped" xml:space="preserve"><value>停止</value></data>
   <data name="Common_Running" xml:space="preserve"><value>実行中</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} で実行中</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>実行中 ({0} クライアント)</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} でリッスン中</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>ポート {0} は使用中</value></data>
-  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ポート {0} のアクセスが拒否されました（管理者として実行）</value></data>
+  <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ポート {0} のアクセスが拒否されました (管理者として実行)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>起動に失敗しました</value></data>
   <data name="Common_Idle" xml:space="preserve"><value>待機中</value></data>
   <data name="Common_Online" xml:space="preserve"><value>オンライン</value></data>
@@ -102,7 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
-  <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
+  <data name="ControllerType_Extended" xml:space="preserve"><value>Extended</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
 
@@ -122,13 +122,13 @@
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
-  <data name="Main_ControllersOffline" xml:space="preserve"><value>1つ以上のコントローラーがオフライン</value></data>
+  <data name="Main_ControllersOffline" xml:space="preserve"><value>1 台以上のコントローラーがオフライン</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (最大 {0} 台)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (最大 {0} 台)</value></data>
-  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (最大 {0})</value></data>
-  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0})</value></data>
+  <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Extended (最大 {0} 台)</value></data>
+  <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0} 台)</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services が必要です)</value></data>
-  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (最大 {0})</value></data>
+  <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (最大 {0} 台)</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide をインストールしています…</value></data>
@@ -139,7 +139,7 @@
   <data name="Status_OperationCancelled" xml:space="preserve"><value>操作がユーザーによりキャンセルされました。</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services のインストールに失敗しました: {0}</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>デバイスリストを更新しました。</value></data>
-  <data name="Status_Recorded_Format" xml:space="preserve"><value>記録完了 "{0}" ← {1}</value></data>
+  <data name="Status_Recorded_Format" xml:space="preserve"><value>「{0}」を記録 ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>次のマッピング: {0} {1}</value></data>
   <data name="Status_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0} {1}  ({2}/{3})</value></data>
   <data name="Status_DirectionRight" xml:space="preserve"><value>(→ 右)</value></data>
@@ -184,21 +184,21 @@
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>デフォルト</value></data>
   <data name="Profiles_Shortcuts" xml:space="preserve"><value>プロファイルショートカット</value></data>
-  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>コントローラーのボタンの組み合わせでプロファイルを切り替えます。</value></data>
+  <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>任意のコントローラーからプロファイルを切り替えるためのボタンの組み合わせを割り当てます。</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>ショートカットを追加</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>次のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>前のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>特定のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ウィンドウの切替</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>接続中の任意のデバイス</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>録音</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>録音中...</value></data>
+  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>記録</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>記録中...</value></data>
   <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
   <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
   <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} から解除しました。</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>デバイスを非表示にしました。（設定ファイルで復元できます。）</value></data>
+  <data name="Status_DeviceHidden" xml:space="preserve"><value>デバイスを非表示にしました。(設定ファイルで復元できます。)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>デバイスを削除しました。</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>仮想コントローラー {0} を削除しました。</value></data>
 
@@ -207,11 +207,11 @@
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台のデバイスがオンライン</value></data>
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>仮想コントローラー</value></data>
-  <data name="Dashboard_Mapped" xml:space="preserve"><value> マッピング済み、</value></data>
-  <data name="Dashboard_Connected" xml:space="preserve"><value> 接続済み</value></data>
+  <data name="Dashboard_Mapped" xml:space="preserve"><value> 台がマッピング済み、</value></data>
+  <data name="Dashboard_Connected" xml:space="preserve"><value> 台が接続済み</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>モーションサーバー</value></data>
-  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用のDSU/CemuHook Motion Provider protocolサーバー。</value></data>
-  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSUモーションサーバーを有効化（CemuHook Motion Provider protocol）</value></data>
+  <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用の DSU/CemuHook Motion Provider protocol サーバーです。</value></data>
+  <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU モーションサーバーを有効化 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>ポート:</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロ/加速度データを提供します。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
@@ -275,7 +275,7 @@
   <data name="About_Title" xml:space="preserve"><value>PadForge について</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>コントローラーマッピングユーティリティ</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce のモダンフォーク — SDL3、WPF、.NET 10 で再構築</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力デバイスをあらゆる仮想コントローラーに変換します。ゲームパッド、ジョイスティック、キーボード、マウス、タッチスクリーンを、仮想ゲームコントローラー（Xbox、PlayStation、フライトスティック、ステアリングホイール、サードパーティ製ゲームパッド）またはキーボード+マウス／MIDI 出力にマッピングし、ゲームから実際のハードウェアとして認識されます — HIDMaestro と Windows MIDI Services によって実現。コントローラー入力には SDL3、キーボードとマウスには Windows Raw Input、ゲームごとのデバイス隠蔽には HidHide を使用し、マッピング、デッドゾーン、感度曲線、フォースフィードバックのためのモダンな Fluent Design インターフェースを提供します。</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力デバイスをあらゆる仮想コントローラーに変換します。ゲームパッド、ジョイスティック、キーボード、マウス、タッチスクリーンを、仮想ゲームコントローラー (Xbox、PlayStation、フライトスティック、ステアリングホイール、サードパーティ製ゲームパッド) またはキーボード + マウス / MIDI 出力にマッピングし、HIDMaestro と Windows MIDI Services によってゲームから実際のハードウェアとして認識させます。コントローラー入力には SDL3、キーボードとマウスには Windows Raw Input、ゲームごとのデバイス非表示には HidHide を使用し、マッピング、デッドゾーン、感度カーブ、フォースフィードバック用のモダンな Fluent Design インターフェースを提供します。</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>使用技術</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>ランタイムおよび WPF フレームワーク</value></data>
@@ -292,7 +292,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm</value></data>
   <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から適用されたものです。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、OSS ライセンスは付与されません。同条件のもとそのまま再配布されます。</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から派生しています。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、同条件のもとでそのまま再配布されます。</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>ゲームパッド</value></data>
@@ -308,14 +308,14 @@
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>すべてのキーボード (統合)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>すべてのマウス (統合)</value></data>
-  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>すべてのタッチパッド（統合）</value></data>
+  <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>すべてのタッチパッド (統合)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>デバイス</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> オンライン / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> 合計</value></data>
+  <data name="Devices_OnlineTotal" xml:space="preserve"><value> 台がオンライン / </value></data>
+  <data name="Devices_Total" xml:space="preserve"><value> 台</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>このデバイスとその設定を削除します</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>製品: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>種類: </value></data>
-  <data name="Devices_AppGUID" xml:space="preserve"><value>アプリGUID: </value></data>
+  <data name="Devices_AppGUID" xml:space="preserve"><value>アプリ GUID: </value></data>
   <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID: </value></data>
   <data name="Devices_InstancePath" xml:space="preserve"><value>インスタンスパス: </value></data>
   <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
@@ -331,7 +331,7 @@
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>このオプションを有効にするには HidHide ドライバーをインストールしてください</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>マッピング済み入力を消費する (フック)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>マッピングされた特定のキー/ボタンのみを抑制し、マッピングされていない入力はそのまま通過させます</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>生の入力状態</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Raw 入力の状態</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>軸</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>キーボード</value></data>
@@ -348,11 +348,11 @@
   <data name="Devices_HideWarning_Format" xml:space="preserve"><value>{0}しようとしています。これは {1}{2} に影響します。</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>このデバイスをすべてのアプリケーションから非表示に</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>このデバイスからのマッピング済み入力をブロック</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> すべての接続された{0}に対して</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (接続中のすべての{0}に対して)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>これが唯一の{0}である場合、システムを操作できなくなります。別の入力デバイスがある場合のみ続行してください。</value></data>
-  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>システム操作に不可欠な入力（左/右クリック、X/Y移動など）を割り当てると、システムを制御できなくなる可能性があります。別の入力デバイスがある場合のみ続行してください。</value></data>
-  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>システム操作に不可欠な入力（よく使うキーなど）を割り当てると、システムを制御できなくなる可能性があります。別の入力デバイスがある場合のみ続行してください。</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0}{1}します。
+  <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>システム操作に不可欠な入力 (左/右クリック、X/Y 移動など) を割り当てると、システムを制御できなくなる可能性があります。別の入力デバイスがある場合のみ続行してください。</value></data>
+  <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>システム操作に不可欠な入力 (よく使うキーなど) を割り当てると、システムを制御できなくなる可能性があります。別の入力デバイスがある場合のみ続行してください。</value></data>
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0}します{1}。
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>マウス</value></data>
@@ -371,10 +371,10 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>インポート済みプロファイル…</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルを管理します：接続されたデバイスから新しく取り込む、既存のものを JSON にエクスポート、または不要になったものを削除します。</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルを管理します。接続されたデバイスから新しく取り込む、既存のものを JSON にエクスポート、または不要になったものを削除します。</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>インポート済みプロファイル</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルは PadForge.xml 内に保存され、すべての Extended スロットのプロファイルドロップダウンに表示されます。以下の接続デバイスから新しく取り込むか、既存のものをエクスポート／削除できます。</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>インポート済みのプロファイル（{0}）</value></data>
+  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>インポート済みのプロファイル ({0})</value></data>
   <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>インポート可能な接続デバイス</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>削除</value></data>
@@ -383,27 +383,27 @@
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>インポートしたプロファイルを削除しますか？</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>「{0}」を削除しますか？このプロファイルを使用しているスロットは合成 Custom エントリに戻ります。</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} にエクスポートしました</value></data>
-  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>エクスポートに失敗しました：{0}</value></data>
+  <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>エクスポートに失敗しました: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>「{0}」を削除しました。</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ファイルからインポート…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>プロファイル JSON をインポート</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} からインポートしました。</value></data>
-  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました：{0}</value></data>
+  <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました: {0}</value></data>
   <data name="ImportFromDevice_Title" xml:space="preserve"><value>デバイスからインポート</value></data>
-  <data name="ImportFromDevice_Description" xml:space="preserve"><value>接続されている HID デバイスを選択してください。PadForge はディスクリプタ、識別情報、レイアウトを取得し、「(User Generated)」サフィックス付きの新しい Extended プロファイルとして保存します。プロファイルは PadForge.xml 内に保存されるため、設定と一緒に持ち運べます。</value></data>
-  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>接続されたデバイス：</value></data>
+  <data name="ImportFromDevice_Description" xml:space="preserve"><value>接続されている HID デバイスを選択してください。PadForge はディスクリプタ、識別情報、レイアウトを取得し、「(User Generated)」という名前の新しい Extended プロファイルとして保存します。プロファイルは PadForge.xml 内に保存されるため、設定と一緒に持ち運べます。</value></data>
+  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>接続されたデバイス:</value></data>
   <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>更新</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>インポート</value></data>
-  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>（名前なしの HID デバイス）</value></data>
+  <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(名前なしの HID デバイス)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} 個の HID インターフェースが見つかりました。</value></data>
-  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>列挙に失敗しました：{0}</value></data>
-  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>抽出に失敗しました：{0}</value></data>
+  <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>列挙に失敗しました: {0}</value></data>
+  <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>抽出に失敗しました: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>抽出したプロファイル JSON を解析できませんでした — 何も保存されていません。</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>カスタマイズ</value></data>
-  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>下のアイデンティティおよびレイアウト上書きフィールドを有効にします。オフの場合、仮想コントローラーは HIDMaestro が提供するプロファイルそのままで作成されます。</value></data>
-  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>すべての上書きフィールドを現在のプロファイルのカタログ値(製品名、VID、PID、スティック/トリガー/POV/ボタン数)に戻し、OEM 上書きを解除します。</value></data>
+  <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>下の識別情報およびレイアウトの上書きフィールドを有効にします。オフの場合、仮想コントローラーは選択中プロファイルの組み込みの識別情報と HID ディスクリプタを HIDMaestro 出荷時のままで使用します。</value></data>
+  <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>すべての上書きフィールドを現在のプロファイルのカタログ値 (製品名、VID、PID、スティック/トリガー/POV/ボタン数) に戻し、OEM 上書きフラグを解除します。</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>製品名</value></data>
-  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>OS がゲームや joy.cpl に報告する iProduct 文字列を上書きします。デバイスマネージャーに表示される名前にも反映されます。</value></data>
+  <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>OS がゲームや joy.cpl に報告する iProduct 文字列を上書きします。別途の説明が設定されていない場合、デバイスマネージャーの FriendlyName にも反映されます。</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM 上書き</value></data>
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>プロファイルの VID:PID に対する DirectInput の OEM 名テーブルエントリを取得します。joy.cpl と DirectInput は HID の iProduct より先にこのテーブルを読み込むため、上の製品名を優先させたい場合に有効化します。既定ではオフ。</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -453,7 +453,7 @@
   <data name="Curve_Smooth" xml:space="preserve"><value>スムーズ</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>アグレッシブ</value></data>
   <data name="Curve_Instant" xml:space="preserve"><value>インスタント</value></data>
-  <data name="Curve_SCurve" xml:space="preserve"><value>Sカーブ</value></data>
+  <data name="Curve_SCurve" xml:space="preserve"><value>S カーブ</value></data>
   <data name="Curve_Delay" xml:space="preserve"><value>ディレイ</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>カスタム</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>中心をキャリブレーション</value></data>
@@ -528,7 +528,7 @@
   <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (進む)</value></data>
   <data name="Macro_Repeat" xml:space="preserve"><value>繰り返し</value></data>
   <data name="Macro_RepeatMode" xml:space="preserve"><value>モード:</value></data>
-  <data name="Macro_Once" xml:space="preserve"><value>1回のみ</value></data>
+  <data name="Macro_Once" xml:space="preserve"><value>1 回のみ</value></data>
   <data name="Macro_FixedCount" xml:space="preserve"><value>指定回数</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>離すまで</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>回数:</value></data>
@@ -660,7 +660,7 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>センターオフセット X をリセット</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>センターオフセット Y をリセット</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>スケールドラジアルにリセット</value></data>
+  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>スケール付き放射状にリセット</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>デッドゾーン X をリセット</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>デッドゾーン Y をリセット</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>アンチデッドゾーン X をリセット</value></data>
@@ -679,18 +679,18 @@
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>ビューをリセット</value></data>
-  <data name="Macro_RecordHint" xml:space="preserve"><value>ボタンを押すか軸/トリガーを動かして記録します。軸は50%以上の偏向で検出されます。</value></data>
-  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windowsシステム音量に継続的にマップし、音量制限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
-  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windowsの音量ミキサーで特定アプリケーションの音量を制限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。</value></data>
-  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>選択した軸をマウス移動 (またはスクロール) に継続的にマップします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。スティック→マウスの場合、X軸用とY軸用の2つのアクションを作成してください。</value></data>
+  <data name="Macro_RecordHint" xml:space="preserve"><value>ボタンを押すか軸/トリガーを動かして記録します。軸は 50% 以上の偏向で検出されます。</value></data>
+  <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windows のシステム音量に継続的にマップし、音量上限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」を組み合わせて使用してください。</value></data>
+  <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows の音量ミキサーで特定アプリケーションの音量を、音量上限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」を組み合わせて使用してください。</value></data>
+  <data name="Macro_MouseMoveHint" xml:space="preserve"><value>選択した軸をマウス移動 (またはスクロール) に継続的にマップします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。スティック→マウスの場合、X 軸用と Y 軸用の 2 つのアクションを作成してください。</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>軸を反転</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>音量OSDを表示</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>音量 OSD を表示</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>方向</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>すべて</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>正方向</value></data>
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>負方向</value></data>
-  <data name="Btn_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
-  <data name="Btn_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
+  <data name="Btn_LeftShoulder" xml:space="preserve"><value>左ショルダー</value></data>
+  <data name="Btn_RightShoulder" xml:space="preserve"><value>右ショルダー</value></data>
   <data name="Btn_Back" xml:space="preserve"><value>戻る</value></data>
   <data name="Btn_Start" xml:space="preserve"><value>スタート</value></data>
   <data name="Btn_Guide" xml:space="preserve"><value>ガイド</value></data>
@@ -841,8 +841,8 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>ボタン {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>軸 {0}</value></data>
-  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左肩ボタン</value></data>
-  <data name="DevObj_RightShoulder" xml:space="preserve"><value>右肩ボタン</value></data>
+  <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左ショルダー</value></data>
+  <data name="DevObj_RightShoulder" xml:space="preserve"><value>右ショルダー</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>
   <data name="DevObj_RightStickButton" xml:space="preserve"><value>右スティックボタン</value></data>
 
@@ -883,10 +883,10 @@
   <data name="Key_Backslash" xml:space="preserve"><value>バックスラッシュ</value></data>
   <data name="Key_RightBracket" xml:space="preserve"><value>右角括弧</value></data>
   <data name="Key_Apostrophe" xml:space="preserve"><value>アポストロフィ</value></data>
-  <data name="Common_Stopping" xml:space="preserve"><value>停止中…</value></data>
+  <data name="Common_Stopping" xml:space="preserve"><value>停止しています…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>エンジンを停止中…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非アクティブ時の破棄タイムアウト:</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに仮想コントローラーが破棄されるまでの秒数。0で無効。残ったコントローラーは隙間を埋めるために上にシフトし、低い XInput スロットに再バインドされます。</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残ったコントローラーは隙間を埋めるために上にシフトし、低い XInput スロットに再バインドされます。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモードの仮想 HID コントローラーエンジン (ViGEmBus と vJoy を置き換え)</value></data>

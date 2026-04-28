@@ -376,7 +376,7 @@ namespace PadForge.Services
         /// Creates the next available virtual controller slot with the specified type.
         /// Returns the slot index (0–15) or -1 if all slots are taken.
         /// </summary>
-        public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Microsoft)
+        public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox)
         {
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -416,7 +416,7 @@ namespace PadForge.Services
         public VirtualControllerType DeleteSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
-                return VirtualControllerType.Microsoft;
+                return VirtualControllerType.Xbox;
 
             // Capture before the reset wipes OutputType. Used to remove the
             // pad index from the correct group's order list and to drive

@@ -3891,12 +3891,10 @@ namespace PadForge.Services
 
         /// <summary>
         /// Swap two slots' visual positions within their (shared) group.
-        /// <paramref name="padIndexA"/> is the user-dragged pad (the source
-        /// the user grabbed); <paramref name="padIndexB"/> is the pad they
-        /// dropped on. The order list is mutated unconditionally; the
-        /// kernel-order rebuild fires only when
-        /// <see cref="ShouldRebuildKernelOrder"/> says it should. Cross-group
-        /// calls are rejected.
+        /// The order list is mutated unconditionally; whether the kernel
+        /// re-allocates is decided by
+        /// <see cref="RebuildKernelOrderAfterReorder"/>. Cross-group calls
+        /// are rejected.
         /// </summary>
         public void SwapSlots(int padIndexA, int padIndexB)
         {
@@ -3910,17 +3908,14 @@ namespace PadForge.Services
 
             var oldOrder = SettingsManager.SlotOrders.GetOrderFor(typeA).ToList();
             SettingsManager.SlotOrders.SwapWithinGroup(padIndexA, padIndexB, typeA);
-            if (ShouldRebuildKernelOrder(typeA, padIndexA, oldOrder))
-                RebuildKernelOrderAfterReorder(typeA, oldOrder);
+            RebuildKernelOrderAfterReorder(typeA, oldOrder);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
         /// Move a slot from its current visual position to a new visual
-        /// position within its own group. <paramref name="sourcePadIndex"/>
-        /// is the user-dragged pad. The kernel-order rebuild fires only
-        /// when <see cref="ShouldRebuildKernelOrder"/> says it should.
-        /// Cross-group moves go through <see cref="MoveSlotToGroupTail"/>.
+        /// position within its own group. Cross-group moves go through
+        /// <see cref="MoveSlotToGroupTail"/>.
         /// </summary>
         public void MoveSlot(int sourcePadIndex, int targetVisualPosition)
         {
@@ -3937,119 +3932,72 @@ namespace PadForge.Services
 
             var oldOrder = orderList.ToList();
             SettingsManager.SlotOrders.MoveWithinGroup(groupType, sourcePos, targetVisualPosition);
-            if (ShouldRebuildKernelOrder(groupType, sourcePadIndex, oldOrder))
-                RebuildKernelOrderAfterReorder(groupType, oldOrder);
+            RebuildKernelOrderAfterReorder(groupType, oldOrder);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
-        /// Decide whether a same-group reorder warrants a kernel-order
-        /// rebuild. Three conditions must all hold:
+        /// Active VCs constitute their own ordering within an HM-backed
+        /// group, independent of where the non-emitting (disabled or
+        /// awaiting-devices) slots sit. The kernel-slot allocation needs
+        /// to follow that active ordering only when it actually changes
+        /// AND the new live position holds a different profile than
+        /// before — same-profile shuffles are kernel-indistinguishable
+        /// and skip.
         ///
-        /// 1. The user-dragged pad has a live VC. Moving a non-emitting
-        ///    slot (disabled or awaiting devices) is a UI-only reorder;
-        ///    a slot with no kernel-slot presence cannot disturb the live
-        ///    VCs' allocation.
+        /// Walk the live subsequences of <paramref name="oldOrder"/> and
+        /// the new order in parallel. At the lowest live position where
+        /// the profile changed, destroy that live VC and every live VC
+        /// below it. Pass 2's visual-order gate +
+        /// <c>ApplyAscendingIndexPreemption</c> recreate them in the new
+        /// visual order.
         ///
-        /// 2. In the new visual order, every non-emitting slot sits below
-        ///    all live VCs (i.e. the lives form a contiguous prefix at the
-        ///    top). A non-emitting slot above (or interleaved with) live
-        ///    VCs blocks kernel re-alignment — its absence in the kernel
-        ///    means the live VCs around it cannot all be re-allocated to
-        ///    match visual order. <c>ApplyAscendingIndexPreemption</c>
-        ///    re-anchors the order whenever that slot transitions to
-        ///    active.
-        ///
-        /// 3. The live-VC subsequence actually changed between old and
-        ///    new order. If the actives keep their relative order, the
-        ///    kernel allocation already matches and rebuilding would just
-        ///    thrash. (Example: dragging an active up past a non-active
-        ///    where it ends up still in the same relative position to
-        ///    the other actives.)
-        ///
-        /// Non-HM groups (KBM, MIDI) always return false; their slot
-        /// order is not tied to a kernel-side index allocation.
-        /// </summary>
-        private bool ShouldRebuildKernelOrder(
-            VirtualControllerType groupType,
-            int draggedPadIndex,
-            IReadOnlyList<int> oldOrder)
-        {
-            if (_inputManager == null) return false;
-            if (groupType != VirtualControllerType.Microsoft
-                && groupType != VirtualControllerType.PlayStation
-                && groupType != VirtualControllerType.Extended)
-                return false;
-
-            if (!_inputManager.HasVirtualControllerAt(draggedPadIndex))
-                return false;
-
-            var newOrder = SettingsManager.SlotOrders.GetOrderFor(groupType);
-
-            // Walk the new order: enforce rule 2 (lives contiguous at top)
-            // and collect the new live subsequence in one pass.
-            var newLives = new List<int>(newOrder.Count);
-            bool seenNonEmitting = false;
-            foreach (int padIdx in newOrder)
-            {
-                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
-                if (_inputManager.HasVirtualControllerAt(padIdx))
-                {
-                    if (seenNonEmitting) return false;
-                    newLives.Add(padIdx);
-                }
-                else
-                {
-                    seenNonEmitting = true;
-                }
-            }
-
-            // Rule 3: live-VC subsequence must differ between old and new.
-            var oldLives = new List<int>(oldOrder.Count);
-            foreach (int padIdx in oldOrder)
-            {
-                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
-                if (_inputManager.HasVirtualControllerAt(padIdx)) oldLives.Add(padIdx);
-            }
-            if (oldLives.SequenceEqual(newLives)) return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tear down every live VC at and below the lowest visual position
-        /// whose pad index changed (compared to <paramref name="oldOrder"/>)
-        /// in the given HM-backed group. Pass 2's visual-order gate plus
-        /// <c>ApplyAscendingIndexPreemption</c> sequence the recreates so
-        /// xinputhid / HM kernel-slot allocation matches the new visual
-        /// order. Callers gate this with <see cref="ShouldRebuildKernelOrder"/>.
+        /// Non-HM groups (KBM, MIDI) skip; their slot order is not tied
+        /// to a kernel-side index allocation.
         /// </summary>
         private void RebuildKernelOrderAfterReorder(
             VirtualControllerType groupType,
             IReadOnlyList<int> oldOrder)
         {
             if (_inputManager == null) return;
+            if (groupType != VirtualControllerType.Microsoft
+                && groupType != VirtualControllerType.PlayStation
+                && groupType != VirtualControllerType.Extended)
+                return;
 
             var newOrder = SettingsManager.SlotOrders.GetOrderFor(groupType);
 
-            int lowestChangedPos = -1;
-            int common = Math.Min(oldOrder.Count, newOrder.Count);
-            for (int p = 0; p < common; p++)
+            var oldLives = new List<int>(oldOrder.Count);
+            foreach (int padIdx in oldOrder)
             {
-                if (oldOrder[p] != newOrder[p])
+                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
+                if (_inputManager.HasVirtualControllerAt(padIdx)) oldLives.Add(padIdx);
+            }
+            var newLives = new List<int>(newOrder.Count);
+            foreach (int padIdx in newOrder)
+            {
+                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
+                if (_inputManager.HasVirtualControllerAt(padIdx)) newLives.Add(padIdx);
+            }
+
+            int compareCount = Math.Min(oldLives.Count, newLives.Count);
+            int firstMismatch = compareCount;
+            for (int i = 0; i < compareCount; i++)
+            {
+                string oldProfile = _mainVm.Pads[oldLives[i]].ProfileId ?? string.Empty;
+                string newProfile = _mainVm.Pads[newLives[i]].ProfileId ?? string.Empty;
+                if (!string.Equals(oldProfile, newProfile, StringComparison.Ordinal))
                 {
-                    lowestChangedPos = p;
+                    firstMismatch = i;
                     break;
                 }
             }
 
-            if (lowestChangedPos < 0) return;
+            if (firstMismatch >= newLives.Count) return;
 
-            for (int pos = lowestChangedPos; pos < newOrder.Count; pos++)
+            for (int i = firstMismatch; i < newLives.Count; i++)
             {
-                int padIdx = newOrder[pos];
-                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
-                if (!_inputManager.HasVirtualControllerAt(padIdx)) continue;
+                int padIdx = newLives[i];
                 try { _inputManager.DestroyVirtualControllerAsync(padIdx); }
                 catch { /* best effort, Pass 2 retries */ }
             }

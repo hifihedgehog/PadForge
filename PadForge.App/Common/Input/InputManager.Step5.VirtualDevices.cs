@@ -1255,20 +1255,14 @@ namespace PadForge.Common.Input
 
             HMProfile effectiveProfile = baseProfile;
 
-            if (type == VirtualControllerType.Extended)
+            if (type == VirtualControllerType.Extended && SlotExtendedCustomize[padIndex])
             {
-                // Customize-gated overrides (ProductString + layout counts).
-                // FFB toggle is evaluated below regardless of Customize: dropping
-                // the PID block requires a descriptor rebuild whether or not
-                // anything else is being customized.
-                bool customizeOn = SlotExtendedCustomize[padIndex];
-
-                string userProductString = customizeOn ? SlotOemOverrideLabel[padIndex] : null;
-                bool productStringOverrides = customizeOn
-                    && !string.IsNullOrEmpty(userProductString)
+                string userProductString = SlotOemOverrideLabel[padIndex];
+                bool productStringOverrides =
+                    !string.IsNullOrEmpty(userProductString)
                     && !string.Equals(userProductString, baseProfile.ProductString, StringComparison.Ordinal);
 
-                var layout = customizeOn ? SlotCustomLayouts[padIndex] : default;
+                var layout = SlotCustomLayouts[padIndex];
                 int userSticks = layout.Sticks;
                 int userTriggers = layout.Triggers;
                 int userPovs = layout.Povs;
@@ -1283,7 +1277,7 @@ namespace PadForge.Common.Input
                 int profPovs = baseProfile.HasHat ? 1 : 0;
                 int profButtons = baseProfile.ButtonCount;
 
-                bool layoutOverrides = customizeOn &&
+                bool layoutOverrides =
                     (userSticks > 0 || userTriggers > 0 || userPovs > 0 || userButtons > 0) &&
                     (userSticks != profSticks
                      || userTriggers != profTriggers
@@ -1293,6 +1287,10 @@ namespace PadForge.Common.Input
                 // FFB toggle. Disabling FFB requires a custom descriptor build
                 // even when no other override is in effect, because the only
                 // way to drop the PID block is to regenerate the descriptor.
+                // Customize-gated by the outer if; SyncExtendedConfigToSlot
+                // pushes true (catalog default) for SlotExtendedFfbEnabled
+                // whenever Customize is off, so this branch only sees the
+                // user's stored value when it should take effect.
                 bool forceFeedbackEnabled = SlotExtendedFfbEnabled[padIndex];
                 bool ffbOverrides = !forceFeedbackEnabled;
 

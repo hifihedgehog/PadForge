@@ -1073,11 +1073,17 @@ namespace PadForge.Services
             _inputManager.SlotExtendedCustomize[slotIndex] = customize;
             _inputManager.SlotOemOverrideEnabled[slotIndex] = customize && cfg.OemNameOverride;
             _inputManager.SlotOemOverrideLabel[slotIndex] = customize ? effectiveLabel : string.Empty;
-            // FFB toggle. Off = drop the HID PID 1.0 descriptor block on the
-            // built device. Step 5 detects a flip vs the applied snapshot and
-            // triggers destroy + recreate so HIDMaestro regenerates the
-            // descriptor with or without the PID block to match.
-            _inputManager.SlotExtendedFfbEnabled[slotIndex] = cfg.ForceFeedbackEnabled;
+            // FFB toggle is Customize-gated, same shape as OemNameOverride /
+            // OemOverrideLabel above: push the user's value through only when
+            // Customize is on; push the catalog default (true) when off, so
+            // the engine treats an uncustomized slot as the catalog profile
+            // says regardless of any sticky non-default value the user set
+            // earlier with Customize on. cfg.ForceFeedbackEnabled stays on the
+            // VM for restoration when Customize comes back on. Step 5 detects
+            // a flip vs the applied snapshot and triggers destroy + recreate
+            // so HIDMaestro regenerates the descriptor with or without the
+            // PID block to match.
+            _inputManager.SlotExtendedFfbEnabled[slotIndex] = customize ? cfg.ForceFeedbackEnabled : true;
         }
 
         /// <summary>

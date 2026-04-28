@@ -657,7 +657,7 @@ namespace PadForge.Common.Input
                         // KeyboardMouse slots don't need device input to
                         // function and continue to create unconditionally.
                         var slotType = SlotControllerTypes[padIndex];
-                        if ((slotType == VirtualControllerType.Microsoft
+                        if ((slotType == VirtualControllerType.Xbox
                              || slotType == VirtualControllerType.PlayStation
                              || slotType == VirtualControllerType.Extended)
                             && !IsSlotActive(padIndex))
@@ -680,10 +680,10 @@ namespace PadForge.Common.Input
                         // the XInput slot snapshot. Otherwise the snapshot
                         // includes old virtuals and the delta detection can't
                         // find the new one.
-                        bool isMsSlot = SlotControllerTypes[padIndex] == VirtualControllerType.Microsoft;
+                        bool isMsSlot = SlotControllerTypes[padIndex] == VirtualControllerType.Xbox;
                         if (isMsSlot) EnsureHMaestroContext();
 
-                        bool isHmSlot = slotType == VirtualControllerType.Microsoft
+                        bool isHmSlot = slotType == VirtualControllerType.Xbox
                                      || slotType == VirtualControllerType.PlayStation
                                      || slotType == VirtualControllerType.Extended;
 
@@ -1032,7 +1032,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public static string GetDefaultProfileId(VirtualControllerType type) => type switch
         {
-            VirtualControllerType.Microsoft => DefaultXboxProfileId,
+            VirtualControllerType.Xbox => DefaultXboxProfileId,
             VirtualControllerType.PlayStation => DefaultPlayStationProfileId,
             VirtualControllerType.Extended => DefaultExtendedProfileId,
             _ => null
@@ -1044,7 +1044,7 @@ namespace PadForge.Common.Input
 
             // MIDI and KeyboardMouse stay on their dedicated implementations.
             // Xbox / PlayStation / Extended now route through HIDMaestro.
-            if (controllerType == VirtualControllerType.Microsoft
+            if (controllerType == VirtualControllerType.Xbox
                 || controllerType == VirtualControllerType.PlayStation
                 || controllerType == VirtualControllerType.Extended)
             {
@@ -1067,7 +1067,7 @@ namespace PadForge.Common.Input
             {
                 vc = controllerType switch
                 {
-                    VirtualControllerType.Microsoft => CreateHMaestroController(VirtualControllerType.Microsoft, profileId, padIndex),
+                    VirtualControllerType.Xbox => CreateHMaestroController(VirtualControllerType.Xbox, profileId, padIndex),
                     VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex),
                     VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId, padIndex),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
@@ -1284,7 +1284,7 @@ namespace PadForge.Common.Input
             if (padIndex < 0 || padIndex >= MaxPads) return false;
             var vc = _virtualControllers[padIndex];
             return vc is HMaestroVirtualController hm
-                && hm.Type == VirtualControllerType.Microsoft;
+                && hm.Type == VirtualControllerType.Xbox;
         }
 
         /// <summary>
@@ -1328,7 +1328,7 @@ namespace PadForge.Common.Input
             bool displacedAny = false;
             var hmSubgroups = new[]
             {
-                VirtualControllerType.Microsoft,
+                VirtualControllerType.Xbox,
                 VirtualControllerType.PlayStation,
                 VirtualControllerType.Extended,
             };

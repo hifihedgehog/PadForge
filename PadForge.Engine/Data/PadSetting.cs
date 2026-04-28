@@ -1017,7 +1017,7 @@ namespace PadForge.Engine.Data
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
         /// </summary>
-        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Microsoft, bool isExtended = false)
+        public string ToJson(VirtualControllerType outputType = VirtualControllerType.Xbox, bool isExtended = false)
         {
             // Flush live dicts to arrays before serializing.
             FlushExtendedMappings();
@@ -1087,7 +1087,7 @@ namespace PadForge.Engine.Data
         public static PadSetting FromJson(string json,
             out VirtualControllerType sourceOutputType, out bool sourceIsExtended)
         {
-            sourceOutputType = VirtualControllerType.Microsoft;
+            sourceOutputType = VirtualControllerType.Xbox;
             sourceIsExtended = false;
 
             if (string.IsNullOrWhiteSpace(json))

@@ -109,7 +109,7 @@ namespace PadForge.Common.Input
             /// <summary>Return the order list for the given VC type group.</summary>
             public static List<int> GetOrderFor(Engine.VirtualControllerType type) => type switch
             {
-                Engine.VirtualControllerType.Microsoft     => XboxSlotOrder,
+                Engine.VirtualControllerType.Xbox     => XboxSlotOrder,
                 Engine.VirtualControllerType.PlayStation   => PlayStationSlotOrder,
                 Engine.VirtualControllerType.Extended      => ExtendedSlotOrder,
                 Engine.VirtualControllerType.KeyboardMouse => KeyboardMouseSlotOrder,
@@ -189,7 +189,7 @@ namespace PadForge.Common.Input
                 int[] persistedKbm = null,
                 int[] persistedMidi = null)
             {
-                Reconcile(XboxSlotOrder,          persistedXbox,        slotType, Engine.VirtualControllerType.Microsoft);
+                Reconcile(XboxSlotOrder,          persistedXbox,        slotType, Engine.VirtualControllerType.Xbox);
                 Reconcile(PlayStationSlotOrder,   persistedPlayStation, slotType, Engine.VirtualControllerType.PlayStation);
                 Reconcile(ExtendedSlotOrder,      persistedExtended,    slotType, Engine.VirtualControllerType.Extended);
                 Reconcile(KeyboardMouseSlotOrder, persistedKbm,         slotType, Engine.VirtualControllerType.KeyboardMouse);
@@ -470,7 +470,7 @@ namespace PadForge.Common.Input
         /// <param name="ud">The device to create defaults for.</param>
         /// <returns>A PadSetting with sensible default mappings.</returns>
         public static PadSetting CreateDefaultPadSetting(UserDevice ud,
-            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Microsoft)
+            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Xbox)
         {
             var ps = new PadSetting();
 

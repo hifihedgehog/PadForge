@@ -75,7 +75,7 @@ namespace PadForge.Views
         private void XboxType_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Microsoft));
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Xbox));
         }
 
         private void DS4Type_Click(object sender, RoutedEventArgs e)
@@ -466,7 +466,7 @@ namespace PadForge.Views
             foreach (var item in SlotsItemsControl.Items)
                 if (item is ViewModels.SlotSummary s && s.PadIndex == padIndex)
                     return s.OutputType;
-            return VirtualControllerType.Microsoft;
+            return VirtualControllerType.Xbox;
         }
 
         private bool IsInsertionInSameTypeGroup(int insertionVisualPos, VirtualControllerType sourceType, List<CardBounds> cards)

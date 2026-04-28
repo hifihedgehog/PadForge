@@ -312,7 +312,7 @@ namespace PadForge.Engine.Data
                 LayoutKind.Kbm        => "KB+M",
                 _ => type switch
                 {
-                    VirtualControllerType.Microsoft    => "Xbox",
+                    VirtualControllerType.Xbox    => "Xbox",
                     VirtualControllerType.PlayStation => "PlayStation",
                     VirtualControllerType.Extended       => "Extended (Gamepad)",
                     _ => type.ToString()

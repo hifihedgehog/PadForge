@@ -4,7 +4,7 @@
 
 PadForge is a controller mapping utility (fork of [x360ce](https://github.com/x360ce/x360ce)) rebuilt with:
 - **[SDL3](https://github.com/libsdl-org/SDL)** (custom fork under `SDL3-build/SDL/` with HIDMaestro filtering) for all device input
-- **[HIDMaestro](https://github.com/hifihedgehog/HIDMaestro)** as the single virtual-controller backend (Microsoft / PlayStation / Extended types)
+- **[HIDMaestro](https://github.com/hifihedgehog/HIDMaestro)** as the single virtual-controller backend (Xbox / PlayStation / Extended types)
 - **[OpenXInput](https://github.com/hifihedgehog/OpenXinput)** XInput shim, embedded in the single-file build
 - **[HelixToolkit](https://github.com/helix-toolkit/helix-toolkit)** for interactive 3D controller visualization
 - **DSU/Cemuhook** motion server for gyro/accelerometer passthrough
@@ -63,7 +63,7 @@ PadForge.sln
 │   │       ├── InputManager.Step4b.EvaluateMacros.cs    Macro evaluation (gamepad + extended)
 │   │       ├── InputManager.Step5.VirtualDevices.cs     Virtual controller output (HIDMaestro / KBM / MIDI)
 │   │       ├── InputManager.Step6.RetrieveOutputStates.cs  Copy combined output for UI
-│   │       ├── HMaestroVirtualController.cs   HIDMaestro VC for Microsoft / PlayStation / Extended types
+│   │       ├── HMaestroVirtualController.cs   HIDMaestro VC for Xbox / PlayStation / Extended types
 │   │       ├── KeyboardMouseVirtualController.cs  Virtual keyboard + mouse output
 │   │       └── MidiVirtualController.cs       Virtual MIDI device output
 │   │
@@ -193,7 +193,7 @@ Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/Pa
    filtering and WinUSB support for Switch 2 Pro Controller. Copied to the output directory
    automatically.
 
-2. **HIDMaestro** -- Required for all gamepad-style virtual controllers (Microsoft, PlayStation,
+2. **HIDMaestro** -- Required for all gamepad-style virtual controllers (Xbox, PlayStation,
    Extended). The app embeds the HIDMaestro installer and managed client; no separate install step.
 
 3. **OpenXInput shim** (`xinput1_4.dll`, `devobj.dll`) -- Custom XInput replacement DLLs embedded
@@ -223,7 +223,7 @@ Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/Pa
 
 ### Virtual Controller Types
 All gamepad-style virtuals run on HIDMaestro via `HMaestroVirtualController.cs`:
-- **Microsoft** -- Xbox 360 layout, up to `MaxPads` (16) simultaneous (XInput visibility caps at 4)
+- **Xbox** -- Xbox 360 layout, up to `MaxPads` (16) simultaneous (XInput visibility caps at 4)
 - **PlayStation** -- DualShock 4 layout, up to 16 simultaneous
 - **Extended** -- Fully custom HID descriptors, up to 16 simultaneous
 

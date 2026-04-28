@@ -815,7 +815,7 @@
   <data name="Mouse_Y" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Scorrimento</value></data>
 
-  <!-- ═══ vJoy Custom Labels ═══ -->
+  <!-- ═══ Extended Custom Labels ═══ -->
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Levetta {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Levetta {0} Y</value></data>
   <data name="Extended_Trigger_Format" xml:space="preserve"><value>Grilletto {0}</value></data>

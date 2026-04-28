@@ -1919,7 +1919,7 @@ namespace PadForge.Services
         public bool[] SlotCreated { get; set; }
 
         /// <summary>
-        /// Which virtual controller slots are enabled for ViGEm output.
+        /// Which virtual controller slots are enabled for output.
         /// Null on old settings files, defaults to all true.
         /// </summary>
         [XmlArray("SlotEnabled")]

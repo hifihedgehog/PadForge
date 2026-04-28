@@ -13,8 +13,9 @@ namespace PadForge.Common.Input
     {
         // ─────────────────────────────────────────────
         //  Step 5: UpdateVirtualDevices
-        //  Feeds combined Gamepad states to ViGEmBus virtual controllers
-        //  (Xbox 360 or DualShock 4) via the IVirtualController abstraction.
+        //  Feeds combined Gamepad states to HIDMaestro virtual controllers
+        //  (Xbox / PlayStation / Extended), plus MIDI and KB+M, via the
+        //  IVirtualController abstraction.
         // ─────────────────────────────────────────────
 
         /// <summary>
@@ -378,8 +379,10 @@ namespace PadForge.Common.Input
 
 
         /// <summary>
-        /// Step 5: Feed each slot's combined gamepad state to ViGEmBus.
-        /// Receives vibration feedback from games via the virtual controller.
+        /// Step 5: Feed each slot's combined gamepad state to its virtual
+        /// controller (HIDMaestro for Xbox / PlayStation / Extended, plus
+        /// MIDI and KB+M). Receives vibration feedback from games via the
+        /// virtual controller.
         ///
         /// Uses a grace period before destroying inactive virtual controllers to
         /// prevent transient IsSlotActive(false) from killing vibration feedback.
@@ -387,8 +390,8 @@ namespace PadForge.Common.Input
         /// (FeedbackReceived stops firing), and recreating it requires the game to
         /// rediscover the controller and re-send XInputSetState — causing a gap.
         ///
-        /// Virtual controllers are created in ascending slot order so that ViGEm
-        /// assigns sequential indices matching the PadForge slot numbers.
+        /// Virtual controllers are created in ascending slot order so the
+        /// kernel assigns sequential indices matching the PadForge slot numbers.
         /// </summary>
         private void UpdateVirtualDevices()
         {

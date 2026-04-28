@@ -13,7 +13,7 @@ namespace PadForge.Engine
     ///
     /// Exposes normalized finger positions (0-1) and contact states for up to
     /// 2 fingers, matching the <see cref="Engine.TouchpadState"/> format used
-    /// by the DS4 touchpad pipeline.
+    /// by the PlayStation touchpad pipeline.
     /// </summary>
     public sealed class PrecisionTouchpadReader : IDisposable
     {

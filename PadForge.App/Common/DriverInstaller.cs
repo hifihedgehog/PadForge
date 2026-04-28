@@ -11,8 +11,9 @@ using PadForge.Common.Input;
 namespace PadForge.Common
 {
     /// <summary>
-    /// Handles installation and uninstallation of ViGEmBus and HidHide drivers
-    /// using embedded bootstrapper executables that contain MSI packages.
+    /// Handles HIDMaestro and HidHide install / uninstall in v3, plus legacy
+    /// uninstall paths for v2 ViGEmBus and vJoy residue. Uses embedded
+    /// bootstrapper executables that contain MSI packages.
     /// </summary>
     public static class DriverInstaller
     {

@@ -14,7 +14,7 @@ namespace PadForge.Engine.Data
 
     /// <summary>
     /// Translates mapping property names between different virtual controller layouts
-    /// (Xbox 360/DS4, Extended custom, MIDI, KB+M) using positional equivalence.
+    /// (Xbox / PlayStation, Extended custom, MIDI, KB+M) using positional equivalence.
     /// </summary>
     public static class MappingTranslation
     {
@@ -29,7 +29,7 @@ namespace PadForge.Engine.Data
                 return GetMidiPosition(propertyName);
             if (type == VirtualControllerType.KeyboardMouse)
                 return GetKbmPosition(propertyName);
-            // Xbox360 / DS4 / Extended gamepad preset
+            // Xbox / PlayStation / Extended gamepad preset
             return GetGamepadPosition(propertyName);
         }
 
@@ -48,7 +48,7 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
-        //  Gamepad (Xbox 360 / DS4 / Extended gamepad preset)
+        //  Gamepad (Xbox / PlayStation / Extended gamepad preset)
         // ─────────────────────────────────────────────
 
         private static readonly Dictionary<string, MappingSlot> _gamepadMap = new()
@@ -281,7 +281,7 @@ namespace PadForge.Engine.Data
             VirtualControllerType srcType, bool srcIsExtended,
             VirtualControllerType tgtType, bool tgtIsExtended)
         {
-            // Xbox360 and DS4 share the same gamepad property names.
+            // Xbox and PlayStation share the same gamepad property names.
             var srcLayout = GetLayoutKind(srcType, srcIsExtended);
             var tgtLayout = GetLayoutKind(tgtType, tgtIsExtended);
             return srcLayout == tgtLayout;
@@ -297,7 +297,7 @@ namespace PadForge.Engine.Data
                 return LayoutKind.Midi;
             if (type == VirtualControllerType.KeyboardMouse)
                 return LayoutKind.Kbm;
-            return LayoutKind.Gamepad; // Xbox360, DS4, Extended gamepad preset
+            return LayoutKind.Gamepad; // Xbox, PlayStation, Extended gamepad preset
         }
 
         /// <summary>

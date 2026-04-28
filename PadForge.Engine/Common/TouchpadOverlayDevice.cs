@@ -6,7 +6,7 @@ namespace PadForge.Engine
     /// Virtual input device representing the touchpad overlay window.
     /// Reads touchpad state from a callback and exposes it through the
     /// standard <see cref="ISdlInputDevice"/> pipeline so it appears
-    /// in the Devices page and can be assigned to DS4 slots.
+    /// in the Devices page and can be assigned to PlayStation slots.
     /// </summary>
     public class TouchpadOverlayDevice : ISdlInputDevice
     {

@@ -10,7 +10,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// ViewModel for the Dashboard page. Shows an at-a-glance overview
     /// of all 16 controller slots, engine status, connected devices, and
-    /// ViGEmBus driver status.
+    /// HIDMaestro / HidHide driver status.
     /// </summary>
     public partial class DashboardViewModel : ViewModelBase
     {
@@ -431,7 +431,7 @@ namespace PadForge.ViewModels
 
         private bool _isVirtualControllerConnected;
 
-        /// <summary>Whether the ViGEm virtual controller for this slot is connected.</summary>
+        /// <summary>Whether the virtual controller for this slot is connected to its backend.</summary>
         public bool IsVirtualControllerConnected
         {
             get => _isVirtualControllerConnected;
@@ -476,7 +476,7 @@ namespace PadForge.ViewModels
 
         private bool _isEnabled = true;
 
-        /// <summary>Whether this virtual controller slot is enabled for ViGEm output.</summary>
+        /// <summary>Whether this virtual controller slot is enabled for output.</summary>
         public bool IsEnabled
         {
             get => _isEnabled;

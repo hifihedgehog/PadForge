@@ -99,7 +99,7 @@ namespace PadForge.Common.Input
                         us.KbmRawOutputState = MapInputToKbmRaw(ud.InputState, ps);
                     }
 
-                    // For DS4 slots, produce touchpad state from input device.
+                    // For PlayStation slots, produce touchpad state from input device.
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.PlayStation)
                     {

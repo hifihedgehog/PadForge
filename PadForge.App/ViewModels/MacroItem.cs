@@ -1541,7 +1541,7 @@ namespace PadForge.ViewModels
             internal set => SetProperty(ref _label, value);
         }
 
-        /// <summary>Xbox/DS4 bitmask flag (0 for custom mode).</summary>
+        /// <summary>Xbox / PlayStation bitmask flag (0 for custom mode).</summary>
         public ushort Flag { get; }
 
         /// <summary>Custom Extended button index (0-based). -1 = use Flag on ushort.</summary>
@@ -1566,7 +1566,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Xbox/DS4 bitmask mode.</summary>
+        /// <summary>Xbox / PlayStation bitmask mode.</summary>
         public GamepadButtonOption(MacroAction parent, string label, ushort flag)
         {
             _parent = parent;

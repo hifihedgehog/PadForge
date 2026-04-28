@@ -13,7 +13,7 @@ namespace PadForge.Common.Input
         //  (Xbox 360, DualShock 4, etc.).
         //
         //  Previously used XInput P/Invoke readback, but that only worked
-        //  for Xbox 360 virtual controllers. DS4 controllers don't appear
+        //  for Xbox 360 virtual controllers. PlayStation virtuals don't appear
         //  in the XInput stack, so direct copy is both more universal and
         //  more accurate.
         // ─────────────────────────────────────────────

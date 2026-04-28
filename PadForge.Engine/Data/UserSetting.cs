@@ -148,7 +148,7 @@ namespace PadForge.Engine.Data
         public KbmRawState KbmRawOutputState { get; set; }
 
         /// <summary>
-        /// DS4 touchpad output state for this device.
+        /// PlayStation touchpad output state for this device.
         /// Written by the background thread, read by Step 4.
         /// </summary>
         [XmlIgnore]

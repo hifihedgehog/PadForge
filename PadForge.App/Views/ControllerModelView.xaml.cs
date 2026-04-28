@@ -62,7 +62,7 @@ namespace PadForge.Views
         private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
         private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
 
-        // Touchpad preview state (DS4 only — applied each render frame from
+        // Touchpad preview state (PlayStation slots only — applied each render frame from
         // PadViewModel.TouchpadFingerN(X,Y,Down) and TouchpadClickPressed)
         private DiffuseMaterial _touchpadHighlightMaterial; // accent-color blue used while click is held
         private bool _touchpadCurrentlyHighlighted;          // tracks current swap so we don't churn materials
@@ -210,7 +210,7 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Touchpad preview (DS4 only)
+        //  Touchpad preview (PlayStation slots only)
         // ─────────────────────────────────────────────
 
         private void BuildTouchpadFingerVisuals()

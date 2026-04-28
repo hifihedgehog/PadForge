@@ -54,8 +54,9 @@ namespace PadForge.Models3D
         public Model3DGroup LeftShoulderTrigger, RightShoulderTrigger;
         public Model3DGroup LeftMotor, RightMotor;
 
-        /// <summary>DS4 touchpad surface (null on controllers without a
-        /// touchpad). Set by the concrete subclass in its constructor; the
+        /// <summary>Touchpad surface (null on models without a touchpad —
+        /// only the DS4 mesh exposes one in v3). Set by the concrete subclass
+        /// in its constructor; the
         /// 3D preview swaps its material to the accent color when
         /// <see cref="ViewModels.PadViewModel.TouchpadClickPressed"/> is
         /// true, and floats finger spheres just above its surface.</summary>

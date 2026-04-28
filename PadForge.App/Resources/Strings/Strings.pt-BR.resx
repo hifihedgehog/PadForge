@@ -100,8 +100,8 @@
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
-  <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox 360</value></data>
-  <data name="ControllerType_PlayStation" xml:space="preserve"><value>DualShock 4</value></data>
+  <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
+  <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
   <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Teclado + Mouse</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
@@ -123,8 +123,8 @@
   <data name="Main_Active" xml:space="preserve"><value>Ativo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inicializando</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Um ou mais controles offline</value></data>
-  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox 360 (máx. {0})</value></data>
-  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>DualShock 4 (máx. {0})</value></data>
+  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
+  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (máx. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Teclado + Mouse (máx. {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (requer Windows MIDI Services)</value></data>

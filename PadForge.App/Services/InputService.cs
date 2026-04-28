@@ -656,7 +656,7 @@ namespace PadForge.Services
                     : Strings.Instance.Common_Idle;
             }
 
-            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
+            int xboxCount = 0, playstationCount = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
@@ -669,8 +669,8 @@ namespace PadForge.Services
                 switch (padVm.OutputType)
                 {
                     case VirtualControllerType.PlayStation:
-                        ds4Count++;
-                        slot.TypeInstanceLabel = ds4Count.ToString();
+                        playstationCount++;
+                        slot.TypeInstanceLabel = playstationCount.ToString();
                         break;
                     case VirtualControllerType.Extended:
                         extendedCount++;
@@ -3424,7 +3424,7 @@ namespace PadForge.Services
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
                 MidiConfigs = SnapshotMidiConfigs(),
-                MicrosoftSlotOrder     = SettingsManager.MicrosoftSlotOrder.ToArray(),
+                XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray(),
                 PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray(),
                 ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray(),
                 KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray(),
@@ -3583,7 +3583,7 @@ namespace PadForge.Services
             // saved arrays (or ascending defaults if the profile predates them).
             SettingsManager.SlotOrders.RebuildFromCurrentTopology(
                 pi => _mainVm.Pads[pi].OutputType,
-                profile.MicrosoftSlotOrder,
+                profile.XboxSlotOrder,
                 profile.PlayStationSlotOrder,
                 profile.ExtendedSlotOrder,
                 profile.KeyboardMouseSlotOrder,
@@ -3736,7 +3736,7 @@ namespace PadForge.Services
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
                     profile.ExtendedConfigs = snapshot.ExtendedConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
-                    profile.MicrosoftSlotOrder     = snapshot.MicrosoftSlotOrder;
+                    profile.XboxSlotOrder          = snapshot.XboxSlotOrder;
                     profile.PlayStationSlotOrder   = snapshot.PlayStationSlotOrder;
                     profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;
                     profile.KeyboardMouseSlotOrder = snapshot.KeyboardMouseSlotOrder;
@@ -4068,8 +4068,8 @@ namespace PadForge.Services
                 && deletedType == VirtualControllerType.Microsoft
                 && _inputManager != null)
             {
-                var msOrder = SettingsManager.MicrosoftSlotOrder;
-                foreach (int slot in msOrder)
+                var xboxOrder = SettingsManager.XboxSlotOrder;
+                foreach (int slot in xboxOrder)
                 {
                     if (slot <= padIndex) continue;
                     if (!_inputManager.IsMicrosoftHmVcAt(slot)) continue;

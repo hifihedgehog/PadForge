@@ -183,7 +183,7 @@ namespace PadForge.ViewModels
 
             // Compute global slot number and per-type instance numbers.
             int xboxCount = 0;
-            int ds4Count = 0;
+            int playstationCount = 0;
             int extendedCount = 0;
             int midiCount = 0;
             int kbmCount = 0;
@@ -201,8 +201,8 @@ namespace PadForge.ViewModels
                 switch (pad.OutputType)
                 {
                     case VirtualControllerType.PlayStation:
-                        ds4Count++;
-                        instanceNum = ds4Count;
+                        playstationCount++;
+                        instanceNum = playstationCount;
                         iconKey = "DS4ControllerIcon";
                         break;
                     case VirtualControllerType.Extended:

@@ -86,7 +86,7 @@
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DS4Count}" Value="0">
+                                                        <DataTrigger Binding="{Binding PlayStationCount}" Value="0">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -97,7 +97,7 @@
                                                       Fill="{DynamicResource TextFillColorPrimaryBrush}"
                                                       Width="10" Height="10" Stretch="Uniform"
                                                       VerticalAlignment="Center" Opacity="0.6"/>
-                                                <TextBlock Text="{Binding DS4Count}" FontSize="10"
+                                                <TextBlock Text="{Binding PlayStationCount}" FontSize="10"
                                                            Opacity="0.7" Margin="3,0,0,0"
                                                            VerticalAlignment="Center"/>
                                             </StackPanel>

@@ -1367,7 +1367,8 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.IsEnabled)
                             or nameof(NavControllerItemViewModel.SlotNumber)
                             or nameof(NavControllerItemViewModel.ConnectedDeviceCount)
-                            or nameof(NavControllerItemViewModel.IsInitializing))
+                            or nameof(NavControllerItemViewModel.IsInitializing)
+                            or nameof(NavControllerItemViewModel.IsVirtualControllerConnected))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
                         }
@@ -1505,8 +1506,12 @@ namespace PadForge
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = Strings.Instance.Main_EngineStopped;
             }
-            else if (navItem.ConnectedDeviceCount == 0)
+            else if (!navItem.IsVirtualControllerConnected)
             {
+                // Yellow reflects "no live VC" (slot has never created a VC, or
+                // its VC was torn down by the HM-inactivity timeout). During
+                // the grace period the VC is still alive even with devices
+                // offline, so the indicator stays green until teardown.
                 powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = Strings.Instance.Main_AwaitingDevices;
             }

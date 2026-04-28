@@ -165,7 +165,7 @@
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                            <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
+                                                            <Condition Binding="{Binding IsVirtualControllerConnected}" Value="False"/>
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="{Binding Main_AwaitingDevices, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
@@ -193,11 +193,15 @@
                                                         <DataTrigger Binding="{Binding IsEnabled}" Value="True">
                                                             <Setter Property="Foreground" Value="#FF4CAF50"/>
                                                         </DataTrigger>
-                                                        <!-- Enabled but no devices connected: yellow (awaiting) -->
+                                                        <!-- Enabled but no live VC: yellow (awaiting devices).
+                                                             During the HM-inactivity grace period the VC stays
+                                                             alive even with devices offline, so the indicator
+                                                             stays green until the timeout actually fires and
+                                                             tears the VC down. -->
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                                <Condition Binding="{Binding ConnectedDeviceCount}" Value="0"/>
+                                                                <Condition Binding="{Binding IsVirtualControllerConnected}" Value="False"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="#FFFFC107"/>
                                                         </MultiDataTrigger>
@@ -256,7 +260,7 @@
                                                     <Setter Property="Opacity" Value="0.3"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding OutputType}" Value="Microsoft">
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
                                                             <Setter Property="Opacity" Value="1.0"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>

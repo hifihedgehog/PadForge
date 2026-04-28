@@ -192,7 +192,7 @@ namespace PadForge.ViewModels
         public System.Collections.Generic.IReadOnlyList<HIDMaestro.HMProfile> AvailableProfiles =>
             _outputType switch
             {
-                VirtualControllerType.Microsoft => HMaestroProfileCatalog.MicrosoftProfiles,
+                VirtualControllerType.Microsoft => HMaestroProfileCatalog.XboxProfiles,
                 VirtualControllerType.PlayStation => HMaestroProfileCatalog.PlayStationProfiles,
                 VirtualControllerType.Extended => HMaestroProfileCatalog.ExtendedProfiles,
                 _ => System.Array.Empty<HIDMaestro.HMProfile>()
@@ -582,10 +582,10 @@ namespace PadForge.ViewModels
         /// </summary>
         private void InitializeGamepadMappings()
         {
-            bool isDS4 = OutputType == VirtualControllerType.PlayStation;
+            bool isPlayStation = OutputType == VirtualControllerType.PlayStation;
 
             // Buttons
-            if (isDS4)
+            if (isPlayStation)
             {
                 Mappings.Add(new MappingItem("\u2715", "ButtonA", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("\u25CB", "ButtonB", MappingCategory.Buttons));
@@ -621,8 +621,8 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadRight, "DPadRight", MappingCategory.DPad));
 
             // Triggers
-            Mappings.Add(new MappingItem(isDS4 ? "L2" : Strings.Instance.Btn_LeftTrigger, "LeftTrigger", MappingCategory.Triggers));
-            Mappings.Add(new MappingItem(isDS4 ? "R2" : Strings.Instance.Btn_RightTrigger, "RightTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(isPlayStation ? "L2" : Strings.Instance.Btn_LeftTrigger, "LeftTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(isPlayStation ? "R2" : Strings.Instance.Btn_RightTrigger, "RightTrigger", MappingCategory.Triggers));
 
             // Stick axes
             Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "LeftThumbAxisX", MappingCategory.LeftStick, "LeftThumbAxisXNeg"));
@@ -630,8 +630,8 @@ namespace PadForge.ViewModels
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RightThumbAxisX", MappingCategory.RightStick, "RightThumbAxisXNeg"));
             Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RightThumbAxisY", MappingCategory.RightStick, "RightThumbAxisYNeg"));
 
-            // Touchpad (DS4 only)
-            if (isDS4)
+            // Touchpad (PlayStation only)
+            if (isPlayStation)
             {
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX1, "TouchpadX1", MappingCategory.Touchpad));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY1, "TouchpadY1", MappingCategory.Touchpad));

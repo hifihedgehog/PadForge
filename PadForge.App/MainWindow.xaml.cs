@@ -1451,7 +1451,7 @@ namespace PadForge
             if (_isDraggingCard) return;
             string iconKey = navItem.IconKey;
             bool isXbox = iconKey == "XboxControllerIcon";
-            bool isDS4 = iconKey == "DS4ControllerIcon";
+            bool isPlayStation = iconKey == "DS4ControllerIcon";
             bool isExtended = iconKey == "ExtendedControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
             bool isKbm = iconKey == "KeyboardMouseControllerIcon";
@@ -1617,32 +1617,32 @@ namespace PadForge
             xboxBtn.Click += OnSidebarTypeXbox;
             row.Children.Add(xboxBtn);
 
-            // PS type button — use SetResourceReference for theme-aware Fill.
-            var ds4Path = new System.Windows.Shapes.Path
+            // PlayStation type button — use SetResourceReference for theme-aware Fill.
+            var playstationPath = new System.Windows.Shapes.Path
             {
                 Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
                 Width = 13,
                 Height = 13,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            ds4Path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            var ds4Btn = new System.Windows.Controls.Button
+            playstationPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+            var playstationBtn = new System.Windows.Controls.Button
             {
-                Content = ds4Path,
+                Content = playstationPath,
                 ToolTip = Strings.Instance.ControllerType_PlayStation,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
-                Opacity = isDS4 ? 1.0 : 0.3,
+                Opacity = isPlayStation ? 1.0 : 0.3,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Margin = new Thickness(1, 0, 0, 0),
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            ds4Btn.Click += OnSidebarTypeDS4;
-            row.Children.Add(ds4Btn);
+            playstationBtn.Click += OnSidebarTypePlayStation;
+            row.Children.Add(playstationBtn);
 
             // Extended type button — use SetResourceReference for theme-aware Fill.
             var extendedPath = new System.Windows.Shapes.Path
@@ -1944,8 +1944,8 @@ namespace PadForge
             }
         }
 
-        /// <summary>Handles sidebar Sony (PlayStation-family) type button click.</summary>
-        private void OnSidebarTypeDS4(object sender, RoutedEventArgs e)
+        /// <summary>Handles sidebar PlayStation type button click.</summary>
+        private void OnSidebarTypePlayStation(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
@@ -2714,7 +2714,7 @@ namespace PadForge
             // across all five groups). When the global total is at the cap
             // every "Add" button disables uniformly. Per-type counts are
             // kept for the at-capacity tooltip text.
-            int xboxCount = 0, ds4Count = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, playstationCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
             int totalActive = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -2723,7 +2723,7 @@ namespace PadForge
                 switch (_viewModel.Pads[i].OutputType)
                 {
                     case VirtualControllerType.Microsoft: xboxCount++; break;
-                    case VirtualControllerType.PlayStation: ds4Count++; break;
+                    case VirtualControllerType.PlayStation: playstationCount++; break;
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
@@ -2769,34 +2769,36 @@ namespace PadForge
             };
             stack.Children.Add(xboxBtn);
 
-            // DS4 button — theme-aware icon fill.
-            var ds4PopupPath = new System.Windows.Shapes.Path
+            // PlayStation button — theme-aware icon fill. Uses the DS4 SVG
+            // asset to represent the PlayStation family in the UI.
+            var playstationPopupPath = new System.Windows.Shapes.Path
             {
                 Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
                 Width = 28,
                 Height = 28,
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
-            ds4PopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            bool ds4AtCapacity = ds4Count >= SettingsManager.MaxDS4Slots;
-            bool ds4Disabled = globalAtCapacity || ds4AtCapacity;
-            if (ds4Disabled) ds4PopupPath.Opacity = 0.35;
-            var ds4Btn = new System.Windows.Controls.Button
+            playstationPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+            bool playstationAtCapacity = playstationCount >= SettingsManager.MaxPlayStationSlots;
+            bool playstationDisabled = globalAtCapacity || playstationAtCapacity;
+            if (playstationDisabled) playstationPopupPath.Opacity = 0.35;
+            var playstationBtn = new System.Windows.Controls.Button
             {
-                Content = ds4PopupPath,
-                ToolTip = ds4AtCapacity
-                        ? string.Format(Strings.Instance.Main_PlayStation_Max_Format, SettingsManager.MaxDS4Slots)
+                Content = playstationPopupPath,
+                ToolTip = playstationAtCapacity
+                        ? string.Format(Strings.Instance.Main_PlayStation_Max_Format, SettingsManager.MaxPlayStationSlots)
                         : Strings.Instance.ControllerType_PlayStation,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(8),
                 MinWidth = 0,
-                Cursor = ds4Disabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+                Cursor = playstationDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(ds4Btn, "AddDS4Btn");
-            ds4Btn.Click += (s, e) =>
+            // AutomationId kept as "AddDS4Btn" for stable UI-automation hookup.
+            System.Windows.Automation.AutomationProperties.SetAutomationId(playstationBtn, "AddDS4Btn");
+            playstationBtn.Click += (s, e) =>
             {
-                if (ds4Disabled) return;
+                if (playstationDisabled) return;
                 popup.IsOpen = false;
                 int newSlot = _deviceService.CreateSlot(VirtualControllerType.PlayStation);
                 if (newSlot >= 0)
@@ -2805,7 +2807,7 @@ namespace PadForge
                     Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
                 }
             };
-            stack.Children.Add(ds4Btn);
+            stack.Children.Add(playstationBtn);
 
             // Extended button — theme-aware icon fill.
             var extendedPopupPath = new System.Windows.Shapes.Path

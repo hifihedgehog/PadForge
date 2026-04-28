@@ -329,7 +329,7 @@ namespace PadForge.Services
             // ascending pad-index order.
             SettingsManager.SlotOrders.RebuildFromCurrentTopology(
                 pi => _mainVm.Pads[pi].OutputType,
-                appSettings.MicrosoftSlotOrder,
+                appSettings.XboxSlotOrder,
                 appSettings.PlayStationSlotOrder,
                 appSettings.ExtendedSlotOrder,
                 appSettings.KeyboardMouseSlotOrder,
@@ -800,7 +800,7 @@ namespace PadForge.Services
                 // app-load reconcile above.
                 SettingsManager.SlotOrders.RebuildFromCurrentTopology(
                     pi => _mainVm.Pads[pi].OutputType,
-                    active.MicrosoftSlotOrder,
+                    active.XboxSlotOrder,
                     active.PlayStationSlotOrder,
                     active.ExtendedSlotOrder,
                     active.KeyboardMouseSlotOrder,
@@ -880,7 +880,7 @@ namespace PadForge.Services
                 .Select(i => _mainVm.Pads[i].ProfileId).ToArray();
             profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
-            profile.MicrosoftSlotOrder     = SettingsManager.MicrosoftSlotOrder.ToArray();
+            profile.XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray();
             profile.PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray();
             profile.ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray();
             profile.KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray();
@@ -899,15 +899,15 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Formats a profile's topology into a compact label like "2x Xbox, 1x DS4".
+        /// Formats a profile's topology into a compact label like "2x Xbox, 1x PlayStation".
         /// Returns empty string for old profiles without topology data.
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int extendedCount, out int midi, out int kbm);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm);
             var parts = new System.Collections.Generic.List<string>();
             if (xbox > 0) parts.Add($"{xbox}x Xbox");
-            if (ds4 > 0) parts.Add($"{ds4}x DS4");
+            if (playstation > 0) parts.Add($"{playstation}x PlayStation");
             if (extendedCount > 0) parts.Add($"{extendedCount}x Extended");
             if (midi > 0) parts.Add($"{midi}x MIDI");
             if (kbm > 0) parts.Add($"{kbm}x KB+M");
@@ -917,9 +917,9 @@ namespace PadForge.Services
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int ds4, out int extendedCount, out int midi, out int kbm);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm);
             item.XboxCount = xbox;
-            item.DS4Count = ds4;
+            item.PlayStationCount = playstation;
             item.ExtendedCount = extendedCount;
             item.MidiCount = midi;
             item.KbmCount = kbm;
@@ -927,9 +927,9 @@ namespace PadForge.Services
         }
 
         private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
-            out int xbox, out int ds4, out int extendedCount, out int midi, out int kbm)
+            out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm)
         {
-            xbox = 0; ds4 = 0; extendedCount = 0; midi = 0; kbm = 0;
+            xbox = 0; playstation = 0; extendedCount = 0; midi = 0; kbm = 0;
             if (slotCreated == null) return;
             for (int i = 0; i < slotCreated.Length; i++)
             {
@@ -938,7 +938,7 @@ namespace PadForge.Services
                     ? slotControllerTypes[i] : 0;
                 switch (type)
                 {
-                    case 1: ds4++; break;
+                    case 1: playstation++; break;
                     case 2: extendedCount++; break;
                     case 3: midi++; break;
                     case 4: kbm++; break;
@@ -1157,7 +1157,7 @@ namespace PadForge.Services
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
-                MicrosoftSlotOrder     = isDefault ? SettingsManager.MicrosoftSlotOrder.ToArray()     : defaultSnap.MicrosoftSlotOrder,
+                XboxSlotOrder          = isDefault ? SettingsManager.XboxSlotOrder.ToArray()          : defaultSnap.XboxSlotOrder,
                 PlayStationSlotOrder   = isDefault ? SettingsManager.PlayStationSlotOrder.ToArray()   : defaultSnap.PlayStationSlotOrder,
                 ExtendedSlotOrder      = isDefault ? SettingsManager.ExtendedSlotOrder.ToArray()      : defaultSnap.ExtendedSlotOrder,
                 KeyboardMouseSlotOrder = isDefault ? SettingsManager.KeyboardMouseSlotOrder.ToArray() : defaultSnap.KeyboardMouseSlotOrder,
@@ -1932,9 +1932,12 @@ namespace PadForge.Services
         /// reconstructs ascending pad-index defaults via
         /// <c>SettingsManager.SlotOrders.RebuildFromCurrentTopology</c>.
         /// </summary>
+        // XmlArray name kept as "MicrosoftSlotOrder" for v2/early-v3
+        // PadForge.xml back-compat. The C# property name follows the
+        // user-facing "Xbox" family naming.
         [XmlArray("MicrosoftSlotOrder")]
         [XmlArrayItem("PadIndex")]
-        public int[] MicrosoftSlotOrder { get; set; }
+        public int[] XboxSlotOrder { get; set; }
 
         [XmlArray("PlayStationSlotOrder")]
         [XmlArrayItem("PadIndex")]
@@ -2309,9 +2312,12 @@ namespace PadForge.Services
         /// ordering refactor; activation reconstructs ascending pad-index
         /// defaults via <c>SettingsManager.SlotOrders.RebuildFromCurrentTopology</c>.
         /// </summary>
+        // XmlArray name kept as "ProfileMicrosoftSlotOrder" for v2/early-v3
+        // PadForge.xml back-compat. The C# property name follows the
+        // user-facing "Xbox" family naming.
         [XmlArray("ProfileMicrosoftSlotOrder")]
         [XmlArrayItem("PadIndex")]
-        public int[] MicrosoftSlotOrder { get; set; }
+        public int[] XboxSlotOrder { get; set; }
 
         [XmlArray("ProfilePlayStationSlotOrder")]
         [XmlArrayItem("PadIndex")]

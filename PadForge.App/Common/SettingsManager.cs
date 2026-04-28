@@ -62,8 +62,8 @@ namespace PadForge.Common.Input
         /// XInput only sees 4, but SDL/ViGEm support up to MaxPads.</summary>
         public const int MaxXbox360Slots = InputManager.MaxPads;
 
-        /// <summary>Maximum number of DualShock 4 virtual controllers.</summary>
-        public const int MaxDS4Slots = InputManager.MaxPads;
+        /// <summary>Maximum number of PlayStation virtual controllers.</summary>
+        public const int MaxPlayStationSlots = InputManager.MaxPads;
 
         /// <summary>Maximum number of Extended virtual controllers (Extended driver limit).</summary>
         public const int MaxExtendedSlots = 16;
@@ -91,7 +91,7 @@ namespace PadForge.Common.Input
         /// only via the helpers in <see cref="SlotOrders"/>. Persisted to
         /// settings.
         /// </summary>
-        public static List<int> MicrosoftSlotOrder { get; set; } = new();
+        public static List<int> XboxSlotOrder { get; set; } = new();
         public static List<int> PlayStationSlotOrder { get; set; } = new();
         public static List<int> ExtendedSlotOrder { get; set; } = new();
         public static List<int> KeyboardMouseSlotOrder { get; set; } = new();
@@ -108,7 +108,7 @@ namespace PadForge.Common.Input
             /// <summary>Return the order list for the given VC type group.</summary>
             public static List<int> GetOrderFor(Engine.VirtualControllerType type) => type switch
             {
-                Engine.VirtualControllerType.Microsoft     => MicrosoftSlotOrder,
+                Engine.VirtualControllerType.Microsoft     => XboxSlotOrder,
                 Engine.VirtualControllerType.PlayStation   => PlayStationSlotOrder,
                 Engine.VirtualControllerType.Extended      => ExtendedSlotOrder,
                 Engine.VirtualControllerType.KeyboardMouse => KeyboardMouseSlotOrder,
@@ -178,17 +178,17 @@ namespace PadForge.Common.Input
             /// profile activation. Both paths supply the persisted lists from
             /// the loaded settings (or null when none exist) plus the current
             /// types from the engine. The resulting lists are written back
-            /// onto the static <see cref="MicrosoftSlotOrder"/> &amp;c.
+            /// onto the static <see cref="XboxSlotOrder"/> &amp;c.
             /// </summary>
             public static void RebuildFromCurrentTopology(
                 System.Func<int, Engine.VirtualControllerType> slotType,
-                int[] persistedMicrosoft = null,
+                int[] persistedXbox = null,
                 int[] persistedPlayStation = null,
                 int[] persistedExtended = null,
                 int[] persistedKbm = null,
                 int[] persistedMidi = null)
             {
-                Reconcile(MicrosoftSlotOrder,     persistedMicrosoft,   slotType, Engine.VirtualControllerType.Microsoft);
+                Reconcile(XboxSlotOrder,          persistedXbox,        slotType, Engine.VirtualControllerType.Microsoft);
                 Reconcile(PlayStationSlotOrder,   persistedPlayStation, slotType, Engine.VirtualControllerType.PlayStation);
                 Reconcile(ExtendedSlotOrder,      persistedExtended,    slotType, Engine.VirtualControllerType.Extended);
                 Reconcile(KeyboardMouseSlotOrder, persistedKbm,         slotType, Engine.VirtualControllerType.KeyboardMouse);

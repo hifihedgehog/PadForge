@@ -33,7 +33,7 @@ namespace PadForge.Common.Input
         private static readonly object _initLock = new object();
         private static bool _initialized;
         private static List<HMProfile> _allProfiles = new();
-        private static List<HMProfile> _microsoftProfiles = new();
+        private static List<HMProfile> _xboxProfiles = new();
         private static List<HMProfile> _playStationProfiles = new();
         private static List<HMProfile> _extendedProfiles = new();
 
@@ -58,11 +58,13 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _allProfiles; }
         }
 
-        /// <summary>Profiles where vendor == "Microsoft" (Xbox 360, Xbox One,
-        /// Xbox Series, Elite, Adaptive, etc.).</summary>
-        public static IReadOnlyList<HMProfile> MicrosoftProfiles
+        /// <summary>Profiles in the Xbox family (HIDMaestro's JSON tags these
+        /// with vendor "Microsoft"; PadForge surfaces the category as "Xbox"
+        /// in the UI). Covers Xbox 360, Xbox One, Xbox Series, Elite, Adaptive,
+        /// etc.</summary>
+        public static IReadOnlyList<HMProfile> XboxProfiles
         {
-            get { EnsureInitialized(); return _microsoftProfiles; }
+            get { EnsureInitialized(); return _xboxProfiles; }
         }
 
         /// <summary>Profiles where vendor == "Sony" (HIDMaestro's JSON still
@@ -74,10 +76,11 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _playStationProfiles; }
         }
 
-        /// <summary>Profiles that are NEITHER Microsoft nor Sony — third-party
-        /// gamepads, flight sticks, wheels, HOTAS, etc. Mutually exclusive with
-        /// MicrosoftProfiles and PlayStationProfiles so each profile appears in
-        /// exactly one category bucket.</summary>
+        /// <summary>Profiles that are NEITHER Xbox nor PlayStation family —
+        /// third-party gamepads, flight sticks, wheels, HOTAS, etc. Mutually
+        /// exclusive with <see cref="XboxProfiles"/> and
+        /// <see cref="PlayStationProfiles"/> so each profile appears in exactly
+        /// one category bucket.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
             get { EnsureInitialized(); return _extendedProfiles; }
@@ -103,7 +106,7 @@ namespace PadForge.Common.Input
             {
                 _initialized = false;
                 _allProfiles = new();
-                _microsoftProfiles = new();
+                _xboxProfiles = new();
                 _playStationProfiles = new();
                 _extendedProfiles = new();
             }
@@ -178,7 +181,7 @@ namespace PadForge.Common.Input
                         .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
-                    _microsoftProfiles = _allProfiles
+                    _xboxProfiles = _allProfiles
                         .Where(p => string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 

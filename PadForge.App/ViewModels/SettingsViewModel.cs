@@ -698,7 +698,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
 
-        public bool HasNoSlots => XboxCount == 0 && DS4Count == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0;
+        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0;
 
         private int _xboxCount;
         public int XboxCount
@@ -707,11 +707,11 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _xboxCount, value);
         }
 
-        private int _ds4Count;
-        public int DS4Count
+        private int _playstationCount;
+        public int PlayStationCount
         {
-            get => _ds4Count;
-            set => SetProperty(ref _ds4Count, value);
+            get => _playstationCount;
+            set => SetProperty(ref _playstationCount, value);
         }
 
         private int _extendedCount;

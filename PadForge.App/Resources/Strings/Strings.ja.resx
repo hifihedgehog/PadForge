@@ -409,7 +409,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>タッチパッド</value></data>
-  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>振動</value></data>
+  <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>証</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>「わたしたちはキリストについて語り,キリストを喜び,キリストを説き,キリストについて預言し,また自分たちの子孫が罪の赦しを受けるためにどこに頼ることができるかを知ることができるように,預言に従って書き記すのである。」— ニーファイ第二書 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>すべての真理の源である主イエス・キリストに,永遠にわたり栄光と誉れと賛美あれ。</value></data>

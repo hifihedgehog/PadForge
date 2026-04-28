@@ -409,7 +409,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>터치패드</value></data>
-  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>진동</value></data>
+  <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>포스 피드백</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>간증</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>"우리가 그리스도에 대하여 말하고, 그리스도를 기뻐하며, 그리스도를 전파하고, 그리스도에 대하여 예언하며, 또한 우리의 예언을 좇아 기록하나니, 이는 우리의 자녀들이 자기들의 죄 사함을 받기 위하여 어느 근원을 바라보아야 할 것인지를 알게 하려 함이라." — 니파이후서 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>모든 진리의 근원이신 주 예수 그리스도께 영광과 존귀와 찬양이 영원무궁토록 있을지어다.</value></data>

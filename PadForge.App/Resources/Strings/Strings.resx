@@ -421,7 +421,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_ExtendedRumble" xml:space="preserve"><value>Rumble</value></data>
+  <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Channel</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI channel (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC Count</value></data>

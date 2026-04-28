@@ -463,12 +463,14 @@ namespace PadForge.Views
                 ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
             }
 
-            // Touchpad and rumble caps aren't exposed by HMProfile directly,
-            // so leave as user-facing defaults. Rumble routes through
-            // HMController.OutputReceived unconditionally — profiles without
-            // physical rumble simply never deliver output packets.
+            // Touchpad and FFB caps aren't exposed by HMProfile directly, so
+            // leave as user-facing defaults. The FFB descriptor block is
+            // appended unconditionally for Extended profiles via
+            // HidDescriptorBuilder.AddPidFfbBlock, so games that drive FFB
+            // see a working PID device whether or not the user toggles this
+            // checkbox; the checkbox itself is currently informational.
             ExtendedTouchpadChk.IsChecked = false;
-            ExtendedRumbleChk.IsChecked = true;
+            ExtendedForceFeedbackChk.IsChecked = true;
         }
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)

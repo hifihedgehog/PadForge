@@ -463,14 +463,12 @@ namespace PadForge.Views
                 ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
             }
 
-            // Touchpad and FFB caps aren't exposed by HMProfile directly, so
-            // leave as user-facing defaults. The FFB descriptor block is
-            // appended unconditionally for Extended profiles via
-            // HidDescriptorBuilder.AddPidFfbBlock, so games that drive FFB
-            // see a working PID device whether or not the user toggles this
-            // checkbox; the checkbox itself is currently informational.
+            // Touchpad caps aren't exposed by HMProfile, so the touchpad
+            // checkbox is currently informational and defaults to false. The
+            // FFB checkbox is bound two-way to ExtendedConfig.ForceFeedbackEnabled
+            // (XAML), so its state is restored from the active slot's config
+            // automatically; no forced default needed here.
             ExtendedTouchpadChk.IsChecked = false;
-            ExtendedForceFeedbackChk.IsChecked = true;
         }
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)

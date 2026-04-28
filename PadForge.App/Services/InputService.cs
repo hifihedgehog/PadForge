@@ -3910,7 +3910,7 @@ namespace PadForge.Services
 
             var oldOrder = SettingsManager.SlotOrders.GetOrderFor(typeA).ToList();
             SettingsManager.SlotOrders.SwapWithinGroup(padIndexA, padIndexB, typeA);
-            if (ShouldRebuildKernelOrder(typeA, padIndexA))
+            if (ShouldRebuildKernelOrder(typeA, padIndexA, oldOrder))
                 RebuildKernelOrderAfterReorder(typeA, oldOrder);
             RefreshAfterSlotReorder();
         }
@@ -3937,14 +3937,14 @@ namespace PadForge.Services
 
             var oldOrder = orderList.ToList();
             SettingsManager.SlotOrders.MoveWithinGroup(groupType, sourcePos, targetVisualPosition);
-            if (ShouldRebuildKernelOrder(groupType, sourcePadIndex))
+            if (ShouldRebuildKernelOrder(groupType, sourcePadIndex, oldOrder))
                 RebuildKernelOrderAfterReorder(groupType, oldOrder);
             RefreshAfterSlotReorder();
         }
 
         /// <summary>
         /// Decide whether a same-group reorder warrants a kernel-order
-        /// rebuild. Two conditions must both hold:
+        /// rebuild. Three conditions must all hold:
         ///
         /// 1. The user-dragged pad has a live VC. Moving a non-emitting
         ///    slot (disabled or awaiting devices) is a UI-only reorder;
@@ -3960,12 +3960,20 @@ namespace PadForge.Services
         ///    re-anchors the order whenever that slot transitions to
         ///    active.
         ///
+        /// 3. The live-VC subsequence actually changed between old and
+        ///    new order. If the actives keep their relative order, the
+        ///    kernel allocation already matches and rebuilding would just
+        ///    thrash. (Example: dragging an active up past a non-active
+        ///    where it ends up still in the same relative position to
+        ///    the other actives.)
+        ///
         /// Non-HM groups (KBM, MIDI) always return false; their slot
         /// order is not tied to a kernel-side index allocation.
         /// </summary>
         private bool ShouldRebuildKernelOrder(
             VirtualControllerType groupType,
-            int draggedPadIndex)
+            int draggedPadIndex,
+            IReadOnlyList<int> oldOrder)
         {
             if (_inputManager == null) return false;
             if (groupType != VirtualControllerType.Microsoft
@@ -3977,14 +3985,33 @@ namespace PadForge.Services
                 return false;
 
             var newOrder = SettingsManager.SlotOrders.GetOrderFor(groupType);
+
+            // Walk the new order: enforce rule 2 (lives contiguous at top)
+            // and collect the new live subsequence in one pass.
+            var newLives = new List<int>(newOrder.Count);
             bool seenNonEmitting = false;
             foreach (int padIdx in newOrder)
             {
                 if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
-                bool hasVc = _inputManager.HasVirtualControllerAt(padIdx);
-                if (!hasVc) seenNonEmitting = true;
-                else if (seenNonEmitting) return false;
+                if (_inputManager.HasVirtualControllerAt(padIdx))
+                {
+                    if (seenNonEmitting) return false;
+                    newLives.Add(padIdx);
+                }
+                else
+                {
+                    seenNonEmitting = true;
+                }
             }
+
+            // Rule 3: live-VC subsequence must differ between old and new.
+            var oldLives = new List<int>(oldOrder.Count);
+            foreach (int padIdx in oldOrder)
+            {
+                if (padIdx < 0 || padIdx >= InputManager.MaxPads) continue;
+                if (_inputManager.HasVirtualControllerAt(padIdx)) oldLives.Add(padIdx);
+            }
+            if (oldLives.SequenceEqual(newLives)) return false;
 
             return true;
         }

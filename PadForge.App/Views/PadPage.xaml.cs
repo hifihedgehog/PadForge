@@ -174,19 +174,40 @@ namespace PadForge.Views
 
             bool isKbm = IsKBM();
             bool isMidi = IsMidi();
-            bool hideAllGamepadTabs = isMidi;
-            var vis = hideAllGamepadTabs ? Visibility.Collapsed : Visibility.Visible;
-            // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers and FFB
-            TabSticks.Visibility = (isMidi) ? Visibility.Collapsed : Visibility.Visible;
+            // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers; MIDI
+            // hides both Sticks and Triggers because its mapping surface is
+            // CC + note, not stick/trigger.
+            //
+            // Force Feedback tab is shown for every VC type, including K+M
+            // and MIDI (issue #54). Even when the virtual controller emits no
+            // FFB to games (K+M and MIDI have no FFB endpoint), the FFB tab
+            // settings drive the physical mapped device: audio bass rumble
+            // mixes into the combined vibration in
+            // InputManager.Step2.UpdateInputStates.cs:184-203, then
+            // ForceFeedbackState.SetDeviceForces applies the FFB tab's
+            // ForceOverall / LeftMotorStrength / RightMotorStrength /
+            // ForceSwapMotor scaling before sending to the physical device.
+            // The Test Rumble button fires the physical device's haptic
+            // surface directly, so it's meaningful regardless of VC type too.
+            TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
             TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
-            TabForceFeedback.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
+            TabForceFeedback.Visibility = Visibility.Visible;
 
             if (MotorBarsGrid != null)
-                MotorBarsGrid.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
+                MotorBarsGrid.Visibility = Visibility.Visible;
 
-            // If on a hidden tab, switch back to Controller tab
-            if ((isMidi || isKbm) && DataContext is PadViewModel vm && vm.SelectedConfigTab >= 3)
-                vm.SelectedConfigTab = 0;
+            // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
+            // 3 Sticks, 4 Triggers, 5 Force Feedback. Macros, Mappings, and
+            // Force Feedback are visible for every VC type. MIDI hides Sticks
+            // and Triggers; K+M hides Triggers only. Kick the user back to
+            // the Controller tab if they're sitting on a hidden one.
+            if (DataContext is PadViewModel vm)
+            {
+                if (isMidi && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
+                    vm.SelectedConfigTab = 0;
+                else if (isKbm && vm.SelectedConfigTab == 4)
+                    vm.SelectedConfigTab = 0;
+            }
         }
 
         private void BindActiveModelView()

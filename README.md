@@ -32,7 +32,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 ### Input and output
 
 - Any physical input into any virtual controller. Joysticks, gamepads, keyboards, mice, and touchscreens feed 225+ HIDMaestro profiles spanning Xbox (360, One, Series, Elite, Adaptive), PlayStation (DualShock 3/4, DualSense, DualSense Edge), flight sticks, wheels, HOTAS, and generic gamepads, plus virtual MIDI or keyboard and mouse output. Extended profiles support up to 8 axes, 128 buttons, and 4 POV hats with customizable VID:PID, product string, and HID descriptor.
-- Up to 16 virtual controllers at once, mixing types. Each slot can merge input from multiple physical devices. Drag-reorder slots within a type group on the Dashboard; the order persists per group.
+- Up to 16 virtual controllers at once, mixing types. Each slot can merge input from multiple physical devices. Drag-reorder slots within a type group on the Dashboard; the order persists per group. Reorders that change the relative position of active virtuals with different HIDMaestro profiles rebuild the affected VCs so the kernel re-allocates slots in the new visual order. Same-profile shuffles, moves of disabled or unassigned slots, and reorders that don't shift the active-VC profile sequence stay zero-flicker.
 - DualShock 4 and DualSense outputs pass the source device's gyro, accelerometer, touchpad, and battery through to the game when the physical controller exposes them.
 - Keyboard and mouse output without a driver: map buttons to key presses, sticks or triggers to mouse movement or scroll.
 - DSU / Cemuhook gyro and accelerometer broadcast over UDP port 26760 for Cemu, Dolphin, and similar emulators.

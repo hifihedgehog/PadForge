@@ -2731,7 +2731,8 @@ namespace PadForge
             }
             bool globalAtCapacity = totalActive >= InputManager.MaxPads;
 
-            // Xbox 360 button — theme-aware icon fill.
+            // Xbox button — theme-aware icon fill. Uses the Xbox 360 SVG
+            // asset to represent the Xbox family in the UI.
             var xboxPopupPath = new System.Windows.Shapes.Path
             {
                 Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),

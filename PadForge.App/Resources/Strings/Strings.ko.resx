@@ -100,8 +100,8 @@
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
-  <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox 360</value></data>
-  <data name="ControllerType_PlayStation" xml:space="preserve"><value>DualShock 4</value></data>
+  <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
+  <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
   <data name="ControllerType_Extended" xml:space="preserve"><value>DirectInput</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>키보드 + 마우스</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
@@ -123,8 +123,8 @@
   <data name="Main_Active" xml:space="preserve"><value>활성</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>초기화 중</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
-  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox 360 (최대 {0})</value></data>
-  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>DualShock 4 (최대 {0})</value></data>
+  <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0})</value></data>
+  <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>DirectInput (최대 {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>키보드 + 마우스 (최대 {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services 필요)</value></data>

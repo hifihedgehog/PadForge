@@ -1301,6 +1301,148 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Re-route the live VCs after a same-group visual reorder.
+        ///
+        /// Active VCs constitute their own ordering within an HM-backed
+        /// group. The kernel slot at visual position V (= the kernel slot
+        /// the VC at <c>oldOrder[V]</c> currently holds) is anchored to V.
+        /// When the user reorders, the data identity at each visual
+        /// position changes (per <paramref name="newOrder"/>) but the
+        /// kernel slot at V stays — its serving VC just gets re-routed
+        /// to feed the new data identity at position V.
+        ///
+        /// Per-position decision:
+        /// <list type="bullet">
+        /// <item>If the VC at position V (pre-reorder) and the new pad
+        /// at position V (post-reorder) share the same profile slug,
+        /// reuse the VC. Pointer-only swap: <c>_virtualControllers</c>
+        /// and per-VC state arrays move together; <c>FeedbackPadIndex</c>
+        /// is updated so feedback callbacks find the right vibration
+        /// entry. No teardown.</item>
+        /// <item>If the profiles differ, the VC at position V is
+        /// destroyed (via the regular async-dispose path). Pass 2's
+        /// visual-order gate plus <c>ApplyAscendingIndexPreemption</c>
+        /// recreate it with the new pad's profile, taking the lowest
+        /// free kernel slot — which is V because all surviving VCs at
+        /// positions &lt; V keep their slots.</item>
+        /// </list>
+        ///
+        /// Same-profile cycles (Example: insert a Profile-A slot at the
+        /// top of an all-Profile-A group) collapse to a pure pointer
+        /// rotation across <c>_virtualControllers</c> with no kernel
+        /// teardown. Different-profile cycles destroy only the positions
+        /// where the profile actually changed; matching positions in the
+        /// same reorder still reuse via pointer swap.
+        /// </summary>
+        public void RerouteVirtualControllersForReorder(
+            VirtualControllerType groupType,
+            IReadOnlyList<int> oldOrder,
+            IReadOnlyList<int> newOrder)
+        {
+            if (groupType != VirtualControllerType.Xbox
+                && groupType != VirtualControllerType.PlayStation
+                && groupType != VirtualControllerType.Extended)
+                return;
+
+            if (oldOrder == null || newOrder == null) return;
+            if (oldOrder.Count != newOrder.Count) return;
+            int n = oldOrder.Count;
+            if (n == 0) return;
+
+            // Decide per visual position: reuse the existing VC at this
+            // kernel slot, or destroy it. Snapshot the per-VC state at
+            // the same time so we can move it with the VC.
+            var reuseAtPosition = new IVirtualController[n];
+            var stateLoggedFirstSubmit = new bool[n];
+            var stateExtendedAppliedProductString = new string[n];
+            var stateExtendedAppliedLayout = new CustomControllerLayout[n];
+            var stateOemOverrideClaimedVidPid = new uint[n];
+            var stateLastAppliedOemLabel = new string[n];
+            var destroyOldPads = new List<int>();
+
+            for (int V = 0; V < n; V++)
+            {
+                int oldPad = oldOrder[V];
+                if (oldPad < 0 || oldPad >= MaxPads) continue;
+                var oldVC = _virtualControllers[oldPad];
+                if (oldVC == null) continue;
+
+                int newPad = newOrder[V];
+                if (newPad < 0 || newPad >= MaxPads)
+                {
+                    destroyOldPads.Add(oldPad);
+                    continue;
+                }
+
+                string oldProfile = (oldVC is HMaestroVirtualController hmOld) ? hmOld.ProfileId : null;
+                string newProfile = SlotProfileIds[newPad];
+
+                if (string.Equals(oldProfile ?? string.Empty, newProfile ?? string.Empty, StringComparison.Ordinal))
+                {
+                    reuseAtPosition[V] = oldVC;
+                    stateLoggedFirstSubmit[V] = _loggedFirstSubmit[oldPad];
+                    stateExtendedAppliedProductString[V] = _extendedAppliedProductString[oldPad];
+                    stateExtendedAppliedLayout[V] = _extendedAppliedLayout[oldPad];
+                    stateOemOverrideClaimedVidPid[V] = _oemOverrideClaimedVidPid[oldPad];
+                    stateLastAppliedOemLabel[V] = _lastAppliedOemLabel[oldPad];
+                }
+                else
+                {
+                    destroyOldPads.Add(oldPad);
+                }
+            }
+
+            // Step 1: Destroy mismatched VCs. This releases their OEM
+            // override claims and queues async dispose. Per-pad state at
+            // these old pads is cleared by DestroyVirtualController.
+            foreach (int oldPad in destroyOldPads)
+            {
+                DestroyVirtualController(oldPad, asyncDispose: true);
+            }
+
+            // Step 2: Clear per-pad state at old pads whose VCs are
+            // moving to a different pad. The OEM override claim is NOT
+            // released here — it's preserved on the moving VC and re-
+            // attached at the new pad in step 3.
+            for (int V = 0; V < n; V++)
+            {
+                if (reuseAtPosition[V] == null) continue;
+                int oldPad = oldOrder[V];
+                int newPad = newOrder[V];
+                if (oldPad == newPad) continue;
+                _virtualControllers[oldPad] = null;
+                _loggedFirstSubmit[oldPad] = false;
+                _extendedAppliedProductString[oldPad] = null;
+                _extendedAppliedLayout[oldPad] = default;
+                _oemOverrideClaimedVidPid[oldPad] = 0;
+                _lastAppliedOemLabel[oldPad] = null;
+            }
+
+            // Step 3: Write the new arrangement. For each reused VC,
+            // its destination pad gets the VC pointer + the snapshot of
+            // its per-VC state; its FeedbackPadIndex is updated so
+            // vibration callbacks write to the correct VibrationStates
+            // entry.
+            for (int V = 0; V < n; V++)
+            {
+                int newPad = newOrder[V];
+                if (newPad < 0 || newPad >= MaxPads) continue;
+                var vc = reuseAtPosition[V];
+                if (vc == null) continue;
+
+                _virtualControllers[newPad] = vc;
+                _loggedFirstSubmit[newPad] = stateLoggedFirstSubmit[V];
+                _extendedAppliedProductString[newPad] = stateExtendedAppliedProductString[V];
+                _extendedAppliedLayout[newPad] = stateExtendedAppliedLayout[V];
+                _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
+                _lastAppliedOemLabel[newPad] = stateLastAppliedOemLabel[V];
+
+                if (vc is HMaestroVirtualController hm)
+                    hm.FeedbackPadIndex = newPad;
+            }
+        }
+
+        /// <summary>
         /// Enforces visual-order kernel-slot allocation within each HM group.
         /// When the lowest visual position whose pad index needs to be created
         /// has any visually-lower active VCs in the same group, those lower-

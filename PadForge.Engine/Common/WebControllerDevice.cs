@@ -49,6 +49,16 @@ namespace PadForge.Engine
         public int NumButtons => _isTouchpadDevice ? 0 : (HasTouchpad ? NumGamepadButtons + 1 : NumGamepadButtons);
         public int RawButtonCount => _isTouchpadDevice ? 0 : (HasTouchpad ? NumGamepadButtons + 1 : NumGamepadButtons);
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
+        public int[] SupportedButtonIndices
+        {
+            get
+            {
+                int n = NumButtons;
+                var a = new int[n];
+                for (int i = 0; i < n; i++) a[i] = i;
+                return a;
+            }
+        }
         public bool HasRumble => true;
         public bool HasHaptic => false;
         public bool HasGyro => false;

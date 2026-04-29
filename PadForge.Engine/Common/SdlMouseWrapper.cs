@@ -29,6 +29,9 @@ namespace PadForge.Engine
         public int NumButtons => MouseButtons;
         public int RawButtonCount => 0;
         public int NumHats => 0;
+        public int[] SupportedButtonIndices => _denseButtonIndices ??= BuildDense(MouseButtons);
+        private int[] _denseButtonIndices;
+        private static int[] BuildDense(int n) { var a = new int[n]; for (int i = 0; i < n; i++) a[i] = i; return a; }
         public bool HasRumble => false;
         public bool HasHaptic => false;
         public bool HasGyro => false;

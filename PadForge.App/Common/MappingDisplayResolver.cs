@@ -217,6 +217,16 @@ namespace PadForge.Common
                 "Y Rotation" => s.DevObj_YRotation,
                 "Z Rotation" => s.DevObj_ZRotation,
                 "POV" => s.DevObj_POV,
+                "Misc 1" => s.DevObj_Misc1,
+                "Right Paddle 1" => s.DevObj_RightPaddle1,
+                "Right Paddle 2" => s.DevObj_RightPaddle2,
+                "Left Paddle 1" => s.DevObj_LeftPaddle1,
+                "Left Paddle 2" => s.DevObj_LeftPaddle2,
+                "Misc 2" => s.DevObj_Misc2,
+                "Misc 3" => s.DevObj_Misc3,
+                "Misc 4" => s.DevObj_Misc4,
+                "Misc 5" => s.DevObj_Misc5,
+                "Misc 6" => s.DevObj_Misc6,
                 _ => null
             };
             if (localized != null) return localized;

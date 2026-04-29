@@ -841,6 +841,16 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>ボタン {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>軸 {0}</value></data>
+  <data name="DevObj_Misc1" xml:space="preserve"><value>その他 1</value></data>
+  <data name="DevObj_Misc2" xml:space="preserve"><value>その他 2</value></data>
+  <data name="DevObj_Misc3" xml:space="preserve"><value>その他 3</value></data>
+  <data name="DevObj_Misc4" xml:space="preserve"><value>その他 4</value></data>
+  <data name="DevObj_Misc5" xml:space="preserve"><value>その他 5</value></data>
+  <data name="DevObj_Misc6" xml:space="preserve"><value>その他 6</value></data>
+  <data name="DevObj_RightPaddle1" xml:space="preserve"><value>右パドル 1</value></data>
+  <data name="DevObj_RightPaddle2" xml:space="preserve"><value>右パドル 2</value></data>
+  <data name="DevObj_LeftPaddle1" xml:space="preserve"><value>左パドル 1</value></data>
+  <data name="DevObj_LeftPaddle2" xml:space="preserve"><value>左パドル 2</value></data>
   <data name="DevObj_LeftShoulder" xml:space="preserve"><value>左ショルダー</value></data>
   <data name="DevObj_RightShoulder" xml:space="preserve"><value>右ショルダー</value></data>
   <data name="DevObj_LeftStickButton" xml:space="preserve"><value>左スティックボタン</value></data>

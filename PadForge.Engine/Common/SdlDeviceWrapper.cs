@@ -194,7 +194,8 @@ namespace PadForge.Engine
             if (GameController != IntPtr.Zero)
             {
                 NumAxes = 6;     // LX, LY, LT, RX, RY, RT
-                NumButtons = 11; // A, B, X, Y, LB, RB, Back, Start, LS, RS, Guide
+                NumButtons = 21; // 0-10 standard + 11-20 extended (Misc1, paddles, Misc2-6).
+                                 // TOUCHPAD has its own descriptor, not a numeric slot.
                 NumHats = 1;     // D-pad synthesized from gamepad buttons
 
                 // Parse the gamepad mapping to find which raw button indices are
@@ -427,14 +428,35 @@ namespace PadForge.Engine
             if (state.Buttons[6] && state.Buttons[7] && state.Buttons[10])
                 state.Buttons[10] = false;
 
+            // --- Extended gamepad buttons (positions 11-20) ---
+            // SDL3 exposes additional well-known buttons beyond the standard 11
+            // (Share / Mute on MISC1, four paddles on Xbox Elite / DualSense
+            // Edge, plus five generic MISC2-MISC6 slots). We populate them in
+            // Xbox-paddle order (P1=R-upper, P2=R-lower, P3=L-upper, P4=L-lower)
+            // so the indices read consistently regardless of source device.
+            // SDL_GetGamepadButton returns false on devices that lack a given
+            // button, so this is harmless on a plain Xbox 360 / DualShock 4.
+            // TOUCHPAD is intentionally NOT mirrored into a numeric Button slot;
+            // the canonical descriptor is "Touchpad 0 Click" via state.TouchpadClick.
+            state.Buttons[11] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC1);
+            state.Buttons[12] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
+            state.Buttons[13] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2);
+            state.Buttons[14] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE1);
+            state.Buttons[15] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE2);
+            state.Buttons[16] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC2);
+            state.Buttons[17] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC3);
+            state.Buttons[18] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC4);
+            state.Buttons[19] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC5);
+            state.Buttons[20] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC6);
+
             // --- Extra raw buttons ---
-            // Append raw joystick buttons beyond the 11 standard gamepad buttons.
-            // This exposes native device buttons (e.g. DualSense touchpad) that
-            // aren't part of the Xbox gamepad mapping, for use as macro triggers.
-            // Skip indices already consumed by the gamepad mapping to avoid
-            // double-reporting (e.g., DS3 DsHidMini SDF: b11→RB, b12→Guide).
+            // Append raw joystick buttons beyond the 21 standardized gamepad
+            // positions (0-10 standard + 11-20 extended). This exposes native
+            // device buttons that aren't part of any SDL gamepad button enum
+            // for use as macro triggers. Skip indices already consumed by the
+            // gamepad mapping to avoid double-reporting.
             int rawCount = RawButtonCount;
-            for (int i = 11; i < rawCount && i < CustomInputState.MaxButtons; i++)
+            for (int i = 21; i < rawCount && i < CustomInputState.MaxButtons; i++)
             {
                 if (_mappedRawButtonIndices != null && _mappedRawButtonIndices.Contains(i))
                     continue;
@@ -813,8 +835,23 @@ namespace PadForge.Engine
             }
 
             // --- Buttons ---
+            // For SDL3-recognized gamepads, skip positions 11-20 the device
+            // doesn't physically have (asked via SDL_GamepadHasButton) so
+            // an Xbox 360 doesn't show "Misc 1" / "Right Paddle 1" in the
+            // dropdown. Positions 0-10 are always present on any recognized
+            // gamepad. Raw joystick devices (isGamepad=false) keep the flat
+            // "Button N" enumeration unchanged.
+            int finalCount = 0;
             for (int i = 0; i < btnCount; i++)
             {
+                bool include = true;
+                if (isGamepad && i >= 11 && i <= 20)
+                {
+                    int sdlButton = GamepadButtonForPosition(i);
+                    include = sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton);
+                }
+                if (!include) continue;
+
                 var item = new DeviceObjectItem();
                 item.InputIndex = i;
                 item.ObjectTypeGuid = ObjectGuid.Button;
@@ -824,8 +861,17 @@ namespace PadForge.Engine
                 item.Aspect = ObjectAspect.Position;
 
                 items[index++] = item;
+                finalCount++;
             }
 
+            // Trim if we skipped any — caller iterates Length, can't have nulls.
+            int totalIncluded = NumAxes + NumHats + finalCount;
+            if (totalIncluded < items.Length)
+            {
+                var trimmed = new DeviceObjectItem[totalIncluded];
+                Array.Copy(items, trimmed, totalIncluded);
+                return trimmed;
+            }
             return items;
         }
 
@@ -1023,7 +1069,12 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Returns a gamepad-friendly button name for the standard 11 gamepad buttons.
+        /// Returns a gamepad-friendly button name for the standardized gamepad
+        /// button positions (0-10 standard + 11-20 extended). The extended
+        /// positions are read via the SDL gamepad API in
+        /// <see cref="GetGamepadState"/>; SDL returns false for buttons the
+        /// device doesn't have, so callers should also gate inclusion in
+        /// device-object enumeration on <see cref="SDL_GamepadHasButton"/>.
         /// </summary>
         private static string GetGamepadButtonName(int buttonIndex)
         {
@@ -1040,7 +1091,53 @@ namespace PadForge.Engine
                 8 => "Left Stick Button",
                 9 => "Right Stick Button",
                 10 => "Guide",
+                11 => "Misc 1",
+                12 => "Right Paddle 1",
+                13 => "Right Paddle 2",
+                14 => "Left Paddle 1",
+                15 => "Left Paddle 2",
+                16 => "Misc 2",
+                17 => "Misc 3",
+                18 => "Misc 4",
+                19 => "Misc 5",
+                20 => "Misc 6",
                 _ => $"Button {buttonIndex}"
+            };
+        }
+
+        /// <summary>
+        /// Maps a PadForge button position (0-20) to the SDL gamepad button
+        /// enum it reads from. Used by <see cref="GetDeviceObjects"/> to skip
+        /// positions whose backing button isn't physically present on the
+        /// device (so an Xbox 360 doesn't show "Misc 1" / "Right Paddle 1"
+        /// in the dropdown).
+        /// </summary>
+        private static int GamepadButtonForPosition(int position)
+        {
+            return position switch
+            {
+                0 => SDL_GAMEPAD_BUTTON_SOUTH,
+                1 => SDL_GAMEPAD_BUTTON_EAST,
+                2 => SDL_GAMEPAD_BUTTON_WEST,
+                3 => SDL_GAMEPAD_BUTTON_NORTH,
+                4 => SDL_GAMEPAD_BUTTON_LEFT_SHOULDER,
+                5 => SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER,
+                6 => SDL_GAMEPAD_BUTTON_BACK,
+                7 => SDL_GAMEPAD_BUTTON_START,
+                8 => SDL_GAMEPAD_BUTTON_LEFT_STICK,
+                9 => SDL_GAMEPAD_BUTTON_RIGHT_STICK,
+                10 => SDL_GAMEPAD_BUTTON_GUIDE,
+                11 => SDL_GAMEPAD_BUTTON_MISC1,
+                12 => SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1,
+                13 => SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2,
+                14 => SDL_GAMEPAD_BUTTON_LEFT_PADDLE1,
+                15 => SDL_GAMEPAD_BUTTON_LEFT_PADDLE2,
+                16 => SDL_GAMEPAD_BUTTON_MISC2,
+                17 => SDL_GAMEPAD_BUTTON_MISC3,
+                18 => SDL_GAMEPAD_BUTTON_MISC4,
+                19 => SDL_GAMEPAD_BUTTON_MISC5,
+                20 => SDL_GAMEPAD_BUTTON_MISC6,
+                _ => -1
             };
         }
 

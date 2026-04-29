@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -25,8 +26,29 @@ namespace PadForge.Engine
         /// <summary>
         /// Returns the first non-HIDMaestro HID-class device instance ID whose
         /// PnP tree contains the given VID/PID, or null if none found.
+        /// Equivalent to <c>FindAll(vid, pid).FirstOrDefault()</c>.
+        /// Kept as a thin wrapper for callers that don't need to disambiguate
+        /// multiple physical devices of the same model.
         /// </summary>
         public static string Find(ushort vid, ushort pid)
+        {
+            var all = FindAll(vid, pid);
+            return all.Count > 0 ? all[0] : null;
+        }
+
+        /// <summary>
+        /// Returns every non-HIDMaestro HID-class device instance ID whose
+        /// PnP tree contains the given VID/PID, sorted lexicographically so
+        /// the order is deterministic across SetupDi enumeration variations
+        /// (e.g. between reboots or after a USB hub re-plug).
+        ///
+        /// <para>Lets <see cref="SdlDeviceWrapper.BuildInstanceGuid"/>
+        /// disambiguate two same-model controllers that would otherwise
+        /// collapse to the same identity (e.g. two Xbox Series Bluetooth
+        /// pads paired at the same time — both report the same VID/PID and
+        /// SDL gives them synthetic XInput#N paths with no serial).</para>
+        /// </summary>
+        public static IReadOnlyList<string> FindAll(ushort vid, ushort pid)
         {
             // USB HID format: VID_045E&PID_0B13
             string vidPidUsb = $"VID_{vid:X4}&PID_{pid:X4}";
@@ -36,9 +58,11 @@ namespace PadForge.Engine
             string vidBle01 = $"VID&01{vid:X4}";
             string pidBle = $"PID&{pid:X4}";
 
+            var matches = new List<string>();
+
             var guid = GUID_DEVCLASS_HIDCLASS;
             IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT);
-            if (devInfoSet == (IntPtr)(-1)) return null;
+            if (devInfoSet == (IntPtr)(-1)) return matches;
 
             try
             {
@@ -62,7 +86,7 @@ namespace PadForge.Engine
                     if (!match) continue;
                     if (IsHidMaestroInstance(instanceId)) continue;
 
-                    return instanceId;
+                    matches.Add(instanceId);
                 }
             }
             finally
@@ -70,7 +94,8 @@ namespace PadForge.Engine
                 SetupDiDestroyDeviceInfoList(devInfoSet);
             }
 
-            return null;
+            matches.Sort(StringComparer.OrdinalIgnoreCase);
+            return matches;
         }
 
         private static bool IsHidMaestroInstance(string instanceId)

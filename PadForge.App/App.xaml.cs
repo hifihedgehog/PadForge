@@ -155,6 +155,13 @@ namespace PadForge
             // Elevation is guaranteed by app.manifest (requireAdministrator).
             // Windows prompts on launch and shows the UAC shield on the icon.
 
+            // Migrate the legacy HKCU\Run launch-at-logon entry (which never
+            // worked once PadForge required elevation) to a Task Scheduler
+            // entry. Idempotent — no-op when no legacy entry exists. Runs
+            // before the UI shows the Settings toggle so the toggle's bound
+            // state always reflects the migrated reality.
+            PadForge.Common.StartupHelper.MigrateLegacyEntryIfNeeded();
+
             // Apply system theme (follows OS light/dark setting).
             ApplicationThemeManager.ApplySystemTheme();
 

@@ -287,6 +287,13 @@ namespace SDL3
         public static bool SDL_GetGamepadButton(IntPtr gamepad, int button) =>
             _SDL_GetGamepadButton(gamepad, button);
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasButton")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GamepadHasButton(IntPtr gamepad, int button);
+
+        public static bool SDL_GamepadHasButton(IntPtr gamepad, int button) =>
+            _SDL_GamepadHasButton(gamepad, button);
+
         // Gamepad axis indices (SDL_GamepadAxis enum).
         public const int SDL_GAMEPAD_AXIS_LEFTX = 0;
         public const int SDL_GAMEPAD_AXIS_LEFTY = 1;
@@ -312,8 +319,18 @@ namespace SDL3
         public const int SDL_GAMEPAD_BUTTON_DPAD_DOWN = 12;
         public const int SDL_GAMEPAD_BUTTON_DPAD_LEFT = 13;
         public const int SDL_GAMEPAD_BUTTON_DPAD_RIGHT = 14;
+        public const int SDL_GAMEPAD_BUTTON_MISC1 = 15;
+        public const int SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1 = 16;
+        public const int SDL_GAMEPAD_BUTTON_LEFT_PADDLE1 = 17;
+        public const int SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2 = 18;
+        public const int SDL_GAMEPAD_BUTTON_LEFT_PADDLE2 = 19;
         public const int SDL_GAMEPAD_BUTTON_TOUCHPAD = 20;
-        public const int SDL_GAMEPAD_BUTTON_COUNT = 21;
+        public const int SDL_GAMEPAD_BUTTON_MISC2 = 21;
+        public const int SDL_GAMEPAD_BUTTON_MISC3 = 22;
+        public const int SDL_GAMEPAD_BUTTON_MISC4 = 23;
+        public const int SDL_GAMEPAD_BUTTON_MISC5 = 24;
+        public const int SDL_GAMEPAD_BUTTON_MISC6 = 25;
+        public const int SDL_GAMEPAD_BUTTON_COUNT = 26;
 
         // ─────────────────────────────────────────────
         //  Joystick state polling

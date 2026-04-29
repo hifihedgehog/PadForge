@@ -344,9 +344,19 @@ namespace PadForge.Engine.Data
                 wrapper.ProductGuid,
                 wrapper.Name);
 
+            // Persist the gated button count (paddles / Misc1-6 only when SDL
+            // says the device has them) rather than the wrapper's NumButtons,
+            // which is a fixed 21 for any SDL3-recognized gamepad. This keeps
+            // the Devices list summary consistent with the live preview when
+            // the device is offline. Fall back to NumButtons for wrappers
+            // that don't expose a sparse list (keyboard / touchpad return
+            // empty arrays, mice return a dense 0..N-1).
+            int gatedButtons = wrapper.SupportedButtonIndices?.Length ?? 0;
+            if (gatedButtons <= 0) gatedButtons = wrapper.NumButtons;
+
             LoadCapabilities(
                 wrapper.NumAxes,
-                wrapper.NumButtons,
+                gatedButtons,
                 wrapper.NumHats,
                 wrapper.GetInputDeviceType());
 

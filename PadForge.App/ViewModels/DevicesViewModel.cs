@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -190,9 +191,15 @@ namespace PadForge.ViewModels
         internal Guid LastRawStateDeviceGuid { get; set; }
 
         /// <summary>
-        /// Rebuilds the raw state collections for a new device with the given capabilities.
+        /// Rebuilds the raw state collections for a new device.
+        /// <paramref name="buttonIndices"/> is the sparse list of button
+        /// positions the device actually exposes — for SDL3 gamepads this
+        /// skips extended slots (paddles, Misc buttons) the device doesn't
+        /// have, so the preview only shows real buttons. Item Index values
+        /// are stored verbatim and used by the InputService update loop
+        /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, int buttonCount, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false)
         {
             RawAxes.Clear();
             if (!isMouse)
@@ -207,23 +214,21 @@ namespace PadForge.ViewModels
             IsMouseDevice = isMouse;
             IsTouchpadDevice = isTouchpad;
 
+            int buttonCount = buttonIndices?.Count ?? 0;
+
             if (isKeyboard)
             {
                 // Build positioned keyboard layout instead of flat button list.
                 foreach (var key in KeyboardKeyItem.BuildLayout())
                     KeyboardKeys.Add(key);
             }
-            else if (isMouse)
-            {
-                // Mouse visual handles button display — but keep RawButtons populated
-                // so InputService can still update IsPressed for the mouse preview.
-                for (int i = 0; i < buttonCount; i++)
-                    RawButtons.Add(new ButtonDisplayItem { Index = i });
-            }
             else
             {
+                // Mouse visual handles button display, but RawButtons still
+                // needs entries so InputService can update IsPressed for the
+                // mouse preview's left/middle/right/X1/X2 lookups by index.
                 for (int i = 0; i < buttonCount; i++)
-                    RawButtons.Add(new ButtonDisplayItem { Index = i });
+                    RawButtons.Add(new ButtonDisplayItem { Index = buttonIndices[i] });
             }
 
             RawPovs.Clear();

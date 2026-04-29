@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -739,13 +740,32 @@ namespace PadForge.Engine
                 // real controller. Resolve to the physical HID child's stable
                 // PnP path (BT MAC / USB hub+port) so the identity survives
                 // xinputhid slot reshuffles.
-                string physicalPath = null;
-                try { physicalPath = StableXInputInstance.Find(vid, pid); }
-                catch { physicalPath = null; }
+                //
+                // Multi-match disambiguation: with two same-model controllers
+                // (e.g. two Xbox Series BT pads paired at once), FindAll
+                // returns both candidates in a deterministic order. We pick
+                // by parsing the slot index out of the SDL XInput#N path so
+                // each slot consistently maps to one of the two physicals,
+                // and append :slot{slot} to the identifier so the two never
+                // hash to the same GUID. Settings can drift on reconnect
+                // (xinputhid may reshuffle which physical is in which slot),
+                // but that's the lesser evil vs collapsing both pads into a
+                // single card with output flickering between them.
+                IReadOnlyList<string> candidates;
+                try { candidates = StableXInputInstance.FindAll(vid, pid); }
+                catch { candidates = Array.Empty<string>(); }
 
-                if (!string.IsNullOrEmpty(physicalPath))
+                if (candidates.Count > 0)
                 {
-                    identifier = $"pnp:{physicalPath}";
+                    int slot = ParseXInputSlot(devicePath);
+                    int idx = candidates.Count == 1
+                        ? 0
+                        : (slot >= 0 ? Math.Min(slot, candidates.Count - 1) : 0);
+                    string physicalPath = candidates[idx];
+
+                    identifier = candidates.Count > 1
+                        ? $"pnp:{physicalPath}:slot{(slot >= 0 ? slot : idx)}"
+                        : $"pnp:{physicalPath}";
                 }
                 else if (!string.IsNullOrEmpty(sdlGuid) && !sdlGuid.All(c => c == '0'))
                 {
@@ -774,6 +794,29 @@ namespace PadForge.Engine
                 byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(identifier));
                 return new Guid(hash);
             }
+        }
+
+        /// <summary>
+        /// Extracts the slot index from an SDL XInput-shaped device path
+        /// (e.g. "XInput#0" → 0, "XInput#3" → 3). Returns -1 when the path
+        /// doesn't match the expected shape. Used by
+        /// <see cref="BuildInstanceGuid"/> to map SDL's slot numbering onto
+        /// the lexicographically-sorted physical-instance list when more
+        /// than one same-model controller is present.
+        /// </summary>
+        private static int ParseXInputSlot(string devicePath)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return -1;
+            const string prefix = "XInput#";
+            if (!devicePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return -1;
+
+            int start = prefix.Length;
+            int end = start;
+            while (end < devicePath.Length && devicePath[end] >= '0' && devicePath[end] <= '9')
+                end++;
+            if (end == start) return -1;
+
+            return int.TryParse(devicePath.AsSpan(start, end - start), out int slot) ? slot : -1;
         }
 
         // ─────────────────────────────────────────────

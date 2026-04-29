@@ -336,6 +336,7 @@ namespace PadForge.Common.Input
             if ((xinputButtons & Gamepad.LEFT_THUMB) != 0) b |= HMButton.LeftStick;
             if ((xinputButtons & Gamepad.RIGHT_THUMB) != 0) b |= HMButton.RightStick;
             if ((xinputButtons & Gamepad.GUIDE) != 0) b |= HMButton.Guide;
+            if ((xinputButtons & Gamepad.TOUCHPAD) != 0) b |= HMButton.Touchpad;
             return b;
         }
 

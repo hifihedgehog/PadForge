@@ -181,12 +181,19 @@ namespace PadForge.Common.Input
                         .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
+                    // Vendor match is prefix-based: HM upstream isn't strictly
+                    // consistent on the vendor field — older Sony profiles use
+                    // "Sony", the dualsense-bt-full profile added in HM 1.2.2
+                    // uses "Sony Interactive Entertainment". Same shape for
+                    // Microsoft if a future HM rev ships "Microsoft Corporation".
+                    // StartsWith keeps both variants in the right family bucket
+                    // without us needing to chase upstream string changes.
                     _xboxProfiles = _allProfiles
-                        .Where(p => string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase))
+                        .Where(p => IsXboxVendor(p.Vendor))
                         .ToList();
 
                     _playStationProfiles = _allProfiles
-                        .Where(p => string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase))
+                        .Where(p => IsSonyVendor(p.Vendor))
                         .ToList();
 
                     // Extended = everything that's not Microsoft or Sony,
@@ -205,8 +212,8 @@ namespace PadForge.Common.Input
                     extended.AddRange(_allProfiles
                         .Where(p =>
                             p.Id != CustomProfileId &&
-                            !string.Equals(p.Vendor, "Microsoft", StringComparison.OrdinalIgnoreCase) &&
-                            !string.Equals(p.Vendor, "Sony", StringComparison.OrdinalIgnoreCase)));
+                            !IsXboxVendor(p.Vendor) &&
+                            !IsSonyVendor(p.Vendor)));
                     _extendedProfiles = extended;
                 }
                 catch
@@ -226,6 +233,14 @@ namespace PadForge.Common.Input
                 _initialized = true;
             }
         }
+
+        private static bool IsXboxVendor(string vendor) =>
+            !string.IsNullOrEmpty(vendor) &&
+            vendor.StartsWith("Microsoft", StringComparison.OrdinalIgnoreCase);
+
+        private static bool IsSonyVendor(string vendor) =>
+            !string.IsNullOrEmpty(vendor) &&
+            vendor.StartsWith("Sony", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Build the synthetic "Custom" profile that anchors the Extended

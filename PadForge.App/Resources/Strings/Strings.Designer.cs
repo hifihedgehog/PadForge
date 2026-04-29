@@ -704,6 +704,16 @@ public class Strings : INotifyPropertyChanged
     public string DevObj_POVN => Get("DevObj_POVN");
     public string DevObj_Button => Get("DevObj_Button");
     public string DevObj_AxisN => Get("DevObj_AxisN");
+    public string DevObj_Misc1 => Get("DevObj_Misc1");
+    public string DevObj_Misc2 => Get("DevObj_Misc2");
+    public string DevObj_Misc3 => Get("DevObj_Misc3");
+    public string DevObj_Misc4 => Get("DevObj_Misc4");
+    public string DevObj_Misc5 => Get("DevObj_Misc5");
+    public string DevObj_Misc6 => Get("DevObj_Misc6");
+    public string DevObj_RightPaddle1 => Get("DevObj_RightPaddle1");
+    public string DevObj_RightPaddle2 => Get("DevObj_RightPaddle2");
+    public string DevObj_LeftPaddle1 => Get("DevObj_LeftPaddle1");
+    public string DevObj_LeftPaddle2 => Get("DevObj_LeftPaddle2");
     public string Profiles_Title => Get("Profiles_Title");
     public string Profiles_Management => Get("Profiles_Management");
     public string Profiles_Description => Get("Profiles_Description");

@@ -245,7 +245,7 @@ namespace PadForge.Services
             // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
             if (_waitForRelease)
             {
-                bool anyHeld = false;
+                bool anyHeld = current.TouchpadClick;
                 for (int i = 0; i < CustomInputState.MaxButtons && !anyHeld; i++)
                     anyHeld = current.Buttons[i];
                 for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
@@ -259,6 +259,17 @@ namespace PadForge.Services
                 _baseline = current;
                 _axisHoldCounter = 0;
                 _axisCandidateIndex = -1;
+                return;
+            }
+
+            // ── Touchpad click (dedicated bool — not in Buttons[]) ──
+            // Captured edge-triggered like a button, but emits the canonical
+            // "Touchpad 0 Click" descriptor that Step 3's MapToButtonPressedSingle
+            // routes via state.TouchpadClick. Engine consumers only see a
+            // Button-shaped result for neg-recording branching purposes.
+            if (current.TouchpadClick && !_baseline.TouchpadClick)
+            {
+                CompleteRecordingWithDescriptor("Touchpad 0 Click");
                 return;
             }
 
@@ -408,6 +419,44 @@ namespace PadForge.Services
                 Type = type,
                 Index = index,
                 PovDirection = povDirection
+            });
+        }
+
+        /// <summary>
+        /// Finishes the active recording with a literal descriptor string,
+        /// bypassing <see cref="BuildDescriptor"/>. Used for inputs that don't
+        /// fit the (MapType, index) shape — e.g. touchpad click, which lives in
+        /// CustomInputState.TouchpadClick rather than the Buttons[] array and
+        /// emits the engine-recognized "Touchpad 0 Click" form directly.
+        /// </summary>
+        private void CompleteRecordingWithDescriptor(string descriptor)
+        {
+            if (_activeMapping == null)
+                return;
+
+            var mapping = _activeMapping;
+            int padIndex = _activePadIndex;
+
+            mapping.IsRecording = false;
+            CleanupTimer();
+            _activeMapping = null;
+            _activePadIndex = -1;
+            _baseline = null;
+
+            mapping.LoadDescriptor(descriptor);
+            string finalDescriptor = mapping.SourceDescriptor;
+
+            _mainVm.StatusText = string.Format(
+                Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
+
+            RecordingCompleted?.Invoke(this, new RecordingResult
+            {
+                Mapping = mapping,
+                PadIndex = padIndex,
+                Descriptor = finalDescriptor,
+                Type = MapType.Button,
+                Index = -1,
+                PovDirection = null
             });
         }
 

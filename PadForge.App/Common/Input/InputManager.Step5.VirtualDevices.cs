@@ -951,7 +951,25 @@ namespace PadForge.Common.Input
                         }
                         else
                         {
-                            vc.SubmitGamepadState(CombinedOutputStates[padIndex]);
+                            // PlayStation slots: thread the touchpad-click bool
+                            // into Gamepad.TOUCHPAD so HMaestroVirtualController.
+                            // MapButtons can route it to HMButton.Touchpad and
+                            // the profile's buttonMap can land it at the correct
+                            // descriptor button (e.g. button 14 on DS4 / DualSense).
+                            // Auto-map populates tp.Click from "Touchpad 0 Click"
+                            // input descriptors but never sets the gp bit, so
+                            // BT profiles (no raw packer) lose the press without
+                            // this OR. USB profiles still ride SubmitRawReport
+                            // for the full byte-level layout, but consistent
+                            // SubmitGamepadState output keeps the GIP / XInput
+                            // surface in agreement.
+                            var gpOut = CombinedOutputStates[padIndex];
+                            if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
+                                && CombinedTouchpadStates[padIndex].Click)
+                            {
+                                gpOut.Buttons |= Gamepad.TOUCHPAD;
+                            }
+                            vc.SubmitGamepadState(gpOut);
 
                             if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
                                 && vc is HMaestroVirtualController hmPs)

@@ -232,11 +232,12 @@ namespace PadForge.Common.Input
             // Counter byte (6).
             dest[6] = (byte)(frameCounter & 0xFF);
 
-            // Buttons + hat (bytes 7-10).
-            // byte 7: bits 0-3 = D-pad 0..7 / 0x8=neutral; bits 4-7 = face buttons.
-            // byte 8: shoulder + trigger digital + system buttons.
-            // byte 9: PS + touchpad click + counter (low 6 bits).
-            // byte 10: vendor / extra (mute on DualSense).
+            // Buttons + hat (bytes 7-10). Byte 9 layout per the DualSense USB
+            // input-report parser in SDL_hidapi_ps5.c (rgucButtonsAndHat[2]):
+            // bit 0 = PS, bit 1 = Touchpad click, bit 2 = Mute (mic), bit 3
+            // reserved, bits 4-7 = DualSense Edge function/paddle buttons.
+            // Byte 9 contains NO counter — the controller has its own counter
+            // at byte 6 and a 32-bit packet sequence at bytes 11-14.
             dest[7] = (byte)(EncodeDpad(gp.Buttons)
                            | (gp.IsButtonPressed(Gamepad.X) ? 0x10 : 0)   // Square
                            | (gp.IsButtonPressed(Gamepad.A) ? 0x20 : 0)   // Cross
@@ -254,13 +255,16 @@ namespace PadForge.Common.Input
             if (gp.IsButtonPressed(Gamepad.RIGHT_THUMB))    b8 |= 0x80;
             dest[8] = b8;
 
-            byte b9 = (byte)((frameCounter >> 8) & 0x3F); // counter high
-            if (gp.IsButtonPressed(Gamepad.GUIDE))     b9 |= 0x01; // PS
-            if (gp.IsButtonPressed(Gamepad.TOUCHPAD)) b9 |= 0x02;
-            if (tp.Click)                              b9 |= 0x02;
+            byte b9 = 0;
+            if (gp.IsButtonPressed(Gamepad.GUIDE)) b9 |= 0x01; // PS
+            if (tp.Click)                          b9 |= 0x02; // Touchpad click
+            // bit 0x04 = Mute (mic), bits 0x10-0x80 = DualSense Edge function /
+            // paddle buttons. Left at 0 — wiring MISC1 / paddles into the
+            // virtual output requires plumbing state.Buttons[11..15] into the
+            // packer, which is a separate task.
             dest[9] = b9;
 
-            // byte 10 stays zero (mute, future button bits).
+            // byte 10 stays zero (reserved / future button bits).
 
             // Packet sequence (bytes 11-14): 32-bit LE counter — increments
             // every frame.

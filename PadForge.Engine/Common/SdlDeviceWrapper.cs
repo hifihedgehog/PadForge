@@ -73,6 +73,18 @@ namespace PadForge.Engine
         /// </summary>
         private HashSet<int> _mappedRawButtonIndices;
 
+        /// <summary>
+        /// Sparse list of button positions that this device actually exposes.
+        /// For SDL3-recognized gamepads: 0-10 always, plus 11-20 only when
+        /// <c>SDL_GamepadHasButton</c> reports the corresponding extended
+        /// button (Misc1, paddles, Misc2-6) is present, plus any raw passthrough
+        /// indices ≥21 that aren't already consumed by the gamepad mapping.
+        /// For raw joystick devices: 0..NumButtons-1.
+        /// Computed once at <see cref="Open"/> time and used by the Devices
+        /// preview to avoid showing button slots the device doesn't have.
+        /// </summary>
+        public int[] SupportedButtonIndices { get; private set; } = Array.Empty<int>();
+
         /// <summary>Whether the device has a gyroscope sensor.</summary>
         public bool HasGyro { get; private set; }
 
@@ -210,6 +222,8 @@ namespace PadForge.Engine
                 NumHats = SDL_GetNumJoystickHats(Joystick);
                 _mappedRawButtonIndices = null;
             }
+
+            SupportedButtonIndices = ComputeSupportedButtonIndices();
 
             // SDL3 may return a raw VID/PID string (e.g., "0x16c0/0x05e1") for devices
             // not in its internal database. Fall back to the Windows HID product string.
@@ -1112,6 +1126,50 @@ namespace PadForge.Engine
         /// device (so an Xbox 360 doesn't show "Misc 1" / "Right Paddle 1"
         /// in the dropdown).
         /// </summary>
+        /// <summary>
+        /// Builds the sparse list of button positions this device exposes,
+        /// used to populate <see cref="SupportedButtonIndices"/>. For SDL3
+        /// gamepads, positions 11-20 are gated on <c>SDL_GamepadHasButton</c>
+        /// so an Xbox 360 (no paddles, no Misc) reports just 0-10, while a
+        /// DualSense Edge reports 0-10 plus its actual paddle / Mute slots.
+        /// Raw passthrough indices ≥21 are included only when not already
+        /// consumed by the gamepad mapping (matches <see cref="GetGamepadState"/>'s
+        /// passthrough loop). Non-gamepad devices get a dense 0..NumButtons-1 list.
+        /// </summary>
+        private int[] ComputeSupportedButtonIndices()
+        {
+            int max = Math.Min(NumButtons, CustomInputState.MaxButtons);
+            var list = new System.Collections.Generic.List<int>(max);
+
+            if (GameController != IntPtr.Zero)
+            {
+                for (int i = 0; i < 11 && i < max; i++)
+                    list.Add(i);
+
+                for (int i = 11; i <= 20 && i < max; i++)
+                {
+                    int sdlButton = GamepadButtonForPosition(i);
+                    if (sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton))
+                        list.Add(i);
+                }
+
+                int rawCount = Math.Min(RawButtonCount, CustomInputState.MaxButtons);
+                for (int i = 21; i < rawCount; i++)
+                {
+                    if (_mappedRawButtonIndices != null && _mappedRawButtonIndices.Contains(i))
+                        continue;
+                    list.Add(i);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < max; i++)
+                    list.Add(i);
+            }
+
+            return list.ToArray();
+        }
+
         private static int GamepadButtonForPosition(int position)
         {
             return position switch

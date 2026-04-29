@@ -15,6 +15,15 @@ namespace PadForge.Engine
         int NumButtons { get; }
         int RawButtonCount { get; }
         int NumHats { get; }
+
+        /// <summary>
+        /// Sparse list of button positions this device actually exposes.
+        /// Implementations that don't gate buttons can return a dense
+        /// 0..NumButtons-1 array. Used by the Devices preview to skip
+        /// positions the device doesn't physically have (e.g. paddles on
+        /// a controller that doesn't have any).
+        /// </summary>
+        int[] SupportedButtonIndices { get; }
         bool HasRumble { get; }
         bool HasHaptic { get; }
         bool HasGyro { get; }

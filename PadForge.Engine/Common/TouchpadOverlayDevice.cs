@@ -28,6 +28,7 @@ namespace PadForge.Engine
         public int NumButtons => 0;
         public int RawButtonCount => 0;
         public int NumHats => 0;
+        public int[] SupportedButtonIndices => Array.Empty<int>();
         public bool HasRumble => false;
         public bool HasHaptic => false;
         public bool HasGyro => false;

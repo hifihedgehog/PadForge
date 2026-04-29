@@ -764,14 +764,12 @@ namespace PadForge.Services
             {
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
                 int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
-                int btnCount = Math.Min(
-                    ud.ForceRawJoystickMode && ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
-                    CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse, isTouchpad);
+                int[] btnIndices = ResolveButtonIndices(ud);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
@@ -804,14 +802,12 @@ namespace PadForge.Services
             {
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
                 int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
-                int btnCount = Math.Min(
-                    ud.ForceRawJoystickMode && ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
-                    CustomInputState.MaxButtons);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
-                devVm.RebuildRawStateCollections(axisCount, btnCount, povCount, isKb, isMouse, isTouchpad2);
+                int[] btnIndices = ResolveButtonIndices(ud);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
@@ -855,7 +851,11 @@ namespace PadForge.Services
             else
             {
                 for (int i = 0; i < devVm.RawButtons.Count; i++)
-                    devVm.RawButtons[i].IsPressed = state.Buttons[i];
+                {
+                    var item = devVm.RawButtons[i];
+                    int idx = item.Index;
+                    item.IsPressed = idx >= 0 && idx < state.Buttons.Length && state.Buttons[idx];
+                }
             }
 
             // Update POV hat values in-place.
@@ -2673,7 +2673,11 @@ namespace PadForge.Services
             row.IsEnabled = ud.IsEnabled;
             row.IsHidden = ud.IsHidden;
             row.AxisCount = ud.CapAxeCount;
-            row.ButtonCount = ud.CapButtonCount;
+            // Prefer the live device's gated count (Xbox 360 → 11, Elite with paddles → 15+)
+            // so the Devices summary doesn't always read 21 on SDL3 gamepads.
+            // Falls back to CapButtonCount when the device is offline.
+            int liveBtns = ud.Device?.SupportedButtonIndices?.Length ?? 0;
+            row.ButtonCount = liveBtns > 0 ? liveBtns : ud.CapButtonCount;
             row.PovCount = ud.CapPovCount;
             row.HasRumble = ud.HasForceFeedback;
             row.HasGyro = ud.HasGyro;
@@ -2927,6 +2931,43 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
         //  UserDevice lookup helpers
         // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Returns the button positions to surface in the Devices preview for
+        /// <paramref name="ud"/>. When the live <c>ISdlInputDevice</c> is
+        /// available, prefer its <c>SupportedButtonIndices</c> so SDL3 gamepads
+        /// only show the extended slots (paddles, Misc1-6) the device actually
+        /// has. Falls back to a dense 0..count-1 list (using RawButtonCount in
+        /// raw passthrough mode, otherwise CapButtonCount) when the device is
+        /// offline or doesn't expose a supported list.
+        /// </summary>
+        private static int[] ResolveButtonIndices(UserDevice ud)
+        {
+            int max = CustomInputState.MaxButtons;
+
+            // Live SDL device: use its computed sparse list, capped at MaxButtons.
+            // Raw passthrough mode bypasses the gamepad-aware filter and uses
+            // the dense raw range so every native HID button is visible.
+            if (ud.Device != null && !ud.ForceRawJoystickMode)
+            {
+                int[] sparse = ud.Device.SupportedButtonIndices;
+                if (sparse != null && sparse.Length > 0)
+                {
+                    if (sparse[sparse.Length - 1] < max) return sparse;
+                    var trimmed = new System.Collections.Generic.List<int>(sparse.Length);
+                    foreach (int idx in sparse) if (idx < max) trimmed.Add(idx);
+                    return trimmed.ToArray();
+                }
+            }
+
+            int count = Math.Min(
+                ud.ForceRawJoystickMode && ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                max);
+            if (count <= 0) return Array.Empty<int>();
+            int[] dense = new int[count];
+            for (int i = 0; i < count; i++) dense[i] = i;
+            return dense;
+        }
 
         /// <summary>
         /// Finds a UserDevice by instance GUID from the SettingsManager collection.

@@ -876,7 +876,7 @@ namespace PadForge.Services
                 devVm.AccelZ = state.Accel[2];
             }
 
-            // Update touchpad finger positions.
+            // Update touchpad finger positions and click state.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
                 devVm.TouchpadX0 = state.TouchpadFingers[0];
@@ -885,6 +885,7 @@ namespace PadForge.Services
                 devVm.TouchpadX1 = state.TouchpadFingers[3];
                 devVm.TouchpadY1 = state.TouchpadFingers[4];
                 devVm.TouchpadDown1 = state.TouchpadDown[1];
+                devVm.TouchpadClickPressed = state.TouchpadClick;
             }
         }
 

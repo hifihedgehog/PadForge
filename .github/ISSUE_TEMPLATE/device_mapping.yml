@@ -167,6 +167,37 @@ body:
         -- or --
         Up: button 12, Down: button 13, Left: button 14, Right: button 15
 
+  - type: markdown
+    attributes:
+      value: |
+        ## Bonus: HIDMaestro device profile
+
+        PadForge's input mapping (above) tells PadForge how to **read** your controller. The HIDMaestro profile tells PadForge how to **emulate** your controller back out to games — useful if your device is one PadForge does not yet recognize for full passthrough.
+
+        Capturing this profile takes about 30 seconds and lets us add your device to the built-in catalog so the next person with the same controller does not have to fill in this form at all.
+
+        ### How to capture it (step by step)
+
+        1. **Plug in your controller** so PadForge can see it.
+        2. Open PadForge and go to the **Pads** page (the main page with the four controller slot cards).
+        3. Pick any slot card and set its output type to **Extended**. (You can change it back when you are done — capturing the profile does not break anything.)
+        4. Next to the **Profile** dropdown on that slot, click the **Imported profiles…** button.
+        5. The **Imported Profiles** window opens. The bottom list, **Connected devices available to import**, shows every HID device currently plugged in. Find your controller in that list and click it. PadForge captures the device's descriptor and adds a new entry to the **Your imported profiles** list at the top, named after your device with **(User Generated)** at the end.
+        6. Click that new entry to select it, then click the **Export…** button on the right.
+        7. A Save dialog appears. Pick any folder you can find again (Desktop is fine), keep the suggested filename, and click **Save**. You now have a `.json` file.
+        8. **Drag that `.json` file into the box below** (or click the box and pick the file). GitHub will attach it to this issue.
+
+        That is it. You can close the **Imported Profiles** window and put the slot back to whatever output type you were using before.
+
+  - type: textarea
+    id: hidmaestro_profile
+    attributes:
+      label: HIDMaestro profile JSON (optional but very helpful)
+      description: |
+        Drag the `.json` file you exported in step 7 above into this box. GitHub will replace this text with an attachment link automatically. Skip this section if you cannot capture the profile for any reason — the input mapping above is still useful on its own.
+      placeholder: |
+        Drag the exported .json file here.
+
   - type: checkboxes
     id: verification
     attributes:

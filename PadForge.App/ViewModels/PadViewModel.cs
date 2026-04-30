@@ -275,6 +275,28 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
+        //  PlayStation per-slot configuration
+        //  Drives the Adaptive Triggers and Lighting tabs.
+        //  Meaningful only when OutputType == PlayStation AND the
+        //  active profile has the relevant capability (DualSense /
+        //  DualSense Edge for adaptive triggers; DS4 / DualSense /
+        //  DualSense Edge for lighting). Tab visibility gates the
+        //  UI surface; the storage instance is always present so XML
+        //  round-trip and profile-switch flows stay symmetrical with
+        //  ExtendedConfig.
+        // ═══════════════════════════════════════════════
+
+        private PlayStationSlotConfig _playStationConfig = new();
+
+        /// <summary>Per-slot PlayStation output configuration. Always
+        /// present; consumed only on PlayStation slots.</summary>
+        public PlayStationSlotConfig PlayStationConfig
+        {
+            get => _playStationConfig;
+            set => SetProperty(ref _playStationConfig, value ?? new());
+        }
+
+        // ═══════════════════════════════════════════════
         //  MIDI per-slot configuration
         // ═══════════════════════════════════════════════
 

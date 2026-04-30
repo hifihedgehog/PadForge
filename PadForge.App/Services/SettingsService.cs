@@ -363,6 +363,7 @@ namespace PadForge.Services
                 appSettings.MidiSlotOrder);
 
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
+            ApplyPlayStationConfigs(appSettings.PlayStationConfigs);
             ApplyMidiConfigs(appSettings.MidiConfigs);
 
             // Load DSU motion server settings (now on Dashboard VM).
@@ -421,6 +422,42 @@ namespace PadForge.Services
                     cfg.ProductString = cfgData.ProductString ?? string.Empty;
                     cfg.Customize = cfgData.Customize;
                     cfg.ForceFeedbackEnabled = cfgData.ForceFeedbackEnabled;
+                }
+            }
+        }
+
+        /// <summary>Applies per-slot PlayStation configurations (Adaptive
+        /// Triggers + Lighting). Only restores configs for slots that
+        /// are currently created as PlayStation.</summary>
+        private void ApplyPlayStationConfigs(ViewModels.PlayStationSlotConfigData[] configs)
+        {
+            if (configs == null) return;
+            foreach (var cfgData in configs)
+            {
+                int idx = cfgData.SlotIndex;
+                if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                    SettingsManager.SlotCreated[idx] &&
+                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.PlayStation)
+                {
+                    var cfg = _mainVm.Pads[idx].PlayStationConfig;
+                    cfg.LeftTriggerMode = cfgData.LeftTriggerMode;
+                    cfg.RightTriggerMode = cfgData.RightTriggerMode;
+                    cfg.LeftStartPosition = cfgData.LeftStartPosition;
+                    cfg.LeftEndPosition = cfgData.LeftEndPosition;
+                    cfg.LeftStrength = cfgData.LeftStrength;
+                    cfg.LeftFrequency = cfgData.LeftFrequency;
+                    cfg.RightStartPosition = cfgData.RightStartPosition;
+                    cfg.RightEndPosition = cfgData.RightEndPosition;
+                    cfg.RightStrength = cfgData.RightStrength;
+                    cfg.RightFrequency = cfgData.RightFrequency;
+                    cfg.LightbarRed = cfgData.LightbarRed;
+                    cfg.LightbarGreen = cfgData.LightbarGreen;
+                    cfg.LightbarBlue = cfgData.LightbarBlue;
+                    cfg.LightbarEnabled = cfgData.LightbarEnabled;
+                    cfg.SpeakerVolume = cfgData.SpeakerVolume;
+                    cfg.MicMute = cfgData.MicMute;
+                    cfg.MicLightOn = cfgData.MicLightOn;
+                    cfg.UserEffectsEnabled = cfgData.UserEffectsEnabled;
                 }
             }
         }
@@ -834,9 +871,10 @@ namespace PadForge.Services
                     active.KeyboardMouseSlotOrder,
                     active.MidiSlotOrder);
 
-                // Now that SlotCreated and OutputType are restored, apply Extended/MIDI
+                // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/PlayStation
                 // configs from the profile's own snapshot.
                 ApplyExtendedConfigs(active.ExtendedConfigs);
+                ApplyPlayStationConfigs(active.PlayStationConfigs);
                 ApplyMidiConfigs(active.MidiConfigs);
 
                 // Apply DSU/Web/overlay settings from the active profile.
@@ -907,6 +945,7 @@ namespace PadForge.Services
             profile.SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
                 .Select(i => _mainVm.Pads[i].ProfileId).ToArray();
             profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
+            profile.PlayStationConfigs = BuildPlayStationConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
             profile.XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray();
             profile.PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray();
@@ -1131,6 +1170,42 @@ namespace PadForge.Services
                 });
             }
 
+            // Collect per-slot PlayStation configurations. Mirror of
+            // ExtendedConfig persistence — only persist for slots that
+            // are actually PlayStation; Xbox / Extended / KbM / MIDI
+            // slots don't read this. Defaults applied on load for any
+            // PlayStation slot the snapshot doesn't carry an entry for.
+            var playStationConfigs = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.PlayStation)
+                    continue;
+                var cfg = _mainVm.Pads[i].PlayStationConfig;
+                playStationConfigs.Add(new ViewModels.PlayStationSlotConfigData
+                {
+                    SlotIndex = i,
+                    LeftTriggerMode = cfg.LeftTriggerMode,
+                    RightTriggerMode = cfg.RightTriggerMode,
+                    LeftStartPosition = cfg.LeftStartPosition,
+                    LeftEndPosition = cfg.LeftEndPosition,
+                    LeftStrength = cfg.LeftStrength,
+                    LeftFrequency = cfg.LeftFrequency,
+                    RightStartPosition = cfg.RightStartPosition,
+                    RightEndPosition = cfg.RightEndPosition,
+                    RightStrength = cfg.RightStrength,
+                    RightFrequency = cfg.RightFrequency,
+                    LightbarRed = cfg.LightbarRed,
+                    LightbarGreen = cfg.LightbarGreen,
+                    LightbarBlue = cfg.LightbarBlue,
+                    LightbarEnabled = cfg.LightbarEnabled,
+                    SpeakerVolume = cfg.SpeakerVolume,
+                    MicMute = cfg.MicMute,
+                    MicLightOn = cfg.MicLightOn,
+                    UserEffectsEnabled = cfg.UserEffectsEnabled
+                });
+            }
+
             // AppSettings always stores the DEFAULT profile's per-slot state.
             // When a named profile is active, use the saved default snapshot
             // so the named profile's state doesn't contaminate the default.
@@ -1184,6 +1259,7 @@ namespace PadForge.Services
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
+                PlayStationConfigs = isDefault ? playStationConfigs.ToArray() : defaultSnap.PlayStationConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
                 XboxSlotOrder          = isDefault ? SettingsManager.XboxSlotOrder.ToArray()          : defaultSnap.XboxSlotOrder,
@@ -1218,6 +1294,45 @@ namespace PadForge.Services
                     ProductString = cfg.ProductString,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        /// <summary>
+        /// Snapshots PlayStation configs for only created PlayStation slots
+        /// (for profile storage).  Mirrors <see cref="BuildExtendedConfigSnapshot"/>.
+        /// </summary>
+        private ViewModels.PlayStationSlotConfigData[] BuildPlayStationConfigSnapshot()
+        {
+            var list = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.PlayStation)
+                    continue;
+                var cfg = _mainVm.Pads[i].PlayStationConfig;
+                list.Add(new ViewModels.PlayStationSlotConfigData
+                {
+                    SlotIndex = i,
+                    LeftTriggerMode = cfg.LeftTriggerMode,
+                    RightTriggerMode = cfg.RightTriggerMode,
+                    LeftStartPosition = cfg.LeftStartPosition,
+                    LeftEndPosition = cfg.LeftEndPosition,
+                    LeftStrength = cfg.LeftStrength,
+                    LeftFrequency = cfg.LeftFrequency,
+                    RightStartPosition = cfg.RightStartPosition,
+                    RightEndPosition = cfg.RightEndPosition,
+                    RightStrength = cfg.RightStrength,
+                    RightFrequency = cfg.RightFrequency,
+                    LightbarRed = cfg.LightbarRed,
+                    LightbarGreen = cfg.LightbarGreen,
+                    LightbarBlue = cfg.LightbarBlue,
+                    LightbarEnabled = cfg.LightbarEnabled,
+                    SpeakerVolume = cfg.SpeakerVolume,
+                    MicMute = cfg.MicMute,
+                    MicLightOn = cfg.MicLightOn,
+                    UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;
@@ -2076,6 +2191,16 @@ namespace PadForge.Services
         public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
 
         /// <summary>
+        /// Per-slot PlayStation configuration (Adaptive Triggers + Lighting).
+        /// Null on settings files older than v3.1.0 — slots fall back to
+        /// out-of-the-box defaults (all triggers Off, lightbar disabled,
+        /// audio neutral) so the schema add is a clean no-op for legacy files.
+        /// </summary>
+        [XmlArray("PlayStationConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.PlayStationSlotConfigData[] PlayStationConfigs { get; set; }
+
+        /// <summary>
         /// User-imported HIDMaestro profile JSONs, captured via
         /// HMDeviceExtractor from controllers the user owns. Each entry is
         /// the full profile JSON (as emitted by HMDeviceExtractor.ToJson)
@@ -2335,6 +2460,13 @@ namespace PadForge.Services
         [XmlArray("ProfileExtendedConfigs")]
         [XmlArrayItem("ExtendedConfig")]
         public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
+
+        /// <summary>Per-slot PlayStation configurations (Adaptive Triggers
+        /// + Lighting) saved with this profile. Null on profiles predating
+        /// v3.1.0; defaults applied on load.</summary>
+        [XmlArray("ProfilePlayStationConfigs")]
+        [XmlArrayItem("PlayStationConfig")]
+        public ViewModels.PlayStationSlotConfigData[] PlayStationConfigs { get; set; }
 
         /// <summary>
         /// Per-group ordered list of pad indices in user-facing visual order

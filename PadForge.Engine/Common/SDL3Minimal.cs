@@ -557,6 +557,50 @@ namespace SDL3
             _SDL_RumbleJoystick(joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
 
         // ─────────────────────────────────────────────
+        //  Gamepad effect (DualSense / DS4 vendor output reports)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Sends a low-level vendor-specific effect packet to the gamepad's
+        /// underlying device.  For DualSense / DualSense Edge this carries
+        /// adaptive trigger commands, lightbar RGB, audio bytes, and rumble
+        /// in a single 47-byte (USB) / 63-byte (Edge USB) / 141-byte (BT)
+        /// effect message.  PadForge owns the byte layout per Sony's PS5
+        /// SDK conventions; SDL handles the wire transport (USB / BT
+        /// framing) for the target's connection type.
+        ///
+        /// <para>Slouken sanctioned this path for adaptive trigger output
+        /// in libsdl-org/SDL #5125 — explicitly outside the haptics API.</para>
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SendGamepadEffect")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_SendGamepadEffect(IntPtr gamepad, IntPtr data, int size);
+
+        /// <summary>Wrapper around <c>SDL_SendGamepadEffect</c>.  Returns
+        /// true on success.  No-op when <paramref name="gamepad"/> is
+        /// IntPtr.Zero or <paramref name="data"/> is null/empty.  The
+        /// payload is pinned via GCHandle for the duration of the native
+        /// call so the engine project doesn't need <c>AllowUnsafeBlocks</c>.</summary>
+        public static bool SDL_SendGamepadEffect(IntPtr gamepad, byte[] data, int offset, int length)
+        {
+            if (gamepad == IntPtr.Zero) return false;
+            if (data == null || length <= 0) return false;
+            if (offset < 0 || offset + length > data.Length) return false;
+
+            var handle = System.Runtime.InteropServices.GCHandle.Alloc(
+                data, System.Runtime.InteropServices.GCHandleType.Pinned);
+            try
+            {
+                IntPtr ptr = System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement(data, offset);
+                return _SDL_SendGamepadEffect(gamepad, ptr, length);
+            }
+            finally
+            {
+                handle.Free();
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Haptic (force feedback) — constants
         // ─────────────────────────────────────────────
 

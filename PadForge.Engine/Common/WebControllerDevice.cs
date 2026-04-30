@@ -59,6 +59,7 @@ namespace PadForge.Engine
                 return a;
             }
         }
+        public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => true;
         public bool HasHaptic => false;
         public bool HasGyro => false;

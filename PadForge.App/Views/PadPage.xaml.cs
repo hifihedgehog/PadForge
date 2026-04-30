@@ -219,19 +219,52 @@ namespace PadForge.Views
             TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
             TabForceFeedback.Visibility = Visibility.Visible;
 
+            // Adaptive Triggers and Lighting visibility depends on the slot's
+            // active HM profile. Adaptive Triggers shows only on DualSense /
+            // DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2). Lighting
+            // additionally covers DS4 — every DualShock-family pad has a
+            // lightbar.  Read the live profile so the tabs follow profile
+            // switches, not just slot type changes.
+            bool hasAdaptiveTriggers = false;
+            bool hasLightbar = false;
+            if (DataContext is PadViewModel vmProfile
+                && vmProfile.OutputType == Engine.VirtualControllerType.PlayStation)
+            {
+                var profile = vmProfile.AvailableProfiles?.FirstOrDefault(p =>
+                    string.Equals(p.Id, vmProfile.ProfileId, System.StringComparison.OrdinalIgnoreCase));
+                if (profile != null && profile.VendorId == 0x054C)
+                {
+                    bool isDualSense = profile.ProductId == 0x0CE6;
+                    bool isDualSenseEdge = profile.ProductId == 0x0DF2;
+                    bool isDs4 = profile.ProductId == 0x05C4 || profile.ProductId == 0x09CC || profile.ProductId == 0x0BA0;
+                    hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
+                    hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                }
+            }
+            if (TabAdaptiveTriggers != null)
+                TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
+            if (TabLighting != null)
+                TabLighting.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+
             if (MotorBarsGrid != null)
                 MotorBarsGrid.Visibility = Visibility.Visible;
 
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
-            // 3 Sticks, 4 Triggers, 5 Force Feedback. Macros, Mappings, and
-            // Force Feedback are visible for every VC type. MIDI hides Sticks
-            // and Triggers; K+M hides Triggers only. Kick the user back to
-            // the Controller tab if they're sitting on a hidden one.
+            // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
+            // 7 Lighting. Macros, Mappings, and Force Feedback are visible
+            // for every VC type. MIDI hides Sticks and Triggers; K+M hides
+            // Triggers only. Adaptive Triggers and Lighting are gated on
+            // profile capability above. Kick the user back to the Controller
+            // tab if they're sitting on a now-hidden one.
             if (DataContext is PadViewModel vm)
             {
                 if (isMidi && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
                     vm.SelectedConfigTab = 0;
                 else if (isKbm && vm.SelectedConfigTab == 4)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 7 && !hasLightbar)
                     vm.SelectedConfigTab = 0;
             }
         }

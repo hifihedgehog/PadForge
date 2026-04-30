@@ -376,6 +376,37 @@
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
+  <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
+  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Triggers</value></data>
+  <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure trigger feedback effects on the assigned physical DualSense. Game-driven trigger effects are forwarded automatically; settings here add a user-configured layer that runs when no game is writing.</value></data>
+  <data name="Pad_UserEffectsEnabled" xml:space="preserve"><value>Apply user-configured effects when no game is writing</value></data>
+  <data name="Pad_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Pad_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Pad_TriggerMode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_AT_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_AT_Feedback" xml:space="preserve"><value>Feedback</value></data>
+  <data name="Pad_AT_Weapon" xml:space="preserve"><value>Weapon</value></data>
+  <data name="Pad_AT_Vibration" xml:space="preserve"><value>Vibration</value></data>
+  <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>Multiple-Position Feedback</value></data>
+  <data name="Pad_AT_Slope" xml:space="preserve"><value>Slope Feedback</value></data>
+  <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Multiple-Position Vibration</value></data>
+  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Start position</value></data>
+  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>End position</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Strength</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequency (Hz)</value></data>
+  <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
+  <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
+  <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
+  <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win; user settings apply when no game is driving the lightbar.</value></data>
+  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Apply user-configured base color when no game is writing</value></data>
+  <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>
+  <data name="Pad_Lighting_Green" xml:space="preserve"><value>Green</value></data>
+  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Blue</value></data>
+  <data name="Pad_Lighting_AudioHeader" xml:space="preserve"><value>Audio (DualSense only)</value></data>
+  <data name="Pad_Lighting_SpeakerVolume" xml:space="preserve"><value>Speaker volume</value></data>
+  <data name="Pad_Lighting_MicMute" xml:space="preserve"><value>Mute microphone</value></data>
+  <data name="Pad_Lighting_MicLight" xml:space="preserve"><value>Mute LED on</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>

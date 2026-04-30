@@ -840,8 +840,8 @@ namespace PadForge
                     if (_viewModel.SelectedPadIndex == slotIndex)
                         SelectNavItemByTag("Dashboard");
 
-                    var deletedType = _deviceService.DeleteSlot(slotIndex);
-                    _inputService.OnSlotDeleted(slotIndex, deletedType);
+                    var info = _deviceService.DeleteSlot(slotIndex);
+                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition);
                     _viewModel.Devices.RefreshSlotButtons();
                     _inputService.RefreshDeviceList();
                 }));
@@ -2018,8 +2018,8 @@ namespace PadForge
                     if (_viewModel.SelectedPadIndex == slotIndex)
                         SelectNavItemByTag("Dashboard");
 
-                    var deletedType = _deviceService.DeleteSlot(slotIndex);
-                    _inputService.OnSlotDeleted(slotIndex, deletedType);
+                    var info = _deviceService.DeleteSlot(slotIndex);
+                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition);
                 }));
             }
         }

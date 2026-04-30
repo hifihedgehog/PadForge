@@ -26,6 +26,7 @@ namespace PadForge.Common.Input
         private HMController _controller;
         private HMaestroFfbDecoder _ffbDecoder;
         private DualSensePassthroughDispatcher _ds5Dispatcher;
+        private UserEffectsDispatcher _userEffectsDispatcher;
         private bool _disposed;
 
         // DualSense / DualSense Edge VID/PID — used to gate the
@@ -93,9 +94,44 @@ namespace PadForge.Common.Input
                 _ds5Dispatcher = null;
             }
 
+            // User-effects dispatcher unsubscribes its PropertyChanged
+            // handler on Dispose; safe to call regardless of whether one
+            // was ever attached.
+            try
+            {
+                _userEffectsDispatcher?.Dispose();
+            }
+            catch { /* best-effort teardown */ }
+            finally
+            {
+                _userEffectsDispatcher = null;
+            }
+
             _controller?.Dispose();
             _controller = null;
             IsConnected = false;
+        }
+
+        /// <summary>Attaches a per-slot
+        /// <see cref="PlayStationSlotConfig"/> so user-configured trigger
+        /// / lightbar / audio effects synthesize and forward to the
+        /// assigned physical DualSense via SDL_SendGamepadEffect.
+        /// Called by Step 5 right after RegisterFeedbackCallback for
+        /// virtual DualSense slots. Idempotent — re-attach replaces the
+        /// existing dispatcher's binding.</summary>
+        public void AttachPlayStationConfig(PadForge.ViewModels.PlayStationSlotConfig config)
+        {
+            if (!IsDualSenseVirtual) return;
+
+            if (_userEffectsDispatcher == null)
+            {
+                _userEffectsDispatcher = new UserEffectsDispatcher(FeedbackPadIndex, config);
+                _userEffectsDispatcher.ApplyOnce();
+            }
+            else
+            {
+                _userEffectsDispatcher.Rebind(config);
+            }
         }
 
         public void Dispose()

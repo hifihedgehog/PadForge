@@ -156,6 +156,7 @@ namespace PadForge.Services
                 _inputManager.SlotProfileIds[i] = _mainVm.Pads[i].ProfileId;
                 SyncExtendedConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
+                _inputManager._playStationConfigs[i] = _mainVm.Pads[i].PlayStationConfig;
             }
 
             // Subscribe to engine events (raised on background thread).
@@ -1000,6 +1001,7 @@ namespace PadForge.Services
                     _inputManager.SlotProfileIds[i] = padVm.ProfileId;
                     SyncExtendedConfigToSlot(i, padVm);
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
+                    _inputManager._playStationConfigs[i] = padVm.PlayStationConfig;
                 }
 
                 if (SettingsManager.SlotCreated[i] && padVm.AudioRumbleEnabled)

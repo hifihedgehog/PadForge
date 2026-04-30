@@ -376,6 +376,14 @@ namespace PadForge.Common.Input
         /// </summary>
         internal MidiSlotConfig[] _midiConfigs = new MidiSlotConfig[MaxPads];
 
+        /// <summary>Per-slot PlayStation configuration reference (Adaptive
+        /// Triggers + Lighting). Wired in InputService.Start alongside
+        /// MidiConfig / ExtendedConfig. Consumed by
+        /// HMaestroVirtualController.AttachPlayStationConfig when a virtual
+        /// DualSense slot is created.  Null entries skip Feature B effect
+        /// synthesis on that slot.</summary>
+        internal PlayStationSlotConfig[] _playStationConfigs = new PlayStationSlotConfig[MaxPads];
+
         /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.
         /// Virtual controllers are only destroyed after a sustained inactivity period
@@ -1267,6 +1275,18 @@ namespace PadForge.Common.Input
                 vc.Connect();
 
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
+
+                // Attach Feature B's user-effects dispatcher when this is
+                // a virtual DualSense slot. Hook is a no-op on non-DS5
+                // virtuals (the inner IsDualSenseVirtual check short-
+                // circuits). Reference is stored from InputService.Start
+                // / live-edit hooks alongside MidiConfig / ExtendedConfig.
+                if (vc is HMaestroVirtualController hmVc)
+                {
+                    var psCfg = _playStationConfigs[padIndex];
+                    if (psCfg != null)
+                        hmVc.AttachPlayStationConfig(psCfg);
+                }
 
                 return vc;
             }

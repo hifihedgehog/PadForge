@@ -25,7 +25,20 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private HMaestroFfbDecoder _ffbDecoder;
+        private DualSensePassthroughDispatcher _ds5Dispatcher;
         private bool _disposed;
+
+        // DualSense / DualSense Edge VID/PID — used to gate the
+        // DS5 effect message pass-through dispatcher.  Both USB and BT
+        // variants of each profile share the same VID/PID; the profile
+        // ID slug differs but doesn't matter for the gating decision.
+        private const ushort SonyVid = 0x054C;
+        private const ushort DualSensePid = 0x0CE6;
+        private const ushort DualSenseEdgePid = 0x0DF2;
+
+        private bool IsDualSenseVirtual =>
+            _profile.VendorId == SonyVid
+            && (_profile.ProductId == DualSensePid || _profile.ProductId == DualSenseEdgePid);
 
         public VirtualControllerType Type => _type;
         public bool IsConnected { get; private set; }
@@ -65,6 +78,21 @@ namespace PadForge.Common.Input
         public void Disconnect()
         {
             if (!IsConnected) return;
+
+            // Tear the DS5 pass-through dispatcher down BEFORE disposing
+            // _controller — once _controller.Dispose() runs, OutputReceived
+            // fires its final close events; we want the dispatcher's
+            // channel writer rejecting further enqueues by then.
+            try
+            {
+                _ds5Dispatcher?.Dispose();
+            }
+            catch { /* best-effort teardown */ }
+            finally
+            {
+                _ds5Dispatcher = null;
+            }
+
             _controller?.Dispose();
             _controller = null;
             IsConnected = false;
@@ -235,12 +263,39 @@ namespace PadForge.Common.Input
             FeedbackPadIndex = padIndex;
             if (_controller == null) return;
 
+            // Virtual DualSense slots get a per-VC pass-through dispatcher
+            // that forwards DS5 effect messages (Report 0x02 USB / 0x31 BT)
+            // to the assigned physical DualSense via SDL_SendGamepadEffect.
+            // Carries adaptive trigger commands, lightbar RGB, audio bytes,
+            // and rumble in a single message.  Created here so its lifetime
+            // matches the OutputReceived subscription it serves.
+            if (IsDualSenseVirtual && _ds5Dispatcher == null)
+            {
+                _ds5Dispatcher = new DualSensePassthroughDispatcher(padIndex);
+                _ds5Dispatcher.Start();
+            }
+
             _controller.OutputReceived += (ctrl, pkt) =>
             {
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
                 var data = pkt.Data.Span;
+
+                // DualSense pass-through (Feature A — issue #6).  Capture
+                // every Sony output report 0x02 / 0x31 into the dispatcher
+                // channel; the worker forwards it via SDL_SendGamepadEffect
+                // to every assigned physical DualSense / DualSense Edge.
+                // No return — falls through to the rumble handler below,
+                // which is gated on no-assigned-DS5 to avoid double-firing
+                // the motors (the DS5 message already carries them).
+                if (_ds5Dispatcher != null
+                    && pkt.Source == HMOutputSource.HidOutput
+                    && _profile.VendorId == SonyVid
+                    && (pkt.ReportId == 0x02 || pkt.ReportId == 0x31))
+                {
+                    _ds5Dispatcher.Enqueue(pkt.ReportId, data);
+                }
 
                 // XInput vibration packet layout (from IOCTL_XUSB_SET_STATE):
                 //   data[0] = 0x00 (command)
@@ -261,10 +316,23 @@ namespace PadForge.Common.Input
                 }
 
                 // DualShock 4 / DualSense (Sony VID 0x054C) HID output report:
-                // Report ID 0x05, bytes [2]/[3] are the rumble motors.
+                // Report ID 0x05 (DS4) / 0x02 (DS5 USB), bytes [2]/[3] are
+                // the rumble motors.  Skipped when the slot has an assigned
+                // physical DualSense — pass-through above already carries
+                // the rumble bytes inside the DS5 effect message and a
+                // parallel SDL_RumbleGamepad write here would double-fire
+                // the motors.  When no DS5 is assigned, the rumble bytes
+                // route to whatever non-DS5 device is mapped (e.g. a DS4
+                // or Xbox controller standing in for a DualSense slot).
+                //
+                // Latent BT bug noted in the dualsense-adaptive-triggers
+                // recipe: data[2]/data[3] aren't motor bytes for DS5 BT
+                // (ReportId 0x31, BT framing offset shifts everything).
+                // Tracked for the v3.1.0 Commit 3 polish pass.
                 if (pkt.Source == HMOutputSource.HidOutput
                     && _profile.VendorId == 0x054C
-                    && data.Length >= 4)
+                    && data.Length >= 4
+                    && !DualSensePassthroughDispatcher.HasAssignedDualSense(idx))
                 {
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);

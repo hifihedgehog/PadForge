@@ -86,6 +86,12 @@ namespace PadForge.Engine
         /// </summary>
         public int[] SupportedButtonIndices { get; private set; } = Array.Empty<int>();
 
+        /// <summary>Native SDL_Gamepad pointer when opened as a Gamepad
+        /// (i.e. <see cref="GameController"/> is non-zero).  Returns
+        /// IntPtr.Zero for devices opened as raw joysticks only.  Used by
+        /// the DualSense passthrough dispatcher.</summary>
+        public IntPtr GamepadHandle => GameController;
+
         /// <summary>Whether the device has a gyroscope sensor.</summary>
         public bool HasGyro { get; private set; }
 

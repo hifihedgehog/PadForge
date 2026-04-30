@@ -447,6 +447,15 @@ namespace PadForge.Views
                     SyncExtendedFields(vm);
                     _syncingExtendedConfig = false;
                 }
+
+                // Adaptive Triggers and Lighting tab visibility depend on
+                // the active profile's VID/PID (DualSense / DualSense Edge
+                // / DS4 capability). A profile switch within the same
+                // PlayStation slot type doesn't fire OutputType change, so
+                // SyncTabVisibility wouldn't run otherwise — leaving the
+                // tabs stale until app relaunch or slot switch. Re-sync
+                // here so the tab strip follows profile changes too.
+                SyncTabVisibility();
             }
         }
 

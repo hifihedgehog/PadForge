@@ -75,6 +75,21 @@ namespace PadForge.Common.Input
         //      old-group VC; the new group's ordinary creation logic
         //      spins up the new VC at the tail. The reroute logic is
         //      intra-group only.
+        //
+        //  (j) Bubble-down cascade applies to every HM subgroup.
+        //      When an HM-backed VC at position V transitions to
+        //      non-active for any reason — slot deletion, sidebar
+        //      disable, all devices unassigned, HM inactivity timeout
+        //      — every surviving HM VC in the same subgroup at a
+        //      strictly higher position is queued for async destroy
+        //      via DestroyVirtualControllerAsync. Pass 2 then recreates
+        //      them in ascending position order so each lands at a
+        //      kernel slot one step lower than before. Applies to
+        //      Xbox / PlayStation / Extended uniformly: external
+        //      observers all care about creation order — xinputhid
+        //      for Xbox, DirectInput / SDL / raw HID for the others.
+        //      MIDI and KeyboardMouse have no kernel-slot ordering
+        //      and skip the cascade entirely.
         // ─────────────────────────────────────────────
 
         /// <summary>
@@ -617,16 +632,37 @@ namespace PadForge.Common.Input
                         if (!_slotInitializing[padIndex]) BeginInitializing(padIndex);
                     }
                 }
-                else if (vc != null && !HasAnyDeviceMapped(padIndex))
+                else if (vc != null
+                         && (!HasAnyDeviceMapped(padIndex)
+                             || !SettingsManager.SlotEnabled[padIndex]))
                 {
-                    // No devices mapped to this slot — user explicitly unassigned
-                    // all devices. Destroy immediately (not a transient disconnect).
-                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
+                    // Two deliberate user-driven non-active transitions:
+                    //  - All mapped devices explicitly unassigned (user
+                    //    cleared the slot's mapping panel).
+                    //  - Slot disabled via the sidebar power toggle
+                    //    (SlotEnabled flipped false).
+                    // Both are "I want this slot off NOW" — destroy
+                    // immediately rather than leaning on the inactivity
+                    // grace period, which exists to bridge transient USB
+                    // hiccups, not deliberate teardowns.
+                    bool wasHmVc = vc is HMaestroVirtualController;
+                    DestroyVirtualController(padIndex, asyncDispose: wasHmVc);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
                     _slotInitializing[padIndex] = false;
                     VibrationStates[padIndex].LeftMotorSpeed = 0;
                     VibrationStates[padIndex].RightMotorSpeed = 0;
+
+                    // For HM-backed slots, fire the bubble-down cascade
+                    // so survivors at higher positions in the same
+                    // subgroup drop their kernel slot. Slot stays in the
+                    // order list at its current position; only the live
+                    // VC is gone. xinputhid (Xbox) / DirectInput / SDL /
+                    // raw HID (PlayStation, Extended) all observe creation
+                    // order so the cascade applies uniformly across HM
+                    // subgroups.
+                    if (wasHmVc)
+                        HmVcWentNonActive?.Invoke(this, padIndex);
                 }
                 else
                 {
@@ -660,15 +696,22 @@ namespace PadForge.Common.Input
                         // don't re-fire each tick.  UI thread handler runs
                         // InputService.OnSlotInactivityTimedOut(padIndex),
                         // which tears down THIS VC (kernel slot frees) and
-                        // bubbles surviving Xbox HM VCs at higher visual
-                        // positions down to lower kernel slots without
-                        // touching slots in any other group.  The slot
-                        // configuration is preserved end-to-end — only the
-                        // live VC is destroyed, so the slot transitions to
-                        // "awaiting devices" and the same VC is recreated
-                        // automatically by Pass 2 once its mapped devices
-                        // come back online.  The latch clears whenever the
-                        // slot returns to active state (counter reset above).
+                        // runs the bubble-down cascade across the same HM
+                        // subgroup (Xbox / PlayStation / Extended) so
+                        // survivors at higher visual positions drop their
+                        // kernel slot.  The slot configuration is preserved
+                        // end-to-end — only the live VC is destroyed, so the
+                        // slot transitions to "awaiting devices" and the same
+                        // VC is recreated automatically by Pass 2 once its
+                        // mapped devices come back online.  The latch clears
+                        // whenever the slot returns to active state (counter
+                        // reset above).
+                        //
+                        // Both events fire so that listeners that care about
+                        // the inactivity-timeout-specific case (e.g. status
+                        // text "VC torn down due to inactivity") still get
+                        // it, while the unified non-active cascade entry
+                        // point also runs.
                         int hmThresholdCycles =
                             (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs);
                         if (_slotInactiveCounter[padIndex] >= hmThresholdCycles)
@@ -1421,12 +1464,27 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Returns true if the slot currently holds an Xbox-category HM
-        /// virtual controller. Used by InputService.OnSlotDeleted's rebuild
-        /// step to decide whether to tear down a higher-pad-index Xbox VC
-        /// after an Xbox delete, so xinputhid bubbles it down to a lower
-        /// kernel slot. PlayStation / Extended VCs don't bind to xinputhid
-        /// kernel slots and don't need this rebuild.
+        /// Returns true if the slot currently holds any HM-backed virtual
+        /// controller (Xbox / PlayStation / Extended). Used by the
+        /// bubble-down cascade in InputService when a slot at a lower
+        /// position transitions to non-active for any reason — delete,
+        /// disable, all-devices-unassigned, HM inactivity timeout —
+        /// so survivors at higher positions in the same subgroup get
+        /// destroyed and recreated, dropping their kernel slot by one.
+        /// External observers (xinputhid for Xbox, DirectInput / SDL /
+        /// raw HID for PlayStation and Extended) all see this as the
+        /// natural disconnect/reconnect shape.
+        /// </summary>
+        public bool IsHmVcAt(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            return _virtualControllers[padIndex] is HMaestroVirtualController;
+        }
+
+        /// <summary>
+        /// Xbox-only variant kept for any callers that still need to
+        /// distinguish Xbox specifically (e.g. an Xbox-only diagnostic).
+        /// New code should use <see cref="IsHmVcAt"/> instead.
         /// </summary>
         public bool IsXboxHmVcAt(int padIndex)
         {

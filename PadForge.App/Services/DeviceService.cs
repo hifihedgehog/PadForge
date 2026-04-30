@@ -409,20 +409,21 @@ namespace PadForge.Services
 
         /// <summary>
         /// Deletes a virtual controller slot. Unassigns all devices from it.
-        /// Returns the type of the deleted slot so callers can drive the
-        /// per-group <c>OnSlotDeleted</c> teardown without re-querying after
-        /// the slot's <c>OutputType</c> has been reset.
+        /// Returns the type of the deleted slot AND its pre-removal
+        /// position in the matching group's order list so callers can
+        /// drive the per-group <c>OnSlotDeleted</c> bubble-down cascade
+        /// without re-querying after the order list has been mutated.
         /// </summary>
-        public VirtualControllerType DeleteSlot(int slotIndex)
+        public SlotDeletionInfo DeleteSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
-                return VirtualControllerType.Xbox;
+                return new SlotDeletionInfo(VirtualControllerType.Xbox, -1);
 
-            // Capture before the reset wipes OutputType. Used to remove the
-            // pad index from the correct group's order list and to drive
-            // any group-scoped post-delete rebuild (e.g. xinputhid kernel
-            // slot bubble-down for Xbox VCs).
+            // Capture before the reset wipes OutputType and SlotOrders.Remove
+            // mutates the group's position list. Both are inputs to the
+            // bubble-down cascade in InputService.OnSlotDeleted.
             var deletedType = _mainVm.Pads[slotIndex].OutputType;
+            int oldPosition = SettingsManager.SlotOrders.GetOrderFor(deletedType).IndexOf(slotIndex);
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
@@ -464,7 +465,7 @@ namespace PadForge.Services
             _settingsService.MarkDirty();
             _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, slotIndex + 1);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
-            return deletedType;
+            return new SlotDeletionInfo(deletedType, oldPosition);
         }
 
         /// <summary>
@@ -510,4 +511,18 @@ namespace PadForge.Services
         }
 
     }
+
+    /// <summary>
+    /// Pair of values returned by <see cref="DeviceService.DeleteSlot"/>:
+    /// the deleted slot's <see cref="VirtualControllerType"/> and its
+    /// pre-removal index in the matching group's order list. The position
+    /// is captured before <c>SlotOrders.Remove</c> mutates the list so
+    /// the bubble-down cascade in InputService.OnSlotDeleted knows which
+    /// post-removal entries are survivors that just shifted up.
+    /// <see cref="OldGroupPosition"/> is -1 when the slot wasn't in any
+    /// order list (defensive; shouldn't happen in normal flow).
+    /// </summary>
+    public readonly record struct SlotDeletionInfo(
+        VirtualControllerType Type,
+        int OldGroupPosition);
 }

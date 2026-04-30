@@ -163,6 +163,7 @@ namespace PadForge.Services
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
+            _inputManager.HmVcWentNonActive += OnHmVcWentNonActive;
 
             // Subscribe to settings/dashboard property changes for runtime propagation.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
@@ -319,6 +320,7 @@ namespace PadForge.Services
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
+                _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -1683,13 +1685,13 @@ namespace PadForge.Services
         /// is durable and never touched here. PadForge.xml is not
         /// modified.
         ///
-        /// For Xbox slots, the bubble-up cascade also fires so that
-        /// surviving Xbox HM VCs at higher visual positions in the same
-        /// group bubble down to lower xinputhid kernel slots, matching
-        /// the natural disconnect/reconnect shape XInput exhibits when
-        /// a real controller unplugs from the middle of a stack.
-        /// PlayStation / Extended slots don't go through xinputhid so
-        /// they don't need this rebuild.
+        /// The bubble-down cascade fires for any HM-backed subgroup
+        /// (Xbox / PlayStation / Extended) so surviving HM VCs at
+        /// higher visual positions in the same group drop their kernel
+        /// slot, matching the natural disconnect/reconnect shape an
+        /// external observer would see (xinputhid for Xbox, DirectInput
+        /// / SDL / raw HID for PlayStation and Extended — all care
+        /// about creation order).
         /// </summary>
         public void OnSlotInactivityTimedOut(int padIndex)
         {
@@ -1702,21 +1704,7 @@ namespace PadForge.Services
             try { _inputManager.DestroyVirtualControllerAsync(padIndex); }
             catch { /* best effort */ }
 
-            if (slotType == VirtualControllerType.Xbox)
-            {
-                var xboxOrder = SettingsManager.XboxSlotOrder;
-                int inactivePos = xboxOrder.IndexOf(padIndex);
-                if (inactivePos >= 0)
-                {
-                    for (int p = inactivePos + 1; p < xboxOrder.Count; p++)
-                    {
-                        int higherPad = xboxOrder[p];
-                        if (!_inputManager.IsXboxHmVcAt(higherPad)) continue;
-                        try { _inputManager.DestroyVirtualControllerAsync(higherPad); }
-                        catch { /* best effort, Pass 2 retries */ }
-                    }
-                }
-            }
+            RunBubbleDownCascadeFromPosition(padIndex, slotType);
 
             // Refresh UI status (slot will show as "awaiting devices").
             UpdatePadDeviceInfo();
@@ -1731,6 +1719,93 @@ namespace PadForge.Services
             {
                 SlotInactivityTimedOut?.Invoke(this, padIndex);
             }));
+        }
+
+        /// <summary>
+        /// Engine fired <see cref="InputManager.HmVcWentNonActive"/> after
+        /// destroying an HM VC for a non-delete reason (sidebar disable,
+        /// all devices unassigned). The VC is already gone by the time
+        /// this runs; the only job left is the bubble-down cascade
+        /// across the slot's HM subgroup. Slot stays in its order list
+        /// at the same position.
+        /// </summary>
+        private void OnHmVcWentNonActive(object sender, int padIndex)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (_inputManager == null) return;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+                if (!SettingsManager.SlotCreated[padIndex]) return;
+                var slotType = _mainVm.Pads[padIndex].OutputType;
+                RunBubbleDownCascadeFromPosition(padIndex, slotType);
+                UpdatePadDeviceInfo();
+            }));
+        }
+
+        /// <summary>
+        /// Shared bubble-down cascade for non-delete inactivity transitions
+        /// (HM inactivity timeout, sidebar disable, all-devices-unassigned).
+        /// The slot at <paramref name="padIndex"/> is still in its group's
+        /// order list at its existing position; this method finds that
+        /// position and async-destroys every surviving HM VC at a strictly
+        /// higher position in the same subgroup. Pass 2 recreates them in
+        /// ascending position order so each lands at a kernel slot one step
+        /// lower than before.
+        ///
+        /// Applies to Xbox / PlayStation / Extended uniformly. MIDI and
+        /// KeyboardMouse have no kernel-slot ordering concern and are
+        /// no-ops here.
+        /// </summary>
+        private void RunBubbleDownCascadeFromPosition(int padIndex, VirtualControllerType slotType)
+        {
+            if (slotType != VirtualControllerType.Xbox
+                && slotType != VirtualControllerType.PlayStation
+                && slotType != VirtualControllerType.Extended)
+            {
+                return;
+            }
+
+            var order = SettingsManager.SlotOrders.GetOrderFor(slotType);
+            int inactivePos = order.IndexOf(padIndex);
+            if (inactivePos < 0) return;
+
+            for (int p = inactivePos + 1; p < order.Count; p++)
+            {
+                int higherPad = order[p];
+                if (!_inputManager.IsHmVcAt(higherPad)) continue;
+                try { _inputManager.DestroyVirtualControllerAsync(higherPad); }
+                catch { /* best effort, Pass 2 retries */ }
+            }
+        }
+
+        /// <summary>
+        /// Bubble-down cascade for the deletion path. The slot has already
+        /// been removed from its group's order list, so we iterate by
+        /// the captured pre-removal position: in the post-removal list,
+        /// every entry at index &gt;= <paramref name="oldPosition"/> is
+        /// a survivor that just shifted up by one position and needs its
+        /// kernel slot to drop accordingly.
+        ///
+        /// Applies to Xbox / PlayStation / Extended uniformly.
+        /// </summary>
+        private void RunBubbleDownCascadeAfterDelete(VirtualControllerType deletedType, int oldPosition)
+        {
+            if (oldPosition < 0) return;
+            if (deletedType != VirtualControllerType.Xbox
+                && deletedType != VirtualControllerType.PlayStation
+                && deletedType != VirtualControllerType.Extended)
+            {
+                return;
+            }
+
+            var order = SettingsManager.SlotOrders.GetOrderFor(deletedType);
+            for (int p = oldPosition; p < order.Count; p++)
+            {
+                int survivor = order[p];
+                if (!_inputManager.IsHmVcAt(survivor)) continue;
+                try { _inputManager.DestroyVirtualControllerAsync(survivor); }
+                catch { /* best effort, Pass 2 retries */ }
+            }
         }
 
         /// <summary>
@@ -4204,29 +4279,24 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Called after a slot is deleted. Removes the pad index from its
-        /// group's order list and, for Xbox slots, queues async destroy of
-        /// any live Xbox HM VCs at higher pad indices in the group so
-        /// xinputhid bubbles them down to the lowest free user-indices on
-        /// recreate. Other groups are not touched.
+        /// Called after a slot is deleted. <see cref="DeviceService.DeleteSlot"/>
+        /// already removed the pad index from its group's order list; the
+        /// caller passes the captured pre-removal position so the cascade
+        /// knows which post-removal entries are survivors that just
+        /// bubbled up.
+        ///
+        /// Applies the bubble-down cascade across the matching HM
+        /// subgroup (Xbox / PlayStation / Extended). All three groups
+        /// have observable creation-order semantics — xinputhid for
+        /// Xbox, DirectInput / SDL / raw HID for PlayStation and
+        /// Extended — so the cascade applies uniformly. MIDI and
+        /// KeyboardMouse are no-ops here.
         /// </summary>
-        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, bool rebuildHmVcs = true)
+        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, int oldGroupPosition, bool rebuildHmVcs = true)
         {
-            // SlotOrders.Remove was already called by DeviceService.DeleteSlot
-            // (so the order list is correct by the time this fires). The
-            // job here is the Xbox-only kernel-slot rebuild.
-            if (rebuildHmVcs
-                && deletedType == VirtualControllerType.Xbox
-                && _inputManager != null)
+            if (rebuildHmVcs && _inputManager != null)
             {
-                var xboxOrder = SettingsManager.XboxSlotOrder;
-                foreach (int slot in xboxOrder)
-                {
-                    if (slot <= padIndex) continue;
-                    if (!_inputManager.IsXboxHmVcAt(slot)) continue;
-                    try { _inputManager.DestroyVirtualControllerAsync(slot); }
-                    catch { /* best effort, Pass 2 retries */ }
-                }
+                RunBubbleDownCascadeAfterDelete(deletedType, oldGroupPosition);
             }
 
             RefreshAfterSlotReorder();

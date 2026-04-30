@@ -50,6 +50,26 @@ namespace PadForge.Common.Input
         /// out.</summary>
         public event System.EventHandler<int> HmVcInactivityDestroyed;
 
+        /// <summary>Raised on the polling thread whenever an HM-backed
+        /// slot (Xbox / PlayStation / Extended) has its live VC torn down
+        /// for any non-delete reason — sidebar disable, all devices
+        /// explicitly unassigned, or the HM inactivity timeout firing.
+        /// The slot stays in its group's order list at the same position;
+        /// only the live VC is gone.  Listener (InputService) marshals to
+        /// the UI thread and runs the bubble-down cascade for surviving
+        /// HM VCs at higher positions in the same subgroup so external
+        /// observers re-bind kernel slots in compact ascending order.
+        /// Argument is the pad index that went non-active.</summary>
+        public event System.EventHandler<int> HmVcWentNonActive;
+
+        /// <summary>Internal helper for Step 5 to fan-out the
+        /// non-active event without exposing direct invocation to other
+        /// classes.</summary>
+        internal void RaiseHmVcWentNonActive(int padIndex)
+        {
+            HmVcWentNonActive?.Invoke(this, padIndex);
+        }
+
         /// <summary>Device re-enumeration interval in milliseconds (every 2 seconds).</summary>
         private const int EnumerationIntervalMs = 2000;
 

@@ -23,6 +23,20 @@ namespace PadForge.Views
 
         private PadViewModel _currentPadVm;
 
+        /// <summary>
+        /// Currently-subscribed <see cref="ExtendedSlotConfig"/> for the active
+        /// PadViewModel. Tracked separately from <see cref="_currentPadVm"/>
+        /// because <see cref="ApplyProfile"/>'s <c>ApplyExtendedConfigs</c> path
+        /// mutates <c>cfg.Customize</c> / <c>cfg.OemNameOverride</c> /
+        /// <c>cfg.ProductString</c> on the active slot directly, without
+        /// changing DataContext or OutputType. We subscribe to PropertyChanged
+        /// on the config instance so the Extended config bar refreshes when
+        /// those fields move under us. See recipe
+        /// <c>extended-config-bar-profile-switch-stale-ui-recipe.md</c> /
+        /// issue #73.
+        /// </summary>
+        private PadForge.ViewModels.ExtendedSlotConfig _currentExtendedConfig;
+
         public PadPage()
         {
             InitializeComponent();
@@ -46,6 +60,18 @@ namespace PadForge.Views
             _currentPadVm = DataContext as PadViewModel;
             if (_currentPadVm != null)
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
+
+            // Track the active slot's ExtendedSlotConfig so we can refresh the
+            // Extended config bar when a profile switch mutates its fields
+            // without changing DataContext or OutputType (issue #73). The
+            // config instance is stable for the lifetime of a PadViewModel —
+            // no external code reassigns the property — so subscribing here
+            // and tearing down on the next DataContext change is enough.
+            if (_currentExtendedConfig != null)
+                _currentExtendedConfig.PropertyChanged -= OnExtendedConfigBarPropertyChanged;
+            _currentExtendedConfig = _currentPadVm?.ExtendedConfig;
+            if (_currentExtendedConfig != null)
+                _currentExtendedConfig.PropertyChanged += OnExtendedConfigBarPropertyChanged;
 
             ApplyViewMode();
             SyncTabStripSelection();
@@ -396,6 +422,35 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
 
         private bool _syncingExtendedConfig;
+
+        /// <summary>
+        /// Refreshes the Extended config bar when the active slot's
+        /// <see cref="PadForge.ViewModels.ExtendedSlotConfig"/> mutates from
+        /// outside the bar's own UI events — currently only the
+        /// <c>ApplyProfile</c> path during profile switching. <c>OnDataContextChanged</c>
+        /// and the <c>OutputType</c> PropertyChanged trigger already handle
+        /// the slot-switch and type-switch cases, so we only need to react
+        /// to the three fields ApplyExtendedConfigs writes through:
+        /// Customize, OemNameOverride, ProductString.
+        ///
+        /// <para>The <see cref="_syncingExtendedConfig"/> guard short-circuits
+        /// when SyncExtendedFields is mid-flight. SyncExtendedFields writes
+        /// only to UI controls (no model writes), so PropertyChanged on the
+        /// config instance shouldn't fire from inside it — but the guard is
+        /// kept as a defensive belt-and-braces against any indirect path
+        /// that might cycle back through SetProperty.</para>
+        /// </summary>
+        private void OnExtendedConfigBarPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (_syncingExtendedConfig) return;
+
+            if (e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.Customize)
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.OemNameOverride)
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ProductString))
+            {
+                SyncExtendedConfigBar();
+            }
+        }
 
         private void SyncExtendedConfigBar()
         {

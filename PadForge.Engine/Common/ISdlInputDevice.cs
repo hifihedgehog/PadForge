@@ -24,6 +24,16 @@ namespace PadForge.Engine
         /// a controller that doesn't have any).
         /// </summary>
         int[] SupportedButtonIndices { get; }
+
+        /// <summary>
+        /// Native SDL_Gamepad pointer for this device, or
+        /// <see cref="IntPtr.Zero"/> if the device wasn't opened as a
+        /// Gamepad (raw joystick, keyboard, mouse, web controller, etc).
+        /// Used by the DualSense passthrough dispatcher to call
+        /// <c>SDL_SendGamepadEffect</c> on the assigned physical
+        /// DualSense / DualSense Edge.
+        /// </summary>
+        IntPtr GamepadHandle { get; }
         bool HasRumble { get; }
         bool HasHaptic { get; }
         bool HasGyro { get; }

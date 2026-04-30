@@ -747,10 +747,12 @@ namespace PadForge.Engine
                 // by parsing the slot index out of the SDL XInput#N path so
                 // each slot consistently maps to one of the two physicals,
                 // and append :slot{slot} to the identifier so the two never
-                // hash to the same GUID. Settings can drift on reconnect
-                // (xinputhid may reshuffle which physical is in which slot),
-                // but that's the lesser evil vs collapsing both pads into a
-                // single card with output flickering between them.
+                // hash to the same GUID. Each PadForge entry binds to a slot;
+                // when xinputhid reshuffles which physical sits in which slot
+                // (reconnect, repair, USB hub event), per-pad settings follow
+                // the slot — that's just XInput's behavior for same-model
+                // duplicates, since the API doesn't expose a per-physical
+                // signal for them.
                 IReadOnlyList<string> candidates;
                 try { candidates = StableXInputInstance.FindAll(vid, pid); }
                 catch { candidates = Array.Empty<string>(); }

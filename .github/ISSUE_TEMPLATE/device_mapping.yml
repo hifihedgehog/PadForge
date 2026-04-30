@@ -8,11 +8,37 @@ body:
       value: |
         Thanks for contributing a device mapping! This helps PadForge automatically recognize your controller.
 
-        **How to fill this out:**
-        1. Connect your device and open PadForge's **Devices** page
-        2. Select your device to see the raw input visualization
-        3. Press each physical button/axis and note which raw index lights up
-        4. Fill in the mapping tables below
+        ## How to fill this out
+
+        1. **Connect your device** and open PadForge's **Devices** page.
+        2. **Select your device** to see the raw input visualization.
+        3. **Press each physical button or move each axis** and note which raw index lights up.
+        4. **Fill in the mapping tables below** with those raw indices.
+
+        > **Tip:** the easiest path is to click the **Submit Mapping** button on the device's card in PadForge's Devices page. It pre-fills the device name, VID, PID, axis/button/POV counts, and SDL GUID automatically. You only have to fill in the per-input mapping tables by hand.
+
+        ### What we are mapping to: the Xbox 360 layout
+
+        ![Xbox 360 controller layout](https://raw.githubusercontent.com/hifihedgehog/PadForge/main/.github/images/xbox360-controller-layout.png)
+
+        Each row in the tables below corresponds to ONE physical Xbox 360 input. Find the equivalent button or axis on YOUR controller and write its raw index next to the matching row.
+
+        Reference for the row labels:
+
+        - **A (South)** — bottom face button (green on Xbox 360)
+        - **B (East)** — right face button (red on Xbox 360)
+        - **X (West)** — left face button (blue on Xbox 360)
+        - **Y (North)** — top face button (yellow on Xbox 360)
+        - **Left Bumper / Right Bumper** — the two flat top shoulder buttons (LB / RB)
+        - **Back / Select** — small button to the left of the Xbox logo
+        - **Start / Menu** — small button to the right of the Xbox logo
+        - **Left Stick Click / Right Stick Click** — pressing the analog stick straight down (L3 / R3)
+        - **Guide / Home** — the central round Xbox-logo button
+        - **Left Stick X / Y** — horizontal / vertical motion of the left analog stick
+        - **Right Stick X / Y** — horizontal / vertical motion of the right analog stick
+        - **Left Trigger / Right Trigger** — the two analog squeeze-buttons under the bumpers (LT / RT)
+
+        > **IMPORTANT.** The "Raw Button Index" and "Raw Axis Index" columns are pre-filled with `FILL IN` placeholders. **Replace each one with the actual number you read from PadForge's Devices page raw input visualization.** If your controller does NOT have a particular Xbox 360 input (no triggers, no second stick, no Guide button, etc.), write `none` in that cell. Submissions where any cell still says `FILL IN` cannot be integrated and will be sent back for revision.
 
   - type: input
     id: device_name
@@ -89,22 +115,22 @@ body:
     attributes:
       label: Button Mapping
       description: |
-        For each physical button, note which raw button index lights up in PadForge's Devices page.
-        Leave blank for buttons your controller doesn't have.
+        For each physical button, note which raw button index lights up in PadForge's Devices page raw input visualization.
+        Replace `FILL IN` with the actual number. Use `none` if your controller does not have that button.
       value: |
-        | Physical Button | Raw Button Index |
-        |----------------|-----------------|
-        | A (South)      |                 |
-        | B (East)       |                 |
-        | X (West)       |                 |
-        | Y (North)      |                 |
-        | Left Bumper    |                 |
-        | Right Bumper   |                 |
-        | Back/Select    |                 |
-        | Start/Menu     |                 |
-        | Left Stick Click  |              |
-        | Right Stick Click |              |
-        | Guide/Home     |                 |
+        | Physical Button   | Raw Button Index |
+        |-------------------|------------------|
+        | A (South)         | FILL IN          |
+        | B (East)          | FILL IN          |
+        | X (West)          | FILL IN          |
+        | Y (North)         | FILL IN          |
+        | Left Bumper       | FILL IN          |
+        | Right Bumper      | FILL IN          |
+        | Back / Select     | FILL IN          |
+        | Start / Menu      | FILL IN          |
+        | Left Stick Click  | FILL IN          |
+        | Right Stick Click | FILL IN          |
+        | Guide / Home      | FILL IN          |
     validations:
       required: true
 
@@ -113,17 +139,18 @@ body:
     attributes:
       label: Axis Mapping
       description: |
-        For each physical axis, note which raw axis index moves in PadForge's Devices page.
-        Also note the direction: does pushing the stick right/up increase or decrease the value?
+        For each physical axis, note which raw axis index moves in PadForge's Devices page raw input visualization.
+        Also note the direction: does pushing the stick right or up increase the raw value? If it goes the WRONG way, set Inverted? to "Yes".
+        Replace `FILL IN` with the actual number. Use `none` if your controller does not have that axis.
       value: |
-        | Physical Axis    | Raw Axis Index | Inverted? |
-        |-----------------|---------------|-----------|
-        | Left Stick X    |               | No        |
-        | Left Stick Y    |               | No        |
-        | Right Stick X   |               | No        |
-        | Right Stick Y   |               | No        |
-        | Left Trigger    |               | No        |
-        | Right Trigger   |               | No        |
+        | Physical Axis  | Raw Axis Index | Inverted? |
+        |----------------|----------------|-----------|
+        | Left Stick X   | FILL IN        | No        |
+        | Left Stick Y   | FILL IN        | No        |
+        | Right Stick X  | FILL IN        | No        |
+        | Right Stick Y  | FILL IN        | No        |
+        | Left Trigger   | FILL IN        | No        |
+        | Right Trigger  | FILL IN        | No        |
     validations:
       required: true
 
@@ -132,9 +159,9 @@ body:
     attributes:
       label: D-Pad Configuration
       description: |
-        How does the D-Pad report? Check one:
-        - **Hat switch**: Which hat index? (usually Hat 0)
-        - **Buttons**: Which raw button indices for Up/Down/Left/Right?
+        How does the D-Pad report? Pick one:
+        - **Hat switch**: which hat index? (usually Hat 0)
+        - **Buttons**: which raw button indices for Up/Down/Left/Right?
       placeholder: |
         Hat 0
         -- or --
@@ -146,6 +173,8 @@ body:
       label: Verification
       description: Please confirm before submitting
       options:
+        - label: I have replaced every FILL IN placeholder with either a raw index or 'none'.
+          required: true
         - label: All buttons I mapped respond correctly in PadForge's raw input visualization
           required: true
         - label: All axes I mapped move in the expected direction

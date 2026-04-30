@@ -261,6 +261,23 @@
                 <RadioButton x:Name="TabForceFeedback" Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
                     <TextBlock Text="{Binding Pad_ForceFeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
+
+                <!-- Adaptive Triggers tab — DualSense / DualSense Edge only.
+                     Visibility driven from code-behind via SyncTabStripSelection
+                     which reads OutputType + ProfileId.  PadPage's runtime
+                     visibility gate hides this RadioButton on Xbox / Extended
+                     / MIDI / KbM slots and on DS4 PlayStation slots.  -->
+                <RadioButton x:Name="TabAdaptiveTriggers" Tag="6" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_AdaptiveTriggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
+
+                <!-- Lighting tab — DS4 / DualSense / DualSense Edge.  Hidden
+                     on slots whose profile lacks a lightbar.  -->
+                <RadioButton x:Name="TabLighting" Tag="7" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Lighting, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
             </WrapPanel>
         </Border>
 
@@ -1887,6 +1904,252 @@
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ══════════════════════════════════════
+                 TAB 6: ADAPTIVE TRIGGERS
+                 (visible only for DualSense / DualSense Edge slots)
+                 ══════════════════════════════════════ -->
+            <TabItem>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Pad_AdaptiveTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Master Feature B toggle.  Game-driven Feature A
+                             passthrough runs independently of this — this
+                             toggle only governs PadForge-synthesized effects
+                             that ride atop the assigned physical DualSense
+                             when no game is writing trigger output. -->
+                        <CheckBox IsChecked="{Binding PlayStationConfig.UserEffectsEnabled, Mode=TwoWay}"
+                                  Content="{Binding Pad_UserEffectsEnabled, Source={x:Static strings:Strings.Instance}}"
+                                  Margin="0,0,0,16"/>
+
+                        <!-- Left Trigger -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="120"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.LeftTriggerMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_StartPosition, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Value="{Binding PlayStationConfig.LeftStartPosition, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LeftStartPosition}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_EndPosition, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Value="{Binding PlayStationConfig.LeftEndPosition, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LeftEndPosition}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_Strength, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Value="{Binding PlayStationConfig.LeftStrength, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LeftStrength}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_Frequency, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="255" TickFrequency="16"
+                                            Value="{Binding PlayStationConfig.LeftFrequency, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LeftFrequency}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Right Trigger -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_RightTrigger, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="120"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.RightTriggerMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_StartPosition, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Value="{Binding PlayStationConfig.RightStartPosition, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.RightStartPosition}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_EndPosition, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Value="{Binding PlayStationConfig.RightEndPosition, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.RightEndPosition}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_Strength, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Value="{Binding PlayStationConfig.RightStrength, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.RightStrength}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_AT_Frequency, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="255" TickFrequency="16"
+                                            Value="{Binding PlayStationConfig.RightFrequency, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.RightFrequency}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ══════════════════════════════════════
+                 TAB 7: LIGHTING
+                 (visible for DS4 / DualSense / DualSense Edge slots)
+                 ══════════════════════════════════════ -->
+            <TabItem>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Solid lightbar color (base layer) -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding PlayStationConfig.LightbarEnabled, Mode=TwoWay}"
+                                          Content="{Binding Pad_Lighting_BaseEnabled, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,8"/>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_Lighting_Red, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Foreground="#FFD32F2F"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="255"
+                                            Value="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
+                                            IsEnabled="{Binding PlayStationConfig.LightbarEnabled}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LightbarRed}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_Lighting_Green, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Foreground="#FF388E3C"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="255"
+                                            Value="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}"
+                                            IsEnabled="{Binding PlayStationConfig.LightbarEnabled}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LightbarGreen}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_Lighting_Blue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Foreground="#FF1976D2"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="255"
+                                            Value="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}"
+                                            IsEnabled="{Binding PlayStationConfig.LightbarEnabled}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.LightbarBlue}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Audio bytes (DualSense only — see code-behind for visibility gating) -->
+                        <Border x:Name="LightingAudioSection" BorderThickness="1" CornerRadius="4" Padding="12"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Lighting_AudioHeader, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="160"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Pad_Lighting_SpeakerVolume, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    <Slider Grid.Column="1" Minimum="0" Maximum="255"
+                                            Value="{Binding PlayStationConfig.SpeakerVolume, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayStationConfig.SpeakerVolume}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <CheckBox IsChecked="{Binding PlayStationConfig.MicMute, Mode=TwoWay}"
+                                          Content="{Binding Pad_Lighting_MicMute, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,8,0,4"/>
+                                <CheckBox IsChecked="{Binding PlayStationConfig.MicLightOn, Mode=TwoWay}"
+                                          Content="{Binding Pad_Lighting_MicLight, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

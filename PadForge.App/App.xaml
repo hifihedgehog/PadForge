@@ -125,6 +125,7 @@
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
+            <conv:EnumIndexConverter x:Key="EnumIndexConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

@@ -60,21 +60,36 @@ namespace PadForge.Common.Input
         // EnableBits2 (high byte).
         private const ushort EnableMicLight         = 0x0100;  // byte[1] bit 0
         private const ushort EnableLightbar         = 0x0400;  // byte[1] bit 2
+        private const ushort EnablePlayerIndicator  = 0x1000;  // byte[1] bit 4
         private const ushort EnableAudioMute        = 0x8000;  // byte[1] bit 7
 
         // Byte-offset constants — verified against
         // daidr/dualsense-tester's outputStruct.ts. See memory:
         // dualsense-tester-byte-layout-reference.md.
-        private const int OffEnableLow   = 0;   // validFlag0
-        private const int OffEnableHigh  = 1;   // validFlag1 (0xF7 = permissive default)
-        private const int OffSpeakerVol  = 5;
-        private const int OffMicLight    = 8;   // muteLedControl
-        private const int OffMicMute     = 9;   // powerSaveMuteControl
-        private const int OffRightTrig   = 10;  // mode + 10 params
-        private const int OffLeftTrig    = 21;  // mode + 10 params
-        private const int OffLedRed      = 44;
-        private const int OffLedGreen    = 45;
-        private const int OffLedBlue     = 46;
+        private const int OffEnableLow       = 0;   // validFlag0
+        private const int OffEnableHigh      = 1;   // validFlag1 (0xF7 = permissive default)
+        private const int OffSpeakerVol      = 5;
+        private const int OffMicLight        = 8;   // muteLedControl
+        private const int OffMicMute         = 9;   // powerSaveMuteControl
+        private const int OffRightTrig       = 10;  // mode + 10 params
+        private const int OffLeftTrig        = 21;  // mode + 10 params
+        private const int OffValidFlag2      = 38;  // ledBrightness gate
+        private const int OffLightbarSetup   = 41;
+        private const int OffLedBrightness   = 42;
+        private const int OffPlayerIndicator = 43;
+        private const int OffLedRed          = 44;
+        private const int OffLedGreen        = 45;
+        private const int OffLedBlue         = 46;
+
+        // playerIndicator bit 5 (0x20) is the "no fade" flag — tells the
+        // firmware to skip any in-progress lightbar fade animation
+        // (notably the BT-connect blue fade) and apply the requested
+        // state immediately. SDL3's PS5 driver ORs this same bit in
+        // SetLightsForPlayerIndex; OpenRGB ALSO sets it in their
+        // SonyDualSenseController. Without it, late-connect (and BT
+        // reconnect) packets are received but visually overridden by
+        // the firmware's default lightbar animation/state.
+        private const byte PlayerIndicatorNoFade = 0x20;
 
         // HID-form trigger mode opcodes from dualsense-tester's
         // TriggerEffect.vue. NOT the same as Sony's PS5 SDK abstract
@@ -100,17 +115,45 @@ namespace PadForge.Common.Input
 
             ushort enableBits = 0;
 
-            // Lightbar — RGB at bytes 44/45/46 with the EnableLightbar
-            // bit in validFlag1 (byte 1 bit 2 = 0x04, packs to 0x0400 in
-            // the u16). Per dualsense-tester, the byte-41 lightbarSetup
-            // value is for fade / blend control and defaults to 0; not
-            // required for solid RGB writes.
+            // Lightbar — full OpenRGB-style packet so user-configured
+            // colors win even on late-connect / BT reconnect.
+            //
+            // dualsense-tester only sets validFlag1 bit 2 + RGB and
+            // works because the controller has already passed through
+            // its connection animation by the time the user clicks
+            // anything. PadForge has to apply colors immediately on
+            // hot-plug — at that moment the firmware is still running
+            // the BT-connect fade and its own player-default LED
+            // sequence, and a bare bit-2-only packet gets visually
+            // ignored even though SDL_SendGamepadEffect returns true.
+            //
+            // The fix (verified in OpenRGB's SonyDualSenseController):
+            //   - Set validFlag1 bit 4 (player indicator) so the
+            //     firmware actually reads byte 43.
+            //   - Set byte 38 validFlag2 bit 0 so the firmware reads
+            //     byte 42 (ledBrightness).
+            //   - Write byte 41 lightbarSetup = 0x02 — bypasses the
+            //     BT-default blue color animation. Harmless on USB.
+            //   - Write byte 42 ledBrightness = 0 (max).
+            //   - Write byte 43 playerIndicator = 0x20 (the no-fade
+            //     flag) — tells the firmware to drop any pending
+            //     fade animation and apply the requested state now.
+            //   - Bytes 44-46 = our RGB.
+            // OpenRGB additionally lights player LEDs based on extra
+            // color zones; we leave bits 0-4 of byte 43 zero (no
+            // physical LEDs lit) since PadForge doesn't expose
+            // per-LED-zone control.
             if (cfg.LightbarEnabled)
             {
                 enableBits |= EnableLightbar;
-                dst[OffLedRed]   = cfg.LightbarRed;
-                dst[OffLedGreen] = cfg.LightbarGreen;
-                dst[OffLedBlue]  = cfg.LightbarBlue;
+                enableBits |= EnablePlayerIndicator;
+                dst[OffValidFlag2]      |= 0x01;
+                dst[OffLightbarSetup]   = 0x02;
+                dst[OffLedBrightness]   = 0x00;
+                dst[OffPlayerIndicator] = PlayerIndicatorNoFade;
+                dst[OffLedRed]          = cfg.LightbarRed;
+                dst[OffLedGreen]        = cfg.LightbarGreen;
+                dst[OffLedBlue]         = cfg.LightbarBlue;
             }
 
             // Audio bytes — speaker volume + mic light + mic mute.

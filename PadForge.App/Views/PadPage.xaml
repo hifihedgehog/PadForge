@@ -2170,8 +2170,74 @@
                                 <CheckBox IsChecked="{Binding PlayStationConfig.MicMute, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_MicMute, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,8,0,4"/>
-                                <CheckBox IsChecked="{Binding PlayStationConfig.MicLightOn, Mode=TwoWay}"
-                                          Content="{Binding Pad_Lighting_MicLight, Source={x:Static strings:Strings.Instance}}"/>
+                                <!-- Mic mute LED mode — DS5 firmware exposes
+                                     three states at byte 8 (Off / Solid /
+                                     Pulse), no separate brightness. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding Pad_Lighting_MicLedMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.MicLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="140" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Player number indicator LEDs (5 small LEDs below the touchpad) -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,12,0,0"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Lighting_PlayerLeds, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,4"/>
+                                <TextBlock Text="{Binding Pad_Lighting_PlayerLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Lighting_PlayerLed_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="140" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P1, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P2, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P3, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P4, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Pad_Lighting_PlayerLed_Brightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedBrightness, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="140" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_High, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Audio-driven lightbar (DSY-style audio-to-LED) -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,12,0,0"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Lighting_AudioLightbar, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,4"/>
+                                <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                <CheckBox IsChecked="{Binding PlayStationConfig.AudioLightbarEnabled, Mode=TwoWay}"
+                                          Content="{Binding Pad_Lighting_AudioLightbar_Enable, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" IsEnabled="{Binding PlayStationConfig.AudioLightbarEnabled}">
+                                    <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="1" Maximum="20" TickFrequency="0.1"/>
+                                    <TextBox Text="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </StackPanel>

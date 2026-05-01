@@ -456,7 +456,16 @@ namespace PadForge.Services
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
                     cfg.SpeakerVolume = cfgData.SpeakerVolume;
                     cfg.MicMute = cfgData.MicMute;
-                    cfg.MicLightOn = cfgData.MicLightOn;
+                    // Migrate legacy MicLightOn to the new MicLedMode if
+                    // the new field hasn't been set explicitly.
+                    if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
+                        cfg.MicLedMode = cfgData.MicLedMode;
+                    else
+                        cfg.MicLightOn = cfgData.MicLightOn;
+                    cfg.PlayerLedMode = cfgData.PlayerLedMode;
+                    cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
+                    cfg.AudioLightbarEnabled = cfgData.AudioLightbarEnabled;
+                    cfg.AudioLightbarSensitivity = cfgData.AudioLightbarSensitivity;
                     cfg.UserEffectsEnabled = cfgData.UserEffectsEnabled;
                 }
             }
@@ -1201,7 +1210,12 @@ namespace PadForge.Services
                     LightbarEnabled = cfg.LightbarEnabled,
                     SpeakerVolume = cfg.SpeakerVolume,
                     MicMute = cfg.MicMute,
+                    MicLedMode = cfg.MicLedMode,
                     MicLightOn = cfg.MicLightOn,
+                    PlayerLedMode = cfg.PlayerLedMode,
+                    PlayerLedBrightness = cfg.PlayerLedBrightness,
+                    AudioLightbarEnabled = cfg.AudioLightbarEnabled,
+                    AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
                     UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }
@@ -1331,7 +1345,12 @@ namespace PadForge.Services
                     LightbarEnabled = cfg.LightbarEnabled,
                     SpeakerVolume = cfg.SpeakerVolume,
                     MicMute = cfg.MicMute,
+                    MicLedMode = cfg.MicLedMode,
                     MicLightOn = cfg.MicLightOn,
+                    PlayerLedMode = cfg.PlayerLedMode,
+                    PlayerLedBrightness = cfg.PlayerLedBrightness,
+                    AudioLightbarEnabled = cfg.AudioLightbarEnabled,
+                    AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
                     UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }

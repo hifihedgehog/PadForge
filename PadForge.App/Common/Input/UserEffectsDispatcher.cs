@@ -37,8 +37,21 @@ namespace PadForge.Common.Input
         private const ushort PidStandard = 0x0CE6;
         private const ushort PidEdge = 0x0DF2;
 
+        /// <summary>Static provider for the system audio peak (0..1).
+        /// InputService wires this to <c>AudioBassDetector.FullSpectrumPeak</c>
+        /// at startup. Returns 0 when the detector hasn't been initialized
+        /// yet — audio-to-lightbar then dispatches a black frame, harmless.</summary>
+        public static Func<float> AudioPeakProvider { get; set; }
+
+        // Audio-to-lightbar polling cadence — 30Hz is enough to feel
+        // responsive without flooding the BT HID write path. WriteFile
+        // open+close is ~1ms per call; 30Hz = 30ms budget.
+        private const int AudioTickMs = 33;
+
         private readonly int _padIndex;
         private PlayStationSlotConfig _config;
+        private System.Threading.Timer _audioTimer;
+        private bool _audioTickActive;
         private bool _disposed;
 
         public UserEffectsDispatcher(int padIndex, PlayStationSlotConfig config)
@@ -47,6 +60,7 @@ namespace PadForge.Common.Input
             _config = config;
             if (_config != null)
                 _config.PropertyChanged += OnConfigChanged;
+            UpdateAudioTimer();
             DiagLog($"ctor padIndex={padIndex} config={(config == null ? "null" : "ok")}");
         }
 
@@ -84,6 +98,7 @@ namespace PadForge.Common.Input
             _config = config;
             if (_config != null)
                 _config.PropertyChanged += OnConfigChanged;
+            UpdateAudioTimer();
             // Push a snapshot immediately so the assigned DS5 reflects
             // the new config without waiting for the next user edit.
             ApplyOnce();
@@ -101,6 +116,7 @@ namespace PadForge.Common.Input
         {
             if (_disposed) return;
             _disposed = true;
+            StopAudioTimer();
             if (_config != null)
                 _config.PropertyChanged -= OnConfigChanged;
             _config = null;
@@ -109,6 +125,10 @@ namespace PadForge.Common.Input
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
             DiagLog($"OnConfigChanged property={e.PropertyName}");
+            // The audio-lightbar toggle / sensitivity changes need to
+            // start/stop the periodic timer.
+            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioLightbarEnabled))
+                UpdateAudioTimer();
             // Every PlayStationSlotConfig field change re-applies the
             // full message. Synthesis is cheap; the alternative would be
             // a per-field write that misses subtle interactions between
@@ -117,14 +137,83 @@ namespace PadForge.Common.Input
             DispatchSnapshot();
         }
 
-        private void DispatchSnapshot()
+        // ────────────────────────────────────────────────
+        //  Audio-to-lightbar timer
+        // ────────────────────────────────────────────────
+        // Started while AudioLightbarEnabled is on, stopped otherwise.
+        // Each tick reads AudioPeakProvider() and re-dispatches if the
+        // peak changed enough to be worth a write — avoids flooding the
+        // HID pipe with no-op packets when the audio signal is steady.
+
+        private void UpdateAudioTimer()
+        {
+            bool wantTimer = !_disposed
+                && _config != null
+                && _config.AudioLightbarEnabled;
+
+            if (wantTimer && !_audioTickActive)
+            {
+                _audioTickActive = true;
+                _audioTimer = new System.Threading.Timer(
+                    OnAudioTick, null, AudioTickMs, AudioTickMs);
+                DiagLog("audio timer started");
+            }
+            else if (!wantTimer && _audioTickActive)
+            {
+                StopAudioTimer();
+            }
+        }
+
+        private void StopAudioTimer()
+        {
+            _audioTickActive = false;
+            try { _audioTimer?.Dispose(); } catch { }
+            _audioTimer = null;
+            _lastDispatchedPeak = -1f;
+        }
+
+        private float _lastDispatchedPeak = -1f;
+
+        private void OnAudioTick(object _)
+        {
+            if (_disposed || _config == null || !_config.AudioLightbarEnabled) return;
+
+            float rawPeak = AudioPeakProvider?.Invoke() ?? 0f;
+            float scaled = Math.Clamp(rawPeak * (float)_config.AudioLightbarSensitivity, 0f, 1f);
+
+            // Skip dispatch if peak hasn't changed by at least one
+            // perceptible step (1/255 ≈ 0.004). Bypass the skip when
+            // the value crosses zero — going dark needs to apply
+            // immediately even from a small change.
+            float delta = MathF.Abs(scaled - _lastDispatchedPeak);
+            bool zeroCrossing =
+                (scaled == 0f && _lastDispatchedPeak > 0f)
+                || (_lastDispatchedPeak == 0f && scaled > 0f);
+            if (!zeroCrossing && delta < 0.004f) return;
+
+            _lastDispatchedPeak = scaled;
+            DispatchSnapshot(scaled);
+        }
+
+        private void DispatchSnapshot(float audioPeak = -1f)
         {
             if (_config == null) { DiagLog("DispatchSnapshot config=null"); return; }
+
+            // For non-audio-driven dispatches (slider drag, OnDevicesUpdated
+            // re-apply, etc.), pull the current peak so the audio path
+            // doesn't snap to black between timer ticks. The synthesizer
+            // ignores the peak when AudioLightbarEnabled is false.
+            float peakForSynth = audioPeak >= 0f
+                ? audioPeak
+                : Math.Clamp(
+                    (AudioPeakProvider?.Invoke() ?? 0f)
+                    * (float)_config.AudioLightbarSensitivity,
+                    0f, 1f);
 
             // Synthesize once per dispatch; reuse the buffer across the
             // multi-DS5 fan-out below.
             var buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
-            int len = Ds5EffectSynthesizer.Build(_config, buffer);
+            int len = Ds5EffectSynthesizer.Build(_config, buffer, peakForSynth);
             if (len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
 
             var settings = SettingsManager.UserSettings;

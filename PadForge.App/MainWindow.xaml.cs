@@ -534,6 +534,18 @@ namespace PadForge
 
                 // ExtendedConfig property changes (preset, counts) trigger autosave.
                 pad.ExtendedConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+
+                // PlayStationConfig changes (Lighting tab, Adaptive Triggers tab)
+                // — autosave + sync audio capture when audio-to-lightbar
+                // toggles. Audio-to-lightbar reuses the same WASAPI capture
+                // as audio-rumble, so the capture lifecycle gates on either
+                // feature being on for any created slot.
+                pad.PlayStationConfig.PropertyChanged += (s, e) =>
+                {
+                    _settingsService.MarkDirty();
+                    if (e.PropertyName == nameof(ViewModels.PlayStationSlotConfig.AudioLightbarEnabled))
+                        _inputService.SyncAudioBassDetector();
+                };
             }
 
             // Recorder completion marks settings dirty + clear flash + advance Map All.

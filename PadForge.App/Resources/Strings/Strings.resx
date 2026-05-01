@@ -393,6 +393,7 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Multiple-Position Vibration</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Start position</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>End position</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>Strength</value></data>
   <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequency (Hz)</value></data>
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->

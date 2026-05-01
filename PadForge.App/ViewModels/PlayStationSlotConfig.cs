@@ -1,5 +1,6 @@
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace PadForge.ViewModels
 {
@@ -191,6 +192,83 @@ namespace PadForge.ViewModels
             get => _userEffectsEnabled;
             set => SetProperty(ref _userEffectsEnabled, value);
         }
+
+        // ────────────────────────────────────────────────
+        //  Reset commands (per-control)
+        //  Mirror the per-row reset pattern on the Sticks / Triggers tabs.
+        //  Each command resets one logical control to its safe default;
+        //  every PropertyChanged that fires from a Reset feeds through
+        //  UserEffectsDispatcher and immediately re-syncs the physical
+        //  pad.
+        // ────────────────────────────────────────────────
+
+        public RelayCommand ResetLeftTriggerCommand =>
+            _resetLeftTrigger ??= new RelayCommand(() =>
+            {
+                LeftTriggerMode = AdaptiveTriggerMode.Off;
+                LeftStartPosition = 0;
+                LeftEndPosition = 0;
+                LeftStrength = 0;
+                LeftFrequency = 0;
+            });
+        private RelayCommand _resetLeftTrigger;
+
+        public RelayCommand ResetRightTriggerCommand =>
+            _resetRightTrigger ??= new RelayCommand(() =>
+            {
+                RightTriggerMode = AdaptiveTriggerMode.Off;
+                RightStartPosition = 0;
+                RightEndPosition = 0;
+                RightStrength = 0;
+                RightFrequency = 0;
+            });
+        private RelayCommand _resetRightTrigger;
+
+        public RelayCommand ResetLeftRangeCommand =>
+            _resetLeftRange ??= new RelayCommand(() =>
+            {
+                LeftStartPosition = 0;
+                LeftEndPosition = 0;
+            });
+        private RelayCommand _resetLeftRange;
+
+        public RelayCommand ResetRightRangeCommand =>
+            _resetRightRange ??= new RelayCommand(() =>
+            {
+                RightStartPosition = 0;
+                RightEndPosition = 0;
+            });
+        private RelayCommand _resetRightRange;
+
+        public RelayCommand ResetLeftStrengthCommand =>
+            _resetLeftStrength ??= new RelayCommand(() => LeftStrength = 0);
+        private RelayCommand _resetLeftStrength;
+
+        public RelayCommand ResetRightStrengthCommand =>
+            _resetRightStrength ??= new RelayCommand(() => RightStrength = 0);
+        private RelayCommand _resetRightStrength;
+
+        public RelayCommand ResetLeftFrequencyCommand =>
+            _resetLeftFrequency ??= new RelayCommand(() => LeftFrequency = 0);
+        private RelayCommand _resetLeftFrequency;
+
+        public RelayCommand ResetRightFrequencyCommand =>
+            _resetRightFrequency ??= new RelayCommand(() => RightFrequency = 0);
+        private RelayCommand _resetRightFrequency;
+
+        /// <summary>Reset lightbar to the Sony player-1 default (solid blue).</summary>
+        public RelayCommand ResetLightbarColorCommand =>
+            _resetLightbar ??= new RelayCommand(() =>
+            {
+                LightbarRed = 0;
+                LightbarGreen = 0;
+                LightbarBlue = 0xFF;
+            });
+        private RelayCommand _resetLightbar;
+
+        public RelayCommand ResetSpeakerVolumeCommand =>
+            _resetSpeakerVol ??= new RelayCommand(() => SpeakerVolume = 0x80);
+        private RelayCommand _resetSpeakerVol;
     }
 
     /// <summary>Sony's seven canonical adaptive trigger effect modes

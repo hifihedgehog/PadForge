@@ -117,11 +117,17 @@ namespace PadForge.Common.Input
         /// / lightbar / audio effects synthesize and forward to the
         /// assigned physical DualSense via SDL_SendGamepadEffect.
         /// Called by Step 5 right after RegisterFeedbackCallback for
-        /// virtual DualSense slots. Idempotent — re-attach replaces the
-        /// existing dispatcher's binding.</summary>
+        /// every HM-backed slot — the dispatcher's runtime resolve
+        /// returns no targets when the slot has no DS5 physical mapped,
+        /// so attaching unconditionally is cheap. Decoupling the gate
+        /// from the virtual's identity lets Feature B work when the
+        /// user has a DS4 virtual + physical DS5 assignment, or any
+        /// other mismatch where they still want to drive the assigned
+        /// physical DS5's lightbar / triggers / audio. Idempotent —
+        /// re-attach replaces the existing dispatcher's binding.</summary>
         public void AttachPlayStationConfig(PadForge.ViewModels.PlayStationSlotConfig config)
         {
-            if (!IsDualSenseVirtual) return;
+            if (config == null) return;
 
             if (_userEffectsDispatcher == null)
             {

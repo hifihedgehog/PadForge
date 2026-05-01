@@ -403,6 +403,8 @@
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>
   <data name="Pad_Lighting_Green" xml:space="preserve"><value>Green</value></data>
   <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Blue</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>
   <data name="Pad_Lighting_AudioHeader" xml:space="preserve"><value>Audio (DualSense only)</value></data>
   <data name="Pad_Lighting_SpeakerVolume" xml:space="preserve"><value>Speaker volume</value></data>
   <data name="Pad_Lighting_MicMute" xml:space="preserve"><value>Mute microphone</value></data>

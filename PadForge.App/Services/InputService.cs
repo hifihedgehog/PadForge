@@ -1677,18 +1677,35 @@ namespace PadForge.Services
                             }
                         }
 
-                        // Retry burst — SDL's PS5 driver re-init after a
-                        // disconnect/reconnect doesn't always have the
-                        // gamepad handle wired up to the firmware on the
-                        // very first OnDevicesUpdated tick. Empirically
-                        // SDL_SendGamepadEffect can return success against
-                        // a wrapper that isn't yet routing to the device.
-                        // Retry at 250 / 750 / 1500 ms so a later cycle
-                        // catches the live handle without waiting on a
-                        // user slider drag.
+                        // Retry burst — SDL3's PS5 driver writes the
+                        // player-index DEFAULT color to the lightbar at
+                        // multiple points after a fresh open:
+                        //   - Immediately on SDL_SetJoystickIDForPlayerIndex
+                        //     (USB: hits firmware right away).
+                        //   - On the first SDL_SendGamepadEffect call when
+                        //     enhanced_mode is false (sets enhanced mode +
+                        //     fires UpdateEffects(LED|PadLights), then
+                        //     SDL_Delay(10) before sending our packet).
+                        //   - For Bluetooth, CheckPendingLEDReset fires
+                        //     UpdateEffects(LED|PadLights) with player-
+                        //     default color when the BT sensor timestamp
+                        //     hits ~10.2 seconds post-first-packet
+                        //     (SDL_hidapi_ps5.c connection_complete = 10200000
+                        //     microseconds).
+                        // The early retries (250/750/1500ms) win against
+                        // the synchronous USB writes; the late retries
+                        // (3s/6s/12s/15s) win against the BT 10.2s
+                        // CheckPendingLEDReset overwrite. Without the
+                        // late retries, BT users see player-default color
+                        // stick after late-connect even though our packets
+                        // returned success at sub-2s.
                         ScheduleDelayedReApply(250);
                         ScheduleDelayedReApply(750);
                         ScheduleDelayedReApply(1500);
+                        ScheduleDelayedReApply(3000);
+                        ScheduleDelayedReApply(6000);
+                        ScheduleDelayedReApply(12000);
+                        ScheduleDelayedReApply(15000);
                     }
                 }
             }));

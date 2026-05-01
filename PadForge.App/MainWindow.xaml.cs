@@ -1277,6 +1277,10 @@ namespace PadForge
                         RebuildControllerSection();
                         RefreshDashboardActiveSlots();
                         _viewModel.Devices.RefreshSlotButtons();
+                        // SlotOrders changed — recompute every device row's
+                        // badge numbers so they track the dashboard cards'
+                        // visual ordering, not the original create order.
+                        _viewModel.Devices.RefreshAllSlotBadges();
                         _inputService.RefreshProfileTopology();
                     }));
 

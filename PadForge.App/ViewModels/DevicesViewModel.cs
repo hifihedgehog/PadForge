@@ -369,11 +369,24 @@ namespace PadForge.ViewModels
         /// </summary>
         public void RefreshSlotButtons()
         {
+            // Walk SlotOrders in type-group order (Xbox → PlayStation →
+            // Extended → KbM → MIDI) so the assignment buttons match the
+            // dashboard cards' visual order. Iterating raw padIndex here
+            // would put a creation-order-first PlayStation before an
+            // Xbox added later, even though the card layout shows Xbox
+            // at #1.
             var activeSlots = new System.Collections.Generic.List<int>();
-            for (int i = 0; i < InputManager.MaxPads; i++)
+            foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
-                if (SettingsManager.SlotCreated[i])
-                    activeSlots.Add(i);
+                foreach (int padIndex in SettingsManager.SlotOrders.GetOrderFor(groupType))
+                {
+                    if (padIndex >= 0
+                        && padIndex < InputManager.MaxPads
+                        && SettingsManager.SlotCreated[padIndex])
+                    {
+                        activeSlots.Add(padIndex);
+                    }
+                }
             }
 
             // Get the selected device's current assignments.
@@ -434,6 +447,23 @@ namespace PadForge.ViewModels
                     return d;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Re-runs SetAssignedSlots on every device row so the slot badges
+        /// recompute their global numbers from the current SlotOrders. Call
+        /// this any time the type-group order changes (slot create / delete /
+        /// type change / swap / move). Without it, the badge numbers drift
+        /// out of sync with the dashboard cards' visual ordering even
+        /// though the assignments themselves haven't changed.
+        /// </summary>
+        public void RefreshAllSlotBadges()
+        {
+            foreach (var d in Devices)
+            {
+                if (d == null) continue;
+                d.SetAssignedSlots(SettingsManager.GetAssignedSlots(d.InstanceGuid));
+            }
         }
 
         /// <summary>

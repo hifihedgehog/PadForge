@@ -285,20 +285,44 @@ namespace PadForge.ViewModels
         {
             _assignedSlots = slots ?? new();
             SlotBadges.Clear();
+            // Walk SlotOrders in type-group order (Xbox → PlayStation →
+            // Extended → KbM → MIDI) to compute the global slot number,
+            // matching the dashboard cards and the Pad page header.
+            // Iterating raw padIndex here mismatches the visual ordering
+            // when an Xbox slot is added after a PlayStation slot — the
+            // cards renumber to put Xbox at #1, but the badge would still
+            // show the PlayStation as #1 because it was created first.
+            var slotToGlobal = BuildSlotNumberLookup();
             foreach (int slot in _assignedSlots)
             {
-                // Compute sequential global number (1-based) among created slots,
-                // not raw padIndex+1. Without this, gaps in SlotCreated[] (e.g.,
-                // slot 1 uncreated) cause badge numbers to skip (1, 3, 4...).
-                int globalNum = 0;
-                var slotCreated = Common.Input.SettingsManager.SlotCreated;
-                for (int i = 0; i <= slot && i < slotCreated.Length; i++)
-                    if (slotCreated[i])
-                        globalNum++;
+                slotToGlobal.TryGetValue(slot, out int globalNum);
                 SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = globalNum });
             }
             OnPropertyChanged(nameof(AssignedSlots));
             OnPropertyChanged(nameof(IsUnassigned));
+        }
+
+        /// <summary>Builds a slotIndex → 1-based global number map walking
+        /// type-group order to match the dashboard / sidebar / Pad page
+        /// numbering. Created/active slots only; uncreated slots are
+        /// excluded so the global numbers don't skip.</summary>
+        private static Dictionary<int, int> BuildSlotNumberLookup()
+        {
+            var map = new Dictionary<int, int>();
+            int globalCount = 0;
+            foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
+            {
+                foreach (int padIndex in Common.Input.SettingsManager.SlotOrders.GetOrderFor(groupType))
+                {
+                    if (padIndex < 0 || padIndex >= Common.Input.SettingsManager.SlotCreated.Length)
+                        continue;
+                    if (!Common.Input.SettingsManager.SlotCreated[padIndex])
+                        continue;
+                    globalCount++;
+                    map[padIndex] = globalCount;
+                }
+            }
+            return map;
         }
 
         // ─────────────────────────────────────────────

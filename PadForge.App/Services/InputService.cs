@@ -2021,10 +2021,16 @@ namespace PadForge.Services
         /// </summary>
         internal void SyncAudioBassDetector()
         {
+            // Capture is needed if either feature on any created slot
+            // wants audio: bass-rumble OR audio-to-lightbar (the latter
+            // taps the same WASAPI capture pre-filter).
             bool anyEnabled = false;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].AudioRumbleEnabled)
+                if (!SettingsManager.SlotCreated[i]) continue;
+                var pad = _mainVm.Pads[i];
+                if (pad.AudioRumbleEnabled
+                    || (pad.PlayStationConfig != null && pad.PlayStationConfig.AudioLightbarEnabled))
                 {
                     anyEnabled = true;
                     break;
@@ -2047,6 +2053,12 @@ namespace PadForge.Services
             if (_audioBassDetector.Start())
             {
                 _inputManager.AudioBassDetector = _audioBassDetector;
+                // Wire the dispatcher's peak provider — audio-to-lightbar
+                // pulls from the same capture as audio-rumble, but reads
+                // the pre-filter FullSpectrumPeak so the lightbar follows
+                // the full waveform regardless of bass-cutoff.
+                UserEffectsDispatcher.AudioPeakProvider =
+                    () => _audioBassDetector?.FullSpectrumPeak ?? 0f;
             }
             else
             {
@@ -2063,6 +2075,7 @@ namespace PadForge.Services
             if (_inputManager != null)
                 _inputManager.AudioBassDetector = null;
 
+            UserEffectsDispatcher.AudioPeakProvider = null;
             _audioBassDetector.Dispose();
             _audioBassDetector = null;
 

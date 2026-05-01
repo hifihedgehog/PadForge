@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -165,19 +166,88 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _micMute, value);
         }
 
-        private bool _micLightOn;
-        /// <summary>Mic mute LED state. Sony convention: lit when muted,
-        /// off when unmuted. PadForge users may want to invert this for
-        /// custom rigs — exposed as an independent toggle.</summary>
+        private MicLedMode _micLedMode;
+        /// <summary>Mic mute LED state. The DS5 firmware exposes three
+        /// modes at byte 8 (muteLedControl): Off, Solid, Pulse. There's
+        /// no separate brightness — these are the firmware-supported
+        /// states.</summary>
+        public MicLedMode MicLedMode
+        {
+            get => _micLedMode;
+            set => SetProperty(ref _micLedMode, value);
+        }
+
+        // Backwards-compat shim. Old XML uses bool MicLightOn; we keep
+        // the property for round-tripping but route it through MicLedMode.
+        // True maps to Solid; False maps to Off. Pulse is opt-in via the
+        // new MicLedMode property.
         public bool MicLightOn
         {
-            get => _micLightOn;
-            set => SetProperty(ref _micLightOn, value);
+            get => _micLedMode != MicLedMode.Off;
+            set
+            {
+                var target = value ? MicLedMode.Solid : MicLedMode.Off;
+                if (_micLedMode != target)
+                    MicLedMode = target;
+            }
+        }
+
+        private PlayerLedMode _playerLedMode;
+        /// <summary>Bottom-row player indicator LEDs (1-5 small white
+        /// LEDs below the touchpad). Off = all dark; PlayerN = the
+        /// canonical player-slot pattern; All = every LED lit.
+        /// Bit pattern at byte 43 per dualsense-tester:
+        /// Off=0x00, P1=0x04, P2=0x0A, P3=0x15, P4=0x1B, All=0x1F.</summary>
+        public PlayerLedMode PlayerLedMode
+        {
+            get => _playerLedMode;
+            set => SetProperty(ref _playerLedMode, value);
+        }
+
+        private PlayerLedBrightness _playerLedBrightness = PlayerLedBrightness.High;
+        /// <summary>Brightness of the player indicator LEDs at byte 42.
+        /// Firmware values: 0=High, 1=Medium, 2=Low. Doesn't affect
+        /// the lightbar (lightbar brightness is implicit in RGB).</summary>
+        public PlayerLedBrightness PlayerLedBrightness
+        {
+            get => _playerLedBrightness;
+            set => SetProperty(ref _playerLedBrightness, value);
         }
 
         // ────────────────────────────────────────────────
         //  Master enable for Feature B (user-configured effects)
         // ────────────────────────────────────────────────
+
+        // ────────────────────────────────────────────────
+        //  Audio-to-lightbar (DSY-style) — modulates the user's
+        //  configured lightbar color by the system audio peak. Taps
+        //  AudioBassDetector pre-filter so the lightbar follows the
+        //  full audio spectrum, independent of the bass-cutoff setting
+        //  the audio-rumble feature uses.
+        // ────────────────────────────────────────────────
+
+        private bool _audioLightbarEnabled;
+        /// <summary>When true, the lightbar RGB is multiplied by the
+        /// system audio peak each tick — pulsing the user's chosen
+        /// color with whatever is playing through the default render
+        /// device. When the user has both <c>LightbarEnabled</c> and
+        /// this on, this wins; the static color is the "max" point of
+        /// the modulation.</summary>
+        public bool AudioLightbarEnabled
+        {
+            get => _audioLightbarEnabled;
+            set => SetProperty(ref _audioLightbarEnabled, value);
+        }
+
+        private double _audioLightbarSensitivity = 4.0;
+        /// <summary>Pre-clamp gain applied to the audio peak before it
+        /// modulates the lightbar. Same range/default as the audio-rumble
+        /// sensitivity so the two controls feel consistent.</summary>
+        public double AudioLightbarSensitivity
+        {
+            get => _audioLightbarSensitivity;
+            set => SetProperty(ref _audioLightbarSensitivity, Math.Clamp(value, 1.0, 20.0));
+        }
 
         private bool _userEffectsEnabled;
         /// <summary>Master toggle for user-configured effect synthesis.
@@ -298,6 +368,43 @@ namespace PadForge.ViewModels
         MultiplePositionVibration = 6,
     }
 
+    /// <summary>Mic mute LED mode. Maps directly to byte 8
+    /// (muteLedControl) values per dualsense-tester's
+    /// MuteButtonLedControl: 0=Off, 1=Solid, 2=Pulse.</summary>
+    public enum MicLedMode
+    {
+        Off = 0,
+        Solid = 1,
+        Pulse = 2,
+    }
+
+    /// <summary>Player indicator LED selection. Sequential 0-5 to map
+    /// 1:1 with the ComboBox dropdown via <c>EnumIndexConverter</c>.
+    /// The synthesizer translates these to the wire-form bit patterns
+    /// at byte 43 (playerIndicator):
+    /// Off=0x00, Player1=0x04, Player2=0x0A, Player3=0x15,
+    /// Player4=0x1B, All=0x1F (per dualsense-tester's
+    /// PlayerLedControl). The 0x20 no-fade flag is ORed in
+    /// independently by the synthesizer.</summary>
+    public enum PlayerLedMode
+    {
+        Off = 0,
+        Player1 = 1,
+        Player2 = 2,
+        Player3 = 3,
+        Player4 = 4,
+        All = 5,
+    }
+
+    /// <summary>Player indicator brightness at byte 42 (ledBrightness).
+    /// Firmware values are inverted from intuitive: 0=High, 2=Low.</summary>
+    public enum PlayerLedBrightness
+    {
+        High = 0,
+        Medium = 1,
+        Low = 2,
+    }
+
     /// <summary>Serializable mirror of <see cref="PlayStationSlotConfig"/>.
     /// XML round-trip via SettingsService. Fields use XmlAttribute to
     /// keep the serialized form compact and aligned with the adjacent
@@ -321,7 +428,16 @@ namespace PadForge.ViewModels
         [XmlAttribute] public bool LightbarEnabled { get; set; }
         [XmlAttribute] public byte SpeakerVolume { get; set; } = 0x80;
         [XmlAttribute] public bool MicMute { get; set; }
+        [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
+        [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;
+        [XmlAttribute] public PlayerLedBrightness PlayerLedBrightness { get; set; } = PlayerLedBrightness.High;
+        // Round-trip the legacy MicLightOn so old XML still loads. Mapped
+        // to MicLedMode in the UI binding layer.
         [XmlAttribute] public bool MicLightOn { get; set; }
         [XmlAttribute] public bool UserEffectsEnabled { get; set; }
+
+        // Audio-to-lightbar (Round 2)
+        [XmlAttribute] public bool AudioLightbarEnabled { get; set; }
+        [XmlAttribute] public double AudioLightbarSensitivity { get; set; } = 4.0;
     }
 }

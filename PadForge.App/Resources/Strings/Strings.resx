@@ -415,6 +415,27 @@
   <data name="Pad_Lighting_SpeakerVolume" xml:space="preserve"><value>Speaker volume</value></data>
   <data name="Pad_Lighting_MicMute" xml:space="preserve"><value>Mute microphone</value></data>
   <data name="Pad_Lighting_MicLight" xml:space="preserve"><value>Mute LED on</value></data>
+  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>Mute LED</value></data>
+  <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Solid</value></data>
+  <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulse</value></data>
+  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>Player LEDs</value></data>
+  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Five small white LEDs below the touchpad. Pick which player slot pattern to display and how bright it should be.</value></data>
+  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Pattern</value></data>
+  <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Player 1</value></data>
+  <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Player 2</value></data>
+  <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Player 3</value></data>
+  <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>Player 4</value></data>
+  <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>All</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>Brightness</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>High</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Medium</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-driven lightbar</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Modulates the base color above by the system audio peak — pulses with whatever is playing through the default output device. Taps the same WASAPI capture as audio rumble but reads the full waveform (no bass-cutoff filter), so it follows everything you hear.</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Pulse base color with system audio</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>

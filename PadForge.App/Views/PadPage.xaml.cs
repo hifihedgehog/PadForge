@@ -50,6 +50,7 @@ namespace PadForge.Views
             SyncTabStripSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
+            SyncLightbarHexBox();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -77,6 +78,7 @@ namespace PadForge.Views
             SyncTabStripSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
+            SyncLightbarHexBox();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
             // populates. WPF's ComboBox with SelectedValuePath can land on a
@@ -605,6 +607,65 @@ namespace PadForge.Views
         private void ExtendedOverride_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter) ExtendedOverride_Changed(sender, e);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Lighting tab — HEX color entry
+        // ─────────────────────────────────────────────
+
+        /// <summary>Populates the HEX textbox from the current
+        /// PlayStationConfig RGB. Called from DataContextChanged so
+        /// switching slots loads the right value, and from
+        /// PadPage_Loaded for the initial paint.</summary>
+        private void SyncLightbarHexBox()
+        {
+            if (LightbarHexBox == null) return;
+            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
+        }
+
+        /// <summary>Parses a HEX color string (with or without leading #)
+        /// and writes the components back into PlayStationConfig. The
+        /// per-channel sliders auto-update via their TwoWay bindings on
+        /// the same observable properties, so no extra UI poke is needed.
+        /// Invalid input is silently ignored — the textbox is restored
+        /// to the current canonical RGB hex on next focus loss.</summary>
+        private void LightbarHexBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                LightbarHexBox_Apply();
+        }
+
+        private void LightbarHexBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            LightbarHexBox_Apply();
+        }
+
+        private void LightbarHexBox_Apply()
+        {
+            if (LightbarHexBox == null) return;
+            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+
+            string text = (LightbarHexBox.Text ?? string.Empty).Trim();
+            if (text.StartsWith("#")) text = text.Substring(1);
+
+            if (text.Length == 6
+                && byte.TryParse(text.Substring(0, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(text.Substring(2, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(text.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte b))
+            {
+                vm.PlayStationConfig.LightbarRed = r;
+                vm.PlayStationConfig.LightbarGreen = g;
+                vm.PlayStationConfig.LightbarBlue = b;
+            }
+
+            // Always reformat the textbox to canonical RRGGBB. Catches
+            // both successful parse (echo back normalized form) and
+            // failed parse (revert to current truth).
+            LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
         }
 
         private void ExtendedOemOverride_Toggled(object sender, RoutedEventArgs e)

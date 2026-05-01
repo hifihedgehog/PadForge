@@ -6,23 +6,39 @@ namespace PadForge.Common.Input
     /// <summary>
     /// Builds DualSense USB Report 0x02 effect messages from a
     /// <see cref="PlayStationSlotConfig"/>. Wire format reference is the
-    /// DS5 SDK's 47-byte <c>DS5EffectsState_t</c> layout — same form
-    /// that game-driven effect output uses (which the
+    /// DS5 SDK's 47-byte effect-state layout — same form that
+    /// game-driven effect output uses (which the
     /// <see cref="DualSensePassthroughDispatcher"/> forwards verbatim).
     ///
-    /// <para>Standard 47-byte payload, written into the caller's buffer:</para>
+    /// <para>Standard 47-byte payload byte map (consensus across DS5W,
+    /// dualsensectl, DSY, AntiMicroX's EffectMessagePs5):</para>
     /// <code>
-    /// [0..1]   enable_bits  (u16 LE — which feature blocks this packet updates)
-    /// [2]      rumble_right
-    /// [3]      rumble_left
-    /// [4]      audio enable / volume
-    /// [5]      mic light / audio mute
-    /// [6..16]  right_trigger_effect (mode + 10 param bytes)
-    /// [17..27] left_trigger_effect  (mode + 10 param bytes)
-    /// [28..33] reserved
-    /// [34..38] led_flags / led_animation / led_brightness / pad_lights / placeholder
-    /// [39..41] led_red / led_green / led_blue
-    /// [42..46] reserved
+    /// [0]      EnableBits1 — bit 0=R rumble, 1=L rumble, 2=R trigger,
+    ///                       3=L trigger, 4=headphone vol, 5=speaker vol,
+    ///                       6=mic vol, 7=audio control flags
+    /// [1]      EnableBits2 — bit 0=mic mute light, 1=power save,
+    ///                       2=lightbar (RGB), 3=release lights,
+    ///                       4=player indicator, 5=motor scale,
+    ///                       6=trigger scale, 7=audio mute
+    /// [2]      RumbleRight
+    /// [3]      RumbleLeft
+    /// [4]      HeadphoneVolume
+    /// [5]      SpeakerVolume
+    /// [6]      MicVolume
+    /// [7]      AudioControlFlags
+    /// [8]      MicLightMode    (0=off, 1=on, 2=pulse)
+    /// [9]      AudioMuteBits   (bit 4 = mic mute)
+    /// [10..20] RightTriggerEffect (mode + 10 param bytes)
+    /// [21..31] LeftTriggerEffect  (mode + 10 param bytes)
+    /// [32..37] reserved
+    /// [38]     LightbarSetupFlags  (0x02 = enable RGB write)
+    /// [39..40] reserved
+    /// [41]     LedAnimation
+    /// [42]     LedBrightness
+    /// [43]     PlayerIndicator
+    /// [44]     LedRed
+    /// [45]     LedGreen
+    /// [46]     LedBlue
     /// </code>
     ///
     /// <para>Feature B writes don't drive rumble (game writes own that
@@ -36,16 +52,34 @@ namespace PadForge.Common.Input
         /// payload (excluding the Report ID prefix that SDL prepends).</summary>
         public const int PayloadSize = 47;
 
-        // enable_bits flags from the DS5 effect message header.
-        private const ushort EnableRumbleAndHaptic = 0x0001 | 0x0002; // rumble L/R
-        private const ushort EnableRightTrigger = 0x0004;
-        private const ushort EnableLeftTrigger = 0x0008;
-        private const ushort EnableAudioVolume = 0x0010;
-        private const ushort EnableMicLight = 0x0100;
-        private const ushort EnableLedColor = 0x0004 << 6; // bit 8 = 0x0100, but reserve LED bit 0x0400
-        // Sony's actual LED enable bit on byte 1: 0x04 (i.e. 0x0400 in the u16).
-        // Use a clearer constant for readability:
-        private const ushort EnableLightbar = 0x0400;
+        // EnableBits1 (low byte of the u16 LE header).
+        private const ushort EnableRightTrigger     = 0x0004;
+        private const ushort EnableLeftTrigger      = 0x0008;
+        private const ushort EnableSpeakerVolume    = 0x0020;
+
+        // EnableBits2 (high byte).
+        private const ushort EnableMicLight         = 0x0100;  // byte[1] bit 0
+        private const ushort EnableLightbar         = 0x0400;  // byte[1] bit 2
+        private const ushort EnableAudioMute        = 0x8000;  // byte[1] bit 7
+
+        // Byte-offset constants — keep close to the byte map above so
+        // anyone editing this file can cross-check at a glance.
+        private const int OffEnableLow   = 0;
+        private const int OffEnableHigh  = 1;
+        private const int OffSpeakerVol  = 5;
+        private const int OffMicLight    = 8;
+        private const int OffMicMute     = 9;
+        private const int OffRightTrig   = 10;  // 11 bytes
+        private const int OffLeftTrig    = 21;  // 11 bytes
+        private const int OffLightFlags  = 38;
+        private const int OffLedRed      = 44;
+        private const int OffLedGreen    = 45;
+        private const int OffLedBlue     = 46;
+
+        // LightbarSetupFlags @ byte 38: bit 1 (0x02) = "set lightbar
+        // RGB". Other bits control fade and player indicator overrides;
+        // we only need the RGB write flag for solid-color set.
+        private const byte LightbarSetupRgb = 0x02;
 
         /// <summary>Builds a single DS5 effect packet from the user's
         /// configuration into <paramref name="dst"/>. Returns the number
@@ -62,53 +96,57 @@ namespace PadForge.Common.Input
 
             ushort enableBits = 0;
 
-            // Lightbar.  Always assert when LightbarEnabled so Feature B
-            // pushes the configured color even when it's all zeros (i.e.
-            // user wants the bar dark).  The game-driven path writes its
-            // own enable bit when applicable; this synthesizer represents
-            // the "no game is writing" fallback layer.
+            // Lightbar — write RGB at bytes 44/45/46 with the LightbarSetupRgb
+            // flag at byte 38 plus the EnableLightbar bit in EnableBits2.
+            // All three together are needed for the firmware to honor the
+            // RGB write — DS5 ignores writes that don't have both the
+            // enable bit AND the setup flag set.
             if (cfg.LightbarEnabled)
             {
                 enableBits |= EnableLightbar;
-                dst[39] = cfg.LightbarRed;
-                dst[40] = cfg.LightbarGreen;
-                dst[41] = cfg.LightbarBlue;
+                dst[OffLightFlags] = LightbarSetupRgb;
+                dst[OffLedRed]   = cfg.LightbarRed;
+                dst[OffLedGreen] = cfg.LightbarGreen;
+                dst[OffLedBlue]  = cfg.LightbarBlue;
             }
 
-            // Audio bytes (DualSense only — DS4 ignores).
-            dst[4] = cfg.SpeakerVolume;
-            enableBits |= EnableAudioVolume;
-            // Mic light bit on byte 5 (Sony layout: bit 0 = mic light).
-            // Mic mute is a separate audio-mute flag the firmware reads
-            // from the audio control byte; PadForge surfaces it as a
-            // user toggle though the bit position is informational —
-            // games typically own this surface.
-            byte audioCtl = 0;
-            if (cfg.MicLightOn) audioCtl |= 0x01;
-            if (cfg.MicMute) audioCtl |= 0x10;
-            dst[5] = audioCtl;
+            // Audio bytes — speaker volume + mic light + mic mute.
+            // DualSense only; DS4 firmware ignores these even when
+            // present in the report.
+            dst[OffSpeakerVol] = cfg.SpeakerVolume;
+            enableBits |= EnableSpeakerVolume;
+
+            // Mic light mode @ byte 8: 0 = off, 1 = on, 2 = pulse.
+            // PadForge surfaces a binary toggle.
+            dst[OffMicLight] = cfg.MicLightOn ? (byte)1 : (byte)0;
             enableBits |= EnableMicLight;
 
-            // Triggers.  Encoding is a one-byte mode followed by ten
-            // mode-specific parameter bytes per trigger.  v3.1.0 ships
-            // the four simplest modes (Off / Feedback / Weapon /
-            // Vibration); the multi-position modes need their parameter
-            // arrays plumbed through PlayStationSlotConfig and ship in
-            // a follow-up commit.
+            // Audio mute bits @ byte 9: bit 4 (0x10) = mic mute.
+            if (cfg.MicMute)
+            {
+                dst[OffMicMute] = 0x10;
+                enableBits |= EnableAudioMute;
+            }
+
+            // Triggers — 11 bytes per trigger (mode + 10 param bytes)
+            // at the canonical Right=10, Left=21 offsets.  Encoding for
+            // the four scalar modes shipping in v3.1.0 is in
+            // EncodeTrigger; multi-position modes need parameter arrays
+            // plumbed through PlayStationSlotConfig in a follow-up.
             EncodeTrigger(cfg.RightTriggerMode,
                 cfg.RightStartPosition, cfg.RightEndPosition,
                 cfg.RightStrength, cfg.RightFrequency,
-                dst.Slice(6, 11));
+                dst.Slice(OffRightTrig, 11));
             EncodeTrigger(cfg.LeftTriggerMode,
                 cfg.LeftStartPosition, cfg.LeftEndPosition,
                 cfg.LeftStrength, cfg.LeftFrequency,
-                dst.Slice(17, 11));
+                dst.Slice(OffLeftTrig, 11));
             if (cfg.RightTriggerMode != AdaptiveTriggerMode.Off) enableBits |= EnableRightTrigger;
             if (cfg.LeftTriggerMode != AdaptiveTriggerMode.Off) enableBits |= EnableLeftTrigger;
 
-            // Header
-            dst[0] = (byte)(enableBits & 0xFF);
-            dst[1] = (byte)((enableBits >> 8) & 0xFF);
+            // Header — pack the u16 enable bits LE.
+            dst[OffEnableLow]  = (byte)(enableBits & 0xFF);
+            dst[OffEnableHigh] = (byte)((enableBits >> 8) & 0xFF);
 
             return PayloadSize;
         }

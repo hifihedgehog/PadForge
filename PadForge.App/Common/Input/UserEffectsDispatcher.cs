@@ -170,8 +170,8 @@ namespace PadForge.Common.Input
 
                     if (isDs5)
                     {
-                        IntPtr h = ud.Device?.GamepadHandle ?? IntPtr.Zero;
-                        DiagLog($"  device guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} handle=0x{h.ToInt64():X}");
+                        bool isBt = Ds5RawHidWriter.IsBluetoothPath(ud.DevicePath);
+                        DiagLog($"  device guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} bt={isBt} path={ud.DevicePath}");
                     }
 
                     if (!inMappedGuids) continue;
@@ -179,19 +179,25 @@ namespace PadForge.Common.Input
                     if (ud.VendorId != SonyVid) { skippedNotDs5++; continue; }
                     if (ud.ProdId != PidStandard && ud.ProdId != PidEdge) { skippedNotDs5++; continue; }
 
-                    IntPtr handle = ud.Device?.GamepadHandle ?? IntPtr.Zero;
-                    if (handle == IntPtr.Zero) { skippedNoHandle++; continue; }
+                    // Raw HID write — bypasses SDL3's PS5 driver, which
+                    // races its own UpdateEffects packets against ours
+                    // (SetDevicePlayerIndex on USB connect, BT
+                    // CheckPendingLEDReset at ~10s post-connect, etc.).
+                    // OpenRGB uses the same approach and has zero
+                    // hot-plug issues with the lightbar.
+                    string path = ud.DevicePath;
+                    if (string.IsNullOrEmpty(path)) { skippedNoHandle++; continue; }
 
                     try
                     {
-                        bool ok = SDL_SendGamepadEffect(handle, buffer, 0, len);
+                        bool ok = Ds5RawHidWriter.Write(path, buffer.AsSpan(0, len));
                         if (ok) sent++;
                         else errors++;
                     }
                     catch (Exception ex)
                     {
                         errors++;
-                        DiagLog($"SDL_SendGamepadEffect threw: {ex.GetType().Name} {ex.Message}");
+                        DiagLog($"Ds5RawHidWriter.Write threw: {ex.GetType().Name} {ex.Message}");
                     }
                 }
             }

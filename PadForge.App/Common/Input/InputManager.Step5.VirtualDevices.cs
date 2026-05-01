@@ -123,6 +123,12 @@ namespace PadForge.Common.Input
         /// </summary>
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
 
+        /// <summary>Read-only access to the per-pad virtual controller
+        /// array for InputService's device-update hook so it can dispatch
+        /// re-apply calls into HMaestroVirtualController on hot-plug.
+        /// Null entries are slots without an active VC.</summary>
+        public IVirtualController[] GetVirtualControllers() => _virtualControllers;
+
         /// <summary>
         /// Configured virtual controller category per slot (Xbox / PlayStation /
         /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;

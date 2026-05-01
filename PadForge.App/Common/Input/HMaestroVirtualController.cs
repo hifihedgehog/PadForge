@@ -140,6 +140,17 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Triggers a fresh apply pass on the user-effects
+        /// dispatcher. Called by InputService on every
+        /// <see cref="InputManager.DevicesUpdated"/> tick so a freshly-
+        /// reconnected DualSense gets its configured lightbar / trigger
+        /// / audio state re-pushed without waiting for the user to
+        /// touch a slider. No-op when no dispatcher is attached.</summary>
+        public void ReApplyUserEffects()
+        {
+            _userEffectsDispatcher?.ApplyOnce();
+        }
+
         public void Dispose()
         {
             if (_disposed) return;

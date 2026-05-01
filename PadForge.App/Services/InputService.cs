@@ -1645,6 +1645,25 @@ namespace PadForge.Services
                 // Re-apply device hiding so newly-connected devices get blacklisted
                 // and their instance IDs get cached for future sessions.
                 ApplyDeviceHiding();
+
+                // Re-push user-configured DS5 effects to every PlayStation
+                // slot's assigned DualSense.  Catches the "DS5 disconnected
+                // and reconnected mid-session" case — without this hook the
+                // dispatcher only fires on PropertyChanged, so a fresh-
+                // reconnected pad would sit at firmware default until the
+                // user touched a slider.
+                if (_inputManager != null)
+                {
+                    var vcs = _inputManager.GetVirtualControllers();
+                    if (vcs != null)
+                    {
+                        for (int i = 0; i < vcs.Length; i++)
+                        {
+                            if (vcs[i] is HMaestroVirtualController hmVc)
+                                hmVc.ReApplyUserEffects();
+                        }
+                    }
+                }
             }));
         }
 

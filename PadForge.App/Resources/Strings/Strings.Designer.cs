@@ -411,6 +411,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_AT_MultiPosVibration => Get("Pad_AT_MultiPosVibration");
     public string Pad_AT_StartPosition => Get("Pad_AT_StartPosition");
     public string Pad_AT_EndPosition => Get("Pad_AT_EndPosition");
+    public string Pad_AT_Range => Get("Pad_AT_Range");
     public string Pad_AT_Strength => Get("Pad_AT_Strength");
     public string Pad_AT_Frequency => Get("Pad_AT_Frequency");
     public string Pad_Lighting => Get("Pad_Lighting");

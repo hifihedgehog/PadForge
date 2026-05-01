@@ -61,11 +61,19 @@ namespace PadForge.Views
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_currentPadVm != null)
+            {
                 _currentPadVm.PropertyChanged -= OnPadVmPropertyChanged;
+                if (_currentPadVm.MappedDevices != null)
+                    _currentPadVm.MappedDevices.CollectionChanged -= OnMappedDevicesChanged;
+            }
 
             _currentPadVm = DataContext as PadViewModel;
             if (_currentPadVm != null)
+            {
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
+                if (_currentPadVm.MappedDevices != null)
+                    _currentPadVm.MappedDevices.CollectionChanged += OnMappedDevicesChanged;
+            }
 
             // Track the active slot's ExtendedSlotConfig so we can refresh the
             // Extended config bar when a profile switch mutates its fields
@@ -236,26 +244,41 @@ namespace PadForge.Views
             TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
             TabForceFeedback.Visibility = Visibility.Visible;
 
-            // Adaptive Triggers and Lighting visibility depends on the slot's
-            // active HM profile. Adaptive Triggers shows only on DualSense /
-            // DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2). Lighting
-            // additionally covers DS4 — every DualShock-family pad has a
-            // lightbar.  Read the live profile so the tabs follow profile
-            // switches, not just slot type changes.
+            // Adaptive Triggers and Lighting tabs reflect what the
+            // currently-SELECTED physical device on this slot can do.
+            // Slots can have multiple devices assigned; the user picks
+            // which one's mappings they're editing via the device
+            // dropdown, and the configuration tabs follow that
+            // selection so a user editing the Xbox controller side of
+            // a "DS5 + Xbox both mapped to one slot" setup doesn't see
+            // DualSense-specific tabs.  When they switch the dropdown
+            // to the DualSense, the tabs reappear.
+            //
+            // Adaptive Triggers: selected device is a DualSense or
+            // DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2).
+            // Lighting: above plus DS4 (PIDs 0x05C4, 0x09CC, 0x0BA0).
             bool hasAdaptiveTriggers = false;
             bool hasLightbar = false;
             if (DataContext is PadViewModel vmProfile
-                && vmProfile.OutputType == Engine.VirtualControllerType.PlayStation)
+                && vmProfile.SelectedMappedDevice != null
+                && vmProfile.SelectedMappedDevice.InstanceGuid != Guid.Empty
+                && SettingsManager.UserDevices != null)
             {
-                var profile = vmProfile.AvailableProfiles?.FirstOrDefault(p =>
-                    string.Equals(p.Id, vmProfile.ProfileId, System.StringComparison.OrdinalIgnoreCase));
-                if (profile != null && profile.VendorId == 0x054C)
+                Guid selectedGuid = vmProfile.SelectedMappedDevice.InstanceGuid;
+                lock (SettingsManager.UserDevices.SyncRoot)
                 {
-                    bool isDualSense = profile.ProductId == 0x0CE6;
-                    bool isDualSenseEdge = profile.ProductId == 0x0DF2;
-                    bool isDs4 = profile.ProductId == 0x05C4 || profile.ProductId == 0x09CC || profile.ProductId == 0x0BA0;
-                    hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
-                    hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                    foreach (var ud in SettingsManager.UserDevices.Items)
+                    {
+                        if (ud == null) continue;
+                        if (ud.InstanceGuid != selectedGuid) continue;
+                        if (ud.VendorId != 0x054C) break;
+                        bool isDualSense = ud.ProdId == 0x0CE6;
+                        bool isDualSenseEdge = ud.ProdId == 0x0DF2;
+                        bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
+                        hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
+                        hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                        break;
+                    }
                 }
             }
             if (TabAdaptiveTriggers != null)
@@ -450,6 +473,12 @@ namespace PadForge.Views
                 SyncMidiConfigBar();
                 ApplyViewMode();
             }
+            else if (e.PropertyName == nameof(PadViewModel.SelectedMappedDevice))
+            {
+                // Tabs reflect the selected physical device; refresh on
+                // dropdown change.
+                SyncTabVisibility();
+            }
             else if (e.PropertyName == nameof(PadViewModel.ProfileId))
             {
                 // When the user picks a new Extended profile, re-seed every
@@ -627,6 +656,15 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
         //  Lighting tab — HEX color entry
         // ─────────────────────────────────────────────
+
+        /// <summary>Refreshes tab visibility when the slot's
+        /// MappedDevices collection changes — covers user
+        /// assigning/unassigning devices via the Devices page.</summary>
+        private void OnMappedDevicesChanged(object sender,
+            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            SyncTabVisibility();
+        }
 
         private void OnPlayStationConfigChanged(object sender, PropertyChangedEventArgs e)
         {

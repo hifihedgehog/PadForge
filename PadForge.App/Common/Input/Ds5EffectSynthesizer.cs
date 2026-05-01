@@ -62,24 +62,28 @@ namespace PadForge.Common.Input
         private const ushort EnableLightbar         = 0x0400;  // byte[1] bit 2
         private const ushort EnableAudioMute        = 0x8000;  // byte[1] bit 7
 
-        // Byte-offset constants — keep close to the byte map above so
-        // anyone editing this file can cross-check at a glance.
-        private const int OffEnableLow   = 0;
-        private const int OffEnableHigh  = 1;
+        // Byte-offset constants — verified against
+        // daidr/dualsense-tester's outputStruct.ts. See memory:
+        // dualsense-tester-byte-layout-reference.md.
+        private const int OffEnableLow   = 0;   // validFlag0
+        private const int OffEnableHigh  = 1;   // validFlag1 (0xF7 = permissive default)
         private const int OffSpeakerVol  = 5;
-        private const int OffMicLight    = 8;
-        private const int OffMicMute     = 9;
-        private const int OffRightTrig   = 10;  // 11 bytes
-        private const int OffLeftTrig    = 21;  // 11 bytes
-        private const int OffLightFlags  = 38;
+        private const int OffMicLight    = 8;   // muteLedControl
+        private const int OffMicMute     = 9;   // powerSaveMuteControl
+        private const int OffRightTrig   = 10;  // mode + 10 params
+        private const int OffLeftTrig    = 21;  // mode + 10 params
         private const int OffLedRed      = 44;
         private const int OffLedGreen    = 45;
         private const int OffLedBlue     = 46;
 
-        // LightbarSetupFlags @ byte 38: bit 1 (0x02) = "set lightbar
-        // RGB". Other bits control fade and player indicator overrides;
-        // we only need the RGB write flag for solid-color set.
-        private const byte LightbarSetupRgb = 0x02;
+        // HID-form trigger mode opcodes from dualsense-tester's
+        // TriggerEffect.vue. NOT the same as Sony's PS5 SDK abstract
+        // 0x21/0x25/0x26 values — those are higher-level abstractions
+        // that don't map to firmware behavior on PC HID.
+        private const byte HidModeOff           = 0x00;
+        private const byte HidModeResistance    = 0x01;  // [start_pos, force]
+        private const byte HidModeSoftTrigger   = 0x02;  // [start_pos, end_pos, force]
+        private const byte HidModeAutoTrigger   = 0x06;  // [frequency, force, start_pos]
 
         /// <summary>Builds a single DS5 effect packet from the user's
         /// configuration into <paramref name="dst"/>. Returns the number
@@ -96,15 +100,14 @@ namespace PadForge.Common.Input
 
             ushort enableBits = 0;
 
-            // Lightbar — write RGB at bytes 44/45/46 with the LightbarSetupRgb
-            // flag at byte 38 plus the EnableLightbar bit in EnableBits2.
-            // All three together are needed for the firmware to honor the
-            // RGB write — DS5 ignores writes that don't have both the
-            // enable bit AND the setup flag set.
+            // Lightbar — RGB at bytes 44/45/46 with the EnableLightbar
+            // bit in validFlag1 (byte 1 bit 2 = 0x04, packs to 0x0400 in
+            // the u16). Per dualsense-tester, the byte-41 lightbarSetup
+            // value is for fade / blend control and defaults to 0; not
+            // required for solid RGB writes.
             if (cfg.LightbarEnabled)
             {
                 enableBits |= EnableLightbar;
-                dst[OffLightFlags] = LightbarSetupRgb;
                 dst[OffLedRed]   = cfg.LightbarRed;
                 dst[OffLedGreen] = cfg.LightbarGreen;
                 dst[OffLedBlue]  = cfg.LightbarBlue;
@@ -152,11 +155,27 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Encodes one trigger's 11-byte effect block (mode +
-        /// 10 parameter bytes) per Sony's PS5 SDK conventions for the
-        /// four simplest modes. Multi-position arrays for the remaining
-        /// three modes ship in a follow-up commit (their array storage
-        /// fields aren't on PlayStationSlotConfig yet — UI exposes the
-        /// scalar parameters only).</summary>
+        /// 10 parameter bytes) per the HID wire form used by
+        /// dualsense-tester (verified end-to-end with real hardware
+        /// via WebHID).
+        ///
+        /// <para>The PadForge UI uses Sony's abstract 7-mode list
+        /// (Off / Feedback / Weapon / Vibration / MultiPosFeedback /
+        /// Slope / MultiPosVibration) but the firmware on PC HID only
+        /// understands four modes: Off / Resistance / Soft Trigger /
+        /// Auto Trigger. We map abstract → HID per the table:</para>
+        ///
+        /// <list type="bullet">
+        /// <item>Off → 0x00 (no params)</item>
+        /// <item>Feedback → 0x01 Resistance: <c>[start_pos, force]</c></item>
+        /// <item>Weapon → 0x02 Soft Trigger: <c>[start_pos, end_pos, force]</c></item>
+        /// <item>Vibration → 0x06 Auto Trigger: <c>[frequency, force, start_pos]</c></item>
+        /// <item>Multi-position modes → 0x00 (Off) until 10-byte array
+        /// storage is added to PlayStationSlotConfig in a follow-up</item>
+        /// </list>
+        ///
+        /// <para>All parameter values are 0-255 (full byte range).</para>
+        /// </summary>
         private static void EncodeTrigger(
             AdaptiveTriggerMode mode,
             byte startPosition,
@@ -169,51 +188,47 @@ namespace PadForge.Common.Input
             switch (mode)
             {
                 case AdaptiveTriggerMode.Off:
-                    block[0] = 0x05; // ScePadTriggerEffectModeOff
+                    block[0] = HidModeOff;
                     break;
 
                 case AdaptiveTriggerMode.Feedback:
-                    // Mode 0x21 = Feedback. Param 0 = position (0-9),
-                    // param 1 = strength (0-8). Strength 0 = release.
-                    block[0] = 0x21;
+                    // HID Resistance — params: [start_pos, force].
+                    block[0] = HidModeResistance;
                     block[1] = startPosition;
                     block[2] = strength;
                     break;
 
                 case AdaptiveTriggerMode.Weapon:
-                    // Mode 0x25 = Weapon. Param 0 = startPosition,
-                    // param 1 = endPosition, param 2 = strength.
-                    block[0] = 0x25;
+                    // HID Soft Trigger — params: [start_pos, end_pos, force].
+                    block[0] = HidModeSoftTrigger;
                     block[1] = startPosition;
                     block[2] = endPosition;
                     block[3] = strength;
                     break;
 
                 case AdaptiveTriggerMode.Vibration:
-                    // Mode 0x26 = Vibration. Param 0 = position,
-                    // param 1 = amplitude (strength), param 2 =
-                    // frequency (Hz).
-                    block[0] = 0x26;
-                    block[1] = startPosition;
+                    // HID Auto Trigger — params: [frequency, force, start_pos].
+                    // Note the parameter ORDER differs from the other
+                    // modes — frequency is param 0, not param 3.
+                    block[0] = HidModeAutoTrigger;
+                    block[1] = frequency;
                     block[2] = strength;
-                    block[3] = frequency;
+                    block[3] = startPosition;
                     break;
 
                 case AdaptiveTriggerMode.MultiplePositionFeedback:
                 case AdaptiveTriggerMode.SlopeFeedback:
                 case AdaptiveTriggerMode.MultiplePositionVibration:
-                    // Multi-position modes use a 10-byte strength array
-                    // (or per-position frequency for vibration variants).
-                    // Storage for those arrays isn't on
-                    // PlayStationSlotConfig yet; UI surfaces the scalar
-                    // parameters only.  Treat as Off until the array
-                    // fields land — the user can pick a scalar mode
-                    // (Feedback / Weapon / Vibration) for now.
-                    block[0] = 0x05;
+                    // Multi-position modes need 10-byte parameter arrays
+                    // that aren't on PlayStationSlotConfig yet. Encode
+                    // as Off so an unsupported selection doesn't lock
+                    // the trigger; user can pick Feedback / Weapon /
+                    // Vibration for now.
+                    block[0] = HidModeOff;
                     break;
 
                 default:
-                    block[0] = 0x05;
+                    block[0] = HidModeOff;
                     break;
             }
         }

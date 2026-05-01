@@ -1652,6 +1652,15 @@ namespace PadForge.Services
                 // dispatcher only fires on PropertyChanged, so a fresh-
                 // reconnected pad would sit at firmware default until the
                 // user touched a slider.
+                //
+                // Always re-attach the slot's PlayStationSlotConfig before
+                // re-applying. If the inactivity timeout tore down and
+                // recreated the VC while the physical pad was unplugged,
+                // the new VC's dispatcher needs a fresh bind. AttachPlayStationConfig
+                // is idempotent (Rebind on existing dispatcher, construct
+                // on null) and ApplyOnce runs internally so a single call
+                // covers both the "still alive, push update" and "fresh
+                // VC, first push" cases.
                 if (_inputManager != null)
                 {
                     var vcs = _inputManager.GetVirtualControllers();
@@ -1660,7 +1669,12 @@ namespace PadForge.Services
                         for (int i = 0; i < vcs.Length; i++)
                         {
                             if (vcs[i] is HMaestroVirtualController hmVc)
+                            {
+                                var psCfg = _inputManager._playStationConfigs[i];
+                                if (psCfg != null)
+                                    hmVc.AttachPlayStationConfig(psCfg);
                                 hmVc.ReApplyUserEffects();
+                            }
                         }
                     }
                 }

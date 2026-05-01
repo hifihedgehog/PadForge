@@ -266,6 +266,18 @@ namespace PadForge.ViewModels
             });
         private RelayCommand _resetLightbar;
 
+        public RelayCommand ResetLightbarRedCommand =>
+            _resetLightbarR ??= new RelayCommand(() => LightbarRed = 0);
+        private RelayCommand _resetLightbarR;
+
+        public RelayCommand ResetLightbarGreenCommand =>
+            _resetLightbarG ??= new RelayCommand(() => LightbarGreen = 0);
+        private RelayCommand _resetLightbarG;
+
+        public RelayCommand ResetLightbarBlueCommand =>
+            _resetLightbarB ??= new RelayCommand(() => LightbarBlue = 0xFF);
+        private RelayCommand _resetLightbarB;
+
         public RelayCommand ResetSpeakerVolumeCommand =>
             _resetSpeakerVol ??= new RelayCommand(() => SpeakerVolume = 0x80);
         private RelayCommand _resetSpeakerVol;

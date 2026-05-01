@@ -1859,9 +1859,10 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
                             <TextBlock Text="{Binding Settings_AudioRumble_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding AudioRumbleSensitivity, Mode=TwoWay}"
-                                    Minimum="1" Maximum="20" Width="200" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding AudioRumbleSensitivity, StringFormat='{}{0:F1}'}"
-                                       Margin="8,0,0,0" Opacity="0.6" VerticalAlignment="Center"/>
+                                    Style="{StaticResource DzSlider}"
+                                    Minimum="1" Maximum="20" TickFrequency="0.1"/>
+                            <TextBox Text="{Binding AudioRumbleSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
                             <Button Command="{Binding ResetAudioSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
@@ -1869,9 +1870,10 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleEnabled}">
                             <TextBlock Text="{Binding Settings_AudioRumble_Cutoff, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <Slider Value="{Binding AudioRumbleCutoffHz, Mode=TwoWay}"
-                                    Minimum="20" Maximum="200" Width="200" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding AudioRumbleCutoffHz, StringFormat='{}{0:F0}'}"
-                                       Margin="8,0,0,0" Opacity="0.6" VerticalAlignment="Center"/>
+                                    Style="{StaticResource DzSlider}"
+                                    Minimum="20" Maximum="200" TickFrequency="1"/>
+                            <TextBox Text="{Binding AudioRumbleCutoffHz, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                     Style="{StaticResource DzValueEdit}"/>
                             <Button Command="{Binding ResetAudioCutoffCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCutoff, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
@@ -1941,13 +1943,20 @@
                                     <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox Width="240" VerticalAlignment="Center"
                                               SelectedIndex="{Binding PlayStationConfig.LeftTriggerMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}">
-                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
@@ -1996,13 +2005,20 @@
                                     <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox Width="240" VerticalAlignment="Center"
                                               SelectedIndex="{Binding PlayStationConfig.RightTriggerMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}">
-                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
@@ -2064,6 +2080,19 @@
                                           Content="{Binding Pad_Lighting_BaseEnabled, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"/>
 
+                                <!-- HSV color picker — Photoshop-style
+                                     Saturation×Value square + Hue strip.
+                                     Two-way bound to the same RGB
+                                     properties as the sliders / HEX
+                                     textbox below, so all three surfaces
+                                     update together. -->
+                                <views:ColorPickerControl Margin="0,0,0,12"
+                                    HorizontalAlignment="Left"
+                                    Red="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
+                                    Green="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}"
+                                    Blue="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}"
+                                    IsEnabled="{Binding PlayStationConfig.LightbarEnabled}"/>
+
                                 <!-- Live preview swatch + HEX entry. The swatch
                                      uses a multi-binding to RGB so it follows
                                      slider drags and HEX-textbox commits. -->
@@ -2100,6 +2129,7 @@
                                             Minimum="0" Maximum="255"
                                             Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarRedCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
                                 <!-- Green -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding PlayStationConfig.LightbarEnabled}">
@@ -2108,6 +2138,7 @@
                                             Minimum="0" Maximum="255"
                                             Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarGreenCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
                                 <!-- Blue -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4" IsEnabled="{Binding PlayStationConfig.LightbarEnabled}">
@@ -2116,7 +2147,7 @@
                                             Minimum="0" Maximum="255"
                                             Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <Button Command="{Binding PlayStationConfig.ResetLightbarColorCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBlueCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

@@ -1676,9 +1676,45 @@ namespace PadForge.Services
                                 hmVc.ReApplyUserEffects();
                             }
                         }
+
+                        // Retry burst — SDL's PS5 driver re-init after a
+                        // disconnect/reconnect doesn't always have the
+                        // gamepad handle wired up to the firmware on the
+                        // very first OnDevicesUpdated tick. Empirically
+                        // SDL_SendGamepadEffect can return success against
+                        // a wrapper that isn't yet routing to the device.
+                        // Retry at 250 / 750 / 1500 ms so a later cycle
+                        // catches the live handle without waiting on a
+                        // user slider drag.
+                        ScheduleDelayedReApply(250);
+                        ScheduleDelayedReApply(750);
+                        ScheduleDelayedReApply(1500);
                     }
                 }
             }));
+        }
+
+        private void ScheduleDelayedReApply(int delayMs)
+        {
+            System.Threading.Tasks.Task.Delay(delayMs).ContinueWith(_ =>
+            {
+                _dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (_inputManager == null) return;
+                    var vcs = _inputManager.GetVirtualControllers();
+                    if (vcs == null) return;
+                    for (int i = 0; i < vcs.Length; i++)
+                    {
+                        if (vcs[i] is HMaestroVirtualController hmVc)
+                        {
+                            var psCfg = _inputManager._playStationConfigs[i];
+                            if (psCfg != null)
+                                hmVc.AttachPlayStationConfig(psCfg);
+                            hmVc.ReApplyUserEffects();
+                        }
+                    }
+                }));
+            });
         }
 
         /// <summary>

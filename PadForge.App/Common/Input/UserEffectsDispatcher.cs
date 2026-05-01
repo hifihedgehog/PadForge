@@ -151,12 +151,30 @@ namespace PadForge.Common.Input
             if (guids.Count == 0) return;
 
             int sent = 0, skippedNotDs5 = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
+            int allDs5Online = 0, allDs5OnlineMapped = 0;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
                 {
                     if (ud == null) continue;
-                    if (!guids.Contains(ud.InstanceGuid)) continue;
+
+                    // Per-device diagnostic — log every DS5 we see (mapped or not)
+                    // so post-reconnect drift in InstanceGuid vs UserSettings.MapTo
+                    // surfaces in the log.
+                    bool isDs5 = ud.VendorId == SonyVid &&
+                                 (ud.ProdId == PidStandard || ud.ProdId == PidEdge);
+                    if (isDs5 && ud.IsOnline) allDs5Online++;
+
+                    bool inMappedGuids = guids.Contains(ud.InstanceGuid);
+                    if (isDs5 && ud.IsOnline && inMappedGuids) allDs5OnlineMapped++;
+
+                    if (isDs5)
+                    {
+                        IntPtr h = ud.Device?.GamepadHandle ?? IntPtr.Zero;
+                        DiagLog($"  device guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} handle=0x{h.ToInt64():X}");
+                    }
+
+                    if (!inMappedGuids) continue;
                     if (!ud.IsOnline) { skippedOffline++; continue; }
                     if (ud.VendorId != SonyVid) { skippedNotDs5++; continue; }
                     if (ud.ProdId != PidStandard && ud.ProdId != PidEdge) { skippedNotDs5++; continue; }
@@ -177,7 +195,7 @@ namespace PadForge.Common.Input
                     }
                 }
             }
-            DiagLog($"DispatchSnapshot sent={sent} skipped(not-ds5)={skippedNotDs5} skipped(offline)={skippedOffline} skipped(no-handle)={skippedNoHandle} errors={errors}");
+            DiagLog($"DispatchSnapshot sent={sent} skipped(not-ds5)={skippedNotDs5} skipped(offline)={skippedOffline} skipped(no-handle)={skippedNoHandle} errors={errors} allDs5Online={allDs5Online} allDs5OnlineMapped={allDs5OnlineMapped}");
         }
     }
 }

@@ -414,6 +414,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_AT_Range => Get("Pad_AT_Range");
     public string Pad_AT_Strength => Get("Pad_AT_Strength");
     public string Pad_AT_Frequency => Get("Pad_AT_Frequency");
+    public string Pad_AT_Off_Tooltip => Get("Pad_AT_Off_Tooltip");
+    public string Pad_AT_Feedback_Tooltip => Get("Pad_AT_Feedback_Tooltip");
+    public string Pad_AT_Weapon_Tooltip => Get("Pad_AT_Weapon_Tooltip");
+    public string Pad_AT_Vibration_Tooltip => Get("Pad_AT_Vibration_Tooltip");
+    public string Pad_AT_NotYetSupported_Tooltip => Get("Pad_AT_NotYetSupported_Tooltip");
     public string Pad_Lighting => Get("Pad_Lighting");
     public string Pad_Lighting_Header => Get("Pad_Lighting_Header");
     public string Pad_Lighting_Subtitle => Get("Pad_Lighting_Subtitle");

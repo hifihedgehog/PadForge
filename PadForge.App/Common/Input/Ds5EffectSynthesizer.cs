@@ -144,8 +144,15 @@ namespace PadForge.Common.Input
                 cfg.LeftStartPosition, cfg.LeftEndPosition,
                 cfg.LeftStrength, cfg.LeftFrequency,
                 dst.Slice(OffLeftTrig, 11));
-            if (cfg.RightTriggerMode != AdaptiveTriggerMode.Off) enableBits |= EnableRightTrigger;
-            if (cfg.LeftTriggerMode != AdaptiveTriggerMode.Off) enableBits |= EnableLeftTrigger;
+            // Always assert the trigger-write enable bits when User
+            // Effects are on. Without these, switching the mode to
+            // Off doesn't release the trigger because the firmware
+            // ignores the trigger bytes entirely (mode byte 0x00 +
+            // zeros never reaches the haptic motor). Setting the
+            // enable bit unconditionally tells the firmware "process
+            // the trigger bytes," which carries the 0x00 mode through
+            // and releases.
+            enableBits |= EnableRightTrigger | EnableLeftTrigger;
 
             // Header — pack the u16 enable bits LE.
             dst[OffEnableLow]  = (byte)(enableBits & 0xFF);

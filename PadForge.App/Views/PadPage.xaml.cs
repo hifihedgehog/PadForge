@@ -37,6 +37,11 @@ namespace PadForge.Views
         /// </summary>
         private PadForge.ViewModels.ExtendedSlotConfig _currentExtendedConfig;
 
+        /// <summary>Currently-subscribed PlayStationSlotConfig so we can
+        /// keep the HEX color textbox in sync with slider drags. Same
+        /// shape as <see cref="_currentExtendedConfig"/>.</summary>
+        private PadForge.ViewModels.PlayStationSlotConfig _currentPlayStationConfig;
+
         public PadPage()
         {
             InitializeComponent();
@@ -73,6 +78,16 @@ namespace PadForge.Views
             _currentExtendedConfig = _currentPadVm?.ExtendedConfig;
             if (_currentExtendedConfig != null)
                 _currentExtendedConfig.PropertyChanged += OnExtendedConfigBarPropertyChanged;
+
+            // Mirror the same subscription pattern for PlayStationSlotConfig
+            // so the HEX textbox follows RGB slider drags (and any other
+            // external mutation).  PlayStationConfig is stable for the
+            // PadViewModel's lifetime — no external code reassigns it.
+            if (_currentPlayStationConfig != null)
+                _currentPlayStationConfig.PropertyChanged -= OnPlayStationConfigChanged;
+            _currentPlayStationConfig = _currentPadVm?.PlayStationConfig;
+            if (_currentPlayStationConfig != null)
+                _currentPlayStationConfig.PropertyChanged += OnPlayStationConfigChanged;
 
             ApplyViewMode();
             SyncTabStripSelection();
@@ -612,6 +627,22 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
         //  Lighting tab — HEX color entry
         // ─────────────────────────────────────────────
+
+        private void OnPlayStationConfigChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Keep the HEX textbox live-synced with the RGB sliders.
+            // Skip the refresh while the user is mid-edit in the textbox
+            // itself — LightbarHexBox_Apply is what's writing the
+            // properties at that moment, and overwriting Text would
+            // fight the caret position.
+            if (e.PropertyName == nameof(PadForge.ViewModels.PlayStationSlotConfig.LightbarRed)
+                || e.PropertyName == nameof(PadForge.ViewModels.PlayStationSlotConfig.LightbarGreen)
+                || e.PropertyName == nameof(PadForge.ViewModels.PlayStationSlotConfig.LightbarBlue))
+            {
+                if (LightbarHexBox != null && !LightbarHexBox.IsKeyboardFocusWithin)
+                    SyncLightbarHexBox();
+            }
+        }
 
         /// <summary>Populates the HEX textbox from the current
         /// PlayStationConfig RGB. Called from DataContextChanged so

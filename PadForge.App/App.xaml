@@ -126,6 +126,7 @@
             <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
             <conv:EnumIndexConverter x:Key="EnumIndexConverter" />
+            <conv:RgbToBrushConverter x:Key="RgbToBrushConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

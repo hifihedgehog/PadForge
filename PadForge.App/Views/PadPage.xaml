@@ -2087,6 +2087,36 @@
                                 <CheckBox IsChecked="{Binding PlayStationConfig.LightbarEnabled, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_BaseEnabled, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"/>
+
+                                <!-- Live preview swatch + HEX entry. The swatch
+                                     uses a multi-binding to RGB so it follows
+                                     slider drags and HEX-textbox commits. -->
+                                <Grid Margin="0,0,0,10" IsEnabled="{Binding PlayStationConfig.LightbarEnabled}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
+                                            HorizontalAlignment="Left"
+                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                        <Border.Background>
+                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                <Binding Path="PlayStationConfig.LightbarRed" />
+                                                <Binding Path="PlayStationConfig.LightbarGreen" />
+                                                <Binding Path="PlayStationConfig.LightbarBlue" />
+                                            </MultiBinding>
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="LightbarHexBox" Grid.Column="2" Width="100"
+                                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                                             FontFamily="Consolas" Padding="6,4"
+                                             KeyDown="LightbarHexBox_KeyDown"
+                                             LostFocus="LightbarHexBox_LostFocus"
+                                             ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </Grid>
                                 <Grid Margin="0,0,0,4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="60"/>

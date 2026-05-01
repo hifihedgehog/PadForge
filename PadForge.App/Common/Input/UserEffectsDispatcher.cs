@@ -47,6 +47,30 @@ namespace PadForge.Common.Input
             _config = config;
             if (_config != null)
                 _config.PropertyChanged += OnConfigChanged;
+            DiagLog($"ctor padIndex={padIndex} config={(config == null ? "null" : "ok")}");
+        }
+
+        // ────────────────────────────────────────────────
+        //  Diagnostic file log
+        // ────────────────────────────────────────────────
+        // Writes to %TEMP%\padforge-ds5-passthrough.log so the developer
+        // can inspect the Feature B dispatch chain without attaching a
+        // debugger. Best-effort — IO failures are swallowed.
+        private static readonly string DiagLogPath =
+            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log");
+        private static readonly object DiagLock = new();
+
+        private void DiagLog(string line)
+        {
+            try
+            {
+                lock (DiagLock)
+                {
+                    System.IO.File.AppendAllText(DiagLogPath,
+                        $"{DateTime.UtcNow:HH:mm:ss.fff} pad={_padIndex} {line}\n");
+                }
+            }
+            catch { }
         }
 
         /// <summary>Re-binds to a new <see cref="PlayStationSlotConfig"/>
@@ -84,6 +108,7 @@ namespace PadForge.Common.Input
 
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
+            DiagLog($"OnConfigChanged property={e.PropertyName}");
             // Every PlayStationSlotConfig field change re-applies the
             // full message. Synthesis is cheap; the alternative would be
             // a per-field write that misses subtle interactions between
@@ -94,17 +119,21 @@ namespace PadForge.Common.Input
 
         private void DispatchSnapshot()
         {
-            if (_config == null) return;
+            if (_config == null) { DiagLog("DispatchSnapshot config=null"); return; }
 
             // Synthesize once per dispatch; reuse the buffer across the
             // multi-DS5 fan-out below.
             var buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
             int len = Ds5EffectSynthesizer.Build(_config, buffer);
-            if (len <= 0) return;
+            if (len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
 
             var settings = SettingsManager.UserSettings;
             var devices = SettingsManager.UserDevices;
-            if (settings == null || devices == null) return;
+            if (settings == null || devices == null)
+            {
+                DiagLog($"DispatchSnapshot settings={(settings == null ? "null" : "ok")} devices={(devices == null ? "null" : "ok")}");
+                return;
+            }
 
             // Resolve assigned DS5 GUIDs.
             var guids = new System.Collections.Generic.List<Guid>(4);
@@ -118,30 +147,37 @@ namespace PadForge.Common.Input
                     guids.Add(us.InstanceGuid);
                 }
             }
+            DiagLog($"DispatchSnapshot mappedGuids={guids.Count}");
             if (guids.Count == 0) return;
 
+            int sent = 0, skippedNotDs5 = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
                 {
-                    if (ud == null || !ud.IsOnline) continue;
-                    if (ud.VendorId != SonyVid) continue;
-                    if (ud.ProdId != PidStandard && ud.ProdId != PidEdge) continue;
+                    if (ud == null) continue;
                     if (!guids.Contains(ud.InstanceGuid)) continue;
+                    if (!ud.IsOnline) { skippedOffline++; continue; }
+                    if (ud.VendorId != SonyVid) { skippedNotDs5++; continue; }
+                    if (ud.ProdId != PidStandard && ud.ProdId != PidEdge) { skippedNotDs5++; continue; }
 
                     IntPtr handle = ud.Device?.GamepadHandle ?? IntPtr.Zero;
-                    if (handle == IntPtr.Zero) continue;
+                    if (handle == IntPtr.Zero) { skippedNoHandle++; continue; }
 
                     try
                     {
-                        SDL_SendGamepadEffect(handle, buffer, 0, len);
+                        bool ok = SDL_SendGamepadEffect(handle, buffer, 0, len);
+                        if (ok) sent++;
+                        else errors++;
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // Device gone stale mid-write — drop and continue.
+                        errors++;
+                        DiagLog($"SDL_SendGamepadEffect threw: {ex.GetType().Name} {ex.Message}");
                     }
                 }
             }
+            DiagLog($"DispatchSnapshot sent={sent} skipped(not-ds5)={skippedNotDs5} skipped(offline)={skippedOffline} skipped(no-handle)={skippedNoHandle} errors={errors}");
         }
     }
 }

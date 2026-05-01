@@ -1957,7 +1957,7 @@
                                     <controls:RangeSlider
                                         LowerValue="{Binding PlayStationConfig.LeftStartPosition, Mode=TwoWay}"
                                         UpperValue="{Binding PlayStationConfig.LeftEndPosition, Mode=TwoWay}"
-                                        Minimum="0" Maximum="9"
+                                        Minimum="0" Maximum="255"
                                         Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.LeftStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -1968,7 +1968,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_AT_Strength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding PlayStationConfig.LeftStrength, Mode=TwoWay}"
-                                            Minimum="0" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Minimum="0" Maximum="255"
                                             Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.LeftStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <Button Command="{Binding PlayStationConfig.ResetLeftStrengthCommand}" Style="{StaticResource ResetButton}"/>
@@ -2012,7 +2012,7 @@
                                     <controls:RangeSlider
                                         LowerValue="{Binding PlayStationConfig.RightStartPosition, Mode=TwoWay}"
                                         UpperValue="{Binding PlayStationConfig.RightEndPosition, Mode=TwoWay}"
-                                        Minimum="0" Maximum="9"
+                                        Minimum="0" Maximum="255"
                                         Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.RightStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -2023,7 +2023,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_AT_Strength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding PlayStationConfig.RightStrength, Mode=TwoWay}"
-                                            Minimum="0" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True"
+                                            Minimum="0" Maximum="255"
                                             Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding PlayStationConfig.RightStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <Button Command="{Binding PlayStationConfig.ResetRightStrengthCommand}" Style="{StaticResource ResetButton}"/>

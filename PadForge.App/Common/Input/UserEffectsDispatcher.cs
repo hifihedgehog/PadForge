@@ -191,6 +191,7 @@ namespace PadForge.Common.Input
                     try
                     {
                         bool ok = Ds5RawHidWriter.Write(path, buffer.AsSpan(0, len));
+                        DiagLog($"  raw-write ok={ok} diag='{Ds5RawHidWriter.LastWriteDiag}'");
                         if (ok) sent++;
                         else errors++;
                     }

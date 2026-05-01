@@ -131,15 +131,14 @@ namespace PadForge.Common.Input
             return WriteRaw(devicePath, buf);
         }
 
-        // BT sequence counter — incremented per BT write. The DS5 firmware
-        // uses the upper nibble as a sequence counter; OpenRGB hardcodes
-        // 0x02 for the whole byte but that breaks if firmware enforces
-        // monotonic sequencing. Increment 0x10 per call (low nibble stays
-        // 0x0); rolls over after 16 writes. Static across all BT DS5s
-        // since Windows serializes writes anyway and no DS5 distinguishes
-        // sequences across paired devices in a way we can observe.
-        private static int _btSeq = 0;
-        private static readonly object _btSeqLock = new();
+        // BT report tag byte — hardcoded to 0x02 to match OpenRGB
+        // exactly. OpenRGB uses this value across thousands of users
+        // with zero hot-plug issues; Sony's BT firmware accepts it as a
+        // valid output-report tag/sequence regardless of monotonicity.
+        // Tried incrementing sequence (seq << 4) — packets reached the
+        // device per the log but firmware ignored them. Constant 0x02
+        // matches the known-good reference.
+        private const byte BtTagByte = 0x02;
 
         /// <summary>Writes the 47-byte effect payload to a Bluetooth
         /// DualSense at <paramref name="devicePath"/>. Wraps the payload
@@ -153,22 +152,16 @@ namespace PadForge.Common.Input
             // CRC seed prefix (0xA2) + 78-byte sent buffer.
             // Wire format (matches OpenRGB SonyDualSenseController.cpp):
             //   [0]    0x31 — report ID
-            //   [1]    tag/sequence (high nibble)
+            //   [1]    0x02 — tag (hardcoded, see BtTagByte)
             //   [2..48] 47-byte effect payload
             //   [49..73] reserved (zeros)
             //   [74..77] CRC32(0xA2 + bytes [0..73])
-            byte seq;
-            lock (_btSeqLock)
-            {
-                seq = (byte)((_btSeq & 0x0F) << 4);
-                _btSeq = (_btSeq + 1) & 0xFF;
-            }
 
             // 79-byte work buffer: [0]=0xA2 (for CRC, stripped), [1..78]=sent bytes.
             var work = new byte[BluetoothPacketSize + 1];
             work[0] = 0xA2;
             work[1] = 0x31;
-            work[2] = seq;
+            work[2] = BtTagByte;
             payload47.CopyTo(work.AsSpan(3, 47));
 
             // CRC32 over [0..73] inclusive of the 0xA2 prefix → 75 bytes.
@@ -220,11 +213,15 @@ namespace PadForge.Common.Input
             return crc ^ 0xFFFFFFFFu;
         }
 
+        /// <summary>Last write outcome — exposed for the dispatcher's
+        /// per-write log line. Updated on every WriteRaw call.</summary>
+        public static string LastWriteDiag { get; private set; } = "";
+
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
-            // GENERIC_READ | GENERIC_WRITE — some Windows HID APIs (incl.
-            // HidD_SetOutputReport on certain stacks) require both. Open
-            // shared so SDL3's existing handle isn't disturbed.
+            // hidapi (which OpenRGB uses) opens with FILE_FLAG_OVERLAPPED,
+            // GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE.
+            // Match that exactly.
             IntPtr handle = CreateFileW(
                 devicePath,
                 GENERIC_READ | GENERIC_WRITE,
@@ -235,23 +232,24 @@ namespace PadForge.Common.Input
                 IntPtr.Zero);
 
             if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE)
+            {
+                LastWriteDiag = $"CreateFile failed err={Marshal.GetLastWin32Error()}";
                 return false;
+            }
 
             try
             {
-                // Try HidD_SetOutputReport first — synchronous SET_REPORT
-                // call, dedicated to HID output reports. Goes through a
-                // different kernel path than WriteFile and works reliably
-                // on Bluetooth HID where bare WriteFile sometimes silently
-                // drops the report.
-                if (HidD_SetOutputReport(handle, buf, (uint)buf.Length))
-                    return true;
-
-                // Fallback: overlapped WriteFile, matches what hidapi does
-                // (hidapi opens with FILE_FLAG_OVERLAPPED + uses
-                // GetOverlappedResult).
+                // Overlapped WriteFile — what hidapi does on Windows. The
+                // earlier HidD_SetOutputReport try was returning success
+                // but the firmware never applied the bytes, so we take
+                // it out of the path entirely and stick with the API
+                // hidapi/OpenRGB actually use.
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
-                if (ev == IntPtr.Zero) return false;
+                if (ev == IntPtr.Zero)
+                {
+                    LastWriteDiag = $"CreateEvent failed err={Marshal.GetLastWin32Error()}";
+                    return false;
+                }
 
                 try
                 {
@@ -260,15 +258,23 @@ namespace PadForge.Common.Input
                     if (!ok)
                     {
                         int err = Marshal.GetLastWin32Error();
-                        if (err != ERROR_IO_PENDING) return false;
-                        // Wait up to 1s for completion.
+                        if (err != ERROR_IO_PENDING)
+                        {
+                            LastWriteDiag = $"WriteFile failed err={err}";
+                            return false;
+                        }
                         if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
                         {
                             CancelIo(handle);
+                            LastWriteDiag = "WriteFile timed out 1s";
                             return false;
                         }
                     }
-                    return GetOverlappedResult(handle, ref ol, out uint _, true);
+                    bool gor = GetOverlappedResult(handle, ref ol, out uint bytes, true);
+                    LastWriteDiag = gor
+                        ? $"WriteFile ok bytes={bytes}"
+                        : $"GetOverlappedResult failed err={Marshal.GetLastWin32Error()}";
+                    return gor;
                 }
                 finally
                 {

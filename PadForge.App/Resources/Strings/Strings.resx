@@ -396,6 +396,11 @@
   <data name="Pad_AT_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>Strength</value></data>
   <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequency (Hz)</value></data>
+  <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>No resistance. Trigger feels normal.</value></data>
+  <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Constant resistance from the start position to fully pressed. Strength sets how hard the trigger pushes back.</value></data>
+  <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Gun-trigger feel. Pull through a soft zone to the end position, then a firm click. Use start/end to set the click point and strength for the click force.</value></data>
+  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Continuous buzz once you cross the start position. Frequency sets the pulse rate; strength sets the intensity.</value></data>
+  <data name="Pad_AT_NotYetSupported_Tooltip" xml:space="preserve"><value>Not yet supported. Falls back to Off until per-position parameter arrays land in a future update.</value></data>
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>

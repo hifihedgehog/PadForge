@@ -59,7 +59,19 @@ namespace PadForge.Common.Input
 
         // EnableBits2 (high byte).
         private const ushort EnableMicLight         = 0x0100;  // byte[1] bit 0
-        private const ushort EnableLightbar         = 0x0400;  // byte[1] bit 2
+        // Lightbar enable (bit 2, 0x04) ORed with Reset-LED-state (bit 3,
+        // 0x08).  After a USB unplug/replug or BT reconnect, SDL3's PS5
+        // driver fires UpdateEffects(LED|PadLights) which writes the
+        // player-index default color, and on BT CheckPendingLEDReset runs
+        // ~10s after the first sensor packet and re-runs the default LED
+        // animation. Without bit 3 set on our packet the firmware
+        // honors that default sequence and our RGB write loses the race.
+        // Bit 3 tells the firmware "drop any pending default LED state
+        // and apply this color now" — same semantic as SDL's
+        // k_EDS5EffectLEDReset path. Mic LED works after reconnect
+        // because there's no equivalent default sequence; the lightbar
+        // is the only field that has one.
+        private const ushort EnableLightbar         = 0x0C00;  // byte[1] bits 2+3
         private const ushort EnableAudioMute        = 0x8000;  // byte[1] bit 7
 
         // Byte-offset constants — verified against

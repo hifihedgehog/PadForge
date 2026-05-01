@@ -26,10 +26,15 @@ namespace PadForge.Common.Input
     /// </summary>
     internal static class Ds5RawHidWriter
     {
-        private const uint GENERIC_WRITE     = 0x40000000u;
-        private const uint FILE_SHARE_READ   = 0x00000001u;
-        private const uint FILE_SHARE_WRITE  = 0x00000002u;
-        private const uint OPEN_EXISTING     = 3u;
+        private const uint GENERIC_WRITE         = 0x40000000u;
+        private const uint GENERIC_READ          = 0x80000000u;
+        private const uint FILE_SHARE_READ       = 0x00000001u;
+        private const uint FILE_SHARE_WRITE      = 0x00000002u;
+        private const uint OPEN_EXISTING         = 3u;
+        private const uint FILE_FLAG_OVERLAPPED  = 0x40000000u;
+        private const uint WAIT_TIMEOUT          = 0x00000102u;
+        private const uint WAIT_OBJECT_0         = 0u;
+        private const int  ERROR_IO_PENDING      = 997;
         private static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -42,16 +47,45 @@ namespace PadForge.Common.Input
             uint dwFlagsAndAttributes,
             IntPtr hTemplateFile);
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct OVERLAPPED
+        {
+            public IntPtr Internal;
+            public IntPtr InternalHigh;
+            public uint OffsetLow;
+            public uint OffsetHigh;
+            public IntPtr hEvent;
+        }
+
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool WriteFile(
             IntPtr hFile,
             byte[] lpBuffer,
             uint nNumberOfBytesToWrite,
-            out uint lpNumberOfBytesWritten,
-            IntPtr lpOverlapped);
+            IntPtr lpNumberOfBytesWritten,
+            ref OVERLAPPED lpOverlapped);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GetOverlappedResult(
+            IntPtr hFile,
+            ref OVERLAPPED lpOverlapped,
+            out uint lpNumberOfBytesTransferred,
+            bool bWait);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CancelIo(IntPtr hFile);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern IntPtr CreateEventW(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("hid.dll", SetLastError = true)]
+        private static extern bool HidD_SetOutputReport(IntPtr HidDeviceObject, byte[] lpReportBuffer, uint ReportBufferLength);
 
         /// <summary>USB DualSense effect report — 1 byte report ID (0x02)
         /// + 47 byte payload = 48 bytes total. Constant matches
@@ -188,13 +222,16 @@ namespace PadForge.Common.Input
 
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
+            // GENERIC_READ | GENERIC_WRITE — some Windows HID APIs (incl.
+            // HidD_SetOutputReport on certain stacks) require both. Open
+            // shared so SDL3's existing handle isn't disturbed.
             IntPtr handle = CreateFileW(
                 devicePath,
-                GENERIC_WRITE,
+                GENERIC_READ | GENERIC_WRITE,
                 FILE_SHARE_READ | FILE_SHARE_WRITE,
                 IntPtr.Zero,
                 OPEN_EXISTING,
-                0,
+                FILE_FLAG_OVERLAPPED,
                 IntPtr.Zero);
 
             if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE)
@@ -202,7 +239,41 @@ namespace PadForge.Common.Input
 
             try
             {
-                return WriteFile(handle, buf, (uint)buf.Length, out uint _, IntPtr.Zero);
+                // Try HidD_SetOutputReport first — synchronous SET_REPORT
+                // call, dedicated to HID output reports. Goes through a
+                // different kernel path than WriteFile and works reliably
+                // on Bluetooth HID where bare WriteFile sometimes silently
+                // drops the report.
+                if (HidD_SetOutputReport(handle, buf, (uint)buf.Length))
+                    return true;
+
+                // Fallback: overlapped WriteFile, matches what hidapi does
+                // (hidapi opens with FILE_FLAG_OVERLAPPED + uses
+                // GetOverlappedResult).
+                IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
+                if (ev == IntPtr.Zero) return false;
+
+                try
+                {
+                    var ol = new OVERLAPPED { hEvent = ev };
+                    bool ok = WriteFile(handle, buf, (uint)buf.Length, IntPtr.Zero, ref ol);
+                    if (!ok)
+                    {
+                        int err = Marshal.GetLastWin32Error();
+                        if (err != ERROR_IO_PENDING) return false;
+                        // Wait up to 1s for completion.
+                        if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
+                        {
+                            CancelIo(handle);
+                            return false;
+                        }
+                    }
+                    return GetOverlappedResult(handle, ref ol, out uint _, true);
+                }
+                finally
+                {
+                    CloseHandle(ev);
+                }
             }
             finally
             {

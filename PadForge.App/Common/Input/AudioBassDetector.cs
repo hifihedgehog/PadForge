@@ -24,6 +24,12 @@ namespace PadForge.Common.Input
 
         // Envelope follower output — the bass energy value (0.0–1.0).
         private volatile float _bassEnergy;
+        // Pre-filter full-spectrum peak (0.0–1.0). Computed in the same
+        // OnDataAvailable pass as the bass-filtered RMS, but BEFORE the
+        // 8th-order IIR low-pass touches the samples — so audio-to-LED
+        // sees the full audio waveform regardless of what bass-cutoff
+        // the user has set for the rumble feature. Sampled per-buffer.
+        private volatile float _fullSpectrumPeak;
         private long _lastCallbackTick;
 
         // User-configurable parameters.
@@ -42,6 +48,11 @@ namespace PadForge.Common.Input
 
         /// <summary>Current bass energy (0.0–1.0). Lockless read from polling thread.</summary>
         public float BassEnergy => _bassEnergy;
+
+        /// <summary>Full-spectrum audio peak (0.0–1.0) — pre-filter, so
+        /// not affected by the bass-cutoff setting. Drives audio-to-LED
+        /// for the lightbar. Lockless read.</summary>
+        public float FullSpectrumPeak => _fullSpectrumPeak;
 
         /// <summary>Motor value as ushort (0–65535).</summary>
         public ushort MotorValue => (ushort)(_bassEnergy * 65535f);
@@ -112,6 +123,7 @@ namespace PadForge.Common.Input
             }
 
             _bassEnergy = 0f;
+            _fullSpectrumPeak = 0f;
         }
 
         /// <summary>
@@ -127,6 +139,12 @@ namespace PadForge.Common.Input
                     _bassEnergy = current * 0.95f;
                 else
                     _bassEnergy = 0f;
+
+                float currentPeak = _fullSpectrumPeak;
+                if (currentPeak > 0.001f)
+                    _fullSpectrumPeak = currentPeak * 0.95f;
+                else
+                    _fullSpectrumPeak = 0f;
             }
         }
 
@@ -210,6 +228,7 @@ namespace PadForge.Common.Input
                 fs[s] = _filterStates[s];
 
             float sumSq = 0f;
+            float fullPeak = 0f;
 
             for (int i = 0; i < floatSpan.Length; i += channels)
             {
@@ -219,6 +238,15 @@ namespace PadForge.Common.Input
                     sample += floatSpan[i + ch];
                 sample /= channels;
 
+                // Tap the mono signal BEFORE the IIR low-pass — this is
+                // the full-spectrum peak that drives audio-to-lightbar.
+                // Splitting here means the lightbar sees the same waveform
+                // the user actually hears, while the rumble path keeps
+                // its bass-cutoff filter for low-end thump detection.
+                float absSample = sample < 0f ? -sample : sample;
+                if (absSample > fullPeak)
+                    fullPeak = absSample;
+
                 // 8th-order cascaded single-pole IIR low-pass (48dB/octave).
                 fs[0] += currentAlpha * (sample - fs[0]);
                 for (int s = 1; s < FilterOrder; s++)
@@ -226,6 +254,8 @@ namespace PadForge.Common.Input
 
                 sumSq += fs[FilterOrder - 1] * fs[FilterOrder - 1];
             }
+
+            _fullSpectrumPeak = fullPeak;
 
             // Write filter states back.
             for (int s = 0; s < FilterOrder; s++)

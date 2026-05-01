@@ -91,6 +91,12 @@ namespace PadForge.Common.Input
         // the firmware's default lightbar animation/state.
         private const byte PlayerIndicatorNoFade = 0x20;
 
+        // Wire bits for the 5-LED player indicator strip below the
+        // touchpad. Indexed by PlayerLedMode (0=Off..5=All). Per
+        // dualsense-tester's PlayerLedControl enum.
+        private static readonly byte[] PlayerLedBits =
+            { 0x00, 0x04, 0x0A, 0x15, 0x1B, 0x1F };
+
         // HID-form trigger mode opcodes from dualsense-tester's
         // TriggerEffect.vue. NOT the same as Sony's PS5 SDK abstract
         // 0x21/0x25/0x26 values — those are higher-level abstractions
@@ -106,7 +112,11 @@ namespace PadForge.Common.Input
         /// <paramref name="dst"/> must be at least <c>PayloadSize</c>
         /// bytes. The buffer is fully written; no need to zero it
         /// beforehand.</summary>
-        public static int Build(PlayStationSlotConfig cfg, Span<byte> dst)
+        /// <param name="audioPeak">System audio peak in 0..1, applied
+        /// only when <see cref="PlayStationSlotConfig.AudioLightbarEnabled"/>
+        /// is true. Pass 0 for non-audio dispatch paths — the
+        /// modulation is gated on the config flag, not the peak value.</param>
+        public static int Build(PlayStationSlotConfig cfg, Span<byte> dst, float audioPeak = 0f)
         {
             if (cfg == null) return 0;
             if (dst.Length < PayloadSize) return 0;
@@ -115,51 +125,59 @@ namespace PadForge.Common.Input
 
             ushort enableBits = 0;
 
-            // Lightbar — full OpenRGB-style packet so user-configured
-            // colors win even on late-connect / BT reconnect.
-            //
-            // dualsense-tester only sets validFlag1 bit 2 + RGB and
-            // works because the controller has already passed through
-            // its connection animation by the time the user clicks
-            // anything. PadForge has to apply colors immediately on
-            // hot-plug — at that moment the firmware is still running
-            // the BT-connect fade and its own player-default LED
-            // sequence, and a bare bit-2-only packet gets visually
-            // ignored even though SDL_SendGamepadEffect returns true.
-            //
-            // The fix (verified in OpenRGB's SonyDualSenseController):
-            //   - Set validFlag1 bit 4 (player indicator) so the
-            //     firmware actually reads byte 43.
-            //   - Set byte 38 validFlag2 bit 0 so the firmware reads
-            //     byte 42 (ledBrightness).
-            //   - Write byte 41 lightbarSetup = 0x02 — bypasses the
-            //     BT-default blue color animation. Harmless on USB.
-            //   - Write byte 42 ledBrightness = 0 (max).
-            //   - Write byte 43 playerIndicator = 0x20 (the no-fade
-            //     flag) — tells the firmware to drop any pending
-            //     fade animation and apply the requested state now.
-            //   - Bytes 44-46 = our RGB.
-            // OpenRGB additionally lights player LEDs based on extra
-            // color zones; we leave bits 0-4 of byte 43 zero (no
-            // physical LEDs lit) since PadForge doesn't expose
-            // per-LED-zone control.
-            if (cfg.LightbarEnabled)
+            // Lightbar / player-LED block. Reference: OpenRGB's
+            // SonyDualSenseController.cpp + dualsense-tester's
+            // OutputPanel.vue. The firmware needs ALL of:
+            //   - validFlag1 bit 2 (lightbar enable) — gate for byte 44-46 RGB
+            //   - validFlag1 bit 4 (player indicator) — gate for byte 43
+            //   - validFlag2 = 0xFF — without higher bits set, hot-plug
+            //     locks the lightbar even though SDL_SendGamepadEffect
+            //     succeeds. Matched OpenRGB exactly to fix this.
+            //   - byte 41 lightbarSetup = 0x02 — bypass BT default blue
+            //   - byte 43 bit 0x20 — "no fade" flag, releases the
+            //     in-progress connection animation. SDL3's PS5 driver
+            //     also ORs this bit in SetLightsForPlayerIndex.
+            // The player-LED bits 0-4 of byte 43 select which of the 5
+            // bottom-row LEDs are lit (PlayerLedMode enum). Bit 0x20
+            // is always set when ANY lightbar/player feature is active.
+            bool anyLightFeature =
+                cfg.LightbarEnabled
+                || cfg.AudioLightbarEnabled
+                || cfg.PlayerLedMode != PlayerLedMode.Off;
+
+            if (anyLightFeature)
             {
-                enableBits |= EnableLightbar;
                 enableBits |= EnablePlayerIndicator;
-                // OpenRGB sets validFlag2 = 0xFF (all 8 bits) on every
-                // write. Setting only bit 0 (ledBrightness gate) leaves
-                // lightbarSetupControl + other bits clear, and on BT
-                // reconnect the firmware appears to lock the lightbar
-                // unless those higher bits are set. Match OpenRGB
-                // exactly — the lightbar follows our RGB on hot-plug.
                 dst[OffValidFlag2]      = 0xFF;
                 dst[OffLightbarSetup]   = 0x02;
-                dst[OffLedBrightness]   = 0x00;
-                dst[OffPlayerIndicator] = PlayerIndicatorNoFade;
-                dst[OffLedRed]          = cfg.LightbarRed;
-                dst[OffLedGreen]        = cfg.LightbarGreen;
-                dst[OffLedBlue]         = cfg.LightbarBlue;
+                dst[OffLedBrightness]   = (byte)cfg.PlayerLedBrightness;
+                int ledIdx = (int)cfg.PlayerLedMode;
+                if (ledIdx < 0 || ledIdx >= PlayerLedBits.Length) ledIdx = 0;
+                dst[OffPlayerIndicator] = (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
+            }
+
+            if (cfg.LightbarEnabled || cfg.AudioLightbarEnabled)
+            {
+                enableBits |= EnableLightbar;
+
+                // Audio-to-lightbar — multiply RGB by audio peak so the
+                // user's configured base color pulses with system audio.
+                // When AudioLightbarEnabled is on but LightbarEnabled is
+                // off, the audio still drives the static fallback color
+                // (black at peak=0 → user color at peak=1).
+                if (cfg.AudioLightbarEnabled)
+                {
+                    float p = Math.Clamp(audioPeak, 0f, 1f);
+                    dst[OffLedRed]   = (byte)Math.Round(cfg.LightbarRed   * p);
+                    dst[OffLedGreen] = (byte)Math.Round(cfg.LightbarGreen * p);
+                    dst[OffLedBlue]  = (byte)Math.Round(cfg.LightbarBlue  * p);
+                }
+                else
+                {
+                    dst[OffLedRed]   = cfg.LightbarRed;
+                    dst[OffLedGreen] = cfg.LightbarGreen;
+                    dst[OffLedBlue]  = cfg.LightbarBlue;
+                }
             }
 
             // Audio bytes — speaker volume + mic light + mic mute.
@@ -168,9 +186,9 @@ namespace PadForge.Common.Input
             dst[OffSpeakerVol] = cfg.SpeakerVolume;
             enableBits |= EnableSpeakerVolume;
 
-            // Mic light mode @ byte 8: 0 = off, 1 = on, 2 = pulse.
-            // PadForge surfaces a binary toggle.
-            dst[OffMicLight] = cfg.MicLightOn ? (byte)1 : (byte)0;
+            // Mic LED mode @ byte 8: 0 = off, 1 = solid, 2 = pulse.
+            // Maps directly from MicLedMode enum.
+            dst[OffMicLight] = (byte)cfg.MicLedMode;
             enableBits |= EnableMicLight;
 
             // Audio mute bits @ byte 9: bit 4 (0x10) = mic mute.

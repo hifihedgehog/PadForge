@@ -147,7 +147,13 @@ namespace PadForge.Common.Input
             {
                 enableBits |= EnableLightbar;
                 enableBits |= EnablePlayerIndicator;
-                dst[OffValidFlag2]      |= 0x01;
+                // OpenRGB sets validFlag2 = 0xFF (all 8 bits) on every
+                // write. Setting only bit 0 (ledBrightness gate) leaves
+                // lightbarSetupControl + other bits clear, and on BT
+                // reconnect the firmware appears to lock the lightbar
+                // unless those higher bits are set. Match OpenRGB
+                // exactly — the lightbar follows our RGB on hot-plug.
+                dst[OffValidFlag2]      = 0xFF;
                 dst[OffLightbarSetup]   = 0x02;
                 dst[OffLedBrightness]   = 0x00;
                 dst[OffPlayerIndicator] = PlayerIndicatorNoFade;

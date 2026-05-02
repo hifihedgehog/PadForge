@@ -61,6 +61,64 @@
     </DrawingImage>
 
     <!-- ═══════════════════════════════════════════
+         PadPage tab icons — DrawingImage paths so they render
+         identically on Windows 10 and Windows 11 without depending
+         on Segoe Fluent Icons (which only ships on Win11). Sources:
+         Material Symbols (Apache 2.0) for joystick / vibration /
+         lightbulb shapes; trigger glyph hand-authored. All paths
+         use viewBox 0 0 24 24.
+         ═══════════════════════════════════════════ -->
+
+    <!-- Sticks tab — Material Symbols "gamepad" (4-direction
+         arrow pad). Visually unambiguous as "directional input
+         configuration" without looking like a physical controller. -->
+    <DrawingImage x:Key="TabSticksIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Geometry="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Triggers tab — gun-trigger silhouette (curved hook with
+         a finger-pull arc). Hand-authored to be recognizably a
+         trigger pull rather than a generic button. -->
+    <DrawingImage x:Key="TabTriggersIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Geometry="M3 4h12a4 4 0 0 1 4 4v3h-2V8a2 2 0 0 0-2-2H3V4zm10 8a4 4 0 0 1-4 4v4l-3-3-3 3v-4a4 4 0 0 1 4-4h6z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Force Feedback tab — Material Symbols "vibration":
+         phone body with two pairs of waves on each side, the
+         universal "this device is rumbling" graphic. -->
+    <DrawingImage x:Key="TabForceFeedbackIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Geometry="M0 15h2V9H0v6zm3 2h2V7H3v10zm19-8v6h2V9h-2zm-3 8h2V7h-2v10zM16.5 3h-9C6.67 3 6 3.67 6 4.5v15c0 .83.67 1.5 1.5 1.5h9c.83 0 1.5-.67 1.5-1.5v-15c0-.83-.67-1.5-1.5-1.5z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Adaptive Triggers tab — trigger silhouette with a vibration
+         wave next to it, signalling "trigger that gives feedback". -->
+    <DrawingImage x:Key="TabAdaptiveTriggersIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Geometry="M3 4h10a4 4 0 0 1 4 4v3h-2V8a2 2 0 0 0-2-2H3V4zm8 8a4 4 0 0 1-4 4v4l-3-3-3 3v-4a4 4 0 0 1 4-4h6zm9-3l1-1 M21 11l1.5-1.5 M20 14l1 1 M21 17l1.5 1.5"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Lighting tab — Material Symbols "lightbulb": rounded bulb
+         with two-step base and filament hint. Universally read as
+         a light source. -->
+    <DrawingImage x:Key="TabLightingIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Geometry="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- ═══════════════════════════════════════════
          Shared Card Styles
          ═══════════════════════════════════════════ -->
 

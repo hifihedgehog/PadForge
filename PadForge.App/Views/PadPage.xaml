@@ -2489,7 +2489,7 @@
                                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         </StackPanel>
 
-                                        <!-- Cross-fade width — only meaningful in CrossFade mode -->
+                                        <!-- Crossfade width — only meaningful in CrossFade mode -->
                                         <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
                                                     Visibility="{Binding PlayStationConfig.AudioLightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=CrossFade}">
                                             <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_CrossFadeWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>

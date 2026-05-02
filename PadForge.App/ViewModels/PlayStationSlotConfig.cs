@@ -311,7 +311,7 @@ namespace PadForge.ViewModels
         }
 
         private double _audioCrossFadePercent = 5.0;
-        /// <summary>Half-width of the cross-fade window (in audio peak
+        /// <summary>Half-width of the crossfade window (in audio peak
         /// percentage) around each threshold boundary in CrossFade mode.
         /// 0..50, default 5. At 5, a peak within ±5% of a threshold is
         /// blended between the adjacent colors; outside that window the
@@ -530,7 +530,7 @@ namespace PadForge.ViewModels
         /// range: 0 → Low, lowMid% → Mid, midHigh% → High. Above
         /// midHigh% stays at High. Smooth color transitions.</summary>
         Gradient = 2,
-        /// <summary>Three discrete colors with a cross-fade window
+        /// <summary>Three discrete colors with a crossfade window
         /// around each threshold. Mostly the Thresholds behavior, but
         /// the boundary edges blend across <c>AudioCrossFadePercent</c>
         /// width to soften the snap.</summary>

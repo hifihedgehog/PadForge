@@ -10,18 +10,29 @@ namespace PadForge.Converters
     /// value's name matches the converter parameter, else
     /// <see cref="Visibility.Collapsed"/>. Used to switch between
     /// per-mode UI sections without adding wrapper properties to the
-    /// view-model. Parameter is case-insensitive on the enum's name —
-    /// e.g. <c>ConverterParameter=Thresholds</c> shows the panel only
-    /// when the bound enum value is <c>SomeEnum.Thresholds</c>.
+    /// view-model.
+    ///
+    /// <para>Parameter is case-insensitive on the enum's name and
+    /// supports a pipe-separated list to accept multiple values:
+    /// <c>ConverterParameter=Thresholds|Gradient|CrossFade</c> shows
+    /// the panel for any of those three. Pipe is used instead of
+    /// comma because XAML markup extensions parse commas as their own
+    /// argument separator.</para>
     /// </summary>
     public sealed class EnumEqualityVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null) return Visibility.Collapsed;
-            return string.Equals(value.ToString(), parameter.ToString(), StringComparison.OrdinalIgnoreCase)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            string current = value.ToString();
+            string param = parameter.ToString();
+            // Split pipe-separated list; trim whitespace per entry.
+            foreach (var entry in param.Split('|'))
+            {
+                if (string.Equals(current, entry.Trim(), StringComparison.OrdinalIgnoreCase))
+                    return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

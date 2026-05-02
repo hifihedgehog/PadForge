@@ -2229,7 +2229,10 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- Audio-driven lightbar (DSY-style audio-to-LED) -->
+                        <!-- Audio-driven lightbar — two modes:
+                             Pulse (DSY-style brightness modulation) and
+                             Thresholds (issue #55 primary: three colors
+                             keyed off audio level bands). -->
                         <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,12,0,0"
                                 BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                             <StackPanel>
@@ -2241,13 +2244,76 @@
                                 <CheckBox IsChecked="{Binding PlayStationConfig.AudioLightbarEnabled, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_AudioLightbar_Enable, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"/>
-                                <StackPanel Orientation="Horizontal" IsEnabled="{Binding PlayStationConfig.AudioLightbarEnabled}">
-                                    <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay}"
-                                            Style="{StaticResource DzSlider}"
-                                            Minimum="1" Maximum="20" TickFrequency="0.1"/>
-                                    <TextBox Text="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource DzValueEdit}"/>
+
+                                <StackPanel IsEnabled="{Binding PlayStationConfig.AudioLightbarEnabled}">
+                                    <!-- Mode picker -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox SelectedIndex="{Binding PlayStationConfig.AudioLightbarMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                                  Width="220" VerticalAlignment="Center">
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_AudioLightbar_Mode_Pulse, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_AudioLightbar_Mode_Thresholds, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Sensitivity (applies to both modes) -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="1" Maximum="20" TickFrequency="0.1"/>
+                                        <TextBox Text="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                    </StackPanel>
+
+                                    <!-- Threshold-mode panel: 3 color pickers + 2 thresholds -->
+                                    <StackPanel Visibility="{Binding PlayStationConfig.AudioLightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Thresholds}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,8">
+                                            <StackPanel Margin="0,0,16,0">
+                                                <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowColor, Source={x:Static strings:Strings.Instance}}"
+                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                                <views:ColorPickerControl
+                                                    Red="{Binding PlayStationConfig.AudioLowR, Mode=TwoWay}"
+                                                    Green="{Binding PlayStationConfig.AudioLowG, Mode=TwoWay}"
+                                                    Blue="{Binding PlayStationConfig.AudioLowB, Mode=TwoWay}"/>
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,16,0">
+                                                <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidColor, Source={x:Static strings:Strings.Instance}}"
+                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                                <views:ColorPickerControl
+                                                    Red="{Binding PlayStationConfig.AudioMidR, Mode=TwoWay}"
+                                                    Green="{Binding PlayStationConfig.AudioMidG, Mode=TwoWay}"
+                                                    Blue="{Binding PlayStationConfig.AudioMidB, Mode=TwoWay}"/>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_HighColor, Source={x:Static strings:Strings.Instance}}"
+                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                                <views:ColorPickerControl
+                                                    Red="{Binding PlayStationConfig.AudioHighR, Mode=TwoWay}"
+                                                    Green="{Binding PlayStationConfig.AudioHighG, Mode=TwoWay}"
+                                                    Blue="{Binding PlayStationConfig.AudioHighB, Mode=TwoWay}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowToMid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                            <Slider Value="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay}"
+                                                    Style="{StaticResource DzSlider}"
+                                                    Minimum="0" Maximum="100" TickFrequency="1"/>
+                                            <TextBox Text="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidToHigh, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                            <Slider Value="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay}"
+                                                    Style="{StaticResource DzSlider}"
+                                                    Minimum="0" Maximum="100" TickFrequency="1"/>
+                                            <TextBox Text="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

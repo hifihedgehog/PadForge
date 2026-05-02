@@ -466,6 +466,18 @@ namespace PadForge.Services
                     cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
                     cfg.AudioLightbarEnabled = cfgData.AudioLightbarEnabled;
                     cfg.AudioLightbarSensitivity = cfgData.AudioLightbarSensitivity;
+                    cfg.AudioLightbarMode = cfgData.AudioLightbarMode;
+                    cfg.AudioLowR = cfgData.AudioLowR;
+                    cfg.AudioLowG = cfgData.AudioLowG;
+                    cfg.AudioLowB = cfgData.AudioLowB;
+                    cfg.AudioMidR = cfgData.AudioMidR;
+                    cfg.AudioMidG = cfgData.AudioMidG;
+                    cfg.AudioMidB = cfgData.AudioMidB;
+                    cfg.AudioHighR = cfgData.AudioHighR;
+                    cfg.AudioHighG = cfgData.AudioHighG;
+                    cfg.AudioHighB = cfgData.AudioHighB;
+                    cfg.AudioLowToMidPercent = cfgData.AudioLowToMidPercent;
+                    cfg.AudioMidToHighPercent = cfgData.AudioMidToHighPercent;
                     cfg.UserEffectsEnabled = cfgData.UserEffectsEnabled;
                 }
             }
@@ -1216,6 +1228,18 @@ namespace PadForge.Services
                     PlayerLedBrightness = cfg.PlayerLedBrightness,
                     AudioLightbarEnabled = cfg.AudioLightbarEnabled,
                     AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
+                    AudioLightbarMode = cfg.AudioLightbarMode,
+                    AudioLowR = cfg.AudioLowR,
+                    AudioLowG = cfg.AudioLowG,
+                    AudioLowB = cfg.AudioLowB,
+                    AudioMidR = cfg.AudioMidR,
+                    AudioMidG = cfg.AudioMidG,
+                    AudioMidB = cfg.AudioMidB,
+                    AudioHighR = cfg.AudioHighR,
+                    AudioHighG = cfg.AudioHighG,
+                    AudioHighB = cfg.AudioHighB,
+                    AudioLowToMidPercent = cfg.AudioLowToMidPercent,
+                    AudioMidToHighPercent = cfg.AudioMidToHighPercent,
                     UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }
@@ -1351,6 +1375,18 @@ namespace PadForge.Services
                     PlayerLedBrightness = cfg.PlayerLedBrightness,
                     AudioLightbarEnabled = cfg.AudioLightbarEnabled,
                     AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
+                    AudioLightbarMode = cfg.AudioLightbarMode,
+                    AudioLowR = cfg.AudioLowR,
+                    AudioLowG = cfg.AudioLowG,
+                    AudioLowB = cfg.AudioLowB,
+                    AudioMidR = cfg.AudioMidR,
+                    AudioMidG = cfg.AudioMidG,
+                    AudioMidB = cfg.AudioMidB,
+                    AudioHighR = cfg.AudioHighR,
+                    AudioHighG = cfg.AudioHighG,
+                    AudioHighB = cfg.AudioHighB,
+                    AudioLowToMidPercent = cfg.AudioLowToMidPercent,
+                    AudioMidToHighPercent = cfg.AudioMidToHighPercent,
                     UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }

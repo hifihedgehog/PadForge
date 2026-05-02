@@ -160,17 +160,48 @@ namespace PadForge.Common.Input
             {
                 enableBits |= EnableLightbar;
 
-                // Audio-to-lightbar — multiply RGB by audio peak so the
-                // user's configured base color pulses with system audio.
-                // When AudioLightbarEnabled is on but LightbarEnabled is
-                // off, the audio still drives the static fallback color
-                // (black at peak=0 → user color at peak=1).
                 if (cfg.AudioLightbarEnabled)
                 {
                     float p = Math.Clamp(audioPeak, 0f, 1f);
-                    dst[OffLedRed]   = (byte)Math.Round(cfg.LightbarRed   * p);
-                    dst[OffLedGreen] = (byte)Math.Round(cfg.LightbarGreen * p);
-                    dst[OffLedBlue]  = (byte)Math.Round(cfg.LightbarBlue  * p);
+
+                    if (cfg.AudioLightbarMode == AudioLightbarMode.Thresholds)
+                    {
+                        // Three-band picker — issue #55 primary request.
+                        // Pick the color whose band the peak falls into.
+                        // Thresholds are stored as 0..100 percent of the
+                        // post-sensitivity peak; convert to 0..1 for compare.
+                        float lowMid  = (float)(cfg.AudioLowToMidPercent / 100.0);
+                        float midHigh = (float)(cfg.AudioMidToHighPercent / 100.0);
+                        // Self-correct if the user dragged the sliders
+                        // out of order — don't strand the Mid band.
+                        if (midHigh < lowMid) midHigh = lowMid;
+
+                        byte r, g, b;
+                        if (p < lowMid)
+                        {
+                            r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
+                        }
+                        else if (p < midHigh)
+                        {
+                            r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
+                        }
+                        else
+                        {
+                            r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
+                        }
+                        dst[OffLedRed]   = r;
+                        dst[OffLedGreen] = g;
+                        dst[OffLedBlue]  = b;
+                    }
+                    else
+                    {
+                        // Pulse — DSY-style brightness modulation. Multiply
+                        // user's static base color by the peak each tick
+                        // (black at silence, full color at peak).
+                        dst[OffLedRed]   = (byte)Math.Round(cfg.LightbarRed   * p);
+                        dst[OffLedGreen] = (byte)Math.Round(cfg.LightbarGreen * p);
+                        dst[OffLedBlue]  = (byte)Math.Round(cfg.LightbarBlue  * p);
+                    }
                 }
                 else
                 {

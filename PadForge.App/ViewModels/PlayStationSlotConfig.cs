@@ -249,6 +249,67 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioLightbarSensitivity, Math.Clamp(value, 1.0, 20.0));
         }
 
+        private AudioLightbarMode _audioLightbarMode = AudioLightbarMode.Pulse;
+        /// <summary>Which audio-to-lightbar behavior to use.
+        /// <para>Pulse — DSY-style: multiply the user's static base
+        /// color by the audio peak each tick. Black at silence, full
+        /// color at peak.</para>
+        /// <para>Thresholds — issue #55 primary request: pick from
+        /// three colors based on which audio band the peak falls into
+        /// (quiet / medium / loud). Use case is FPS games where the
+        /// lightbar shifts green→yellow→red as ambient noise rises.</para>
+        /// </summary>
+        public AudioLightbarMode AudioLightbarMode
+        {
+            get => _audioLightbarMode;
+            set => SetProperty(ref _audioLightbarMode, value);
+        }
+
+        // Threshold-mode color triplets. Defaults map the FPS use case
+        // from the issue: green when quiet, yellow when audio rises,
+        // red on loud transients.
+        private byte _audioLowR;
+        public byte AudioLowR { get => _audioLowR; set => SetProperty(ref _audioLowR, value); }
+        private byte _audioLowG = 0xFF;
+        public byte AudioLowG { get => _audioLowG; set => SetProperty(ref _audioLowG, value); }
+        private byte _audioLowB;
+        public byte AudioLowB { get => _audioLowB; set => SetProperty(ref _audioLowB, value); }
+
+        private byte _audioMidR = 0xFF;
+        public byte AudioMidR { get => _audioMidR; set => SetProperty(ref _audioMidR, value); }
+        private byte _audioMidG = 0xFF;
+        public byte AudioMidG { get => _audioMidG; set => SetProperty(ref _audioMidG, value); }
+        private byte _audioMidB;
+        public byte AudioMidB { get => _audioMidB; set => SetProperty(ref _audioMidB, value); }
+
+        private byte _audioHighR = 0xFF;
+        public byte AudioHighR { get => _audioHighR; set => SetProperty(ref _audioHighR, value); }
+        private byte _audioHighG;
+        public byte AudioHighG { get => _audioHighG; set => SetProperty(ref _audioHighG, value); }
+        private byte _audioHighB;
+        public byte AudioHighB { get => _audioHighB; set => SetProperty(ref _audioHighB, value); }
+
+        private double _audioLowToMidPercent = 33;
+        /// <summary>Audio peak (post-sensitivity) percentage at which
+        /// the lightbar transitions from the Low color to the Mid color.
+        /// 0..100, default 33 — matches a roughly even split into
+        /// thirds against the Mid→High threshold's default of 66.</summary>
+        public double AudioLowToMidPercent
+        {
+            get => _audioLowToMidPercent;
+            set => SetProperty(ref _audioLowToMidPercent, Math.Clamp(value, 0, 100));
+        }
+
+        private double _audioMidToHighPercent = 66;
+        /// <summary>Audio peak (post-sensitivity) percentage at which
+        /// the lightbar transitions from the Mid color to the High
+        /// color. 0..100, default 66.</summary>
+        public double AudioMidToHighPercent
+        {
+            get => _audioMidToHighPercent;
+            set => SetProperty(ref _audioMidToHighPercent, Math.Clamp(value, 0, 100));
+        }
+
         private bool _userEffectsEnabled;
         /// <summary>Master toggle for user-configured effect synthesis.
         /// When false, only Feature A (game-driven passthrough via
@@ -405,6 +466,21 @@ namespace PadForge.ViewModels
         Low = 2,
     }
 
+    /// <summary>Audio-driven lightbar behavior. Issue #55 listed the
+    /// threshold variant as primary and pulse-modulation as the
+    /// alternative — PadForge ships both so users can pick whichever
+    /// fits the use case.</summary>
+    public enum AudioLightbarMode
+    {
+        /// <summary>DSY-style brightness modulation: lightbar RGB =
+        /// base color × audio peak. Pulses one color with audio.</summary>
+        Pulse = 0,
+        /// <summary>Three discrete colors keyed off the audio peak band:
+        /// quiet → low color, medium → mid color, loud → high color.
+        /// Issue #55 use case (FPS green/yellow/red ambient cue).</summary>
+        Thresholds = 1,
+    }
+
     /// <summary>Serializable mirror of <see cref="PlayStationSlotConfig"/>.
     /// XML round-trip via SettingsService. Fields use XmlAttribute to
     /// keep the serialized form compact and aligned with the adjacent
@@ -439,5 +515,17 @@ namespace PadForge.ViewModels
         // Audio-to-lightbar (Round 2)
         [XmlAttribute] public bool AudioLightbarEnabled { get; set; }
         [XmlAttribute] public double AudioLightbarSensitivity { get; set; } = 4.0;
+        [XmlAttribute] public AudioLightbarMode AudioLightbarMode { get; set; } = AudioLightbarMode.Pulse;
+        [XmlAttribute] public byte AudioLowR { get; set; } = 0x00;
+        [XmlAttribute] public byte AudioLowG { get; set; } = 0xFF;
+        [XmlAttribute] public byte AudioLowB { get; set; } = 0x00;
+        [XmlAttribute] public byte AudioMidR { get; set; } = 0xFF;
+        [XmlAttribute] public byte AudioMidG { get; set; } = 0xFF;
+        [XmlAttribute] public byte AudioMidB { get; set; } = 0x00;
+        [XmlAttribute] public byte AudioHighR { get; set; } = 0xFF;
+        [XmlAttribute] public byte AudioHighG { get; set; } = 0x00;
+        [XmlAttribute] public byte AudioHighB { get; set; } = 0x00;
+        [XmlAttribute] public double AudioLowToMidPercent { get; set; } = 33;
+        [XmlAttribute] public double AudioMidToHighPercent { get; set; } = 66;
     }
 }

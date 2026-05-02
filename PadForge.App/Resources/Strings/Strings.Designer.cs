@@ -329,6 +329,8 @@ public class Strings : INotifyPropertyChanged
     public string About_ModernWpfDesc => Get("About_ModernWpfDesc");
     public string About_MvvmToolkit => Get("About_MvvmToolkit");
     public string About_MvvmToolkitDesc => Get("About_MvvmToolkitDesc");
+    public string About_ZackslyIcons => Get("About_ZackslyIcons");
+    public string About_ZackslyIconsDesc => Get("About_ZackslyIconsDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

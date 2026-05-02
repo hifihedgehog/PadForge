@@ -1124,7 +1124,10 @@ namespace PadForge.ViewModels
                     : i == 0 ? Strings.Instance.Stick_LeftThumbstick : Strings.Instance.Stick_RightThumbstick;
                 int xiIdx = axX != null ? axX[i] : -1;
                 int yiIdx = axY != null ? axY[i] : -1;
-                var item = new StickConfigItem(i, title, xiIdx, yiIdx);
+                string iconLabel = isExtended
+                    ? (i + 1).ToString()
+                    : i == 0 ? "L" : "R";
+                var item = new StickConfigItem(i, title, xiIdx, yiIdx, iconLabel);
                 SyncStickItemFromVm(item);
                 item.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(item);
@@ -1158,13 +1161,31 @@ namespace PadForge.ViewModels
             if (isExtended && count > 0)
                 ExtendedConfig.ComputeAxisLayout(out axX, out axY, out trAx);
 
+            bool isSony = OutputType == VirtualControllerType.PlayStation;
             for (int i = 0; i < count; i++)
             {
                 string title = isExtended
                     ? string.Format(Strings.Instance.Trigger_Format, i + 1)
                     : i == 0 ? Strings.Instance.Btn_LeftTrigger : Strings.Instance.Btn_RightTrigger;
                 int ai = trAx != null ? trAx[i] : -1;
-                var item = new TriggerConfigItem(i, title, ai);
+                string iconLabel;
+                bool iconRightSide;
+                if (isExtended)
+                {
+                    iconLabel = (i + 1).ToString();
+                    iconRightSide = (i % 2) == 1;
+                }
+                else if (isSony)
+                {
+                    iconLabel = i == 0 ? "L2" : "R2";
+                    iconRightSide = i == 1;
+                }
+                else
+                {
+                    iconLabel = i == 0 ? "LT" : "RT";
+                    iconRightSide = i == 1;
+                }
+                var item = new TriggerConfigItem(i, title, ai, iconLabel, iconRightSide);
                 SyncTriggerItemFromVm(item);
                 item.PropertyChanged += OnTriggerConfigPropertyChanged;
                 TriggerConfigs.Add(item);

@@ -27,6 +27,8 @@ namespace PadForge.ViewModels
 
         public string Title { get; }
         public int Index { get; }
+        public string IconLabel { get; }
+        public bool IconRightSide { get; }
 
         // ── Digit conversion helpers (triggers use unsigned 16-bit: 0–65535) ──
         private static int PctToDigit(double pct) => (int)Math.Round(pct / 100.0 * 65535.0);
@@ -119,11 +121,13 @@ namespace PadForge.ViewModels
         private ICommand _resetSensitivityCommand;
         public ICommand ResetSensitivityCommand => _resetSensitivityCommand ??= new RelayCommand(() => SensitivityCurve = "0,0;1,1");
 
-        public TriggerConfigItem(int index, string title, int axisIndex = -1)
+        public TriggerConfigItem(int index, string title, int axisIndex = -1, string iconLabel = "", bool iconRightSide = false)
         {
             Index = index;
             Title = title;
             AxisIndex = axisIndex;
+            IconLabel = iconLabel ?? string.Empty;
+            IconRightSide = iconRightSide;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace PadForge.ViewModels
 
         public string Title { get; }
         public int Index { get; }
+        public string IconLabel { get; }
 
         // ── Digit conversion helpers (stick axes use signed 16-bit: ±32768) ──
         private static int PctToDigit(double pct) => (int)Math.Round(pct / 100.0 * 32768.0);
@@ -341,12 +342,13 @@ namespace PadForge.ViewModels
             return pts;
         }
 
-        public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1)
+        public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1, string iconLabel = "")
         {
             Index = index;
             Title = title;
             AxisXIndex = axisXIndex;
             AxisYIndex = axisYIndex;
+            IconLabel = iconLabel ?? string.Empty;
         }
 
         // ── Reset commands ──

@@ -61,33 +61,68 @@
     </DrawingImage>
 
     <!-- ═══════════════════════════════════════════
-         PadPage tab icons — DrawingImage paths so they render
-         identically on Windows 10 and Windows 11 without depending
-         on Segoe Fluent Icons (which only ships on Win11). Sources:
-         Material Symbols (Apache 2.0) for joystick / vibration /
-         lightbulb shapes; trigger glyph hand-authored. All paths
-         use viewBox 0 0 24 24.
+         PadPage tab icons.
+
+         Sticks and Triggers icons are derivative works built on the
+         outer-body geometry of "Xbox Series Button Icons and Controls"
+         by Zacksly (CC BY 3.0,
+         https://zacksly.itch.io/xbox-series-button-icons-and-controls).
+         The originals' lettering is not used; the inner stick disc is
+         a plain primitive and the blank trigger uses only the outer
+         silhouette subpath. See Resources/ZackslyIcons/ATTRIBUTION.txt.
+
+         Force Feedback and Lighting icons come from Material Symbols
+         (Apache 2.0). Adaptive Triggers chevrons are hand-authored.
+         All Zacksly-derived icons use viewBox 0 0 512 512;
+         Material Symbols icons use viewBox 0 0 24 24.
          ═══════════════════════════════════════════ -->
 
-    <!-- Sticks tab — top-down analog thumbstick: outer travel
-         ring + inner stick cap, the universal way analog sticks
-         get drawn in input UIs (vs. D-pads which show 4 arrows).
-         Annular outer + filled inner circle. -->
+    <!-- Stick outer-ring geometry — verbatim from Zacksly Left/Right
+         Stick (path 2 in both files, identical). Reused below as the
+         shared shape for the Sticks tab header. -->
+    <StreamGeometry x:Key="ZackslyStickOuterRingGeometry">M256,83A173,173,0,1,0,429,256,173,173,0,0,0,256,83Zm0,294.29A121.25,121.25,0,1,1,377.25,256,121.38,121.38,0,0,1,256,377.25Z</StreamGeometry>
+
+    <!-- Stick inner disc — plain circle of radius 103.07 centred at
+         (256,256). Not derivative; matches the inner radius of the
+         Zacksly outer ring so the two compose. -->
+    <StreamGeometry x:Key="ZackslyStickInnerDiscGeometry">M256,152.93 A103.07,103.07,0,1,1,256,359.06 A103.07,103.07,0,1,1,256,152.93 Z</StreamGeometry>
+
+    <!-- Trigger outer-body silhouette (left side) — first subpath of
+         the Zacksly Left Trigger SVG (the body shell), with the
+         lettering subpaths intentionally omitted. -->
+    <StreamGeometry x:Key="ZackslyTriggerOuterBodyGeometry">M404.07,376.92a30.76,30.76,0,0,1-1.95-2.73c-60.72-96.54-25.86-219-17.11-245.72.92-2.79,15.68-30.76-13.66-35.17-2.54-.38-5-1.09-7.57-1.09H139.45a26.66,26.66,0,0,0-25,17.14c-17.16,45.89-14.79,123-14.45,131.94,0,.58.06,1.15.11,1.72C112.4,382.06,233.75,414.53,254.94,419.15a26.82,26.82,0,0,0,5.79.64H385.27a26.56,26.56,0,0,0,10.48-2.11C424.22,405.38,408.31,382.29,404.07,376.92Z</StreamGeometry>
+
+    <!-- Trigger outer-body silhouette (right side) — body subpath of
+         the Zacksly Right Trigger SVG, lettering omitted. -->
+    <StreamGeometry x:Key="ZackslyTriggerOuterBodyRightGeometry">M397.58,109.35a26.66,26.66,0,0,0-25-17.14H148.22c-2.57,0-5,.71-7.57,1.09-29.33,4.41-14.58,32.38-13.66,35.17,8.75,26.71,43.61,149.18-17.11,245.72a30.76,30.76,0,0,1-1.95,2.73c-4.24,5.37-20.15,28.46,8.32,40.76a26.56,26.56,0,0,0,10.48,2.11H251.27a26.82,26.82,0,0,0,5.79-.64C278.25,414.53,399.6,382.06,411.92,243c.05-.57.09-1.14.11-1.72C412.37,232.31,414.74,155.24,397.58,109.35Z</StreamGeometry>
+
+    <!-- Sticks tab — outer travel ring + inner stick cap. -->
     <DrawingImage x:Key="TabSticksIcon">
         <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>
+            <DrawingGroup>
+                <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Geometry="{StaticResource ZackslyStickOuterRingGeometry}"/>
+                <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Geometry="{StaticResource ZackslyStickInnerDiscGeometry}"/>
+            </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <!-- Triggers tab — controller shoulder + trigger paddle in
-         side profile: wide top edge (shoulder mount) tapering
-         into a curved tongue (trigger paddle). The classic
-         T-shape with a rounded paddle bottom. -->
+    <!-- Triggers tab — blank trigger silhouette (left side). -->
     <DrawingImage x:Key="TabTriggersIcon">
         <DrawingImage.Drawing>
             <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M4 3h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-5v6c0 2-1.79 4-3 4s-3-2-3-4v-6H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                             Geometry="{StaticResource ZackslyTriggerOuterBodyGeometry}"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Right-side trigger silhouette, used by LabeledShapeIcon when
+         the variant represents a right trigger (RT / R2 / even-numbered
+         Extended). -->
+    <DrawingImage x:Key="TabTriggersIconRight">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Geometry="{StaticResource ZackslyTriggerOuterBodyRightGeometry}"/>
         </DrawingImage.Drawing>
     </DrawingImage>
 
@@ -101,16 +136,19 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <!-- Adaptive Triggers tab — same shoulder+paddle silhouette as
-         the regular Triggers icon, narrowed slightly so two filled
-         chevron markers fit on the right side. The chevrons read as
-         feedback radiating outward from the trigger. The base shape
-         stays consistent with TabTriggersIcon so the two tabs read
-         as a family. -->
+    <!-- Adaptive Triggers tab — shares the Zacksly-derived trigger
+         silhouette with TabTriggersIcon so the two tabs read as a
+         family. Two hand-authored chevrons sit to the right of the
+         body, suggesting feedback radiating outward from the trigger.
+         viewBox 0 0 512 512 to match. -->
     <DrawingImage x:Key="TabAdaptiveTriggersIcon">
         <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M2 3h13a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4v6c0 2-1.34 4-2.5 4S6 19 6 17v-6H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM19 6L22 8L19 10ZM19 12L22 14L19 16Z"/>
+            <DrawingGroup>
+                <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Geometry="{StaticResource ZackslyTriggerOuterBodyGeometry}"/>
+                <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Geometry="M445,180 L475,200 L445,220 L455,220 L485,200 L455,180 Z M445,280 L475,300 L445,320 L455,320 L485,300 L455,280 Z"/>
+            </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
 

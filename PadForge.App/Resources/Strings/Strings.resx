@@ -380,6 +380,12 @@
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure trigger feedback effects on the assigned physical DualSense. Game-driven trigger effects are forwarded automatically; settings here add a user-configured layer that runs when no game is writing.</value></data>
+  <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per-stick deadzones, anti-deadzones, sensitivity curves, and center-offset calibration. Each section below targets one analog stick on the active output. Extended profiles can have up to four sticks; standard gamepads have two.</value></data>
+  <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per-trigger deadzones, anti-deadzones, max-range scaling, and sensitivity curves. Each section below targets one trigger axis on the active output. Extended profiles can expose up to eight axes shared with the Sticks tab.</value></data>
+  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
+  <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tunes how PadForge scales force-feedback events from the game and how it routes them to the physical controller's rumble motors or DualSense haptic actuators. Audio Bass Rumble adds a system-audio-driven layer on top.</value></data>
   <data name="Pad_UserEffectsEnabled" xml:space="preserve"><value>Apply user-configured effects when no game is writing</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
@@ -798,7 +804,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger Axis</value></data>
 
   <!-- ═══ Pad — Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Rumble</value></data>
+  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Rumble / Haptics</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain:</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor:</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Right Motor:</value></data>

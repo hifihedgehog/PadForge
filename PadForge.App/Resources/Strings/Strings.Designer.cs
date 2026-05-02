@@ -458,6 +458,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_AudioLightbar_Subtitle => Get("Pad_Lighting_AudioLightbar_Subtitle");
     public string Pad_Lighting_AudioLightbar_Enable => Get("Pad_Lighting_AudioLightbar_Enable");
     public string Pad_Lighting_AudioLightbar_Sensitivity => Get("Pad_Lighting_AudioLightbar_Sensitivity");
+    public string Pad_Lighting_AudioLightbar_Mode => Get("Pad_Lighting_AudioLightbar_Mode");
+    public string Pad_Lighting_AudioLightbar_Mode_Pulse => Get("Pad_Lighting_AudioLightbar_Mode_Pulse");
+    public string Pad_Lighting_AudioLightbar_Mode_Thresholds => Get("Pad_Lighting_AudioLightbar_Mode_Thresholds");
+    public string Pad_Lighting_AudioLightbar_LowColor => Get("Pad_Lighting_AudioLightbar_LowColor");
+    public string Pad_Lighting_AudioLightbar_MidColor => Get("Pad_Lighting_AudioLightbar_MidColor");
+    public string Pad_Lighting_AudioLightbar_HighColor => Get("Pad_Lighting_AudioLightbar_HighColor");
+    public string Pad_Lighting_AudioLightbar_LowToMid => Get("Pad_Lighting_AudioLightbar_LowToMid");
+    public string Pad_Lighting_AudioLightbar_MidToHigh => Get("Pad_Lighting_AudioLightbar_MidToHigh");
     public string Pad_Preset => Get("Pad_Preset");
     public string Pad_Custom => Get("Pad_Custom");
     public string Pad_ExtendedSticks => Get("Pad_ExtendedSticks");

@@ -478,6 +478,7 @@ namespace PadForge.Services
                     cfg.AudioHighB = cfgData.AudioHighB;
                     cfg.AudioLowToMidPercent = cfgData.AudioLowToMidPercent;
                     cfg.AudioMidToHighPercent = cfgData.AudioMidToHighPercent;
+                    cfg.AudioCrossFadePercent = cfgData.AudioCrossFadePercent;
                     cfg.UserEffectsEnabled = cfgData.UserEffectsEnabled;
                 }
             }
@@ -1240,6 +1241,7 @@ namespace PadForge.Services
                     AudioHighB = cfg.AudioHighB,
                     AudioLowToMidPercent = cfg.AudioLowToMidPercent,
                     AudioMidToHighPercent = cfg.AudioMidToHighPercent,
+                    AudioCrossFadePercent = cfg.AudioCrossFadePercent,
                     UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }
@@ -1387,6 +1389,7 @@ namespace PadForge.Services
                     AudioHighB = cfg.AudioHighB,
                     AudioLowToMidPercent = cfg.AudioLowToMidPercent,
                     AudioMidToHighPercent = cfg.AudioMidToHighPercent,
+                    AudioCrossFadePercent = cfg.AudioCrossFadePercent,
                     UserEffectsEnabled = cfg.UserEffectsEnabled
                 });
             }

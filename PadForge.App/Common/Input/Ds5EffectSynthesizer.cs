@@ -163,44 +163,127 @@ namespace PadForge.Common.Input
                 if (cfg.AudioLightbarEnabled)
                 {
                     float p = Math.Clamp(audioPeak, 0f, 1f);
+                    byte r, g, b;
 
-                    if (cfg.AudioLightbarMode == AudioLightbarMode.Thresholds)
+                    switch (cfg.AudioLightbarMode)
                     {
-                        // Three-band picker — issue #55 primary request.
-                        // Pick the color whose band the peak falls into.
-                        // Thresholds are stored as 0..100 percent of the
-                        // post-sensitivity peak; convert to 0..1 for compare.
-                        float lowMid  = (float)(cfg.AudioLowToMidPercent / 100.0);
-                        float midHigh = (float)(cfg.AudioMidToHighPercent / 100.0);
-                        // Self-correct if the user dragged the sliders
-                        // out of order — don't strand the Mid band.
-                        if (midHigh < lowMid) midHigh = lowMid;
+                        case AudioLightbarMode.Thresholds:
+                        case AudioLightbarMode.Gradient:
+                        case AudioLightbarMode.CrossFade:
+                        {
+                            float lowMid  = (float)(cfg.AudioLowToMidPercent / 100.0);
+                            float midHigh = (float)(cfg.AudioMidToHighPercent / 100.0);
+                            // Self-correct if the user dragged sliders
+                            // out of order — Mid band would otherwise
+                            // get stranded.
+                            if (midHigh < lowMid) midHigh = lowMid;
 
-                        byte r, g, b;
-                        if (p < lowMid)
-                        {
-                            r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
+                            if (cfg.AudioLightbarMode == AudioLightbarMode.Thresholds)
+                            {
+                                // Hard discrete buckets — original behavior.
+                                if (p < lowMid)
+                                {
+                                    r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
+                                }
+                                else if (p < midHigh)
+                                {
+                                    r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
+                                }
+                                else
+                                {
+                                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
+                                }
+                            }
+                            else if (cfg.AudioLightbarMode == AudioLightbarMode.Gradient)
+                            {
+                                // Linear lerp across the whole peak range.
+                                // [0, lowMid]: Low → Mid
+                                // [lowMid, midHigh]: Mid → High
+                                // [midHigh, 1]: stays at High
+                                if (p <= lowMid)
+                                {
+                                    float t = lowMid > 0 ? p / lowMid : 1f;
+                                    LerpColor(t,
+                                        cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
+                                        cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,
+                                        out r, out g, out b);
+                                }
+                                else if (p <= midHigh)
+                                {
+                                    float span = midHigh - lowMid;
+                                    float t = span > 0 ? (p - lowMid) / span : 1f;
+                                    LerpColor(t,
+                                        cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB,
+                                        cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB,
+                                        out r, out g, out b);
+                                }
+                                else
+                                {
+                                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
+                                }
+                            }
+                            else // CrossFade — discrete with cross-fade window
+                            {
+                                float halfWindow = (float)(cfg.AudioCrossFadePercent / 100.0);
+                                // Sane clamp: window can't exceed half the
+                                // distance to the next threshold or it
+                                // overlaps the neighbor's window.
+                                float maxAtLowMid = MathF.Min(lowMid, MathF.Min(midHigh - lowMid, 1f - midHigh)) * 0.5f;
+                                if (halfWindow > maxAtLowMid && maxAtLowMid > 0)
+                                    halfWindow = maxAtLowMid;
+
+                                float lo1 = lowMid  - halfWindow;
+                                float hi1 = lowMid  + halfWindow;
+                                float lo2 = midHigh - halfWindow;
+                                float hi2 = midHigh + halfWindow;
+
+                                if (p < lo1)
+                                {
+                                    r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
+                                }
+                                else if (p < hi1)
+                                {
+                                    float span = hi1 - lo1;
+                                    float t = span > 0 ? (p - lo1) / span : 1f;
+                                    LerpColor(t,
+                                        cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
+                                        cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,
+                                        out r, out g, out b);
+                                }
+                                else if (p < lo2)
+                                {
+                                    r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
+                                }
+                                else if (p < hi2)
+                                {
+                                    float span = hi2 - lo2;
+                                    float t = span > 0 ? (p - lo2) / span : 1f;
+                                    LerpColor(t,
+                                        cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB,
+                                        cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB,
+                                        out r, out g, out b);
+                                }
+                                else
+                                {
+                                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
+                                }
+                            }
+
+                            dst[OffLedRed]   = r;
+                            dst[OffLedGreen] = g;
+                            dst[OffLedBlue]  = b;
+                            break;
                         }
-                        else if (p < midHigh)
-                        {
-                            r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
-                        }
-                        else
-                        {
-                            r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
-                        }
-                        dst[OffLedRed]   = r;
-                        dst[OffLedGreen] = g;
-                        dst[OffLedBlue]  = b;
-                    }
-                    else
-                    {
-                        // Pulse — DSY-style brightness modulation. Multiply
-                        // user's static base color by the peak each tick
-                        // (black at silence, full color at peak).
-                        dst[OffLedRed]   = (byte)Math.Round(cfg.LightbarRed   * p);
-                        dst[OffLedGreen] = (byte)Math.Round(cfg.LightbarGreen * p);
-                        dst[OffLedBlue]  = (byte)Math.Round(cfg.LightbarBlue  * p);
+
+                        case AudioLightbarMode.Pulse:
+                        default:
+                            // DSY-style brightness modulation. Multiply
+                            // user's static base color by the peak each
+                            // tick (black at silence, full color at peak).
+                            dst[OffLedRed]   = (byte)Math.Round(cfg.LightbarRed   * p);
+                            dst[OffLedGreen] = (byte)Math.Round(cfg.LightbarGreen * p);
+                            dst[OffLedBlue]  = (byte)Math.Round(cfg.LightbarBlue  * p);
+                            break;
                     }
                 }
                 else
@@ -257,6 +340,20 @@ namespace PadForge.Common.Input
             dst[OffEnableHigh] = (byte)((enableBits >> 8) & 0xFF);
 
             return PayloadSize;
+        }
+
+        // Linear interpolation between two RGB colors. t is clamped
+        // 0..1; t=0 returns color A, t=1 returns color B.
+        private static void LerpColor(
+            float t,
+            byte aR, byte aG, byte aB,
+            byte bR, byte bG, byte bB,
+            out byte r, out byte g, out byte b)
+        {
+            t = Math.Clamp(t, 0f, 1f);
+            r = (byte)Math.Round(aR + (bR - aR) * t);
+            g = (byte)Math.Round(aG + (bG - aG) * t);
+            b = (byte)Math.Round(aB + (bB - aB) * t);
         }
 
         /// <summary>Encodes one trigger's 11-byte effect block (mode +

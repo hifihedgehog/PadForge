@@ -56,6 +56,7 @@ namespace PadForge.Views
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
+            SyncAudioHexBoxes();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -102,6 +103,7 @@ namespace PadForge.Views
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
+            SyncAudioHexBoxes();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
             // populates. WPF's ComboBox with SelectedValuePath can land on a
@@ -668,18 +670,112 @@ namespace PadForge.Views
 
         private void OnPlayStationConfigChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Keep the HEX textbox live-synced with the RGB sliders.
+            // Keep the HEX textboxes live-synced with the RGB sliders.
             // Skip the refresh while the user is mid-edit in the textbox
-            // itself — LightbarHexBox_Apply is what's writing the
-            // properties at that moment, and overwriting Text would
-            // fight the caret position.
-            if (e.PropertyName == nameof(PadForge.ViewModels.PlayStationSlotConfig.LightbarRed)
-                || e.PropertyName == nameof(PadForge.ViewModels.PlayStationSlotConfig.LightbarGreen)
-                || e.PropertyName == nameof(PadForge.ViewModels.PlayStationSlotConfig.LightbarBlue))
+            // itself — *_Apply is what's writing the properties at that
+            // moment, and overwriting Text would fight the caret position.
+            switch (e.PropertyName)
             {
-                if (LightbarHexBox != null && !LightbarHexBox.IsKeyboardFocusWithin)
-                    SyncLightbarHexBox();
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarRed):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarGreen):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBlue):
+                    if (LightbarHexBox != null && !LightbarHexBox.IsKeyboardFocusWithin)
+                        SyncLightbarHexBox();
+                    break;
+                case nameof(ViewModels.PlayStationSlotConfig.AudioLowR):
+                case nameof(ViewModels.PlayStationSlotConfig.AudioLowG):
+                case nameof(ViewModels.PlayStationSlotConfig.AudioLowB):
+                    if (AudioLowHexBox != null && !AudioLowHexBox.IsKeyboardFocusWithin)
+                        SyncOneAudioHex(AudioLowHexBox, "Low");
+                    break;
+                case nameof(ViewModels.PlayStationSlotConfig.AudioMidR):
+                case nameof(ViewModels.PlayStationSlotConfig.AudioMidG):
+                case nameof(ViewModels.PlayStationSlotConfig.AudioMidB):
+                    if (AudioMidHexBox != null && !AudioMidHexBox.IsKeyboardFocusWithin)
+                        SyncOneAudioHex(AudioMidHexBox, "Mid");
+                    break;
+                case nameof(ViewModels.PlayStationSlotConfig.AudioHighR):
+                case nameof(ViewModels.PlayStationSlotConfig.AudioHighG):
+                case nameof(ViewModels.PlayStationSlotConfig.AudioHighB):
+                    if (AudioHighHexBox != null && !AudioHighHexBox.IsKeyboardFocusWithin)
+                        SyncOneAudioHex(AudioHighHexBox, "High");
+                    break;
             }
+        }
+
+        // ── Audio threshold HEX boxes — generic Tag-based handlers ──
+        // Each TextBox in the XAML carries Tag="Low" / "Mid" / "High"
+        // identifying which color triplet it edits. One set of handlers
+        // covers all three; logic mirrors LightbarHexBox_Apply.
+
+        private void SyncAudioHexBoxes()
+        {
+            SyncOneAudioHex(AudioLowHexBox, "Low");
+            SyncOneAudioHex(AudioMidHexBox, "Mid");
+            SyncOneAudioHex(AudioHighHexBox, "High");
+        }
+
+        private void SyncOneAudioHex(System.Windows.Controls.TextBox box, string tag)
+        {
+            if (box == null) return;
+            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            var (r, g, b) = ReadAudioRgb(vm.PlayStationConfig, tag);
+            box.Text = $"{r:X2}{g:X2}{b:X2}";
+        }
+
+        private static (byte r, byte g, byte b) ReadAudioRgb(
+            ViewModels.PlayStationSlotConfig cfg, string tag) => tag switch
+        {
+            "Low"  => (cfg.AudioLowR,  cfg.AudioLowG,  cfg.AudioLowB),
+            "Mid"  => (cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB),
+            "High" => (cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB),
+            _ => (0, 0, 0),
+        };
+
+        private static void WriteAudioRgb(
+            ViewModels.PlayStationSlotConfig cfg, string tag, byte r, byte g, byte b)
+        {
+            switch (tag)
+            {
+                case "Low":  cfg.AudioLowR  = r; cfg.AudioLowG  = g; cfg.AudioLowB  = b; break;
+                case "Mid":  cfg.AudioMidR  = r; cfg.AudioMidG  = g; cfg.AudioMidB  = b; break;
+                case "High": cfg.AudioHighR = r; cfg.AudioHighG = g; cfg.AudioHighB = b; break;
+            }
+        }
+
+        private void AudioHexBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && sender is System.Windows.Controls.TextBox box)
+                AudioHexBox_Apply(box);
+        }
+
+        private void AudioHexBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.TextBox box)
+                AudioHexBox_Apply(box);
+        }
+
+        private void AudioHexBox_Apply(System.Windows.Controls.TextBox box)
+        {
+            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            string tag = box.Tag as string;
+            if (string.IsNullOrEmpty(tag)) return;
+
+            string text = (box.Text ?? string.Empty).Trim();
+            if (text.StartsWith("#")) text = text.Substring(1);
+
+            if (text.Length == 6
+                && byte.TryParse(text.Substring(0, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(text.Substring(2, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(text.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte b))
+            {
+                WriteAudioRgb(vm.PlayStationConfig, tag, r, g, b);
+            }
+
+            SyncOneAudioHex(box, tag);
         }
 
         /// <summary>Populates the HEX textbox from the current

@@ -2266,35 +2266,185 @@
                                                  Style="{StaticResource DzValueEdit}"/>
                                     </StackPanel>
 
-                                    <!-- Threshold-mode panel: 3 color pickers + 2 thresholds -->
+                                    <!-- Threshold-mode panel: 3 color blocks (each mirrors
+                                         the static base color UI) + 2 threshold sliders. -->
                                     <StackPanel Visibility="{Binding PlayStationConfig.AudioLightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Thresholds}">
-                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,8">
-                                            <StackPanel Margin="0,0,16,0">
+
+                                        <!-- LOW (quiet) color -->
+                                        <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,4,0,8"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                            <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowColor, Source={x:Static strings:Strings.Instance}}"
-                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                                <views:ColorPickerControl
+                                                           FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                                <views:ColorPickerControl Margin="0,0,0,12"
+                                                    HorizontalAlignment="Left"
                                                     Red="{Binding PlayStationConfig.AudioLowR, Mode=TwoWay}"
                                                     Green="{Binding PlayStationConfig.AudioLowG, Mode=TwoWay}"
                                                     Blue="{Binding PlayStationConfig.AudioLowB, Mode=TwoWay}"/>
+                                                <Grid Margin="0,0,0,10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="64"/>
+                                                        <ColumnDefinition Width="60"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
+                                                            HorizontalAlignment="Left"
+                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                <Binding Path="PlayStationConfig.AudioLowR" />
+                                                                <Binding Path="PlayStationConfig.AudioLowG" />
+                                                                <Binding Path="PlayStationConfig.AudioLowB" />
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                    <TextBox x:Name="AudioLowHexBox" Grid.Column="2" Width="100" Tag="Low"
+                                                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                             FontFamily="Consolas" Padding="6,4"
+                                                             KeyDown="AudioHexBox_KeyDown"
+                                                             LostFocus="AudioHexBox_LostFocus"
+                                                             ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                </Grid>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Red, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FFD32F2F"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioLowR, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioLowR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioLowRCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Green, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FF388E3C"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioLowG, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioLowG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioLowGCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Blue, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FF1976D2"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioLowB, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioLowBCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                            <StackPanel Margin="0,0,16,0">
+                                        </Border>
+
+                                        <!-- MID (medium) color -->
+                                        <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                            <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidColor, Source={x:Static strings:Strings.Instance}}"
-                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                                <views:ColorPickerControl
+                                                           FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                                <views:ColorPickerControl Margin="0,0,0,12"
+                                                    HorizontalAlignment="Left"
                                                     Red="{Binding PlayStationConfig.AudioMidR, Mode=TwoWay}"
                                                     Green="{Binding PlayStationConfig.AudioMidG, Mode=TwoWay}"
                                                     Blue="{Binding PlayStationConfig.AudioMidB, Mode=TwoWay}"/>
+                                                <Grid Margin="0,0,0,10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="64"/>
+                                                        <ColumnDefinition Width="60"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
+                                                            HorizontalAlignment="Left"
+                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                <Binding Path="PlayStationConfig.AudioMidR" />
+                                                                <Binding Path="PlayStationConfig.AudioMidG" />
+                                                                <Binding Path="PlayStationConfig.AudioMidB" />
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                    <TextBox x:Name="AudioMidHexBox" Grid.Column="2" Width="100" Tag="Mid"
+                                                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                             FontFamily="Consolas" Padding="6,4"
+                                                             KeyDown="AudioHexBox_KeyDown"
+                                                             LostFocus="AudioHexBox_LostFocus"
+                                                             ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                </Grid>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Red, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FFD32F2F"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioMidR, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioMidR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioMidRCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Green, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FF388E3C"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioMidG, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioMidG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioMidGCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Blue, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FF1976D2"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioMidB, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioMidB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioMidBCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
                                             </StackPanel>
+                                        </Border>
+
+                                        <!-- HIGH (loud) color -->
+                                        <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,12"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_HighColor, Source={x:Static strings:Strings.Instance}}"
-                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                                <views:ColorPickerControl
+                                                           FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                                <views:ColorPickerControl Margin="0,0,0,12"
+                                                    HorizontalAlignment="Left"
                                                     Red="{Binding PlayStationConfig.AudioHighR, Mode=TwoWay}"
                                                     Green="{Binding PlayStationConfig.AudioHighG, Mode=TwoWay}"
                                                     Blue="{Binding PlayStationConfig.AudioHighB, Mode=TwoWay}"/>
+                                                <Grid Margin="0,0,0,10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="64"/>
+                                                        <ColumnDefinition Width="60"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
+                                                            HorizontalAlignment="Left"
+                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                <Binding Path="PlayStationConfig.AudioHighR" />
+                                                                <Binding Path="PlayStationConfig.AudioHighG" />
+                                                                <Binding Path="PlayStationConfig.AudioHighB" />
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                    <TextBox x:Name="AudioHighHexBox" Grid.Column="2" Width="100" Tag="High"
+                                                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                             FontFamily="Consolas" Padding="6,4"
+                                                             KeyDown="AudioHexBox_KeyDown"
+                                                             LostFocus="AudioHexBox_LostFocus"
+                                                             ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                </Grid>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Red, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FFD32F2F"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioHighR, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioHighR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioHighRCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Green, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FF388E3C"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioHighG, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioHighG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioHighGCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Lighting_Blue, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Foreground="#FF1976D2"/>
+                                                    <Slider Value="{Binding PlayStationConfig.AudioHighB, Mode=TwoWay}" Minimum="0" Maximum="255" Width="200" VerticalAlignment="Center"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.AudioHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetAudioHighBCommand}" Style="{StaticResource ResetButton}"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Border>
 
+                                        <!-- Threshold sliders -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowToMid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                             <Slider Value="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay}"

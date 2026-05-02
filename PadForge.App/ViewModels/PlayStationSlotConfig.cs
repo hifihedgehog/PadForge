@@ -412,6 +412,39 @@ namespace PadForge.ViewModels
         public RelayCommand ResetSpeakerVolumeCommand =>
             _resetSpeakerVol ??= new RelayCommand(() => SpeakerVolume = 0x80);
         private RelayCommand _resetSpeakerVol;
+
+        // ── Audio-lightbar threshold reset commands ──
+        // Defaults match the FPS use case from issue #55: green low,
+        // yellow mid, red high.
+        public RelayCommand ResetAudioLowRCommand =>
+            _resetAudLowR ??= new RelayCommand(() => AudioLowR = 0);
+        private RelayCommand _resetAudLowR;
+        public RelayCommand ResetAudioLowGCommand =>
+            _resetAudLowG ??= new RelayCommand(() => AudioLowG = 0xFF);
+        private RelayCommand _resetAudLowG;
+        public RelayCommand ResetAudioLowBCommand =>
+            _resetAudLowB ??= new RelayCommand(() => AudioLowB = 0);
+        private RelayCommand _resetAudLowB;
+
+        public RelayCommand ResetAudioMidRCommand =>
+            _resetAudMidR ??= new RelayCommand(() => AudioMidR = 0xFF);
+        private RelayCommand _resetAudMidR;
+        public RelayCommand ResetAudioMidGCommand =>
+            _resetAudMidG ??= new RelayCommand(() => AudioMidG = 0xFF);
+        private RelayCommand _resetAudMidG;
+        public RelayCommand ResetAudioMidBCommand =>
+            _resetAudMidB ??= new RelayCommand(() => AudioMidB = 0);
+        private RelayCommand _resetAudMidB;
+
+        public RelayCommand ResetAudioHighRCommand =>
+            _resetAudHighR ??= new RelayCommand(() => AudioHighR = 0xFF);
+        private RelayCommand _resetAudHighR;
+        public RelayCommand ResetAudioHighGCommand =>
+            _resetAudHighG ??= new RelayCommand(() => AudioHighG = 0);
+        private RelayCommand _resetAudHighG;
+        public RelayCommand ResetAudioHighBCommand =>
+            _resetAudHighB ??= new RelayCommand(() => AudioHighB = 0);
+        private RelayCommand _resetAudHighB;
     }
 
     /// <summary>Sony's seven canonical adaptive trigger effect modes

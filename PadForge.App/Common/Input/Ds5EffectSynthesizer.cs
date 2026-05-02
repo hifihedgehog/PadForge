@@ -222,7 +222,7 @@ namespace PadForge.Common.Input
                                     r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
                                 }
                             }
-                            else // CrossFade — discrete with cross-fade window
+                            else // CrossFade — discrete with crossfade window
                             {
                                 float halfWindow = (float)(cfg.AudioCrossFadePercent / 100.0);
                                 // Sane clamp: window can't exceed half the

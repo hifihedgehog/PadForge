@@ -2250,9 +2250,11 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <ComboBox SelectedIndex="{Binding PlayStationConfig.AudioLightbarMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                                  Width="220" VerticalAlignment="Center">
+                                                  Width="280" VerticalAlignment="Center">
                                             <ComboBoxItem Content="{Binding Pad_Lighting_AudioLightbar_Mode_Pulse, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding Pad_Lighting_AudioLightbar_Mode_Thresholds, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_AudioLightbar_Mode_Gradient, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_AudioLightbar_Mode_CrossFade, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -2267,8 +2269,10 @@
                                     </StackPanel>
 
                                     <!-- Threshold-mode panel: 3 color blocks (each mirrors
-                                         the static base color UI) + 2 threshold sliders. -->
-                                    <StackPanel Visibility="{Binding PlayStationConfig.AudioLightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Thresholds}">
+                                         the static base color UI) + 2 threshold sliders.
+                                         Visible for all three multi-color modes
+                                         (hard / gradient / cross-fade). -->
+                                    <StackPanel Visibility="{Binding PlayStationConfig.AudioLightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Thresholds|Gradient|CrossFade}">
 
                                         <!-- LOW (quiet) color -->
                                         <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,4,0,8"
@@ -2460,6 +2464,18 @@
                                                     Style="{StaticResource DzSlider}"
                                                     Minimum="0" Maximum="100" TickFrequency="1"/>
                                             <TextBox Text="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        </StackPanel>
+
+                                        <!-- Cross-fade width — only meaningful in CrossFade mode -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
+                                                    Visibility="{Binding PlayStationConfig.AudioLightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=CrossFade}">
+                                            <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_CrossFadeWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                            <Slider Value="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay}"
+                                                    Style="{StaticResource DzSlider}"
+                                                    Minimum="0" Maximum="50" TickFrequency="0.5"/>
+                                            <TextBox Text="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
                                                      Style="{StaticResource DzValueEdit}"/>
                                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         </StackPanel>

@@ -310,6 +310,20 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioMidToHighPercent, Math.Clamp(value, 0, 100));
         }
 
+        private double _audioCrossFadePercent = 5.0;
+        /// <summary>Half-width of the cross-fade window (in audio peak
+        /// percentage) around each threshold boundary in CrossFade mode.
+        /// 0..50, default 5. At 5, a peak within ±5% of a threshold is
+        /// blended between the adjacent colors; outside that window the
+        /// behavior matches the discrete Thresholds mode. Above 0,
+        /// peak% < threshold% - this stays the prior color; peak% >
+        /// threshold% + this stays the next color.</summary>
+        public double AudioCrossFadePercent
+        {
+            get => _audioCrossFadePercent;
+            set => SetProperty(ref _audioCrossFadePercent, Math.Clamp(value, 0, 50));
+        }
+
         private bool _userEffectsEnabled;
         /// <summary>Master toggle for user-configured effect synthesis.
         /// When false, only Feature A (game-driven passthrough via
@@ -501,17 +515,26 @@ namespace PadForge.ViewModels
 
     /// <summary>Audio-driven lightbar behavior. Issue #55 listed the
     /// threshold variant as primary and pulse-modulation as the
-    /// alternative — PadForge ships both so users can pick whichever
-    /// fits the use case.</summary>
+    /// alternative; PadForge ships both, plus two interpolation
+    /// variants for the threshold path.</summary>
     public enum AudioLightbarMode
     {
         /// <summary>DSY-style brightness modulation: lightbar RGB =
         /// base color × audio peak. Pulses one color with audio.</summary>
         Pulse = 0,
-        /// <summary>Three discrete colors keyed off the audio peak band:
-        /// quiet → low color, medium → mid color, loud → high color.
-        /// Issue #55 use case (FPS green/yellow/red ambient cue).</summary>
+        /// <summary>Three discrete colors with hard boundaries at the
+        /// thresholds. Color snaps the moment the peak crosses.
+        /// Issue #55 primary description.</summary>
         Thresholds = 1,
+        /// <summary>Three colors, linearly interpolated across the peak
+        /// range: 0 → Low, lowMid% → Mid, midHigh% → High. Above
+        /// midHigh% stays at High. Smooth color transitions.</summary>
+        Gradient = 2,
+        /// <summary>Three discrete colors with a cross-fade window
+        /// around each threshold. Mostly the Thresholds behavior, but
+        /// the boundary edges blend across <c>AudioCrossFadePercent</c>
+        /// width to soften the snap.</summary>
+        CrossFade = 3,
     }
 
     /// <summary>Serializable mirror of <see cref="PlayStationSlotConfig"/>.
@@ -560,5 +583,6 @@ namespace PadForge.ViewModels
         [XmlAttribute] public byte AudioHighB { get; set; } = 0x00;
         [XmlAttribute] public double AudioLowToMidPercent { get; set; } = 33;
         [XmlAttribute] public double AudioMidToHighPercent { get; set; } = 66;
+        [XmlAttribute] public double AudioCrossFadePercent { get; set; } = 5.0;
     }
 }

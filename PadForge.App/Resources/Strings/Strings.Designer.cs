@@ -461,6 +461,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_AudioLightbar_Mode => Get("Pad_Lighting_AudioLightbar_Mode");
     public string Pad_Lighting_AudioLightbar_Mode_Pulse => Get("Pad_Lighting_AudioLightbar_Mode_Pulse");
     public string Pad_Lighting_AudioLightbar_Mode_Thresholds => Get("Pad_Lighting_AudioLightbar_Mode_Thresholds");
+    public string Pad_Lighting_AudioLightbar_Mode_Gradient => Get("Pad_Lighting_AudioLightbar_Mode_Gradient");
+    public string Pad_Lighting_AudioLightbar_Mode_CrossFade => Get("Pad_Lighting_AudioLightbar_Mode_CrossFade");
+    public string Pad_Lighting_AudioLightbar_CrossFadeWidth => Get("Pad_Lighting_AudioLightbar_CrossFadeWidth");
     public string Pad_Lighting_AudioLightbar_LowColor => Get("Pad_Lighting_AudioLightbar_LowColor");
     public string Pad_Lighting_AudioLightbar_MidColor => Get("Pad_Lighting_AudioLightbar_MidColor");
     public string Pad_Lighting_AudioLightbar_HighColor => Get("Pad_Lighting_AudioLightbar_HighColor");

@@ -2169,33 +2169,42 @@
                                 </StackPanel>
                                 <CheckBox IsChecked="{Binding PlayStationConfig.MicMute, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_MicMute, Source={x:Static strings:Strings.Instance}}"
-                                          Margin="0,8,0,4"/>
-                                <!-- Mic mute LED mode — DS5 firmware exposes
-                                     three states at byte 8 (Off / Solid /
-                                     Pulse), no separate brightness. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                    <TextBlock Text="{Binding Pad_Lighting_MicLedMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.MicLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="140" VerticalAlignment="Center">
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
-                                </StackPanel>
+                                          Margin="0,8,0,0"/>
                             </StackPanel>
                         </Border>
 
-                        <!-- Player number indicator LEDs (5 small LEDs below the touchpad) -->
+                        <!-- Indicator LEDs — player number row + mic mute LED.
+                             Grouped under one section because they share the
+                             firmware's single brightness register (byte 42).
+                             OpenRGB shows brightness as a property of every
+                             mode (Direct / Mic Off / Mic Pulse) for the same
+                             reason — there's only one register on the device. -->
                         <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,12,0,0"
                                 BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Lighting_PlayerLeds, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds, Source={x:Static strings:Strings.Instance}}"
                                            FontWeight="SemiBold" FontSize="14" Margin="0,0,0,4"/>
-                                <TextBlock Text="{Binding Pad_Lighting_PlayerLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                                <!-- Shared brightness — physically writes byte 42
+                                     ledBrightness, which the DS5 firmware uses
+                                     for the player LED row. Mute LED has only
+                                     mode (Off / Solid / Pulse) — no register. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Lighting_PlayerLed_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_LedBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedBrightness, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="140" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_High, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Player pattern -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Lighting_PlayerPattern, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
                                               Width="140" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}"/>
@@ -2206,13 +2215,15 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                 </StackPanel>
+
+                                <!-- Mute LED mode -->
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Pad_Lighting_PlayerLed_Brightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedBrightness, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                    <TextBlock Text="{Binding Pad_Lighting_MuteLedMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.MicLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
                                               Width="140" VerticalAlignment="Center">
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_High, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                 </StackPanel>
                             </StackPanel>

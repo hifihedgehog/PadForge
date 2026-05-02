@@ -69,23 +69,25 @@
          use viewBox 0 0 24 24.
          ═══════════════════════════════════════════ -->
 
-    <!-- Sticks tab — Material Symbols "gamepad" (4-direction
-         arrow pad). Visually unambiguous as "directional input
-         configuration" without looking like a physical controller. -->
+    <!-- Sticks tab — top-down analog thumbstick: outer travel
+         ring + inner stick cap, the universal way analog sticks
+         get drawn in input UIs (vs. D-pads which show 4 arrows).
+         Annular outer + filled inner circle. -->
     <DrawingImage x:Key="TabSticksIcon">
         <DrawingImage.Drawing>
             <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/>
+                             Geometry="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <!-- Triggers tab — gun-trigger silhouette (curved hook with
-         a finger-pull arc). Hand-authored to be recognizably a
-         trigger pull rather than a generic button. -->
+    <!-- Triggers tab — controller shoulder + trigger paddle in
+         side profile: wide top edge (shoulder mount) tapering
+         into a curved tongue (trigger paddle). The classic
+         T-shape with a rounded paddle bottom. -->
     <DrawingImage x:Key="TabTriggersIcon">
         <DrawingImage.Drawing>
             <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M3 4h12a4 4 0 0 1 4 4v3h-2V8a2 2 0 0 0-2-2H3V4zm10 8a4 4 0 0 1-4 4v4l-3-3-3 3v-4a4 4 0 0 1 4-4h6z"/>
+                             Geometry="M4 3h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-5v6c0 2-1.79 4-3 4s-3-2-3-4v-6H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
         </DrawingImage.Drawing>
     </DrawingImage>
 
@@ -99,12 +101,16 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <!-- Adaptive Triggers tab — trigger silhouette with a vibration
-         wave next to it, signalling "trigger that gives feedback". -->
+    <!-- Adaptive Triggers tab — same shoulder+paddle silhouette as
+         the regular Triggers icon, narrowed slightly so two filled
+         chevron markers fit on the right side. The chevrons read as
+         feedback radiating outward from the trigger. The base shape
+         stays consistent with TabTriggersIcon so the two tabs read
+         as a family. -->
     <DrawingImage x:Key="TabAdaptiveTriggersIcon">
         <DrawingImage.Drawing>
             <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M3 4h10a4 4 0 0 1 4 4v3h-2V8a2 2 0 0 0-2-2H3V4zm8 8a4 4 0 0 1-4 4v4l-3-3-3 3v-4a4 4 0 0 1 4-4h6zm9-3l1-1 M21 11l1.5-1.5 M20 14l1 1 M21 17l1.5 1.5"/>
+                             Geometry="M2 3h13a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4v6c0 2-1.34 4-2.5 4S6 19 6 17v-6H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM19 6L22 8L19 10ZM19 12L22 14L19 16Z"/>
         </DrawingImage.Drawing>
     </DrawingImage>
 

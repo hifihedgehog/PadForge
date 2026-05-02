@@ -1316,24 +1316,27 @@
 
             <!-- ─── TAB 3: Sticks (dynamic) ─── -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="16">
-                        <TextBlock Text="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE7C9;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
                         <TextBlock Text="{Binding Pad_Sticks_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
                     <ItemsControl ItemsSource="{Binding StickConfigs}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:StickConfigItem}">
-                                <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
-                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
-                                <StackPanel Margin="0,0,0,4">
+                                <Border Style="{StaticResource CardBorder}">
+                                <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="&#xE7C9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
                                         <TextBlock Text="{Binding Title}"
-                                                   FontSize="14" FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                   VerticalAlignment="Center"/>
+                                                   Style="{StaticResource CardTitle}"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                                     </StackPanel>
@@ -1695,24 +1698,27 @@
 
             <!-- ─── TAB 4: Triggers (dynamic) ─── -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="16">
-                        <TextBlock Text="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE7C9;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
                         <TextBlock Text="{Binding Pad_Triggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
                     <ItemsControl ItemsSource="{Binding TriggerConfigs}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:TriggerConfigItem}">
-                                <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
-                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
-                                <StackPanel Margin="0,0,0,4">
+                                <Border Style="{StaticResource CardBorder}">
+                                <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="&#xE7C9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
                                         <TextBlock Text="{Binding Title}"
-                                                   FontSize="14" FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                   VerticalAlignment="Center"/>
+                                                   Style="{StaticResource CardTitle}"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                                     </StackPanel>
@@ -1815,23 +1821,26 @@
 
             <!-- ─── TAB 5: Force Feedback ─── -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="16">
-                        <TextBlock Text="{Binding Pad_ForceFeedback_Header, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE92F;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_ForceFeedback_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
                         <TextBlock Text="{Binding Pad_ForceFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
                         <!-- Force Feedback / Rumble / Haptics section -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE92F;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
-                                       FontSize="14" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                       VerticalAlignment="Center"/>
+                                       Style="{StaticResource CardTitle}"/>
                             <Button Command="{Binding ResetForceAllCommand}" Style="{StaticResource ResetAllButton}"
                                     Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                         </StackPanel>
@@ -1900,19 +1909,18 @@
                         </Border>
 
                         <!-- ── Audio Bass Rumble section ── -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
-                                       FontSize="14" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                       VerticalAlignment="Center"/>
+                                       Style="{StaticResource CardTitle}"/>
                             <Button Command="{Binding ResetAudioRumbleAllCommand}" Style="{StaticResource ResetAllButton}"
                                     Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Settings_AudioRumbleDesc, Source={x:Static strings:Strings.Instance}}"
-                                   Opacity="0.6" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                                   Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
                         <CheckBox Content="{Binding Settings_AudioRumble_Enable, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding AudioRumbleEnabled, Mode=TwoWay}"
@@ -1980,10 +1988,14 @@
                  (visible only for DualSense / DualSense Edge slots)
                  ══════════════════════════════════════ -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="16">
-                        <TextBlock Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE928;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
                         <TextBlock Text="{Binding Pad_AdaptiveTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
@@ -1998,11 +2010,14 @@
                                   Margin="0,0,0,16"/>
 
                         <!-- Left Trigger -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE928;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
                                 <!-- Mode -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -2060,11 +2075,14 @@
                         </Border>
 
                         <!-- Right Trigger -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_RightTrigger, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE928;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_RightTrigger, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
                                 <!-- Mode -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -2129,18 +2147,27 @@
                  (visible for DS4 / DualSense / DualSense Edge slots)
                  ══════════════════════════════════════ -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="16">
-                        <TextBlock Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
                         <TextBlock Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
                         <!-- Solid lightbar color (base layer) -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_BaseColor, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
                                 <CheckBox IsChecked="{Binding PlayStationConfig.LightbarEnabled, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_BaseEnabled, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"/>
@@ -2212,11 +2239,14 @@
                         </Border>
 
                         <!-- Audio bytes (DualSense only — see code-behind for visibility gating) -->
-                        <Border x:Name="LightingAudioSection" BorderThickness="1" CornerRadius="4" Padding="12"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border x:Name="LightingAudioSection" Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Lighting_AudioHeader, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_AudioHeader, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
                                 <!-- Speaker volume -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Lighting_SpeakerVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -2238,14 +2268,16 @@
                              OpenRGB shows brightness as a property of every
                              mode (Direct / Mic Off / Mic Pulse) for the same
                              reason — there's only one register on the device. -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,12,0,0"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,4"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="&#xE754;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
                                 <!-- Shared brightness — physically writes byte 42
                                      ledBrightness, which the DS5 firmware uses
@@ -2292,14 +2324,16 @@
                              Pulse (DSY-style brightness modulation) and
                              Thresholds (issue #55 primary: three colors
                              keyed off audio level bands). -->
-                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,12,0,0"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Lighting_AudioLightbar, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="14" Margin="0,0,0,4"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_AudioLightbar, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                                 <CheckBox IsChecked="{Binding PlayStationConfig.AudioLightbarEnabled, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_AudioLightbar_Enable, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"/>

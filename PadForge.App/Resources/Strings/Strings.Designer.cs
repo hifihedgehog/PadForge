@@ -428,6 +428,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting => Get("Pad_Lighting");
     public string Pad_Lighting_Header => Get("Pad_Lighting_Header");
     public string Pad_Lighting_Subtitle => Get("Pad_Lighting_Subtitle");
+    public string Pad_Lighting_BaseColor => Get("Pad_Lighting_BaseColor");
     public string Pad_Lighting_BaseEnabled => Get("Pad_Lighting_BaseEnabled");
     public string Pad_Lighting_Red => Get("Pad_Lighting_Red");
     public string Pad_Lighting_Green => Get("Pad_Lighting_Green");

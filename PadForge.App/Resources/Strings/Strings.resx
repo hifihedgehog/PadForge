@@ -411,6 +411,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
+  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Base color</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Apply user-configured base color when no game is writing</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>
   <data name="Pad_Lighting_Green" xml:space="preserve"><value>Green</value></data>

@@ -438,6 +438,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_MicLed_Pulse => Get("Pad_Lighting_MicLed_Pulse");
     public string Pad_Lighting_PlayerLeds => Get("Pad_Lighting_PlayerLeds");
     public string Pad_Lighting_PlayerLeds_Subtitle => Get("Pad_Lighting_PlayerLeds_Subtitle");
+    public string Pad_Lighting_IndicatorLeds => Get("Pad_Lighting_IndicatorLeds");
+    public string Pad_Lighting_IndicatorLeds_Subtitle => Get("Pad_Lighting_IndicatorLeds_Subtitle");
+    public string Pad_Lighting_PlayerPattern => Get("Pad_Lighting_PlayerPattern");
+    public string Pad_Lighting_MuteLedMode => Get("Pad_Lighting_MuteLedMode");
+    public string Pad_Lighting_LedBrightness => Get("Pad_Lighting_LedBrightness");
     public string Pad_Lighting_PlayerLed_Mode => Get("Pad_Lighting_PlayerLed_Mode");
     public string Pad_Lighting_PlayerLed_Off => Get("Pad_Lighting_PlayerLed_Off");
     public string Pad_Lighting_PlayerLed_P1 => Get("Pad_Lighting_PlayerLed_P1");

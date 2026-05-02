@@ -1316,10 +1316,18 @@
 
             <!-- ─── TAB 3: Sticks (dynamic) ─── -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Pad_Sticks_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
                     <ItemsControl ItemsSource="{Binding StickConfigs}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:StickConfigItem}">
+                                <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
+                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                                 <StackPanel Margin="0,0,0,4">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Title}"
@@ -1676,21 +1684,30 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <Separator Margin="0,8,0,12"/>
                                 </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
             <!-- ─── TAB 4: Triggers (dynamic) ─── -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Pad_Triggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
                     <ItemsControl ItemsSource="{Binding TriggerConfigs}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:TriggerConfigItem}">
-                                <StackPanel Margin="0,0,0,16">
+                                <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
+                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                <StackPanel Margin="0,0,0,4">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Title}"
                                                    FontSize="14" FontWeight="SemiBold"
@@ -1787,18 +1804,29 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <Separator Margin="0,8,0,12"/>
                                 </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
             <!-- ─── TAB 5: Force Feedback ─── -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
-                    <StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{Binding Pad_ForceFeedback_Header, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Pad_ForceFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Force Feedback / Rumble / Haptics section -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="14" FontWeight="SemiBold"
@@ -1868,8 +1896,13 @@
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>
 
-                        <!-- ── Audio Bass Rumble ── -->
-                        <Separator Margin="0,16,0,12"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ── Audio Bass Rumble section ── -->
+                        <Border BorderThickness="1" CornerRadius="4" Padding="12"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                            <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="14" FontWeight="SemiBold"
@@ -1936,6 +1969,8 @@
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

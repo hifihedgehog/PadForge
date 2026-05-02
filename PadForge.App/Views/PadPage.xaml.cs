@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
@@ -230,37 +231,29 @@ namespace PadForge.Views
             // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers; MIDI
             // hides both Sticks and Triggers because its mapping surface is
             // CC + note, not stick/trigger.
-            //
-            // Force Feedback tab is shown for every VC type, including K+M
-            // and MIDI (issue #54). Even when the virtual controller emits no
-            // FFB to games (K+M and MIDI have no FFB endpoint), the FFB tab
-            // settings drive the physical mapped device: audio bass rumble
-            // mixes into the combined vibration in
-            // InputManager.Step2.UpdateInputStates.cs:184-203, then
-            // ForceFeedbackState.SetDeviceForces applies the FFB tab's
-            // ForceOverall / LeftMotorStrength / RightMotorStrength /
-            // ForceSwapMotor scaling before sending to the physical device.
-            // The Test Rumble button fires the physical device's haptic
-            // surface directly, so it's meaningful regardless of VC type too.
             TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
             TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
-            TabForceFeedback.Visibility = Visibility.Visible;
 
-            // Adaptive Triggers and Lighting tabs reflect what the
-            // currently-SELECTED physical device on this slot can do.
-            // Slots can have multiple devices assigned; the user picks
-            // which one's mappings they're editing via the device
-            // dropdown, and the configuration tabs follow that
-            // selection so a user editing the Xbox controller side of
-            // a "DS5 + Xbox both mapped to one slot" setup doesn't see
-            // DualSense-specific tabs.  When they switch the dropdown
-            // to the DualSense, the tabs reappear.
+            // Adaptive Triggers, Lighting, and Force Feedback tabs all
+            // reflect what the currently-SELECTED physical device on this
+            // slot can do. Slots can have multiple devices assigned; the
+            // user picks which one's mappings they're editing via the
+            // device dropdown, and the configuration tabs follow that
+            // selection so a user editing the Xbox controller side of a
+            // "DS5 + Xbox both mapped to one slot" setup doesn't see
+            // DualSense-specific tabs. When they switch the dropdown to
+            // the DualSense, the tabs reappear.
             //
             // Adaptive Triggers: selected device is a DualSense or
-            // DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2).
+            //   DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2).
             // Lighting: above plus DS4 (PIDs 0x05C4, 0x09CC, 0x0BA0).
+            // Force Feedback: selected device's CapType is a stick-class
+            //   input (Gamepad / Joystick / Driving / Flight / FirstPerson).
+            //   Keyboards / mice / touchpads / MIDI controllers don't
+            //   have FFB endpoints, so the tab would be a no-op there.
             bool hasAdaptiveTriggers = false;
             bool hasLightbar = false;
+            bool hasForceFeedback = false;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
                 && vmProfile.SelectedMappedDevice.InstanceGuid != Guid.Empty
@@ -273,16 +266,27 @@ namespace PadForge.Views
                     {
                         if (ud == null) continue;
                         if (ud.InstanceGuid != selectedGuid) continue;
-                        if (ud.VendorId != 0x054C) break;
-                        bool isDualSense = ud.ProdId == 0x0CE6;
-                        bool isDualSenseEdge = ud.ProdId == 0x0DF2;
-                        bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
-                        hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
-                        hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+
+                        hasForceFeedback =
+                            ud.CapType == InputDeviceType.Gamepad
+                            || ud.CapType == InputDeviceType.Joystick
+                            || ud.CapType == InputDeviceType.Driving
+                            || ud.CapType == InputDeviceType.Flight
+                            || ud.CapType == InputDeviceType.FirstPerson;
+
+                        if (ud.VendorId == 0x054C)
+                        {
+                            bool isDualSense = ud.ProdId == 0x0CE6;
+                            bool isDualSenseEdge = ud.ProdId == 0x0DF2;
+                            bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
+                            hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
+                            hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                        }
                         break;
                     }
                 }
             }
+            TabForceFeedback.Visibility = hasForceFeedback ? Visibility.Visible : Visibility.Collapsed;
             if (TabAdaptiveTriggers != null)
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)

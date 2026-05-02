@@ -1,0 +1,17 @@
+<UserControl x:Class="PadForge.Views.Controls.LabeledShapeIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             SnapsToDevicePixels="True"
+             UseLayoutRounding="True">
+    <Grid>
+        <Image x:Name="ShapeImage" Stretch="Uniform"/>
+        <Viewbox x:Name="LabelHost" Stretch="Uniform">
+            <!-- Inner 512x512 canvas matches the icon viewBox so label
+                 positions are expressed in icon coordinates. -->
+            <Canvas Width="512" Height="512" Background="Transparent" IsHitTestVisible="False">
+                <Path x:Name="LabelPath"
+                      Fill="{DynamicResource SolidBackgroundFillColorBaseBrush}"/>
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</UserControl>

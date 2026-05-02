@@ -293,6 +293,8 @@
   <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 design system for WPF</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm for data binding</value></data>
+  <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick and trigger icons derived from "Xbox Series Button Icons and Controls" by Zacksly (CC BY 3.0)</value></data>
   <data name="About_License" xml:space="preserve"><value>License</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>This software is licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). 3D controller models adapted from Handheld Companion (CC BY-NC-SA 4.0). 2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT). Original codebase forked from x360ce (MIT). SDL3 is licensed under the zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit, and WPF UI are licensed under the MIT License. OpenXInput ships only an upstream trademark disclaimer; redistributed as-is under the same terms.</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>

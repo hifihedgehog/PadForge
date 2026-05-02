@@ -1,0 +1,22 @@
+Xbox Series Button Icons and Controls
+======================================
+
+Source:   Zacksly
+URL:      https://zacksly.itch.io/xbox-series-button-icons-and-controls
+License:  Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+          https://creativecommons.org/licenses/by/3.0/
+
+The four files in this directory (Left Stick.svg, Right Stick.svg,
+Left Trigger.svg, Right Trigger.svg) are unmodified originals from the
+above pack and are redistributed under CC BY 3.0.
+
+Modifications in PadForge
+-------------------------
+PadForge ships derivative tab icons in Resources/ControllerIcons.xaml
+that re-use the outer body geometry of the stick and trigger SVGs
+(outer ring + inner disc for sticks; outer trigger silhouette for
+triggers). The originals' lettering is not used; per-section labels
+(L/R/LT/RT/L2/R2/digits) are rendered at runtime by
+Views/Controls/LabeledShapeIcon as a Path built via
+FormattedText.BuildGeometry against Bahnschrift SemiBold Condensed
+(a Windows system font), composited over the licensed body shape.

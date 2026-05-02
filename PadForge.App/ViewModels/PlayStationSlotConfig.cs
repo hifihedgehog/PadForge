@@ -55,7 +55,10 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _leftStartPosition, value);
         }
 
-        private byte _leftEndPosition;
+        private byte _leftEndPosition = 255;
+        /// <summary>End of the trigger pull range that the active effect
+        /// targets. Default 255 (full pull) so a fresh slot exposes the
+        /// trigger's full travel; the reset command goes back to this.</summary>
         public byte LeftEndPosition
         {
             get => _leftEndPosition;
@@ -83,7 +86,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _rightStartPosition, value);
         }
 
-        private byte _rightEndPosition;
+        private byte _rightEndPosition = 255;
+        /// <summary>End of the trigger pull range that the active effect
+        /// targets. Default 255 (full pull); see <see cref="LeftEndPosition"/>.</summary>
         public byte RightEndPosition
         {
             get => _rightEndPosition;
@@ -352,7 +357,7 @@ namespace PadForge.ViewModels
             {
                 LeftTriggerMode = AdaptiveTriggerMode.Off;
                 LeftStartPosition = 0;
-                LeftEndPosition = 0;
+                LeftEndPosition = 255;
                 LeftStrength = 0;
                 LeftFrequency = 0;
             });
@@ -363,7 +368,7 @@ namespace PadForge.ViewModels
             {
                 RightTriggerMode = AdaptiveTriggerMode.Off;
                 RightStartPosition = 0;
-                RightEndPosition = 0;
+                RightEndPosition = 255;
                 RightStrength = 0;
                 RightFrequency = 0;
             });
@@ -373,7 +378,7 @@ namespace PadForge.ViewModels
             _resetLeftRange ??= new RelayCommand(() =>
             {
                 LeftStartPosition = 0;
-                LeftEndPosition = 0;
+                LeftEndPosition = 255;
             });
         private RelayCommand _resetLeftRange;
 
@@ -381,7 +386,7 @@ namespace PadForge.ViewModels
             _resetRightRange ??= new RelayCommand(() =>
             {
                 RightStartPosition = 0;
-                RightEndPosition = 0;
+                RightEndPosition = 255;
             });
         private RelayCommand _resetRightRange;
 
@@ -547,11 +552,11 @@ namespace PadForge.ViewModels
         [XmlAttribute] public AdaptiveTriggerMode LeftTriggerMode { get; set; } = AdaptiveTriggerMode.Off;
         [XmlAttribute] public AdaptiveTriggerMode RightTriggerMode { get; set; } = AdaptiveTriggerMode.Off;
         [XmlAttribute] public byte LeftStartPosition { get; set; }
-        [XmlAttribute] public byte LeftEndPosition { get; set; }
+        [XmlAttribute] public byte LeftEndPosition { get; set; } = 255;
         [XmlAttribute] public byte LeftStrength { get; set; }
         [XmlAttribute] public byte LeftFrequency { get; set; }
         [XmlAttribute] public byte RightStartPosition { get; set; }
-        [XmlAttribute] public byte RightEndPosition { get; set; }
+        [XmlAttribute] public byte RightEndPosition { get; set; } = 255;
         [XmlAttribute] public byte RightStrength { get; set; }
         [XmlAttribute] public byte RightFrequency { get; set; }
         [XmlAttribute] public byte LightbarRed { get; set; }

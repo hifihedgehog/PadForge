@@ -381,7 +381,7 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>
-  <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure trigger feedback effects on the assigned physical DualSense. Game-driven trigger effects are forwarded automatically; settings here add a user-configured layer that runs when no game is writing.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure trigger feedback effects on the assigned physical DualSense. Game-driven trigger effects are forwarded automatically. Settings here add a user-configured layer that runs when no game is writing.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per-stick deadzones, anti-deadzones, sensitivity curves, and center-offset calibration. Each section below targets one analog stick on the active output. Extended profiles can have up to four sticks; standard gamepads have two.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
@@ -413,7 +413,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Base color</value></data>
+  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Base Color</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Apply user-configured base color when no game is writing</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>
   <data name="Pad_Lighting_Green" xml:space="preserve"><value>Green</value></data>
@@ -446,7 +446,7 @@
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>High</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Medium</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>Low</value></data>
-  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-driven lightbar</value></data>
+  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-Driven Lightbar</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Modulates the base color above by the system audio peak. Pulses with whatever is playing through the default output device. Taps the same WASAPI capture as audio rumble but reads the full waveform (no bass-cutoff filter), so it follows everything you hear.</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Pulse base color with system audio</value></data>
   <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>

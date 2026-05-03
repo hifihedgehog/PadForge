@@ -22,18 +22,6 @@ namespace PadForge.Engine
     }
 
     // ─────────────────────────────────────────────────────────────────
-    //  ObjectAspect
-    //  Used when filtering device objects by aspect (position,
-    //  velocity, acceleration, force).
-    // ─────────────────────────────────────────────────────────────────
-
-    [Flags]
-    public enum ObjectAspect : int
-    {
-        Position = 0x100
-    }
-
-    // ─────────────────────────────────────────────────────────────────
     //  ObjectGuid
     //  Static class providing well-known GUIDs for device object types
     //  (axes, buttons, POV controllers). Values match DirectInput
@@ -84,7 +72,6 @@ namespace PadForge.Engine
 
     public static class InputDeviceType
     {
-        public const int Device = 17;
         public const int Mouse = 18;
         public const int Keyboard = 19;
         public const int Joystick = 20;

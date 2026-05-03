@@ -56,16 +56,6 @@ namespace PadForge.Engine
         /// </summary>
         public int Offset { get; set; }
 
-        // ─────────────────────────────────────────────
-        //  Aspect and capabilities
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// The aspect of the object (Position, Velocity, Acceleration, Force).
-        /// Most objects are Position-aspect.
-        /// </summary>
-        public ObjectAspect Aspect { get; set; } = ObjectAspect.Position;
-
         /// <summary>
         /// Whether this object is an axis (absolute or relative).
         /// </summary>

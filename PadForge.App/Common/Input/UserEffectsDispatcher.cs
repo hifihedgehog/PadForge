@@ -75,7 +75,7 @@ namespace PadForge.Common.Input
         private PlayStationSlotConfig _config;
         private System.Threading.Timer _animTimer;
         private bool _animTickActive;
-        private bool _disposed;
+        private volatile bool _disposed;
 
         // Per-mode runtime state. The synthesizer is stateless; the
         // dispatcher carries random-colour memory across audio onsets,
@@ -317,8 +317,11 @@ namespace PadForge.Common.Input
                 }
                 else // InputReactiveCycle
                 {
-                    var palette = _config.LightbarPalette;
-                    int n = palette?.Count ?? 0;
+                    // Timer thread can't read the live ObservableCollection
+                    // directly without racing concurrent UI-thread palette
+                    // edits — snapshot under the config's palette lock.
+                    var palette = _config.SnapshotLightbarPalette();
+                    int n = palette.Length;
                     if (n > 0)
                     {
                         _palettePulseIndex = (_palettePulseIndex + 1) % n;

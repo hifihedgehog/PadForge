@@ -92,6 +92,14 @@ namespace PadForge.Views
 
         public void Unbind()
         {
+            // Stop any in-flight recording-flash timer before tearing
+            // down the rest of the binding state. Otherwise the
+            // DispatcherTimer holds the control + widget objects alive
+            // through its callback closure and keeps firing
+            // ApplyFlashState every 400 ms after the page has been
+            // unbound.
+            UpdateFlashTarget(null);
+
             CompositionTarget.Rendering -= OnRendering;
             if (_vm != null)
             {
@@ -666,7 +674,10 @@ namespace PadForge.Views
                 {
                     if (highlight) w.Arrow.Fill = FlashBrush;
                     else w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
-                    w.Arrow.Visibility = Visibility.Visible;
+                    // Match the stick pattern: blink on/off rather than
+                    // staying visible the whole time so the flash is
+                    // actually perceptible against a centered POV.
+                    w.Arrow.Visibility = highlight ? Visibility.Visible : Visibility.Collapsed;
                     // Show arrow pointing in the target direction
                     string dir = t.Substring($"ExtendedPov{w.PovIndex}".Length);
                     double angle = dir switch

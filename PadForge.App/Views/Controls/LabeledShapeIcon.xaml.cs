@@ -44,7 +44,14 @@ namespace PadForge.Views.Controls
         }
 
         private static void OnShapeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => ((LabeledShapeIcon)d).UpdateShape();
+        {
+            // UpdateLabel sizes the glyph based on Shape (sticks use a
+            // smaller font than triggers), so a Shape change has to
+            // re-layout the label too.
+            var c = (LabeledShapeIcon)d;
+            c.UpdateShape();
+            c.UpdateLabel();
+        }
 
         private static void OnLabelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((LabeledShapeIcon)d).UpdateLabel();

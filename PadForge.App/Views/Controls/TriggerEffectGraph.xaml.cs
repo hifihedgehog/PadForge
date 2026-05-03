@@ -134,6 +134,15 @@ namespace PadForge.Views.Controls
             if (Mode == AdaptiveTriggerMode.Off || Strength == 0)
                 return;
 
+            // Vibration modes also encode as Off when frequency is 0
+            // (firmware autoTrigger with freq byte 0 produces no buzz).
+            // Match that in the preview so the user doesn't see an
+            // animated wave for an inert trigger.
+            if ((Mode == AdaptiveTriggerMode.Vibration ||
+                 Mode == AdaptiveTriggerMode.MultiplePositionVibration)
+                && Frequency == 0)
+                return;
+
             // Map byte position [0, 255] → x in [0, w]. Strength byte
             // [0, 255] → height fraction of plotH.
             double startX = StartPosition / 255.0 * w;

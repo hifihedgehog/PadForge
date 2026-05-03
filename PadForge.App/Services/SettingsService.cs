@@ -502,9 +502,8 @@ namespace PadForge.Services
                     cfg.LightbarColorCycleSmooth = cfgData.LightbarColorCycleSmooth;
                     if (cfgData.LightbarPalette != null && cfgData.LightbarPalette.Length > 0)
                     {
-                        cfg.LightbarPalette.Clear();
-                        foreach (var entry in cfgData.LightbarPalette)
-                            cfg.LightbarPalette.Add(new ViewModels.LightbarPaletteEntry(entry.R, entry.G, entry.B));
+                        cfg.ReplaceLightbarPalette(cfgData.LightbarPalette
+                            .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
                     }
                     cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
 

@@ -50,12 +50,20 @@ namespace PadForge.Common.Input
         private const int StandardPayloadSize = 47;
 
         // Bounded channel keeps memory pressure predictable under runaway
-        // game cadence. DropOldest matches the recipe's optional coalescing
-        // policy: trigger / lightbar / audio / mute are all *state*, not
-        // event sequences, so the latest applied state is what matters.
-        // 32 slots is generous for 30-60 Hz writes against an 8 ms HM ring
-        // and a typical sub-millisecond SDL write.
-        private const int ChannelCapacity = 32;
+        // game cadence. 64 slots is generous for 30-60 Hz writes against
+        // an 8 ms HM ring and a typical sub-millisecond SDL write.
+        //
+        // FullMode = DropWrite (not DropOldest): with DropOldest the
+        // channel silently dequeues the oldest entry on overflow without
+        // surfacing it to the reader, which means the rented ArrayPool
+        // buffer attached to that entry was never returned — a per-overflow
+        // permanent leak. DropWrite makes TryWrite return false on
+        // overflow so the existing Enqueue catch returns the buffer
+        // immediately. The semantic difference for state-based writes
+        // (newest dropped instead of oldest) is irrelevant: under sustained
+        // pressure either policy drops some packets, and the next state
+        // write still arrives at the controller within milliseconds.
+        private const int ChannelCapacity = 64;
 
         private readonly Channel<Ds5Effect> _channel;
         private readonly CancellationTokenSource _cts = new();
@@ -68,7 +76,7 @@ namespace PadForge.Common.Input
             _padIndex = padIndex;
             _channel = Channel.CreateBounded<Ds5Effect>(new BoundedChannelOptions(ChannelCapacity)
             {
-                FullMode = BoundedChannelFullMode.DropOldest,
+                FullMode = BoundedChannelFullMode.DropWrite,
                 SingleReader = true,
                 SingleWriter = false,
             });
@@ -82,11 +90,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>HM polling thread enqueues here. Returns immediately
-        /// after a buffer rent, copy, and channel write — no blocking
-        /// I/O.  When the channel is full the oldest queued packet is
-        /// dropped (its buffer returned to the pool inside the worker
-        /// when it would have been consumed) since trigger / lightbar
-        /// state is last-writer-wins.</summary>
+        /// after a buffer rent, copy, and channel write — no blocking I/O.
+        /// On overflow (DropWrite mode) <c>TryWrite</c> returns false and
+        /// the rented buffer is returned to the pool so it doesn't leak.
+        /// On Dispose race the same branch handles it.</summary>
         public void Enqueue(byte reportId, ReadOnlySpan<byte> payload)
         {
             if (_disposed) return;
@@ -99,7 +106,8 @@ namespace PadForge.Common.Input
             var effect = new Ds5Effect(buf, payload.Length, reportId);
             if (!_channel.Writer.TryWrite(effect))
             {
-                // Channel completed (Dispose race) — return the rented buffer.
+                // Channel full (DropWrite) or completed (Dispose race) —
+                // either way, return the rented buffer.
                 ArrayPool<byte>.Shared.Return(buf);
             }
         }

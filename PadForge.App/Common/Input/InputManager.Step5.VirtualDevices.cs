@@ -916,6 +916,18 @@ namespace PadForge.Common.Input
                                     {
                                         _createFailed[capturedIndex] = true;
                                     }
+                                    else
+                                    {
+                                        // Connect() returned but the VC is not connected
+                                        // (device disconnected mid-bring-up, kernel reject,
+                                        // etc.). Without disposing here the IVirtualController
+                                        // and its HM kernel resources leak; without latching
+                                        // _createFailed the next polling cycle sees the slot
+                                        // as eligible-but-unbuilt and kicks off another
+                                        // connect, accumulating leaked VCs.
+                                        try { vcAsync.Dispose(); } catch { /* best effort */ }
+                                        _createFailed[capturedIndex] = true;
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
@@ -948,6 +960,15 @@ namespace PadForge.Common.Input
                             }
                             else if (vc == null)
                             {
+                                _createFailed[padIndex] = true;
+                                _slotInitializing[padIndex] = false;
+                            }
+                            else
+                            {
+                                // Created but not connected — dispose and latch
+                                // failure so we don't loop on the next cycle.
+                                try { vc.Dispose(); } catch { /* best effort */ }
+                                _virtualControllers[padIndex] = null;
                                 _createFailed[padIndex] = true;
                                 _slotInitializing[padIndex] = false;
                             }

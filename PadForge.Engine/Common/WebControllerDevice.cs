@@ -202,8 +202,7 @@ namespace PadForge.Engine
                     ObjectTypeGuid = AxisGuids[i],
                     Name = AxisNames[i],
                     ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
-                    Offset = i * 4,
-                    Aspect = ObjectAspect.Position
+                    Offset = i * 4
                 };
             }
 
@@ -216,8 +215,7 @@ namespace PadForge.Engine
                     ObjectTypeGuid = ObjectGuid.Button,
                     Name = ButtonNames[i],
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumGamepadAxes + i) * 4,
-                    Aspect = ObjectAspect.Position
+                    Offset = (NumGamepadAxes + i) * 4
                 };
             }
 
@@ -228,8 +226,7 @@ namespace PadForge.Engine
                 ObjectTypeGuid = ObjectGuid.PovController,
                 Name = "D-Pad",
                 ObjectType = DeviceObjectTypeFlags.PointOfViewController,
-                Offset = (NumGamepadAxes + NumGamepadButtons) * 4,
-                Aspect = ObjectAspect.Position
+                Offset = (NumGamepadAxes + NumGamepadButtons) * 4
             };
 
             // Touchpad descriptors (when device has touchpad capability).
@@ -247,8 +244,7 @@ namespace PadForge.Engine
                         ObjectTypeGuid = ObjectGuid.Unknown,
                         Name = tpNames[i],
                         ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
-                        Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + i) * 4,
-                        Aspect = ObjectAspect.Position
+                        Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + i) * 4
                     };
                 }
 
@@ -263,8 +259,7 @@ namespace PadForge.Engine
                     ObjectTypeGuid = ObjectGuid.Button,
                     Name = "Touchpad Click",
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + 6) * 4 + 4,
-                    Aspect = ObjectAspect.Position
+                    Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + 6) * 4 + 4
                 };
             }
 

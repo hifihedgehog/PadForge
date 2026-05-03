@@ -421,6 +421,7 @@
   <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Blue</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>
+  <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Remove this color from the palette</value></data>
   <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>Mute LED</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Solid</value></data>
@@ -862,6 +863,32 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Reset Bass Cutoff</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Reset Left Motor</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Reset Right Motor</value></data>
+
+  <!-- ═══ Pad — Adaptive Triggers reset tooltips ═══ -->
+  <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Reset Left Trigger</value></data>
+  <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Reset Right Trigger</value></data>
+  <data name="Pad_ResetStrength" xml:space="preserve"><value>Reset Strength</value></data>
+  <data name="Pad_ResetFrequency" xml:space="preserve"><value>Reset Frequency</value></data>
+
+  <!-- ═══ Pad — Lighting reset tooltips ═══ -->
+  <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Reset Period</value></data>
+  <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Reset Pulse Decay</value></data>
+  <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>
+  <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>Reset Low-to-Mid Boundary</value></data>
+  <data name="Pad_ResetAudioMidToHighPercent" xml:space="preserve"><value>Reset Mid-to-High Boundary</value></data>
+  <data name="Pad_ResetAudioCrossFadePercent" xml:space="preserve"><value>Reset Crossfade Width</value></data>
+  <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Reset Red</value></data>
+  <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Reset Green</value></data>
+  <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Reset Blue</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Reset Low Band — Red</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Reset Low Band — Green</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Reset Low Band — Blue</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Reset Mid Band — Red</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Reset Mid Band — Green</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Reset Mid Band — Blue</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Reset High Band — Red</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Reset High Band — Green</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Reset High Band — Blue</value></data>
 
   <!-- ═══ Pad — Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>

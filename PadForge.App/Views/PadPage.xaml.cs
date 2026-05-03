@@ -704,6 +704,11 @@ namespace PadForge.Views
                     if (AudioHighHexBox != null && !AudioHighHexBox.IsKeyboardFocusWithin)
                         SyncOneAudioHex(AudioHighHexBox, "High");
                     break;
+                // Palette items (LightbarPaletteEntry) carry their own
+                // PropertyChanged via the ObservableCollection wiring in
+                // PlayStationSlotConfig; their TextBoxes bind directly
+                // to entry.Hex with UpdateSourceTrigger=LostFocus, so no
+                // explicit sync case is needed here.
             }
         }
 

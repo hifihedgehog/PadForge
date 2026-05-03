@@ -499,18 +499,12 @@ namespace PadForge.Services
                                 : ViewModels.LightbarMode.Off;
                     cfg.LightbarPeriodMs = cfgData.LightbarPeriodMs;
                     cfg.LightbarColorCycleSmooth = cfgData.LightbarColorCycleSmooth;
-                    cfg.LightbarPalette1R = cfgData.LightbarPalette1R;
-                    cfg.LightbarPalette1G = cfgData.LightbarPalette1G;
-                    cfg.LightbarPalette1B = cfgData.LightbarPalette1B;
-                    cfg.LightbarPalette2R = cfgData.LightbarPalette2R;
-                    cfg.LightbarPalette2G = cfgData.LightbarPalette2G;
-                    cfg.LightbarPalette2B = cfgData.LightbarPalette2B;
-                    cfg.LightbarPalette3R = cfgData.LightbarPalette3R;
-                    cfg.LightbarPalette3G = cfgData.LightbarPalette3G;
-                    cfg.LightbarPalette3B = cfgData.LightbarPalette3B;
-                    cfg.LightbarPalette4R = cfgData.LightbarPalette4R;
-                    cfg.LightbarPalette4G = cfgData.LightbarPalette4G;
-                    cfg.LightbarPalette4B = cfgData.LightbarPalette4B;
+                    if (cfgData.LightbarPalette != null && cfgData.LightbarPalette.Length > 0)
+                    {
+                        cfg.LightbarPalette.Clear();
+                        foreach (var entry in cfgData.LightbarPalette)
+                            cfg.LightbarPalette.Add(new ViewModels.LightbarPaletteEntry(entry.R, entry.G, entry.B));
+                    }
                     cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
                     cfg.LightbarInputRandomize = cfgData.LightbarInputRandomize;
                 }
@@ -1279,18 +1273,9 @@ namespace PadForge.Services
                     LightbarMode = cfg.LightbarMode,
                     LightbarPeriodMs = cfg.LightbarPeriodMs,
                     LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
-                    LightbarPalette1R = cfg.LightbarPalette1R,
-                    LightbarPalette1G = cfg.LightbarPalette1G,
-                    LightbarPalette1B = cfg.LightbarPalette1B,
-                    LightbarPalette2R = cfg.LightbarPalette2R,
-                    LightbarPalette2G = cfg.LightbarPalette2G,
-                    LightbarPalette2B = cfg.LightbarPalette2B,
-                    LightbarPalette3R = cfg.LightbarPalette3R,
-                    LightbarPalette3G = cfg.LightbarPalette3G,
-                    LightbarPalette3B = cfg.LightbarPalette3B,
-                    LightbarPalette4R = cfg.LightbarPalette4R,
-                    LightbarPalette4G = cfg.LightbarPalette4G,
-                    LightbarPalette4B = cfg.LightbarPalette4B,
+                    LightbarPalette = cfg.LightbarPalette
+                        .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
+                        .ToArray(),
                     LightbarInputDecayMs = cfg.LightbarInputDecayMs,
                     LightbarInputRandomize = cfg.LightbarInputRandomize,
                 });
@@ -1444,18 +1429,9 @@ namespace PadForge.Services
                     LightbarMode = cfg.LightbarMode,
                     LightbarPeriodMs = cfg.LightbarPeriodMs,
                     LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
-                    LightbarPalette1R = cfg.LightbarPalette1R,
-                    LightbarPalette1G = cfg.LightbarPalette1G,
-                    LightbarPalette1B = cfg.LightbarPalette1B,
-                    LightbarPalette2R = cfg.LightbarPalette2R,
-                    LightbarPalette2G = cfg.LightbarPalette2G,
-                    LightbarPalette2B = cfg.LightbarPalette2B,
-                    LightbarPalette3R = cfg.LightbarPalette3R,
-                    LightbarPalette3G = cfg.LightbarPalette3G,
-                    LightbarPalette3B = cfg.LightbarPalette3B,
-                    LightbarPalette4R = cfg.LightbarPalette4R,
-                    LightbarPalette4G = cfg.LightbarPalette4G,
-                    LightbarPalette4B = cfg.LightbarPalette4B,
+                    LightbarPalette = cfg.LightbarPalette
+                        .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
+                        .ToArray(),
                     LightbarInputDecayMs = cfg.LightbarInputDecayMs,
                     LightbarInputRandomize = cfg.LightbarInputRandomize,
                 });

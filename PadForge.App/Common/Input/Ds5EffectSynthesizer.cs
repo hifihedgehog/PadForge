@@ -311,11 +311,12 @@ namespace PadForge.Common.Input
 
                 case LightbarMode.ColorCycle:
                 {
-                    // Walk the 4-color palette across the period.
-                    const int N = 4;
-                    double scaled = phase * N;
-                    int idx = (int)Math.Floor(scaled) % N;
-                    int next = (idx + 1) % N;
+                    int n = cfg.LightbarPalette?.Count ?? 0;
+                    if (n == 0) return (0, 0, 0);
+                    if (n == 1) return PaletteAt(cfg, 0);
+                    double scaled = phase * n;
+                    int idx = (int)Math.Floor(scaled) % n;
+                    int next = (idx + 1) % n;
                     var (r1, g1, b1) = PaletteAt(cfg, idx);
                     if (!cfg.LightbarColorCycleSmooth)
                         return (r1, g1, b1);
@@ -376,13 +377,14 @@ namespace PadForge.Common.Input
         }
 
         private static (byte r, byte g, byte b) PaletteAt(PlayStationSlotConfig cfg, int idx)
-            => idx switch
-            {
-                0 => (cfg.LightbarPalette1R, cfg.LightbarPalette1G, cfg.LightbarPalette1B),
-                1 => (cfg.LightbarPalette2R, cfg.LightbarPalette2G, cfg.LightbarPalette2B),
-                2 => (cfg.LightbarPalette3R, cfg.LightbarPalette3G, cfg.LightbarPalette3B),
-                _ => (cfg.LightbarPalette4R, cfg.LightbarPalette4G, cfg.LightbarPalette4B),
-            };
+        {
+            var palette = cfg.LightbarPalette;
+            if (palette == null || palette.Count == 0) return (0, 0, 0);
+            int n = palette.Count;
+            int wrapped = ((idx % n) + n) % n;
+            var entry = palette[wrapped];
+            return (entry.R, entry.G, entry.B);
+        }
 
         private static (byte r, byte g, byte b) HsvToRgb(double h, double s, double v)
         {

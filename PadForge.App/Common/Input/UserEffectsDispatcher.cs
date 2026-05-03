@@ -50,6 +50,16 @@ namespace PadForge.Common.Input
         /// and enqueue a fading pulse.</summary>
         public static Func<int, ushort> SlotButtonsProvider { get; set; }
 
+        /// <summary>Static provider for the current rumble state of a
+        /// given pad index, returned as 8-bit right/left motor values
+        /// (0..255). InputService wires this to read from
+        /// <c>InputManager.VibrationStates[i]</c>, scaled from the
+        /// underlying ushort. The synthesizer carries these values in
+        /// every effect packet plus asserts bit 0 of validFlag1, so the
+        /// 30 Hz lightbar dispatch doesn't crowd SDL3's separate
+        /// SDL_RumbleJoystick writes off the BT HID channel.</summary>
+        public static Func<int, (byte right, byte left)> SlotRumbleProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -207,6 +217,8 @@ namespace PadForge.Common.Input
         }
 
         private float _lastDispatchedPeak = -1f;
+        private byte _lastDispatchedRumbleR;
+        private byte _lastDispatchedRumbleL;
 
         private void OnAnimTick(object _)
         {
@@ -255,9 +267,18 @@ namespace PadForge.Common.Input
                 bool zeroCrossing =
                     (scaled == 0f && _lastDispatchedPeak > 0f)
                     || (_lastDispatchedPeak == 0f && scaled > 0f);
-                if (!zeroCrossing && delta < 0.004f && mode != LightbarMode.AudioPulseRainbow)
+
+                // Don't suppress the dispatch when game rumble changes —
+                // even a steady audio peak shouldn't stall the rumble
+                // passthrough.
+                var r = SlotRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
+                bool rumbleChanged = r.right != _lastDispatchedRumbleR || r.left != _lastDispatchedRumbleL;
+
+                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && mode != LightbarMode.AudioPulseRainbow)
                     return;
                 _lastDispatchedPeak = scaled;
+                _lastDispatchedRumbleR = r.right;
+                _lastDispatchedRumbleL = r.left;
             }
 
             DispatchSnapshot(scaled);
@@ -355,13 +376,15 @@ namespace PadForge.Common.Input
                     0f, 1f);
             long nowMs = Environment.TickCount64;
             float pulseIntensity = ComputePulseIntensity(nowMs);
+            var rumble = SlotRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
 
             // Synthesize once per dispatch; reuse the buffer across the
             // multi-DS5 fan-out below.
             var buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
             int len = Ds5EffectSynthesizer.Build(
                 _config, buffer, peakForSynth, nowMs,
-                _randomColor, _pulseColor, pulseIntensity);
+                _randomColor, _pulseColor, pulseIntensity,
+                rumble.right, rumble.left);
             if (len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
 
             var settings = SettingsManager.UserSettings;

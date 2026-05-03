@@ -53,6 +53,7 @@ namespace PadForge.Common.Input
         public const int PayloadSize = 47;
 
         // EnableBits1 (low byte of the u16 LE header).
+        private const ushort EnableRumbleEmulation  = 0x0001;  // bit 0 — gates bytes 2-3 (right/left motor)
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
         private const ushort EnableSpeakerVolume    = 0x0020;
@@ -68,6 +69,8 @@ namespace PadForge.Common.Input
         // dualsense-tester-byte-layout-reference.md.
         private const int OffEnableLow       = 0;   // validFlag0
         private const int OffEnableHigh      = 1;   // validFlag1 (0xF7 = permissive default)
+        private const int OffRumbleRight     = 2;   // compatibility rumble — right motor (high-frequency)
+        private const int OffRumbleLeft      = 3;   // compatibility rumble — left motor (low-frequency)
         private const int OffSpeakerVol      = 5;
         private const int OffMicLight        = 8;   // muteLedControl
         private const int OffMicMute         = 9;   // powerSaveMuteControl
@@ -134,7 +137,9 @@ namespace PadForge.Common.Input
             long nowMs = 0,
             uint randomColor = 0,
             uint pulseColor = 0,
-            float pulseIntensity = 0f)
+            float pulseIntensity = 0f,
+            byte rumbleRight = 0,
+            byte rumbleLeft = 0)
         {
             if (cfg == null) return 0;
             if (dst.Length < PayloadSize) return 0;
@@ -142,6 +147,16 @@ namespace PadForge.Common.Input
             dst.Slice(0, PayloadSize).Clear();
 
             ushort enableBits = 0;
+
+            // Game rumble passthrough. The dispatcher's animated-lightbar
+            // timer fires raw HID writes at 30 Hz, which on Bluetooth
+            // crowds SDL3's separate SDL_RumbleJoystick writes off the
+            // channel. Carrying the current motor state in every packet
+            // keeps rumble alive regardless of how much lightbar
+            // bandwidth we're using. Bit 0 of validFlag1 gates bytes 2-3.
+            dst[OffRumbleRight] = rumbleRight;
+            dst[OffRumbleLeft]  = rumbleLeft;
+            enableBits |= EnableRumbleEmulation;
 
             // Lightbar / player-LED block. Reference: OpenRGB's
             // SonyDualSenseController.cpp + dualsense-tester's

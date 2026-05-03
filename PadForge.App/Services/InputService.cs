@@ -157,6 +157,8 @@ namespace PadForge.Services
                 SyncExtendedConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
                 _inputManager._playStationConfigs[i] = _mainVm.Pads[i].PlayStationConfig;
+                if (_mainVm.Pads[i].PlayStationConfig != null)
+                    _mainVm.Pads[i].PlayStationConfig.PropertyChanged += OnPlayStationConfigChanged;
             }
 
             // Subscribe to engine events (raised on background thread).
@@ -333,6 +335,9 @@ namespace PadForge.Services
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;
+                foreach (var pad in _mainVm.Pads)
+                    if (pad.PlayStationConfig != null)
+                        pad.PlayStationConfig.PropertyChanged -= OnPlayStationConfigChanged;
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -2034,15 +2039,16 @@ namespace PadForge.Services
         internal void SyncAudioBassDetector()
         {
             // Capture is needed if either feature on any created slot
-            // wants audio: bass-rumble OR audio-to-lightbar (the latter
-            // taps the same WASAPI capture pre-filter).
+            // wants audio: bass-rumble OR any audio-driven lightbar mode
+            // (Pulse / PulseRandom / PulseRainbow / Thresholds / Gradient
+            // / CrossFade — they all read the WASAPI peak the detector
+            // produces).
             bool anyEnabled = false;
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
                 var pad = _mainVm.Pads[i];
-                if (pad.AudioRumbleEnabled
-                    || (pad.PlayStationConfig != null && pad.PlayStationConfig.AudioLightbarEnabled))
+                if (pad.AudioRumbleEnabled || IsAudioLightbarMode(pad.PlayStationConfig?.LightbarMode))
                 {
                     anyEnabled = true;
                     break;
@@ -2053,6 +2059,24 @@ namespace PadForge.Services
                 StartAudioBassDetector();
             else if (!anyEnabled && _audioBassDetector != null)
                 StopAudioBassDetector();
+        }
+
+        private static bool IsAudioLightbarMode(ViewModels.LightbarMode? m) =>
+            m is ViewModels.LightbarMode.AudioPulse
+              or ViewModels.LightbarMode.AudioPulseRandom
+              or ViewModels.LightbarMode.AudioPulseRainbow
+              or ViewModels.LightbarMode.AudioThresholds
+              or ViewModels.LightbarMode.AudioGradient
+              or ViewModels.LightbarMode.AudioCrossFade;
+
+        // Re-evaluate WASAPI capture on every LightbarMode change so the
+        // detector starts the moment a user picks an audio mode and stops
+        // when the last slot leaves audio. Without this hook, the gate
+        // only re-evaluates on AudioRumble toggle changes.
+        private void OnPlayStationConfigChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModels.PlayStationSlotConfig.LightbarMode))
+                SyncAudioBassDetector();
         }
 
         private void StartAudioBassDetector()

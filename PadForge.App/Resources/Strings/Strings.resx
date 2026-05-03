@@ -459,18 +459,19 @@
   <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at:</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at:</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode:</value></data>
-  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off (game owns the lightbar)</value></data>
-  <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static color</value></data>
-  <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (single color fades)</value></data>
-  <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Rainbow cycle</value></data>
-  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color cycle</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio pulse — static color</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio pulse — random color per beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio pulse — rainbow cycle</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audio bands — three colors, hard transitions</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio bands — three colors, smooth gradient</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio bands — three colors, crossfade at boundaries</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input reactive (pulse on button press)</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off (Game Owns the Lightbar)</value></data>
+  <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static Color</value></data>
+  <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (Single Color Fades)</value></data>
+  <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Rainbow Cycle</value></data>
+  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color Cycle</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio Pulse — Static Color</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio Pulse — Random Color per Beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio Pulse — Rainbow Cycle</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audio Bands — Three Colors, Hard Transitions</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio Bands — Three Colors, Smooth Gradient</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio Bands — Three Colors, Crossfade at Boundaries</value></data>
+  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input Reactive — Random Color per Press</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Input Reactive — Cycle Through Palette</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
@@ -482,7 +483,6 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms):</value></data>
-  <data name="Pad_Lighting_InputRandomize" xml:space="preserve"><value>Random color per press (otherwise cycles palette)</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>

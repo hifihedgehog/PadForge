@@ -507,7 +507,16 @@ namespace PadForge.Services
                             cfg.LightbarPalette.Add(new ViewModels.LightbarPaletteEntry(entry.R, entry.G, entry.B));
                     }
                     cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
-                    cfg.LightbarInputRandomize = cfgData.LightbarInputRandomize;
+
+                    // v3.1.0 migration: the LightbarInputRandomize bool used
+                    // to gate cycle-vs-random in the InputReactive mode; now
+                    // each is its own LightbarMode entry. Old saves with the
+                    // bool at false flip to InputReactiveCycle.
+                    if (cfg.LightbarMode == ViewModels.LightbarMode.InputReactive
+                        && !cfgData.LightbarInputRandomize)
+                    {
+                        cfg.LightbarMode = ViewModels.LightbarMode.InputReactiveCycle;
+                    }
                 }
             }
         }
@@ -1277,7 +1286,6 @@ namespace PadForge.Services
                         .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                         .ToArray(),
                     LightbarInputDecayMs = cfg.LightbarInputDecayMs,
-                    LightbarInputRandomize = cfg.LightbarInputRandomize,
                 });
             }
 
@@ -1433,7 +1441,6 @@ namespace PadForge.Services
                         .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                         .ToArray(),
                     LightbarInputDecayMs = cfg.LightbarInputDecayMs,
-                    LightbarInputRandomize = cfg.LightbarInputRandomize,
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;

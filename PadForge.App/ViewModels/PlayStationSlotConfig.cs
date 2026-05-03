@@ -359,15 +359,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _lightbarInputDecayMs, Math.Clamp(value, 100, 3000));
         }
 
-        private bool _lightbarInputRandomize = true;
-        /// <summary>InputReactive color source. True picks a random hue
-        /// per press; false cycles through the 4-color palette in order.</summary>
-        public bool LightbarInputRandomize
-        {
-            get => _lightbarInputRandomize;
-            set => SetProperty(ref _lightbarInputRandomize, value);
-        }
-
         // ────────────────────────────────────────────────
         //  Master enable for Feature B (user-configured effects)
         // ────────────────────────────────────────────────
@@ -613,10 +604,6 @@ namespace PadForge.ViewModels
             _resetLightbarColorCycleSmooth ??= new RelayCommand(() => LightbarColorCycleSmooth = true);
         private RelayCommand _resetLightbarColorCycleSmooth;
 
-        public RelayCommand ResetLightbarInputRandomizeCommand =>
-            _resetLightbarInputRandomize ??= new RelayCommand(() => LightbarInputRandomize = true);
-        private RelayCommand _resetLightbarInputRandomize;
-
         public RelayCommand ResetAudioLightbarSensitivityCommand =>
             _resetAudSens ??= new RelayCommand(() => AudioLightbarSensitivity = 4.0);
         private RelayCommand _resetAudSens;
@@ -773,7 +760,8 @@ namespace PadForge.ViewModels
         AudioThresholds = 8,
         AudioGradient = 9,
         AudioCrossFade = 10,
-        InputReactive = 11,
+        InputReactive = 11,           // random hue per press
+        InputReactiveCycle = 12,      // step through the configured palette per press
     }
 
     /// <summary>Audio-driven lightbar behavior. Issue #55 listed the

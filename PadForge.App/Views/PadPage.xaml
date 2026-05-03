@@ -2222,6 +2222,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioGradient, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactive, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveCycle, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                 </StackPanel>
 
@@ -2243,9 +2244,12 @@
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
 
-                                <!-- InputReactive controls (settings) - moved before Palette so InputReactive mode shows settings above its colors -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive}">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <!-- InputReactive controls. Decay slider shows for both
+                                     variants; the per-press color source is now expressed by
+                                     the mode dropdown choice itself (random vs. palette
+                                     cycle), no separate checkbox needed. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive|InputReactiveCycle}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -2254,13 +2258,10 @@
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}"/>
                                     </StackPanel>
-                                    <CheckBox IsChecked="{Binding PlayStationConfig.LightbarInputRandomize, Mode=TwoWay}"
-                                              Content="{Binding Pad_Lighting_InputRandomize, Source={x:Static strings:Strings.Instance}}"
-                                              Margin="0,4,0,8"/>
                                 </StackPanel>
 
-                                <!-- Palette (variable count): ColorCycle and InputReactive share. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle|InputReactive}">
+                                <!-- Palette (variable count): ColorCycle and InputReactiveCycle share. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle|InputReactiveCycle}">
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" Margin="0,0,0,6"/>
                                     <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarPalette}" Margin="0,0,0,8">

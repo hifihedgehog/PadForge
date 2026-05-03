@@ -362,6 +362,7 @@ namespace PadForge.Common.Input
                     return ComputeAudioBands(cfg, p);
 
                 case LightbarMode.InputReactive:
+                case LightbarMode.InputReactiveCycle:
                 {
                     float i = Math.Clamp(pulseIntensity, 0f, 1f);
                     byte pr = (byte)((pulseColor >> 16) & 0xFF);

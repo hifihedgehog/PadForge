@@ -187,7 +187,8 @@ namespace PadForge.Common.Input
                   or LightbarMode.AudioThresholds
                   or LightbarMode.AudioGradient
                   or LightbarMode.AudioCrossFade
-                  or LightbarMode.InputReactive;
+                  or LightbarMode.InputReactive
+                  or LightbarMode.InputReactiveCycle;
 
         private void UpdateAnimTimer()
         {
@@ -257,9 +258,10 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Drain button rising edges into pulses for InputReactive.
-            if (mode == LightbarMode.InputReactive)
-                DrainInputPulses();
+            // Drain button rising edges into pulses for both
+            // InputReactive variants (random per press, cycle palette).
+            if (mode == LightbarMode.InputReactive || mode == LightbarMode.InputReactiveCycle)
+                DrainInputPulses(mode);
 
             if (audioMode)
             {
@@ -294,7 +296,7 @@ namespace PadForge.Common.Input
             _randomColor = (uint)((r << 16) | (g << 8) | b);
         }
 
-        private void DrainInputPulses()
+        private void DrainInputPulses(LightbarMode mode)
         {
             if (_config == null) return;
             var provider = SlotButtonsProvider;
@@ -307,13 +309,13 @@ namespace PadForge.Common.Input
                 // One pulse per tick is plenty even if multiple buttons
                 // came down in the same frame — last-press-wins matches
                 // how the user perceives a chord vs a sequence.
-                if (_config.LightbarInputRandomize)
+                if (mode == LightbarMode.InputReactive)
                 {
                     int h = _rng.Next(0, 360);
                     HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
                     _pulseColor = (uint)((r << 16) | (g << 8) | b);
                 }
-                else
+                else // InputReactiveCycle
                 {
                     var palette = _config.LightbarPalette;
                     int n = palette?.Count ?? 0;

@@ -179,6 +179,21 @@ namespace PadForge.Services
                 return _inputManager.CombinedOutputStates[padIndex].Buttons;
             };
 
+            // Per-slot rumble state for DS5 effect-packet passthrough. The
+            // synthesizer carries these bytes in every dispatch so the
+            // 30 Hz lightbar writes don't crowd SDL3's separate
+            // SDL_RumbleJoystick writes off the BT HID channel. Vibration
+            // structs use ushort (0..65535); DS5 firmware takes byte
+            // (0..255), so shift down 8 bits.
+            UserEffectsDispatcher.SlotRumbleProvider = padIndex =>
+            {
+                if (_inputManager == null) return ((byte)0, (byte)0);
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
+                var vib = _inputManager.VibrationStates[padIndex];
+                if (vib == null) return ((byte)0, (byte)0);
+                return ((byte)(vib.RightMotorSpeed >> 8), (byte)(vib.LeftMotorSpeed >> 8));
+            };
+
             // Subscribe to settings/dashboard property changes for runtime propagation.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
@@ -342,6 +357,7 @@ namespace PadForge.Services
                 _inputManager.Dispose();
                 _inputManager = null;
                 UserEffectsDispatcher.SlotButtonsProvider = null;
+                UserEffectsDispatcher.SlotRumbleProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher

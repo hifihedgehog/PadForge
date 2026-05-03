@@ -298,6 +298,15 @@ namespace PadForge.ViewModels
         // modes. Defaults to four primaries (red, green, blue, yellow);
         // user can add or remove entries from the Lighting tab. Synth
         // iterates with idx % Count so any size from 1..N works.
+        //
+        // Threading: the collection is mutated on the UI thread (palette
+        // commands) and read on the lighting timer thread (DrainInputPulses
+        // and Ds5EffectSynthesizer.PaletteAt). ObservableCollection<T> is
+        // not thread-safe, so timer-thread reads MUST go through
+        // SnapshotLightbarPalette() — calling .Count or indexing the live
+        // collection from off-thread can throw or read torn state during
+        // a concurrent UI add/remove.
+        private readonly object _lightbarPaletteLock = new();
         private ObservableCollection<LightbarPaletteEntry> _lightbarPalette
             = new ObservableCollection<LightbarPaletteEntry>
             {
@@ -313,10 +322,41 @@ namespace PadForge.ViewModels
             {
                 var v = value ?? new ObservableCollection<LightbarPaletteEntry>();
                 if (_lightbarPalette == v) return;
-                UnhookPalette(_lightbarPalette);
-                _lightbarPalette = v;
-                HookPalette(_lightbarPalette);
+                lock (_lightbarPaletteLock)
+                {
+                    UnhookPalette(_lightbarPalette);
+                    _lightbarPalette = v;
+                    HookPalette(_lightbarPalette);
+                }
                 OnPropertyChanged(nameof(LightbarPalette));
+            }
+        }
+
+        /// <summary>Thread-safe snapshot of the current palette colors.
+        /// Timer-thread consumers call this instead of touching
+        /// <see cref="LightbarPalette"/> directly so a concurrent UI-thread
+        /// Add / Remove / Clear can't tear the read.</summary>
+        public LightbarPaletteEntry[] SnapshotLightbarPalette()
+        {
+            lock (_lightbarPaletteLock)
+            {
+                return _lightbarPalette.ToArray();
+            }
+        }
+
+        /// <summary>Atomically replace the palette contents with a new set
+        /// of entries under the same lock the timer-thread snapshot uses.
+        /// Settings load drives this when restoring a saved config.</summary>
+        public void ReplaceLightbarPalette(IEnumerable<LightbarPaletteEntry> entries)
+        {
+            lock (_lightbarPaletteLock)
+            {
+                _lightbarPalette.Clear();
+                if (entries != null)
+                {
+                    foreach (var e in entries)
+                        _lightbarPalette.Add(e);
+                }
             }
         }
 
@@ -327,16 +367,18 @@ namespace PadForge.ViewModels
                 // newly added swatch visually different from the one above
                 // so the user can immediately see it landed.
                 byte r = 0xFF, g = 0xFF, b = 0xFF;
-                if (LightbarPalette.Count > 0)
+                lock (_lightbarPaletteLock)
                 {
-                    var last = LightbarPalette[LightbarPalette.Count - 1];
-                    // Rotate primaries in a simple cycle to keep contrast.
-                    if (last.R == 0xFF && last.G == 0x00 && last.B == 0x00) { r = 0x00; g = 0xFF; b = 0x00; }
-                    else if (last.R == 0x00 && last.G == 0xFF && last.B == 0x00) { r = 0x00; g = 0x00; b = 0xFF; }
-                    else if (last.R == 0x00 && last.G == 0x00 && last.B == 0xFF) { r = 0xFF; g = 0xFF; b = 0x00; }
-                    else { r = 0xFF; g = 0x00; b = 0x00; }
+                    if (_lightbarPalette.Count > 0)
+                    {
+                        var last = _lightbarPalette[_lightbarPalette.Count - 1];
+                        if (last.R == 0xFF && last.G == 0x00 && last.B == 0x00) { r = 0x00; g = 0xFF; b = 0x00; }
+                        else if (last.R == 0x00 && last.G == 0xFF && last.B == 0x00) { r = 0x00; g = 0x00; b = 0xFF; }
+                        else if (last.R == 0x00 && last.G == 0x00 && last.B == 0xFF) { r = 0xFF; g = 0xFF; b = 0x00; }
+                        else { r = 0xFF; g = 0x00; b = 0x00; }
+                    }
+                    _lightbarPalette.Add(new LightbarPaletteEntry(r, g, b));
                 }
-                LightbarPalette.Add(new LightbarPaletteEntry(r, g, b));
             });
         private RelayCommand _addPalette;
 
@@ -344,8 +386,11 @@ namespace PadForge.ViewModels
             _removePalette ??= new RelayCommand<LightbarPaletteEntry>(entry =>
             {
                 if (entry == null) return;
-                if (LightbarPalette.Count <= 1) return; // never let it go empty
-                LightbarPalette.Remove(entry);
+                lock (_lightbarPaletteLock)
+                {
+                    if (_lightbarPalette.Count <= 1) return; // never let it go empty
+                    _lightbarPalette.Remove(entry);
+                }
             });
         private RelayCommand<LightbarPaletteEntry> _removePalette;
 
@@ -623,11 +668,14 @@ namespace PadForge.ViewModels
         public RelayCommand ResetPaletteCommand =>
             _resetPalette ??= new RelayCommand(() =>
             {
-                LightbarPalette.Clear();
-                LightbarPalette.Add(new LightbarPaletteEntry(0xFF, 0x00, 0x00));
-                LightbarPalette.Add(new LightbarPaletteEntry(0x00, 0xFF, 0x00));
-                LightbarPalette.Add(new LightbarPaletteEntry(0x00, 0x00, 0xFF));
-                LightbarPalette.Add(new LightbarPaletteEntry(0xFF, 0xFF, 0x00));
+                lock (_lightbarPaletteLock)
+                {
+                    _lightbarPalette.Clear();
+                    _lightbarPalette.Add(new LightbarPaletteEntry(0xFF, 0x00, 0x00));
+                    _lightbarPalette.Add(new LightbarPaletteEntry(0x00, 0xFF, 0x00));
+                    _lightbarPalette.Add(new LightbarPaletteEntry(0x00, 0x00, 0xFF));
+                    _lightbarPalette.Add(new LightbarPaletteEntry(0xFF, 0xFF, 0x00));
+                }
             });
         private RelayCommand _resetPalette;
     }

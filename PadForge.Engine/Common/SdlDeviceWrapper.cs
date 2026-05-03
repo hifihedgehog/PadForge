@@ -110,9 +110,6 @@ namespace PadForge.Engine
         /// <summary>USB Product ID.</summary>
         public ushort ProductId { get; private set; }
 
-        /// <summary>USB Product Version.</summary>
-        public ushort ProductVersion { get; private set; }
-
         /// <summary>Device file system path (may be empty on some platforms).</summary>
         public string DevicePath { get; private set; } = string.Empty;
 
@@ -198,7 +195,6 @@ namespace PadForge.Engine
             Name = SDL_GetJoystickName(Joystick);
             VendorId = SDL_GetJoystickVendor(Joystick);
             ProductId = SDL_GetJoystickProduct(Joystick);
-            ProductVersion = SDL_GetJoystickProductVersion(Joystick);
             JoystickType = SDL_GetJoystickType(Joystick);
             DevicePath = SDL_GetJoystickPath(Joystick);
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
@@ -879,8 +875,6 @@ namespace PadForge.Engine
 
                 item.ObjectType = DeviceObjectTypeFlags.AbsoluteAxis;
                 item.Offset = i * 4; // Simulated offset for identification.
-                item.Aspect = ObjectAspect.Position;
-
                 items[index++] = item;
             }
 
@@ -894,8 +888,6 @@ namespace PadForge.Engine
                     : NumHats == 1 ? "POV" : $"POV {i}";
                 item.ObjectType = DeviceObjectTypeFlags.PointOfViewController;
                 item.Offset = (NumAxes + i) * 4;
-                item.Aspect = ObjectAspect.Position;
-
                 items[index++] = item;
             }
 
@@ -923,8 +915,6 @@ namespace PadForge.Engine
                 item.Name = (isGamepad && i < NumButtons) ? GetGamepadButtonName(i) : $"Button {i}";
                 item.ObjectType = DeviceObjectTypeFlags.PushButton;
                 item.Offset = (NumAxes + NumHats + i) * 4;
-                item.Aspect = ObjectAspect.Position;
-
                 items[index++] = item;
                 finalCount++;
             }

@@ -121,8 +121,7 @@ namespace PadForge.Engine
                     ObjectTypeGuid = ObjectGuid.Key,
                     Name = name,
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = i * 4,
-                    Aspect = ObjectAspect.Position
+                    Offset = i * 4
                 };
             }
             return items;

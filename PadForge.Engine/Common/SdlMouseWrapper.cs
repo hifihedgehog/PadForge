@@ -155,8 +155,7 @@ namespace PadForge.Engine
                 ObjectTypeGuid = ObjectGuid.XAxis,
                 Name = "X Motion",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
-                Offset = 0,
-                Aspect = ObjectAspect.Position
+                Offset = 0
             };
             items[index++] = new DeviceObjectItem
             {
@@ -164,8 +163,7 @@ namespace PadForge.Engine
                 ObjectTypeGuid = ObjectGuid.YAxis,
                 Name = "Y Motion",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
-                Offset = 4,
-                Aspect = ObjectAspect.Position
+                Offset = 4
             };
             items[index++] = new DeviceObjectItem
             {
@@ -173,8 +171,7 @@ namespace PadForge.Engine
                 ObjectTypeGuid = ObjectGuid.ZAxis,
                 Name = "Scroll",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
-                Offset = 8,
-                Aspect = ObjectAspect.Position
+                Offset = 8
             };
 
             string[] buttonNames = { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
@@ -186,8 +183,7 @@ namespace PadForge.Engine
                     ObjectTypeGuid = ObjectGuid.Button,
                     Name = buttonNames[i],
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (MouseAxes + i) * 4,
-                    Aspect = ObjectAspect.Position
+                    Offset = (MouseAxes + i) * 4
                 };
             }
 

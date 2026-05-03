@@ -16,10 +16,10 @@ namespace PadForge.Common.Input
         /// Step 2: Read current input states from all online devices and apply force feedback.
         ///
         /// For each online device:
-        ///   1. Save the current state as OldInputState.
+        ///   1. Save the current state as OldInputState (preserved for any consumer
+        ///      that needs change detection on the next cycle).
         ///   2. Read a new state snapshot from SDL.
-        ///   3. Compute buffered updates (differences from old state).
-        ///   4. Apply force feedback if the device supports rumble and a game
+        ///   3. Apply force feedback if the device supports rumble and a game
         ///      is sending vibration data via ViGEmBus.
         /// </summary>
         private void UpdateInputStates()
@@ -49,8 +49,6 @@ namespace PadForge.Common.Input
                 {
                     // Save previous state for change detection.
                     ud.OldInputState = ud.InputState;
-                    ud.OldInputUpdates = ud.InputUpdates;
-                    ud.OldInputStateTime = ud.InputStateTime;
 
                     CustomInputState newState;
 
@@ -88,17 +86,6 @@ namespace PadForge.Common.Input
 
                     // Atomic reference swap — safe for cross-thread reading.
                     ud.InputState = newState;
-                    ud.InputStateTime = DateTime.UtcNow;
-
-                    // Compute buffered updates for change detection / recording.
-                    if (ud.OldInputState != null)
-                    {
-                        ud.InputUpdates = CustomInputHelper.GetUpdates(ud.OldInputState, newState);
-                    }
-                    else
-                    {
-                        ud.InputUpdates = Array.Empty<CustomInputUpdate>();
-                    }
 
                     // Apply force feedback (rumble) if applicable.
                     ApplyForceFeedback(ud);

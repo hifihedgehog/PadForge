@@ -2057,6 +2057,15 @@
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
+                                <!-- Effect-profile preview: shows the resistance / vibration
+                                     pattern across the trigger throw for the selected mode. -->
+                                <viewControls:TriggerEffectGraph
+                                    Mode="{Binding PlayStationConfig.LeftTriggerMode}"
+                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                    Height="72" Margin="0,0,0,12"/>
                                 <!-- Range (start ↔ end) — dual-thumb -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_AT_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -2123,6 +2132,13 @@
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
+                                <viewControls:TriggerEffectGraph
+                                    Mode="{Binding PlayStationConfig.RightTriggerMode}"
+                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                    Height="72" Margin="0,0,0,12"/>
                                 <!-- Range (start ↔ end) — dual-thumb -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_AT_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>

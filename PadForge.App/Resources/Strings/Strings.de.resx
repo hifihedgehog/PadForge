@@ -1023,13 +1023,13 @@
   <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Rot zurücksetzen</value></data>
   <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Grün zurücksetzen</value></data>
   <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Blau zurücksetzen</value></data>
-  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Leise Band — Rot zurücksetzen</value></data>
-  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Leise Band — Grün zurücksetzen</value></data>
-  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Leise Band — Blau zurücksetzen</value></data>
-  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Mittlere Band — Rot zurücksetzen</value></data>
-  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Mittlere Band — Grün zurücksetzen</value></data>
-  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Mittlere Band — Blau zurücksetzen</value></data>
-  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Laute Band — Rot zurücksetzen</value></data>
-  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Laute Band — Grün zurücksetzen</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Laute Band — Blau zurücksetzen</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Leise — Rot zurücksetzen</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Leise — Grün zurücksetzen</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Leise — Blau zurücksetzen</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Mittel — Rot zurücksetzen</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Mittel — Grün zurücksetzen</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Mittel — Blau zurücksetzen</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Laut — Rot zurücksetzen</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Laut — Grün zurücksetzen</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Laut — Blau zurücksetzen</value></data>
 </root>

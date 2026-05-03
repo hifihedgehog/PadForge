@@ -1023,13 +1023,13 @@
   <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Réinitialiser le rouge</value></data>
   <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Réinitialiser le vert</value></data>
   <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Réinitialiser le bleu</value></data>
-  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Réinitialiser bande faible — rouge</value></data>
-  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Réinitialiser bande faible — vert</value></data>
-  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Réinitialiser bande faible — bleu</value></data>
-  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Réinitialiser bande moyenne — rouge</value></data>
-  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Réinitialiser bande moyenne — vert</value></data>
-  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Réinitialiser bande moyenne — bleu</value></data>
-  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Réinitialiser bande forte — rouge</value></data>
-  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Réinitialiser bande forte — vert</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser bande forte — bleu</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Réinitialiser la bande faible — rouge</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Réinitialiser la bande faible — vert</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Réinitialiser la bande faible — bleu</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Réinitialiser la bande moyenne — rouge</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Réinitialiser la bande moyenne — vert</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Réinitialiser la bande moyenne — bleu</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Réinitialiser la bande forte — rouge</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Réinitialiser la bande forte — vert</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte — bleu</value></data>
 </root>

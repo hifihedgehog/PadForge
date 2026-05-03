@@ -904,135 +904,132 @@
   <data name="About_HidHideDesc" xml:space="preserve"><value>Driver de kernel para ocultar dispositivos físicos dos jogos</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Substituto direto do XInput; filtra os próprios controles virtuais do PadForge da sua própria visão</value></data>
-
-
-  <!-- ═══ Pending translation: keys appended from base Strings.resx ═══ -->
-  <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick and trigger icons derived from "Xbox Series Button Icons and Controls" by Zacksly (CC BY 3.0)</value></data>
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Triggers</value></data>
-  <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>
-  <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure trigger feedback effects on the assigned physical DualSense. Game-driven trigger effects are forwarded automatically. Settings here add a user-configured layer that runs when no game is writing.</value></data>
-  <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
-  <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per-stick deadzones, anti-deadzones, sensitivity curves, and center-offset calibration. Each section below targets one analog stick on the active output. Extended profiles can have up to four sticks. Standard gamepads have two.</value></data>
-  <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per-trigger deadzones, anti-deadzones, max-range scaling, and sensitivity curves. Each section below targets one trigger axis on the active output. Extended profiles can expose up to eight axes shared with the Sticks tab.</value></data>
-  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
-  <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tunes how PadForge scales force feedback events from the game and how it routes them to the physical controller's rumble motors or haptic actuators. Audio Rumble adds a system audio-driven layer on top.</value></data>
-  <data name="Pad_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
-  <data name="Pad_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
-  <data name="Pad_TriggerMode" xml:space="preserve"><value>Mode</value></data>
-  <data name="Pad_AT_Off" xml:space="preserve"><value>Off</value></data>
-  <data name="Pad_AT_Feedback" xml:space="preserve"><value>Feedback</value></data>
-  <data name="Pad_AT_Weapon" xml:space="preserve"><value>Weapon</value></data>
-  <data name="Pad_AT_Vibration" xml:space="preserve"><value>Vibration</value></data>
-  <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>Multiple-Position Feedback</value></data>
-  <data name="Pad_AT_Slope" xml:space="preserve"><value>Slope Feedback</value></data>
-  <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Multiple-Position Vibration</value></data>
-  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Start position</value></data>
-  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>End position</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>Range</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>Strength</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequency (Hz)</value></data>
-  <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>No resistance. Trigger feels normal.</value></data>
-  <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Constant resistance from the start position to fully pressed. Strength sets how hard the trigger pushes back.</value></data>
-  <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Gun-trigger feel. Pull through a soft zone to the end position, then a firm click. Use start/end to set the click point and strength for the click force.</value></data>
-  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Continuous buzz once you cross the start position. Frequency sets the pulse rate; strength sets the intensity.</value></data>
-  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Ratcheting resistance — discrete force bumps across the start-to-end range. Pulling the trigger feels like clicking through detents instead of pushing through one continuous wall.</value></data>
-  <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Resistance ramps from light at the start position to full at the end position. Past the end position the trigger holds at peak strength.</value></data>
-  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Stuttering vibration — short buzz bursts spaced across the start-to-end range. Pulling the trigger feels like crossing distinct vibration zones, not one continuous buzz.</value></data>
-  <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
-  <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
-  <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
-  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Apply user-configured base color when no game is writing</value></data>
-  <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>
-  <data name="Pad_Lighting_Green" xml:space="preserve"><value>Green</value></data>
-  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Blue</value></data>
+  <data name="About_ZackslyIcons" xml:space="preserve"><value>Pacote de ícones Zacksly</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ícones de analógicos e gatilhos derivados de "Xbox Series Button Icons and Controls" por Zacksly (CC BY 3.0)</value></data>
+  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gatilhos adaptativos</value></data>
+  <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gatilhos adaptativos</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura os efeitos de gatilho no DualSense físico atribuído. Os efeitos gerados pelo jogo são encaminhados automaticamente. As configurações aqui adicionam uma camada configurada pelo usuário que atua quando nenhum jogo está escrevendo.</value></data>
+  <data name="Pad_Sticks_Header" xml:space="preserve"><value>Analógicos</value></data>
+  <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Por analógico: zonas mortas, anti-zonas mortas, curvas de sensibilidade e calibração de deslocamento do centro. Cada seção abaixo afeta um analógico da saída ativa. Perfis estendidos podem ter até quatro analógicos. Controles padrão têm dois.</value></data>
+  <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gatilhos</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Por gatilho: zonas mortas, anti-zonas mortas, escala do alcance máximo e curvas de sensibilidade. Cada seção abaixo afeta um eixo de gatilho da saída ativa. Perfis estendidos podem expor até oito eixos compartilhados com a aba Analógicos.</value></data>
+  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
+  <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ajusta como o PadForge escala os eventos de force feedback do jogo e como os roteia para os motores de vibração ou atuadores hápticos do controle físico. Vibração por áudio adiciona uma camada acionada pelo áudio do sistema.</value></data>
+  <data name="Pad_LeftTrigger" xml:space="preserve"><value>Gatilho esquerdo</value></data>
+  <data name="Pad_RightTrigger" xml:space="preserve"><value>Gatilho direito</value></data>
+  <data name="Pad_TriggerMode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_AT_Off" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Pad_AT_Feedback" xml:space="preserve"><value>Resistência</value></data>
+  <data name="Pad_AT_Weapon" xml:space="preserve"><value>Arma</value></data>
+  <data name="Pad_AT_Vibration" xml:space="preserve"><value>Vibração</value></data>
+  <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>Resistência multiposição</value></data>
+  <data name="Pad_AT_Slope" xml:space="preserve"><value>Resistência progressiva</value></data>
+  <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Vibração multiposição</value></data>
+  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Posição inicial</value></data>
+  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Posição final</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Alcance:</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Força:</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequência (Hz):</value></data>
+  <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Sem resistência. O gatilho funciona normalmente.</value></data>
+  <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Resistência constante da posição inicial até pressionado totalmente. Força define o quanto o gatilho empurra de volta.</value></data>
+  <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Sensação de gatilho de arma. Puxe por uma zona suave até a posição final e então um clique firme. Use início/fim para definir o ponto do clique e força para a intensidade do clique.</value></data>
+  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Vibração contínua assim que você passa da posição inicial. Frequência define a taxa de pulso; força define a intensidade.</value></data>
+  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Resistência travada — saliências de força discretas pelo intervalo de início a fim. Puxar o gatilho parece passar por estalos em vez de empurrar uma parede contínua.</value></data>
+  <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>A resistência sobe de leve na posição inicial até o máximo na posição final. Além da posição final, o gatilho permanece na força máxima.</value></data>
+  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Vibração entrecortada — pequenas rajadas de vibração espaçadas pelo intervalo de início a fim. Puxar o gatilho parece atravessar zonas distintas de vibração, não uma vibração contínua.</value></data>
+  <data name="Pad_Lighting" xml:space="preserve"><value>Iluminação</value></data>
+  <data name="Pad_Lighting_Header" xml:space="preserve"><value>Iluminação</value></data>
+  <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Define a cor base da barra de luz e o comportamento de áudio no controle físico atribuído. As escritas do jogo sempre prevalecem. As configurações do usuário se aplicam quando nenhum jogo controla a barra.</value></data>
+  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra de luz</value></data>
+  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Aplicar cor base configurada pelo usuário quando nenhum jogo está escrevendo</value></data>
+  <data name="Pad_Lighting_Red" xml:space="preserve"><value>Vermelho</value></data>
+  <data name="Pad_Lighting_Green" xml:space="preserve"><value>Verde</value></data>
+  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Azul</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
-  <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>
-  <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Remove this color from the palette</value></data>
-  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>Mute LED</value></data>
-  <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Off</value></data>
-  <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Solid</value></data>
-  <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulse</value></data>
-  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>Player LEDs</value></data>
-  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Five small white LEDs below the touchpad. Pick which player slot pattern to display and how bright it should be.</value></data>
-  <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator LEDs</value></data>
-  <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Player number row (5 LEDs below the touchpad) and the mute LED above the mic. The brightness control physically only affects the player row. The firmware exposes mute LED states (Off / Solid / Pulse) but no separate mute brightness register.</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player Pattern:</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED Mode:</value></data>
-  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED Brightness:</value></data>
-  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Pattern</value></data>
-  <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Off</value></data>
-  <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Player 1</value></data>
-  <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Player 2</value></data>
-  <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Player 3</value></data>
-  <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>Player 4</value></data>
-  <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>All</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>Brightness</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>High</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Medium</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>Low</value></data>
-  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-Driven Lightbar</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Modulates the base color above by the system audio peak. Pulses with whatever is playing through the default output device. Taps into the same WASAPI capture as audio rumble but reads the full waveform (no bass-cutoff filter), so it follows everything you hear.</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Pulse base color with system audio</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>Mode</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>Pulse base color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Three colors — hard transitions</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Three colors — smooth gradient</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Three colors — crossfade at boundaries</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Crossfade Width:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Quiet Color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Medium Color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Loud Color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at:</value></data>
-  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode:</value></data>
-  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off (Game Owns the Lightbar)</value></data>
-  <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static Color</value></data>
-  <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (Single Color Fades)</value></data>
-  <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Rainbow Cycle</value></data>
-  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color Cycle</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio Pulse — Static Color</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio Pulse — Random Color per Beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio Pulse — Rainbow Cycle</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audio Bands — Three Colors, Hard Transitions</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio Bands — Three Colors, Smooth Gradient</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio Bands — Three Colors, Crossfade at Boundaries</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input Reactive — Random Color per Press</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Input Reactive — Cycle Through Palette</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms):</value></data>
-  <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
-  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
-  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Color 2</value></data>
-  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>Color 3</value></data>
-  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>Color 4</value></data>
-  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend smoothly between palette colors</value></data>
-  <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
-  <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
-  <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms):</value></data>
-  <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Reset Left Trigger</value></data>
-  <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Reset Right Trigger</value></data>
-  <data name="Pad_ResetStrength" xml:space="preserve"><value>Reset Strength</value></data>
-  <data name="Pad_ResetFrequency" xml:space="preserve"><value>Reset Frequency</value></data>
-  <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Reset Period</value></data>
-  <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Reset Pulse Decay</value></data>
-  <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>
-  <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>Reset Low-to-Mid Boundary</value></data>
-  <data name="Pad_ResetAudioMidToHighPercent" xml:space="preserve"><value>Reset Mid-to-High Boundary</value></data>
-  <data name="Pad_ResetAudioCrossFadePercent" xml:space="preserve"><value>Reset Crossfade Width</value></data>
-  <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Reset Red</value></data>
-  <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Reset Green</value></data>
-  <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Reset Blue</value></data>
-  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Reset Low Band — Red</value></data>
-  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Reset Low Band — Green</value></data>
-  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Reset Low Band — Blue</value></data>
-  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Reset Mid Band — Red</value></data>
-  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Reset Mid Band — Green</value></data>
-  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Reset Mid Band — Blue</value></data>
-  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Reset High Band — Red</value></data>
-  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Reset High Band — Green</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Reset High Band — Blue</value></data>
+  <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Insira uma cor hexadecimal de seis dígitos (RRGGBB ou #RRGGBB) e pressione Enter ou clique fora para aplicar.</value></data>
+  <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Remover esta cor da paleta</value></data>
+  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>LED do microfone</value></data>
+  <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Desligado</value></data>
+  <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Aceso</value></data>
+  <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulsando</value></data>
+  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>LEDs de jogador</value></data>
+  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinco LEDs brancos pequenos abaixo do touchpad. Escolha qual padrão de jogador exibir e o brilho.</value></data>
+  <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LEDs indicadores</value></data>
+  <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Fileira de número do jogador (5 LEDs abaixo do touchpad) e o LED de mudo acima do microfone. O controle de brilho afeta fisicamente apenas a fileira do jogador. O firmware expõe estados do LED de mudo (Desligado / Aceso / Pulsando), mas nenhum registro de brilho separado para mudo.</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Padrão do jogador:</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modo do LED de mudo:</value></data>
+  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Brilho do LED:</value></data>
+  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Padrão</value></data>
+  <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Desligado</value></data>
+  <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Jogador 1</value></data>
+  <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Jogador 2</value></data>
+  <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Jogador 3</value></data>
+  <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>Jogador 4</value></data>
+  <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>Todos</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>Brilho</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>Alto</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Médio</value></data>
+  <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>Baixo</value></data>
+  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Barra de luz por áudio</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Modula a cor base acima de acordo com o pico de áudio do sistema. Pulsa com o que estiver tocando pelo dispositivo de saída padrão. Usa a mesma captura WASAPI da vibração por áudio, mas lê a forma de onda completa (sem filtro de corte de graves) e, assim, acompanha tudo que você ouve.</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Pulsar a cor base com o áudio do sistema</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensibilidade:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>Pulsar cor base</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Três cores — transições duras</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Três cores — gradiente suave</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Três cores — crossfade nos limites</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Largura do crossfade:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Cor suave</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Cor média</value></data>
+  <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Cor alta</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Suave → Médio em:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Médio → Alto em:</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Modo:</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Desativado (o jogo controla a barra)</value></data>
+  <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Cor estática</value></data>
+  <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Respiração (uma cor com fade)</value></data>
+  <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Ciclo arco-íris</value></data>
+  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Ciclo de cores</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulso por áudio — cor estática</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulso por áudio — cor aleatória por batida</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulso por áudio — ciclo arco-íris</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandas de áudio — três cores, transições duras</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandas de áudio — três cores, gradiente suave</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandas de áudio — três cores, crossfade nos limites</value></data>
+  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Reativo à entrada — cor aleatória por pressão</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reativo à entrada — percorrer paleta</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Período (ms):</value></data>
+  <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paleta</value></data>
+  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Cor 1</value></data>
+  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Cor 2</value></data>
+  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>Cor 3</value></data>
+  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>Cor 4</value></data>
+  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Mesclar suavemente entre as cores da paleta</value></data>
+  <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Adicionar cor</value></data>
+  <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Redefinir paleta</value></data>
+  <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Substitui a paleta atual pelas quatro cores padrão (vermelho, verde, azul, amarelo).</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decaimento do pulso (ms):</value></data>
+  <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Redefinir gatilho esquerdo</value></data>
+  <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Redefinir gatilho direito</value></data>
+  <data name="Pad_ResetStrength" xml:space="preserve"><value>Redefinir força</value></data>
+  <data name="Pad_ResetFrequency" xml:space="preserve"><value>Redefinir frequência</value></data>
+  <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Redefinir período</value></data>
+  <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Redefinir decaimento do pulso</value></data>
+  <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Redefinir sensibilidade</value></data>
+  <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>Redefinir limite suave→médio</value></data>
+  <data name="Pad_ResetAudioMidToHighPercent" xml:space="preserve"><value>Redefinir limite médio→alto</value></data>
+  <data name="Pad_ResetAudioCrossFadePercent" xml:space="preserve"><value>Redefinir largura do crossfade</value></data>
+  <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Redefinir vermelho</value></data>
+  <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Redefinir verde</value></data>
+  <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Redefinir azul</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Redefinir banda suave — vermelho</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Redefinir banda suave — verde</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Redefinir banda suave — azul</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Redefinir banda média — vermelho</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Redefinir banda média — verde</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Redefinir banda média — azul</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Redefinir banda alta — vermelho</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Redefinir banda alta — verde</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Redefinir banda alta — azul</value></data>
 </root>

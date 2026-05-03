@@ -2267,6 +2267,7 @@
                                             Minimum="250" Maximum="10000" TickFrequency="250"/>
                                     <TextBox Text="{Binding PlayStationConfig.LightbarPeriodMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarPeriodCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
 
                                 <!-- Palette (variable count): ColorCycle and InputReactive share. -->
@@ -2335,13 +2336,23 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <Button Command="{Binding PlayStationConfig.AddPaletteColorCommand}"
-                                            HorizontalAlignment="Left" Margin="0,0,0,8" Padding="10,4">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <Button Command="{Binding PlayStationConfig.AddPaletteColorCommand}"
+                                                Padding="10,4">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding PlayStationConfig.ResetPaletteCommand}"
+                                                Margin="8,0,0,0" Padding="10,4"
+                                                ToolTip="{Binding Pad_Lighting_ResetPaletteTooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Pad_Lighting_ResetPalette, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
                                     <CheckBox IsChecked="{Binding PlayStationConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
                                               Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"
                                               Margin="0,0,0,8"
@@ -2357,6 +2368,7 @@
                                                 Minimum="100" Maximum="3000" TickFrequency="50"/>
                                         <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}"/>
                                     </StackPanel>
                                     <CheckBox IsChecked="{Binding PlayStationConfig.LightbarInputRandomize, Mode=TwoWay}"
                                               Content="{Binding Pad_Lighting_InputRandomize, Source={x:Static strings:Strings.Instance}}"
@@ -2372,6 +2384,7 @@
                                             Minimum="1" Maximum="20" TickFrequency="0.1"/>
                                     <TextBox Text="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetAudioLightbarSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
 
                                 <!-- Audio bands: 3 colors with thresholds, only visible
@@ -2561,6 +2574,7 @@
                                         <TextBox Text="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetAudioLowToMidPercentCommand}" Style="{StaticResource ResetButton}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidToHigh, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -2570,6 +2584,7 @@
                                         <TextBox Text="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetAudioMidToHighPercentCommand}" Style="{StaticResource ResetButton}"/>
                                     </StackPanel>
 
                                     <!-- Crossfade width — only meaningful in CrossFade mode -->
@@ -2582,6 +2597,7 @@
                                         <TextBox Text="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>

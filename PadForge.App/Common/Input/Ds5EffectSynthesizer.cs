@@ -145,7 +145,14 @@ namespace PadForge.Common.Input
                 || cfg.AudioLightbarEnabled
                 || cfg.PlayerLedMode != PlayerLedMode.Off;
 
-            if (anyLightFeature)
+            // Always assert the player-indicator update bit and write byte
+            // 43, even when PlayerLedMode == Off. Without setting validFlag1
+            // bit 4 the firmware ignores byte 43 entirely, so a transition
+            // from a pattern (say, Player1) back to Off would leave the row
+            // stuck on the previous pattern. PlayerLedBits[Off] is 0, so the
+            // byte degenerates to PlayerIndicatorNoFade alone (0x20) — no
+            // LED bits set, no-fade asserted — which cleanly extinguishes
+            // the row.
             {
                 enableBits |= EnablePlayerIndicator;
                 dst[OffValidFlag2]      = 0xFF;

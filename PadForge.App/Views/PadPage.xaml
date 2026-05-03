@@ -1320,8 +1320,8 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Image Source="{StaticResource TabSticksIcon}" Width="24" Height="24"
-                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <viewControls:LabeledShapeIcon Shape="Stick" Width="24" Height="24"
+                                                            VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
                         </StackPanel>
@@ -1703,8 +1703,8 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Image Source="{StaticResource TabTriggersIcon}" Width="24" Height="24"
-                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <viewControls:LabeledShapeIcon Shape="TriggerLeft" Width="24" Height="24"
+                                                            VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
                         </StackPanel>
@@ -1829,8 +1829,10 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Image Source="{StaticResource TabForceFeedbackIcon}" Width="24" Height="24"
-                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Path Width="24" Height="24" Stretch="Uniform"
+                                  Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                  Data="M0 15h2V9H0v6zm3 2h2V7H3v10zm19-8v6h2V9h-2zm-3 8h2V7h-2v10zM16.5 3h-9C6.67 3 6 3.67 6 4.5v15c0 .83.67 1.5 1.5 1.5h9c.83 0 1.5-.67 1.5-1.5v-15c0-.83-.67-1.5-1.5-1.5z"
+                                  VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_ForceFeedback_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
                         </StackPanel>
@@ -1842,8 +1844,10 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Image Source="{StaticResource TabForceFeedbackIcon}" Width="18" Height="18"
-                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <Path Width="18" Height="18" Stretch="Uniform"
+                                  Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                  Data="M0 15h2V9H0v6zm3 2h2V7H3v10zm19-8v6h2V9h-2zm-3 8h2V7h-2v10zM16.5 3h-9C6.67 3 6 3.67 6 4.5v15c0 .83.67 1.5 1.5 1.5h9c.83 0 1.5-.67 1.5-1.5v-15c0-.83-.67-1.5-1.5-1.5z"
+                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource CardTitle}"/>
                             <Button Command="{Binding ResetForceAllCommand}" Style="{StaticResource ResetAllButton}"
@@ -1996,8 +2000,15 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Image Source="{StaticResource TabAdaptiveTriggersIcon}" Width="24" Height="24"
-                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Viewbox Width="24" Height="24" Stretch="Uniform"
+                                     VerticalAlignment="Center" Margin="0,0,10,0">
+                                <Grid Width="512" Height="512">
+                                    <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                          Data="{StaticResource ZackslyTriggerOuterBodyGeometry}"/>
+                                    <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                          Data="M445,180 L475,200 L445,220 L455,220 L485,200 L455,180 Z M445,280 L475,300 L445,320 L455,320 L485,300 L455,280 Z"/>
+                                </Grid>
+                            </Viewbox>
                             <TextBlock Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
                         </StackPanel>
@@ -2157,8 +2168,10 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Image Source="{StaticResource TabLightingIcon}" Width="24" Height="24"
-                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Path Width="24" Height="24" Stretch="Uniform"
+                                  Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                  Data="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"
+                                  VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
                         </StackPanel>

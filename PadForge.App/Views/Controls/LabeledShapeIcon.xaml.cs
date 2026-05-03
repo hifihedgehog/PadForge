@@ -51,19 +51,12 @@ namespace PadForge.Views.Controls
 
         private void UpdateShape()
         {
-            object resource = Shape switch
-            {
-                LabeledShapeKind.TriggerRight => TryFind("TabTriggersIconRight") ?? TryFind("TabTriggersIcon"),
-                LabeledShapeKind.TriggerLeft => TryFind("TabTriggersIcon"),
-                _ => TryFind("TabSticksIcon")
-            };
-
-            if (resource is ImageSource img)
-                ShapeImage.Source = img;
+            bool isStick = Shape == LabeledShapeKind.Stick;
+            StickOuterPath.Visibility = isStick ? Visibility.Visible : Visibility.Collapsed;
+            StickInnerPath.Visibility = isStick ? Visibility.Visible : Visibility.Collapsed;
+            TriggerLeftPath.Visibility = Shape == LabeledShapeKind.TriggerLeft ? Visibility.Visible : Visibility.Collapsed;
+            TriggerRightPath.Visibility = Shape == LabeledShapeKind.TriggerRight ? Visibility.Visible : Visibility.Collapsed;
         }
-
-        private object TryFind(string key)
-            => Application.Current?.TryFindResource(key);
 
         private void UpdateLabel()
         {

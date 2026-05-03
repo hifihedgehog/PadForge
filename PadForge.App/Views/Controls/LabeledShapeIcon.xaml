@@ -3,17 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              SnapsToDevicePixels="True"
              UseLayoutRounding="True">
+    <!-- The shape used to be sourced from a DrawingImage resource in
+         ControllerIcons.xaml. DrawingImage is a Freezable and auto-freezes
+         when stored in a ResourceDictionary, which captures its DynamicResource
+         brush bindings at first resolution. Theme changes never propagated, so
+         a pad started in dark mode kept rendering as white-on-white after the
+         user switched to light. Path elements are FrameworkElement, not Freezable
+         on the Fill property's binding chain, so DynamicResource keeps tracking. -->
     <Grid>
-        <Image x:Name="ShapeImage" Stretch="Uniform"/>
+        <Viewbox Stretch="Uniform">
+            <Grid Width="512" Height="512">
+                <Path x:Name="StickOuterPath" Visibility="Collapsed"
+                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Data="{StaticResource ZackslyStickOuterRingGeometry}"/>
+                <Path x:Name="StickInnerPath" Visibility="Collapsed"
+                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Data="{StaticResource ZackslyStickInnerDiscGeometry}"/>
+                <Path x:Name="TriggerLeftPath" Visibility="Collapsed"
+                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Data="{StaticResource ZackslyTriggerOuterBodyGeometry}"/>
+                <Path x:Name="TriggerRightPath" Visibility="Collapsed"
+                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Data="{StaticResource ZackslyTriggerOuterBodyRightGeometry}"/>
+            </Grid>
+        </Viewbox>
         <Viewbox x:Name="LabelHost" Stretch="Uniform">
-            <!-- Inner 512x512 canvas matches the icon viewBox so label
-                 positions are expressed in icon coordinates. -->
             <Canvas Width="512" Height="512" Background="Transparent" IsHitTestVisible="False">
-                <!-- Label fill needs maximum contrast against the shape,
-                     which uses TextFillColorPrimaryBrush. The inverse
-                     brush (white in light theme, black in dark theme)
-                     is the exact opposite, so the knockout reads
-                     clearly in both themes. -->
+                <!-- Label fill is the inverse of the shape's primary text
+                     color, so the glyph reads as a knockout in both
+                     themes. -->
                 <Path x:Name="LabelPath"
                       Fill="{DynamicResource TextFillColorInverseBrush}"/>
             </Canvas>

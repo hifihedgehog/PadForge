@@ -294,15 +294,18 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    _palettePulseIndex = (_palettePulseIndex + 1) & 3;
-                    var (pr, pg, pb) = _palettePulseIndex switch
+                    var palette = _config.LightbarPalette;
+                    int n = palette?.Count ?? 0;
+                    if (n > 0)
                     {
-                        0 => (_config.LightbarPalette1R, _config.LightbarPalette1G, _config.LightbarPalette1B),
-                        1 => (_config.LightbarPalette2R, _config.LightbarPalette2G, _config.LightbarPalette2B),
-                        2 => (_config.LightbarPalette3R, _config.LightbarPalette3G, _config.LightbarPalette3B),
-                        _ => (_config.LightbarPalette4R, _config.LightbarPalette4G, _config.LightbarPalette4B),
-                    };
-                    _pulseColor = (uint)((pr << 16) | (pg << 8) | pb);
+                        _palettePulseIndex = (_palettePulseIndex + 1) % n;
+                        var entry = palette[_palettePulseIndex];
+                        _pulseColor = (uint)((entry.R << 16) | (entry.G << 8) | entry.B);
+                    }
+                    else
+                    {
+                        _pulseColor = 0;
+                    }
                 }
                 _pulseStartMs = Environment.TickCount64;
             }

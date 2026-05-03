@@ -481,6 +481,7 @@
   <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>Color 3</value></data>
   <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>Color 4</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend smoothly between palette colors</value></data>
+  <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse decay (ms)</value></data>
   <data name="Pad_Lighting_InputRandomize" xml:space="preserve"><value>Random color per press (otherwise cycles palette)</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>

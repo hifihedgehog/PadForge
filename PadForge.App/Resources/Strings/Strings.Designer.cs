@@ -438,6 +438,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_Blue => Get("Pad_Lighting_Blue");
     public string Pad_Lighting_Hex => Get("Pad_Lighting_Hex");
     public string Pad_Lighting_HexTooltip => Get("Pad_Lighting_HexTooltip");
+    public string Pad_Lighting_RemoveColor => Get("Pad_Lighting_RemoveColor");
     public string Pad_Lighting_MicLedMode => Get("Pad_Lighting_MicLedMode");
     public string Pad_Lighting_MicLed_Off => Get("Pad_Lighting_MicLed_Off");
     public string Pad_Lighting_MicLed_Solid => Get("Pad_Lighting_MicLed_Solid");
@@ -1017,4 +1018,26 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetAudioCutoff => Get("Pad_ResetAudioCutoff");
     public string Pad_ResetAudioLeftMotor => Get("Pad_ResetAudioLeftMotor");
     public string Pad_ResetAudioRightMotor => Get("Pad_ResetAudioRightMotor");
+    public string Pad_ResetLeftTrigger => Get("Pad_ResetLeftTrigger");
+    public string Pad_ResetRightTrigger => Get("Pad_ResetRightTrigger");
+    public string Pad_ResetStrength => Get("Pad_ResetStrength");
+    public string Pad_ResetFrequency => Get("Pad_ResetFrequency");
+    public string Pad_ResetLightbarPeriod => Get("Pad_ResetLightbarPeriod");
+    public string Pad_ResetLightbarInputDecay => Get("Pad_ResetLightbarInputDecay");
+    public string Pad_ResetAudioLightbarSensitivity => Get("Pad_ResetAudioLightbarSensitivity");
+    public string Pad_ResetAudioLowToMidPercent => Get("Pad_ResetAudioLowToMidPercent");
+    public string Pad_ResetAudioMidToHighPercent => Get("Pad_ResetAudioMidToHighPercent");
+    public string Pad_ResetAudioCrossFadePercent => Get("Pad_ResetAudioCrossFadePercent");
+    public string Pad_ResetLightbarRed => Get("Pad_ResetLightbarRed");
+    public string Pad_ResetLightbarGreen => Get("Pad_ResetLightbarGreen");
+    public string Pad_ResetLightbarBlue => Get("Pad_ResetLightbarBlue");
+    public string Pad_ResetAudioLowR => Get("Pad_ResetAudioLowR");
+    public string Pad_ResetAudioLowG => Get("Pad_ResetAudioLowG");
+    public string Pad_ResetAudioLowB => Get("Pad_ResetAudioLowB");
+    public string Pad_ResetAudioMidR => Get("Pad_ResetAudioMidR");
+    public string Pad_ResetAudioMidG => Get("Pad_ResetAudioMidG");
+    public string Pad_ResetAudioMidB => Get("Pad_ResetAudioMidB");
+    public string Pad_ResetAudioHighR => Get("Pad_ResetAudioHighR");
+    public string Pad_ResetAudioHighG => Get("Pad_ResetAudioHighG");
+    public string Pad_ResetAudioHighB => Get("Pad_ResetAudioHighB");
 }

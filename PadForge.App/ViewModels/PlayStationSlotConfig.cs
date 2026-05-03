@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -22,6 +23,49 @@ namespace PadForge.ViewModels
     /// </summary>
     public class PlayStationSlotConfig : ObservableObject
     {
+        public PlayStationSlotConfig()
+        {
+            HookPalette(_lightbarPalette);
+        }
+
+        // Subscribe collection + per-item PropertyChanged so the
+        // dispatcher's OnConfigChanged catches any palette edit.
+        // Without this, dragging an RGB slider on a palette entry would
+        // not retrigger DispatchSnapshot — the entry's PropertyChanged
+        // is internal to the entry and the parent collection wouldn't
+        // see it.
+        private void HookPalette(ObservableCollection<LightbarPaletteEntry> coll)
+        {
+            if (coll == null) return;
+            coll.CollectionChanged += OnPaletteCollectionChanged;
+            foreach (var entry in coll)
+                if (entry != null) entry.PropertyChanged += OnPaletteEntryChanged;
+        }
+
+        private void UnhookPalette(ObservableCollection<LightbarPaletteEntry> coll)
+        {
+            if (coll == null) return;
+            coll.CollectionChanged -= OnPaletteCollectionChanged;
+            foreach (var entry in coll)
+                if (entry != null) entry.PropertyChanged -= OnPaletteEntryChanged;
+        }
+
+        private void OnPaletteCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (LightbarPaletteEntry old in e.OldItems)
+                    if (old != null) old.PropertyChanged -= OnPaletteEntryChanged;
+            if (e.NewItems != null)
+                foreach (LightbarPaletteEntry add in e.NewItems)
+                    if (add != null) add.PropertyChanged += OnPaletteEntryChanged;
+            OnPropertyChanged(nameof(LightbarPalette));
+        }
+
+        private void OnPaletteEntryChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(LightbarPalette));
+        }
+
         // ────────────────────────────────────────────────
         //  Adaptive Triggers — per-trigger config
         // ────────────────────────────────────────────────
@@ -258,24 +302,60 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _lightbarColorCycleSmooth, value);
         }
 
-        // 4-color palette shared by ColorCycle and InputReactive modes.
-        // Defaults: red, green, blue, yellow — visually distinct primaries
-        // that read well on the lightbar's diffuser.
-        private byte _palette1R = 0xFF; public byte LightbarPalette1R { get => _palette1R; set => SetProperty(ref _palette1R, value); }
-        private byte _palette1G;        public byte LightbarPalette1G { get => _palette1G; set => SetProperty(ref _palette1G, value); }
-        private byte _palette1B;        public byte LightbarPalette1B { get => _palette1B; set => SetProperty(ref _palette1B, value); }
+        // Variable-length palette shared by ColorCycle and InputReactive
+        // modes. Defaults to four primaries (red, green, blue, yellow);
+        // user can add or remove entries from the Lighting tab. Synth
+        // iterates with idx % Count so any size from 1..N works.
+        private ObservableCollection<LightbarPaletteEntry> _lightbarPalette
+            = new ObservableCollection<LightbarPaletteEntry>
+            {
+                new LightbarPaletteEntry(0xFF, 0x00, 0x00),
+                new LightbarPaletteEntry(0x00, 0xFF, 0x00),
+                new LightbarPaletteEntry(0x00, 0x00, 0xFF),
+                new LightbarPaletteEntry(0xFF, 0xFF, 0x00),
+            };
+        public ObservableCollection<LightbarPaletteEntry> LightbarPalette
+        {
+            get => _lightbarPalette;
+            set
+            {
+                var v = value ?? new ObservableCollection<LightbarPaletteEntry>();
+                if (_lightbarPalette == v) return;
+                UnhookPalette(_lightbarPalette);
+                _lightbarPalette = v;
+                HookPalette(_lightbarPalette);
+                OnPropertyChanged(nameof(LightbarPalette));
+            }
+        }
 
-        private byte _palette2R;        public byte LightbarPalette2R { get => _palette2R; set => SetProperty(ref _palette2R, value); }
-        private byte _palette2G = 0xFF; public byte LightbarPalette2G { get => _palette2G; set => SetProperty(ref _palette2G, value); }
-        private byte _palette2B;        public byte LightbarPalette2B { get => _palette2B; set => SetProperty(ref _palette2B, value); }
+        public RelayCommand AddPaletteColorCommand =>
+            _addPalette ??= new RelayCommand(() =>
+            {
+                // Roll a fresh hue distinct from the last entry. Keeps the
+                // newly added swatch visually different from the one above
+                // so the user can immediately see it landed.
+                byte r = 0xFF, g = 0xFF, b = 0xFF;
+                if (LightbarPalette.Count > 0)
+                {
+                    var last = LightbarPalette[LightbarPalette.Count - 1];
+                    // Rotate primaries in a simple cycle to keep contrast.
+                    if (last.R == 0xFF && last.G == 0x00 && last.B == 0x00) { r = 0x00; g = 0xFF; b = 0x00; }
+                    else if (last.R == 0x00 && last.G == 0xFF && last.B == 0x00) { r = 0x00; g = 0x00; b = 0xFF; }
+                    else if (last.R == 0x00 && last.G == 0x00 && last.B == 0xFF) { r = 0xFF; g = 0xFF; b = 0x00; }
+                    else { r = 0xFF; g = 0x00; b = 0x00; }
+                }
+                LightbarPalette.Add(new LightbarPaletteEntry(r, g, b));
+            });
+        private RelayCommand _addPalette;
 
-        private byte _palette3R;        public byte LightbarPalette3R { get => _palette3R; set => SetProperty(ref _palette3R, value); }
-        private byte _palette3G;        public byte LightbarPalette3G { get => _palette3G; set => SetProperty(ref _palette3G, value); }
-        private byte _palette3B = 0xFF; public byte LightbarPalette3B { get => _palette3B; set => SetProperty(ref _palette3B, value); }
-
-        private byte _palette4R = 0xFF; public byte LightbarPalette4R { get => _palette4R; set => SetProperty(ref _palette4R, value); }
-        private byte _palette4G = 0xFF; public byte LightbarPalette4G { get => _palette4G; set => SetProperty(ref _palette4G, value); }
-        private byte _palette4B;        public byte LightbarPalette4B { get => _palette4B; set => SetProperty(ref _palette4B, value); }
+        public RelayCommand<LightbarPaletteEntry> RemovePaletteColorCommand =>
+            _removePalette ??= new RelayCommand<LightbarPaletteEntry>(entry =>
+            {
+                if (entry == null) return;
+                if (LightbarPalette.Count <= 1) return; // never let it go empty
+                LightbarPalette.Remove(entry);
+            });
+        private RelayCommand<LightbarPaletteEntry> _removePalette;
 
         private int _lightbarInputDecayMs = 600;
         /// <summary>Decay time for InputReactive pulses, in milliseconds.
@@ -595,6 +675,59 @@ namespace PadForge.ViewModels
         Low = 2,
     }
 
+    /// <summary>One entry in the user-defined lightbar palette. Used by
+    /// ColorCycle (walked over time) and InputReactive (cycled on each
+    /// button press when randomize is off). ObservableObject so the
+    /// dispatcher repaints whenever the user drags a slider on any entry
+    /// — bubble PropertyChanged is wired in PlayStationSlotConfig's
+    /// constructor.</summary>
+    public class LightbarPaletteEntry : ObservableObject
+    {
+        public LightbarPaletteEntry() { }
+        public LightbarPaletteEntry(byte r, byte g, byte b)
+        {
+            _r = r; _g = g; _b = b;
+        }
+
+        private byte _r;
+        public byte R { get => _r; set { if (SetProperty(ref _r, value)) OnPropertyChanged(nameof(Hex)); } }
+
+        private byte _g;
+        public byte G { get => _g; set { if (SetProperty(ref _g, value)) OnPropertyChanged(nameof(Hex)); } }
+
+        private byte _b;
+        public byte B { get => _b; set { if (SetProperty(ref _b, value)) OnPropertyChanged(nameof(Hex)); } }
+
+        /// <summary>Two-way HEX shim. Get formats RRGGBB; set parses and
+        /// writes through to R/G/B. Always fires PropertyChanged at the
+        /// end so a TextBox bound with UpdateSourceTrigger=LostFocus
+        /// re-displays the canonical form after invalid input.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string Hex
+        {
+            get => $"{_r:X2}{_g:X2}{_b:X2}";
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var s = value.Trim();
+                    if (s.StartsWith("#")) s = s.Substring(1);
+                    if (s.Length == 6
+                        && byte.TryParse(s.Substring(0, 2), System.Globalization.NumberStyles.HexNumber,
+                            System.Globalization.CultureInfo.InvariantCulture, out var nr)
+                        && byte.TryParse(s.Substring(2, 2), System.Globalization.NumberStyles.HexNumber,
+                            System.Globalization.CultureInfo.InvariantCulture, out var ng)
+                        && byte.TryParse(s.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
+                            System.Globalization.CultureInfo.InvariantCulture, out var nb))
+                    {
+                        R = nr; G = ng; B = nb;
+                    }
+                }
+                OnPropertyChanged(nameof(Hex));
+            }
+        }
+    }
+
     /// <summary>Unified lightbar effect picker. Replaces the legacy
     /// LightbarEnabled + AudioLightbarEnabled + AudioLightbarMode trio.
     /// Migration runs in SettingsService.ApplyPlayStationConfigs when
@@ -700,19 +833,19 @@ namespace PadForge.ViewModels
         [XmlAttribute] public LightbarMode LightbarMode { get; set; } = LightbarMode.Off;
         [XmlAttribute] public int LightbarPeriodMs { get; set; } = 3000;
         [XmlAttribute] public bool LightbarColorCycleSmooth { get; set; } = true;
-        [XmlAttribute] public byte LightbarPalette1R { get; set; } = 0xFF;
-        [XmlAttribute] public byte LightbarPalette1G { get; set; }
-        [XmlAttribute] public byte LightbarPalette1B { get; set; }
-        [XmlAttribute] public byte LightbarPalette2R { get; set; }
-        [XmlAttribute] public byte LightbarPalette2G { get; set; } = 0xFF;
-        [XmlAttribute] public byte LightbarPalette2B { get; set; }
-        [XmlAttribute] public byte LightbarPalette3R { get; set; }
-        [XmlAttribute] public byte LightbarPalette3G { get; set; }
-        [XmlAttribute] public byte LightbarPalette3B { get; set; } = 0xFF;
-        [XmlAttribute] public byte LightbarPalette4R { get; set; } = 0xFF;
-        [XmlAttribute] public byte LightbarPalette4G { get; set; } = 0xFF;
-        [XmlAttribute] public byte LightbarPalette4B { get; set; }
+        [XmlArray("LightbarPalette")]
+        [XmlArrayItem("Color")]
+        public LightbarPaletteEntryData[] LightbarPalette { get; set; }
         [XmlAttribute] public int LightbarInputDecayMs { get; set; } = 600;
         [XmlAttribute] public bool LightbarInputRandomize { get; set; } = true;
+    }
+
+    /// <summary>Serializable mirror of <see cref="LightbarPaletteEntry"/>.
+    /// Plain struct: three byte XmlAttributes per Color element.</summary>
+    public class LightbarPaletteEntryData
+    {
+        [XmlAttribute] public byte R { get; set; }
+        [XmlAttribute] public byte G { get; set; }
+        [XmlAttribute] public byte B { get; set; }
     }
 }

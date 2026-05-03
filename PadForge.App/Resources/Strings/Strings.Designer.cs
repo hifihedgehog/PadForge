@@ -498,6 +498,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_PaletteColor3 => Get("Pad_Lighting_PaletteColor3");
     public string Pad_Lighting_PaletteColor4 => Get("Pad_Lighting_PaletteColor4");
     public string Pad_Lighting_ColorCycleSmooth => Get("Pad_Lighting_ColorCycleSmooth");
+    public string Pad_Lighting_AddColor => Get("Pad_Lighting_AddColor");
     public string Pad_Lighting_InputDecay => Get("Pad_Lighting_InputDecay");
     public string Pad_Lighting_InputRandomize => Get("Pad_Lighting_InputRandomize");
     public string Pad_Preset => Get("Pad_Preset");

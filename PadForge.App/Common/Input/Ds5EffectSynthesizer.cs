@@ -616,11 +616,18 @@ namespace PadForge.Common.Input
             int endIdx   = PositionToZone(endPosition);
             if (endIdx < startIdx) (startIdx, endIdx) = (endIdx, startIdx);
 
+            // Alternating active/inactive zones in [start, end] — gives a
+            // distinct ratcheting feel: trigger meets force at one zone,
+            // releases at the next, meets force again, etc. Without the
+            // alternation, "constant strength across a range" is exactly
+            // what Weapon mode already does, and the two presets are
+            // indistinguishable.
             uint forceZones = 0;
             ushort activeZones = 0;
             int forceValue = (strZone - 1) & 0x07;
             for (int i = startIdx; i <= endIdx; i++)
             {
+                if (((i - startIdx) & 1) != 0) continue; // skip every other zone
                 forceZones |= (uint)(forceValue << (3 * i));
                 activeZones |= (ushort)(1 << i);
             }

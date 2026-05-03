@@ -435,9 +435,13 @@ namespace PadForge.Services
             foreach (var cfgData in configs)
             {
                 int idx = cfgData.SlotIndex;
-                if (idx >= 0 && idx < _mainVm.Pads.Count &&
-                    SettingsManager.SlotCreated[idx] &&
-                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.PlayStation)
+                // Apply to whichever pad index the config was saved
+                // against, regardless of current SlotCreated / OutputType.
+                // The PlayStationConfig object exists on every pad; the
+                // synth only honours it for PS-typed slots, so feeding
+                // values into a non-PS slot's config is harmless.
+                if (idx >= 0 && idx < _mainVm.Pads.Count
+                    && _mainVm.Pads[idx].PlayStationConfig != null)
                 {
                     var cfg = _mainVm.Pads[idx].PlayStationConfig;
                     cfg.LeftTriggerMode = cfgData.LeftTriggerMode;
@@ -1227,9 +1231,11 @@ namespace PadForge.Services
             var playStationConfigs = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                if (!SettingsManager.SlotCreated[i] ||
-                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.PlayStation)
-                    continue;
+                // Save every slot's PS config — see BuildPlayStationConfig-
+                // Snapshot for the rationale. App-exit teardown sets
+                // SlotCreated=false, so the previous gate dropped the
+                // user's lighting and adaptive-trigger edits on disk.
+                if (_mainVm.Pads[i].PlayStationConfig == null) continue;
                 var cfg = _mainVm.Pads[i].PlayStationConfig;
                 playStationConfigs.Add(new ViewModels.PlayStationSlotConfigData
                 {
@@ -1380,12 +1386,15 @@ namespace PadForge.Services
         /// </summary>
         private ViewModels.PlayStationSlotConfigData[] BuildPlayStationConfigSnapshot()
         {
+            // Save every slot's PS config, not just currently-created PS
+            // slots. The previous SlotCreated + OutputType gate caused
+            // lighting and adaptive-trigger edits to evaporate when the
+            // app's final save fired after VC teardown set SlotCreated=
+            // false. MIDI follows the same all-slots pattern.
             var list = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                if (!SettingsManager.SlotCreated[i] ||
-                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.PlayStation)
-                    continue;
+                if (_mainVm.Pads[i].PlayStationConfig == null) continue;
                 var cfg = _mainVm.Pads[i].PlayStationConfig;
                 list.Add(new ViewModels.PlayStationSlotConfigData
                 {

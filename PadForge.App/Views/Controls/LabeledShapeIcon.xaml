@@ -9,13 +9,13 @@
             <!-- Inner 512x512 canvas matches the icon viewBox so label
                  positions are expressed in icon coordinates. -->
             <Canvas Width="512" Height="512" Background="Transparent" IsHitTestVisible="False">
-                <!-- Label fill matches the card background so the glyph
-                     reads as a knockout against the shape, in both
-                     light and dark themes. CardBorder uses the same
-                     CardBackgroundFillColorDefaultBrush, so the colours
-                     line up regardless of which theme is active. -->
+                <!-- Label fill needs maximum contrast against the shape,
+                     which uses TextFillColorPrimaryBrush. The inverse
+                     brush (white in light theme, black in dark theme)
+                     is the exact opposite, so the knockout reads
+                     clearly in both themes. -->
                 <Path x:Name="LabelPath"
-                      Fill="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+                      Fill="{DynamicResource TextFillColorInverseBrush}"/>
             </Canvas>
         </Viewbox>
     </Grid>

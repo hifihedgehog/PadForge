@@ -413,7 +413,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Base Color</value></data>
+  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Apply user-configured base color when no game is writing</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>
   <data name="Pad_Lighting_Green" xml:space="preserve"><value>Green</value></data>
@@ -461,6 +461,28 @@
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Loud color</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off (game owns the lightbar)</value></data>
+  <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static color</value></data>
+  <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (single color fades)</value></data>
+  <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Rainbow cycle</value></data>
+  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color cycle (4-color palette)</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio pulse — static color</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio pulse — random color per beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio pulse — rainbow cycle</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audio bands — three colors, hard transitions</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio bands — three colors, smooth gradient</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio bands — three colors, crossfade at boundaries</value></data>
+  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input reactive (pulse on button press)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms)</value></data>
+  <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
+  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
+  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Color 2</value></data>
+  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>Color 3</value></data>
+  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>Color 4</value></data>
+  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend smoothly between palette colors</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse decay (ms)</value></data>
+  <data name="Pad_Lighting_InputRandomize" xml:space="preserve"><value>Random color per press (otherwise cycles palette)</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>

@@ -220,6 +220,83 @@ namespace PadForge.ViewModels
         }
 
         // ────────────────────────────────────────────────
+        //  Lightbar — unified mode picker. Replaces the old separate
+        //  LightbarEnabled and AudioLightbarEnabled toggles. The legacy
+        //  bools still exist below for XML round-trip and migration on
+        //  load (SettingsService.ApplyPlayStationConfigs maps them into
+        //  LightbarMode if LightbarMode is at its default).
+        // ────────────────────────────────────────────────
+
+        private LightbarMode _lightbarMode = LightbarMode.Off;
+        /// <summary>Active lightbar effect. Off means PadForge does not
+        /// author the lightbar at all (game owns it). Animated modes
+        /// (Breathing / Rainbow / ColorCycle / Audio* / InputReactive)
+        /// run on the dispatcher's periodic timer.</summary>
+        public LightbarMode LightbarMode
+        {
+            get => _lightbarMode;
+            set => SetProperty(ref _lightbarMode, value);
+        }
+
+        private int _lightbarPeriodMs = 3000;
+        /// <summary>Animation period in milliseconds for time-based modes:
+        /// one full Breathing fade-in/out cycle, one full Rainbow hue
+        /// rotation, one full ColorCycle palette traversal, and the hue
+        /// rotation speed for AudioPulseRainbow. Clamped 250..10000.</summary>
+        public int LightbarPeriodMs
+        {
+            get => _lightbarPeriodMs;
+            set => SetProperty(ref _lightbarPeriodMs, Math.Clamp(value, 250, 10000));
+        }
+
+        private bool _lightbarColorCycleSmooth = true;
+        /// <summary>ColorCycle interpolation: true blends linearly between
+        /// adjacent palette entries, false hops instantly at each step.</summary>
+        public bool LightbarColorCycleSmooth
+        {
+            get => _lightbarColorCycleSmooth;
+            set => SetProperty(ref _lightbarColorCycleSmooth, value);
+        }
+
+        // 4-color palette shared by ColorCycle and InputReactive modes.
+        // Defaults: red, green, blue, yellow — visually distinct primaries
+        // that read well on the lightbar's diffuser.
+        private byte _palette1R = 0xFF; public byte LightbarPalette1R { get => _palette1R; set => SetProperty(ref _palette1R, value); }
+        private byte _palette1G;        public byte LightbarPalette1G { get => _palette1G; set => SetProperty(ref _palette1G, value); }
+        private byte _palette1B;        public byte LightbarPalette1B { get => _palette1B; set => SetProperty(ref _palette1B, value); }
+
+        private byte _palette2R;        public byte LightbarPalette2R { get => _palette2R; set => SetProperty(ref _palette2R, value); }
+        private byte _palette2G = 0xFF; public byte LightbarPalette2G { get => _palette2G; set => SetProperty(ref _palette2G, value); }
+        private byte _palette2B;        public byte LightbarPalette2B { get => _palette2B; set => SetProperty(ref _palette2B, value); }
+
+        private byte _palette3R;        public byte LightbarPalette3R { get => _palette3R; set => SetProperty(ref _palette3R, value); }
+        private byte _palette3G;        public byte LightbarPalette3G { get => _palette3G; set => SetProperty(ref _palette3G, value); }
+        private byte _palette3B = 0xFF; public byte LightbarPalette3B { get => _palette3B; set => SetProperty(ref _palette3B, value); }
+
+        private byte _palette4R = 0xFF; public byte LightbarPalette4R { get => _palette4R; set => SetProperty(ref _palette4R, value); }
+        private byte _palette4G = 0xFF; public byte LightbarPalette4G { get => _palette4G; set => SetProperty(ref _palette4G, value); }
+        private byte _palette4B;        public byte LightbarPalette4B { get => _palette4B; set => SetProperty(ref _palette4B, value); }
+
+        private int _lightbarInputDecayMs = 600;
+        /// <summary>Decay time for InputReactive pulses, in milliseconds.
+        /// A button press flashes the chosen color at full intensity, then
+        /// fades to black over this duration.</summary>
+        public int LightbarInputDecayMs
+        {
+            get => _lightbarInputDecayMs;
+            set => SetProperty(ref _lightbarInputDecayMs, Math.Clamp(value, 100, 3000));
+        }
+
+        private bool _lightbarInputRandomize = true;
+        /// <summary>InputReactive color source. True picks a random hue
+        /// per press; false cycles through the 4-color palette in order.</summary>
+        public bool LightbarInputRandomize
+        {
+            get => _lightbarInputRandomize;
+            set => SetProperty(ref _lightbarInputRandomize, value);
+        }
+
+        // ────────────────────────────────────────────────
         //  Master enable for Feature B (user-configured effects)
         // ────────────────────────────────────────────────
 
@@ -518,6 +595,32 @@ namespace PadForge.ViewModels
         Low = 2,
     }
 
+    /// <summary>Unified lightbar effect picker. Replaces the legacy
+    /// LightbarEnabled + AudioLightbarEnabled + AudioLightbarMode trio.
+    /// Migration runs in SettingsService.ApplyPlayStationConfigs when
+    /// the saved value is the default Off — old XML maps to Static,
+    /// AudioPulse, AudioThresholds, AudioGradient, or AudioCrossFade
+    /// based on which legacy bool was on.
+    /// <para>Idle modes (Off, Static) only produce work on config
+    /// changes. Animated modes (Breathing, Rainbow, ColorCycle, every
+    /// Audio* variant, InputReactive) drive the dispatcher's periodic
+    /// timer at ~30 Hz.</para></summary>
+    public enum LightbarMode
+    {
+        Off = 0,
+        Static = 1,
+        Breathing = 2,
+        Rainbow = 3,
+        ColorCycle = 4,
+        AudioPulse = 5,
+        AudioPulseRandom = 6,
+        AudioPulseRainbow = 7,
+        AudioThresholds = 8,
+        AudioGradient = 9,
+        AudioCrossFade = 10,
+        InputReactive = 11,
+    }
+
     /// <summary>Audio-driven lightbar behavior. Issue #55 listed the
     /// threshold variant as primary and pulse-modulation as the
     /// alternative; PadForge ships both, plus two interpolation
@@ -589,5 +692,27 @@ namespace PadForge.ViewModels
         [XmlAttribute] public double AudioLowToMidPercent { get; set; } = 33;
         [XmlAttribute] public double AudioMidToHighPercent { get; set; } = 66;
         [XmlAttribute] public double AudioCrossFadePercent { get; set; } = 5.0;
+
+        // Unified lightbar mode (v3.1.0+). When this is at the default
+        // Off, SettingsService.ApplyPlayStationConfigs falls back to the
+        // legacy LightbarEnabled / AudioLightbarEnabled / AudioLightbarMode
+        // trio above to migrate old saves.
+        [XmlAttribute] public LightbarMode LightbarMode { get; set; } = LightbarMode.Off;
+        [XmlAttribute] public int LightbarPeriodMs { get; set; } = 3000;
+        [XmlAttribute] public bool LightbarColorCycleSmooth { get; set; } = true;
+        [XmlAttribute] public byte LightbarPalette1R { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarPalette1G { get; set; }
+        [XmlAttribute] public byte LightbarPalette1B { get; set; }
+        [XmlAttribute] public byte LightbarPalette2R { get; set; }
+        [XmlAttribute] public byte LightbarPalette2G { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarPalette2B { get; set; }
+        [XmlAttribute] public byte LightbarPalette3R { get; set; }
+        [XmlAttribute] public byte LightbarPalette3G { get; set; }
+        [XmlAttribute] public byte LightbarPalette3B { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarPalette4R { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarPalette4G { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarPalette4B { get; set; }
+        [XmlAttribute] public int LightbarInputDecayMs { get; set; } = 600;
+        [XmlAttribute] public bool LightbarInputRandomize { get; set; } = true;
     }
 }

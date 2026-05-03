@@ -25,14 +25,18 @@ namespace PadForge.Views
         private bool _dirty;
         private bool _layoutBuilt;
 
-        // Accent color for pressed/active elements
-        private static readonly Brush AccentBrush = new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD4));
+        // Theme-aware brush keys — re-resolved by WPF on theme switch via
+        // SetResourceReference. Dark-mode literals here used to leave the
+        // schematic stuck on dark colors after a switch to light.
+        private const string BgKey = "ControlFillColorDefaultBrush";
+        private const string DimKey = "ControlStrokeColorDefaultBrush";
+        private const string LabelKey = "TextFillColorSecondaryBrush";
+        private const string AccentKey = "AccentFillColorDefaultBrush";
+
+        // Semantic colors — intentionally fixed (recording flash + hover
+        // affordance), not driven by theme.
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
         private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
-        private static readonly Brush DimBrush = new SolidColorBrush(Color.FromRgb(0x60, 0x60, 0x60));
-        private static readonly Brush BgBrush = new SolidColorBrush(Color.FromRgb(0x2D, 0x2D, 0x2D));
-        private static readonly Brush LabelBrush = new SolidColorBrush(Color.FromRgb(0xBB, 0xBB, 0xBB));
-        private static readonly Brush DotBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
 
         // Flash state
         private DispatcherTimer _flashTimer;
@@ -218,11 +222,11 @@ namespace PadForge.Views
             {
                 Width = StickSize,
                 Height = StickSize,
-                Stroke = DimBrush,
                 StrokeThickness = 1.5,
-                Fill = BgBrush,
                 Cursor = Cursors.Hand
             };
+            outer.SetResourceReference(Shape.StrokeProperty, DimKey);
+            outer.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(outer, x);
             Canvas.SetTop(outer, y);
             SchematicCanvas.Children.Add(outer);
@@ -232,14 +236,16 @@ namespace PadForge.Views
             {
                 X1 = x + 4, Y1 = y + StickSize / 2,
                 X2 = x + StickSize - 4, Y2 = y + StickSize / 2,
-                Stroke = DimBrush, StrokeThickness = 0.5, Opacity = 0.5
+                StrokeThickness = 0.5, Opacity = 0.5
             };
+            hLine.SetResourceReference(Shape.StrokeProperty, DimKey);
             var vLine = new Line
             {
                 X1 = x + StickSize / 2, Y1 = y + 4,
                 X2 = x + StickSize / 2, Y2 = y + StickSize - 4,
-                Stroke = DimBrush, StrokeThickness = 0.5, Opacity = 0.5
+                StrokeThickness = 0.5, Opacity = 0.5
             };
+            vLine.SetResourceReference(Shape.StrokeProperty, DimKey);
             SchematicCanvas.Children.Add(hLine);
             SchematicCanvas.Children.Add(vLine);
 
@@ -247,9 +253,9 @@ namespace PadForge.Views
             var dot = new Ellipse
             {
                 Width = 10, Height = 10,
-                Fill = AccentBrush,
                 IsHitTestVisible = false
             };
+            dot.SetResourceReference(Shape.FillProperty, AccentKey);
             Canvas.SetLeft(dot, x + StickSize / 2 - 5);
             Canvas.SetTop(dot, y + StickSize / 2 - 5);
             SchematicCanvas.Children.Add(dot);
@@ -306,7 +312,7 @@ namespace PadForge.Views
             {
                 if (_flashTarget != null) return;
                 dirArrow.Visibility = Visibility.Collapsed;
-                outer.Stroke = DimBrush;
+                outer.SetResourceReference(Shape.StrokeProperty, DimKey);
                 outer.StrokeThickness = 1.5;
             };
 
@@ -348,12 +354,12 @@ namespace PadForge.Views
             {
                 Width = TriggerWidth,
                 Height = TriggerHeight,
-                Fill = BgBrush,
-                Stroke = DimBrush,
                 StrokeThickness = 1,
                 RadiusX = 3, RadiusY = 3,
                 Cursor = Cursors.Hand
             };
+            bg.SetResourceReference(Shape.FillProperty, BgKey);
+            bg.SetResourceReference(Shape.StrokeProperty, DimKey);
             Canvas.SetLeft(bg, x);
             Canvas.SetTop(bg, y);
             SchematicCanvas.Children.Add(bg);
@@ -363,10 +369,10 @@ namespace PadForge.Views
             {
                 Width = TriggerWidth - 4,
                 Height = 0,
-                Fill = AccentBrush,
                 RadiusX = 2, RadiusY = 2,
                 IsHitTestVisible = false
             };
+            fill.SetResourceReference(Shape.FillProperty, AccentKey);
             Canvas.SetLeft(fill, x + 2);
             Canvas.SetTop(fill, y + TriggerHeight - 2);
             SchematicCanvas.Children.Add(fill);
@@ -385,7 +391,7 @@ namespace PadForge.Views
             bg.MouseLeave += (s, e) =>
             {
                 if (_flashTarget != null) return;
-                bg.Stroke = DimBrush;
+                bg.SetResourceReference(Shape.StrokeProperty, DimKey);
                 bg.StrokeThickness = 1;
             };
 
@@ -416,10 +422,10 @@ namespace PadForge.Views
             {
                 Width = PovSize,
                 Height = PovSize,
-                Stroke = DimBrush,
-                StrokeThickness = 1.5,
-                Fill = BgBrush
+                StrokeThickness = 1.5
             };
+            outer.SetResourceReference(Shape.StrokeProperty, DimKey);
+            outer.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(outer, x);
             Canvas.SetTop(outer, y);
             SchematicCanvas.Children.Add(outer);
@@ -436,11 +442,11 @@ namespace PadForge.Views
                     new Point(PovSize / 2 - 6, PovSize / 2 - arrowBase),
                     new Point(PovSize / 2 + 6, PovSize / 2 - arrowBase)
                 },
-                Fill = AccentBrush,
                 IsHitTestVisible = false,
                 Visibility = Visibility.Collapsed,
                 RenderTransformOrigin = new Point(0.5, 0.5)
             };
+            arrow.SetResourceReference(Shape.FillProperty, AccentKey);
             // Use a fixed-size Canvas so RenderTransformOrigin (0.5,0.5) = POV center
             var arrowCanvas = new Canvas
             {
@@ -481,7 +487,7 @@ namespace PadForge.Views
             {
                 if (_flashTarget != null) return;
                 arrow.Visibility = Visibility.Collapsed;
-                outer.Stroke = DimBrush;
+                outer.SetResourceReference(Shape.StrokeProperty, DimKey);
                 outer.StrokeThickness = 1.5;
             };
 
@@ -521,11 +527,11 @@ namespace PadForge.Views
             {
                 Width = ButtonSize,
                 Height = ButtonSize,
-                Stroke = DimBrush,
                 StrokeThickness = 1.5,
-                Fill = BgBrush,
                 Cursor = Cursors.Hand
             };
+            circle.SetResourceReference(Shape.StrokeProperty, DimKey);
+            circle.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(circle, x);
             Canvas.SetTop(circle, y);
             SchematicCanvas.Children.Add(circle);
@@ -534,10 +540,10 @@ namespace PadForge.Views
             {
                 Text = (index + 1).ToString(),
                 FontSize = 9,
-                Foreground = LabelBrush,
                 IsHitTestVisible = false,
                 TextAlignment = TextAlignment.Center
             };
+            text.SetResourceReference(TextBlock.ForegroundProperty, LabelKey);
             text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             Canvas.SetLeft(text, x + (ButtonSize - text.DesiredSize.Width) / 2);
             Canvas.SetTop(text, y + (ButtonSize - text.DesiredSize.Height) / 2);
@@ -552,7 +558,7 @@ namespace PadForge.Views
             circle.MouseLeave += (s, e) =>
             {
                 if (_flashTarget != null) return;
-                circle.Stroke = DimBrush;
+                circle.SetResourceReference(Shape.StrokeProperty, DimKey);
                 circle.StrokeThickness = 1.5;
             };
 
@@ -619,7 +625,8 @@ namespace PadForge.Views
                     else
                         angle = isNeg ? 0 : 180; // up or down
 
-                    w.OuterCircle.Stroke = highlight ? FlashBrush : DimBrush;
+                    if (highlight) w.OuterCircle.Stroke = FlashBrush;
+                    else w.OuterCircle.SetResourceReference(Shape.StrokeProperty, DimKey);
                     w.OuterCircle.StrokeThickness = highlight ? 2.5 : 1.5;
                     w.DirectionArrow.Visibility = highlight ? Visibility.Visible : Visibility.Collapsed;
                     w.DirectionArrow.Fill = FlashBrush;
@@ -634,7 +641,8 @@ namespace PadForge.Views
             {
                 if (baseTarget == $"ExtendedAxis{w.AxisIndex}")
                 {
-                    w.Fill.Fill = highlight ? FlashBrush : AccentBrush;
+                    if (highlight) w.Fill.Fill = FlashBrush;
+                    else w.Fill.SetResourceReference(Shape.FillProperty, AccentKey);
                     return;
                 }
             }
@@ -644,7 +652,8 @@ namespace PadForge.Views
             {
                 if (t == $"ExtendedBtn{w.ButtonIndex}")
                 {
-                    w.Circle.Stroke = highlight ? FlashBrush : DimBrush;
+                    if (highlight) w.Circle.Stroke = FlashBrush;
+                    else w.Circle.SetResourceReference(Shape.StrokeProperty, DimKey);
                     w.Circle.StrokeThickness = highlight ? 2.5 : 1.5;
                     return;
                 }
@@ -655,7 +664,8 @@ namespace PadForge.Views
             {
                 if (t.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal))
                 {
-                    w.Arrow.Fill = highlight ? FlashBrush : AccentBrush;
+                    if (highlight) w.Arrow.Fill = FlashBrush;
+                    else w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
                     w.Arrow.Visibility = Visibility.Visible;
                     // Show arrow pointing in the target direction
                     string dir = t.Substring($"ExtendedPov{w.PovIndex}".Length);
@@ -730,7 +740,7 @@ namespace PadForge.Views
                 else
                 {
                     w.Arrow.Visibility = Visibility.Visible;
-                    w.Arrow.Fill = AccentBrush;
+                    w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
                     w.ArrowCanvas.RenderTransform = new RotateTransform(povValue / 100.0,
                         PovSize / 2, PovSize / 2);
                 }
@@ -740,7 +750,7 @@ namespace PadForge.Views
             foreach (var w in _buttonWidgets)
             {
                 bool pressed = raw.IsButtonPressed(w.ButtonIndex);
-                w.Circle.Fill = pressed ? AccentBrush : BgBrush;
+                w.Circle.SetResourceReference(Shape.FillProperty, pressed ? AccentKey : BgKey);
             }
         }
 
@@ -754,9 +764,9 @@ namespace PadForge.Views
             {
                 Text = text,
                 FontSize = 11,
-                Foreground = LabelBrush,
                 IsHitTestVisible = false
             };
+            tb.SetResourceReference(TextBlock.ForegroundProperty, LabelKey);
             Canvas.SetLeft(tb, x);
             Canvas.SetTop(tb, y);
             return tb;

@@ -56,13 +56,11 @@ namespace PadForge.Common.Input
         private const ushort EnableRumbleEmulation  = 0x0001;  // bit 0 — gates bytes 2-3 (right/left motor)
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
-        private const ushort EnableSpeakerVolume    = 0x0020;
 
         // EnableBits2 (high byte).
         private const ushort EnableMicLight         = 0x0100;  // byte[1] bit 0
         private const ushort EnableLightbar         = 0x0400;  // byte[1] bit 2
         private const ushort EnablePlayerIndicator  = 0x1000;  // byte[1] bit 4
-        private const ushort EnableAudioMute        = 0x8000;  // byte[1] bit 7
 
         // Byte-offset constants — verified against
         // daidr/dualsense-tester's outputStruct.ts. See memory:
@@ -71,9 +69,7 @@ namespace PadForge.Common.Input
         private const int OffEnableHigh      = 1;   // validFlag1 (0xF7 = permissive default)
         private const int OffRumbleRight     = 2;   // compatibility rumble — right motor (high-frequency)
         private const int OffRumbleLeft      = 3;   // compatibility rumble — left motor (low-frequency)
-        private const int OffSpeakerVol      = 5;
         private const int OffMicLight        = 8;   // muteLedControl
-        private const int OffMicMute         = 9;   // powerSaveMuteControl
         private const int OffRightTrig       = 10;  // mode + 10 params
         private const int OffLeftTrig        = 21;  // mode + 10 params
         private const int OffValidFlag2      = 38;  // ledBrightness gate
@@ -223,23 +219,10 @@ namespace PadForge.Common.Input
                 // (ledBrightness) to apply.
             }
 
-            // Audio bytes — speaker volume + mic light + mic mute.
-            // DualSense only; DS4 firmware ignores these even when
-            // present in the report.
-            dst[OffSpeakerVol] = cfg.SpeakerVolume;
-            enableBits |= EnableSpeakerVolume;
-
             // Mic LED mode @ byte 8: 0 = off, 1 = solid, 2 = pulse.
             // Maps directly from MicLedMode enum.
             dst[OffMicLight] = (byte)cfg.MicLedMode;
             enableBits |= EnableMicLight;
-
-            // Audio mute bits @ byte 9: bit 4 (0x10) = mic mute.
-            if (cfg.MicMute)
-            {
-                dst[OffMicMute] = 0x10;
-                enableBits |= EnableAudioMute;
-            }
 
             // Triggers — 11 bytes per trigger (mode + 10 param bytes)
             // at the canonical Right=10, Left=21 offsets.  Encoding for

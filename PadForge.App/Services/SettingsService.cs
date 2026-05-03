@@ -458,8 +458,6 @@ namespace PadForge.Services
                     cfg.LightbarGreen = cfgData.LightbarGreen;
                     cfg.LightbarBlue = cfgData.LightbarBlue;
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
-                    cfg.SpeakerVolume = cfgData.SpeakerVolume;
-                    cfg.MicMute = cfgData.MicMute;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -1254,8 +1252,6 @@ namespace PadForge.Services
                     LightbarGreen = cfg.LightbarGreen,
                     LightbarBlue = cfg.LightbarBlue,
                     LightbarEnabled = cfg.LightbarEnabled,
-                    SpeakerVolume = cfg.SpeakerVolume,
-                    MicMute = cfg.MicMute,
                     MicLedMode = cfg.MicLedMode,
                     MicLightOn = cfg.MicLightOn,
                     PlayerLedMode = cfg.PlayerLedMode,
@@ -1413,8 +1409,6 @@ namespace PadForge.Services
                     LightbarGreen = cfg.LightbarGreen,
                     LightbarBlue = cfg.LightbarBlue,
                     LightbarEnabled = cfg.LightbarEnabled,
-                    SpeakerVolume = cfg.SpeakerVolume,
-                    MicMute = cfg.MicMute,
                     MicLedMode = cfg.MicLedMode,
                     MicLightOn = cfg.MicLightOn,
                     PlayerLedMode = cfg.PlayerLedMode,

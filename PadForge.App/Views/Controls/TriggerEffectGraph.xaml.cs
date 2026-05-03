@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
 namespace PadForge.Views.Controls
@@ -304,16 +305,20 @@ namespace PadForge.Views.Controls
 
         private static int ClampZone(byte position) => Math.Clamp(position * 10 / 256, 0, 9);
 
-        private static string ModeDisplayName(AdaptiveTriggerMode mode) => mode switch
+        private static string ModeDisplayName(AdaptiveTriggerMode mode)
         {
-            AdaptiveTriggerMode.Off => "Off",
-            AdaptiveTriggerMode.Feedback => "Feedback",
-            AdaptiveTriggerMode.Weapon => "Weapon",
-            AdaptiveTriggerMode.Vibration => "Vibration",
-            AdaptiveTriggerMode.MultiplePositionFeedback => "Multi-Position Feedback",
-            AdaptiveTriggerMode.SlopeFeedback => "Slope",
-            AdaptiveTriggerMode.MultiplePositionVibration => "Multi-Position Vibration",
-            _ => mode.ToString()
-        };
+            var s = Strings.Instance;
+            return mode switch
+            {
+                AdaptiveTriggerMode.Off => s.Pad_AT_Off,
+                AdaptiveTriggerMode.Feedback => s.Pad_AT_Feedback,
+                AdaptiveTriggerMode.Weapon => s.Pad_AT_Weapon,
+                AdaptiveTriggerMode.Vibration => s.Pad_AT_Vibration,
+                AdaptiveTriggerMode.MultiplePositionFeedback => s.Pad_AT_MultiPosFeedback,
+                AdaptiveTriggerMode.SlopeFeedback => s.Pad_AT_Slope,
+                AdaptiveTriggerMode.MultiplePositionVibration => s.Pad_AT_MultiPosVibration,
+                _ => mode.ToString()
+            };
+        }
     }
 }

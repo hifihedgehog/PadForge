@@ -156,7 +156,16 @@ namespace PadForge.Common.Input
                 dst[OffPlayerIndicator] = (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
             }
 
-            if (cfg.LightbarEnabled || cfg.AudioLightbarEnabled)
+            // Set the lightbar-enable bit whenever any LED feature is in
+            // play, not just when the user toggled the base-color override.
+            // Byte 42 (ledBrightness) only takes effect when validFlag1
+            // bit 2 is set — without this, brightness writes are silently
+            // ignored, so changing High/Medium/Low looked like a no-op
+            // unless the user also turned on the base-color toggle. The
+            // saved RGB is written in the else branch below, so the
+            // lightbar shows the user's configured colour rather than
+            // black when an indicator feature is on without the toggle.
+            if (anyLightFeature)
             {
                 enableBits |= EnableLightbar;
 

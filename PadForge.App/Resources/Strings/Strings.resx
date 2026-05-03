@@ -410,7 +410,7 @@
   <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Continuous buzz once you cross the start position. Frequency sets the pulse rate; strength sets the intensity.</value></data>
   <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Ratcheting resistance — discrete force bumps across the start-to-end range. Pulling the trigger feels like clicking through detents instead of pushing through one continuous wall.</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Resistance ramps from light at the start position to full at the end position. Past the end position the trigger holds at peak strength.</value></data>
-  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Vibration only inside the range from start to end position. Frequency sets the pulse rate; strength sets the amplitude.</value></data>
+  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Stuttering vibration — short buzz bursts spaced across the start-to-end range. Pulling the trigger feels like crossing distinct vibration zones, not one continuous buzz.</value></data>
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>

@@ -2016,15 +2016,6 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
-                        <!-- Master Feature B toggle.  Game-driven Feature A
-                             passthrough runs independently of this — this
-                             toggle only governs PadForge-synthesized effects
-                             that ride atop the assigned physical DualSense
-                             when no game is writing trigger output. -->
-                        <CheckBox IsChecked="{Binding PlayStationConfig.UserEffectsEnabled, Mode=TwoWay}"
-                                  Content="{Binding Pad_UserEffectsEnabled, Source={x:Static strings:Strings.Instance}}"
-                                  Margin="0,0,0,16"/>
-
                         <!-- Left Trigger -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>

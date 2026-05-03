@@ -478,20 +478,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioCrossFadePercent, Math.Clamp(value, 0, 50));
         }
 
-        private bool _userEffectsEnabled;
-        /// <summary>Master toggle for user-configured effect synthesis.
-        /// When false, only Feature A (game-driven passthrough via
-        /// <c>DualSensePassthroughDispatcher</c>) writes to the assigned
-        /// physical DualSense. When true, the synthesizer also runs and
-        /// PadForge writes the UI-configured trigger / lightbar / audio
-        /// effects directly via <c>SDL_SendGamepadEffect</c>. Game writes
-        /// always win per packet; user effects are the fallback layer.</summary>
-        public bool UserEffectsEnabled
-        {
-            get => _userEffectsEnabled;
-            set => SetProperty(ref _userEffectsEnabled, value);
-        }
-
         // ────────────────────────────────────────────────
         //  Reset commands (per-control)
         //  Mirror the per-row reset pattern on the Sticks / Triggers tabs.
@@ -841,7 +827,6 @@ namespace PadForge.ViewModels
         // Round-trip the legacy MicLightOn so old XML still loads. Mapped
         // to MicLedMode in the UI binding layer.
         [XmlAttribute] public bool MicLightOn { get; set; }
-        [XmlAttribute] public bool UserEffectsEnabled { get; set; }
 
         // Audio-to-lightbar (Round 2)
         [XmlAttribute] public bool AudioLightbarEnabled { get; set; }

@@ -406,7 +406,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ForceFeedback_Header => Get("Pad_ForceFeedback_Header");
     public string Pad_ForceFeedback_Subtitle => Get("Pad_ForceFeedback_Subtitle");
     public string Pad_AdaptiveTriggers_Subtitle => Get("Pad_AdaptiveTriggers_Subtitle");
-    public string Pad_UserEffectsEnabled => Get("Pad_UserEffectsEnabled");
     public string Pad_LeftTrigger => Get("Pad_LeftTrigger");
     public string Pad_RightTrigger => Get("Pad_RightTrigger");
     public string Pad_TriggerMode => Get("Pad_TriggerMode");

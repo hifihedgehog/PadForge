@@ -481,7 +481,6 @@ namespace PadForge.Services
                     cfg.AudioLowToMidPercent = cfgData.AudioLowToMidPercent;
                     cfg.AudioMidToHighPercent = cfgData.AudioMidToHighPercent;
                     cfg.AudioCrossFadePercent = cfgData.AudioCrossFadePercent;
-                    cfg.UserEffectsEnabled = cfgData.UserEffectsEnabled;
 
                     // Unified lightbar mode (v3.1.0+). Migrate from the
                     // legacy bools when the saved value is at the default.
@@ -1271,7 +1270,6 @@ namespace PadForge.Services
                     AudioLowToMidPercent = cfg.AudioLowToMidPercent,
                     AudioMidToHighPercent = cfg.AudioMidToHighPercent,
                     AudioCrossFadePercent = cfg.AudioCrossFadePercent,
-                    UserEffectsEnabled = cfg.UserEffectsEnabled,
                     LightbarMode = cfg.LightbarMode,
                     LightbarPeriodMs = cfg.LightbarPeriodMs,
                     LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
@@ -1428,7 +1426,6 @@ namespace PadForge.Services
                     AudioLowToMidPercent = cfg.AudioLowToMidPercent,
                     AudioMidToHighPercent = cfg.AudioMidToHighPercent,
                     AudioCrossFadePercent = cfg.AudioCrossFadePercent,
-                    UserEffectsEnabled = cfg.UserEffectsEnabled,
                     LightbarMode = cfg.LightbarMode,
                     LightbarPeriodMs = cfg.LightbarPeriodMs,
                     LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,

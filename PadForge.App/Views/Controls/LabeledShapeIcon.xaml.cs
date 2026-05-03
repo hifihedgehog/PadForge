@@ -79,7 +79,7 @@ namespace PadForge.Views.Controls
             int len = text.Length;
             double fontSize = Shape == LabeledShapeKind.Stick
                 ? (len <= 1 ? 220 : 170)
-                : (len <= 1 ? 230 : 180);
+                : (len <= 1 ? 260 : 210);
 
             // Build the label as a real glyph geometry. Bounds give the
             // exact visible-glyph rectangle, avoiding all of the line-box

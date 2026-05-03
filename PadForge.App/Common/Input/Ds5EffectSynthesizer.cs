@@ -112,11 +112,29 @@ namespace PadForge.Common.Input
         /// <paramref name="dst"/> must be at least <c>PayloadSize</c>
         /// bytes. The buffer is fully written; no need to zero it
         /// beforehand.</summary>
-        /// <param name="audioPeak">System audio peak in 0..1, applied
-        /// only when <see cref="PlayStationSlotConfig.AudioLightbarEnabled"/>
-        /// is true. Pass 0 for non-audio dispatch paths — the
-        /// modulation is gated on the config flag, not the peak value.</param>
-        public static int Build(PlayStationSlotConfig cfg, Span<byte> dst, float audioPeak = 0f)
+        /// <param name="audioPeak">System audio peak in 0..1. Used by
+        /// the AudioPulse* and AudioThresholds/Gradient/CrossFade modes
+        /// only; ignored by static / time-based / input-reactive modes.</param>
+        /// <param name="nowMs">Wall-clock timestamp in milliseconds for
+        /// time-based animations (Breathing / Rainbow / ColorCycle /
+        /// AudioPulseRainbow). 0 is fine for non-animated dispatches.</param>
+        /// <param name="randomColor">Packed RGB (0xRRGGBB) the dispatcher
+        /// rolled at the most recent audio onset. Read by
+        /// <see cref="LightbarMode.AudioPulseRandom"/>.</param>
+        /// <param name="pulseColor">Packed RGB (0xRRGGBB) of the current
+        /// input-reactive pulse. Read by
+        /// <see cref="LightbarMode.InputReactive"/>.</param>
+        /// <param name="pulseIntensity">Decay envelope of the current
+        /// input-reactive pulse, 0..1. Read by
+        /// <see cref="LightbarMode.InputReactive"/>.</param>
+        public static int Build(
+            PlayStationSlotConfig cfg,
+            Span<byte> dst,
+            float audioPeak = 0f,
+            long nowMs = 0,
+            uint randomColor = 0,
+            uint pulseColor = 0,
+            float pulseIntensity = 0f)
         {
             if (cfg == null) return 0;
             if (dst.Length < PayloadSize) return 0;
@@ -141,8 +159,7 @@ namespace PadForge.Common.Input
             // bottom-row LEDs are lit (PlayerLedMode enum). Bit 0x20
             // is always set when ANY lightbar/player feature is active.
             bool anyLightFeature =
-                cfg.LightbarEnabled
-                || cfg.AudioLightbarEnabled
+                cfg.LightbarMode != LightbarMode.Off
                 || cfg.PlayerLedMode != PlayerLedMode.Off;
 
             // Always assert the player-indicator update bit and write byte
@@ -176,143 +193,19 @@ namespace PadForge.Common.Input
             {
                 enableBits |= EnableLightbar;
 
-                if (cfg.AudioLightbarEnabled)
+                if (cfg.LightbarMode != LightbarMode.Off)
                 {
-                    float p = Math.Clamp(audioPeak, 0f, 1f);
-                    byte r, g, b;
-
-                    switch (cfg.AudioLightbarMode)
-                    {
-                        case AudioLightbarMode.Thresholds:
-                        case AudioLightbarMode.Gradient:
-                        case AudioLightbarMode.CrossFade:
-                        {
-                            float lowMid  = (float)(cfg.AudioLowToMidPercent / 100.0);
-                            float midHigh = (float)(cfg.AudioMidToHighPercent / 100.0);
-                            // Self-correct if the user dragged sliders
-                            // out of order — Mid band would otherwise
-                            // get stranded.
-                            if (midHigh < lowMid) midHigh = lowMid;
-
-                            if (cfg.AudioLightbarMode == AudioLightbarMode.Thresholds)
-                            {
-                                // Hard discrete buckets — original behavior.
-                                if (p < lowMid)
-                                {
-                                    r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
-                                }
-                                else if (p < midHigh)
-                                {
-                                    r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
-                                }
-                                else
-                                {
-                                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
-                                }
-                            }
-                            else if (cfg.AudioLightbarMode == AudioLightbarMode.Gradient)
-                            {
-                                // Linear lerp across the whole peak range.
-                                // [0, lowMid]: Low → Mid
-                                // [lowMid, midHigh]: Mid → High
-                                // [midHigh, 1]: stays at High
-                                if (p <= lowMid)
-                                {
-                                    float t = lowMid > 0 ? p / lowMid : 1f;
-                                    LerpColor(t,
-                                        cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
-                                        cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,
-                                        out r, out g, out b);
-                                }
-                                else if (p <= midHigh)
-                                {
-                                    float span = midHigh - lowMid;
-                                    float t = span > 0 ? (p - lowMid) / span : 1f;
-                                    LerpColor(t,
-                                        cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB,
-                                        cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB,
-                                        out r, out g, out b);
-                                }
-                                else
-                                {
-                                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
-                                }
-                            }
-                            else // CrossFade — discrete with crossfade window
-                            {
-                                float halfWindow = (float)(cfg.AudioCrossFadePercent / 100.0);
-                                // Sane clamp: window can't exceed half the
-                                // distance to the next threshold or it
-                                // overlaps the neighbor's window.
-                                float maxAtLowMid = MathF.Min(lowMid, MathF.Min(midHigh - lowMid, 1f - midHigh)) * 0.5f;
-                                if (halfWindow > maxAtLowMid && maxAtLowMid > 0)
-                                    halfWindow = maxAtLowMid;
-
-                                float lo1 = lowMid  - halfWindow;
-                                float hi1 = lowMid  + halfWindow;
-                                float lo2 = midHigh - halfWindow;
-                                float hi2 = midHigh + halfWindow;
-
-                                if (p < lo1)
-                                {
-                                    r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
-                                }
-                                else if (p < hi1)
-                                {
-                                    float span = hi1 - lo1;
-                                    float t = span > 0 ? (p - lo1) / span : 1f;
-                                    LerpColor(t,
-                                        cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
-                                        cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,
-                                        out r, out g, out b);
-                                }
-                                else if (p < lo2)
-                                {
-                                    r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
-                                }
-                                else if (p < hi2)
-                                {
-                                    float span = hi2 - lo2;
-                                    float t = span > 0 ? (p - lo2) / span : 1f;
-                                    LerpColor(t,
-                                        cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB,
-                                        cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB,
-                                        out r, out g, out b);
-                                }
-                                else
-                                {
-                                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
-                                }
-                            }
-
-                            dst[OffLedRed]   = r;
-                            dst[OffLedGreen] = g;
-                            dst[OffLedBlue]  = b;
-                            break;
-                        }
-
-                        case AudioLightbarMode.Pulse:
-                        default:
-                            // DSY-style brightness modulation. Multiply
-                            // user's static base color by the peak each
-                            // tick (black at silence, full color at peak).
-                            dst[OffLedRed]   = (byte)Math.Round(cfg.LightbarRed   * p);
-                            dst[OffLedGreen] = (byte)Math.Round(cfg.LightbarGreen * p);
-                            dst[OffLedBlue]  = (byte)Math.Round(cfg.LightbarBlue  * p);
-                            break;
-                    }
-                }
-                else if (cfg.LightbarEnabled)
-                {
-                    dst[OffLedRed]   = cfg.LightbarRed;
-                    dst[OffLedGreen] = cfg.LightbarGreen;
-                    dst[OffLedBlue]  = cfg.LightbarBlue;
+                    var (r, g, b) = ComputeLightbarColor(
+                        cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
+                    dst[OffLedRed]   = r;
+                    dst[OffLedGreen] = g;
+                    dst[OffLedBlue]  = b;
                 }
                 // else: anyLightFeature is true purely because the player
-                // pattern is on (no base-color override, no audio mode).
-                // Leave bytes 44-46 at the buffer's initial zero so the
-                // lightbar stays dark; we still need EnableLightbar set
-                // above for byte 42 (ledBrightness) to apply.
+                // pattern is on with LightbarMode == Off. Leave bytes 44-46
+                // at the buffer's initial zero so the lightbar stays dark;
+                // we still need EnableLightbar set above for byte 42
+                // (ledBrightness) to apply.
             }
 
             // Audio bytes — speaker volume + mic light + mic mute.
@@ -375,6 +268,227 @@ namespace PadForge.Common.Input
             r = (byte)Math.Round(aR + (bR - aR) * t);
             g = (byte)Math.Round(aG + (bG - aG) * t);
             b = (byte)Math.Round(aB + (bB - aB) * t);
+        }
+
+        // ────────────────────────────────────────────────
+        //  Lightbar mode dispatch (LightbarMode -> RGB triple)
+        // ────────────────────────────────────────────────
+
+        /// <summary>Reduces the active <see cref="LightbarMode"/> plus
+        /// dynamic inputs (audio peak, wall-clock timestamp, dispatcher-
+        /// rolled random color, dispatcher-tracked input pulse) to a final
+        /// RGB triple for bytes 44-46 of the effect packet. Stateless;
+        /// the dispatcher owns all state.</summary>
+        private static (byte r, byte g, byte b) ComputeLightbarColor(
+            PlayStationSlotConfig cfg,
+            float audioPeak,
+            long nowMs,
+            uint randomColor,
+            uint pulseColor,
+            float pulseIntensity)
+        {
+            float p = Math.Clamp(audioPeak, 0f, 1f);
+            int periodMs = Math.Max(cfg.LightbarPeriodMs, 250);
+            double phase = nowMs > 0 ? (double)((nowMs % periodMs + periodMs) % periodMs) / periodMs : 0.0;
+
+            switch (cfg.LightbarMode)
+            {
+                case LightbarMode.Static:
+                    return (cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
+
+                case LightbarMode.Breathing:
+                {
+                    // Triangle envelope 0 → 1 → 0 across the period.
+                    double m = phase < 0.5 ? phase * 2.0 : (1.0 - phase) * 2.0;
+                    return (
+                        (byte)Math.Round(cfg.LightbarRed   * m),
+                        (byte)Math.Round(cfg.LightbarGreen * m),
+                        (byte)Math.Round(cfg.LightbarBlue  * m));
+                }
+
+                case LightbarMode.Rainbow:
+                    return HsvToRgb(phase * 360.0, 1.0, 1.0);
+
+                case LightbarMode.ColorCycle:
+                {
+                    // Walk the 4-color palette across the period.
+                    const int N = 4;
+                    double scaled = phase * N;
+                    int idx = (int)Math.Floor(scaled) % N;
+                    int next = (idx + 1) % N;
+                    var (r1, g1, b1) = PaletteAt(cfg, idx);
+                    if (!cfg.LightbarColorCycleSmooth)
+                        return (r1, g1, b1);
+                    var (r2, g2, b2) = PaletteAt(cfg, next);
+                    double t = scaled - Math.Floor(scaled);
+                    return (
+                        (byte)Math.Round(r1 + (r2 - r1) * t),
+                        (byte)Math.Round(g1 + (g2 - g1) * t),
+                        (byte)Math.Round(b1 + (b2 - b1) * t));
+                }
+
+                case LightbarMode.AudioPulse:
+                    return (
+                        (byte)Math.Round(cfg.LightbarRed   * p),
+                        (byte)Math.Round(cfg.LightbarGreen * p),
+                        (byte)Math.Round(cfg.LightbarBlue  * p));
+
+                case LightbarMode.AudioPulseRandom:
+                {
+                    byte rr = (byte)((randomColor >> 16) & 0xFF);
+                    byte rg = (byte)((randomColor >> 8) & 0xFF);
+                    byte rb = (byte)(randomColor & 0xFF);
+                    return (
+                        (byte)Math.Round(rr * p),
+                        (byte)Math.Round(rg * p),
+                        (byte)Math.Round(rb * p));
+                }
+
+                case LightbarMode.AudioPulseRainbow:
+                {
+                    var (rr, rg, rb) = HsvToRgb(phase * 360.0, 1.0, 1.0);
+                    return (
+                        (byte)Math.Round(rr * p),
+                        (byte)Math.Round(rg * p),
+                        (byte)Math.Round(rb * p));
+                }
+
+                case LightbarMode.AudioThresholds:
+                case LightbarMode.AudioGradient:
+                case LightbarMode.AudioCrossFade:
+                    return ComputeAudioBands(cfg, p);
+
+                case LightbarMode.InputReactive:
+                {
+                    float i = Math.Clamp(pulseIntensity, 0f, 1f);
+                    byte pr = (byte)((pulseColor >> 16) & 0xFF);
+                    byte pg = (byte)((pulseColor >> 8) & 0xFF);
+                    byte pb = (byte)(pulseColor & 0xFF);
+                    return (
+                        (byte)Math.Round(pr * i),
+                        (byte)Math.Round(pg * i),
+                        (byte)Math.Round(pb * i));
+                }
+
+                default:
+                    return (0, 0, 0);
+            }
+        }
+
+        private static (byte r, byte g, byte b) PaletteAt(PlayStationSlotConfig cfg, int idx)
+            => idx switch
+            {
+                0 => (cfg.LightbarPalette1R, cfg.LightbarPalette1G, cfg.LightbarPalette1B),
+                1 => (cfg.LightbarPalette2R, cfg.LightbarPalette2G, cfg.LightbarPalette2B),
+                2 => (cfg.LightbarPalette3R, cfg.LightbarPalette3G, cfg.LightbarPalette3B),
+                _ => (cfg.LightbarPalette4R, cfg.LightbarPalette4G, cfg.LightbarPalette4B),
+            };
+
+        private static (byte r, byte g, byte b) HsvToRgb(double h, double s, double v)
+        {
+            h = ((h % 360) + 360) % 360;
+            double c = v * s;
+            double x = c * (1 - Math.Abs((h / 60.0) % 2 - 1));
+            double m = v - c;
+            double rp, gp, bp;
+            if (h < 60)       { rp = c; gp = x; bp = 0; }
+            else if (h < 120) { rp = x; gp = c; bp = 0; }
+            else if (h < 180) { rp = 0; gp = c; bp = x; }
+            else if (h < 240) { rp = 0; gp = x; bp = c; }
+            else if (h < 300) { rp = x; gp = 0; bp = c; }
+            else              { rp = c; gp = 0; bp = x; }
+            return (
+                (byte)Math.Round((rp + m) * 255),
+                (byte)Math.Round((gp + m) * 255),
+                (byte)Math.Round((bp + m) * 255));
+        }
+
+        private static (byte r, byte g, byte b) ComputeAudioBands(PlayStationSlotConfig cfg, float p)
+        {
+            float lowMid  = (float)(cfg.AudioLowToMidPercent / 100.0);
+            float midHigh = (float)(cfg.AudioMidToHighPercent / 100.0);
+            // Self-correct if the user dragged sliders out of order — the
+            // Mid band would otherwise be stranded.
+            if (midHigh < lowMid) midHigh = lowMid;
+
+            byte r, g, b;
+
+            if (cfg.LightbarMode == LightbarMode.AudioThresholds)
+            {
+                if (p < lowMid)        { r = cfg.AudioLowR;  g = cfg.AudioLowG;  b = cfg.AudioLowB; }
+                else if (p < midHigh)  { r = cfg.AudioMidR;  g = cfg.AudioMidG;  b = cfg.AudioMidB; }
+                else                   { r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB; }
+                return (r, g, b);
+            }
+
+            if (cfg.LightbarMode == LightbarMode.AudioGradient)
+            {
+                if (p <= lowMid)
+                {
+                    float t = lowMid > 0 ? p / lowMid : 1f;
+                    LerpColor(t,
+                        cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
+                        cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,
+                        out r, out g, out b);
+                }
+                else if (p <= midHigh)
+                {
+                    float span = midHigh - lowMid;
+                    float t = span > 0 ? (p - lowMid) / span : 1f;
+                    LerpColor(t,
+                        cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB,
+                        cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB,
+                        out r, out g, out b);
+                }
+                else
+                {
+                    r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
+                }
+                return (r, g, b);
+            }
+
+            // CrossFade — discrete with crossfade window around each threshold.
+            float halfWindow = (float)(cfg.AudioCrossFadePercent / 100.0);
+            float maxAtLowMid = MathF.Min(lowMid, MathF.Min(midHigh - lowMid, 1f - midHigh)) * 0.5f;
+            if (halfWindow > maxAtLowMid && maxAtLowMid > 0)
+                halfWindow = maxAtLowMid;
+
+            float lo1 = lowMid  - halfWindow;
+            float hi1 = lowMid  + halfWindow;
+            float lo2 = midHigh - halfWindow;
+            float hi2 = midHigh + halfWindow;
+
+            if (p < lo1)
+            {
+                r = cfg.AudioLowR; g = cfg.AudioLowG; b = cfg.AudioLowB;
+            }
+            else if (p < hi1)
+            {
+                float span = hi1 - lo1;
+                float t = span > 0 ? (p - lo1) / span : 1f;
+                LerpColor(t,
+                    cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
+                    cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,
+                    out r, out g, out b);
+            }
+            else if (p < lo2)
+            {
+                r = cfg.AudioMidR; g = cfg.AudioMidG; b = cfg.AudioMidB;
+            }
+            else if (p < hi2)
+            {
+                float span = hi2 - lo2;
+                float t = span > 0 ? (p - lo2) / span : 1f;
+                LerpColor(t,
+                    cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB,
+                    cfg.AudioHighR, cfg.AudioHighG, cfg.AudioHighB,
+                    out r, out g, out b);
+            }
+            else
+            {
+                r = cfg.AudioHighR; g = cfg.AudioHighG; b = cfg.AudioHighB;
+            }
+            return (r, g, b);
         }
 
         /// <summary>Encodes one trigger's 11-byte effect block (mode +

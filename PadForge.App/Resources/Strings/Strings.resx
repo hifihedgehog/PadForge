@@ -421,7 +421,7 @@
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>
   <data name="Pad_Lighting_AudioHeader" xml:space="preserve"><value>Audio (DualSense only)</value></data>
-  <data name="Pad_Lighting_SpeakerVolume" xml:space="preserve"><value>Speaker volume</value></data>
+  <data name="Pad_Lighting_SpeakerVolume" xml:space="preserve"><value>Speaker Volume:</value></data>
   <data name="Pad_Lighting_MicMute" xml:space="preserve"><value>Mute microphone</value></data>
   <data name="Pad_Lighting_MicLight" xml:space="preserve"><value>Mute LED on</value></data>
   <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>Mute LED</value></data>
@@ -432,9 +432,9 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Five small white LEDs below the touchpad. Pick which player slot pattern to display and how bright it should be.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator LEDs</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Player number row (5 LEDs below the touchpad) and the mute LED above the mic. The brightness control physically only affects the player row. The firmware exposes mute LED states (Off / Solid / Pulse) but no separate mute brightness register.</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player pattern</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED mode</value></data>
-  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED brightness</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player Pattern:</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED Mode:</value></data>
+  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED Brightness:</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Pattern</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Player 1</value></data>
@@ -449,19 +449,19 @@
   <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-Driven Lightbar</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Modulates the base color above by the system audio peak. Pulses with whatever is playing through the default output device. Taps into the same WASAPI capture as audio rumble but reads the full waveform (no bass-cutoff filter), so it follows everything you hear.</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Pulse base color with system audio</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity:</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>Pulse base color</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Three colors — hard transitions</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Three colors — smooth gradient</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Three colors — crossfade at boundaries</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Crossfade width</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Quiet color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Medium color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Loud color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at</value></data>
-  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Crossfade Width:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Quiet Color</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Medium Color</value></data>
+  <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Loud Color</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at:</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode:</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off (game owns the lightbar)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static color</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (single color fades)</value></data>
@@ -474,7 +474,7 @@
   <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio bands — three colors, smooth gradient</value></data>
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio bands — three colors, crossfade at boundaries</value></data>
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input reactive (pulse on button press)</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Color 2</value></data>
@@ -484,7 +484,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse decay (ms)</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms):</value></data>
   <data name="Pad_Lighting_InputRandomize" xml:space="preserve"><value>Random color per press (otherwise cycles palette)</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>

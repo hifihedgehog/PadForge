@@ -408,7 +408,9 @@
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Constant resistance from the start position to fully pressed. Strength sets how hard the trigger pushes back.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Gun-trigger feel. Pull through a soft zone to the end position, then a firm click. Use start/end to set the click point and strength for the click force.</value></data>
   <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Continuous buzz once you cross the start position. Frequency sets the pulse rate; strength sets the intensity.</value></data>
-  <data name="Pad_AT_NotYetSupported_Tooltip" xml:space="preserve"><value>Not yet supported. Falls back to Off until per-position parameter arrays land in a future update.</value></data>
+  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Constant resistance across the range from start to end position. Outside that range the trigger pulls free.</value></data>
+  <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Resistance ramps from light at the start position to full at the end position. Past the end position the trigger holds at peak strength.</value></data>
+  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Vibration only inside the range from start to end position. Frequency sets the pulse rate; strength sets the amplitude.</value></data>
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>

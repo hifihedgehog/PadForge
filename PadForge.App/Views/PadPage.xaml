@@ -2049,11 +2049,11 @@
                                         <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      ToolTip="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      ToolTip="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
@@ -2115,11 +2115,11 @@
                                         <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      ToolTip="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      ToolTip="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_NotYetSupported_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>

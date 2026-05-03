@@ -488,6 +488,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_Mode_AudioGradient => Get("Pad_Lighting_Mode_AudioGradient");
     public string Pad_Lighting_Mode_AudioCrossFade => Get("Pad_Lighting_Mode_AudioCrossFade");
     public string Pad_Lighting_Mode_InputReactive => Get("Pad_Lighting_Mode_InputReactive");
+    public string Pad_Lighting_Mode_InputReactiveCycle => Get("Pad_Lighting_Mode_InputReactiveCycle");
     public string Pad_Lighting_Period => Get("Pad_Lighting_Period");
     public string Pad_Lighting_PaletteHeader => Get("Pad_Lighting_PaletteHeader");
     public string Pad_Lighting_PaletteColor1 => Get("Pad_Lighting_PaletteColor1");
@@ -499,7 +500,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_ResetPalette => Get("Pad_Lighting_ResetPalette");
     public string Pad_Lighting_ResetPaletteTooltip => Get("Pad_Lighting_ResetPaletteTooltip");
     public string Pad_Lighting_InputDecay => Get("Pad_Lighting_InputDecay");
-    public string Pad_Lighting_InputRandomize => Get("Pad_Lighting_InputRandomize");
     public string Pad_Preset => Get("Pad_Preset");
     public string Pad_Custom => Get("Pad_Custom");
     public string Pad_ExtendedSticks => Get("Pad_ExtendedSticks");

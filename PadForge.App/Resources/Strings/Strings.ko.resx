@@ -973,7 +973,7 @@
   <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>오디오 기반 라이트바</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>위의 기본 색상을 시스템 오디오 피크로 변조합니다. 기본 출력 장치에서 재생되는 내용에 맞춰 깜박입니다. 오디오 럼블과 동일한 WASAPI 캡처를 사용하지만 전체 파형을 읽으므로(저역 컷오프 필터 없음) 들리는 모든 소리에 반응합니다.</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>시스템 오디오에 맞춰 기본 색상 깜박이기</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>민감도:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>감도:</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>기본 색상 깜박이기</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>세 가지 색 — 즉시 전환</value></data>
@@ -1016,7 +1016,7 @@
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>주파수 초기화</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>주기 초기화</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>펄스 감쇠 초기화</value></data>
-  <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>민감도 초기화</value></data>
+  <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>감도 초기화</value></data>
   <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>저→중 전환 초기화</value></data>
   <data name="Pad_ResetAudioMidToHighPercent" xml:space="preserve"><value>중→고 전환 초기화</value></data>
   <data name="Pad_ResetAudioCrossFadePercent" xml:space="preserve"><value>크로스페이드 폭 초기화</value></data>

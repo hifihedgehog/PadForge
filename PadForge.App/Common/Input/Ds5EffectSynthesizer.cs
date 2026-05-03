@@ -688,11 +688,17 @@ namespace PadForge.Common.Input
             int endIdx   = PositionToZone(endPosition);
             if (endIdx < startIdx) (startIdx, endIdx) = (endIdx, startIdx);
 
+            // Alternating active/inactive zones across [start, end] —
+            // gives a stuttering / pulsing buzz feel as the trigger
+            // pulls through the range. Without alternation, "buzz inside
+            // a range" is what users already get from Vibration with a
+            // narrowed Range slider, and the two presets feel the same.
             uint strengthZones = 0;
             ushort activeZones = 0;
             int strengthValue = (ampZone - 1) & 0x07;
             for (int i = startIdx; i <= endIdx; i++)
             {
+                if (((i - startIdx) & 1) != 0) continue;
                 strengthZones |= (uint)(strengthValue << (3 * i));
                 activeZones |= (ushort)(1 << i);
             }

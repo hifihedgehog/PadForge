@@ -1,0 +1,22 @@
+<UserControl x:Class="PadForge.Views.Controls.TriggerEffectGraph"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             SnapsToDevicePixels="True"
+             UseLayoutRounding="True">
+    <Border CornerRadius="4" Padding="8"
+            Background="{DynamicResource ControlFillColorDefaultBrush}"
+            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="1">
+        <Grid>
+            <!-- Background track + zone tick marks. Lines drawn in
+                 code-behind so they re-tint on theme switch. -->
+            <Canvas x:Name="GraphCanvas" ClipToBounds="True"/>
+            <!-- Mode label sits in the bottom-left corner so the user
+                 can confirm which preset the graph represents. -->
+            <TextBlock x:Name="ModeLabel"
+                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                       FontSize="10"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </Grid>
+    </Border>
+</UserControl>

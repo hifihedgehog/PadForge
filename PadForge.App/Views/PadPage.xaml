@@ -2205,59 +2205,6 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <!-- Single colour: Static / Breathing / AudioPulse -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse}">
-                                    <views:ColorPickerControl Margin="0,0,0,12"
-                                        HorizontalAlignment="Left"
-                                        Red="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
-                                        Green="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}"
-                                        Blue="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}"/>
-                                    <Grid Margin="0,0,0,10">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="64"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
-                                                HorizontalAlignment="Left"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
-                                            <Border.Background>
-                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
-                                                    <Binding Path="PlayStationConfig.LightbarRed" />
-                                                    <Binding Path="PlayStationConfig.LightbarGreen" />
-                                                    <Binding Path="PlayStationConfig.LightbarBlue" />
-                                                </MultiBinding>
-                                            </Border.Background>
-                                        </Border>
-                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
-                                        <TextBox x:Name="LightbarHexBox" Grid.Column="2" Width="100"
-                                                 HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                 FontFamily="Consolas" Padding="6,4"
-                                                 KeyDown="LightbarHexBox_KeyDown"
-                                                 LostFocus="LightbarHexBox_LostFocus"
-                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    </Grid>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarRedCommand}" Style="{StaticResource ResetButtonTight}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarGreenCommand}" Style="{StaticResource ResetButtonTight}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarBlueCommand}" Style="{StaticResource ResetButtonTight}"/>
-                                    </StackPanel>
-                                </StackPanel>
-
                                 <!-- Period: Breathing / Rainbow / ColorCycle / AudioPulseRainbow -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
                                             Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Breathing|Rainbow|ColorCycle|AudioPulseRainbow}">
@@ -2268,6 +2215,28 @@
                                     <TextBox Text="{Binding PlayStationConfig.LightbarPeriodMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarPeriodCommand}" Style="{StaticResource ResetButton}"/>
+                                </StackPanel>
+
+                                <!-- Smooth toggle (ColorCycle): blend or hop between palette colors -->
+                                <CheckBox IsChecked="{Binding PlayStationConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
+                                          Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,8"
+                                          Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
+
+                                <!-- InputReactive controls (settings) - moved before Palette so InputReactive mode shows settings above its colors -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="100" Maximum="3000" TickFrequency="50"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}"/>
+                                    </StackPanel>
+                                    <CheckBox IsChecked="{Binding PlayStationConfig.LightbarInputRandomize, Mode=TwoWay}"
+                                              Content="{Binding Pad_Lighting_InputRandomize, Source={x:Static strings:Strings.Instance}}"
+                                              Margin="0,4,0,8"/>
                                 </StackPanel>
 
                                 <!-- Palette (variable count): ColorCycle and InputReactive share. -->
@@ -2353,26 +2322,6 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
-                                    <CheckBox IsChecked="{Binding PlayStationConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
-                                              Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"
-                                              Margin="0,0,0,8"
-                                              Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
-                                </StackPanel>
-
-                                <!-- InputReactive controls -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive}">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                        <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="100" Maximum="3000" TickFrequency="50"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}"/>
-                                    </StackPanel>
-                                    <CheckBox IsChecked="{Binding PlayStationConfig.LightbarInputRandomize, Mode=TwoWay}"
-                                              Content="{Binding Pad_Lighting_InputRandomize, Source={x:Static strings:Strings.Instance}}"
-                                              Margin="0,4,0,8"/>
                                 </StackPanel>
 
                                 <!-- Audio sensitivity: every Audio* mode -->
@@ -2385,6 +2334,97 @@
                                     <TextBox Text="{Binding PlayStationConfig.AudioLightbarSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <Button Command="{Binding PlayStationConfig.ResetAudioLightbarSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                </StackPanel>
+
+                                <!-- Audio band thresholds (settings) — moved out of the audio
+                                     bands wrapper below so settings stay above colours. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioThresholds|AudioGradient|AudioCrossFade}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowToMid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="100" TickFrequency="1"/>
+                                        <TextBox Text="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetAudioLowToMidPercentCommand}" Style="{StaticResource ResetButton}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidToHigh, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="100" TickFrequency="1"/>
+                                        <TextBox Text="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetAudioMidToHighPercentCommand}" Style="{StaticResource ResetButton}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- Crossfade width (setting) — only meaningful in CrossFade mode -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioCrossFade}">
+                                    <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_CrossFadeWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="0" Maximum="50" TickFrequency="0.5"/>
+                                    <TextBox Text="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}"/>
+                                </StackPanel>
+
+                                <!-- Single colour: Static / Breathing / AudioPulse -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse}">
+                                    <views:ColorPickerControl Margin="0,0,0,12"
+                                        HorizontalAlignment="Left"
+                                        Red="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
+                                        Green="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}"
+                                        Blue="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}"/>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="64"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
+                                                HorizontalAlignment="Left"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                            <Border.Background>
+                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                    <Binding Path="PlayStationConfig.LightbarRed" />
+                                                    <Binding Path="PlayStationConfig.LightbarGreen" />
+                                                    <Binding Path="PlayStationConfig.LightbarBlue" />
+                                                </MultiBinding>
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                        <TextBox x:Name="LightbarHexBox" Grid.Column="2" Width="100"
+                                                 HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                 FontFamily="Consolas" Padding="6,4"
+                                                 KeyDown="LightbarHexBox_KeyDown"
+                                                 LostFocus="LightbarHexBox_LostFocus"
+                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarRedCommand}" Style="{StaticResource ResetButtonTight}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarGreenCommand}" Style="{StaticResource ResetButtonTight}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarBlueCommand}" Style="{StaticResource ResetButtonTight}"/>
+                                    </StackPanel>
                                 </StackPanel>
 
                                 <!-- Audio bands: 3 colors with thresholds, only visible
@@ -2565,40 +2605,6 @@
                                         </Border>
                                     </Grid>
 
-                                    <!-- Threshold sliders -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowToMid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="100" TickFrequency="1"/>
-                                        <TextBox Text="{Binding PlayStationConfig.AudioLowToMidPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetAudioLowToMidPercentCommand}" Style="{StaticResource ResetButton}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidToHigh, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="100" TickFrequency="1"/>
-                                        <TextBox Text="{Binding PlayStationConfig.AudioMidToHighPercent, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetAudioMidToHighPercentCommand}" Style="{StaticResource ResetButton}"/>
-                                    </StackPanel>
-
-                                    <!-- Crossfade width — only meaningful in CrossFade mode -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
-                                                Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioCrossFade}">
-                                        <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_CrossFadeWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="50" TickFrequency="0.5"/>
-                                        <TextBox Text="{Binding PlayStationConfig.AudioCrossFadePercent, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}"/>
-                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

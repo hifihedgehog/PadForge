@@ -387,7 +387,7 @@
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per-trigger deadzones, anti-deadzones, max-range scaling, and sensitivity curves. Each section below targets one trigger axis on the active output. Extended profiles can expose up to eight axes shared with the Sticks tab.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
-  <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tunes how PadForge scales force feedback events from the game and how it routes them to the physical controller's rumble motors or DualSense haptic actuators. Audio Bass Rumble adds a system-audio-driven layer on top.</value></data>
+  <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tunes how PadForge scales force feedback events from the game and how it routes them to the physical controller's rumble motors or DualSense haptic actuators. Audio Rumble adds a system-audio-driven layer on top.</value></data>
   <data name="Pad_UserEffectsEnabled" xml:space="preserve"><value>Apply user-configured effects when no game is writing</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>

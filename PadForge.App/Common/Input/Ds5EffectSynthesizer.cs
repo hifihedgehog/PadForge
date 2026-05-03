@@ -96,14 +96,18 @@ namespace PadForge.Common.Input
         private static readonly byte[] PlayerLedBits =
             { 0x00, 0x04, 0x0A, 0x15, 0x1B, 0x1F };
 
-        // HID-form trigger mode opcodes from dualsense-tester's
-        // TriggerEffect.vue. NOT the same as Sony's PS5 SDK abstract
-        // 0x21/0x25/0x26 values — those are higher-level abstractions
-        // that don't map to firmware behavior on PC HID.
+        // DS5 firmware trigger mode opcodes. The simple set (0x01/0x02/0x06)
+        // takes scalar parameters; the official set (0x21/0x26) takes a
+        // 10-zone bitmap + packed 3-bit strengths and is what
+        // multi-position and slope effects need. Both sets are recognized
+        // by current PC HID firmware — see Nielk1's TriggerEffectGenerator
+        // (DualSenseY-v2/thirdparty/duaLib/src/source/triggerFactory.cpp).
         private const byte HidModeOff           = 0x00;
         private const byte HidModeResistance    = 0x01;  // [start_pos, force]
         private const byte HidModeSoftTrigger   = 0x02;  // [start_pos, end_pos, force]
         private const byte HidModeAutoTrigger   = 0x06;  // [frequency, force, start_pos]
+        private const byte HidModeFeedback      = 0x21;  // multi-position resistance
+        private const byte HidModeVibration     = 0x26;  // multi-position vibration
 
         /// <summary>Builds a single DS5 effect packet from the user's
         /// configuration into <paramref name="dst"/>. Returns the number
@@ -492,26 +496,30 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Encodes one trigger's 11-byte effect block (mode +
-        /// 10 parameter bytes) per the HID wire form used by
-        /// dualsense-tester (verified end-to-end with real hardware
-        /// via WebHID).
-        ///
-        /// <para>The PadForge UI uses Sony's abstract 7-mode list
-        /// (Off / Feedback / Weapon / Vibration / MultiPosFeedback /
-        /// Slope / MultiPosVibration) but the firmware on PC HID only
-        /// understands four modes: Off / Resistance / Soft Trigger /
-        /// Auto Trigger. We map abstract → HID per the table:</para>
+        /// 10 parameter bytes). The simple modes (Feedback / Weapon /
+        /// Vibration) use scalar opcodes 0x01/0x02/0x06 with the
+        /// dualsense-tester layout; the multi-position modes
+        /// (MultiplePositionFeedback / SlopeFeedback /
+        /// MultiplePositionVibration) use the official 0x21/0x26 zone-
+        /// bitmap encoding from Nielk1's TriggerEffectGenerator.
         ///
         /// <list type="bullet">
         /// <item>Off → 0x00 (no params)</item>
-        /// <item>Feedback → 0x01 Resistance: <c>[start_pos, force]</c></item>
-        /// <item>Weapon → 0x02 Soft Trigger: <c>[start_pos, end_pos, force]</c></item>
-        /// <item>Vibration → 0x06 Auto Trigger: <c>[frequency, force, start_pos]</c></item>
-        /// <item>Multi-position modes → 0x00 (Off) until 10-byte array
-        /// storage is added to PlayStationSlotConfig in a follow-up</item>
+        /// <item>Feedback → 0x01: <c>[start_pos, force]</c></item>
+        /// <item>Weapon → 0x02: <c>[start_pos, end_pos, force]</c></item>
+        /// <item>Vibration → 0x06: <c>[frequency, force, start_pos]</c></item>
+        /// <item>MultiplePositionFeedback → 0x21 with active-zone bitmap +
+        /// per-zone 3-bit strengths covering [start_pos, end_pos]</item>
+        /// <item>SlopeFeedback → 0x21 with strengths interpolated linearly
+        /// from 1 at start_pos to <c>strength</c> at end_pos</item>
+        /// <item>MultiplePositionVibration → 0x26 with active-zone bitmap +
+        /// per-zone amplitudes covering [start_pos, end_pos] and
+        /// frequency in byte 9</item>
         /// </list>
         ///
-        /// <para>All parameter values are 0-255 (full byte range).</para>
+        /// <para>UI parameter values are 0-255 (full byte range). The 10
+        /// multi-position zones are at trigger positions 0..9 mapped
+        /// linearly across the byte range.</para>
         /// </summary>
         private static void EncodeTrigger(
             AdaptiveTriggerMode mode,
@@ -554,20 +562,153 @@ namespace PadForge.Common.Input
                     break;
 
                 case AdaptiveTriggerMode.MultiplePositionFeedback:
+                    EncodeMultiPosFeedback(block, startPosition, endPosition, strength);
+                    break;
+
                 case AdaptiveTriggerMode.SlopeFeedback:
+                    EncodeSlopeFeedback(block, startPosition, endPosition, strength);
+                    break;
+
                 case AdaptiveTriggerMode.MultiplePositionVibration:
-                    // Multi-position modes need 10-byte parameter arrays
-                    // that aren't on PlayStationSlotConfig yet. Encode
-                    // as Off so an unsupported selection doesn't lock
-                    // the trigger; user can pick Feedback / Weapon /
-                    // Vibration for now.
-                    block[0] = HidModeOff;
+                    EncodeMultiPosVibration(block, startPosition, endPosition, strength, frequency);
                     break;
 
                 default:
                     block[0] = HidModeOff;
                     break;
             }
+        }
+
+        // ────────────────────────────────────────────────
+        //  Multi-position helpers (mode 0x21 / 0x26).
+        //
+        //  10 zones map linearly across the trigger throw, so a
+        //  byte position p ∈ [0, 255] corresponds to zone index
+        //  ⌊p / 25.6⌋ ∈ [0, 9]. Each zone carries a 3-bit strength
+        //  (1-8 in user-facing terms; firmware decodes (strength-1)).
+        //  Strength 0 = inactive zone. The wire format packs all 10
+        //  3-bit strengths into a 32-bit forceZones word and the
+        //  active-zone bitmap into a 16-bit activeZones word.
+        // ────────────────────────────────────────────────
+
+        private static int PositionToZone(byte position) => Math.Clamp(position * 10 / 256, 0, 9);
+
+        // Convert a 0-255 strength byte to a 0-8 zone strength
+        // (0 = off, 1-8 = increasing force). Round-half-up so a slider
+        // at 255 hits the maximum 8 and 0 stays exactly 0.
+        private static int StrengthToZone(byte strength)
+        {
+            if (strength == 0) return 0;
+            int v = (strength * 8 + 127) / 255;
+            return Math.Clamp(v, 1, 8);
+        }
+
+        private static void EncodeMultiPosFeedback(Span<byte> block, byte startPosition, byte endPosition, byte strength)
+        {
+            int strZone = StrengthToZone(strength);
+            if (strZone == 0)
+            {
+                block[0] = HidModeOff;
+                return;
+            }
+
+            int startIdx = PositionToZone(startPosition);
+            int endIdx   = PositionToZone(endPosition);
+            if (endIdx < startIdx) (startIdx, endIdx) = (endIdx, startIdx);
+
+            uint forceZones = 0;
+            ushort activeZones = 0;
+            int forceValue = (strZone - 1) & 0x07;
+            for (int i = startIdx; i <= endIdx; i++)
+            {
+                forceZones |= (uint)(forceValue << (3 * i));
+                activeZones |= (ushort)(1 << i);
+            }
+
+            WriteFeedbackBlock(block, HidModeFeedback, activeZones, forceZones);
+        }
+
+        private static void EncodeSlopeFeedback(Span<byte> block, byte startPosition, byte endPosition, byte strength)
+        {
+            int endZone = StrengthToZone(strength);
+            if (endZone == 0)
+            {
+                block[0] = HidModeOff;
+                return;
+            }
+
+            int startIdx = PositionToZone(startPosition);
+            int endIdx   = PositionToZone(endPosition);
+            if (endIdx <= startIdx) endIdx = Math.Min(9, startIdx + 1);
+
+            // Linear ramp from 1 at startIdx to endZone at endIdx, held
+            // at endZone past endIdx so a fully pressed trigger keeps
+            // the peak resistance.
+            uint forceZones = 0;
+            ushort activeZones = 0;
+            int span = endIdx - startIdx;
+            for (int i = startIdx; i < 10; i++)
+            {
+                int s;
+                if (i <= endIdx)
+                {
+                    double t = span > 0 ? (double)(i - startIdx) / span : 1.0;
+                    s = (int)Math.Round(1.0 + t * (endZone - 1));
+                }
+                else
+                {
+                    s = endZone;
+                }
+                s = Math.Clamp(s, 1, 8);
+                int forceValue = (s - 1) & 0x07;
+                forceZones |= (uint)(forceValue << (3 * i));
+                activeZones |= (ushort)(1 << i);
+            }
+
+            WriteFeedbackBlock(block, HidModeFeedback, activeZones, forceZones);
+        }
+
+        private static void EncodeMultiPosVibration(Span<byte> block, byte startPosition, byte endPosition, byte strength, byte frequency)
+        {
+            int ampZone = StrengthToZone(strength);
+            if (ampZone == 0 || frequency == 0)
+            {
+                block[0] = HidModeOff;
+                return;
+            }
+
+            int startIdx = PositionToZone(startPosition);
+            int endIdx   = PositionToZone(endPosition);
+            if (endIdx < startIdx) (startIdx, endIdx) = (endIdx, startIdx);
+
+            uint strengthZones = 0;
+            ushort activeZones = 0;
+            int strengthValue = (ampZone - 1) & 0x07;
+            for (int i = startIdx; i <= endIdx; i++)
+            {
+                strengthZones |= (uint)(strengthValue << (3 * i));
+                activeZones |= (ushort)(1 << i);
+            }
+
+            block[0] = HidModeVibration;
+            block[1] = (byte)(activeZones & 0xff);
+            block[2] = (byte)((activeZones >> 8) & 0xff);
+            block[3] = (byte)(strengthZones & 0xff);
+            block[4] = (byte)((strengthZones >> 8) & 0xff);
+            block[5] = (byte)((strengthZones >> 16) & 0xff);
+            block[6] = (byte)((strengthZones >> 24) & 0xff);
+            block[9] = frequency;
+        }
+
+        private static void WriteFeedbackBlock(Span<byte> block, byte mode, ushort activeZones, uint forceZones)
+        {
+            block[0] = mode;
+            block[1] = (byte)(activeZones & 0xff);
+            block[2] = (byte)((activeZones >> 8) & 0xff);
+            block[3] = (byte)(forceZones & 0xff);
+            block[4] = (byte)((forceZones >> 8) & 0xff);
+            block[5] = (byte)((forceZones >> 16) & 0xff);
+            block[6] = (byte)((forceZones >> 24) & 0xff);
         }
     }
 }

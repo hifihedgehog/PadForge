@@ -302,12 +302,17 @@ namespace PadForge.Common.Input
                             break;
                     }
                 }
-                else
+                else if (cfg.LightbarEnabled)
                 {
                     dst[OffLedRed]   = cfg.LightbarRed;
                     dst[OffLedGreen] = cfg.LightbarGreen;
                     dst[OffLedBlue]  = cfg.LightbarBlue;
                 }
+                // else: anyLightFeature is true purely because the player
+                // pattern is on (no base-color override, no audio mode).
+                // Leave bytes 44-46 at the buffer's initial zero so the
+                // lightbar stays dark; we still need EnableLightbar set
+                // above for byte 42 (ledBrightness) to apply.
             }
 
             // Audio bytes — speaker volume + mic light + mic mute.

@@ -621,6 +621,54 @@ namespace PadForge.ViewModels
         public RelayCommand ResetAudioHighBCommand =>
             _resetAudHighB ??= new RelayCommand(() => AudioHighB = 0);
         private RelayCommand _resetAudHighB;
+
+        // ── Lightbar mode-parameter resets ──
+        // One-tap defaults for the per-mode parameter sliders / checkboxes
+        // / the palette collection. Match the field initializers so a
+        // reset always lands on the same value a fresh slot starts at.
+
+        public RelayCommand ResetLightbarPeriodCommand =>
+            _resetLightbarPeriod ??= new RelayCommand(() => LightbarPeriodMs = 3000);
+        private RelayCommand _resetLightbarPeriod;
+
+        public RelayCommand ResetLightbarInputDecayCommand =>
+            _resetLightbarInputDecay ??= new RelayCommand(() => LightbarInputDecayMs = 600);
+        private RelayCommand _resetLightbarInputDecay;
+
+        public RelayCommand ResetLightbarColorCycleSmoothCommand =>
+            _resetLightbarColorCycleSmooth ??= new RelayCommand(() => LightbarColorCycleSmooth = true);
+        private RelayCommand _resetLightbarColorCycleSmooth;
+
+        public RelayCommand ResetLightbarInputRandomizeCommand =>
+            _resetLightbarInputRandomize ??= new RelayCommand(() => LightbarInputRandomize = true);
+        private RelayCommand _resetLightbarInputRandomize;
+
+        public RelayCommand ResetAudioLightbarSensitivityCommand =>
+            _resetAudSens ??= new RelayCommand(() => AudioLightbarSensitivity = 4.0);
+        private RelayCommand _resetAudSens;
+
+        public RelayCommand ResetAudioLowToMidPercentCommand =>
+            _resetAudLowMid ??= new RelayCommand(() => AudioLowToMidPercent = 33);
+        private RelayCommand _resetAudLowMid;
+
+        public RelayCommand ResetAudioMidToHighPercentCommand =>
+            _resetAudMidHigh ??= new RelayCommand(() => AudioMidToHighPercent = 66);
+        private RelayCommand _resetAudMidHigh;
+
+        public RelayCommand ResetAudioCrossFadePercentCommand =>
+            _resetAudCrossFade ??= new RelayCommand(() => AudioCrossFadePercent = 5.0);
+        private RelayCommand _resetAudCrossFade;
+
+        public RelayCommand ResetPaletteCommand =>
+            _resetPalette ??= new RelayCommand(() =>
+            {
+                LightbarPalette.Clear();
+                LightbarPalette.Add(new LightbarPaletteEntry(0xFF, 0x00, 0x00));
+                LightbarPalette.Add(new LightbarPaletteEntry(0x00, 0xFF, 0x00));
+                LightbarPalette.Add(new LightbarPaletteEntry(0x00, 0x00, 0xFF));
+                LightbarPalette.Add(new LightbarPaletteEntry(0xFF, 0xFF, 0x00));
+            });
+        private RelayCommand _resetPalette;
     }
 
     /// <summary>Sony's seven canonical adaptive trigger effect modes

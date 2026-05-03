@@ -195,25 +195,8 @@ namespace PadForge.ViewModels
         }
 
         // ────────────────────────────────────────────────
-        //  Audio bytes (DualSense only) — speaker / mic / mic light
+        //  Mic LED mode (DualSense only) — mute LED state on the front edge
         // ────────────────────────────────────────────────
-
-        private byte _speakerVolume = 0x80;
-        /// <summary>Controller speaker volume, 0-255. Default 0x80
-        /// (mid-volume) — same as Sony's default for a fresh DualSense.</summary>
-        public byte SpeakerVolume
-        {
-            get => _speakerVolume;
-            set => SetProperty(ref _speakerVolume, value);
-        }
-
-        private bool _micMute;
-        /// <summary>Controller microphone mute. Default false (unmuted).</summary>
-        public bool MicMute
-        {
-            get => _micMute;
-            set => SetProperty(ref _micMute, value);
-        }
 
         private MicLedMode _micLedMode;
         /// <summary>Mic mute LED state. The DS5 firmware exposes three
@@ -585,10 +568,6 @@ namespace PadForge.ViewModels
             _resetLightbarB ??= new RelayCommand(() => LightbarBlue = 0xFF);
         private RelayCommand _resetLightbarB;
 
-        public RelayCommand ResetSpeakerVolumeCommand =>
-            _resetSpeakerVol ??= new RelayCommand(() => SpeakerVolume = 0x80);
-        private RelayCommand _resetSpeakerVol;
-
         // ── Audio-lightbar threshold reset commands ──
         // Defaults match the FPS use case from issue #55: green low,
         // yellow mid, red high.
@@ -847,8 +826,6 @@ namespace PadForge.ViewModels
         [XmlAttribute] public byte LightbarGreen { get; set; }
         [XmlAttribute] public byte LightbarBlue { get; set; } = 0xFF;
         [XmlAttribute] public bool LightbarEnabled { get; set; }
-        [XmlAttribute] public byte SpeakerVolume { get; set; } = 0x80;
-        [XmlAttribute] public bool MicMute { get; set; }
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;
         [XmlAttribute] public PlayerLedBrightness PlayerLedBrightness { get; set; } = PlayerLedBrightness.High;

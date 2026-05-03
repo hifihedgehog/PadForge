@@ -437,10 +437,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_Blue => Get("Pad_Lighting_Blue");
     public string Pad_Lighting_Hex => Get("Pad_Lighting_Hex");
     public string Pad_Lighting_HexTooltip => Get("Pad_Lighting_HexTooltip");
-    public string Pad_Lighting_AudioHeader => Get("Pad_Lighting_AudioHeader");
-    public string Pad_Lighting_SpeakerVolume => Get("Pad_Lighting_SpeakerVolume");
-    public string Pad_Lighting_MicMute => Get("Pad_Lighting_MicMute");
-    public string Pad_Lighting_MicLight => Get("Pad_Lighting_MicLight");
     public string Pad_Lighting_MicLedMode => Get("Pad_Lighting_MicLedMode");
     public string Pad_Lighting_MicLed_Off => Get("Pad_Lighting_MicLed_Off");
     public string Pad_Lighting_MicLed_Solid => Get("Pad_Lighting_MicLed_Solid");

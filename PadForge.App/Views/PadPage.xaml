@@ -2616,30 +2616,6 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- Audio bytes (DualSense only — see code-behind for visibility gating) -->
-                        <Border x:Name="LightingAudioSection" Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Lighting_AudioHeader, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
-                                </StackPanel>
-                                <!-- Speaker volume -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Lighting_SpeakerVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding PlayStationConfig.SpeakerVolume, Mode=TwoWay}"
-                                            Minimum="0" Maximum="255"
-                                            Width="200" VerticalAlignment="Center"/>
-                                    <TextBox Text="{Binding PlayStationConfig.SpeakerVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <Button Command="{Binding PlayStationConfig.ResetSpeakerVolumeCommand}" Style="{StaticResource ResetButton}"/>
-                                </StackPanel>
-                                <CheckBox IsChecked="{Binding PlayStationConfig.MicMute, Mode=TwoWay}"
-                                          Content="{Binding Pad_Lighting_MicMute, Source={x:Static strings:Strings.Instance}}"
-                                          Margin="0,8,0,0"/>
-                            </StackPanel>
-                        </Border>
-
                         <!-- Indicator LEDs — player number row + mic mute LED.
                              Grouped under one section because they share the
                              firmware's single brightness register (byte 42).

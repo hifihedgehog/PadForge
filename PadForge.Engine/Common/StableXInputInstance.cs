@@ -24,19 +24,6 @@ namespace PadForge.Engine
     public static class StableXInputInstance
     {
         /// <summary>
-        /// Returns the first non-HIDMaestro HID-class device instance ID whose
-        /// PnP tree contains the given VID/PID, or null if none found.
-        /// Equivalent to <c>FindAll(vid, pid).FirstOrDefault()</c>.
-        /// Kept as a thin wrapper for callers that don't need to disambiguate
-        /// multiple physical devices of the same model.
-        /// </summary>
-        public static string Find(ushort vid, ushort pid)
-        {
-            var all = FindAll(vid, pid);
-            return all.Count > 0 ? all[0] : null;
-        }
-
-        /// <summary>
         /// Returns every non-HIDMaestro HID-class device instance ID whose
         /// PnP tree contains the given VID/PID, sorted lexicographically so
         /// the order is deterministic across SetupDi enumeration variations

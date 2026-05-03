@@ -414,11 +414,8 @@ namespace PadForge.Services
             RecordingCompleted?.Invoke(this, new RecordingResult
             {
                 Mapping = mapping,
-                PadIndex = padIndex,
                 Descriptor = finalDescriptor,
                 Type = type,
-                Index = index,
-                PovDirection = povDirection
             });
         }
 
@@ -452,11 +449,8 @@ namespace PadForge.Services
             RecordingCompleted?.Invoke(this, new RecordingResult
             {
                 Mapping = mapping,
-                PadIndex = padIndex,
                 Descriptor = finalDescriptor,
                 Type = MapType.Button,
-                Index = -1,
-                PovDirection = null
             });
         }
 
@@ -609,19 +603,10 @@ namespace PadForge.Services
         /// <summary>The mapping item that was recorded.</summary>
         public MappingItem Mapping { get; set; }
 
-        /// <summary>The pad index the recording was for.</summary>
-        public int PadIndex { get; set; }
-
         /// <summary>The descriptor string assigned (e.g., "Button 0", "Axis 1").</summary>
         public string Descriptor { get; set; }
 
         /// <summary>The detected input type.</summary>
         public MapType Type { get; set; }
-
-        /// <summary>The detected input index.</summary>
-        public int Index { get; set; }
-
-        /// <summary>For POV: the direction detected.</summary>
-        public string PovDirection { get; set; }
     }
 }

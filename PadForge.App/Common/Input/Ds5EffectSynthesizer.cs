@@ -313,16 +313,20 @@ namespace PadForge.Common.Input
 
                 case LightbarMode.ColorCycle:
                 {
-                    int n = cfg.LightbarPalette?.Count ?? 0;
+                    // Snapshot once: timer thread can't safely Count + index
+                    // the live ObservableCollection while the UI thread is
+                    // mutating it.
+                    var palette = cfg.SnapshotLightbarPalette();
+                    int n = palette.Length;
                     if (n == 0) return (0, 0, 0);
-                    if (n == 1) return PaletteAt(cfg, 0);
+                    if (n == 1) return PaletteAt(palette, 0);
                     double scaled = phase * n;
                     int idx = (int)Math.Floor(scaled) % n;
                     int next = (idx + 1) % n;
-                    var (r1, g1, b1) = PaletteAt(cfg, idx);
+                    var (r1, g1, b1) = PaletteAt(palette, idx);
                     if (!cfg.LightbarColorCycleSmooth)
                         return (r1, g1, b1);
-                    var (r2, g2, b2) = PaletteAt(cfg, next);
+                    var (r2, g2, b2) = PaletteAt(palette, next);
                     double t = scaled - Math.Floor(scaled);
                     return (
                         (byte)Math.Round(r1 + (r2 - r1) * t),
@@ -379,11 +383,10 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static (byte r, byte g, byte b) PaletteAt(PlayStationSlotConfig cfg, int idx)
+        private static (byte r, byte g, byte b) PaletteAt(LightbarPaletteEntry[] palette, int idx)
         {
-            var palette = cfg.LightbarPalette;
-            if (palette == null || palette.Count == 0) return (0, 0, 0);
-            int n = palette.Count;
+            if (palette == null || palette.Length == 0) return (0, 0, 0);
+            int n = palette.Length;
             int wrapped = ((idx % n) + n) % n;
             var entry = palette[wrapped];
             return (entry.R, entry.G, entry.B);
@@ -430,7 +433,13 @@ namespace PadForge.Common.Input
             {
                 if (p <= lowMid)
                 {
-                    float t = lowMid > 0 ? p / lowMid : 1f;
+                    // When the user collapses the low band to zero
+                    // (lowMid == 0) the only sample that lands in this
+                    // branch is p == 0 (silence). Treat that as the
+                    // bottom of the gradient so silence shows the low
+                    // color rather than jumping to the mid color via a
+                    // 1f fallback.
+                    float t = lowMid > 0 ? p / lowMid : 0f;
                     LerpColor(t,
                         cfg.AudioLowR, cfg.AudioLowG, cfg.AudioLowB,
                         cfg.AudioMidR, cfg.AudioMidG, cfg.AudioMidB,

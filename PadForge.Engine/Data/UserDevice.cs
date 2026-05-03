@@ -55,10 +55,6 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public ushort ProdId { get; set; }
 
-        /// <summary>USB Product Version / Revision.</summary>
-        [XmlElement]
-        public ushort DevRevision { get; set; }
-
         /// <summary>Device file system path (used for instance GUID generation).</summary>
         [XmlElement]
         public string DevicePath { get; set; } = string.Empty;
@@ -182,34 +178,10 @@ namespace PadForge.Engine.Data
         public CustomInputState InputState { get; set; }
 
         /// <summary>
-        /// Buffered input updates since the last poll cycle.
-        /// </summary>
-        [XmlIgnore]
-        public CustomInputUpdate[] InputUpdates { get; set; }
-
-        /// <summary>
-        /// Timestamp of the current <see cref="InputState"/> reading.
-        /// </summary>
-        [XmlIgnore]
-        public DateTime InputStateTime { get; set; }
-
-        /// <summary>
         /// Previous input state (from the prior poll cycle), used for change detection.
         /// </summary>
         [XmlIgnore]
         public CustomInputState OldInputState { get; set; }
-
-        /// <summary>
-        /// Previous buffered updates (from the prior poll cycle).
-        /// </summary>
-        [XmlIgnore]
-        public CustomInputUpdate[] OldInputUpdates { get; set; }
-
-        /// <summary>
-        /// Timestamp of the previous <see cref="OldInputState"/> reading.
-        /// </summary>
-        [XmlIgnore]
-        public DateTime OldInputStateTime { get; set; }
 
         /// <summary>
         /// Total number of force-feedback actuator axes.
@@ -329,7 +301,6 @@ namespace PadForge.Engine.Data
                 throw new ArgumentNullException(nameof(wrapper));
 
             LoadFromDevice(wrapper);
-            DevRevision = wrapper.ProductVersion;
         }
 
         /// <summary>
@@ -439,9 +410,7 @@ namespace PadForge.Engine.Data
             Device = null;
             IsOnline = false;
             InputState = null;
-            InputUpdates = null;
             OldInputState = null;
-            OldInputUpdates = null;
             // DeviceObjects preserved — static device capabilities needed by UI dropdowns.
             ForceFeedbackState = null;
 

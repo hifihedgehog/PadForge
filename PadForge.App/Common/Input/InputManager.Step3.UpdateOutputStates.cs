@@ -600,6 +600,20 @@ namespace PadForge.Common.Input
             if (!desc.IsValid)
                 return 0;
 
+            // POV → trigger needs digital semantics, not the axis-style
+            // 32767-at-rest baseline GetRawValue uses for stick mapping.
+            // A POV mapped to a trigger should sit at 0 when the POV is
+            // centered and at 65535 when the configured direction is
+            // active; without this, a centered POV reports ~50% trigger
+            // pull at rest.
+            if (desc.Type == MapType.POV
+                && desc.Index >= 0 && desc.Index < state.Povs.Length)
+            {
+                bool active = IsPovDirectionActive(state.Povs[desc.Index], desc.PovDirection);
+                if (desc.Inverted) active = !active;
+                return active ? (ushort)65535 : (ushort)0;
+            }
+
             int rawValue = GetRawValue(state, desc);
 
             // Keep full unsigned 16-bit range (0–65535) for trigger precision.

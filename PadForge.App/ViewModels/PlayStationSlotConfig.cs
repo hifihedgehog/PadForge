@@ -109,14 +109,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _leftEndPosition, value);
         }
 
-        private byte _leftStrength;
+        private byte _leftStrength = 200;
+        /// <summary>Trigger effect force, 0-255. Default 200 (substantial)
+        /// so picking a non-Off mode produces immediate noticeable
+        /// resistance without the user having to move the slider first.</summary>
         public byte LeftStrength
         {
             get => _leftStrength;
             set => SetProperty(ref _leftStrength, value);
         }
 
-        private byte _leftFrequency;
+        private byte _leftFrequency = 10;
+        /// <summary>Vibration frequency, 0-255 (low end of the range is
+        /// where the firmware actually responds — dualsense-tester
+        /// caps its UI at 15). Default 10 gives a moderate buzz
+        /// frequency for Vibration / MultiplePositionVibration.</summary>
         public byte LeftFrequency
         {
             get => _leftFrequency;
@@ -139,14 +146,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _rightEndPosition, value);
         }
 
-        private byte _rightStrength;
+        private byte _rightStrength = 200;
+        /// <summary>See <see cref="LeftStrength"/>.</summary>
         public byte RightStrength
         {
             get => _rightStrength;
             set => SetProperty(ref _rightStrength, value);
         }
 
-        private byte _rightFrequency;
+        private byte _rightFrequency = 10;
+        /// <summary>See <see cref="LeftFrequency"/>.</summary>
         public byte RightFrequency
         {
             get => _rightFrequency;
@@ -498,8 +507,8 @@ namespace PadForge.ViewModels
                 LeftTriggerMode = AdaptiveTriggerMode.Off;
                 LeftStartPosition = 0;
                 LeftEndPosition = 255;
-                LeftStrength = 0;
-                LeftFrequency = 0;
+                LeftStrength = 200;
+                LeftFrequency = 10;
             });
         private RelayCommand _resetLeftTrigger;
 
@@ -509,8 +518,8 @@ namespace PadForge.ViewModels
                 RightTriggerMode = AdaptiveTriggerMode.Off;
                 RightStartPosition = 0;
                 RightEndPosition = 255;
-                RightStrength = 0;
-                RightFrequency = 0;
+                RightStrength = 200;
+                RightFrequency = 10;
             });
         private RelayCommand _resetRightTrigger;
 
@@ -531,19 +540,19 @@ namespace PadForge.ViewModels
         private RelayCommand _resetRightRange;
 
         public RelayCommand ResetLeftStrengthCommand =>
-            _resetLeftStrength ??= new RelayCommand(() => LeftStrength = 0);
+            _resetLeftStrength ??= new RelayCommand(() => LeftStrength = 200);
         private RelayCommand _resetLeftStrength;
 
         public RelayCommand ResetRightStrengthCommand =>
-            _resetRightStrength ??= new RelayCommand(() => RightStrength = 0);
+            _resetRightStrength ??= new RelayCommand(() => RightStrength = 200);
         private RelayCommand _resetRightStrength;
 
         public RelayCommand ResetLeftFrequencyCommand =>
-            _resetLeftFrequency ??= new RelayCommand(() => LeftFrequency = 0);
+            _resetLeftFrequency ??= new RelayCommand(() => LeftFrequency = 10);
         private RelayCommand _resetLeftFrequency;
 
         public RelayCommand ResetRightFrequencyCommand =>
-            _resetRightFrequency ??= new RelayCommand(() => RightFrequency = 0);
+            _resetRightFrequency ??= new RelayCommand(() => RightFrequency = 10);
         private RelayCommand _resetRightFrequency;
 
         /// <summary>Reset lightbar to the Sony player-1 default (solid blue).</summary>
@@ -816,12 +825,12 @@ namespace PadForge.ViewModels
         [XmlAttribute] public AdaptiveTriggerMode RightTriggerMode { get; set; } = AdaptiveTriggerMode.Off;
         [XmlAttribute] public byte LeftStartPosition { get; set; }
         [XmlAttribute] public byte LeftEndPosition { get; set; } = 255;
-        [XmlAttribute] public byte LeftStrength { get; set; }
-        [XmlAttribute] public byte LeftFrequency { get; set; }
+        [XmlAttribute] public byte LeftStrength { get; set; } = 200;
+        [XmlAttribute] public byte LeftFrequency { get; set; } = 10;
         [XmlAttribute] public byte RightStartPosition { get; set; }
         [XmlAttribute] public byte RightEndPosition { get; set; } = 255;
-        [XmlAttribute] public byte RightStrength { get; set; }
-        [XmlAttribute] public byte RightFrequency { get; set; }
+        [XmlAttribute] public byte RightStrength { get; set; } = 200;
+        [XmlAttribute] public byte RightFrequency { get; set; } = 10;
         [XmlAttribute] public byte LightbarRed { get; set; }
         [XmlAttribute] public byte LightbarGreen { get; set; }
         [XmlAttribute] public byte LightbarBlue { get; set; } = 0xFF;

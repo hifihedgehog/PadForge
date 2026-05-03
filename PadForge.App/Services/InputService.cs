@@ -166,6 +166,17 @@ namespace PadForge.Services
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
             _inputManager.HmVcWentNonActive += OnHmVcWentNonActive;
 
+            // Expose per-slot button bitmaps to the user-effects dispatcher
+            // so InputReactive lightbar can detect button rising edges.
+            // Bound to the manager via a captured field so .NET keeps the
+            // delegate alive for the manager's lifetime.
+            UserEffectsDispatcher.SlotButtonsProvider = padIndex =>
+            {
+                if (_inputManager == null) return (ushort)0;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return (ushort)0;
+                return _inputManager.CombinedOutputStates[padIndex].Buttons;
+            };
+
             // Subscribe to settings/dashboard property changes for runtime propagation.
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
@@ -325,6 +336,7 @@ namespace PadForge.Services
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
+                UserEffectsDispatcher.SlotButtonsProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher

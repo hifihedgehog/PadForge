@@ -480,6 +480,39 @@ namespace PadForge.Services
                     cfg.AudioMidToHighPercent = cfgData.AudioMidToHighPercent;
                     cfg.AudioCrossFadePercent = cfgData.AudioCrossFadePercent;
                     cfg.UserEffectsEnabled = cfgData.UserEffectsEnabled;
+
+                    // Unified lightbar mode (v3.1.0+). Migrate from the
+                    // legacy bools when the saved value is at the default.
+                    cfg.LightbarMode = cfgData.LightbarMode != ViewModels.LightbarMode.Off
+                        ? cfgData.LightbarMode
+                        : cfgData.AudioLightbarEnabled
+                            ? cfgData.AudioLightbarMode switch
+                            {
+                                ViewModels.AudioLightbarMode.Pulse      => ViewModels.LightbarMode.AudioPulse,
+                                ViewModels.AudioLightbarMode.Thresholds => ViewModels.LightbarMode.AudioThresholds,
+                                ViewModels.AudioLightbarMode.Gradient   => ViewModels.LightbarMode.AudioGradient,
+                                ViewModels.AudioLightbarMode.CrossFade  => ViewModels.LightbarMode.AudioCrossFade,
+                                _                                       => ViewModels.LightbarMode.AudioPulse,
+                            }
+                            : cfgData.LightbarEnabled
+                                ? ViewModels.LightbarMode.Static
+                                : ViewModels.LightbarMode.Off;
+                    cfg.LightbarPeriodMs = cfgData.LightbarPeriodMs;
+                    cfg.LightbarColorCycleSmooth = cfgData.LightbarColorCycleSmooth;
+                    cfg.LightbarPalette1R = cfgData.LightbarPalette1R;
+                    cfg.LightbarPalette1G = cfgData.LightbarPalette1G;
+                    cfg.LightbarPalette1B = cfgData.LightbarPalette1B;
+                    cfg.LightbarPalette2R = cfgData.LightbarPalette2R;
+                    cfg.LightbarPalette2G = cfgData.LightbarPalette2G;
+                    cfg.LightbarPalette2B = cfgData.LightbarPalette2B;
+                    cfg.LightbarPalette3R = cfgData.LightbarPalette3R;
+                    cfg.LightbarPalette3G = cfgData.LightbarPalette3G;
+                    cfg.LightbarPalette3B = cfgData.LightbarPalette3B;
+                    cfg.LightbarPalette4R = cfgData.LightbarPalette4R;
+                    cfg.LightbarPalette4G = cfgData.LightbarPalette4G;
+                    cfg.LightbarPalette4B = cfgData.LightbarPalette4B;
+                    cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
+                    cfg.LightbarInputRandomize = cfgData.LightbarInputRandomize;
                 }
             }
         }
@@ -1242,7 +1275,24 @@ namespace PadForge.Services
                     AudioLowToMidPercent = cfg.AudioLowToMidPercent,
                     AudioMidToHighPercent = cfg.AudioMidToHighPercent,
                     AudioCrossFadePercent = cfg.AudioCrossFadePercent,
-                    UserEffectsEnabled = cfg.UserEffectsEnabled
+                    UserEffectsEnabled = cfg.UserEffectsEnabled,
+                    LightbarMode = cfg.LightbarMode,
+                    LightbarPeriodMs = cfg.LightbarPeriodMs,
+                    LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
+                    LightbarPalette1R = cfg.LightbarPalette1R,
+                    LightbarPalette1G = cfg.LightbarPalette1G,
+                    LightbarPalette1B = cfg.LightbarPalette1B,
+                    LightbarPalette2R = cfg.LightbarPalette2R,
+                    LightbarPalette2G = cfg.LightbarPalette2G,
+                    LightbarPalette2B = cfg.LightbarPalette2B,
+                    LightbarPalette3R = cfg.LightbarPalette3R,
+                    LightbarPalette3G = cfg.LightbarPalette3G,
+                    LightbarPalette3B = cfg.LightbarPalette3B,
+                    LightbarPalette4R = cfg.LightbarPalette4R,
+                    LightbarPalette4G = cfg.LightbarPalette4G,
+                    LightbarPalette4B = cfg.LightbarPalette4B,
+                    LightbarInputDecayMs = cfg.LightbarInputDecayMs,
+                    LightbarInputRandomize = cfg.LightbarInputRandomize,
                 });
             }
 
@@ -1390,7 +1440,24 @@ namespace PadForge.Services
                     AudioLowToMidPercent = cfg.AudioLowToMidPercent,
                     AudioMidToHighPercent = cfg.AudioMidToHighPercent,
                     AudioCrossFadePercent = cfg.AudioCrossFadePercent,
-                    UserEffectsEnabled = cfg.UserEffectsEnabled
+                    UserEffectsEnabled = cfg.UserEffectsEnabled,
+                    LightbarMode = cfg.LightbarMode,
+                    LightbarPeriodMs = cfg.LightbarPeriodMs,
+                    LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
+                    LightbarPalette1R = cfg.LightbarPalette1R,
+                    LightbarPalette1G = cfg.LightbarPalette1G,
+                    LightbarPalette1B = cfg.LightbarPalette1B,
+                    LightbarPalette2R = cfg.LightbarPalette2R,
+                    LightbarPalette2G = cfg.LightbarPalette2G,
+                    LightbarPalette2B = cfg.LightbarPalette2B,
+                    LightbarPalette3R = cfg.LightbarPalette3R,
+                    LightbarPalette3G = cfg.LightbarPalette3G,
+                    LightbarPalette3B = cfg.LightbarPalette3B,
+                    LightbarPalette4R = cfg.LightbarPalette4R,
+                    LightbarPalette4G = cfg.LightbarPalette4G,
+                    LightbarPalette4B = cfg.LightbarPalette4B,
+                    LightbarInputDecayMs = cfg.LightbarInputDecayMs,
+                    LightbarInputRandomize = cfg.LightbarInputRandomize,
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;

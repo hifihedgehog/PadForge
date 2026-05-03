@@ -43,16 +43,41 @@ namespace PadForge.Common.Input
         /// yet — audio-to-lightbar then dispatches a black frame, harmless.</summary>
         public static Func<float> AudioPeakProvider { get; set; }
 
-        // Audio-to-lightbar polling cadence — 30Hz is enough to feel
+        /// <summary>Static provider for the current button-state bitmap
+        /// of a given pad index. InputService wires this to read from
+        /// <c>InputManager.CombinedOutputStates[i].Buttons</c>. Used by
+        /// <see cref="LightbarMode.InputReactive"/> to detect rising edges
+        /// and enqueue a fading pulse.</summary>
+        public static Func<int, ushort> SlotButtonsProvider { get; set; }
+
+        // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
-        private const int AudioTickMs = 33;
+        private const int AnimTickMs = 33;
+
+        // Audio onset threshold for AudioPulseRandom: peak rising from
+        // below this to above it counts as a pulse onset and rolls a
+        // new random colour.
+        private const float AudioOnsetEnter = 0.30f;
+        private const float AudioOnsetExit  = 0.15f;
 
         private readonly int _padIndex;
         private PlayStationSlotConfig _config;
-        private System.Threading.Timer _audioTimer;
-        private bool _audioTickActive;
+        private System.Threading.Timer _animTimer;
+        private bool _animTickActive;
         private bool _disposed;
+
+        // Per-mode runtime state. The synthesizer is stateless; the
+        // dispatcher carries random-colour memory across audio onsets,
+        // the active input-reactive pulse, and the previous button mask
+        // for rising-edge detection.
+        private uint _randomColor;
+        private bool _audioOnsetActive;
+        private uint _pulseColor;
+        private long _pulseStartMs;
+        private ushort _lastButtons;
+        private int _palettePulseIndex;
+        private readonly Random _rng = new Random();
 
         public UserEffectsDispatcher(int padIndex, PlayStationSlotConfig config)
         {
@@ -60,7 +85,8 @@ namespace PadForge.Common.Input
             _config = config;
             if (_config != null)
                 _config.PropertyChanged += OnConfigChanged;
-            UpdateAudioTimer();
+            RollRandomColor();
+            UpdateAnimTimer();
             DiagLog($"ctor padIndex={padIndex} config={(config == null ? "null" : "ok")}");
         }
 
@@ -98,7 +124,7 @@ namespace PadForge.Common.Input
             _config = config;
             if (_config != null)
                 _config.PropertyChanged += OnConfigChanged;
-            UpdateAudioTimer();
+            UpdateAnimTimer();
             // Push a snapshot immediately so the assigned DS5 reflects
             // the new config without waiting for the next user edit.
             ApplyOnce();
@@ -116,7 +142,7 @@ namespace PadForge.Common.Input
         {
             if (_disposed) return;
             _disposed = true;
-            StopAudioTimer();
+            StopAnimTimer();
             if (_config != null)
                 _config.PropertyChanged -= OnConfigChanged;
             _config = null;
@@ -125,95 +151,214 @@ namespace PadForge.Common.Input
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
             DiagLog($"OnConfigChanged property={e.PropertyName}");
-            // The audio-lightbar toggle / sensitivity changes need to
-            // start/stop the periodic timer.
-            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioLightbarEnabled))
-                UpdateAudioTimer();
-            // Every PlayStationSlotConfig field change re-applies the
-            // full message. Synthesis is cheap; the alternative would be
-            // a per-field write that misses subtle interactions between
-            // enable_bits flags. Last-writer-wins matches the game-driven
-            // path's semantics.
+            // Mode / period changes can flip whether the periodic timer
+            // should be running.
+            if (e.PropertyName == nameof(PlayStationSlotConfig.LightbarMode)
+                || e.PropertyName == nameof(PlayStationSlotConfig.LightbarPeriodMs))
+                UpdateAnimTimer();
             DispatchSnapshot();
         }
 
         // ────────────────────────────────────────────────
-        //  Audio-to-lightbar timer
+        //  Animation / audio / input-reactive timer
         // ────────────────────────────────────────────────
-        // Started while AudioLightbarEnabled is on, stopped otherwise.
-        // Each tick reads AudioPeakProvider() and re-dispatches if the
-        // peak changed enough to be worth a write — avoids flooding the
-        // HID pipe with no-op packets when the audio signal is steady.
+        // Runs while the active LightbarMode is animated (anything that
+        // depends on time, audio peak, or input state). Idle modes (Off
+        // and Static) only dispatch on config changes, so the timer
+        // stays parked.
 
-        private void UpdateAudioTimer()
+        private static bool IsAnimated(LightbarMode mode) =>
+            mode is LightbarMode.Breathing
+                  or LightbarMode.Rainbow
+                  or LightbarMode.ColorCycle
+                  or LightbarMode.AudioPulse
+                  or LightbarMode.AudioPulseRandom
+                  or LightbarMode.AudioPulseRainbow
+                  or LightbarMode.AudioThresholds
+                  or LightbarMode.AudioGradient
+                  or LightbarMode.AudioCrossFade
+                  or LightbarMode.InputReactive;
+
+        private void UpdateAnimTimer()
         {
             bool wantTimer = !_disposed
                 && _config != null
-                && _config.AudioLightbarEnabled;
+                && IsAnimated(_config.LightbarMode);
 
-            if (wantTimer && !_audioTickActive)
+            if (wantTimer && !_animTickActive)
             {
-                _audioTickActive = true;
-                _audioTimer = new System.Threading.Timer(
-                    OnAudioTick, null, AudioTickMs, AudioTickMs);
-                DiagLog("audio timer started");
+                _animTickActive = true;
+                _animTimer = new System.Threading.Timer(
+                    OnAnimTick, null, AnimTickMs, AnimTickMs);
+                DiagLog($"anim timer started mode={_config.LightbarMode}");
             }
-            else if (!wantTimer && _audioTickActive)
+            else if (!wantTimer && _animTickActive)
             {
-                StopAudioTimer();
+                StopAnimTimer();
             }
         }
 
-        private void StopAudioTimer()
+        private void StopAnimTimer()
         {
-            _audioTickActive = false;
-            try { _audioTimer?.Dispose(); } catch { }
-            _audioTimer = null;
+            _animTickActive = false;
+            try { _animTimer?.Dispose(); } catch { }
+            _animTimer = null;
             _lastDispatchedPeak = -1f;
         }
 
         private float _lastDispatchedPeak = -1f;
 
-        private void OnAudioTick(object _)
+        private void OnAnimTick(object _)
         {
-            if (_disposed || _config == null || !_config.AudioLightbarEnabled) return;
+            if (_disposed || _config == null) return;
+            var mode = _config.LightbarMode;
+            if (!IsAnimated(mode)) return;
+
+            // Audio-driven modes also do an early-exit if the peak hasn't
+            // changed by 1/255 (≈0.004), to avoid flooding the HID pipe
+            // with no-op packets while the signal is steady. Time-based
+            // and input-reactive modes always dispatch — they animate on
+            // every tick by definition.
+            bool audioMode =
+                mode is LightbarMode.AudioPulse
+                     or LightbarMode.AudioPulseRandom
+                     or LightbarMode.AudioPulseRainbow
+                     or LightbarMode.AudioThresholds
+                     or LightbarMode.AudioGradient
+                     or LightbarMode.AudioCrossFade;
 
             float rawPeak = AudioPeakProvider?.Invoke() ?? 0f;
             float scaled = Math.Clamp(rawPeak * (float)_config.AudioLightbarSensitivity, 0f, 1f);
 
-            // Skip dispatch if peak hasn't changed by at least one
-            // perceptible step (1/255 ≈ 0.004). Bypass the skip when
-            // the value crosses zero — going dark needs to apply
-            // immediately even from a small change.
-            float delta = MathF.Abs(scaled - _lastDispatchedPeak);
-            bool zeroCrossing =
-                (scaled == 0f && _lastDispatchedPeak > 0f)
-                || (_lastDispatchedPeak == 0f && scaled > 0f);
-            if (!zeroCrossing && delta < 0.004f) return;
+            // Roll a new random colour on the rising edge of an audio
+            // onset, so AudioPulseRandom flashes a fresh hue per pulse.
+            if (mode == LightbarMode.AudioPulseRandom)
+            {
+                if (!_audioOnsetActive && scaled >= AudioOnsetEnter)
+                {
+                    _audioOnsetActive = true;
+                    RollRandomColor();
+                }
+                else if (_audioOnsetActive && scaled <= AudioOnsetExit)
+                {
+                    _audioOnsetActive = false;
+                }
+            }
 
-            _lastDispatchedPeak = scaled;
+            // Drain button rising edges into pulses for InputReactive.
+            if (mode == LightbarMode.InputReactive)
+                DrainInputPulses();
+
+            if (audioMode)
+            {
+                float delta = MathF.Abs(scaled - _lastDispatchedPeak);
+                bool zeroCrossing =
+                    (scaled == 0f && _lastDispatchedPeak > 0f)
+                    || (_lastDispatchedPeak == 0f && scaled > 0f);
+                if (!zeroCrossing && delta < 0.004f && mode != LightbarMode.AudioPulseRainbow)
+                    return;
+                _lastDispatchedPeak = scaled;
+            }
+
             DispatchSnapshot(scaled);
+        }
+
+        private void RollRandomColor()
+        {
+            // Pick a vivid hue uniformly. Saturation+value pinned to 1
+            // so the colour reads cleanly through the diffuser at any
+            // peak intensity.
+            int h = _rng.Next(0, 360);
+            HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
+            _randomColor = (uint)((r << 16) | (g << 8) | b);
+        }
+
+        private void DrainInputPulses()
+        {
+            if (_config == null) return;
+            var provider = SlotButtonsProvider;
+            ushort buttons = provider != null ? provider(_padIndex) : (ushort)0;
+            ushort newlyPressed = (ushort)(buttons & ~_lastButtons);
+            _lastButtons = buttons;
+
+            if (newlyPressed != 0)
+            {
+                // One pulse per tick is plenty even if multiple buttons
+                // came down in the same frame — last-press-wins matches
+                // how the user perceives a chord vs a sequence.
+                if (_config.LightbarInputRandomize)
+                {
+                    int h = _rng.Next(0, 360);
+                    HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
+                    _pulseColor = (uint)((r << 16) | (g << 8) | b);
+                }
+                else
+                {
+                    _palettePulseIndex = (_palettePulseIndex + 1) & 3;
+                    var (pr, pg, pb) = _palettePulseIndex switch
+                    {
+                        0 => (_config.LightbarPalette1R, _config.LightbarPalette1G, _config.LightbarPalette1B),
+                        1 => (_config.LightbarPalette2R, _config.LightbarPalette2G, _config.LightbarPalette2B),
+                        2 => (_config.LightbarPalette3R, _config.LightbarPalette3G, _config.LightbarPalette3B),
+                        _ => (_config.LightbarPalette4R, _config.LightbarPalette4G, _config.LightbarPalette4B),
+                    };
+                    _pulseColor = (uint)((pr << 16) | (pg << 8) | pb);
+                }
+                _pulseStartMs = Environment.TickCount64;
+            }
+        }
+
+        private float ComputePulseIntensity(long nowMs)
+        {
+            if (_pulseStartMs == 0 || _config == null) return 0f;
+            long elapsed = nowMs - _pulseStartMs;
+            int decay = Math.Max(_config.LightbarInputDecayMs, 50);
+            if (elapsed <= 0) return 1f;
+            if (elapsed >= decay) return 0f;
+            return 1f - (float)elapsed / decay;
+        }
+
+        private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)
+        {
+            h = ((h % 360) + 360) % 360;
+            double c = v * s;
+            double x = c * (1 - Math.Abs((h / 60.0) % 2 - 1));
+            double m = v - c;
+            double rp, gp, bp;
+            if (h < 60)       { rp = c; gp = x; bp = 0; }
+            else if (h < 120) { rp = x; gp = c; bp = 0; }
+            else if (h < 180) { rp = 0; gp = c; bp = x; }
+            else if (h < 240) { rp = 0; gp = x; bp = c; }
+            else if (h < 300) { rp = x; gp = 0; bp = c; }
+            else              { rp = c; gp = 0; bp = x; }
+            r = (byte)Math.Round((rp + m) * 255);
+            g = (byte)Math.Round((gp + m) * 255);
+            b = (byte)Math.Round((bp + m) * 255);
         }
 
         private void DispatchSnapshot(float audioPeak = -1f)
         {
             if (_config == null) { DiagLog("DispatchSnapshot config=null"); return; }
 
-            // For non-audio-driven dispatches (slider drag, OnDevicesUpdated
-            // re-apply, etc.), pull the current peak so the audio path
-            // doesn't snap to black between timer ticks. The synthesizer
-            // ignores the peak when AudioLightbarEnabled is false.
+            // For non-tick dispatches (slider drag, OnDevicesUpdated re-
+            // apply, etc.), pull the current peak so the audio path
+            // doesn't snap to black between ticks. The synthesizer
+            // ignores the peak when the active mode doesn't read it.
             float peakForSynth = audioPeak >= 0f
                 ? audioPeak
                 : Math.Clamp(
                     (AudioPeakProvider?.Invoke() ?? 0f)
                     * (float)_config.AudioLightbarSensitivity,
                     0f, 1f);
+            long nowMs = Environment.TickCount64;
+            float pulseIntensity = ComputePulseIntensity(nowMs);
 
             // Synthesize once per dispatch; reuse the buffer across the
             // multi-DS5 fan-out below.
             var buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
-            int len = Ds5EffectSynthesizer.Build(_config, buffer, peakForSynth);
+            int len = Ds5EffectSynthesizer.Build(
+                _config, buffer, peakForSynth, nowMs,
+                _randomColor, _pulseColor, pulseIntensity);
             if (len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
 
             var settings = SettingsManager.UserSettings;

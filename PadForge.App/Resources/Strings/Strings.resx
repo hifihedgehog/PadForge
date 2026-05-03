@@ -466,7 +466,7 @@
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static color</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (single color fades)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Rainbow cycle</value></data>
-  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color cycle (4-color palette)</value></data>
+  <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color cycle</value></data>
   <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio pulse — static color</value></data>
   <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio pulse — random color per beat</value></data>
   <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio pulse — rainbow cycle</value></data>

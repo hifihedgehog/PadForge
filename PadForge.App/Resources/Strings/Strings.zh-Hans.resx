@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>按下鼠标 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>释放鼠标 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触控板叠加层</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>将灯条设置为{0}，持续{1}毫秒</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>设置灯条颜色</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>在配置的持续时间内，使用所选RGB颜色覆盖已分配PlayStation插槽的灯条。持续时间结束后，灯条恢复到“灯光”选项卡的设置。游戏发出的写入仍优先于此覆盖。</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>居中</value></data>

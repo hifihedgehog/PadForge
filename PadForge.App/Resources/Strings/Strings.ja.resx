@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>ライトバーを{0}に{1}ms設定</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ライトバーの色を設定</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>割り当てられたPlayStationスロットのライトバーを、指定した時間だけ選択したRGBカラーで上書きします。時間が経過すると、ライティングタブの設定に戻ります。ゲーム側の書き込みは引き続き優先されます。</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>中央</value></data>

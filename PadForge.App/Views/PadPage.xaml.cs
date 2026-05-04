@@ -253,6 +253,7 @@ namespace PadForge.Views
             //   have FFB endpoints, so the tab would be a no-op there.
             bool hasAdaptiveTriggers = false;
             bool hasLightbar = false;
+            bool hasIndicatorLeds = false;
             bool hasForceFeedback = false;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -281,6 +282,9 @@ namespace PadForge.Views
                             bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
                             hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
                             hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                            // Indicator LEDs (player row + mic LED + brightness)
+                            // are DualSense-family only — DS4 has neither.
+                            hasIndicatorLeds = isDualSense || isDualSenseEdge;
                         }
                         break;
                     }
@@ -291,6 +295,8 @@ namespace PadForge.Views
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)
                 TabLighting.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (IndicatorLedsCard != null)
+                IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
 
             if (MotorBarsGrid != null)
                 MotorBarsGrid.Visibility = Visibility.Visible;

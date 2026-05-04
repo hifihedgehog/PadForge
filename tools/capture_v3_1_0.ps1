@@ -200,12 +200,58 @@ if (SelectFirstSlot) {
             Write-Host "    [$ti] '$($tabs[$ti].Current.Name)'"
         }
         Cap "pad-controller-3d"
+
+        # Toggle the 3D/2D view button (top-left of PadPageView, ~52,124 DIPs)
+        # to capture the 2D controller view.
+        $rect = $padPage.Current.BoundingRectangle
+        $toggleX = [int]($rect.X + 52)
+        $toggleY = [int]($rect.Y + 124)
+        [W32]::ForceFG($hwnd)
+        Start-Sleep -Milliseconds 200
+        [W32]::ClickAt($toggleX, $toggleY)
+        Start-Sleep -Milliseconds 800
+        Cap "pad-controller-2d"
+        # Toggle back to 3D so the next capture (Macros) starts clean.
+        [W32]::ClickAt($toggleX, $toggleY)
+        Start-Sleep -Milliseconds 500
     }
 
     if (Tab "Macros") { Start-Sleep -Milliseconds 600; Cap "pad-macros" }
     if (Tab "Mappings") { Start-Sleep -Milliseconds 600; Cap "pad-mappings" }
-    if (Tab "Sticks") { Start-Sleep -Milliseconds 600; Cap "pad-sticks" }
-    if (Tab "Triggers") { Start-Sleep -Milliseconds 600; Cap "pad-triggers" }
+    if (Tab "Sticks") {
+        Start-Sleep -Milliseconds 600
+        Cap "pad-sticks"
+
+        # Open the deadzone-shape dropdown (ComboBox at fixed coords for the
+        # sticks tab). The 2D-overlay coords used here come from the previous
+        # April capture run; re-tested as still correct on the v3.1 layout.
+        [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
+        [W32]::ClickAt(946, 469)
+        Start-Sleep -Milliseconds 800
+        Cap "pad-sticks-deadzone-dropdown"
+        [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+        Start-Sleep -Milliseconds 300
+
+        # Sensitivity preset dropdown — second combo lower in the same tab.
+        [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
+        [W32]::ClickAt(946, 1046)
+        Start-Sleep -Milliseconds 800
+        Cap "pad-sticks-sensitivity-dropdown"
+        [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+        Start-Sleep -Milliseconds 300
+    }
+    if (Tab "Triggers") {
+        Start-Sleep -Milliseconds 600
+        Cap "pad-triggers"
+
+        # Triggers sensitivity preset dropdown.
+        [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
+        [W32]::ClickAt(946, 472)
+        Start-Sleep -Milliseconds 800
+        Cap "pad-triggers-sensitivity-dropdown"
+        [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+        Start-Sleep -Milliseconds 300
+    }
     if (Tab "Force Feedback") { Start-Sleep -Milliseconds 600; Cap "pad-forcefeedback" }
     if (Tab "Adaptive Triggers") { Start-Sleep -Milliseconds 800; Cap "pad-adaptive-triggers" }
     if (Tab "Lighting") { Start-Sleep -Milliseconds 800; Cap "pad-lighting" }

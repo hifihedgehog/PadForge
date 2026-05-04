@@ -389,15 +389,54 @@ namespace PadForge.ViewModels
         // ────────────────────────────────────────────────
 
         private LightbarMode _lightbarMode = LightbarMode.Off;
-        /// <summary>Active lightbar effect. Off means PadForge does not
-        /// author the lightbar at all (game owns it). Animated modes
-        /// (Breathing / Rainbow / ColorCycle / Audio* / InputReactive)
-        /// run on the dispatcher's periodic timer.</summary>
+        /// <summary>Active lightbar BASE effect. Off means PadForge
+        /// does not author the lightbar at all (game owns it). Animated
+        /// modes (Breathing / Rainbow / ColorCycle / Audio*) run on the
+        /// dispatcher's periodic timer. The InputReactive* values still
+        /// live in the enum for XML round-trip but are migrated on load
+        /// to <see cref="InputReactiveMode"/>; see SettingsService's
+        /// ApplyPlayStationConfigData.</summary>
         public LightbarMode LightbarMode
         {
             get => _lightbarMode;
-            set => SetProperty(ref _lightbarMode, value);
+            set
+            {
+                if (SetProperty(ref _lightbarMode, value))
+                    OnPropertyChanged(nameof(ShowPaletteEditor));
+            }
         }
+
+        private InputReactiveMode _inputReactiveMode = InputReactiveMode.Off;
+        /// <summary>Active input-reactive OVERLAY effect. Layered on
+        /// top of <see cref="LightbarMode"/> — when a button press
+        /// pulses, this overlay's color blends over the base color by
+        /// the pulse intensity (full override at intensity 1.0, fades
+        /// back to base as intensity decays to 0). Macro lightbar
+        /// overrides still beat both. Off means no overlay.</summary>
+        public InputReactiveMode InputReactiveMode
+        {
+            get => _inputReactiveMode;
+            set
+            {
+                if (SetProperty(ref _inputReactiveMode, value))
+                {
+                    OnPropertyChanged(nameof(IsInputReactiveActive));
+                    OnPropertyChanged(nameof(ShowPaletteEditor));
+                }
+            }
+        }
+
+        /// <summary>True when the input-reactive overlay is enabled
+        /// (any non-Off variant). UI binds Hold / Decay slider
+        /// visibility to this.</summary>
+        public bool IsInputReactiveActive => _inputReactiveMode != InputReactiveMode.Off;
+
+        /// <summary>True when either the base mode is ColorCycle or
+        /// the input-reactive overlay is Cycle. The palette editor
+        /// shows when either consumer is active.</summary>
+        public bool ShowPaletteEditor =>
+            _lightbarMode == LightbarMode.ColorCycle
+            || _inputReactiveMode == InputReactiveMode.Cycle;
 
         private int _lightbarPeriodMs = 3000;
         /// <summary>Animation period in milliseconds for time-based modes:
@@ -779,6 +818,10 @@ namespace PadForge.ViewModels
             _resetLightbarMode ??= new RelayCommand(() => LightbarMode = LightbarMode.Off);
         private RelayCommand _resetLightbarMode;
 
+        public RelayCommand ResetInputReactiveModeCommand =>
+            _resetInputReactiveMode ??= new RelayCommand(() => InputReactiveMode = InputReactiveMode.Off);
+        private RelayCommand _resetInputReactiveMode;
+
         public RelayCommand ResetPlayerLedBrightnessCommand =>
             _resetPlayerLedBrightness ??= new RelayCommand(() => PlayerLedBrightness = PlayerLedBrightness.High);
         private RelayCommand _resetPlayerLedBrightness;
@@ -966,9 +1009,35 @@ namespace PadForge.ViewModels
         AudioThresholds = 8,
         AudioGradient = 9,
         AudioCrossFade = 10,
-        InputReactive = 11,           // random hue per press
-        InputReactiveCycle = 12,      // step through the configured palette per press
-        InputReactiveFixed = 13,      // single color (LightbarRed/Green/Blue) flashed per press
+        // ── Legacy (v3.1.x) ── these values stay in the enum for
+        // XML round-trip + macro-action backward compat. They are NOT
+        // exposed in the Lighting tab dropdown anymore — the dispatcher
+        // migrates them on load and on macro apply into
+        // InputReactiveMode (overlay) + LightbarMode = Off (base).
+        // See SettingsService.ApplyPlayStationConfigData and
+        // ApplyLightbarModeSetMigrated in the macro engine.
+        InputReactive = 11,           // (legacy) random hue per press
+        InputReactiveCycle = 12,      // (legacy) step through the configured palette per press
+        InputReactiveFixed = 13,      // (legacy) single color (LightbarRed/Green/Blue) flashed per press
+    }
+
+    /// <summary>Input-reactive overlay variant. Independent of the
+    /// base <see cref="LightbarMode"/>: the overlay flashes the
+    /// chosen color on top of whatever base mode the user picked,
+    /// fading back to the base over the configured Hold + Decay
+    /// window. Off disables the overlay entirely.</summary>
+    public enum InputReactiveMode
+    {
+        Off = 0,
+        /// <summary>Random hue rolled on each button press.</summary>
+        Random = 1,
+        /// <summary>Step through the configured lightbar palette
+        /// on each button press.</summary>
+        Cycle = 2,
+        /// <summary>Flash the configured base RGB
+        /// (<see cref="PlayStationSlotConfig.LightbarRed"/> et al.)
+        /// on each button press.</summary>
+        Fixed = 3,
     }
 
     /// <summary>Audio-driven lightbar behavior. Issue #55 listed the
@@ -1059,6 +1128,12 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int LightbarInputHoldMs { get; set; } = 0;
         [XmlAttribute] public int LightbarInputDecayMs { get; set; } = 600;
         [XmlAttribute] public bool LightbarInputRandomize { get; set; } = true;
+
+        /// <summary>Input-reactive overlay variant (v3.2+). Independent
+        /// of <see cref="LightbarMode"/> so users can layer a reactive
+        /// flash over a static / animated base. Defaults to Off so
+        /// older saves load with no behavior change.</summary>
+        [XmlAttribute] public InputReactiveMode InputReactiveMode { get; set; } = InputReactiveMode.Off;
     }
 
     /// <summary>Serializable mirror of <see cref="LightbarPaletteEntry"/>.

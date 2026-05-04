@@ -554,6 +554,38 @@ namespace PadForge.Services
                     {
                         cfg.LightbarMode = ViewModels.LightbarMode.InputReactiveCycle;
                     }
+
+                    // v3.2 migration: the InputReactive* values used to be
+                    // base-mode entries; they are now an OVERLAY layered on
+                    // top of the base. If the saved file already carries a
+                    // non-Off InputReactiveMode, honor it and leave the base
+                    // alone. Otherwise, translate any legacy InputReactive*
+                    // base-mode value into (LightbarMode = Off, overlay =
+                    // corresponding) so the visual result matches what users
+                    // had before — a black base with a reactive flash. Users
+                    // can re-pick a richer base mode under the overlay later.
+                    if (cfgData.InputReactiveMode != ViewModels.InputReactiveMode.Off)
+                    {
+                        cfg.InputReactiveMode = cfgData.InputReactiveMode;
+                    }
+                    else
+                    {
+                        switch (cfg.LightbarMode)
+                        {
+                            case ViewModels.LightbarMode.InputReactive:
+                                cfg.InputReactiveMode = ViewModels.InputReactiveMode.Random;
+                                cfg.LightbarMode = ViewModels.LightbarMode.Off;
+                                break;
+                            case ViewModels.LightbarMode.InputReactiveCycle:
+                                cfg.InputReactiveMode = ViewModels.InputReactiveMode.Cycle;
+                                cfg.LightbarMode = ViewModels.LightbarMode.Off;
+                                break;
+                            case ViewModels.LightbarMode.InputReactiveFixed:
+                                cfg.InputReactiveMode = ViewModels.InputReactiveMode.Fixed;
+                                cfg.LightbarMode = ViewModels.LightbarMode.Off;
+                                break;
+                        }
+                    }
         }
 
         /// <summary>
@@ -1466,6 +1498,7 @@ namespace PadForge.Services
                     .ToArray(),
                 LightbarInputHoldMs = cfg.LightbarInputHoldMs,
                 LightbarInputDecayMs = cfg.LightbarInputDecayMs,
+                InputReactiveMode = cfg.InputReactiveMode,
             };
         }
 

@@ -2411,11 +2411,27 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioThresholds, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioGradient, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactive, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveCycle, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveFixed, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarMode, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Input Reactive overlay (v3.2+). Layered on top of the
+                                     base mode above: a button-press flashes the chosen
+                                     reactive color and decays back to the base. Off keeps
+                                     the base mode untouched. Random rolls a hue per press,
+                                     Cycle steps through the palette, Fixed flashes the
+                                     base RGB color. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.InputReactiveMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="320" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Random, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Cycle, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Fixed, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <Button Command="{Binding PlayStationConfig.ResetInputReactiveModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetInputReactive, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Period: Breathing / Rainbow / ColorCycle / AudioPulseRainbow -->
@@ -2436,12 +2452,12 @@
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
 
-                                <!-- InputReactive controls. Hold + Decay sliders show for all
-                                     three variants; the per-press color source is expressed by
-                                     the mode dropdown choice itself (random vs. palette cycle
-                                     vs. fixed slot color). Hold may be 0 for instant fade;
-                                     Decay may be 0 for clean on/off with no fade. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive|InputReactiveCycle|InputReactiveFixed}">
+                                <!-- InputReactive controls. Hold + Decay sliders show whenever
+                                     the input-reactive overlay (v3.2+) is enabled in any
+                                     variant — Random / Cycle / Fixed. Hold may be 0 for
+                                     instant fade; Decay may be 0 for clean on/off with no
+                                     fade. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.IsInputReactiveActive, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay}"
@@ -2462,8 +2478,10 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Palette (variable count): ColorCycle and InputReactiveCycle share. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle|InputReactiveCycle}">
+                                <!-- Palette (variable count): ColorCycle base mode and the
+                                     v3.2+ Cycle input-reactive overlay both consume it. The
+                                     ShowPaletteEditor derived bool flips when either trips. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.ShowPaletteEditor, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" Margin="0,0,0,6"/>
                                     <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarPalette}" Margin="0,0,0,8">

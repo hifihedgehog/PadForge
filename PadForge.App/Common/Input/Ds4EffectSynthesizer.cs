@@ -37,6 +37,29 @@ namespace PadForge.Common.Input
     /// helper as DS5.</item>
     /// <item>Off — bytes left zero.</item>
     /// </list>
+    ///
+    /// <para>══════════════════════════════════════════════════════════════</para>
+    /// <para><b>SOLE-WRITER CONTRACT — read before changing rumble bytes.</b></para>
+    /// <para>══════════════════════════════════════════════════════════════</para>
+    /// <para>Same architecture as <see cref="Ds5EffectSynthesizer"/>:
+    /// <c>InputManager.Step2.ApplyForceFeedback</c> skips Sony VID 0x054C
+    /// / DS4 PIDs so SDL_RumbleJoystick is never called for these
+    /// devices. This synthesizer's packet is the ONLY DS4 effect write
+    /// from PadForge — rumble + lightbar + flash, all in one.</para>
+    /// <para>Therefore: ValidFlags = 0xF7 unconditionally (bit 0 = rumble
+    /// enable, bits 1-2 = lightbar/flash enable). Rumble bytes are always
+    /// carried; the dispatcher produces audio-mixed + gain-scaled values
+    /// via <c>InputService.SlotRumbleForDeviceProvider</c>. Do NOT clear
+    /// bit 0 "when rumble is silent" — the firmware retains the last
+    /// applied value, and gating bit 0 just creates dead zones in the
+    /// dispatch stream.</para>
+    /// <para>Garbage-color bug history: with two writers, SDL's DS4
+    /// effect packet alongside its rumble update could carry stale or
+    /// zeroed lightbar bytes that raced the dispatcher's animated colors
+    /// at 30 Hz, producing what users perceived as "fast cycling" or
+    /// "random colors." Sole-writer mode resolved this. Don't reintroduce
+    /// SDL DS4 writes.</para>
+    /// <para>See memory: sony-rumble-sole-writer-architecture.md.</para>
     /// </summary>
     internal static class Ds4EffectSynthesizer
     {

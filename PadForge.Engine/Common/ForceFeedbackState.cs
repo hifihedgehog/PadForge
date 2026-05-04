@@ -127,6 +127,22 @@ namespace PadForge.Engine
         /// 2. Applies gain scaling to the raw XInput motor speeds.
         /// 3. Swaps motors if configured.
         /// 4. Only sends to hardware when values change (avoids SDL rumble restart gaps).
+        ///
+        /// <para>══════════════════════════════════════════════════════════════</para>
+        /// <para><b>NOT REACHED FOR SONY DUALSENSE / DUALSHOCK 4.</b></para>
+        /// <para>══════════════════════════════════════════════════════════════</para>
+        /// <para><c>InputManager.Step2.ApplyForceFeedback</c> returns early
+        /// for Sony VID 0x054C with DS5 / DS5 Edge / DS4 PIDs before this
+        /// method is called. Sony pads receive their entire effect packet
+        /// (rumble + lightbar + AT + mic LED) from
+        /// <c>UserEffectsDispatcher</c> via <c>Ds5RawHidWriter</c>. SDL is
+        /// the sole writer for Xbox / generic gamepads / FFB joysticks —
+        /// never for Sony.</para>
+        /// <para>If a future change wants to route Sony pads through this
+        /// path again, undo BOTH the Step 2 skip AND the dispatcher's
+        /// always-write rumble bytes. Half-and-half produces the
+        /// audio-rumble + animated-lightbar race that motivated the
+        /// architecture (see memory: sony-rumble-sole-writer-architecture.md).</para>
         /// </summary>
         /// <param name="ud">The user device data model (for device reference).</param>
         /// <param name="device">The SDL device wrapper to rumble.</param>

@@ -125,11 +125,31 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Per-slot poke for the UserEffectsDispatcher's timer state.
-            // Sony DS5/DS4 rumble flows through the dispatcher's effect
-            // packets — SDL no longer writes for those devices — so the
-            // timer must stay alive whenever there's any rumble work to
-            // push, even when the slot's lightbar mode is static / off.
+            // ══════════════════════════════════════════════════════════════
+            // Per-slot Sony-rumble poke for UserEffectsDispatcher.
+            // ══════════════════════════════════════════════════════════════
+            // DO NOT REMOVE THIS LOOP without also reverting the Sony
+            // VID/PID skip above + the synthesizers' unconditional rumble
+            // writes. The three pieces form the sole-writer rumble
+            // architecture for DS5/DS4:
+            //
+            //   1. ApplyForceFeedback skips Sony pads (above) → SDL
+            //      never writes rumble for them.
+            //   2. UserEffectsDispatcher writes the entire effect packet
+            //      every tick (rumble + lightbar + AT + mic LED).
+            //   3. THIS poke keeps the dispatcher's 33 ms timer alive
+            //      during audio-rumble or game-rumble periods even
+            //      when the lightbar mode is static / off — because
+            //      the timer was originally gated only on lightbar
+            //      animation, and an idle-lightbar slot would otherwise
+            //      have NO writer at all.
+            //
+            // The architecture exists because two writers (PadForge
+            // dispatcher + SDL3 PS5/PS4 driver) racing on an
+            // asynchronously-sampled audio peak produced the v3.1.x
+            // audio-rumble + animated-lightbar regression — see memory:
+            // sony-rumble-sole-writer-architecture.md.
+            //
             // Inputs:
             //   - hasGameRumble: raw VibrationStates non-zero (game or
             //     test rumble in flight)
@@ -137,7 +157,15 @@ namespace PadForge.Common.Input
             //     the slot has AudioRumbleEnabled=="1" (audio peaks
             //     should be flowing into rumble bytes)
             // The dispatcher merges these with its lightbar-animation
-            // logic to decide whether to keep its 33 ms timer running.
+            // logic in UpdateAnimTimer to decide whether to keep its
+            // 33 ms timer running.
+            //
+            // Cost: one walk of UserSettings.Items per slot per polling
+            // tick under the SyncRoot lock. ~16 slots × ~16 user
+            // settings worst case, well under a microsecond on warm
+            // cache. The lock is held briefly enough that UI-thread
+            // mutations (device assignment, profile load) don't see
+            // measurable contention.
             var settingsForPoke = SettingsManager.UserSettings;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
@@ -199,20 +227,34 @@ namespace PadForge.Common.Input
             if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                 return;
 
-            // Skip Sony DualSense / DualShock 4 — UserEffectsDispatcher
-            // is the sole writer of their effect packets (rumble +
-            // lightbar + triggers + mic LED, all in one HID write).
-            // Calling SDL_RumbleJoystick here would have SDL3's
-            // PS5/PS4 driver write its own effect packet through a
-            // separate HID handle that races with the dispatcher's
-            // per-tick writes; the firmware applies whichever
-            // WriteFile lands most recently and the two writers
-            // produce a 30 Hz motor stutter when their values disagree
-            // (the v3.1.x audio-rumble + animated-lightbar regression).
-            // Step 2's per-slot poke after the device loop keeps the
-            // dispatcher's timer alive whenever there's rumble work;
-            // game rumble, audio rumble, and test rumble all flow
-            // through the dispatcher.
+            // ══════════════════════════════════════════════════════════════
+            // SONY DS5 / DS4 SKIP — DO NOT REMOVE.
+            // ══════════════════════════════════════════════════════════════
+            // UserEffectsDispatcher is the SOLE writer of effect packets
+            // for Sony DualSense / DualShock 4 — rumble + lightbar +
+            // adaptive triggers + mic LED, all in one HID write per
+            // dispatcher tick. SDL_RumbleJoystick MUST NOT be called
+            // for these devices.
+            //
+            // Calling SDL rumble here would have SDL3's PS5/PS4 driver
+            // write its own effect packet through a separate HID handle
+            // that races with the dispatcher's per-tick writes. The
+            // firmware applies whichever WriteFile lands most recently;
+            // when the two writers' rumble bytes disagree (which they
+            // always do during audio rumble, because AudioBassDetector.
+            // MotorValue is sampled asynchronously from the WASAPI
+            // callback), motors stutter at 30 Hz and the user perceives
+            // weak rumble. This was the v3.1.x audio-rumble +
+            // animated-lightbar regression. The architectural fix is
+            // sole-writer mode; do not undo it.
+            //
+            // The poke loop at the end of UpdateInputStates keeps the
+            // dispatcher's 33 ms timer alive across audio-rumble and
+            // game-rumble periods even with a static / off lightbar.
+            // Game rumble, test rumble, and audio rumble all flow
+            // through the dispatcher's effect packet path.
+            //
+            // See memory: sony-rumble-sole-writer-architecture.md.
             const ushort SonyVid = 0x054C;
             if (ud.VendorId == SonyVid &&
                 (ud.ProdId == 0x0CE6   // DualSense

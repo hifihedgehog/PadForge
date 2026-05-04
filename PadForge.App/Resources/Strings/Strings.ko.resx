@@ -458,9 +458,9 @@
   <data name="Curve_Custom" xml:space="preserve"><value>사용자 정의</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>중앙 보정</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
-  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X:</value></data>
-  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>데드존 형태:</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>데드존 형태</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>스케일 방사형</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>방사형</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>축형</value></data>
@@ -474,21 +474,21 @@
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>이름</value></data>
   <data name="Macro_Trigger" xml:space="preserve"><value>트리거</value></data>
-  <data name="Macro_Fire" xml:space="preserve"><value>실행:</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>실행</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>누를 때</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>뗄 때</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>누르고 있는 동안</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>항상</value></data>
-  <data name="Macro_Source" xml:space="preserve"><value>소스:</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>소스</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>입력 장치</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>출력 컨트롤러</value></data>
-  <data name="Macro_Threshold" xml:space="preserve"><value>임계값:</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>임계값</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>트리거 버튼 소비 (게임에서 숨기기)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>이 가상 컨트롤러가 활성 상태인 동안 계속 실행됩니다. 트리거 버튼이 필요하지 않습니다.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>동작 시퀀스</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>동작 추가</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>동작 편집</value></data>
-  <data name="Macro_ActionType" xml:space="preserve"><value>유형:</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>유형</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>버튼 누르기</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>버튼 놓기</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>키 누르기</value></data>
@@ -502,24 +502,24 @@
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>마우스 버튼 놓기</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
-  <data name="Macro_Buttons" xml:space="preserve"><value>버튼:</value></data>
-  <data name="Macro_KeyCombo" xml:space="preserve"><value>키 조합:</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>버튼</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>키 조합</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 형식의 키 조합 (편집 가능)</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>키를 선택하여 추가하십시오. 예: {Control}{Alt}{Delete}</value></data>
-  <data name="Macro_Duration" xml:space="preserve"><value>지속 시간:</value></data>
-  <data name="Macro_Axis" xml:space="preserve"><value>축:</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>지속 시간</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>축</value></data>
   <data name="Macro_LeftStickX" xml:space="preserve"><value>왼쪽 스틱 X</value></data>
   <data name="Macro_LeftStickY" xml:space="preserve"><value>왼쪽 스틱 Y</value></data>
   <data name="Macro_RightStickX" xml:space="preserve"><value>오른쪽 스틱 X</value></data>
   <data name="Macro_RightStickY" xml:space="preserve"><value>오른쪽 스틱 Y</value></data>
   <data name="Macro_LeftTrigger" xml:space="preserve"><value>왼쪽 트리거</value></data>
   <data name="Macro_RightTrigger" xml:space="preserve"><value>오른쪽 트리거</value></data>
-  <data name="Macro_AxisValue" xml:space="preserve"><value>값:</value></data>
-  <data name="Macro_AxisFrom" xml:space="preserve"><value>축 원본:</value></data>
-  <data name="Macro_SourceAxis" xml:space="preserve"><value>소스 축:</value></data>
-  <data name="Macro_Device" xml:space="preserve"><value>장치:</value></data>
-  <data name="Macro_VolumeLimit" xml:space="preserve"><value>볼륨 제한:</value></data>
-  <data name="Macro_Process" xml:space="preserve"><value>프로세스:</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>값</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>축 원본</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>소스 축</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>장치</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>볼륨 제한</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>프로세스</value></data>
   <data name="Macro_ProcessTooltip" xml:space="preserve"><value>.exe 확장자 없이 입력하는 프로세스 이름. 드롭다운에는 활성 오디오 세션이 있는 프로세스가 표시됩니다</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>왼쪽</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>오른쪽</value></data>
@@ -527,13 +527,13 @@
   <data name="Macro_MouseX1" xml:space="preserve"><value>X1 (뒤로)</value></data>
   <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (앞으로)</value></data>
   <data name="Macro_Repeat" xml:space="preserve"><value>반복</value></data>
-  <data name="Macro_RepeatMode" xml:space="preserve"><value>모드:</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>한 번</value></data>
   <data name="Macro_FixedCount" xml:space="preserve"><value>고정 횟수</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>놓을 때까지</value></data>
-  <data name="Macro_Count" xml:space="preserve"><value>횟수:</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>지연 (ms):</value></data>
-  <data name="Macro_Sensitivity" xml:space="preserve"><value>감도:</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>횟수</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>지연 (ms)</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>새 매크로</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>트리거 기록</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>설정되지 않음, 기록을 클릭하십시오</value></data>
@@ -577,18 +577,18 @@
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}개의 라이트바 모드 순환</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>아래에서 선택한 모드들로 슬롯의 라이트바 모드를 진행합니다. 발화할 때마다 다음 체크된 모드로 이동합니다. 위치는 동작별이며 앱 재시작 시 초기화됩니다.</value></data>
 
-  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>유지:</value></data>
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>유지</value></data>
   <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>반응형 (페이드)</value></data>
   <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>고정형 (유지)</value></data>
-  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>색상:</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>색상</value></data>
   <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>고정</value></data>
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>임의 색조</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>팔레트 단계</value></data>
-  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>감쇠:</value></data>
-  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>페이드:</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>감쇠</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>페이드</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>팔레트</value></data>
   <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>빈 팔레트는 슬롯의 조명 탭 팔레트를 사용합니다.</value></data>
-  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 라이트바 모드를 선택하세요. 발화할 때마다 다음 체크된 모드로 이동합니다.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -657,32 +657,32 @@
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>데드존 X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>데드존 Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>안티 데드존 X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>안티 데드존 Y:</value></data>
-  <data name="Pad_Linear" xml:space="preserve"><value>선형:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>데드존 X</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>데드존 Y</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>안티 데드존 X</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>안티 데드존 Y</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>선형</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>감도 곡선</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>더블 클릭으로 점 추가. 우클릭으로 제거. 드래그로 조정.</value></data>
-  <data name="Pad_SensitivityX" xml:space="preserve"><value>감도 X:</value></data>
-  <data name="Pad_SensitivityY" xml:space="preserve"><value>감도 Y:</value></data>
-  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>최소 범위 X (왼쪽):</value></data>
-  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>최대 범위 X (오른쪽):</value></data>
-  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>최소 범위 Y (아래):</value></data>
-  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>최대 범위 Y (위):</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>감도 X</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>감도 Y</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>최소 범위 X (왼쪽)</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>최대 범위 X (오른쪽)</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>최소 범위 Y (아래)</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>최대 범위 Y (위)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X 축</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 축</value></data>
-  <data name="Pad_Range" xml:space="preserve"><value>범위:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>안티 데드존:</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>범위</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>안티 데드존</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>감도 곡선</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>더블 클릭으로 점 추가. 우클릭으로 제거. 드래그로 조정.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>프리셋:</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>라이브:</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>프리셋</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>라이브</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>트리거 축</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>포스 피드백 / 진동</value></data>
-  <data name="Pad_OverallGain" xml:space="preserve"><value>전체 게인:</value></data>
-  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터:</value></data>
-  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>오른쪽 모터:</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>전체 게인</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>오른쪽 모터</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>왼쪽/오른쪽 모터 교체</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>진동 테스트</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>모터 활동</value></data>
@@ -984,9 +984,9 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>터치패드 아래의 다섯 개 작은 흰색 LED. 표시할 플레이어 슬롯 패턴과 밝기를 선택합니다.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>표시 LED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>플레이어 번호 행(터치패드 아래 5개 LED)과 마이크 위의 음소거 LED. 밝기 제어는 물리적으로 플레이어 행에만 영향을 줍니다. 펌웨어는 음소거 LED 상태(끔 / 켜짐 / 깜박임)를 노출하지만 별도의 음소거 밝기 레지스터는 제공하지 않습니다.</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>플레이어 패턴:</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>음소거 LED 모드:</value></data>
-  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 밝기:</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>플레이어 패턴</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>음소거 LED 모드</value></data>
+  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 밝기</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>패턴</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>플레이어 1</value></data>
@@ -1001,19 +1001,19 @@
   <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>오디오 기반 라이트바</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>위의 기본 색상을 시스템 오디오 피크로 변조합니다. 기본 출력 장치에서 재생되는 내용에 맞춰 깜박입니다. 오디오 럼블과 동일한 WASAPI 캡처를 사용하지만 전체 파형을 읽으므로(저역 컷오프 필터 없음) 들리는 모든 소리에 반응합니다.</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>시스템 오디오에 맞춰 기본 색상 깜박이기</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>감도:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>기본 색상 깜박이기</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>세 가지 색 — 즉시 전환</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>세 가지 색 — 부드러운 그라데이션</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>세 가지 색 — 경계에서 크로스페이드</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>크로스페이드 폭:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>크로스페이드 폭</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>저음량 색상</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>중음량 색상</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>고음량 색상</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>저 → 중 전환:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>중 → 고 전환:</value></data>
-  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>모드:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>저 → 중 전환</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>중 → 고 전환</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>끔 (게임이 라이트바를 제어)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>단색</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>브리딩 (단색 페이드)</value></data>
@@ -1028,7 +1028,7 @@
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>입력 반응 — 누를 때마다 랜덤 색상</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응 — 팔레트 순회</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응 — 누름마다 단일 색상</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기 (ms):</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기 (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>팔레트</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>색상 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>색상 2</value></data>
@@ -1038,8 +1038,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>색상 추가</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>팔레트 초기화</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>현재 팔레트를 기본 네 가지 색상(빨강, 초록, 파랑, 노랑)으로 교체합니다.</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>펄스 유지 (ms):</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>펄스 감쇠 (ms):</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>펄스 유지 (ms)</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>펄스 감쇠 (ms)</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 초기화</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>오른쪽 트리거 초기화</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>강도 초기화</value></data>

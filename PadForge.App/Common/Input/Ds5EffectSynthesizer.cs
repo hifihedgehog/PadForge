@@ -382,7 +382,7 @@ namespace PadForge.Common.Input
                         (byte)((pulseColor >> 8) & 0xFF),
                         (byte)(pulseColor & 0xFF));
                 case InputReactiveMode.Fixed:
-                    return (cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
+                    return (cfg.InputReactiveR, cfg.InputReactiveG, cfg.InputReactiveB);
                 default:
                     return (0, 0, 0);
             }

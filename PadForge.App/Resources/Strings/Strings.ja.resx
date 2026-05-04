@@ -458,9 +458,9 @@
   <data name="Curve_Custom" xml:space="preserve"><value>カスタム</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>中心をキャリブレーション</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>サンプリング中...</value></data>
-  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X:</value></data>
-  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>デッドゾーン形状:</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>デッドゾーン形状</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>スケール付き放射状</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>放射状</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>軸方向</value></data>
@@ -474,21 +474,21 @@
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>名前</value></data>
   <data name="Macro_Trigger" xml:space="preserve"><value>トリガー</value></data>
-  <data name="Macro_Fire" xml:space="preserve"><value>発火:</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>発火</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>押した時</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>離した時</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>押している間</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>常時</value></data>
-  <data name="Macro_Source" xml:space="preserve"><value>ソース:</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>ソース</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>入力デバイス</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>出力コントローラー</value></data>
-  <data name="Macro_Threshold" xml:space="preserve"><value>しきい値:</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>しきい値</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>トリガーボタンを消費する (ゲームから隠す)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>アクションシーケンス</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>アクションを編集</value></data>
-  <data name="Macro_ActionType" xml:space="preserve"><value>種類:</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>種類</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>ボタン押下</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>ボタン解放</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>キー押下</value></data>
@@ -502,24 +502,24 @@
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>マウスボタン解放</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
-  <data name="Macro_Buttons" xml:space="preserve"><value>ボタン:</value></data>
-  <data name="Macro_KeyCombo" xml:space="preserve"><value>キーコンボ:</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>ボタン</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>キーコンボ</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 形式のキーコンボ — 編集可能</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>キーを選択して追加します。例: {Control}{Alt}{Delete}</value></data>
-  <data name="Macro_Duration" xml:space="preserve"><value>持続時間:</value></data>
-  <data name="Macro_Axis" xml:space="preserve"><value>軸:</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>持続時間</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>軸</value></data>
   <data name="Macro_LeftStickX" xml:space="preserve"><value>左スティック X</value></data>
   <data name="Macro_LeftStickY" xml:space="preserve"><value>左スティック Y</value></data>
   <data name="Macro_RightStickX" xml:space="preserve"><value>右スティック X</value></data>
   <data name="Macro_RightStickY" xml:space="preserve"><value>右スティック Y</value></data>
   <data name="Macro_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
   <data name="Macro_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
-  <data name="Macro_AxisValue" xml:space="preserve"><value>値:</value></data>
-  <data name="Macro_AxisFrom" xml:space="preserve"><value>軸の入力元:</value></data>
-  <data name="Macro_SourceAxis" xml:space="preserve"><value>ソース軸:</value></data>
-  <data name="Macro_Device" xml:space="preserve"><value>デバイス:</value></data>
-  <data name="Macro_VolumeLimit" xml:space="preserve"><value>音量上限:</value></data>
-  <data name="Macro_Process" xml:space="preserve"><value>プロセス:</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>値</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>軸の入力元</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>ソース軸</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>デバイス</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>音量上限</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>プロセス</value></data>
   <data name="Macro_ProcessTooltip" xml:space="preserve"><value>.exe を除いたプロセス名 — ドロップダウンにはアクティブなオーディオセッションを持つプロセスが表示されます</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>左</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>右</value></data>
@@ -527,13 +527,13 @@
   <data name="Macro_MouseX1" xml:space="preserve"><value>X1 (戻る)</value></data>
   <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (進む)</value></data>
   <data name="Macro_Repeat" xml:space="preserve"><value>繰り返し</value></data>
-  <data name="Macro_RepeatMode" xml:space="preserve"><value>モード:</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>モード</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>1 回のみ</value></data>
   <data name="Macro_FixedCount" xml:space="preserve"><value>指定回数</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>離すまで</value></data>
-  <data name="Macro_Count" xml:space="preserve"><value>回数:</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延 (ms):</value></data>
-  <data name="Macro_Sensitivity" xml:space="preserve"><value>感度:</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>回数</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延 (ms)</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>新規マクロ</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>トリガーを記録</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>未設定 — 記録をクリック</value></data>
@@ -577,18 +577,18 @@
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}個のライトバーモードを循環</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>下で選択したモードでスロットのライトバーモードを進めます。発火ごとに次のチェック済みモードへ移ります。位置はアクション単位で、アプリ再起動時にリセットされます。</value></data>
 
-  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持:</value></data>
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>リアクティブ（フェード）</value></data>
   <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>
-  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>色:</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>色</value></data>
   <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>固定</value></data>
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>ランダム色相</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>パレット送り</value></data>
-  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>減衰:</value></data>
-  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>フェード:</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>減衰</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>フェード</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>パレット</value></data>
   <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>空のパレットはスロットのライティングタブのパレットを使用します。</value></data>
-  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>モード:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>モード</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>マクロが循環するライトバーモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -657,32 +657,32 @@
   <data name="Preview_DPad" xml:space="preserve"><value>十字キー</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>デッドゾーン X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>デッドゾーン Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>アンチデッドゾーン X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>アンチデッドゾーン Y:</value></data>
-  <data name="Pad_Linear" xml:space="preserve"><value>リニア:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>デッドゾーン X</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>デッドゾーン Y</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>アンチデッドゾーン X</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>アンチデッドゾーン Y</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>リニア</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>感度カーブ</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
-  <data name="Pad_SensitivityX" xml:space="preserve"><value>感度 X:</value></data>
-  <data name="Pad_SensitivityY" xml:space="preserve"><value>感度 Y:</value></data>
-  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>最小範囲 X (左):</value></data>
-  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>最大範囲 X (右):</value></data>
-  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小範囲 Y (下):</value></data>
-  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大範囲 Y (上):</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>感度 X</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>感度 Y</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>最小範囲 X (左)</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>最大範囲 X (右)</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小範囲 Y (下)</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大範囲 Y (上)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X 軸</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 軸</value></data>
-  <data name="Pad_Range" xml:space="preserve"><value>範囲:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>アンチデッドゾーン:</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>範囲</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>アンチデッドゾーン</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>感度カーブ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>プリセット:</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>ライブ:</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>プリセット</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>ライブ</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>トリガー軸</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>フォースフィードバック / 振動</value></data>
-  <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン:</value></data>
-  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左モーター:</value></data>
-  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右モーター:</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左モーター</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右モーター</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>左右モーターを入れ替える</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
@@ -984,9 +984,9 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>タッチパッドの下にある 5 つの小さな白い LED。表示するプレイヤースロットのパターンと明るさを選びます。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>インジケーターLED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>プレイヤー番号の列 (タッチパッド下の 5 つの LED) とマイク上のミュート LED。明るさのコントロールは物理的にプレイヤー列にのみ影響します。ファームウェアはミュート LED の状態 (オフ / 点灯 / パルス) を公開していますが、ミュート用の独立した明るさレジスタはありません。</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>プレイヤーパターン:</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>ミュートLEDモード:</value></data>
-  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LEDの明るさ:</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>プレイヤーパターン</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>ミュートLEDモード</value></data>
+  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LEDの明るさ</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>パターン</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>プレイヤー 1</value></data>
@@ -1001,19 +1001,19 @@
   <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>オーディオ駆動ライトバー</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>上記のベースカラーをシステムオーディオのピークで変調します。デフォルト出力デバイスから再生されている内容に合わせてパルスします。オーディオラブルと同じ WASAPI キャプチャを利用しますが、波形全体を読み取り (低音カットフィルタなし)、聞こえる音すべてに反応します。</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>ベースカラーをシステムオーディオでパルスさせる</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>感度:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>モード</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>ベースカラーをパルス</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>3 色 — ハードな切り替え</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>3 色 — 滑らかなグラデーション</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>3 色 — 境界でクロスフェード</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>クロスフェード幅:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>クロスフェード幅</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>小音量カラー</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>中音量カラー</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>大音量カラー</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>小 → 中 切替:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 大 切替:</value></data>
-  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>モード:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>小 → 中 切替</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 大 切替</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>モード</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>オフ (ゲームがライトバーを制御)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>静止カラー</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>ブリージング (単色フェード)</value></data>
@@ -1028,7 +1028,7 @@
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>インプットリアクティブ — 押すたびにランダムカラー</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ — パレットを巡回</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ — 押下ごとに単色</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms):</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>カラー 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>カラー 2</value></data>
@@ -1038,8 +1038,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>カラーを追加</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>パレットをリセット</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>現在のパレットを既定の 4 色 (赤、緑、青、黄) に置き換えます。</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>パルス保持 (ms):</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>パルス減衰 (ms):</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>パルス保持 (ms)</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>パルス減衰 (ms)</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>強度をリセット</value></data>

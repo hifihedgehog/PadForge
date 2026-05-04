@@ -12,11 +12,17 @@ public class W3W {
     [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int cx, int cy, uint flags);
     [DllImport("user32.dll")] public static extern void SwitchToThisWindow(IntPtr h, bool fAltTab);
     [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
+    [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
     [StructLayout(LayoutKind.Sequential)] public struct RECT { public int L, T, R, B; }
     public static readonly IntPtr HWND_TOPMOST = (IntPtr)(-1);
     public static readonly IntPtr HWND_NOTOPMOST = (IntPtr)(-2);
 }
 "@
+    # Make this PowerShell DPI-aware so GetWindowRect returns physical
+    # pixels (matching what CopyFromScreen captures). Without this,
+    # GetWindowRect returns DIPs and we capture only the top-left 2/3
+    # of the actual window on a 150% DPI display.
+    [W3W]::SetProcessDPIAware() | Out-Null
 
     $XmlPath = "C:\PadForge\PadForge.xml"
     $ExePath = "C:\PadForge\PadForge.exe"

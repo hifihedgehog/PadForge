@@ -422,6 +422,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsInputReactiveActive));
                     OnPropertyChanged(nameof(ShowPaletteEditor));
+                    OnPropertyChanged(nameof(IsInputReactiveFixed));
                 }
             }
         }
@@ -437,6 +438,40 @@ namespace PadForge.ViewModels
         public bool ShowPaletteEditor =>
             _lightbarMode == LightbarMode.ColorCycle
             || _inputReactiveMode == InputReactiveMode.Cycle;
+
+        /// <summary>True when the input-reactive overlay is the
+        /// Fixed variant — the color picker for the per-press flash
+        /// color shows in this case (separate from the base
+        /// LightbarRed/Green/Blue used by Static / Breathing).</summary>
+        public bool IsInputReactiveFixed =>
+            _inputReactiveMode == InputReactiveMode.Fixed;
+
+        // Per-press flash color used by InputReactiveMode.Fixed. Kept
+        // separate from LightbarRed/Green/Blue so users can layer
+        // (e.g. Static blue base + white reactive flash on press).
+        // Defaults to white so a new Fixed selection produces a
+        // visible flash without the user immediately reaching for
+        // the picker.
+        private byte _inputReactiveR = 0xFF;
+        public byte InputReactiveR
+        {
+            get => _inputReactiveR;
+            set => SetProperty(ref _inputReactiveR, value);
+        }
+
+        private byte _inputReactiveG = 0xFF;
+        public byte InputReactiveG
+        {
+            get => _inputReactiveG;
+            set => SetProperty(ref _inputReactiveG, value);
+        }
+
+        private byte _inputReactiveB = 0xFF;
+        public byte InputReactiveB
+        {
+            get => _inputReactiveB;
+            set => SetProperty(ref _inputReactiveB, value);
+        }
 
         private int _lightbarPeriodMs = 3000;
         /// <summary>Animation period in milliseconds for time-based modes:
@@ -822,6 +857,15 @@ namespace PadForge.ViewModels
             _resetInputReactiveMode ??= new RelayCommand(() => InputReactiveMode = InputReactiveMode.Off);
         private RelayCommand _resetInputReactiveMode;
 
+        public RelayCommand ResetInputReactiveColorCommand =>
+            _resetInputReactiveColor ??= new RelayCommand(() =>
+            {
+                InputReactiveR = 0xFF;
+                InputReactiveG = 0xFF;
+                InputReactiveB = 0xFF;
+            });
+        private RelayCommand _resetInputReactiveColor;
+
         public RelayCommand ResetPlayerLedBrightnessCommand =>
             _resetPlayerLedBrightness ??= new RelayCommand(() => PlayerLedBrightness = PlayerLedBrightness.High);
         private RelayCommand _resetPlayerLedBrightness;
@@ -1134,6 +1178,15 @@ namespace PadForge.ViewModels
         /// flash over a static / animated base. Defaults to Off so
         /// older saves load with no behavior change.</summary>
         [XmlAttribute] public InputReactiveMode InputReactiveMode { get; set; } = InputReactiveMode.Off;
+
+        /// <summary>Per-press flash color used by
+        /// <see cref="InputReactiveMode.Fixed"/>. Kept separate from
+        /// LightbarRed/Green/Blue so the base mode (Static / Breathing /
+        /// etc.) and the reactive flash can each pick independent
+        /// colors. Defaults to white.</summary>
+        [XmlAttribute] public byte InputReactiveR { get; set; } = 0xFF;
+        [XmlAttribute] public byte InputReactiveG { get; set; } = 0xFF;
+        [XmlAttribute] public byte InputReactiveB { get; set; } = 0xFF;
     }
 
     /// <summary>Serializable mirror of <see cref="LightbarPaletteEntry"/>.

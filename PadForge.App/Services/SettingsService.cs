@@ -566,6 +566,9 @@ namespace PadForge.Services
                     }
                     cfg.LightbarInputHoldMs = cfgData.LightbarInputHoldMs;
                     cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
+                    cfg.InputReactiveR = cfgData.InputReactiveR;
+                    cfg.InputReactiveG = cfgData.InputReactiveG;
+                    cfg.InputReactiveB = cfgData.InputReactiveB;
 
                     // v3.1.0 migration: the LightbarInputRandomize bool used
                     // to gate cycle-vs-random in the InputReactive mode; now
@@ -604,6 +607,14 @@ namespace PadForge.Services
                                 break;
                             case ViewModels.LightbarMode.InputReactiveFixed:
                                 cfg.InputReactiveMode = ViewModels.InputReactiveMode.Fixed;
+                                // Legacy InputReactiveFixed flashed
+                                // LightbarRed/G/B; preserve that color
+                                // intent on the new dedicated overlay
+                                // RGB so the per-press flash keeps its
+                                // configured color across migration.
+                                cfg.InputReactiveR = cfgData.LightbarRed;
+                                cfg.InputReactiveG = cfgData.LightbarGreen;
+                                cfg.InputReactiveB = cfgData.LightbarBlue;
                                 cfg.LightbarMode = ViewModels.LightbarMode.Off;
                                 break;
                         }
@@ -1521,6 +1532,9 @@ namespace PadForge.Services
                 LightbarInputHoldMs = cfg.LightbarInputHoldMs,
                 LightbarInputDecayMs = cfg.LightbarInputDecayMs,
                 InputReactiveMode = cfg.InputReactiveMode,
+                InputReactiveR = cfg.InputReactiveR,
+                InputReactiveG = cfg.InputReactiveG,
+                InputReactiveB = cfg.InputReactiveB,
             };
         }
 

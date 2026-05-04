@@ -124,6 +124,47 @@ namespace PadForge.Common.Input
                     RaiseError($"Error reading state for device {ud.ResolvedName}", ex);
                 }
             }
+
+            // Per-slot poke for the UserEffectsDispatcher's timer state.
+            // Sony DS5/DS4 rumble flows through the dispatcher's effect
+            // packets — SDL no longer writes for those devices — so the
+            // timer must stay alive whenever there's any rumble work to
+            // push, even when the slot's lightbar mode is static / off.
+            // Inputs:
+            //   - hasGameRumble: raw VibrationStates non-zero (game or
+            //     test rumble in flight)
+            //   - hasAudioRumbleEnabled: any per-device PadSetting on
+            //     the slot has AudioRumbleEnabled=="1" (audio peaks
+            //     should be flowing into rumble bytes)
+            // The dispatcher merges these with its lightbar-animation
+            // logic to decide whether to keep its 33 ms timer running.
+            var settingsForPoke = SettingsManager.UserSettings;
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                var raw = VibrationStates[padIndex];
+                bool hasGameRumble = raw != null && (raw.LeftMotorSpeed > 0 || raw.RightMotorSpeed > 0);
+
+                bool hasAudioRumbleEnabled = false;
+                if (settingsForPoke != null)
+                {
+                    lock (settingsForPoke.SyncRoot)
+                    {
+                        for (int i = 0; i < settingsForPoke.Items.Count; i++)
+                        {
+                            var us = settingsForPoke.Items[i];
+                            if (us == null || us.MapTo != padIndex) continue;
+                            var ps = us.GetPadSetting();
+                            if (ps != null && ps.AudioRumbleEnabled == "1")
+                            {
+                                hasAudioRumbleEnabled = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                UserEffectsDispatcher.OnPollingTick(padIndex, hasGameRumble, hasAudioRumbleEnabled);
+            }
         }
 
         /// <summary>Finds the PTP device handle for a given InstanceGuid.</summary>
@@ -156,6 +197,29 @@ namespace PadForge.Common.Input
 
             // Only SDL devices with rumble or haptic FFB support.
             if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
+                return;
+
+            // Skip Sony DualSense / DualShock 4 — UserEffectsDispatcher
+            // is the sole writer of their effect packets (rumble +
+            // lightbar + triggers + mic LED, all in one HID write).
+            // Calling SDL_RumbleJoystick here would have SDL3's
+            // PS5/PS4 driver write its own effect packet through a
+            // separate HID handle that races with the dispatcher's
+            // per-tick writes; the firmware applies whichever
+            // WriteFile lands most recently and the two writers
+            // produce a 30 Hz motor stutter when their values disagree
+            // (the v3.1.x audio-rumble + animated-lightbar regression).
+            // Step 2's per-slot poke after the device loop keeps the
+            // dispatcher's timer alive whenever there's rumble work;
+            // game rumble, audio rumble, and test rumble all flow
+            // through the dispatcher.
+            const ushort SonyVid = 0x054C;
+            if (ud.VendorId == SonyVid &&
+                (ud.ProdId == 0x0CE6   // DualSense
+              || ud.ProdId == 0x0DF2   // DualSense Edge
+              || ud.ProdId == 0x05C4   // DS4 v1
+              || ud.ProdId == 0x09CC   // DS4 v1 alt
+              || ud.ProdId == 0x0BA0)) // DS4 v2
                 return;
 
             // Find ALL pad slots this device is mapped to (multi-slot assignment).

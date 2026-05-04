@@ -98,18 +98,14 @@ namespace PadForge.Common.Input
 
             Array.Clear(dst, 0, UsbPacketSize);
             dst[OffUsbReportId]    = 0x05;
-            // Validity flags. Bit 0 = rumble update; clear it when we
-            // have no game-rumble value to write so SDL's separate
-            // SDL_RumbleJoystick path is the sole writer of bytes 4-5.
-            // See Ds5EffectSynthesizer for the full audio-rumble race
-            // explanation; the DS4 field layout is the equivalent.
-            bool hasRumble = (rumbleRight | rumbleLeft) != 0;
-            dst[OffUsbValidFlags1] = hasRumble ? ValidFlagsAll : (byte)(ValidFlagsAll & ~0x01);
-            if (hasRumble)
-            {
-                dst[OffUsbRumbleSmall] = rumbleRight;
-                dst[OffUsbRumbleBig]   = rumbleLeft;
-            }
+            // The dispatcher is now the sole writer of DS4 effect
+            // packets — see Step 2 ApplyForceFeedback skip for Sony
+            // VID. Always assert all valid flags + carry the
+            // dispatcher-computed rumble bytes (audio-mix + per-device
+            // gain). No second writer to race with.
+            dst[OffUsbValidFlags1] = ValidFlagsAll;
+            dst[OffUsbRumbleSmall] = rumbleRight;
+            dst[OffUsbRumbleBig]   = rumbleLeft;
 
             ResolveLightbarRgb(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity,
                 out byte r, out byte g, out byte b);
@@ -146,15 +142,10 @@ namespace PadForge.Common.Input
             dst[OffBtReportId]    = 0x11;
             dst[OffBtPollRate]    = 0xC0;
             dst[OffBtHeader]      = 0xA0;
-            // Bit 0 of valid flags = rumble update; clear when no game
-            // rumble so SDL owns the rumble fields uncontested.
-            bool hasRumble = (rumbleRight | rumbleLeft) != 0;
-            dst[OffBtValidFlags1] = hasRumble ? ValidFlagsAll : (byte)(ValidFlagsAll & ~0x01);
-            if (hasRumble)
-            {
-                dst[OffBtRumbleSmall] = rumbleRight;
-                dst[OffBtRumbleBig]   = rumbleLeft;
-            }
+            // Sole-writer model — see USB path above for rationale.
+            dst[OffBtValidFlags1] = ValidFlagsAll;
+            dst[OffBtRumbleSmall] = rumbleRight;
+            dst[OffBtRumbleBig]   = rumbleLeft;
 
             ResolveLightbarRgb(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity,
                 out byte r, out byte g, out byte b);

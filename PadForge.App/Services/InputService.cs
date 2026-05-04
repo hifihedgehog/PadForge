@@ -184,32 +184,22 @@ namespace PadForge.Services
 
             // Rumble bytes for the DS5/DS4 effect-packet path.
             //
-            // Returns the RAW per-slot game-rumble bytes — no audio
-            // mixing on the dispatcher side. The synthesizers gate the
-            // rumble-enable bit on these bytes being non-zero (see
-            // Ds5EffectSynthesizer + Ds4EffectSynthesizer), so a slot
-            // with no game rumble produces dispatcher packets that
-            // leave the firmware's rumble fields untouched. SDL3 then
-            // becomes the sole writer of those fields, including the
-            // audio-rumble mix it applies in ScaleRumbleForDevice.
+            // The dispatcher is the SOLE writer of DS5/DS4 effect
+            // packets — Step 2's ApplyForceFeedback no longer calls
+            // SDL_RumbleJoystick for Sony VID/PID devices, because
+            // SDL3's PS5/PS4 driver writes its own effect packet
+            // through a separate HID handle and races with the
+            // dispatcher's per-tick lightbar writes. With no SDL
+            // writer there is no race, so the dispatcher computes
+            // per-device audio-mix + gain via ScaleRumbleForDevice
+            // exactly the way the SDL path used to, and writes those
+            // bytes alongside the lightbar / triggers / mic-LED in
+            // every effect packet.
             //
-            // Why not mix audio in here too: AudioBassDetector.MotorValue
-            // updates asynchronously from the WASAPI callback, so two
-            // readers (dispatcher tick + SDL polling tick) sample it at
-            // different moments and end up with DIFFERENT values even
-            // when both apply the same scaling formula. Per
-            // Ds5RawHidWriter's docstring "the firmware applies
-            // whichever WriteFile lands most recently" — different
-            // values → motors stutter at 30 Hz → user perceives WEAK.
-            // Test rumble (constant 65535) doesn't suffer this because
-            // the input is stable, which is why test vibration feels
-            // strong even with animated lightbar concurrent.
-            //
-            // Letting SDL own audio rumble end-to-end side-steps the
-            // race entirely; PadForge's dispatcher only carries
-            // rumble bytes for the game-rumble case, where the input
-            // is the slot's raw VibrationStates and both writers
-            // sample the same value.
+            // Per-DEVICE PadSetting (not the slot's anchor): two Sony
+            // pads on one slot can have different audio-rumble
+            // sensitivity / gain / motor-balance, and each must see
+            // its own settings.
             //
             // Vibration structs use ushort (0..65535); DS5/DS4 firmware
             // takes byte (0..255), so shift down 8 bits.
@@ -219,7 +209,29 @@ namespace PadForge.Services
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
-                return ((byte)(raw.RightMotorSpeed >> 8), (byte)(raw.LeftMotorSpeed >> 8));
+
+                PadSetting devicePs = null;
+                var settings = SettingsManager.UserSettings;
+                if (settings != null && deviceGuid != Guid.Empty)
+                {
+                    lock (settings.SyncRoot)
+                    {
+                        for (int i = 0; i < settings.Items.Count; i++)
+                        {
+                            var us = settings.Items[i];
+                            if (us == null) continue;
+                            if (us.MapTo != padIndex) continue;
+                            if (us.InstanceGuid != deviceGuid) continue;
+                            devicePs = us.GetPadSetting();
+                            break;
+                        }
+                    }
+                }
+
+                _inputManager.ScaleRumbleForDevice(
+                    raw.LeftMotorSpeed, raw.RightMotorSpeed,
+                    devicePs, out ushort scaledL, out ushort scaledR);
+                return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
             };
 
             // Slot's raw rumble for change-detection inside the audio

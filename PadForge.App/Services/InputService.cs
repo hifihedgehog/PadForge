@@ -183,13 +183,32 @@ namespace PadForge.Services
             };
 
             // Per-(slot, device) rumble for the DS5/DS4 effect-packet path.
-            // Each Sony device mapped to the slot pulls its own
-            // PadSetting (audio rumble + ForceOverall + Left/Right + swap),
-            // so different physical devices on the same slot can have
-            // different effective rumble — gain at 0 on the DualSense
-            // silences only the DualSense, not the Xbox sharing the slot.
-            // Vibration structs use ushort (0..65535); DS5 firmware takes
-            // byte (0..255), so shift down 8 bits.
+            //
+            // ── CRITICAL CONTRACT: this MUST carry audio-mixed bytes
+            // when audio rumble is enabled on the device's PadSetting.
+            // ── Why: PadForge's UserEffectsDispatcher writes raw HID
+            // effect packets to DS5 at up to 30 Hz (Ds5RawHidWriter
+            // bypasses SDL3 entirely — see that file's docstring). SDL3
+            // separately writes its own effect packets when
+            // SDL_RumbleJoystick is called from ForceFeedbackState. Two
+            // writers, same DS5: per Ds5RawHidWriter's docstring,
+            // "the firmware applies whichever WriteFile lands most
+            // recently." If this provider returns 0 while audio rumble
+            // is active for the device, the dispatcher's effect packet
+            // says "rumble=0" 30 Hz — crowding SDL's audio writes off
+            // the BT channel and collapsing audio rumble strength
+            // (the v3.1.x audio-rumble regression).
+            //
+            // ScaleRumbleForDevice mixes audio when ps.AudioRumbleEnabled
+            // == "1" and applies ForceOverall × Left/Right motor
+            // strength × Swap. Per-device by design — when audio is
+            // enabled on DS5 only, DS5's bytes carry audio while the
+            // Xbox slot-mate stays silent. The user explicitly asked
+            // for per-device audio rumble; do NOT add a slot-mate
+            // fallback here.
+            //
+            // Vibration structs use ushort (0..65535); DS5 firmware
+            // takes byte (0..255), so shift down 8 bits.
             UserEffectsDispatcher.SlotRumbleForDeviceProvider = (padIndex, deviceGuid) =>
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);

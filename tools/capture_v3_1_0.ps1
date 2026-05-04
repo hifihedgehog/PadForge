@@ -34,26 +34,48 @@ public class W32 {
     [StructLayout(LayoutKind.Sequential)] public struct RECT { public int L, T, R, B; }
     public static void ClickAt(int x, int y) {
         SetCursorPos(x, y);
-        System.Threading.Thread.Sleep(50);
+        System.Threading.Thread.Sleep(80);
         mouse_event(0x02, 0, 0, 0, 0); // LBUTTONDOWN
-        System.Threading.Thread.Sleep(50);
+        System.Threading.Thread.Sleep(80);
         mouse_event(0x04, 0, 0, 0, 0); // LBUTTONUP
     }
+    public static void DropdownClick(int x, int y) {
+        // WPF ComboBox: open the dropdown by clicking the toggle arrow
+        // explicitly. Plain ClickAt on the text area focuses the combo
+        // but doesn't always pop the list. The ToggleButton inside the
+        // combo template lives at the right edge.
+        SetCursorPos(x, y);
+        System.Threading.Thread.Sleep(150);
+        mouse_event(0x02, 0, 0, 0, 0);
+        System.Threading.Thread.Sleep(120);
+        mouse_event(0x04, 0, 0, 0, 0);
+    }
+    [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr hAfter, int x, int y, int cx, int cy, uint flags);
+    [DllImport("user32.dll")] public static extern void SwitchToThisWindow(IntPtr h, bool fAltTab);
+    public static readonly IntPtr HWND_TOP = (IntPtr)0;
+    public static readonly IntPtr HWND_TOPMOST = (IntPtr)(-1);
+    public static readonly IntPtr HWND_NOTOPMOST = (IntPtr)(-2);
+    public const uint SWP_NOMOVE = 0x0002;
+    public const uint SWP_NOSIZE = 0x0001;
+    public const uint SWP_SHOWWINDOW = 0x0040;
     public static void ForceFG(IntPtr h) {
-        // AttachThreadInput trick: lets us bypass SetForegroundWindow's
-        // foreground-lock restriction. Also a no-op ALT keypress nudges
-        // Windows into accepting the change.
+        // Aggressive raise: ShowWindow maximize + SetWindowPos topmost
+        // (then back to non-topmost so we don't keep it pinned). Plus
+        // SwitchToThisWindow which is the strongest raise API. Skip the
+        // ALT-keypress that closes WPF combo dropdowns.
+        ShowWindow(h, 3); // SW_MAXIMIZE
+        SwitchToThisWindow(h, true);
+        SetWindowPos(h, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+        SetWindowPos(h, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
         IntPtr fg = GetForegroundWindow();
+        if (fg == h) return;
         uint pidTmp;
         uint fgTid = GetWindowThreadProcessId(fg, out pidTmp);
         uint targetTid = GetWindowThreadProcessId(h, out pidTmp);
         uint myTid = GetCurrentThreadId();
         AttachThreadInput(myTid, fgTid, true);
         AttachThreadInput(myTid, targetTid, true);
-        ShowWindow(h, 9); // SW_RESTORE
         BringWindowToTop(h);
-        keybd_event(0x12, 0, 0, 0);            // ALT down
-        keybd_event(0x12, 0, 0x02, 0);         // ALT up
         SetForegroundWindow(h);
         AttachThreadInput(myTid, fgTid, false);
         AttachThreadInput(myTid, targetTid, false);
@@ -136,11 +158,14 @@ function ClickEl {
 }
 
 function Cap {
-    param([string]$Name)
+    param([string]$Name, [bool]$KeepCursor = $false)
     [W32]::ForceFG($hwnd)
     # Park cursor far from any title-bar button (Win11 snap-assist
-    # appears if the cursor lingers on Maximize).
-    [W32]::SetCursorPos(200, 1000) | Out-Null
+    # appears if the cursor lingers on Maximize). Skip when capturing
+    # an open dropdown — moving the cursor away can dismiss it.
+    if (-not $KeepCursor) {
+        [W32]::SetCursorPos(200, 1000) | Out-Null
+    }
     Start-Sleep -Milliseconds 600
     $r = New-Object W32+RECT
     [W32]::GetWindowRect($hwnd, [ref]$r) | Out-Null
@@ -269,53 +294,58 @@ if (SelectFirstSlot) {
     if (Tab "Mappings") { Start-Sleep -Milliseconds 600; Cap "pad-mappings" }
     if (Tab "Sticks") {
         Start-Sleep -Milliseconds 600
+        # Scroll back to top — previous capture runs may have left the
+        # Sticks ScrollViewer scrolled down to reach the sensitivity combo.
+        $pp = $padPage.Current.BoundingRectangle
+        [W32]::SetCursorPos([int]($pp.X + 800), [int]($pp.Y + 800))
+        Start-Sleep -Milliseconds 100
+        for ($w = 0; $w -lt 12; $w++) {
+            [W32]::mouse_event(0x0800, 0, 0, 120, 0)
+            Start-Sleep -Milliseconds 40
+        }
+        Start-Sleep -Milliseconds 500
         Cap "pad-sticks"
 
-        # Deadzone Shape combo. UIA can't see the combo itself (TabControl
-        # ContentPresenter strips children). Coords anchored to PadPage,
-        # measured from a known-good capture of the Sticks tab layout.
+        # Deadzone Shape combo (Width=200 DIPs = 300 px). Center near
+        # combo body. Just click — F4 toggles (closes if click already opened).
         $pp = $padPage.Current.BoundingRectangle
-        [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
-        [W32]::ClickAt([int]($pp.X + 419), [int]($pp.Y + 755))
-        Start-Sleep -Milliseconds 900
-        Cap "pad-sticks-deadzone-dropdown"
+        $cx = [int]($pp.X + 515); $cy = [int]($pp.Y + 550)
+        [W32]::ClickAt($cx, $cy)
+        Start-Sleep -Milliseconds 1000
+        Cap "pad-sticks-deadzone-dropdown" -KeepCursor $true
         [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
         Start-Sleep -Milliseconds 400
 
-        # Sensitivity X combo (further down — past deadzone/anti-deadzone
-        # rows). Sticks tab needs to be scrolled to make this visible, so
-        # we scroll the page first via mouse wheel.
-        [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
-        [W32]::SetCursorPos([int]($pp.X + 800), [int]($pp.Y + 800))
-        Start-Sleep -Milliseconds 200
-        # Mouse wheel down (negative delta in mouse_event)
-        for ($w = 0; $w -lt 5; $w++) {
-            [W32]::mouse_event(0x0800, 0, 0, [uint32]::MaxValue - 119, 0)
-            Start-Sleep -Milliseconds 80
-        }
-        Start-Sleep -Milliseconds 600
-        [W32]::ClickAt([int]($pp.X + 419), [int]($pp.Y + 755))
-        Start-Sleep -Milliseconds 900
-        Cap "pad-sticks-sensitivity-dropdown"
+        # Sensitivity X combo (Width=120 DIPs = 180 px, narrower than Deadzone).
+        # X must be left of where Deadzone clicks (which would land on this
+        # combo's reset button). Combo center ~ PadPage.X + 455.
+        $sx = [int]($pp.X + 455); $sy = [int]($pp.Y + 900)
+        [W32]::ClickAt($sx, $sy)
+        Start-Sleep -Milliseconds 1000
+        Cap "pad-sticks-sensitivity-dropdown" -KeepCursor $true
         [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
-        Start-Sleep -Milliseconds 400
-        # Scroll back up
-        for ($w = 0; $w -lt 6; $w++) {
-            [W32]::mouse_event(0x0800, 0, 0, 120, 0)
-            Start-Sleep -Milliseconds 80
-        }
         Start-Sleep -Milliseconds 400
     }
     if (Tab "Triggers") {
         Start-Sleep -Milliseconds 600
+        # Scroll Triggers ScrollViewer to top.
+        $pp = $padPage.Current.BoundingRectangle
+        [W32]::SetCursorPos([int]($pp.X + 800), [int]($pp.Y + 800))
+        Start-Sleep -Milliseconds 100
+        for ($w = 0; $w -lt 12; $w++) {
+            [W32]::mouse_event(0x0800, 0, 0, 120, 0)
+            Start-Sleep -Milliseconds 40
+        }
+        Start-Sleep -Milliseconds 500
         Cap "pad-triggers"
 
-        # Trigger Preset combo (top of Triggers tab, similar offset to Sticks).
+        # Trigger Preset combo (Width=120 DIPs). Use sensitivity-style offset
+        # since it's also the narrower combo style.
         $pp = $padPage.Current.BoundingRectangle
-        [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
-        [W32]::ClickAt([int]($pp.X + 394), [int]($pp.Y + 460))
-        Start-Sleep -Milliseconds 900
-        Cap "pad-triggers-sensitivity-dropdown"
+        $tx = [int]($pp.X + 455); $ty = [int]($pp.Y + 550)
+        [W32]::ClickAt($tx, $ty)
+        Start-Sleep -Milliseconds 1000
+        Cap "pad-triggers-sensitivity-dropdown" -KeepCursor $true
         [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
         Start-Sleep -Milliseconds 400
     }

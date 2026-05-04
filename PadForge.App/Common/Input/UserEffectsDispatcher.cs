@@ -111,13 +111,44 @@ namespace PadForge.Common.Input
         // dispatcher carries random-colour memory across audio onsets,
         // the active input-reactive pulse, and the previous button mask
         // for rising-edge detection.
+        //
+        // Per-(slot, device) state lives in <see cref="_deviceStates"/>
+        // — each Sony device on the slot picks its own random hue or
+        // palette entry per press so two DualSenses with different
+        // palettes (or different per-device random rolls) flash
+        // independently. The pulse start timestamp and previous button
+        // mask are slot-level (one button-press event drives every
+        // device's pulse together).
         private uint _randomColor;
         private bool _audioOnsetActive;
-        private uint _pulseColor;
         private long _pulseStartMs;
         private ushort _lastButtons;
-        private int _palettePulseIndex;
         private readonly Random _rng = new Random();
+
+        private sealed class DeviceState
+        {
+            public uint PulseColor;
+            public int PalettePulseIndex;
+        }
+        private readonly Dictionary<Guid, DeviceState> _deviceStates = new();
+
+        private DeviceState GetOrCreateDeviceState(Guid deviceGuid)
+        {
+            if (!_deviceStates.TryGetValue(deviceGuid, out var state))
+            {
+                state = new DeviceState();
+                _deviceStates[deviceGuid] = state;
+            }
+            return state;
+        }
+
+        /// <summary>Static provider returning every per-device
+        /// <see cref="PlayStationSlotConfig"/> on a slot. The dispatcher's
+        /// device loop reads this to synthesize per-device output (each
+        /// device renders its own LightbarMode + colors / palette).
+        /// Wired by InputService to
+        /// <c>InputManager._perDevicePlayStationConfigs[slot]</c>.</summary>
+        public static Func<int, IReadOnlyDictionary<Guid, PlayStationSlotConfig>> SlotPerDeviceConfigsProvider { get; set; }
 
         public UserEffectsDispatcher(int padIndex, PlayStationSlotConfig config)
         {
@@ -234,21 +265,49 @@ namespace PadForge.Common.Input
             // A Sticky override has constant RGB and constant intensity
             // (1.0), so the dispatcher just needs the one snapshot fired
             // off the OnConfigChanged event. No timer required.
-            bool reactiveOverrideRunning =
-                _config != null
-                && _config.HasActiveMacroLightbarOverride
-                && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
-
-            bool wantTimer = !_disposed
-                && _config != null
-                && (IsAnimated(_config.LightbarMode) || reactiveOverrideRunning);
+            // Walk every per-device config on the slot — the timer runs
+            // when any device wants animation or has a reactive override
+            // in flight, not just the SelectedMappedDevice's. Falls back
+            // to the anchor _config when the per-device dictionary
+            // hasn't been wired yet (early startup).
+            bool wantTimer = false;
+            if (!_disposed)
+            {
+                var perDeviceCfgs = SlotPerDeviceConfigsProvider?.Invoke(_padIndex);
+                if (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
+                {
+                    foreach (var kvp in perDeviceCfgs)
+                    {
+                        var devCfg = kvp.Value;
+                        if (devCfg == null) continue;
+                        if (IsAnimated(devCfg.LightbarMode))
+                        {
+                            wantTimer = true;
+                            break;
+                        }
+                        if (devCfg.HasActiveMacroLightbarOverride
+                            && devCfg.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive)
+                        {
+                            wantTimer = true;
+                            break;
+                        }
+                    }
+                }
+                else if (_config != null)
+                {
+                    bool reactiveOverrideRunning =
+                        _config.HasActiveMacroLightbarOverride
+                        && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
+                    wantTimer = IsAnimated(_config.LightbarMode) || reactiveOverrideRunning;
+                }
+            }
 
             if (wantTimer && !_animTickActive)
             {
                 _animTickActive = true;
                 _animTimer = new System.Threading.Timer(
                     OnAnimTick, null, AnimTickMs, AnimTickMs);
-                DiagLog($"anim timer started mode={_config.LightbarMode}");
+                DiagLog($"anim timer started anchorMode={_config?.LightbarMode}");
             }
             else if (!wantTimer && _animTickActive)
             {
@@ -273,59 +332,87 @@ namespace PadForge.Common.Input
         private void OnAnimTick(object _)
         {
             if (_disposed || _config == null) return;
-            var mode = _config.LightbarMode;
-            bool overrideActive = _config.HasActiveMacroLightbarOverride;
-            bool reactiveRunning = overrideActive && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
-            bool animated = IsAnimated(mode);
 
-            // If neither an animated mode nor a running Reactive override
-            // needs us, dispatch one final snapshot (so a just-expired
+            // Aggregate state across every per-device config on the
+            // slot. The timer only stops when NO device wants it.
+            var perDeviceCfgs = SlotPerDeviceConfigsProvider?.Invoke(_padIndex);
+            bool anyAnimated = false;
+            bool anyReactiveRunning = false;
+            bool anyAudioMode = false;
+            bool anyAudioPulseRandom = false;
+            float maxSensitivity = (float)_config.AudioLightbarSensitivity;
+            if (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
+            {
+                maxSensitivity = 0f;
+                foreach (var kvp in perDeviceCfgs)
+                {
+                    var devCfg = kvp.Value;
+                    if (devCfg == null) continue;
+                    var devMode = devCfg.LightbarMode;
+                    if (IsAnimated(devMode)) anyAnimated = true;
+                    if (IsAudioMode(devMode))
+                    {
+                        anyAudioMode = true;
+                        if (devMode == LightbarMode.AudioPulseRandom) anyAudioPulseRandom = true;
+                    }
+                    var s = (float)devCfg.AudioLightbarSensitivity;
+                    if (s > maxSensitivity) maxSensitivity = s;
+                    if (devCfg.HasActiveMacroLightbarOverride
+                        && devCfg.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive)
+                        anyReactiveRunning = true;
+                }
+            }
+            else
+            {
+                // No per-device dictionary wired yet — fall back to anchor.
+                var mode = _config.LightbarMode;
+                anyAnimated = IsAnimated(mode);
+                anyAudioMode = IsAudioMode(mode);
+                anyAudioPulseRandom = mode == LightbarMode.AudioPulseRandom;
+                bool overrideActive = _config.HasActiveMacroLightbarOverride;
+                anyReactiveRunning = overrideActive && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
+            }
+
+            // If no device wants an animated mode or a running Reactive
+            // override, dispatch one final snapshot (so a just-expired
             // override hands off cleanly to the configured base/off
             // state) and stop the timer. Sticky holds don't keep the
             // timer running — RGB and intensity are constant.
-            if (!animated && !reactiveRunning)
+            if (!anyAnimated && !anyReactiveRunning)
             {
                 if (_lastTickOverrideActive)
                 {
-                    // Override just expired this tick — flush a final
-                    // packet so the lightbar transitions back cleanly.
                     DispatchSnapshot();
                 }
                 _lastTickOverrideActive = false;
                 StopAnimTimer();
                 return;
             }
-            _lastTickOverrideActive = reactiveRunning;
+            _lastTickOverrideActive = anyReactiveRunning;
 
-            // Reactive-only path (mode is idle): dispatch every tick so
-            // the intensity ramp is smooth. Skip the audio/pulse
-            // recomputation — the synthesizer pulls intensity directly
-            // from the config.
-            if (!animated && reactiveRunning)
+            // Reactive-only path (no device animated): dispatch every
+            // tick so each device's intensity ramp is smooth. Skip the
+            // audio/pulse recomputation — the synthesizer pulls each
+            // device's intensity from its own config.
+            if (!anyAnimated && anyReactiveRunning)
             {
                 DispatchSnapshot();
                 return;
             }
 
-            // Audio-driven modes also do an early-exit if the peak hasn't
-            // changed by 1/255 (≈0.004), to avoid flooding the HID pipe
-            // with no-op packets while the signal is steady. Time-based
-            // and input-reactive modes always dispatch — they animate on
-            // every tick by definition.
-            bool audioMode =
-                mode is LightbarMode.AudioPulse
-                     or LightbarMode.AudioPulseRandom
-                     or LightbarMode.AudioPulseRainbow
-                     or LightbarMode.AudioThresholds
-                     or LightbarMode.AudioGradient
-                     or LightbarMode.AudioCrossFade;
-
+            // Slot-level audio peak — used only by the steady-state
+            // early-exit below. Per-device peak scaling happens inside
+            // the device synth call. Use the slot's max sensitivity so
+            // the early-exit threshold doesn't suppress a device that's
+            // more sensitive than the selected one.
             float rawPeak = AudioPeakProvider?.Invoke() ?? 0f;
-            float scaled = Math.Clamp(rawPeak * (float)_config.AudioLightbarSensitivity, 0f, 1f);
+            float scaled = Math.Clamp(rawPeak * maxSensitivity, 0f, 1f);
 
             // Roll a new random colour on the rising edge of an audio
             // onset, so AudioPulseRandom flashes a fresh hue per pulse.
-            if (mode == LightbarMode.AudioPulseRandom)
+            // Slot-level — every AudioPulseRandom device on the slot
+            // shares the same per-onset hue.
+            if (anyAudioPulseRandom)
             {
                 if (!_audioOnsetActive && scaled >= AudioOnsetEnter)
                 {
@@ -338,14 +425,13 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Drain button rising edges into pulses for the InputReactive
-            // variants (random per press, cycle palette, or fixed slot color).
-            if (mode == LightbarMode.InputReactive
-                || mode == LightbarMode.InputReactiveCycle
-                || mode == LightbarMode.InputReactiveFixed)
-                DrainInputPulses(mode);
+            // Drain button rising edges. The slot-level button mask is
+            // shared across devices but each device rolls its own pulse
+            // colour using its own LightbarMode + palette, so two
+            // DualSenses on the slot can flash independently.
+            DrainInputPulses();
 
-            if (audioMode)
+            if (anyAudioMode)
             {
                 float delta = MathF.Abs(scaled - _lastDispatchedPeak);
                 bool zeroCrossing =
@@ -360,7 +446,11 @@ namespace PadForge.Common.Input
                 var r = SlotRawRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
                 bool rumbleChanged = r.right != _lastDispatchedRumbleR || r.left != _lastDispatchedRumbleL;
 
-                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && mode != LightbarMode.AudioPulseRainbow)
+                // Suppress the rainbow-pulse mode's special-case
+                // anti-skip only when ANY device is on AudioPulseRainbow
+                // — keeps that mode's per-tick hue rotation alive.
+                bool anyAudioPulseRainbow = AnyDeviceMode(perDeviceCfgs, LightbarMode.AudioPulseRainbow);
+                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow)
                     return;
                 _lastDispatchedPeak = scaled;
                 _lastDispatchedRumbleR = r.right;
@@ -369,6 +459,25 @@ namespace PadForge.Common.Input
 
             DispatchSnapshot(scaled);
         }
+
+        /// <summary>True when any device's config on the slot is in the
+        /// given <see cref="LightbarMode"/>. Used by tick-suppression
+        /// special-cases (e.g. AudioPulseRainbow's per-tick rotation).</summary>
+        private static bool AnyDeviceMode(IReadOnlyDictionary<Guid, PlayStationSlotConfig> cfgs, LightbarMode mode)
+        {
+            if (cfgs == null) return false;
+            foreach (var kvp in cfgs)
+                if (kvp.Value != null && kvp.Value.LightbarMode == mode) return true;
+            return false;
+        }
+
+        private static bool IsAudioMode(LightbarMode m) =>
+            m is LightbarMode.AudioPulse
+              or LightbarMode.AudioPulseRandom
+              or LightbarMode.AudioPulseRainbow
+              or LightbarMode.AudioThresholds
+              or LightbarMode.AudioGradient
+              or LightbarMode.AudioCrossFade;
 
         private void RollRandomColor()
         {
@@ -380,53 +489,71 @@ namespace PadForge.Common.Input
             _randomColor = (uint)((r << 16) | (g << 8) | b);
         }
 
-        private void DrainInputPulses(LightbarMode mode)
+        private void DrainInputPulses()
         {
-            if (_config == null) return;
+            // Slot-level button-press detection — one rising-edge event
+            // per tick fans out to every per-device pulse below.
             var provider = SlotButtonsProvider;
             ushort buttons = provider != null ? provider(_padIndex) : (ushort)0;
             ushort newlyPressed = (ushort)(buttons & ~_lastButtons);
             _lastButtons = buttons;
+            if (newlyPressed == 0) return;
 
-            if (newlyPressed != 0)
+            // Roll per-device pulse colour using each device's own
+            // mode + palette. A device in InputReactive (random hue)
+            // gets its own random roll; a device in InputReactiveCycle
+            // advances its own palette index; a device in
+            // InputReactiveFixed needs no roll (synthesizer reads the
+            // device's static LightbarRed/G/B).
+            var perDeviceCfgs = SlotPerDeviceConfigsProvider?.Invoke(_padIndex);
+            if (perDeviceCfgs != null)
             {
-                // One pulse per tick is plenty even if multiple buttons
-                // came down in the same frame — last-press-wins matches
-                // how the user perceives a chord vs a sequence.
-                if (mode == LightbarMode.InputReactive)
+                foreach (var kvp in perDeviceCfgs)
                 {
-                    int h = _rng.Next(0, 360);
-                    HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
-                    _pulseColor = (uint)((r << 16) | (g << 8) | b);
-                }
-                else // InputReactiveCycle
-                {
-                    // Timer thread can't read the live ObservableCollection
-                    // directly without racing concurrent UI-thread palette
-                    // edits — snapshot under the config's palette lock.
-                    var palette = _config.SnapshotLightbarPalette();
-                    int n = palette.Length;
-                    if (n > 0)
+                    var devCfg = kvp.Value;
+                    if (devCfg == null) continue;
+                    var devMode = devCfg.LightbarMode;
+                    if (devMode != LightbarMode.InputReactive
+                        && devMode != LightbarMode.InputReactiveCycle
+                        && devMode != LightbarMode.InputReactiveFixed)
+                        continue;
+
+                    var state = GetOrCreateDeviceState(kvp.Key);
+                    if (devMode == LightbarMode.InputReactive)
                     {
-                        _palettePulseIndex = (_palettePulseIndex + 1) % n;
-                        var entry = palette[_palettePulseIndex];
-                        _pulseColor = (uint)((entry.R << 16) | (entry.G << 8) | entry.B);
+                        int h = _rng.Next(0, 360);
+                        HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
+                        state.PulseColor = (uint)((r << 16) | (g << 8) | b);
                     }
-                    else
+                    else if (devMode == LightbarMode.InputReactiveCycle)
                     {
-                        _pulseColor = 0;
+                        var palette = devCfg.SnapshotLightbarPalette();
+                        int n = palette.Length;
+                        if (n > 0)
+                        {
+                            state.PalettePulseIndex = (state.PalettePulseIndex + 1) % n;
+                            var entry = palette[state.PalettePulseIndex];
+                            state.PulseColor = (uint)((entry.R << 16) | (entry.G << 8) | entry.B);
+                        }
+                        else
+                        {
+                            state.PulseColor = 0;
+                        }
                     }
+                    // InputReactiveFixed: synthesizer reads the device's
+                    // own LightbarRed/G/B; no per-device pulse colour to
+                    // roll here.
                 }
-                _pulseStartMs = Environment.TickCount64;
             }
+            _pulseStartMs = Environment.TickCount64;
         }
 
-        private float ComputePulseIntensity(long nowMs)
+        private float ComputePulseIntensity(long nowMs, PlayStationSlotConfig cfg)
         {
-            if (_pulseStartMs == 0 || _config == null) return 0f;
+            if (_pulseStartMs == 0 || cfg == null) return 0f;
             long elapsed = nowMs - _pulseStartMs;
-            int hold = Math.Max(_config.LightbarInputHoldMs, 0);
-            int decay = Math.Max(_config.LightbarInputDecayMs, 0);
+            int hold = Math.Max(cfg.LightbarInputHoldMs, 0);
+            int decay = Math.Max(cfg.LightbarInputDecayMs, 0);
             if (elapsed < 0) return 1f;
             if (elapsed < hold) return 1f;
             if (decay <= 0) return elapsed >= hold ? 0f : 1f;
@@ -461,14 +588,17 @@ namespace PadForge.Common.Input
             // apply, etc.), pull the current peak so the audio path
             // doesn't snap to black between ticks. The synthesizer
             // ignores the peak when the active mode doesn't read it.
-            float peakForSynth = audioPeak >= 0f
+            float rawAudioPeak = AudioPeakProvider?.Invoke() ?? 0f;
+            // Per-device peak scaling happens inside the device loop (each
+            // device has its own AudioLightbarSensitivity); this fallback
+            // uses the slot's "anchor" config sensitivity for the
+            // non-tick path's pre-loop default.
+            float peakForSynthDefault = audioPeak >= 0f
                 ? audioPeak
                 : Math.Clamp(
-                    (AudioPeakProvider?.Invoke() ?? 0f)
-                    * (float)_config.AudioLightbarSensitivity,
+                    rawAudioPeak * (float)_config.AudioLightbarSensitivity,
                     0f, 1f);
             long nowMs = Environment.TickCount64;
-            float pulseIntensity = ComputePulseIntensity(nowMs);
 
             // Test-rumble target for this slot. When set, only the matching
             // device receives the rumble bytes inside the effect packet —
@@ -479,6 +609,14 @@ namespace PadForge.Common.Input
             // to the slot. Step 2's SDL physical-rumble path already honors
             // the same filter via InputManager.TestRumbleTargetGuid.
             Guid testTarget = TestRumbleTargetGuidProvider?.Invoke(_padIndex) ?? Guid.Empty;
+
+            // Per-(slot, device) lighting configs — each Sony device on
+            // the slot synthesizes from its own LightbarMode / colors /
+            // palette / decay so two DualSenses can light up
+            // independently. Falls back to the dispatcher's anchor
+            // _config (the slot's selected device) when the per-device
+            // dictionary hasn't been wired yet.
+            var perDeviceCfgs = SlotPerDeviceConfigsProvider?.Invoke(_padIndex);
 
             var settings = SettingsManager.UserSettings;
             var devices = SettingsManager.UserDevices;
@@ -553,17 +691,42 @@ namespace PadForge.Common.Input
                     byte rR = deliverRumble ? perDevRumble.right : (byte)0;
                     byte rL = deliverRumble ? perDevRumble.left  : (byte)0;
 
+                    // Resolve this device's per-device lighting config.
+                    // Falls back to the slot's anchor config if missing
+                    // (transient case before the dictionary is wired).
+                    PlayStationSlotConfig devCfg = null;
+                    if (perDeviceCfgs != null
+                        && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolved))
+                        devCfg = resolved;
+                    devCfg ??= _config;
+                    if (devCfg == null) continue;
+
+                    // Per-device peak scaling (each device has own
+                    // AudioLightbarSensitivity).
+                    float devPeak = audioPeak >= 0f
+                        ? audioPeak
+                        : Math.Clamp(
+                            rawAudioPeak * (float)devCfg.AudioLightbarSensitivity,
+                            0f, 1f);
+
+                    // Per-device pulse colour + intensity (DrainInputPulses
+                    // rolled per-device above).
+                    var devState = _deviceStates.TryGetValue(ud.InstanceGuid, out var ds) ? ds : null;
+                    uint devPulseColor = devState?.PulseColor ?? 0;
+                    float devPulseIntensity = ComputePulseIntensity(nowMs, devCfg);
+
                     try
                     {
                         bool ok;
                         if (isDs5)
                         {
                             // DS5 path — synthesize per-device with this
-                            // device's rumble bytes, then wrap in the
-                            // standard USB (0x02) or BT (0x31) envelope.
+                            // device's config, pulse state, and rumble
+                            // bytes, then wrap in the USB (0x02) or BT
+                            // (0x31) envelope.
                             int ds5Len = Ds5EffectSynthesizer.Build(
-                                _config, ds5Buffer, peakForSynth, nowMs,
-                                _randomColor, _pulseColor, pulseIntensity,
+                                devCfg, ds5Buffer, devPeak, nowMs,
+                                _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL);
                             if (ds5Len <= 0) { errors++; continue; }
                             // When this device gets no rumble (test target
@@ -580,16 +743,17 @@ namespace PadForge.Common.Input
                         {
                             // DS4 path — full output report built inline
                             // (USB report 0x05 = 32 bytes, BT report 0x11
-                            // = 78 bytes with CRC32 trailer). The BT CRC
-                            // depends on the rumble bytes, so we rebuild
-                            // per-device.
+                            // = 78 bytes with CRC32 trailer). Synthesizes
+                            // per-device using each DS4's own config so
+                            // mode / colors / palette match the
+                            // Lighting tab for that device.
                             byte[] packet;
                             if (isBluetooth)
                             {
                                 if (ds4BtBuf == null) ds4BtBuf = new byte[Ds4EffectSynthesizer.BluetoothPacketSize];
                                 int n = Ds4EffectSynthesizer.BuildBluetooth(
-                                    _config, ds4BtBuf, peakForSynth, nowMs,
-                                    _randomColor, _pulseColor, pulseIntensity,
+                                    devCfg, ds4BtBuf, devPeak, nowMs,
+                                    _randomColor, devPulseColor, devPulseIntensity,
                                     rR, rL);
                                 if (n <= 0) { errors++; continue; }
                                 packet = ds4BtBuf;
@@ -598,8 +762,8 @@ namespace PadForge.Common.Input
                             {
                                 if (ds4UsbBuf == null) ds4UsbBuf = new byte[Ds4EffectSynthesizer.UsbPacketSize];
                                 int n = Ds4EffectSynthesizer.BuildUsb(
-                                    _config, ds4UsbBuf, peakForSynth, nowMs,
-                                    _randomColor, _pulseColor, pulseIntensity,
+                                    devCfg, ds4UsbBuf, devPeak, nowMs,
+                                    _randomColor, devPulseColor, devPulseIntensity,
                                     rR, rL);
                                 if (n <= 0) { errors++; continue; }
                                 packet = ds4UsbBuf;

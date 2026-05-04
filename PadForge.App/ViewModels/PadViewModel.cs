@@ -286,14 +286,115 @@ namespace PadForge.ViewModels
         //  ExtendedConfig.
         // ═══════════════════════════════════════════════
 
+        // Per-(slot, device) lighting tab configs. The Lighting tab is
+        // per-device (parallel to PadSetting): different physical devices
+        // mapped to the same slot can have different lightbar mode,
+        // colors, palette, audio response, etc. Macro lightbar actions
+        // fan out across every entry here so multiple DualSenses on one
+        // slot move together while each renders its own personality
+        // (palette, colors) for the new mode.
+        //
+        // <c>_playStationConfig</c> below is a reference to the
+        // SelectedMappedDevice's entry in this dictionary, swapped on
+        // device change so the Lighting tab's bindings re-resolve.
+        // ConcurrentDictionary so the polling thread (which iterates this
+        // every dispatch tick + every macro lightbar action) doesn't race
+        // with UI-thread mutations from device-map changes / settings
+        // load. Iteration on ConcurrentDictionary returns a moment-in-time
+        // snapshot rather than throwing InvalidOperationException.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, PlayStationSlotConfig> _perDevicePlayStationConfigs = new();
         private PlayStationSlotConfig _playStationConfig = new();
+        private static readonly PlayStationSlotConfig _emptyPlayStationConfigSentinel = new();
 
-        /// <summary>Per-slot PlayStation output configuration. Always
-        /// present; consumed only on PlayStation slots.</summary>
+        /// <summary>Per-(slot, device) lighting tab configs keyed by
+        /// physical device InstanceGuid. Always populated for every
+        /// mapped device; the empty Guid key holds a fallback used
+        /// before any device is mapped.</summary>
+        public IReadOnlyDictionary<Guid, PlayStationSlotConfig> PerDevicePlayStationConfigs
+            => _perDevicePlayStationConfigs;
+
+        /// <summary>The lighting tab's currently-bound config —
+        /// references the SelectedMappedDevice's entry in
+        /// <see cref="PerDevicePlayStationConfigs"/>. The setter accepts
+        /// any config (used by load paths to seed the dictionary
+        /// before SelectedMappedDevice is set). On swap, the forwarder
+        /// re-attaches its PropertyChanged subscription so listeners
+        /// of <see cref="ActivePlayStationConfigPropertyChanged"/>
+        /// keep receiving events from whichever per-device config is
+        /// currently bound.</summary>
         public PlayStationSlotConfig PlayStationConfig
         {
             get => _playStationConfig;
-            set => SetProperty(ref _playStationConfig, value ?? new());
+            set
+            {
+                var old = _playStationConfig;
+                if (SetProperty(ref _playStationConfig, value ?? new()))
+                {
+                    if (old != null) old.PropertyChanged -= OnActivePlayStationConfigPropertyChanged;
+                    if (_playStationConfig != null) _playStationConfig.PropertyChanged += OnActivePlayStationConfigPropertyChanged;
+                }
+            }
+        }
+
+        /// <summary>Forwards PropertyChanged from the currently-bound
+        /// <see cref="PlayStationConfig"/> regardless of which
+        /// per-device entry the anchor points at. Subscribers attach to
+        /// this rather than to the inner config so the subscription
+        /// follows the anchor across SelectedMappedDevice swaps.</summary>
+        public event System.ComponentModel.PropertyChangedEventHandler ActivePlayStationConfigPropertyChanged;
+
+        private void OnActivePlayStationConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            => ActivePlayStationConfigPropertyChanged?.Invoke(sender, e);
+
+        /// <summary>Returns the per-device lighting config for the given
+        /// device, creating a fresh default entry if none exists yet.
+        /// Used by macro fan-out and the polling-thread synthesizer to
+        /// resolve a specific (slot, device) config.</summary>
+        public PlayStationSlotConfig GetOrCreatePlayStationConfig(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty)
+                return _playStationConfig;
+            return _perDevicePlayStationConfigs.GetOrAdd(deviceGuid, _ => new PlayStationSlotConfig());
+        }
+
+        /// <summary>Snapshot of every per-device config on the slot. Used
+        /// by macro fan-out so a slot-level lightbar action writes to
+        /// each device's config in turn.</summary>
+        public IEnumerable<PlayStationSlotConfig> EnumeratePlayStationConfigs()
+            => _perDevicePlayStationConfigs.Values;
+
+        /// <summary>Ensures the per-device dictionary has an entry for
+        /// every currently-mapped device. Newly-mapped devices get a
+        /// fresh default config — the user customizes each device's
+        /// Lighting tab independently. Called by the input service
+        /// after MappedDevices changes.</summary>
+        public void EnsurePlayStationConfigsForMappedDevices()
+        {
+            foreach (var dev in MappedDevices)
+            {
+                if (dev.InstanceGuid == Guid.Empty) continue;
+                _perDevicePlayStationConfigs.GetOrAdd(dev.InstanceGuid, _ => new PlayStationSlotConfig());
+            }
+        }
+
+        /// <summary>Switches the Lighting tab's bound config to the
+        /// device with the given InstanceGuid, creating an entry if
+        /// missing. Called by SelectedMappedDevice change.</summary>
+        private void BindPlayStationConfigForDevice(Guid deviceGuid)
+        {
+            PlayStationSlotConfig target;
+            if (deviceGuid == Guid.Empty)
+            {
+                // No device selected — bind a sentinel so the UI doesn't
+                // mutate any device's config inadvertently.
+                target = _emptyPlayStationConfigSentinel;
+            }
+            else
+            {
+                target = GetOrCreatePlayStationConfig(deviceGuid);
+            }
+            if (!ReferenceEquals(_playStationConfig, target))
+                PlayStationConfig = target;
         }
 
         // ═══════════════════════════════════════════════
@@ -367,6 +468,11 @@ namespace PadForge.ViewModels
                     if (old != null) old.PropertyChanged -= OnSelectedDevicePropertyChanged;
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
+                    // Swap the Lighting tab's bound config to the new
+                    // device's per-device entry. UI bindings that resolve
+                    // PlayStationConfig.* re-evaluate against the new
+                    // reference.
+                    BindPlayStationConfigForDevice(value?.InstanceGuid ?? Guid.Empty);
                     SelectedDeviceChanged?.Invoke(this, value);
                 }
             }

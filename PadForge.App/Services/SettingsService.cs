@@ -435,15 +435,44 @@ namespace PadForge.Services
             foreach (var cfgData in configs)
             {
                 int idx = cfgData.SlotIndex;
-                // Apply to whichever pad index the config was saved
-                // against, regardless of current SlotCreated / OutputType.
-                // The PlayStationConfig object exists on every pad; the
-                // synth only honours it for PS-typed slots, so feeding
-                // values into a non-PS slot's config is harmless.
-                if (idx >= 0 && idx < _mainVm.Pads.Count
-                    && _mainVm.Pads[idx].PlayStationConfig != null)
+                if (idx < 0 || idx >= _mainVm.Pads.Count) continue;
+                var padVm = _mainVm.Pads[idx];
+
+                // Per-device entry — apply to that device's per-device
+                // PlayStationSlotConfig only. Slot-level entries (legacy
+                // saves with no DeviceGuid) fan out below to the slot's
+                // anchor PlayStationConfig + every per-device entry.
+                if (cfgData.DeviceGuid != Guid.Empty)
                 {
-                    var cfg = _mainVm.Pads[idx].PlayStationConfig;
+                    var devCfg = padVm.GetOrCreatePlayStationConfig(cfgData.DeviceGuid);
+                    if (devCfg != null)
+                        ApplyPlayStationConfigData(devCfg, cfgData);
+                    continue;
+                }
+
+                // Legacy slot-level entry — apply to the anchor
+                // (PlayStationConfig) so the Lighting tab shows
+                // something reasonable before any device is selected,
+                // and fan out to any per-device entries already
+                // populated (e.g. from earlier per-device entries in
+                // the same load pass).
+                if (padVm.PlayStationConfig != null)
+                    ApplyPlayStationConfigData(padVm.PlayStationConfig, cfgData);
+                foreach (var devCfg in padVm.PerDevicePlayStationConfigs.Values)
+                {
+                    if (devCfg != null && !ReferenceEquals(devCfg, padVm.PlayStationConfig))
+                        ApplyPlayStationConfigData(devCfg, cfgData);
+                }
+            }
+        }
+
+        /// <summary>Writes the saved DTO fields into a single
+        /// PlayStationSlotConfig instance. Extracted so the loader can
+        /// call it once per per-device entry, or once per slot when
+        /// fanning out a legacy slot-level entry to every device.</summary>
+        private static void ApplyPlayStationConfigData(ViewModels.PlayStationSlotConfig cfg, ViewModels.PlayStationSlotConfigData cfgData)
+        {
+            if (cfg == null) return;
                     cfg.LeftTriggerMode = cfgData.LeftTriggerMode;
                     cfg.RightTriggerMode = cfgData.RightTriggerMode;
                     cfg.LeftStartPosition = cfgData.LeftStartPosition;
@@ -517,8 +546,6 @@ namespace PadForge.Services
                     {
                         cfg.LightbarMode = ViewModels.LightbarMode.InputReactiveCycle;
                     }
-                }
-            }
         }
 
         /// <summary>
@@ -1240,65 +1267,26 @@ namespace PadForge.Services
                 });
             }
 
-            // Collect per-slot PlayStation configurations. Mirror of
-            // ExtendedConfig persistence — only persist for slots that
-            // are actually PlayStation; Xbox / Extended / KbM / MIDI
-            // slots don't read this. Defaults applied on load for any
-            // PlayStation slot the snapshot doesn't carry an entry for.
+            // Collect per-(slot, device) PlayStation configurations.
+            // Lighting tab is per-device — different physical devices
+            // mapped to the same slot can have different mode / colors
+            // / palette. One DTO per (slot, device) pair, plus a
+            // single legacy slot-level entry per slot (DeviceGuid empty)
+            // so older PadForge installs reading the new XML still get
+            // a usable default. App-exit teardown sets SlotCreated=false,
+            // so we save unconditionally rather than gate on it.
             var playStationConfigs = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                // Save every slot's PS config — see BuildPlayStationConfig-
-                // Snapshot for the rationale. App-exit teardown sets
-                // SlotCreated=false, so the previous gate dropped the
-                // user's lighting and adaptive-trigger edits on disk.
-                if (_mainVm.Pads[i].PlayStationConfig == null) continue;
-                var cfg = _mainVm.Pads[i].PlayStationConfig;
-                playStationConfigs.Add(new ViewModels.PlayStationSlotConfigData
+                var padVm = _mainVm.Pads[i];
+                if (padVm.PlayStationConfig != null)
+                    playStationConfigs.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, i, Guid.Empty));
+                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
                 {
-                    SlotIndex = i,
-                    LeftTriggerMode = cfg.LeftTriggerMode,
-                    RightTriggerMode = cfg.RightTriggerMode,
-                    LeftStartPosition = cfg.LeftStartPosition,
-                    LeftEndPosition = cfg.LeftEndPosition,
-                    LeftStrength = cfg.LeftStrength,
-                    LeftFrequency = cfg.LeftFrequency,
-                    RightStartPosition = cfg.RightStartPosition,
-                    RightEndPosition = cfg.RightEndPosition,
-                    RightStrength = cfg.RightStrength,
-                    RightFrequency = cfg.RightFrequency,
-                    LightbarRed = cfg.LightbarRed,
-                    LightbarGreen = cfg.LightbarGreen,
-                    LightbarBlue = cfg.LightbarBlue,
-                    LightbarEnabled = cfg.LightbarEnabled,
-                    MicLedMode = cfg.MicLedMode,
-                    MicLightOn = cfg.MicLightOn,
-                    PlayerLedMode = cfg.PlayerLedMode,
-                    PlayerLedBrightness = cfg.PlayerLedBrightness,
-                    AudioLightbarEnabled = cfg.AudioLightbarEnabled,
-                    AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
-                    AudioLightbarMode = cfg.AudioLightbarMode,
-                    AudioLowR = cfg.AudioLowR,
-                    AudioLowG = cfg.AudioLowG,
-                    AudioLowB = cfg.AudioLowB,
-                    AudioMidR = cfg.AudioMidR,
-                    AudioMidG = cfg.AudioMidG,
-                    AudioMidB = cfg.AudioMidB,
-                    AudioHighR = cfg.AudioHighR,
-                    AudioHighG = cfg.AudioHighG,
-                    AudioHighB = cfg.AudioHighB,
-                    AudioLowToMidPercent = cfg.AudioLowToMidPercent,
-                    AudioMidToHighPercent = cfg.AudioMidToHighPercent,
-                    AudioCrossFadePercent = cfg.AudioCrossFadePercent,
-                    LightbarMode = cfg.LightbarMode,
-                    LightbarPeriodMs = cfg.LightbarPeriodMs,
-                    LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
-                    LightbarPalette = cfg.LightbarPalette
-                        .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
-                        .ToArray(),
-                    LightbarInputHoldMs = cfg.LightbarInputHoldMs,
-                    LightbarInputDecayMs = cfg.LightbarInputDecayMs,
-                });
+                    if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
+                    if (ReferenceEquals(kvp.Value, padVm.PlayStationConfig)) continue;
+                    playStationConfigs.Add(BuildPlayStationConfigData(kvp.Value, i, kvp.Key));
+                }
             }
 
             // AppSettings always stores the DEFAULT profile's per-slot state.
@@ -1395,68 +1383,82 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Snapshots PlayStation configs for only created PlayStation slots
-        /// (for profile storage).  Mirrors <see cref="BuildExtendedConfigSnapshot"/>.
+        /// Snapshots PlayStation configs for every slot for profile
+        /// storage. One DTO per slot's anchor (DeviceGuid empty) plus
+        /// one per (slot, device) entry — mirrors the load path's
+        /// per-device handling.
         /// </summary>
         private ViewModels.PlayStationSlotConfigData[] BuildPlayStationConfigSnapshot()
         {
-            // Save every slot's PS config, not just currently-created PS
-            // slots. The previous SlotCreated + OutputType gate caused
-            // lighting and adaptive-trigger edits to evaporate when the
-            // app's final save fired after VC teardown set SlotCreated=
-            // false. MIDI follows the same all-slots pattern.
             var list = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
-                if (_mainVm.Pads[i].PlayStationConfig == null) continue;
-                var cfg = _mainVm.Pads[i].PlayStationConfig;
-                list.Add(new ViewModels.PlayStationSlotConfigData
+                var padVm = _mainVm.Pads[i];
+                if (padVm.PlayStationConfig != null)
+                    list.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, i, Guid.Empty));
+                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
                 {
-                    SlotIndex = i,
-                    LeftTriggerMode = cfg.LeftTriggerMode,
-                    RightTriggerMode = cfg.RightTriggerMode,
-                    LeftStartPosition = cfg.LeftStartPosition,
-                    LeftEndPosition = cfg.LeftEndPosition,
-                    LeftStrength = cfg.LeftStrength,
-                    LeftFrequency = cfg.LeftFrequency,
-                    RightStartPosition = cfg.RightStartPosition,
-                    RightEndPosition = cfg.RightEndPosition,
-                    RightStrength = cfg.RightStrength,
-                    RightFrequency = cfg.RightFrequency,
-                    LightbarRed = cfg.LightbarRed,
-                    LightbarGreen = cfg.LightbarGreen,
-                    LightbarBlue = cfg.LightbarBlue,
-                    LightbarEnabled = cfg.LightbarEnabled,
-                    MicLedMode = cfg.MicLedMode,
-                    MicLightOn = cfg.MicLightOn,
-                    PlayerLedMode = cfg.PlayerLedMode,
-                    PlayerLedBrightness = cfg.PlayerLedBrightness,
-                    AudioLightbarEnabled = cfg.AudioLightbarEnabled,
-                    AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
-                    AudioLightbarMode = cfg.AudioLightbarMode,
-                    AudioLowR = cfg.AudioLowR,
-                    AudioLowG = cfg.AudioLowG,
-                    AudioLowB = cfg.AudioLowB,
-                    AudioMidR = cfg.AudioMidR,
-                    AudioMidG = cfg.AudioMidG,
-                    AudioMidB = cfg.AudioMidB,
-                    AudioHighR = cfg.AudioHighR,
-                    AudioHighG = cfg.AudioHighG,
-                    AudioHighB = cfg.AudioHighB,
-                    AudioLowToMidPercent = cfg.AudioLowToMidPercent,
-                    AudioMidToHighPercent = cfg.AudioMidToHighPercent,
-                    AudioCrossFadePercent = cfg.AudioCrossFadePercent,
-                    LightbarMode = cfg.LightbarMode,
-                    LightbarPeriodMs = cfg.LightbarPeriodMs,
-                    LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
-                    LightbarPalette = cfg.LightbarPalette
-                        .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
-                        .ToArray(),
-                    LightbarInputHoldMs = cfg.LightbarInputHoldMs,
-                    LightbarInputDecayMs = cfg.LightbarInputDecayMs,
-                });
+                    if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
+                    if (ReferenceEquals(kvp.Value, padVm.PlayStationConfig)) continue;
+                    list.Add(BuildPlayStationConfigData(kvp.Value, i, kvp.Key));
+                }
             }
             return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        /// <summary>Encodes a single <see cref="ViewModels.PlayStationSlotConfig"/>
+        /// into a <see cref="ViewModels.PlayStationSlotConfigData"/> tagged with
+        /// the (slot index, device GUID) pair. Empty <paramref name="deviceGuid"/>
+        /// produces a legacy slot-level entry.</summary>
+        private static ViewModels.PlayStationSlotConfigData BuildPlayStationConfigData(
+            ViewModels.PlayStationSlotConfig cfg, int slotIndex, Guid deviceGuid)
+        {
+            return new ViewModels.PlayStationSlotConfigData
+            {
+                SlotIndex = slotIndex,
+                DeviceGuid = deviceGuid,
+                LeftTriggerMode = cfg.LeftTriggerMode,
+                RightTriggerMode = cfg.RightTriggerMode,
+                LeftStartPosition = cfg.LeftStartPosition,
+                LeftEndPosition = cfg.LeftEndPosition,
+                LeftStrength = cfg.LeftStrength,
+                LeftFrequency = cfg.LeftFrequency,
+                RightStartPosition = cfg.RightStartPosition,
+                RightEndPosition = cfg.RightEndPosition,
+                RightStrength = cfg.RightStrength,
+                RightFrequency = cfg.RightFrequency,
+                LightbarRed = cfg.LightbarRed,
+                LightbarGreen = cfg.LightbarGreen,
+                LightbarBlue = cfg.LightbarBlue,
+                LightbarEnabled = cfg.LightbarEnabled,
+                MicLedMode = cfg.MicLedMode,
+                MicLightOn = cfg.MicLightOn,
+                PlayerLedMode = cfg.PlayerLedMode,
+                PlayerLedBrightness = cfg.PlayerLedBrightness,
+                AudioLightbarEnabled = cfg.AudioLightbarEnabled,
+                AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
+                AudioLightbarMode = cfg.AudioLightbarMode,
+                AudioLowR = cfg.AudioLowR,
+                AudioLowG = cfg.AudioLowG,
+                AudioLowB = cfg.AudioLowB,
+                AudioMidR = cfg.AudioMidR,
+                AudioMidG = cfg.AudioMidG,
+                AudioMidB = cfg.AudioMidB,
+                AudioHighR = cfg.AudioHighR,
+                AudioHighG = cfg.AudioHighG,
+                AudioHighB = cfg.AudioHighB,
+                AudioLowToMidPercent = cfg.AudioLowToMidPercent,
+                AudioMidToHighPercent = cfg.AudioMidToHighPercent,
+                AudioCrossFadePercent = cfg.AudioCrossFadePercent,
+                LightbarMode = cfg.LightbarMode,
+                LightbarPeriodMs = cfg.LightbarPeriodMs,
+                LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
+                LightbarPalette = cfg.LightbarPalette
+                    .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
+                    .ToArray(),
+                LightbarInputHoldMs = cfg.LightbarInputHoldMs,
+                LightbarInputDecayMs = cfg.LightbarInputDecayMs,
+            };
         }
 
         /// <summary>

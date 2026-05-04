@@ -150,15 +150,50 @@ namespace PadForge.Common.Input
         /// <c>InputManager._perDevicePlayStationConfigs[slot]</c>.</summary>
         public static Func<int, IReadOnlyDictionary<Guid, PlayStationSlotConfig>> SlotPerDeviceConfigsProvider { get; set; }
 
+        // Per-slot instance registry. Step 2's polling thread broadcasts
+        // a per-tick rumble-status poke through OnPollingTick(padIndex, ...)
+        // so the timer state can react to game-rumble onset and audio-rumble
+        // toggle even when the slot's lightbar mode is static. Without this,
+        // an idle-lightbar slot would never spin up the dispatcher's timer
+        // and the SDL-skip path (ApplyForceFeedback) would leave Sony pads
+        // with no rumble writer at all.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, UserEffectsDispatcher> _instances = new();
+
         public UserEffectsDispatcher(int padIndex, PlayStationSlotConfig config)
         {
             _padIndex = padIndex;
             _config = config;
             if (_config != null)
                 _config.PropertyChanged += OnConfigChanged;
+            _instances[padIndex] = this;
             RollRandomColor();
             UpdateAnimTimer();
             DiagLog($"ctor padIndex={padIndex} config={(config == null ? "null" : "ok")}");
+        }
+
+        /// <summary>Polling-thread broadcast — Step 2 calls this every
+        /// tick for each slot with the current "any reason to keep the
+        /// dispatcher's effect-packet timer alive" inputs. The dispatcher
+        /// merges this with its lightbar-animation logic in
+        /// <see cref="UpdateAnimTimer"/>; transitions in either direction
+        /// kick the timer on or off so audio-rumble / game-rumble onset
+        /// without an animated lightbar still produces dispatcher writes,
+        /// and a slot that drops both stays parked.</summary>
+        public static void OnPollingTick(int padIndex, bool slotHasGameRumble, bool slotHasAudioRumbleEnabled)
+        {
+            if (_instances.TryGetValue(padIndex, out var d))
+                d.OnPollingTickInstance(slotHasGameRumble, slotHasAudioRumbleEnabled);
+        }
+
+        private bool _slotNeedsRumbleTimer;
+        private void OnPollingTickInstance(bool gameRumble, bool audioRumbleEnabled)
+        {
+            bool need = gameRumble || audioRumbleEnabled;
+            if (need != _slotNeedsRumbleTimer)
+            {
+                _slotNeedsRumbleTimer = need;
+                UpdateAnimTimer();
+            }
         }
 
         // ────────────────────────────────────────────────
@@ -217,6 +252,12 @@ namespace PadForge.Common.Input
             if (_config != null)
                 _config.PropertyChanged -= OnConfigChanged;
             _config = null;
+            // Only remove from the registry if WE are still the registered
+            // instance — a fresh dispatcher could have replaced us mid-life
+            // (rebind during VC reset) and we shouldn't yank its slot key.
+            _instances.TryGetValue(_padIndex, out var current);
+            if (ReferenceEquals(current, this))
+                _instances.TryRemove(_padIndex, out _);
         }
 
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
@@ -300,6 +341,17 @@ namespace PadForge.Common.Input
                         && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
                     wantTimer = IsAnimated(_config.LightbarMode) || reactiveOverrideRunning;
                 }
+
+                // Polling-thread rumble poke. The dispatcher is the SOLE
+                // writer of DS5/DS4 effect packets, so it must keep its
+                // timer alive across every state where rumble bytes need
+                // to flow — game-rumble in flight (raw VibrationStates
+                // non-zero) and audio-rumble enabled on any per-device
+                // PadSetting. Without this gate, an idle-lightbar slot
+                // would have no writer at all once Step 2 stopped
+                // calling SDL_RumbleJoystick for Sony pads.
+                if (_slotNeedsRumbleTimer)
+                    wantTimer = true;
             }
 
             if (wantTimer && !_animTickActive)
@@ -373,12 +425,12 @@ namespace PadForge.Common.Input
                 anyReactiveRunning = overrideActive && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
             }
 
-            // If no device wants an animated mode or a running Reactive
-            // override, dispatch one final snapshot (so a just-expired
-            // override hands off cleanly to the configured base/off
-            // state) and stop the timer. Sticky holds don't keep the
-            // timer running — RGB and intensity are constant.
-            if (!anyAnimated && !anyReactiveRunning)
+            // If no device wants an animated mode, no Reactive override,
+            // and no rumble work to push, dispatch one final snapshot
+            // (so a just-expired override hands off cleanly) and stop
+            // the timer. Sticky holds don't keep the timer running —
+            // RGB and intensity are constant.
+            if (!anyAnimated && !anyReactiveRunning && !_slotNeedsRumbleTimer)
             {
                 if (_lastTickOverrideActive)
                 {
@@ -390,11 +442,13 @@ namespace PadForge.Common.Input
             }
             _lastTickOverrideActive = anyReactiveRunning;
 
-            // Reactive-only path (no device animated): dispatch every
-            // tick so each device's intensity ramp is smooth. Skip the
-            // audio/pulse recomputation — the synthesizer pulls each
-            // device's intensity from its own config.
-            if (!anyAnimated && anyReactiveRunning)
+            // Rumble-or-Reactive-only path (no device animated lightbar):
+            // dispatch every tick so the per-device audio-mixed rumble
+            // bytes propagate through the dispatcher's effect packet.
+            // SDL no longer writes Sony rumble, so this path IS the
+            // rumble pipeline for any slot with audio rumble or game
+            // rumble in flight + a static / off lightbar.
+            if (!anyAnimated && (anyReactiveRunning || _slotNeedsRumbleTimer))
             {
                 DispatchSnapshot();
                 return;

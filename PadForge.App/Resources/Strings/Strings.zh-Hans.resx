@@ -955,9 +955,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>多位置振动</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>起始位置</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>结束位置</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>范围:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>强度:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>频率 (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>范围</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>强度</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>频率 (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>无阻力。扳机感觉正常。</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>从起始位置到完全按下持续阻力。强度决定扳机回推的力度。</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>枪械扳机手感。穿过一段柔软区域到达结束位置,然后有一记明确的咔哒。用起始/结束设置咔哒点,用强度设置咔哒力度。</value></data>
@@ -1066,5 +1066,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>重置中声频带 — 蓝</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>重置强声频带 — 红</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>重置强声频带 — 绿</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>重置强声频带 — 蓝</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>重置强声频带 — 蓝</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>输入响应</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>关闭</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>每次按下随机颜色</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>循环调色板</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>每次按下单一颜色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>重置输入响应</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>按下时闪烁颜色</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>重置输入响应颜色</value></data>
+
+
+
+
+
+
+
+
 </root>

@@ -432,6 +432,25 @@ namespace PadForge.Services
         private void ApplyPlayStationConfigs(ViewModels.PlayStationSlotConfigData[] configs)
         {
             if (configs == null) return;
+
+            // Pre-scan: which slots already carry per-device entries in
+            // the saved config. v3.1+ saves write one entry per (slot,
+            // device GUID) pair plus a slot-level "anchor" entry (with
+            // DeviceGuid = Empty) for legacy display fallback. The
+            // anchor mirrors whatever device was selected at save time,
+            // so fanning it out across every per-device config (the
+            // pre-v3.1 model) corrupts other devices' settings — most
+            // visibly, it spreads InputReactiveMode = Random from the
+            // selected DualSense to every other Sony pad on the slot
+            // even though Lighting is per-device. Only fan out when
+            // there are NO per-device entries (genuine pre-v3.1 save).
+            var slotsWithPerDeviceEntries = new System.Collections.Generic.HashSet<int>();
+            foreach (var cfgData in configs)
+            {
+                if (cfgData.DeviceGuid != Guid.Empty)
+                    slotsWithPerDeviceEntries.Add(cfgData.SlotIndex);
+            }
+
             foreach (var cfgData in configs)
             {
                 int idx = cfgData.SlotIndex;
@@ -447,9 +466,9 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[idx];
 
                 // Per-device entry — apply to that device's per-device
-                // PlayStationSlotConfig only. Slot-level entries (legacy
-                // saves with no DeviceGuid) fan out below to the slot's
-                // anchor PlayStationConfig + every per-device entry.
+                // PlayStationSlotConfig only. The Lighting tab is
+                // per-device, so two pads on one slot legitimately
+                // carry different lightbar / overlay state.
                 if (cfgData.DeviceGuid != Guid.Empty)
                 {
                     var devCfg = padVm.GetOrCreatePlayStationConfig(cfgData.DeviceGuid);
@@ -458,18 +477,21 @@ namespace PadForge.Services
                     continue;
                 }
 
-                // Legacy slot-level entry — apply to the anchor
-                // (PlayStationConfig) so the Lighting tab shows
-                // something reasonable before any device is selected,
-                // and fan out to any per-device entries already
-                // populated (e.g. from earlier per-device entries in
-                // the same load pass).
+                // Slot-level entry — always apply to the anchor so the
+                // Lighting tab shows something reasonable before any
+                // device is selected. Fan out to per-device configs
+                // ONLY when this slot has zero per-device entries (a
+                // pre-v3.1 save where lighting was slot-wide); v3.1+
+                // saves are authoritative per-device.
                 if (padVm.PlayStationConfig != null)
                     ApplyPlayStationConfigData(padVm.PlayStationConfig, cfgData);
-                foreach (var devCfg in padVm.PerDevicePlayStationConfigs.Values)
+                if (!slotsWithPerDeviceEntries.Contains(idx))
                 {
-                    if (devCfg != null && !ReferenceEquals(devCfg, padVm.PlayStationConfig))
-                        ApplyPlayStationConfigData(devCfg, cfgData);
+                    foreach (var devCfg in padVm.PerDevicePlayStationConfigs.Values)
+                    {
+                        if (devCfg != null && !ReferenceEquals(devCfg, padVm.PlayStationConfig))
+                            ApplyPlayStationConfigData(devCfg, cfgData);
+                    }
                 }
             }
         }

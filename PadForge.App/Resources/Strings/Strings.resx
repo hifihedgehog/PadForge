@@ -430,9 +430,9 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Five small white LEDs below the touchpad. Pick which player slot pattern to display and how bright it should be.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator LEDs</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Player number row (5 LEDs below the touchpad) and the mute LED above the mic. The brightness control physically only affects the player row. The firmware exposes mute LED states (Off / Solid / Pulse) but no separate mute brightness register.</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player Pattern:</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED Mode:</value></data>
-  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED Brightness:</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player Pattern</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED Mode</value></data>
+  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED Brightness</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Pattern</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Player 1</value></data>
@@ -447,19 +447,19 @@
   <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-Driven Lightbar</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Modulates the base color above by the system audio peak. Pulses with whatever is playing through the default output device. Taps into the same WASAPI capture as audio rumble but reads the full waveform (no bass-cutoff filter), so it follows everything you hear.</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Pulse base color with system audio</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>Pulse base color</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Three colors — hard transitions</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Three colors — smooth gradient</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Three colors — crossfade at boundaries</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Crossfade Width:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Crossfade Width</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Quiet Color</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Medium Color</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Loud Color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at:</value></data>
-  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium at</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud at</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off (Game Owns the Lightbar)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Static Color</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (Single Color Fades)</value></data>
@@ -483,7 +483,7 @@
   <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Base Color per Press</value></data>
   <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Reset Input Reactive</value></data>
 
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms):</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Color 2</value></data>
@@ -493,8 +493,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulse Hold (ms):</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms):</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulse Hold (ms)</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms)</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
@@ -586,9 +586,9 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibrate Center</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Sampling...</value></data>
-  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center Offset X:</value></data>
-  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center Offset Y:</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Deadzone Shape:</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center Offset X</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center Offset Y</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Deadzone Shape</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>Scaled Radial</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>Radial</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>Axial</value></data>
@@ -602,21 +602,21 @@
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Name</value></data>
   <data name="Macro_Trigger" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Macro_Fire" xml:space="preserve"><value>Fire:</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>Fire</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>On Press</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>On Release</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>While Held</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>Always</value></data>
-  <data name="Macro_Source" xml:space="preserve"><value>Source:</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>Source</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>Input Device</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>Output Controller</value></data>
-  <data name="Macro_Threshold" xml:space="preserve"><value>Threshold:</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>Threshold</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consume trigger buttons (hide from game)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Runs continuously while this virtual controller is active. No trigger button required.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Action Sequence</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Add Action</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>Edit Action</value></data>
-  <data name="Macro_ActionType" xml:space="preserve"><value>Type:</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>Type</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>Button Press</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>Button Release</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>Key Press</value></data>
@@ -630,24 +630,24 @@
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Mouse Button Release</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Toggle Touchpad Overlay</value></data>
-  <data name="Macro_Buttons" xml:space="preserve"><value>Buttons:</value></data>
-  <data name="Macro_KeyCombo" xml:space="preserve"><value>Key Combo:</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>Buttons</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>Key Combo</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Key combo in {Key1}{Key2} format — editable</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>Select a key to add it. Example: {Control}{Alt}{Delete}</value></data>
-  <data name="Macro_Duration" xml:space="preserve"><value>Duration:</value></data>
-  <data name="Macro_Axis" xml:space="preserve"><value>Axis:</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>Duration</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>Axis</value></data>
   <data name="Macro_LeftStickX" xml:space="preserve"><value>Left Stick X</value></data>
   <data name="Macro_LeftStickY" xml:space="preserve"><value>Left Stick Y</value></data>
   <data name="Macro_RightStickX" xml:space="preserve"><value>Right Stick X</value></data>
   <data name="Macro_RightStickY" xml:space="preserve"><value>Right Stick Y</value></data>
   <data name="Macro_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Macro_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
-  <data name="Macro_AxisValue" xml:space="preserve"><value>Value:</value></data>
-  <data name="Macro_AxisFrom" xml:space="preserve"><value>Axis from:</value></data>
-  <data name="Macro_SourceAxis" xml:space="preserve"><value>Source axis:</value></data>
-  <data name="Macro_Device" xml:space="preserve"><value>Device:</value></data>
-  <data name="Macro_VolumeLimit" xml:space="preserve"><value>Volume limit:</value></data>
-  <data name="Macro_Process" xml:space="preserve"><value>Process:</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>Value</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>Axis from</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>Source axis</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>Volume limit</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>Process</value></data>
   <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Process name without .exe — dropdown shows processes with active audio sessions</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>Left</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>Right</value></data>
@@ -655,13 +655,13 @@
   <data name="Macro_MouseX1" xml:space="preserve"><value>X1 (Back)</value></data>
   <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (Forward)</value></data>
   <data name="Macro_Repeat" xml:space="preserve"><value>Repeat</value></data>
-  <data name="Macro_RepeatMode" xml:space="preserve"><value>Mode:</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>Once</value></data>
   <data name="Macro_FixedCount" xml:space="preserve"><value>Fixed Count</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Until Release</value></data>
-  <data name="Macro_Count" xml:space="preserve"><value>Count:</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>Delay (ms):</value></data>
-  <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensitivity:</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>Count</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Delay (ms)</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>New Macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Record Trigger</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Not set — click Record</value></data>
@@ -705,18 +705,18 @@
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Cycle through {0} lightbar modes</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Advances the slot's lightbar mode through the modes selected below. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
 
-  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hold:</value></data>
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hold</value></data>
   <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>Reactive (fade)</value></data>
   <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Sticky (hold)</value></data>
-  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Color:</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Color</value></data>
   <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>Fixed</value></data>
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Random Hue</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Palette Step</value></data>
-  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decay:</value></data>
-  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fade:</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decay</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fade</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palette</value></data>
   <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Empty palette uses the slot's own Lighting tab palette.</value></data>
-  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pick which lightbar modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -845,34 +845,34 @@
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
 
   <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X:</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y:</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X:</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y:</value></data>
-  <data name="Pad_Linear" xml:space="preserve"><value>Linear:</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>Anti-Deadzone Y</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Sensitivity Curves</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>Double-click chart to add point. Right-click to remove. Drag to adjust.</value></data>
-  <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitivity X:</value></data>
-  <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitivity Y:</value></data>
-  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>Min Range X (Left):</value></data>
-  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>Max Range X (Right):</value></data>
-  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min Range Y (Down):</value></data>
-  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max Range Y (Up):</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitivity X</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitivity Y</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>Min Range X (Left)</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>Max Range X (Right)</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min Range Y (Down)</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max Range Y (Up)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X Axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y Axis</value></data>
-  <data name="Pad_Range" xml:space="preserve"><value>Range:</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone:</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Sensitivity Curve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Double-click to add point. Right-click to remove. Drag to adjust.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset:</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>Live:</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>Live</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger Axis</value></data>
 
   <!-- ═══ Pad — Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Rumble / Haptics</value></data>
-  <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain:</value></data>
-  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor:</value></data>
-  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Right Motor:</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Right Motor</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Swap left/right motors</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>

@@ -148,15 +148,32 @@ namespace PadForge.Common.Input
 
             ushort enableBits = 0;
 
-            // Game rumble passthrough. The dispatcher's animated-lightbar
-            // timer fires raw HID writes at 30 Hz, which on Bluetooth
-            // crowds SDL3's separate SDL_RumbleJoystick writes off the
-            // channel. Carrying the current motor state in every packet
-            // keeps rumble alive regardless of how much lightbar
-            // bandwidth we're using. Bit 0 of validFlag1 gates bytes 2-3.
-            dst[OffRumbleRight] = rumbleRight;
-            dst[OffRumbleLeft]  = rumbleLeft;
-            enableBits |= EnableRumbleEmulation;
+            // Game rumble passthrough. Bit 0 of validFlag1 gates bytes
+            // 2-3 — when bit 0 is clear, the firmware ignores the
+            // rumble bytes entirely and leaves the motor state from
+            // the most-recent write in place.
+            //
+            // We assert bit 0 ONLY when the dispatcher actually has a
+            // non-zero game-rumble value to carry. With both bytes
+            // zero (the AUDIO RUMBLE case — raw VibrationStates is 0
+            // because audio mix is applied to SDL's writes only), we
+            // leave bit 0 clear so SDL's separate SDL_RumbleJoystick
+            // writes are the SOLE writer of the rumble fields. Two
+            // writers competing on async-sampled audio peaks produce
+            // a 30 Hz stutter the small DS5 motors perceive as weak;
+            // staying out of SDL's lane lets the audio-mixed bytes it
+            // writes survive untouched.
+            //
+            // Test rumble + game rumble: raw VibrationStates is set,
+            // both writers carry the same scaled value, motors run
+            // steady. (See InputService.SlotRumbleForDeviceProvider
+            // for the input-side contract.)
+            if ((rumbleRight | rumbleLeft) != 0)
+            {
+                dst[OffRumbleRight] = rumbleRight;
+                dst[OffRumbleLeft]  = rumbleLeft;
+                enableBits |= EnableRumbleEmulation;
+            }
 
             // Lightbar / player-LED block. Reference: OpenRGB's
             // SonyDualSenseController.cpp + dualsense-tester's

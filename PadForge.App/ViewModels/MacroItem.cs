@@ -936,11 +936,14 @@ namespace PadForge.ViewModels
 
         private IReadOnlyList<LightbarModeCycleOption> _cycleModeOptions;
 
-        /// <summary>Checkbox-bindable list of all 13 LightbarMode values
-        /// for the LightbarModeCycle action's editor. Toggling any
-        /// option's IsChecked rewrites <see cref="LightbarCycleModesCsv"/>
-        /// — the CSV is the canonical storage; the option list is a
-        /// UI-side projection.</summary>
+        /// <summary>Checkbox-bindable list of every selectable
+        /// LightbarMode value for the LightbarModeCycle action's editor.
+        /// Toggling any option's IsChecked rewrites
+        /// <see cref="LightbarCycleModesCsv"/> — the CSV is the
+        /// canonical storage; the option list is a UI-side projection.
+        /// Each option's <c>Label</c> is a live getter that resolves
+        /// the localized mode name on access, so a culture change
+        /// reflows the labels without rebuilding the list.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public IReadOnlyList<LightbarModeCycleOption> CycleModeOptions
         {
@@ -953,10 +956,10 @@ namespace PadForge.ViewModels
                         LightbarMode.Rainbow, LightbarMode.ColorCycle,
                         LightbarMode.AudioPulse, LightbarMode.AudioPulseRandom, LightbarMode.AudioPulseRainbow,
                         LightbarMode.AudioThresholds, LightbarMode.AudioGradient, LightbarMode.AudioCrossFade,
-                        LightbarMode.InputReactive, LightbarMode.InputReactiveCycle,
+                        LightbarMode.InputReactive, LightbarMode.InputReactiveCycle, LightbarMode.InputReactiveFixed,
                     };
                     _cycleModeOptions = modes
-                        .Select(m => new LightbarModeCycleOption(this, LightbarModeDisplayName(m), m))
+                        .Select(m => new LightbarModeCycleOption(this, m))
                         .ToList()
                         .AsReadOnly();
                 }
@@ -1799,7 +1802,7 @@ namespace PadForge.ViewModels
             return list.ToArray();
         }
 
-        private static string LightbarModeDisplayName(LightbarMode mode)
+        internal static string LightbarModeDisplayName(LightbarMode mode)
         {
             var s = Strings.Instance;
             return mode switch
@@ -1817,6 +1820,7 @@ namespace PadForge.ViewModels
                 LightbarMode.AudioCrossFade     => s.Pad_Lighting_Mode_AudioCrossFade,
                 LightbarMode.InputReactive      => s.Pad_Lighting_Mode_InputReactive,
                 LightbarMode.InputReactiveCycle => s.Pad_Lighting_Mode_InputReactiveCycle,
+                LightbarMode.InputReactiveFixed => s.Pad_Lighting_Mode_InputReactiveFixed,
                 _ => mode.ToString()
             };
         }
@@ -2228,15 +2232,27 @@ namespace PadForge.ViewModels
     public class LightbarModeCycleOption : ObservableObject
     {
         private readonly MacroAction _parent;
-        public string Label { get; }
         public LightbarMode Mode { get; }
 
-        public LightbarModeCycleOption(MacroAction parent, string label, LightbarMode mode)
+        /// <summary>Live-resolved localized mode name. Reads
+        /// <see cref="Strings.Instance"/> on each access so the cached
+        /// option list reflows after a culture change without being
+        /// rebuilt — paired with the CultureChanged subscription that
+        /// raises PropertyChanged below.</summary>
+        public string Label => MacroAction.LightbarModeDisplayName(Mode);
+
+        public LightbarModeCycleOption(MacroAction parent, LightbarMode mode)
         {
             _parent = parent;
-            Label = label;
             Mode = mode;
+            // Refresh the label when the user switches UI culture.
+            // Strings.CultureChanged uses weak-handler tracking
+            // (instance methods are held via WeakReference), so the
+            // option doesn't need to unsubscribe explicitly.
+            Strings.CultureChanged += OnCultureChanged;
         }
+
+        private void OnCultureChanged() => OnPropertyChanged(nameof(Label));
 
         public bool IsChecked
         {

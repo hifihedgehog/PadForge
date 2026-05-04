@@ -67,17 +67,21 @@
       OpenXInput-derived xinput1_4.dll replaces the system one via DLL search order
       (application directory before System32 for non-KnownDLLs).  When SDL3 calls
       LoadLibrary("xinput1_4.dll"), this local copy resolves first and SDL's XInput
-      backend uses it instead of Microsoft's.  devobj.dll is OpenXInput's internal
-      helper it imports from; must be shipped alongside.  Forked from
-      Nemirtingas/OpenXInput with a HIDMaestro classifier added to the enumeration
-      step so HM virtuals are skipped during slot assignment.
+      backend uses it instead of Microsoft's.  Forked from Nemirtingas/OpenXInput
+      with a HIDMaestro classifier added to the enumeration step so HM virtuals
+      are skipped during slot assignment.
+
+      Do NOT also bundle devobj.dll here.  OpenXInput's source tree contains a
+      stub devobj.dll (every export returns 0xCDCDCDCD) to satisfy xinput1_4's
+      static-link import at compile time.  If we ship that stub alongside,
+      SetDllDirectory pre-empts C:\Windows\System32\devobj.dll for the whole
+      process — including system setupapi.dll's own DevObj* imports — and
+      setupapi crashes during HID class enumeration on systems where the
+      hijack succeeds.  See PadForge #69 and memory/openxinput-devobj-stub-hijack-bug.md.
+      xinput1_4.dll's devobj.dll import resolves from System32 unaided.
     -->
     <Content Include="Resources\OpenXInput\x64\xinput1_4.dll" Link="xinput1_4.dll"
              Condition="Exists('Resources\OpenXInput\x64\xinput1_4.dll')">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\OpenXInput\x64\devobj.dll" Link="devobj.dll"
-             Condition="Exists('Resources\OpenXInput\x64\devobj.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />

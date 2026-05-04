@@ -2597,13 +2597,14 @@
                                     <Button Command="{Binding PlayStationConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCrossFadePercent, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Single colour: Static / Breathing / AudioPulse. Wrapped in a
-                                     bordered card to match the palette items and audio
-                                     band cards. -->
+                                <!-- Single colour: Static / Breathing / AudioPulse / InputReactiveFixed.
+                                     Wrapped in a bordered card to match the palette items and audio
+                                     band cards. InputReactiveFixed reads the same RGB and flashes
+                                     it per button press through the dispatcher. -->
                                 <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
                                         HorizontalAlignment="Left"
                                         BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                                        Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse}">
+                                        Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse|InputReactiveFixed}">
                                     <StackPanel>
                                         <views:ColorPickerControl Margin="0,0,0,12"
                                             HorizontalAlignment="Left"

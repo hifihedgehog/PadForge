@@ -1014,6 +1014,10 @@
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>重置强度</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>重置频率</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>重置灯条模式</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>重置LED亮度</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>重置玩家图案</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>重置静音LED模式</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>重置周期</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>重置脉冲衰减</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>重置灵敏度</value></data>

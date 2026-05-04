@@ -702,6 +702,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
                     OnPropertyChanged(nameof(IsLightbarStickyHold));
                     OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                 }
             }
         }
@@ -717,8 +718,9 @@ namespace PadForge.ViewModels
         /// <summary>True when Type uses the generic <c>DurationMs</c>
         /// field for its hold time — ButtonPress / KeyPress / Delay /
         /// MouseButtonPress. LightbarColor uses its own
-        /// <c>LightbarDecayMs</c> instead so the decay slider can be
-        /// scaled and labeled separately from the generic ms field.</summary>
+        /// <c>LightbarHoldMs</c>/<c>LightbarFadeMs</c> pair instead so
+        /// the hold and fade sliders can be scaled and labeled
+        /// separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
 
@@ -1404,6 +1406,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
                     OnPropertyChanged(nameof(IsLightbarStickyHold));
                     OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                     OnPropertyChanged(nameof(DisplayText));
                 }
             }
@@ -1422,25 +1425,163 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _lightbarColorSource, value))
                 {
                     OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                     OnPropertyChanged(nameof(DisplayText));
                 }
             }
         }
 
-        private int _lightbarDecayMs = 600;
-        /// <summary>Decay window for Reactive holds (ms). Same default
-        /// as the existing <c>LightbarInputDecayMs</c> on the Lighting
-        /// tab. Clamped 50..5000.</summary>
-        public int LightbarDecayMs
+        private int _lightbarHoldMs = 0;
+        /// <summary>Hold window for Reactive holds (ms). The override
+        /// stays at full intensity for this many ms before the fade
+        /// begins. 0 means start fading immediately. Clamped 0..5000.</summary>
+        public int LightbarHoldMs
         {
-            get => _lightbarDecayMs;
+            get => _lightbarHoldMs;
             set
             {
-                int clamped = Math.Clamp(value, 50, 5000);
-                if (SetProperty(ref _lightbarDecayMs, clamped))
+                int clamped = Math.Clamp(value, 0, 5000);
+                if (SetProperty(ref _lightbarHoldMs, clamped))
                     OnPropertyChanged(nameof(DisplayText));
             }
         }
+
+        private int _lightbarFadeMs = 600;
+        /// <summary>Fade window for Reactive holds (ms). After the hold
+        /// period elapses, the override linearly fades to 0 over this
+        /// duration. 0 means cut directly to off after the hold.
+        /// Clamped 0..5000.</summary>
+        public int LightbarFadeMs
+        {
+            get => _lightbarFadeMs;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 5000);
+                if (SetProperty(ref _lightbarFadeMs, clamped))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private string _lightbarPaletteCsv = string.Empty;
+        /// <summary>CSV of "R,G,B" hex triplets defining the per-macro
+        /// palette for <see cref="MacroLightbarColorSource.PaletteStep"/>.
+        /// Empty falls back to the slot's own
+        /// <c>LightbarPalette</c>.</summary>
+        public string LightbarPaletteCsv
+        {
+            get => _lightbarPaletteCsv;
+            set
+            {
+                if (SetProperty(ref _lightbarPaletteCsv, value ?? string.Empty))
+                {
+                    OnPropertyChanged(nameof(LightbarPalette));
+                    OnPropertyChanged(nameof(IsLightbarPaletteVisible));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        /// <summary>Parsed view of <see cref="LightbarPaletteCsv"/> as a
+        /// list of LightbarPaletteEntry rows. The macro editor binds an
+        /// ItemsControl to this and writes back via the helper commands.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry> LightbarPalette
+        {
+            get
+            {
+                if (_lightbarPaletteCache != null) return _lightbarPaletteCache;
+                _lightbarPaletteCache = new System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry>();
+                foreach (var (r, g, b) in ParsePaletteCsv(_lightbarPaletteCsv))
+                {
+                    var entry = new LightbarPaletteEntry { R = r, G = g, B = b };
+                    entry.PropertyChanged += OnPaletteEntryPropertyChanged;
+                    _lightbarPaletteCache.Add(entry);
+                }
+                _lightbarPaletteCache.CollectionChanged += (_, e) =>
+                {
+                    if (e.NewItems != null)
+                        foreach (LightbarPaletteEntry n in e.NewItems)
+                            n.PropertyChanged += OnPaletteEntryPropertyChanged;
+                    if (e.OldItems != null)
+                        foreach (LightbarPaletteEntry o in e.OldItems)
+                            o.PropertyChanged -= OnPaletteEntryPropertyChanged;
+                    SyncPaletteCsvFromCollection();
+                };
+                return _lightbarPaletteCache;
+            }
+        }
+        private System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry>? _lightbarPaletteCache;
+
+        private void OnPaletteEntryPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // Re-emit only on R/G/B; ignore other ObservableObject churn.
+            if (e.PropertyName is nameof(LightbarPaletteEntry.R)
+                                or nameof(LightbarPaletteEntry.G)
+                                or nameof(LightbarPaletteEntry.B))
+            {
+                SyncPaletteCsvFromCollection();
+            }
+        }
+
+        /// <summary>True when the palette editor should be visible —
+        /// LightbarColor + Reactive + ColorSource = PaletteStep.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarPaletteVisible
+            => _type == MacroActionType.LightbarColor
+               && _lightbarHoldMode == MacroLightbarHoldMode.Reactive
+               && _lightbarColorSource == MacroLightbarColorSource.PaletteStep;
+
+        private static System.Collections.Generic.IEnumerable<(byte r, byte g, byte b)> ParsePaletteCsv(string csv)
+        {
+            if (string.IsNullOrWhiteSpace(csv)) yield break;
+            // Format: "RRGGBB,RRGGBB,..." (hex, 6 chars each).
+            foreach (var raw in csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                if (raw.Length != 6) continue;
+                if (byte.TryParse(raw.AsSpan(0, 2), System.Globalization.NumberStyles.HexNumber, null, out var r)
+                 && byte.TryParse(raw.AsSpan(2, 2), System.Globalization.NumberStyles.HexNumber, null, out var g)
+                 && byte.TryParse(raw.AsSpan(4, 2), System.Globalization.NumberStyles.HexNumber, null, out var b))
+                {
+                    yield return (r, g, b);
+                }
+            }
+        }
+
+        private void SyncPaletteCsvFromCollection()
+        {
+            if (_lightbarPaletteCache == null) return;
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < _lightbarPaletteCache.Count; i++)
+            {
+                if (i > 0) sb.Append(',');
+                var e = _lightbarPaletteCache[i];
+                sb.Append($"{e.R:X2}{e.G:X2}{e.B:X2}");
+            }
+            // Skip the round-trip through the property setter so we
+            // don't rebuild the cache we just authored.
+            string newCsv = sb.ToString();
+            if (_lightbarPaletteCsv != newCsv)
+            {
+                _lightbarPaletteCsv = newCsv;
+                OnPropertyChanged(nameof(LightbarPaletteCsv));
+                OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        public RelayCommand AddLightbarPaletteColorCommand
+            => _addLightbarPaletteColorCommand ??= new RelayCommand(() =>
+            {
+                LightbarPalette.Add(new LightbarPaletteEntry { R = 0xFF, G = 0xFF, B = 0xFF });
+            });
+        private RelayCommand? _addLightbarPaletteColorCommand;
+
+        public RelayCommand<LightbarPaletteEntry> RemoveLightbarPaletteColorCommand
+            => _removeLightbarPaletteColorCommand ??= new RelayCommand<LightbarPaletteEntry>(entry =>
+            {
+                if (entry == null) return;
+                LightbarPalette.Remove(entry);
+            });
+        private RelayCommand<LightbarPaletteEntry>? _removeLightbarPaletteColorCommand;
 
         private LightbarMode _lightbarTargetMode = LightbarMode.Static;
         /// <summary>Target <c>LightbarMode</c> for
@@ -1628,7 +1769,7 @@ namespace PadForge.ViewModels
                 colorPart = $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}";
             return _lightbarHoldMode == MacroLightbarHoldMode.Sticky
                 ? string.Format(Strings.Instance.MacroAction_LightbarColor_Sticky_Format, colorPart)
-                : string.Format(Strings.Instance.MacroAction_LightbarColor_Reactive_Format, colorPart, _lightbarDecayMs);
+                : string.Format(Strings.Instance.MacroAction_LightbarColor_Reactive_Format, colorPart, _lightbarHoldMs + _lightbarFadeMs);
         }
 
         /// <summary>Counts the modes selected in

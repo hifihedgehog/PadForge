@@ -585,6 +585,9 @@
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>임의 색조</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>팔레트 단계</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>감쇠:</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>페이드:</value></data>
+  <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>팔레트</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>빈 팔레트는 슬롯의 조명 탭 팔레트를 사용합니다.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드:</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 라이트바 모드를 선택하세요. 발화할 때마다 다음 체크된 모드로 이동합니다.</value></data>
 
@@ -1024,6 +1027,7 @@
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 경계에서 크로스페이드</value></data>
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>입력 반응 — 누를 때마다 랜덤 색상</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응 — 팔레트 순회</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응 — 누름마다 단일 색상</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기 (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>팔레트</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>색상 1</value></data>
@@ -1034,6 +1038,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>색상 추가</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>팔레트 초기화</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>현재 팔레트를 기본 네 가지 색상(빨강, 초록, 파랑, 노랑)으로 교체합니다.</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>펄스 유지 (ms):</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>펄스 감쇠 (ms):</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 초기화</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>오른쪽 트리거 초기화</value></data>
@@ -1044,6 +1049,7 @@
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>플레이어 패턴 초기화</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>음소거 LED 모드 초기화</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>주기 초기화</value></data>
+  <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>펄스 유지 초기화</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>펄스 감쇠 초기화</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>감도 초기화</value></data>
   <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>저→중 전환 초기화</value></data>

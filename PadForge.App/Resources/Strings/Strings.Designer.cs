@@ -490,6 +490,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_Mode_AudioCrossFade => Get("Pad_Lighting_Mode_AudioCrossFade");
     public string Pad_Lighting_Mode_InputReactive => Get("Pad_Lighting_Mode_InputReactive");
     public string Pad_Lighting_Mode_InputReactiveCycle => Get("Pad_Lighting_Mode_InputReactiveCycle");
+    public string Pad_Lighting_Mode_InputReactiveFixed => Get("Pad_Lighting_Mode_InputReactiveFixed");
     public string Pad_Lighting_Period => Get("Pad_Lighting_Period");
     public string Pad_Lighting_PaletteHeader => Get("Pad_Lighting_PaletteHeader");
     public string Pad_Lighting_PaletteColor1 => Get("Pad_Lighting_PaletteColor1");
@@ -500,6 +501,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_AddColor => Get("Pad_Lighting_AddColor");
     public string Pad_Lighting_ResetPalette => Get("Pad_Lighting_ResetPalette");
     public string Pad_Lighting_ResetPaletteTooltip => Get("Pad_Lighting_ResetPaletteTooltip");
+    public string Pad_Lighting_InputHold => Get("Pad_Lighting_InputHold");
     public string Pad_Lighting_InputDecay => Get("Pad_Lighting_InputDecay");
     public string Pad_Preset => Get("Pad_Preset");
     public string Pad_Custom => Get("Pad_Custom");
@@ -783,6 +785,9 @@ public class Strings : INotifyPropertyChanged
     public string Macro_LightbarColorSource_RandomHue => Get("Macro_LightbarColorSource_RandomHue");
     public string Macro_LightbarColorSource_PaletteStep => Get("Macro_LightbarColorSource_PaletteStep");
     public string Macro_LightbarDecay_Label => Get("Macro_LightbarDecay_Label");
+    public string Macro_LightbarFade_Label => Get("Macro_LightbarFade_Label");
+    public string Macro_LightbarPalette_Label => Get("Macro_LightbarPalette_Label");
+    public string Macro_LightbarPalette_Empty => Get("Macro_LightbarPalette_Empty");
     public string Macro_LightbarTargetMode_Label => Get("Macro_LightbarTargetMode_Label");
     public string Macro_LightbarCycleModes_Hint => Get("Macro_LightbarCycleModes_Hint");
     public string TouchpadOverlay_DragTooltip => Get("TouchpadOverlay_DragTooltip");
@@ -1051,6 +1056,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetPlayerPattern => Get("Pad_ResetPlayerPattern");
     public string Pad_ResetMuteLedMode => Get("Pad_ResetMuteLedMode");
     public string Pad_ResetLightbarPeriod => Get("Pad_ResetLightbarPeriod");
+    public string Pad_ResetLightbarInputHold => Get("Pad_ResetLightbarInputHold");
     public string Pad_ResetLightbarInputDecay => Get("Pad_ResetLightbarInputDecay");
     public string Pad_ResetAudioLightbarSensitivity => Get("Pad_ResetAudioLightbarSensitivity");
     public string Pad_ResetAudioLowToMidPercent => Get("Pad_ResetAudioLowToMidPercent");

@@ -505,6 +505,7 @@ namespace PadForge.Services
                         cfg.ReplaceLightbarPalette(cfgData.LightbarPalette
                             .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
                     }
+                    cfg.LightbarInputHoldMs = cfgData.LightbarInputHoldMs;
                     cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
 
                     // v3.1.0 migration: the LightbarInputRandomize bool used
@@ -805,7 +806,9 @@ namespace PadForge.Services
                             LightbarB = ad.LightbarB,
                             LightbarHoldMode = ad.LightbarHoldMode,
                             LightbarColorSource = ad.LightbarColorSource,
-                            LightbarDecayMs = ad.LightbarDecayMs > 0 ? ad.LightbarDecayMs : 600,
+                            LightbarHoldMs = Math.Clamp(ad.LightbarHoldMs, 0, 5000),
+                            LightbarFadeMs = Math.Clamp(ad.LightbarFadeMs, 0, 5000),
+                            LightbarPaletteCsv = ad.LightbarPaletteCsv ?? string.Empty,
                             LightbarTargetMode = ad.LightbarTargetMode,
                             LightbarCycleModesCsv = ad.LightbarCycleModesCsv
                         });
@@ -1293,6 +1296,7 @@ namespace PadForge.Services
                     LightbarPalette = cfg.LightbarPalette
                         .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                         .ToArray(),
+                    LightbarInputHoldMs = cfg.LightbarInputHoldMs,
                     LightbarInputDecayMs = cfg.LightbarInputDecayMs,
                 });
             }
@@ -1448,6 +1452,7 @@ namespace PadForge.Services
                     LightbarPalette = cfg.LightbarPalette
                         .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                         .ToArray(),
+                    LightbarInputHoldMs = cfg.LightbarInputHoldMs,
                     LightbarInputDecayMs = cfg.LightbarInputDecayMs,
                 });
             }
@@ -1557,7 +1562,9 @@ namespace PadForge.Services
                             LightbarB = a.LightbarB,
                             LightbarHoldMode = a.LightbarHoldMode,
                             LightbarColorSource = a.LightbarColorSource,
-                            LightbarDecayMs = a.LightbarDecayMs,
+                            LightbarHoldMs = a.LightbarHoldMs,
+                            LightbarFadeMs = a.LightbarFadeMs,
+                            LightbarPaletteCsv = a.LightbarPaletteCsv,
                             LightbarTargetMode = a.LightbarTargetMode,
                             LightbarCycleModesCsv = a.LightbarCycleModesCsv
                         }).ToArray()
@@ -2515,12 +2522,20 @@ namespace PadForge.Services
         /// <summary>Color source for Reactive holds (Fixed / RandomHue /
         /// PaletteStep). Sticky always uses Fixed.</summary>
         [XmlElement] public ViewModels.MacroLightbarColorSource LightbarColorSource { get; set; } = ViewModels.MacroLightbarColorSource.Fixed;
-        /// <summary>Decay window for Reactive holds, ms.</summary>
-        [XmlElement] public int LightbarDecayMs { get; set; } = 600;
+        /// <summary>Hold window for Reactive holds, ms (full intensity
+        /// for this duration before fade begins).</summary>
+        [XmlElement] public int LightbarHoldMs { get; set; } = 0;
+        /// <summary>Fade window for Reactive holds, ms (linear fade
+        /// from full to off after the hold elapses).</summary>
+        [XmlElement] public int LightbarFadeMs { get; set; } = 600;
+        /// <summary>CSV of "RRGGBB" hex triplets for the per-macro
+        /// palette used by PaletteStep. Empty falls back to the slot's
+        /// own LightbarPalette.</summary>
+        [XmlElement] public string LightbarPaletteCsv { get; set; } = string.Empty;
         /// <summary>Target mode for LightbarModeSet.</summary>
         [XmlElement] public ViewModels.LightbarMode LightbarTargetMode { get; set; } = ViewModels.LightbarMode.Static;
         /// <summary>CSV of LightbarMode int values for LightbarModeCycle.</summary>
-        [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12";
+        [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12,13";
     }
 
     /// <summary>

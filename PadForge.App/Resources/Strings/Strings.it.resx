@@ -585,6 +585,9 @@
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Tonalità casuale</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Passo di tavolozza</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decadimento:</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Dissolvenza:</value></data>
+  <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Tavolozza</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Una tavolozza vuota usa la tavolozza della scheda Illuminazione dello slot.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modalità:</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Scegli quali modalità della barra luminosa la macro deve ciclare. Ogni attivazione passa alla successiva selezionata.</value></data>
 
@@ -1042,6 +1045,7 @@
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bande audio — tre colori, crossfade ai confini</value></data>
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Reattivo all'input — colore casuale per pressione</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reattivo all'input — ciclo della tavolozza</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Reattivo all'input — colore singolo per pressione</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periodo (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Tavolozza</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Colore 1</value></data>
@@ -1052,6 +1056,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Aggiungi colore</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Ripristina tavolozza</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Sostituisce la tavolozza attuale con i quattro colori predefiniti (rosso, verde, blu, giallo).</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Mantieni impulso (ms):</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decadimento impulso (ms):</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Ripristina grilletto sinistro</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Ripristina grilletto destro</value></data>
@@ -1062,6 +1067,7 @@
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Ripristina pattern giocatore</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Ripristina modalità LED muto</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Ripristina periodo</value></data>
+  <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>Ripristina mantieni impulso</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Ripristina decadimento impulso</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Ripristina sensibilità</value></data>
   <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>Ripristina soglia basso→medio</value></data>

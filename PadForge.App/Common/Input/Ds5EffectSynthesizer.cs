@@ -413,6 +413,15 @@ namespace PadForge.Common.Input
                         (byte)Math.Round(pb * i));
                 }
 
+                case LightbarMode.InputReactiveFixed:
+                {
+                    float i = Math.Clamp(pulseIntensity, 0f, 1f);
+                    return (
+                        (byte)Math.Round(cfg.LightbarRed * i),
+                        (byte)Math.Round(cfg.LightbarGreen * i),
+                        (byte)Math.Round(cfg.LightbarBlue * i));
+                }
+
                 default:
                     return (0, 0, 0);
             }

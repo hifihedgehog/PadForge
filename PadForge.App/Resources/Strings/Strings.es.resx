@@ -955,9 +955,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Vibración multiposición</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Posición inicial</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Posición final</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>Rango:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>Intensidad:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frecuencia (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Rango</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Intensidad</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frecuencia (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Sin resistencia. El gatillo se siente normal.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Resistencia constante desde la posición inicial hasta presionar a fondo. Intensidad ajusta la fuerza con que el gatillo se opone.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Sensación de gatillo de arma. Tira por una zona suave hasta la posición final y luego notarás un clic firme. Usa inicio/fin para fijar el punto de clic y la intensidad para la fuerza del clic.</value></data>
@@ -1066,5 +1066,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Restablecer banda media — azul</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Restablecer banda alta — rojo</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Restablecer banda alta — verde</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Restablecer banda alta — azul</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Restablecer banda alta — azul</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reactivo a entrada</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Desactivado</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Color aleatorio por pulsación</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Recorrer la paleta</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Color único por pulsación</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Restablecer reactivo a entrada</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Color del destello por pulsación</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Restablecer color reactivo a entrada</value></data>
+
+
+
+
+
+
+
+
 </root>

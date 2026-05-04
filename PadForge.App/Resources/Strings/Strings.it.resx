@@ -973,9 +973,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Vibrazione multiposizione</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Posizione iniziale</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Posizione finale</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>Range:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>Forza:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequenza (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Range</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Forza</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequenza (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Nessuna resistenza. Il grilletto si comporta normalmente.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Resistenza costante dalla posizione iniziale fino alla pressione completa. Forza regola quanto il grilletto spinge indietro.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Sensazione del grilletto di un'arma. Tiri attraverso una zona morbida fino alla posizione finale, poi un clic deciso. Usa inizio/fine per impostare il punto di clic e la forza per la pressione del clic.</value></data>
@@ -1084,5 +1084,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Ripristina banda media — blu</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Ripristina banda alta — rosso</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Ripristina banda alta — verde</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Ripristina banda alta — blu</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Ripristina banda alta — blu</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reattivo all'input</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Disattivato</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Colore casuale per pressione</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Ciclo della tavolozza</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Colore singolo per pressione</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Reimposta reattivo all'input</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Colore del lampo per pressione</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Reimposta colore reattivo all'input</value></data>
+
+
+
+
+
+
+
+
 </root>

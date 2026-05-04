@@ -955,9 +955,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>マルチポジション・バイブレーション</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>開始位置</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>終了位置</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>範囲:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>強度:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>周波数 (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>範囲</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>強度</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>周波数 (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>抵抗なし。トリガーは通常どおりの感触です。</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>開始位置から完全に押し込まれるまで一定の抵抗が続きます。強度はトリガーの押し返す力を設定します。</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>銃のトリガーの感触。柔らかいゾーンを通って終了位置まで引き、その後しっかりとしたクリックを感じます。開始/終了でクリックポイントを、強度でクリックの力を設定します。</value></data>
@@ -1066,5 +1066,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>中バンド — 青をリセット</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>大バンド — 赤をリセット</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>大バンド — 緑をリセット</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>大バンド — 青をリセット</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>大バンド — 青をリセット</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>インプットリアクティブ</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>オフ</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>押すたびにランダムカラー</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>パレットを巡回</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>押下ごとに単色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>インプットリアクティブをリセット</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>押下時のフラッシュカラー</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>インプットリアクティブの色をリセット</value></data>
+
+
+
+
+
+
+
+
 </root>

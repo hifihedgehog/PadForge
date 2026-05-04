@@ -955,9 +955,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>다중 위치 진동</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>시작 위치</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>종료 위치</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>범위:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>강도:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>주파수 (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>범위</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>강도</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>주파수 (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>저항 없음. 트리거가 일반적으로 느껴집니다.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>시작 위치부터 완전히 누를 때까지 일정한 저항. 강도는 트리거가 밀어내는 정도를 설정합니다.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>총기 트리거 느낌. 부드러운 영역을 거쳐 종료 위치까지 당긴 다음 단단한 클릭이 발생합니다. 시작/종료로 클릭 지점을, 강도로 클릭 힘을 설정합니다.</value></data>
@@ -1066,5 +1066,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>중음 밴드 — 파랑 초기화</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>고음 밴드 — 빨강 초기화</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>고음 밴드 — 초록 초기화</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>고음 밴드 — 파랑 초기화</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>고음 밴드 — 파랑 초기화</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>입력 반응</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>끔</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>누를 때마다 랜덤 색상</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>팔레트 순회</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>누름마다 단일 색상</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>입력 반응 초기화</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>누름당 플래시 색상</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>입력 반응 색상 초기화</value></data>
+
+
+
+
+
+
+
+
 </root>

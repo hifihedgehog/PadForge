@@ -955,9 +955,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Vibration multiposition</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Position de départ</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Position de fin</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>Plage :</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>Intensité :</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Fréquence (Hz) :</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Plage</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Intensité</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Fréquence (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Aucune résistance. La gâchette se comporte normalement.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Résistance constante de la position de départ jusqu'à la pression complète. Intensité règle la force de retour de la gâchette.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Sensation d'une gâchette d'arme. Tirez à travers une zone souple jusqu'à la position de fin, puis un clic ferme. Utilisez début/fin pour régler le point de clic et l'intensité pour la force du clic.</value></data>
@@ -1066,5 +1066,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Réinitialiser la bande moyenne — bleu</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Réinitialiser la bande forte — rouge</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Réinitialiser la bande forte — vert</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte — bleu</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte — bleu</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Désactivé</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Couleur aléatoire par appui</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Parcourir la palette</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Couleur unique par appui</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Réinitialiser réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Couleur du flash par appui</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Réinitialiser la couleur réactive aux entrées</value></data>
+
+
+
+
+
+
+
+
 </root>

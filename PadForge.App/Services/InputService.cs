@@ -182,24 +182,41 @@ namespace PadForge.Services
                 return _inputManager.CombinedOutputStates[padIndex].Buttons;
             };
 
-            // Rumble bytes for the DS5/DS4 effect-packet path.
+            // ══════════════════════════════════════════════════════════════
+            // SOLE-WRITER RUMBLE INPUT FOR DS5 / DS4.
+            // ══════════════════════════════════════════════════════════════
+            // This provider IS the input side of the sole-writer rumble
+            // architecture. The dispatcher reads from this lambda once
+            // per (slot, device) per packet build and writes the
+            // returned bytes into the DS5/DS4 effect packet — that
+            // packet is the only path rumble takes to a Sony pad.
+            // SDL_RumbleJoystick is skipped for Sony VID/PID devices
+            // in InputManager.Step2.ApplyForceFeedback (banner there).
             //
-            // The dispatcher is the SOLE writer of DS5/DS4 effect
-            // packets — Step 2's ApplyForceFeedback no longer calls
-            // SDL_RumbleJoystick for Sony VID/PID devices, because
-            // SDL3's PS5/PS4 driver writes its own effect packet
-            // through a separate HID handle and races with the
-            // dispatcher's per-tick lightbar writes. With no SDL
-            // writer there is no race, so the dispatcher computes
-            // per-device audio-mix + gain via ScaleRumbleForDevice
-            // exactly the way the SDL path used to, and writes those
-            // bytes alongside the lightbar / triggers / mic-LED in
-            // every effect packet.
+            // We compute audio mix + per-device gain here via
+            // ScaleRumbleForDevice exactly the way SDL used to. The
+            // critical property is single-writer: even though
+            // AudioBassDetector.MotorValue updates asynchronously from
+            // the WASAPI callback, only ONE consumer samples it per
+            // dispatcher tick, so there's no race partner producing a
+            // different byte from a different sample of the same value.
             //
-            // Per-DEVICE PadSetting (not the slot's anchor): two Sony
-            // pads on one slot can have different audio-rumble
-            // sensitivity / gain / motor-balance, and each must see
-            // its own settings.
+            // Per-DEVICE PadSetting lookup (not the slot's selected
+            // device): two Sony pads on one slot can have different
+            // audio-rumble sensitivity / gain / motor-balance, and
+            // each must see its own settings. The lookup walks
+            // UserSettings.Items under SyncRoot — cheap (~16 entries
+            // worst case) and matches the lock pattern used elsewhere
+            // in this file.
+            //
+            // If you find yourself wanting to change this to read raw
+            // VibrationStates (no audio mix) or to pull from
+            // FinalVibrationStates (slot's anchor PadSetting), STOP.
+            // Both were tried during the v3.1.x debugging; raw bytes
+            // killed audio rumble outright on this path, slot-level
+            // bytes broke per-device gain. The sole-writer architecture
+            // requires per-device audio-mixed bytes here. See memory:
+            // sony-rumble-sole-writer-architecture.md.
             //
             // Vibration structs use ushort (0..65535); DS5/DS4 firmware
             // takes byte (0..255), so shift down 8 bits.

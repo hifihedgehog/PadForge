@@ -30,6 +30,31 @@ namespace PadForge.Common.Input
     /// <see cref="SDL_SendGamepadEffect"/> per assigned physical DS5.
     /// Total is well under a millisecond per user-interaction event,
     /// which is bounded by how fast a human can drag a slider.</para>
+    ///
+    /// <para>══════════════════════════════════════════════════════════════</para>
+    /// <para><b>SOLE WRITER FOR DS5 / DS4 — DO NOT REINTRODUCE SDL RUMBLE.</b></para>
+    /// <para>══════════════════════════════════════════════════════════════</para>
+    /// <para>This dispatcher writes the ENTIRE effect packet (rumble +
+    /// lightbar + adaptive triggers + mic LED) for every Sony pad mapped
+    /// to its slot. <c>InputManager.Step2.ApplyForceFeedback</c> returns
+    /// early for Sony VID 0x054C / DS5 / DS4 PIDs so SDL_RumbleJoystick
+    /// is never called. This is intentional and load-bearing.</para>
+    /// <para>Why: SDL3's PS5/PS4 driver writes its own effect packet
+    /// through a separate HID handle. Two writers competing on an
+    /// asynchronously-sampled audio peak (<see cref="AudioBassDetector"/>)
+    /// produce a 30 Hz motor stutter — the v3.1.x audio-rumble +
+    /// animated-lightbar regression. One writer cannot race with itself.</para>
+    /// <para>The polling thread (<c>InputManager.Step2.UpdateInputStates</c>)
+    /// broadcasts a per-slot poke via <see cref="OnPollingTick"/> every
+    /// tick so the dispatcher's 33 ms timer stays alive whenever audio
+    /// rumble is enabled or game rumble is in flight, even when the
+    /// lightbar mode is static / off. Without that poke, an idle-lightbar
+    /// slot would have NO writer at all once the SDL skip is in place.</para>
+    /// <para>If you need to debug DS5/DS4 rumble: this dispatcher's
+    /// <see cref="DispatchSnapshot"/> is the only code path that writes
+    /// rumble bytes to those devices. Audio mix + per-device gain are
+    /// computed in <c>InputService.SlotRumbleForDeviceProvider</c>.</para>
+    /// <para>See memory: sony-rumble-sole-writer-architecture.md.</para>
     /// </summary>
     internal sealed class UserEffectsDispatcher : IDisposable
     {

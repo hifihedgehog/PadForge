@@ -540,7 +540,12 @@ namespace PadForge
                 // toggles. Audio-to-lightbar reuses the same WASAPI capture
                 // as audio-rumble, so the capture lifecycle gates on either
                 // feature being on for any created slot.
-                pad.PlayStationConfig.PropertyChanged += (s, e) =>
+                // Forwarded event follows the per-device PlayStationConfig
+                // anchor across SelectedMappedDevice swaps. Subscribing
+                // to pad.ActivePlayStationConfigPropertyChanged instead
+                // of pad.PlayStationConfig.PropertyChanged means edits
+                // on whichever device the user has selected route here.
+                pad.ActivePlayStationConfigPropertyChanged += (s, e) =>
                 {
                     _settingsService.MarkDirty();
                     if (e.PropertyName == nameof(ViewModels.PlayStationSlotConfig.AudioLightbarEnabled))

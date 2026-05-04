@@ -383,12 +383,25 @@ namespace PadForge.Common.Input
         internal MidiSlotConfig[] _midiConfigs = new MidiSlotConfig[MaxPads];
 
         /// <summary>Per-slot PlayStation configuration reference (Adaptive
-        /// Triggers + Lighting). Wired in InputService.Start alongside
-        /// MidiConfig / ExtendedConfig. Consumed by
-        /// HMaestroVirtualController.AttachPlayStationConfig when a virtual
-        /// DualSense slot is created.  Null entries skip Feature B effect
-        /// synthesis on that slot.</summary>
+        /// Triggers + Lighting). Mirrors the slot's currently-selected
+        /// device's per-device config — the Lighting tab is per-device,
+        /// so this entry shifts as the user switches SelectedMappedDevice.
+        /// Used by HMaestroVirtualController.AttachPlayStationConfig as
+        /// the dispatcher's "anchor" for animation-timer state and event
+        /// subscriptions; per-device synthesis happens inside the
+        /// dispatcher via <see cref="_perDevicePlayStationConfigs"/>.
+        /// Null entries skip Feature B effect synthesis on that slot.</summary>
         internal PlayStationSlotConfig[] _playStationConfigs = new PlayStationSlotConfig[MaxPads];
+
+        /// <summary>Per-(slot, device) lighting configs. Lookup keyed by
+        /// physical device InstanceGuid. Source of truth for the
+        /// dispatcher's per-device synthesis loop and for macro
+        /// lightbar fan-out (every assigned device gets the same
+        /// override / mode write). Mirrored from
+        /// <c>PadViewModel.PerDevicePlayStationConfigs</c> by
+        /// <c>InputService.SyncViewModelToPadSettings</c>.</summary>
+        internal IReadOnlyDictionary<Guid, PlayStationSlotConfig>[] _perDevicePlayStationConfigs
+            = new IReadOnlyDictionary<Guid, PlayStationSlotConfig>[MaxPads];
 
         /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.

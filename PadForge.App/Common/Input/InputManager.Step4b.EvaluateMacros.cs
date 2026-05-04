@@ -650,8 +650,10 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                     {
-                        var psCfg = _playStationConfigs[slotIndex];
-                        psCfg?.ClearMacroOverride();
+                        // Slot-level fan-out: every per-device config on
+                        // the slot clears its override.
+                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                            devCfg.ClearMacroOverride();
                     }
                     AdvanceAction(macro);
                     break;
@@ -662,8 +664,12 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                     {
-                        var psCfg = _playStationConfigs[slotIndex];
-                        if (psCfg != null) psCfg.LightbarMode = action.LightbarTargetMode;
+                        // Slot-level fan-out: switch every device's mode
+                        // to the action's target. Each device renders
+                        // that mode using its OWN per-device config
+                        // (its own RGB / palette / decay).
+                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                            devCfg.LightbarMode = action.LightbarTargetMode;
                     }
                     AdvanceAction(macro);
                     break;
@@ -678,20 +684,49 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Pushes a LightbarColor action's override into the
-        /// target slot's PSConfig. Resolves the color source (Fixed /
-        /// RandomHue / PaletteStep) and sets <c>StartUtc</c>,
-        /// <c>ExpiresAtUtc</c>, and <c>HoldMode</c> in one go so the
-        /// synthesizer's intensity computation has consistent inputs.
-        /// Sticky uses <c>DateTime.MaxValue</c> for the expiry; Reactive
-        /// uses now + decay.</summary>
+        /// <summary>Enumerates every per-device PlayStationSlotConfig
+        /// on the slot. Macro lightbar actions are slot-level: macro is
+        /// to the left of the device dropdown, so a macro's color /
+        /// mode / clear push uniformly to every assigned device. The
+        /// Lighting tab (right of the dropdown) is per-device — a mode
+        /// change pushed by a macro re-renders each device using its
+        /// own LightbarMode / palette / colors. Falls back to the
+        /// anchor slot config when the per-device dictionary hasn't
+        /// been wired yet (early startup).</summary>
+        private System.Collections.Generic.IEnumerable<PlayStationSlotConfig> EnumerateSlotPlayStationConfigs(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= MaxPads) yield break;
+            var perDev = _perDevicePlayStationConfigs[slotIndex];
+            if (perDev != null && perDev.Count > 0)
+            {
+                foreach (var kvp in perDev)
+                {
+                    if (kvp.Value != null) yield return kvp.Value;
+                }
+                yield break;
+            }
+            var anchor = _playStationConfigs[slotIndex];
+            if (anchor != null) yield return anchor;
+        }
+
+        /// <summary>Pushes a LightbarColor action's override into every
+        /// per-device PSConfig on the target slot. Resolves the color
+        /// source (Fixed / RandomHue / PaletteStep) once and writes the
+        /// same RGB + Hold/Fade timing to every device — macro is
+        /// slot-level so all assigned devices flash uniformly. Sticky
+        /// uses <c>DateTime.MaxValue</c> for the expiry; Reactive uses
+        /// now + hold + fade.</summary>
         private void ApplyLightbarColorAction(MacroItem macro, MacroAction action)
         {
             int slotIndex = macro.PadIndex;
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
-            var psCfg = _playStationConfigs[slotIndex];
-            if (psCfg == null) return;
 
+            // Resolve the color ONCE for the whole slot so every device
+            // gets the same flash. PaletteStep with empty per-macro
+            // palette falls back to the slot's first device's palette
+            // (deterministic; any device's palette would do — the macro
+            // is slot-level by design and the user controls the
+            // per-macro palette explicitly).
             byte r, g, b;
             if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky
                 || action.LightbarColorSource == MacroLightbarColorSource.Fixed)
@@ -707,12 +742,15 @@ namespace PadForge.Common.Input
             }
             else // PaletteStep
             {
-                // Per-macro palette wins when populated; otherwise fall back
-                // to the slot's own LightbarPalette so existing macros that
-                // never set a per-action palette keep their old behavior.
                 var palette = ParseMacroPaletteCsv(action.LightbarPaletteCsv);
                 if (palette.Length == 0)
-                    palette = psCfg.SnapshotLightbarPalette();
+                {
+                    foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                    {
+                        palette = devCfg.SnapshotLightbarPalette();
+                        if (palette.Length > 0) break;
+                    }
+                }
                 if (palette.Length > 0)
                 {
                     int idx = (action.LightbarCycleIndex % palette.Length + palette.Length) % palette.Length;
@@ -722,22 +760,19 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    // Empty palette — treat as off so the user gets feedback
-                    // that their selection isn't producing a visible result.
+                    // Empty palette across the slot — treat as off so the
+                    // user gets feedback that their selection isn't
+                    // producing a visible result.
                     r = 0; g = 0; b = 0;
                 }
             }
 
             DateTime now = DateTime.UtcNow;
-            psCfg.MacroOverrideR = r;
-            psCfg.MacroOverrideG = g;
-            psCfg.MacroOverrideB = b;
-            psCfg.MacroOverrideHoldMode = action.LightbarHoldMode;
-            psCfg.MacroOverrideStartUtc = now;
+            DateTime holdEnd, expiresAt;
             if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky)
             {
-                psCfg.MacroOverrideHoldEndUtc = DateTime.MaxValue;
-                psCfg.MacroOverrideExpiresAtUtc = DateTime.MaxValue;
+                holdEnd = DateTime.MaxValue;
+                expiresAt = DateTime.MaxValue;
             }
             else
             {
@@ -746,9 +781,24 @@ namespace PadForge.Common.Input
                 // Force at least 1 ms so the override registers as active
                 // — Hold=0/Fade=0 would otherwise expire on the same tick.
                 if (holdMs == 0 && fadeMs == 0) holdMs = 1;
-                DateTime holdEnd = now.AddMilliseconds(holdMs);
+                holdEnd = now.AddMilliseconds(holdMs);
+                expiresAt = holdEnd.AddMilliseconds(fadeMs);
+            }
+
+            // Slot-level fan-out: every per-device PSConfig gets the
+            // same color and timing. Devices that aren't assigned to a
+            // physical Sony device still receive the override write —
+            // harmless, the dispatcher's device loop only writes to
+            // online Sony devices.
+            foreach (var psCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+            {
+                psCfg.MacroOverrideR = r;
+                psCfg.MacroOverrideG = g;
+                psCfg.MacroOverrideB = b;
+                psCfg.MacroOverrideHoldMode = action.LightbarHoldMode;
+                psCfg.MacroOverrideStartUtc = now;
                 psCfg.MacroOverrideHoldEndUtc = holdEnd;
-                psCfg.MacroOverrideExpiresAtUtc = holdEnd.AddMilliseconds(fadeMs);
+                psCfg.MacroOverrideExpiresAtUtc = expiresAt;
             }
         }
 
@@ -773,21 +823,24 @@ namespace PadForge.Common.Input
             return list.ToArray();
         }
 
-        /// <summary>Advances the action's volatile cycle position and
-        /// writes the resulting <c>LightbarMode</c> into the slot's
-        /// PSConfig. No-op when the action's cycle list is empty.</summary>
+        /// <summary>Advances the action's cycle position and writes the
+        /// resulting <c>LightbarMode</c> into every per-device PSConfig
+        /// on the slot. Slot-level fan-out: every assigned device
+        /// switches to the same mode in lockstep, then renders that
+        /// mode using its own per-device LightbarRed/G/B / palette /
+        /// decay. No-op when the action's cycle list is empty.</summary>
         private void ApplyLightbarModeCycleAction(MacroItem macro, MacroAction action)
         {
             int slotIndex = macro.PadIndex;
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
-            var psCfg = _playStationConfigs[slotIndex];
-            if (psCfg == null) return;
 
             var modes = action.ParsedCycleModes();
             if (modes.Length == 0) return;
 
             int idx = ((action.LightbarCycleIndex % modes.Length) + modes.Length) % modes.Length;
-            psCfg.LightbarMode = modes[idx];
+            LightbarMode target = modes[idx];
+            foreach (var psCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                psCfg.LightbarMode = target;
             action.LightbarCycleIndex = idx + 1;
         }
 
@@ -1186,7 +1239,11 @@ namespace PadForge.Common.Input
                 {
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
-                        _playStationConfigs[slotIndex]?.ClearMacroOverride();
+                    {
+                        // Slot-level fan-out: clear override on every device.
+                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                            devCfg.ClearMacroOverride();
+                    }
                     AdvanceAction(macro);
                     break;
                 }
@@ -1196,8 +1253,11 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                     {
-                        var psCfg = _playStationConfigs[slotIndex];
-                        if (psCfg != null) psCfg.LightbarMode = action.LightbarTargetMode;
+                        // Slot-level fan-out: switch every device's mode.
+                        // Each device renders the new mode using its OWN
+                        // per-device colors / palette.
+                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                            devCfg.LightbarMode = action.LightbarTargetMode;
                     }
                     AdvanceAction(macro);
                     break;

@@ -193,10 +193,10 @@ namespace PadForge.Common.Input
                         .ToList();
 
                     _playStationProfiles = _allProfiles
-                        .Where(p => IsSonyVendor(p.Vendor))
+                        .Where(p => IsPlayStationVendor(p.Vendor))
                         .ToList();
 
-                    // Extended = everything that's not Microsoft or Sony,
+                    // Extended = everything that's not Xbox or PlayStation,
                     // plus the synthetic "Custom" entry at the top so the
                     // user can define a fully custom VC without inheriting
                     // from any catalog profile. Custom sorts first to
@@ -213,7 +213,7 @@ namespace PadForge.Common.Input
                         .Where(p =>
                             p.Id != CustomProfileId &&
                             !IsXboxVendor(p.Vendor) &&
-                            !IsSonyVendor(p.Vendor)));
+                            !IsPlayStationVendor(p.Vendor)));
                     _extendedProfiles = extended;
                 }
                 catch
@@ -238,7 +238,7 @@ namespace PadForge.Common.Input
             !string.IsNullOrEmpty(vendor) &&
             vendor.StartsWith("Microsoft", StringComparison.OrdinalIgnoreCase);
 
-        private static bool IsSonyVendor(string vendor) =>
+        private static bool IsPlayStationVendor(string vendor) =>
             !string.IsNullOrEmpty(vendor) &&
             vendor.StartsWith("Sony", StringComparison.OrdinalIgnoreCase);
 

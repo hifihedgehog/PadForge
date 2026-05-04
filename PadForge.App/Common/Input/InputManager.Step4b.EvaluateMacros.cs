@@ -631,6 +631,38 @@ namespace PadForge.Common.Input
                     ToggleTouchpadOverlayRequested = true;
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.LightbarColor:
+                {
+                    // Holds for DurationMs like a KeyPress. First-frame:
+                    // push the override RGB + expiry into the slot's
+                    // PlayStationSlotConfig. Setting MacroOverrideExpiresAtUtc
+                    // fires PropertyChanged → UserEffectsDispatcher wakes
+                    // its animation timer and dispatches one snapshot
+                    // carrying the override RGB. The synthesizer's
+                    // priority gate uses HasActiveMacroLightbarOverride so
+                    // the override beats audio + base-color paths but
+                    // still loses to game-driven Feature A writes.
+                    if (actionElapsed < 1)
+                    {
+                        int slotIndex = macro.PadIndex;
+                        if (slotIndex >= 0 && slotIndex < MaxPads)
+                        {
+                            var psCfg = _playStationConfigs[slotIndex];
+                            if (psCfg != null)
+                            {
+                                psCfg.MacroOverrideR = action.LightbarR;
+                                psCfg.MacroOverrideG = action.LightbarG;
+                                psCfg.MacroOverrideB = action.LightbarB;
+                                psCfg.MacroOverrideExpiresAtUtc =
+                                    DateTime.UtcNow.AddMilliseconds(Math.Max(action.DurationMs, 1));
+                            }
+                        }
+                    }
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+                }
             }
         }
 
@@ -993,6 +1025,33 @@ namespace PadForge.Common.Input
                     SendMouseButtonInput(action.MouseButton, down: false);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.LightbarColor:
+                {
+                    // Same shape as the combined-state path. Extended slots
+                    // can have a DS5 physical assigned, so the override is
+                    // applicable here too. PSConfig may be null for slots
+                    // that don't have one wired — silently no-op.
+                    if (actionElapsed < 1)
+                    {
+                        int slotIndex = macro.PadIndex;
+                        if (slotIndex >= 0 && slotIndex < MaxPads)
+                        {
+                            var psCfg = _playStationConfigs[slotIndex];
+                            if (psCfg != null)
+                            {
+                                psCfg.MacroOverrideR = action.LightbarR;
+                                psCfg.MacroOverrideG = action.LightbarG;
+                                psCfg.MacroOverrideB = action.LightbarB;
+                                psCfg.MacroOverrideExpiresAtUtc =
+                                    DateTime.UtcNow.AddMilliseconds(Math.Max(action.DurationMs, 1));
+                            }
+                        }
+                    }
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+                }
             }
         }
 

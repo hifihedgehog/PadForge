@@ -187,6 +187,19 @@ namespace PadForge.Common.Input
                 : WriteUsb(devicePath, payload47);
         }
 
+        /// <summary>Writes a fully-formed HID output packet (report ID
+        /// already in byte 0, no envelope wrapping) to the device. Used
+        /// by the DS4 path which builds its complete USB / BT packet
+        /// inline rather than going through the DS5 47-byte payload
+        /// indirection. The actual file I/O is identical to the DS5
+        /// path — same raw-HID open/write pattern that bypasses SDL3.</summary>
+        public static bool WriteFullPacket(string devicePath, byte[] fullPacket)
+        {
+            if (string.IsNullOrEmpty(devicePath) || fullPacket == null || fullPacket.Length == 0)
+                return false;
+            return WriteRaw(devicePath, fullPacket);
+        }
+
         // Standard CRC32 (poly 0xEDB88320, init 0xFFFFFFFF, final XOR
         // 0xFFFFFFFF, reflected) — same algorithm hidapi/CRCpp use, which
         // is what OpenRGB calls for the DS5 BT effect packet checksum.

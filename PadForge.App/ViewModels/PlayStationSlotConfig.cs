@@ -204,6 +204,64 @@ namespace PadForge.ViewModels
         }
 
         // ────────────────────────────────────────────────
+        //  Lightbar — macro-driven override (#63)
+        // ────────────────────────────────────────────────
+        // Transient runtime state set by MacroActionType.LightbarColor
+        // when a macro fires. Held until ExpiresAtUtc, then cleared
+        // implicitly by HasActiveMacroLightbarOverride flipping false on
+        // the next dispatch. Not persisted — overrides are tied to a
+        // specific macro execution, not to the slot's saved config.
+        //
+        // Priority order in the synthesizer:
+        //   1. Game-driven Feature A passthrough — packet-level, separate
+        //      dispatcher (DualSensePassthroughDispatcher). Game writes win.
+        //   2. Macro-driven override (these fields) — held while UtcNow
+        //      < ExpiresAtUtc.
+        //   3. AudioLightbarEnabled / animated-mode RGB — existing path.
+        //   4. LightbarEnabled base color — existing path.
+        //   5. Off — bytes left zero.
+
+        private byte _macroOverrideR;
+        [System.Xml.Serialization.XmlIgnore]
+        public byte MacroOverrideR
+        {
+            get => _macroOverrideR;
+            set => SetProperty(ref _macroOverrideR, value);
+        }
+
+        private byte _macroOverrideG;
+        [System.Xml.Serialization.XmlIgnore]
+        public byte MacroOverrideG
+        {
+            get => _macroOverrideG;
+            set => SetProperty(ref _macroOverrideG, value);
+        }
+
+        private byte _macroOverrideB;
+        [System.Xml.Serialization.XmlIgnore]
+        public byte MacroOverrideB
+        {
+            get => _macroOverrideB;
+            set => SetProperty(ref _macroOverrideB, value);
+        }
+
+        private DateTime _macroOverrideExpiresAtUtc = DateTime.MinValue;
+        [System.Xml.Serialization.XmlIgnore]
+        public DateTime MacroOverrideExpiresAtUtc
+        {
+            get => _macroOverrideExpiresAtUtc;
+            set => SetProperty(ref _macroOverrideExpiresAtUtc, value);
+        }
+
+        /// <summary>True while the macro-driven override is still within
+        /// its hold window. Read by the synthesizer and the animation
+        /// timer's stop-condition. Cleared implicitly by the timestamp
+        /// rolling past — no explicit "clear" event needed.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasActiveMacroLightbarOverride
+            => DateTime.UtcNow < _macroOverrideExpiresAtUtc;
+
+        // ────────────────────────────────────────────────
         //  Mic LED mode (DualSense only) — mute LED state on the front edge
         // ────────────────────────────────────────────────
 

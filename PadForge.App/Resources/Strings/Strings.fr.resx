@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Appui souris {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Relâchement souris {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer la superposition du pavé tactile</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Régler la barre lumineuse sur {0} pendant {1} ms</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Définir la couleur de la barre lumineuse</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Remplace la barre lumineuse du slot PlayStation assigné par une couleur RVB choisie pendant la durée configurée. À l'expiration, la barre revient aux réglages de l'onglet Éclairage. Les écritures pilotées par le jeu restent prioritaires.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centré</value></data>

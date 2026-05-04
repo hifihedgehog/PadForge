@@ -1432,6 +1432,7 @@ namespace PadForge.ViewModels
             {
                 var macro = new MacroItem
                 {
+                    PadIndex = PadIndex,
                     Name = $"Macro {Macros.Count + 1}",
                     ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
                 };

@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>마우스 {0} 누르기</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>마우스 {0} 놓기</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>라이트바를 {0}으로 {1}ms 설정</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>라이트바 색상 설정</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>지정된 시간 동안 할당된 PlayStation 슬롯의 라이트바를 선택한 RGB 색상으로 덮어씁니다. 시간이 만료되면 조명 탭의 설정으로 돌아갑니다. 게임이 직접 쓰는 값은 계속 우선합니다.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>중립</value></data>

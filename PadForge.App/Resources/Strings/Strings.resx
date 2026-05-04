@@ -679,6 +679,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Mouse Press {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mouse Release {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Toggle Touchpad Overlay</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Set lightbar to {0} for {1}ms</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Set Lightbar Color</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB color for the configured duration. After the duration, the lightbar returns to the Lighting tab's settings. Game-driven writes still take priority over the override.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centered</value></data>

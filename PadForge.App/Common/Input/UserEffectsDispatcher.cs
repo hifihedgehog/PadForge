@@ -34,8 +34,16 @@ namespace PadForge.Common.Input
     internal sealed class UserEffectsDispatcher : IDisposable
     {
         private const ushort SonyVid = 0x054C;
-        private const ushort PidStandard = 0x0CE6;
-        private const ushort PidEdge = 0x0DF2;
+        private const ushort PidStandard = 0x0CE6;  // DualSense
+        private const ushort PidEdge = 0x0DF2;      // DualSense Edge
+        // DualShock 4 family — three PIDs cover the v1, v1 alternate, and
+        // v2 hardware revisions. Same VID, different output report
+        // shape (Report 0x05 USB / 0x11 BT, no AT / no player LEDs / no
+        // mic LED). Lighting tab base color + audio modes apply via the
+        // DS4 path; AT and Indicator LED settings are silently ignored.
+        private const ushort Ds4Pid_V1     = 0x05C4;
+        private const ushort Ds4Pid_V1Alt  = 0x09CC;
+        private const ushort Ds4Pid_V2     = 0x0BA0;
 
         /// <summary>Static provider for the system audio peak (0..1).
         /// InputService wires this to <c>AudioBassDetector.FullSpectrumPeak</c>
@@ -162,9 +170,13 @@ namespace PadForge.Common.Input
         {
             DiagLog($"OnConfigChanged property={e.PropertyName}");
             // Mode / period changes can flip whether the periodic timer
-            // should be running.
+            // should be running. So can the macro-override expiry — when
+            // a macro fires LightbarColor and the slot's mode is Off, the
+            // timer is otherwise asleep and the override packet would
+            // never go out without this nudge.
             if (e.PropertyName == nameof(PlayStationSlotConfig.LightbarMode)
-                || e.PropertyName == nameof(PlayStationSlotConfig.LightbarPeriodMs))
+                || e.PropertyName == nameof(PlayStationSlotConfig.LightbarPeriodMs)
+                || e.PropertyName == nameof(PlayStationSlotConfig.MacroOverrideExpiresAtUtc))
                 UpdateAnimTimer();
             DispatchSnapshot();
         }
@@ -194,7 +206,8 @@ namespace PadForge.Common.Input
         {
             bool wantTimer = !_disposed
                 && _config != null
-                && IsAnimated(_config.LightbarMode);
+                && (IsAnimated(_config.LightbarMode)
+                    || _config.HasActiveMacroLightbarOverride);
 
             if (wantTimer && !_animTickActive)
             {
@@ -209,6 +222,7 @@ namespace PadForge.Common.Input
             }
         }
 
+
         private void StopAnimTimer()
         {
             _animTickActive = false;
@@ -220,12 +234,42 @@ namespace PadForge.Common.Input
         private float _lastDispatchedPeak = -1f;
         private byte _lastDispatchedRumbleR;
         private byte _lastDispatchedRumbleL;
+        private bool _lastTickOverrideActive;
 
         private void OnAnimTick(object _)
         {
             if (_disposed || _config == null) return;
             var mode = _config.LightbarMode;
-            if (!IsAnimated(mode)) return;
+            bool overrideActive = _config.HasActiveMacroLightbarOverride;
+            bool animated = IsAnimated(mode);
+
+            // If neither an animated mode nor an active override needs us,
+            // dispatch one final snapshot (so a just-expired override
+            // hands off to the configured base/off state) and stop the
+            // timer.
+            if (!animated && !overrideActive)
+            {
+                if (_lastTickOverrideActive)
+                {
+                    // Override just expired this tick — flush a final
+                    // packet so the lightbar transitions back cleanly.
+                    DispatchSnapshot();
+                }
+                _lastTickOverrideActive = false;
+                StopAnimTimer();
+                return;
+            }
+            _lastTickOverrideActive = overrideActive;
+
+            // Override-only path (mode is idle): dispatch every tick so
+            // the override packet refreshes and the just-expired transition
+            // above fires reliably. Skip the audio/pulse recomputation
+            // entirely — the synthesizer reads the override directly.
+            if (!animated && overrideActive)
+            {
+                DispatchSnapshot();
+                return;
+            }
 
             // Audio-driven modes also do an early-exit if the peak hasn't
             // changed by 1/255 (≈0.004), to avoid flooding the HID pipe
@@ -383,14 +427,17 @@ namespace PadForge.Common.Input
             float pulseIntensity = ComputePulseIntensity(nowMs);
             var rumble = SlotRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
 
-            // Synthesize once per dispatch; reuse the buffer across the
-            // multi-DS5 fan-out below.
-            var buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
-            int len = Ds5EffectSynthesizer.Build(
-                _config, buffer, peakForSynth, nowMs,
+            // Synthesize the DS5 payload once. Fan out below covers any
+            // DualSense / DualSense Edge mapped to this slot. The DS4
+            // payload is synthesized lazily inside the device loop the
+            // first time a DS4 is encountered, since the USB and BT
+            // packet shapes differ enough that we need per-device work.
+            var ds5Buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
+            int ds5Len = Ds5EffectSynthesizer.Build(
+                _config, ds5Buffer, peakForSynth, nowMs,
                 _randomColor, _pulseColor, pulseIntensity,
                 rumble.right, rumble.left);
-            if (len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
+            if (ds5Len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
 
             var settings = SettingsManager.UserSettings;
             var devices = SettingsManager.UserDevices;
@@ -415,59 +462,93 @@ namespace PadForge.Common.Input
             DiagLog($"DispatchSnapshot mappedGuids={guids.Count}");
             if (guids.Count == 0) return;
 
-            int sent = 0, skippedNotDs5 = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
-            int allDs5Online = 0, allDs5OnlineMapped = 0;
+            int sent = 0, skippedNotPs = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
+            int allPsOnline = 0, allPsOnlineMapped = 0;
+            byte[] ds4UsbBuf = null;
+            byte[] ds4BtBuf = null;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
                 {
                     if (ud == null) continue;
 
-                    // Per-device diagnostic — log every DS5 we see (mapped or not)
-                    // so post-reconnect drift in InstanceGuid vs UserSettings.MapTo
-                    // surfaces in the log.
                     bool isDs5 = ud.VendorId == SonyVid &&
                                  (ud.ProdId == PidStandard || ud.ProdId == PidEdge);
-                    if (isDs5 && ud.IsOnline) allDs5Online++;
+                    bool isDs4 = ud.VendorId == SonyVid &&
+                                 (ud.ProdId == Ds4Pid_V1 || ud.ProdId == Ds4Pid_V1Alt || ud.ProdId == Ds4Pid_V2);
+                    bool isPs = isDs5 || isDs4;
+                    if (isPs && ud.IsOnline) allPsOnline++;
 
                     bool inMappedGuids = guids.Contains(ud.InstanceGuid);
-                    if (isDs5 && ud.IsOnline && inMappedGuids) allDs5OnlineMapped++;
+                    if (isPs && ud.IsOnline && inMappedGuids) allPsOnlineMapped++;
 
-                    if (isDs5)
+                    if (isPs)
                     {
                         bool isBt = Ds5RawHidWriter.IsBluetoothPath(ud.DevicePath);
-                        DiagLog($"  device guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} bt={isBt} path={ud.DevicePath}");
+                        string family = isDs5 ? "DS5" : "DS4";
+                        DiagLog($"  device {family} guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} bt={isBt} path={ud.DevicePath}");
                     }
 
                     if (!inMappedGuids) continue;
                     if (!ud.IsOnline) { skippedOffline++; continue; }
-                    if (ud.VendorId != SonyVid) { skippedNotDs5++; continue; }
-                    if (ud.ProdId != PidStandard && ud.ProdId != PidEdge) { skippedNotDs5++; continue; }
+                    if (!isPs) { skippedNotPs++; continue; }
 
-                    // Raw HID write — bypasses SDL3's PS5 driver, which
-                    // races its own UpdateEffects packets against ours
-                    // (SetDevicePlayerIndex on USB connect, BT
-                    // CheckPendingLEDReset at ~10s post-connect, etc.).
-                    // OpenRGB uses the same approach and has zero
-                    // hot-plug issues with the lightbar.
                     string path = ud.DevicePath;
                     if (string.IsNullOrEmpty(path)) { skippedNoHandle++; continue; }
+                    bool isBluetooth = Ds5RawHidWriter.IsBluetoothPath(path);
 
                     try
                     {
-                        bool ok = Ds5RawHidWriter.Write(path, buffer.AsSpan(0, len));
-                        DiagLog($"  raw-write ok={ok} diag='{Ds5RawHidWriter.LastWriteDiag}'");
+                        bool ok;
+                        if (isDs5)
+                        {
+                            // DS5 path — wrap the 47-byte payload in the
+                            // standard USB (0x02) or BT (0x31) envelope.
+                            ok = Ds5RawHidWriter.Write(path, ds5Buffer.AsSpan(0, ds5Len));
+                            DiagLog($"  raw-write ds5 ok={ok} diag='{Ds5RawHidWriter.LastWriteDiag}'");
+                        }
+                        else
+                        {
+                            // DS4 path — full output report built inline
+                            // (USB report 0x05 = 32 bytes, BT report 0x11
+                            // = 78 bytes with CRC32 trailer). Lazily synth
+                            // the per-shape buffer on first hit.
+                            byte[] packet;
+                            if (isBluetooth)
+                            {
+                                if (ds4BtBuf == null) ds4BtBuf = new byte[Ds4EffectSynthesizer.BluetoothPacketSize];
+                                int n = Ds4EffectSynthesizer.BuildBluetooth(
+                                    _config, ds4BtBuf, peakForSynth, nowMs,
+                                    _randomColor, _pulseColor, pulseIntensity,
+                                    rumble.right, rumble.left);
+                                if (n <= 0) { errors++; continue; }
+                                packet = ds4BtBuf;
+                            }
+                            else
+                            {
+                                if (ds4UsbBuf == null) ds4UsbBuf = new byte[Ds4EffectSynthesizer.UsbPacketSize];
+                                int n = Ds4EffectSynthesizer.BuildUsb(
+                                    _config, ds4UsbBuf, peakForSynth, nowMs,
+                                    _randomColor, _pulseColor, pulseIntensity,
+                                    rumble.right, rumble.left);
+                                if (n <= 0) { errors++; continue; }
+                                packet = ds4UsbBuf;
+                            }
+                            ok = Ds5RawHidWriter.WriteFullPacket(path, packet);
+                            DiagLog($"  raw-write ds4 bt={isBluetooth} ok={ok} diag='{Ds5RawHidWriter.LastWriteDiag}'");
+                        }
+
                         if (ok) sent++;
                         else errors++;
                     }
                     catch (Exception ex)
                     {
                         errors++;
-                        DiagLog($"Ds5RawHidWriter.Write threw: {ex.GetType().Name} {ex.Message}");
+                        DiagLog($"raw-write threw: {ex.GetType().Name} {ex.Message}");
                     }
                 }
             }
-            DiagLog($"DispatchSnapshot sent={sent} skipped(not-ds5)={skippedNotDs5} skipped(offline)={skippedOffline} skipped(no-handle)={skippedNoHandle} errors={errors} allDs5Online={allDs5Online} allDs5OnlineMapped={allDs5OnlineMapped}");
+            DiagLog($"DispatchSnapshot sent={sent} skipped(not-ps)={skippedNotPs} skipped(offline)={skippedOffline} skipped(no-handle)={skippedNoHandle} errors={errors} allPsOnline={allPsOnline} allPsOnlineMapped={allPsOnlineMapped}");
         }
     }
 }

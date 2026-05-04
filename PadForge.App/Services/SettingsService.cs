@@ -755,6 +755,7 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[md.PadIndex];
                 var macro = new MacroItem
                 {
+                    PadIndex = md.PadIndex,
                     Name = md.Name ?? "Macro",
                     IsEnabled = md.IsEnabled,
                     TriggerButtons = md.TriggerButtons,
@@ -798,7 +799,10 @@ namespace PadForge.Services
                             MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
                             MouseButton = ad.MouseButton,
                             InvertAxis = ad.InvertAxis,
-                            ShowVolumeOsd = ad.ShowVolumeOsd
+                            ShowVolumeOsd = ad.ShowVolumeOsd,
+                            LightbarR = ad.LightbarR,
+                            LightbarG = ad.LightbarG,
+                            LightbarB = ad.LightbarB
                         });
                     }
                 }
@@ -1542,7 +1546,10 @@ namespace PadForge.Services
                             MouseSensitivity = a.MouseSensitivity,
                             MouseButton = a.MouseButton,
                             InvertAxis = a.InvertAxis,
-                            ShowVolumeOsd = a.ShowVolumeOsd
+                            ShowVolumeOsd = a.ShowVolumeOsd,
+                            LightbarR = a.LightbarR,
+                            LightbarG = a.LightbarG,
+                            LightbarB = a.LightbarB
                         }).ToArray()
                     });
                 }
@@ -2484,6 +2491,13 @@ namespace PadForge.Services
         /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
         [XmlElement]
         public bool ShowVolumeOsd { get; set; } = true;
+
+        /// <summary>Lightbar override RGB for MacroActionType.LightbarColor.
+        /// Default 0xFF / 0xFF / 0xFF (white) so a freshly-added action
+        /// produces a visible flash on first test fire.</summary>
+        [XmlElement] public byte LightbarR { get; set; } = 0xFF;
+        [XmlElement] public byte LightbarG { get; set; } = 0xFF;
+        [XmlElement] public byte LightbarB { get; set; } = 0xFF;
     }
 
     /// <summary>

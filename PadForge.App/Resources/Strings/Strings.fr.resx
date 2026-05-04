@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Appui souris {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Relâchement souris {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer la superposition du pavé tactile</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Régler la barre lumineuse sur {0} pendant {1} ms</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Définir la couleur de la barre lumineuse</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Remplace la barre lumineuse du slot PlayStation assigné par une couleur RVB choisie pendant la durée configurée. À l'expiration, la barre revient aux réglages de l'onglet Éclairage. Les écritures pilotées par le jeu restent prioritaires.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Remplace la barre lumineuse du slot PlayStation assigné par une couleur RVB choisie. Réactif s'estompe de l'intensité maximale au noir sur la fenêtre d'atténuation configurée, puis rend la main aux réglages de l'onglet Éclairage. Persistant maintient la couleur jusqu'à ce qu'une action « Effacer la substitution de la barre lumineuse » la libère. Les écritures pilotées par le jeu restent prioritaires.</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Régler la barre lumineuse sur {0} pendant {1} ms</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Faire flasher la barre lumineuse {0} (atténuation {1} ms)</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Maintenir la barre lumineuse {0} jusqu'à effacement</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Effacer la substitution de la barre lumineuse</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Effacer la substitution de la barre lumineuse</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Libère toute substitution active de la barre lumineuse sur le slot assigné. Associer à une action « Définir la couleur de la barre lumineuse » persistante pour annuler via une autre macro.</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Définir le mode de la barre lumineuse</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Régler le mode de la barre lumineuse sur {0}</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Définit le mode de la barre lumineuse du slot assigné sur une valeur précise. Persiste comme une modification de l'onglet Éclairage jusqu'à ce qu'une autre action ou l'utilisateur le change.</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Faire défiler les modes de la barre lumineuse</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Faire défiler {0} modes de barre lumineuse</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Avance le mode de la barre lumineuse du slot parmi les modes cochés ci-dessous. Chaque déclenchement passe au mode coché suivant. La position est propre à l'action et est réinitialisée au redémarrage de l'application.</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Maintien :</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>Réactif (estomper)</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Persistant (maintenir)</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Couleur :</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>Fixe</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Teinte aléatoire</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Étape de palette</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Atténuation :</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode :</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Choisis les modes de barre lumineuse parcourus par la macro. Chaque déclenchement passe au mode coché suivant.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centré</value></data>

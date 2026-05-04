@@ -802,7 +802,12 @@ namespace PadForge.Services
                             ShowVolumeOsd = ad.ShowVolumeOsd,
                             LightbarR = ad.LightbarR,
                             LightbarG = ad.LightbarG,
-                            LightbarB = ad.LightbarB
+                            LightbarB = ad.LightbarB,
+                            LightbarHoldMode = ad.LightbarHoldMode,
+                            LightbarColorSource = ad.LightbarColorSource,
+                            LightbarDecayMs = ad.LightbarDecayMs > 0 ? ad.LightbarDecayMs : 600,
+                            LightbarTargetMode = ad.LightbarTargetMode,
+                            LightbarCycleModesCsv = ad.LightbarCycleModesCsv
                         });
                     }
                 }
@@ -1549,7 +1554,12 @@ namespace PadForge.Services
                             ShowVolumeOsd = a.ShowVolumeOsd,
                             LightbarR = a.LightbarR,
                             LightbarG = a.LightbarG,
-                            LightbarB = a.LightbarB
+                            LightbarB = a.LightbarB,
+                            LightbarHoldMode = a.LightbarHoldMode,
+                            LightbarColorSource = a.LightbarColorSource,
+                            LightbarDecayMs = a.LightbarDecayMs,
+                            LightbarTargetMode = a.LightbarTargetMode,
+                            LightbarCycleModesCsv = a.LightbarCycleModesCsv
                         }).ToArray()
                     });
                 }
@@ -2492,12 +2502,25 @@ namespace PadForge.Services
         [XmlElement]
         public bool ShowVolumeOsd { get; set; } = true;
 
-        /// <summary>Lightbar override RGB for MacroActionType.LightbarColor.
-        /// Default 0xFF / 0xFF / 0xFF (white) so a freshly-added action
+        /// <summary>Lightbar override RGB for
+        /// MacroActionType.LightbarColor with ColorSource = Fixed (or
+        /// any Sticky hold). Default white so a freshly-added action
         /// produces a visible flash on first test fire.</summary>
         [XmlElement] public byte LightbarR { get; set; } = 0xFF;
         [XmlElement] public byte LightbarG { get; set; } = 0xFF;
         [XmlElement] public byte LightbarB { get; set; } = 0xFF;
+        /// <summary>Reactive (decay-fade) or Sticky hold for
+        /// LightbarColor.</summary>
+        [XmlElement] public ViewModels.MacroLightbarHoldMode LightbarHoldMode { get; set; } = ViewModels.MacroLightbarHoldMode.Reactive;
+        /// <summary>Color source for Reactive holds (Fixed / RandomHue /
+        /// PaletteStep). Sticky always uses Fixed.</summary>
+        [XmlElement] public ViewModels.MacroLightbarColorSource LightbarColorSource { get; set; } = ViewModels.MacroLightbarColorSource.Fixed;
+        /// <summary>Decay window for Reactive holds, ms.</summary>
+        [XmlElement] public int LightbarDecayMs { get; set; } = 600;
+        /// <summary>Target mode for LightbarModeSet.</summary>
+        [XmlElement] public ViewModels.LightbarMode LightbarTargetMode { get; set; } = ViewModels.LightbarMode.Static;
+        /// <summary>CSV of LightbarMode int values for LightbarModeCycle.</summary>
+        [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12";
     }
 
     /// <summary>

@@ -812,6 +812,15 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.LightbarColor}"
                                                           ToolTip="{Binding MacroAction_LightbarColor_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarColorClear, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.LightbarColorClear}"
+                                                          ToolTip="{Binding MacroAction_LightbarColorClear_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarModeSet, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.LightbarModeSet}"
+                                                          ToolTip="{Binding MacroAction_LightbarModeSet_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.LightbarModeCycle}"
+                                                          ToolTip="{Binding MacroAction_LightbarModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -866,26 +875,131 @@
                                         <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
 
-                                    <!-- Lightbar color picker — for LightbarColor -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsLightbarType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
-                                                   FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                        <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,6"
-                                                                  Red="{Binding LightbarR, Mode=TwoWay}"
-                                                                  Green="{Binding LightbarG, Mode=TwoWay}"
-                                                                  Blue="{Binding LightbarB, Mode=TwoWay}"/>
-                                        <Border Width="80" Height="20" HorizontalAlignment="Left" CornerRadius="3"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
-                                            <Border.Background>
-                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
-                                                    <Binding Path="LightbarR"/>
-                                                    <Binding Path="LightbarG"/>
-                                                    <Binding Path="LightbarB"/>
-                                                </MultiBinding>
-                                            </Border.Background>
-                                        </Border>
-                                    </StackPanel>
+                                    <!-- Lightbar Color card (Reactive | Sticky) -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsLightbarType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding LightbarHoldMode, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="140">
+                                                    <ComboBoxItem Content="{Binding Macro_LightbarHold_Reactive, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarHoldMode.Reactive}"/>
+                                                    <ComboBoxItem Content="{Binding Macro_LightbarHold_Sticky, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarHoldMode.Sticky}"/>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <!-- Color source — Reactive only. Sticky always uses Fixed. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                        Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding LightbarColorSource, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="160">
+                                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_Fixed, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.Fixed}"/>
+                                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_RandomHue, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.RandomHue}"/>
+                                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_PaletteStep, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.PaletteStep}"/>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <!-- Color picker — visible for Sticky always, Reactive only when Source=Fixed. -->
+                                            <StackPanel Margin="0,0,0,6"
+                                                        Visibility="{Binding IsLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,4"
+                                                                          Red="{Binding LightbarR, Mode=TwoWay}"
+                                                                          Green="{Binding LightbarG, Mode=TwoWay}"
+                                                                          Blue="{Binding LightbarB, Mode=TwoWay}"/>
+                                                <Border Width="80" Height="20" HorizontalAlignment="Left" CornerRadius="3"
+                                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                    <Border.Background>
+                                                        <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                            <Binding Path="LightbarR"/>
+                                                            <Binding Path="LightbarG"/>
+                                                            <Binding Path="LightbarB"/>
+                                                        </MultiBinding>
+                                                    </Border.Background>
+                                                </Border>
+                                            </StackPanel>
+                                            <!-- Decay slider — Reactive only. -->
+                                            <StackPanel Orientation="Horizontal"
+                                                        Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_LightbarDecay_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding LightbarDecayMs, Mode=TwoWay}"
+                                                        Minimum="50" Maximum="3000" Width="220"
+                                                        VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding LightbarDecayMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
+                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Lightbar Color Clear card -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsLightbarColorClearType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_LightbarColorClear, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MacroAction_LightbarColorClear_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Lightbar Mode Set card -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsLightbarModeSetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_LightbarModeSet, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Macro_LightbarTargetMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding LightbarTargetMode, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="280">
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Breathing}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Rainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Rainbow}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ColorCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ColorCycle}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulse, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulse}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRandom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRandom}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRainbow}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioThresholds, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioThresholds}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioGradient, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioGradient}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioCrossFade}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactive, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.InputReactive}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.InputReactiveCycle}"/>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Lightbar Mode Cycle card — checkbox grid bound through LightbarCycleModesCsv via the action's CycleModeOptions list. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsLightbarModeCycleType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Macro_LightbarCycleModes_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <ItemsControl ItemsSource="{Binding CycleModeOptions}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Content="{Binding Label}"
+                                                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                                  MinWidth="160" Margin="0,0,8,4"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
 
                                     <!-- Axis target + value — for AxisSet -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"

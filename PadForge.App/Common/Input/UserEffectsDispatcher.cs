@@ -204,10 +204,21 @@ namespace PadForge.Common.Input
 
         private void UpdateAnimTimer()
         {
+            // Timer wants to run when:
+            //   - LightbarMode is animated (audio / breathing / etc.), or
+            //   - A Reactive macro override is in flight (intensity is
+            //     decaying and needs per-tick re-dispatch).
+            // A Sticky override has constant RGB and constant intensity
+            // (1.0), so the dispatcher just needs the one snapshot fired
+            // off the OnConfigChanged event. No timer required.
+            bool reactiveOverrideRunning =
+                _config != null
+                && _config.HasActiveMacroLightbarOverride
+                && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
+
             bool wantTimer = !_disposed
                 && _config != null
-                && (IsAnimated(_config.LightbarMode)
-                    || _config.HasActiveMacroLightbarOverride);
+                && (IsAnimated(_config.LightbarMode) || reactiveOverrideRunning);
 
             if (wantTimer && !_animTickActive)
             {
@@ -241,13 +252,15 @@ namespace PadForge.Common.Input
             if (_disposed || _config == null) return;
             var mode = _config.LightbarMode;
             bool overrideActive = _config.HasActiveMacroLightbarOverride;
+            bool reactiveRunning = overrideActive && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
             bool animated = IsAnimated(mode);
 
-            // If neither an animated mode nor an active override needs us,
-            // dispatch one final snapshot (so a just-expired override
-            // hands off to the configured base/off state) and stop the
-            // timer.
-            if (!animated && !overrideActive)
+            // If neither an animated mode nor a running Reactive override
+            // needs us, dispatch one final snapshot (so a just-expired
+            // override hands off cleanly to the configured base/off
+            // state) and stop the timer. Sticky holds don't keep the
+            // timer running — RGB and intensity are constant.
+            if (!animated && !reactiveRunning)
             {
                 if (_lastTickOverrideActive)
                 {
@@ -259,13 +272,13 @@ namespace PadForge.Common.Input
                 StopAnimTimer();
                 return;
             }
-            _lastTickOverrideActive = overrideActive;
+            _lastTickOverrideActive = reactiveRunning;
 
-            // Override-only path (mode is idle): dispatch every tick so
-            // the override packet refreshes and the just-expired transition
-            // above fires reliably. Skip the audio/pulse recomputation
-            // entirely — the synthesizer reads the override directly.
-            if (!animated && overrideActive)
+            // Reactive-only path (mode is idle): dispatch every tick so
+            // the intensity ramp is smooth. Skip the audio/pulse
+            // recomputation — the synthesizer pulls intensity directly
+            // from the config.
+            if (!animated && reactiveRunning)
             {
                 DispatchSnapshot();
                 return;

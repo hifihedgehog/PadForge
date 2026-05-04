@@ -458,9 +458,9 @@
   <data name="Curve_Custom" xml:space="preserve"><value>自定义</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>校准中心</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>采样中...</value></data>
-  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心偏移 X：</value></data>
-  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心偏移 Y：</value></data>
-  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>死区形状：</value></data>
+  <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心偏移 X</value></data>
+  <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心偏移 Y</value></data>
+  <data name="Pad_DeadZoneShape" xml:space="preserve"><value>死区形状</value></data>
   <data name="Pad_DZScaledRadial" xml:space="preserve"><value>缩放径向</value></data>
   <data name="Pad_DZRadial" xml:space="preserve"><value>径向</value></data>
   <data name="Pad_DZAxial" xml:space="preserve"><value>轴向</value></data>
@@ -474,21 +474,21 @@
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>名称</value></data>
   <data name="Macro_Trigger" xml:space="preserve"><value>触发器</value></data>
-  <data name="Macro_Fire" xml:space="preserve"><value>触发方式：</value></data>
+  <data name="Macro_Fire" xml:space="preserve"><value>触发方式</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>按下时</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>释放时</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>始终</value></data>
-  <data name="Macro_Source" xml:space="preserve"><value>来源：</value></data>
+  <data name="Macro_Source" xml:space="preserve"><value>来源</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>输入设备</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>输出控制器</value></data>
-  <data name="Macro_Threshold" xml:space="preserve"><value>阈值：</value></data>
+  <data name="Macro_Threshold" xml:space="preserve"><value>阈值</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>拦截触发按钮（对游戏隐藏）</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>在此虚拟控制器激活时持续运行。无需触发按钮。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>动作序列</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>添加动作</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>编辑动作</value></data>
-  <data name="Macro_ActionType" xml:space="preserve"><value>类型：</value></data>
+  <data name="Macro_ActionType" xml:space="preserve"><value>类型</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>按下按钮</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>释放按钮</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>按下按键</value></data>
@@ -502,24 +502,24 @@
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>释放鼠标按钮</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触控板叠加层</value></data>
-  <data name="Macro_Buttons" xml:space="preserve"><value>按钮：</value></data>
-  <data name="Macro_KeyCombo" xml:space="preserve"><value>组合键：</value></data>
+  <data name="Macro_Buttons" xml:space="preserve"><value>按钮</value></data>
+  <data name="Macro_KeyCombo" xml:space="preserve"><value>组合键</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>按键组合，格式为 {Key1}{Key2}，可编辑</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>选择一个按键添加。示例：{Control}{Alt}{Delete}</value></data>
-  <data name="Macro_Duration" xml:space="preserve"><value>持续时间：</value></data>
-  <data name="Macro_Axis" xml:space="preserve"><value>轴：</value></data>
+  <data name="Macro_Duration" xml:space="preserve"><value>持续时间</value></data>
+  <data name="Macro_Axis" xml:space="preserve"><value>轴</value></data>
   <data name="Macro_LeftStickX" xml:space="preserve"><value>左摇杆 X</value></data>
   <data name="Macro_LeftStickY" xml:space="preserve"><value>左摇杆 Y</value></data>
   <data name="Macro_RightStickX" xml:space="preserve"><value>右摇杆 X</value></data>
   <data name="Macro_RightStickY" xml:space="preserve"><value>右摇杆 Y</value></data>
   <data name="Macro_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
   <data name="Macro_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
-  <data name="Macro_AxisValue" xml:space="preserve"><value>数值：</value></data>
-  <data name="Macro_AxisFrom" xml:space="preserve"><value>轴来源：</value></data>
-  <data name="Macro_SourceAxis" xml:space="preserve"><value>源轴：</value></data>
-  <data name="Macro_Device" xml:space="preserve"><value>设备：</value></data>
-  <data name="Macro_VolumeLimit" xml:space="preserve"><value>音量上限：</value></data>
-  <data name="Macro_Process" xml:space="preserve"><value>进程：</value></data>
+  <data name="Macro_AxisValue" xml:space="preserve"><value>数值</value></data>
+  <data name="Macro_AxisFrom" xml:space="preserve"><value>轴来源</value></data>
+  <data name="Macro_SourceAxis" xml:space="preserve"><value>源轴</value></data>
+  <data name="Macro_Device" xml:space="preserve"><value>设备</value></data>
+  <data name="Macro_VolumeLimit" xml:space="preserve"><value>音量上限</value></data>
+  <data name="Macro_Process" xml:space="preserve"><value>进程</value></data>
   <data name="Macro_ProcessTooltip" xml:space="preserve"><value>不带 .exe 的进程名称；下拉列表显示有活跃音频会话的进程</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>左键</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>右键</value></data>
@@ -527,13 +527,13 @@
   <data name="Macro_MouseX1" xml:space="preserve"><value>X1（后退）</value></data>
   <data name="Macro_MouseX2" xml:space="preserve"><value>X2（前进）</value></data>
   <data name="Macro_Repeat" xml:space="preserve"><value>重复</value></data>
-  <data name="Macro_RepeatMode" xml:space="preserve"><value>模式：</value></data>
+  <data name="Macro_RepeatMode" xml:space="preserve"><value>模式</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>单次</value></data>
   <data name="Macro_FixedCount" xml:space="preserve"><value>固定次数</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>直到释放</value></data>
-  <data name="Macro_Count" xml:space="preserve"><value>次数：</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>延迟（ms）：</value></data>
-  <data name="Macro_Sensitivity" xml:space="preserve"><value>灵敏度：</value></data>
+  <data name="Macro_Count" xml:space="preserve"><value>次数</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>延迟（ms）</value></data>
+  <data name="Macro_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>新建宏</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>录制触发器</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>未设置 —— 点击录制</value></data>
@@ -577,18 +577,18 @@
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>循环{0}个灯条模式</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>在下方选定的模式中推进插槽的灯条模式。每次触发跳到下一个已勾选模式。位置按动作存储，应用重启时重置。</value></data>
 
-  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持：</value></data>
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>反应式（淡出）</value></data>
   <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>持续（保持）</value></data>
-  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>颜色：</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>颜色</value></data>
   <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>固定</value></data>
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>随机色相</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>调色板步进</value></data>
-  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>衰减：</value></data>
-  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>淡出：</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>衰减</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>淡出</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>调色板</value></data>
   <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>空调色板使用插槽的灯光选项卡调色板。</value></data>
-  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>模式：</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>模式</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>选择宏要循环的灯条模式。每次触发跳到下一个已勾选模式。</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -657,32 +657,32 @@
   <data name="Preview_DPad" xml:space="preserve"><value>十字键</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
-  <data name="Pad_DeadZoneX" xml:space="preserve"><value>死区 X：</value></data>
-  <data name="Pad_DeadZoneY" xml:space="preserve"><value>死区 Y：</value></data>
-  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>反死区 X：</value></data>
-  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>反死区 Y：</value></data>
-  <data name="Pad_Linear" xml:space="preserve"><value>线性：</value></data>
+  <data name="Pad_DeadZoneX" xml:space="preserve"><value>死区 X</value></data>
+  <data name="Pad_DeadZoneY" xml:space="preserve"><value>死区 Y</value></data>
+  <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>反死区 X</value></data>
+  <data name="Pad_AntiDeadZoneY" xml:space="preserve"><value>反死区 Y</value></data>
+  <data name="Pad_Linear" xml:space="preserve"><value>线性</value></data>
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>灵敏度曲线</value></data>
   <data name="Pad_SensitivityCurveHint" xml:space="preserve"><value>双击添加点。右键单击删除。拖动调整。</value></data>
-  <data name="Pad_SensitivityX" xml:space="preserve"><value>灵敏度 X：</value></data>
-  <data name="Pad_SensitivityY" xml:space="preserve"><value>灵敏度 Y：</value></data>
-  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>最小范围 X（左）：</value></data>
-  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>最大范围 X（右）：</value></data>
-  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小范围 Y（下）：</value></data>
-  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大范围 Y（上）：</value></data>
+  <data name="Pad_SensitivityX" xml:space="preserve"><value>灵敏度 X</value></data>
+  <data name="Pad_SensitivityY" xml:space="preserve"><value>灵敏度 Y</value></data>
+  <data name="Pad_MinRangeXLeft" xml:space="preserve"><value>最小范围 X（左）</value></data>
+  <data name="Pad_MaxRangeXRight" xml:space="preserve"><value>最大范围 X（右）</value></data>
+  <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小范围 Y（下）</value></data>
+  <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大范围 Y（上）</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X 轴</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 轴</value></data>
-  <data name="Pad_Range" xml:space="preserve"><value>范围：</value></data>
-  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>反死区：</value></data>
+  <data name="Pad_Range" xml:space="preserve"><value>范围</value></data>
+  <data name="Pad_AntiDeadZone" xml:space="preserve"><value>反死区</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>灵敏度曲线</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>双击添加点。右键单击删除。拖动调整。</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>预设：</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>实时：</value></data>
+  <data name="Pad_Preset_Label" xml:space="preserve"><value>预设</value></data>
+  <data name="Pad_Live" xml:space="preserve"><value>实时</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳机轴</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>力反馈 / 振动</value></data>
-  <data name="Pad_OverallGain" xml:space="preserve"><value>总增益：</value></data>
-  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左马达：</value></data>
-  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右马达：</value></data>
+  <data name="Pad_OverallGain" xml:space="preserve"><value>总增益</value></data>
+  <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左马达</value></data>
+  <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右马达</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>交换左右马达</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>测试振动</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>马达活动</value></data>
@@ -984,9 +984,9 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>触摸板下方的五个小白色 LED。选择要显示的玩家位次图案及亮度。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>指示 LED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>玩家编号一排(触摸板下的 5 个 LED)和麦克风上方的静音 LED。亮度控制实际上只影响玩家排。固件提供静音 LED 状态(关闭 / 常亮 / 脉冲),但没有独立的静音亮度寄存器。</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>玩家图案:</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>静音 LED 模式:</value></data>
-  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 亮度:</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>玩家图案</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>静音 LED 模式</value></data>
+  <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 亮度</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>图案</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>玩家 1</value></data>
@@ -1001,19 +1001,19 @@
   <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>音频驱动灯条</value></data>
   <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>根据系统音频峰值调制上面的基础颜色。随默认输出设备正在播放的内容脉冲。复用与音频震动相同的 WASAPI 采集,但读取完整波形(无低音截止滤波),因此跟随你听到的一切。</value></data>
   <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>让基础颜色随系统音频脉冲</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>灵敏度:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>脉冲基础颜色</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>三色 — 硬切换</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>三色 — 平滑渐变</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>三色 — 边界交叉淡化</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>交叉淡化宽度:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>交叉淡化宽度</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>弱声颜色</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>中声颜色</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>强声颜色</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>弱 → 中 阈值:</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 强 阈值:</value></data>
-  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>模式:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>弱 → 中 阈值</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 强 阈值</value></data>
+  <data name="Pad_Lighting_Mode" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>关闭(游戏控制灯条)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>静态颜色</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>呼吸(单色渐隐渐显)</value></data>
@@ -1028,7 +1028,7 @@
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>输入响应 — 每次按下随机颜色</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>输入响应 — 循环调色板</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>输入响应 — 每次按下单一颜色</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms):</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>调色板</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>颜色 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>颜色 2</value></data>
@@ -1038,8 +1038,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>添加颜色</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>重置调色板</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>将当前调色板替换为四种默认颜色(红、绿、蓝、黄)。</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>脉冲保持 (ms):</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脉冲衰减 (ms):</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>脉冲保持 (ms)</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脉冲衰减 (ms)</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>重置强度</value></data>

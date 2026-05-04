@@ -2452,6 +2452,41 @@
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
 
+                                <!-- Per-press flash color for the Fixed overlay variant.
+                                     Independent of LightbarRed/Green/Blue (which drives
+                                     the base mode color), so users can layer a base
+                                     color with a different flash color. -->
+                                <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                                        Visibility="{Binding PlayStationConfig.IsInputReactiveFixed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Pad_Lighting_InputReactive_FixedColor, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                        <views:ColorPickerControl Margin="0,0,0,12"
+                                            HorizontalAlignment="Left"
+                                            Red="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay}"
+                                            Green="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay}"
+                                            Blue="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                            <Slider Value="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                            <Slider Value="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <Slider Value="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                            <Button Command="{Binding PlayStationConfig.ResetInputReactiveColorCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetInputReactiveColor, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
                                 <!-- InputReactive controls. Hold + Decay sliders show whenever
                                      the input-reactive overlay (v3.2+) is enabled in any
                                      variant — Random / Cycle / Fixed. Hold may be 0 for
@@ -2615,14 +2650,14 @@
                                     <Button Command="{Binding PlayStationConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCrossFadePercent, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Single colour: Static / Breathing / AudioPulse / InputReactiveFixed.
-                                     Wrapped in a bordered card to match the palette items and audio
-                                     band cards. InputReactiveFixed reads the same RGB and flashes
-                                     it per button press through the dispatcher. -->
+                                <!-- Single colour: Static / Breathing / AudioPulse base modes.
+                                     The Input Reactive Fixed overlay has its own color
+                                     picker below so users can pick a separate flash
+                                     color independent of the base. -->
                                 <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
                                         HorizontalAlignment="Left"
                                         BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                                        Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse|InputReactiveFixed}">
+                                        Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse}">
                                     <StackPanel>
                                         <views:ColorPickerControl Margin="0,0,0,12"
                                             HorizontalAlignment="Left"

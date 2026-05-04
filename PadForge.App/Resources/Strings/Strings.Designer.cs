@@ -497,6 +497,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_InputReactive_Cycle => Get("Pad_Lighting_InputReactive_Cycle");
     public string Pad_Lighting_InputReactive_Fixed => Get("Pad_Lighting_InputReactive_Fixed");
     public string Pad_ResetInputReactive => Get("Pad_ResetInputReactive");
+    public string Pad_Lighting_InputReactive_FixedColor => Get("Pad_Lighting_InputReactive_FixedColor");
+    public string Pad_ResetInputReactiveColor => Get("Pad_ResetInputReactiveColor");
     public string Pad_Lighting_Period => Get("Pad_Lighting_Period");
     public string Pad_Lighting_PaletteHeader => Get("Pad_Lighting_PaletteHeader");
     public string Pad_Lighting_PaletteColor1 => Get("Pad_Lighting_PaletteColor1");

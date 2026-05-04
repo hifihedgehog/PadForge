@@ -720,22 +720,55 @@ namespace PadForge.Common.Input
                         bool ok;
                         if (isDs5)
                         {
-                            // DS5 path — synthesize per-device with this
-                            // device's config, pulse state, and rumble
-                            // bytes, then wrap in the USB (0x02) or BT
-                            // (0x31) envelope.
+                            // ── CRITICAL: DS5 effect packet rumble byte contract ──
+                            //
+                            // PadForge writes DS5 effect packets via raw HID
+                            // (Ds5RawHidWriter) at up to 30 Hz, BYPASSING SDL3
+                            // entirely. SDL3's PS5 driver also writes effect
+                            // packets — for SDL_RumbleJoystick calls the SDL
+                            // path carries the audio-mixed rumble bytes from
+                            // ForceFeedbackState.SetDeviceForces. Two writers,
+                            // same DS5: per Ds5RawHidWriter's own docstring,
+                            // "the firmware applies whichever WriteFile lands
+                            // most recently."
+                            //
+                            // That means: every PadForge dispatcher write is
+                            // ALSO writing rumble bytes from this packet's
+                            // perspective. If the dispatcher writes 0 motor
+                            // values 30 Hz between SDL's audio-rumble writes,
+                            // motors pulse audio→0→audio→0 — average strength
+                            // collapses (the v3.1.x audio-rumble regression).
+                            //
+                            // Two rules that MUST hold for audio rumble to
+                            // feel right:
+                            //   1. Bit 0 of validFlag1 (EnableRumbleEmulation)
+                            //      stays set unconditionally on every
+                            //      dispatcher packet. Clearing it ("disable
+                            //      compatibility motor mode") races SDL's
+                            //      bit-0-set writes off the channel.
+                            //   2. The rumble bytes the dispatcher carries
+                            //      MUST include audio mix (when audio rumble
+                            //      is enabled) so the dispatcher reinforces
+                            //      SDL's audio rumble rather than fighting
+                            //      it. SlotRumbleForDeviceProvider runs
+                            //      ScaleRumbleForDevice for this — it pulls
+                            //      raw VibrationStates (game rumble) and
+                            //      mixes audio in, yielding the same value
+                            //      SDL sends.
+                            //
+                            // For test-rumble target gating (only the picked
+                            // device should rumble), we still zero rR/rL on
+                            // non-target devices — but bit 0 stays set so the
+                            // firmware applies our zero in compatibility mode
+                            // (a transient zero SDL's next write can replace
+                            // if it really wants to drive that device). That
+                            // matches 3.1.0 behavior; it does NOT compound
+                            // into a steady-state motor kill.
                             int ds5Len = Ds5EffectSynthesizer.Build(
                                 devCfg, ds5Buffer, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL);
                             if (ds5Len <= 0) { errors++; continue; }
-                            // When this device gets no rumble (test target
-                            // mismatch or per-device gain = 0), clear bit 0
-                            // of validFlag1 so the firmware ignores motor
-                            // bytes — without this gate prior rumble can
-                            // persist on the device.
-                            if (rR == 0 && rL == 0)
-                                ds5Buffer[1] &= 0xFE;
                             ok = Ds5RawHidWriter.Write(path, ds5Buffer.AsSpan(0, ds5Len));
                             DiagLog($"  raw-write ds5 ok={ok} rumble=({rR},{rL}) testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
                         }

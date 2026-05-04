@@ -357,6 +357,16 @@ namespace PadForge.Common.Input
                             wantTimer = true;
                             break;
                         }
+                        // v3.2 input-reactive overlay needs the timer
+                        // running for both button-press edge detection
+                        // (DrainInputPulses fires only from OnAnimTick)
+                        // and for the pulse-intensity decay that fades
+                        // the flash back into the base color.
+                        if (devCfg.InputReactiveMode != InputReactiveMode.Off)
+                        {
+                            wantTimer = true;
+                            break;
+                        }
                     }
                 }
                 else if (_config != null)
@@ -364,7 +374,9 @@ namespace PadForge.Common.Input
                     bool reactiveOverrideRunning =
                         _config.HasActiveMacroLightbarOverride
                         && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
-                    wantTimer = IsAnimated(_config.LightbarMode) || reactiveOverrideRunning;
+                    wantTimer = IsAnimated(_config.LightbarMode)
+                        || reactiveOverrideRunning
+                        || _config.InputReactiveMode != InputReactiveMode.Off;
                 }
 
                 // Polling-thread rumble poke. The dispatcher is the SOLE
@@ -417,6 +429,7 @@ namespace PadForge.Common.Input
             bool anyReactiveRunning = false;
             bool anyAudioMode = false;
             bool anyAudioPulseRandom = false;
+            bool anyInputReactiveOverlay = false;
             float maxSensitivity = (float)_config.AudioLightbarSensitivity;
             if (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
             {
@@ -437,6 +450,8 @@ namespace PadForge.Common.Input
                     if (devCfg.HasActiveMacroLightbarOverride
                         && devCfg.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive)
                         anyReactiveRunning = true;
+                    if (devCfg.InputReactiveMode != InputReactiveMode.Off)
+                        anyInputReactiveOverlay = true;
                 }
             }
             else
@@ -448,14 +463,15 @@ namespace PadForge.Common.Input
                 anyAudioPulseRandom = mode == LightbarMode.AudioPulseRandom;
                 bool overrideActive = _config.HasActiveMacroLightbarOverride;
                 anyReactiveRunning = overrideActive && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
+                anyInputReactiveOverlay = _config.InputReactiveMode != InputReactiveMode.Off;
             }
 
             // If no device wants an animated mode, no Reactive override,
-            // and no rumble work to push, dispatch one final snapshot
-            // (so a just-expired override hands off cleanly) and stop
-            // the timer. Sticky holds don't keep the timer running —
-            // RGB and intensity are constant.
-            if (!anyAnimated && !anyReactiveRunning && !_slotNeedsRumbleTimer)
+            // no input-reactive overlay, and no rumble work to push,
+            // dispatch one final snapshot (so a just-expired override
+            // hands off cleanly) and stop the timer. Sticky holds don't
+            // keep the timer running — RGB and intensity are constant.
+            if (!anyAnimated && !anyReactiveRunning && !anyInputReactiveOverlay && !_slotNeedsRumbleTimer)
             {
                 if (_lastTickOverrideActive)
                 {
@@ -467,14 +483,16 @@ namespace PadForge.Common.Input
             }
             _lastTickOverrideActive = anyReactiveRunning;
 
-            // Rumble-or-Reactive-only path (no device animated lightbar):
-            // dispatch every tick so the per-device audio-mixed rumble
-            // bytes propagate through the dispatcher's effect packet.
-            // SDL no longer writes Sony rumble, so this path IS the
-            // rumble pipeline for any slot with audio rumble or game
-            // rumble in flight + a static / off lightbar.
-            if (!anyAnimated && (anyReactiveRunning || _slotNeedsRumbleTimer))
+            // Non-animated paths that still need every-tick dispatch:
+            //   - Reactive macro override is decaying intensity → ramp.
+            //   - Input-reactive overlay is enabled → DrainInputPulses
+            //     must run every tick to detect button-press edges, and
+            //     pulseIntensity decays smoothly back to base color.
+            //   - Rumble work in flight → effect packet must carry the
+            //     per-device rumble bytes (sole-writer model).
+            if (!anyAnimated && (anyReactiveRunning || anyInputReactiveOverlay || _slotNeedsRumbleTimer))
             {
+                if (anyInputReactiveOverlay) DrainInputPulses();
                 DispatchSnapshot();
                 return;
             }
@@ -579,11 +597,17 @@ namespace PadForge.Common.Input
             if (newlyPressed == 0) return;
 
             // Roll per-device pulse colour using each device's own
-            // mode + palette. A device in InputReactive (random hue)
-            // gets its own random roll; a device in InputReactiveCycle
-            // advances its own palette index; a device in
-            // InputReactiveFixed needs no roll (synthesizer reads the
-            // device's static LightbarRed/G/B).
+            // input-reactive overlay mode + palette. The legacy
+            // LightbarMode.InputReactive* values are still honored for
+            // any unmigrated saves / runtime macro applications, but
+            // the v3.2+ overlay surface is cfg.InputReactiveMode
+            // (independent of base LightbarMode, lerped over the base
+            // by pulseIntensity in the synthesizer).
+            //
+            //   - Random / legacy InputReactive    → random hue
+            //   - Cycle  / legacy InputReactiveCycle → palette step
+            //   - Fixed  / legacy InputReactiveFixed → no roll
+            //     (synthesizer reads cfg.LightbarRed/G/B)
             var perDeviceCfgs = SlotPerDeviceConfigsProvider?.Invoke(_padIndex);
             if (perDeviceCfgs != null)
             {
@@ -592,19 +616,29 @@ namespace PadForge.Common.Input
                     var devCfg = kvp.Value;
                     if (devCfg == null) continue;
                     var devMode = devCfg.LightbarMode;
-                    if (devMode != LightbarMode.InputReactive
-                        && devMode != LightbarMode.InputReactiveCycle
-                        && devMode != LightbarMode.InputReactiveFixed)
+                    var overlayMode = devCfg.InputReactiveMode;
+
+                    bool wantRandomRoll =
+                        overlayMode == InputReactiveMode.Random
+                        || devMode == LightbarMode.InputReactive;
+                    bool wantPaletteRoll =
+                        overlayMode == InputReactiveMode.Cycle
+                        || devMode == LightbarMode.InputReactiveCycle;
+                    bool wantFixed =
+                        overlayMode == InputReactiveMode.Fixed
+                        || devMode == LightbarMode.InputReactiveFixed;
+
+                    if (!wantRandomRoll && !wantPaletteRoll && !wantFixed)
                         continue;
 
                     var state = GetOrCreateDeviceState(kvp.Key);
-                    if (devMode == LightbarMode.InputReactive)
+                    if (wantRandomRoll)
                     {
                         int h = _rng.Next(0, 360);
                         HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
                         state.PulseColor = (uint)((r << 16) | (g << 8) | b);
                     }
-                    else if (devMode == LightbarMode.InputReactiveCycle)
+                    else if (wantPaletteRoll)
                     {
                         var palette = devCfg.SnapshotLightbarPalette();
                         int n = palette.Length;
@@ -619,8 +653,8 @@ namespace PadForge.Common.Input
                             state.PulseColor = 0;
                         }
                     }
-                    // InputReactiveFixed: synthesizer reads the device's
-                    // own LightbarRed/G/B; no per-device pulse colour to
+                    // wantFixed: synthesizer reads the device's
+                    // LightbarRed/G/B; no per-device pulse colour to
                     // roll here.
                 }
             }

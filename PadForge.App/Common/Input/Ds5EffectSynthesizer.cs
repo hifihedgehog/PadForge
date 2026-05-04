@@ -198,11 +198,13 @@ namespace PadForge.Common.Input
             // Reactive, and is 0 when no override is active.
             float macroOverrideIntensity = cfg.ComputeMacroOverrideIntensity();
             bool macroOverrideActive = macroOverrideIntensity > 0f;
+            bool inputReactiveActive = cfg.InputReactiveMode != InputReactiveMode.Off;
 
             bool anyLightFeature =
                 cfg.LightbarMode != LightbarMode.Off
                 || cfg.PlayerLedMode != PlayerLedMode.Off
-                || macroOverrideActive;
+                || macroOverrideActive
+                || inputReactiveActive;
 
             // Always assert the player-indicator update bit and write byte
             // 43, even when PlayerLedMode == Off. Without setting validFlag1
@@ -235,31 +237,50 @@ namespace PadForge.Common.Input
             {
                 enableBits |= EnableLightbar;
 
+                // Priority: macro override > input-reactive overlay > base
+                // mode. Macro override blends the configured macro RGB
+                // ×macroIntensity directly (legacy behaviour, full
+                // override during the hold window). The input-reactive
+                // overlay layers OVER the base mode by lerping between
+                // the base color and the reactive flash by pulseIntensity
+                // — at intensity 1.0 you see the flash, as it decays
+                // toward 0 the base mode shows through. Off + overlay
+                // collapses to a black base, matching legacy
+                // InputReactive*-as-base-mode behaviour.
                 if (macroOverrideActive)
                 {
-                    // Macro-driven override beats both the configured mode
-                    // and the base-color path for its hold window. Game
-                    // writes still win at packet level via Feature A.
-                    // RGB scaled by intensity so a Reactive flash fades
-                    // smoothly to black (mode takes over once intensity
-                    // hits 0 → HasActiveMacroLightbarOverride flips false).
                     dst[OffLedRed]   = (byte)Math.Round(cfg.MacroOverrideR * macroOverrideIntensity);
                     dst[OffLedGreen] = (byte)Math.Round(cfg.MacroOverrideG * macroOverrideIntensity);
                     dst[OffLedBlue]  = (byte)Math.Round(cfg.MacroOverrideB * macroOverrideIntensity);
                 }
-                else if (cfg.LightbarMode != LightbarMode.Off)
+                else
                 {
-                    var (r, g, b) = ComputeLightbarColor(
-                        cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
-                    dst[OffLedRed]   = r;
-                    dst[OffLedGreen] = g;
-                    dst[OffLedBlue]  = b;
+                    byte baseR = 0, baseG = 0, baseB = 0;
+                    if (cfg.LightbarMode != LightbarMode.Off)
+                    {
+                        (baseR, baseG, baseB) = ComputeLightbarColor(
+                            cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
+                    }
+
+                    if (inputReactiveActive && pulseIntensity > 0f)
+                    {
+                        var (rR, rG, rB) = ResolveReactiveOverlayColor(
+                            cfg, randomColor, pulseColor);
+                        LerpColor(pulseIntensity,
+                            baseR, baseG, baseB,
+                            rR, rG, rB,
+                            out byte fR, out byte fG, out byte fB);
+                        dst[OffLedRed]   = fR;
+                        dst[OffLedGreen] = fG;
+                        dst[OffLedBlue]  = fB;
+                    }
+                    else
+                    {
+                        dst[OffLedRed]   = baseR;
+                        dst[OffLedGreen] = baseG;
+                        dst[OffLedBlue]  = baseB;
+                    }
                 }
-                // else: anyLightFeature is true purely because the player
-                // pattern is on with LightbarMode == Off. Leave bytes 44-46
-                // at the buffer's initial zero so the lightbar stays dark;
-                // we still need EnableLightbar set above for byte 42
-                // (ledBrightness) to apply.
             }
 
             // Mic LED mode @ byte 8: 0 = off, 1 = solid, 2 = pulse.
@@ -328,6 +349,44 @@ namespace PadForge.Common.Input
             uint pulseColor,
             float pulseIntensity)
             => ComputeLightbarColor(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
+
+        /// <summary>Public adapter for <see cref="ResolveReactiveOverlayColor"/>
+        /// so the DS4 synthesizer can compose the same overlay logic
+        /// without duplicating it. Reactive variants (Random, Cycle,
+        /// Fixed) all read dispatcher-rolled state for randomColor /
+        /// pulseColor + the slot's static base RGB for Fixed.</summary>
+        public static (byte r, byte g, byte b) ResolveReactiveOverlayColorPublic(
+            PlayStationSlotConfig cfg,
+            uint randomColor,
+            uint pulseColor)
+            => ResolveReactiveOverlayColor(cfg, randomColor, pulseColor);
+
+        /// <summary>Picks the overlay color based on
+        /// <see cref="PlayStationSlotConfig.InputReactiveMode"/>:
+        /// Random uses the dispatcher's per-press random hue,
+        /// Cycle uses the per-press palette pick, and Fixed
+        /// uses the slot's configured base RGB. Caller is
+        /// responsible for blending this with the base mode color
+        /// via <see cref="LerpColor"/> at the current pulse intensity.</summary>
+        private static (byte r, byte g, byte b) ResolveReactiveOverlayColor(
+            PlayStationSlotConfig cfg,
+            uint randomColor,
+            uint pulseColor)
+        {
+            switch (cfg.InputReactiveMode)
+            {
+                case InputReactiveMode.Random:
+                case InputReactiveMode.Cycle:
+                    return (
+                        (byte)((pulseColor >> 16) & 0xFF),
+                        (byte)((pulseColor >> 8) & 0xFF),
+                        (byte)(pulseColor & 0xFF));
+                case InputReactiveMode.Fixed:
+                    return (cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
+                default:
+                    return (0, 0, 0);
+            }
+        }
 
         /// <summary>Reduces the active <see cref="LightbarMode"/> plus
         /// dynamic inputs (audio peak, wall-clock timestamp, dispatcher-

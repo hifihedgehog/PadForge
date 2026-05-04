@@ -669,7 +669,7 @@ namespace PadForge.Common.Input
                         // that mode using its OWN per-device config
                         // (its own RGB / palette / decay).
                         foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
-                            devCfg.LightbarMode = action.LightbarTargetMode;
+                            ApplyLightbarModeSetMigrated(devCfg, action.LightbarTargetMode);
                     }
                     AdvanceAction(macro);
                     break;
@@ -1257,7 +1257,7 @@ namespace PadForge.Common.Input
                         // Each device renders the new mode using its OWN
                         // per-device colors / palette.
                         foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
-                            devCfg.LightbarMode = action.LightbarTargetMode;
+                            ApplyLightbarModeSetMigrated(devCfg, action.LightbarTargetMode);
                     }
                     AdvanceAction(macro);
                     break;
@@ -1266,6 +1266,35 @@ namespace PadForge.Common.Input
                 case MacroActionType.LightbarModeCycle:
                     ApplyLightbarModeCycleAction(macro, action);
                     AdvanceAction(macro);
+                    break;
+            }
+        }
+
+        /// <summary>Apply a macro LightbarModeSet target to one device's
+        /// config, translating the legacy InputReactive* values into
+        /// the v3.2+ overlay model: LightbarMode = Off, InputReactiveMode
+        /// = corresponding overlay variant. Non-reactive base modes set
+        /// LightbarMode directly and leave the overlay alone (so users
+        /// can layer macros — e.g. macro switches base to Rainbow while
+        /// the user's overlay continues to flash on each press).</summary>
+        private static void ApplyLightbarModeSetMigrated(PlayStationSlotConfig devCfg, LightbarMode target)
+        {
+            switch (target)
+            {
+                case LightbarMode.InputReactive:
+                    devCfg.InputReactiveMode = InputReactiveMode.Random;
+                    devCfg.LightbarMode = LightbarMode.Off;
+                    break;
+                case LightbarMode.InputReactiveCycle:
+                    devCfg.InputReactiveMode = InputReactiveMode.Cycle;
+                    devCfg.LightbarMode = LightbarMode.Off;
+                    break;
+                case LightbarMode.InputReactiveFixed:
+                    devCfg.InputReactiveMode = InputReactiveMode.Fixed;
+                    devCfg.LightbarMode = LightbarMode.Off;
+                    break;
+                default:
+                    devCfg.LightbarMode = target;
                     break;
             }
         }

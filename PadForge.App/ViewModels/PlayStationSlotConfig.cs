@@ -1002,6 +1002,12 @@ namespace PadForge.ViewModels
     public class PlayStationSlotConfigData
     {
         [XmlAttribute] public int SlotIndex { get; set; }
+        /// <summary>Per-device entry: InstanceGuid of the physical
+        /// device this Lighting tab config applies to. Empty
+        /// (Guid.Empty serialized as "00000000-0000-0000-0000-000000000000")
+        /// means a legacy slot-level entry — loader fans out to every
+        /// mapped device on the slot.</summary>
+        [XmlAttribute] public Guid DeviceGuid { get; set; }
         [XmlAttribute] public AdaptiveTriggerMode LeftTriggerMode { get; set; } = AdaptiveTriggerMode.Off;
         [XmlAttribute] public AdaptiveTriggerMode RightTriggerMode { get; set; } = AdaptiveTriggerMode.Off;
         [XmlAttribute] public byte LeftStartPosition { get; set; }

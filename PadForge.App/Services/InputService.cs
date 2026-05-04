@@ -157,8 +157,11 @@ namespace PadForge.Services
                 SyncExtendedConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
                 _inputManager._playStationConfigs[i] = _mainVm.Pads[i].PlayStationConfig;
-                if (_mainVm.Pads[i].PlayStationConfig != null)
-                    _mainVm.Pads[i].PlayStationConfig.PropertyChanged += OnPlayStationConfigChanged;
+                _inputManager._perDevicePlayStationConfigs[i] = _mainVm.Pads[i].PerDevicePlayStationConfigs;
+                // Subscribe to PadVm's forwarder so the handler follows
+                // the per-device anchor across SelectedMappedDevice
+                // swaps, not just the initial config instance.
+                _mainVm.Pads[i].ActivePlayStationConfigPropertyChanged += OnPlayStationConfigChanged;
             }
 
             // Subscribe to engine events (raised on background thread).
@@ -236,6 +239,18 @@ namespace PadForge.Services
                 if (_inputManager == null) return Guid.Empty;
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return Guid.Empty;
                 return _inputManager.TestRumbleTargetGuid[padIndex];
+            };
+
+            // Per-(slot, device) lightbar configs — drives the
+            // dispatcher's per-device synthesis loop and per-device
+            // pulse rolls. Lighting tab is per-device (parallel to
+            // PadSetting), so two DualSenses on the same slot can have
+            // different LightbarMode / colors / palette.
+            UserEffectsDispatcher.SlotPerDeviceConfigsProvider = padIndex =>
+            {
+                if (_inputManager == null) return null;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return null;
+                return _inputManager._perDevicePlayStationConfigs[padIndex];
             };
 
             // Subscribe to settings/dashboard property changes for runtime propagation.
@@ -395,8 +410,7 @@ namespace PadForge.Services
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;
                 foreach (var pad in _mainVm.Pads)
-                    if (pad.PlayStationConfig != null)
-                        pad.PlayStationConfig.PropertyChanged -= OnPlayStationConfigChanged;
+                    pad.ActivePlayStationConfigPropertyChanged -= OnPlayStationConfigChanged;
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -404,6 +418,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
+                UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -1084,6 +1099,13 @@ namespace PadForge.Services
                     SyncExtendedConfigToSlot(i, padVm);
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
                     _inputManager._playStationConfigs[i] = padVm.PlayStationConfig;
+                    // Per-(slot, device) lighting configs — source of
+                    // truth for the dispatcher's per-device synthesis and
+                    // macro lightbar fan-out. Mirroring is a reference
+                    // copy (shared dictionary instance), so config edits
+                    // on the UI thread are visible to the polling thread
+                    // without an extra sync step.
+                    _inputManager._perDevicePlayStationConfigs[i] = padVm.PerDevicePlayStationConfigs;
                 }
 
                 if (SettingsManager.SlotCreated[i] && padVm.AudioRumbleEnabled)
@@ -1632,6 +1654,23 @@ namespace PadForge.Services
                 LoadPadSettingToViewModel(padVm, newGuid);
                 PopulateAvailableInputs(padVm, FindUserDevice(newGuid));
                 _previousSelectedDevice[padVm.PadIndex] = newGuid;
+            }
+
+            // The slot's PlayStationConfig anchor (PadVm.PlayStationConfig)
+            // just swapped to the new device's per-device entry inside
+            // BindPlayStationConfigForDevice. Re-attach the slot's HM
+            // dispatcher so it follows the new anchor (and re-subscribes
+            // its inner OnConfigChanged to the right instance).
+            if (_inputManager != null && padVm.PadIndex >= 0 && padVm.PadIndex < InputManager.MaxPads)
+            {
+                var vcs = _inputManager.GetVirtualControllers();
+                if (vcs != null && padVm.PadIndex < vcs.Length
+                    && vcs[padVm.PadIndex] is HMaestroVirtualController hmVc)
+                {
+                    var anchor = padVm.PlayStationConfig;
+                    if (anchor != null)
+                        hmVc.AttachPlayStationConfig(anchor);
+                }
             }
         }
 
@@ -3113,6 +3152,12 @@ namespace PadForge.Services
 
                     // Sync the ObservableCollection (minimize UI churn).
                     SyncMappedDevices(padVm.MappedDevices, deviceInfos);
+
+                    // Per-device Lighting tab configs follow the mapped
+                    // devices set. Newly-mapped devices get a fresh
+                    // default lighting config (the user customizes each
+                    // device's Lighting tab independently from there).
+                    padVm.EnsurePlayStationConfigsForMappedDevices();
 
                     // Auto-select first device if nothing is selected.
                     if (padVm.SelectedMappedDevice == null && padVm.MappedDevices.Count > 0)

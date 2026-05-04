@@ -288,13 +288,14 @@ namespace PadForge.Common.Input
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
             DiagLog($"OnConfigChanged property={e.PropertyName}");
-            // Mode / period changes can flip whether the periodic timer
-            // should be running. So can the macro-override expiry — when
-            // a macro fires LightbarColor and the slot's mode is Off, the
-            // timer is otherwise asleep and the override packet would
-            // never go out without this nudge.
+            // Mode / period / overlay / macro-override changes can flip
+            // whether the periodic timer should be running. Without
+            // re-evaluating, enabling the input-reactive overlay on a
+            // slot whose base mode is static / off would never start
+            // the timer, so button-press edges would never be detected.
             if (e.PropertyName == nameof(PlayStationSlotConfig.LightbarMode)
                 || e.PropertyName == nameof(PlayStationSlotConfig.LightbarPeriodMs)
+                || e.PropertyName == nameof(PlayStationSlotConfig.InputReactiveMode)
                 || e.PropertyName == nameof(PlayStationSlotConfig.MacroOverrideExpiresAtUtc))
                 UpdateAnimTimer();
             DispatchSnapshot();

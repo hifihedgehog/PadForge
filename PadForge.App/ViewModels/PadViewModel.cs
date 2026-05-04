@@ -916,6 +916,10 @@ namespace PadForge.ViewModels
             ForceOverallGain = 100;
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
+            // Macros are bound to the slot, not the physical device, so a
+            // slot deletion has to drop them. Otherwise the next VC created
+            // at this pad index inherits the deleted slot's macros.
+            Macros.Clear();
         }
 
         /// <summary>Resets all deadzone, anti-deadzone, linear, and trigger settings to defaults.</summary>

@@ -634,36 +634,148 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.LightbarColor:
                 {
-                    // Holds for DurationMs like a KeyPress. First-frame:
-                    // push the override RGB + expiry into the slot's
-                    // PlayStationSlotConfig. Setting MacroOverrideExpiresAtUtc
-                    // fires PropertyChanged → UserEffectsDispatcher wakes
-                    // its animation timer and dispatches one snapshot
-                    // carrying the override RGB. The synthesizer's
-                    // priority gate uses HasActiveMacroLightbarOverride so
-                    // the override beats audio + base-color paths but
-                    // still loses to game-driven Feature A writes.
-                    if (actionElapsed < 1)
+                    // Single-frame fire — write the override into PSConfig
+                    // and advance immediately. The fade (Reactive) or
+                    // hold (Sticky) plays out via the synthesizer reading
+                    // PSConfig on each subsequent dispatch tick, so the
+                    // macro doesn't need to stay "current" while the
+                    // lightbar is visibly transitioning.
+                    ApplyLightbarColorAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.LightbarColorClear:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
                     {
-                        int slotIndex = macro.PadIndex;
-                        if (slotIndex >= 0 && slotIndex < MaxPads)
-                        {
-                            var psCfg = _playStationConfigs[slotIndex];
-                            if (psCfg != null)
-                            {
-                                psCfg.MacroOverrideR = action.LightbarR;
-                                psCfg.MacroOverrideG = action.LightbarG;
-                                psCfg.MacroOverrideB = action.LightbarB;
-                                psCfg.MacroOverrideExpiresAtUtc =
-                                    DateTime.UtcNow.AddMilliseconds(Math.Max(action.DurationMs, 1));
-                            }
-                        }
+                        var psCfg = _playStationConfigs[slotIndex];
+                        psCfg?.ClearMacroOverride();
                     }
-                    if (actionElapsed >= action.DurationMs)
-                        AdvanceAction(macro);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.LightbarModeSet:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        var psCfg = _playStationConfigs[slotIndex];
+                        if (psCfg != null) psCfg.LightbarMode = action.LightbarTargetMode;
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.LightbarModeCycle:
+                {
+                    ApplyLightbarModeCycleAction(macro, action);
+                    AdvanceAction(macro);
                     break;
                 }
             }
+        }
+
+        /// <summary>Pushes a LightbarColor action's override into the
+        /// target slot's PSConfig. Resolves the color source (Fixed /
+        /// RandomHue / PaletteStep) and sets <c>StartUtc</c>,
+        /// <c>ExpiresAtUtc</c>, and <c>HoldMode</c> in one go so the
+        /// synthesizer's intensity computation has consistent inputs.
+        /// Sticky uses <c>DateTime.MaxValue</c> for the expiry; Reactive
+        /// uses now + decay.</summary>
+        private void ApplyLightbarColorAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+            var psCfg = _playStationConfigs[slotIndex];
+            if (psCfg == null) return;
+
+            byte r, g, b;
+            if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky
+                || action.LightbarColorSource == MacroLightbarColorSource.Fixed)
+            {
+                r = action.LightbarR;
+                g = action.LightbarG;
+                b = action.LightbarB;
+            }
+            else if (action.LightbarColorSource == MacroLightbarColorSource.RandomHue)
+            {
+                int h = _macroLightbarRng.Next(0, 360);
+                HsvToRgb(h, 1.0, 1.0, out r, out g, out b);
+            }
+            else // PaletteStep
+            {
+                var palette = psCfg.SnapshotLightbarPalette();
+                if (palette.Length > 0)
+                {
+                    int idx = (action.LightbarCycleIndex % palette.Length + palette.Length) % palette.Length;
+                    var entry = palette[idx];
+                    r = entry.R; g = entry.G; b = entry.B;
+                    action.LightbarCycleIndex = idx + 1;
+                }
+                else
+                {
+                    // Empty palette — treat as off so the user gets feedback
+                    // that their selection isn't producing a visible result.
+                    r = 0; g = 0; b = 0;
+                }
+            }
+
+            DateTime now = DateTime.UtcNow;
+            psCfg.MacroOverrideR = r;
+            psCfg.MacroOverrideG = g;
+            psCfg.MacroOverrideB = b;
+            psCfg.MacroOverrideHoldMode = action.LightbarHoldMode;
+            psCfg.MacroOverrideStartUtc = now;
+            psCfg.MacroOverrideExpiresAtUtc = action.LightbarHoldMode == MacroLightbarHoldMode.Sticky
+                ? DateTime.MaxValue
+                : now.AddMilliseconds(Math.Max(action.LightbarDecayMs, 1));
+        }
+
+        /// <summary>Advances the action's volatile cycle position and
+        /// writes the resulting <c>LightbarMode</c> into the slot's
+        /// PSConfig. No-op when the action's cycle list is empty.</summary>
+        private void ApplyLightbarModeCycleAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+            var psCfg = _playStationConfigs[slotIndex];
+            if (psCfg == null) return;
+
+            var modes = action.ParsedCycleModes();
+            if (modes.Length == 0) return;
+
+            int idx = ((action.LightbarCycleIndex % modes.Length) + modes.Length) % modes.Length;
+            psCfg.LightbarMode = modes[idx];
+            action.LightbarCycleIndex = idx + 1;
+        }
+
+        // RNG for the RandomHue color source. Shared across slots —
+        // the cost is one Next(0,360) per macro fire which is trivial.
+        private static readonly Random _macroLightbarRng = new Random();
+
+        /// <summary>HSV → RGB. Matches the converter in
+        /// <see cref="UserEffectsDispatcher"/> so a Reactive RandomHue
+        /// macro flash uses the same colour distribution as the
+        /// existing InputReactive lightbar mode.</summary>
+        private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)
+        {
+            h = ((h % 360) + 360) % 360;
+            double c = v * s;
+            double x = c * (1 - Math.Abs((h / 60.0) % 2 - 1));
+            double m = v - c;
+            double rp, gp, bp;
+            if (h < 60)       { rp = c; gp = x; bp = 0; }
+            else if (h < 120) { rp = x; gp = c; bp = 0; }
+            else if (h < 180) { rp = 0; gp = c; bp = x; }
+            else if (h < 240) { rp = 0; gp = x; bp = c; }
+            else if (h < 300) { rp = x; gp = 0; bp = c; }
+            else              { rp = c; gp = 0; bp = x; }
+            r = (byte)Math.Round((rp + m) * 255);
+            g = (byte)Math.Round((gp + m) * 255);
+            b = (byte)Math.Round((bp + m) * 255);
         }
 
         /// <summary>Resets mouse accumulators on all actions when a macro starts/restarts.</summary>
@@ -1027,31 +1139,35 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.LightbarColor:
+                    ApplyLightbarColorAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.LightbarColorClear:
                 {
-                    // Same shape as the combined-state path. Extended slots
-                    // can have a DS5 physical assigned, so the override is
-                    // applicable here too. PSConfig may be null for slots
-                    // that don't have one wired — silently no-op.
-                    if (actionElapsed < 1)
-                    {
-                        int slotIndex = macro.PadIndex;
-                        if (slotIndex >= 0 && slotIndex < MaxPads)
-                        {
-                            var psCfg = _playStationConfigs[slotIndex];
-                            if (psCfg != null)
-                            {
-                                psCfg.MacroOverrideR = action.LightbarR;
-                                psCfg.MacroOverrideG = action.LightbarG;
-                                psCfg.MacroOverrideB = action.LightbarB;
-                                psCfg.MacroOverrideExpiresAtUtc =
-                                    DateTime.UtcNow.AddMilliseconds(Math.Max(action.DurationMs, 1));
-                            }
-                        }
-                    }
-                    if (actionElapsed >= action.DurationMs)
-                        AdvanceAction(macro);
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        _playStationConfigs[slotIndex]?.ClearMacroOverride();
+                    AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.LightbarModeSet:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        var psCfg = _playStationConfigs[slotIndex];
+                        if (psCfg != null) psCfg.LightbarMode = action.LightbarTargetMode;
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.LightbarModeCycle:
+                    ApplyLightbarModeCycleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
             }
         }
 

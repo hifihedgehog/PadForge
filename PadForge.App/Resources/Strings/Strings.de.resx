@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Maustaste {0} drücken</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Maustaste {0} loslassen</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay umschalten</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar für {1}ms auf {0} setzen</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe festlegen</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Überschreibt die Lightbar des zugewiesenen PlayStation-Slots für die konfigurierte Dauer mit einer gewählten RGB-Farbe. Nach Ablauf kehrt die Lightbar zu den Einstellungen der Beleuchtungs-Registerkarte zurück. Vom Spiel geschriebene Werte haben weiterhin Vorrang.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Überschreibt die Lightbar des zugewiesenen PlayStation-Slots mit einer gewählten RGB-Farbe. Reaktiv blendet von voller Helligkeit auf Schwarz über das konfigurierte Abklingfenster aus, dann übernehmen die Beleuchtungs-Einstellungen wieder. Permanent hält die Farbe, bis eine "Lightbar-Override aufheben"-Aktion läuft. Vom Spiel geschriebene Werte haben weiterhin Vorrang.</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar für {1}ms auf {0} setzen</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Lightbar {0} blitzen (Abklingen {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Lightbar {0} halten bis aufgehoben</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Lightbar-Override aufheben</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Lightbar-Override aufheben</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Hebt jede aktive Lightbar-Override des zugewiesenen Slots auf. Mit einer permanenten "Lightbar-Farbe festlegen"-Aktion kombinieren, um sie über ein anderes Makro zurückzunehmen.</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Lightbar-Modus festlegen</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Lightbar-Modus auf {0} setzen</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setzt den Lightbar-Modus des zugewiesenen Slots auf einen bestimmten Wert. Bleibt wie eine Beleuchtungs-Registerkartenänderung bestehen, bis eine andere Aktion oder der Benutzer ihn ändert.</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Lightbar-Modi durchlaufen</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} Lightbar-Modi durchlaufen</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schaltet den Lightbar-Modus des Slots durch die unten ausgewählten Modi weiter. Jede Auslösung springt zum nächsten markierten Modus. Die Position ist pro Aktion und wird beim App-Neustart zurückgesetzt.</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Modus:</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>Reaktiv (ausblenden)</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Permanent (halten)</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Farbe:</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>Fest</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Zufälliger Farbton</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Palette weiterschalten</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Abklingen:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus:</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Wähle aus, durch welche Lightbar-Modi das Makro wechseln soll. Jede Auslösung springt zum nächsten markierten Modus.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Zentriert</value></data>

@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>마우스 {0} 누르기</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>마우스 {0} 놓기</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>라이트바를 {0}으로 {1}ms 설정</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>라이트바 색상 설정</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>지정된 시간 동안 할당된 PlayStation 슬롯의 라이트바를 선택한 RGB 색상으로 덮어씁니다. 시간이 만료되면 조명 탭의 설정으로 돌아갑니다. 게임이 직접 쓰는 값은 계속 우선합니다.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>할당된 PlayStation 슬롯의 라이트바를 선택한 RGB 색상으로 덮어씁니다. 반응형은 설정된 감쇠 시간 동안 최대 밝기에서 검정으로 페이드된 다음 조명 탭 설정으로 돌아갑니다. 고정형은 "라이트바 재정의 해제" 동작이 실행될 때까지 색을 유지합니다. 게임 쓰기는 계속 우선합니다.</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>라이트바를 {0}으로 {1}ms 설정</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>라이트바 {0} 점멸 (감쇠 {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>해제까지 라이트바 {0} 유지</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>라이트바 재정의 해제</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>라이트바 재정의 해제</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>할당된 슬롯의 활성화된 라이트바 재정의를 해제합니다. 고정형 "라이트바 색상 설정"과 함께 사용하여 다른 매크로로 되돌립니다.</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>라이트바 모드 설정</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>라이트바 모드를 {0}로 설정</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>할당된 슬롯의 라이트바 모드를 특정 값으로 설정합니다. 다른 동작이나 사용자가 바꿀 때까지 조명 탭 편집과 동일하게 유지됩니다.</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>라이트바 모드 순환</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}개의 라이트바 모드 순환</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>아래에서 선택한 모드들로 슬롯의 라이트바 모드를 진행합니다. 발화할 때마다 다음 체크된 모드로 이동합니다. 위치는 동작별이며 앱 재시작 시 초기화됩니다.</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>유지:</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>반응형 (페이드)</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>고정형 (유지)</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>색상:</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>고정</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>임의 색조</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>팔레트 단계</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>감쇠:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드:</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 라이트바 모드를 선택하세요. 발화할 때마다 다음 체크된 모드로 이동합니다.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>중립</value></data>

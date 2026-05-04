@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>按下鼠标 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>释放鼠标 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触控板叠加层</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>将灯条设置为{0}，持续{1}毫秒</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>设置灯条颜色</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>在配置的持续时间内，使用所选RGB颜色覆盖已分配PlayStation插槽的灯条。持续时间结束后，灯条恢复到“灯光”选项卡的设置。游戏发出的写入仍优先于此覆盖。</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>使用所选RGB颜色覆盖已分配PlayStation插槽的灯条。"反应式"在配置的衰减窗口内从满亮度淡出到黑色，随后恢复到"灯光"选项卡的设置。"持续"将颜色一直保持，直到执行"清除灯条覆盖"动作。游戏发出的写入仍优先于此覆盖。</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>将灯条设置为{0}，持续{1}毫秒</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>闪烁灯条 {0}（衰减 {1}ms）</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>保持灯条 {0} 直到清除</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>清除灯条覆盖</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>清除灯条覆盖</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>释放已分配插槽上任何活动的灯条覆盖。可与持续型"设置灯条颜色"动作配合，以通过另一个宏撤销。</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>设置灯条模式</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>将灯条模式设置为{0}</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>将已分配插槽的灯条模式设置为指定值。如同"灯光"选项卡的编辑一样持久，直到另一个动作或用户更改它。</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>循环灯条模式</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>循环{0}个灯条模式</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>在下方选定的模式中推进插槽的灯条模式。每次触发跳到下一个已勾选模式。位置按动作存储，应用重启时重置。</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持：</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>反应式（淡出）</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>持续（保持）</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>颜色：</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>随机色相</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>调色板步进</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>衰减：</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>模式：</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>选择宏要循环的灯条模式。每次触发跳到下一个已勾选模式。</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>居中</value></data>

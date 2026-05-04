@@ -175,8 +175,11 @@ namespace PadForge.Common.Input
             // is always set when ANY lightbar/player feature is active.
             // Snapshot the override window once so the rest of the function
             // sees a single time-of-check (the UtcNow comparison can flip
-            // between calls within the same packet build).
-            bool macroOverrideActive = cfg.HasActiveMacroLightbarOverride;
+            // between calls within the same packet build). Intensity is
+            // 1.0 for Sticky, ramps 1.0 → 0.0 over the decay window for
+            // Reactive, and is 0 when no override is active.
+            float macroOverrideIntensity = cfg.ComputeMacroOverrideIntensity();
+            bool macroOverrideActive = macroOverrideIntensity > 0f;
 
             bool anyLightFeature =
                 cfg.LightbarMode != LightbarMode.Off
@@ -219,9 +222,12 @@ namespace PadForge.Common.Input
                     // Macro-driven override beats both the configured mode
                     // and the base-color path for its hold window. Game
                     // writes still win at packet level via Feature A.
-                    dst[OffLedRed]   = cfg.MacroOverrideR;
-                    dst[OffLedGreen] = cfg.MacroOverrideG;
-                    dst[OffLedBlue]  = cfg.MacroOverrideB;
+                    // RGB scaled by intensity so a Reactive flash fades
+                    // smoothly to black (mode takes over once intensity
+                    // hits 0 → HasActiveMacroLightbarOverride flips false).
+                    dst[OffLedRed]   = (byte)Math.Round(cfg.MacroOverrideR * macroOverrideIntensity);
+                    dst[OffLedGreen] = (byte)Math.Round(cfg.MacroOverrideG * macroOverrideIntensity);
+                    dst[OffLedBlue]  = (byte)Math.Round(cfg.MacroOverrideB * macroOverrideIntensity);
                 }
                 else if (cfg.LightbarMode != LightbarMode.Off)
                 {

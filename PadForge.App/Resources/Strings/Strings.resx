@@ -679,9 +679,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Mouse Press {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mouse Release {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Toggle Touchpad Overlay</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Set lightbar to {0} for {1}ms</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Set Lightbar Color</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB color for the configured duration. After the duration, the lightbar returns to the Lighting tab's settings. Game-driven writes still take priority over the override.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB color. Reactive fades from full intensity to black over the configured decay window, then hands back to the Lighting tab's settings. Sticky holds the color until a Clear Lightbar Override action runs. Game-driven writes still take priority over the override.</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Set lightbar to {0} for {1}ms</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Flash lightbar {0} (decay {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hold lightbar {0} until cleared</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Clear Lightbar Override</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Clear lightbar override</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Releases any active lightbar override on the assigned slot. Pair with a Sticky Set Lightbar Color action to undo it via another macro.</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Set Lightbar Mode</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Set lightbar mode to {0}</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sets the assigned slot's lightbar mode to a specific value. Persists like a Lighting tab edit until another action or the user changes it.</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Cycle Lightbar Modes</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Cycle through {0} lightbar modes</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Advances the slot's lightbar mode through the modes selected below. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hold:</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>Reactive (fade)</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Sticky (hold)</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Color:</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>Fixed</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Random Hue</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Palette Step</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decay:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode:</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pick which lightbar modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centered</value></data>

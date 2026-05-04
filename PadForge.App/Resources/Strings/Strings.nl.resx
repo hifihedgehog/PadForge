@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop {0} indrukken</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop {0} loslaten</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar {1} ms op {0} zetten</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-kleur instellen</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Overschrijft de lightbar van het toegewezen PlayStation-slot tijdelijk met een gekozen RGB-kleur voor de ingestelde duur. Na afloop keert de lightbar terug naar de instellingen op het tabblad Verlichting. Schrijfacties vanuit het spel blijven voorrang houden.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Overschrijft de lightbar van het toegewezen PlayStation-slot met een gekozen RGB-kleur. Reactief vervaagt van volle intensiteit naar zwart binnen het ingestelde uitstervenvenster en geeft daarna terug aan de instellingen op het tabblad Verlichting. Plakkerig houdt de kleur vast totdat een "Lightbar-overschrijving wissen"-actie hem vrijgeeft. Schrijfacties vanuit het spel blijven voorrang houden.</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar {1} ms op {0} zetten</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Lightbar {0} laten flitsen (uitsterven {1} ms)</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Lightbar {0} vasthouden tot wissen</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Lightbar-overschrijving wissen</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Lightbar-overschrijving wissen</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Geeft elke actieve lightbar-overschrijving op het toegewezen slot vrij. Combineer met een plakkerige "Lightbar-kleur instellen"-actie om hem via een andere macro ongedaan te maken.</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Lightbar-modus instellen</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Lightbar-modus instellen op {0}</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stelt de lightbar-modus van het toegewezen slot in op een specifieke waarde. Blijft net als een Verlichting-tabblad-bewerking bestaan totdat een andere actie of de gebruiker hem wijzigt.</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Lightbar-modi doorlopen</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} lightbar-modi doorlopen</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de lightbar-modus van het slot door de hieronder geselecteerde modi. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en wordt gereset bij herstart van de app.</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Houden:</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>Reactief (vervagen)</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Plakkerig (vasthouden)</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Kleur:</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>Vast</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Willekeurige tint</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Paletstap</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Uitsterven:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus:</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Kies welke lightbar-modi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Gecentreerd</value></data>

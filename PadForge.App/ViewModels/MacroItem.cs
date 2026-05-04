@@ -695,6 +695,13 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseButtonType));
                     OnPropertyChanged(nameof(IsContinuousAxisType));
                     OnPropertyChanged(nameof(IsLightbarType));
+                    OnPropertyChanged(nameof(IsLightbarColorClearType));
+                    OnPropertyChanged(nameof(IsLightbarModeSetType));
+                    OnPropertyChanged(nameof(IsLightbarModeCycleType));
+                    OnPropertyChanged(nameof(IsAnyLightbarType));
+                    OnPropertyChanged(nameof(IsLightbarReactiveHold));
+                    OnPropertyChanged(nameof(IsLightbarStickyHold));
+                    OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
                 }
             }
         }
@@ -707,9 +714,13 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsKeyType => _type == MacroActionType.KeyPress || _type == MacroActionType.KeyRelease;
 
-        /// <summary>True when Type is ButtonPress, KeyPress, Delay, MouseButtonPress, or LightbarColor.</summary>
+        /// <summary>True when Type uses the generic <c>DurationMs</c>
+        /// field for its hold time — ButtonPress / KeyPress / Delay /
+        /// MouseButtonPress. LightbarColor uses its own
+        /// <c>LightbarDecayMs</c> instead so the decay slider can be
+        /// scaled and labeled separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.LightbarColor;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
 
         /// <summary>True when Type is AxisSet.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -734,6 +745,53 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is LightbarColor (PlayStation slot RGB override).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsLightbarType => _type == MacroActionType.LightbarColor;
+
+        /// <summary>True when Type is LightbarColorClear.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarColorClearType => _type == MacroActionType.LightbarColorClear;
+
+        /// <summary>True when Type is LightbarModeSet.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarModeSetType => _type == MacroActionType.LightbarModeSet;
+
+        /// <summary>True when Type is LightbarModeCycle.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarModeCycleType => _type == MacroActionType.LightbarModeCycle;
+
+        /// <summary>True when Type is any of the lightbar-related action
+        /// types — drives the macro editor's grouping into a single
+        /// CardBorder.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyLightbarType
+            => _type == MacroActionType.LightbarColor
+            || _type == MacroActionType.LightbarColorClear
+            || _type == MacroActionType.LightbarModeSet
+            || _type == MacroActionType.LightbarModeCycle;
+
+        /// <summary>True when the LightbarColor action is in Reactive
+        /// hold mode — drives the visibility of the ColorSource picker
+        /// and Decay slider in the editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarReactiveHold
+            => _type == MacroActionType.LightbarColor
+               && _lightbarHoldMode == MacroLightbarHoldMode.Reactive;
+
+        /// <summary>True when the LightbarColor action is in Sticky hold
+        /// mode.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarStickyHold
+            => _type == MacroActionType.LightbarColor
+               && _lightbarHoldMode == MacroLightbarHoldMode.Sticky;
+
+        /// <summary>True when the color picker should be visible —
+        /// LightbarColor with ColorSource = Fixed (Reactive or Sticky).
+        /// Random and Palette sources don't read the action's RGB so
+        /// the picker is hidden in those cases.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarFixedColorVisible
+            => _type == MacroActionType.LightbarColor
+               && (_lightbarHoldMode == MacroLightbarHoldMode.Sticky
+                   || _lightbarColorSource == MacroLightbarColorSource.Fixed);
 
         /// <summary>True when Type uses a continuous axis source (SystemVolume, AppVolume, MouseMove, MouseScroll).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -870,6 +928,46 @@ namespace PadForge.ViewModels
             if (_buttonOptions == null || _buttonStyle != MacroButtonStyle.Numbered) return;
             foreach (var opt in _buttonOptions)
                 opt.Refresh();
+        }
+
+        // ── LightbarMode cycle checkbox options ──
+
+        private IReadOnlyList<LightbarModeCycleOption> _cycleModeOptions;
+
+        /// <summary>Checkbox-bindable list of all 13 LightbarMode values
+        /// for the LightbarModeCycle action's editor. Toggling any
+        /// option's IsChecked rewrites <see cref="LightbarCycleModesCsv"/>
+        /// — the CSV is the canonical storage; the option list is a
+        /// UI-side projection.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IReadOnlyList<LightbarModeCycleOption> CycleModeOptions
+        {
+            get
+            {
+                if (_cycleModeOptions == null)
+                {
+                    var modes = new[] {
+                        LightbarMode.Off, LightbarMode.Static, LightbarMode.Breathing,
+                        LightbarMode.Rainbow, LightbarMode.ColorCycle,
+                        LightbarMode.AudioPulse, LightbarMode.AudioPulseRandom, LightbarMode.AudioPulseRainbow,
+                        LightbarMode.AudioThresholds, LightbarMode.AudioGradient, LightbarMode.AudioCrossFade,
+                        LightbarMode.InputReactive, LightbarMode.InputReactiveCycle,
+                    };
+                    _cycleModeOptions = modes
+                        .Select(m => new LightbarModeCycleOption(this, LightbarModeDisplayName(m), m))
+                        .ToList()
+                        .AsReadOnly();
+                }
+                return _cycleModeOptions;
+            }
+        }
+
+        /// <summary>Sets the cycle CSV from an enumerable of selected
+        /// modes. Sorts by enum value for stable ordering.</summary>
+        internal void WriteCycleCsv(IEnumerable<LightbarMode> selected)
+        {
+            var ordered = selected.Distinct().OrderBy(m => (int)m).Select(m => ((int)m).ToString());
+            LightbarCycleModesCsv = string.Join(",", ordered);
         }
 
         // ── Button checkbox options ──
@@ -1255,10 +1353,10 @@ namespace PadForge.ViewModels
                     AudioProcessNames.Add(name);
             });
 
-        // ── Lightbar color (for MacroActionType.LightbarColor) ──
-        // Used only when Type == LightbarColor. Default to white so a
-        // freshly-added action lights the bar instead of going dark
-        // silently on the first test fire.
+        // ── Lightbar (for MacroActionType.LightbarColor / Clear / ModeSet / ModeCycle) ──
+        // RGB used by LightbarColor when ColorSource = Fixed. Default to
+        // white so a freshly-added Color action produces a visible flash
+        // on first test fire.
 
         private byte _lightbarR = 0xFF;
         public byte LightbarR
@@ -1291,6 +1389,100 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _lightbarB, value))
                     OnPropertyChanged(nameof(DisplayText));
             }
+        }
+
+        private MacroLightbarHoldMode _lightbarHoldMode = MacroLightbarHoldMode.Reactive;
+        /// <summary>Reactive (default, decay-fade) or Sticky (held until
+        /// a <see cref="MacroActionType.LightbarColorClear"/> runs).</summary>
+        public MacroLightbarHoldMode LightbarHoldMode
+        {
+            get => _lightbarHoldMode;
+            set
+            {
+                if (SetProperty(ref _lightbarHoldMode, value))
+                {
+                    OnPropertyChanged(nameof(IsLightbarReactiveHold));
+                    OnPropertyChanged(nameof(IsLightbarStickyHold));
+                    OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private MacroLightbarColorSource _lightbarColorSource = MacroLightbarColorSource.Fixed;
+        /// <summary>For Reactive holds: Fixed RGB (the action's color),
+        /// RandomHue (rolled per fire), or PaletteStep (advance through
+        /// the slot's <c>LightbarPalette</c>). Ignored for Sticky holds
+        /// (always Fixed).</summary>
+        public MacroLightbarColorSource LightbarColorSource
+        {
+            get => _lightbarColorSource;
+            set
+            {
+                if (SetProperty(ref _lightbarColorSource, value))
+                {
+                    OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private int _lightbarDecayMs = 600;
+        /// <summary>Decay window for Reactive holds (ms). Same default
+        /// as the existing <c>LightbarInputDecayMs</c> on the Lighting
+        /// tab. Clamped 50..5000.</summary>
+        public int LightbarDecayMs
+        {
+            get => _lightbarDecayMs;
+            set
+            {
+                int clamped = Math.Clamp(value, 50, 5000);
+                if (SetProperty(ref _lightbarDecayMs, clamped))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private LightbarMode _lightbarTargetMode = LightbarMode.Static;
+        /// <summary>Target <c>LightbarMode</c> for
+        /// <see cref="MacroActionType.LightbarModeSet"/>.</summary>
+        public LightbarMode LightbarTargetMode
+        {
+            get => _lightbarTargetMode;
+            set
+            {
+                if (SetProperty(ref _lightbarTargetMode, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        // CSV of LightbarMode int values for ModeCycle. Default skips
+        // Off and the audio modes — most users want a quick visual
+        // toggle, not silent output.
+        private string _lightbarCycleModesCsv = "1,2,3,4,11,12";
+        /// <summary>CSV of <c>LightbarMode</c> int values to cycle
+        /// through. Each fire advances to the next listed mode. Editor
+        /// surfaces this as a 13-item checkbox grid.</summary>
+        public string LightbarCycleModesCsv
+        {
+            get => _lightbarCycleModesCsv;
+            set
+            {
+                if (SetProperty(ref _lightbarCycleModesCsv, value ?? string.Empty))
+                {
+                    _lightbarCycleIndex = 0;
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private int _lightbarCycleIndex;
+        /// <summary>Per-action volatile cycle position. Resets on action
+        /// edit and on app restart.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int LightbarCycleIndex
+        {
+            get => _lightbarCycleIndex;
+            set => _lightbarCycleIndex = value;
         }
 
         // ── Volume limit ──
@@ -1408,13 +1600,84 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
-                    MacroActionType.LightbarColor => string.Format(
-                        Strings.Instance.MacroAction_LightbarColor_Format,
-                        $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}",
-                        _durationMs),
+                    MacroActionType.LightbarColor => FormatLightbarColorSummary(),
+                    MacroActionType.LightbarColorClear => Strings.Instance.MacroAction_LightbarColorClear,
+                    MacroActionType.LightbarModeSet => string.Format(
+                        Strings.Instance.MacroAction_LightbarModeSet_Format,
+                        LightbarModeDisplayName(_lightbarTargetMode)),
+                    MacroActionType.LightbarModeCycle => string.Format(
+                        Strings.Instance.MacroAction_LightbarModeCycle_Format,
+                        CountSelectedCycleModes()),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
+        }
+
+        // ── Lightbar action display helpers ──
+
+        private string FormatLightbarColorSummary()
+        {
+            string colorPart = _lightbarColorSource switch
+            {
+                MacroLightbarColorSource.RandomHue   => Strings.Instance.Macro_LightbarColorSource_RandomHue,
+                MacroLightbarColorSource.PaletteStep => Strings.Instance.Macro_LightbarColorSource_PaletteStep,
+                _                                    => $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}"
+            };
+            // Sticky always uses Fixed (the picker's RGB).
+            if (_lightbarHoldMode == MacroLightbarHoldMode.Sticky)
+                colorPart = $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}";
+            return _lightbarHoldMode == MacroLightbarHoldMode.Sticky
+                ? string.Format(Strings.Instance.MacroAction_LightbarColor_Sticky_Format, colorPart)
+                : string.Format(Strings.Instance.MacroAction_LightbarColor_Reactive_Format, colorPart, _lightbarDecayMs);
+        }
+
+        /// <summary>Counts the modes selected in
+        /// <see cref="LightbarCycleModesCsv"/>. Used for the cycle
+        /// action's display string.</summary>
+        public int CountSelectedCycleModes()
+        {
+            if (string.IsNullOrEmpty(_lightbarCycleModesCsv)) return 0;
+            int count = 0;
+            foreach (var token in _lightbarCycleModesCsv.Split(','))
+                if (int.TryParse(token, out _)) count++;
+            return count;
+        }
+
+        /// <summary>Parses <see cref="LightbarCycleModesCsv"/> into an
+        /// array of <see cref="LightbarMode"/> values (skipping invalid
+        /// tokens). Empty array if the CSV is empty or unparseable.</summary>
+        public LightbarMode[] ParsedCycleModes()
+        {
+            if (string.IsNullOrEmpty(_lightbarCycleModesCsv)) return Array.Empty<LightbarMode>();
+            var list = new System.Collections.Generic.List<LightbarMode>();
+            foreach (var token in _lightbarCycleModesCsv.Split(','))
+            {
+                if (int.TryParse(token.Trim(), out int v) && Enum.IsDefined(typeof(LightbarMode), v))
+                    list.Add((LightbarMode)v);
+            }
+            return list.ToArray();
+        }
+
+        private static string LightbarModeDisplayName(LightbarMode mode)
+        {
+            var s = Strings.Instance;
+            return mode switch
+            {
+                LightbarMode.Off                => s.Pad_Lighting_Mode_Off,
+                LightbarMode.Static             => s.Pad_Lighting_Mode_Static,
+                LightbarMode.Breathing          => s.Pad_Lighting_Mode_Breathing,
+                LightbarMode.Rainbow            => s.Pad_Lighting_Mode_Rainbow,
+                LightbarMode.ColorCycle         => s.Pad_Lighting_Mode_ColorCycle,
+                LightbarMode.AudioPulse         => s.Pad_Lighting_Mode_AudioPulse,
+                LightbarMode.AudioPulseRandom   => s.Pad_Lighting_Mode_AudioPulseRandom,
+                LightbarMode.AudioPulseRainbow  => s.Pad_Lighting_Mode_AudioPulseRainbow,
+                LightbarMode.AudioThresholds    => s.Pad_Lighting_Mode_AudioThresholds,
+                LightbarMode.AudioGradient      => s.Pad_Lighting_Mode_AudioGradient,
+                LightbarMode.AudioCrossFade     => s.Pad_Lighting_Mode_AudioCrossFade,
+                LightbarMode.InputReactive      => s.Pad_Lighting_Mode_InputReactive,
+                LightbarMode.InputReactiveCycle => s.Pad_Lighting_Mode_InputReactiveCycle,
+                _ => mode.ToString()
+            };
         }
 
         /// <summary>
@@ -1521,12 +1784,60 @@ namespace PadForge.ViewModels
         /// <summary>Toggle the touchpad overlay visibility.</summary>
         ToggleTouchpadOverlay,
 
-        /// <summary>Set the assigned PlayStation slot's lightbar to a
-        /// specific RGB color for a duration. After the duration elapses,
-        /// the lightbar returns to whatever the user has configured on the
-        /// Lighting tab (audio mode, base color, etc.). Game-driven writes
-        /// still win over the macro override at the packet level.</summary>
-        LightbarColor
+        /// <summary>Override the assigned PlayStation slot's lightbar.
+        /// Two hold modes: <see cref="MacroLightbarHoldMode.Reactive"/>
+        /// fires a decay-fade flash like the InputReactive lightbar mode
+        /// (configurable color source and decay length);
+        /// <see cref="MacroLightbarHoldMode.Sticky"/> holds the chosen
+        /// RGB until a <see cref="LightbarColorClear"/> action releases
+        /// it. Game-driven writes still win over the override at the
+        /// packet level.</summary>
+        LightbarColor,
+
+        /// <summary>Releases any active lightbar override on the
+        /// assigned slot. Pair with <see cref="LightbarColor"/> Sticky
+        /// to give the user a deliberate way to undo the hold via
+        /// another macro.</summary>
+        LightbarColorClear,
+
+        /// <summary>Sets the slot's <c>LightbarMode</c> to a specific
+        /// value. Persists like any other Lighting-tab edit until
+        /// another action or the user changes it.</summary>
+        LightbarModeSet,
+
+        /// <summary>Cycles the slot's <c>LightbarMode</c> through a
+        /// user-selected subset of modes. Each fire advances to the
+        /// next checked mode. Cycle position is per-action and
+        /// volatile — resets on app restart.</summary>
+        LightbarModeCycle
+    }
+
+    /// <summary>Hold mode for <see cref="MacroActionType.LightbarColor"/>.</summary>
+    public enum MacroLightbarHoldMode
+    {
+        /// <summary>Decay-fade flash. Intensity ramps from 1.0 to 0.0
+        /// across the configured decay window, then expires and the
+        /// configured Lighting-tab mode takes back over. Mirrors the
+        /// existing InputReactive lightbar mode.</summary>
+        Reactive = 0,
+        /// <summary>Held at full intensity until a
+        /// <see cref="MacroActionType.LightbarColorClear"/> action
+        /// runs (or the slot's device unbinds).</summary>
+        Sticky = 1
+    }
+
+    /// <summary>Color source for a Reactive
+    /// <see cref="MacroActionType.LightbarColor"/>. Sticky always
+    /// uses Fixed.</summary>
+    public enum MacroLightbarColorSource
+    {
+        /// <summary>The action's configured RGB.</summary>
+        Fixed = 0,
+        /// <summary>A fresh random hue rolled at fire time.</summary>
+        RandomHue = 1,
+        /// <summary>The next entry in the slot's <c>LightbarPalette</c>,
+        /// advancing per fire.</summary>
+        PaletteStep = 2
     }
 
     public enum MacroMouseButton
@@ -1767,5 +2078,48 @@ namespace PadForge.ViewModels
         public string DisplayName { get; }
 
         public override string ToString() => DisplayName;
+    }
+
+    /// <summary>Checkbox-bindable option representing one
+    /// <see cref="LightbarMode"/> value in the LightbarModeCycle editor's
+    /// grid. Reads / writes the parent action's
+    /// <c>LightbarCycleModesCsv</c>.</summary>
+    public class LightbarModeCycleOption : ObservableObject
+    {
+        private readonly MacroAction _parent;
+        public string Label { get; }
+        public LightbarMode Mode { get; }
+
+        public LightbarModeCycleOption(MacroAction parent, string label, LightbarMode mode)
+        {
+            _parent = parent;
+            Label = label;
+            Mode = mode;
+        }
+
+        public bool IsChecked
+        {
+            get
+            {
+                var csv = _parent.LightbarCycleModesCsv;
+                if (string.IsNullOrEmpty(csv)) return false;
+                int target = (int)Mode;
+                foreach (var token in csv.Split(','))
+                    if (int.TryParse(token.Trim(), out int v) && v == target) return true;
+                return false;
+            }
+            set
+            {
+                var csv = _parent.LightbarCycleModesCsv ?? string.Empty;
+                var current = new System.Collections.Generic.HashSet<LightbarMode>();
+                foreach (var token in csv.Split(','))
+                    if (int.TryParse(token.Trim(), out int v) && Enum.IsDefined(typeof(LightbarMode), v))
+                        current.Add((LightbarMode)v);
+                if (value) current.Add(Mode);
+                else current.Remove(Mode);
+                _parent.WriteCycleCsv(current);
+                OnPropertyChanged();
+            }
+        }
     }
 }

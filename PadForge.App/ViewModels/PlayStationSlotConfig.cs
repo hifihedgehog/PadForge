@@ -245,6 +245,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _macroOverrideB, value);
         }
 
+        private DateTime _macroOverrideStartUtc = DateTime.MinValue;
+        /// <summary>Fire timestamp for the active override. Used together
+        /// with <see cref="MacroOverrideExpiresAtUtc"/> to compute the
+        /// decay intensity in Reactive hold mode.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public DateTime MacroOverrideStartUtc
+        {
+            get => _macroOverrideStartUtc;
+            set => SetProperty(ref _macroOverrideStartUtc, value);
+        }
+
         private DateTime _macroOverrideExpiresAtUtc = DateTime.MinValue;
         [System.Xml.Serialization.XmlIgnore]
         public DateTime MacroOverrideExpiresAtUtc
@@ -253,13 +264,52 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _macroOverrideExpiresAtUtc, value);
         }
 
+        private MacroLightbarHoldMode _macroOverrideHoldMode = MacroLightbarHoldMode.Reactive;
+        /// <summary>Reactive (decay-fade) or Sticky (held until cleared).
+        /// Reactive computes intensity over the [Start, Expires] window;
+        /// Sticky returns full intensity until <see cref="ClearMacroOverride"/>
+        /// runs.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MacroLightbarHoldMode MacroOverrideHoldMode
+        {
+            get => _macroOverrideHoldMode;
+            set => SetProperty(ref _macroOverrideHoldMode, value);
+        }
+
         /// <summary>True while the macro-driven override is still within
         /// its hold window. Read by the synthesizer and the animation
         /// timer's stop-condition. Cleared implicitly by the timestamp
-        /// rolling past — no explicit "clear" event needed.</summary>
+        /// rolling past for Reactive holds; explicitly via
+        /// <see cref="ClearMacroOverride"/> for Sticky holds.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool HasActiveMacroLightbarOverride
             => DateTime.UtcNow < _macroOverrideExpiresAtUtc;
+
+        /// <summary>0..1 intensity scalar for the override RGB. 1.0 for
+        /// Sticky holds; linear ramp from 1.0 down to 0.0 across the
+        /// [Start, Expires] window for Reactive holds. The synthesizer
+        /// multiplies the override RGB by this so a Reactive flash fades
+        /// smoothly the same way the InputReactive lightbar mode does.
+        /// Returns 0 when no override is active.</summary>
+        public float ComputeMacroOverrideIntensity()
+        {
+            if (!HasActiveMacroLightbarOverride) return 0f;
+            if (_macroOverrideHoldMode == MacroLightbarHoldMode.Sticky) return 1f;
+            double duration = (_macroOverrideExpiresAtUtc - _macroOverrideStartUtc).TotalMilliseconds;
+            if (duration <= 0) return 1f;
+            double elapsed = (DateTime.UtcNow - _macroOverrideStartUtc).TotalMilliseconds;
+            return (float)Math.Clamp(1.0 - elapsed / duration, 0.0, 1.0);
+        }
+
+        /// <summary>Releases any active override (Sticky or Reactive) so
+        /// the synthesizer falls back to the configured Lighting tab
+        /// state on the next dispatch. Drives the
+        /// <see cref="MacroActionType.LightbarColorClear"/> action.</summary>
+        public void ClearMacroOverride()
+        {
+            if (_macroOverrideExpiresAtUtc != DateTime.MinValue)
+                MacroOverrideExpiresAtUtc = DateTime.MinValue;
+        }
 
         // ────────────────────────────────────────────────
         //  Mic LED mode (DualSense only) — mute LED state on the front edge

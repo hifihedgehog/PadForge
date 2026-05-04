@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>ライトバーを{0}に{1}ms設定</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ライトバーの色を設定</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>割り当てられたPlayStationスロットのライトバーを、指定した時間だけ選択したRGBカラーで上書きします。時間が経過すると、ライティングタブの設定に戻ります。ゲーム側の書き込みは引き続き優先されます。</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>割り当てられたPlayStationスロットのライトバーを、選択したRGBカラーで上書きします。リアクティブは、設定された減衰時間で最大輝度から黒へフェードしてから、ライティングタブの設定に戻ります。スティッキーは「ライトバー上書き解除」アクションが実行されるまで色を保持します。ゲーム側の書き込みは引き続き優先されます。</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>ライトバーを{0}に{1}ms設定</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ライトバーを{0}でフラッシュ（減衰{1}ms）</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ライトバーを{0}で保持（解除まで）</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ライトバー上書き解除</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>ライトバー上書き解除</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>割り当てられたスロットでアクティブなライトバー上書きを解除します。スティッキーな「ライトバーの色を設定」と組み合わせて、別のマクロで取り消すために使用できます。</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ライトバーモードを設定</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ライトバーモードを{0}に設定</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>割り当てられたスロットのライトバーモードを特定の値に設定します。別のアクションかユーザーが変更するまで、ライティングタブの編集と同様に保持されます。</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ライトバーモードを循環</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}個のライトバーモードを循環</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>下で選択したモードでスロットのライトバーモードを進めます。発火ごとに次のチェック済みモードへ移ります。位置はアクション単位で、アプリ再起動時にリセットされます。</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持:</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>リアクティブ（フェード）</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>色:</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>ランダム色相</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>パレット送り</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>減衰:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>モード:</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>マクロが循環するライトバーモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>中央</value></data>

@@ -1026,6 +1026,17 @@ namespace PadForge.ViewModels
             // slot deletion has to drop them. Otherwise the next VC created
             // at this pad index inherits the deleted slot's macros.
             Macros.Clear();
+
+            // Per-device Lighting tab configs live in this PadViewModel's
+            // dictionary, keyed by physical device InstanceGuid — not on
+            // UserSetting, so DeleteSlot's UserSetting removal does not
+            // reach them. Without this clear, deleting a slot and later
+            // remapping the same physical device to a new slot would
+            // resurrect that device's prior lightbar mode / colors /
+            // palette via GetOrAdd in EnsurePlayStationConfigsForMappedDevices,
+            // and the saved XML would still carry the stale entries.
+            _perDevicePlayStationConfigs.Clear();
+            PlayStationConfig = new PlayStationSlotConfig();
         }
 
         /// <summary>Resets all deadzone, anti-deadzone, linear, and trigger settings to defaults.</summary>

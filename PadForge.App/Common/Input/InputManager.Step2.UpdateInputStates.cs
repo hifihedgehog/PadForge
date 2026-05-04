@@ -27,6 +27,15 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
+            // Decay the audio bass detector exactly ONCE per polling tick.
+            // ScaleRumbleForDevice is called many times per tick (slot
+            // pass + per-device pass + per-device dispatcher pass), and
+            // each DecayIfSilent invocation multiplies the decay rate
+            // when audio is silent — collapsing bass energy between hits
+            // and weakening audio rumble. The detector docstring spells
+            // out "once per frame"; this is that one frame call.
+            AudioBassDetector?.DecayIfSilent();
+
             // Refresh per-slot post-mix-post-gain rumble before the per-device
             // FFB loop reads it. One pass per polling tick — every consumer
             // (SDL physical rumble, DS5/DS4 effect packet, FFB-tab meter)
@@ -324,7 +333,18 @@ namespace PadForge.Common.Input
             var detector = AudioBassDetector;
             if (detector != null && ps != null && ps.AudioRumbleEnabled == "1")
             {
-                detector.DecayIfSilent();
+                // NOTE: detector.DecayIfSilent() must NOT be called here.
+                // ScaleRumbleForDevice is invoked many times per polling
+                // tick (once per slot in ComputeFinalVibrationStates,
+                // once per (slot, device) in ApplyForceFeedback, plus
+                // once per (slot, device) in SlotRumbleForDeviceProvider
+                // for the dispatcher's per-device synthesis). Calling
+                // DecayIfSilent here would multiply the per-tick decay
+                // rate and collapse audio rumble between bass hits —
+                // exactly the regression the docstring warns against
+                // ("Call from the polling thread once per frame.").
+                // The single per-tick decay is invoked from
+                // UpdateInputStates above.
                 detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
                 detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
                 ushort motorVal = detector.MotorValue;

@@ -27,6 +27,12 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
+            // Refresh per-slot post-mix-post-gain rumble before the per-device
+            // FFB loop reads it. One pass per polling tick — every consumer
+            // (SDL physical rumble, DS5/DS4 effect packet, FFB-tab meter)
+            // reads the same FinalVibrationStates instance.
+            ComputeFinalVibrationStates();
+
             // Snapshot online devices into pre-allocated buffer (no LINQ allocation).
             int snapshotCount;
             lock (SettingsManager.UserDevices.SyncRoot)
@@ -138,7 +144,10 @@ namespace PadForge.Common.Input
 
             // Combine vibration across all mapped slots (max of each motor).
             // For directional FFB data, use the first slot that has it (no sensible
-            // way to "combine" two different polar directions).
+            // way to "combine" two different polar directions). Scalar values come
+            // from FinalVibrationStates so audio mix + ForceOverall/Left/Right/Swap
+            // are already applied — same source the FFB-tab meter and the DS5/DS4
+            // dispatcher read.
             ushort combinedL = 0, combinedR = 0;
             Vibration directionalSource = null;
             PadSetting firstPadSetting = null;
@@ -153,41 +162,23 @@ namespace PadForge.Common.Input
                 if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
                     continue;
 
-                var vib = VibrationStates[padIndex];
-                if (vib == null) continue;
+                var fin = FinalVibrationStates[padIndex];
+                if (fin != null)
+                {
+                    if (fin.LeftMotorSpeed > combinedL)  combinedL = fin.LeftMotorSpeed;
+                    if (fin.RightMotorSpeed > combinedR) combinedR = fin.RightMotorSpeed;
+                }
 
-                if (vib.LeftMotorSpeed > combinedL)  combinedL = vib.LeftMotorSpeed;
-                if (vib.RightMotorSpeed > combinedR) combinedR = vib.RightMotorSpeed;
-
-                if (directionalSource == null && (vib.HasDirectionalData || vib.HasConditionData))
-                    directionalSource = vib;
+                var raw = VibrationStates[padIndex];
+                if (raw != null && directionalSource == null
+                    && (raw.HasDirectionalData || raw.HasConditionData))
+                    directionalSource = raw;
 
                 if (firstPadSetting == null)
                     firstPadSetting = us.GetPadSetting();
             }
 
             if (firstPadSetting == null) return;
-
-            // Combine audio bass rumble (additive via max, per-device settings).
-            var detector = AudioBassDetector;
-            if (detector != null && firstPadSetting.AudioRumbleEnabled == "1")
-            {
-                detector.DecayIfSilent();
-
-                // Read per-device sensitivity/cutoff and update detector.
-                float sens = TryParseFloat(firstPadSetting.AudioRumbleSensitivity, 4f);
-                float cutoff = TryParseFloat(firstPadSetting.AudioRumbleCutoffHz, 80f);
-                detector.Sensitivity = sens;
-                detector.CutoffHz = cutoff;
-
-                ushort motorVal = detector.MotorValue;
-                float leftScale = TryParseFloat(firstPadSetting.AudioRumbleLeftMotor, 100f) / 100f;
-                float rightScale = TryParseFloat(firstPadSetting.AudioRumbleRightMotor, 100f) / 100f;
-                ushort audioL = (ushort)(motorVal * leftScale);
-                ushort audioR = (ushort)(motorVal * rightScale);
-                if (audioL > combinedL) combinedL = audioL;
-                if (audioR > combinedR) combinedR = audioR;
-            }
 
             // Write combined vibration to a scratch Vibration and apply.
             if (_combinedVibration == null) _combinedVibration = new Vibration();
@@ -225,6 +216,100 @@ namespace PadForge.Common.Input
         {
             return float.TryParse(value, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
+        }
+
+        private static int TryParseInt(string value, int defaultValue)
+        {
+            return int.TryParse(value, System.Globalization.NumberStyles.Integer,
+                System.Globalization.CultureInfo.InvariantCulture, out int result) ? result : defaultValue;
+        }
+
+        private static bool TryParseBool(string value)
+        {
+            return value == "1" || string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Per-slot pre-pass that produces <see cref="FinalVibrationStates"/>
+        /// from raw <see cref="VibrationStates"/> by mixing in audio bass
+        /// rumble and applying ForceOverall × LeftMotorStrength /
+        /// RightMotorStrength × ForceSwapMotor. Runs once per polling tick
+        /// before the per-device FFB loop so every downstream consumer
+        /// (SDL physical rumble, DS5/DS4 effect packet, FFB-tab meter) sees
+        /// the same final values. Convention: a slot's settings come from
+        /// its first mapped device's PadSetting.
+        /// </summary>
+        public void ComputeFinalVibrationStates()
+        {
+            var settings = SettingsManager.UserSettings;
+            var detector = AudioBassDetector;
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                var raw = VibrationStates[padIndex];
+                var final = FinalVibrationStates[padIndex];
+                if (raw == null || final == null) continue;
+
+                ushort baseL = raw.LeftMotorSpeed;
+                ushort baseR = raw.RightMotorSpeed;
+
+                PadSetting ps = null;
+                if (settings != null)
+                {
+                    var slotSettings = settings.FindByPadIndex(padIndex);
+                    if (slotSettings != null && slotSettings.Count > 0)
+                        ps = slotSettings[0].GetPadSetting();
+                }
+
+                // Audio bass rumble — additive via max, per-slot detector
+                // settings driven from the slot's first PadSetting.
+                if (detector != null && ps != null && ps.AudioRumbleEnabled == "1")
+                {
+                    detector.DecayIfSilent();
+                    detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
+                    detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
+                    ushort motorVal = detector.MotorValue;
+                    float leftScale = TryParseFloat(ps.AudioRumbleLeftMotor, 100f) / 100f;
+                    float rightScale = TryParseFloat(ps.AudioRumbleRightMotor, 100f) / 100f;
+                    ushort audioL = (ushort)(motorVal * leftScale);
+                    ushort audioR = (ushort)(motorVal * rightScale);
+                    if (audioL > baseL) baseL = audioL;
+                    if (audioR > baseR) baseR = audioR;
+                }
+
+                // Force-feedback gain / motor balance / swap.
+                int overallGain = 100;
+                int leftGain = 100;
+                int rightGain = 100;
+                bool swap = false;
+                if (ps != null)
+                {
+                    overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
+                    leftGain = Math.Clamp(TryParseInt(ps.LeftMotorStrength, 100), 0, 100);
+                    rightGain = Math.Clamp(TryParseInt(ps.RightMotorStrength, 100), 0, 100);
+                    swap = TryParseBool(ps.ForceSwapMotor);
+                }
+                double scaledL = baseL * (leftGain / 100.0) * (overallGain / 100.0);
+                double scaledR = baseR * (rightGain / 100.0) * (overallGain / 100.0);
+                ushort finalL = (ushort)Math.Clamp(scaledL, 0, 65535);
+                ushort finalR = (ushort)Math.Clamp(scaledR, 0, 65535);
+                if (swap) (finalL, finalR) = (finalR, finalL);
+
+                final.LeftMotorSpeed = finalL;
+                final.RightMotorSpeed = finalR;
+
+                // Directional / condition data passes through unchanged —
+                // ForceFeedbackState handles overallGain on those branches
+                // via SignedMagnitude scaling, which we leave as-is.
+                final.HasDirectionalData = raw.HasDirectionalData;
+                final.HasConditionData = raw.HasConditionData;
+                final.EffectType = raw.EffectType;
+                final.SignedMagnitude = raw.SignedMagnitude;
+                final.Direction = raw.Direction;
+                final.Period = raw.Period;
+                final.DeviceGain = raw.DeviceGain;
+                final.ConditionAxisCount = raw.ConditionAxisCount;
+                final.ConditionAxes = raw.ConditionAxes;
+            }
         }
     }
 }

@@ -58,7 +58,25 @@ namespace PadForge.Common.Input
                         if (isExtended) CombinedExtendedRawStates[padIndex] = _padIndexBuffer[0].ExtendedRawOutputState;
                         if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
-                        if (isDs4) CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
+                        if (isDs4)
+                        {
+                            CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
+                            // Bake the touchpad-click into the combined Gamepad
+                            // bitmap so every downstream consumer (Step 5
+                            // virtual-controller submit, Step 6 retrieved-
+                            // states copy, UserEffectsDispatcher InputReactive
+                            // pulse detection) sees the press uniformly.
+                            // Without this, only Step 5's local copy + the
+                            // packer saw the click; the dispatcher's
+                            // SlotButtonsProvider read missed it and the
+                            // touchpad couldn't trigger InputReactive flashes.
+                            if (CombinedTouchpadStates[padIndex].Click)
+                            {
+                                var gp = CombinedOutputStates[padIndex];
+                                gp.Buttons |= Gamepad.TOUCHPAD;
+                                CombinedOutputStates[padIndex] = gp;
+                            }
+                        }
                         continue;
                     }
 
@@ -142,6 +160,15 @@ namespace PadForge.Common.Input
                             }
                         }
                         CombinedTouchpadStates[padIndex] = combinedTp;
+
+                        // Bake the touchpad-click into the combined Gamepad
+                        // bitmap — see the slotCount==1 branch for rationale.
+                        if (combinedTp.Click)
+                        {
+                            var gp = CombinedOutputStates[padIndex];
+                            gp.Buttons |= Gamepad.TOUCHPAD;
+                            CombinedOutputStates[padIndex] = gp;
+                        }
                     }
                 }
                 catch (Exception ex)

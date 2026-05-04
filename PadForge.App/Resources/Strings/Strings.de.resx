@@ -955,9 +955,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Mehrpunkt-Vibration</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Startposition</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Endposition</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>Bereich:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>Stärke:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequenz (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Bereich</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Stärke</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequenz (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Kein Widerstand. Der Trigger fühlt sich normal an.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Konstanter Widerstand von der Startposition bis zum vollen Druck. Stärke regelt, wie stark der Trigger zurückdrückt.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Wie der Abzug einer Waffe. Durch eine weiche Zone bis zur Endposition ziehen, dann fester Klick. Mit Start/Ende den Klickpunkt und mit Stärke die Klickkraft festlegen.</value></data>
@@ -1066,5 +1066,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Mittel — Blau zurücksetzen</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Laut — Rot zurücksetzen</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Laut — Grün zurücksetzen</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Laut — Blau zurücksetzen</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Laut — Blau zurücksetzen</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Eingabereaktiv</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Aus</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Zufallsfarbe pro Druck</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Palette durchlaufen</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Einzelfarbe pro Druck</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Eingabereaktiv zurücksetzen</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Blinkfarbe pro Druck</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Eingabereaktiv-Farbe zurücksetzen</value></data>
+
+
+
+
+
+
+
+
 </root>

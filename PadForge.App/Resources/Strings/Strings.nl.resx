@@ -973,9 +973,9 @@
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Multi-positie vibratie</value></data>
   <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Startpositie</value></data>
   <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Eindpositie</value></data>
-  <data name="Pad_AT_Range" xml:space="preserve"><value>Bereik:</value></data>
-  <data name="Pad_AT_Strength" xml:space="preserve"><value>Sterkte:</value></data>
-  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequentie (Hz):</value></data>
+  <data name="Pad_AT_Range" xml:space="preserve"><value>Bereik</value></data>
+  <data name="Pad_AT_Strength" xml:space="preserve"><value>Sterkte</value></data>
+  <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequentie (Hz)</value></data>
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Geen weerstand. De trigger voelt normaal aan.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Constante weerstand vanaf de startpositie tot volledig ingedrukt. Sterkte bepaalt hoe hard de trigger terugduwt.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Wapengevoel. Trek door een zachte zone tot de eindpositie en dan een stevige klik. Gebruik start/eind om het klikpunt te bepalen en sterkte voor de klikkracht.</value></data>
@@ -1084,5 +1084,13 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Middenband — blauw herstellen</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Luide band — rood herstellen</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Luide band — groen herstellen</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Luide band — blauw herstellen</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Luide band — blauw herstellen</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Invoerreactief</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Uit</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Willekeurige kleur per druk</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Door palet bladeren</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Eén kleur per druk</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Invoerreactief herstellen</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Knipperkleur per druk</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Invoerreactief-kleur herstellen</value></data>
+
+
+
+
+
+
+
+
 </root>

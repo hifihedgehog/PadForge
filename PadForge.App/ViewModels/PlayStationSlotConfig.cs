@@ -637,6 +637,22 @@ namespace PadForge.ViewModels
         // / the palette collection. Match the field initializers so a
         // reset always lands on the same value a fresh slot starts at.
 
+        public RelayCommand ResetLightbarModeCommand =>
+            _resetLightbarMode ??= new RelayCommand(() => LightbarMode = LightbarMode.Off);
+        private RelayCommand _resetLightbarMode;
+
+        public RelayCommand ResetPlayerLedBrightnessCommand =>
+            _resetPlayerLedBrightness ??= new RelayCommand(() => PlayerLedBrightness = PlayerLedBrightness.High);
+        private RelayCommand _resetPlayerLedBrightness;
+
+        public RelayCommand ResetPlayerLedModeCommand =>
+            _resetPlayerLedMode ??= new RelayCommand(() => PlayerLedMode = PlayerLedMode.Off);
+        private RelayCommand _resetPlayerLedMode;
+
+        public RelayCommand ResetMicLedModeCommand =>
+            _resetMicLedMode ??= new RelayCommand(() => MicLedMode = MicLedMode.Off);
+        private RelayCommand _resetMicLedMode;
+
         public RelayCommand ResetLightbarPeriodCommand =>
             _resetLightbarPeriod ??= new RelayCommand(() => LightbarPeriodMs = 3000);
         private RelayCommand _resetLightbarPeriod;

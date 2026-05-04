@@ -871,6 +871,10 @@
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>Reset Frequency</value></data>
 
   <!-- ═══ Pad — Lighting reset tooltips ═══ -->
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>Reset Lightbar Mode</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>Reset LED Brightness</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Reset Player Pattern</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Reset Mute LED Mode</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Reset Period</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Reset Pulse Decay</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>

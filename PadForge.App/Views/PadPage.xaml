@@ -2224,6 +2224,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactive, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveCycle, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Period: Breathing / Rainbow / ColorCycle / AudioPulseRainbow -->
@@ -2666,6 +2667,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
+                                    <Button Command="{Binding PlayStationConfig.ResetPlayerLedBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLedBrightness, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Player pattern -->
@@ -2680,6 +2682,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P4, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
+                                    <Button Command="{Binding PlayStationConfig.ResetPlayerLedModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetPlayerPattern, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Mute LED mode -->
@@ -2691,6 +2694,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
+                                    <Button Command="{Binding PlayStationConfig.ResetMicLedModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetMuteLedMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

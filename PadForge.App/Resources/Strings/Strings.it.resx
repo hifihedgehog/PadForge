@@ -931,7 +931,7 @@
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per ogni levetta: zone morte, anti-zone morte, curve di sensibilità e calibrazione dell'offset centrale. Ogni sezione sotto si applica a una levetta analogica dell'uscita attiva. I profili estesi possono avere fino a quattro levette. I gamepad standard ne hanno due.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Grilletti</value></data>
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per ogni grilletto: zone morte, anti-zone morte, scala dell'intervallo massimo e curve di sensibilità. Ogni sezione sotto si applica a un asse del grilletto dell'uscita attiva. I profili estesi possono esporre fino a otto assi condivisi con la scheda Levette.</value></data>
-  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
+  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Regola come PadForge scala gli eventi di force feedback dal gioco e come li instrada ai motori di vibrazione o agli attuatori aptici del controller fisico. La vibrazione audio aggiunge un livello pilotato dall'audio di sistema.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
@@ -1032,6 +1032,10 @@
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Ripristina grilletto destro</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Ripristina forza</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>Ripristina frequenza</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>Ripristina modalità barra luminosa</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>Ripristina luminosità LED</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Ripristina pattern giocatore</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Ripristina modalità LED muto</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Ripristina periodo</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Ripristina decadimento impulso</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Ripristina sensibilità</value></data>

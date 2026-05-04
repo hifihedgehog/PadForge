@@ -1014,6 +1014,10 @@
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>오른쪽 트리거 초기화</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>강도 초기화</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>주파수 초기화</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>라이트바 모드 초기화</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>LED 밝기 초기화</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>플레이어 패턴 초기화</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>음소거 LED 모드 초기화</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>주기 초기화</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>펄스 감쇠 초기화</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>감도 초기화</value></data>

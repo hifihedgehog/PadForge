@@ -906,14 +906,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Substituto direto do XInput; filtra os próprios controles virtuais do PadForge da sua própria visão</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pacote de ícones Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ícones de analógicos e gatilhos derivados de "Xbox Series Button Icons and Controls" por Zacksly (CC BY 3.0)</value></data>
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gatilhos adaptativos</value></data>
-  <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gatilhos adaptativos</value></data>
+  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gatilhos Adaptativos</value></data>
+  <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gatilhos Adaptativos</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura os efeitos de gatilho no DualSense físico atribuído. Os efeitos gerados pelo jogo são encaminhados automaticamente. As configurações aqui adicionam uma camada configurada pelo usuário que atua quando nenhum jogo está escrevendo.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Analógicos</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Por analógico: zonas mortas, anti-zonas mortas, curvas de sensibilidade e calibração de deslocamento do centro. Cada seção abaixo afeta um analógico da saída ativa. Perfis estendidos podem ter até quatro analógicos. Controles padrão têm dois.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Por gatilho: zonas mortas, anti-zonas mortas, escala do alcance máximo e curvas de sensibilidade. Cada seção abaixo afeta um eixo de gatilho da saída ativa. Perfis estendidos podem expor até oito eixos compartilhados com a aba Analógicos.</value></data>
-  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
+  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ajusta como o PadForge escala os eventos de force feedback do jogo e como os roteia para os motores de vibração ou atuadores hápticos do controle físico. Vibração por áudio adiciona uma camada acionada pelo áudio do sistema.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Gatilho Direito</value></data>
@@ -956,8 +956,8 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinco LEDs brancos pequenos abaixo do touchpad. Escolha qual padrão de jogador exibir e o brilho.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LEDs Indicadores</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Fileira de número do jogador (5 LEDs abaixo do touchpad) e o LED de mudo acima do microfone. O controle de brilho afeta fisicamente apenas a fileira do jogador. O firmware expõe estados do LED de mudo (Desligado / Aceso / Pulsando), mas nenhum registro de brilho separado para mudo.</value></data>
-  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Padrão do jogador:</value></data>
-  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modo do LED de mudo:</value></data>
+  <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Padrão do Jogador:</value></data>
+  <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modo do LED de Mudo:</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Brilho do LED:</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Padrão</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Desligado</value></data>
@@ -979,7 +979,7 @@
   <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Três Cores — Transições Duras</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Três Cores — Gradiente Suave</value></data>
   <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Três Cores — Crossfade nos Limites</value></data>
-  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Largura do crossfade:</value></data>
+  <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Largura do Crossfade:</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Cor Suave</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Cor Média</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Cor Alta</value></data>
@@ -1009,11 +1009,15 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Adicionar Cor</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Redefinir Paleta</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Substitui a paleta atual pelas quatro cores padrão (vermelho, verde, azul, amarelo).</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decaimento do pulso (ms):</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decaimento do Pulso (ms):</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Redefinir Gatilho Esquerdo</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Redefinir Gatilho Direito</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Redefinir Força</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>Redefinir Frequência</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>Redefinir Modo da Barra de Luz</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>Redefinir Brilho do LED</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Redefinir Padrão do Jogador</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Redefinir Modo do LED de Mudo</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Redefinir Período</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Redefinir Decaimento do Pulso</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Redefinir Sensibilidade</value></data>

@@ -184,53 +184,32 @@ namespace PadForge.Services
 
             // Rumble bytes for the DS5/DS4 effect-packet path.
             //
-            // ── CRITICAL: this MUST return the SAME audio-mixed +
-            // gain-scaled values SDL is writing for THIS specific
-            // device on THIS slot. ──
+            // Returns the RAW per-slot game-rumble bytes — no audio
+            // mixing on the dispatcher side. The synthesizers gate the
+            // rumble-enable bit on these bytes being non-zero (see
+            // Ds5EffectSynthesizer + Ds4EffectSynthesizer), so a slot
+            // with no game rumble produces dispatcher packets that
+            // leave the firmware's rumble fields untouched. SDL3 then
+            // becomes the sole writer of those fields, including the
+            // audio-rumble mix it applies in ScaleRumbleForDevice.
             //
-            // Two writers reach the physical DS5/DS4 simultaneously:
-            //   1. PadForge's UserEffectsDispatcher writes raw HID effect
-            //      packets via Ds5RawHidWriter — at most 30 Hz, but
-            //      ONLY while an animated lightbar mode is selected
-            //      (the AnimTickMs timer). Otherwise it fires only on
-            //      UI PropertyChanged events and is effectively idle.
-            //   2. SDL3's PS5 driver writes effect packets every time
-            //      SDL_RumbleJoystick is called from
-            //      ForceFeedbackState.SetDeviceForces — once per
-            //      polling tick (300+ Hz typical) carrying audio-mixed
-            //      bytes from per-device ScaleRumbleForDevice.
+            // Why not mix audio in here too: AudioBassDetector.MotorValue
+            // updates asynchronously from the WASAPI callback, so two
+            // readers (dispatcher tick + SDL polling tick) sample it at
+            // different moments and end up with DIFFERENT values even
+            // when both apply the same scaling formula. Per
+            // Ds5RawHidWriter's docstring "the firmware applies
+            // whichever WriteFile lands most recently" — different
+            // values → motors stutter at 30 Hz → user perceives WEAK.
+            // Test rumble (constant 65535) doesn't suffer this because
+            // the input is stable, which is why test vibration feels
+            // strong even with animated lightbar concurrent.
             //
-            // Per Ds5RawHidWriter's docstring: "the firmware applies
-            // whichever WriteFile lands most recently." If the two
-            // writers carry DIFFERENT rumble bytes, the firmware sees
-            // them alternate and motors stutter. That's perceived as
-            // weak.
-            //
-            // Empirical evidence (2026-05-04 user A/B):
-            //   - Test rumble (raw VibrationStates = 65535): both
-            //     writers carry 255. Motors steady → STRONG. Works
-            //     with animated lightbar concurrent.
-            //   - Audio rumble alone (no animated lightbar): dispatcher
-            //     idle, only SDL writes audio-mixed values. Motors
-            //     steady at audio level → STRONG.
-            //   - Audio rumble + animated lightbar (DS5 OR DS4 on same
-            //     slot): if dispatcher writes 0 while SDL writes audio
-            //     peak, motors pulse 30 Hz → WEAK (the bug user
-            //     reported as "Otherwise, it gets weak").
-            //
-            // The fix: dispatcher must compute per-device audio-mix +
-            // gain just like ApplyForceFeedback does for its SDL
-            // writes. Same input (raw VibrationStates), same per-device
-            // PadSetting, same ScaleRumbleForDevice path → identical
-            // output bytes, no pulse race regardless of which writer
-            // lands last.
-            //
-            // Per-DEVICE (not slot's selected device) is mandatory:
-            // when DS5 + DS4 share a slot with different audio-rumble
-            // gains, each must see its own setting. Slot-level
-            // FinalVibrationStates pulls only the slot's selected
-            // device PadSetting and is wrong for the other device on
-            // the same slot.
+            // Letting SDL own audio rumble end-to-end side-steps the
+            // race entirely; PadForge's dispatcher only carries
+            // rumble bytes for the game-rumble case, where the input
+            // is the slot's raw VibrationStates and both writers
+            // sample the same value.
             //
             // Vibration structs use ushort (0..65535); DS5/DS4 firmware
             // takes byte (0..255), so shift down 8 bits.
@@ -240,29 +219,7 @@ namespace PadForge.Services
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
-
-                PadSetting devicePs = null;
-                var settings = SettingsManager.UserSettings;
-                if (settings != null && deviceGuid != Guid.Empty)
-                {
-                    lock (settings.SyncRoot)
-                    {
-                        for (int i = 0; i < settings.Items.Count; i++)
-                        {
-                            var us = settings.Items[i];
-                            if (us == null) continue;
-                            if (us.MapTo != padIndex) continue;
-                            if (us.InstanceGuid != deviceGuid) continue;
-                            devicePs = us.GetPadSetting();
-                            break;
-                        }
-                    }
-                }
-
-                _inputManager.ScaleRumbleForDevice(
-                    raw.LeftMotorSpeed, raw.RightMotorSpeed,
-                    devicePs, out ushort scaledL, out ushort scaledR);
-                return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
+                return ((byte)(raw.RightMotorSpeed >> 8), (byte)(raw.LeftMotorSpeed >> 8));
             };
 
             // Slot's raw rumble for change-detection inside the audio

@@ -41,10 +41,25 @@ namespace PadForge.Common.Input
     /// [46]     LedBlue
     /// </code>
     ///
-    /// <para>Feature B writes don't drive rumble (game writes own that
-    /// surface; the existing rumble pipeline still feeds non-DS5
-    /// targets). Adaptive trigger and lightbar bytes are the meaningful
-    /// payload here.</para>
+    /// <para>══════════════════════════════════════════════════════════════</para>
+    /// <para><b>SOLE-WRITER CONTRACT — read before changing rumble bytes.</b></para>
+    /// <para>══════════════════════════════════════════════════════════════</para>
+    /// <para>This synthesizer's output is the ONLY effect packet that
+    /// reaches a DualSense from PadForge. <c>InputManager.Step2.ApplyForceFeedback</c>
+    /// returns early for Sony VID 0x054C / DS5 PIDs so SDL_RumbleJoystick
+    /// is never called for these devices. That asymmetry is load-bearing:
+    /// two writers (PadForge dispatcher + SDL3's PS5 driver) competing on
+    /// an asynchronously-sampled audio peak (<see cref="AudioBassDetector"/>)
+    /// produced the v3.1.x audio-rumble + animated-lightbar regression.
+    /// One writer cannot race with itself.</para>
+    /// <para>Therefore: the rumble bytes (offsets 2/3) and bit 0 of
+    /// validFlag0 are written UNCONDITIONALLY in every dispatch. The
+    /// dispatcher computes audio-mix + per-device gain in
+    /// <c>InputService.SlotRumbleForDeviceProvider</c> and feeds those
+    /// bytes here. Do NOT add conditional gating "for safety" — there is
+    /// no second writer to coordinate with, and conditional bytes would
+    /// just leave gaps in the rumble stream during silent audio frames.</para>
+    /// <para>See memory: sony-rumble-sole-writer-architecture.md.</para>
     /// </summary>
     internal static class Ds5EffectSynthesizer
     {

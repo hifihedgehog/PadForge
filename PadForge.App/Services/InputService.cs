@@ -179,19 +179,52 @@ namespace PadForge.Services
                 return _inputManager.CombinedOutputStates[padIndex].Buttons;
             };
 
-            // Per-slot rumble state for DS5 effect-packet passthrough. The
-            // synthesizer carries these bytes in every dispatch so the
-            // 30 Hz lightbar writes don't crowd SDL3's separate
-            // SDL_RumbleJoystick writes off the BT HID channel. Vibration
-            // structs use ushort (0..65535); DS5 firmware takes byte
-            // (0..255), so shift down 8 bits.
-            UserEffectsDispatcher.SlotRumbleProvider = padIndex =>
+            // Per-(slot, device) rumble for the DS5/DS4 effect-packet path.
+            // Each Sony device mapped to the slot pulls its own
+            // PadSetting (audio rumble + ForceOverall + Left/Right + swap),
+            // so different physical devices on the same slot can have
+            // different effective rumble — gain at 0 on the DualSense
+            // silences only the DualSense, not the Xbox sharing the slot.
+            // Vibration structs use ushort (0..65535); DS5 firmware takes
+            // byte (0..255), so shift down 8 bits.
+            UserEffectsDispatcher.SlotRumbleForDeviceProvider = (padIndex, deviceGuid) =>
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
-                var vib = _inputManager.FinalVibrationStates[padIndex];
-                if (vib == null) return ((byte)0, (byte)0);
-                return ((byte)(vib.RightMotorSpeed >> 8), (byte)(vib.LeftMotorSpeed >> 8));
+                var raw = _inputManager.VibrationStates[padIndex];
+                if (raw == null) return ((byte)0, (byte)0);
+                var us = SettingsManager.UserSettings;
+                PadSetting ps = null;
+                if (us != null && deviceGuid != Guid.Empty)
+                {
+                    lock (us.SyncRoot)
+                    {
+                        for (int i = 0; i < us.Items.Count; i++)
+                        {
+                            var u = us.Items[i];
+                            if (u.MapTo == padIndex && u.InstanceGuid == deviceGuid)
+                            {
+                                ps = u.GetPadSetting();
+                                break;
+                            }
+                        }
+                    }
+                }
+                _inputManager.ScaleRumbleForDevice(
+                    raw.LeftMotorSpeed, raw.RightMotorSpeed, ps,
+                    out ushort sL, out ushort sR);
+                return ((byte)(sR >> 8), (byte)(sL >> 8));
+            };
+
+            // Slot's raw rumble for change-detection inside the audio
+            // dispatch tick — see SlotRawRumbleProvider docs.
+            UserEffectsDispatcher.SlotRawRumbleProvider = padIndex =>
+            {
+                if (_inputManager == null) return ((byte)0, (byte)0);
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
+                var raw = _inputManager.VibrationStates[padIndex];
+                if (raw == null) return ((byte)0, (byte)0);
+                return ((byte)(raw.RightMotorSpeed >> 8), (byte)(raw.LeftMotorSpeed >> 8));
             };
 
             // Active test-rumble target for the slot, so the dispatcher's
@@ -368,7 +401,9 @@ namespace PadForge.Services
                 _inputManager.Dispose();
                 _inputManager = null;
                 UserEffectsDispatcher.SlotButtonsProvider = null;
-                UserEffectsDispatcher.SlotRumbleProvider = null;
+                UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
+                UserEffectsDispatcher.SlotRawRumbleProvider = null;
+                UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -1056,9 +1091,21 @@ namespace PadForge.Services
 
                 var selected = padVm.SelectedMappedDevice;
                 if (selected == null || selected.InstanceGuid == Guid.Empty)
+                {
+                    if (_inputManager != null && i < InputManager.MaxPads)
+                        _inputManager.SelectedDeviceGuids[i] = Guid.Empty;
                     continue;
+                }
 
                 SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
+
+                // Mirror SelectedMappedDevice to the polling thread so
+                // ComputeFinalVibrationStates can read the user's selected
+                // device PadSetting for the meter, and the per-device
+                // rumble paths (SDL + DS5 dispatcher) can resolve each
+                // mapped device's own PadSetting independently.
+                if (_inputManager != null && i < InputManager.MaxPads)
+                    _inputManager.SelectedDeviceGuids[i] = selected.InstanceGuid;
             }
 
             // Start/stop audio bass detector when per-slot enable changes.

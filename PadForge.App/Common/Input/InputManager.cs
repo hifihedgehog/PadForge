@@ -182,17 +182,26 @@ namespace PadForge.Common.Input
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
-        /// Per-slot post-processed vibration: <see cref="VibrationStates"/> with
-        /// audio bass mixed in and ForceOverall × Left/Right motor strength ×
-        /// ForceSwapMotor applied. Populated each polling tick by Step 2's
-        /// <c>ComputeFinalVibrationStates</c>. The FFB-tab activity meter, the
-        /// DS5/DS4 effect-packet rumble bytes (via
-        /// <c>UserEffectsDispatcher.SlotRumbleProvider</c>), and the SDL
-        /// physical-rumble path (<c>SetDeviceForces</c>) all read this so the
-        /// three surfaces stay in sync. <c>SetDeviceForces</c> therefore does
-        /// NOT reapply gain on the scalar branch.
+        /// Per-slot post-processed vibration *as seen by the slot's
+        /// <see cref="SelectedDeviceGuids"/> device* — audio bass mix and
+        /// gain/balance/swap applied per the SelectedMappedDevice's
+        /// PadSetting. Drives the FFB-tab activity meter only. The SDL
+        /// physical-rumble path and the DS5/DS4 dispatcher each compute
+        /// their own per-device scaled rumble from each mapped device's
+        /// own PadSetting (different physical devices can have different
+        /// gain / audio rumble settings on the same slot), so they do
+        /// NOT read this array.
         /// </summary>
         public Vibration[] FinalVibrationStates { get; } = new Vibration[MaxPads];
+
+        /// <summary>
+        /// Per-slot InstanceGuid of the device the user has selected on
+        /// the slot's FFB tab — drives whose PadSetting populates
+        /// <see cref="FinalVibrationStates"/> for the meter. Updated by
+        /// <c>InputService.SyncViewModelToPadSettings</c> at 30 Hz.
+        /// <see cref="Guid.Empty"/> when no device is selected.
+        /// </summary>
+        public Guid[] SelectedDeviceGuids { get; } = new Guid[MaxPads];
 
         /// <summary>
         /// Per-slot motion snapshots for DSU (cemuhook) streaming.

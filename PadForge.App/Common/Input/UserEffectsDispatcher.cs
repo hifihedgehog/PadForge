@@ -59,14 +59,25 @@ namespace PadForge.Common.Input
         public static Func<int, ushort> SlotButtonsProvider { get; set; }
 
         /// <summary>Static provider for the current rumble state of a
-        /// given pad index, returned as 8-bit right/left motor values
-        /// (0..255). InputService wires this to read from
-        /// <c>InputManager.VibrationStates[i]</c>, scaled from the
-        /// underlying ushort. The synthesizer carries these values in
-        /// every effect packet plus asserts bit 0 of validFlag1, so the
-        /// 30 Hz lightbar dispatch doesn't crowd SDL3's separate
-        /// SDL_RumbleJoystick writes off the BT HID channel.</summary>
-        public static Func<int, (byte right, byte left)> SlotRumbleProvider { get; set; }
+        /// given (slot, physical device) pair, returned as 8-bit
+        /// right/left motor values (0..255). InputService wires this to
+        /// scale the slot's raw <c>VibrationStates</c> by the specific
+        /// device's PadSetting (audio rumble + ForceOverall + motor
+        /// strengths + swap), so each Sony device mapped to the slot can
+        /// have different gain or audio rumble settings. The synthesizer
+        /// carries these values in every effect packet plus asserts bit
+        /// 0 of validFlag1, so the 30 Hz lightbar dispatch doesn't crowd
+        /// SDL3's separate SDL_RumbleJoystick writes off the BT HID
+        /// channel.</summary>
+        public static Func<int, Guid, (byte right, byte left)> SlotRumbleForDeviceProvider { get; set; }
+
+        /// <summary>Static provider for the slot's raw (unscaled) rumble
+        /// used for change detection only — when this changes mid audio
+        /// tick, the dispatcher forces a fresh dispatch so the per-device
+        /// motor bytes propagate immediately rather than waiting for the
+        /// next audio peak update. Per-device scaling happens later via
+        /// <see cref="SlotRumbleForDeviceProvider"/> in the device loop.</summary>
+        public static Func<int, (byte right, byte left)> SlotRawRumbleProvider { get; set; }
 
         /// <summary>Static provider for the per-slot test-rumble target
         /// GUID. Returns <see cref="Guid.Empty"/> when no test rumble is
@@ -343,8 +354,10 @@ namespace PadForge.Common.Input
 
                 // Don't suppress the dispatch when game rumble changes —
                 // even a steady audio peak shouldn't stall the rumble
-                // passthrough.
-                var r = SlotRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
+                // passthrough. Uses the slot's raw rumble for change
+                // detection; per-device scaling happens later in the
+                // device loop via SlotRumbleForDeviceProvider.
+                var r = SlotRawRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
                 bool rumbleChanged = r.right != _lastDispatchedRumbleR || r.left != _lastDispatchedRumbleL;
 
                 if (!zeroCrossing && !rumbleChanged && delta < 0.004f && mode != LightbarMode.AudioPulseRainbow)
@@ -456,7 +469,6 @@ namespace PadForge.Common.Input
                     0f, 1f);
             long nowMs = Environment.TickCount64;
             float pulseIntensity = ComputePulseIntensity(nowMs);
-            var rumble = SlotRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
 
             // Test-rumble target for this slot. When set, only the matching
             // device receives the rumble bytes inside the effect packet —
@@ -467,33 +479,6 @@ namespace PadForge.Common.Input
             // to the slot. Step 2's SDL physical-rumble path already honors
             // the same filter via InputManager.TestRumbleTargetGuid.
             Guid testTarget = TestRumbleTargetGuidProvider?.Invoke(_padIndex) ?? Guid.Empty;
-
-            // Synthesize the DS5 payload once. Fan out below covers any
-            // DualSense / DualSense Edge mapped to this slot. The DS4
-            // payload is synthesized lazily inside the device loop the
-            // first time a DS4 is encountered, since the USB and BT
-            // packet shapes differ enough that we need per-device work.
-            var ds5Buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
-            int ds5Len = Ds5EffectSynthesizer.Build(
-                _config, ds5Buffer, peakForSynth, nowMs,
-                _randomColor, _pulseColor, pulseIntensity,
-                rumble.right, rumble.left);
-            if (ds5Len <= 0) { DiagLog("DispatchSnapshot synth-len=0"); return; }
-
-            // Build a parallel "no rumble" DS5 buffer once when test rumble
-            // is active so the per-device write below is a buffer pick, not
-            // a per-device synthesis. byte[1] bit 0 (EnableRumbleEmulation)
-            // is cleared here too — without that gate the firmware ignores
-            // the zeroed motor bytes and the rumble persists.
-            byte[] ds5BufferNoRumble = null;
-            if (testTarget != Guid.Empty)
-            {
-                ds5BufferNoRumble = new byte[Ds5EffectSynthesizer.PayloadSize];
-                Buffer.BlockCopy(ds5Buffer, 0, ds5BufferNoRumble, 0, ds5Len);
-                ds5BufferNoRumble[1] &= 0xFE; // clear validFlag1 bit 0
-                ds5BufferNoRumble[2] = 0;     // OffRumbleRight
-                ds5BufferNoRumble[3] = 0;     // OffRumbleLeft
-            }
 
             var settings = SettingsManager.UserSettings;
             var devices = SettingsManager.UserDevices;
@@ -520,6 +505,7 @@ namespace PadForge.Common.Input
 
             int sent = 0, skippedNotPs = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
             int allPsOnline = 0, allPsOnlineMapped = 0;
+            byte[] ds5Buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
             byte[] ds4UsbBuf = null;
             byte[] ds4BtBuf = null;
             lock (devices.SyncRoot)
@@ -553,34 +539,50 @@ namespace PadForge.Common.Input
                     if (string.IsNullOrEmpty(path)) { skippedNoHandle++; continue; }
                     bool isBluetooth = Ds5RawHidWriter.IsBluetoothPath(path);
 
+                    // Per-device rumble bytes — each Sony device on the
+                    // slot pulls its OWN PadSetting (audio rumble + gain
+                    // + motor balance + swap) so different physical
+                    // devices on the same slot get different output.
+                    var perDevRumble = SlotRumbleForDeviceProvider?.Invoke(_padIndex, ud.InstanceGuid)
+                                       ?? ((byte)0, (byte)0);
                     // Test-rumble target gates the rumble bytes only —
                     // lightbar/trigger/mic-LED still update on non-target
                     // devices so an active animation doesn't freeze across
                     // the 500 ms test window.
                     bool deliverRumble = testTarget == Guid.Empty || ud.InstanceGuid == testTarget;
-                    byte rR = deliverRumble ? rumble.right : (byte)0;
-                    byte rL = deliverRumble ? rumble.left  : (byte)0;
+                    byte rR = deliverRumble ? perDevRumble.right : (byte)0;
+                    byte rL = deliverRumble ? perDevRumble.left  : (byte)0;
 
                     try
                     {
                         bool ok;
                         if (isDs5)
                         {
-                            // DS5 path — wrap the 47-byte payload in the
+                            // DS5 path — synthesize per-device with this
+                            // device's rumble bytes, then wrap in the
                             // standard USB (0x02) or BT (0x31) envelope.
-                            byte[] payload = deliverRumble ? ds5Buffer : ds5BufferNoRumble;
-                            ok = Ds5RawHidWriter.Write(path, payload.AsSpan(0, ds5Len));
-                            DiagLog($"  raw-write ds5 ok={ok} testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
+                            int ds5Len = Ds5EffectSynthesizer.Build(
+                                _config, ds5Buffer, peakForSynth, nowMs,
+                                _randomColor, _pulseColor, pulseIntensity,
+                                rR, rL);
+                            if (ds5Len <= 0) { errors++; continue; }
+                            // When this device gets no rumble (test target
+                            // mismatch or per-device gain = 0), clear bit 0
+                            // of validFlag1 so the firmware ignores motor
+                            // bytes — without this gate prior rumble can
+                            // persist on the device.
+                            if (rR == 0 && rL == 0)
+                                ds5Buffer[1] &= 0xFE;
+                            ok = Ds5RawHidWriter.Write(path, ds5Buffer.AsSpan(0, ds5Len));
+                            DiagLog($"  raw-write ds5 ok={ok} rumble=({rR},{rL}) testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
                         }
                         else
                         {
                             // DS4 path — full output report built inline
                             // (USB report 0x05 = 32 bytes, BT report 0x11
-                            // = 78 bytes with CRC32 trailer). Lazily synth
-                            // the per-shape buffer on first hit. When test
-                            // rumble is active the rumble bytes vary per
-                            // device, so we rebuild on every iteration —
-                            // negligible cost vs. the 500 ms test window.
+                            // = 78 bytes with CRC32 trailer). The BT CRC
+                            // depends on the rumble bytes, so we rebuild
+                            // per-device.
                             byte[] packet;
                             if (isBluetooth)
                             {
@@ -603,7 +605,7 @@ namespace PadForge.Common.Input
                                 packet = ds4UsbBuf;
                             }
                             ok = Ds5RawHidWriter.WriteFullPacket(path, packet);
-                            DiagLog($"  raw-write ds4 bt={isBluetooth} ok={ok} testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
+                            DiagLog($"  raw-write ds4 bt={isBluetooth} ok={ok} rumble=({rR},{rL}) testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
                         }
 
                         if (ok) sent++;

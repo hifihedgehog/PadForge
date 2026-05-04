@@ -142,12 +142,13 @@ namespace PadForge.Common.Input
             int slotCount = settings.FindByInstanceGuid(ud.InstanceGuid, _instanceGuidBuffer);
             if (slotCount == 0) return;
 
-            // Combine vibration across all mapped slots (max of each motor).
-            // For directional FFB data, use the first slot that has it (no sensible
-            // way to "combine" two different polar directions). Scalar values come
-            // from FinalVibrationStates so audio mix + ForceOverall/Left/Right/Swap
-            // are already applied — same source the FFB-tab meter and the DS5/DS4
-            // dispatcher read.
+            // Per-(device, slot) PadSetting drives the audio-rumble + FFB
+            // gain applied to THIS device. Different physical devices on
+            // the same slot can have different gain / audio rumble settings,
+            // so each device pulls its own UserSetting's PadSetting rather
+            // than reading slotSettings[0]'s like the per-slot meter pass
+            // does. For directional FFB data, use the first slot that
+            // has it (no sensible way to combine two polar directions).
             ushort combinedL = 0, combinedR = 0;
             Vibration directionalSource = null;
             PadSetting firstPadSetting = null;
@@ -162,20 +163,22 @@ namespace PadForge.Common.Input
                 if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
                     continue;
 
-                var fin = FinalVibrationStates[padIndex];
-                if (fin != null)
-                {
-                    if (fin.LeftMotorSpeed > combinedL)  combinedL = fin.LeftMotorSpeed;
-                    if (fin.RightMotorSpeed > combinedR) combinedR = fin.RightMotorSpeed;
-                }
-
                 var raw = VibrationStates[padIndex];
-                if (raw != null && directionalSource == null
+                if (raw == null) continue;
+
+                var devicePs = us.GetPadSetting();
+                ScaleRumbleForDevice(raw.LeftMotorSpeed, raw.RightMotorSpeed,
+                    devicePs, out ushort scaledL, out ushort scaledR);
+
+                if (scaledL > combinedL) combinedL = scaledL;
+                if (scaledR > combinedR) combinedR = scaledR;
+
+                if (directionalSource == null
                     && (raw.HasDirectionalData || raw.HasConditionData))
                     directionalSource = raw;
 
                 if (firstPadSetting == null)
-                    firstPadSetting = us.GetPadSetting();
+                    firstPadSetting = devicePs;
             }
 
             if (firstPadSetting == null) return;
@@ -230,70 +233,58 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Per-slot pre-pass that produces <see cref="FinalVibrationStates"/>
-        /// from raw <see cref="VibrationStates"/> by mixing in audio bass
-        /// rumble and applying ForceOverall × LeftMotorStrength /
-        /// RightMotorStrength × ForceSwapMotor. Runs once per polling tick
-        /// before the per-device FFB loop so every downstream consumer
-        /// (SDL physical rumble, DS5/DS4 effect packet, FFB-tab meter) sees
-        /// the same final values. Convention: a slot's settings come from
-        /// its first mapped device's PadSetting.
+        /// Per-slot pre-pass that fills <see cref="FinalVibrationStates"/>
+        /// using the slot's <see cref="SelectedDeviceGuids"/> device's
+        /// PadSetting — drives the FFB-tab activity meter only. The SDL
+        /// physical-rumble path and the DS5/DS4 dispatcher each compute
+        /// their own per-device scaled rumble (different physical devices
+        /// on the same slot can have different gain / audio rumble
+        /// settings), so they do NOT read this array.
         /// </summary>
         public void ComputeFinalVibrationStates()
         {
             var settings = SettingsManager.UserSettings;
-            var detector = AudioBassDetector;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 var raw = VibrationStates[padIndex];
                 var final = FinalVibrationStates[padIndex];
                 if (raw == null || final == null) continue;
 
-                ushort baseL = raw.LeftMotorSpeed;
-                ushort baseR = raw.RightMotorSpeed;
-
+                // Resolve the slot's currently-selected device PadSetting.
+                // Falls back to slotSettings[0] when no device is selected
+                // (e.g. before the first 30 Hz UI sync) so the meter still
+                // reads something reasonable.
                 PadSetting ps = null;
                 if (settings != null)
                 {
-                    var slotSettings = settings.FindByPadIndex(padIndex);
-                    if (slotSettings != null && slotSettings.Count > 0)
-                        ps = slotSettings[0].GetPadSetting();
+                    Guid selected = SelectedDeviceGuids[padIndex];
+                    if (selected != Guid.Empty)
+                    {
+                        var slotSettings = settings.FindByPadIndex(padIndex);
+                        if (slotSettings != null)
+                        {
+                            for (int i = 0; i < slotSettings.Count; i++)
+                            {
+                                if (slotSettings[i].InstanceGuid == selected)
+                                {
+                                    ps = slotSettings[i].GetPadSetting();
+                                    break;
+                                }
+                            }
+                            if (ps == null && slotSettings.Count > 0)
+                                ps = slotSettings[0].GetPadSetting();
+                        }
+                    }
+                    else
+                    {
+                        var slotSettings = settings.FindByPadIndex(padIndex);
+                        if (slotSettings != null && slotSettings.Count > 0)
+                            ps = slotSettings[0].GetPadSetting();
+                    }
                 }
 
-                // Audio bass rumble — additive via max, per-slot detector
-                // settings driven from the slot's first PadSetting.
-                if (detector != null && ps != null && ps.AudioRumbleEnabled == "1")
-                {
-                    detector.DecayIfSilent();
-                    detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
-                    detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
-                    ushort motorVal = detector.MotorValue;
-                    float leftScale = TryParseFloat(ps.AudioRumbleLeftMotor, 100f) / 100f;
-                    float rightScale = TryParseFloat(ps.AudioRumbleRightMotor, 100f) / 100f;
-                    ushort audioL = (ushort)(motorVal * leftScale);
-                    ushort audioR = (ushort)(motorVal * rightScale);
-                    if (audioL > baseL) baseL = audioL;
-                    if (audioR > baseR) baseR = audioR;
-                }
-
-                // Force-feedback gain / motor balance / swap.
-                int overallGain = 100;
-                int leftGain = 100;
-                int rightGain = 100;
-                bool swap = false;
-                if (ps != null)
-                {
-                    overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
-                    leftGain = Math.Clamp(TryParseInt(ps.LeftMotorStrength, 100), 0, 100);
-                    rightGain = Math.Clamp(TryParseInt(ps.RightMotorStrength, 100), 0, 100);
-                    swap = TryParseBool(ps.ForceSwapMotor);
-                }
-                double scaledL = baseL * (leftGain / 100.0) * (overallGain / 100.0);
-                double scaledR = baseR * (rightGain / 100.0) * (overallGain / 100.0);
-                ushort finalL = (ushort)Math.Clamp(scaledL, 0, 65535);
-                ushort finalR = (ushort)Math.Clamp(scaledR, 0, 65535);
-                if (swap) (finalL, finalR) = (finalR, finalL);
-
+                ScaleRumbleForDevice(raw.LeftMotorSpeed, raw.RightMotorSpeed,
+                    ps, out ushort finalL, out ushort finalR);
                 final.LeftMotorSpeed = finalL;
                 final.RightMotorSpeed = finalR;
 
@@ -310,6 +301,59 @@ namespace PadForge.Common.Input
                 final.ConditionAxisCount = raw.ConditionAxisCount;
                 final.ConditionAxes = raw.ConditionAxes;
             }
+        }
+
+        /// <summary>
+        /// Mixes audio bass rumble into the raw motor values (when the
+        /// device's PadSetting has it enabled) and applies ForceOverall ×
+        /// LeftMotorStrength / RightMotorStrength × ForceSwapMotor. The
+        /// audio detector is shared across slots (one peak source) but
+        /// the per-device sensitivity / cutoff / left-right scaling
+        /// applied here are per-PadSetting. With <paramref name="ps"/>
+        /// null all scaling falls back to identity (raw passthrough at
+        /// 100 % gain) so transient pre-init frames still produce sane
+        /// rumble.
+        /// </summary>
+        public void ScaleRumbleForDevice(
+            ushort rawLeft, ushort rawRight, PadSetting ps,
+            out ushort scaledLeft, out ushort scaledRight)
+        {
+            ushort baseL = rawLeft;
+            ushort baseR = rawRight;
+
+            var detector = AudioBassDetector;
+            if (detector != null && ps != null && ps.AudioRumbleEnabled == "1")
+            {
+                detector.DecayIfSilent();
+                detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
+                detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
+                ushort motorVal = detector.MotorValue;
+                float leftScale = TryParseFloat(ps.AudioRumbleLeftMotor, 100f) / 100f;
+                float rightScale = TryParseFloat(ps.AudioRumbleRightMotor, 100f) / 100f;
+                ushort audioL = (ushort)(motorVal * leftScale);
+                ushort audioR = (ushort)(motorVal * rightScale);
+                if (audioL > baseL) baseL = audioL;
+                if (audioR > baseR) baseR = audioR;
+            }
+
+            int overallGain = 100;
+            int leftGain = 100;
+            int rightGain = 100;
+            bool swap = false;
+            if (ps != null)
+            {
+                overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
+                leftGain = Math.Clamp(TryParseInt(ps.LeftMotorStrength, 100), 0, 100);
+                rightGain = Math.Clamp(TryParseInt(ps.RightMotorStrength, 100), 0, 100);
+                swap = TryParseBool(ps.ForceSwapMotor);
+            }
+            double sL = baseL * (leftGain / 100.0) * (overallGain / 100.0);
+            double sR = baseR * (rightGain / 100.0) * (overallGain / 100.0);
+            ushort finalL = (ushort)Math.Clamp(sL, 0, 65535);
+            ushort finalR = (ushort)Math.Clamp(sR, 0, 65535);
+            if (swap) (finalL, finalR) = (finalR, finalL);
+            scaledLeft = finalL;
+            scaledRight = finalR;
         }
     }
 }

@@ -175,12 +175,17 @@ namespace PadForge.Common.Input
             float pulseIntensity,
             out byte r, out byte g, out byte b)
         {
-            // Priority 1: macro-driven override.
-            if (cfg.HasActiveMacroLightbarOverride)
+            // Priority 1: macro-driven override. Intensity = 1.0 for
+            // Sticky holds, fades 1.0 → 0.0 over the Reactive decay
+            // window. RGB scaled by intensity so a Reactive flash fades
+            // out smoothly the same way the InputReactive lightbar mode
+            // does on DualSense.
+            float overrideIntensity = cfg.ComputeMacroOverrideIntensity();
+            if (overrideIntensity > 0f)
             {
-                r = cfg.MacroOverrideR;
-                g = cfg.MacroOverrideG;
-                b = cfg.MacroOverrideB;
+                r = (byte)Math.Round(cfg.MacroOverrideR * overrideIntensity);
+                g = (byte)Math.Round(cfg.MacroOverrideG * overrideIntensity);
+                b = (byte)Math.Round(cfg.MacroOverrideB * overrideIntensity);
                 return;
             }
 

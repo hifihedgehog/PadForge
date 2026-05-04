@@ -562,9 +562,31 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Presionar ratón {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar ratón {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar superposición de panel táctil</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Establecer barra de luz en {0} durante {1}ms</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Establecer color de barra de luz</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Reemplaza la barra de luz del slot de PlayStation asignado por un color RGB elegido durante la duración configurada. Al finalizar, la barra de luz vuelve a la configuración de la pestaña Iluminación. Las escrituras del juego siguen teniendo prioridad sobre la sustitución.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Reemplaza la barra de luz del slot de PlayStation asignado por un color RGB elegido. Reactivo se desvanece de brillo completo a negro en la ventana de decaimiento configurada y luego cede a la pestaña Iluminación. Permanente mantiene el color hasta que una acción "Borrar sustitución de barra de luz" lo libere. Las escrituras del juego siguen teniendo prioridad.</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Establecer barra de luz en {0} durante {1}ms</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Destellar barra de luz {0} (decaimiento {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Mantener barra de luz {0} hasta liberar</value></data>
+  <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Borrar sustitución de barra de luz</value></data>
+  <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Borrar sustitución de barra de luz</value></data>
+  <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Libera cualquier sustitución activa de la barra de luz del slot asignado. Combina con una acción permanente "Establecer color de barra de luz" para deshacerla mediante otro macro.</value></data>
+  <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Establecer modo de barra de luz</value></data>
+  <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Establecer modo de barra de luz a {0}</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Establece el modo de barra de luz del slot asignado a un valor específico. Persiste como una edición de la pestaña Iluminación hasta que otra acción o el usuario lo cambie.</value></data>
+  <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Ciclar modos de barra de luz</value></data>
+  <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Ciclar entre {0} modos de barra de luz</value></data>
+  <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Avanza el modo de barra de luz del slot por los modos seleccionados abajo. Cada disparo pasa al siguiente modo marcado. La posición es por acción y se reinicia al reiniciar la app.</value></data>
+
+  <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Modo:</value></data>
+  <data name="Macro_LightbarHold_Reactive" xml:space="preserve"><value>Reactivo (atenuar)</value></data>
+  <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Permanente (mantener)</value></data>
+  <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Color:</value></data>
+  <data name="Macro_LightbarColorSource_Fixed" xml:space="preserve"><value>Fijo</value></data>
+  <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Tono aleatorio</value></data>
+  <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Paso de paleta</value></data>
+  <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decaimiento:</value></data>
+  <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modo:</value></data>
+  <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Selecciona qué modos de barra de luz debe ciclar el macro. Cada disparo avanza al siguiente modo marcado.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centrado</value></data>

@@ -707,7 +707,12 @@ namespace PadForge.Common.Input
             }
             else // PaletteStep
             {
-                var palette = psCfg.SnapshotLightbarPalette();
+                // Per-macro palette wins when populated; otherwise fall back
+                // to the slot's own LightbarPalette so existing macros that
+                // never set a per-action palette keep their old behavior.
+                var palette = ParseMacroPaletteCsv(action.LightbarPaletteCsv);
+                if (palette.Length == 0)
+                    palette = psCfg.SnapshotLightbarPalette();
                 if (palette.Length > 0)
                 {
                     int idx = (action.LightbarCycleIndex % palette.Length + palette.Length) % palette.Length;
@@ -729,9 +734,43 @@ namespace PadForge.Common.Input
             psCfg.MacroOverrideB = b;
             psCfg.MacroOverrideHoldMode = action.LightbarHoldMode;
             psCfg.MacroOverrideStartUtc = now;
-            psCfg.MacroOverrideExpiresAtUtc = action.LightbarHoldMode == MacroLightbarHoldMode.Sticky
-                ? DateTime.MaxValue
-                : now.AddMilliseconds(Math.Max(action.LightbarDecayMs, 1));
+            if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky)
+            {
+                psCfg.MacroOverrideHoldEndUtc = DateTime.MaxValue;
+                psCfg.MacroOverrideExpiresAtUtc = DateTime.MaxValue;
+            }
+            else
+            {
+                int holdMs = Math.Max(action.LightbarHoldMs, 0);
+                int fadeMs = Math.Max(action.LightbarFadeMs, 0);
+                // Force at least 1 ms so the override registers as active
+                // — Hold=0/Fade=0 would otherwise expire on the same tick.
+                if (holdMs == 0 && fadeMs == 0) holdMs = 1;
+                DateTime holdEnd = now.AddMilliseconds(holdMs);
+                psCfg.MacroOverrideHoldEndUtc = holdEnd;
+                psCfg.MacroOverrideExpiresAtUtc = holdEnd.AddMilliseconds(fadeMs);
+            }
+        }
+
+        /// <summary>Parses "RRGGBB,RRGGBB,..." into palette entries.
+        /// Mirrors <c>MacroAction.ParsePaletteCsv</c>; kept here so the
+        /// Step 4b dispatch path doesn't reach into MacroAction's private
+        /// parser.</summary>
+        private static LightbarPaletteEntry[] ParseMacroPaletteCsv(string? csv)
+        {
+            if (string.IsNullOrWhiteSpace(csv)) return Array.Empty<LightbarPaletteEntry>();
+            var list = new System.Collections.Generic.List<LightbarPaletteEntry>();
+            foreach (var raw in csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                if (raw.Length != 6) continue;
+                if (byte.TryParse(raw.AsSpan(0, 2), System.Globalization.NumberStyles.HexNumber, null, out var r)
+                 && byte.TryParse(raw.AsSpan(2, 2), System.Globalization.NumberStyles.HexNumber, null, out var g)
+                 && byte.TryParse(raw.AsSpan(4, 2), System.Globalization.NumberStyles.HexNumber, null, out var b))
+                {
+                    list.Add(new LightbarPaletteEntry { R = r, G = g, B = b });
+                }
+            }
+            return list.ToArray();
         }
 
         /// <summary>Advances the action's volatile cycle position and

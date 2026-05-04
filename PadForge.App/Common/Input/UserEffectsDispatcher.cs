@@ -200,7 +200,8 @@ namespace PadForge.Common.Input
                   or LightbarMode.AudioGradient
                   or LightbarMode.AudioCrossFade
                   or LightbarMode.InputReactive
-                  or LightbarMode.InputReactiveCycle;
+                  or LightbarMode.InputReactiveCycle
+                  or LightbarMode.InputReactiveFixed;
 
         private void UpdateAnimTimer()
         {
@@ -315,9 +316,11 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Drain button rising edges into pulses for both
-            // InputReactive variants (random per press, cycle palette).
-            if (mode == LightbarMode.InputReactive || mode == LightbarMode.InputReactiveCycle)
+            // Drain button rising edges into pulses for the InputReactive
+            // variants (random per press, cycle palette, or fixed slot color).
+            if (mode == LightbarMode.InputReactive
+                || mode == LightbarMode.InputReactiveCycle
+                || mode == LightbarMode.InputReactiveFixed)
                 DrainInputPulses(mode);
 
             if (audioMode)
@@ -398,10 +401,14 @@ namespace PadForge.Common.Input
         {
             if (_pulseStartMs == 0 || _config == null) return 0f;
             long elapsed = nowMs - _pulseStartMs;
-            int decay = Math.Max(_config.LightbarInputDecayMs, 50);
-            if (elapsed <= 0) return 1f;
-            if (elapsed >= decay) return 0f;
-            return 1f - (float)elapsed / decay;
+            int hold = Math.Max(_config.LightbarInputHoldMs, 0);
+            int decay = Math.Max(_config.LightbarInputDecayMs, 0);
+            if (elapsed < 0) return 1f;
+            if (elapsed < hold) return 1f;
+            if (decay <= 0) return elapsed >= hold ? 0f : 1f;
+            long fadeElapsed = elapsed - hold;
+            if (fadeElapsed >= decay) return 0f;
+            return 1f - (float)fadeElapsed / decay;
         }
 
         private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)

@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Presionar ratón {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Soltar ratón {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alternar superposición de panel táctil</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Establecer barra de luz en {0} durante {1}ms</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Establecer color de barra de luz</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Reemplaza la barra de luz del slot de PlayStation asignado por un color RGB elegido durante la duración configurada. Al finalizar, la barra de luz vuelve a la configuración de la pestaña Iluminación. Las escrituras del juego siguen teniendo prioridad sobre la sustitución.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centrado</value></data>

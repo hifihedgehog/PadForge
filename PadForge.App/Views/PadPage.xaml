@@ -809,6 +809,9 @@
                                             <ComboBoxItem Content="{Binding Macro_MouseButtonRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonRelease}"/>
                                             <ComboBoxItem Content="{Binding Macro_MouseScroll, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseScroll}"/>
                                             <ComboBoxItem Content="{Binding Macro_ToggleTouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ToggleTouchpadOverlay}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.LightbarColor}"
+                                                          ToolTip="{Binding MacroAction_LightbarColor_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -854,13 +857,34 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Duration — for ButtonPress / KeyPress / Delay -->
+                                    <!-- Duration — for ButtonPress / KeyPress / Delay / LightbarColor -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
                                         <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                    </StackPanel>
+
+                                    <!-- Lightbar color picker — for LightbarColor -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsLightbarType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                        <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,6"
+                                                                  Red="{Binding LightbarR, Mode=TwoWay}"
+                                                                  Green="{Binding LightbarG, Mode=TwoWay}"
+                                                                  Blue="{Binding LightbarB, Mode=TwoWay}"/>
+                                        <Border Width="80" Height="20" HorizontalAlignment="Left" CornerRadius="3"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                            <Border.Background>
+                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                    <Binding Path="LightbarR"/>
+                                                    <Binding Path="LightbarG"/>
+                                                    <Binding Path="LightbarB"/>
+                                                </MultiBinding>
+                                            </Border.Background>
+                                        </Border>
                                     </StackPanel>
 
                                     <!-- Axis target + value — for AxisSet -->
@@ -2643,8 +2667,11 @@
                              firmware's single brightness register (byte 42).
                              OpenRGB shows brightness as a property of every
                              mode (Direct / Mic Off / Mic Pulse) for the same
-                             reason — there's only one register on the device. -->
-                        <Border Style="{StaticResource CardBorder}">
+                             reason — there's only one register on the device.
+                             DualSense / DualSense Edge only — DS4 has neither
+                             player LEDs nor a mic LED, so the card is hidden
+                             on DS4 slots via SyncTabVisibility. -->
+                        <Border x:Name="IndicatorLedsCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <TextBlock Text="&#xE754;" FontFamily="Segoe MDL2 Assets" FontSize="16"

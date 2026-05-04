@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop {0} indrukken</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop {0} loslaten</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar {1} ms op {0} zetten</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-kleur instellen</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Overschrijft de lightbar van het toegewezen PlayStation-slot tijdelijk met een gekozen RGB-kleur voor de ingestelde duur. Na afloop keert de lightbar terug naar de instellingen op het tabblad Verlichting. Schrijfacties vanuit het spel blijven voorrang houden.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Gecentreerd</value></data>

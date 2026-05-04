@@ -562,6 +562,9 @@
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Maustaste {0} drücken</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Maustaste {0} loslassen</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay umschalten</value></data>
+  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar für {1}ms auf {0} setzen</value></data>
+  <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe festlegen</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Überschreibt die Lightbar des zugewiesenen PlayStation-Slots für die konfigurierte Dauer mit einer gewählten RGB-Farbe. Nach Ablauf kehrt die Lightbar zu den Einstellungen der Beleuchtungs-Registerkarte zurück. Vom Spiel geschriebene Werte haben weiterhin Vorrang.</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Zentriert</value></data>

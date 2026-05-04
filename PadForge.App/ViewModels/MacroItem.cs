@@ -49,6 +49,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _name, value);
         }
 
+        /// <summary>Pad index (0-based) of the slot that owns this macro.
+        /// Set when the macro is added to a slot's collection or loaded
+        /// from XML. Used by <see cref="MacroActionType.LightbarColor"/>
+        /// to resolve the target <c>PlayStationSlotConfig</c> at fire
+        /// time. Not serialized — the parent <c>MacroData.PadIndex</c> is
+        /// the persisted source of truth and gets reapplied on load.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int PadIndex { get; set; } = -1;
+
         private bool _isEnabled = true;
 
         /// <summary>Whether this macro is active.</summary>
@@ -685,6 +694,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseMoveType));
                     OnPropertyChanged(nameof(IsMouseButtonType));
                     OnPropertyChanged(nameof(IsContinuousAxisType));
+                    OnPropertyChanged(nameof(IsLightbarType));
                 }
             }
         }
@@ -697,9 +707,9 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsKeyType => _type == MacroActionType.KeyPress || _type == MacroActionType.KeyRelease;
 
-        /// <summary>True when Type is ButtonPress, KeyPress, or Delay.</summary>
+        /// <summary>True when Type is ButtonPress, KeyPress, Delay, MouseButtonPress, or LightbarColor.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.LightbarColor;
 
         /// <summary>True when Type is AxisSet.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -720,6 +730,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is MouseButtonPress or MouseButtonRelease.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsMouseButtonType => _type == MacroActionType.MouseButtonPress || _type == MacroActionType.MouseButtonRelease;
+
+        /// <summary>True when Type is LightbarColor (PlayStation slot RGB override).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsLightbarType => _type == MacroActionType.LightbarColor;
 
         /// <summary>True when Type uses a continuous axis source (SystemVolume, AppVolume, MouseMove, MouseScroll).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -1241,6 +1255,44 @@ namespace PadForge.ViewModels
                     AudioProcessNames.Add(name);
             });
 
+        // ── Lightbar color (for MacroActionType.LightbarColor) ──
+        // Used only when Type == LightbarColor. Default to white so a
+        // freshly-added action lights the bar instead of going dark
+        // silently on the first test fire.
+
+        private byte _lightbarR = 0xFF;
+        public byte LightbarR
+        {
+            get => _lightbarR;
+            set
+            {
+                if (SetProperty(ref _lightbarR, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private byte _lightbarG = 0xFF;
+        public byte LightbarG
+        {
+            get => _lightbarG;
+            set
+            {
+                if (SetProperty(ref _lightbarG, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private byte _lightbarB = 0xFF;
+        public byte LightbarB
+        {
+            get => _lightbarB;
+            set
+            {
+                if (SetProperty(ref _lightbarB, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         // ── Volume limit ──
 
         private int _volumeLimit = 100;
@@ -1356,6 +1408,10 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
+                    MacroActionType.LightbarColor => string.Format(
+                        Strings.Instance.MacroAction_LightbarColor_Format,
+                        $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}",
+                        _durationMs),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -1463,7 +1519,14 @@ namespace PadForge.ViewModels
         MouseScroll,
 
         /// <summary>Toggle the touchpad overlay visibility.</summary>
-        ToggleTouchpadOverlay
+        ToggleTouchpadOverlay,
+
+        /// <summary>Set the assigned PlayStation slot's lightbar to a
+        /// specific RGB color for a duration. After the duration elapses,
+        /// the lightbar returns to whatever the user has configured on the
+        /// Lighting tab (audio mode, base color, etc.). Game-driven writes
+        /// still win over the macro override at the packet level.</summary>
+        LightbarColor
     }
 
     public enum MacroMouseButton

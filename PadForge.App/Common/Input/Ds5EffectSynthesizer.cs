@@ -173,9 +173,15 @@ namespace PadForge.Common.Input
             // The player-LED bits 0-4 of byte 43 select which of the 5
             // bottom-row LEDs are lit (PlayerLedMode enum). Bit 0x20
             // is always set when ANY lightbar/player feature is active.
+            // Snapshot the override window once so the rest of the function
+            // sees a single time-of-check (the UtcNow comparison can flip
+            // between calls within the same packet build).
+            bool macroOverrideActive = cfg.HasActiveMacroLightbarOverride;
+
             bool anyLightFeature =
                 cfg.LightbarMode != LightbarMode.Off
-                || cfg.PlayerLedMode != PlayerLedMode.Off;
+                || cfg.PlayerLedMode != PlayerLedMode.Off
+                || macroOverrideActive;
 
             // Always assert the player-indicator update bit and write byte
             // 43, even when PlayerLedMode == Off. Without setting validFlag1
@@ -208,7 +214,16 @@ namespace PadForge.Common.Input
             {
                 enableBits |= EnableLightbar;
 
-                if (cfg.LightbarMode != LightbarMode.Off)
+                if (macroOverrideActive)
+                {
+                    // Macro-driven override beats both the configured mode
+                    // and the base-color path for its hold window. Game
+                    // writes still win at packet level via Feature A.
+                    dst[OffLedRed]   = cfg.MacroOverrideR;
+                    dst[OffLedGreen] = cfg.MacroOverrideG;
+                    dst[OffLedBlue]  = cfg.MacroOverrideB;
+                }
+                else if (cfg.LightbarMode != LightbarMode.Off)
                 {
                     var (r, g, b) = ComputeLightbarColor(
                         cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
@@ -275,6 +290,20 @@ namespace PadForge.Common.Input
         // ────────────────────────────────────────────────
         //  Lightbar mode dispatch (LightbarMode -> RGB triple)
         // ────────────────────────────────────────────────
+
+        /// <summary>Public adapter for <see cref="ComputeLightbarColor"/>
+        /// so the <see cref="Ds4EffectSynthesizer"/> can reuse the same
+        /// per-mode logic without duplicating it. The DS4 path skips DS5-
+        /// only fields (player LEDs, mic LED, AT) but the lightbar-mode
+        /// resolution itself is device-agnostic.</summary>
+        public static (byte r, byte g, byte b) ComputeLightbarColorPublic(
+            PlayStationSlotConfig cfg,
+            float audioPeak,
+            long nowMs,
+            uint randomColor,
+            uint pulseColor,
+            float pulseIntensity)
+            => ComputeLightbarColor(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
 
         /// <summary>Reduces the active <see cref="LightbarMode"/> plus
         /// dynamic inputs (audio peak, wall-clock timestamp, dispatcher-

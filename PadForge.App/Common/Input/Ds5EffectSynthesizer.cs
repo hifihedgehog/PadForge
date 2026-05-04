@@ -148,32 +148,18 @@ namespace PadForge.Common.Input
 
             ushort enableBits = 0;
 
-            // Game rumble passthrough. Bit 0 of validFlag1 gates bytes
-            // 2-3 — when bit 0 is clear, the firmware ignores the
-            // rumble bytes entirely and leaves the motor state from
-            // the most-recent write in place.
-            //
-            // We assert bit 0 ONLY when the dispatcher actually has a
-            // non-zero game-rumble value to carry. With both bytes
-            // zero (the AUDIO RUMBLE case — raw VibrationStates is 0
-            // because audio mix is applied to SDL's writes only), we
-            // leave bit 0 clear so SDL's separate SDL_RumbleJoystick
-            // writes are the SOLE writer of the rumble fields. Two
-            // writers competing on async-sampled audio peaks produce
-            // a 30 Hz stutter the small DS5 motors perceive as weak;
-            // staying out of SDL's lane lets the audio-mixed bytes it
-            // writes survive untouched.
-            //
-            // Test rumble + game rumble: raw VibrationStates is set,
-            // both writers carry the same scaled value, motors run
-            // steady. (See InputService.SlotRumbleForDeviceProvider
-            // for the input-side contract.)
-            if ((rumbleRight | rumbleLeft) != 0)
-            {
-                dst[OffRumbleRight] = rumbleRight;
-                dst[OffRumbleLeft]  = rumbleLeft;
-                enableBits |= EnableRumbleEmulation;
-            }
+            // Rumble passthrough. The dispatcher is now the SOLE writer
+            // of DS5/DS4 effect packets — Step 2's ApplyForceFeedback
+            // skips SDL_RumbleJoystick for Sony VID/PID devices. There
+            // is no second writer to race with, so bit 0 stays asserted
+            // unconditionally and the bytes the dispatcher carries
+            // (audio-mix + per-device gain, computed in
+            // InputService.SlotRumbleForDeviceProvider) are what the
+            // firmware applies. Both audio and game rumble flow through
+            // this one path.
+            dst[OffRumbleRight] = rumbleRight;
+            dst[OffRumbleLeft]  = rumbleLeft;
+            enableBits |= EnableRumbleEmulation;
 
             // Lightbar / player-LED block. Reference: OpenRGB's
             // SonyDualSenseController.cpp + dualsense-tester's

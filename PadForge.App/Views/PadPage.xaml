@@ -920,15 +920,66 @@
                                                     </Border.Background>
                                                 </Border>
                                             </StackPanel>
-                                            <!-- Decay slider — Reactive only. -->
+                                            <!-- Per-macro palette editor — visible only when Reactive + PaletteStep. -->
+                                            <StackPanel Margin="0,0,0,6"
+                                                        Visibility="{Binding IsLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_LightbarPalette_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                                <TextBlock Text="{Binding Macro_LightbarPalette_Empty, Source={x:Static strings:Strings.Instance}}"
+                                                           FontSize="11" TextWrapping="Wrap"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Margin="0,0,0,4"/>
+                                                <ItemsControl ItemsSource="{Binding LightbarPalette}" Margin="0,0,0,4">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
+                                                            <Border BorderThickness="1" CornerRadius="4" Padding="6" Margin="0,0,6,6"
+                                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                                <StackPanel>
+                                                                    <Button Command="{Binding DataContext.RemoveLightbarPaletteColorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                            CommandParameter="{Binding}"
+                                                                            HorizontalAlignment="Right" Margin="0,0,0,4"
+                                                                            Padding="4,0" MinWidth="20"
+                                                                            ToolTip="{Binding Pad_Lighting_RemoveColor, Source={x:Static strings:Strings.Instance}}">
+                                                                        <TextBlock Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                                                                    </Button>
+                                                                    <views:ColorPickerControl HorizontalAlignment="Left"
+                                                                        Red="{Binding R, Mode=TwoWay}"
+                                                                        Green="{Binding G, Mode=TwoWay}"
+                                                                        Blue="{Binding B, Mode=TwoWay}"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <Button Content="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding AddLightbarPaletteColorCommand}"
+                                                        HorizontalAlignment="Left" Padding="8,2"/>
+                                            </StackPanel>
+                                            <!-- Hold slider — Reactive only. Held at full intensity for this many ms before the fade begins. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                        Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding LightbarHoldMs, Mode=TwoWay}"
+                                                        Minimum="0" Maximum="5000" Width="220"
+                                                        VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding LightbarHoldMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
+                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                            <!-- Fade slider — Reactive only. Linear fade from full to off after the hold. -->
                                             <StackPanel Orientation="Horizontal"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_LightbarDecay_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Text="{Binding Macro_LightbarFade_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
-                                                <Slider Value="{Binding LightbarDecayMs, Mode=TwoWay}"
-                                                        Minimum="50" Maximum="3000" Width="220"
+                                                <Slider Value="{Binding LightbarFadeMs, Mode=TwoWay}"
+                                                        Minimum="0" Maximum="5000" Width="220"
                                                         VerticalAlignment="Center"/>
-                                                <TextBox Text="{Binding LightbarDecayMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
+                                                <TextBox Text="{Binding LightbarFadeMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
                                                 <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -970,6 +1021,7 @@
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioCrossFade}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactive, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.InputReactive}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.InputReactiveCycle}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveFixed, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.InputReactiveFixed}"/>
                                                 </ComboBox>
                                             </StackPanel>
                                         </StackPanel>
@@ -2361,6 +2413,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactive, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveCycle, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_InputReactiveFixed, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -2383,16 +2436,26 @@
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
 
-                                <!-- InputReactive controls. Decay slider shows for both
-                                     variants; the per-press color source is now expressed by
-                                     the mode dropdown choice itself (random vs. palette
-                                     cycle), no separate checkbox needed. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive|InputReactiveCycle}">
+                                <!-- InputReactive controls. Hold + Decay sliders show for all
+                                     three variants; the per-press color source is expressed by
+                                     the mode dropdown choice itself (random vs. palette cycle
+                                     vs. fixed slot color). Hold may be 0 for instant fade;
+                                     Decay may be 0 for clean on/off with no fade. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputReactive|InputReactiveCycle|InputReactiveFixed}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
-                                                Minimum="100" Maximum="3000" TickFrequency="50"/>
+                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
                                         <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>

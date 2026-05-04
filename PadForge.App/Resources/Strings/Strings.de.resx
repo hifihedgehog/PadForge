@@ -585,6 +585,9 @@
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Zufälliger Farbton</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Palette weiterschalten</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Abklingen:</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Ausblenden:</value></data>
+  <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palette</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Eine leere Palette verwendet die Palette aus dem Beleuchtungs-Tab des Slots.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus:</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Wähle aus, durch welche Lightbar-Modi das Makro wechseln soll. Jede Auslösung springt zum nächsten markierten Modus.</value></data>
 
@@ -1024,6 +1027,7 @@
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audiobänder — drei Farben, Crossfade an den Grenzen</value></data>
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Eingabereaktiv — Zufallsfarbe pro Druck</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Eingabereaktiv — Palette durchlaufen</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Eingabereaktiv — Einzelfarbe pro Druck</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Farbe 1</value></data>
@@ -1034,6 +1038,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Farbe hinzufügen</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Palette zurücksetzen</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Ersetzt die aktuelle Palette durch die vier Standardfarben (Rot, Grün, Blau, Gelb).</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulshalten (ms):</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulsabklingen (ms):</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
@@ -1044,6 +1049,7 @@
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Spielermuster zurücksetzen</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Mute-LED-Modus zurücksetzen</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Periode zurücksetzen</value></data>
+  <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>Pulshalten zurücksetzen</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Pulsabklingen zurücksetzen</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>Schwelle Leise→Mittel zurücksetzen</value></data>

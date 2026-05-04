@@ -473,6 +473,7 @@
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio Bands — Three Colors, Crossfade at Boundaries</value></data>
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input Reactive — Random Color per Press</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Input Reactive — Cycle Through Palette</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Input Reactive — Single Color per Press</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
@@ -483,6 +484,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulse Hold (ms):</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms):</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
@@ -702,6 +704,9 @@
   <data name="Macro_LightbarColorSource_RandomHue" xml:space="preserve"><value>Random Hue</value></data>
   <data name="Macro_LightbarColorSource_PaletteStep" xml:space="preserve"><value>Palette Step</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decay:</value></data>
+  <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fade:</value></data>
+  <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palette</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Empty palette uses the slot's own Lighting tab palette.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode:</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pick which lightbar modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
 
@@ -901,6 +906,7 @@
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Reset Player Pattern</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Reset Mute LED Mode</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Reset Period</value></data>
+  <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>Reset Pulse Hold</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Reset Pulse Decay</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>
   <data name="Pad_ResetAudioLowToMidPercent" xml:space="preserve"><value>Reset Low-to-Mid Boundary</value></data>

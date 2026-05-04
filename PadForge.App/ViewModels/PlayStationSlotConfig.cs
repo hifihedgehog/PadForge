@@ -246,14 +246,27 @@ namespace PadForge.ViewModels
         }
 
         private DateTime _macroOverrideStartUtc = DateTime.MinValue;
-        /// <summary>Fire timestamp for the active override. Used together
-        /// with <see cref="MacroOverrideExpiresAtUtc"/> to compute the
-        /// decay intensity in Reactive hold mode.</summary>
+        /// <summary>Fire timestamp for the active override. Boundary
+        /// for the hold window when <see cref="MacroOverrideHoldEndUtc"/>
+        /// > Start.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public DateTime MacroOverrideStartUtc
         {
             get => _macroOverrideStartUtc;
             set => SetProperty(ref _macroOverrideStartUtc, value);
+        }
+
+        private DateTime _macroOverrideHoldEndUtc = DateTime.MinValue;
+        /// <summary>Hold-end timestamp. The override stays at full
+        /// intensity over [Start, HoldEnd], then fades linearly from 1.0
+        /// to 0.0 over [HoldEnd, Expires]. HoldEnd == Start means start
+        /// fading immediately; HoldEnd == Expires means cut directly to
+        /// off after the hold (no fade).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public DateTime MacroOverrideHoldEndUtc
+        {
+            get => _macroOverrideHoldEndUtc;
+            set => SetProperty(ref _macroOverrideHoldEndUtc, value);
         }
 
         private DateTime _macroOverrideExpiresAtUtc = DateTime.MinValue;
@@ -286,19 +299,21 @@ namespace PadForge.ViewModels
             => DateTime.UtcNow < _macroOverrideExpiresAtUtc;
 
         /// <summary>0..1 intensity scalar for the override RGB. 1.0 for
-        /// Sticky holds; linear ramp from 1.0 down to 0.0 across the
-        /// [Start, Expires] window for Reactive holds. The synthesizer
-        /// multiplies the override RGB by this so a Reactive flash fades
-        /// smoothly the same way the InputReactive lightbar mode does.
-        /// Returns 0 when no override is active.</summary>
+        /// Sticky holds; for Reactive holds, 1.0 across [Start, HoldEnd]
+        /// then a linear ramp from 1.0 to 0.0 across [HoldEnd, Expires].
+        /// The synthesizer multiplies the override RGB by this so a
+        /// Reactive flash fades smoothly the same way the InputReactive
+        /// lightbar mode does. Returns 0 when no override is active.</summary>
         public float ComputeMacroOverrideIntensity()
         {
             if (!HasActiveMacroLightbarOverride) return 0f;
             if (_macroOverrideHoldMode == MacroLightbarHoldMode.Sticky) return 1f;
-            double duration = (_macroOverrideExpiresAtUtc - _macroOverrideStartUtc).TotalMilliseconds;
-            if (duration <= 0) return 1f;
-            double elapsed = (DateTime.UtcNow - _macroOverrideStartUtc).TotalMilliseconds;
-            return (float)Math.Clamp(1.0 - elapsed / duration, 0.0, 1.0);
+            DateTime now = DateTime.UtcNow;
+            if (now <= _macroOverrideHoldEndUtc) return 1f;
+            double fade = (_macroOverrideExpiresAtUtc - _macroOverrideHoldEndUtc).TotalMilliseconds;
+            if (fade <= 0) return 0f;
+            double fadeElapsed = (now - _macroOverrideHoldEndUtc).TotalMilliseconds;
+            return (float)Math.Clamp(1.0 - fadeElapsed / fade, 0.0, 1.0);
         }
 
         /// <summary>Releases any active override (Sticky or Reactive) so
@@ -309,6 +324,8 @@ namespace PadForge.ViewModels
         {
             if (_macroOverrideExpiresAtUtc != DateTime.MinValue)
                 MacroOverrideExpiresAtUtc = DateTime.MinValue;
+            if (_macroOverrideHoldEndUtc != DateTime.MinValue)
+                MacroOverrideHoldEndUtc = DateTime.MinValue;
         }
 
         // ────────────────────────────────────────────────
@@ -502,14 +519,27 @@ namespace PadForge.ViewModels
             });
         private RelayCommand<LightbarPaletteEntry> _removePalette;
 
+        private int _lightbarInputHoldMs;
+        /// <summary>Hold time for InputReactive pulses, in milliseconds.
+        /// A button press flashes the chosen color at full intensity for
+        /// this long before the fade starts. Set to 0 (default) for an
+        /// immediate fade out — matches the v3.1.0 behavior.</summary>
+        public int LightbarInputHoldMs
+        {
+            get => _lightbarInputHoldMs;
+            set => SetProperty(ref _lightbarInputHoldMs, Math.Clamp(value, 0, 5000));
+        }
+
         private int _lightbarInputDecayMs = 600;
-        /// <summary>Decay time for InputReactive pulses, in milliseconds.
-        /// A button press flashes the chosen color at full intensity, then
-        /// fades to black over this duration.</summary>
+        /// <summary>Fade-out duration for InputReactive pulses (after the
+        /// hold period elapses), in milliseconds. Set to 0 for a hard
+        /// cutoff — useful with a non-zero <see cref="LightbarInputHoldMs"/>
+        /// to produce a clean on/off blink. The pre-v3.1.1 single-decay
+        /// behaviour is recovered by Hold=0, Decay=600 (the default).</summary>
         public int LightbarInputDecayMs
         {
             get => _lightbarInputDecayMs;
-            set => SetProperty(ref _lightbarInputDecayMs, Math.Clamp(value, 100, 3000));
+            set => SetProperty(ref _lightbarInputDecayMs, Math.Clamp(value, 0, 5000));
         }
 
         // ────────────────────────────────────────────────
@@ -765,6 +795,10 @@ namespace PadForge.ViewModels
             _resetLightbarPeriod ??= new RelayCommand(() => LightbarPeriodMs = 3000);
         private RelayCommand _resetLightbarPeriod;
 
+        public RelayCommand ResetLightbarInputHoldCommand =>
+            _resetLightbarInputHold ??= new RelayCommand(() => LightbarInputHoldMs = 0);
+        private RelayCommand _resetLightbarInputHold;
+
         public RelayCommand ResetLightbarInputDecayCommand =>
             _resetLightbarInputDecay ??= new RelayCommand(() => LightbarInputDecayMs = 600);
         private RelayCommand _resetLightbarInputDecay;
@@ -934,6 +968,7 @@ namespace PadForge.ViewModels
         AudioCrossFade = 10,
         InputReactive = 11,           // random hue per press
         InputReactiveCycle = 12,      // step through the configured palette per press
+        InputReactiveFixed = 13,      // single color (LightbarRed/Green/Blue) flashed per press
     }
 
     /// <summary>Audio-driven lightbar behavior. Issue #55 listed the
@@ -1015,6 +1050,7 @@ namespace PadForge.ViewModels
         [XmlArray("LightbarPalette")]
         [XmlArrayItem("Color")]
         public LightbarPaletteEntryData[] LightbarPalette { get; set; }
+        [XmlAttribute] public int LightbarInputHoldMs { get; set; } = 0;
         [XmlAttribute] public int LightbarInputDecayMs { get; set; } = 600;
         [XmlAttribute] public bool LightbarInputRandomize { get; set; } = true;
     }

@@ -436,6 +436,14 @@ namespace PadForge.Services
             {
                 int idx = cfgData.SlotIndex;
                 if (idx < 0 || idx >= _mainVm.Pads.Count) continue;
+                // Skip entries for uncreated slots. Older saves (or
+                // pre-2026-05-04 builds before DeleteSlot cleared the
+                // per-device dictionary) can carry stale entries for
+                // slots that have since been deleted; loading them
+                // would resurrect the prior lightbar mode / colors /
+                // palette as soon as the user remaps the same physical
+                // device to a freshly-created slot at the same index.
+                if (!SettingsManager.SlotCreated[idx]) continue;
                 var padVm = _mainVm.Pads[idx];
 
                 // Per-device entry — apply to that device's per-device

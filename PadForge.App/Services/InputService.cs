@@ -189,9 +189,20 @@ namespace PadForge.Services
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
-                var vib = _inputManager.VibrationStates[padIndex];
+                var vib = _inputManager.FinalVibrationStates[padIndex];
                 if (vib == null) return ((byte)0, (byte)0);
                 return ((byte)(vib.RightMotorSpeed >> 8), (byte)(vib.LeftMotorSpeed >> 8));
+            };
+
+            // Active test-rumble target for the slot, so the dispatcher's
+            // device loop zeros rumble bytes on every Sony device whose
+            // GUID doesn't match — same scoping that Step 2 already applies
+            // for the SDL physical-rumble path.
+            UserEffectsDispatcher.TestRumbleTargetGuidProvider = padIndex =>
+            {
+                if (_inputManager == null) return Guid.Empty;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return Guid.Empty;
+                return _inputManager.TestRumbleTargetGuid[padIndex];
             };
 
             // Subscribe to settings/dashboard property changes for runtime propagation.
@@ -450,7 +461,10 @@ namespace PadForge.Services
             {
                 var padVm = _mainVm.Pads[i];
                 var gp = _inputManager.CombinedOutputStates[i];
-                var vibration = _inputManager.VibrationStates[i];
+                // Meter reads post-mix-post-gain values so the activity bars
+                // match what the physical device and the DS5/DS4 effect
+                // packet are sending.
+                var vibration = _inputManager.FinalVibrationStates[i];
 
                 padVm.UpdateFromEngineState(gp, vibration);
                 padVm.UpdateFromTouchpadState(_inputManager.CombinedTouchpadStates[i]);

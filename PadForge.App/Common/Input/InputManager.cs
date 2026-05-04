@@ -182,6 +182,19 @@ namespace PadForge.Common.Input
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
+        /// Per-slot post-processed vibration: <see cref="VibrationStates"/> with
+        /// audio bass mixed in and ForceOverall × Left/Right motor strength ×
+        /// ForceSwapMotor applied. Populated each polling tick by Step 2's
+        /// <c>ComputeFinalVibrationStates</c>. The FFB-tab activity meter, the
+        /// DS5/DS4 effect-packet rumble bytes (via
+        /// <c>UserEffectsDispatcher.SlotRumbleProvider</c>), and the SDL
+        /// physical-rumble path (<c>SetDeviceForces</c>) all read this so the
+        /// three surfaces stay in sync. <c>SetDeviceForces</c> therefore does
+        /// NOT reapply gain on the scalar branch.
+        /// </summary>
+        public Vibration[] FinalVibrationStates { get; } = new Vibration[MaxPads];
+
+        /// <summary>
         /// Per-slot motion snapshots for DSU (cemuhook) streaming.
         /// Written by the polling thread after Step 2, read by the DSU server.
         /// </summary>
@@ -275,6 +288,7 @@ namespace PadForge.Common.Input
             for (int i = 0; i < MaxPads; i++)
             {
                 VibrationStates[i] = new Vibration();
+                FinalVibrationStates[i] = new Vibration();
             }
         }
 

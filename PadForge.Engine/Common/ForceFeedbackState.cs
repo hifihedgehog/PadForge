@@ -217,22 +217,15 @@ namespace PadForge.Engine
                 _cachedPeriod = 0;
             }
 
-            ushort rawLeft = v.LeftMotorSpeed;
-            ushort rawRight = v.RightMotorSpeed;
-
-            // Apply per-motor and overall gain.
-            double left = rawLeft * (leftGain / 100.0) * (overallGain / 100.0);
-            double right = rawRight * (rightGain / 100.0) * (overallGain / 100.0);
-
-            // Clamp to ushort range.
-            ushort finalLeft = (ushort)Math.Clamp(left, 0, 65535);
-            ushort finalRight = (ushort)Math.Clamp(right, 0, 65535);
-
-            // Swap motors if configured.
-            if (swapMotors)
-            {
-                (finalLeft, finalRight) = (finalRight, finalLeft);
-            }
+            // Scalar values are already audio-mixed and gain/swap-scaled by
+            // InputManager.ComputeFinalVibrationStates so the FFB-tab activity
+            // meter, the SDL physical-rumble path, and the DS5/DS4 effect
+            // packet stay in sync. Reapplying leftGain/rightGain/overallGain/
+            // swap here would double-attenuate. The directional/haptic
+            // branches above still consume overallGain via SignedMagnitude
+            // scaling — that's intentional and stays.
+            ushort finalLeft = v.LeftMotorSpeed;
+            ushort finalRight = v.RightMotorSpeed;
 
             // Only send to hardware when values change.
             if (finalLeft == _cachedLeftMotorSpeed && finalRight == _cachedRightMotorSpeed)

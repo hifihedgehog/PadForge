@@ -373,7 +373,7 @@ if ($existing) {
 if (-not (Test-Path $PadForgeXml)) {
     Write-Host "  PadForge.xml not found -- launching PadForge to create defaults..."
     Start-Process $PadForgeExe
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 10
     Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
     Start-Sleep -Seconds 2
     if (-not (Test-Path $PadForgeXml)) {
@@ -396,9 +396,24 @@ Copy-Item $PadForgeXml $xmlBak -Force
 Remove-Item $PadForgeXml -Force
 Write-Host "  Backed up and deleted PadForge.xml for clean start"
 
-# Launch PadForge briefly to regenerate default XML, then kill it
+# Launch PadForge briefly to regenerate default XML, then kill it.
+# Poll for the file rather than wait a fixed interval — first-time launch
+# on a stock system can take 15-20s for the SDL3 enumeration + initial
+# settings flush to complete. Cap at 30s so we don't hang forever if
+# something's broken.
 Start-Process $PadForgeExe
-Start-Sleep -Seconds 5
+$xmlAppeared = $false
+for ($w = 0; $w -lt 30; $w++) {
+    Start-Sleep -Seconds 1
+    if (Test-Path $PadForgeXml) { $xmlAppeared = $true; break }
+}
+if ($xmlAppeared) {
+    Write-Host "  PadForge.xml regenerated after ${w}s" -ForegroundColor Green
+    # Give the settings flush + enumeration a couple more seconds before kill.
+    Start-Sleep -Seconds 3
+} else {
+    Write-Host "  !! PadForge.xml never appeared (waited 30s)" -ForegroundColor Yellow
+}
 Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
 Start-Sleep -Seconds 2
 if (-not (Test-Path $PadForgeXml)) {
@@ -703,6 +718,84 @@ Start-Sleep -Milliseconds 3000
 $slots = @(Find-AllSlots)
 Write-Host "  Slots after creation: $($slots.Count)"
 
+# ----------------------------------------------------------------------
+# Assign a DualSense to the Xbox + PlayStation slots so their PadPages
+# expose the conditional tabs:
+#   - Force Feedback tab is gated on a gamepad-class device being assigned
+#   - Adaptive Triggers + Lighting tabs are gated on a DualSense (or
+#     DualSense Edge) device being assigned, per PadPage.xaml.cs:255-283
+# Without this step those tabs stay Visibility=Collapsed and capture
+# can't reach them.
+# ----------------------------------------------------------------------
+Write-Host ""
+Write-Host "--- Assign DualSense to Xbox + PlayStation slots ---" -ForegroundColor Yellow
+Nav "Devices"; Start-Sleep -Milliseconds 1500
+
+function Assign-DeviceToSlot {
+    param([string]$DeviceNamePart, [string]$SlotNumberLabel)
+    $searchIn = $script:uiaWin
+    $liCond = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ListItem)
+    $items = $searchIn.FindAll($TD, $liCond)
+    Write-Host "  Search: $($items.Count) ListItem(s) in window"
+    $target = $null
+    foreach ($it in $items) {
+        if ($it.Current.Name -like "*$DeviceNamePart*") { $target = $it; break }
+    }
+    if (-not $target) {
+        Write-Host "  !! Device matching '$DeviceNamePart' not found in $($items.Count) items. Dump:" -ForegroundColor Yellow
+        for ($i = 0; $i -lt [Math]::Min($items.Count, 30); $i++) {
+            Write-Host "    [$i] '$($items[$i].Current.Name)' Class='$($items[$i].Current.ClassName)'"
+        }
+        return $false
+    }
+    Click-El $target -Label "Device card '$DeviceNamePart'" -Delay 1000 | Out-Null
+
+    # Slot toggle buttons live below the device's detail panel; each
+    # ToggleButton's accessible name is the slot number text. Find by name.
+    $btnCond = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Button)
+    $allButtons = $searchIn.FindAll($TD, $btnCond)
+    foreach ($b in $allButtons) {
+        if ($b.Current.Name -eq $SlotNumberLabel) {
+            try {
+                $tp = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
+                if ($tp.Current.ToggleState -ne [System.Windows.Automation.ToggleState]::On) {
+                    $tp.Toggle()
+                    Start-Sleep -Milliseconds 800
+                    Write-Host "  Toggled slot $SlotNumberLabel ON for $DeviceNamePart" -ForegroundColor Green
+                } else {
+                    Write-Host "  Slot $SlotNumberLabel already assigned to $DeviceNamePart"
+                }
+                return $true
+            } catch {
+                # Fallback: invoke pattern (regular click)
+                try {
+                    $ip = $b.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern)
+                    $ip.Invoke()
+                    Start-Sleep -Milliseconds 800
+                    Write-Host "  Clicked slot $SlotNumberLabel for $DeviceNamePart" -ForegroundColor Green
+                    return $true
+                } catch {
+                    Write-Host "  !! Slot $SlotNumberLabel button has no Toggle/Invoke pattern" -ForegroundColor Yellow
+                }
+            }
+        }
+    }
+    Write-Host "  !! Slot $SlotNumberLabel button not found for $DeviceNamePart" -ForegroundColor Yellow
+    return $false
+}
+
+Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
+
+# Give the Devices page time to write the assignment back to the VMs and
+# for the PadPage's hasForceFeedback / hasAdaptiveTriggers / hasLightbar
+# gating to flip on for the affected slots.
+Start-Sleep -Milliseconds 2000
+
 # Web controller server is enabled via XML injection in Step 0 — no UI click needed.
 
 # ==============================================================================
@@ -881,16 +974,100 @@ if ($slots.Count -ge 1) {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
 
+# ---- 13a-b. PlayStation slot — Adaptive Triggers + Lighting tabs ----
+# These are PS-only tabs not present on Xbox/Extended/KBM/MIDI. After
+# the type-group reorder the PlayStation slot is at index 1 (Xbox at 0).
+#
+# Use Dashboard slot cards (SlotsItemsControl) rather than the sidebar
+# (MenuItemsHost) — sidebar NavigationViewItems get virtualized out of
+# the UIA tree after several tab captures, while Dashboard cards stay
+# materialized.
+Write-Host ""
+Write-Host "--- PlayStation Slot ---" -ForegroundColor Yellow
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+if ($slotsHost) {
+    $cards = $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)
+    if ($cards.Count -ge 2) {
+        Click-El $cards[1] -Label "PlayStation Slot card" -Delay 4000 | Out-Null
+
+        # Land on the Controller tab first so the PadPage is fully realized
+        # and the conditional AT/Lighting tabs have time to flip to Visible
+        # via the PadPage code-behind's hasAdaptiveTriggers / hasLightbar
+        # gating. The capability flags depend on HM profile load, which
+        # can take several seconds for a fresh slot.
+        $padPage = Find-UIA -Aid "PadPageView"
+        if ($padPage) {
+            $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::RadioButton)
+
+            # Poll for AT tab visibility — it flips visible only after the
+            # slot's PlayStationSlotConfig is bound and capability gating
+            # has propagated. Up to ~10s on a cold HM bring-up.
+            $atVisible = $false
+            for ($w = 0; $w -lt 10 -and -not $atVisible; $w++) {
+                Start-Sleep -Milliseconds 1000
+                $tabs = $padPage.FindAll($TC, $rbCond)
+                if ($tabs | Where-Object { $_.Current.Name -eq "Adaptive Triggers" }) {
+                    $atVisible = $true
+                }
+            }
+            $tabs = $padPage.FindAll($TC, $rbCond)
+            if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "PS Controller Tab" -Delay 1000 | Out-Null }
+            $tabs = $padPage.FindAll($TC, $rbCond)
+            Write-Host "  PadPage tabs visible to UIA: $($tabs.Count) (AT visible: $atVisible)"
+            for ($ti = 0; $ti -lt $tabs.Count; $ti++) {
+                Write-Host "    [$ti] Name='$($tabs[$ti].Current.Name)'"
+            }
+
+            Write-Host "[$(Next)/$total] Adaptive Triggers"
+            $atTab = $tabs | Where-Object { $_.Current.Name -eq "Adaptive Triggers" } | Select-Object -First 1
+            if ($atTab) {
+                Click-El $atTab -Label "AT Tab" -Delay 1000 | Out-Null
+                Cap "pad-adaptive-triggers"
+            } else {
+                Write-Host "  !! Adaptive Triggers tab not in UIA tree" -ForegroundColor Yellow
+            }
+
+            Write-Host "[$(Next)/$total] Lighting"
+            # Re-enumerate (selection state changes can affect what's visible).
+            $tabs = $padPage.FindAll($TC, $rbCond)
+            $lightTab = $tabs | Where-Object { $_.Current.Name -eq "Lighting" } | Select-Object -First 1
+            if ($lightTab) {
+                Click-El $lightTab -Label "Lighting Tab" -Delay 1000 | Out-Null
+                Cap "pad-lighting"
+            } else {
+                Write-Host "  !! Lighting tab not in UIA tree" -ForegroundColor Yellow
+            }
+        } else {
+            Write-Host "  !! PadPageView not found after PS slot click" -ForegroundColor Yellow
+            $n += 2
+        }
+    } else {
+        Write-Host "  !! Only $($cards.Count) slot cards on Dashboard" -ForegroundColor Yellow
+        $n += 2
+    }
+} else {
+    Write-Host "  !! SlotsItemsControl not found" -ForegroundColor Yellow
+    $n += 2
+}
+
 # ---- 14. Extended slot ----
 # After type-group reorder, order from end is always: ...Extended, KBM, MIDI.
 # Use offsets from end to handle variable number of Xbox / PlayStation slots.
+# Use Dashboard slot cards (SlotsItemsControl) instead of sidebar nav —
+# sidebar NavigationViewItems virtualize out of the UIA tree after the
+# Xbox-slot tab pass, but Dashboard cards stay materialized.
 Write-Host ""
 Write-Host "--- Extended Slot ---" -ForegroundColor Yellow
-$slots = @(Find-AllSlots)
-$extendedIdx = $slots.Count - 3  # After type-group reorder: ...Extended, KBM, MIDI
-if ($extendedIdx -ge 0 -and $slots.Count -ge 3) {
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+$extendedIdx = $cards.Count - 3  # After type-group reorder: ...Extended, KBM, MIDI
+if ($extendedIdx -ge 0 -and $cards.Count -ge 3) {
     Write-Host "[$(Next)/$total] Extended config bar"
-    Select-El $slots[$extendedIdx] -Label "Extended Slot" -Delay 1000
+    Click-El $cards[$extendedIdx] -Label "Extended Slot card" -Delay 1500 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
@@ -944,14 +1121,15 @@ if ($extendedIdx -ge 0 -and $slots.Count -ge 3) {
 # ---- 16. KBM slot ----
 Write-Host ""
 Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
-Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
-$slots = @(Find-AllSlots)
-$kbmIdx = $slots.Count - 2  # second from end
-if ($kbmIdx -ge 0 -and $slots.Count -ge 2) {
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+$kbmIdx = $cards.Count - 2  # second from end
+if ($kbmIdx -ge 0 -and $cards.Count -ge 2) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
-    Select-El $slots[$kbmIdx] -Label "KBM Slot" -Delay 1000
+    Click-El $cards[$kbmIdx] -Label "KBM Slot card" -Delay 1500 | Out-Null
     # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
-    Start-Sleep -Milliseconds 500
+    Start-Sleep -Milliseconds 800
     Cap "pad-kbm-preview"
 } else {
     Write-Host "  !! KBM slot not found" -ForegroundColor Yellow
@@ -961,12 +1139,13 @@ if ($kbmIdx -ge 0 -and $slots.Count -ge 2) {
 # ---- 17. MIDI slot ----
 Write-Host ""
 Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
-Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
-$slots = @(Find-AllSlots)
-$midiIdx = $slots.Count - 1  # last slot
-if ($midiIdx -ge 0 -and $slots.Count -ge 1) {
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+$midiIdx = $cards.Count - 1  # last slot
+if ($midiIdx -ge 0 -and $cards.Count -ge 1) {
     Write-Host "[$(Next)/$total] MIDI config bar"
-    Select-El $slots[$midiIdx] -Label "MIDI Slot" -Delay 1000
+    Click-El $cards[$midiIdx] -Label "MIDI Slot card" -Delay 1500 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(

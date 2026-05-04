@@ -51,6 +51,11 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 - HID PID 1.0 force feedback on Extended controllers: constant, ramp, periodic (sine, square, triangle, sawtooth), and condition effects (spring, damper, friction, inertia) decoded and routed to physical wheels and joysticks with directional pass-through.
 - Audio bass rumble: captures system audio and converts bass frequencies to per-device vibration through a 48 dB/octave filter with configurable sensitivity and cutoff.
 
+### DualSense adaptive triggers and lighting
+
+- Seven trigger effect modes for slots with a DualSense assigned: Off, Feedback (constant resistance), Weapon (soft zone + click), Vibration (continuous buzz), Multi-Position Feedback (ratcheting bumps), Slope Feedback (gradient ramp), and Multi-Position Vibration (stuttering bursts). A live effect-profile preview draws the resistance / amplitude shape across the trigger pull and updates as you drag the Range, Strength, and Frequency sliders. Game-driven trigger effects pass through unchanged via a separate dispatch path.
+- Thirteen lightbar modes for slots with a DualShock 4, DualSense, or DualSense Edge assigned: Static Color, Breathing, Rainbow Cycle, palette-based Color Cycle, three Audio Pulse variants (static / random / rainbow), three Audio Bands variants (hard transitions / smooth gradient / crossfade at boundaries), and two Input Reactive variants (random color per press / cycle through palette). Variable-length palette, per-band thresholds with crossfade width, pulse decay slider, plus the Indicator LEDs card for the player-pattern row, mute LED mode, and brightness.
+
 ### Visualization
 
 - 3D HelixToolkit controller model. Rotate, zoom, pan. Buttons, sticks, and triggers highlight in real time.
@@ -134,6 +139,14 @@ Preview highlighting every mapped key and button in real time.
 ### PlayStation virtual controller
 ![PlayStation](screenshots/playstation.jpg)
 DualShock 4 / DualSense / DualSense Edge output through HIDMaestro with a 3D model that rotates and highlights live state.
+
+### Adaptive triggers
+![Adaptive Triggers](screenshots/adaptive-triggers.jpg)
+Seven DualSense trigger effect modes with a live preview that draws the resistance or amplitude shape across the trigger pull. Range, Strength, and Frequency sliders update the preview in real time. Game-driven effects pass through unchanged.
+
+### Lighting
+![Lighting](screenshots/lighting.jpg)
+Thirteen lightbar modes &mdash; Static Color, Breathing, Rainbow Cycle, palette Color Cycle, three Audio Pulse variants, three Audio Bands variants, and two Input Reactive variants &mdash; plus the Indicator LEDs card for the player pattern, mute LED mode, and brightness.
 
 ### MIDI virtual controller
 ![MIDI](screenshots/midi.jpg)

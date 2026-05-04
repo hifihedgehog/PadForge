@@ -146,7 +146,7 @@ Seven DualSense trigger effect modes with a live preview that draws the resistan
 
 ### Lighting
 ![Lighting](screenshots/lighting.jpg)
-Thirteen lightbar modes &mdash; Static Color, Breathing, Rainbow Cycle, palette Color Cycle, three Audio Pulse variants, three Audio Bands variants, and two Input Reactive variants &mdash; plus the Indicator LEDs card for the player pattern, mute LED mode, and brightness.
+Thirteen lightbar modes &mdash; Static Color, Breathing, Rainbow Cycle, palette Color Cycle, three Audio Pulse variants, three Audio Bands variants, and two Input Reactive variants &mdash; plus the Indicator LEDs card for the player pattern, mute LED mode, and brightness. Every dropdown has a one-click reset to its default.
 
 ### MIDI virtual controller
 ![MIDI](screenshots/midi.jpg)
